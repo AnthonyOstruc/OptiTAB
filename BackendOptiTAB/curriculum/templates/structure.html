@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Structure des Exercices</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    h2 { color: #2c3e50; }
+    ul { list-style-type: none; }
+    li { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>📚 Structure des Exercices</h1>
+  {% for matiere in matieres %}
+    <h2>📘 {{ matiere.nom }}</h2>
+    <ul>
+      {% for notion in matiere.notions.all %}
+        <li>
+          📗 <strong>{{ notion.nom }}</strong>
+          <ul>
+            {% for chapitre in notion.chapitres.all %}
+              <li>
+                📕 {{ chapitre.nom }}
+                <ul>
+                  {% for ex in chapitre.exercices.all %}
+                    <li>✅ {{ ex.titre }}</li>
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+</body>
+</html>

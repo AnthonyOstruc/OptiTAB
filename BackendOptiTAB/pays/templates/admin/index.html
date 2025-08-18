@@ -1,0 +1,94 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Administration OptiTAB{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+.welcome-section {
+    background: linear-gradient(135deg, #007cba, #0056b3);
+    color: white;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.stat-item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007cba;
+}
+
+.stat-label {
+    color: #666;
+    margin-top: 5px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="welcome-section">
+    <h1>🎓 Administration OptiTAB</h1>
+    <p>Interface simplifiée pour gérer votre plateforme éducative</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-item">
+        <div class="stat-number">{{ stats.pays_count|default:0 }}</div>
+        <div class="stat-label">Pays configurés</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">{{ stats.niveaux_count|default:0 }}</div>
+        <div class="stat-label">Niveaux disponibles</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">{{ stats.associations_count|default:0 }}</div>
+        <div class="stat-label">Associations pays-niveaux</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">{{ stats.users_count|default:0 }}</div>
+        <div class="stat-label">Utilisateurs total</div>
+    </div>
+</div>
+
+<div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+    <h2>🔗 Liens rapides</h2>
+    <ul style="list-style: none; padding: 0;">
+        <li style="margin: 10px 0;">
+            <strong>🌍 Gestion des pays :</strong> 
+            <a href="/admin/pays/pays/">Accéder à l'admin des pays</a>
+        </li>
+        <li style="margin: 10px 0;">
+            <strong>🎓 Niveaux scolaires :</strong> 
+            <a href="/admin/niveaux/niveau/">Gérer les niveaux</a>
+        </li>
+        <li style="margin: 10px 0;">
+            <strong>👥 Utilisateurs :</strong> 
+            <a href="/admin/users/customuser/">Administrer les utilisateurs</a>
+        </li>
+        <li style="margin: 10px 0;">
+            <strong>⚙️ Admin complet :</strong> 
+            <a href="/admin/">Interface d'administration Django</a>
+        </li>
+    </ul>
+</div>
+
+{% endblock %}

@@ -1,0 +1,294 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | {{ site_title|default:"Django site admin" }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+.pays-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.pays-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.pays-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.pays-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.pays-flag {
+    font-size: 2rem;
+}
+
+.pays-info h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.pays-code {
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.pays-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.pays-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background: #007cba;
+    color: white;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.add-pays-section {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input, .form-group textarea {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.emoji-suggestions {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.emoji-btn {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.emoji-btn:hover {
+    background: #f0f0f0;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.status-actif {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-inactif {
+    background: #f8d7da;
+    color: #721c24;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>🌍 {{ title }}</h1>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<!-- Section d'ajout rapide -->
+<div class="add-pays-section">
+    <h2>➕ Ajouter un Nouveau Pays</h2>
+    <form method="post" action="{% url 'admin:ajouter_pays' %}">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group">
+                <label for="nom">Nom du Pays *</label>
+                <input type="text" id="nom" name="nom" required placeholder="ex: France, Belgique...">
+            </div>
+            <div class="form-group">
+                <label for="code_iso">Code ISO *</label>
+                <input type="text" id="code_iso" name="code_iso" required maxlength="3" placeholder="ex: FR, BE, CA..." style="text-transform: uppercase;">
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="drapeau_emoji">Drapeau (Emoji)</label>
+                <input type="text" id="drapeau_emoji" name="drapeau_emoji" placeholder="🇫🇷">
+                <div class="emoji-suggestions">
+                    <span>Suggestions:</span>
+                    <button type="button" class="emoji-btn" onclick="setEmoji('🇫🇷')">🇫🇷</button>
+                    <button type="button" class="emoji-btn" onclick="setEmoji('🇧🇪')">🇧🇪</button>
+                    <button type="button" class="emoji-btn" onclick="setEmoji('🇨🇦')">🇨🇦</button>
+                    <button type="button" class="emoji-btn" onclick="setEmoji('🇨🇭')">🇨🇭</button>
+                    <button type="button" class="emoji-btn" onclick="setEmoji('🇩🇪')">🇩🇪</button>
+                    <button type="button" class="emoji-btn" onclick="setEmoji('🇪🇸')">🇪🇸</button>
+                    <button type="button" class="emoji-btn" onclick="setEmoji('🇮🇹')">🇮🇹</button>
+                    <button type="button" class="emoji-btn" onclick="setEmoji('🇺🇸')">🇺🇸</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ordre">Ordre d'affichage</label>
+                <input type="number" id="ordre" name="ordre" min="0" value="0">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description du système éducatif</label>
+            <textarea id="description" name="description" placeholder="Décrivez le système éducatif de ce pays..."></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">✅ Créer le Pays</button>
+    </form>
+</div>
+
+<!-- Liste des pays existants -->
+<h2>📋 Pays Existants ({{ pays_list.count }})</h2>
+
+{% if pays_list %}
+    <div class="pays-grid">
+        {% for pays in pays_list %}
+            <div class="pays-card">
+                <div class="pays-header">
+                    <span class="pays-flag">{{ pays.drapeau_emoji|default:"🏳️" }}</span>
+                    <div class="pays-info">
+                        <h3>{{ pays.nom }}</h3>
+                        <span class="pays-code">{{ pays.code_iso }}</span>
+                        <span class="status-badge {% if pays.est_actif %}status-actif{% else %}status-inactif{% endif %}">
+                            {% if pays.est_actif %}✅ Actif{% else %}❌ Inactif{% endif %}
+                        </span>
+                    </div>
+                </div>
+                
+                {% if pays.description %}
+                    <p style="font-size: 0.9rem; color: #666; margin: 10px 0;">{{ pays.description|truncatewords:20 }}</p>
+                {% endif %}
+                
+                <div class="pays-stats">
+                    <span>📚 {{ pays.nombre_niveaux }} niveau{{ pays.nombre_niveaux|pluralize }}</span>
+                    <span>👥 {{ pays.nombre_utilisateurs }} utilisateur{{ pays.nombre_utilisateurs|pluralize }}</span>
+                </div>
+                
+                <div class="pays-actions">
+                    <a href="{% url 'admin:modifier_pays' pays.id %}" class="btn btn-primary">
+                        ✏️ Modifier
+                    </a>
+                    {% if pays.nombre_utilisateurs == 0 %}
+                        <form method="post" action="{% url 'admin:supprimer_pays' pays.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce pays ?')">
+                                🗑️ Supprimer
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div style="text-align: center; padding: 40px; color: #666;">
+        <h3>Aucun pays configuré</h3>
+        <p>Commencez par ajouter votre premier pays avec le formulaire ci-dessus.</p>
+    </div>
+{% endif %}
+
+<script>
+function setEmoji(emoji) {
+    document.getElementById('drapeau_emoji').value = emoji;
+}
+
+// Auto-format du code ISO en majuscules
+document.getElementById('code_iso').addEventListener('input', function(e) {
+    e.target.value = e.target.value.toUpperCase();
+});
+</script>
+
+{% endblock %}

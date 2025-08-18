@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Exercice PDF</title>
+    <style>
+      @page { size: A4; margin: 12mm; }
+      body { font-family: 'Times New Roman', serif; color:#111827; }
+      h1 { font-size: 18px; color:#1e40af; margin:0 0 10px 0; }
+      h2 { font-size: 14px; color:#374151; margin: 16px 0 8px; }
+      .meta { font-size: 11px; color:#6b7280; margin-bottom: 8px; }
+      .card { border:1px solid #e5e7eb; border-radius:8px; padding:12px 14px; page-break-inside: avoid; }
+      .section { margin-top: 14px; }
+      .badge { display:inline-block; font-size:10px; background:#f3f4f6; border:1px solid #e5e7eb; padding:2px 6px; border-radius:10px; }
+      .MathJax, mjx-container { page-break-inside: avoid; }
+      .question, .solution, .steps { line-height: 1.8; }
+      img { max-width:100%; height:auto; page-break-inside: avoid; }
+    </style>
+    <script>
+      window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+        svg: { fontCache: 'none' },
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  </head>
+  <body>
+    <h1>{{ exercice.titre|default:exercice.nom }}</h1>
+    <div class="meta">
+      {% if exercice.points %}<span class="badge">{{ exercice.points }} point(s)</span>{% endif %}
+    </div>
+
+    <div class="section">
+      <h2>Énoncé</h2>
+      <div class="card question">{{ exercice.question|default:exercice.instruction|default:exercice.contenu|safe }}</div>
+    </div>
+
+    {% if include_solution %}
+    <div class="section">
+      <h2>Solution</h2>
+      <div class="card solution">{{ exercice.reponse_correcte|default:exercice.solution|safe }}</div>
+      {% if exercice.etapes %}
+      <div class="section">
+        <h2>Étapes de résolution</h2>
+        <div class="card steps">{{ exercice.etapes|safe }}</div>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+  </body>
+  </html>
+

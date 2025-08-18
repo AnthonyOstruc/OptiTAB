@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Structure Exercices</title>
+</head>
+<body>
+  <h1>Structure Exercices</h1>
+  {% for matiere in matieres %}
+    <h2>{{ matiere.nom }}</h2>
+    {% for notion in matiere.notions.all %}
+      <h3 style="margin-left:20px;">Notion : {{ notion.nom }}</h3>
+      {% for chapitre in notion.chapitres.all %}
+        <h4 style="margin-left:40px;">Chapitre : {{ chapitre.nom }}</h4>
+        {% for exercice in chapitre.exercices.all %}
+          <div style="margin-left:60px;">
+            <strong>Exercice :</strong> {{ exercice.titre }}<br>
+            <em>{{ exercice.instruction }}</em>
+          </div>
+        {% endfor %}
+      {% endfor %}
+    {% endfor %}
+  {% empty %}
+    <p>Aucune matière trouvée.</p>
+  {% endfor %}
+</body>
+</html>

@@ -1,28 +1,10 @@
 #!/bin/bash
 
-# Script de démarrage pour Render
+# Script de démarrage pour Render - Solution ultime
 echo "=== Démarrage de l'application OptiTAB ==="
 
-# Vérifie si nous sommes dans le bon répertoire
-if [ -d "backend" ]; then
-    echo "Navigation vers le dossier backend..."
-    cd backend
-fi
+# Change vers le répertoire backend
+cd /opt/render/project/src/backend
 
-# Vérifie que manage.py existe
-if [ ! -f "manage.py" ]; then
-    echo "Erreur: manage.py non trouvé!"
-    exit 1
-fi
-
-# Collecte les fichiers statiques si nécessaire
-echo "Collecte des fichiers statiques..."
-python manage.py collectstatic --noinput --clear
-
-# Applique les migrations de base de données
-echo "Application des migrations..."
-python manage.py migrate --noinput
-
-# Démarre Gunicorn
-echo "Démarrage de Gunicorn..."
-exec gunicorn --config gunicorn.conf.py backendAPI.wsgi:application
+# Démarre Gunicorn avec le fichier de configuration
+PYTHONPATH=/opt/render/project/src/backend gunicorn --config gunicorn.conf.py backendAPI.wsgi:application --bind 0.0.0.0:$PORT

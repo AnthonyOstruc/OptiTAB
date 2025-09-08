@@ -23,10 +23,29 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: process.env.VITE_API_BASE_URL || 'http://localhost:8000',
         changeOrigin: true,
         secure: false,
       }
     }
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['vue', 'vue-router', 'pinia'],
+          math: ['katex', 'mathjax', 'mathlive'],
+          ui: ['@heroicons/vue', 'axios', 'lodash-es']
+        }
+      }
+    }
+  },
+  define: {
+    __VUE_PROD_DEVTOOLS__: false,
+    __VUE_OPTIONS_API__: true,
+    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
   }
 }) 

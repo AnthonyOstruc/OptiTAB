@@ -255,3 +255,62 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 # CONFIGURATION OPENAI
 # ========================================
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+# ========================================
+# CONFIGURATION PRODUCTION POUR RENDER
+# ========================================
+
+# Import pour la configuration Render
+import dj_database_url
+
+# Configuration Render (activée automatiquement en production)
+if not DEBUG:
+    # Configuration base de données Render
+    DATABASES['default'] = dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
+
+    # Configuration des hosts autorisés pour Render
+    ALLOWED_HOSTS = [
+        'optitab.net',
+        'www.optitab.net',
+        'optitab-backend.onrender.com',
+        '.onrender.com',
+        'localhost',
+        '127.0.0.1'
+    ]
+
+    # Configuration CORS pour la production
+    CORS_ALLOWED_ORIGINS = [
+        "https://optitab.net",
+        "https://www.optitab.net",
+        "https://optitab-frontend.onrender.com",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
+
+    # Configuration HTTPS et sécurité
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+
+    # Configuration des fichiers statiques pour Render
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+    # Cache pour la production (optionnel)
+    # CACHES = {
+    #     'default': {
+    #         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    #         'LOCATION': 'optitab-cache',
+    #     }
+    # }

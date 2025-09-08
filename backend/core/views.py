@@ -2,10 +2,27 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from django.views.decorators.cache import cache_page
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 import os
+
+
+class AdminRequiredMixin(APIView):
+    """
+    Mixin to ensure only admin users can access the view
+    """
+    permission_classes = [IsAuthenticated]
+
+    def dispatch(self, request, *args, **kwargs):
+        if not (request.user.is_staff or request.user.is_superuser):
+            return Response(
+                {"detail": "You do not have permission to perform this action."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().dispatch(request, *args, **kwargs)
+
 
 @api_view(['GET'])
 @permission_classes([AllowAny])

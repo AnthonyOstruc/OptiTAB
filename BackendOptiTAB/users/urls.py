@@ -1,6 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from users.views.authentication_views import UserRegistrationView, CustomLoginView, EmailVerificationView, UserLogoutView
-from users.views.profile_views import MeView, UpdateProfileView, UpdateNiveauView, UpdatePaysView, UpdatePaysNiveauView, MeGamificationView, LeaderboardView, MyChildrenView, ChildOverviewView, AddChildView, RemoveChildView, CreateChildAccountView, MyOverviewView, MyStreaksView, RecommendationsView
+from users.views.profile_views import MeView, UpdateProfileView, UpdateNiveauView, UpdatePaysView, UpdatePaysNiveauView, MeGamificationView, UpdateUserXPView, LeaderboardView, MyChildrenView, ChildOverviewView, AddChildView, RemoveChildView, CreateChildAccountView, MyOverviewView, MyStreaksView, RecommendationsView
+from users.views.social_auth_views import GoogleLoginView
+from rest_framework.routers import DefaultRouter
+from users.views.notifications_views import UserNotificationViewSet
 from users.views.preferences_views import (
     UserFavoriteMatiereListCreateView,
     UserFavoriteMatiereDetailView,
@@ -17,6 +20,9 @@ from users.views.preferences_views import (
 from rest_framework_simplejwt.views import TokenRefreshView
 from django_rest_passwordreset.views import reset_password_request_token, reset_password_confirm
 
+router = DefaultRouter()
+router.register(r'notifications', UserNotificationViewSet, basename='user-notification')
+
 urlpatterns = [
     
     # API REST Endpoints existants
@@ -29,9 +35,12 @@ urlpatterns = [
     path('logout/', UserLogoutView.as_view(), name='logout'),
     path('me/', MeView.as_view(), name='me'),  # pour obtenir les infos de l'utilisateur connecté
     path('me/gamification/', MeGamificationView.as_view(), name='me_gamification'),
+    path('me/update-xp/', UpdateUserXPView.as_view(), name='me_update_xp'),
     path('me/overview/', MyOverviewView.as_view(), name='me_overview'),
     path('me/streaks/', MyStreaksView.as_view(), name='me_streaks'),
     path('me/recommendations/', RecommendationsView.as_view(), name='me_recommendations'),
+    # Notifications
+    path('', include(router.urls)),
     path('leaderboard/', LeaderboardView.as_view(), name='leaderboard'),
     path('me/children/', MyChildrenView.as_view(), name='me_children'),
     path('me/children/add/', AddChildView.as_view(), name='add_child'),
@@ -59,4 +68,7 @@ urlpatterns = [
     path('selected/add/<int:matiere_id>/', add_selected_matiere, name='add_selected_matiere'),
     path('selected/remove/<int:matiere_id>/', remove_selected_matiere, name='remove_selected_matiere'),
     path('selected/set-active/<int:matiere_id>/', set_active_matiere, name='set_active_matiere'),
+
+    # Route pour l'authentification Google One Tap
+    path('auth/google/', GoogleLoginView.as_view(), name='google_login'),
 ]

@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view, permission_classes, action
 from .models import SuiviExercice, SuiviQuiz
 from .serializers import SuiviExerciceSerializer, SuiviQuizSerializer
 from django.db import transaction
+from users.models import UserNotification
 from django.utils import timezone
 from datetime import timedelta
 
@@ -387,7 +388,7 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
             )
             
             print(f"✅ Suivi sauvegardé: {suivi.id}")
-            
+
             try:
                 # Mettre à jour les XP et le niveau de l'utilisateur
                 user = self.request.user
@@ -397,6 +398,19 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 user.save(update_fields=["xp"])
                 
                 print(f"🆙 Utilisateur mis à jour: XP={user.xp}")
+
+                # Notification persistante si XP gagnés
+                if int(max(0, xp_gain)) > 0:
+                    try:
+                        UserNotification.objects.create(
+                            user=user,
+                            type='xp_gained',
+                            title='🎉 XP Gagnés !',
+                            message=f"+{int(max(0, xp_gain))} XP pour \"{getattr(quiz_obj, 'titre', 'Quiz')}\"",
+                            data={'quiz_id': getattr(quiz_obj, 'id', None), 'tentative': tentative_numero}
+                        )
+                    except Exception:
+                        pass
             except Exception as e:
                 print(f"❌ Erreur mise à jour utilisateur: {e}")
                 pass

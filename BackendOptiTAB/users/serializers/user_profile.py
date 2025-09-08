@@ -12,7 +12,7 @@ Classes:
 """
 
 from rest_framework import serializers
-from ..models import CustomUser
+from ..models import CustomUser, UserNotification
 from pays.serializers import NiveauSerializer, PaysSerializer
 
 
@@ -239,3 +239,9 @@ class UserSummarySerializer(serializers.ModelSerializer):
 # Professional aliases for consistency
 UserSerializer = UserDetailSerializer  # Main user serializer
 UserSerializerWithNiveau = UserDetailSerializer  # Compatibility alias
+
+
+class UserNotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserNotification
+        fields = ['id', 'type', 'title', 'message', 'data', 'read', 'created_at']

@@ -11,6 +11,14 @@ class CustomUserAdmin(UserAdmin):
     """Administration simplifiée pour les utilisateurs"""
     model = CustomUser
 
+    # Champs d'identification (remplace username par email)
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'first_name', 'last_name', 'password1', 'password2'),
+        }),
+    )
+
     # Colonnes affichées dans la liste
     list_display = ('email', 'full_name', 'role', 'civilite', 'telephone', 'pays', 'niveau_pays', 'is_active', 'is_staff', 'date_joined')
 
@@ -33,6 +41,10 @@ class CustomUserAdmin(UserAdmin):
         }),
         ('Géographie éducative', {
             'fields': ('pays', 'niveau_pays'),
+            'classes': ('collapse',)
+        }),
+        ('Gamification', {
+            'fields': ('xp',),
             'classes': ('collapse',)
         }),
         ('Permissions', {

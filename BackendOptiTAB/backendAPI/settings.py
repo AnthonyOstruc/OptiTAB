@@ -15,7 +15,9 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == 'True'
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"] if DEBUG else []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"] if DEBUG else [
+    os.getenv("ALLOWED_HOST", "")
+]
 
 # ========================================
 # APPLICATIONS
@@ -32,8 +34,13 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework.authtoken',
     'django_rest_passwordreset',
     'corsheaders',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 LOCAL_APPS = [
@@ -41,11 +48,12 @@ LOCAL_APPS = [
     'users',
     'curriculum',
     'cours',
+    'synthesis',
     'suivis',
     'calc',
-    'fiches',
     'quiz',
     'pays',
+    'ai',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -63,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 # ========================================
@@ -126,7 +135,8 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',  # Pour l'interface web DRF
+        # SessionAuthentication peut imposer le CSRF pour les appels non authentifiés
+        # Sur les endpoints publics (ex: Google One Tap), on utilisera des vues avec authentication_classes = []
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -146,9 +156,15 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'accept', 'accept-encoding', 'authorization', 'content-type',
+    'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with'
+]
 CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 
 if DEBUG:
@@ -201,3 +217,41 @@ USE_TZ = True
 # ========================================
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ========================================
+# DJANGO-ALLAUTH CONFIGURATION
+# ========================================
+
+# Configuration de base pour django-allauth
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
+# Configuration des providers sociaux
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+        'APP': {
+            'client_id': os.getenv('GOOGLE_OAUTH_CLIENT_ID'),
+            'secret': os.getenv('GOOGLE_OAUTH_CLIENT_SECRET'),
+            'key': ''
+        }
+    }
+}
+
+# Configuration minimale pour Google One Tap
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
+# ========================================
+# CONFIGURATION OPENAI
+# ========================================
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')

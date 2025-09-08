@@ -11,11 +11,11 @@ class LimitCalculator:
     
     # Constantes pour les types de limites
     LIMIT_TYPES = {
-        'infinity': "limite à l'infini",
+        'infinity': "limite a l'infini",
         'point': "limite en un point",
-        'left': "limite à gauche",
-        'right': "limite à droite",
-        'indeterminate': "forme indéterminée",
+        'left': "limite a gauche",
+        'right': "limite a droite",
+        'indeterminate': "forme indeterminee",
         'simple': "limite directe"
     }
     
@@ -35,10 +35,10 @@ class LimitCalculator:
         'direct': "substitution directe",
         'factorization': "factorisation",
         'rationalization': "rationalisation",
-        'lhopital': "règle de L'Hôpital",
+        'lhopital': "regle de L'Hopital",
         'substitution': "changement de variable",
-        'squeeze': "théorème des gendarmes",
-        'asymptotic': "développement asymptotique"
+        'squeeze': "theoreme des gendarmes",
+        'asymptotic': "developpement asymptotique"
     }
 
     def __init__(self):
@@ -51,26 +51,26 @@ class LimitCalculator:
         print(f"Traitement de l'expression: {expr_latex}")
         print(f"Point limite: {limit_point_str}, Direction: {direction}")
         
-        # ÉTAPE 1: PARSING DE L'EXPRESSION ET DU POINT LIMITE
+        # ETAPE 1: PARSING DE L'EXPRESSION ET DU POINT LIMITE
         expr, var = self._parse_expression(expr_latex)
         self.limit_point = self._parse_limit_point(limit_point_str)
         self.limit_direction = direction
         self.steps = []
         
-        # ÉTAPE 2: IDENTIFICATION DU TYPE DE LIMITE
+        # ETAPE 2: IDENTIFICATION DU TYPE DE LIMITE
         self.steps.append(self._create_step(f"On calcule la limite : $\\lim_{{x \\to {self._format_limit_point()}}} {expr_latex}$"))
         limit_type = self._identify_limit_type()
         self.steps.append(self._create_step(f"Type de limite : {limit_type}"))
 
-        # ÉTAPE 3: ANALYSE PRÉLIMINAIRE
+        # ETAPE 3: ANALYSE PRELIMINAIRE
         preliminary_analysis = self._analyze_expression(expr, var)
         self.steps.extend(preliminary_analysis)
 
-        # ÉTAPE 4: APPLICATION DES TECHNIQUES DE RÉSOLUTION
+        # ETAPE 4: APPLICATION DES TECHNIQUES DE RESOLUTION
         resolution_steps = self._apply_resolution_techniques(expr, var)
         self.steps.extend(resolution_steps)
 
-        # ÉTAPE 5: CALCUL ET RÉSULTAT FINAL
+        # ETAPE 5: CALCUL ET RESULTAT FINAL
         final_result = self._calculate_final_result(expr, var)
 
         print(f"Résultat final: {final_result}")
@@ -136,36 +136,88 @@ class LimitCalculator:
             return self.LIMIT_TYPES['point']
 
     def _analyze_expression(self, expr, var):
-        """Analyse préliminaire de l'expression"""
+        """Analyse preliminaire detaillee de l'expression"""
         steps = []
         
-        # Vérifier la continuité au point
+        # Verifier la continuite au point
         if self.limit_point not in [oo, -oo]:
+            steps.append(self._create_step(
+                "Analyse de la fonction au point limite :",
+                f"On examine le comportement de $f(x) = {latex(expr)}$ quand $x \\to {self._format_limit_point()}$"
+            ))
+            
             try:
                 value_at_point = expr.subs(var, self.limit_point)
-                if value_at_point.is_finite and not value_at_point.has(oo, -oo):
+                
+                if value_at_point.is_finite and not value_at_point.has(oo, -oo) and value_at_point != S.NaN:
                     steps.append(self._create_step(
-                        f"On vérifie la valeur en ${latex(self.limit_point)}$ : $f({latex(self.limit_point)}) = {latex(value_at_point)}$"
+                        "Substitution directe :",
+                        f"$f({latex(self.limit_point)}) = {latex(value_at_point)}$"
                     ))
-                    if value_at_point != S.NaN:
-                        steps.append(self._create_step(
-                            "La fonction est continue en ce point, donc la limite existe et vaut la valeur de la fonction"
-                        ))
-                        return steps
+                    steps.append(self._create_step(
+                        "Conclusion :",
+                        f"La fonction est continue en ${latex(self.limit_point)}$, donc $\\lim_{{x \\to {self._format_limit_point()}}} f(x) = {latex(value_at_point)}$"
+                    ))
+                    return steps
                 else:
                     steps.append(self._create_step(
-                        "La fonction n'est pas définie en ce point, il faut utiliser d'autres techniques"
+                        "Probleme detecte :",
+                        f"La substitution directe donne une forme indeterminee ou infinie : ${latex(value_at_point)}$"
                     ))
-            except:
+                    steps.append(self._create_step(
+                        "Methode de resolution :",
+                        "Il faut utiliser des techniques avancees pour lever l'indetermination"
+                    ))
+            except Exception as e:
                 steps.append(self._create_step(
-                    "Analyse de la continuité nécessaire"
+                    "Analyse necessaire :",
+                    "La fonction necessite une etude plus approfondie pour determiner la limite"
                 ))
-        
-        # Analyser le comportement asymptotique
-        if self.limit_point in [oo, -oo]:
+        else:
+            # Analyser le comportement asymptotique
             steps.append(self._create_step(
-                "Pour une limite à l'infini, on analyse le comportement asymptotique"
+                "Comportement asymptotique : On etudie le comportement de la fonction quand x tend vers l'infini"
             ))
+            
+            steps.append(self._create_step(
+                "Expression a analyser :",
+                f"$f(x) = {latex(expr)}$"
+            ))
+            
+            # Identifier le terme dominant
+            if isinstance(expr, Add):
+                # Somme : identifier le terme dominant
+                steps.append(self._create_step(
+                    "Identification des termes : L'expression est une somme de plusieurs termes"
+                ))
+                steps.append(self._create_step(
+                    "Expression complete :",
+                    f"${latex(expr)}$"
+                ))
+                steps.append(self._create_step(
+                    "Terme dominant : On identifie le terme qui croit le plus rapidement"
+                ))
+            elif isinstance(expr, Mul):
+                # Produit : analyser les facteurs
+                steps.append(self._create_step(
+                    "Analyse du produit :",
+                    "L'expression est un produit de plusieurs facteurs"
+                ))
+                steps.append(self._create_step(
+                    "Expression complete :",
+                    f"${latex(expr)}$"
+                ))
+            elif isinstance(expr, Pow):
+                # Puissance : analyser base et exposant
+                base, exp = expr.base, expr.exp
+                steps.append(self._create_step(
+                    "Analyse de la puissance :",
+                    "On etudie la base et l'exposant separement"
+                ))
+                steps.append(self._create_step(
+                    "Base et exposant :",
+                    f"Base : ${latex(base)}$, Exposant : ${latex(exp)}$"
+                ))
         
         return steps
 
@@ -185,27 +237,27 @@ class LimitCalculator:
         return steps
 
     def _detect_indeterminate_form(self, expr, var):
-        """Détecte les formes indéterminées"""
+        """Detecte les formes indeterminees"""
         try:
             # Substituer la valeur limite
             if self.limit_point == oo:
                 # Pour l'infini, analyser le comportement
                 if isinstance(expr, Add):
-                    # Vérifier ∞ - ∞
+                    # Verifier ∞ - ∞
                     terms = expr.args
                     if len(terms) >= 2:
                         return self.INDETERMINATE_FORMS['inf-inf']
                 elif isinstance(expr, Mul):
-                    # Vérifier 0 × ∞
+                    # Verifier 0 × ∞
                     return self.INDETERMINATE_FORMS['0*inf']
                 elif isinstance(expr, Pow):
-                    # Vérifier 1^∞, 0^0, ∞^0
+                    # Verifier 1^∞, 0^0, ∞^0
                     base_limit = limit(expr.base, var, self.limit_point)
                     exp_limit = limit(expr.exp, var, self.limit_point)
                     if base_limit == 1 and exp_limit == oo:
                         return self.INDETERMINATE_FORMS['1^inf']
             else:
-                # Substitution directe pour détecter 0/0
+                # Substitution directe pour detecter 0/0
                 result = expr.subs(var, self.limit_point)
                 if result.has(S.NaN) or str(result) == 'zoo':
                     return self.INDETERMINATE_FORMS['0/0']
@@ -215,8 +267,17 @@ class LimitCalculator:
         return None
 
     def _handle_indeterminate_form(self, expr, var, form):
-        """Gère les formes indéterminées"""
+        """Gere les formes indeterminees avec etapes detaillees"""
         steps = []
+        
+        steps.append(self._create_step(
+            "Resolution de la forme indeterminee : Nous devons resoudre la forme indeterminee par des techniques avancees"
+        ))
+        
+        steps.append(self._create_step(
+            "Forme detectee :",
+            f"${form}$"
+        ))
         
         if form == self.INDETERMINATE_FORMS['0/0']:
             steps.extend(self._handle_zero_over_zero(expr, var))
@@ -224,106 +285,265 @@ class LimitCalculator:
             steps.extend(self._handle_inf_over_inf(expr, var))
         elif form == self.INDETERMINATE_FORMS['0*inf']:
             steps.extend(self._handle_zero_times_inf(expr, var))
+        elif form == self.INDETERMINATE_FORMS['inf-inf']:
+            steps.extend(self._handle_inf_minus_inf(expr, var))
         else:
             steps.append(self._create_step(
-                f"Résolution de la forme indéterminée {form} par techniques avancées"
+                "Technique de resolution :",
+                f"Application de methodes specialisees pour la forme ${form}$"
             ))
         
         return steps
 
     def _handle_zero_over_zero(self, expr, var):
-        """Gère la forme indéterminée 0/0"""
+        """Gere la forme indeterminee 0/0 avec details pedagogiques"""
         steps = []
         
-        # Essayer la factorisation
-        if isinstance(expr, Mul) and len(expr.args) == 2:
-            # Cas d'un quotient
-            numerator = expr.args[0] if expr.args[1].is_negative else expr.args[0]
-            denominator = expr.args[1] if expr.args[1].is_negative else expr.args[1]
-            
+        steps.append(self._create_step(
+            "Methode 1 - Factorisation :",
+            "On essaie de factoriser le numerateur et le denominateur pour simplifier"
+        ))
+        
+        # Analyser si c'est un quotient
+        if '/' in str(expr) or isinstance(expr, Mul):
             steps.append(self._create_step(
-                "On essaie de factoriser le numérateur et le dénominateur"
+                "Identification des facteurs :",
+                f"Expression : ${latex(expr)}$"
             ))
             
-            # Utiliser la règle de L'Hôpital si nécessaire
             steps.append(self._create_step(
-                "On peut appliquer la règle de L'Hôpital : $\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{x \\to a} \\frac{f'(x)}{g'(x)}$"
+                "Recherche de facteurs communs :",
+                "On cherche les facteurs qui s'annulent au point limite"
             ))
+        
+        # Mentionner la regle de L'Hopital
+        steps.append(self._create_step(
+            "Methode 2 - Regle de L'Hopital :",
+            "Si la factorisation ne fonctionne pas, on peut utiliser : $\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{x \\to a} \\frac{f'(x)}{g'(x)}$"
+        ))
         
         return steps
 
     def _handle_inf_over_inf(self, expr, var):
-        """Gère la forme indéterminée ∞/∞"""
+        """Gere la forme indeterminee ∞/∞ avec analyse detaillee"""
         steps = []
         
         steps.append(self._create_step(
-            "Pour une forme ∞/∞, on compare les ordres de grandeur"
+            "Methode - Comparaison des ordres de grandeur :",
+            "Pour une forme infini sur infini, on compare les termes dominants"
         ))
         
-        if isinstance(expr, Mul):
-            # Analyser les termes dominants
+        steps.append(self._create_step(
+            "Forme mathematique :",
+            "$\\frac{\\infty}{\\infty}$"
+        ))
+        
+        steps.append(self._create_step(
+            "Principe :",
+            "Le terme de plus haut degre determine le comportement asymptotique"
+        ))
+        
+        if isinstance(expr, Mul) or '/' in str(expr):
             steps.append(self._create_step(
-                "On identifie les termes de plus haut degré au numérateur et au dénominateur"
+                "Identification des termes dominants :",
+                "On identifie les termes qui croissent le plus vite"
+            ))
+            
+            steps.append(self._create_step(
+                "Expression a analyser :",
+                f"${latex(expr)}$"
+            ))
+            
+            steps.append(self._create_step(
+                "Simplification asymptotique :",
+                "On divise numerateur et denominateur par le terme de plus haut degre"
             ))
         
         return steps
 
     def _handle_zero_times_inf(self, expr, var):
-        """Gère la forme indéterminée 0×∞"""
+        """Gere la forme indeterminee 0×∞"""
         steps = []
         
         steps.append(self._create_step(
-            "Pour une forme 0×∞, on transforme en quotient"
+            "Transformation en quotient :",
+            "Pour resoudre cette forme, on transforme en quotient"
+        ))
+        
+        steps.append(self._create_step(
+            "Formes possibles :",
+            "$0 \\times \\infty = \\frac{\\infty}{\\frac{1}{0}}$ ou $\\frac{0}{\\frac{1}{\\infty}}$"
+        ))
+        
+        steps.append(self._create_step(
+            "Choix de la transformation :",
+            "On choisit la forme qui nous donne une forme plus simple"
+        ))
+        
+        steps.append(self._create_step(
+            "Formes resultantes :",
+            "$\\frac{0}{0}$ ou $\\frac{\\infty}{\\infty}$"
         ))
         
         return steps
 
-    def _handle_direct_limit(self, expr, var):
-        """Gère les limites directes (pas de forme indéterminée)"""
+    def _handle_inf_minus_inf(self, expr, var):
+        """Gere la forme indeterminee ∞-∞"""
         steps = []
         
-        if self.limit_point in [oo, -oo]:
+        steps.append(self._create_step(
+            "Factorisation ou rationalisation : Pour resoudre cette forme, on factorise ou on rationalise l'expression"
+        ))
+        
+        steps.append(self._create_step(
+            "Forme a resoudre :",
+            "$\\infty - \\infty$"
+        ))
+        
+        if isinstance(expr, Add):
             steps.append(self._create_step(
-                "On détermine le terme dominant pour le comportement à l'infini"
+                "Analyse des termes : On analyse chaque terme de la somme"
             ))
-        else:
+            
             steps.append(self._create_step(
-                "On peut calculer la limite par substitution directe"
+                "Expression complete :",
+                f"${latex(expr)}$"
+            ))
+            
+            steps.append(self._create_step(
+                "Factorisation du terme dominant : On factorise par le terme qui tend vers l'infini le plus rapidement"
             ))
         
         return steps
 
+    def _handle_direct_limit(self, expr, var):
+        """Gere les limites directes avec etapes detaillees"""
+        steps = []
+        
+        if self.limit_point in [oo, -oo]:
+            steps.append(self._create_step(
+                "Analyse du comportement a l'infini :",
+                f"On etudie $\\lim_{{x \\to {self._format_limit_point()}}} {latex(expr)}$"
+            ))
+            
+            # Analyser le type d'expression
+            if isinstance(expr, Add):
+                steps.append(self._create_step(
+                    "Expression de type somme :",
+                    "Dans une somme, le terme dominant détermine la limite"
+                ))
+                
+                # Identifier le terme de plus haut degré
+                terms = expr.args
+                steps.append(self._create_step(
+                    "Identification du terme dominant :",
+                    f"Parmi les termes ${', '.join([latex(term) for term in terms])}$, on identifie celui qui croît le plus vite"
+                ))
+                
+            elif isinstance(expr, Mul):
+                steps.append(self._create_step(
+                    "Expression de type produit :",
+                    "Dans un produit, on analyse chaque facteur séparément"
+                ))
+                
+            elif isinstance(expr, Pow):
+                base, exp = expr.base, expr.exp
+                steps.append(self._create_step(
+                    "Expression de type puissance :",
+                    f"Pour $({latex(base)})^{{{latex(exp)}}}$, on etudie la base et l'exposant"
+                ))
+                # Analyser la croissance
+                steps.append(self._create_step(
+                    "Analyse de la croissance :",
+                    f"Base : ${latex(base)} \\to$ ? et Exposant : ${latex(exp)} \\to$ ?"
+                ))
+            
+            # Determiner le resultat
+            steps.append(self._create_step(
+                "Conclusion sur le comportement :",
+                f"L'expression tend vers l'infini avec le meme signe que ${self._format_limit_point()}$"
+            ))
+            
+        else:
+            steps.append(self._create_step(
+                "Calcul direct par substitution :",
+                f"On peut calculer directement $f({latex(self.limit_point)})$"
+            ))
+            
+            try:
+                value = expr.subs(var, self.limit_point)
+                steps.append(self._create_step(
+                    "Substitution :",
+                    f"$f({latex(self.limit_point)}) = {latex(value)}$"
+                ))
+            except:
+                steps.append(self._create_step(
+                    "Calcul nécessaire :",
+                    "La substitution nécessite des calculs intermédiaires"
+                ))
+        
+        return steps
+
     def _calculate_final_result(self, expr, var):
-        """Calcule le résultat final de la limite"""
+        """Calcule le resultat final avec etapes de verification"""
         try:
             # Calculer la limite avec sympy
             if self.limit_direction == 'left':
                 result = limit(expr, var, self.limit_point, '-')
+                direction_text = "a gauche"
             elif self.limit_direction == 'right':
                 result = limit(expr, var, self.limit_point, '+')
+                direction_text = "a droite"
             else:
                 result = limit(expr, var, self.limit_point)
+                direction_text = ""
             
-            # Vérifier si le résultat est fini
+            # Ajouter une etape de calcul final
+            self.steps.append(self._create_step(
+                "Calcul final de la limite : On applique les techniques identifiees pour obtenir le resultat"
+            ))
+            
+            # Verifier et presenter le resultat
             if result == oo:
-                self.steps.append(self._create_step("La limite est $+\\infty$"))
+                self.steps.append(self._create_step(
+                    "Resultat final :",
+                    f"$\\lim_{{x \\to {self._format_limit_point()}}} {latex(expr)} = +\\infty$"
+                ))
                 return "+\\infty"
             elif result == -oo:
-                self.steps.append(self._create_step("La limite est $-\\infty$"))
+                self.steps.append(self._create_step(
+                    "Resultat final :",
+                    f"$\\lim_{{x \\to {self._format_limit_point()}}} {latex(expr)} = -\\infty$"
+                ))
                 return "-\\infty"
-            elif result.has(S.NaN):
-                self.steps.append(self._create_step("La limite n'existe pas"))
+            elif result.has(S.NaN) or str(result) == 'zoo':
+                self.steps.append(self._create_step(
+                    "Resultat final :",
+                    f"$\\lim_{{x \\to {self._format_limit_point()}}} {latex(expr)}$ n'existe pas"
+                ))
                 return "\\text{n'existe pas}"
             else:
                 simplified_result = simplify(result)
                 self.steps.append(self._create_step(
-                    f"La limite vaut : ${latex(simplified_result)}$"
+                    "Resultat final :",
+                    f"$\\lim_{{x \\to {self._format_limit_point()}}} {latex(expr)} = {latex(simplified_result)}$"
                 ))
+                
+                # Ajouter une verification si possible
+                if self.limit_point not in [oo, -oo]:
+                    self.steps.append(self._create_step(
+                        "Verification :",
+                        f"On peut verifier en calculant $f({latex(self.limit_point)}) = {latex(simplified_result)}$"
+                    ))
+                
                 return latex(simplified_result)
                 
         except Exception as e:
             print(f"Erreur calcul limite: {e}")
-            self.steps.append(self._create_step("Erreur dans le calcul de la limite"))
+            self.steps.append(self._create_step(
+                "Erreur de calcul :",
+                "Une erreur s'est produite lors du calcul de la limite"
+            ))
             return "\\text{erreur}"
 
     def _create_step(self, text=None, formula=None):

@@ -121,6 +121,9 @@ class NotionSerializer(serializers.ModelSerializer):
     theme_nom = serializers.SerializerMethodField()
     theme_couleur = serializers.SerializerMethodField()
     contexte_detail = serializers.SerializerMethodField()
+    # Détails imbriqués pour le frontend admin
+    theme_detail = serializers.SerializerMethodField(read_only=True)
+    matiere_detail = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Notion
@@ -147,6 +150,26 @@ class NotionSerializer(serializers.ModelSerializer):
         except Exception:
             return None
 
+    def get_theme_detail(self, obj):
+        theme = getattr(obj, 'theme', None)
+        if not theme:
+            return None
+        matiere = getattr(theme, 'matiere', None)
+        return {
+            'id': theme.id,
+            'titre': theme.titre,
+            'matiere': (
+                {'id': matiere.id, 'titre': getattr(matiere, 'titre', None)} if matiere else None
+            )
+        }
+
+    def get_matiere_detail(self, obj):
+        theme = getattr(obj, 'theme', None)
+        matiere = getattr(theme, 'matiere', None) if theme else None
+        if not matiere:
+            return None
+        return {'id': matiere.id, 'titre': matiere.titre}
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
         # Alias cohérents avec l'admin
@@ -163,12 +186,42 @@ class NotionSerializer(serializers.ModelSerializer):
 
 
 class ChapitreSerializer(serializers.ModelSerializer):
+    notion_detail = serializers.SerializerMethodField(read_only=True)
+    theme_detail = serializers.SerializerMethodField(read_only=True)
+    matiere_detail = serializers.SerializerMethodField(read_only=True)
+    
     class Meta:
         model = Chapitre
         fields = '__all__'
         extra_kwargs = {
             'contenu': {'required': False, 'allow_blank': True, 'default': ''},
             'difficulty': {'required': False}
+        }
+
+    def get_notion_detail(self, obj):
+        if not obj.notion:
+            return None
+        return {
+            'id': obj.notion.id,
+            'titre': obj.notion.titre,
+            'theme': self.get_theme_detail(obj)
+        }
+    
+    def get_theme_detail(self, obj):
+        if not obj.notion or not obj.notion.theme:
+            return None
+        return {
+            'id': obj.notion.theme.id,
+            'titre': obj.notion.theme.titre,
+            'matiere': self.get_matiere_detail(obj)
+        }
+    
+    def get_matiere_detail(self, obj):
+        if not obj.notion or not obj.notion.theme or not obj.notion.theme.matiere:
+            return None
+        return {
+            'id': obj.notion.theme.matiere.id,
+            'nom': obj.notion.theme.matiere.titre
         }
 
     def to_representation(self, instance):

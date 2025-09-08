@@ -8,10 +8,11 @@ urlpatterns = [
     path('api/users/', include('users.urls')),
     path('api/', include('curriculum.urls')),
     path('api/cours/', include('cours.urls')),
+    path('api/', include('synthesis.urls')),
     path('api/suivis/', include('suivis.urls')),
     path('api/calc/', include('calc.urls')),
-    path('api/', include('fiches.urls')),
     path('api/quiz/', include('quiz.urls')),
+    path('api/ai/', include('ai.urls')),
     # path('api/', include('niveaux.urls')),  # Removed - using NiveauPays in pays
     path('api/', include('pays.urls')),  # API pour les pays et niveaux par pays
 ]

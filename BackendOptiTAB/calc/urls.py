@@ -6,5 +6,5 @@ urlpatterns=[
     path('integrate/', IntegralView.as_view()),
     path('expand/', ExpandView.as_view()),
     path('factor/', FactorView.as_view()),
-    path('limit/', LimitView.as_view())
+    path('limit/', LimitView.as_view()),
 ] 

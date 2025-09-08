@@ -12,7 +12,8 @@ from ..serializers.geographic_data import UserPaysNiveauUpdateSerializer
 from pays.models import Pays, Niveau
 from django.db.models import F, Q, Count, IntegerField
 from django.db.models.functions import Cast, TruncDate
-from users.models import CustomUser, ParentChild
+from users.models import CustomUser, ParentChild, UserNotification
+from ..serializers.user_profile import UserNotificationSerializer
 from suivis.models import SuiviExercice
 from django.utils import timezone
 from datetime import timedelta
@@ -65,6 +66,78 @@ class MeGamificationView(APIView):
         except Exception:
             return ResponseService.error(
                 message="Erreur lors de la récupération gamification",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class UpdateUserXPView(APIView):
+    """Met à jour les XP de l'utilisateur connecté"""
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        try:
+            xp_delta = request.data.get('xp_delta')
+            reason = request.data.get('reason', 'unknown')
+            
+            if xp_delta is None or not isinstance(xp_delta, (int, float)):
+                return ResponseService.error(
+                    message="xp_delta doit être un nombre valide",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
+            
+            user = request.user
+            old_xp = user.xp or 0
+            new_xp = old_xp + int(xp_delta)
+            
+            # Mettre à jour les XP de l'utilisateur
+            user.xp = new_xp
+            user.save(update_fields=['xp'])
+            
+            # Calculer le nouveau niveau
+            from suivis.views import calculate_user_level
+            level, next_level_xp, xp_to_next = calculate_user_level(new_xp)
+            
+            # Log simple dans la console pour le debug
+            print(f"🎮 XP gagnés: {xp_delta} pour {user.email} ({reason})")
+            
+            data = {
+                'old_xp': old_xp,
+                'new_xp': new_xp,
+                'xp_gained': xp_delta,
+                'level': level,
+                'xp_to_next': xp_to_next,
+                'reason': reason
+            }
+            
+            # Créer une notification XP si gain
+            try:
+                gained = int(xp_delta)
+            except Exception:
+                gained = 0
+
+            if gained != 0:
+                try:
+                    UserNotification.objects.create(
+                        user=user,
+                        type='xp_gained' if gained > 0 else 'achievement',
+                        title='🎉 XP Gagnés !' if gained > 0 else 'Mise à jour XP',
+                        message=(f"+{gained} XP" if gained > 0 else f"{gained} XP"),
+                        data={'reason': reason, 'xp_delta': gained}
+                    )
+                except Exception:
+                    pass
+
+            # Adapter le message selon si c'est un gain ou une perte d'XP
+            message = f"XP mis à jour avec succès ({'+' if xp_delta >= 0 else ''}{xp_delta})"
+            
+            return ResponseService.success(
+                message=message,
+                data=data
+            )
+            
+        except Exception as e:
+            return ResponseService.error(
+                message=f"Erreur lors de la mise à jour des XP: {str(e)}",
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 

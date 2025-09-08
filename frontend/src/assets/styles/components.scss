@@ -1,0 +1,130 @@
+// Reusable Component Styles for OptiTAB
+// This file contains all reusable styles for buttons, hover effects, and common elements
+
+// Color Variables
+$primary-color: #667eea;
+$primary-hover: #5a67d8;
+$text-color: #333;
+$text-light: #666;
+$white: #fff;
+$background-light: rgba(102, 126, 234, 0.1);
+
+// Button Base Styles
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: $text-color;
+  
+  &:hover {
+    transform: translateY(-1px);
+  }
+  
+  // Primary button variant
+  &.btn-primary {
+    background: $primary-color;
+    color: $white;
+    
+    &:hover {
+      background: $primary-hover;
+    }
+  }
+  
+  // Secondary button variant
+  &.btn-secondary {
+    background: transparent;
+    color: $text-color;
+    
+    &:hover {
+      background: $background-light;
+      color: $primary-color;
+    }
+  }
+  
+  // Ghost button variant (for navigation items)
+  &.btn-ghost {
+    background: transparent;
+    color: $text-color;
+    
+    &:hover {
+      background: $background-light;
+      color: $primary-color;
+    }
+  }
+}
+
+// Navigation Item Styles
+.nav-item {
+  @extend .btn;
+  @extend .btn-ghost;
+  padding: 8px 12px;
+  
+  .nav-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .nav-text {
+    font-size: 14px;
+  }
+}
+
+// Right Action Item Styles
+.right-item {
+  @extend .btn;
+  @extend .btn-secondary;
+  
+  .right-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .right-text {
+    font-size: 14px;
+  }
+  
+  // Special styling for login button
+  &.btn-login {
+    @extend .btn-primary;
+  }
+}
+
+// Utility Classes
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gap-1 { gap: 4px; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.gap-5 { gap: 20px; } 

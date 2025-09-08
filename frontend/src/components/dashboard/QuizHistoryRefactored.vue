@@ -1,0 +1,575 @@
+<template>
+  <BaseHistory
+    title="🧠 Historique des Quiz"
+    list-title="📝 Quiz effectués"
+    loading-text="Chargement des quiz..."
+    api-endpoint="/api/suivis/quiz/stats/"
+    :custom-filters="masteryFilters"
+    :navigation-handler="navigateToQuiz"
+    @data-loaded="onDataLoaded"
+    @filter-changed="onFilterChanged"
+  >
+    <!-- Statistiques globales -->
+    <template #global-stats="{ stats }">
+      <div class="stats-grid">
+        <div class="stat-card quiz-completed">
+          <span class="stat-label">Quiz effectués</span>
+          <span class="stat-value">{{ stats.completed || 0 }}</span>
+        </div>
+        <div class="stat-card quiz-average">
+          <span class="stat-label">Note moyenne</span>
+          <span class="stat-value">{{ stats.average || 0 }}/10</span>
+        </div>
+        <div class="stat-card quiz-notions">
+          <span class="stat-label">Notions maîtrisées</span>
+          <span class="stat-value">{{ stats.masteredNotions || 0 }}</span>
+        </div>
+      </div>
+    </template>
+
+    <!-- Statistiques par matière -->
+    <template #matiere-stats="{ stats }">
+      <h4 class="section-subtitle">📊 Moyennes par matière</h4>
+      <div class="matiere-grid">
+        <div v-for="matiere in stats" :key="matiere.id" class="matiere-card">
+          <div class="matiere-name">{{ matiere.titre }}</div>
+          <div class="matiere-info">
+            <span class="matiere-average">{{ matiere.average }}/10</span>
+            <span class="matiere-count">{{ matiere.quiz_count }} quiz</span>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Filtres personnalisés -->
+    <template #custom-filters="{ filters, selected }">
+      <button 
+        v-for="filter in filters" 
+        :key="filter.value"
+        @click="updateSelectedMastery(filter.value)"
+        :class="['inline-mastery-btn', { active: selected === filter.value }, filter.class]"
+      >
+        <span v-if="filter.icon" class="inline-mastery-icon">{{ filter.icon }}</span>
+        <span class="inline-mastery-label">{{ filter.label }}</span>
+      </button>
+    </template>
+
+    <!-- Liste des quiz -->
+    <template #items-list="{ items, toggleDetails, isExpanded, navigateToItem }">
+      <div v-for="quiz in filteredQuizList" :key="quiz.id" class="quiz-card" :class="{ 'multiple-attempts': quiz.total_attempts > 1 }">
+        <div class="quiz-card-header" @click="toggleDetails(quiz.id)">
+          <div class="quiz-card-title-section">
+            <h5 class="quiz-card-title clickable-title" @click.stop="navigateToItem(quiz)" :title="'Accéder au quiz: ' + quiz.quiz_titre">
+              {{ quiz.quiz_titre }}
+              <svg class="navigation-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 17l9.2-9.2M17 17V7H7"></path>
+              </svg>
+            </h5>
+            <div class="quiz-breadcrumb-compact">
+              {{ quiz.matiere.titre }} → {{ quiz.notion.titre }}
+            </div>
+          </div>
+          <div class="quiz-card-actions">
+            <div class="quiz-score" :class="getScoreClass(quiz.score_on_10)">
+              {{ quiz.score_on_10 }}/10
+              <span v-if="quiz.total_attempts > 1" class="retry-indicator">↻</span>
+            </div>
+            <button class="expand-toggle" :class="{ expanded: isExpanded(quiz.id) }">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6,9 12,15 18,9"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div v-if="isExpanded(quiz.id)" class="quiz-card-details">
+          <div class="quiz-breadcrumb">
+            <span class="breadcrumb-item">{{ quiz.matiere.titre }}</span>
+            <span class="breadcrumb-separator">→</span>
+            <span class="breadcrumb-item">{{ quiz.notion.titre }}</span>
+            <span class="breadcrumb-separator">→</span>
+            <span class="breadcrumb-item">{{ quiz.chapitre.titre }}</span>
+          </div>
+          
+          <div class="quiz-meta">
+            <span class="quiz-attempt">
+              Tentative #{{ quiz.tentative_numero }}
+              <span v-if="quiz.total_attempts > 1" class="total-attempts">
+                ({{ quiz.total_attempts }} au total)
+              </span>
+            </span>
+            <span class="quiz-date">{{ formatDate(quiz.date_creation) }}</span>
+            <span class="quiz-time" v-if="quiz.temps_total_seconde">
+              {{ formatTime(quiz.temps_total_seconde) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- État vide -->
+    <template #empty-state>
+      <p>Aucun quiz trouvé avec ces filtres</p>
+    </template>
+  </BaseHistory>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import BaseHistory from './BaseHistory.vue'
+
+// Router
+const router = useRouter()
+
+// État
+const selectedMastery = ref('all')
+const currentQuizList = ref([])
+
+// Filtres de maîtrise pour quiz
+const masteryFilters = [
+  { value: 'all', label: 'Tous', icon: '', class: 'all' },
+  { value: 'mastered', label: 'Maîtrisés', icon: '✅', class: 'mastered' },
+  { value: 'average', label: 'Moyens', icon: '⚠️', class: 'average' },
+  { value: 'poor', label: 'Non maîtrisés', icon: '❌', class: 'poor' }
+]
+
+// Computed pour filtrer les quiz selon le niveau de maîtrise
+const filteredQuizList = computed(() => {
+  let filtered = currentQuizList.value
+
+  // Filtrer par niveau de maîtrise
+  if (selectedMastery.value !== 'all') {
+    filtered = filtered.filter(quiz => {
+      const score = quiz.score_on_10
+      switch (selectedMastery.value) {
+        case 'mastered':
+          return score >= 7 // Maîtrisé
+        case 'average':
+          return score >= 5 && score < 7 // Moyen
+        case 'poor':
+          return score < 5 // Non maîtrisé
+        default:
+          return true
+      }
+    })
+  }
+
+  return filtered
+})
+
+// Méthodes
+const onDataLoaded = (data) => {
+  currentQuizList.value = data.quiz_list || []
+}
+
+const onFilterChanged = (filters) => {
+  console.log('Filtres changés:', filters)
+}
+
+const getScoreClass = (score) => {
+  if (score >= 7) return 'score-good'
+  if (score >= 5) return 'score-average'
+  return 'score-poor'
+}
+
+const navigateToQuiz = async (quiz) => {
+  try {
+    console.log(`[QuizHistory] 🚀 Navigation rapide vers quiz: ${quiz.quiz_titre}`)
+    
+    const chapitreId = quiz.chapitre.id
+    const quizId = quiz.quiz_id
+    
+    // Navigation optimisée avec remplacement de l'historique pour éviter les allers-retours
+    await router.push({
+      path: `/quiz-exercices/${chapitreId}`,
+      query: { quizId: quizId, autoStart: 'true' }
+    })
+    
+    console.log(`[QuizHistory] ✅ Navigation complétée`)
+  } catch (error) {
+    console.error(`[QuizHistory] ❌ Erreur de navigation:`, error)
+  }
+}
+
+const updateSelectedMastery = (value) => {
+  selectedMastery.value = value
+}
+
+// Méthodes utilitaires
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+const formatTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = seconds % 60
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
+}
+
+// Exposer les méthodes pour le template
+defineExpose({
+  updateSelectedMastery
+})
+</script>
+
+<style scoped>
+/* Stats globales */
+.stats-grid {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  min-width: 140px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.stat-card.quiz-completed {
+  border-color: #8b5cf6;
+}
+.stat-card.quiz-completed .stat-value {
+  color: #8b5cf6;
+}
+
+.stat-card.quiz-average {
+  border-color: #f59e0b;
+}
+.stat-card.quiz-average .stat-value {
+  color: #d97706;
+}
+
+.stat-card.quiz-notions {
+  border-color: #10b981;
+}
+.stat-card.quiz-notions .stat-value {
+  color: #059669;
+}
+
+/* Stats par matière */
+.section-subtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.matiere-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.matiere-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.matiere-name {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.matiere-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.matiere-average {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #059669;
+}
+
+.matiere-count {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Filtres personnalisés */
+.inline-mastery-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: white;
+  color: #6b7280;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 28px;
+}
+
+.inline-mastery-btn:hover {
+  border-color: #d1d5db;
+  background: #f9fafb;
+}
+
+.inline-mastery-btn.active {
+  font-weight: 600;
+  color: white;
+  border-width: 1px;
+}
+
+.inline-mastery-btn.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.inline-mastery-icon {
+  font-size: 0.75rem;
+}
+
+.inline-mastery-label {
+  font-size: 0.75rem;
+}
+
+/* Cartes de quiz */
+.quiz-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.quiz-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.quiz-card.multiple-attempts {
+  border-left: 3px solid #f59e0b;
+}
+
+.quiz-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin: -0.5rem -0.5rem 0.75rem -0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.quiz-card-header:hover {
+  background-color: #f8fafc;
+}
+
+.quiz-card-title-section {
+  flex: 1;
+}
+
+.quiz-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quiz-card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.25rem 0;
+}
+
+.clickable-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin: -0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.clickable-title:hover {
+  color: #3b82f6;
+  background: #f0f9ff;
+}
+
+.navigation-icon {
+  opacity: 0;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.clickable-title:hover .navigation-icon {
+  opacity: 1;
+}
+
+.quiz-breadcrumb-compact {
+  font-size: 0.7rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.quiz-score {
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.expand-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+.expand-toggle:hover {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.expand-toggle svg {
+  transition: transform 0.2s;
+}
+
+.expand-toggle.expanded svg {
+  transform: rotate(180deg);
+}
+
+.quiz-score.score-good {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.quiz-score.score-average {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.quiz-score.score-poor {
+  background: #fecaca;
+  color: #991b1b;
+}
+
+.retry-indicator {
+  margin-left: 0.25rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.quiz-card-details {
+  border-top: 1px solid #f3f4f6;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.quiz-breadcrumb {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.breadcrumb-item {
+  font-weight: 500;
+}
+
+.breadcrumb-separator {
+  margin: 0 0.25rem;
+}
+
+.quiz-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.quiz-attempt {
+  font-weight: 600;
+}
+
+.total-attempts {
+  color: #6b7280;
+  font-weight: 400;
+  font-size: 0.7rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .matiere-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quiz-meta {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .quiz-card-header {
+    align-items: flex-start;
+  }
+  
+  .quiz-card-actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+  }
+  
+  .quiz-breadcrumb-compact {
+    font-size: 0.65rem;
+  }
+}
+</style>

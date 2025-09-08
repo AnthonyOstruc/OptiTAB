@@ -3,8 +3,8 @@ services:
   - type: web
     name: optitab-backend
     runtime: python3
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
-    startCommand: "gunicorn backendAPI.wsgi:application --bind 0.0.0.0:$PORT"
+    buildCommand: "cd backend && pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "cd backend && gunicorn backendAPI.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
       - key: DATABASE_URL
         sync: false
@@ -37,26 +37,20 @@ services:
       - key: GOOGLE_OAUTH_CLIENT_SECRET
         sync: false
       - key: PYTHONPATH
-        value: /opt/render/project/src
+        value: /opt/render/project/src/backend
     healthCheckPath: /api/health/
 
   # Frontend Vue.js
   - type: web
     name: optitab-frontend
     runtime: node
-    buildCommand: "npm install && npm run build"
-    startCommand: "npm run serve"
-    staticPublishPath: dist
+    buildCommand: "cd frontend && npm install && npm run build"
+    startCommand: "cd frontend && npm run start"
     envVars:
       - key: NODE_ENV
         value: production
       - key: VITE_API_BASE_URL
         value: https://optitab-backend.onrender.com/api
-    routes:
-      - type: redirect
-        source: /api/(.*)
-        destination: https://optitab-backend.onrender.com/api/$1
-        status: 200
 
 # Base de données PostgreSQL
 databases:

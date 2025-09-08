@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
+from django.core.exceptions import ImproperlyConfigured
 
 load_dotenv()
 
@@ -266,11 +267,19 @@ import dj_database_url
 # Configuration Render (activée automatiquement en production)
 if not DEBUG:
     # Configuration base de données Render
-    DATABASES['default'] = dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    database_url = os.getenv('DATABASE_URL')
+    if database_url:
+        DATABASES['default'] = dj_database_url.config(
+            default=database_url,
+            conn_max_age=600,
+            ssl_require=True
+        )
+    else:
+        # Fallback configuration si DATABASE_URL n'est pas défini
+        raise ImproperlyConfigured(
+            "DATABASE_URL environment variable is required in production. "
+            "Please configure your database URL in the Render environment variables."
+        )
 
     # Configuration des hosts autorisés pour Render
     ALLOWED_HOSTS = [

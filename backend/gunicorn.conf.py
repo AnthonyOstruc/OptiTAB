@@ -37,4 +37,4 @@ certfile = None
 
 # Application
 wsgi_module = "backendAPI.wsgi:application"
-pythonpath = "/opt/render/project/src"
+pythonpath = "/opt/render/project/src/backend"

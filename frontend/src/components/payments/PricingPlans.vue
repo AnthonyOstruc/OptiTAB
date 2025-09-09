@@ -93,7 +93,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { CheckIcon } from '@heroicons/vue/24/solid'
 import { apiClient } from '@/api'
-import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
+import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()

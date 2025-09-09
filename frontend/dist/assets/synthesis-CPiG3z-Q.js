@@ -1,1 +1,0 @@
-import{A as t}from"./index-C20tTf3S.js";const i=(e={})=>t.get("/api/sheets/",{params:e}),r=e=>t.post("/api/sheets/",e),n=(e,s)=>t.put(`/api/sheets/${e}/`,s),h=e=>t.delete(`/api/sheets/${e}/`),p=e=>t.post(`/api/sheets/${e}/duplicate/`),u=()=>t.get("/api/matieres/user_matieres/");export{u as a,h as b,r as c,p as d,i as g,n as u};

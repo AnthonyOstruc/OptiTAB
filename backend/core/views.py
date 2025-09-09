@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponsePermanentRedirect
 from django.views.decorators.http import require_GET
 from django.views.decorators.cache import cache_page
 from rest_framework.decorators import api_view, permission_classes
@@ -113,3 +113,18 @@ def root_json_view(request):
         "documentation": "API documentation available at /api/docs/"
     }
     return JsonResponse(data)
+
+
+def redirect_to_frontend(request, path=""):
+    """
+    Redirect any non-API/admin path received by the backend to the frontend
+    static site, preserving the requested path.
+
+    This is useful when the apex domain accidentally points to the backend
+    service: hitting e.g. "/dashboard" on the backend will issue a 301 to
+    the configured frontend base URL with the same path.
+    """
+    base_url = getattr(settings, 'FRONTEND_BASE_URL', 'https://www.optitab.net')
+    base_url = base_url.rstrip('/')
+    preserved_path = ("/" + path.lstrip('/')) if path else "/"
+    return HttpResponsePermanentRedirect(f"{base_url}{preserved_path}")

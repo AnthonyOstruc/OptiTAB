@@ -3,12 +3,34 @@ import router from '@/router'
 import { useUserStore } from '@/stores/user'
 
 /**
+ * Résolution robuste de l'URL de base API
+ * - DEV: privilégie les URLs relatives (proxy Vite) ou force HTTP pour localhost
+ * - PROD: utilise VITE_API_BASE_URL ou VITE_API_URL si fournie, sinon origine courante
+ */
+function resolveBaseUrl() {
+  const isDev = import.meta.env.DEV || import.meta.env.MODE === 'development'
+  let raw = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '').trim()
+
+  // En dev, si aucune base n'est fournie, utiliser les URLs relatives pour passer par le proxy Vite
+  if (!raw) {
+    return isDev ? '' : (typeof window !== 'undefined' ? window.location.origin : '')
+  }
+
+  // Éviter HTTPS vers localhost/127.0.0.1 (entraîne ERR_SSL_PROTOCOL_ERROR si le backend n'est pas en TLS)
+  if (/^https:\/\/(127\.0\.0\.1|localhost)(:\d+)?/i.test(raw)) {
+    raw = raw.replace(/^https:/i, 'http:')
+  }
+
+  // Nettoyer le trailing slash
+  return raw.replace(/\/+$/, '')
+}
+
+/**
  * Configuration de l'API Client
  * Configuration centralisée et flexible pour l'API
  */
 const API_CONFIG = {
-  // URLs - Force HTTP to avoid SSL protocol errors
-  BASE_URL: (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000').replace(/^https:/, 'http:'),
+  BASE_URL: resolveBaseUrl(),
   REFRESH_ENDPOINT: '/api/users/token/refresh/',
   
   // Timeouts

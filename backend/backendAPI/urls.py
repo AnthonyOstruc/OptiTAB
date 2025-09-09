@@ -16,7 +16,6 @@ urlpatterns = [
     path('api/ai/', include('ai.urls')),
     # path('api/', include('niveaux.urls')),  # Removed - using NiveauPays in pays
     path('api/', include('pays.urls')),  # API pour les pays et niveaux par pays
-    path('api/', include('core.urls')),  # Health check et vues core
 ]
 
 # Servir les fichiers médias en développement

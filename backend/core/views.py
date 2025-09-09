@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
+from django.conf import settings
+from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 import logging
 
 logger = logging.getLogger(__name__)
@@ -61,6 +63,7 @@ class RootView(APIView):
     Root view for the API that provides basic information about available endpoints.
     """
     permission_classes = [AllowAny]
+    renderer_classes = [JSONRenderer]
 
     def get(self, request):
         """
@@ -85,3 +88,28 @@ class RootView(APIView):
             "documentation": "API documentation available at /api/docs/"
         }
         return Response(data)
+
+
+def root_json_view(request):
+    """
+    Root endpoint without DRF Browsable UI. Always returns pure JSON.
+    """
+    data = {
+        "message": "OptiTAB API Server",
+        "version": "1.0.0",
+        "status": "running",
+        "endpoints": {
+            "admin": "/admin/",
+            "users": "/api/users/",
+            "curriculum": "/api/",
+            "courses": "/api/cours/",
+            "synthesis": "/api/",
+            "tracking": "/api/suivis/",
+            "calculator": "/api/calc/",
+            "quizzes": "/api/quiz/",
+            "countries": "/api/",
+            "ai": "/api/ai/"
+        },
+        "documentation": "API documentation available at /api/docs/"
+    }
+    return JsonResponse(data)

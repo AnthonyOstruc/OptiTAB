@@ -7,6 +7,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 import os
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class AdminRequiredMixin(APIView):
@@ -47,3 +54,34 @@ def status_view(request):
         'service': 'OptiTAB Backend',
         'version': '1.0.0'
     })
+
+
+class RootView(APIView):
+    """
+    Root view for the API that provides basic information about available endpoints.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        """
+        Return API information and available endpoints.
+        """
+        data = {
+            "message": "OptiTAB API Server",
+            "version": "1.0.0",
+            "status": "running",
+            "endpoints": {
+                "admin": "/admin/",
+                "users": "/api/users/",
+                "curriculum": "/api/",
+                "courses": "/api/cours/",
+                "synthesis": "/api/",
+                "tracking": "/api/suivis/",
+                "calculator": "/api/calc/",
+                "quizzes": "/api/quiz/",
+                "countries": "/api/",
+                "ai": "/api/ai/"
+            },
+            "documentation": "API documentation available at /api/docs/"
+        }
+        return Response(data)

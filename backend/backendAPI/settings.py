@@ -111,8 +111,21 @@ TEMPLATES = [
 # SECRET_KEY : utilise la valeur de Render ou .env local, sinon valeur de dev
 SECRET_KEY = os.getenv("SECRET_KEY", "dev_secret_key")
 
-# DEBUG : True si local, False si Render (à configurer via variable d'environnement)
-DEBUG = os.getenv("DEBUG", "True") == "True"
+# DEBUG : toujours False sur Render; en local True par défaut (surchargable)
+_debug_env = os.getenv("DEBUG")
+_is_render = (
+    os.getenv("RENDER", "").lower() == "true"
+    or bool(os.getenv("RENDER_EXTERNAL_URL"))
+    or bool(os.getenv("RENDER_SERVICE_NAME"))
+)
+
+if _is_render:
+    DEBUG = False
+else:
+    if _debug_env is not None:
+        DEBUG = _debug_env.lower() == "true"
+    else:
+        DEBUG = True
 
 # ALLOWED_HOSTS : localhost pour dev, domaine Render en prod
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
@@ -190,10 +203,10 @@ REST_FRAMEWORK = {
     ],
     # Activer l'API navigable DRF en local ET en production pour avoir le même rendu
     # Si vous souhaitez la désactiver en prod, retirez BrowsableAPIRenderer lorsque DEBUG est False
-    'DEFAULT_RENDERER_CLASSES': [
+    'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
-    ],
+    ),
 }
 
 SIMPLE_JWT = {
@@ -246,6 +259,18 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# CSRF Trusted Origins (local + production)
+CSRF_TRUSTED_ORIGINS = [
+    'https://optitab.net',
+    'https://www.optitab.net',
+    'https://optitab-frontend.onrender.com',
+    'https://optitab-backend.onrender.com',
+    'http://localhost',
+    'http://127.0.0.1',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
 
 # ========================================
 # CACHE
@@ -369,11 +394,10 @@ if not DEBUG:
         "http://127.0.0.1:5173",
     ]
 
-    # Configuration HTTPS et sécurité
-    # Désactiver explicitement en développement, activer seulement en production explicite
-    SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "False") == "True"
-    SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "False") == "True"
-    CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", "False") == "True"
+    # Configuration HTTPS et sécurité (activées par défaut en production)
+    SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "True") == "True"
+    SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "True") == "True"
+    CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", "True") == "True"
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'

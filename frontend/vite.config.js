@@ -33,12 +33,26 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
+    chunkSizeWarningLimit: 1000, // Increase warning limit to 1MB
     rollupOptions: {
       output: {
         manualChunks: {
+          // Core framework chunks
           vendor: ['vue', 'vue-router', 'pinia'],
-          math: ['katex', 'mathjax', 'mathlive'],
-          ui: ['@heroicons/vue', 'axios', 'lodash-es']
+
+          // UI libraries
+          ui: ['@heroicons/vue', 'axios', 'lodash-es'],
+
+          // Math libraries (split for better caching)
+          math: ['mathjax'],
+          mathlive: ['mathlive'],
+
+          // Heavy libraries
+          calculator: ['plotly.js-dist-min'],
+          pdf: ['jspdf', 'html2canvas'],
+
+          // Utility libraries
+          marked: ['marked']
         }
       }
     }

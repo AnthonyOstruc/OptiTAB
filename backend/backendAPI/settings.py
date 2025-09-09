@@ -112,7 +112,7 @@ TEMPLATES = [
 SECRET_KEY = os.getenv("SECRET_KEY", "dev_secret_key")
 
 # DEBUG : True si local, False si Render (à configurer via variable d'environnement)
-DEBUG = os.getenv("DEBUG", "True") == "True"
+DEBUG = os.getenv("DEBUG", "False") == "False"
 
 # ALLOWED_HOSTS : localhost pour dev, domaine Render en prod
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")

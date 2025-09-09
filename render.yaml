@@ -7,3 +7,13 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 20.19.0
+  - type: web
+    name: optitab-backend
+    rootDirectory: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn backendAPI.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 30
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: backendAPI.settings
+      - key: PYTHONPATH
+        value: /opt/render/project/src/backend

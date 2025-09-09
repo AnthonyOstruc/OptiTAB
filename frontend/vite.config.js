@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     port: 3000,
     open: true,
+    historyApiFallback: true,
     proxy: {
       '/api': {
         target: process.env.VITE_API_URL || 'http://localhost:8000',
@@ -56,6 +57,9 @@ export default defineConfig(({ mode }) => ({
         }
       }
     }
+  },
+  preview: {
+    historyApiFallback: true
   },
   // Supprime console.* et debugger uniquement en production
   esbuild: mode === 'production' ? { drop: ['console', 'debugger'] } : undefined,

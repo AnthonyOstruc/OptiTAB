@@ -38,6 +38,14 @@ import apiClient, { apiUtils } from '@/api/client'
 const tokensCleaned = apiUtils.cleanExpiredTokens()
 const hasValidToken = localStorage.getItem('access_token')
 
+// Désactiver les logs en production (laissé actif en local)
+if (import.meta && import.meta.env && import.meta.env.PROD) {
+  const noop = () => {}
+  console.log = noop
+  console.debug = noop
+  console.info = noop
+}
+
 if (tokensCleaned) {
   console.log('Tokens expirés nettoyés au démarrage de l\'application')
 }

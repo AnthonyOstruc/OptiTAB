@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     vue({
       template: {
@@ -57,9 +57,11 @@ export default defineConfig({
       }
     }
   },
+  // Supprime console.* et debugger uniquement en production
+  esbuild: mode === 'production' ? { drop: ['console', 'debugger'] } : undefined,
   define: {
     __VUE_PROD_DEVTOOLS__: false,
     __VUE_OPTIONS_API__: true,
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
   }
-})
+}))

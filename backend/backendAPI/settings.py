@@ -112,7 +112,7 @@ TEMPLATES = [
 SECRET_KEY = os.getenv("SECRET_KEY", "dev_secret_key")
 
 # DEBUG : True si local, False si Render (à configurer via variable d'environnement)
-DEBUG = os.getenv("DEBUG", "False") == "False"
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
 # ALLOWED_HOSTS : localhost pour dev, domaine Render en prod
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
@@ -122,26 +122,37 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 # ========================================
 
 # DATABASE_URL : Render fournit l'URL complète (postgres://user:pass@host:port/dbname)
-# En local, on accepte soit DATABASE_URL, soit des variables séparées (POSTGRES_* ou DB_*)
-database_url = os.getenv("DATABASE_URL")
+# En local et en prod, on accepte soit DATABASE_URL, soit des variables séparées (POSTGRES_* ou DB_*)
+database_url_env = os.getenv("DATABASE_URL")
 
-if not database_url:
-    # Construire une URL Postgres à partir des variables classiques si présentes
-    pg_db = os.getenv("POSTGRES_DB") or os.getenv("DB_NAME")
-    pg_user = os.getenv("POSTGRES_USER") or os.getenv("DB_USER")
-    pg_password = os.getenv("POSTGRES_PASSWORD") or os.getenv("DB_PASSWORD")
-    pg_host = os.getenv("POSTGRES_HOST") or os.getenv("DB_HOST", "localhost")
-    pg_port = os.getenv("POSTGRES_PORT") or os.getenv("DB_PORT", "5432")
+# Construire une URL Postgres à partir des variables classiques si présentes
+pg_db = os.getenv("POSTGRES_DB") or os.getenv("DB_NAME")
+pg_user = os.getenv("POSTGRES_USER") or os.getenv("DB_USER")
+pg_password = os.getenv("POSTGRES_PASSWORD") or os.getenv("DB_PASSWORD")
+pg_host = os.getenv("POSTGRES_HOST") or os.getenv("DB_HOST", "localhost")
+pg_port = os.getenv("POSTGRES_PORT") or os.getenv("DB_PORT", "5432")
 
-    if pg_db and pg_user and pg_password:
-        database_url = f"postgresql://{pg_user}:{pg_password}@{pg_host}:{pg_port}/{pg_db}"
+split_vars_url = None
+if pg_db and pg_user and pg_password and pg_host:
+    split_vars_url = f"postgresql://{pg_user}:{pg_password}@{pg_host}:{pg_port}/{pg_db}"
+
+# Par défaut, on préfère les variables séparées si elles sont présentes
+database_url = split_vars_url or database_url_env
+
+db_ssl_required_env = os.getenv("DB_SSL_REQUIRED", "auto").lower()
+if db_ssl_required_env not in ("true", "false", "auto"):
+    db_ssl_required_env = "auto"
+
+ssl_required = (db_ssl_required_env == "true") or (
+    db_ssl_required_env == "auto" and not DEBUG
+)
 
 if database_url:
     DATABASES = {
         "default": dj_database_url.parse(
             database_url,
             conn_max_age=600,
-            ssl_require=not DEBUG  # SSL requis seulement en prod
+            ssl_require=ssl_required
         )
     }
 else:
@@ -176,6 +187,12 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+    ],
+    # Activer l'API navigable DRF en local ET en production pour avoir le même rendu
+    # Si vous souhaitez la désactiver en prod, retirez BrowsableAPIRenderer lorsque DEBUG est False
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ],
 }
 
@@ -304,19 +321,31 @@ import dj_database_url
 
 # Configuration Render (activée automatiquement en production)
 if not DEBUG:
-    # Configuration base de données Render
-    database_url = os.getenv('DATABASE_URL')
-    if database_url:
-        DATABASES['default'] = dj_database_url.config(
-            default=database_url,
+    # Configuration base de données Render (accepte DATABASE_URL ou POSTGRES_*)
+    prod_database_url_env = os.getenv('DATABASE_URL')
+
+    prod_pg_db = os.getenv("POSTGRES_DB") or os.getenv("DB_NAME")
+    prod_pg_user = os.getenv("POSTGRES_USER") or os.getenv("DB_USER")
+    prod_pg_password = os.getenv("POSTGRES_PASSWORD") or os.getenv("DB_PASSWORD")
+    prod_pg_host = os.getenv("POSTGRES_HOST") or os.getenv("DB_HOST")
+    prod_pg_port = os.getenv("POSTGRES_PORT") or os.getenv("DB_PORT", "5432")
+
+    prod_split_vars_url = None
+    if prod_pg_db and prod_pg_user and prod_pg_password and prod_pg_host:
+        prod_split_vars_url = f"postgresql://{prod_pg_user}:{prod_pg_password}@{prod_pg_host}:{prod_pg_port}/{prod_pg_db}"
+
+    prod_database_url = prod_split_vars_url or prod_database_url_env
+
+    if prod_database_url:
+        DATABASES['default'] = dj_database_url.parse(
+            prod_database_url,
             conn_max_age=600,
             ssl_require=True
         )
     else:
-        # Fallback configuration si DATABASE_URL n'est pas défini
+        # Fallback configuration si aucune configuration n'est définie
         raise ImproperlyConfigured(
-            "DATABASE_URL environment variable is required in production. "
-            "Please configure your database URL in the Render environment variables."
+            "Database configuration is required in production. Set DATABASE_URL or POSTGRES_* variables in Render environment."
         )
 
     # Configuration des hosts autorisés pour Render
@@ -348,6 +377,8 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
+    # Honorer les en-têtes proxy de Render pour détecter HTTPS
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     # Configuration des fichiers statiques pour Render
     STATIC_URL = '/static/'

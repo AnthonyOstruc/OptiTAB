@@ -8,6 +8,12 @@ from dotenv import load_dotenv
 from datetime import timedelta
 from django.core.exceptions import ImproperlyConfigured
 
+# ========================================
+# CONFIGURATION DE BASE
+# ========================================
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 load_dotenv()
 
@@ -93,14 +99,8 @@ TEMPLATES = [
 ]
 
 # ========================================
-# BASE DE DONNÉES
-# ========================================
-
-# ========================================
 # CONFIGURATION DE BASE
 # ========================================
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECRET_KEY : utilise la valeur de Render ou .env local, sinon valeur de dev
 SECRET_KEY = os.getenv("SECRET_KEY", "dev_secret_key")

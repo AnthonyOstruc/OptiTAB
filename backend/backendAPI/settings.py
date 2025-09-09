@@ -69,8 +69,13 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # ========================================
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    # Sécurité et statiques (WhiteNoise) doivent arriver en tête
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
+    # CORS dès que possible après la sécurité
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -265,6 +270,20 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Utiliser WhiteNoise pour servir les fichiers statiques en production
+# (Configuration compatible Django 5.x)
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
+
+# Cache agressif côté client pour les assets versionnés
+WHITENOISE_MAX_AGE = 31536000  # 1 an
+
 # CSRF Trusted Origins (local + production)
 CSRF_TRUSTED_ORIGINS = [
     'https://optitab.net',
@@ -446,7 +465,8 @@ if not DEBUG:
     # Honorer les en-têtes proxy de Render pour détecter HTTPS
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    # Configuration des fichiers statiques pour Render
+    # WhiteNoise compression/manifest déjà configurés via STORAGES
+    # Les chemins de base restent identiques
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     MEDIA_URL = '/media/'

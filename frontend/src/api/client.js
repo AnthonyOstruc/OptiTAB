@@ -7,8 +7,8 @@ import { useUserStore } from '@/stores/user'
  * Configuration centralisée et flexible pour l'API
  */
 const API_CONFIG = {
-  // URLs
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000',
+  // URLs - Force HTTP to avoid SSL protocol errors
+  BASE_URL: (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000').replace(/^https:/, 'http:'),
   REFRESH_ENDPOINT: '/api/users/token/refresh/',
   
   // Timeouts

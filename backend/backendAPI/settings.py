@@ -4,7 +4,7 @@ Configuration Django simplifiée et sécurisée
 import os
 import dj_database_url
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from datetime import timedelta
 from django.core.exceptions import ImproperlyConfigured
 
@@ -15,7 +15,13 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-load_dotenv()
+# Charge automatiquement le fichier .env le plus proche en remontant les dossiers
+env_path = find_dotenv(filename='.env', usecwd=True)
+if env_path:
+    load_dotenv(env_path, override=True)
+else:
+    # Fallback: tente backend/.env si non trouvé
+    load_dotenv(BASE_DIR / '.env', override=True)
 
 
 
@@ -116,14 +122,33 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 # ========================================
 
 # DATABASE_URL : Render fournit l'URL complète (postgres://user:pass@host:port/dbname)
-# En local, on peut utiliser DATABASE_URL ou les variables séparées
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL"),  # prend DATABASE_URL si défini, sinon None
-        conn_max_age=600,
-        ssl_require=not DEBUG  # SSL requis seulement en prod
+# En local, on accepte soit DATABASE_URL, soit des variables séparées (POSTGRES_* ou DB_*)
+database_url = os.getenv("DATABASE_URL")
+
+if not database_url:
+    # Construire une URL Postgres à partir des variables classiques si présentes
+    pg_db = os.getenv("POSTGRES_DB") or os.getenv("DB_NAME")
+    pg_user = os.getenv("POSTGRES_USER") or os.getenv("DB_USER")
+    pg_password = os.getenv("POSTGRES_PASSWORD") or os.getenv("DB_PASSWORD")
+    pg_host = os.getenv("POSTGRES_HOST") or os.getenv("DB_HOST", "localhost")
+    pg_port = os.getenv("POSTGRES_PORT") or os.getenv("DB_PORT", "5432")
+
+    if pg_db and pg_user and pg_password:
+        database_url = f"postgresql://{pg_user}:{pg_password}@{pg_host}:{pg_port}/{pg_db}"
+
+if database_url:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            database_url,
+            conn_max_age=600,
+            ssl_require=not DEBUG  # SSL requis seulement en prod
+        )
+    }
+else:
+    # Pas de fallback SQLite: forcer une configuration PostgreSQL explicite
+    raise ImproperlyConfigured(
+        "DATABASE configuration is missing. Set DATABASE_URL or POSTGRES_* / DB_* variables."
     )
-}
 
 
 # ========================================

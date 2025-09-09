@@ -5,6 +5,8 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 import logging
@@ -185,10 +187,41 @@ class UserScopedMixin(BaseFilterMixin):
     """
     Mixin that automatically scopes queries to the current user.
     """
-    
+
     def get_queryset(self):
         """
         Filter queryset to current user's data only.
         """
         queryset = super().get_queryset()
         return self.filter_by_user(queryset)
+
+
+class RootView(APIView):
+    """
+    Root view for the API that provides basic information about available endpoints.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        """
+        Return API information and available endpoints.
+        """
+        data = {
+            "message": "OptiTAB API Server",
+            "version": "1.0.0",
+            "status": "running",
+            "endpoints": {
+                "admin": "/admin/",
+                "users": "/api/users/",
+                "curriculum": "/api/",
+                "courses": "/api/cours/",
+                "synthesis": "/api/",
+                "tracking": "/api/suivis/",
+                "calculator": "/api/calc/",
+                "quizzes": "/api/quiz/",
+                "countries": "/api/",
+                "ai": "/api/ai/"
+            },
+            "documentation": "API documentation available at /api/docs/"
+        }
+        return Response(data)

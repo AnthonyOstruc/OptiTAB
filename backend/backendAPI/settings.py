@@ -2,22 +2,15 @@
 Configuration Django simplifiée et sécurisée
 """
 import os
+import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
 
+
 load_dotenv()
 
-# ========================================
-# CONFIGURATION DE BASE
-# ========================================
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG") == 'True'
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"] if DEBUG else [
-    os.getenv("ALLOWED_HOST", "")
-]
 
 # ========================================
 # APPLICATIONS
@@ -100,20 +93,35 @@ TEMPLATES = [
 # BASE DE DONNÉES
 # ========================================
 
-db_host = os.getenv("DATABASE_HOST", "localhost")
-db_options = {"sslmode": "require"} if db_host not in ("localhost", "127.0.0.1") else {}
+# ========================================
+# CONFIGURATION DE BASE
+# ========================================
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# SECRET_KEY : utilise la valeur de Render ou .env local, sinon valeur de dev
+SECRET_KEY = os.getenv("SECRET_KEY", "dev_secret_key")
+
+# DEBUG : True si local, False si Render (à configurer via variable d'environnement)
+DEBUG = os.getenv("DEBUG", "True") == "True"
+
+# ALLOWED_HOSTS : localhost pour dev, domaine Render en prod
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+
+# ========================================
+# BASE DE DONNÉES
+# ========================================
+
+# DATABASE_URL : Render fournit l'URL complète (postgres://user:pass@host:port/dbname)
+# En local, on peut utiliser DATABASE_URL ou les variables séparées
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DATABASE_NAME"),
-        "USER": os.getenv("DATABASE_USER"),
-        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
-        "HOST": db_host,
-        "PORT": os.getenv("DATABASE_PORT"),
-        "OPTIONS": db_options,  # Obligatoire pour Supabase
-    }
+    "default": dj_database_url.config(
+        default=os.getenv("DATABASE_URL"),  # prend DATABASE_URL si défini, sinon None
+        conn_max_age=600,
+        ssl_require=not DEBUG  # SSL requis seulement en prod
+    )
 }
+
 
 # ========================================
 # AUTHENTIFICATION

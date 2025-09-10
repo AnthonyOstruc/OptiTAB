@@ -436,6 +436,12 @@ defineExpose({
   flex-shrink: 0;
   transition: none;
 }
+/* Ensure heroicons are visible even with global svg styles */
+.sidebar-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 .sidebar.collapsed .sidebar-icon {
   width: 1.6rem;
   height: 1.6rem;

@@ -1939,11 +1939,12 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   }
   
   .matiere-tab {
-    min-width: 70px;
-    max-width: 100px;
-    font-size: 0.65rem;
-    height: 20px;
-    padding: 0.05rem 0.2rem;
+    min-width: 52px;
+    max-width: 88px;
+    font-size: 0.64rem;
+    height: 24px;
+    padding: 0.06rem 0.18rem;
+    padding-right: 0.6rem;
     /* Assurer que les onglets ne se cassent pas */
     flex-shrink: 0;
   }
@@ -1955,9 +1956,9 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   }
   
   .tab-close {
-    width: 12px;
-    height: 12px;
-    font-size: 0.7rem;
+    width: 10px;
+    height: 10px;
+    font-size: 0.6rem;
   }
   
   .dropdown-item {
@@ -1983,6 +1984,13 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   }
   
   .favorite-icon {
+    width: 10px;
+    height: 10px;
+    font-size: 0.65rem;
+  }
+
+  /* Réduire aussi l'icône des onglets pour compacter la largeur */
+  .tab-icon {
     width: 10px;
     height: 10px;
     font-size: 0.65rem;

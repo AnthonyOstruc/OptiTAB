@@ -9,7 +9,8 @@ export const AUTH_FORM_CONFIGS = {
         label: 'Email',
         placeholder: 'votre@email.com',
         required: true,
-        autocomplete: 'email',
+        name: 'username',
+        autocomplete: 'username',
         validation: [validationRules.required, validationRules.email]
       },
       password: {
@@ -17,6 +18,7 @@ export const AUTH_FORM_CONFIGS = {
         label: 'Mot de passe',
         placeholder: 'Votre mot de passe',
         required: true,
+        name: 'current-password',
         autocomplete: 'current-password',
         validation: [validationRules.required, validationRules.minLength(6)]
       },

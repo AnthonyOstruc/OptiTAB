@@ -1295,78 +1295,78 @@ onMounted(async () => {
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .quiz-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .quiz-filters {
     flex-direction: column;
   }
-  
+
   .filter-select {
     min-width: 100%;
   }
-  
+
   .stats-grid {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .quiz-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .quiz-meta {
     flex-direction: column;
     gap: 0.25rem;
   }
-  
+
   .quiz-card-header {
     align-items: flex-start;
   }
-  
+
   .quiz-card-actions {
     flex-direction: column;
     align-items: flex-end;
     gap: 0.25rem;
   }
-  
+
   .quiz-breadcrumb-compact {
     font-size: 0.65rem;
   }
-  
+
   .quiz-list-header {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
   }
-  
+
   .inline-mastery-filters {
     align-self: stretch;
     justify-content: space-between;
   }
-  
+
   .inline-mastery-btn {
     flex: 1;
     justify-content: center;
   }
-  
+
   .pagination-container {
     gap: 0.25rem;
   }
-  
+
   .pagination-btn {
     padding: 0.375rem 0.5rem;
     font-size: 0.8rem;
   }
-  
+
   .pagination-page {
     width: 32px;
     height: 32px;
     font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 1024px) {
-  .quiz-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 </style>

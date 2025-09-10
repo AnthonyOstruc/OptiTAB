@@ -809,49 +809,49 @@ defineExpose({
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .items-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .history-filters {
     flex-direction: column;
   }
-  
+
   .filter-select {
     min-width: 100%;
   }
-  
+
   .items-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .items-list-header {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
   }
-  
+
   .inline-filters {
     align-self: stretch;
     justify-content: space-between;
   }
-  
+
   .pagination-container {
     gap: 0.25rem;
   }
-  
+
   .pagination-btn {
     padding: 0.375rem 0.5rem;
     font-size: 0.8rem;
   }
-  
+
   .pagination-page {
     width: 32px;
     height: 32px;
     font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 1024px) {
-  .items-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 </style>

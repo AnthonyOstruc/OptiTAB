@@ -8,7 +8,7 @@
     </div>
 
     <!-- Affichage de l'objectif actuel seulement -->
-    <div v-if="currentObjective" class="current-objective" :key="forceUpdate">
+    <div v-if="isInitialized && currentObjective" class="current-objective" :key="forceUpdate">
       <div class="objective-icon">{{ currentObjective.icon }}</div>
       <div class="objective-content">
         <div class="objective-text">{{ currentObjective.text }}</div>
@@ -27,9 +27,14 @@
       </div>
     </div>
     
-    <!-- Message si aucun objectif disponible -->
+    <!-- Message si aucun objectif disponible (après init) -->
     <div v-else class="no-objective">
-      🎉 Tous les défis du jour sont terminés ! Revenez demain pour de nouveaux défis.
+      <template v-if="isInitialized">
+        🎉 Tous les défis du jour sont terminés ! Revenez demain pour de nouveaux défis.
+      </template>
+      <template v-else>
+        ⏳ Chargement des défis du jour...
+      </template>
     </div>
 
     <!-- Badge de complétion si terminé -->
@@ -119,6 +124,7 @@ const {
   allObjectives,
   userStats,
   loadTodayStats,
+  isInitialized,
   // Fonctions de simulation pour les tests
   simulateQuizEasy,
   simulateQuizMedium,

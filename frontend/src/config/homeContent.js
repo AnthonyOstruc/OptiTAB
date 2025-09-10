@@ -158,7 +158,7 @@ export const faq = [
 ];
 
 export const newsletterSection = {
-  titre: "Restez informé avec Optitab",
+  titre: "Restez informé avec OptiTAB",
   description: "Recevez les dernières actualités, mises à jour et conseils pour progresser en maths directement dans votre boîte mail.",
   placeholder: "Votre email",
   bouton: "S’abonner"

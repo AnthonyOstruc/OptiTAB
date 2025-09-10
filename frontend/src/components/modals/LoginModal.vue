@@ -118,9 +118,26 @@ export default {
 
     const loginError = ref('')
 
-    // Initialiser Google Sign-In au montage du composant
+    // Initialiser Google Sign-In et pré-remplir si "Se souvenir" est actif
     onMounted(async () => {
       await setupGoogleSignIn()
+
+      try {
+        const raw = localStorage.getItem('remember_me')
+        if (raw) {
+          const parsed = JSON.parse(raw)
+          const now = Date.now()
+          if (parsed?.expiresAt && now < parsed.expiresAt && parsed?.email && parsed?.password) {
+            formData.email = parsed.email
+            formData.password = parsed.password
+            formData.rememberMe = true
+          } else if (parsed?.expiresAt && now >= parsed.expiresAt) {
+            localStorage.removeItem('remember_me')
+          }
+        }
+      } catch (_) {
+        // ignore parsing errors
+      }
     })
 
     // Methods
@@ -172,6 +189,20 @@ export default {
           userStore.setUser(userData)
         }
         
+        // Enregistrer les identifiants si "Se souvenir de moi" est coché (30 jours)
+        try {
+          if (data.rememberMe) {
+            const payloadToRemember = {
+              email: data.email,
+              password: data.password,
+              expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000
+            }
+            localStorage.setItem('remember_me', JSON.stringify(payloadToRemember))
+          } else {
+            localStorage.removeItem('remember_me')
+          }
+        } catch (_) {}
+
         // Naviguer immédiatement, récupérer le profil en arrière-plan
         emit('login', { email: data.email })
         handleClose()
@@ -372,16 +403,6 @@ export default {
 .social-btn.google-btn {
   border-color: #e5e7eb;
   color: $text-color;
-}
-
-.social-btn.facebook-btn {
-  border-color: #1877f2;
-  color: #1877f2;
-
-  &:hover:not(:disabled) {
-    background: #f0f6ff;
-    border-color: #1877f2;
-  }
 }
 
 .social-icon {

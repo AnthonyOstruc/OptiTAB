@@ -12,6 +12,12 @@ const sharedUserStats = ref({
   exercicesCompleted: 0
 })
 
+// Indicateur global d'initialisation pour éviter les faux "tous terminés" au chargement
+const sharedIsInitialized = ref(false)
+
+// État partagé des objectifs débloqués pour conserver la progression entre les pages
+const sharedUnlockedObjectives = ref([])
+
 let objectivesInitialized = false
 
 // Composable pour gérer les objectifs journaliers
@@ -84,8 +90,8 @@ export function useDailyObjectives() {
     { name: 'Exercices réussis', type: 'exercices_completed', target: 2 }
   ]
 
-  // État des objectifs débloqués
-  const unlockedObjectives = ref([])
+  // État des objectifs débloqués (partagé entre toutes les instances)
+  const unlockedObjectives = sharedUnlockedObjectives
 
   // Initialiser les objectifs débloqués
   const initializeUnlockedObjectives = () => {
@@ -185,6 +191,9 @@ export function useDailyObjectives() {
 
   // Objectif actuel (le premier non complété parmi les débloqués)
   const currentObjective = computed(() => {
+    // Ne pas retourner d'objectif tant que l'init n'est pas terminée
+    if (!sharedIsInitialized.value) return null
+
     const objectives = unlockedObjectivesList.value
     if (objectives.length === 0) return null
 
@@ -327,6 +336,7 @@ export function useDailyObjectives() {
 
   // Vérifier si l'objectif du jour est complété
   const isDailyObjectiveCompleted = computed(() => {
+    if (!currentObjective.value) return false
     return currentObjective.value.progress >= currentObjective.value.target
   })
 
@@ -456,10 +466,12 @@ export function useDailyObjectives() {
     initializeUnlockedObjectives()
     watch(userStats, saveStats, { deep: true })
     objectivesInitialized = true
+    sharedIsInitialized.value = true
   }
 
   return {
     userStats,
+    isInitialized: sharedIsInitialized,
     currentObjective,
     unlockedObjectives,
     unlockedObjectivesList,

@@ -112,7 +112,7 @@ onMounted(async () => {
       :bouton="newsletterSection.bouton"
     />
     <WhatsappChatButton
-      phone="33612345678"
+      phone="33764040251"
       message="Bonjour, j'ai une question sur Optitab !"
       tooltip="Une question ? Discutons sur WhatsApp !"
     />

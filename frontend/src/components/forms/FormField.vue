@@ -9,6 +9,7 @@
       :placeholder="fieldConfig.placeholder"
       :required="fieldConfig.required"
       :disabled="disabled"
+      :name="fieldConfig.name || fieldName"
       :autocomplete="fieldConfig.autocomplete"
       :error="getFieldError(fieldName)"
       :help-text="fieldConfig.helpText"

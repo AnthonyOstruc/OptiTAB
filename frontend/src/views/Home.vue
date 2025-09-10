@@ -5,7 +5,6 @@ import Footer from '@/components/layout/Footer.vue'
 import SectionHero from '@/components/home/SectionHero.vue'
 import CallToAction from '@/components/home/CallToAction.vue'
 import SubjectsSection from '@/components/home/SubjectsSection.vue'
-import FeaturesSection from '@/components/home/FeaturesSection.vue'
 import IntroFeaturesSection from '@/components/home/IntroFeaturesSection.vue'
 import StepsHowItWorks from '@/components/home/StepsHowItWorks.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
@@ -24,8 +23,6 @@ import {
   liensPiedDePage,
   introPiedDePage,
   contactsPiedDePage,
-  titreFonctionnalites,
-  fonctionnalites,
   introFeatures,
   etapesParcours,
   faq,
@@ -88,12 +85,6 @@ onMounted(async () => {
       :titre-bas="etapesParcours.titreBas"
     />
 
-
-    <!-- Section Fonctionnalités clés -->
-    <FeaturesSection
-      :titre="titreFonctionnalites"
-      :fonctionnalites="fonctionnalites"
-    />
 
     <!-- Section Matières/Sujets -->
     <SubjectsSection

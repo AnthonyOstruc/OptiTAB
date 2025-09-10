@@ -226,6 +226,7 @@ export default {
   right: -100%;
   width: 300px;
   height: 100vh;
+  height: 100dvh; // utiliser la hauteur dynamique pour iOS Safari
   background: $white;
   z-index: 12003;
   transition: right 0.3s ease;
@@ -306,6 +307,10 @@ export default {
   border-top: 1px solid #e5e5e5;
   flex-shrink: 0; // Empêcher le footer de se comprimer
   background: $white; // S'assurer que le background est visible
+  // Laisser de l'espace pour la barre système (safe area) et les bulles flottantes
+  padding-bottom: calc(20px + 12px);
+  padding-bottom: calc(20px + constant(safe-area-inset-bottom) + 12px);
+  padding-bottom: calc(20px + env(safe-area-inset-bottom) + 12px);
 }
 
 .login-button {
@@ -319,6 +324,8 @@ export default {
   min-height: 48px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  // Séparer visuellement du bord inférieur
+  margin-bottom: max(4px, env(safe-area-inset-bottom));
   
   &:hover {
     transform: translateY(-1px);
@@ -336,6 +343,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  // Préserver un espace avec la zone sûre iOS
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .user-details {
@@ -407,6 +416,10 @@ export default {
 
   .panel-footer {
     padding: 16px;
+    // Ajustement mobile: remonter encore un peu le bouton
+    padding-bottom: calc(16px + 12px);
+    padding-bottom: calc(16px + constant(safe-area-inset-bottom) + 12px);
+    padding-bottom: calc(16px + env(safe-area-inset-bottom) + 12px);
   }
 }
 </style> 

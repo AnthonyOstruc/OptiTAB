@@ -56,6 +56,8 @@
           :key="filter.value"
           @click.stop="updateSelectedMastery(filter.value)"
           :class="['inline-mastery-btn', filter.class, { active: selectedMastery === filter.value }]"
+          :title="filter.label"
+          :aria-label="filter.label"
         >
           <span class="inline-mastery-icon">{{ filter.icon }}</span>
           <span class="inline-mastery-label">{{ filter.label }}</span>
@@ -337,6 +339,7 @@ defineExpose({
   display: flex;
   gap: 0.25rem;
   align-items: center;
+  width: 100%;
 }
 
 .inline-mastery-btn {
@@ -366,17 +369,7 @@ defineExpose({
   border-width: 1px;
 }
 
-.inline-mastery-btn.all.active {
-  background: #3b82f6;
-  border-color: #3b82f6;
-}
-
-.inline-mastery-btn.correct.active {
-  background: #3b82f6;
-  border-color: #3b82f6;
-}
-
-.inline-mastery-btn.incorrect.active {
+.inline-mastery-btn.active {
   background: #3b82f6;
   border-color: #3b82f6;
 }
@@ -587,13 +580,27 @@ defineExpose({
   }
   
   .inline-mastery-filters {
-    align-self: stretch;
-    justify-content: space-between;
+    align-self: stretch !important;
+    justify-content: space-between !important;
+    gap: 0 !important;
+    width: 100% !important;
   }
   
   .inline-mastery-btn {
-    flex: 1;
-    justify-content: center;
+    flex: 1 !important;
+    justify-content: center !important;
+  }
+
+  /* Mobile: icônes seules pour les filtres (sauf "Tous") */
+  .inline-mastery-btn:not(.all) .inline-mastery-label {
+    display: none;
+  }
+  .inline-mastery-btn:not(.all) {
+    min-width: 36px;
+    padding: 0.25rem;
+  }
+  .inline-mastery-btn:not(.all) .inline-mastery-icon {
+    font-size: 1rem;
   }
   
   .exercice-meta {

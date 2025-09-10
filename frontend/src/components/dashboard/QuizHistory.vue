@@ -76,6 +76,8 @@
                         :key="filter.value"
                         @click.stop="selectedMastery = filter.value"
                         :class="['inline-mastery-btn', { active: selectedMastery === filter.value }, filter.class]"
+                        :title="filter.label"
+                        :aria-label="filter.label"
                       >
                         <span v-if="filter.icon" class="inline-mastery-icon">{{ filter.icon }}</span>
                         <span class="inline-mastery-label">{{ filter.label }}</span>
@@ -165,9 +167,12 @@
           <button 
             @click="goToPage(currentPage - 1)" 
             :disabled="currentPage <= 1"
-            class="pagination-btn"
+            class="pagination-btn prev"
+            :title="'Précédent'"
+            aria-label="Précédent"
           >
-            ‹ Précédent
+            <span class="pagination-icon">‹</span>
+            <span class="pagination-label">Précédent</span>
           </button>
           
           <div class="pagination-pages">
@@ -184,9 +189,12 @@
           <button 
             @click="goToPage(currentPage + 1)" 
             :disabled="currentPage >= totalPages"
-            class="pagination-btn"
+            class="pagination-btn next"
+            :title="'Suivant'"
+            aria-label="Suivant"
           >
-            Suivant ›
+            <span class="pagination-label">Suivant</span>
+            <span class="pagination-icon">›</span>
           </button>
         </div>
       </div>
@@ -201,7 +209,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMatieres, getNotions, getChapitres, getChapitresByNotion } from '@/api'
 import apiClient from '@/api/client'
@@ -246,6 +254,14 @@ const isQuizListExpanded = ref(true)
 // Cooldown des quiz
 const quizCooldowns = ref(new Map())
 const cooldownLoading = ref(false)
+
+// Responsive helper (mobile detection)
+const isMobile = ref(false)
+const updateIsMobile = () => {
+  if (typeof window !== 'undefined') {
+    isMobile.value = window.innerWidth <= 768
+  }
+}
 
 // Computed
 const filteredNotions = computed(() => {
@@ -327,6 +343,14 @@ const visiblePages = computed(() => {
   const pages = []
   const total = totalPages.value
   const current = currentPage.value
+  
+  // Mode mobile: n'afficher que 1 … total
+  if (isMobile.value) {
+    if (total <= 1) {
+      return [1]
+    }
+    return [1, '...', total]
+  }
   
   if (total <= 7) {
     // Si 7 pages ou moins, afficher toutes les pages
@@ -700,6 +724,11 @@ const resetPagination = () => {
 
 // Lifecycle
 onMounted(async () => {
+  updateIsMobile()
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', updateIsMobile)
+  }
+  
   // Si l'utilisateur n'est pas encore chargé, attendre un peu
   if (userStore.isLoading || (!userStore.isAuthenticated && !userStore.id)) {
     // Attendre que l'utilisateur soit chargé (max 3 secondes)
@@ -712,6 +741,12 @@ onMounted(async () => {
   
   await loadReferenceData()
   await loadQuizData()
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateIsMobile)
+  }
 })
 </script>
 
@@ -1354,6 +1389,18 @@ onMounted(async () => {
     justify-content: center;
   }
 
+  /* Mobile: icônes seules pour les filtres (sauf "Tous") */
+  .inline-mastery-btn:not(.all) .inline-mastery-label {
+    display: none;
+  }
+  .inline-mastery-btn:not(.all) {
+    min-width: 36px;
+    padding: 0.25rem;
+  }
+  .inline-mastery-btn:not(.all) .inline-mastery-icon {
+    font-size: 1rem;
+  }
+
   .pagination-container {
     gap: 0.25rem;
   }
@@ -1367,6 +1414,19 @@ onMounted(async () => {
     width: 32px;
     height: 32px;
     font-size: 0.8rem;
+  }
+
+  /* Pagination responsive: icônes seules en mobile */
+  .pagination-btn .pagination-label {
+    display: none;
+  }
+  .pagination-btn {
+    padding: 0.375rem 0.5rem;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

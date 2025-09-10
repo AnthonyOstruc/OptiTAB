@@ -52,7 +52,9 @@
           :aria-selected="activeMatiereId === matiere.id"
           role="tab"
         >
+          <span class="tab-icon" v-html="matiere.svg_icon || '📚'" aria-hidden="true"></span>
           <span class="tab-name">{{ matiere.nom }}</span>
+          <span class="tab-initials">{{ getInitials(matiere.nom) }}</span>
           <button 
             class="tab-close"
             @click.stop="removeMatiere(matiere.id)"
@@ -164,6 +166,7 @@
             >
               <span class="favorite-icon" v-html="matiere.svg_icon || '📚'" aria-hidden="true"></span>
               <span class="favorite-name">{{ matiere.nom }}</span>
+              <span class="favorite-initials">{{ getInitials(matiere.nom) }}</span>
             </button>
           </div>
           
@@ -297,6 +300,29 @@ const activeMatiere = computed(() => {
 const handleError = (error, context) => {
   console.error(`[SelectedMatiereHeader] Erreur dans ${context}:`, error)
   // Ici on pourrait ajouter une notification utilisateur ou un service de logging
+}
+
+/**
+ * Génère les initiales à partir d'un nom de matière
+ * Exemple: "Physique Chimie" -> "PC", "Maths" -> "M"
+ * @param {string} name
+ * @returns {string}
+ */
+const getInitials = (name) => {
+  try {
+    if (!name || typeof name !== 'string') return ''
+    const cleaned = name
+      .replace(/\([^)]*\)/g, '') // enlever le contenu entre parenthèses
+      .replace(/[^\p{L}\s-]/gu, '') // enlever la ponctuation (lettres unicode conservées)
+      .trim()
+    if (!cleaned) return ''
+    const words = cleaned.split(/[\s-]+/).filter(Boolean)
+    if (words.length === 0) return ''
+    // Limiter à 2 lettres pour garder un rendu compact
+    return words.slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('')
+  } catch {
+    return ''
+  }
 }
 
 /**
@@ -969,11 +995,11 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 
 .tabs-container {
   display: flex;
-  gap: 1px;
+  gap: 4px;
   width: 100%;
   background: #ffffff;
   border-radius: 6px;
-  padding: 2px;
+  padding: 1px;
   overflow-x: auto;
   overflow-y: hidden;
   margin-bottom: 0;
@@ -1010,8 +1036,9 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   gap: 0.25rem;
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  padding: 0.22rem 0.6rem;
+  padding-right: 1.8rem; /* espace pour le bouton fermer à droite */
   font-size: 0.75rem;
   color: #64748b;
   cursor: pointer;
@@ -1021,7 +1048,8 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   max-width: 160px;
   position: relative;
   flex-shrink: 0;
-  height: 24px;
+  height: 28px;
+  line-height: 26px;
   /* Assurer que les onglets ne se cassent pas */
   box-sizing: border-box;
 }
@@ -1029,7 +1057,6 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 .matiere-tab:hover {
   background: #ffffff;
   color: #64748b;
-  transform: translateY(-1px);
   border-color: #e2e8f0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
@@ -1064,7 +1091,7 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   right: 0;
   height: 2px;
   background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
-  border-radius: 4px 4px 0 0;
+  border-radius: 3px 3px 0 0;
 }
 
 .matiere-tab.loading {
@@ -1099,7 +1126,6 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   background: #e2e8f0;
   color: #374151;
   border-color: #94a3b8;
-  transform: translateY(-1px);
 }
 
 .matiere-tab.new-tab:disabled {
@@ -1134,7 +1160,7 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 }
 
 .matiere-tab.new-tab-small .tab-icon {
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-weight: bold;
   color: #64748b;
 }
@@ -1142,9 +1168,18 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 .tab-icon {
   display: inline-flex;
   align-items: center;
-  font-size: 1rem;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  font-size: 0.75rem;
   color: #64748b;
   flex-shrink: 0;
+}
+
+.tab-icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
 }
 
 .matiere-tab.active .tab-icon {
@@ -1152,7 +1187,7 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 }
 
 .matiere-tab.new-tab .tab-icon {
-  font-size: 1.2rem;
+  font-size: 0.75rem;
   font-weight: bold;
   color: #64748b;
 }
@@ -1163,6 +1198,13 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
+}
+
+.tab-initials {
+  display: none;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.02em;
 }
 
 .tab-close {
@@ -1179,8 +1221,12 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   opacity: 0.6;
 }
 
@@ -1188,7 +1234,6 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   opacity: 1;
   background: #fee2e2;
   color: #ef4444;
-  transform: scale(1.1);
 }
 
 .tab-close:focus {
@@ -1434,12 +1479,13 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   border: none;
   border-radius: 0;
   padding: 0;
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
   box-shadow: none;
   position: relative;
   height: 28px;
   /* Aligner avec les onglets */
   width: 100%;
+  flex-shrink: 0;
   justify-content: flex-start;
 }
 
@@ -1480,7 +1526,7 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 
 .favorites-list {
   display: flex;
-  gap: 0.3rem;
+  gap: 0.25rem;
   overflow-x: auto;
   flex: 1;
   padding: 0 0.15rem;
@@ -1549,6 +1595,14 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   white-space: nowrap;
   letter-spacing: 0.025em;
   color: inherit;
+}
+
+/* Initiales des favoris: masquées par défaut, visibles en mode compact */
+.favorite-initials {
+  display: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #64748b;
 }
 
 .favorites-toggle {
@@ -1657,17 +1711,24 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 }
 
 /* Responsive Design - Optimisé pour que les onglets restent toujours visibles */
+@media (max-width: 1100px) {
+  .favorites-bar {
+    margin-top: 0.3rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .selected-matiere-header {
     gap: 0.4rem;
   }
   
   .matiere-tab {
-    min-width: 100px;
-    max-width: 180px;
+    min-width: 108px;
+    max-width: 192px;
     font-size: 0.8rem;
-    padding: 0.15rem 0.4rem;
-    height: 26px;
+    padding: 0.22rem 0.62rem;
+    padding-right: 1.9rem;
+    height: 28px;
   }
   
   .matiere-tab.new-tab-small {
@@ -1697,7 +1758,7 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   
   .favorites-bar {
     padding: 0.3rem 0.5rem;
-    margin-top: 0.4rem;
+    margin-top: 0.3rem;
     /* Aligner avec les onglets */
     margin-left: 0;
     padding-left: 0;
@@ -1705,18 +1766,19 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   
   .tabs-container {
     /* Assurer que les onglets restent toujours visibles */
-    padding: 1px;
+    padding: 2px;
     /* Scroll horizontal obligatoire */
     overflow-x: auto;
     overflow-y: hidden;
   }
   
   .matiere-tab {
-    min-width: 80px;
-    max-width: 120px;
-    font-size: 0.7rem;
-    padding: 0.1rem 0.25rem;
-    height: 22px;
+    min-width: 96px;
+    max-width: 146px;
+    font-size: 0.76rem;
+    padding: 0.2rem 0.48rem;
+    padding-right: 1.6rem;
+    height: 27px;
     /* Assurer que les onglets ne se cassent pas */
     flex-shrink: 0;
   }
@@ -1758,7 +1820,7 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   
   .favorites-bar {
     padding: 0.3rem 0.5rem;
-    margin-top: 0.4rem;
+    margin-top: 0.3rem;
     /* Aligner avec les onglets */
     margin-left: 0;
     padding-left: 0;
@@ -1790,6 +1852,70 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
     width: 24px;
     height: 22px;
     font-size: 0.7rem;
+  }
+}
+
+/* Compactage de la barre des favoris pour les petites largeurs */
+@media (max-width: 550px) {
+  /* Dans le libellé, ne garder que l'icône ⭐ */
+  .favorites-text {
+    display: none;
+  }
+
+  /* Dans la liste, n'afficher que le logo de la matière */
+  .favorite-name {
+    display: none;
+  }
+
+  /* Afficher les initiales en mode compact pour les favoris */
+  .favorite-initials {
+    display: inline-flex;
+    font-weight: 700;
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-left: 0.15rem;
+  }
+
+  /* Onglets compacts: masquer le nom complet, ne garder que l'icône + initiales */
+  .tab-name {
+    display: none;
+  }
+  .tab-initials {
+    display: inline-flex;
+    font-size: 0.7rem;
+    margin-left: 0.15rem;
+    font-weight: 800;
+  }
+
+  /* Onglets compacts: carré comme favoris */
+  .matiere-tab {
+    min-width: auto;
+    max-width: none;
+    padding: 0.22rem 0.52rem;
+    padding-right: 1.2rem; /* espace pour le bouton fermer */
+    height: 28px;
+    line-height: 26px;
+    gap: 0.3rem;
+    border-radius: 3px;
+  }
+
+  .tab-close {
+    right: 4px;
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Icônes compactes alignées sur les favoris */
+  .tab-icon,
+  .favorite-icon {
+    width: 12px;
+    height: 12px;
+    font-size: 0.7rem;
+  }
+  .tab-icon svg,
+  .favorite-icon svg {
+    width: 12px;
+    height: 12px;
   }
 }
 
@@ -1909,7 +2035,9 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   }
   
   .favorites-bar {
-    display: none; /* Masquer les favoris en mode paysage pour économiser l'espace */
+    display: flex; /* Garder visible en mode paysage */
+    height: 24px;
+    margin-top: 0.2rem;
   }
 }
 
@@ -1957,9 +2085,8 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 }
 
 /* Effet visuel pour le clic de la molette (style Google Chrome) */
-.matiere-tab:active {
-  transform: scale(0.95);
-  transition: transform 0.1s ease;
+.matiere-tab:active { /* neutralize motion without empty rule */
+  transform: none;
 }
 
 /* Mode contraste élevé */

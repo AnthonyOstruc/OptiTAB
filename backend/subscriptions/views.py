@@ -8,12 +8,14 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.contrib.auth.models import User
 from django.utils import timezone
+import logging
 from datetime import timedelta
 
 from .models import SubscriptionPlan, UserSubscription, PaymentHistory
 from stripe_config import STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUCCESS_URL, CANCEL_URL, FREE_TRIAL_DAYS
 
 stripe.api_key = STRIPE_SECRET_KEY
+logger = logging.getLogger(__name__)
 
 class CreateCheckoutSessionView(View):
     """Créer une session de paiement Stripe"""
@@ -199,7 +201,7 @@ def handle_checkout_session_completed(session):
             user_subscription.save()
         
     except Exception as e:
-        print(f"Erreur dans handle_checkout_session_completed: {e}")
+        logger.error(f"Erreur dans handle_checkout_session_completed: {e}")
 
 def handle_payment_succeeded(invoice):
     """Gérer un paiement réussi"""
@@ -224,7 +226,7 @@ def handle_payment_succeeded(invoice):
         )
         
     except Exception as e:
-        print(f"Erreur dans handle_payment_succeeded: {e}")
+        logger.error(f"Erreur dans handle_payment_succeeded: {e}")
 
 def handle_payment_failed(invoice):
     """Gérer un paiement échoué"""
@@ -235,7 +237,7 @@ def handle_payment_failed(invoice):
         user_subscription.save()
         
     except Exception as e:
-        print(f"Erreur dans handle_payment_failed: {e}")
+        logger.error(f"Erreur dans handle_payment_failed: {e}")
 
 def handle_subscription_updated(subscription):
     """Gérer la mise à jour d'un abonnement"""
@@ -247,7 +249,7 @@ def handle_subscription_updated(subscription):
         user_subscription.save()
         
     except Exception as e:
-        print(f"Erreur dans handle_subscription_updated: {e}")
+        logger.error(f"Erreur dans handle_subscription_updated: {e}")
 
 def handle_subscription_deleted(subscription):
     """Gérer la suppression d'un abonnement"""
@@ -257,4 +259,4 @@ def handle_subscription_deleted(subscription):
         user_subscription.save()
         
     except Exception as e:
-        print(f"Erreur dans handle_subscription_deleted: {e}")
+        logger.error(f"Erreur dans handle_subscription_deleted: {e}")

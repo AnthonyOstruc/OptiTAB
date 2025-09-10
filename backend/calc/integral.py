@@ -1,6 +1,10 @@
 from sympy import symbols, diff, simplify, latex, Add, Mul, Pow, S, E, expand, factor, integrate, oo
 from sympy.functions import sin, cos, tan, exp, log, sqrt
 from sympy.parsing.latex import parse_latex
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class IntegralCalculator:
@@ -47,7 +51,7 @@ class IntegralCalculator:
 
     def calculate_integral(self, expr_latex, lower_bound=None, upper_bound=None):
         """Calcule l'intégrale avec étapes détaillées et pédagogiques"""
-        print(f"Traitement de l'intégrale: {expr_latex}")
+        logger.debug(f"Traitement de l'intégrale: {expr_latex}")
         
         self.steps = []
         
@@ -69,8 +73,7 @@ class IntegralCalculator:
         # ÉTAPE 6 & 7: CALCUL FINAL ET SIMPLIFICATION
         result = self._calculate_final_result(primitive, var, lower_bound, upper_bound, integral_type)
         
-        print(f"Résultat final: {result}")
-        print(f"Nombre d'étapes: {len(self.steps)}")
+        logger.debug(f"Résultat final: {result}; étapes: {len(self.steps)}")
 
         return {'result_latex': result, 'steps': self.steps}
 
@@ -103,9 +106,9 @@ class IntegralCalculator:
             expr = parse_latex(expr_latex)
             expr = expr.subs(symbols('e'), E)
             var = list(expr.free_symbols)[0] if expr.free_symbols else symbols('x')
-            print(f"Fonction parsée: {expr}")
+            logger.debug(f"Fonction parsée: {expr}")
         except Exception as parse_error:
-            print(f"Erreur parsing: {parse_error}")
+            logger.error(f"Erreur parsing: {parse_error}")
             raise ValueError(f'Erreur de parsing LaTeX: {str(parse_error)}')
         
         # Analyse de la structure de la fonction à intégrer

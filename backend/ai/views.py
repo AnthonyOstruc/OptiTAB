@@ -5,10 +5,14 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.conf import settings
+import logging
 from curriculum.models import MatiereContexte, Chapitre, Exercice
 from cours.models import Cours
 from .models import AIConversation
 from .serializers import AIQuerySerializer, AIConversationSerializer
+
+
+logger = logging.getLogger(__name__)
 
 
 class AIHelper:
@@ -111,17 +115,17 @@ CONTEXTE DISPONIBLE:
             for var in proxy_vars:
                 os.environ.pop(var, None)
 
-            print("Variables proxy nettoyées")
+            logger.debug("Variables proxy nettoyées")
 
             # Utilisation de l'ancienne API OpenAI v0.28.1 (compatible proxy)
-            print("Utilisation de l'ancienne API OpenAI v0.28.1")
+            logger.debug("Utilisation de l'ancienne API OpenAI v0.28.1")
 
             # Configurer la clé API
             api_key = getattr(settings, 'OPENAI_API_KEY', os.getenv('OPENAI_API_KEY'))
             if not api_key:
                 raise ValueError("OPENAI_API_KEY non configurée. Ajoutez-la dans vos variables d'environnement.")
 
-            print("Clé API trouvée, configuration OpenAI...")
+            logger.debug("Clé API trouvée, configuration OpenAI...")
             openai.api_key = api_key
 
             response = openai.ChatCompletion.create(
@@ -141,7 +145,7 @@ CONTEXTE DISPONIBLE:
 
         except Exception as e:
             error_msg = str(e)
-            print(f"Erreur OpenAI: {error_msg}")
+            logger.error(f"Erreur OpenAI: {error_msg}")
 
             # Gestion spécifique de l'erreur de quota
             if "exceeded your current quota" in error_msg.lower():

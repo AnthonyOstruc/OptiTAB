@@ -44,8 +44,10 @@ if (import.meta && import.meta.env && import.meta.env.PROD) {
   console.log = noop
   console.debug = noop
   console.info = noop
+  console.warn = noop
 }
 
+// Ces logs sont utiles en dev mais désactivés en prod par le bloc ci-dessus
 if (tokensCleaned) {
   console.log('Tokens expirés nettoyés au démarrage de l\'application')
 }

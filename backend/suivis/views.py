@@ -11,6 +11,8 @@ from django.db import transaction
 from users.models import UserNotification
 from django.utils import timezone
 from datetime import timedelta
+import logging
+logger = logging.getLogger(__name__)
 
 
 def _compute_exercice_xp(points_obtenus: int, est_correct: bool, temps_seconde: int) -> int:
@@ -159,7 +161,7 @@ def check_quiz_cooldown(user, quiz_id: int) -> dict:
                 'next_attempt_time': (last_attempt.date_creation + cooldown_duration).isoformat()
             }
     except Exception as e:
-        print(f"❌ Erreur vérification cooldown: {e}")
+        logger.warning(f"Erreur vérification cooldown: {e}")
         return {
             'can_attempt': True,
             'message': 'Tentative autorisée (erreur de vérification)'
@@ -365,7 +367,7 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
             
             tentative_numero = get_next_quiz_attempt_number(self.request.user, quiz_id)
             
-            print(f"🔍 Création tentative quiz {quiz_id} pour user {self.request.user.id}, tentative #{tentative_numero}")
+            logger.debug(f"Création tentative quiz {quiz_id} pour user {self.request.user.id}, tentative #{tentative_numero}")
             
             # Calculer les XP pour cette tentative
             quiz_obj = serializer.validated_data.get('quiz')
@@ -378,7 +380,7 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 tentative_numero=tentative_numero,
             )
             
-            print(f"🎯 XP calculés: {xp_gain}")
+            logger.debug(f"XP calculés: {xp_gain}")
             
             # Sauvegarder le suivi avec les XP gagnés
             suivi = serializer.save(
@@ -387,7 +389,7 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 xp_gagne=xp_gain
             )
             
-            print(f"✅ Suivi sauvegardé: {suivi.id}")
+            logger.debug(f"Suivi sauvegardé: {suivi.id}")
 
             try:
                 # Mettre à jour les XP et le niveau de l'utilisateur
@@ -412,7 +414,7 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                     except Exception:
                         pass
             except Exception as e:
-                print(f"❌ Erreur mise à jour utilisateur: {e}")
+                logger.error(f"Erreur mise à jour utilisateur: {e}")
                 pass
                 
             return suivi

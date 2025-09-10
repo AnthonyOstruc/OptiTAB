@@ -2,6 +2,10 @@ from sympy import symbols, factor, gcd, expand, simplify, latex, Add, Mul, Pow, 
 from sympy.parsing.latex import parse_latex
 from sympy.polys.polytools import factor_list
 from sympy.core.numbers import Integer
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class FactorCalculator:
@@ -34,7 +38,7 @@ class FactorCalculator:
 
     def calculate_factorization(self, expr_latex):
         """Calcule la factorisation avec étapes détaillées"""
-        print(f"Traitement de l'expression: {expr_latex}")
+        logger.debug(f"Traitement de l'expression: {expr_latex}")
         
         # ÉTAPE 1: PARSING DE L'EXPRESSION
         expr = self._parse_expression(expr_latex)
@@ -52,8 +56,7 @@ class FactorCalculator:
         # ÉTAPE 4: VÉRIFICATION ET RÉSULTAT FINAL
         final_result = self._calculate_final_result(expr, expr_latex)
 
-        print(f"Résultat final: {final_result}")
-        print(f"Nombre d'étapes: {len(self.steps)}")
+        logger.debug(f"Résultat final: {final_result}; étapes: {len(self.steps)}")
 
         return {'result_latex': final_result, 'steps': self.steps}
 
@@ -61,10 +64,10 @@ class FactorCalculator:
         """Parse l'expression LaTeX"""
         try:
             expr = parse_latex(expr_latex)
-            print(f"Expression parsée: {expr}")
+            logger.debug(f"Expression parsée: {expr}")
             return expr
         except Exception as parse_error:
-            print(f"Erreur parsing: {parse_error}")
+            logger.error(f"Erreur parsing: {parse_error}")
             raise ValueError(f'Erreur de parsing LaTeX: {str(parse_error)}')
 
     def _identify_expression_type(self, expr):

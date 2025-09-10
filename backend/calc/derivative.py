@@ -1,6 +1,10 @@
 from sympy import symbols, diff, simplify, latex, Add, Mul, Pow, S, E, expand, factor
 from sympy.functions import sin, cos, tan, exp, log, sqrt
 from sympy.parsing.latex import parse_latex
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class DerivativeCalculator:
@@ -35,7 +39,7 @@ class DerivativeCalculator:
 
     def calculate_derivative(self, expr_latex):
         """Calcule la dérivée avec étapes détaillées"""
-        print(f"Traitement de l'expression: {expr_latex}")
+        logger.debug(f"Traitement de l'expression: {expr_latex}")
         
         # ÉTAPE 1: PARSING DE LA FONCTION
         expr, var = self._parse_expression(expr_latex)
@@ -57,8 +61,7 @@ class DerivativeCalculator:
         # ÉTAPE 5 & 6: CALCUL ET SIMPLIFICATION FINALE
         result = self._calculate_final_result(expr, var, expr_latex)
 
-        print(f"Résultat final: {result}")
-        print(f"Nombre d'étapes: {len(self.steps)}")
+        logger.debug(f"Résultat final: {result}; étapes: {len(self.steps)}")
 
         return {'result_latex': result, 'steps': self.steps}
 
@@ -66,9 +69,9 @@ class DerivativeCalculator:
         """Parse l'expression LaTeX et retourne l'expression et la variable"""
         try:
             expr = parse_latex(expr_latex)
-            print(f"Expression parsée: {expr}")
+            logger.debug(f"Expression parsée: {expr}")
         except Exception as parse_error:
-            print(f"Erreur parsing: {parse_error}")
+            logger.error(f"Erreur parsing: {parse_error}")
             raise ValueError(f'Erreur de parsing LaTeX: {str(parse_error)}')
         
         expr = expr.subs(symbols('e'), E)

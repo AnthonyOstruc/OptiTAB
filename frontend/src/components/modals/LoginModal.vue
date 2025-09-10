@@ -172,14 +172,16 @@ export default {
           userStore.setUser(userData)
         }
         
-        // Récupérer les données complètes de l'utilisateur (y compris le niveau)
-        console.log('📡 Récupération du profil utilisateur...')
-        await userStore.fetchUser()
-
+        // Naviguer immédiatement, récupérer le profil en arrière-plan
         emit('login', { email: data.email })
         handleClose()
         closeModal(MODAL_IDS.LOGIN)
         router.push('/dashboard')
+
+        console.log('📡 Récupération du profil utilisateur en arrière-plan...')
+        userStore.fetchUser().catch((e) => {
+          console.error('Erreur fetchUser en arrière-plan:', e)
+        })
       } catch (error) {
         console.error('Erreur lors de la connexion:', error)
         // Gestion de l'erreur backend : DRF renvoie généralement 'detail'

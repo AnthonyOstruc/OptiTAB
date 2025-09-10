@@ -170,12 +170,13 @@ class UserLogoutView(APIView):
         refresh_token = request.data.get("refresh_token") or request.data.get("refresh")
         
         if not refresh_token:
+            # Idempotent: considérer la déconnexion comme réussie même sans token
             logger.warning(
-                f"Logout attempt without refresh token from {request.META.get('REMOTE_ADDR')}"
+                f"Logout attempt without refresh token from {request.META.get('REMOTE_ADDR')} (idempotent success)"
             )
-            return ResponseService.error(
-                message="Token de rafraîchissement requis pour la déconnexion",
-                status_code=status.HTTP_400_BAD_REQUEST
+            return ResponseService.success(
+                message="Déconnexion réussie",
+                status_code=status.HTTP_205_RESET_CONTENT
             )
         
         try:
@@ -196,11 +197,11 @@ class UserLogoutView(APIView):
             )
             
         except Exception as e:
-            logger.error(f"Logout error: {e}")
-            
-            return ResponseService.error(
-                message="Erreur lors de la déconnexion",
-                status_code=status.HTTP_400_BAD_REQUEST
+            # Idempotent: ne jamais échouer fonctionnellement la déconnexion
+            logger.warning(f"Logout error (idempotent success): {e}")
+            return ResponseService.success(
+                message="Déconnexion réussie",
+                status_code=status.HTTP_205_RESET_CONTENT
             )
 
 

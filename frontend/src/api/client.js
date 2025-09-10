@@ -13,7 +13,8 @@ function resolveBaseUrl() {
 
   // En dev, si aucune base n'est fournie, utiliser les URLs relatives pour passer par le proxy Vite
   if (!raw) {
-    return isDev ? '' : (typeof window !== 'undefined' ? window.location.origin : '')
+    // Fallback global: utiliser le backend Render si aucun env n'est défini
+    return 'https://optitab-backend.onrender.com'
   }
 
   // Éviter HTTPS vers localhost/127.0.0.1 (entraîne ERR_SSL_PROTOCOL_ERROR si le backend n'est pas en TLS)
@@ -29,17 +30,18 @@ function resolveBaseUrl() {
  * Configuration de l'API Client
  * Configuration centralisée et flexible pour l'API
  */
+const isProd = (import.meta.env.PROD || import.meta.env.MODE === 'production')
 const API_CONFIG = {
   BASE_URL: resolveBaseUrl(),
   REFRESH_ENDPOINT: '/api/users/token/refresh/',
   
-  // Timeouts
-  REQUEST_TIMEOUT: 10000, // 10 secondes
-  REFRESH_TIMEOUT: 5000,  // 5 secondes
+  // Timeouts (plus courts en prod pour une UI réactive)
+  REQUEST_TIMEOUT: isProd ? 8000 : 10000,
+  REFRESH_TIMEOUT: isProd ? 4000 : 5000,
   
-  // Retry configuration
-  MAX_RETRIES: 3,
-  RETRY_DELAY: 1000, // 1 seconde
+  // Retry configuration (moins d'essais en prod pour ne pas bloquer l'UI)
+  MAX_RETRIES: isProd ? 1 : 3,
+  RETRY_DELAY: isProd ? 500 : 1000,
   
   // Logging configuration
   LOGGING: {

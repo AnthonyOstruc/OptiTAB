@@ -17,6 +17,8 @@ from ..serializers.user_profile import UserNotificationSerializer
 from suivis.models import SuiviExercice
 from django.utils import timezone
 from datetime import timedelta
+import logging
+logger = logging.getLogger(__name__)
 import secrets
 import string
 
@@ -97,8 +99,8 @@ class UpdateUserXPView(APIView):
             from suivis.views import calculate_user_level
             level, next_level_xp, xp_to_next = calculate_user_level(new_xp)
             
-            # Log simple dans la console pour le debug
-            print(f"🎮 XP gagnés: {xp_delta} pour {user.email} ({reason})")
+            # Log debug (silencieux en prod)
+            logger.debug(f"XP gagnés: {xp_delta} pour {user.email} ({reason})")
             
             data = {
                 'old_xp': old_xp,

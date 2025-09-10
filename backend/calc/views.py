@@ -1,4 +1,6 @@
 from rest_framework.views import APIView
+import logging
+logger = logging.getLogger(__name__)
 from rest_framework.response import Response
 from .derivative import DerivativeCalculator
 from .integral import IntegralCalculator
@@ -28,9 +30,8 @@ class DerivativeView(APIView):
 
     def _handle_error(self, error):
         """Gère les erreurs de manière centralisée"""
-        print(f"Erreur lors du calcul: {str(error)}")
         import traceback
-        print(f"Traceback: {traceback.format_exc()}")
+        logger.error(f"Erreur lors du calcul: {str(error)}\n{traceback.format_exc()}")
         return Response({'detail': f'Erreur lors du calcul: {str(error)}'}, status=400)
 
 
@@ -58,9 +59,8 @@ class IntegralView(APIView):
 
     def _handle_error(self, error):
         """Gère les erreurs de manière centralisée"""
-        print(f"Erreur lors du calcul: {str(error)}")
         import traceback
-        print(f"Traceback: {traceback.format_exc()}")
+        logger.error(f"Erreur lors du calcul: {str(error)}\n{traceback.format_exc()}")
         return Response({'detail': f'Erreur lors du calcul: {str(error)}'}, status=400)
 
 
@@ -86,9 +86,8 @@ class ExpandView(APIView):
 
     def _handle_error(self, error):
         """Gère les erreurs de manière centralisée"""
-        print(f"Erreur lors du développement: {str(error)}")
         import traceback
-        print(f"Traceback: {traceback.format_exc()}")
+        logger.error(f"Erreur lors du développement: {str(error)}\n{traceback.format_exc()}")
         return Response({'detail': f'Erreur lors du développement: {str(error)}'}, status=400)
 
 
@@ -114,9 +113,8 @@ class FactorView(APIView):
 
     def _handle_error(self, error):
         """Gère les erreurs de manière centralisée"""
-        print(f"Erreur lors de la factorisation: {str(error)}")
         import traceback
-        print(f"Traceback: {traceback.format_exc()}")
+        logger.error(f"Erreur lors de la factorisation: {str(error)}\n{traceback.format_exc()}")
         return Response({'detail': f'Erreur lors de la factorisation: {str(error)}'}, status=400)
 
 
@@ -144,7 +142,6 @@ class LimitView(APIView):
 
     def _handle_error(self, error):
         """Gère les erreurs de manière centralisée"""
-        print(f"Erreur lors du calcul de limite: {str(error)}")
         import traceback
-        print(f"Traceback: {traceback.format_exc()}")
+        logger.error(f"Erreur lors du calcul de limite: {str(error)}\n{traceback.format_exc()}")
         return Response({'detail': f'Erreur lors du calcul de limite: {str(error)}'}, status=400)

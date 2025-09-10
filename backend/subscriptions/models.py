@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+import logging
 import stripe
 from stripe_config import STRIPE_SECRET_KEY
 
 stripe.api_key = STRIPE_SECRET_KEY
+logger = logging.getLogger(__name__)
 
 class SubscriptionPlan(models.Model):
     """Plans d'abonnement disponibles"""
@@ -85,7 +87,7 @@ class UserSubscription(models.Model):
                 self.save()
                 return True
             except stripe.error.StripeError as e:
-                print(f"Erreur lors de l'annulation: {e}")
+                logger.error(f"Erreur lors de l'annulation: {e}")
                 return False
         return False
 

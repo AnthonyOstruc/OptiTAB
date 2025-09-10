@@ -1,5 +1,9 @@
 from sympy import symbols, expand, simplify, latex, Add, Mul, Pow
 from sympy.parsing.latex import parse_latex
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class ExpandCalculator:
@@ -29,7 +33,7 @@ class ExpandCalculator:
 
     def calculate_expansion(self, expr_latex):
         """Calcule le développement avec étapes détaillées"""
-        print(f"Traitement de l'expression: {expr_latex}")
+        logger.debug(f"Traitement de l'expression: {expr_latex}")
         
         # ÉTAPE 1: PARSING DE L'EXPRESSION
         expr = self._parse_expression(expr_latex)
@@ -47,8 +51,7 @@ class ExpandCalculator:
         # ÉTAPE 4: SIMPLIFICATION ET RÉSULTAT FINAL
         final_result = self._calculate_final_result(expr, expr_latex)
 
-        print(f"Résultat final: {final_result}")
-        print(f"Nombre d'étapes: {len(self.steps)}")
+        logger.debug(f"Résultat final: {final_result}; étapes: {len(self.steps)}")
 
         return {'result_latex': final_result, 'steps': self.steps}
 
@@ -56,10 +59,10 @@ class ExpandCalculator:
         """Parse l'expression LaTeX"""
         try:
             expr = parse_latex(expr_latex)
-            print(f"Expression parsée: {expr}")
+            logger.debug(f"Expression parsée: {expr}")
             return expr
         except Exception as parse_error:
-            print(f"Erreur parsing: {parse_error}")
+            logger.error(f"Erreur parsing: {parse_error}")
             raise ValueError(f'Erreur de parsing LaTeX: {str(parse_error)}')
 
     def _identify_expression_type(self, expr):

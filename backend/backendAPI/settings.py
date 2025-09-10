@@ -133,7 +133,7 @@ else:
         DEBUG = True
 
 # ALLOWED_HOSTS : localhost pour dev, domaine Render en prod
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,optitab-backend.onrender.com,*.onrender.com,optitab.net,www.optitab.net").split(",")
 
 # ========================================
 # BASE DE DONNÉES

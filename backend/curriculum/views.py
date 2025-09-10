@@ -15,12 +15,16 @@ import tempfile
 import os
 import base64
 from io import BytesIO
+import logging
 from .models import Matiere, Theme, Notion, Chapitre, Exercice, MatiereContexte, ExerciceImage
 from .serializers import (
     MatiereSerializer, ThemeSerializer, NotionSerializer, 
     ChapitreSerializer, ExerciceSerializer, MatiereContexteSerializer,
     ExerciceImageSerializer
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 class MatiereViewSet(viewsets.ModelViewSet):
@@ -344,11 +348,16 @@ class ThemeViewSet(viewsets.ModelViewSet):
         user_niveau = getattr(user, 'niveau_pays', None)
         matiere_id = request.query_params.get('matiere')
 
-        # Logs de debug pour comprendre le problème de filtrage
-        print(f"DEBUG - User: {user.email}")
-        print(f"DEBUG - User pays: {user_pays} (ID: {getattr(user_pays, 'id', None)})")
-        print(f"DEBUG - User niveau: {user_niveau} (ID: {getattr(user_niveau, 'id', None)})")
-        print(f"DEBUG - Matiere ID: {matiere_id}")
+        # Logs de debug (niveau debug seulement)
+        logger.debug(
+            "Filtrage themes/notions", 
+            extra={
+                'user': getattr(user, 'email', None),
+                'user_pays': getattr(user_pays, 'id', None),
+                'user_niveau': getattr(user_niveau, 'id', None),
+                'matiere_id': matiere_id,
+            }
+        )
 
         # Clé de cache par utilisateur + contexte
         cache_key = f"themes_notions:{user.id}:{matiere_id or 'all'}:{getattr(user_pays, 'id', 'np')}:{getattr(user_niveau, 'id', 'nn')}"

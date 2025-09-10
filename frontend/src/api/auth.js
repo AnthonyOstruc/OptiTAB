@@ -1,45 +1,49 @@
 import apiClient from './client'
 
 /**
- * Register a new user.
- * Expects: { first_name, last_name, email, password, ... }
- * Adjust keys according to your Django serializer.
+ * Register a new user
  */
-export const registerUser = (payload) => apiClient.post('/api/users/register/', payload)
+export const registerUser = (payload) =>
+  apiClient.post('/api/users/register/', payload, { timeout: 20000 })
 
-// Map RegisterModal form fields to backend serializer keys
 export const mapRegisterFormToPayload = (data) => ({
-  first_name: data.firstName,
-  last_name: data.lastName,
-  email: data.email,
+  first_name: data.firstName?.trim(),
+  last_name: data.lastName?.trim(),
+  email: data.email?.trim().toLowerCase(),
   password: data.password,
   password2: data.confirmPassword,
 })
 
 /**
- * Traditional email/password login.
+ * Email/password login
  */
-export const loginUser = (payload) => apiClient.post('/api/users/login/', payload)
+export const loginUser = (payload) =>
+  apiClient.post('/api/users/login/', {
+    email: (payload?.email || '').trim().toLowerCase(),
+    password: payload?.password,
+  }, { timeout: 20000 })
 
 export const mapLoginFormToPayload = (data) => ({
-  email: data.email,
+  email: data.email?.trim().toLowerCase(),
   password: data.password,
 })
 
 /**
- * Vérifie le code de validation envoyé à l'utilisateur.
- * Expects: { email, code }
+ * Verify validation code
  */
-export const verifyUserCode = (payload) => apiClient.post('/api/users/verify-code/', payload)
+export const verifyUserCode = (payload) =>
+  apiClient.post('/api/users/verify-code/', payload, { timeout: 15000 })
 
 /**
- * Déconnecte l'utilisateur en invalidant le refresh token côté backend.
- * Expects: { refresh }
+ * Logout (blacklist refresh token)
  */
-export const logoutUser = (payload) => apiClient.post('/api/users/logout/', payload)
+export const logoutUser = (payload) =>
+  apiClient.post('/api/users/logout/', payload, { timeout: 10000 })
 
 /**
- * Authentification Google One Tap
- * Expects: { access_token } - L'id_token JWT de Google
+ * Google OAuth login (One Tap)
  */
-export const googleLogin = (payload) => apiClient.post('/api/users/auth/google/', payload) 
+export const googleLogin = (payload) =>
+  apiClient.post('/api/users/auth/google/', payload, { timeout: 20000 })
+
+

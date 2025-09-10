@@ -46,22 +46,42 @@
 
       <!-- Panel Footer -->
       <div class="panel-footer">
-        <button class="login-button" @click="handleLoginClick">
+        <!-- Bouton de connexion si non authentifié -->
+        <button 
+          v-if="!isAuthenticated" 
+          class="login-button" 
+          @click="handleLoginClick"
+        >
           <UserIcon class="login-icon" />
           <span>Connexion</span>
         </button>
+        
+        <!-- Informations utilisateur si authentifié -->
+        <div v-else class="user-info">
+          <div class="user-details">
+            <UserIcon class="user-avatar" />
+            <div class="user-text">
+              <div class="user-name">{{ userStore.user?.first_name || 'Utilisateur' }}</div>
+              <div class="user-email">{{ userStore.user?.email }}</div>
+            </div>
+          </div>
+          <button class="logout-button" @click="handleLogout">
+            Déconnexion
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { menuItems } from '@/config/menuItems'
 import { UserIcon } from '@heroicons/vue/24/outline'
 import Logo from '@/components/common/Logo.vue'
 import HamburgerIcon from '@/components/common/HamburgerIcon.vue'
 import CloseIcon from '@/components/common/CloseIcon.vue'
+import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'MobileMenu',
@@ -75,9 +95,11 @@ export default {
   setup(props, { emit }) {
     // State
     const isOpen = ref(false)
+    const userStore = useUserStore()
 
     // Computed
     const navigationItems = menuItems.filter(item => item.key !== 'login')
+    const isAuthenticated = computed(() => userStore.isAuthenticated)
 
     // Methods
     const toggleMenu = () => {
@@ -106,6 +128,15 @@ export default {
       closeMenu()
     }
 
+    const handleLogout = async () => {
+      try {
+        await userStore.logout()
+        closeMenu()
+      } catch (error) {
+        console.error('Erreur lors de la déconnexion:', error)
+      }
+    }
+
     // ESC key handler
     const handleKeydown = (event) => {
       if (event.key === 'Escape' && isOpen.value) {
@@ -125,15 +156,18 @@ export default {
     return {
       // State
       isOpen,
+      userStore,
       
       // Computed
       navigationItems,
+      isAuthenticated,
       
       // Methods
       toggleMenu,
       closeMenu,
       handleNavigationClick,
-      handleLoginClick
+      handleLoginClick,
+      handleLogout
     }
   }
 }
@@ -198,6 +232,7 @@ export default {
   display: flex;
   flex-direction: column;
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden; // Prévenir le débordement du contenu
 
   &.is-open {
     right: 0;
@@ -231,6 +266,7 @@ export default {
   flex: 1;
   padding: 20px 0;
   overflow-y: auto;
+  min-height: 0; // Important pour le flex scrolling
 }
 
 .navigation-item {
@@ -268,6 +304,8 @@ export default {
 .panel-footer {
   padding: 20px;
   border-top: 1px solid #e5e5e5;
+  flex-shrink: 0; // Empêcher le footer de se comprimer
+  background: $white; // S'assurer que le background est visible
 }
 
 .login-button {
@@ -275,8 +313,17 @@ export default {
   @extend .btn-primary;
   width: 100%;
   justify-content: center;
-  padding: 12px 20px;
+  padding: 14px 20px;
   font-size: 16px;
+  font-weight: 600;
+  min-height: 48px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .login-icon {
@@ -284,10 +331,82 @@ export default {
   height: 20px;
 }
 
+// User Info Section
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  color: $primary-color;
+  flex-shrink: 0;
+}
+
+.user-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: $text-color;
+  margin-bottom: 2px;
+}
+
+.user-email {
+  font-size: 12px;
+  color: $text-light;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logout-button {
+  @extend .btn;
+  width: 100%;
+  justify-content: center;
+  padding: 10px 16px;
+  font-size: 14px;
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  
+  &:hover {
+    background: #fef2f2;
+    border-color: #fca5a5;
+  }
+}
+
 // Responsive Design
 @media (max-width: 480px) {
   .mobile-panel {
     width: 100%;
+  }
+
+  .user-details {
+    padding: 10px;
+  }
+
+  .user-name, .user-email {
+    font-size: 13px;
+  }
+
+  .panel-footer {
+    padding: 16px;
   }
 }
 </style> 

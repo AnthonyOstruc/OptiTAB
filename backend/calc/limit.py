@@ -4,6 +4,10 @@ from sympy.parsing.latex import parse_latex
 from sympy.calculus.util import continuous_domain
 from sympy.core.numbers import Integer, Float
 import re
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class LimitCalculator:
@@ -48,8 +52,7 @@ class LimitCalculator:
 
     def calculate_limit(self, expr_latex, limit_point_str=None, direction=None):
         """Calcule la limite avec étapes détaillées"""
-        print(f"Traitement de l'expression: {expr_latex}")
-        print(f"Point limite: {limit_point_str}, Direction: {direction}")
+        logger.debug(f"Traitement de l'expression: {expr_latex}; point: {limit_point_str}; direction: {direction}")
         
         # ETAPE 1: PARSING DE L'EXPRESSION ET DU POINT LIMITE
         expr, var = self._parse_expression(expr_latex)
@@ -73,8 +76,7 @@ class LimitCalculator:
         # ETAPE 5: CALCUL ET RESULTAT FINAL
         final_result = self._calculate_final_result(expr, var)
 
-        print(f"Résultat final: {final_result}")
-        print(f"Nombre d'étapes: {len(self.steps)}")
+        logger.debug(f"Résultat final: {final_result}; étapes: {len(self.steps)}")
 
         return {'result_latex': final_result, 'steps': self.steps}
 
@@ -85,10 +87,10 @@ class LimitCalculator:
             # Identifier la variable principale (généralement x)
             variables = list(expr.free_symbols)
             var = variables[0] if variables else symbols('x')
-            print(f"Expression parsée: {expr}, Variable: {var}")
+            logger.debug(f"Expression parsée: {expr}, Variable: {var}")
             return expr, var
         except Exception as parse_error:
-            print(f"Erreur parsing: {parse_error}")
+            logger.error(f"Erreur parsing: {parse_error}")
             raise ValueError(f'Erreur de parsing LaTeX: {str(parse_error)}')
 
     def _parse_limit_point(self, limit_point_str):
@@ -539,7 +541,7 @@ class LimitCalculator:
                 return latex(simplified_result)
                 
         except Exception as e:
-            print(f"Erreur calcul limite: {e}")
+            logger.error(f"Erreur calcul limite: {e}")
             self.steps.append(self._create_step(
                 "Erreur de calcul :",
                 "Une erreur s'est produite lors du calcul de la limite"

@@ -24,7 +24,11 @@ export default defineConfig(({ mode }) => ({
     historyApiFallback: true,
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || 'http://localhost:8000',
+        // Par défaut en dev, on cible le backend local.
+        // Pour utiliser le backend distant en dev, exportez VITE_USE_REMOTE_IN_DEV=true
+        target: process.env.VITE_USE_REMOTE_IN_DEV === 'true'
+          ? (process.env.VITE_API_URL || 'https://optitab-backend.onrender.com')
+          : 'http://localhost:8000',
         changeOrigin: true,
         secure: false,
       }

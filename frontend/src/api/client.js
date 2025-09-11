@@ -10,10 +10,31 @@ import { useUserStore } from '@/stores/user'
 function resolveBaseUrl() {
   const isDev = import.meta.env.DEV || import.meta.env.MODE === 'development'
   let raw = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '').trim()
+  const useRemoteInDev = (import.meta.env.VITE_USE_REMOTE_IN_DEV === 'true') || (import.meta.env.VITE_FORCE_REMOTE === 'true')
 
-  // En dev, si aucune base n'est fournie, utiliser les URLs relatives pour passer par le proxy Vite
+  // En développement, privilégier le backend local/par proxy
+  if (isDev) {
+    // Si un BASE_URL local est fourni, on l'utilise explicitement (permet d'afficher 127.0.0.1:8000 dans Network)
+    if (/^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?/i.test(raw)) {
+      // Éviter HTTPS vers localhost/127.0.0.1
+      raw = raw.replace(/^https:/i, 'http:')
+      return raw.replace(/\/+$/, '')
+    }
+
+    // Si aucune base n'est fournie, utiliser le proxy Vite via URL relative
+    if (!raw) {
+      return ''
+    }
+
+    // Si une base distante est fournie mais qu'on ne force pas le remote en dev, utiliser le proxy
+    if (!useRemoteInDev) {
+      return ''
+    }
+    // Sinon, on utilisera la base distante fournie (ex: tests spécifiques)
+  }
+
+  // En production: si aucune base n'est fournie, fallback Render
   if (!raw) {
-    // Fallback global: utiliser le backend Render si aucun env n'est défini
     return 'https://optitab-backend.onrender.com'
   }
 

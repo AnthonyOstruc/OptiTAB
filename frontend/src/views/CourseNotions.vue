@@ -50,7 +50,7 @@ function goBackToDashboard() {
 
 <style scoped>
 .course-notions-page {
-  background: #f8fafc;
+  background: #ffffff;
   min-height: 100vh;
   padding: 0;
 }
@@ -173,11 +173,11 @@ function goBackToDashboard() {
 }
 
 .theme-section {
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
 }
 
 /* Theme Headers */

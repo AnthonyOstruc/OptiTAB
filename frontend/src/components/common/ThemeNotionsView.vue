@@ -246,12 +246,12 @@ watch(() => props.matiereId, (id) => load(id))
 
 /* Blocs de thèmes */
 .tnv-theme-block {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 2rem;
+  background: transparent;
+  border-radius: 0;
+  padding: 2rem 0;
   margin-bottom: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  box-shadow: none;
+  border: none;
 }
 
 .tnv-theme-header {

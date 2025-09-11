@@ -724,6 +724,66 @@ export const apiUtils = {
   },
   
   /**
+   * Requête GET avec cache mémoire (TTL) + déduplication en vol
+   * - key: facultatif, sinon basé sur url+params+user contexte
+   * - ttl: durée en ms (défaut 5 minutes)
+   */
+  async cachedGet(url, { params = {}, ttl = 300000, signal } = {}) {
+    // Stable stringify des params
+    const stableStringify = (obj) => {
+      if (!obj) return ''
+      const keys = Object.keys(obj).sort()
+      const entries = keys.map(k => `${encodeURIComponent(k)}=${encodeURIComponent(obj[k] ?? '')}`)
+      return entries.join('&')
+    }
+
+    // Contexte utilisateur minimal pour discriminer le cache
+    let niveauId = 'n'
+    let paysId = 'p'
+    try {
+      const userStore = useUserStore()
+      niveauId = userStore?.niveau_pays?.id ?? 'n'
+      paysId = userStore?.pays?.id ?? 'p'
+    } catch (_) {}
+
+    const accessToken = (typeof localStorage !== 'undefined' && localStorage.getItem('access_token')) || ''
+    const tokenKey = accessToken ? accessToken.slice(0, 12) : 'anon'
+
+    const cacheKey = `GET|${url}|${stableStringify(params)}|${niveauId}|${paysId}|${tokenKey}`
+
+    // Maps de cache et de requêtes en vol (sur module scope unique)
+    if (!window.__API_RESPONSE_CACHE__) {
+      window.__API_RESPONSE_CACHE__ = new Map()
+    }
+    if (!window.__API_INFLIGHT__) {
+      window.__API_INFLIGHT__ = new Map()
+    }
+
+    const now = Date.now()
+    const cached = window.__API_RESPONSE_CACHE__.get(cacheKey)
+    if (cached && (now - cached.t) < ttl) {
+      return cached.r
+    }
+
+    // Déduplication: si une requête identique est en cours, la réutiliser
+    if (window.__API_INFLIGHT__.has(cacheKey)) {
+      return window.__API_INFLIGHT__.get(cacheKey)
+    }
+
+    const reqPromise = apiClient.get(url, { params, signal }).then((resp) => {
+      window.__API_RESPONSE_CACHE__.set(cacheKey, { t: Date.now(), r: resp })
+      window.__API_INFLIGHT__.delete(cacheKey)
+      return resp
+    }).catch((err) => {
+      window.__API_INFLIGHT__.delete(cacheKey)
+      throw err
+    })
+
+    window.__API_INFLIGHT__.set(cacheKey, reqPromise)
+    return reqPromise
+  },
+  
+  /**
    * Vérifie si l'utilisateur est authentifié
    */
   isAuthenticated() {

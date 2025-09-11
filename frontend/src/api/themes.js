@@ -20,20 +20,23 @@ export const getThemes = (params = {}) => client.get('/api/themes/', { params })
 // Récupérer en une requête les thèmes + notions filtrés pour l'utilisateur courant
 // Fallback public si non authentifié ou 401: combine /api/themes/ et /api/notions/
 export const getThemesWithNotionsForUser = async (params = {}) => {
+  // Extraire un éventuel signal (AbortController) du params
+  const { signal, ...query } = params || {}
   const isAuth = apiUtils.isAuthenticated()
   if (isAuth) {
     try {
-      return await client.get('/api/themes/notions-pour-utilisateur/', { params })
+      // Utiliser le cache GET pour réduire les délais perçus
+      return await apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: query, ttl: 120000, signal })
     } catch (error) {
       if (error?.response?.status !== 401) throw error
       // 401 -> fallback public
     }
   }
   // Public fallback: retourne la même forme { data: { themes, notions } }
-  const matiere = params?.matiere
+  const matiere = query?.matiere
   const [themesRes, notionsRes] = await Promise.all([
-    client.get('/api/themes/', { params: { matiere } }),
-    client.get('/api/notions/', { params: { matiere } })
+    apiUtils.cachedGet('/api/themes/', { params: { matiere }, ttl: 120000, signal }),
+    apiUtils.cachedGet('/api/notions/', { params: { matiere }, ttl: 120000, signal })
   ])
   return { data: { themes: themesRes?.data || [], notions: notionsRes?.data || [] } }
 }

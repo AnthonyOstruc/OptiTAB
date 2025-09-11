@@ -1,8 +1,8 @@
 <template>
   <DashboardLayout>
-    <div class="course-notions-page">
+    <div class="notions-page-base">
       <!-- Navigation Header -->
-      <div class="nav-header">
+      <div class="nav-header-base">
         <BackButton 
           text="Retour au dashboard" 
           :customAction="goBackToDashboard"
@@ -13,7 +13,7 @@
       
 
       <!-- Main Content -->
-      <div class="main-content">
+      <div class="main-content-base">
         <div class="notions-container">
           <ThemeNotionsView :matiere-id="currentMatiereId" :notion-route-name="'CourseChapitres'" />
         </div>
@@ -48,18 +48,21 @@ function goBackToDashboard() {
 }
 </script>
 
+<style src="@/styles/notions-layout.css"></style>
+
 <style scoped>
 .course-notions-page {
   background: #ffffff;
   min-height: 100vh;
+  /* reset local paddings to rely solely on DashboardLayout spacing */
   padding: 0;
 }
 
 /* Navigation Header */
 .nav-header {
-  padding: 1rem 2rem;
+  /* no extra padding; use layout's own padding */
+  padding: 0 0 1rem 0;
   background: white;
-  border-bottom: 1px solid #e2e8f0;
 }
 
 /* Page Title */
@@ -79,9 +82,10 @@ function goBackToDashboard() {
 
 /* Main Content */
 .main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
 /* Loading State */
@@ -163,6 +167,27 @@ function goBackToDashboard() {
 /* Notions Container */
 .notions-container {
   width: 100%;
+}
+
+/* Overrides internes pour ThemeNotionsView afin d'aligner tout à gauche */
+:deep(.tnv-wrapper) {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+}
+
+:deep(.tnv-themes) {
+  margin: 0;
+}
+
+:deep(.tnv-theme-block) {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+:deep(.tnv-notions-grid) {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* Themes Layout */

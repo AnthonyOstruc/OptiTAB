@@ -106,6 +106,7 @@ import { useRouter } from 'vue-router'
 import { logoutUser } from '@/api'
 import { getInitials } from '@/utils'
 import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { apiUtils } from '@/api/client'
 
 import { AcademicCapIcon, LightBulbIcon, BookOpenIcon, PencilSquareIcon, PlusCircleIcon, DocumentTextIcon, QuestionMarkCircleIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
 import { useRoute } from 'vue-router'
@@ -167,6 +168,8 @@ async function handleSidebarClick(item) {
     if (item.key === 'exercices') {
       if (activeId) {
         router.push({ name: 'Themes', params: { matiereId: String(activeId) } })
+        // Prefetch discret: thèmes + notions pour accélérer la page suivante
+        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 120000 }) } catch (_) {}
       } else {
         router.push({ name: 'Exercises' })
       }
@@ -179,12 +182,14 @@ async function handleSidebarClick(item) {
     } else if (item.key === 'quiz') {
       if (activeId) {
         router.push({ name: 'QuizNotions', params: { matiereId: String(activeId) } })
+        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 120000 }) } catch (_) {}
       } else {
         router.push({ name: 'Quiz' })
       }
     } else if (item.key === 'cours') {
       if (activeId) {
         router.push({ name: 'CourseNotions', params: { matiereId: String(activeId) } })
+        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 120000 }) } catch (_) {}
       } else {
         router.push({ name: 'OnlineCourses' })
       }
@@ -207,7 +212,7 @@ let resizeObserver = null
 
 // Fonction pour détecter si l'écran est petit
 const isSmallScreen = () => {
-  return window.innerWidth < 1024 // Breakpoint pour plier automatiquement
+  return window.innerWidth < 900 // Breakpoint pour plier automatiquement
 }
 
 // Fonction pour gérer le redimensionnement de la fenêtre avec debouncing
@@ -538,7 +543,7 @@ defineExpose({
 }
 
 /* Styles responsives pour le sidebar */
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .sidebar {
     /* Assurer que le sidebar reste accessible sur tablette */
     z-index: 1000;

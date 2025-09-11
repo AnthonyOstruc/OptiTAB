@@ -149,14 +149,15 @@ function onSubjectClick(matiere) {
 <style scoped>
 .exercises-section {
   background: #fff;
-  padding: 0 5vw 40px 5vw;
-  text-align: center;
+  /* align with dashboard content left gutter */
+  padding: 0.5rem 2vw 2rem 0;
+  text-align: left;
 }
 
 .exercises-title {
-  font-size: 2rem;
+  font-size: 1.75rem;
   color: #193e8e;
-  margin-bottom: 20px;
+  margin: 0 0 12px 0.25rem;
   font-weight: 800;
 }
 

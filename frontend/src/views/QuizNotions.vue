@@ -1,8 +1,8 @@
 <template>
   <DashboardLayout>
-    <div class="quiz-notions-page">
+    <div class="notions-page-base">
       <!-- Navigation Header -->
-      <div class="nav-header">
+      <div class="nav-header-base">
         <BackButton 
           text="Retour au dashboard" 
           :customAction="goBackToMatieres"
@@ -13,7 +13,7 @@
       
 
       <!-- Main Content -->
-      <div class="main-content">
+      <div class="main-content-base">
         <div v-if="loading" class="loading-state">
           <div class="loading-spinner"></div>
           <p>Chargement...</p>
@@ -63,40 +63,6 @@ function onNotionClick(notionId) {
 </script>
 
 <style scoped>
-.quiz-notions-page {
-  background: #ffffff;
-  min-height: 100vh;
-  padding: 0;
-}
-
-/* Navigation Header */
-.nav-header {
-  padding: 1rem 2rem;
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-/* Page Title */
-.page-title {
-  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-  padding: 2rem 2rem 1rem 2rem;
-  color: white;
-}
-
-.page-title h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: white;
-  margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Main Content */
-.main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
 
 /* Loading State */
 .loading-state {
@@ -309,22 +275,6 @@ function onNotionClick(notionId) {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .nav-header {
-    padding: 1rem;
-  }
-  
-  .page-title {
-    padding: 1.5rem 1rem 1rem 1rem;
-  }
-  
-  .page-title h1 {
-    font-size: 1.5rem;
-  }
-  
-  .main-content {
-    padding: 1rem;
-  }
-  
   .theme-header {
     padding: 1rem;
   }
@@ -356,4 +306,5 @@ function onNotionClick(notionId) {
     font-size: 0.9rem;
   }
 }
-</style> 
+</style>
+<style src="@/styles/notions-layout.css"></style> 

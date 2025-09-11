@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { getNotionsPourUtilisateur } from '@/api'
@@ -136,6 +136,8 @@ function cacheKey(matiereId) {
   return `${matiereId}|${niveauId}|${paysId}`
 }
 
+let currentAbortController = null
+
 async function load(matiereId) {
   if (!matiereId) return
   error.value = ''
@@ -152,7 +154,12 @@ async function load(matiereId) {
   }
 
   try {
-    const { data } = await getThemesWithNotionsForUser({ matiere: matiereId })
+    // Annuler l'appel précédent si toujours en vol
+    if (currentAbortController) {
+      try { currentAbortController.abort() } catch (_) {}
+    }
+    currentAbortController = new AbortController()
+    const { data } = await getThemesWithNotionsForUser({ matiere: matiereId, signal: currentAbortController.signal })
     const themesList = Array.isArray(data?.themes) ? data.themes : []
     const notions = Array.isArray(data?.notions) ? data.notions : []
 
@@ -170,6 +177,10 @@ async function load(matiereId) {
     cache.set(key, { t: Date.now(), v: cachePayload })
     writeToStorage(matiereId, cachePayload)
   } catch (e) {
+    if (e?.name === 'CanceledError' || e?.name === 'AbortError') {
+      // navigation rapide: ignorer l'erreur annulée
+      return
+    }
     error.value = 'Erreur lors du chargement des concepts'
   } finally {
     loading.value = false
@@ -178,12 +189,20 @@ async function load(matiereId) {
 
 onMounted(() => load(props.matiereId))
 watch(() => props.matiereId, (id) => load(id))
+
+onBeforeUnmount(() => {
+  if (currentAbortController) {
+    try { currentAbortController.abort() } catch (_) {}
+  }
+})
 </script>
 
 <style scoped>
 .tnv-wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  /* left align content within dashboard main */
+  margin: 0;
 }
 
 /* États de chargement et d'erreur */
@@ -248,18 +267,23 @@ watch(() => props.matiereId, (id) => load(id))
 .tnv-theme-block {
   background: transparent;
   border-radius: 0;
-  padding: 2rem 0;
-  margin-bottom: 2rem;
+  padding: 1rem 0;
+  margin-bottom: 1.25rem;
   box-shadow: none;
   border: none;
 }
 
+.tnv-theme-block:first-child {
+  padding-top: 0.5rem;
+}
+
 .tnv-theme-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid #f3f4f6;
 }
 
@@ -282,8 +306,10 @@ watch(() => props.matiereId, (id) => load(id))
 /* Grille des notions - EXACTEMENT 4 CARTES PAR LIGNE */
 .tnv-notions-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  /* 4 colonnes fixes, espace constant, alignées à gauche */
+  grid-template-columns: repeat(4, 280px);
+  gap: 1rem;
+  justify-content: start;
   align-items: start;
 }
 
@@ -344,17 +370,19 @@ watch(() => props.matiereId, (id) => load(id))
 }
 
 /* Responsive - ADAPTATION POUR 4 CARTES PAR LIGNE */
-@media (max-width: 1200px) {
+@media (max-width: 1500px) {
   .tnv-notions-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: repeat(3, 280px);
+    gap: 1rem;
+    justify-content: start;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .tnv-notions-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 280px);
     gap: 1rem;
+    justify-content: start;
   }
   
   .tnv-theme-block {
@@ -362,42 +390,28 @@ watch(() => props.matiereId, (id) => load(id))
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 680px) {
   .tnv-notions-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .tnv-theme-block {
     padding: 1.25rem;
     margin-bottom: 1.5rem;
   }
-  
+
   .tnv-theme-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
-  
+
   .tnv-theme-title {
     font-size: 1.25rem;
   }
 }
 
-@media (max-width: 480px) {
-  .tnv-theme-block {
-    padding: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .tnv-theme-title {
-    font-size: 1.125rem;
-  }
-  
-  .tnv-fallback {
-    padding: 1.5rem;
-  }
-}
 </style>
 
 

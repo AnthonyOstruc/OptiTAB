@@ -36,8 +36,8 @@ defineProps({
 <style scoped>
 .notion-card {
   width: 100%;
-  max-width: 240px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
 }
 
 .notion-card-inner {
@@ -106,62 +106,5 @@ defineProps({
   color: #6b7280;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .notion-card {
-    max-width: 220px;
-  }
-  
-  .notion-card-inner {
-    padding: 0.875rem;
-  }
-  
-  .notion-icon {
-    width: 32px;
-    height: 32px;
-    margin-bottom: 0.625rem;
-  }
-  
-  .notion-title {
-    font-size: 0.8rem;
-  }
-  
-  .notion-description {
-    font-size: 0.7rem;
-  }
-  
-  .notion-arrow {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .notion-card {
-    max-width: 200px;
-  }
-  
-  .notion-card-inner {
-    padding: 0.75rem;
-  }
-  
-  .notion-icon {
-    width: 28px;
-    height: 28px;
-    margin-bottom: 0.5rem;
-  }
-  
-  .notion-title {
-    font-size: 0.75rem;
-  }
-  
-  .notion-description {
-    font-size: 0.65rem;
-  }
-  
-  .notion-arrow {
-    width: 18px;
-    height: 18px;
-  }
-}
+/* Responsive - Désactivé pour conserver le style normal */
 </style> 

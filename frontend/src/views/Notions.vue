@@ -261,12 +261,13 @@ function onNotionClick(notionId) {
 .notions-page {
   background: #f8fafc;
   min-height: 100vh;
-  padding: 0;
+  /* reduce default offsets to align with other pages */
+  padding: 0.5rem 2vw 2rem 0;
 }
 
 /* Navigation Header */
 .nav-header {
-  padding: 1rem 2rem;
+  padding: 0.75rem 1rem 0.75rem 0;
   background: white;
   border-bottom: 1px solid #e2e8f0;
 }
@@ -288,9 +289,10 @@ function onNotionClick(notionId) {
 
 /* Main Content */
 .main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
 /* Loading State */

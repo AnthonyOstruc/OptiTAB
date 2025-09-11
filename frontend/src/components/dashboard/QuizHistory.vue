@@ -243,7 +243,7 @@ const selectedMastery = ref('all')
 
 // Pagination
 const currentPage = ref(1)
-const itemsPerPage = 12
+const itemsPerPage = 6
 
 // État d'expansion des détails
 const expandedQuizzes = ref(new Set())

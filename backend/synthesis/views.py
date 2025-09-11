@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
-from core.views import AdminRequiredMixin
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import SynthesisSheet
 from .serializers import (
     SynthesisSheetSerializer, 
@@ -11,12 +11,29 @@ from .serializers import (
 )
 
 
-class SynthesisSheetViewSet(AdminRequiredMixin, viewsets.ModelViewSet):
+class SynthesisSheetViewSet(viewsets.ModelViewSet):
     """
-    ViewSet pour la gestion des fiches de synthèse
-    Réservé aux administrateurs
+    ViewSet pour la gestion des fiches de synthèse.
+    - Lecture (list/retrieve) accessible aux utilisateurs authentifiés
+    - Écriture (create/update/delete/duplicate/preview_data) réservée aux administrateurs
     """
     queryset = SynthesisSheet.objects.all()
+
+    def get_permissions(self):
+        # Autoriser tous les utilisateurs authentifiés à lire
+        if self.action in ["list", "retrieve"]:
+            return [IsAuthenticated()]
+        # Toutes les autres actions (écriture) sont réservées aux admins
+        if self.action in [
+            "create",
+            "update",
+            "partial_update",
+            "destroy",
+            "duplicate",
+            "preview_data",
+        ]:
+            return [IsAdminUser()]
+        return super().get_permissions()
     
     def get_serializer_class(self):
         if self.action == 'list':

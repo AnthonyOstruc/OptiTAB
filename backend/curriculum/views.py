@@ -292,7 +292,7 @@ class ThemeViewSet(viewsets.ModelViewSet):
         queryset = queryset.filter(est_actif=True).annotate(
             notion_count=models.Count('notions', filter=models.Q(notions__est_actif=True), distinct=True)
         )
-        return queryset
+        return queryset.order_by('ordre', 'titre')
     
     @action(detail=False, methods=['get'], url_path='pour-utilisateur')
     def pour_utilisateur(self, request):
@@ -328,8 +328,8 @@ class ThemeViewSet(viewsets.ModelViewSet):
         # Annoter le nombre de notions pour chaque thème
         queryset = queryset.annotate(
             notion_count=models.Count('notions', filter=models.Q(notions__est_actif=True), distinct=True)
-        )
-        serializer = ThemeSerializer(queryset, many=True)
+        ).order_by('ordre', 'titre')
+        serializer = ThemeSerializer(queryset.order_by('ordre', 'titre'), many=True)
         return Response(serializer.data)
 
     @action(detail=False, methods=['get'], url_path='notions-pour-utilisateur')
@@ -385,7 +385,7 @@ class ThemeViewSet(viewsets.ModelViewSet):
         # Annoter le nombre de notions actives
         themes_qs = themes_qs.annotate(
             notion_count=models.Count('notions', filter=models.Q(notions__est_actif=True), distinct=True)
-        )
+        ).order_by('ordre', 'titre')
 
         # Notions pour ces thèmes (une seule requête)
         theme_ids = list(themes_qs.values_list('id', flat=True))
@@ -396,7 +396,7 @@ class ThemeViewSet(viewsets.ModelViewSet):
         )
 
         data = {
-            'themes': ThemeSerializer(themes_qs, many=True).data,
+            'themes': ThemeSerializer(themes_qs.order_by('ordre', 'titre'), many=True).data,
             'notions': NotionSerializer(notions_qs, many=True).data,
         }
 

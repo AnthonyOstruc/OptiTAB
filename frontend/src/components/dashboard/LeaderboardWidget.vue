@@ -49,8 +49,9 @@
               <div class="avatar">{{ initials(u.display_name) }}</div>
               <div class="info">
                 <div class="name">
-                  <span v-if="u.pays_flag" class="flag">{{ u.pays_flag }}</span>
-                  {{ u.display_name }}
+                  <span v-if="u.pays_flag" class="flag name-flag">{{ u.pays_flag }}</span>
+                  <span class="first-name">{{ parseName(u.display_name).firstName }}</span>
+                  <span class="last-name">{{ parseName(u.display_name).lastName }}</span>
                 </div>
                 <div class="meta" v-if="u.niveau">{{ u.niveau }}</div>
               </div>
@@ -74,8 +75,9 @@
                 <div class="avatar">{{ initials(u.display_name) }}</div>
                 <div class="info">
                   <div class="name">
-                    <span v-if="u.pays_flag" class="flag">{{ u.pays_flag }}</span>
-                    {{ u.display_name }}
+                    <span v-if="u.pays_flag" class="flag name-flag">{{ u.pays_flag }}</span>
+                    <span class="first-name">{{ parseName(u.display_name).firstName }}</span>
+                    <span class="last-name">{{ parseName(u.display_name).lastName }}</span>
                   </div>
                   <div class="meta" v-if="u.niveau">{{ u.niveau }}</div>
                 </div>
@@ -86,18 +88,18 @@
         </div>
       </div>
 
-      <!-- Bouton Voir plus -->
+      <!-- Bouton Voir plus toujours visible (désactivé si rien à étendre) -->
       <div class="leaderboard-actions" v-if="allLeaderboard.length > 0">
         <button 
-          v-if="!isExpanded && allLeaderboard.length > 5" 
+          v-if="!isExpanded" 
           @click="loadMore" 
           class="btn-see-more"
-          :disabled="loading"
+          :disabled="loading || allLeaderboard.length <= 5"
         >
           <span class="btn-text">Voir plus</span>
         </button>
         <button 
-          v-else-if="isExpanded" 
+          v-else 
           @click="loadLess" 
           class="btn-see-less"
         >
@@ -144,6 +146,16 @@ function initials(name) {
   const parts = String(name).trim().split(/\s+/)
   if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase()
   return (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase()
+}
+
+// Découpe un nom "Prénom Nom" pour pouvoir masquer dynamiquement
+function parseName(name) {
+  const raw = String(name || '').trim()
+  if (!raw) return { firstName: '', lastName: '' }
+  const parts = raw.split(/\s+/)
+  const firstName = parts[0] || ''
+  const lastName = parts.slice(1).join(' ') || ''
+  return { firstName, lastName }
 }
 
 async function load() {
@@ -202,12 +214,17 @@ onMounted(() => load())
   font-size: 1.1rem;
   font-weight: 800;
   color: #1f2937;
+  white-space: nowrap;
+  hyphens: manual;
 }
 .leaderboard-tabs {
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   background: #f3f4f6;
   border-radius: 8px;
   padding: 2px;
+  gap: 8px;
+  align-items: center;
 }
 .tab {
   background: transparent;
@@ -217,6 +234,9 @@ onMounted(() => load())
   font-weight: 600;
   color: #475569;
   cursor: pointer;
+  white-space: nowrap; /* éviter "Glo-bal" ou "Ni-veau" */
+  hyphens: manual;
+  text-align: center;
 }
 .tab.active { background: #fff; color: #111827; box-shadow: 0 1px 2px rgba(0, 0, 0, .06); }
 .tab:disabled { opacity: .5; cursor: not-allowed; }
@@ -235,6 +255,7 @@ onMounted(() => load())
   padding-right: 0.5rem;
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 #f1f5f9;
+  -webkit-overflow-scrolling: touch;
 }
 
 .leaderboard-content::-webkit-scrollbar {
@@ -265,7 +286,7 @@ onMounted(() => load())
 .me-percent { color: #16a34a; font-weight: 700; font-size: .9rem; }
 
 .leaderboard-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .5rem; }
-.leaderboard-item { display: grid; grid-template-columns: 70px 1fr auto; align-items: center; gap: .75rem; padding: .55rem .75rem; border: 1px solid #e5e7eb; border-radius: 10px; }
+.leaderboard-item { display: grid; grid-template-columns: 70px 1fr max-content; align-items: center; gap: .75rem; padding: .55rem .75rem; border: 1px solid #e5e7eb; border-radius: 10px; }
 .rank { font-weight: 800; color: #475569; text-align: center; }
 .trophy { font-size: 1.25rem; }
 .trophy.gold { filter: saturate(1.1); }
@@ -274,9 +295,13 @@ onMounted(() => load())
 .user { display: flex; align-items: center; gap: .6rem; }
 .avatar { width: 34px; height: 34px; border-radius: 50%; background: #eef2ff; color: #4f46e5; display:flex; align-items:center; justify-content:center; font-weight: 800; }
 .info .name { font-weight: 700; color: #111827; display:flex; align-items:center; gap:.4rem; }
+.info .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.info .name .first-name, .info .name .last-name { white-space: nowrap; }
+.info .name .last-name { font-weight: 600; color:#1f2937; }
+.name-flag { flex-shrink: 0; }
 .info .meta { color: #64748b; font-size: .85rem; }
 .flag { font-size: 1.1rem; }
-.xp { font-weight: 800; color: #2563eb; }
+.xp { font-weight: 800; color: #2563eb; white-space: nowrap; min-width: max-content; }
 
 .empty-state { text-align: center; color: #64748b; padding: .75rem; }
 
@@ -398,9 +423,48 @@ onMounted(() => load())
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 @media (max-width: 520px) {
-  .leaderboard-item {
-    grid-template-columns: 52px 1fr auto;
+  .leaderboard-header { flex-wrap: wrap; row-gap: .5rem; }
+  .leaderboard-title { flex: 1 1 100%; }
+  /* Groupe de filtres centré et espacé uniformément */
+  .leaderboard-tabs { 
+    width: 100%; 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px; 
+    margin: 0 auto; 
+    justify-items: stretch; 
+    align-items: center; 
   }
+  .tab { font-size: .9rem; padding: .35rem .55rem; text-align: center; }
+  .leaderboard-item {
+    grid-template-columns: 52px 1fr max-content;
+  }
+}
+
+/* Sur mobile/tablettes: éviter un scroll interne qui bloque le scroll de page */
+@media (max-width: 1000px) {
+  .leaderboard-card { height: auto; }
+  .leaderboard-content { overflow-y: visible; padding-right: 0; }
+}
+
+/* Casse progressive pour éviter toute 2e ligne */
+@media (max-width: 1000px) {
+  .leaderboard-item .info .name { font-size: 0.95rem; }
+}
+
+@media (max-width: 900px) {
+  /* Cache le pays si l'espace est limité */
+  .leaderboard-item .info .name .name-flag { display: none; }
+}
+
+@media (max-width: 820px) {
+  /* Réduit la taille du nom */
+  .leaderboard-item .info .name { font-size: 0.9rem; }
+}
+
+@media (max-width: 760px) {
+  /* Cache le nom de famille pour garder une seule ligne */
+  .leaderboard-item .info .name .last-name { display: none; }
 }
 </style>
 

@@ -171,13 +171,11 @@ onMounted(() => {
   border-radius: 16px; 
   padding: 1.5rem; 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  transition: none;
 }
 
-.xp-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
+/* Désactive tout effet au survol pour éviter le "mouvement" ou l'ombre plus foncée */
+.xp-card:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
 
 .xp-header { 
   display: flex; 
@@ -340,7 +338,6 @@ onMounted(() => {
 .streak-xp-display:hover {
   background: #fde68a;
   border-color: #f59e0b;
-  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
 }
 
@@ -414,6 +411,20 @@ onMounted(() => {
 }
 
 /* Responsive */
+@media (max-width: 1200px) {
+  /* Masque le sous-titre du streak (ex: "12 jours - Vous êtes régulier !") */
+  .streak-subtitle {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  /* Masque le bloc couronne +5 XP à droite */
+  .streak-xp-display {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .xp-card {
     padding: 1rem;

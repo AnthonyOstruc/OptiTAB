@@ -296,12 +296,14 @@ onMounted(async () => {
 /* Activity */
 
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .leaderboard-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+}
+
+@media (max-width: 768px) {
   .quick-grid { grid-template-columns: 1fr; }
 }
 </style>

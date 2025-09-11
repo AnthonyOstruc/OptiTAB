@@ -161,6 +161,15 @@ async function load(matiereId) {
     currentAbortController = new AbortController()
     const { data } = await getThemesWithNotionsForUser({ matiere: matiereId, signal: currentAbortController.signal })
     const themesList = Array.isArray(data?.themes) ? data.themes : []
+    // Tri de secours côté client par ordre puis nom/titre
+    const sortedThemes = [...themesList].sort((a, b) => {
+      const ao = Number(a?.ordre ?? 0)
+      const bo = Number(b?.ordre ?? 0)
+      if (ao !== bo) return ao - bo
+      const an = (a?.nom ?? a?.titre ?? '').toString()
+      const bn = (b?.nom ?? b?.titre ?? '').toString()
+      return an.localeCompare(bn)
+    })
     const notions = Array.isArray(data?.notions) ? data.notions : []
 
     const grouped = {}
@@ -169,7 +178,7 @@ async function load(matiereId) {
       grouped[n.theme].push(n)
     }
 
-    themes.value = themesList
+    themes.value = sortedThemes
     themeToNotions.value = grouped
     directNotions.value = themesList.length === 0 ? notions.filter(n => !n.theme) : []
 

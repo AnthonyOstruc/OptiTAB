@@ -7,7 +7,7 @@
     api-endpoint="/api/suivis/exercices/stats/"
     :custom-filters="masteryFilters"
     :navigation-handler="navigateToExercice"
-    :items-per-page="12"
+    :items-per-page="6"
     :filtered-items="filteredExercicesList"
     @data-loaded="onDataLoaded"
     @filter-changed="onFilterChanged"

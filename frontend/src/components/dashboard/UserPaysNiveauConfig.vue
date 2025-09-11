@@ -4,6 +4,7 @@
     <PaysNiveauDisplayCard 
       :user-pays="userPays" 
       :user-niveau="userNiveau" 
+      :user-role="userRole"
       @edit="showConfigModal = true" 
     />
     
@@ -17,11 +18,13 @@
       :selected-niveau-id="selectedNiveauId"
       :user-pays="userPays"
       :user-niveau="userNiveau"
+      :selected-role="selectedRole"
       :current-step="currentStep"
       :can-save="canSave"
       :saving="saving"
       @select-pays="selectPays"
       @select-niveau="selectNiveau"
+      @select-role="selectRole"
       @save="saveConfiguration"
       @prefetch-niveaux="prefetchNiveauxForPays"
     />
@@ -41,6 +44,7 @@ const {
   niveauxList,
   selectedPaysId,
   selectedNiveauId,
+  selectedRole,
   saving,
   showConfigModal,
   currentStep,
@@ -49,6 +53,7 @@ const {
   // Computed
   userPays,
   userNiveau,
+  userRole,
   filteredNiveaux,
   canSave,
   
@@ -56,6 +61,7 @@ const {
   loadData,
   selectPays,
   selectNiveau,
+  selectRole,
   saveConfiguration,
   prefetchNiveauxForPays
 } = usePaysNiveauConfig()

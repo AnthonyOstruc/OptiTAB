@@ -47,19 +47,23 @@
               <label for="civilite">Civilité</label>
               <select id="civilite" v-model="profileData.civilite" class="form-select">
                 <option value="">Sélectionnez...</option>
-                <option value="Monsieur">Monsieur</option>
-                <option value="Madame">Madame</option>
-                <option value="Autre">Autre</option>
+                <option value="M">Monsieur</option>
+                <option value="Mme">Madame</option>
               </select>
             </div>
             <div class="form-group">
               <label for="date_naissance">Date de naissance</label>
-              <input 
-                id="date_naissance"
+              <VueDatePicker
                 v-model="profileData.date_naissance"
-                type="date" 
-                class="form-input"
-              >
+                model-type="yyyy-MM-dd"
+                :enable-time-picker="false"
+                :week-start="1"
+                locale="fr"
+                :max-date="new Date()"
+                input-class-name="form-input"
+                :teleport="true"
+                placeholder="jj/mm/aaaa"
+              />
             </div>
           </div>
 
@@ -152,12 +156,15 @@ import { useToast } from '@/composables/useToast'
 import PaysSelector from '@/components/user/PaysSelector.vue'
 import NiveauSelector from '@/components/user/NiveauSelector.vue'
 import { updateUserProfile } from '@/api/users.js'
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
   name: 'UserPreferences',
   components: {
     PaysSelector,
-    NiveauSelector
+    NiveauSelector,
+    VueDatePicker
   },
   setup() {
     const userStore = useUserStore()
@@ -176,7 +183,9 @@ export default {
       if (userStore.user) {
         profileData.first_name = userStore.user.first_name || ''
         profileData.last_name = userStore.user.last_name || ''
-        profileData.civilite = userStore.user.civilite || ''
+        // Map legacy human-readable values to backend codes
+        const civ = userStore.user.civilite || ''
+        profileData.civilite = civ === 'Monsieur' ? 'M' : civ === 'Madame' ? 'Mme' : civ
         profileData.date_naissance = userStore.user.date_naissance || ''
         profileData.telephone = userStore.user.telephone || ''
       }
@@ -185,7 +194,15 @@ export default {
     const saveProfile = async () => {
       try {
         savingProfile.value = true
-        await updateUserProfile(profileData)
+        // Normalize empty strings to null for optional fields
+        const payload = {
+          first_name: profileData.first_name || null,
+          last_name: profileData.last_name || null,
+          civilite: profileData.civilite || null,
+          date_naissance: profileData.date_naissance || null,
+          telephone: profileData.telephone || null
+        }
+        await updateUserProfile(payload)
         await userStore.fetchUser()
         showToast('Profil mis à jour avec succès', 'success')
       } catch (error) {

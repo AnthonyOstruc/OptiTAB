@@ -30,6 +30,15 @@
           </div>
         </div>
       </div>
+      <div class="config-divider"></div>
+      <div class="config-item">
+        <div class="config-label">Rôle</div>
+        <div class="config-value">
+          <div class="role-badge" :class="userRole === 'parent' ? 'parent' : 'student'">
+            {{ userRole === 'parent' ? 'Parent' : 'Élève' }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -43,6 +52,10 @@ defineProps({
   userNiveau: {
     type: Object,
     default: null
+  },
+  userRole: {
+    type: String,
+    default: 'student'
   }
 })
 
@@ -157,6 +170,19 @@ defineEmits(['edit'])
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.role-badge {
+  background: #eef2ff;
+  color: #1e293b;
+  padding: 6px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.role-badge.parent {
+  background: #fff7ed;
+  color: #9a3412;
 }
 
 .config-divider {

@@ -121,6 +121,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'civilite',
             'date_naissance',
             'telephone',
+            'role',
             'pays',
             'niveau_pays'
         ]
@@ -145,6 +146,10 @@ class UserUpdateSerializer(serializers.ModelSerializer):
                 'required': False,
                 'help_text': 'User phone number'
             },
+            'role': {
+                'required': False,
+                'help_text': "User role: 'student' or 'parent'"
+            },
             'pays': {
                 'required': False,
                 'help_text': 'User country'
@@ -154,6 +159,15 @@ class UserUpdateSerializer(serializers.ModelSerializer):
                 'help_text': 'Education level (must match selected country)'
             },
         }
+
+    def validate_role(self, value: str):
+        """Validate role is one of allowed choices."""
+        if value is None:
+            return value
+        normalized = str(value).strip().lower()
+        if normalized not in ('student', 'parent'):
+            raise serializers.ValidationError("Rôle invalide. Utilisez 'student' ou 'parent'.")
+        return normalized
 
     def validate_first_name(self, value):
         """Validate first name format."""

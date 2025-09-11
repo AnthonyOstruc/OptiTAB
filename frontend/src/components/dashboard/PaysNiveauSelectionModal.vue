@@ -20,6 +20,11 @@
           <span class="circle">2</span>
           <span class="label">Niveau</span>
         </div>
+        <div class="line"></div>
+        <div class="progress-step">
+          <span class="circle">3</span>
+          <span class="label">Rôle</span>
+        </div>
       </div>
       
       <div class="config-modal-body">
@@ -77,6 +82,19 @@
             />
           </div>
         </div>
+
+        <!-- Étape 3: Sélection du rôle -->
+        <div class="config-step role-step">
+          <h4>
+            <span class="step-number">3</span>
+            Vous êtes ?
+          </h4>
+          <p>Choisissez le type de compte pour personnaliser l'expérience.</p>
+          <div class="role-options">
+            <button type="button" class="role-btn" :class="{ active: selectedRole === 'student' }" @click="selectRole('student')">Élève</button>
+            <button type="button" class="role-btn" :class="{ active: selectedRole === 'parent' }" @click="selectRole('parent')">Parent</button>
+          </div>
+        </div>
       </div>
       
       <div class="config-modal-footer">
@@ -95,7 +113,7 @@
 </template>
 
 <script setup>
-import { watch, onMounted, onUnmounted } from 'vue'
+import { watch, onMounted, onUnmounted, computed } from 'vue'
 import SelectionCard from '@/components/common/SelectionCard.vue'
 
 const props = defineProps({
@@ -142,10 +160,14 @@ const props = defineProps({
   saving: {
     type: Boolean,
     default: false
+  },
+  selectedRole: {
+    type: String,
+    default: 'student'
   }
 })
 
-const emit = defineEmits(['update:modelValue', 'select-pays', 'select-niveau', 'save', 'prefetch-niveaux'])
+const emit = defineEmits(['update:modelValue', 'select-pays', 'select-niveau', 'select-role', 'save', 'prefetch-niveaux'])
 
 const closeModal = () => {
   emit('update:modelValue', false)
@@ -166,6 +188,9 @@ const saveConfiguration = () => {
 const prefetchNiveaux = (pays) => {
   emit('prefetch-niveaux', pays?.id || pays)
 }
+
+const selectedRole = computed(() => props.selectedRole)
+const selectRole = (role) => emit('select-role', role)
 
 // Empêcher le scroll de l'arrière-plan quand le modal est ouvert
 watch(() => props.modelValue, (isOpen) => {
@@ -440,6 +465,26 @@ onUnmounted(() => {
 
 .line.completed {
   background: #10b981;
+}
+
+/* Role step */
+.role-options {
+  display: flex;
+  gap: 12px;
+}
+.role-btn {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #111827;
+  border-radius: 9999px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.role-btn.active {
+  background: #e0e7ff;
+  border-color: #6366f1;
+  color: #3730a3;
 }
 
   @media (max-width: 768px) {

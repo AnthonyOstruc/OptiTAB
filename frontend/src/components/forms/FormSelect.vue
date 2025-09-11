@@ -10,6 +10,7 @@
         v-model="modelValueProxy"
         :required="required"
         :disabled="disabled"
+        :autocomplete="autocomplete"
         class="form-input"
         :class="inputClass"
         @focus="handleFocus"
@@ -57,6 +58,10 @@ export default {
     options: {
       type: Array,
       required: true // [{ value: '', label: '--' }, ...]
+    },
+    autocomplete: {
+      type: String,
+      default: ''
     }
   },
   emits: ['update:modelValue', 'focus', 'blur'],

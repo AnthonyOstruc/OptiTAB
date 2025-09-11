@@ -18,19 +18,38 @@
             v-model="form.civilite"
             :options="[
               { value: '', label: '--' },
-              { value: 'Monsieur', label: 'Monsieur' },
-              { value: 'Madame', label: 'Madame' },
-              { value: 'Autre', label: 'Autre' }
+              { value: 'M', label: 'Monsieur' },
+              { value: 'Mme', label: 'Madame' }
             ]"
+            autocomplete="honorific-prefix"
             class="account-input"
           />
-          <FormInput label="Prénom" v-model="form.firstName" id="firstName" required class="account-input" placeholder="Prénom" />
-          <FormInput label="Nom" v-model="form.lastName" id="lastName" required class="account-input" placeholder="Nom" />
+          <FormInput label="Prénom" v-model="form.firstName" id="firstName" required autocomplete="given-name" class="account-input" placeholder="Prénom" />
+          <FormInput label="Nom" v-model="form.lastName" id="lastName" required autocomplete="family-name" class="account-input" placeholder="Nom" />
         </div>
         <div class="account-fields-row">
-          <FormInput label="Email (ton identifiant)" v-model="form.email" id="email" type="email" :disabled="true" class="account-input" placeholder="Email" />
-          <FormInput label="Numéro de téléphone" v-model="form.telephone" id="telephone" type="tel" class="account-input" placeholder="Numéro de téléphone" />
-          <FormInput label="Date de naissance" v-model="form.date_naissance" id="date_naissance" type="date" class="account-input" placeholder="Date de naissance" />
+          <FormInput label="Email" v-model="form.email" id="email" type="email" :disabled="true" autocomplete="email" class="account-input field-wide" placeholder="Email" />
+          <FormInput label="Numéro de téléphone" v-model="form.telephone" id="telephone" type="tel" autocomplete="tel" class="account-input field-narrow" placeholder="Numéro de téléphone" />
+        </div>
+        <div class="account-fields-row">
+          <div class="account-field">
+            <label for="date_naissance" class="account-label">Date de naissance</label>
+            <VueDatePicker
+              v-model="form.date_naissance"
+              model-type="yyyy-MM-dd"
+              format="dd/MM/yyyy"
+              :enable-time-picker="false"
+              :week-start="1"
+              locale="fr"
+              :max-date="new Date()"
+              input-class-name="account-input"
+              :clearable="false"
+              :hide-input-icon="true"
+              :teleport="true"
+              autocomplete="bday"
+              placeholder="jj/mm/aaaa"
+            />
+          </div>
         </div>
         <div class="account-actions">
           <button class="account-save-btn" type="submit" :disabled="isSaving">
@@ -53,6 +72,8 @@ import FormSelect from '@/components/forms/FormSelect.vue'
 import { UserCircleIcon } from '@heroicons/vue/24/outline'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import UserPaysNiveauConfig from '@/components/dashboard/UserPaysNiveauConfig.vue'
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const icon = UserCircleIcon
 const userStore = useUserStore()
@@ -71,7 +92,9 @@ const successMsg = ref('')
 const errorMsg = ref('')
 
 const fillForm = (user) => {
-  form.value.civilite = user.civilite || ''
+  // Backend expects 'M' or 'Mme'. If older human-readable value slipped in, map it.
+  const civ = user.civilite || ''
+  form.value.civilite = civ === 'Monsieur' ? 'M' : civ === 'Madame' ? 'Mme' : civ
   form.value.firstName = user.firstName || user.first_name || ''
   form.value.lastName = user.lastName || user.last_name || ''
   form.value.email = user.email || ''
@@ -86,7 +109,8 @@ onMounted(async () => {
   fillForm(userStore)
   try {
     const { data } = await fetchUserProfile()
-    fillForm(data)
+    // API returns { success, message, data: { ...user } }
+    fillForm((data && data.data) ? data.data : data)
   } catch {}
 })
 
@@ -113,6 +137,11 @@ const handleSubmit = async () => {
     
     const response = await updateUserProfile(payload)
     successMsg.value = 'Profil mis à jour avec succès !'
+    // Recharger depuis la réponse (plus rapide) puis synchroniser le store
+    if (response && response.data) {
+      const userPayload = response.data.data || response.data
+      if (userPayload) fillForm(userPayload)
+    }
     await userStore.fetchUser()
   } catch (e) {
     console.error('Erreur mise à jour profil:', e)
@@ -175,6 +204,14 @@ const handleSubmit = async () => {
   flex-direction: column;
   gap: 0.4rem;
 }
+.account-label {
+  font-weight: 900;
+  color: #333;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 .account-input {
   width: 100%;
   padding: 12px 16px;
@@ -185,6 +222,17 @@ const handleSubmit = async () => {
   color: #222;
   transition: border 0.2s;
   margin-bottom: 0;
+}
+.account-input:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+/* widths for email/phone */
+.field-wide {
+  flex: 2;
+}
+.field-narrow {
+  flex: 1;
 }
 /* Agrandir le select de civilité */
 #civilite.account-input {

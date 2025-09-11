@@ -77,7 +77,7 @@ const handleLogout = () => {
 /* Bouton burger fixe - Solution professionnelle */
 .burger-btn-fixed {
   position: absolute;
-  left: 1rem;
+  left: 0.75rem; /* Légèrement plus à gauche pour centrer avec la barre latérale */
   top: 50%;
   transform: translateY(-50%);
   background: #fff;
@@ -95,7 +95,7 @@ const handleLogout = () => {
   transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   /* POSITION CENTRÉE VERTICALEMENT */
   position: absolute;
-  left: 1rem;
+  left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -243,6 +243,7 @@ const handleLogout = () => {
     padding: 0.7rem 1rem 0.7rem 3rem;
     min-height: 60px;
   }
+  .burger-btn-fixed { left: 0.7rem; }
   
   .header-center {
     margin: 0 1rem;
@@ -260,6 +261,7 @@ const handleLogout = () => {
     padding: 0.6rem 0.7rem 0.6rem 2.8rem;
     min-height: 56px;
   }
+  .burger-btn-fixed { left: 0.6rem; }
   
   .header-center {
     margin: 0 0.5rem;
@@ -288,6 +290,7 @@ const handleLogout = () => {
     padding: 0.5rem 0.5rem 0.5rem 2.5rem;
     min-height: 52px;
   }
+  .burger-btn-fixed { left: 0.5rem; }
   
   .header-center {
     margin: 0 0.3rem;
@@ -315,6 +318,7 @@ const handleLogout = () => {
     padding: 0.4rem 0.4rem 0.4rem 2.2rem;
     min-height: 48px;
   }
+  .burger-btn-fixed { left: 0.45rem; }
   
   .header-center {
     margin: 0 0.2rem;

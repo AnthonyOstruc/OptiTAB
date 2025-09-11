@@ -3,7 +3,7 @@ import { useUserStore } from '@/stores/user'
 import { useToast } from '@/composables/useToast'
 import { getPays } from '@/api/pays.js'
 import { getNiveauxParPays } from '@/api/niveaux.js'
-import { updateUserPaysNiveau } from '@/api/users.js'
+import { updateUserPaysNiveau, updateUserProfile } from '@/api/users.js'
 
 export function usePaysNiveauConfig() {
   const userStore = useUserStore()
@@ -14,6 +14,7 @@ export function usePaysNiveauConfig() {
   const niveauxList = ref([])
   const selectedPaysId = ref(null)
   const selectedNiveauId = ref(null)
+  const selectedRole = ref('student')
   const saving = ref(false)
   const showConfigModal = ref(false)
   const currentStep = ref('pays')
@@ -26,6 +27,7 @@ export function usePaysNiveauConfig() {
   // Computed properties
   const userPays = computed(() => userStore.pays)
   const userNiveau = computed(() => userStore.niveau_pays)
+  const userRole = computed(() => userStore.role || 'student')
 
   const filteredNiveaux = computed(() => {
     if (!selectedPaysId.value) return []
@@ -35,7 +37,9 @@ export function usePaysNiveauConfig() {
   const canSave = computed(() => {
     const paysChanged = selectedPaysId.value !== userPays.value?.id
     const niveauChanged = selectedNiveauId.value !== userNiveau.value?.id
-    return Boolean((paysChanged || niveauChanged) && selectedPaysId.value && selectedNiveauId.value)
+    const roleChanged = selectedRole.value !== userRole.value
+    const hasPaysNiveau = Boolean(selectedPaysId.value && selectedNiveauId.value)
+    return Boolean(paysChanged || niveauChanged || roleChanged) && (hasPaysNiveau || roleChanged)
   })
 
   // Méthodes
@@ -52,6 +56,7 @@ export function usePaysNiveauConfig() {
       if (userNiveau.value) {
         selectedNiveauId.value = userNiveau.value.id
       }
+      selectedRole.value = userRole.value
     } catch (error) {
       console.error('Error loading data:', error)
       showToast('Erreur lors du chargement des données', 'error')
@@ -136,16 +141,38 @@ export function usePaysNiveauConfig() {
     selectedNiveauId.value = niveau.id
   }
 
+  const selectRole = (role) => {
+    if (role === 'student' || role === 'parent') {
+      selectedRole.value = role
+    }
+  }
+
   const saveConfiguration = async () => {
     if (!canSave.value) return
     
     try {
       saving.value = true
-      
-      await updateUserPaysNiveau({
-        pays_id: selectedPaysId.value,
-        niveau_id: selectedNiveauId.value
-      })
+      const actions = []
+      const paysChanged = selectedPaysId.value !== userPays.value?.id
+      const niveauChanged = selectedNiveauId.value !== userNiveau.value?.id
+      const roleChanged = selectedRole.value !== userRole.value
+
+      if (paysChanged || niveauChanged) {
+        actions.push(
+          updateUserPaysNiveau({
+            pays_id: selectedPaysId.value,
+            niveau_id: selectedNiveauId.value
+          })
+        )
+      }
+
+      if (roleChanged) {
+        actions.push(updateUserProfile({ role: selectedRole.value }))
+      }
+
+      if (actions.length) {
+        await Promise.all(actions)
+      }
       
       await userStore.fetchUser()
       showToast('Configuration mise à jour avec succès !', 'success')
@@ -188,6 +215,7 @@ export function usePaysNiveauConfig() {
     niveauxList,
     selectedPaysId,
     selectedNiveauId,
+    selectedRole,
     saving,
     showConfigModal,
     currentStep,
@@ -196,6 +224,7 @@ export function usePaysNiveauConfig() {
     // Computed
     userPays,
     userNiveau,
+    userRole,
     filteredNiveaux,
     canSave,
     
@@ -203,6 +232,7 @@ export function usePaysNiveauConfig() {
     loadData,
     selectPays,
     selectNiveau,
+    selectRole,
     saveConfiguration,
     closeModal,
     prefetchNiveauxForPays

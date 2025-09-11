@@ -48,8 +48,6 @@ function goBackToDashboard() {
 }
 </script>
 
-<style src="@/styles/notions-layout.css"></style>
-
 <style scoped>
 .course-notions-page {
   background: #ffffff;

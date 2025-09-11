@@ -9,6 +9,7 @@ import { useSubjectsStore } from '@/stores/subjects/index'
 import 'katex/dist/katex.min.css'
 import 'mathlive'
 import '@/styles/global.css'
+import '@/styles/notions-layout.css'
 
 // Supprimer les icônes MathLive globalement
 if (typeof document !== 'undefined') {

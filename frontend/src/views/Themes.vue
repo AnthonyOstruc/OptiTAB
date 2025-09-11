@@ -66,4 +66,4 @@ function onNotionClick(notionId) {
 // Le composant enfant gère le chargement et le cache
 </script>
 
-<style src="@/styles/notions-layout.css"></style>
+ 

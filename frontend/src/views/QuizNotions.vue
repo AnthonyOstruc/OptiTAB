@@ -307,4 +307,3 @@ function onNotionClick(notionId) {
   }
 }
 </style>
-<style src="@/styles/notions-layout.css"></style> 

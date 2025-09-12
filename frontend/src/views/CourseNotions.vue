@@ -237,6 +237,7 @@ function goBackToDashboard() {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
   padding: 1.5rem;
+  align-items: stretch; /* Toutes les cartes ont la même hauteur dans leur ligne */
 }
 
 /* Notion Cards */
@@ -314,6 +315,7 @@ function goBackToDashboard() {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
+  align-items: stretch; /* Toutes les cartes ont la même hauteur dans leur ligne */
 }
 
 /* Responsive */

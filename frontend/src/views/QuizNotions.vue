@@ -194,6 +194,7 @@ function onNotionClick(notionId) {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
   padding: 1.5rem;
+  align-items: stretch; /* Toutes les cartes ont la même hauteur dans leur ligne */
 }
 
 /* Notion Cards */
@@ -271,6 +272,7 @@ function onNotionClick(notionId) {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
+  align-items: stretch; /* Toutes les cartes ont la même hauteur dans leur ligne */
 }
 
 /* Responsive */

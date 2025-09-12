@@ -13,14 +13,15 @@
       <!-- Contenu de la notion -->
       <div class="notion-content">
         <h3 class="notion-title">{{ title }}</h3>
-        <p class="notion-description">{{ description || 'Cliquez pour explorer les chapitres' }}</p>
-      </div>
-      
-      <!-- Indicateur d'action -->
-      <div class="notion-arrow">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <div class="notion-description-container">
+          <p class="notion-description">{{ description || 'Cliquez pour explorer les chapitres' }}</p>
+          <!-- Flèche à côté du texte -->
+          <div class="notion-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -38,6 +39,8 @@ defineProps({
   width: 100%;
   max-width: none;
   margin: 0;
+  height: 100%; /* S'étire pour remplir toute la hauteur disponible */
+  display: flex;
 }
 
 .notion-card-inner {
@@ -48,6 +51,7 @@ defineProps({
   padding: 1rem;
   cursor: pointer;
   height: 100%;
+  width: 100%; /* Prend toute la largeur disponible */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -87,6 +91,14 @@ defineProps({
   line-height: 1.3;
 }
 
+/* Container pour la description et la flèche */
+.notion-description-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
 .notion-description {
   font-size: 0.75rem;
   color: #6b7280;
@@ -94,17 +106,18 @@ defineProps({
   line-height: 1.3;
 }
 
-/* Flèche */
+/* Flèche à côté du texte */
 .notion-arrow {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   background: #f3f4f6;
-  border-radius: 4px;
+  border-radius: 3px;
   color: #6b7280;
+  flex-shrink: 0; /* Empêche la flèche de se rétrécir */
 }
 
 /* Responsive - Désactivé pour conserver le style normal */
-</style> 
+</style>

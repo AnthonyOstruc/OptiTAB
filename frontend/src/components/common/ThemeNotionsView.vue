@@ -319,7 +319,7 @@ onBeforeUnmount(() => {
   grid-template-columns: repeat(4, 280px);
   gap: 1rem;
   justify-content: start;
-  align-items: start;
+  align-items: stretch; /* Toutes les cartes ont la même hauteur dans leur ligne */
 }
 
 /* État vide */
@@ -399,9 +399,9 @@ onBeforeUnmount(() => {
   }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 705px) {
   .tnv-notions-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 280px;
     gap: 1rem;
   }
 

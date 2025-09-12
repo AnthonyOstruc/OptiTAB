@@ -45,7 +45,7 @@ const props = defineProps({
   justify-content: center;
   min-height: 480px;
   padding: 160px 5vw 48px 5vw;
-  border-radius: 0 0 32px 32px;
+  border-radius: 0;
   box-shadow: 0 2px 16px rgba(30,41,59,0.04);
   gap: 40px;
   overflow: hidden;
@@ -53,7 +53,7 @@ const props = defineProps({
     flex-direction: column;
     text-align: center;
     padding: 130px 2vw 24px 2vw;
-    border-radius: 0 0 20px 20px;
+    border-radius: 0;
     gap: 24px;
     min-height: 420px;
   }

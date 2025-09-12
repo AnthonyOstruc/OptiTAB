@@ -302,7 +302,6 @@ onMounted(async () => {
 
 .nav-items {
   @extend .flex;
-  gap: 15px;
   flex-wrap: wrap;
 }
 

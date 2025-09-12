@@ -306,7 +306,7 @@ onBeforeUnmount(() => {
 .tnv-theme-count {
   background: #f3f4f6;
   color: #6b7280;
-  padding: 0.25rem 0.75rem;
+  padding: 0.4rem 0.65rem;
   border-radius: 20px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -411,9 +411,9 @@ onBeforeUnmount(() => {
   }
 
   .tnv-theme-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
   }
 
   .tnv-theme-title {

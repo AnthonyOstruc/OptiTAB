@@ -8,9 +8,10 @@
       <form @submit.prevent="handleSave">
         <div class="form-group">
           <label>Contexte (Matière + Niveau):</label>
+          <input v-model="contexteFilter" type="text" placeholder="Filtrer les contextes..." class="filter-input" />
           <select v-model="form.contexte" required>
             <option value="">Choisir un contexte</option>
-            <option v-for="c in contextesOptions" :key="c.id" :value="c.id">
+            <option v-for="c in filteredContextes" :key="c.id" :value="c.id">
               {{ c.matiere_nom }} — {{ c.pays.nom }} - {{ c.niveau.nom }}
             </option>
           </select>
@@ -19,6 +20,10 @@
         <div class="form-group">
           <label>Nom du thème:</label>
           <input v-model="form.nom" type="text" required />
+          <div class="help-text">
+            💡 Vous pouvez créer des thèmes avec le même nom dans des contextes différents 
+            (par exemple "Algèbre" pour Maths CE2 et Maths Terminal).
+          </div>
         </div>
         
         <div class="form-group">
@@ -57,18 +62,15 @@
       <div class="filters">
         <div class="filter-group">
           <label>Filtrer par contexte:</label>
+          <input v-model="contexteFilter" type="text" placeholder="Filtrer les contextes..." class="filter-input" />
           <select v-model="filters.contexte">
             <option value="">Tous les contextes</option>
-            <option v-for="c in contextesOptions" :key="c.id" :value="c.id">
+            <option v-for="c in filteredContextes" :key="c.id" :value="c.id">
               {{ c.matiere_nom }} — {{ c.pays.nom }} - {{ c.niveau.nom }}
             </option>
           </select>
         </div>
         
-        <div class="filter-group">
-          <label>Rechercher:</label>
-          <input v-model="filters.nom" type="text" placeholder="Nom du thème..." />
-        </div>
       </div>
 
       <!-- Liste simple des thèmes (le contexte inclut déjà la matière/niveau) -->
@@ -114,6 +116,7 @@ import { AdminActionsButtons } from '@/components/admin'
 
 const contextesOptions = ref([])
 const themes = ref([])
+const contexteFilter = ref('')
 const form = ref({
   id: null,
   contexte: '',
@@ -124,12 +127,24 @@ const form = ref({
 })
 
 const filters = ref({
-  contexte: '',
-  nom: ''
+  contexte: ''
 })
 
 // Computed properties
 const filteredMatieres = computed(() => [])
+
+const filteredContextes = computed(() => {
+  if (!contexteFilter.value) {
+    return contextesOptions.value
+  }
+  const filter = contexteFilter.value.toLowerCase()
+  return contextesOptions.value.filter(c =>
+    c.matiere_nom.toLowerCase().includes(filter) ||
+    c.pays?.nom.toLowerCase().includes(filter) ||
+    c.niveau?.nom.toLowerCase().includes(filter) ||
+    `${c.matiere_nom} — ${c.pays?.nom} - ${c.niveau?.nom}`.toLowerCase().includes(filter)
+  )
+})
 
 const filteredThemes = () => {
   const list = Array.isArray(themes.value) ? themes.value : []
@@ -137,13 +152,7 @@ const filteredThemes = () => {
   if (filters.value.contexte) {
     filtered = filtered.filter(t => String(t.contexte) === String(filters.value.contexte))
   }
-  
-  if (filters.value.nom) {
-    filtered = filtered.filter(t => 
-      t.nom.toLowerCase().includes(filters.value.nom.toLowerCase())
-    )
-  }
-  
+
   return filtered.sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
 }
 
@@ -174,7 +183,7 @@ function resetForm() {
 
 async function handleSave() {
   if (!form.value.contexte || !form.value.nom) return
-  
+
   try {
     // Find the selected contexte to get the matiere
     const selectedContexte = contextesOptions.value.find(c => c.id === Number(form.value.contexte))
@@ -182,43 +191,73 @@ async function handleSave() {
       console.error('Contexte non trouvé')
       return
     }
-    
+
     if (!selectedContexte.matiere) {
       console.error('Matière non trouvée dans le contexte')
       alert('Erreur: Impossible de récupérer la matière associée à ce contexte.')
       return
     }
-    
-    // Check for duplicate theme name in the same matiere
-    const existingTheme = themes.value.find(t => 
-      t.matiere === selectedContexte.matiere && 
-      (t.nom === form.value.nom || t.titre === form.value.nom) && 
+
+    // Check for duplicate theme name in the same contexte
+    // Note: Cette validation permet d'avoir le même nom de thème dans des contextes différents
+    const existingTheme = themes.value.find(t =>
+      String(t.contexte) === String(form.value.contexte) &&
+      (t.nom === form.value.nom || t.titre === form.value.nom) &&
       t.id !== form.value.id
     )
     if (existingTheme) {
-      alert('Un thème avec ce nom existe déjà dans cette matière.')
+      const contexteDetail = contextesOptions.value.find(c => c.id === Number(form.value.contexte))
+      const contexteNom = contexteDetail ? 
+        `${contexteDetail.matiere_nom} — ${contexteDetail.pays?.nom} - ${contexteDetail.niveau?.nom}` : 
+        'ce contexte'
+      alert(`Un thème avec le nom "${form.value.nom}" existe déjà dans ${contexteNom}.\n\nVous pouvez créer un thème avec le même nom dans un contexte différent (autre niveau ou pays).`)
       return
     }
-    
+
+    // Le backend déduit la matière depuis le contexte.
+    // Pour éviter toute validation héritée côté backend distant,
+    // on ne transmet plus explicitement le champ `matiere`.
     const payload = {
       contexte: Number(form.value.contexte),
-      matiere: selectedContexte.matiere, // Add the matiere field
       nom: form.value.nom,
       description: form.value.description,
       couleur: form.value.couleur,
       ordre: form.value.ordre
     }
-    
+
     console.log('Payload being sent:', payload)
     console.log('Selected contexte:', selectedContexte)
-    
-    if (form.value.id) {
-      await updateTheme(form.value.id, payload)
-    } else {
-      await createTheme(payload)
+
+    try {
+      if (form.value.id) {
+        await updateTheme(form.value.id, payload)
+      } else {
+        await createTheme(payload)
+      }
+    } catch (err) {
+      // Fallback: certains environnements backend anciens exigent encore `matiere`.
+      // On réessaie une seule fois en ajoutant `matiere` à partir du contexte.
+      const needMatiere = !!(err?.response?.data && (err.response.data.matiere || err.response.data.Matiere))
+      if (needMatiere && selectedContexte?.matiere) {
+        const payloadWithMatiere = { ...payload, matiere: selectedContexte.matiere }
+        if (form.value.id) {
+          await updateTheme(form.value.id, payloadWithMatiere)
+        } else {
+          await createTheme(payloadWithMatiere)
+        }
+      } else {
+        throw err
+      }
     }
-    
+
+    // Sauvegarder le contexte actuel avant de reset le formulaire
+    const currentContexte = form.value.contexte
+
     resetForm()
+
+    // Remettre le contexte sélectionné pour permettre d'ajouter un autre thème dans le même contexte
+    form.value.contexte = currentContexte
+
     await load()
   } catch (error) {
     console.error('Erreur lors de la sauvegarde:', error)
@@ -228,11 +267,22 @@ async function handleSave() {
       if (errorData.non_field_errors) {
         alert(`Erreur: ${errorData.non_field_errors.join(', ')}`)
       } else if (errorData.titre) {
-        alert(`Erreur sur le nom: ${errorData.titre.join(', ')}`)
+        // Afficher le message d'erreur détaillé du backend sur le titre/nom
+        const titreErrors = Array.isArray(errorData.titre) ? errorData.titre : [errorData.titre]
+        alert(`${titreErrors.join('\n')}`)
       } else if (errorData.matiere) {
         alert(`Erreur sur la matière: ${errorData.matiere.join(', ')}`)
       } else {
-        alert(`Erreur: ${JSON.stringify(errorData)}`)
+        // Afficher tous les autres types d'erreurs de façon plus lisible
+        const errorMessages = []
+        for (const [field, messages] of Object.entries(errorData)) {
+          if (Array.isArray(messages)) {
+            errorMessages.push(`${field}: ${messages.join(', ')}`)
+          } else {
+            errorMessages.push(`${field}: ${messages}`)
+          }
+        }
+        alert(`Erreur de validation:\n${errorMessages.join('\n')}`)
       }
     } else {
       alert('Erreur lors de la sauvegarde. Vérifiez les données saisies.')
@@ -318,9 +368,28 @@ onMounted(load)
   font-size: 0.875rem;
 }
 
+.filter-input {
+  margin-bottom: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
 .form-group textarea {
   resize: vertical;
   min-height: 80px;
+}
+
+.help-text {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+  background-color: #f9fafb;
+  border-radius: 0.25rem;
+  border-left: 3px solid #3b82f6;
 }
 
 .color-input-group {

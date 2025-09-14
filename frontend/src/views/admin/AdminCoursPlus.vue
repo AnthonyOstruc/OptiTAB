@@ -182,9 +182,10 @@ Description: [Description courte expliquant l'objectif du cours]
     </div>
 
     <div class="bulk-form">
+      <input v-model="chapitreFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
       <select v-model="selectedChapitre" required>
         <option disabled value="">Choisir chapitre</option>
-        <option v-for="c in chapitres" :key="c.id" :value="c.id">{{ formatChapitreOption(c) }}</option>
+        <option v-for="c in filteredChapitres" :key="c.id" :value="c.id">{{ formatChapitreOption(c) }}</option>
       </select>
 
       <!-- Upload d'images -->
@@ -253,7 +254,7 @@ Description: [Description courte expliquant l'objectif du cours]
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { getChapitres, getNotions } from '@/api'
 import { createCours, createCoursImage, getCours, updateCours } from '@/api/cours'
 import { renderContentWithImages, renderMath, markdownToHtml } from '@/utils/scientificRenderer'
@@ -272,6 +273,7 @@ const IMAGE_MARKER_REGEX = /\[IMAGE_(\d+)\]/g
 
 const chapitres = ref([])
 const notions = ref([])
+const chapitreFilter = ref('')
 const selectedChapitre = ref('')
 const rawInput = ref('')
 const successMsg = ref('')
@@ -664,11 +666,19 @@ async function handleCreate() {
 
     if (createdCount > 0 || updatedCount > 0) {
       successMsg.value = `${createdCount} créé(s)${updatedCount ? `, ${updatedCount} mis à jour` : ''}${errorCount > 0 ? `, ${errorCount} erreur(s)` : ''}`
+
+      // Sauvegarder le chapitre actuel avant de nettoyer le formulaire
+      const currentChapitre = selectedChapitre.value
+
+      // Nettoyer le formulaire
       rawInput.value = ''
       previewList.value = []
       selectedImages.value = []
       imageManager.images.clear()
       if (imagesInput.value) imagesInput.value.value = ''
+
+      // Remettre le chapitre sélectionné pour permettre d'ajouter d'autres cours dans le même chapitre
+      selectedChapitre.value = currentChapitre
     } else {
       errorMsg.value = 'Aucun cours n\'a pu être créé'
     }
@@ -677,6 +687,21 @@ async function handleCreate() {
     errorMsg.value = 'Erreur lors de la création des cours'
   }
 }
+
+// ============================================================================
+// COMPUTED PROPERTIES
+// ============================================================================
+
+// Chapitres filtrés (par texte seulement)
+const filteredChapitres = computed(() => {
+  if (!chapitreFilter.value) {
+    return chapitres.value
+  }
+  const filter = chapitreFilter.value.toLowerCase()
+  return chapitres.value.filter(chapitre =>
+    formatChapitreOption(chapitre).toLowerCase().includes(filter)
+  )
+})
 
 // ============================================================================
 // INITIALISATION
@@ -778,6 +803,15 @@ onMounted(async () => {
   border-radius: 8px;
   font-size: 1rem;
   margin-bottom: 1.5rem;
+}
+
+.filter-input {
+  margin-bottom: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
 }
 
 .images-upload-section {

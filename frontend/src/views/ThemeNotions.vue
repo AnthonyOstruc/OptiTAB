@@ -125,9 +125,16 @@ const loadThemeNotions = async (themeId) => {
     themeNom.value = themeData.nom
     themeColor.value = themeData.couleur || '#3b82f6'
     
-    // Charger toutes les notions et filtrer par thème
+    // Charger toutes les notions et filtrer par thème, puis trier par ordre croissant
     const notionsData = await getNotions()
-    notions.value = notionsData.filter(notion => notion.theme === parseInt(themeId))
+    notions.value = notionsData
+      .filter(notion => notion.theme === parseInt(themeId))
+      .sort((a, b) => {
+        const ao = Number(a?.ordre ?? 0)
+        const bo = Number(b?.ordre ?? 0)
+        if (ao !== bo) return ao - bo
+        return String(a?.nom || '').localeCompare(String(b?.nom || ''))
+      })
     
     console.log('[ThemeNotions] Notions chargées:', notions.value.length)
   } catch (e) {

@@ -4,9 +4,10 @@
     <form class="admin-form" @submit.prevent="handleSave">
       <div class="form-group">
         <label>Chapitre:</label>
+        <input v-model="chapitreFormFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
         <select v-model="form.chapitre" required>
           <option value="">Choisir un chapitre</option>
-          <option v-for="c in chapitres" :key="c.id" :value="c.id">{{ formatChapitreOption(c) }}</option>
+          <option v-for="c in filteredChapitresForForm" :key="c.id" :value="c.id">{{ formatChapitreOption(c) }}</option>
         </select>
       </div>
       <div v-if="currentContext" class="context-panel">
@@ -75,18 +76,15 @@
     <div class="filters">
       <div class="filter-group">
         <label>Filtrer par chapitre:</label>
+        <input v-model="chapitreFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
         <select v-model="filters.chapitre">
           <option value="">Tous les chapitres</option>
-          <option v-for="chapitre in chapitres" :key="chapitre.id" :value="chapitre.id">
+          <option v-for="chapitre in filteredChapitres" :key="chapitre.id" :value="chapitre.id">
             {{ chapitre.nom }} ({{ chapitre.notion_nom }})
           </option>
         </select>
       </div>
       
-      <div class="filter-group">
-        <label>Rechercher:</label>
-        <input v-model="filters.nom" type="text" placeholder="Rechercher dans le titre..." />
-      </div>
     </div>
 
     <!-- Tableau des quiz -->
@@ -174,6 +172,8 @@ import { AdminActionsButtons } from '@/components/admin'
 const quiz = ref([])
 const chapitres = ref([])
 const notions = ref([])
+const chapitreFormFilter = ref('')
+const chapitreFilter = ref('')
 const form = ref({ 
   id: null, 
   chapitre: '', 
@@ -185,8 +185,7 @@ const form = ref({
   questions_json: ''
 })
 const filters = ref({
-  chapitre: '',
-  nom: ''
+  chapitre: ''
 })
 const showDuplicateModal = ref(false)
 const duplicateForm = ref({
@@ -202,14 +201,30 @@ const filteredQuiz = computed(() => {
   if (filters.value.chapitre) {
     filtered = filtered.filter(q => q.chapitre == filters.value.chapitre)
   }
-  
-  if (filters.value.nom) {
-    filtered = filtered.filter(q => 
-      q.titre.toLowerCase().includes(filters.value.nom.toLowerCase())
-    )
-  }
-  
+
   return filtered
+})
+
+// Chapitres filtrés pour le formulaire (par texte seulement)
+const filteredChapitresForForm = computed(() => {
+  if (!chapitreFormFilter.value) {
+    return chapitres.value
+  }
+  const filter = chapitreFormFilter.value.toLowerCase()
+  return chapitres.value.filter(chapitre =>
+    formatChapitreOption(chapitre).toLowerCase().includes(filter)
+  )
+})
+
+// Chapitres filtrés pour les filtres (par texte seulement)
+const filteredChapitres = computed(() => {
+  if (!chapitreFilter.value) {
+    return chapitres.value
+  }
+  const filter = chapitreFilter.value.toLowerCase()
+  return chapitres.value.filter(chapitre =>
+    formatChapitreOption(chapitre).toLowerCase().includes(filter)
+  )
 })
 
 async function load() {
@@ -247,7 +262,7 @@ function resetForm() {
 
 async function handleSave() {
   if (!form.value.chapitre || !form.value.titre) return
-  
+
   try {
     const difficultyMap = { 'facile': 'easy', 'moyen': 'medium', 'difficile': 'hard' }
     let questions = []
@@ -263,13 +278,21 @@ async function handleSave() {
       questions_data: Array.isArray(questions) ? questions : [],
       difficulty: difficultyMap[form.value.difficulte] || 'medium'
     }
-    
+
     if (form.value.id) {
       await updateQuiz(form.value.id, payload)
     } else {
       await createQuiz(payload)
     }
+
+    // Sauvegarder le chapitre actuel avant de reset le formulaire
+    const currentChapitre = form.value.chapitre
+
     resetForm()
+
+    // Remettre le chapitre sélectionné pour permettre d'ajouter un autre quiz dans le même chapitre
+    form.value.chapitre = currentChapitre
+
     await load()
   } catch (e) {
     console.error('[AdminQuiz] Erreur:', e)
@@ -478,6 +501,15 @@ function getContextCodeByChapitre(chapitreId) {
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.filter-input {
+  margin-bottom: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   font-size: 0.875rem;

@@ -141,11 +141,18 @@ const error = ref('')
 const notionsByTheme = computed(() => {
   if (!notions.value.length) return []
   
-  // Grouper les notions par thème
+  // Grouper les notions par thème (tri par ordre croissant puis nom)
   const grouped = {}
   const notionsWithoutTheme = []
   
-  notions.value.forEach(notion => {
+  const sortedAll = [...notions.value].sort((a, b) => {
+    const ao = Number(a?.ordre ?? 0)
+    const bo = Number(b?.ordre ?? 0)
+    if (ao !== bo) return ao - bo
+    return String(a?.nom || '').localeCompare(String(b?.nom || ''))
+  })
+
+  sortedAll.forEach(notion => {
     if (notion.theme) {
       const themeId = notion.theme
       if (!grouped[themeId]) {

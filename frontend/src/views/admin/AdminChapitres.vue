@@ -4,9 +4,10 @@
     <form class="admin-form" @submit.prevent="handleSave">
       <div class="form-group">
         <label>Notion (hérite du contexte via Thème):</label>
+        <input v-model="notionFormFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
         <select v-model="form.notion" required>
           <option value="">Choisir une notion</option>
-          <option v-for="notion in notions" :key="notion.id" :value="notion.id">
+          <option v-for="notion in filteredNotionsForForm" :key="notion.id" :value="notion.id">
             {{ formatNotionOption(notion) }}
           </option>
         </select>
@@ -37,18 +38,15 @@
     <div class="filters">
       <div class="filter-group">
         <label>Filtrer par notion:</label>
+        <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
         <select v-model="filters.notion">
           <option value="">Toutes les notions</option>
-          <option v-for="notion in notions" :key="notion.id" :value="notion.id">
+          <option v-for="notion in filteredNotions" :key="notion.id" :value="notion.id">
             {{ formatNotionOption(notion) }}
           </option>
         </select>
       </div>
       
-      <div class="filter-group">
-        <label>Rechercher:</label>
-        <input v-model="filters.nom" type="text" placeholder="Nom du chapitre..." />
-      </div>
     </div>
 
     <!-- Tableau des chapitres -->
@@ -95,16 +93,17 @@ import { AdminActionsButtons } from '@/components/admin'
 
 const chapitres = ref([])
 const notions = ref([])
-const form = ref({ 
-  id: null, 
-  nom: '', 
-  notion: '', 
-  description: '', 
+const notionFormFilter = ref('')
+const notionFilter = ref('')
+const form = ref({
+  id: null,
+  nom: '',
+  notion: '',
+  description: '',
   ordre: 0,
 })
 const filters = ref({
-  notion: '',
-  nom: ''
+  notion: ''
 })
 
 // Computed properties
@@ -114,14 +113,30 @@ const filteredChapitres = computed(() => {
   if (filters.value.notion) {
     filtered = filtered.filter(c => c.notion == filters.value.notion)
   }
-  
-  if (filters.value.nom) {
-    filtered = filtered.filter(c => 
-      c.nom.toLowerCase().includes(filters.value.nom.toLowerCase())
-    )
-  }
-  
+
   return filtered.sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
+})
+
+// Notions filtrées pour le formulaire (par texte seulement)
+const filteredNotionsForForm = computed(() => {
+  if (!notionFormFilter.value) {
+    return notions.value
+  }
+  const filter = notionFormFilter.value.toLowerCase()
+  return notions.value.filter(notion =>
+    formatNotionOption(notion).toLowerCase().includes(filter)
+  )
+})
+
+// Notions filtrées pour les filtres (par texte seulement)
+const filteredNotions = computed(() => {
+  if (!notionFilter.value) {
+    return notions.value
+  }
+  const filter = notionFilter.value.toLowerCase()
+  return notions.value.filter(notion =>
+    formatNotionOption(notion).toLowerCase().includes(filter)
+  )
 })
 
 async function load() {
@@ -153,7 +168,7 @@ function resetForm() {
 
 async function handleSave() {
   if (!form.value.nom || !form.value.notion) return
-  
+
   try {
     const payload = {
       nom: form.value.nom,
@@ -162,13 +177,21 @@ async function handleSave() {
       ordre: form.value.ordre,
       contenu: ''
     }
-    
+
     if (form.value.id) {
       await updateChapitre(form.value.id, payload)
     } else {
       await createChapitre(payload)
     }
+
+    // Sauvegarder la notion actuelle avant de reset le formulaire
+    const currentNotion = form.value.notion
+
     resetForm()
+
+    // Remettre la notion sélectionnée pour permettre d'ajouter un autre chapitre dans la même notion
+    form.value.notion = currentNotion
+
     await load()
   } catch (e) {
     console.error('[AdminChapitres] Erreur:', e)
@@ -308,6 +331,15 @@ function handleDeleteChapitre(chapitre) {
 
 .filter-group input,
 .filter-group select {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.filter-input {
+  margin-bottom: 0.5rem;
+  width: 100%;
   padding: 0.5rem;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;

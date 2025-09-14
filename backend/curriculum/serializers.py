@@ -2,6 +2,7 @@
 SERIALIZERS ULTRA SIMPLES pour exercices
 """
 from rest_framework import serializers
+from django.db.models import Max
 from .models import Matiere, Theme, Notion, Chapitre, Exercice, MatiereContexte, ExerciceImage
 from pays.models import Niveau
 
@@ -75,12 +76,43 @@ class MatiereContexteSerializer(serializers.ModelSerializer):
 class ThemeSerializer(serializers.ModelSerializer):
     notion_count = serializers.IntegerField(read_only=True)
     # Champ niveaux supprimé
+    # 'matiere' n'est plus requis côté API: il est déduit depuis 'contexte'
+    matiere = serializers.PrimaryKeyRelatedField(queryset=Matiere.objects.all(), required=False, allow_null=True)
     contexte = serializers.PrimaryKeyRelatedField(queryset=MatiereContexte.objects.all(), required=False, allow_null=True)
     contexte_detail = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Theme
         fields = '__all__'
+        extra_kwargs = {
+            'matiere': {'required': False, 'allow_null': True},
+        }
+
+    def validate(self, data):
+        """
+        Validation personnalisée pour les thèmes.
+        Permet d'avoir le même titre dans des contextes différents.
+        """
+        contexte = data.get('contexte')
+        titre = data.get('titre', data.get('nom'))
+        
+        if contexte and titre:
+            # Vérifier s'il existe déjà un thème avec le même titre dans le même contexte
+            queryset = Theme.objects.filter(contexte=contexte, titre=titre)
+            
+            # Si on modifie un thème existant, l'exclure de la vérification
+            if self.instance:
+                queryset = queryset.exclude(pk=self.instance.pk)
+                
+            if queryset.exists():
+                existing_theme = queryset.first()
+                contexte_info = f"{contexte.matiere.titre} — {contexte.pays.nom if contexte.pays else 'N/A'} - {contexte.niveau.nom if contexte.niveau else 'N/A'}"
+                raise serializers.ValidationError({
+                    'titre': f'Un thème avec le nom "{titre}" existe déjà dans le contexte {contexte_info}. '
+                             f'Vous pouvez créer un thème avec le même nom dans un contexte différent (autre niveau ou pays).'
+                })
+        
+        return data
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -177,10 +209,28 @@ class NotionSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
+        # Si aucun ordre n'est fourni, placer la notion à la fin de son thème
+        if 'ordre' not in validated_data:
+            theme = validated_data.get('theme')
+            if theme:
+                last_order = (
+                    Notion.objects.filter(theme=theme).aggregate(max_o=Max('ordre')).get('max_o')
+                    or 0
+                )
+                validated_data['ordre'] = last_order + 1
         obj = super().create(validated_data)
         return obj
 
     def update(self, instance, validated_data):
+        # Si on change de thème sans préciser l'ordre, repositionner en fin du nouveau thème
+        new_theme = validated_data.get('theme', instance.theme)
+        changing_theme = 'theme' in validated_data and new_theme and new_theme != instance.theme
+        if changing_theme and 'ordre' not in validated_data:
+            last_order = (
+                Notion.objects.filter(theme=new_theme).aggregate(max_o=Max('ordre')).get('max_o')
+                or 0
+            )
+            validated_data['ordre'] = last_order + 1
         obj = super().update(instance, validated_data)
         return obj
 

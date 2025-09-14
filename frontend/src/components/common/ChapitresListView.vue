@@ -67,7 +67,7 @@ const props = defineProps({
 .chapitres-list-view {
   background: #fff;
   padding: 0 5vw 40px 5vw;
-  text-align: center;
+  text-align: left;
   position: relative;
 }
 

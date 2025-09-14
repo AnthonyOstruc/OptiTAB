@@ -10,27 +10,16 @@ import { useUserStore } from '@/stores/user'
 function resolveBaseUrl() {
   const isDev = import.meta.env.DEV || import.meta.env.MODE === 'development'
   let raw = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '').trim()
-  const useRemoteInDev = (import.meta.env.VITE_USE_REMOTE_IN_DEV === 'true') || (import.meta.env.VITE_FORCE_REMOTE === 'true')
 
-  // En développement, privilégier le backend local/par proxy
+  // En développement, forcer l'utilisation du proxy Vite (backend local)
+  // pour éviter toute dérive vers un backend distant non migré.
   if (isDev) {
-    // Si un BASE_URL local est fourni, on l'utilise explicitement (permet d'afficher 127.0.0.1:8000 dans Network)
-    if (/^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?/i.test(raw)) {
-      // Éviter HTTPS vers localhost/127.0.0.1
-      raw = raw.replace(/^https:/i, 'http:')
-      return raw.replace(/\/+$/, '')
+    if (typeof window !== 'undefined') {
+      // Petit log d'aide en dev pour confirmer la cible
+      // eslint-disable-next-line no-console
+      console.info('[API] Development mode: using Vite proxy for /api → http://localhost:8000')
     }
-
-    // Si aucune base n'est fournie, utiliser le proxy Vite via URL relative
-    if (!raw) {
-      return ''
-    }
-
-    // Si une base distante est fournie mais qu'on ne force pas le remote en dev, utiliser le proxy
-    if (!useRemoteInDev) {
-      return ''
-    }
-    // Sinon, on utilisera la base distante fournie (ex: tests spécifiques)
+    return ''
   }
 
   // En production: si aucune base n'est fournie, fallback Render

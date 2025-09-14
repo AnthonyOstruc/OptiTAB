@@ -55,7 +55,7 @@ class Theme(BaseOrganizational):
     # Ancien champ supprimé: niveaux M2M
     
     class Meta:
-        unique_together = [['matiere', 'titre']]
+        unique_together = [['contexte', 'titre']]
         ordering = ['matiere', 'ordre', 'titre']
         verbose_name = "Thème"
         verbose_name_plural = "Thèmes"

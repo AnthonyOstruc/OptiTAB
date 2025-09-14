@@ -4,9 +4,10 @@
     <form class="admin-form" @submit.prevent="handleSave">
       <div class="form-group">
         <label>Chapitre:</label>
+        <input v-model="chapitreFormFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
         <select v-model="form.chapitre" required>
           <option value="">Choisir un chapitre</option>
-          <option v-for="chapitre in chapitres" :key="chapitre.id" :value="chapitre.id">{{ formatChapitreOption(chapitre) }}</option>
+          <option v-for="chapitre in filteredChapitresForForm" :key="chapitre.id" :value="chapitre.id">{{ formatChapitreOption(chapitre) }}</option>
         </select>
       </div>
       <div v-if="currentContext" class="context-panel">
@@ -107,18 +108,15 @@
     <div class="filters">
       <div class="filter-group">
         <label>Filtrer par chapitre:</label>
+        <input v-model="chapitreFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
         <select v-model="filters.chapitre">
           <option value="">Tous les chapitres</option>
-          <option v-for="chapitre in chapitres" :key="chapitre.id" :value="chapitre.id">
+          <option v-for="chapitre in filteredChapitres" :key="chapitre.id" :value="chapitre.id">
             {{ chapitre.nom }} ({{ chapitre.notion_nom }})
           </option>
         </select>
       </div>
       
-      <div class="filter-group">
-        <label>Rechercher:</label>
-        <input v-model="filters.nom" type="text" placeholder="Rechercher dans le titre..." />
-      </div>
     </div>
 
     <!-- Tableau des cours -->
@@ -212,6 +210,8 @@ const MAX_IMAGE_SIZE = 10 * 1024 * 1024 // 10MB
 const cours = ref([])
 const chapitres = ref([])
 const notions = ref([])
+const chapitreFormFilter = ref('')
+const chapitreFilter = ref('')
 const form = ref({ 
   id: null, 
   chapitre: '', 
@@ -221,8 +221,7 @@ const form = ref({
   difficulte: 'moyen'
 })
 const filters = ref({
-  chapitre: '',
-  nom: ''
+  chapitre: ''
 })
 const showPreview = ref(false)
 const previewData = ref(null)
@@ -242,14 +241,30 @@ const filteredCours = computed(() => {
   if (filters.value.chapitre) {
     filtered = filtered.filter(c => c.chapitre == filters.value.chapitre)
   }
-  
-  if (filters.value.nom) {
-    filtered = filtered.filter(c => 
-      c.titre.toLowerCase().includes(filters.value.nom.toLowerCase())
-    )
-  }
-  
+
   return filtered.sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
+})
+
+// Chapitres filtrés pour le formulaire (par texte seulement)
+const filteredChapitresForForm = computed(() => {
+  if (!chapitreFormFilter.value) {
+    return chapitres.value
+  }
+  const filter = chapitreFormFilter.value.toLowerCase()
+  return chapitres.value.filter(chapitre =>
+    formatChapitreOption(chapitre).toLowerCase().includes(filter)
+  )
+})
+
+// Chapitres filtrés pour les filtres (par texte seulement)
+const filteredChapitres = computed(() => {
+  if (!chapitreFilter.value) {
+    return chapitres.value
+  }
+  const filter = chapitreFilter.value.toLowerCase()
+  return chapitres.value.filter(chapitre =>
+    formatChapitreOption(chapitre).toLowerCase().includes(filter)
+  )
 })
 
 async function load() {
@@ -331,7 +346,7 @@ function getDifficultyLabel(difficulty) {
 
 async function handleSave() {
   if (!form.value.chapitre || !form.value.titre || !form.value.contenu) return
-  
+
   try {
     const difficultyMap = { 'facile': 'easy', 'moyen': 'medium', 'difficile': 'hard' }
     const payload = {
@@ -341,13 +356,21 @@ async function handleSave() {
       ordre: form.value.ordre,
       difficulty: difficultyMap[form.value.difficulte] || 'medium'
     }
-    
+
     if (form.value.id) {
       await updateCours(form.value.id, payload)
     } else {
       await createCours(payload)
     }
+
+    // Sauvegarder le chapitre actuel avant de reset le formulaire
+    const currentChapitre = form.value.chapitre
+
     resetForm()
+
+    // Remettre le chapitre sélectionné pour permettre d'ajouter un autre cours dans le même chapitre
+    form.value.chapitre = currentChapitre
+
     await load()
   } catch (e) {
     console.error('[AdminCours] Erreur:', e)
@@ -673,6 +696,15 @@ function getContextCodeByChapitre(chapitreId) {
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.filter-input {
+  margin-bottom: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   font-size: 0.875rem;

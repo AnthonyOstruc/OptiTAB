@@ -49,10 +49,11 @@ Instructions: Quiz sur les intégrales simples
     </div>
 
     <div class="bulk-form">
+      <input v-model="chapitreFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
       <div class="form-row">
         <select v-model="selectedChapitre" required class="chapter-select">
           <option disabled value="">📚 Choisir le chapitre</option>
-          <option v-for="c in chapitres" :key="c.id" :value="c.id">
+          <option v-for="c in filteredChapitres" :key="c.id" :value="c.id">
             {{ formatChapitreOption(c) }}
           </option>
         </select>
@@ -219,6 +220,7 @@ import { createQuiz, createQuizImage, updateQuiz } from '@/api/quiz'
 
 const chapitres = ref([])
 const notions = ref([])
+const chapitreFilter = ref('')
 const selectedChapitre = ref('')
 const rawInput = ref('')
 const successMsg = ref('')
@@ -505,6 +507,17 @@ async function load() {
   }
 }
 
+// Chapitres filtrés (par texte seulement)
+const filteredChapitres = computed(() => {
+  if (!chapitreFilter.value) {
+    return chapitres.value
+  }
+  const filter = chapitreFilter.value.toLowerCase()
+  return chapitres.value.filter(chapitre =>
+    formatChapitreOption(chapitre).toLowerCase().includes(filter)
+  )
+})
+
 onMounted(load)
 
 function getNotionName(id) {
@@ -745,9 +758,15 @@ async function handleCreate() {
       errorMsg.value = `Certains quiz n'ont pas pu être créés : ${errors.join(' | ')}`
     }
     
+    // Sauvegarder le chapitre actuel avant de nettoyer le formulaire
+    const currentChapitre = selectedChapitre.value
+
     successMsg.value = message
     rawInput.value = ''
     previewList.value = []
+
+    // Remettre le chapitre sélectionné pour permettre d'ajouter d'autres quiz dans le même chapitre
+    selectedChapitre.value = currentChapitre
     
   } catch (e) {
     console.error('Erreur création:', e)
@@ -930,6 +949,15 @@ function renderWithImages(text, imageString) {
   flex-direction: column;
   gap: 1rem;
   max-width: 1000px;
+}
+
+.filter-input {
+  margin-bottom: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
 }
 
 .form-row {

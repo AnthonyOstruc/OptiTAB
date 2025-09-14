@@ -55,9 +55,10 @@ Solution:
     </div>
 
     <div class="bulk-form">
+      <input v-model="chapitreFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
       <select v-model="selectedChapitre" required>
         <option disabled value="">Choisir chapitre</option>
-        <option v-for="c in chapitres" :key="c.id" :value="c.id">{{ formatChapitreOption(c) }}</option>
+        <option v-for="c in filteredChapitres" :key="c.id" :value="c.id">{{ formatChapitreOption(c) }}</option>
       </select>
 
       <!-- Upload d'images -->
@@ -125,7 +126,7 @@ Solution:
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { getChapitres, getNotions, createExercice, createExerciceImage } from '@/api'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 
@@ -143,6 +144,7 @@ const IMAGE_MARKER_REGEX = /\[IMAGE_(\d+)\]/g
 
 const chapitres = ref([])
 const notions = ref([])
+const chapitreFilter = ref('')
 const selectedChapitre = ref('')
 const rawInput = ref('')
 const successMsg = ref('')
@@ -664,13 +666,19 @@ async function handleCreate() {
       if (errors.length > 0) {
         successMsg.value += ` (${errors.length} erreur(s) mineure(s))`
       }
-      
+
+      // Sauvegarder le chapitre actuel avant de nettoyer le formulaire
+      const currentChapitre = selectedChapitre.value
+
       // Nettoyer le formulaire
       rawInput.value = ''
       imageManager.cleanup()
       selectedImages.value = []
       if (imagesInput.value) imagesInput.value.value = ''
       previewList.value = []
+
+      // Remettre le chapitre sélectionné pour permettre d'ajouter d'autres exercices dans le même chapitre
+      selectedChapitre.value = currentChapitre
     }
     
     if (errors.length > 0) {
@@ -694,6 +702,21 @@ function handlePreview() {
 }
 
 // ============================================================================
+// COMPUTED PROPERTIES
+// ============================================================================
+
+// Chapitres filtrés (par texte seulement)
+const filteredChapitres = computed(() => {
+  if (!chapitreFilter.value) {
+    return chapitres.value
+  }
+  const filter = chapitreFilter.value.toLowerCase()
+  return chapitres.value.filter(chapitre =>
+    formatChapitreOption(chapitre).toLowerCase().includes(filter)
+  )
+})
+
+// ============================================================================
 // LIFECYCLE
 // ============================================================================
 
@@ -710,6 +733,7 @@ onMounted(load)
 .bulk-form{display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem;}
 .bulk-form select,.bulk-form textarea{padding:0.75rem;border:1px solid #d1d5db;border-radius:6px;font-size:1rem;}
 .bulk-form textarea{min-height:200px;resize:vertical;}
+.filter-input{margin-bottom:0.5rem;width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:6px;font-size:1rem;}
 .btn-group{display:flex;gap:1rem;}
 .btn-primary{background:#3b82f6;color:#fff;border:none;padding:0.75rem 1.5rem;border-radius:6px;cursor:pointer;font-weight:600;}
 .btn-secondary{background:#6b7280;color:#fff;border:none;padding:0.75rem 1.5rem;border-radius:6px;cursor:pointer;}

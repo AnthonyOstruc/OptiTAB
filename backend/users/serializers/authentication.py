@@ -17,6 +17,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 import random
 import logging
+from django.utils import timezone
 
 from ..models import CustomUser
 
@@ -90,19 +91,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        """
-        Create user with email verification.
-        
-        Returns:
-            CustomUser: Created user instance with verification code
-        """
+        """Create user and activate immediately (no email verification)."""
         # Remove confirmation field
         validated_data.pop('password_confirmation')
         
-        # Generate secure verification code
-        verification_code = self._generate_verification_code()
-        
-        # Create user
         user = CustomUser.objects.create_user(
             email=validated_data['email'],
             first_name=validated_data['first_name'],
@@ -111,12 +103,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             date_naissance=validated_data.get('date_naissance'),
             telephone=validated_data.get('telephone'),
             password=validated_data['password'],
-            is_active=False,
-            verification_code=verification_code
+            is_active=True,
+            verification_code=None,
+            verification_code_sent_at=None
         )
-        
-        # Send verification email
-        self._send_verification_email(user, verification_code)
         
         logger.info(f"New user registration: {user.email}")
         return user
@@ -167,63 +157,4 @@ L'équipe OptiTAB
         """.strip()
 
 
-class EmailVerificationSerializer(serializers.Serializer):
-    """
-    Professional email verification serializer.
-    
-    Features:
-        - Secure code validation
-        - Account activation
-        - Clean error handling
-    """
-    
-    email = serializers.EmailField(
-        help_text="Email address of the account to verify"
-    )
-    verification_code = serializers.CharField(
-        max_length=6,
-        min_length=6,
-        help_text="6-digit verification code sent by email"
-    )
-
-    def validate(self, data):
-        """Validate email and verification code combination."""
-        try:
-            user = CustomUser.objects.get(email__iexact=data['email'])
-        except CustomUser.DoesNotExist:
-            raise serializers.ValidationError({
-                'email': 'Aucun compte trouvé avec cette adresse email.'
-            })
-        
-        if user.is_active:
-            raise serializers.ValidationError({
-                'email': 'Ce compte est déjà activé.'
-            })
-        
-        if not user.verification_code:
-            raise serializers.ValidationError({
-                'verification_code': 'Aucun code de vérification en attente.'
-            })
-        
-        if user.verification_code != data['verification_code']:
-            raise serializers.ValidationError({
-                'verification_code': 'Code de vérification incorrect.'
-            })
-        
-        data['user'] = user
-        return data
-
-    def save(self, **kwargs):
-        """Activate user account and clear verification code."""
-        user = self.validated_data['user']
-        user.is_active = True
-        user.verification_code = None
-        user.save(update_fields=['is_active', 'verification_code'])
-        
-        logger.info(f"Email verified and account activated: {user.email}")
-        return user
-
-
-# Compatibility aliases for existing code
 RegisterSerializer = UserRegistrationSerializer
-VerifyCodeSerializer = EmailVerificationSerializer

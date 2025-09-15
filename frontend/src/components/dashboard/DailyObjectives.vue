@@ -8,7 +8,7 @@
     </div>
 
     <!-- Affichage de l'objectif actuel seulement -->
-    <div v-if="isInitialized && currentObjective" class="current-objective" :key="forceUpdate">
+    <div v-if="isInitialized && currentObjective" class="current-objective">
       <div class="objective-icon">{{ currentObjective.icon }}</div>
       <div class="objective-content">
         <div class="objective-text">{{ currentObjective.text }}</div>
@@ -115,6 +115,7 @@ import { useDailyObjectives } from '@/composables/useDailyObjectives'
 import XPRewardNotification from '@/components/notifications/XPRewardNotification.vue'
 
 const showModal = ref(false)
+const DEBUG = import.meta.env && (import.meta.env.DEV || import.meta.env.MODE !== 'production')
 
 // Utiliser le composable pour les objectifs journaliers
 const {
@@ -134,18 +135,13 @@ const {
   simulateQuizStreak
 } = useDailyObjectives()
 
-// Force de mise à jour pour la réactivité
-const forceUpdate = ref(0)
-
 // Calculer le nombre de défis complétés
 const completedObjectivesCount = computed(() => {
-  forceUpdate.value // Forcer la re-évaluation
   return unlockedObjectivesList.value.filter(obj => obj.isCompleted).length
 })
 
 // Calculer le total des XP gagnés aujourd'hui
 const totalXPEarned = computed(() => {
-  forceUpdate.value // Forcer la re-évaluation
   return unlockedObjectivesList.value
     .filter(obj => obj.isCompleted)
     .reduce((total, obj) => total + obj.xpReward, 0)
@@ -172,10 +168,8 @@ const getObjectiveProgress = (objective) => {
 
 // Computed pour le pourcentage de l'objectif actuel (réactif)
 const currentObjectivePercentage = computed(() => {
-  forceUpdate.value // Forcer la re-évaluation
-  
   if (!currentObjective.value) {
-    console.log(`🎯 [DailyObjectives] Aucun objectif actuel`)
+    if (DEBUG) console.debug(`🎯 [DailyObjectives] Aucun objectif actuel`)
     return 0
   }
   
@@ -183,9 +177,10 @@ const currentObjectivePercentage = computed(() => {
   const target = currentObjective.value.target
   const percentage = Math.min((progress / target) * 100, 100)
   
-  console.log(`🎯 [DailyObjectives] Calcul pourcentage réactif: ${progress}/${target} = ${percentage}%`)
-  console.log(`🎯 [DailyObjectives] Objectif actuel:`, currentObjective.value)
-  console.log(`🎯 [DailyObjectives] forceUpdate:`, forceUpdate.value)
+  if (DEBUG) {
+    console.debug(`🎯 [DailyObjectives] Calcul pourcentage réactif: ${progress}/${target} = ${percentage}%`)
+    console.debug(`🎯 [DailyObjectives] Objectif actuel:`, currentObjective.value)
+  }
   
   return percentage
 })
@@ -219,67 +214,36 @@ const testQuizStreak = () => simulateQuizStreak(Math.floor(Math.random() * 8) + 
 
 // Mise à jour en temps réel des objectifs
 const handleObjectiveProgress = (event) => {
-  console.log('🎯 [DailyObjectives] Progression mise à jour:', event.detail)
-  // Forcer la mise à jour de l'interface
-  forceUpdate.value++
+  if (DEBUG) console.debug('🎯 [DailyObjectives] Progression mise à jour:', event.detail)
   // Recharger les stats pour s'assurer de la synchronisation
   loadTodayStats()
   
   // Log du pourcentage après mise à jour
   setTimeout(() => {
     if (currentObjective.value) {
-      console.log('🎯 [DailyObjectives] Objectif après mise à jour:', {
-        progress: currentObjective.value.progress,
-        target: currentObjective.value.target,
-        percentage: currentObjective.value.percentage,
-        calculatedPercentage: getCurrentObjectivePercentage()
-      })
+      if (DEBUG) {
+        console.debug('🎯 [DailyObjectives] Objectif après mise à jour:', {
+          progress: currentObjective.value.progress,
+          target: currentObjective.value.target,
+          percentage: currentObjective.value.percentage,
+          calculatedPercentage: getCurrentObjectivePercentage()
+        })
+      }
     }
   }, 100)
 }
 
 // Gérer les objectifs débloqués
 const handleObjectiveUnlocked = (event) => {
-  console.log('🎯 [DailyObjectives] Nouvel objectif débloqué:', event.detail)
-  // Forcer la mise à jour de l'interface
-  forceUpdate.value++
+  if (DEBUG) console.debug('🎯 [DailyObjectives] Nouvel objectif débloqué:', event.detail)
 }
 
 // Gérer les objectifs complétés
 const handleObjectiveCompleted = (event) => {
-  console.log('🎯 [DailyObjectives] Objectif complété:', event.detail)
-  // Forcer la mise à jour de l'interface
-  forceUpdate.value++
+  if (DEBUG) console.debug('🎯 [DailyObjectives] Objectif complété:', event.detail)
 }
 
-// Watcher pour détecter les changements dans userStats
-watch(userStats, (newStats, oldStats) => {
-  console.log('🎯 [DailyObjectives] userStats changé:', { newStats, oldStats })
-  forceUpdate.value++
-}, { deep: true })
-
-// Watcher pour détecter les changements dans unlockedObjectives
-watch(unlockedObjectives, (newUnlocked, oldUnlocked) => {
-  console.log('🎯 [DailyObjectives] unlockedObjectives changé:', { newUnlocked, oldUnlocked })
-  forceUpdate.value++
-}, { deep: true })
-
-// Polling pour s'assurer de la synchronisation
-let pollInterval = null
-
-const startPolling = () => {
-  pollInterval = setInterval(() => {
-    loadTodayStats()
-    forceUpdate.value++
-  }, 2000) // Toutes les 2 secondes
-}
-
-const stopPolling = () => {
-  if (pollInterval) {
-    clearInterval(pollInterval)
-    pollInterval = null
-  }
-}
+// Suppression du polling et des watchers artificiels : la réactivité de Vue suffit
 
 // Écouter les mises à jour de progression
 onMounted(() => {
@@ -288,23 +252,19 @@ onMounted(() => {
   window.addEventListener('dailyObjectiveCompleted', handleObjectiveCompleted)
   
   // Log de debug au montage
-  console.log('🎯 [DailyObjectives] Composant monté:', {
-    userStats: userStats.value,
-    currentObjective: currentObjective.value,
-    unlockedObjectives: unlockedObjectives.value
-  })
-  
-  // Démarrer le polling pour la synchronisation
-  startPolling()
+  if (DEBUG) {
+    console.debug('🎯 [DailyObjectives] Composant monté:', {
+      userStats: userStats.value,
+      currentObjective: currentObjective.value,
+      unlockedObjectives: unlockedObjectives.value
+    })
+  }
 })
 
 onUnmounted(() => {
   window.removeEventListener('dailyObjectiveProgress', handleObjectiveProgress)
   window.removeEventListener('objectiveUnlocked', handleObjectiveUnlocked)
   window.removeEventListener('dailyObjectiveCompleted', handleObjectiveCompleted)
-  
-  // Arrêter le polling
-  stopPolling()
 })
 
 // Exposer les fonctions de test pour le développement

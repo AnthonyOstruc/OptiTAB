@@ -217,7 +217,7 @@ async function handleCreateChild() {
 </script>
 
 <style scoped>
-.parent-dashboard { margin: 1rem 0 1.5rem; }
+.parent-dashboard { margin: 1rem 0 1.5rem; padding-bottom: 40px; }
 .header h1 { margin: 0; font-size: 1.5rem; font-weight: 800; color: #1f2937; }
 .subtitle { margin: .25rem 0 0; color: #64748b; }
 

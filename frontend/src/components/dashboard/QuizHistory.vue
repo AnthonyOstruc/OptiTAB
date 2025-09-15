@@ -414,7 +414,9 @@ const loadQuizCooldowns = async () => {
       }
     }
   } catch (error) {
-    console.error('Erreur lors du chargement des cooldowns:', error)
+    if (import.meta.env && import.meta.env.DEV) {
+      console.error('Erreur lors du chargement des cooldowns:', error)
+    }
   } finally {
     cooldownLoading.value = false
   }
@@ -435,11 +437,11 @@ const loadReferenceData = async () => {
     // Utiliser les endpoints spécialisés qui filtrent automatiquement selon l'utilisateur
     const [mResponse, tnResponse, nResponse, cResponse] = await Promise.all([
       // Matières pour l'utilisateur (endpoint spécialisé)
-      apiClient.get('/api/matieres/user_matieres/'),
+      apiClient.get('/api/matieres/user_matieres/', { timeout: 20000 }).catch(() => apiClient.get('/api/matieres/user_matieres/')),
       // Thèmes + Notions pour utilisateur (donne le lien thème -> matière)
-      apiClient.get('/api/themes/notions-pour-utilisateur/'),
+      apiClient.get('/api/themes/notions-pour-utilisateur/', { timeout: 20000 }).catch(() => apiClient.get('/api/themes/notions-pour-utilisateur/')),
       // Notions - essayer d'abord l'endpoint spécialisé, puis l'endpoint général
-      getNotions({}).catch(() => apiClient.get('/api/notions/pour-utilisateur/')),
+      getNotions({}).catch(() => apiClient.get('/api/notions/pour-utilisateur/', { timeout: 20000 })),
       // Chapitres via l'endpoint général mais on filtrera côté client
       getChapitres({})
     ])
@@ -522,7 +524,7 @@ const loadQuizData = async () => {
     if (selectedNotion.value) params.notion = selectedNotion.value
     if (selectedChapitre.value) params.chapitre = selectedChapitre.value
     
-    const response = await apiClient.get('/api/suivis/quiz/stats/', { params })
+    const response = await apiClient.get('/api/suivis/quiz/stats/', { params, timeout: 20000 })
     const data = response.data
     
     globalStats.value = data.global_stats || { completed: 0, average: 0, masteredNotions: 0 }

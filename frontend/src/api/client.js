@@ -41,12 +41,25 @@ function resolveBaseUrl() {
  * Configuration centralisée et flexible pour l'API
  */
 const isProd = (import.meta.env.PROD || import.meta.env.MODE === 'production')
+// Détecter si on utilise le backend Render (peut être lent à démarrer → augmenter les timeouts)
+const __BASE_URL__ = resolveBaseUrl()
+const isRemoteDev = (!isProd) && (import.meta.env.VITE_USE_REMOTE_IN_DEV === 'true')
+const isRenderBase = (__BASE_URL__ || '').includes('onrender.com')
+
+// Configuration de logs basée sur l'environnement
+const envLogLevel = (import.meta.env.VITE_API_LOG_LEVEL || '').toLowerCase()
+const envLogsEnabled = (import.meta.env.VITE_API_LOGS === 'true') || import.meta.env.DEV
+const effectiveLogLevel = ['debug', 'info', 'warn', 'error'].includes(envLogLevel)
+  ? envLogLevel
+  : (import.meta.env.DEV ? 'warn' : 'error')
+
 const API_CONFIG = {
-  BASE_URL: resolveBaseUrl(),
+  BASE_URL: __BASE_URL__,
   REFRESH_ENDPOINT: '/api/users/token/refresh/',
   
   // Timeouts (plus courts en prod pour une UI réactive)
-  REQUEST_TIMEOUT: isProd ? 8000 : 10000,
+  // Si on cible Render (dev distant ou base Render), augmenter le timeout pour absorber le cold-start
+  REQUEST_TIMEOUT: (isRemoteDev || isRenderBase) ? 30000 : (isProd ? 8000 : 20000),
   REFRESH_TIMEOUT: isProd ? 4000 : 5000,
   
   // Retry configuration (moins d'essais en prod pour ne pas bloquer l'UI)
@@ -55,8 +68,8 @@ const API_CONFIG = {
   
   // Logging configuration
   LOGGING: {
-    ENABLED: import.meta.env.DEV, // Actif uniquement en développement
-    LEVEL: import.meta.env.DEV ? 'debug' : 'error', // Niveau de log
+    ENABLED: envLogsEnabled, // Activable via VITE_API_LOGS="true" ou auto en dev
+    LEVEL: effectiveLogLevel, // Surchargable via VITE_API_LOG_LEVEL (debug|info|warn|error)
     SENSITIVE_FIELDS: ['password', 'token', 'refresh', 'access'], // Champs sensibles à masquer
   },
   
@@ -223,6 +236,26 @@ class TokenManager {
     this.refreshSubscribers = []
     this.refreshPromise = null
   }
+
+  /**
+   * Décode en toute sécurité le payload d'un JWT (base64url → JSON)
+   * Retourne null en cas d'erreur.
+   */
+  decodeJwt(token) {
+    try {
+      if (!token) return null
+      const parts = token.split('.')
+      if (parts.length < 2) return null
+      let base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/')
+      const pad = base64.length % 4
+      if (pad) base64 += '='.repeat(4 - pad)
+      const json = atob(base64)
+      return JSON.parse(json)
+    } catch (error) {
+      ApiLogger.warn('Impossible de décoder le token JWT', { error: error.message })
+      return null
+    }
+  }
   
   /**
    * Récupère le token d'accès depuis le localStorage
@@ -263,15 +296,11 @@ class TokenManager {
    */
   isTokenExpired(token) {
     if (!token) return true
-    
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]))
-      const currentTime = Date.now() / 1000
-      return payload.exp < currentTime
-    } catch (error) {
-      ApiLogger.warn('Impossible de décoder le token JWT', { error: error.message })
-      return true
-    }
+    const payload = this.decodeJwt(token)
+    // Si on ne peut pas décoder, supposer valide pour laisser le serveur décider
+    if (!payload || typeof payload.exp !== 'number') return false
+    const currentTime = Math.floor(Date.now() / 1000)
+    return payload.exp < currentTime
   }
   
   /**
@@ -375,17 +404,11 @@ class TokenManager {
    */
   shouldRefreshToken(token, thresholdMinutes = 5) {
     if (!token) return false
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]))
-      const currentTime = Date.now() / 1000
-      const thresholdTime = thresholdMinutes * 60 // convertir en secondes
-
-      return (payload.exp - currentTime) <= thresholdTime
-    } catch (error) {
-      ApiLogger.warn('Impossible de vérifier l\'expiration du token', { error: error.message })
-      return false
-    }
+    const payload = this.decodeJwt(token)
+    if (!payload || typeof payload.exp !== 'number') return false
+    const currentTime = Math.floor(Date.now() / 1000)
+    const thresholdTime = thresholdMinutes * 60 // convertir en secondes
+    return (payload.exp - currentTime) <= thresholdTime
   }
 
   /**

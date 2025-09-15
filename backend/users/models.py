@@ -54,6 +54,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     # Vérification email
     verification_code = models.CharField(max_length=6, blank=True, null=True)
+    verification_code_sent_at = models.DateTimeField(null=True, blank=True)
     
     # Timestamps automatiques
     date_joined = models.DateTimeField(default=timezone.now)

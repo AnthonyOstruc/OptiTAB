@@ -40,11 +40,24 @@ onMounted(async () => {
       return // Navigation automatique effectuée
     }
 
-    // Charger les matières pour affichage (filtrées par niveau)
-    const niveauId = userStore.niveau_pays?.id
-    const { data } = await getMatieres(niveauId)
-    matieres.value = data
-    console.log(`[OnlineCourses] Matières chargées pour niveau ${niveauId}:`, matieres.value.length)
+    // Charger les matières pour affichage
+    const { data } = await getMatieres()
+    matieres.value = Array.isArray(data) ? data : (data?.results || [])
+    // Exposer au cache global léger pour fallback
+    try { window.__SUBJECTS_CACHE__ = matieres.value } catch (_) {}
+
+    // Première visite: choisir Mathématiques par défaut si rien d'actif
+    if (!subjectsStore.activeMatiereId && matieres.value.length > 0) {
+      const normalize = (s) => (s || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+      const math = matieres.value.find(m => normalize(m.nom || m.titre).includes('mathem'))
+      const chosen = math || matieres.value[0]
+      await subjectsStore.addMatiereId(chosen.id)
+      await subjectsStore.setActiveMatiere(chosen.id)
+      await router.push({ name: 'CourseNotions', params: { matiereId: chosen.id } })
+      return
+    }
+
+    console.log(`[OnlineCourses] Matières chargées:`, matieres.value.length)
   } catch (e) {
     matieres.value = []
   }

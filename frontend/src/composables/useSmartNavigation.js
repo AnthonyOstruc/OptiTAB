@@ -185,7 +185,8 @@ export const useSmartNavigation = () => {
     const routeGenerators = {
       'exercises': (id) => ({ name: 'Notions', params: { matiereId: id } }),
       'quiz': (id) => ({ name: 'QuizNotions', params: { matiereId: id } }),
-      'sheets': (id) => ({ name: 'Sheets', query: { matiereId: id } })
+      'sheets': (id) => ({ name: 'Sheets', query: { matiereId: id } }),
+      'onlinecourses': (id) => ({ name: 'CourseNotions', params: { matiereId: id } })
     }
 
     const generator = routeGenerators[sectionName.toLowerCase()]
@@ -277,7 +278,25 @@ export const useSmartNavigation = () => {
       // Si la route actuelle a besoin d'une matière mais qu'on en a pas
       if (currentRouteNeedsMatiere.value && !matiereIdFromRoute.value) {
         // Essayer d'obtenir une matière intelligemment
-      const smartMatiereId = await subjectsStore.getOrSetSmartActiveMatiere(subjectsStore.selectedMatieresIds)
+        let smartMatiereId = await subjectsStore.getOrSetSmartActiveMatiere(subjectsStore.selectedMatieresIds)
+        
+        // Fallback première connexion: choisir automatiquement "Mathématiques" ou la première matière dispo
+        if (!smartMatiereId) {
+          try {
+            const api = await import('@/api')
+            const resp = await api.getMatieres()
+            const list = Array.isArray(resp?.data) ? resp.data : (resp?.data?.results || [])
+            const normalize = (s) => (s || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+            const math = list.find(m => normalize(m.nom || m.titre).includes('mathem'))
+            const chosen = math || list[0]
+            if (chosen?.id) {
+              smartMatiereId = chosen.id
+              // Définir et mémoriser
+              subjectsStore.addMatiereId(chosen.id)
+              subjectsStore.setActiveMatiere(chosen.id)
+            }
+          } catch (_) {}
+        }
         
         if (smartMatiereId) {
           // Rediriger vers la même section mais avec la matière

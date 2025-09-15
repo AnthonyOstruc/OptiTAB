@@ -15,15 +15,20 @@ Classes:
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from core.services import ResponseService
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils import timezone
+from datetime import timedelta
+import random
+from users.models import CustomUser
 import logging
 
 from ..serializers.authentication import (
     UserRegistrationSerializer,
-    EmailVerificationSerializer
 )
 from ..serializers.token_serializers import CustomTokenObtainPairSerializer
 
@@ -46,10 +51,10 @@ class UserRegistrationView(generics.CreateAPIView):
     
     def create(self, request, *args, **kwargs):
         """
-        Create new user account with email verification.
+        Create new user account and return JWT tokens for immediate login.
         
         Returns:
-            201: User created successfully, verification email sent
+            201: User created successfully with tokens
             400: Validation errors
         """
         serializer = self.get_serializer(data=request.data)
@@ -59,16 +64,20 @@ class UserRegistrationView(generics.CreateAPIView):
             
             logger.info(f"New user registration: {user.email}")
             
+            # Generate JWT tokens for immediate login
+            refresh = RefreshToken.for_user(user)
+            token_payload = {
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user_id': user.id,
+                'email': user.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'is_staff': user.is_staff,
+            }
             return ResponseService.success(
-                message=(
-                    "Compte créé avec succès. "
-                    "Vérifiez votre email pour activer votre compte."
-                ),
-                data={
-                    'user_id': user.id,
-                    'email': user.email,
-                    'verification_required': True
-                },
+                message="Compte créé et connecté",
+                data=token_payload,
                 status_code=status.HTTP_201_CREATED
             )
         
@@ -110,43 +119,105 @@ class CustomLoginView(TokenObtainPairView):
         return response
 
 
-class EmailVerificationView(APIView):
-    """
-    Professional email verification endpoint.
-    
-    Features:
-        - Secure code validation
-        - Account activation
-        - Clear success/error responses
-    """
-    
-    permission_classes = [AllowAny]
-    
+class EmailVerificationSendView(APIView):
+    """Envoie un code de vérification à l'email de l'utilisateur connecté."""
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-        """
-        Verify email with verification code.
-        
-        Returns:
-            200: Email verified, account activated
-            400: Invalid code or validation errors
-        """
-        serializer = EmailVerificationSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            user = serializer.save()
-            
-            logger.info(f"Email verified: {user.email}")
-            
-            return ResponseService.success(
-                message="Email vérifié avec succès. Votre compte est maintenant actif.",
-                data={
-                    'user_id': user.id,
-                    'email': user.email,
-                    'is_active': user.is_active
-                }
+        user: CustomUser = request.user
+        try:
+            # Si déjà vérifié, répondre gentiment (idempotent)
+            if user.is_active:
+                return ResponseService.success(
+                    message="Email déjà vérifié",
+                )
+
+            # Limite simple: ne pas renvoyer plus d'une fois par minute
+            if user.verification_code_sent_at and (timezone.now() - user.verification_code_sent_at) < timedelta(minutes=1):
+                return ResponseService.error(
+                    message="Veuillez patienter une minute avant de renvoyer un code",
+                    status_code=429
+                )
+
+            # Générer un code 6 chiffres
+            code = str(random.randint(100000, 999999))
+            user.verification_code = code
+            user.verification_code_sent_at = timezone.now()
+            user.save(update_fields=["verification_code", "verification_code_sent_at"]) 
+
+            # Envoyer l'email
+            subject = 'Code de vérification OptiTAB'
+            message = (
+                f"Bonjour {user.first_name or ''},\n\n"
+                f"Votre code de vérification est: {code}\n\n"
+                "Ce code expirera dans 24 heures.\n\n"
+                "Cordialement,\nL'équipe OptiTAB"
             )
-        
-        return ResponseService.validation_error(serializer.errors)
+            from_email = settings.DEFAULT_FROM_EMAIL
+            try:
+                send_mail(subject, message, from_email, [user.email])
+            except Exception:
+                # Continuer même si l'email échoue (afficher message côté client)
+                pass
+
+            return ResponseService.success(
+                message="Code de vérification envoyé",
+            )
+        except Exception as e:
+            return ResponseService.error(
+                message=f"Erreur lors de l'envoi du code: {e}",
+                status_code=500
+            )
+
+
+class EmailVerificationConfirmView(APIView):
+    """Vérifie le code et active le compte utilisateur."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user: CustomUser = request.user
+        try:
+            code = str(request.data.get('code') or '').strip()
+            if not code or len(code) != 6:
+                return ResponseService.error(
+                    message="Code invalide",
+                    status_code=400
+                )
+
+            if not user.verification_code or not user.verification_code_sent_at:
+                return ResponseService.error(
+                    message="Aucun code actif. Veuillez renvoyer un code.",
+                    status_code=400
+                )
+
+            # Expiration 24h
+            if (timezone.now() - user.verification_code_sent_at) > timedelta(hours=24):
+                return ResponseService.error(
+                    message="Code expiré. Veuillez renvoyer un nouveau code.",
+                    status_code=400
+                )
+
+            if code != user.verification_code:
+                return ResponseService.error(
+                    message="Code incorrect",
+                    status_code=400
+                )
+
+            # Activer le compte et nettoyer
+            user.is_active = True
+            user.verification_code = None
+            user.verification_code_sent_at = None
+            user.save(update_fields=["is_active", "verification_code", "verification_code_sent_at"]) 
+
+            return ResponseService.success(
+                message="Email vérifié avec succès",
+                data={"is_active": True}
+            )
+        except Exception as e:
+            return ResponseService.error(
+                message=f"Erreur lors de la vérification: {e}",
+                status_code=500
+            )
 
 
 class UserLogoutView(APIView):
@@ -237,5 +308,6 @@ class PasswordResetView(APIView):
 
 # Professional aliases for consistency and backward compatibility
 RegisterView = UserRegistrationView
-VerifyCodeView = EmailVerificationView
+# Backward compat: old name pointed to verify; map to new confirm view
+VerifyCodeView = EmailVerificationConfirmView
 LogoutView = UserLogoutView

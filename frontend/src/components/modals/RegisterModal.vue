@@ -200,10 +200,16 @@ export default {
 
       try {
         const response = await registerUser(payload)
-        // Si le backend renvoie les infos utilisateur, on les mémorise dans Pinia
+        // Sauvegarder les tokens si présents, puis mettre à jour le store
         if (response && response.data) {
-          const userData = response.data?.data || response.data
-          userStore.setUser(userData)
+          const data = response.data?.data || response.data
+          const access = data.access
+          const refresh = data.refresh
+          if (access && refresh) {
+            localStorage.setItem('access_token', access)
+            localStorage.setItem('refresh_token', refresh)
+          }
+          userStore.setUser(data)
         }
         showFeedback('Compte créé avec succès!', 'success')
         emit('register', { ...payload })

@@ -36,7 +36,7 @@ export const getThemesWithNotionsForUser = async (params = {}) => {
   const matiere = query?.matiere
   const [themesRes, notionsRes] = await Promise.all([
     apiUtils.cachedGet('/api/themes/', { params: { matiere }, ttl: 120000, signal }),
-    apiUtils.cachedGet('/api/notions/', { params: { matiere }, ttl: 120000, signal })
+    apiUtils.cachedGet('/api/notions/', { params: { matiere }, ttl: 180000, signal })
   ])
   return { data: { themes: themesRes?.data || [], notions: notionsRes?.data || [] } }
 }

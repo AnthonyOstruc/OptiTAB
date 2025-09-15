@@ -57,13 +57,6 @@
       @login="handleSwitchToLogin"
     />
 
-    <!-- Verify Code Modal -->
-    <VerifyCodeModal
-      :is-open="isVerifyCodeModalOpen"
-      :email="pendingVerifyEmail"
-      @close="closeVerifyCodeModal"
-      @verified="handleVerified"
-    />
 
     <!-- Modal de sélection Pays/Niveau pour nouveaux utilisateurs -->
     <PaysNiveauSelector
@@ -85,7 +78,6 @@ import { useConfigurationModal } from '@/composables/useConfigurationModal'
 import LoginModal from '@/components/modals/LoginModal.vue'
 import RegisterModal from '@/components/modals/RegisterModal.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
-import VerifyCodeModal from '@/components/modals/VerifyCodeModal.vue'
 import PaysNiveauSelector from '@/components/modals/PaysNiveauSelector.vue'
 import Toast from '@/components/common/Toast.vue'
 import { registerUser } from '@/api'
@@ -108,9 +100,7 @@ const {
 // Computed pour le mode développement
 const isDevelopment = computed(() => import.meta.env.DEV)
 
-// State for verify code modal
-const isVerifyCodeModalOpen = ref(false)
-const pendingVerifyEmail = ref('')
+// Verification flow removed
 
 // State for pays/niveau modal
 const isPaysNiveauModalOpen = ref(false)
@@ -162,15 +152,7 @@ const handleConfigurationComplete = () => {
   })
 }
 
-// Verify code modal methods
-const openVerifyCodeModal = (email) => {
-  pendingVerifyEmail.value = email
-  isVerifyCodeModalOpen.value = true
-}
-const closeVerifyCodeModal = () => {
-  isVerifyCodeModalOpen.value = false
-  pendingVerifyEmail.value = ''
-}
+// Verification flow removed
 
 // Login handlers
 const handleLogin = (loginData) => {
@@ -193,9 +175,6 @@ const handleForgotPassword = () => {
 const handleRegister = async (registerData) => {
   if (registerData.provider === 'google') {
     // Google registration
-  } else {
-    closeRegisterModal()
-    openVerifyCodeModal(registerData.email)
   }
 }
 const handleSwitchToLogin = () => {
@@ -205,10 +184,6 @@ const handleSwitchToLogin = () => {
 }
 const handleTerms = () => {}
 const handlePrivacy = () => {}
-const handleVerified = () => {
-  closeVerifyCodeModal()
-  router.push('/dashboard')
-}
 const handleForgotPasswordSubmit = (forgotPasswordData) => {}
 
 // Logique pour afficher le modal pays/niveau pour les nouveaux utilisateurs

@@ -81,12 +81,16 @@ router.beforeEach(async (to, from, next) => {
   const isTokenExpired = (token) => {
     if (!token) return true
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]))
-      const currentTime = Date.now() / 1000
+      const part = token.split('.')[1]
+      let base64 = part.replace(/-/g, '+').replace(/_/g, '/')
+      const pad = base64.length % 4
+      if (pad) base64 += '='.repeat(4 - pad)
+      const payload = JSON.parse(atob(base64))
+      const currentTime = Math.floor(Date.now() / 1000)
       return payload.exp < currentTime
     } catch (error) {
       console.warn('Impossible de décoder le token JWT', error)
-      return true
+      return false
     }
   }
 

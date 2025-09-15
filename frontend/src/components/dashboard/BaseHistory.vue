@@ -324,9 +324,9 @@ const loadReferenceData = async () => {
       // Matières pour l'utilisateur (endpoint spécialisé)
       apiClient.get('/api/matieres/user_matieres/'),
       // Thèmes + Notions pour utilisateur (donne le lien thème -> matière)
-      apiClient.get('/api/themes/notions-pour-utilisateur/'),
+      apiClient.get('/api/themes/notions-pour-utilisateur/', { timeout: 20000 }).catch(() => apiClient.get('/api/themes/notions-pour-utilisateur/')),
       // Notions - essayer d'abord l'endpoint spécialisé, puis l'endpoint général
-      getNotions({}).catch(() => apiClient.get('/api/notions/pour-utilisateur/')),
+      getNotions({}).catch(() => apiClient.get('/api/notions/pour-utilisateur/', { timeout: 20000 })),
       // Chapitres via l'endpoint général mais on filtrera côté client
       getChapitres({})
     ])

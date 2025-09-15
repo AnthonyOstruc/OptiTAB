@@ -1,5 +1,11 @@
 from django.urls import path, include
-from users.views.authentication_views import UserRegistrationView, CustomLoginView, EmailVerificationView, UserLogoutView
+from users.views.authentication_views import (
+    UserRegistrationView,
+    CustomLoginView,
+    EmailVerificationSendView,
+    EmailVerificationConfirmView,
+    UserLogoutView
+)
 from users.views.profile_views import MeView, UpdateProfileView, UpdateNiveauView, UpdatePaysView, UpdatePaysNiveauView, MeGamificationView, UpdateUserXPView, LeaderboardView, MyChildrenView, ChildOverviewView, AddChildView, RemoveChildView, CreateChildAccountView, MyOverviewView, MyStreaksView, RecommendationsView
 from users.views.social_auth_views import GoogleLoginView
 from rest_framework.routers import DefaultRouter
@@ -31,7 +37,8 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # renouveler le token
     path('password/reset/', reset_password_request_token, name='password_reset'), #reset password
     path('password/reset/confirm/', reset_password_confirm, name='password_reset_confirm'),
-    path('verify-code/', EmailVerificationView.as_view(), name='verify_code'),
+    path('email/send-code/', EmailVerificationSendView.as_view(), name='email_send_code'),
+    path('email/verify-code/', EmailVerificationConfirmView.as_view(), name='email_verify_code'),
     path('logout/', UserLogoutView.as_view(), name='logout'),
     path('me/', MeView.as_view(), name='me'),  # pour obtenir les infos de l'utilisateur connecté
     path('me/gamification/', MeGamificationView.as_view(), name='me_gamification'),

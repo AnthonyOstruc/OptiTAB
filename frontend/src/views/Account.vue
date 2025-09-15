@@ -28,7 +28,17 @@
           <FormInput label="Nom" v-model="form.lastName" id="lastName" required autocomplete="family-name" class="account-input" placeholder="Nom" />
         </div>
         <div class="account-fields-row">
-          <FormInput label="Email" v-model="form.email" id="email" type="email" :disabled="true" autocomplete="email" class="account-input field-wide" placeholder="Email" />
+          <div class="account-field field-wide">
+            <label class="account-label" for="email">Email</label>
+            <div class="email-row">
+              <input class="account-input" id="email" type="email" :value="form.email" disabled autocomplete="email" placeholder="Email" />
+              <button v-if="!userStoreIsActive" type="button" class="verify-btn" @click="openVerificationModal">
+                Vérifier
+              </button>
+              <span v-else class="verified-badge">✔️ Vérifié</span>
+            </div>
+            <p v-if="!userStoreIsActive" class="verify-hint">Votre email n'est pas encore vérifié.</p>
+          </div>
           <FormInput label="Numéro de téléphone" v-model="form.telephone" id="telephone" type="tel" autocomplete="tel" class="account-input field-narrow" placeholder="Numéro de téléphone" />
         </div>
         <div class="account-fields-row">
@@ -61,12 +71,38 @@
       </form>
     </div>
   </DashboardLayout>
+
+  <!-- Modal de vérification email -->
+  <div v-if="showVerifyModal" class="modal-overlay" @click="closeVerificationModal">
+    <div class="modal-card" @click.stop>
+      <div class="modal-header">
+        <h3>Vérification de l'email</h3>
+        <button class="modal-close" @click="closeVerificationModal">×</button>
+      </div>
+      <div class="modal-body">
+        <p>Un code a été envoyé à <strong>{{ form.email }}</strong> depuis <strong>contact@optitab.net</strong>. Veuillez le saisir ci-dessous.</p>
+        <div class="code-inputs">
+          <input v-for="(d, idx) in 6" :key="idx" maxlength="1" inputmode="numeric" pattern="[0-9]*" class="code-input" v-model="codeDigits[idx]" @input="focusNext(idx, $event)" />
+        </div>
+        <p v-if="verifyError" class="verify-error">{{ verifyError }}</p>
+        <p v-if="verifySuccess" class="verify-success">Email vérifié avec succès.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="resend-btn" :disabled="isSending || resendCooldown>0" @click="sendCode">
+          {{ resendCooldown>0 ? `Renvoyer (${resendCooldown}s)` : (isSending ? 'Envoi...' : 'Renvoyer le code') }}
+        </button>
+        <button class="confirm-btn" :disabled="isVerifying" @click="confirmCode">
+          {{ isVerifying ? 'Vérification...' : 'Confirmer' }}
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { updateUserProfile, fetchUserProfile } from '@/api'
+import { updateUserProfile, fetchUserProfile, sendEmailVerificationCode, verifyEmailCode } from '@/api'
 import FormInput from '@/components/forms/FormInput.vue'
 import FormSelect from '@/components/forms/FormSelect.vue'
 import { UserCircleIcon } from '@heroicons/vue/24/outline'
@@ -90,6 +126,16 @@ const form = ref({
 const isSaving = ref(false)
 const successMsg = ref('')
 const errorMsg = ref('')
+
+// Email verification state
+const showVerifyModal = ref(false)
+const isSending = ref(false)
+const isVerifying = ref(false)
+const verifyError = ref('')
+const verifySuccess = ref('')
+const resendCooldown = ref(0)
+const codeDigits = ref(['', '', '', '', '', ''])
+const userStoreIsActive = computed(() => !!userStore && userStore.id && (userStore.isActive || userStore.is_active || false) || (userStore?.isAuthenticated && userStore?.id && userStore?.level >= 0 && userStore?.email))
 
 const fillForm = (user) => {
   // Backend expects 'M' or 'Mme'. If older human-readable value slipped in, map it.
@@ -158,6 +204,67 @@ const handleSubmit = async () => {
     }
   } finally {
     isSaving.value = false
+  }
+}
+
+function openVerificationModal() {
+  verifyError.value = ''
+  verifySuccess.value = ''
+  codeDigits.value = ['','','','','','']
+  showVerifyModal.value = true
+  // Envoyer le code immédiatement
+  sendCode()
+}
+
+function closeVerificationModal() {
+  showVerifyModal.value = false
+}
+
+async function sendCode() {
+  try {
+    if (resendCooldown.value > 0) return
+    isSending.value = true
+    await sendEmailVerificationCode()
+    verifyError.value = ''
+    verifySuccess.value = 'Code envoyé. Vérifiez votre boîte mail.'
+    // Cooldown 60s
+    resendCooldown.value = 60
+    const timer = setInterval(() => {
+      resendCooldown.value--
+      if (resendCooldown.value <= 0) clearInterval(timer)
+    }, 1000)
+  } catch (e) {
+    verifyError.value = e?.response?.data?.message || 'Impossible d\'envoyer le code. Réessayez plus tard.'
+    verifySuccess.value = ''
+  } finally {
+    isSending.value = false
+  }
+}
+
+function focusNext(idx, evt) {
+  const val = evt.target.value.replace(/[^0-9]/g, '')
+  codeDigits.value[idx] = val
+  if (val && idx < 5) {
+    const inputs = evt.target.parentElement.querySelectorAll('.code-input')
+    inputs[idx + 1]?.focus()
+  }
+}
+
+async function confirmCode() {
+  try {
+    isVerifying.value = true
+    verifyError.value = ''
+    verifySuccess.value = ''
+    const code = codeDigits.value.join('')
+    const res = await verifyEmailCode(code)
+    verifySuccess.value = 'Email vérifié avec succès.'
+    // Rafraîchir le profil pour mettre à jour is_active
+    await userStore.fetchUser()
+    showVerifyModal.value = false
+  } catch (e) {
+    verifyError.value = e?.response?.data?.message || 'Code invalide. Réessayez.'
+  } finally {
+    isVerifying.value = false
   }
 }
 </script>
@@ -264,6 +371,45 @@ const handleSubmit = async () => {
   gap: 1.2rem;
   margin-top: 1.2rem;
 }
+
+/* Email verify UI */
+.email-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.verify-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.verified-badge {
+  color: #16a34a;
+  font-weight: 800;
+}
+.verify-hint { color: #6b7280; font-size: 0.85rem; margin-top: 0.3rem; }
+.verify-error { color: #dc2626; font-weight: 600; margin-top: 0.5rem; }
+.verify-success { color: #16a34a; font-weight: 600; margin-top: 0.5rem; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center; z-index: 9999;
+}
+.modal-card { background: #fff; border-radius: 12px; width: 90%; max-width: 460px; padding: 1rem; }
+.modal-header { display:flex; align-items:center; justify-content: space-between; margin-bottom: .5rem; }
+.modal-header h3 { margin: 0; color: #193e8e; }
+.modal-close { background:none; border:none; font-size:1.5rem; cursor:pointer; }
+.modal-body { padding: .5rem 0 1rem 0; }
+.code-inputs { display:flex; gap:.5rem; justify-content:center; margin-top:.5rem; }
+.code-input { width: 46px; height: 50px; text-align:center; font-size: 1.25rem; border:2px solid #e5e7eb; border-radius:8px; }
+.modal-actions { display:flex; justify-content: space-between; gap:.75rem; }
+.confirm-btn { background:#16a34a; color:#fff; border:none; border-radius:8px; padding:.6rem 1.1rem; font-weight:700; cursor:pointer; }
+.resend-btn { background:#f3f4f6; color:#111827; border:none; border-radius:8px; padding:.6rem 1.1rem; font-weight:700; cursor:pointer; }
 .account-save-btn {
   background: #6366f1;
   color: #fff;

@@ -143,6 +143,7 @@ function onNotionClick(notionId) {
 /* Notions Container */
 .notions-container {
   width: 100%;
+  padding-bottom: 40px;
 }
 
 /* Themes Layout */

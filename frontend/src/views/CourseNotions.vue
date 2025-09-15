@@ -38,7 +38,17 @@ const userStore = useUserStore()
 
 // Récupérer l'ID de la matière courante
 const currentMatiereId = computed(() => {
-  const id = subjectsStore.activeMatiereId || route.params.matiereId
+  let id = subjectsStore.activeMatiereId || route.params.matiereId
+  if (!id) {
+    // Fallback première visite: forcer "Mathématiques" si possible
+    try {
+      const normalize = (s) => (s || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+      const list = (window.__SUBJECTS_CACHE__ && Array.isArray(window.__SUBJECTS_CACHE__)) ? window.__SUBJECTS_CACHE__ : []
+      const math = list.find(m => normalize(m.nom || m.titre).includes('mathem'))
+      id = math?.id || list[0]?.id || null
+      if (id) subjectsStore.setActiveMatiere(id)
+    } catch (_) {}
+  }
   return id ? Number(id) : null
 })
 
@@ -165,6 +175,7 @@ function goBackToDashboard() {
 /* Notions Container */
 .notions-container {
   width: 100%;
+  padding-bottom: 40px;
 }
 
 /* Overrides internes pour ThemeNotionsView afin d'aligner tout à gauche */

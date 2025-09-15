@@ -1,4 +1,4 @@
-import apiClient from './client'
+import apiClient, { apiUtils as clientUtils } from './client'
 
 /**
  * API Base - Fonctions génériques pour éviter la répétition de code
@@ -22,7 +22,8 @@ export class BaseAPI {
    */
   async getAll(params = {}) {
     try {
-      const response = await apiClient.get(this.endpoint, { params })
+      // Utiliser cachedGet pour réduire la charge et éviter les timeouts répétés
+      const response = await clientUtils.cachedGet(this.endpoint, { params, ttl: 120000 })
       return response.data
     } catch (error) {
       this.handleError('récupération', error)

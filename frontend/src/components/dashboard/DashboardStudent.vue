@@ -64,6 +64,7 @@ import { useRouter } from 'vue-router'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { getStatuses, getExercices, getChapitres, getMatieres } from '@/api'
 import { fetchUserGamification, fetchMyOverview } from '@/api/users'
+// Verification disabled: no imports
 import LeaderboardWidget from '@/components/dashboard/LeaderboardWidget.vue'
 
 
@@ -93,6 +94,7 @@ const exercicesIndex = ref({})
 const chapitresIndex = ref({})
 const matieres = ref([])
 const overview = ref(null)
+// Verification disabled: no code-handling functions
 
 const lastActivity = computed(() => {
   if (!statuses.value.length) return null
@@ -171,6 +173,7 @@ onMounted(async () => {
 <style scoped>
 .dashboard-content {
   margin-bottom: 1.5rem;
+  padding-bottom: 40px;
 }
 
 .dashboard-center-top {

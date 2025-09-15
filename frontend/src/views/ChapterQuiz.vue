@@ -1500,7 +1500,7 @@ function startCooldownAutoUpdate() {
   
   // Optimisation : intervalle adaptatif selon le contexte
   const hasActiveCooldowns = Array.from(quizCooldowns.value.values()).some(c => !c.can_attempt)
-  const interval = hasActiveCooldowns ? 10000 : 60000 // 10s si cooldowns actifs, 1min sinon
+  const interval = hasActiveCooldowns ? 30000 : 120000 // 30s si actifs, 2min sinon (moins de charge)
   
   cooldownUpdateInterval = setInterval(() => {
     updateCooldownsRealTime()
@@ -1513,7 +1513,9 @@ function startCooldownAutoUpdate() {
     }
   }, interval)
   
-  console.log(`🎯 Timer cooldown: ${interval/1000}s (cooldowns actifs: ${hasActiveCooldowns})`)
+  if (import.meta.env && import.meta.env.DEV) {
+    console.debug(`🎯 Timer cooldown: ${interval/1000}s (cooldowns actifs: ${hasActiveCooldowns})`)
+  }
 }
 
 // Fonction pour arrêter la mise à jour automatique

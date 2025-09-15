@@ -135,3 +135,7 @@ export const deleteAllNotifications = async () => {
   const successful = results.filter(r => r.status === 'fulfilled' && r.value.success !== false).length
   return { count: successful }
 }
+
+// Email verification
+export const sendEmailVerificationCode = () => apiClient.post('/api/users/email/send-code/')
+export const verifyEmailCode = (code) => apiClient.post('/api/users/email/verify-code/', { code })

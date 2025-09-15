@@ -1,4 +1,4 @@
-import apiClient from './client'
+import apiClient, { apiUtils } from './client'
 
 // ----- Quiz QCM -----
 // Remarque: le backend monte le router sous /api/quiz/ + register('quiz') → endpoints réels: /api/quiz/quiz/
@@ -98,14 +98,19 @@ export const getChapterQuizAttempts = async (chapitreId) => {
  */
 export const checkQuizCooldown = async (quizId) => {
   try {
-    console.log('📤 Vérification cooldown pour quiz:', quizId)
-    const response = await apiClient.get(`/api/suivis/quiz/check-cooldown/${quizId}/`)
-    console.log('📥 Cooldown reçu:', response.data)
+    const DEBUG = import.meta.env && import.meta.env.DEV
+    if (DEBUG) console.debug('📤 Vérification cooldown pour quiz:', quizId)
+    // Utiliser un cache court pour éviter le spam serveur (TTL 20s)
+    const response = await apiUtils.cachedGet(`/api/suivis/quiz/check-cooldown/${quizId}/`, { ttl: 20000 })
+    if (DEBUG) console.debug('📥 Cooldown reçu:', response.data)
     return response.data
   } catch (error) {
-    console.error('❌ Erreur lors de la vérification du cooldown:', error)
-    console.error('❌ Détails de l\'erreur:', error.response?.data)
-    console.error('❌ Status de l\'erreur:', error.response?.status)
+    const DEBUG = import.meta.env && import.meta.env.DEV
+    if (DEBUG) {
+      console.error('❌ Erreur lors de la vérification du cooldown:', error)
+      console.error('❌ Détails de l\'erreur:', error.response?.data)
+      console.error('❌ Status de l\'erreur:', error.response?.status)
+    }
     throw error
   }
 }

@@ -47,6 +47,7 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    "dj_rest_auth",
 ]
 
 LOCAL_APPS = [
@@ -232,11 +233,14 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
     "https://optitab-frontend.onrender.com",
     "https://optitab.net",
     "https://www.optitab.net",
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\\.netlify\\.app$",
+    r"^https://.*\\.onrender\\.com$",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -247,7 +251,7 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 
 if DEBUG:
-    CORS_ALLOW_ALL_HEADERS = True
+    CORS_ALLOW_ALL_ORIGINS  = True
 
 # ========================================
 # EMAIL
@@ -292,8 +296,10 @@ CSRF_TRUSTED_ORIGINS = [
     'https://optitab-backend.onrender.com',
     'http://localhost',
     'http://127.0.0.1',
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://*.netlify.app',
+    'https://*.onrender.com',
 ]
 
 # ========================================
@@ -451,8 +457,8 @@ if not DEBUG:
         "https://optitab-frontend.onrender.com",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
     ]
 
     # Configuration HTTPS et sécurité (activées par défaut en production)

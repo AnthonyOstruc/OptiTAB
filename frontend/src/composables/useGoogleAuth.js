@@ -31,6 +31,13 @@ export function useGoogleAuth() {
 
     // Vérifier si Google Identity Services est chargé
     if (typeof google !== 'undefined') {
+      try {
+        // Activer les logs détaillés côté GSI uniquement en développement
+        if (import.meta?.env?.DEV && google?.accounts?.id?.setLogLevel) {
+          google.accounts.id.setLogLevel('debug')
+        }
+      } catch (_) {}
+
       google.accounts.id.initialize({
         client_id: googleClientId,
         callback: handleGoogleCredentialResponse,
@@ -38,11 +45,14 @@ export function useGoogleAuth() {
         ux_mode: 'popup',
         auto_select: false,
         cancel_on_tap_outside: true,
-        // Temporarily disable FedCM to avoid compatibility issues
-        use_fedcm_for_prompt: false
+        // Enable FedCM (mandatory from Oct 2024)
+        use_fedcm_for_prompt: true
       })
 
-      console.log('Google Sign-In initialisé (sans FedCM)')
+      console.log('Google Sign-In initialisé (FedCM activé)')
+      try {
+        console.log('[GSI] Origin:', window.location.origin, '| Client ID:', googleClientId)
+      } catch (_) {}
     } else {
       console.error('Google Identity Services non chargé')
     }
@@ -96,6 +106,7 @@ export function useGoogleAuth() {
     }
 
     if (typeof google !== 'undefined') {
+      // Appeler prompt sans callback pour éviter l'avertissement GSI lié aux méthodes de statut UI
       google.accounts.id.prompt()
     } else {
       showToast('Google Sign-In non disponible', 'error')

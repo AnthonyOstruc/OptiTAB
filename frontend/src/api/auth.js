@@ -11,7 +11,7 @@ export const mapRegisterFormToPayload = (data) => ({
   last_name: data.lastName?.trim(),
   email: data.email?.trim().toLowerCase(),
   password: data.password,
-  password2: data.confirmPassword,
+  password_confirmation: data.confirmPassword,
 })
 
 /**

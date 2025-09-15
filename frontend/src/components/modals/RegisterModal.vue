@@ -202,19 +202,32 @@ export default {
         const response = await registerUser(payload)
         // Si le backend renvoie les infos utilisateur, on les mémorise dans Pinia
         if (response && response.data) {
-          userStore.setUser(response.data)
+          const userData = response.data?.data || response.data
+          userStore.setUser(userData)
         }
         showFeedback('Compte créé avec succès!', 'success')
         emit('register', { ...payload })
         // Ferme la modale après un court délai pour laisser le message s’afficher
         setTimeout(handleClose, 1200)
       } catch (error) {
-        const serverMsg = error.response?.data
-          ? Object.entries(error.response.data)
-              .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
-              .join(' | ')
-          : error.message
-        console.error('Registration error:', serverMsg)
+        const apiData = error.response?.data
+        let serverMsg = ''
+        if (apiData?.errors && typeof apiData.errors === 'object') {
+          const parts = Object.entries(apiData.errors).map(([field, msgs]) => {
+            if (Array.isArray(msgs)) return `${field}: ${msgs.join(', ')}`
+            if (typeof msgs === 'object' && msgs !== null) {
+              const flat = Object.values(msgs).flat()
+              return `${field}: ${flat.join(', ')}`
+            }
+            return `${field}: ${String(msgs)}`
+          })
+          serverMsg = parts.join(' | ') || apiData.message
+        } else if (apiData?.message) {
+          serverMsg = apiData.message
+        } else {
+          serverMsg = error.message
+        }
+        console.error('Registration error:', serverMsg, apiData?.errors || apiData)
         showFeedback(serverMsg || 'Erreur lors de la création du compte', 'error')
       }
     }

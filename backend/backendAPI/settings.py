@@ -269,6 +269,10 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "OptiTAB <contact@optitab.net>")
 
+# URL absolue du logo utilisé dans les emails (ex: https://optitab.net/Logo_Fr.png)
+# À définir dans l'environnement (.env) surtout en développement, car localhost n'est pas accessible par les clients mail
+EMAIL_LOGO_URL = os.getenv("EMAIL_LOGO_URL")
+
 # URL du frontend pour construire les liens d'action envoyés par email
 FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL", "http://localhost:3000")
 FRONTEND_URL = os.getenv("FRONTEND_URL", FRONTEND_BASE_URL)

@@ -47,9 +47,9 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
               <td style=\"padding:16px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;\">
                 <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">
                   <tr>
-                    <td style=\"width:80px;vertical-align:middle;\">
+                    <td style=\"width:120px;vertical-align:middle;\">
                       <a href=\"{site_url}\" style=\"text-decoration:none;\">
-                        <img src=\"{logo_url}\" alt=\"OptiTAB\" height=\"55\" style=\"display:block;border:0;outline:none;\" />
+                        <img src=\"{logo_url}\" alt=\"OptiTAB\" height=\"100\" width=\"100\" style=\"display:block;border:0;outline:none;\" />
                       </a>
                     </td>
                     <td style=\"vertical-align:middle;text-align:right;\">

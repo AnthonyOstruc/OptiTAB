@@ -270,7 +270,8 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "OptiTAB <contact@optitab.net>")
 
 # URL du frontend pour construire les liens d'action envoyés par email
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL", "http://localhost:3000")
+FRONTEND_URL = os.getenv("FRONTEND_URL", FRONTEND_BASE_URL)
 
 # ========================================
 # FICHIERS STATIQUES ET MÉDIA

@@ -49,7 +49,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
                   <tr>
                     <td style=\"width:120px;vertical-align:middle;\">
                       <a href=\"{site_url}\" style=\"text-decoration:none;\">
-                        <img src=\"{logo_url}\" alt=\"OptiTAB\" height=\"200\" style=\"display:block;border:0;outline:none;\" />
+                        <img src=\"{logo_url}\" alt=\"OptiTAB\" height=\"120\" style=\"display:block;border:0;outline:none;\" />
                       </a>
                     </td>
                     <td style=\"vertical-align:middle;text-align:right;\">

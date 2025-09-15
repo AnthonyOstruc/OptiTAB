@@ -18,7 +18,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
     greet_suffix = f" {first_name}" if first_name else ''
     site_url = frontend_base.rstrip('/')
     # Le logo doit être dans le dossier public pour être accessible
-    logo_url = getattr(settings, 'EMAIL_LOGO_URL', None) or f"{site_url}/Logo_Fr.png"
+    logo_url = getattr(settings, 'EMAIL_LOGO_URL', None) or f"{site_url}/favicon.png"
     brand = "#4F46E5"
 
     html_content = f"""
@@ -53,7 +53,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
             <tr>
               <td style=\"padding:16px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;\">
                 <p style=\"margin:0 0 4px;font-family:Inter,Arial,sans-serif;color:#111827;font-weight:600;\">OptiTAB</p>
-                <p style=\"margin:0;color:#6b7280;font-family:Inter,Arial,sans-serif;\">Plateforme éducative • <a href=\"mailto:contact@optitab.net\" style=\"color:{brand};text-decoration:none;\">contact@optitab.net</a> • <a href=\"{site_url}\" style=\"color:{brand};text-decoration:none;\">optitab.net</a></p>
+                <p style=\"margin:0;color:#6b7280;font-family:Inter,Arial,sans-serif;\">Plateforme éducative • <a href=\"mailto:contact@optitab.net\" style=\"color:{brand};text-decoration:none;\">contact@optitab.net</a> • <a href=\"{site_url}\" style=\"color:{brand};text-decoration:none;\">www.optitab.net</a></p>
               </td>
             </tr>
           </table>

@@ -245,6 +245,7 @@ export default {
   
   .btn {
     min-width: 120px;
+    justify-content: center;
   }
 }
 

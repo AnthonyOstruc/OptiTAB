@@ -80,6 +80,7 @@ import { ref } from 'vue'
 import { useAuthForm } from '@/composables/useAuthForms'
 import Modal from '@/components/common/Modal.vue'
 import DynamicForm from '@/components/forms/DynamicForm.vue'
+import { requestPasswordReset } from '@/api/auth'
 
 export default {
   name: 'ForgotPasswordModal',
@@ -126,8 +127,8 @@ export default {
     const handleFormSubmit = async () => {
       const success = await submitForm(
         async (data) => {
-          // Simulate API call
-          await new Promise(resolve => setTimeout(resolve, 1500))
+          // Call backend to send reset email
+          await requestPasswordReset({ email: data.email })
           
           // Emit forgot password event with form data
           emit('forgot-password', { ...data })
@@ -140,9 +141,7 @@ export default {
         }
       )
 
-      if (!success) {
-        console.log('Form validation failed')
-      }
+      if (!success) { /* handled in composable */ }
     }
 
     const handleBackToLogin = () => {

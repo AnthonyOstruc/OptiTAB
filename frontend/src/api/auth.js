@@ -47,3 +47,20 @@ export const googleLogin = (payload) =>
   apiClient.post('/api/users/auth/google/', payload, { timeout: 20000 })
 
 
+/**
+ * Request password reset link
+ */
+export const requestPasswordReset = (payload) => {
+  const email = (payload?.email || '').trim().toLowerCase()
+  return apiClient.post('/api/users/password/reset/', { email }, { timeout: 15000 })
+}
+
+/**
+ * Confirm password reset (set new password using token)
+ * django_rest_passwordreset expects: token, password
+ */
+export const confirmPasswordReset = ({ token, password }) => {
+  return apiClient.post('/api/users/password/reset/confirm/', { token, password }, { timeout: 15000 })
+}
+
+

@@ -1,15 +1,17 @@
 // Import icons from assets
 // Note: You'll need to create these icons or use a library like @heroicons/vue
 // For now, I'll use placeholder imports
-import { 
-  BookOpenIcon, 
-  CalculatorIcon, 
-  AcademicCapIcon, 
-  DocumentTextIcon, 
-  EnvelopeIcon, 
+import {
+  BookOpenIcon,
+  CalculatorIcon,
+  AcademicCapIcon,
+  DocumentTextIcon,
+  EnvelopeIcon,
   UserIcon,
   Squares2X2Icon, // <- icône dashboard
-  QuestionMarkCircleIcon // <- icône quiz
+  QuestionMarkCircleIcon, // <- icône quiz
+  InformationCircleIcon, // <- icône about
+  UserGroupIcon // <- icône cours particuliers
 } from '@heroicons/vue/24/outline'
 const DashboardIcon = Squares2X2Icon;
 // Centralized menu configuration for OptiTAB
@@ -28,6 +30,20 @@ export const menuItems = [
     icon: CalculatorIcon,
     href: '/calculator',
     description: 'Calculatrices et outils mathématiques'
+  },
+  {
+    key: 'cours-particuliers',
+    text: 'Cours Particuliers',
+    icon: UserGroupIcon,
+    href: '/cours-particuliers',
+    description: 'Cours particuliers personnalisés'
+  },
+  {
+    key: 'about',
+    text: 'À Propos',
+    icon: InformationCircleIcon,
+    href: '/about',
+    description: 'En savoir plus sur OptiTAB'
   },
   {
     key: 'cours',

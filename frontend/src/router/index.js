@@ -23,6 +23,7 @@ const routes = [
   { path: '/cours/:matiereId/:notionId/:chapitreId/:coursId', name: 'CoursDetail', component: () => import('@/views/CoursDetail.vue'), meta: { requiresAuth: true } },
   { path: '/sheets', name: 'Sheets', component: () => import('@/views/Sheets.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
   { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
+  { path: '/cours-particuliers', name: 'CoursParticuliers', component: () => import('@/views/CoursParticuliers.vue') },
   { path: '/password-reset', name: 'PasswordReset', component: () => import('@/views/PasswordReset.vue') },
   { path: '/cgv', name: 'CGV', component: () => import('@/views/CGV.vue') },
   { path: '/cgu', name: 'CGU', component: () => import('@/views/CGU.vue') },

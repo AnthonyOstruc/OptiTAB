@@ -41,6 +41,11 @@
       </div>
       
       <div class="form-group">
+        <label>Méthode de résolution:</label>
+        <textarea v-model="form.etapes" rows="4" placeholder="Décrivez les étapes de résolution..."></textarea>
+      </div>
+      
+      <div class="form-group">
         <label>Solution:</label>
         <textarea v-model="form.solution" rows="4"></textarea>
       </div>
@@ -193,6 +198,7 @@ const form = ref({
   chapitre: '', 
   nom: '',
   enonce: '', 
+  etapes: '', 
   solution: '', 
   difficulte: 'moyen',
   niveaux: []
@@ -285,6 +291,7 @@ function resetForm() {
     nom: '',
     type: '', 
     enonce: '', 
+    etapes: '', 
     solution: '', 
     difficulte: 'moyen',
     niveaux: []
@@ -306,6 +313,7 @@ async function handleSave() {
       // Champs compatibles modèle Exercice
       question: form.value.enonce,
       reponse_correcte: form.value.solution || '',
+      etapes: form.value.etapes || '',
       points: 1
     }
 
@@ -341,6 +349,7 @@ function editExercice(exercice) {
     chapitre: exercice.chapitre,
     nom: exercice.titre || exercice.nom || '',
     enonce: exercice.contenu || exercice.question || exercice.enonce || '',
+    etapes: exercice.etapes || '',
     solution: exercice.reponse_correcte || exercice.solution || '',
     difficulte: difficultyMap[exercice.difficulty] || exercice.difficulte || 'moyen',
     niveaux: niveauxIds
@@ -439,7 +448,7 @@ function handlePreview() {
   previewData.value = {
     titre: form.value.nom,
     instruction: form.value.enonce,
-    etapes: '', // Pas d'étapes dans ce formulaire simple
+    etapes: form.value.etapes || '',
     solution: form.value.solution || '',
     difficulty: difficultyMap[form.value.difficulte] || 'medium'
   }

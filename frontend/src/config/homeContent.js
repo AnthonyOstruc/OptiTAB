@@ -18,7 +18,7 @@ export const introFeatures = {
       description: "Des leçons rédigées par des enseignants certifiés, conçues pour être claires, progressives et adaptées à chaque niveau."
     },
     {
-      icon: 'fichesSynthese',
+      icon: 'outilsIntelligents',
       titre: "Outils Intelligents",
       description: "Utilisez nos outils intégrés : calculatrices, solveurs, convertisseurs et graphiques interactifs pour travailler plus vite et mieux."
     },

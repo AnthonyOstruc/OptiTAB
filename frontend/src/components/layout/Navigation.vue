@@ -99,8 +99,8 @@ const isLoadingMatieres = ref(false)
 
 // Left side: Main navigation items
 const leftMenuItems = computed(() => {
-  return menuItems.filter(item => 
-    ['cours', 'calculator', 'exercices', 'quiz', 'fiches'].includes(item.key)
+  return menuItems.filter(item =>
+    ['calculator', 'about', 'cours-particuliers'].includes(item.key)
   )
 })
 
@@ -143,12 +143,6 @@ const handleItemClick = async (item) => {
       return
     }
     
-    // Navigation intelligente pour les sections avec matières
-    if (['exercices', 'fiches', 'quiz'].includes(item.key)) {
-      console.log(`[Navigation] Navigation vers: ${item.key}`)
-      // Navigation intelligente - à implémenter selon les besoins
-      return
-    }
     
     // Navigation normale pour les autres liens
     if (item.href && !item.external) {

@@ -18,7 +18,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
     greet_suffix = f" {first_name}" if first_name else ''
     site_url = frontend_base.rstrip('/')
     # Le logo doit être dans le dossier public pour être accessible
-    logo_url = getattr(settings, 'EMAIL_LOGO_URL', None) or f"{site_url}/favicon.png"
+    logo_url = getattr(settings, 'EMAIL_LOGO_URL', None) or f"{site_url}/Logo_Fr.png"
     brand = "#4F46E5"
 
     html_content = f"""
@@ -26,13 +26,6 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
       <tr>
         <td align=\"center\">
           <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"600\" style=\"width:100%;max-width:600px;background:#ffffff;border-radius:12px;border:1px solid #e5e7eb;\">
-            <tr>
-              <td style=\"padding:24px 24px 0;text-align:center;\">
-                <a href=\"{site_url}\" style=\"text-decoration:none;color:#111827\">
-                  <img src=\"{logo_url}\" alt=\"OptiTAB\" height=\"56\" style=\"display:inline-block;border:0;outline:none;\" />
-                </a>
-              </td>
-            </tr>
             <tr>
               <td style=\"padding:24px 24px 8px;font-family:Inter,Arial,sans-serif;color:#111827;\">
                 <h1 style=\"margin:0 0 8px;font-size:20px;\">Réinitialisation du mot de passe</h1>
@@ -51,9 +44,24 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
               </td>
             </tr>
             <tr>
-              <td style=\"padding:16px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;\">
-                <p style=\"margin:0 0 4px;font-family:Inter,Arial,sans-serif;color:#111827;font-weight:600;\">OptiTAB</p>
-                <p style=\"margin:0;color:#6b7280;font-family:Inter,Arial,sans-serif;\">Plateforme éducative • <a href=\"mailto:contact@optitab.net\" style=\"color:{brand};text-decoration:none;\">contact@optitab.net</a> • <a href=\"{site_url}\" style=\"color:{brand};text-decoration:none;\">www.optitab.net</a></p>
+              <td style=\"padding:16px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;\">
+                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">
+                  <tr>
+                    <td style=\"width:80px;vertical-align:middle;\">
+                      <a href=\"{site_url}\" style=\"text-decoration:none;\">
+                        <img src=\"{logo_url}\" alt=\"OptiTAB\" height=\"55\" style=\"display:block;border:0;outline:none;\" />
+                      </a>
+                    </td>
+                    <td style=\"vertical-align:middle;text-align:right;\">
+                      <p style=\"margin:0 0 4px;font-family:Inter,Arial,sans-serif;color:#10257f;font-weight:600;\">OptiTAB</p>
+                      <p style=\"margin:0;color:#6b7280;font-family:Inter,Arial,sans-serif;font-size:13px;\">Plateforme éducative</p>
+                      <p style=\"margin:4px 0 0;color:#6b7280;font-family:Inter,Arial,sans-serif;font-size:13px;\">
+                        <a href=\"mailto:contact@optitab.net\" style=\"color:{brand};text-decoration:none;\">contact@optitab.net</a> • 
+                        <a href=\"{site_url}\" style=\"color:{brand};text-decoration:none;\">www.optitab.net</a>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </table>

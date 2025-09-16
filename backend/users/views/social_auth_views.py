@@ -242,3 +242,99 @@ class GoogleOAuthCodeExchangeView(APIView):
                 message="Erreur lors de la connexion Google",
                 status_code=status.HTTP_400_BAD_REQUEST
             )
+
+
+class GoogleOAuthAccessTokenView(APIView):
+    """
+    Connexion via access_token OAuth (GIS Token Flow) en fallback.
+    Récupère le profil via l'endpoint userinfo et émet des JWT applicatifs.
+    """
+
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def post(self, request):
+        try:
+            access_token = request.data.get('access_token')
+            if not access_token:
+                return ResponseService.error(
+                    message="Access token manquant",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Récupérer les infos utilisateur via Google UserInfo
+            userinfo_resp = requests.get(
+                'https://www.googleapis.com/oauth2/v3/userinfo',
+                headers={'Authorization': f'Bearer {access_token}'},
+                timeout=10
+            )
+            if userinfo_resp.status_code != 200:
+                try:
+                    detail = userinfo_resp.json()
+                except Exception:
+                    detail = userinfo_resp.text
+                logger.error(f"Google userinfo failed: {userinfo_resp.status_code} {detail}")
+                return ResponseService.error(
+                    message="Échec de la récupération du profil Google",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
+
+            info = userinfo_resp.json() or {}
+            email = info.get('email')
+            email_verified = info.get('email_verified', True)
+            first_name = info.get('given_name') or ''
+            last_name = info.get('family_name') or ''
+            google_uid = info.get('sub')
+
+            if not email:
+                return ResponseService.error(
+                    message="Profil Google incomplet (email manquant)",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
+            if not email_verified:
+                return ResponseService.error(
+                    message="Email Google non vérifié",
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
+
+            user, created = User.objects.get_or_create(
+                email=email,
+                defaults={
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'is_active': True,
+                }
+            )
+
+            SocialAccount.objects.get_or_create(
+                user=user,
+                provider=GoogleProvider.id,
+                uid=google_uid or email,
+                defaults={'extra_data': info}
+            )
+
+            refresh = RefreshToken.for_user(user)
+            user_data = {
+                'id': user.id,
+                'email': user.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'role': getattr(user, 'role', 'student'),
+                'is_active': user.is_active,
+            }
+
+            return ResponseService.success(
+                message="Connexion Google réussie",
+                data={
+                    'user': user_data,
+                    'access': str(refresh.access_token),
+                    'refresh': str(refresh)
+                }
+            )
+
+        except Exception as e:
+            logger.error(f"Erreur lors de la connexion via access_token Google: {e}")
+            return ResponseService.error(
+                message="Erreur lors de la connexion Google",
+                status_code=status.HTTP_400_BAD_REQUEST
+            )

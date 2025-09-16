@@ -4,7 +4,7 @@
  */
 
 import { ref, nextTick } from 'vue'
-import { googleLogin, googleOAuthExchange } from '@/api/auth'
+import { googleLogin, googleOAuthExchange, googleOAuthTokenLogin } from '@/api/auth'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
@@ -125,8 +125,41 @@ export function useGoogleAuth() {
     return new Promise((resolve, reject) => {
       try {
         if (!google?.accounts?.oauth2?.initCodeClient) {
-          reject(new Error('OAuth2 Code Client non disponible'))
-          return
+          // Si le Code Flow n'est pas disponible, tomber sur le Token Flow
+          if (google?.accounts?.oauth2?.initTokenClient) {
+            const tokenClient = google.accounts.oauth2.initTokenClient({
+              client_id: googleClientId,
+              scope: 'openid email profile',
+              callback: async (resp) => {
+                try {
+                  if (resp?.access_token) {
+                    // Dernier fallback: on envoie l'access_token au backend pour récupérer le profil
+                    const result = await googleOAuthTokenLogin({ access_token: resp.access_token })
+                    const { user, access, refresh } = result.data.data
+                    localStorage.setItem('access_token', access)
+                    localStorage.setItem('refresh_token', refresh)
+                    userStore.setUser(user)
+                    await userStore.fetchUser()
+                    closeModal(MODAL_IDS.LOGIN)
+                    router.push('/dashboard')
+                    showToast('Connexion réussie !', 'success')
+                    didFallbackToOAuth.value = true
+                    shouldReopenLoginModal.value = false
+                    resolve(true)
+                    return
+                  }
+                  reject(new Error('Access token non reçu'))
+                } catch (e) {
+                  reject(e)
+                }
+              }
+            })
+            tokenClient.requestAccessToken()
+            return
+          } else {
+            reject(new Error('OAuth2 non disponible'))
+            return
+          }
         }
 
         const codeClient = google.accounts.oauth2.initCodeClient({

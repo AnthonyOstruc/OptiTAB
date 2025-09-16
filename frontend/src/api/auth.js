@@ -52,6 +52,12 @@ export const googleLogin = (payload) =>
 export const googleOAuthExchange = (payload) =>
   apiClient.post('/api/users/auth/google/oauth-exchange/', payload, { timeout: 20000 })
 
+/**
+ * Google OAuth token login (token flow fallback)
+ */
+export const googleOAuthTokenLogin = (payload) =>
+  apiClient.post('/api/users/auth/google/oauth-token/', payload, { timeout: 20000 })
+
 
 /**
  * Request password reset link

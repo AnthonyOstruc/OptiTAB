@@ -20,11 +20,14 @@ export function useGoogleAuth() {
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
   // Permet de savoir si on doit réouvrir le modal login après l'interaction Google
   const shouldReopenLoginModal = ref(false)
+  // Évite les boucles de fallback
+  const didFallbackToNoFedCM = ref(false)
 
   /**
    * Initialise Google Sign-In
    */
-  const initializeGoogleSignIn = () => {
+  const initializeGoogleSignIn = (options = {}) => {
+    const { useFedCMForPrompt = true } = options
     if (!googleClientId) {
       console.warn('⚠️ VITE_GOOGLE_CLIENT_ID non configuré - Google Sign-In sera désactivé')
       console.warn('📝 Consultez ENV_SETUP.md pour configurer Google OAuth')
@@ -47,11 +50,11 @@ export function useGoogleAuth() {
         ux_mode: 'popup',
         auto_select: false,
         cancel_on_tap_outside: true,
-        // Enable FedCM (mandatory from Oct 2024)
-        use_fedcm_for_prompt: true
+        // FedCM peut échouer en navigation privée si l'utilisateur n'est pas connecté à l'IdP
+        use_fedcm_for_prompt: !!useFedCMForPrompt
       })
 
-      console.log('Google Sign-In initialisé (FedCM activé)')
+      console.log(`Google Sign-In initialisé (FedCM=${!!useFedCMForPrompt})`)
       try {
         console.log('[GSI] Origin:', window.location.origin, '| Client ID:', googleClientId)
       } catch (_) {}
@@ -122,27 +125,54 @@ export function useGoogleAuth() {
 
       // Utiliser le callback de moment pour gérer l'affichage/fermeture du prompt
       try {
-        google.accounts.id.prompt((notification) => {
-          try {
-            const isNotDisplayed = notification?.isNotDisplayed?.()
-            const isSkipped = notification?.isSkippedMoment?.()
-            const isDismissed = notification?.isDismissedMoment?.()
-            const dismissedReason = notification?.getDismissedReason?.()
+        didFallbackToNoFedCM.value = false
+        const runPrompt = () => {
+          google.accounts.id.prompt((notification) => {
+            try {
+              const isNotDisplayed = notification?.isNotDisplayed?.()
+              const notDisplayedReason = notification?.getNotDisplayedReason?.()
+              const isSkipped = notification?.isSkippedMoment?.()
+              const skippedReason = notification?.getSkippedReason?.()
+              const isDismissed = notification?.isDismissedMoment?.()
+              const dismissedReason = notification?.getDismissedReason?.()
 
-            // Si le prompt n'a pas pu s'afficher ou a été fermé sans authentification,
-            // on ré-ouvre le modal login si nécessaire
-            const closedWithoutCredential = (
-              (isDismissed && dismissedReason !== 'credential_returned') ||
-              isNotDisplayed ||
-              isSkipped
-            )
+              const closedWithoutCredential = (
+                (isDismissed && dismissedReason !== 'credential_returned') ||
+                isNotDisplayed ||
+                isSkipped
+              )
 
-            if (closedWithoutCredential && shouldReopenLoginModal.value) {
-              openModal(MODAL_IDS.LOGIN)
-              shouldReopenLoginModal.value = false
-            }
-          } catch (_) {}
-        })
+              // Fallback: si le prompt FedCM n'est pas affiché en navigation privée, ré-essayer sans FedCM une seule fois
+              const shouldFallbackNoFedCM = (
+                !didFallbackToNoFedCM.value && (
+                  isNotDisplayed ||
+                  notDisplayedReason === 'opt_out_or_no_session' ||
+                  notDisplayedReason === 'unknown_reason' ||
+                  (isDismissed && dismissedReason === 'token_generation_failed') ||
+                  (isDismissed && dismissedReason === 'network_error')
+                )
+              )
+
+              if (shouldFallbackNoFedCM) {
+                didFallbackToNoFedCM.value = true
+                try {
+                  initializeGoogleSignIn({ useFedCMForPrompt: false })
+                  // Attendre le prochain tick pour s'assurer de l'init
+                  nextTick().then(() => {
+                    runPrompt()
+                  })
+                  return
+                } catch (_) {}
+              }
+
+              if (closedWithoutCredential && shouldReopenLoginModal.value) {
+                openModal(MODAL_IDS.LOGIN)
+                shouldReopenLoginModal.value = false
+              }
+            } catch (_) {}
+          })
+        }
+        runPrompt()
       } catch (_) {
         // En cas d'erreur imprévue, ré-ouvrir le modal si on l'avait fermé
         if (shouldReopenLoginModal.value) {

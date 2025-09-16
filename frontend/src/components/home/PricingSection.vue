@@ -10,7 +10,7 @@
         <div class="pricing-card-header">
           <div class="pricing-card-icon" :class="plan.key">
             <svg v-if="plan.key==='free'" width="36" height="36" fill="none" stroke="#a78bfa" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>
-            <svg v-else-if="plan.key==='standard'" width="36" height="36" fill="none" stroke="#6366f1" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <svg v-else-if="plan.key==='standard'" width="36" height="36" fill="none" stroke="#2a38b7" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             <svg v-else width="36" height="36" fill="none" stroke="#a78bfa" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="6"/></svg>
           </div>
           <h3 class="pricing-card-title">{{ plan.titre }}</h3>
@@ -96,7 +96,7 @@ const props = defineProps({
   transition: box-shadow 0.2s, border 0.2s;
 }
 .pricing-card.populaire {
-  border: 2.5px solid #6366f1;
+  border: 2.5px solid #2a38b7;
   box-shadow: 0 4px 24px rgba(99,102,241,0.10);
   z-index: 2;
 }
@@ -105,7 +105,7 @@ const props = defineProps({
   top: -22px;
   left: 50%;
   transform: translateX(-50%);
-  background: #6366f1;
+  background: #2a38b7;
   color: #fff;
   font-weight: 700;
   font-size: 1rem;
@@ -127,7 +127,7 @@ const props = defineProps({
   margin-bottom: 2px;
 }
 .pricing-card-subtitle {
-  color: #6366f1;
+  color: #2a38b7;
   font-size: 1.01rem;
   margin-bottom: 0;
 }
@@ -176,7 +176,7 @@ const props = defineProps({
   margin-top: 8px;
 }
 .pricing-btn.primary {
-  background: #6366f1;
+  background: #2a38b7;
   color: #fff;
 }
 .pricing-btn.primary:hover {
@@ -184,12 +184,12 @@ const props = defineProps({
 }
 .pricing-btn.secondary {
   background: #fff;
-  color: #6366f1;
+  color: #2a38b7;
   border: 2px solid #e0e7ff;
 }
 .pricing-btn.secondary:hover {
   background: #f3f4f6;
-  color: #6366f1;
+  color: #2a38b7;
 }
 .pricing-btn.premium {
   background: #a78bfa;

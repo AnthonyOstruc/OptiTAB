@@ -22,6 +22,6 @@ defineEmits(['update:modelValue'])
 <style scoped>
 .tabs{display:flex;gap:1rem;margin-bottom:1rem;}
 .tab-btn{background:none;border:none;padding:6px 14px;font-weight:600;color:#374151;cursor:pointer;border-radius:8px 8px 0 0;}
-.tab-btn.active{background:#6366f1;color:#fff;}
+.tab-btn.active{background:#2a38b7;color:#fff;}
 .tab-btn:hover:not(.active){background:#e0e7ff;}
 </style> 

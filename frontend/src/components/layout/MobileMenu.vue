@@ -98,7 +98,9 @@ export default {
     const userStore = useUserStore()
 
     // Computed
-    const navigationItems = menuItems.filter(item => item.key !== 'login')
+    const navigationItems = menuItems.filter(item =>
+      ['calculator', 'cours-particuliers', 'about', 'contact'].includes(item.key)
+    )
     const isAuthenticated = computed(() => userStore.isAuthenticated)
 
     // Methods
@@ -187,13 +189,13 @@ export default {
 .hamburger-button {
   background: transparent;
   border: none;
-  cursor: pointer;
   padding: 8px;
   border-radius: 6px;
   transition: all 0.2s ease;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   
   &:hover {
     background: $background-light;
@@ -252,10 +254,10 @@ export default {
 .close-button {
   background: transparent;
   border: none;
-  cursor: pointer;
   padding: 8px;
   border-radius: 6px;
   transition: all 0.2s ease;
+  cursor: pointer;
 
   &:hover {
     background: $background-light;
@@ -280,6 +282,7 @@ export default {
   font-weight: 500;
   transition: all 0.2s ease;
   border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
 
   &:hover {
     background: $background-light;
@@ -393,6 +396,7 @@ export default {
   color: #ef4444;
   border: 1px solid #fecaca;
   border-radius: 6px;
+  cursor: pointer;
   
   &:hover {
     background: #fef2f2;

@@ -37,7 +37,7 @@ import { footerLinks } from '@/config/footerContent.js';
 .footer {
   background: #4e63c2;
   padding: 24px 0 0 0;
-  margin-top: auto;
+  margin-top: 0;
 }
 .footer-support {
   max-width: 700px;

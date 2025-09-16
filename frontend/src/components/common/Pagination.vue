@@ -59,7 +59,7 @@ const pages = computed(() => {
 <style scoped>
 .pagination { display: flex; gap: 0.4rem; align-items: center; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
 .page-btn, .nav-btn { background: #e5e7eb; border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-weight:600; }
-.page-btn.active{ background:#6366f1; color:#fff; }
+.page-btn.active{ background:#2a38b7; color:#fff; }
 .page-btn:hover:not(.active), .nav-btn:hover:not(:disabled){ background:#cbd5e1; }
 .nav-btn:disabled{ opacity:0.5; cursor:not-allowed; }
 .ellipsis{padding:0 4px;font-weight:700;}

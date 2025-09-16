@@ -4,10 +4,6 @@
       <!-- Hero Section Pédagogique -->
       <div class="hero-section">
         <div class="hero-content">
-          <div class="hero-badge">
-            <img src="/icons/math.svg" alt="Éducation" class="badge-icon" />
-            <span class="badge-text">Éducation Innovante</span>
-          </div>
           <h1 class="hero-title">
             Votre enfant mérite le 
             <span class="gradient-text">meilleur accompagnement</span>
@@ -32,35 +28,6 @@
             </div>
           </div>
         </div>
-        <div class="hero-visual">
-          <div class="floating-card card-1">
-            <div class="card-icon-bg">
-              <img src="/icons/exercicesGuides.svg" alt="Cours" class="card-icon" />
-            </div>
-            <div class="card-content">
-              <span class="card-title">Cours Interactifs</span>
-              <span class="card-desc">Méthodes éprouvées</span>
-            </div>
-          </div>
-          <div class="floating-card card-2">
-            <div class="card-icon-bg">
-              <img src="/icons/fichesSynthese.svg" alt="Exercices" class="card-icon" />
-            </div>
-            <div class="card-content">
-              <span class="card-title">Exercices Corrigés</span>
-              <span class="card-desc">Progression garantie</span>
-            </div>
-          </div>
-          <div class="floating-card card-3">
-            <div class="card-icon-bg">
-              <img src="/icons/physics.svg" alt="Sciences" class="card-icon" />
-            </div>
-            <div class="card-content">
-              <span class="card-title">Expertise Scientifique</span>
-              <span class="card-desc">Contenu de qualité</span>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Section Pourquoi OptiTAB -->
@@ -75,7 +42,7 @@
           <div class="benefits-grid">
             <div class="benefit-card">
               <div class="benefit-icon">
-                <img src="/icons/math.svg" alt="Résultats" class="icon" />
+                <img src="/icons/ResultatsGarantis.svg?v=2" alt="Résultats" class="icon" />
               </div>
               <h3>Résultats Garantis</h3>
               <p>95% de nos élèves améliorent leurs notes de 2 points minimum en 3 mois</p>
@@ -124,9 +91,9 @@
                 v-for="(p, j) in section.content" 
                 :key="j" 
                 class="content-paragraph"
-                :class="{ 'highlight-text': p.includes('@') || p.includes('www') }"
+                :class="{ 'highlight-text': p.includes('@') || p.includes('www') || p.includes('WhatsApp') }"
+                v-html="p"
               >
-                {{ p }}
               </p>
             </div>
 
@@ -143,60 +110,45 @@
                 </li>
               </ul>
             </div>
+
+            <!-- Additional Content -->
+            <div v-if="section.additionalContent" class="text-content">
+              <p 
+                v-for="(p, j) in section.additionalContent" 
+                :key="'additional-' + j" 
+                class="content-paragraph"
+                v-html="p"
+              >
+              </p>
+            </div>
+
+            <!-- Social Media Icons -->
+            <div v-if="section.socialMedia" class="social-media-section">
+              <div class="social-media-row highlight-text">
+                <span class="social-media-label">📱 Réseaux sociaux : @Opti.TAB</span>
+                <div class="social-media-icons-inline">
+                  <a href="https://instagram.com/optitabedu" target="_blank" class="social-icon-inline instagram-icon">
+                    <svg class="social-icon-svg-inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.919-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/>
+                    </svg>
+                  </a>
+                  <a href="https://facebook.com/optitabedu" target="_blank" class="social-icon-inline facebook-icon">
+                    <svg class="social-icon-svg-inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="currentColor"/>
+                    </svg>
+                  </a>
+                  <a href="https://linkedin.com/company/optitabedu" target="_blank" class="social-icon-inline linkedin-icon">
+                    <svg class="social-icon-svg-inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" fill="currentColor"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Section Témoignages -->
-      <div class="testimonials-section">
-        <div class="container">
-          <h2 class="testimonials-title">Ce que disent les parents</h2>
-          <div class="testimonials-grid">
-            <div class="testimonial-card">
-              <div class="testimonial-content">
-                <p>"OptiTAB a transformé l'apprentissage des maths pour mon fils. Il a gagné 3 points en 2 mois !"</p>
-              </div>
-              <div class="testimonial-author">
-                <div class="author-avatar">
-                  <img src="/icons/math.svg" alt="Famille" class="avatar-icon" />
-                </div>
-                <div class="author-info">
-                  <span class="author-name">Marie L.</span>
-                  <span class="author-detail">Maman de Thomas, 15 ans</span>
-                </div>
-              </div>
-            </div>
-            <div class="testimonial-card">
-              <div class="testimonial-content">
-                <p>"L'approche pédagogique est excellente. Ma fille adore les exercices interactifs !"</p>
-              </div>
-              <div class="testimonial-author">
-                <div class="author-avatar">
-                  <img src="/icons/physics.svg" alt="Famille" class="avatar-icon" />
-                </div>
-                <div class="author-info">
-                  <span class="author-name">Pierre D.</span>
-                  <span class="author-detail">Papa de Sophie, 13 ans</span>
-                </div>
-              </div>
-            </div>
-            <div class="testimonial-card">
-              <div class="testimonial-content">
-                <p>"Le suivi des progrès est fantastique. Je vois exactement où ma fille progresse."</p>
-              </div>
-              <div class="testimonial-author">
-                <div class="author-avatar">
-                  <img src="/icons/SuiviProgression.svg" alt="Famille" class="avatar-icon" />
-                </div>
-                <div class="author-info">
-                  <span class="author-name">Sophie M.</span>
-                  <span class="author-detail">Maman de Lucas, 16 ans</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- Call to Action -->
       <div class="cta-section">
@@ -212,7 +164,7 @@
                 <img src="/icons/math.svg" alt="Éducation" class="button-icon" />
                 Commencer l'essai gratuit
               </router-link>
-              <a href="mailto:contact@optitab.com" class="cta-button secondary">
+              <a href="mailto:contact@optitab.net" class="cta-button secondary">
                 <img src="/icons/mail.svg" alt="Contact" class="button-icon" />
                 Parler à un expert
               </a>
@@ -235,18 +187,22 @@ import about from '@/config/aboutContent.js'
 // Fonction pour mapper les emojis vers les icônes SVG
 const getSectionIcon = (emoji) => {
   const iconMap = {
-    '🚀': '/icons/math.svg',
-    '📚': '/icons/exercicesGuides.svg',
-    '🎯': '/icons/fichesSynthese.svg',
-    '💡': '/icons/physics.svg',
+    '🚀': '/icons/ResultatsGarantis.svg',
+    '📚': '/icons/proposeoptitab.svg',
+    '🎯': '/icons/notremission.svg',
+    '💡': '/icons/uniqueOpitab.svg',
+    '👤': '/icons/quisommenous.svg',
     '👥': '/icons/AuteursExperts.svg',
+    '📈': '/icons/visionavenir.svg',
     '📊': '/icons/SuiviProgression.svg',
     '🔄': '/icons/ApprentissageFlexible.svg',
-    '🎓': '/icons/math.svg',
+    '🎓': '/icons/ResultatsGarantis.svg',
+    '📬': '/icons/contactEchanges.svg',
+    '👪': '/icons/motParent.svg',
     '📧': '/icons/mail.svg',
     '✅': '/icons/ApprentissageFlexible.svg'
   }
-  return iconMap[emoji] || '/icons/math.svg'
+  return iconMap[emoji] || '/icons/ResultatsGarantis.svg'
 }
 </script>
 
@@ -259,68 +215,48 @@ const getSectionIcon = (emoji) => {
 
 /* Hero Section Pédagogique */
 .hero-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
+  text-align: center;
+  max-width: 800px;
   margin: 0 auto;
   padding: 4rem 2rem;
-  position: relative;
-  overflow: hidden;
+  margin-top: 20px;
 }
 
 .hero-content {
-  flex: 1;
-  max-width: 600px;
-  z-index: 2;
+  width: 100%;
 }
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: linear-gradient(135deg, #4e63c2 0%, #6b46c1 100%);
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 15px rgba(78, 99, 194, 0.3);
-}
-
-.badge-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  filter: brightness(0) invert(1);
-}
 
 .hero-title {
-  font-size: 3.5rem;
-  font-weight: 800;
+  font-size: 2.5rem;
+  font-weight: 600;
   color: #1f2937;
-  line-height: 1.1;
+  line-height: 1.3;
   margin-bottom: 1.5rem;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #4e63c2 0%, #6b46c1 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: #6b7280;
   line-height: 1.6;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Hero Stats */
 .hero-stats {
   display: flex;
-  gap: 2rem;
+  gap: 3rem;
+  justify-content: center;
   margin-top: 2rem;
 }
 
@@ -330,103 +266,23 @@ const getSectionIcon = (emoji) => {
 
 .stat-number {
   display: block;
-  font-size: 2rem;
-  font-weight: 800;
-  color: #4e63c2;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #6366f1;
   line-height: 1;
+  margin-bottom: 0.5rem;
 }
 
 .stat-label {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #6b7280;
   font-weight: 500;
 }
 
-/* Hero Visual */
-.hero-visual {
-  flex: 1;
-  position: relative;
-  height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.floating-card {
-  position: absolute;
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 20px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  animation: float 6s ease-in-out infinite;
-  min-width: 200px;
-}
-
-.floating-card:nth-child(1) {
-  top: 15%;
-  left: 5%;
-  animation-delay: 0s;
-}
-
-.floating-card:nth-child(2) {
-  top: 45%;
-  right: 10%;
-  animation-delay: 2s;
-}
-
-.floating-card:nth-child(3) {
-  bottom: 15%;
-  left: 15%;
-  animation-delay: 4s;
-}
-
-.card-icon-bg {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, #4e63c2 0%, #6b46c1 100%);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.card-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  filter: brightness(0) invert(1);
-}
-
-.card-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.card-title {
-  font-weight: 700;
-  color: #1f2937;
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
-}
-
-.card-desc {
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
 
 /* Why Section */
 .why-section {
-  background: #fff;
+  background: transparent;
   padding: 4rem 0;
   margin: 2rem 0;
 }
@@ -458,8 +314,10 @@ const getSectionIcon = (emoji) => {
 
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .benefit-card {
@@ -472,27 +330,27 @@ const getSectionIcon = (emoji) => {
 }
 
 .benefit-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  background: #fff;
+  transform: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: #f8fafc;
 }
 
 .benefit-icon {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #4e63c2 0%, #6b46c1 100%);
+  width: 120px;
+  height: 120px;
+  background: transparent;
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
-  box-shadow: 0 8px 25px rgba(78, 99, 194, 0.3);
 }
 
 .benefit-icon .icon {
-  width: 2rem;
-  height: 2rem;
-  filter: brightness(0) invert(1);
+  width: 6rem;
+  height: 6rem;
+  filter: none;
+  color: #6366f1;
 }
 
 .benefit-card h3 {
@@ -511,23 +369,24 @@ const getSectionIcon = (emoji) => {
 .content-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 2rem 4rem 2rem;
+  padding: 0 2rem 0 2rem;
 }
 
 /* Section Styles */
 .about-section {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
   padding: 2.5rem;
   margin-bottom: 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.8);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
 .about-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transform: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .section-header {
@@ -538,20 +397,20 @@ const getSectionIcon = (emoji) => {
 }
 
 .section-icon {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #4e63c2 0%, #6b46c1 100%);
+  width: 120px;
+  height: 120px;
+  background: transparent;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(78, 99, 194, 0.3);
 }
 
 .icon-emoji {
-  width: 1.8rem;
-  height: 1.8rem;
-  filter: brightness(0) invert(1);
+  width: 5.4rem;
+  height: 5.4rem;
+  filter: none;
+  color: #2a38b7;
 }
 
 .section-title {
@@ -576,8 +435,20 @@ const getSectionIcon = (emoji) => {
   background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  border-left: 4px solid #4e63c2;
+  border-left: 4px solid #6366f1;
   font-weight: 500;
+}
+
+.contact-link {
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+  color: #4f46e5;
+  text-decoration: underline;
 }
 
 /* Feature List */
@@ -600,14 +471,14 @@ const getSectionIcon = (emoji) => {
 }
 
 .feature-item:hover {
-  background: #f1f5f9;
-  transform: translateX(5px);
+  background: #f8fafc;
+  transform: none;
 }
 
 .feature-bullet {
   width: 8px;
   height: 8px;
-  background: linear-gradient(135deg, #4e63c2 0%, #6b46c1 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   border-radius: 50%;
   margin-top: 0.5rem;
   flex-shrink: 0;
@@ -620,83 +491,179 @@ const getSectionIcon = (emoji) => {
   font-weight: 500;
 }
 
-/* Testimonials Section */
-.testimonials-section {
-  background: linear-gradient(135deg, #4e63c2 0%, #6b46c1 100%);
-  padding: 4rem 0;
-  color: #fff;
+/* Social Media Section */
+.social-media-section {
+  margin-top: 1.5rem;
 }
 
-.testimonials-title {
-  text-align: center;
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 3rem;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.testimonial-card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 2rem;
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.testimonial-content p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  font-style: italic;
-}
-
-.testimonial-author {
+.social-media-row {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
-.author-avatar {
-  width: 50px;
-  height: 50px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
+.social-media-label {
+  font-size: 1.05rem;
+  color: #374151;
+  font-weight: 500;
+  margin: 0;
+}
+
+.social-media-icons-inline {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: 0.5rem;
+}
+
+.social-media-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.social-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: #fff;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.avatar-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  filter: brightness(0) invert(1);
+.social-icon:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-.author-info {
+.social-icon:nth-child(1):hover {
+  border-color: #E4405F;
+  background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+}
+
+.social-icon:nth-child(2):hover {
+  border-color: #1877F2;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.social-icon:nth-child(3):hover {
+  border-color: #0A66C2;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.social-icon-svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Couleurs spécifiques pour chaque réseau social */
+.instagram-icon .social-icon-svg {
+  color: #E4405F;
+}
+
+.facebook-icon .social-icon-svg {
+  color: #1877F2;
+}
+
+.linkedin-icon .social-icon-svg {
+  color: #0A66C2;
+}
+
+/* Effets de survol avec couleurs */
+.instagram-icon:hover .social-icon-svg {
+  color: #C13584;
+}
+
+.facebook-icon:hover .social-icon-svg {
+  color: #166FE5;
+}
+
+.linkedin-icon:hover .social-icon-svg {
+  color: #004182;
+}
+
+/* Icônes en ligne */
+.social-icon-inline {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border-radius: 6px;
+  border: none;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: none;
 }
 
-.author-name {
-  font-weight: 600;
-  font-size: 1rem;
+.social-icon-inline:hover {
+  transform: none;
+  box-shadow: none;
 }
 
-.author-detail {
-  font-size: 0.9rem;
-  opacity: 0.8;
+.instagram-icon:hover {
+  border: none;
+  background: transparent;
 }
+
+.facebook-icon:hover {
+  border: none;
+  background: transparent;
+}
+
+.linkedin-icon:hover {
+  border: none;
+  background: transparent;
+}
+
+.social-icon-svg-inline {
+  width: 20px;
+  height: 20px;
+}
+
+/* Couleurs spécifiques pour les icônes en ligne */
+.instagram-icon .social-icon-svg-inline {
+  color: #E4405F;
+}
+
+.facebook-icon .social-icon-svg-inline {
+  color: #1877F2;
+}
+
+.linkedin-icon .social-icon-svg-inline {
+  color: #0A66C2;
+}
+
+/* Effets de survol avec couleurs pour les icônes en ligne */
+.instagram-icon:hover .social-icon-svg-inline {
+  color: #C13584;
+}
+
+.facebook-icon:hover .social-icon-svg-inline {
+  color: #166FE5;
+}
+
+.linkedin-icon:hover .social-icon-svg-inline {
+  color: #004182;
+}
+
 
 /* CTA Section */
 .cta-section {
-  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   padding: 4rem 2rem;
-  margin-top: 2rem;
+  margin-top: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
 }
 
 .cta-card {
@@ -708,13 +675,13 @@ const getSectionIcon = (emoji) => {
 .cta-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #fff;
+  color: #1f2937;
   margin-bottom: 1rem;
 }
 
 .cta-text {
   font-size: 1.2rem;
-  color: #d1d5db;
+  color: #6b7280;
   line-height: 1.6;
   margin-bottom: 2.5rem;
 }
@@ -741,32 +708,32 @@ const getSectionIcon = (emoji) => {
 }
 
 .cta-button.primary {
-  background: linear-gradient(135deg, #4e63c2 0%, #6b46c1 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(78, 99, 194, 0.4);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
 }
 
 .cta-button.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(78, 99, 194, 0.6);
+  transform: none;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
 }
 
 .cta-button.secondary {
   background: transparent;
-  color: #fff;
-  border-color: #fff;
+  color: #6366f1;
+  border-color: #6366f1;
 }
 
 .cta-button.secondary:hover {
-  background: #fff;
-  color: #1f2937;
-  transform: translateY(-2px);
+  background: #6366f1;
+  color: #fff;
+  transform: none;
 }
 
 .button-icon {
   width: 1.2rem;
   height: 1.2rem;
-  filter: brightness(0) invert(1);
+  filter: none;
 }
 
 .cta-guarantee {
@@ -774,50 +741,39 @@ const getSectionIcon = (emoji) => {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  color: #9ca3af;
+  color: #6b7280;
   font-size: 0.95rem;
 }
 
 .guarantee-icon {
   width: 1.1rem;
   height: 1.1rem;
-  filter: brightness(0) invert(1);
+  filter: none;
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
   .hero-section {
-    flex-direction: column;
-    text-align: center;
     padding: 3rem 1.5rem;
   }
   
   .hero-title {
-    font-size: 2.8rem;
-  }
-  
-  .hero-visual {
-    height: 300px;
-    margin-top: 2rem;
+    font-size: 2.2rem;
   }
   
   .hero-stats {
-    justify-content: center;
-  }
-  
-  .floating-card {
-    padding: 1rem;
-    min-width: 180px;
+    gap: 2rem;
   }
   
   .benefits-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 600px;
   }
 }
 
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
   
   .hero-subtitle {
@@ -826,11 +782,11 @@ const getSectionIcon = (emoji) => {
   
   .hero-stats {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
   }
   
   .content-container {
-    padding: 0 1rem 3rem 1rem;
+    padding: 0 1rem 0 1rem;
   }
   
   .about-section {
@@ -839,6 +795,11 @@ const getSectionIcon = (emoji) => {
   
   .section-title {
     font-size: 1.6rem;
+  }
+  
+  .benefits-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
   }
   
   .cta-title {
@@ -856,9 +817,6 @@ const getSectionIcon = (emoji) => {
     justify-content: center;
   }
   
-  .testimonials-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 480px) {
@@ -882,13 +840,13 @@ const getSectionIcon = (emoji) => {
   }
   
   .section-icon {
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
   }
   
   .icon-emoji {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 4.5rem;
+    height: 4.5rem;
   }
   
   .feature-item {
@@ -899,17 +857,14 @@ const getSectionIcon = (emoji) => {
     font-size: 1rem;
   }
   
-  .floating-card {
-    min-width: 150px;
-    padding: 0.75rem;
-  }
-  
-  .card-title {
+  .hero-badge-visual {
     font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
   }
   
-  .card-desc {
+  .hero-badge-secondary {
     font-size: 0.8rem;
+    padding: 0.5rem 1rem;
   }
 }
 </style> 

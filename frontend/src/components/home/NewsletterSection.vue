@@ -16,7 +16,7 @@
           autocomplete="email"
         />
         <span class="icon" aria-hidden="true">
-          <svg width="20" height="20" fill="none" stroke="#6366f1" stroke-width="2" viewBox="0 0 24 24">
+          <svg width="20" height="20" fill="none" stroke="#2a38b7" stroke-width="2" viewBox="0 0 24 24">
             <rect width="20" height="14" x="2" y="5" rx="3"/>
             <path d="M2 7l10 6 10-6"/>
           </svg>
@@ -92,7 +92,7 @@ function onSubmit() {
   transition: 0.2s;
 }
 .input-group input:focus {
-  border-color: #6366f1;
+  border-color: #2a38b7;
   background: #fff;
   outline: none;
 }
@@ -105,7 +105,7 @@ function onSubmit() {
 }
 button {
   padding: 14px 28px;
-  background: #6366f1;
+  background: #2a38b7;
   color: white;
   font-weight: 700;
   border: none;

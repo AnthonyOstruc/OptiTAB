@@ -33,13 +33,13 @@ const props = defineProps({
   padding: 18px 40px;
   border-radius: 10px;
   background: #fff;
-  color: #6366f1;
+  color: #2a38b7;
   font-weight: 700;
   border: none;
   transition: background 0.2s, color 0.2s;
   cursor: pointer;
   &:hover {
-    background: #6366f1;
+    background: #2a38b7;
     color: #fff;
   }
 }

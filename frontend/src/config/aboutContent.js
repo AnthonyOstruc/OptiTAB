@@ -59,21 +59,26 @@ export default [
     title: 'Contact et échanges',
     content: [
       "Vous avez une question ? Une suggestion ? Nous sommes à votre écoute.",
-      "📧 Email : contact@optitab.com",
-      "🌐 Site web : www.optitab.com",
-      "📱 Réseaux sociaux : @OptiTABEdu (Instagram, Facebook, LinkedIn)"
-    ]
+      "📧 Email : <a href='mailto:contact@optitab.net' class='contact-link'>contact@optitab.net</a>",
+      "🌐 Site web : <a href='https://www.optitab.net' target='_blank' class='contact-link'>www.optitab.net</a>",
+      "<img src='/icons/whatsapp.svg' alt='WhatsApp' class='whatsapp-icon-inline' style='width: 20px; height: 20px; color: #25D366; vertical-align: middle; margin-right: 5px;' /> WhatsApp : <a href='https://wa.me/33764040251' target='_blank' class='contact-link'>07 64 04 02 51</a>"
+    ],
+    socialMedia: true
   },
   {
     emoji: '👪',
     title: 'Un mot pour les parents',
     content: [
-      "Nous comprenons vos attentes. En tant que parents, vous cherchez à offrir à vos enfants :",
-      "des outils fiables,",
-      "des méthodes qui fonctionnent,",
-      "un accompagnement sérieux.",
+      "Nous comprenons vos attentes. En tant que parents, vous cherchez à offrir à vos enfants :"
+    ],
+    list: [
+      "des outils fiables",
+      "des méthodes qui fonctionnent", 
+      "un accompagnement sérieux"
+    ],
+    additionalContent: [
       "OptiTAB est conçu pour ça.",
-      "Nous allions l’exigence pédagogique à l’innovation technologique, pour aider chaque élève à reprendre confiance, acquérir les bons réflexes, et réussir durablement."
+      "Nous allions l'exigence pédagogique à l'innovation technologique, pour aider chaque élève à reprendre confiance, acquérir les bons réflexes, et réussir durablement."
     ]
   }
 ] 

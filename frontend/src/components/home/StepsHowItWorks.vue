@@ -134,7 +134,7 @@ function getStepShadow(idx) {
   font-size: 2.5rem;
   width: 48px;
   height: 48px;
-  color: #6366f1;
+  color: #2a38b7;
   display: block;
 }
 .steps-how-step-title {
@@ -163,7 +163,7 @@ function getStepShadow(idx) {
 }
 .steps-how-cta-top {
   margin: 38px 0 0 0;
-  color: #6366f1;
+  color: #2a38b7;
   font-weight: 600;
   font-size: 1.1rem;
 }
@@ -184,7 +184,7 @@ function getStepShadow(idx) {
   flex-wrap: wrap;
 }
 .steps-how-cta-main {
-  background: #6366f1;
+  background: #2a38b7;
   color: #fff;
   font-weight: 700;
   font-size: 1.1rem;
@@ -201,7 +201,7 @@ function getStepShadow(idx) {
 }
 .steps-how-cta-secondary {
   background: #fff;
-  color: #6366f1;
+  color: #2a38b7;
   font-weight: 700;
   font-size: 1.1rem;
   border: 2px solid #e0e7ff;
@@ -211,7 +211,7 @@ function getStepShadow(idx) {
   transition: background 0.2s, color 0.2s;
   &:hover {
     background: #f3f4f6;
-    color: #6366f1;
+    color: #2a38b7;
   }
 }
 @media (max-width: 900px) {

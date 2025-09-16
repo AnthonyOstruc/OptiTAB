@@ -124,75 +124,105 @@ export function useGoogleAuth() {
   const startOAuthFallback = () => {
     return new Promise((resolve, reject) => {
       try {
-        if (!google?.accounts?.oauth2?.initCodeClient) {
-          // Si le Code Flow n'est pas disponible, tomber sur le Token Flow
-          if (google?.accounts?.oauth2?.initTokenClient) {
-            const tokenClient = google.accounts.oauth2.initTokenClient({
-              client_id: googleClientId,
-              scope: 'openid email profile',
-              callback: async (resp) => {
-                try {
-                  if (resp?.access_token) {
-                    // Dernier fallback: on envoie l'access_token au backend pour récupérer le profil
-                    const result = await googleOAuthTokenLogin({ access_token: resp.access_token })
-                    const { user, access, refresh } = result.data.data
-                    localStorage.setItem('access_token', access)
-                    localStorage.setItem('refresh_token', refresh)
-                    userStore.setUser(user)
-                    await userStore.fetchUser()
-                    closeModal(MODAL_IDS.LOGIN)
-                    router.push('/dashboard')
-                    showToast('Connexion réussie !', 'success')
-                    didFallbackToOAuth.value = true
-                    shouldReopenLoginModal.value = false
-                    resolve(true)
-                    return
-                  }
-                  reject(new Error('Access token non reçu'))
-                } catch (e) {
-                  reject(e)
+        // 1) Tenter d'abord le Token Flow (plus simple, compatible incognito)
+        if (google?.accounts?.oauth2?.initTokenClient) {
+          const tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: googleClientId,
+            scope: 'openid email profile',
+            callback: async (resp) => {
+              try {
+                if (resp?.access_token) {
+                  const result = await googleOAuthTokenLogin({ access_token: resp.access_token })
+                  const { user, access, refresh } = result.data.data
+                  localStorage.setItem('access_token', access)
+                  localStorage.setItem('refresh_token', refresh)
+                  userStore.setUser(user)
+                  await userStore.fetchUser()
+                  closeModal(MODAL_IDS.LOGIN)
+                  router.push('/dashboard')
+                  showToast('Connexion réussie !', 'success')
+                  didFallbackToOAuth.value = true
+                  shouldReopenLoginModal.value = false
+                  resolve(true)
+                  return
                 }
+                // Si pas d'access token, tenter le Code Flow
+                if (google?.accounts?.oauth2?.initCodeClient) {
+                  const codeClient = google.accounts.oauth2.initCodeClient({
+                    client_id: googleClientId,
+                    scope: 'openid email profile',
+                    ux_mode: 'popup',
+                    callback: async (resp2) => {
+                      try {
+                        if (resp2?.code) {
+                          const result = await googleOAuthExchange({ code: resp2.code, client_id: googleClientId })
+                          const { user, access, refresh } = result.data.data
+                          localStorage.setItem('access_token', access)
+                          localStorage.setItem('refresh_token', refresh)
+                          userStore.setUser(user)
+                          await userStore.fetchUser()
+                          closeModal(MODAL_IDS.LOGIN)
+                          router.push('/dashboard')
+                          showToast('Connexion réussie !', 'success')
+                          didFallbackToOAuth.value = true
+                          shouldReopenLoginModal.value = false
+                          resolve(true)
+                          return
+                        }
+                        reject(new Error('Code OAuth non reçu'))
+                      } catch (e2) {
+                        reject(e2)
+                      }
+                    }
+                  })
+                  codeClient.requestCode()
+                  return
+                }
+                reject(new Error('OAuth2 Code Flow non disponible'))
+              } catch (e) {
+                reject(e)
               }
-            })
-            tokenClient.requestAccessToken()
-            return
-          } else {
-            reject(new Error('OAuth2 non disponible'))
-            return
-          }
+            }
+          })
+          tokenClient.requestAccessToken()
+          return
         }
 
-        const codeClient = google.accounts.oauth2.initCodeClient({
-          client_id: googleClientId,
-          scope: 'openid email profile',
-          ux_mode: 'popup',
-          callback: async (resp) => {
-            try {
-              if (resp?.code) {
-                // Envoyer le code au backend pour échange
-                const result = await googleOAuthExchange({ code: resp.code, client_id: googleClientId })
-                const { user, access, refresh } = result.data.data
-
-                localStorage.setItem('access_token', access)
-                localStorage.setItem('refresh_token', refresh)
-                userStore.setUser(user)
-                await userStore.fetchUser()
-                closeModal(MODAL_IDS.LOGIN)
-                router.push('/dashboard')
-                showToast('Connexion réussie !', 'success')
-                didFallbackToOAuth.value = true
-                shouldReopenLoginModal.value = false
-                resolve(true)
-              } else {
+        // 2) Sinon tenter directement le Code Flow
+        if (google?.accounts?.oauth2?.initCodeClient) {
+          const codeClient = google.accounts.oauth2.initCodeClient({
+            client_id: googleClientId,
+            scope: 'openid email profile',
+            ux_mode: 'popup',
+            callback: async (resp) => {
+              try {
+                if (resp?.code) {
+                  const result = await googleOAuthExchange({ code: resp.code, client_id: googleClientId })
+                  const { user, access, refresh } = result.data.data
+                  localStorage.setItem('access_token', access)
+                  localStorage.setItem('refresh_token', refresh)
+                  userStore.setUser(user)
+                  await userStore.fetchUser()
+                  closeModal(MODAL_IDS.LOGIN)
+                  router.push('/dashboard')
+                  showToast('Connexion réussie !', 'success')
+                  didFallbackToOAuth.value = true
+                  shouldReopenLoginModal.value = false
+                  resolve(true)
+                  return
+                }
                 reject(new Error('Code OAuth non reçu'))
+              } catch (e) {
+                reject(e)
               }
-            } catch (e) {
-              reject(e)
             }
-          },
-        })
+          })
+          codeClient.requestCode()
+          return
+        }
 
-        codeClient.requestCode()
+        // 3) Aucun flow disponible
+        reject(new Error('OAuth2 non disponible'))
       } catch (e) {
         reject(e)
       }

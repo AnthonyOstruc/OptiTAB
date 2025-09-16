@@ -1,0 +1,50 @@
+# Configuration de développement pour OptiTAB
+# ==========================================
+
+Créez un fichier .env dans le dossier backend/ avec le contenu suivant :
+
+# DEBUG
+DEBUG=True
+
+# Base de données locale (SQLite pour développement)
+# DATABASE_URL=sqlite:///db.sqlite3
+
+# Pour PostgreSQL local (optionnel)
+# POSTGRES_DB=optitab_dev
+# POSTGRES_USER=postgres
+# POSTGRES_PASSWORD=password
+# POSTGRES_HOST=localhost
+# POSTGRES_PORT=5432
+
+# Google OAuth (À CONFIGURER avec vos vraies valeurs)
+GOOGLE_OAUTH_CLIENT_ID=votre_google_client_id_developpement
+GOOGLE_OAUTH_CLIENT_SECRET=votre_google_client_secret_developpement
+
+# URLs
+FRONTEND_BASE_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:3000
+
+# Email (pour développement local)
+EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+# EMAIL_HOST=smtp.gmail.com
+# EMAIL_PORT=587
+# EMAIL_USE_TLS=True
+# EMAIL_HOST_USER=votre-email@gmail.com
+# EMAIL_HOST_PASSWORD=votre-mot-de-passe-application
+DEFAULT_FROM_EMAIL=OptiTAB <contact@optitab.net>
+
+# Clés de sécurité
+SECRET_KEY=dev_secret_key_change_in_production
+
+# OpenAI (optionnel)
+# OPENAI_API_KEY=votre_cle_openai
+
+# ==========================================
+# INSTRUCTIONS :
+# ==========================================
+
+1. Copiez le contenu ci-dessus dans un fichier .env dans le dossier backend/
+2. Remplacez les valeurs GOOGLE_OAUTH_* par vos vraies clés Google Cloud Console
+3. Créez un client OAuth séparé pour le développement dans Google Cloud Console
+4. Configurez les origines autorisées : http://localhost:3000 et http://127.0.0.1:3000
+

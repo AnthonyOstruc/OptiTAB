@@ -3,7 +3,7 @@
  * Simple, fluide et automatique
  */
 
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { googleLogin } from '@/api/auth'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
@@ -13,11 +13,13 @@ import { useToast } from '@/composables/useToast'
 export function useGoogleAuth() {
   const router = useRouter()
   const userStore = useUserStore()
-  const { closeModal } = useModalManager()
+  const { openModal, closeModal, isModalOpen } = useModalManager()
   const { showToast } = useToast()
 
   const isGoogleLoading = ref(false)
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+  // Permet de savoir si on doit réouvrir le modal login après l'interaction Google
+  const shouldReopenLoginModal = ref(false)
 
   /**
    * Initialise Google Sign-In
@@ -91,6 +93,11 @@ export function useGoogleAuth() {
       console.error('Erreur Google:', error)
       const errorMessage = error.response?.data?.message || 'Erreur de connexion'
       showToast(errorMessage, 'error')
+      // Si l'utilisateur venait du modal Login, on le ré-ouvre en cas d'échec
+      if (shouldReopenLoginModal.value) {
+        openModal(MODAL_IDS.LOGIN)
+        shouldReopenLoginModal.value = false
+      }
     } finally {
       isGoogleLoading.value = false
     }
@@ -99,15 +106,50 @@ export function useGoogleAuth() {
   /**
    * Déclenche Google One Tap
    */
-  const signInWithGoogle = () => {
+  const signInWithGoogle = async () => {
     if (!googleClientId) {
       showToast('Google OAuth non configuré', 'warning')
       return
     }
 
     if (typeof google !== 'undefined') {
-      // Appeler prompt sans callback pour éviter l'avertissement GSI lié aux méthodes de statut UI
-      google.accounts.id.prompt()
+      // Si le modal Login est ouvert, on le ferme temporairement pour laisser Google au premier plan
+      shouldReopenLoginModal.value = isModalOpen(MODAL_IDS.LOGIN)
+      if (shouldReopenLoginModal.value) {
+        closeModal(MODAL_IDS.LOGIN)
+        await nextTick()
+      }
+
+      // Utiliser le callback de moment pour gérer l'affichage/fermeture du prompt
+      try {
+        google.accounts.id.prompt((notification) => {
+          try {
+            const isNotDisplayed = notification?.isNotDisplayed?.()
+            const isSkipped = notification?.isSkippedMoment?.()
+            const isDismissed = notification?.isDismissedMoment?.()
+            const dismissedReason = notification?.getDismissedReason?.()
+
+            // Si le prompt n'a pas pu s'afficher ou a été fermé sans authentification,
+            // on ré-ouvre le modal login si nécessaire
+            const closedWithoutCredential = (
+              (isDismissed && dismissedReason !== 'credential_returned') ||
+              isNotDisplayed ||
+              isSkipped
+            )
+
+            if (closedWithoutCredential && shouldReopenLoginModal.value) {
+              openModal(MODAL_IDS.LOGIN)
+              shouldReopenLoginModal.value = false
+            }
+          } catch (_) {}
+        })
+      } catch (_) {
+        // En cas d'erreur imprévue, ré-ouvrir le modal si on l'avait fermé
+        if (shouldReopenLoginModal.value) {
+          openModal(MODAL_IDS.LOGIN)
+          shouldReopenLoginModal.value = false
+        }
+      }
     } else {
       showToast('Google Sign-In non disponible', 'error')
     }

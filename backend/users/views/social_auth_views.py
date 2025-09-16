@@ -152,17 +152,26 @@ class GoogleOAuthCodeExchangeView(APIView):
 
             resp = requests.post(token_endpoint, data=payload, timeout=10)
             if resp.status_code != 200:
-                logging.error(f"Google token exchange failed: {resp.status_code} {resp.text}")
-                return ResponseService.error(
-                    message="Échec de l'échange du code Google",
-                    status_code=status.HTTP_400_BAD_REQUEST
-                )
+                # Certains environnements (apps GSI sans secret côté front) acceptent l'échange sans client_secret
+                # Tenter un second essai sans le secret si le premier échoue
+                payload_no_secret = payload.copy()
+                payload_no_secret.pop('client_secret', None)
+                resp2 = requests.post(token_endpoint, data=payload_no_secret, timeout=10)
+                if resp2.status_code != 200:
+                    detail = resp.text or resp2.text
+                    logging.error(f"Google token exchange failed: {resp.status_code}/{resp2.status_code} {detail}")
+                    return ResponseService.error(
+                        message="Échec de l'échange du code Google",
+                        status_code=status.HTTP_400_BAD_REQUEST
+                    )
+                resp = resp2
 
             token_data = resp.json()
             google_id_token = token_data.get('id_token')
             if not google_id_token:
+                # Retourner un message plus explicite côté client pour debug
                 return ResponseService.error(
-                    message="id_token Google manquant après l'échange",
+                    message="id_token manquant après l'échange. Vérifiez client_id/secret et l'activation de l'API OAuth sur Google Cloud.",
                     status_code=status.HTTP_400_BAD_REQUEST
                 )
 

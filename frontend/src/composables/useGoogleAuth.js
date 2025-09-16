@@ -24,11 +24,25 @@ export function useGoogleAuth() {
   const didFallbackToNoFedCM = ref(false)
   const didFallbackToOAuth = ref(false)
 
+  const isFedCMPreferred = () => {
+    try {
+      const disabledFlag = localStorage.getItem('gsi_disable_fedcm') === '1'
+      if (disabledFlag) return false
+      const envOverride = import.meta?.env?.VITE_GSI_ENABLE_FEDCM
+      if (envOverride === 'true') return true
+      if (envOverride === 'false') return false
+      // Par défaut, on désactive FedCM en production pour éviter les warnings incognito
+      return !import.meta?.env?.PROD
+    } catch (_) {
+      return !import.meta?.env?.PROD
+    }
+  }
+
   /**
    * Initialise Google Sign-In
    */
   const initializeGoogleSignIn = (options = {}) => {
-    const { useFedCMForPrompt = true } = options
+    const { useFedCMForPrompt = isFedCMPreferred() } = options
     if (!googleClientId) {
       console.warn('⚠️ VITE_GOOGLE_CLIENT_ID non configuré - Google Sign-In sera désactivé')
       console.warn('📝 Consultez ENV_SETUP.md pour configurer Google OAuth')
@@ -162,6 +176,21 @@ export function useGoogleAuth() {
     }
 
     if (typeof google !== 'undefined') {
+      // Si FedCM n'est pas préféré, lancer directement le Code Flow en popup
+      if (!isFedCMPreferred()) {
+        try {
+          await startOAuthFallback()
+          return
+        } catch (e) {
+          // En cas d'échec, ouvrir/rouvrir le modal login
+          if (shouldReopenLoginModal.value) {
+            openModal(MODAL_IDS.LOGIN)
+            shouldReopenLoginModal.value = false
+          }
+          showToast('Échec de la connexion Google', 'error')
+          return
+        }
+      }
       // Si le modal Login est ouvert, on le ferme temporairement pour laisser Google au premier plan
       shouldReopenLoginModal.value = isModalOpen(MODAL_IDS.LOGIN)
       if (shouldReopenLoginModal.value) {

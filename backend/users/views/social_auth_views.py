@@ -137,8 +137,9 @@ class GoogleOAuthCodeExchangeView(APIView):
                     status_code=status.HTTP_400_BAD_REQUEST
                 )
 
-            client_id = settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['client_id']
-            client_secret = settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['secret']
+            # Utiliser le client_id fourni par le front si présent, sinon celui de la config
+            client_id = request.data.get('client_id') or settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['client_id']
+            client_secret = settings.SOCIALACCOUNT_PROVIDERS['google']['APP'].get('secret')
 
             token_endpoint = 'https://oauth2.googleapis.com/token'
             payload = {
@@ -158,11 +159,17 @@ class GoogleOAuthCodeExchangeView(APIView):
                 payload_no_secret.pop('client_secret', None)
                 resp2 = requests.post(token_endpoint, data=payload_no_secret, timeout=10)
                 if resp2.status_code != 200:
-                    detail = resp.text or resp2.text
+                    # Retourner un message plus verbeux au client pour debug
+                    detail = None
+                    try:
+                        detail = resp2.json()
+                    except Exception:
+                        detail = resp2.text or resp.text
                     logging.error(f"Google token exchange failed: {resp.status_code}/{resp2.status_code} {detail}")
                     return ResponseService.error(
                         message="Échec de l'échange du code Google",
-                        status_code=status.HTTP_400_BAD_REQUEST
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        extra={ 'google_error': detail }
                     )
                 resp = resp2
 
@@ -171,8 +178,9 @@ class GoogleOAuthCodeExchangeView(APIView):
             if not google_id_token:
                 # Retourner un message plus explicite côté client pour debug
                 return ResponseService.error(
-                    message="id_token manquant après l'échange. Vérifiez client_id/secret et l'activation de l'API OAuth sur Google Cloud.",
-                    status_code=status.HTTP_400_BAD_REQUEST
+                    message="id_token manquant après l'échange. Vérifiez client_id/secret et l'activation de l'API OAuth.",
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    extra={ 'token_data': token_data }
                 )
 
             # Vérifier le id_token

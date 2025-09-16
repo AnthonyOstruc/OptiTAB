@@ -137,7 +137,7 @@ export function useGoogleAuth() {
             try {
               if (resp?.code) {
                 // Envoyer le code au backend pour échange
-                const result = await googleOAuthExchange({ code: resp.code })
+                const result = await googleOAuthExchange({ code: resp.code, client_id: googleClientId })
                 const { user, access, refresh } = result.data.data
 
                 localStorage.setItem('access_token', access)

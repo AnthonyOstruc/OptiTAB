@@ -4,10 +4,6 @@
       <!-- Hero Section -->
       <div class="hero-section">
         <div class="hero-content">
-          <div class="hero-badge">
-            <img src="/icons/AuteursExperts.svg" alt="Cours Particuliers" class="badge-icon" />
-            <span class="badge-text">Cours Personnalisés</span>
-          </div>
           <h1 class="hero-title">
             Cours particuliers
             <span class="gradient-text">sur mesure</span>
@@ -16,47 +12,18 @@
             Bénéficiez d'un accompagnement personnalisé avec nos professeurs expérimentés.
             Un suivi adapté à votre rythme et à vos besoins spécifiques pour maximiser vos résultats.
           </p>
-          <div class="hero-features">
-            <div class="feature-item">
-              <span class="feature-icon">👨‍🏫</span>
-              <span class="feature-text">Professeurs experts</span>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-number">95%</span>
+              <span class="stat-label">Amélioration des notes</span>
             </div>
-            <div class="feature-item">
-              <span class="feature-icon">📅</span>
-              <span class="feature-text">Horaires flexibles</span>
+            <div class="stat-item">
+              <span class="stat-number">10k+</span>
+              <span class="stat-label">Élèves accompagnés</span>
             </div>
-            <div class="feature-item">
-              <span class="feature-icon">🎯</span>
-              <span class="feature-text">Objectifs personnalisés</span>
-            </div>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <div class="floating-card card-1">
-            <div class="card-icon-bg">
-              <img src="/icons/AuteursExperts.svg" alt="Professeur" class="card-icon" />
-            </div>
-            <div class="card-content">
-              <span class="card-title">Professeur dédié</span>
-              <span class="card-desc">Suivi personnalisé</span>
-            </div>
-          </div>
-          <div class="floating-card card-2">
-            <div class="card-icon-bg">
-              <img src="/icons/ApprentissageFlexible.svg" alt="Planning" class="card-icon" />
-            </div>
-            <div class="card-content">
-              <span class="card-title">Planning adapté</span>
-              <span class="card-desc">À votre rythme</span>
-            </div>
-          </div>
-          <div class="floating-card card-3">
-            <div class="card-icon-bg">
-              <img src="/icons/SuiviProgression.svg" alt="Objectifs" class="card-icon" />
-            </div>
-            <div class="card-content">
-              <span class="card-title">Objectifs clairs</span>
-              <span class="card-desc">Progrès mesurés</span>
+            <div class="stat-item">
+              <span class="stat-number">24/7</span>
+              <span class="stat-label">Support disponible</span>
             </div>
           </div>
         </div>
@@ -74,31 +41,31 @@
           <div class="avantages-grid">
             <div class="avantage-card">
               <div class="avantage-icon">
-                <img src="/icons/AuteursExperts.svg" alt="Personnalisé" class="icon" />
+                <img src="/icons/ResultatsGarantis.svg" alt="Résultats" class="icon" />
               </div>
-              <h3>Cours sur mesure</h3>
-              <p>Programme adapté à votre niveau et à vos objectifs spécifiques</p>
+              <h3>Résultats Garantis</h3>
+              <p>95% de nos élèves améliorent leurs notes de 2 points minimum en 3 mois</p>
             </div>
             <div class="avantage-card">
               <div class="avantage-icon">
-                <img src="/icons/ApprentissageFlexible.svg" alt="Flexible" class="icon" />
+                <img src="/icons/AuteursExperts.svg" alt="Experts" class="icon" />
               </div>
-              <h3>Horaires flexibles</h3>
-              <p>Choisissez les jours et horaires qui vous conviennent le mieux</p>
+              <h3>Experts Pédagogues</h3>
+              <p>Contenu créé par des enseignants expérimentés et des experts en sciences</p>
             </div>
             <div class="avantage-card">
               <div class="avantage-icon">
-                <img src="/icons/SuiviProgression.svg" alt="Progression" class="icon" />
+                <img src="/icons/SuiviProgression.svg" alt="Suivi" class="icon" />
               </div>
-              <h3>Suivi régulier</h3>
-              <p>Bilans réguliers pour mesurer vos progrès et ajuster le programme</p>
+              <h3>Suivi Détaillé</h3>
+              <p>Tableau de bord personnalisé pour suivre les progrès en temps réel</p>
             </div>
             <div class="avantage-card">
               <div class="avantage-icon">
-                <img src="/icons/mail.svg" alt="Communication" class="icon" />
+                <img src="/icons/ApprentissageFlexible.svg" alt="Flexibilité" class="icon" />
               </div>
-              <h3>Communication directe</h3>
-              <p>Contact direct avec votre professeur pour un suivi optimal</p>
+              <h3>Apprentissage Flexible</h3>
+              <p>Adapté au rythme et au niveau d'apprentissage de votre enfant</p>
             </div>
           </div>
         </div>
@@ -175,11 +142,9 @@
             </p>
             <div class="cta-buttons">
               <router-link to="/contact" class="cta-button primary">
-                <img src="/icons/ApprentissageFlexible.svg" alt="Calendrier" class="button-icon" />
                 Réserver un cours gratuit
               </router-link>
               <a href="mailto:contact@optitab.com" class="cta-button secondary">
-                <img src="/icons/mail.svg" alt="Contact" class="button-icon" />
                 Nous contacter
               </a>
             </div>
@@ -203,20 +168,15 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 
 /* Hero Section */
 .hero-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
+  text-align: center;
+  max-width: 800px;
   margin: 0 auto;
   padding: 4rem 2rem;
-  position: relative;
-  overflow: hidden;
+  margin-top: 20px;
 }
 
 .hero-content {
-  flex: 1;
-  max-width: 600px;
-  z-index: 2;
+  width: 100%;
 }
 
 .hero-badge {
@@ -240,10 +200,10 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 }
 
 .hero-title {
-  font-size: 3.5rem;
-  font-weight: 800;
+  font-size: 2.5rem;
+  font-weight: 600;
   color: #1f2937;
-  line-height: 1.1;
+  line-height: 1.3;
   margin-bottom: 1.5rem;
 }
 
@@ -255,116 +215,42 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: #6b7280;
   line-height: 1.6;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Hero Features */
-.hero-features {
+/* Hero Stats */
+.hero-stats {
   display: flex;
-  gap: 2rem;
+  gap: 3rem;
+  justify-content: center;
   margin-top: 2rem;
 }
 
-.feature-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.stat-item {
+  text-align: center;
 }
 
-.feature-icon {
-  font-size: 1.5rem;
+.stat-number {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #6366f1;
+  line-height: 1;
+  margin-bottom: 0.5rem;
 }
 
-.feature-text {
-  font-size: 0.9rem;
+.stat-label {
+  font-size: 0.95rem;
   color: #6b7280;
   font-weight: 500;
 }
 
-/* Hero Visual */
-.hero-visual {
-  flex: 1;
-  position: relative;
-  height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.floating-card {
-  position: absolute;
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 20px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  animation: float 6s ease-in-out infinite;
-  min-width: 200px;
-}
-
-.floating-card:nth-child(1) {
-  top: 15%;
-  left: 5%;
-  animation-delay: 0s;
-}
-
-.floating-card:nth-child(2) {
-  top: 45%;
-  right: 10%;
-  animation-delay: 2s;
-}
-
-.floating-card:nth-child(3) {
-  bottom: 15%;
-  left: 15%;
-  animation-delay: 4s;
-}
-
-.card-icon-bg {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, #4e63c2 0%, #6b46c1 100%);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.card-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  filter: brightness(0) invert(1);
-}
-
-.card-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.card-title {
-  font-weight: 700;
-  color: #1f2937;
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
-}
-
-.card-desc {
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
 
 /* Avantages Section */
 .avantages-section {
@@ -400,41 +286,37 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 
 .avantages-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .avantage-card {
-  background: #f8fafc;
+  background: #ffffff;
   padding: 2rem;
-  border-radius: 16px;
+  border-radius: 12px;
   text-align: center;
   border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
-}
-
-.avantage-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .avantage-icon {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, #4e63c2 0%, #6b46c1 100%);
+  background: transparent;
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
-  box-shadow: 0 8px 25px rgba(78, 99, 194, 0.3);
 }
 
 .avantage-icon .icon {
-  width: 2rem;
-  height: 2rem;
-  filter: brightness(0) invert(1);
+  width: 7.5rem;
+  height: 7.5rem;
+  filter: none;
+  color: #6366f1;
 }
 
 .avantage-card h3 {
@@ -568,9 +450,12 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 
 /* CTA Section */
 .cta-section {
-  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-  padding: 4rem 2rem;
-  margin-top: 2rem;
+  background: #ffffff;
+  padding: 3rem 2rem;
+  margin-top: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .cta-card {
@@ -580,17 +465,17 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 }
 
 .cta-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #fff;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1f2937;
   margin-bottom: 1rem;
 }
 
 .cta-text {
-  font-size: 1.2rem;
-  color: #d1d5db;
+  font-size: 1.1rem;
+  color: #6b7280;
   line-height: 1.6;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .cta-buttons {
@@ -627,64 +512,63 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 
 .cta-button.secondary {
   background: transparent;
-  color: #fff;
-  border-color: #fff;
+  color: #6366f1;
+  border-color: #6366f1;
 }
 
 .cta-button.secondary:hover {
-  background: #fff;
-  color: #1f2937;
-  transform: translateY(-2px);
+  background: #6366f1;
+  color: #fff;
+  transform: none;
 }
 
 .button-icon {
   width: 1.2rem;
   height: 1.2rem;
-  filter: brightness(0) invert(1);
+  filter: none;
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
   .hero-section {
-    flex-direction: column;
-    text-align: center;
     padding: 3rem 1.5rem;
   }
 
   .hero-title {
-    font-size: 2.8rem;
+    font-size: 2.2rem;
   }
 
-  .hero-visual {
-    height: 300px;
-    margin-top: 2rem;
-  }
-
-  .hero-features {
-    justify-content: center;
+  .hero-stats {
+    gap: 2rem;
   }
 
   .avantages-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 600px;
   }
 }
 
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
 
   .hero-subtitle {
     font-size: 1.1rem;
   }
 
-  .hero-features {
+  .hero-stats {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
   .section-title {
     font-size: 2rem;
+  }
+
+  .avantages-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
   }
 
   .cta-title {
@@ -716,11 +600,6 @@ import MainLayout from '@/components/layout/MainLayout.vue'
     font-size: 1.8rem;
   }
 
-  .hero-badge {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
-  }
-
   .avantage-card,
   .tarif-card {
     padding: 1.5rem;
@@ -732,19 +611,6 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 
   .cta-title {
     font-size: 1.8rem;
-  }
-
-  .floating-card {
-    min-width: 150px;
-    padding: 0.75rem;
-  }
-
-  .card-title {
-    font-size: 0.9rem;
-  }
-
-  .card-desc {
-    font-size: 0.8rem;
   }
 }
 </style>

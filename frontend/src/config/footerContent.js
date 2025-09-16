@@ -2,7 +2,8 @@ export const footerLinks = [
   { label: 'CGV', href: '/cgv' },
   { label: 'CGU', href: '/cgu' },
   { label: 'Politique de confidentialité', href: '/confidentialite' },
-  { label: "Conditions d'utilisation", href: '/conditions' },
+  { label: 'Mentions légales', href: '/legal' },
+  { label: 'Politique de cookies', href: '/cookies' },
   { label: 'À propos', href: '/about' }
 ];
 

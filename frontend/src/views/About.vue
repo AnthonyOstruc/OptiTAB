@@ -175,11 +175,19 @@
         </div>
       </div>
     </div>
+    
+    <!-- Bouton WhatsApp flottant -->
+    <WhatsappChatButton
+      phone="33764040251"
+      message="Bonjour, j'ai une question sur OptiTAB !"
+      tooltip="Une question ? Discutons sur WhatsApp !"
+    />
   </MainLayout>
 </template>
 
 <script setup>
 import MainLayout from '@/components/layout/MainLayout.vue'
+import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import about from '@/config/aboutContent.js'
 
 // Fonction pour mapper les emojis vers les icônes SVG

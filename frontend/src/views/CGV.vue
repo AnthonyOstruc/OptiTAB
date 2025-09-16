@@ -1,187 +1,699 @@
 <template>
   <MainLayout>
-    <div class="cgv-container">
-      <h1>Conditions Générales de Vente (CGV) – OptiTAB</h1>
-      <p class="update-date">Dernière mise à jour : 15 juillet 2025</p>
-      <nav class="toc">
-        <h2>Sommaire</h2>
-        <ul>
-          <li><a href="#objet">1. Objet</a></li>
-          <li><a href="#acces">2. Conditions d’accès et public visé</a></li>
-          <li><a href="#abonnement">3. Description de l’abonnement</a></li>
-          <li><a href="#duree">4. Durée et renouvellement</a></li>
-          <li><a href="#resiliation">5. Résiliation</a></li>
-          <li><a href="#prix">6. Prix et modalités de paiement</a></li>
-          <li><a href="#retractation">7. Droit de rétractation</a></li>
-          <li><a href="#service">8. Accès au service</a></li>
-          <li><a href="#responsabilite">9. Responsabilité</a></li>
-          <li><a href="#propriete">10. Propriété intellectuelle</a></li>
-          <li><a href="#donnees">11. Protection des données personnelles</a></li>
-          <li><a href="#litiges">12. Médiation et litiges</a></li>
+    <div class="cgv-page">
+      <!-- Header Section -->
+      <div class="cgv-header">
+        <div class="container">
+          <div class="header-content">
+            <h1 class="cgv-title">
+              Conditions Générales de Vente
+            </h1>
+            <p class="cgv-subtitle">
+              <span class="gradient-text">OptiTAB</span> - Plateforme d'apprentissage
+            </p>
+            <div class="cgv-meta">
+              <span class="meta-text">Dernière mise à jour : {{ currentDate }} • Version 1.0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table of Contents -->
+      <div class="toc-section">
+        <div class="container">
+          <h2 class="toc-title">Sommaire</h2>
+          <div class="toc-list">
+            <a 
+              v-for="(section, index) in sections" 
+              :key="index"
+              :href="`#${section.id}`" 
+              :class="['toc-link', { 'active': activeSection === section.id }]"
+              @click="scrollToSection(section.id, $event)"
+            >
+              <span class="toc-number">{{ index + 1 }}</span>
+              <span class="toc-text">{{ section.title }}</span>
+              <span class="toc-arrow">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Sections -->
+      <div class="cgv-content">
+        <div class="container">
+          <div class="content-wrapper">
+            <!-- Section 1: Objet -->
+            <section id="objet" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">1</span>
+                Objet et champ d'application
+              </h2>
+              <div class="section-content">
+                <p>Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre OptiTAB et ses utilisateurs concernant :</p>
+                <ul class="content-list">
+                  <li>Les abonnements aux services pédagogiques en ligne</li>
+                  <li>L'accès aux contenus et ressources éducatives</li>
+                  <li>Les services de soutien scolaire personnalisé</li>
+                  <li>Les outils d'apprentissage interactifs</li>
         </ul>
-      </nav>
-      <section id="objet">
-        <h2>1. Objet</h2>
-        <p>Ces CGV régissent la vente des prestations pédagogiques en ligne proposées par la Société, notamment :</p>
-        <ul>
-          <li>Abonnements (mensuel, annuel),</li>
-          <li>Téléchargement de ressources (fiches, exercices, méthodes),</li>
-          <li>Services de correction personnalisée,</li>
-          <li>Accès à des outils (calculatrice, tchat, visioconférence).</li>
+              </div>
+      </section>
+
+            <!-- Section 2: Services -->
+            <section id="services" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">2</span>
+                Description des services
+              </h2>
+              <div class="section-content">
+                <h3 class="subsection-title">2.1 Services inclus</h3>
+                <ul class="content-list">
+                  <li>Accès illimité à la bibliothèque de contenus pédagogiques</li>
+                  <li>Exercices interactifs et corrigés automatiquement</li>
+                  <li>Suivi personnalisé des progrès</li>
+                  <li>Support technique et pédagogique</li>
+                  <li>Accès mobile et hors ligne (selon l'offre)</li>
         </ul>
+                
+                <h3 class="subsection-title">2.2 Disponibilité</h3>
+                <p>Les services sont disponibles 24h/24, 7j/7, sous réserve des opérations de maintenance programmées.</p>
+              </div>
       </section>
-      <section id="acces">
-        <h2>2. Conditions d’accès et public visé</h2>
-        <ul>
-          <li>Le Site est accessible à toute personne majeure possédant une connexion internet.</li>
-          <li>Les mineurs de plus de 15 ans peuvent s’inscrire avec l’autorisation d’un représentant légal.</li>
-          <li>Un abonnement payant ne peut être souscrit que par un utilisateur majeur, ou par son représentant légal.</li>
-          <li>Un utilisateur majeur peut souscrire un abonnement au nom d’un mineur.</li>
+
+            <!-- Section 3: Abonnements -->
+            <section id="abonnements" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">3</span>
+                Abonnements et tarifs
+              </h2>
+              <div class="section-content">
+                <h3 class="subsection-title">3.1 Formules d'abonnement</h3>
+                <ul class="content-list">
+                  <li><strong>Mensuel :</strong> 19,90€/mois</li>
+                  <li><strong>Annuel :</strong> 199€/an (soit 16,58€/mois)</li>
+                  <li><strong>Famille :</strong> 29,90€/mois (jusqu'à 3 enfants)</li>
         </ul>
+                
+                <h3 class="subsection-title">3.2 Modalités de paiement</h3>
+                <p>Paiement par carte bancaire, PayPal ou virement. Les abonnements sont renouvelés automatiquement.</p>
+              </div>
       </section>
-      <section id="abonnement">
-        <h2>3. Description de l’abonnement</h2>
-        <h3>3.1 Prestations incluses</h3>
-        <ul>
-          <li>Accès illimité aux contenus (cours, exercices, fiches, méthodes),</li>
-          <li>Téléchargement en PDF,</li>
-          <li>Accès hors ligne sur jusqu’à 3 appareils compatibles,</li>
-          <li>Suivi de progression personnalisé,</li>
-          <li>Chat et visioconférences (groupées ou individuelles selon l’offre),</li>
-          <li>Option de correction d’exercices envoyés.</li>
+
+            <!-- Section 4: Engagement -->
+            <section id="engagement" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">4</span>
+                Durée et engagement
+              </h2>
+              <div class="section-content">
+                <ul class="content-list">
+                  <li>Les abonnements mensuels se renouvellent automatiquement</li>
+                  <li>Les abonnements annuels sont sans engagement</li>
+                  <li>Résiliation possible à tout moment depuis l'espace client</li>
+                  <li>L'accès reste actif jusqu'à la fin de la période payée</li>
         </ul>
-        <p>La Société se réserve le droit d’apporter modifications, ajouts ou suppressions, sans altérer la qualité ni augmenter le prix pendant la durée de l’abonnement.</p>
-        <h3>3.2 Maintenance et suspension</h3>
-        <p>La Société peut suspendre l’accès pour maintenance, mises à jour ou raisons légales, avec notification 24 h à l’avance, sauf urgence.<br>
-        La Société peut également résilier définitivement un abonnement avec un préavis d’un mois, sans indemnité mais en remboursant le restant dû au prorata.</p>
+              </div>
       </section>
-      <section id="duree">
-        <h2>4. Durée et renouvellement</h2>
-        <ul>
-          <li>Formule mensuelle : dure 1 mois, renouvelable tacitement.</li>
-          <li>Formule annuelle : dure 12 mois, peut être sans reconduction automatique (selon l’offre).</li>
-          <li>Formule scolaire : du 1er août au 31 juillet (durée scolaire), renouvelable tacitement.</li>
-          <li>Offre découverte ou d’essai : durée définie, limitée à une seule inscription par personne, reconduite en abonnement payant sauf résiliation avant terme.</li>
+
+            <!-- Section 5: Remboursement -->
+            <section id="remboursement" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">5</span>
+                Politique de remboursement
+              </h2>
+              <div class="section-content">
+                <h3 class="subsection-title">5.1 Droit de rétractation</h3>
+                <p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux services numériques fournis immédiatement après la commande.</p>
+                
+                <h3 class="subsection-title">5.2 Remboursement exceptionnel</h3>
+                <p>En cas de problème technique majeur non résolu sous 48h, un remboursement au prorata peut être accordé.</p>
+              </div>
+      </section>
+
+            <!-- Section 6: Responsabilités -->
+            <section id="responsabilites" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">6</span>
+                Responsabilités
+              </h2>
+              <div class="section-content">
+                <h3 class="subsection-title">6.1 OptiTAB</h3>
+                <ul class="content-list">
+                  <li>Fournir un service de qualité conforme à la description</li>
+                  <li>Maintenir la disponibilité du service dans la mesure du possible</li>
+                  <li>Protéger les données personnelles des utilisateurs</li>
         </ul>
-      </section>
-      <section id="resiliation">
-        <h2>5. Résiliation</h2>
-        <ul>
-          <li>Le Client peut résilier son abonnement à tout moment via son espace personnel ou en contactant le support avant la fin de la période en cours.</li>
-          <li>La résiliation prend effet à la fin de la période mensuelle ou annuelle en cours.</li>
-          <li>En l’absence de résiliation, l’abonnement est renouvelé au tarif en vigueur.</li>
+                
+                <h3 class="subsection-title">6.2 Utilisateur</h3>
+                <ul class="content-list">
+                  <li>Utiliser le service conformément aux conditions d'utilisation</li>
+                  <li>Ne pas partager ses identifiants de connexion</li>
+                  <li>Respecter les droits de propriété intellectuelle</li>
         </ul>
+              </div>
       </section>
-      <section id="prix">
-        <h2>6. Prix et modalités de paiement</h2>
-        <ul>
-          <li>Les prix sont indiqués en euros TTC.</li>
-          <li>Modalités de paiement : carte bancaire (Visa, Mastercard), PayPal, Stripe.</li>
-          <li>Paiement immédiat et intégral au moment de la commande.</li>
-          <li>Pour les abonnements, le paiement est récurrent selon la périodicité choisie.</li>
-          <li>Le Client peut supprimer ses données bancaires à tout moment depuis son compte ou via le support.</li>
-        </ul>
+
+            <!-- Section 7: Données personnelles -->
+            <section id="donnees" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">7</span>
+                Protection des données
+              </h2>
+              <div class="section-content">
+                <p>Le traitement des données personnelles est régi par notre <a href="/politique-confidentialite" class="link">Politique de Confidentialité</a> conforme au RGPD.</p>
+                <p>Vous disposez d'un droit d'accès, de rectification, de suppression et d'opposition à vos données.</p>
+              </div>
       </section>
-      <section id="retractation">
-        <h2>7. Droit de rétractation</h2>
-        <p>Conformément à l’article L221‑28 du Code de la consommation, le droit de rétractation ne s’applique pas dès lors que le service (contenu numérique) est activement fourni et accepté avant l’expiration du délai légal.<br>
-        En validant sa commande, le Client renonce expressément à ce droit.</p>
+
+            <!-- Section 8: Contact -->
+            <section id="contact" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">8</span>
+                Contact et support
+              </h2>
+              <div class="section-content">
+                <div class="contact-info">
+                  <div class="contact-item">
+                    <strong>Email :</strong> <a href="mailto:contact@optitab.com" class="link">contact@optitab.com</a>
+                  </div>
+                  <div class="contact-item">
+                    <strong>Support :</strong> <a href="mailto:support@optitab.com" class="link">support@optitab.com</a>
+                  </div>
+                  <div class="contact-item">
+                    <strong>WhatsApp :</strong> <a href="https://wa.me/33764040251" class="link">07 64 04 02 51</a>
+                  </div>
+                </div>
+              </div>
       </section>
-      <section id="service">
-        <h2>8. Accès au service</h2>
-        <ul>
-          <li>L’accès est immédiat dès réception du paiement.</li>
-          <li>La disponibilité est assurée 24/7 sauf maintenance ou problèmes techniques.</li>
-          <li>La Société s’efforce de maintenir ce niveau de service mais ne peut garantir une disponibilité absolue.</li>
-        </ul>
+
+            <!-- Section 9: Droit applicable -->
+            <section id="droit" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">9</span>
+                Droit applicable et juridiction
+              </h2>
+              <div class="section-content">
+                <p>Les présentes CGV sont soumises au droit français. En cas de litige, les tribunaux français seront seuls compétents.</p>
+                <p>En cas de différend, nous privilégions toujours la résolution amiable.</p>
+              </div>
       </section>
-      <section id="responsabilite">
-        <h2>9. Responsabilité</h2>
-        <ul>
-          <li>La Société s’engage à fournir son service avec professionnalisme mais ne garantit pas la réussite scolaire.</li>
-          <li>Elle ne peut être tenue responsable des interruptions de service, sauf faute grave et prouvée.</li>
-        </ul>
-      </section>
-      <section id="propriete">
-        <h2>10. Propriété intellectuelle</h2>
-        <ul>
-          <li>Tous les contenus (cours, fiches, exercices, vidéos, outils) sont protégés par le droit d’auteur et restent la propriété exclusive de la Société.</li>
-          <li>Toute reproduction ou diffusion non autorisée est interdite.</li>
-        </ul>
-      </section>
-      <section id="donnees">
-        <h2>11. Protection des données personnelles</h2>
-        <ul>
-          <li>Les données collectées servent à la gestion de la relation client et au fonctionnement des services.</li>
-          <li>Conformément au RGPD, le Client dispose d’un droit d’accès, de rectification, de suppression et d’opposition via contact@optitab.com.</li>
-        </ul>
-      </section>
-      <section id="litiges">
-        <h2>12. Médiation et litiges</h2>
-        <ul>
-          <li>En cas de litige, le Client peut recourir gratuitement à un médiateur de la consommation.</li>
-          <li>À défaut de solution amiable, le tribunal compétent sera celui du siège social de la Société.</li>
-        </ul>
-      </section>
-      <div class="cgv-note">
-        <p><strong>ℹ️ Notes pratiques :</strong><br>
-          Affiche un sommaire cliquable en haut de page.<br>
-          Ajoute un lien dans le footer vers cette page.<br>
-          Vérifie avec un professionnel une fois ton service développé, particulièrement en cas de croissance rapide ou de forte valeur monétaire.
-        </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Note -->
+      <div class="cgv-footer">
+        <div class="container">
+          <div class="footer-note">
+            <p><strong>Note importante :</strong> Ces conditions peuvent être modifiées. Les utilisateurs seront informés de tout changement par email ou notification sur la plateforme.</p>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Bouton retour en haut -->
+    <button 
+      v-show="showBackToTop" 
+      @click="scrollToTop"
+      class="back-to-top"
+      title="Retour en haut"
+    >
+      ↑
+    </button>
+
+    <!-- Bouton WhatsApp flottant -->
+    <WhatsappChatButton
+      phone="33764040251"
+      message="Bonjour, j'ai une question sur les CGV d'OptiTAB !"
+      tooltip="Une question ? Discutons sur WhatsApp !"
+    />
   </MainLayout>
 </template>
 
 <script setup>
-import MainLayout from '@/components/layout/MainLayout.vue';
+import MainLayout from '@/components/layout/MainLayout.vue'
+import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+
+// Date actuelle
+const currentDate = ref(new Date().toLocaleDateString('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+}))
+
+// Bouton retour en haut
+const showBackToTop = ref(false)
+
+// Section active pour la navigation
+const activeSection = ref('')
+
+// Sections pour le sommaire
+const sections = ref([
+  { id: 'objet', title: 'Objet et champ d\'application' },
+  { id: 'services', title: 'Description des services' },
+  { id: 'abonnements', title: 'Abonnements et tarifs' },
+  { id: 'engagement', title: 'Durée et engagement' },
+  { id: 'remboursement', title: 'Politique de remboursement' },
+  { id: 'responsabilites', title: 'Responsabilités' },
+  { id: 'donnees', title: 'Protection des données' },
+  { id: 'contact', title: 'Contact et support' },
+  { id: 'droit', title: 'Droit applicable et juridiction' }
+])
+
+// Fonction pour retourner en haut
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+}
+
+// Fonction pour gérer l'affichage du bouton retour en haut
+const handleScroll = () => {
+  showBackToTop.value = window.scrollY > 300
+  
+  // Détecter la section active
+  const sections = document.querySelectorAll('.cgv-section')
+  let current = ''
+  
+  sections.forEach(section => {
+    const rect = section.getBoundingClientRect()
+    if (rect.top <= 100 && rect.bottom >= 100) {
+      current = section.id
+    }
+  })
+  
+  if (current) {
+    activeSection.value = current
+  }
+}
+
+// Fonction pour scroll vers une section
+const scrollToSection = (sectionId, event) => {
+  event.preventDefault()
+  const element = document.getElementById(sectionId)
+  if (element) {
+    const offset = 80 // Hauteur du header
+    const elementPosition = element.offsetTop - offset
+    window.scrollTo({
+      top: elementPosition,
+      behavior: 'smooth'
+    })
+  }
+}
+
+// Lifecycle hooks
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+  // Définir la première section comme active au chargement
+  activeSection.value = 'objet'
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <style scoped>
-.cgv-container {
+/* Page Container */
+.cgv-page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Header Section - Style propre */
+.cgv-header {
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 4rem 0;
+  margin-top: 40px;
+  margin-bottom: 0;
+}
+
+.header-content {
+  text-align: center;
   max-width: 800px;
   margin: 0 auto;
-  padding: 2rem 1rem;
-  padding-top: 60px;
 }
-.update-date {
-  color: #888;
-  font-size: 1rem;
+
+.cgv-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cgv-subtitle {
+  font-size: 1.2rem;
+  color: #6b7280;
+  line-height: 1.4;
+  margin-bottom: 2.5rem;
+  font-weight: 500;
+}
+
+.cgv-meta {
+  margin-top: 1.5rem;
+}
+
+.meta-text {
+  font-size: 0.95rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Table of Contents - Style propre */
+.toc-section {
+  background: white;
+  padding: 3rem 0;
+  margin: 0;
+}
+
+.toc-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  text-align: center;
   margin-bottom: 2rem;
+  letter-spacing: -0.01em;
 }
-.toc {
-  background: #f7f7f7;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
+
+.toc-list {
+  max-width: 800px;
+  margin: 0 auto;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  border: none;
+  box-shadow: none;
 }
-.toc ul {
+
+.toc-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  text-decoration: none;
+  color: #374151;
+  font-weight: 400;
+  transition: all 0.15s ease;
+  border-bottom: 1px solid #f3f4f6;
+  position: relative;
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+.toc-link:last-child {
+  border-bottom: none;
+}
+
+.toc-link:hover {
+  background: transparent;
+  color: #6366f1;
+}
+
+.toc-link:hover .toc-arrow {
+  transform: translateX(4px);
+  opacity: 1;
+}
+
+.toc-link.active {
+  background: white;
+  color: #374151;
+}
+
+.toc-link.active .toc-number {
+  background: #6366f1;
+  color: white;
+}
+
+
+.toc-number {
+  background: #6366f1;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.toc-text {
+  font-size: 0.95rem;
+  flex: 1;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.toc-arrow {
+  color: #9ca3af;
+  font-size: 0.8rem;
+  opacity: 0;
+  transform: translateX(0);
+  transition: all 0.15s ease;
+}
+
+.toc-link.active .toc-arrow {
+  opacity: 0;
+  color: #9ca3af;
+}
+
+/* Content - Style propre */
+.cgv-content {
+  background: white;
+  padding: 4rem 0;
+}
+
+.content-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cgv-section {
+  margin-bottom: 2.5rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid #6366f1;
+  letter-spacing: -0.01em;
+}
+
+.section-number {
+  background: #6366f1;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.section-content {
+  margin-left: 0;
+  padding: 0 0.5rem;
+}
+
+.subsection-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #374151;
+  margin: 1.5rem 0 0.75rem 0;
+  padding-left: 1rem;
+  border-left: 4px solid #6366f1;
+  letter-spacing: -0.005em;
+}
+
+.content-list {
   list-style: none;
   padding: 0;
+  margin: 1rem 0;
 }
-.toc li {
+
+.content-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #4b5563;
+  line-height: 1.7;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.content-list li::before {
+  content: "•";
+  color: #6366f1;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.contact-info {
+  background: transparent;
+  padding: 0;
+  border: none;
+  margin-top: 0.5rem;
+}
+
+.contact-item {
   margin-bottom: 0.5rem;
-}
-.toc a {
-  color: #2a7ae2;
-  text-decoration: none;
-}
-.toc a:hover {
-  text-decoration: underline;
-}
-.cgv-note {
-  margin-top: 3rem;
-  background: #fffbe6;
-  border-left: 4px solid #ffe066;
-  padding: 1rem;
-  border-radius: 6px;
+  color: #4b5563;
   font-size: 0.95rem;
 }
-section {
-  margin-bottom: 2.5rem;
+
+.contact-item:last-child {
+  margin-bottom: 0;
 }
-section h2 {
-  margin-top: 2rem;
+
+.link {
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+
+/* Footer - Style propre */
+.cgv-footer {
+  background: white;
+  border: none;
+  padding: 3rem 0;
+  margin-top: 0;
+}
+
+.footer-note {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.footer-note strong {
+  color: #374151;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .cgv-title {
+    font-size: 1.875rem;
+  }
+
+
+  .toc-list {
+    margin: 0;
+  }
+
+  .section-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .section-content {
+    padding: 0;
+  }
+
+  .cgv-header {
+    padding: 2rem 0;
+  }
+
+  .cgv-content {
+    padding: 1rem 0;
+  }
+}
+
+/* Bouton retour en haut */
+.back-to-top {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-to-top:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.back-to-top:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 80px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
 }
 </style> 

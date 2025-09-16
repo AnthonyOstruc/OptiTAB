@@ -6,24 +6,24 @@
         <div class="hero-content">
           <h1 class="hero-title">
             Cours particuliers
-            <span class="gradient-text">sur mesure</span>
+            <span class="gradient-text">professionnels</span>
           </h1>
           <p class="hero-subtitle">
-            Bénéficiez d'un accompagnement personnalisé avec nos professeurs expérimentés.
-            Un suivi adapté à votre rythme et à vos besoins spécifiques pour maximiser vos résultats.
+            Enseignement individuel dispensé par des professeurs qualifiés.
+            Méthodes pédagogiques structurées et évaluation continue des acquis.
           </p>
           <div class="hero-stats">
             <div class="stat-item">
               <span class="stat-number">95%</span>
-              <span class="stat-label">Amélioration des notes</span>
+              <span class="stat-label">Taux de réussite</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">10k+</span>
-              <span class="stat-label">Élèves accompagnés</span>
+              <span class="stat-number">15+</span>
+              <span class="stat-label">Années d'expérience</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">24/7</span>
-              <span class="stat-label">Support disponible</span>
+              <span class="stat-number">1:1</span>
+              <span class="stat-label">Ratio professeur/élève</span>
             </div>
           </div>
         </div>
@@ -33,39 +33,39 @@
       <div class="avantages-section">
         <div class="container">
           <div class="section-intro">
-            <h2 class="section-title">Pourquoi choisir nos cours particuliers ?</h2>
+            <h2 class="section-title">Méthodologie d'enseignement</h2>
             <p class="section-subtitle">
-              Une méthode pédagogique éprouvée qui s'adapte à chaque élève
+              Approche structurée basée sur l'évaluation des compétences et l'adaptation des contenus
             </p>
           </div>
           <div class="avantages-grid">
             <div class="avantage-card">
               <div class="avantage-icon">
-                <img src="/icons/ResultatsGarantis.svg" alt="Résultats" class="icon" />
+                <img src="/icons/exercicesGuides.svg" alt="Adaptation" class="icon" />
               </div>
-              <h3>Résultats Garantis</h3>
-              <p>95% de nos élèves améliorent leurs notes de 2 points minimum en 3 mois</p>
+              <h3>Adaptation Pédagogique</h3>
+              <p>Identification du profil d'apprentissage et ajustement des méthodes d'enseignement en fonction des besoins spécifiques de l'élève.</p>
             </div>
             <div class="avantage-card">
               <div class="avantage-icon">
                 <img src="/icons/AuteursExperts.svg" alt="Experts" class="icon" />
               </div>
-              <h3>Experts Pédagogues</h3>
-              <p>Contenu créé par des enseignants expérimentés et des experts en sciences</p>
+              <h3>Qualification Professionnelle</h3>
+              <p>Enseignants diplômés et spécialisés dans leur discipline. Formation continue en pédagogie et expérience en enseignement individuel.</p>
             </div>
             <div class="avantage-card">
               <div class="avantage-icon">
                 <img src="/icons/SuiviProgression.svg" alt="Suivi" class="icon" />
               </div>
-              <h3>Suivi Détaillé</h3>
-              <p>Tableau de bord personnalisé pour suivre les progrès en temps réel</p>
+              <h3>Suivi des Acquis</h3>
+              <p>Évaluations régulières et tests de positionnement pour identifier les compétences acquises et les axes d'amélioration.</p>
             </div>
             <div class="avantage-card">
               <div class="avantage-icon">
                 <img src="/icons/ApprentissageFlexible.svg" alt="Flexibilité" class="icon" />
               </div>
-              <h3>Apprentissage Flexible</h3>
-              <p>Adapté au rythme et au niveau d'apprentissage de votre enfant</p>
+              <h3>Organisation Flexible</h3>
+              <p>Horaires adaptables et durée des séances modulable selon les contraintes et objectifs pédagogiques définis.</p>
             </div>
           </div>
         </div>
@@ -85,10 +85,10 @@
                 </div>
               </div>
               <div class="tarif-features">
-                <div class="feature">✓ 1 heure de cours par semaine</div>
-                <div class="feature">✓ Suivi des progrès</div>
-                <div class="feature">✓ Exercices personnalisés</div>
-                <div class="feature">✓ Support par email</div>
+                <div class="feature">✓ 1 heure de cours individuel par semaine</div>
+                <div class="feature">✓ Évaluation initiale des compétences</div>
+                <div class="feature">✓ Exercices adaptés au niveau</div>
+                <div class="feature">✓ Rapport de progression mensuel</div>
               </div>
               <button class="tarif-button">Choisir cette formule</button>
             </div>
@@ -102,11 +102,11 @@
                 <div class="popular-badge">Le plus populaire</div>
               </div>
               <div class="tarif-features">
-                <div class="feature">✓ 2 heures de cours par semaine</div>
-                <div class="feature">✓ Suivi intensif</div>
-                <div class="feature">✓ Exercices avancés</div>
-                <div class="feature">✓ Support téléphonique</div>
-                <div class="feature">✓ Bilans mensuels</div>
+                <div class="feature">✓ 2 heures de cours individuel par semaine</div>
+                <div class="feature">✓ Méthodologie adaptée au profil</div>
+                <div class="feature">✓ Travail ciblé sur les difficultés</div>
+                <div class="feature">✓ Communication régulière avec les parents</div>
+                <div class="feature">✓ Évaluations intermédiaires</div>
               </div>
               <button class="tarif-button primary">Choisir cette formule</button>
             </div>
@@ -119,11 +119,11 @@
                 </div>
               </div>
               <div class="tarif-features">
-                <div class="feature">✓ Cours à la demande</div>
-                <div class="feature">✓ Suivi personnalisé complet</div>
+                <div class="feature">✓ Cours individuels à la demande</div>
+                <div class="feature">✓ Plan de formation personnalisé</div>
                 <div class="feature">✓ Préparation aux examens</div>
-                <div class="feature">✓ Support prioritaire</div>
-                <div class="feature">✓ Bilans hebdomadaires</div>
+                <div class="feature">✓ Suivi pédagogique renforcé</div>
+                <div class="feature">✓ Rapports de progression hebdomadaires</div>
               </div>
               <button class="tarif-button">Choisir cette formule</button>
             </div>
@@ -135,28 +135,36 @@
       <div class="cta-section">
         <div class="cta-card">
           <div class="cta-content">
-            <h3 class="cta-title">Prêt à booster vos résultats ?</h3>
+            <h3 class="cta-title">Consultation pédagogique</h3>
             <p class="cta-text">
-              Réservez votre premier cours gratuit et découvrez notre méthode d'enseignement personnalisé.
-              Ensemble, nous atteindrons vos objectifs !
+              Entretien d'évaluation gratuit pour définir les objectifs d'apprentissage.
+              Élaboration d'un plan de formation adapté aux besoins identifiés.
             </p>
             <div class="cta-buttons">
               <router-link to="/contact" class="cta-button primary">
-                Réserver un cours gratuit
+                Demander un entretien
               </router-link>
               <a href="mailto:contact@optitab.com" class="cta-button secondary">
-                Nous contacter
+                Contacter nos services
               </a>
             </div>
           </div>
         </div>
       </div>
     </div>
+    
+    <!-- Bouton WhatsApp flottant -->
+    <WhatsappChatButton
+      phone="33764040251"
+      message="Bonjour, j'ai une question sur les cours particuliers OptiTAB !"
+      tooltip="Une question ? Discutons sur WhatsApp !"
+    />
   </MainLayout>
 </template>
 
 <script setup>
 import MainLayout from '@/components/layout/MainLayout.vue'
+import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 </script>
 
 <style scoped>

@@ -6,7 +6,7 @@
         <div class="container">
           <div class="header-content">
             <h1 class="cgv-title">
-              Conditions Générales d'Utilisation
+              Mentions Légales
             </h1>
             <p class="cgv-subtitle">
               <span class="gradient-text">OptiTAB</span> - Plateforme d'apprentissage
@@ -42,217 +42,146 @@
       <div class="cgv-content">
         <div class="container">
           <div class="content-wrapper">
-            <!-- Section 1: Définitions -->
-            <section id="definitions" class="cgv-section">
+            <!-- Section 1: Éditeur -->
+            <section id="editeur" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">1</span>
-                Définitions
+                Éditeur du site
               </h2>
               <div class="section-content">
-                <ul class="content-list">
-                  <li><strong>OptiTAB / la plateforme / le service :</strong> site et applications associées fournissant des cours particuliers, exercices guidés, fiches pédagogiques et outils éducatifs.</li>
-                  <li><strong>Utilisateur :</strong> toute personne s'inscrivant ou utilisant OptiTAB.</li>
-                  <li><strong>Compte utilisateur :</strong> espace personnel créé lors de l'inscription permettant l'accès aux services.</li>
-                  <li><strong>Abonnement :</strong> contrat d'accès payant aux services proposés par OptiTAB.</li>
-                </ul>
+                <p>Le présent site est édité par :</p>
+                <div class="contact-info">
+                  <div class="contact-item">
+                    <strong>Raison sociale :</strong> OptiTAB
+                  </div>
+                  <div class="contact-item">
+                    <strong>Forme juridique :</strong> [À compléter]
+                  </div>
+                  <div class="contact-item">
+                    <strong>Capital social :</strong> [À compléter]
+                  </div>
+                  <div class="contact-item">
+                    <strong>RCS :</strong> [À compléter]
+                  </div>
+                  <div class="contact-item">
+                    <strong>Siège social :</strong> [À compléter]
+                  </div>
+                  <div class="contact-item">
+                    <strong>Email :</strong> <a href="mailto:support@optitab.net" class="link">support@optitab.net</a>
+                  </div>
+                </div>
               </div>
             </section>
 
-            <!-- Section 2: Accès au service -->
-            <section id="acces" class="cgv-section">
+            <!-- Section 2: Directeur de publication -->
+            <section id="directeur" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">2</span>
-                Accès au service
+                Directeur de publication
               </h2>
               <div class="section-content">
-                <ul class="content-list">
-                  <li>L'accès à OptiTAB nécessite la création d'un compte valide.</li>
-                  <li>L'utilisateur doit fournir des informations exactes et à jour.</li>
-                  <li>La confidentialité des identifiants est de la responsabilité de l'utilisateur. Toute activité sur le compte est imputable à l'utilisateur.</li>
-                  <li>OptiTAB peut suspendre ou supprimer un compte en cas de non-respect des CGU.</li>
-                </ul>
+                <p>Le directeur de la publication est :</p>
+                <div class="contact-info">
+                  <div class="contact-item">
+                    <strong>Nom :</strong> [À compléter]
+                  </div>
+                  <div class="contact-item">
+                    <strong>Fonction :</strong> [À compléter]
+                  </div>
+                </div>
               </div>
             </section>
 
-            <!-- Section 3: Services proposés -->
-            <section id="services" class="cgv-section">
+            <!-- Section 3: Hébergement -->
+            <section id="hebergement" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">3</span>
-                Services proposés
+                Hébergement
               </h2>
               <div class="section-content">
-                <p>OptiTAB propose :</p>
-                <ul class="content-list">
-                  <li>Des cours particuliers en ligne avec réservation.</li>
-                  <li>Des exercices guidés et fiches pédagogiques.</li>
-                  <li>Des outils de calcul et d'aide aux devoirs.</li>
-                  <li>La possibilité d'envoyer des exercices pour correction.</li>
-                </ul>
-                <p>La plateforme peut modifier, suspendre ou interrompre tout service à tout moment, avec ou sans préavis.</p>
+                <p>Le site est hébergé par :</p>
+                <div class="contact-info">
+                  <div class="contact-item">
+                    <strong>Hébergeur :</strong> [À compléter]
+                  </div>
+                  <div class="contact-item">
+                    <strong>Adresse :</strong> [À compléter]
+                  </div>
+                  <div class="contact-item">
+                    <strong>Téléphone :</strong> [À compléter]
+                  </div>
+                </div>
               </div>
             </section>
 
-            <!-- Section 4: Abonnements et paiements -->
-            <section id="abonnements" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">4</span>
-                Abonnements et paiements
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>Les services peuvent être proposés via des abonnements payants.</li>
-                  <li>Les paiements se font en ligne via les moyens proposés (carte bancaire, paiement sécurisé).</li>
-                  <li>Les abonnements se renouvellent automatiquement sauf résiliation par l'utilisateur.</li>
-                  <li>Aucun remboursement n'est possible pour les périodes déjà entamées, sauf dispositions légales.</li>
-                  <li>En cas de défaut de paiement, OptiTAB se réserve le droit de suspendre l'accès au compte.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 5: Propriété intellectuelle -->
+            <!-- Section 4: Propriété intellectuelle -->
             <section id="propriete" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">5</span>
+                <span class="section-number">4</span>
                 Propriété intellectuelle
               </h2>
               <div class="section-content">
-                <ul class="content-list">
-                  <li>Tous les contenus (textes, images, vidéos, logiciels, exercices, fiches) sont protégés par le droit d'auteur.</li>
-                  <li>L'utilisateur peut utiliser le contenu uniquement pour un usage personnel et non commercial.</li>
-                  <li>Toute reproduction, diffusion ou exploitation commerciale sans autorisation écrite est interdite.</li>
-                </ul>
+                <p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.</p>
+                <p>La reproduction de tout ou partie de ce site sur un support électronique quel qu'il soit est formellement interdite sauf autorisation expresse du directeur de la publication.</p>
+                <p>La marque et le logo OptiTAB sont des marques déposées. Toute reproduction non autorisée de ces marques, dessins et modèles constitue une contrefaçon passible de sanctions pénales.</p>
               </div>
             </section>
 
-            <!-- Section 6: Contenu utilisateur -->
-            <section id="contenu" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">6</span>
-                Contenu utilisateur
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>Les utilisateurs conservent la propriété des contenus qu'ils postent (exercices, commentaires).</li>
-                  <li>En publiant sur OptiTAB, l'utilisateur accorde à OptiTAB une licence non exclusive, gratuite et mondiale pour utiliser ce contenu afin d'améliorer les services.</li>
-                  <li>Tout contenu illégal, injurieux ou portant atteinte aux droits d'autrui est interdit.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 7: Obligations de l'utilisateur -->
-            <section id="obligations" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">7</span>
-                Obligations de l'utilisateur
-              </h2>
-              <div class="section-content">
-                <p>L'utilisateur s'engage à :</p>
-                <ul class="content-list">
-                  <li>Ne pas utiliser la plateforme à des fins illégales ou frauduleuses.</li>
-                  <li>Ne pas perturber le fonctionnement du site ou tenter d'accéder à des données non autorisées.</li>
-                  <li>Respecter les autres utilisateurs et le personnel d'OptiTAB.</li>
-                  <li>Respecter les règles relatives aux mineurs (âge minimum requis : 13 ans, consentement parental si nécessaire).</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 8: Données personnelles et sécurité -->
-            <section id="donnees" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">8</span>
-                Données personnelles et sécurité
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>Les données collectées sont traitées conformément à la Politique de confidentialité de la plateforme.</li>
-                  <li>L'utilisateur peut accéder, rectifier ou supprimer ses données personnelles.</li>
-                  <li>OptiTAB met en place des mesures de sécurité pour protéger les comptes et données, mais l'utilisateur reste responsable de la confidentialité de son mot de passe.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 9: Responsabilité -->
+            <!-- Section 5: Responsabilité -->
             <section id="responsabilite" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">9</span>
+                <span class="section-number">5</span>
                 Responsabilité
               </h2>
               <div class="section-content">
-                <ul class="content-list">
-                  <li>OptiTAB s'efforce de fournir des contenus exacts et des services disponibles.</li>
-                  <li>La plateforme n'est pas responsable des erreurs ou omissions dans les contenus fournis.</li>
-                  <li>L'utilisateur utilise OptiTAB à ses risques et périls.</li>
-                  <li>OptiTAB ne peut être tenu responsable de dommages indirects liés à l'utilisation du service (perte de données, interruption de service, etc.).</li>
-                </ul>
+                <p>Les informations contenues sur ce site sont aussi précises que possible et le site remis à jour à différentes périodes de l'année, mais peut toutefois contenir des inexactitudes ou des omissions.</p>
+                <p>Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, merci de bien vouloir le signaler par email, à l'adresse support@optitab.net, en décrivant le problème de la manière la plus précise possible.</p>
+                <p>Tout contenu téléchargé se fait aux risques et périls de l'utilisateur et sous sa seule responsabilité. En conséquence, ne saurait être tenu responsable d'un quelconque dommage subi par l'ordinateur de l'utilisateur ou d'une quelconque perte de données consécutives au téléchargement.</p>
               </div>
             </section>
 
-            <!-- Section 10: Suspension et résiliation -->
-            <section id="suspension" class="cgv-section">
+            <!-- Section 6: Liens hypertextes -->
+            <section id="liens" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">10</span>
-                Suspension et résiliation
+                <span class="section-number">6</span>
+                Liens hypertextes
               </h2>
               <div class="section-content">
-                <ul class="content-list">
-                  <li>OptiTAB peut suspendre ou résilier un compte en cas de violation des CGU.</li>
-                  <li>L'utilisateur peut supprimer son compte à tout moment depuis son espace personnel.</li>
-                  <li>En cas de résiliation, les contenus et données liés au compte peuvent être supprimés.</li>
-                </ul>
+                <p>Des liens hypertextes peuvent être présents sur le site. L'utilisateur est informé qu'en cliquant sur ces liens, il sortira du site optitab.net. Ce dernier n'a pas de contrôle sur les pages web sur lesquelles aboutissent ces liens et ne saurait en aucun cas être responsable de leur contenu.</p>
               </div>
             </section>
 
-            <!-- Section 11: Modifications des CGU -->
-            <section id="modifications" class="cgv-section">
+            <!-- Section 7: Cookies -->
+            <section id="cookies" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">11</span>
-                Modifications des CGU
+                <span class="section-number">7</span>
+                Cookies
               </h2>
               <div class="section-content">
-                <ul class="content-list">
-                  <li>OptiTAB se réserve le droit de modifier les CGU à tout moment.</li>
-                  <li>Les utilisateurs seront informés de ces changements. L'usage continu du service vaut acceptation des nouvelles CGU.</li>
-                </ul>
+                <p>Le site optitab.net peut être amené à vous demander l'acceptation des cookies pour des besoins de statistiques et d'affichage. Un cookie est une information déposée sur votre disque dur par le serveur du site que vous visitez.</p>
+                <p>Il contient plusieurs données qui sont stockées sur votre ordinateur dans un simple fichier texte auquel un serveur accède pour lire et enregistrer des informations. Certaines parties de ce site ne peuvent être fonctionnelles sans l'acceptation de cookies.</p>
               </div>
             </section>
 
-            <!-- Section 12: Mineurs -->
-            <section id="mineurs" class="cgv-section">
+            <!-- Section 8: Droit applicable -->
+            <section id="droit" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">12</span>
-                Mineurs
+                <span class="section-number">8</span>
+                Droit applicable et juridiction compétente
               </h2>
               <div class="section-content">
-                <ul class="content-list">
-                  <li>L'âge minimum pour utiliser OptiTAB est de 13 ans.</li>
-                  <li>Pour les utilisateurs de moins de 18 ans, l'inscription nécessite le consentement parental.</li>
-                </ul>
+                <p>Tout litige en relation avec l'utilisation du site optitab.net est soumis au droit français. Il est fait attribution exclusive de juridiction aux tribunaux compétents de [Ville].</p>
               </div>
             </section>
 
-            <!-- Section 13: Résolution des litiges -->
-            <section id="litiges" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">13</span>
-                Résolution des litiges
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>Les présentes CGU sont régies par le droit français.</li>
-                  <li>En cas de litige, les parties s'engagent à rechercher une solution amiable avant toute action judiciaire.</li>
-                  <li>À défaut d'accord amiable, le litige sera porté devant les tribunaux compétents en France.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 14: Contact -->
+            <!-- Section 9: Contact -->
             <section id="contact" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">14</span>
+                <span class="section-number">9</span>
                 Contact
               </h2>
               <div class="section-content">
-                <p>Pour toute question relative aux CGU ou à la plateforme :</p>
+                <p>Pour toute question concernant ces mentions légales :</p>
                 <div class="contact-info">
                   <div class="contact-item">
                     <strong>Email :</strong> <a href="mailto:support@optitab.net" class="link">support@optitab.net</a>
@@ -262,13 +191,13 @@
             </section>
           </div>
         </div>
-      </div>
 
-      <!-- Footer Note -->
-      <div class="cgv-footer">
-        <div class="container">
-          <div class="footer-note">
-            <p><strong>Note importante :</strong> Ces conditions peuvent être modifiées. Les utilisateurs seront informés de tout changement par email ou notification sur la plateforme.</p>
+        <!-- Footer Note -->
+        <div class="cgv-footer">
+          <div class="container">
+            <div class="footer-note">
+              <p><strong>Note importante :</strong> Ces mentions légales sont régies par le droit français. En cas de litige, les tribunaux français seront compétents.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -286,7 +215,7 @@
       <!-- Bouton WhatsApp flottant -->
       <WhatsappChatButton
         phone="33764040251"
-        message="Bonjour, j'ai une question sur les CGU d'OptiTAB !"
+        message="Bonjour, j'ai une question sur les mentions légales d'OptiTAB !"
         tooltip="Une question ? Discutons sur WhatsApp !"
       />
     </div>
@@ -313,19 +242,14 @@ const activeSection = ref('')
 
 // Sections pour le sommaire
 const sections = ref([
-  { id: 'definitions', title: 'Définitions' },
-  { id: 'acces', title: 'Accès au service' },
-  { id: 'services', title: 'Services proposés' },
-  { id: 'abonnements', title: 'Abonnements et paiements' },
+  { id: 'editeur', title: 'Éditeur du site' },
+  { id: 'directeur', title: 'Directeur de publication' },
+  { id: 'hebergement', title: 'Hébergement' },
   { id: 'propriete', title: 'Propriété intellectuelle' },
-  { id: 'contenu', title: 'Contenu utilisateur' },
-  { id: 'obligations', title: 'Obligations de l\'utilisateur' },
-  { id: 'donnees', title: 'Données personnelles et sécurité' },
   { id: 'responsabilite', title: 'Responsabilité' },
-  { id: 'suspension', title: 'Suspension et résiliation' },
-  { id: 'modifications', title: 'Modifications des CGU' },
-  { id: 'mineurs', title: 'Mineurs' },
-  { id: 'litiges', title: 'Résolution des litiges' },
+  { id: 'liens', title: 'Liens hypertextes' },
+  { id: 'cookies', title: 'Cookies' },
+  { id: 'droit', title: 'Droit applicable et juridiction compétente' },
   { id: 'contact', title: 'Contact' }
 ])
 
@@ -375,7 +299,7 @@ const scrollToSection = (sectionId, event) => {
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   // Définir la première section comme active au chargement
-  activeSection.value = 'definitions'
+  activeSection.value = 'editeur'
 })
 
 onUnmounted(() => {

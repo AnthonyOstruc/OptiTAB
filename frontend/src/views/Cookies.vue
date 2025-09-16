@@ -6,7 +6,7 @@
         <div class="container">
           <div class="header-content">
             <h1 class="cgv-title">
-              Conditions Générales d'Utilisation
+              Politique de Cookies
             </h1>
             <p class="cgv-subtitle">
               <span class="gradient-text">OptiTAB</span> - Plateforme d'apprentissage
@@ -42,233 +42,242 @@
       <div class="cgv-content">
         <div class="container">
           <div class="content-wrapper">
-            <!-- Section 1: Définitions -->
-            <section id="definitions" class="cgv-section">
+            <!-- Section 1: Qu'est-ce qu'un cookie -->
+            <section id="definition" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">1</span>
-                Définitions
+                Qu'est-ce qu'un cookie ?
               </h2>
               <div class="section-content">
-                <ul class="content-list">
-                  <li><strong>OptiTAB / la plateforme / le service :</strong> site et applications associées fournissant des cours particuliers, exercices guidés, fiches pédagogiques et outils éducatifs.</li>
-                  <li><strong>Utilisateur :</strong> toute personne s'inscrivant ou utilisant OptiTAB.</li>
-                  <li><strong>Compte utilisateur :</strong> espace personnel créé lors de l'inscription permettant l'accès aux services.</li>
-                  <li><strong>Abonnement :</strong> contrat d'accès payant aux services proposés par OptiTAB.</li>
-                </ul>
+                <p>Un cookie est un petit fichier texte déposé sur votre ordinateur, tablette ou smartphone lorsque vous visitez un site web. Il permet au site de mémoriser vos actions et préférences pendant une période donnée, afin que vous n'ayez pas à les ressaisir à chaque visite ou navigation sur le site.</p>
+                <p>Les cookies ne peuvent pas endommager votre ordinateur et ne contiennent aucun virus. Ils sont utilisés par la plupart des sites web pour améliorer votre expérience de navigation.</p>
               </div>
             </section>
 
-            <!-- Section 2: Accès au service -->
-            <section id="acces" class="cgv-section">
+            <!-- Section 2: Types de cookies -->
+            <section id="types" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">2</span>
-                Accès au service
+                Types de cookies utilisés
               </h2>
               <div class="section-content">
+                <h3 class="subsection-title">2.1 Cookies strictement nécessaires</h3>
+                <p>Ces cookies sont indispensables au fonctionnement du site et ne peuvent pas être désactivés. Ils permettent :</p>
                 <ul class="content-list">
-                  <li>L'accès à OptiTAB nécessite la création d'un compte valide.</li>
-                  <li>L'utilisateur doit fournir des informations exactes et à jour.</li>
-                  <li>La confidentialité des identifiants est de la responsabilité de l'utilisateur. Toute activité sur le compte est imputable à l'utilisateur.</li>
-                  <li>OptiTAB peut suspendre ou supprimer un compte en cas de non-respect des CGU.</li>
+                  <li>La navigation sur le site et l'utilisation de ses fonctionnalités</li>
+                  <li>La mémorisation de votre session de connexion</li>
+                  <li>La sécurité et la prévention des fraudes</li>
+                  <li>L'équilibrage de la charge du serveur</li>
+                </ul>
+
+                <h3 class="subsection-title">2.2 Cookies de performance</h3>
+                <p>Ces cookies nous aident à comprendre comment les visiteurs interagissent avec notre site :</p>
+                <ul class="content-list">
+                  <li>Nombre de visiteurs et pages visitées</li>
+                  <li>Temps passé sur le site</li>
+                  <li>Sources de trafic</li>
+                  <li>Pages d'erreur rencontrées</li>
+                </ul>
+
+                <h3 class="subsection-title">2.3 Cookies de fonctionnalité</h3>
+                <p>Ces cookies permettent d'améliorer votre expérience utilisateur :</p>
+                <ul class="content-list">
+                  <li>Mémorisation de vos préférences (langue, région)</li>
+                  <li>Personnalisation de l'interface</li>
+                  <li>Rappel de vos choix précédents</li>
+                </ul>
+
+                <h3 class="subsection-title">2.4 Cookies de ciblage</h3>
+                <p>Ces cookies sont utilisés pour :</p>
+                <ul class="content-list">
+                  <li>Proposer des contenus adaptés à vos centres d'intérêt</li>
+                  <li>Mesurer l'efficacité de nos campagnes publicitaires</li>
+                  <li>Limiter le nombre d'affichages d'une publicité</li>
                 </ul>
               </div>
             </section>
 
-            <!-- Section 3: Services proposés -->
-            <section id="services" class="cgv-section">
+            <!-- Section 3: Cookies utilisés sur OptiTAB -->
+            <section id="cookies-optitab" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">3</span>
-                Services proposés
+                Cookies utilisés sur OptiTAB
               </h2>
               <div class="section-content">
-                <p>OptiTAB propose :</p>
-                <ul class="content-list">
-                  <li>Des cours particuliers en ligne avec réservation.</li>
-                  <li>Des exercices guidés et fiches pédagogiques.</li>
-                  <li>Des outils de calcul et d'aide aux devoirs.</li>
-                  <li>La possibilité d'envoyer des exercices pour correction.</li>
-                </ul>
-                <p>La plateforme peut modifier, suspendre ou interrompre tout service à tout moment, avec ou sans préavis.</p>
+                <div class="cookies-table">
+                  <div class="cookie-item">
+                    <div class="cookie-name">Session utilisateur</div>
+                    <div class="cookie-details">
+                      <strong>Finalité :</strong> Maintien de votre session de connexion<br>
+                      <strong>Durée :</strong> Session (supprimé à la fermeture du navigateur)<br>
+                      <strong>Type :</strong> Strictement nécessaire
+                    </div>
+                  </div>
+                  
+                  <div class="cookie-item">
+                    <div class="cookie-name">Préférences utilisateur</div>
+                    <div class="cookie-details">
+                      <strong>Finalité :</strong> Mémorisation de vos paramètres et préférences<br>
+                      <strong>Durée :</strong> 1 an<br>
+                      <strong>Type :</strong> Fonctionnalité
+                    </div>
+                  </div>
+                  
+                  <div class="cookie-item">
+                    <div class="cookie-name">Analytiques</div>
+                    <div class="cookie-details">
+                      <strong>Finalité :</strong> Analyse du trafic et amélioration du site<br>
+                      <strong>Durée :</strong> 13 mois<br>
+                      <strong>Type :</strong> Performance
+                    </div>
+                  </div>
+                  
+                  <div class="cookie-item">
+                    <div class="cookie-name">Sécurité</div>
+                    <div class="cookie-details">
+                      <strong>Finalité :</strong> Protection contre les attaques et fraudes<br>
+                      <strong>Durée :</strong> 24 heures<br>
+                      <strong>Type :</strong> Strictement nécessaire
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
 
-            <!-- Section 4: Abonnements et paiements -->
-            <section id="abonnements" class="cgv-section">
+            <!-- Section 4: Gestion des cookies -->
+            <section id="gestion" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">4</span>
-                Abonnements et paiements
+                Gestion de vos cookies
               </h2>
               <div class="section-content">
+                <h3 class="subsection-title">4.1 Paramètres du navigateur</h3>
+                <p>Vous pouvez configurer votre navigateur pour :</p>
                 <ul class="content-list">
-                  <li>Les services peuvent être proposés via des abonnements payants.</li>
-                  <li>Les paiements se font en ligne via les moyens proposés (carte bancaire, paiement sécurisé).</li>
-                  <li>Les abonnements se renouvellent automatiquement sauf résiliation par l'utilisateur.</li>
-                  <li>Aucun remboursement n'est possible pour les périodes déjà entamées, sauf dispositions légales.</li>
-                  <li>En cas de défaut de paiement, OptiTAB se réserve le droit de suspendre l'accès au compte.</li>
+                  <li>Accepter tous les cookies</li>
+                  <li>Refuser tous les cookies</li>
+                  <li>Être notifié avant l'installation d'un cookie</li>
+                  <li>Supprimer les cookies existants</li>
+                </ul>
+
+                <h3 class="subsection-title">4.2 Instructions par navigateur</h3>
+                <div class="browser-instructions">
+                  <div class="browser-item">
+                    <strong>Google Chrome :</strong> Paramètres > Confidentialité et sécurité > Cookies et autres données de site
+                  </div>
+                  <div class="browser-item">
+                    <strong>Mozilla Firefox :</strong> Options > Vie privée et sécurité > Cookies et données de sites
+                  </div>
+                  <div class="browser-item">
+                    <strong>Safari :</strong> Préférences > Confidentialité > Gérer les données de site web
+                  </div>
+                  <div class="browser-item">
+                    <strong>Microsoft Edge :</strong> Paramètres > Cookies et autorisations de site
+                  </div>
+                </div>
+
+                <h3 class="subsection-title">4.3 Conséquences du refus</h3>
+                <p>Si vous refusez les cookies :</p>
+                <ul class="content-list">
+                  <li>Certaines fonctionnalités du site peuvent ne pas fonctionner correctement</li>
+                  <li>Vous devrez vous reconnecter à chaque visite</li>
+                  <li>Vos préférences ne seront pas mémorisées</li>
+                  <li>L'expérience utilisateur peut être dégradée</li>
                 </ul>
               </div>
             </section>
 
-            <!-- Section 5: Propriété intellectuelle -->
-            <section id="propriete" class="cgv-section">
+            <!-- Section 5: Cookies tiers -->
+            <section id="tiers" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">5</span>
-                Propriété intellectuelle
+                Cookies de tiers
               </h2>
               <div class="section-content">
+                <p>Notre site peut contenir des cookies provenant de services tiers :</p>
+                
+                <h3 class="subsection-title">5.1 Google Analytics</h3>
+                <p>Nous utilisons Google Analytics pour analyser l'utilisation de notre site :</p>
                 <ul class="content-list">
-                  <li>Tous les contenus (textes, images, vidéos, logiciels, exercices, fiches) sont protégés par le droit d'auteur.</li>
-                  <li>L'utilisateur peut utiliser le contenu uniquement pour un usage personnel et non commercial.</li>
-                  <li>Toute reproduction, diffusion ou exploitation commerciale sans autorisation écrite est interdite.</li>
+                  <li><strong>Finalité :</strong> Mesure d'audience et statistiques</li>
+                  <li><strong>Données collectées :</strong> Pages visitées, durée de visite, source de trafic</li>
+                  <li><strong>Durée :</strong> 13 mois</li>
+                  <li><strong>Désactivation :</strong> <a href="https://tools.google.com/dlpage/gaoptout" class="link" target="_blank">Outil de désactivation Google Analytics</a></li>
+                </ul>
+
+                <h3 class="subsection-title">5.2 Réseaux sociaux</h3>
+                <p>Des boutons de partage peuvent déposer des cookies :</p>
+                <ul class="content-list">
+                  <li>Facebook, Twitter, LinkedIn, etc.</li>
+                  <li>Ces cookies sont gérés par les plateformes concernées</li>
+                  <li>Consultez leurs politiques de confidentialité respectives</li>
                 </ul>
               </div>
             </section>
 
-            <!-- Section 6: Contenu utilisateur -->
-            <section id="contenu" class="cgv-section">
+            <!-- Section 6: Durée de conservation -->
+            <section id="duree" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">6</span>
-                Contenu utilisateur
+                Durée de conservation
               </h2>
               <div class="section-content">
+                <p>Les cookies ont différentes durées de vie :</p>
                 <ul class="content-list">
-                  <li>Les utilisateurs conservent la propriété des contenus qu'ils postent (exercices, commentaires).</li>
-                  <li>En publiant sur OptiTAB, l'utilisateur accorde à OptiTAB une licence non exclusive, gratuite et mondiale pour utiliser ce contenu afin d'améliorer les services.</li>
-                  <li>Tout contenu illégal, injurieux ou portant atteinte aux droits d'autrui est interdit.</li>
+                  <li><strong>Cookies de session :</strong> Supprimés à la fermeture du navigateur</li>
+                  <li><strong>Cookies persistants :</strong> Conservés selon la durée définie (de quelques jours à plusieurs années)</li>
+                  <li><strong>Cookies de sécurité :</strong> Généralement 24 heures</li>
+                  <li><strong>Cookies de préférences :</strong> 1 an maximum</li>
+                  <li><strong>Cookies analytiques :</strong> 13 mois maximum</li>
                 </ul>
+                <p>Vous pouvez supprimer manuellement tous les cookies à tout moment via les paramètres de votre navigateur.</p>
               </div>
             </section>
 
-            <!-- Section 7: Obligations de l'utilisateur -->
-            <section id="obligations" class="cgv-section">
+            <!-- Section 7: Vos droits -->
+            <section id="droits" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">7</span>
-                Obligations de l'utilisateur
+                Vos droits
               </h2>
               <div class="section-content">
-                <p>L'utilisateur s'engage à :</p>
+                <p>Concernant les cookies, vous avez le droit de :</p>
                 <ul class="content-list">
-                  <li>Ne pas utiliser la plateforme à des fins illégales ou frauduleuses.</li>
-                  <li>Ne pas perturber le fonctionnement du site ou tenter d'accéder à des données non autorisées.</li>
-                  <li>Respecter les autres utilisateurs et le personnel d'OptiTAB.</li>
-                  <li>Respecter les règles relatives aux mineurs (âge minimum requis : 13 ans, consentement parental si nécessaire).</li>
+                  <li><strong>Être informé :</strong> Connaître les cookies utilisés et leur finalité</li>
+                  <li><strong>Donner votre consentement :</strong> Accepter ou refuser les cookies non essentiels</li>
+                  <li><strong>Retirer votre consentement :</strong> Modifier vos préférences à tout moment</li>
+                  <li><strong>Accéder aux données :</strong> Demander quelles données sont collectées</li>
+                  <li><strong>Supprimer :</strong> Effacer les cookies de votre navigateur</li>
                 </ul>
+                <p>Pour exercer ces droits, contactez-nous à <a href="mailto:support@optitab.net" class="link">support@optitab.net</a></p>
               </div>
             </section>
 
-            <!-- Section 8: Données personnelles et sécurité -->
-            <section id="donnees" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">8</span>
-                Données personnelles et sécurité
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>Les données collectées sont traitées conformément à la Politique de confidentialité de la plateforme.</li>
-                  <li>L'utilisateur peut accéder, rectifier ou supprimer ses données personnelles.</li>
-                  <li>OptiTAB met en place des mesures de sécurité pour protéger les comptes et données, mais l'utilisateur reste responsable de la confidentialité de son mot de passe.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 9: Responsabilité -->
-            <section id="responsabilite" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">9</span>
-                Responsabilité
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>OptiTAB s'efforce de fournir des contenus exacts et des services disponibles.</li>
-                  <li>La plateforme n'est pas responsable des erreurs ou omissions dans les contenus fournis.</li>
-                  <li>L'utilisateur utilise OptiTAB à ses risques et périls.</li>
-                  <li>OptiTAB ne peut être tenu responsable de dommages indirects liés à l'utilisation du service (perte de données, interruption de service, etc.).</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 10: Suspension et résiliation -->
-            <section id="suspension" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">10</span>
-                Suspension et résiliation
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>OptiTAB peut suspendre ou résilier un compte en cas de violation des CGU.</li>
-                  <li>L'utilisateur peut supprimer son compte à tout moment depuis son espace personnel.</li>
-                  <li>En cas de résiliation, les contenus et données liés au compte peuvent être supprimés.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 11: Modifications des CGU -->
-            <section id="modifications" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">11</span>
-                Modifications des CGU
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>OptiTAB se réserve le droit de modifier les CGU à tout moment.</li>
-                  <li>Les utilisateurs seront informés de ces changements. L'usage continu du service vaut acceptation des nouvelles CGU.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 12: Mineurs -->
-            <section id="mineurs" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">12</span>
-                Mineurs
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>L'âge minimum pour utiliser OptiTAB est de 13 ans.</li>
-                  <li>Pour les utilisateurs de moins de 18 ans, l'inscription nécessite le consentement parental.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 13: Résolution des litiges -->
-            <section id="litiges" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">13</span>
-                Résolution des litiges
-              </h2>
-              <div class="section-content">
-                <ul class="content-list">
-                  <li>Les présentes CGU sont régies par le droit français.</li>
-                  <li>En cas de litige, les parties s'engagent à rechercher une solution amiable avant toute action judiciaire.</li>
-                  <li>À défaut d'accord amiable, le litige sera porté devant les tribunaux compétents en France.</li>
-                </ul>
-              </div>
-            </section>
-
-            <!-- Section 14: Contact -->
+            <!-- Section 8: Contact -->
             <section id="contact" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">14</span>
+                <span class="section-number">8</span>
                 Contact
               </h2>
               <div class="section-content">
-                <p>Pour toute question relative aux CGU ou à la plateforme :</p>
+                <p>Pour toute question concernant notre politique de cookies :</p>
                 <div class="contact-info">
                   <div class="contact-item">
                     <strong>Email :</strong> <a href="mailto:support@optitab.net" class="link">support@optitab.net</a>
                   </div>
                 </div>
+                <p>Nous nous engageons à répondre à vos demandes dans les meilleurs délais.</p>
               </div>
             </section>
           </div>
         </div>
-      </div>
 
-      <!-- Footer Note -->
-      <div class="cgv-footer">
-        <div class="container">
-          <div class="footer-note">
-            <p><strong>Note importante :</strong> Ces conditions peuvent être modifiées. Les utilisateurs seront informés de tout changement par email ou notification sur la plateforme.</p>
+        <!-- Footer Note -->
+        <div class="cgv-footer">
+          <div class="container">
+            <div class="footer-note">
+              <p><strong>Note importante :</strong> Cette politique de cookies peut être modifiée pour refléter les changements dans nos pratiques ou pour des raisons légales. Nous vous informerons de tout changement significatif.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -286,7 +295,7 @@
       <!-- Bouton WhatsApp flottant -->
       <WhatsappChatButton
         phone="33764040251"
-        message="Bonjour, j'ai une question sur les CGU d'OptiTAB !"
+        message="Bonjour, j'ai une question sur la politique de cookies d'OptiTAB !"
         tooltip="Une question ? Discutons sur WhatsApp !"
       />
     </div>
@@ -313,19 +322,13 @@ const activeSection = ref('')
 
 // Sections pour le sommaire
 const sections = ref([
-  { id: 'definitions', title: 'Définitions' },
-  { id: 'acces', title: 'Accès au service' },
-  { id: 'services', title: 'Services proposés' },
-  { id: 'abonnements', title: 'Abonnements et paiements' },
-  { id: 'propriete', title: 'Propriété intellectuelle' },
-  { id: 'contenu', title: 'Contenu utilisateur' },
-  { id: 'obligations', title: 'Obligations de l\'utilisateur' },
-  { id: 'donnees', title: 'Données personnelles et sécurité' },
-  { id: 'responsabilite', title: 'Responsabilité' },
-  { id: 'suspension', title: 'Suspension et résiliation' },
-  { id: 'modifications', title: 'Modifications des CGU' },
-  { id: 'mineurs', title: 'Mineurs' },
-  { id: 'litiges', title: 'Résolution des litiges' },
+  { id: 'definition', title: 'Qu\'est-ce qu\'un cookie ?' },
+  { id: 'types', title: 'Types de cookies utilisés' },
+  { id: 'cookies-optitab', title: 'Cookies utilisés sur OptiTAB' },
+  { id: 'gestion', title: 'Gestion de vos cookies' },
+  { id: 'tiers', title: 'Cookies de tiers' },
+  { id: 'duree', title: 'Durée de conservation' },
+  { id: 'droits', title: 'Vos droits' },
   { id: 'contact', title: 'Contact' }
 ])
 
@@ -375,7 +378,7 @@ const scrollToSection = (sectionId, event) => {
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   // Définir la première section comme active au chargement
-  activeSection.value = 'definitions'
+  activeSection.value = 'definition'
 })
 
 onUnmounted(() => {
@@ -636,6 +639,50 @@ onUnmounted(() => {
   top: 0;
 }
 
+/* Cookies table */
+.cookies-table {
+  margin: 1.5rem 0;
+}
+
+.cookie-item {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.cookie-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.cookie-details {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+/* Browser instructions */
+.browser-instructions {
+  margin: 1.5rem 0;
+}
+
+.browser-item {
+  background: #f8fafc;
+  border-left: 4px solid #6366f1;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.browser-item strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
 .contact-info {
   background: transparent;
   padding: 0;
@@ -722,6 +769,10 @@ onUnmounted(() => {
 
   .cgv-content {
     padding: 1rem 0;
+  }
+
+  .cookie-item {
+    padding: 1rem;
   }
 }
 

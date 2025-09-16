@@ -4,7 +4,7 @@
  */
 
 import { ref, nextTick } from 'vue'
-import { googleLogin } from '@/api/auth'
+import { googleLogin, googleOAuthExchange } from '@/api/auth'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
@@ -22,6 +22,7 @@ export function useGoogleAuth() {
   const shouldReopenLoginModal = ref(false)
   // Évite les boucles de fallback
   const didFallbackToNoFedCM = ref(false)
+  const didFallbackToOAuth = ref(false)
 
   /**
    * Initialise Google Sign-In
@@ -106,6 +107,51 @@ export function useGoogleAuth() {
     }
   }
 
+  const startOAuthFallback = () => {
+    return new Promise((resolve, reject) => {
+      try {
+        if (!google?.accounts?.oauth2?.initCodeClient) {
+          reject(new Error('OAuth2 Code Client non disponible'))
+          return
+        }
+
+        const codeClient = google.accounts.oauth2.initCodeClient({
+          client_id: googleClientId,
+          scope: 'openid email profile',
+          ux_mode: 'popup',
+          callback: async (resp) => {
+            try {
+              if (resp?.code) {
+                // Envoyer le code au backend pour échange
+                const result = await googleOAuthExchange({ code: resp.code })
+                const { user, access, refresh } = result.data.data
+
+                localStorage.setItem('access_token', access)
+                localStorage.setItem('refresh_token', refresh)
+                userStore.setUser(user)
+                await userStore.fetchUser()
+                closeModal(MODAL_IDS.LOGIN)
+                router.push('/dashboard')
+                showToast('Connexion réussie !', 'success')
+                didFallbackToOAuth.value = true
+                shouldReopenLoginModal.value = false
+                resolve(true)
+              } else {
+                reject(new Error('Code OAuth non reçu'))
+              }
+            } catch (e) {
+              reject(e)
+            }
+          },
+        })
+
+        codeClient.requestCode()
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
+
   /**
    * Déclenche Google One Tap
    */
@@ -163,6 +209,24 @@ export function useGoogleAuth() {
                   })
                   return
                 } catch (_) {}
+              }
+
+              // Si après le fallback no-FedCM, l'UI n'est toujours pas affichée ou a échoué,
+              // tenter l'OAuth Code Flow en popup (comme le font d'autres sites)
+              const shouldStartOAuth = (
+                !didFallbackToOAuth.value && (
+                  closedWithoutCredential || isNotDisplayed || isSkipped || isDismissed
+                )
+              )
+
+              if (shouldStartOAuth) {
+                startOAuthFallback().catch(() => {
+                  if (shouldReopenLoginModal.value) {
+                    openModal(MODAL_IDS.LOGIN)
+                    shouldReopenLoginModal.value = false
+                  }
+                })
+                return
               }
 
               if (closedWithoutCredential && shouldReopenLoginModal.value) {

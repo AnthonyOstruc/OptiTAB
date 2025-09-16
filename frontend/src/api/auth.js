@@ -46,6 +46,12 @@ export const logoutUser = (payload) =>
 export const googleLogin = (payload) =>
   apiClient.post('/api/users/auth/google/', payload, { timeout: 20000 })
 
+/**
+ * Google OAuth code exchange (fallback for incognito)
+ */
+export const googleOAuthExchange = (payload) =>
+  apiClient.post('/api/users/auth/google/oauth-exchange/', payload, { timeout: 20000 })
+
 
 /**
  * Request password reset link

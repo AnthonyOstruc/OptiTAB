@@ -7,7 +7,7 @@ from users.views.authentication_views import (
     UserLogoutView
 )
 from users.views.profile_views import MeView, UpdateProfileView, UpdateNiveauView, UpdatePaysView, UpdatePaysNiveauView, MeGamificationView, UpdateUserXPView, LeaderboardView, MyChildrenView, ChildOverviewView, AddChildView, RemoveChildView, CreateChildAccountView, MyOverviewView, MyStreaksView, RecommendationsView
-from users.views.social_auth_views import GoogleLoginView
+from users.views.social_auth_views import GoogleLoginView, GoogleOAuthCodeExchangeView
 from rest_framework.routers import DefaultRouter
 from users.views.notifications_views import UserNotificationViewSet
 from users.views.preferences_views import (
@@ -76,6 +76,7 @@ urlpatterns = [
     path('selected/remove/<int:matiere_id>/', remove_selected_matiere, name='remove_selected_matiere'),
     path('selected/set-active/<int:matiere_id>/', set_active_matiere, name='set_active_matiere'),
 
-    # Route pour l'authentification Google One Tap
-    path('auth/google/', GoogleLoginView.as_view(), name='google_login'),
+    # Routes pour l'authentification Google
+    path('auth/google/', GoogleLoginView.as_view(), name='google_login'),  # One Tap / id_token
+    path('auth/google/oauth-exchange/', GoogleOAuthCodeExchangeView.as_view(), name='google_oauth_exchange'),  # OAuth code -> JWT
 ]

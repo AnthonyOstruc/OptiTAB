@@ -74,7 +74,7 @@
 
       <!-- Content Sections -->
       <div class="content-container">
-        <div v-for="(section, i) in about" :key="i" class="about-section">
+        <div v-for="(section, i) in about" :key="i" class="about-section" :class="{ 'parents-section': section.title === 'Un mot pour les parents' }">
           <!-- Section Header -->
           <div class="section-header">
             <div class="section-icon">
@@ -161,7 +161,6 @@
             </p>
             <div class="cta-buttons">
               <router-link to="/" class="cta-button primary">
-                <img src="/icons/math.svg" alt="Éducation" class="button-icon" />
                 Commencer l'essai gratuit
               </router-link>
               <a href="mailto:contact@optitab.net" class="cta-button secondary">
@@ -170,7 +169,6 @@
               </a>
             </div>
             <div class="cta-guarantee">
-              <img src="/icons/ApprentissageFlexible.svg" alt="Garantie" class="guarantee-icon" />
               <span class="guarantee-text">Essai gratuit de 7 jours • Résultats garantis • Support 24/7</span>
             </div>
           </div>
@@ -374,20 +372,14 @@ const getSectionIcon = (emoji) => {
 
 /* Section Styles */
 .about-section {
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 20px;
-  padding: 2.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 2px solid #e2e8f0;
 }
 
-.about-section:hover {
-  transform: none;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
 
 .section-header {
   display: flex;
@@ -413,10 +405,16 @@ const getSectionIcon = (emoji) => {
   color: #2a38b7;
 }
 
+/* Style spécifique pour la section "Un mot pour les parents" - icône plus grande */
+.parents-section .icon-emoji {
+  width: 8rem;
+  height: 8rem;
+}
+
 .section-title {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #1e40af;
   margin: 0;
 }
 
@@ -426,9 +424,10 @@ const getSectionIcon = (emoji) => {
 
 .content-paragraph {
   font-size: 1.1rem;
+  font-weight: 500;
+  color: #374151;
   line-height: 1.7;
-  margin-bottom: 1.5rem;
-  color: #4b5563;
+  margin-bottom: 1rem;
 }
 
 .highlight-text {
@@ -461,18 +460,13 @@ const getSectionIcon = (emoji) => {
 .feature-item {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-bottom: 1rem;
-  padding: 1rem;
-  background: #f8fafc;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
-}
-
-.feature-item:hover {
-  background: #f8fafc;
-  transform: none;
+  padding: 1rem 1.25rem;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
 }
 
 .feature-bullet {
@@ -485,10 +479,10 @@ const getSectionIcon = (emoji) => {
 }
 
 .feature-text {
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: #374151;
+  font-size: 1rem;
   font-weight: 500;
+  color: #374151;
+  line-height: 1.5;
 }
 
 /* Social Media Section */

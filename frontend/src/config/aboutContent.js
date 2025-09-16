@@ -69,16 +69,16 @@ export default [
     emoji: '👪',
     title: 'Un mot pour les parents',
     content: [
-      "Nous comprenons vos attentes. En tant que parents, vous cherchez à offrir à vos enfants :"
+      "Nous comprenons vos préoccupations. Vous voulez offrir à votre enfant :"
     ],
     list: [
-      "des outils fiables",
-      "des méthodes qui fonctionnent", 
-      "un accompagnement sérieux"
+      "des cours clairs et structurés",
+      "un suivi personnalisé de ses progrès", 
+      "des résultats concrets et mesurables"
     ],
     additionalContent: [
-      "OptiTAB est conçu pour ça.",
-      "Nous allions l'exigence pédagogique à l'innovation technologique, pour aider chaque élève à reprendre confiance, acquérir les bons réflexes, et réussir durablement."
+      "OptiTAB répond à ces attentes.",
+      "Notre approche pédagogique éprouvée aide chaque élève à comprendre, progresser et réussir en sciences."
     ]
   }
 ] 

@@ -1,1 +1,0 @@
-import{D as s,b as o}from"./index-Egejfov0.js";const e=new s("/api/contextes/"),c=(t={})=>e.getAll(t),i=t=>e.getById(t),r=t=>e.create(t),x=(t,a)=>e.update(t,a),u=t=>e.delete(t),l=async()=>{const{data:t}=await o.get("/api/contextes/pour-utilisateur/");return t};export{i as a,l as b,r as c,u as d,c as g,x as u};

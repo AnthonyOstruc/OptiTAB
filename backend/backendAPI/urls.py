@@ -18,7 +18,7 @@ urlpatterns = [
     # path('api/', include('niveaux.urls')),  # Removed - using NiveauPays in pays
     path('api/', include('pays.urls')),  # API pour les pays et niveaux par pays
     # Catch-all for non-API, non-admin paths when they accidentally hit backend
-    re_path(r'^(?!admin/|api/).*$', redirect_to_frontend),
+    #re_path(r'^(?!admin/|api/).*$', redirect_to_frontend),
 ]
 
 # Servir les fichiers statiques et médias

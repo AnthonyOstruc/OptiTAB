@@ -27,15 +27,11 @@
 
 
 
-    <!-- Historique des quiz avec filtres -->
-    <div v-if="!loadingStats">
-      <QuizHistory />
-    </div>
+    <!-- Historique des quiz avec filtres → rendu immédiat (sans attendre d'autres stats) -->
+    <QuizHistory />
 
-    <!-- Historique des exercices avec filtres -->
-    <div v-if="!loadingStats">
-      <ExercicesHistory />
-    </div>
+    <!-- Historique des exercices avec filtres → rendu immédiat -->
+    <ExercicesHistory />
     
     <div v-if="loadingStats" class="dashboard-spinner"><span class="spinner"></span></div>
 

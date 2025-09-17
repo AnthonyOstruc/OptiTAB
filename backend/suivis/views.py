@@ -522,6 +522,16 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
             notion_id = request.query_params.get('notion')
             chapitre_id = request.query_params.get('chapitre')
             
+            # Paramètre facultatif pour limiter la taille de la payload renvoyée dans "quiz_list"
+            # Les statistiques globales sont toujours calculées sur l'ensemble des données
+            limit_param = request.query_params.get('limit')
+            try:
+                limit = int(limit_param) if limit_param is not None else None
+                if limit is not None and limit <= 0:
+                    limit = None
+            except Exception:
+                limit = None
+
             if matiere_id:
                 user_quiz_attempts = user_quiz_attempts.filter(
                     quiz__chapitre__notion__theme__matiere_id=matiere_id
@@ -587,17 +597,22 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 if quiz_id not in quiz_best_scores or score_on_10 > quiz_best_scores[quiz_id]:
                     quiz_best_scores[quiz_id] = score_on_10
             
-            # Construire la liste finale et calculer les statistiques
-            quiz_list = []
+            # Construire la liste complète (toutes dernières tentatives) triée par date
+            full_quiz_list = []
             total_score_sum = 0
-            
+
             for quiz_data in quiz_latest_attempts.values():
-                # Convertir la date en string pour la réponse JSON
                 quiz_data['date_creation'] = quiz_data['date_creation'].isoformat()
-                quiz_list.append(quiz_data)
+                full_quiz_list.append(quiz_data)
                 total_score_sum += quiz_data['score_on_10']
-            
-            total_attempts = len(quiz_list)
+
+            # Trier par date décroissante pour la payload et l'affichage
+            try:
+                full_quiz_list.sort(key=lambda x: x['date_creation'], reverse=True)
+            except Exception:
+                pass
+
+            total_attempts = len(full_quiz_list)
             
             # Calculer les notions maîtrisées (quiz avec meilleur score >= 7/10)
             mastered_notions = sum(1 for score in quiz_best_scores.values() if score >= 7)
@@ -607,7 +622,7 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
             
             # Statistiques par matière
             matiere_stats = {}
-            for attempt_data in quiz_list:
+            for attempt_data in full_quiz_list:
                 matiere_id = attempt_data['matiere']['id']
                 matiere_titre = attempt_data['matiere']['titre']
                 
@@ -625,7 +640,7 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
             
             # Agrégat matière/notion (mêmes clés que exercices pour cohérence frontend)
             matiere_notion_stats = {}
-            for attempt_data in quiz_list:
+            for attempt_data in full_quiz_list:
                 mat = attempt_data['matiere']
                 notion = attempt_data['notion']
                 key = (mat['id'], notion['id'])
@@ -656,13 +671,21 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 if matiere_data['quiz_count'] > 0:
                     matiere_data['average'] = round(matiere_data['total_score'] / matiere_data['quiz_count'], 1)
             
+            # Appliquer la limite sur la payload de la liste (sans impacter les stats)
+            quiz_list_payload = full_quiz_list
+            if limit is not None:
+                try:
+                    quiz_list_payload = full_quiz_list[:limit]
+                except Exception:
+                    pass
+
             return Response({
                 'global_stats': {
                     'completed': total_attempts,
                     'average': average,
                     'masteredNotions': mastered_notions
                 },
-                'quiz_list': quiz_list,
+                'quiz_list': quiz_list_payload,
                 'matiere_stats': list(matiere_stats.values()),
                 'matiere_notion_stats': matiere_notion_stats_list,
                 'filters_applied': {

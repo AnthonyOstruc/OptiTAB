@@ -202,6 +202,15 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
             matiere_id = request.query_params.get('matiere')
             notion_id = request.query_params.get('notion')
             chapitre_id = request.query_params.get('chapitre')
+            # Limite optionnelle sur le nombre d'éléments renvoyés dans "exercice_list"
+            # (utile pour alléger le dashboard tout en conservant les stats globales)
+            limit_param = request.query_params.get('limit')
+            try:
+                limit = int(limit_param) if limit_param is not None else None
+                if limit is not None and limit <= 0:
+                    limit = None
+            except Exception:
+                limit = None
             
             if matiere_id:
                 user_exercice_suivis = user_exercice_suivis.filter(
@@ -216,12 +225,15 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
                     exercice__chapitre_id=chapitre_id
                 )
             
-            # Construire la liste des exercices
-            exercice_list = []
-            score_sum = 0
-            correct_count = 0
+            # Construire la liste des exercices (avec limitation facultative pour la réponse)
+            exercice_list = []  # liste limitée renvoyée au front (payload)
+            score_sum = 0       # somme sur tous les suivis
+            correct_count = 0   # total correct sur tous les suivis
+            total_all_count = 0 # nombre total de suivis
+            # Agrégats matière -> notion
+            matiere_notion_stats = {}
             
-            for suivi in user_exercice_suivis:
+            for idx, suivi in enumerate(user_exercice_suivis):
                 exercice = suivi.exercice
                 chapitre = exercice.chapitre
                 notion = chapitre.notion
@@ -231,10 +243,11 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
                 # Score sur 10 basé sur la réussite
                 score_on_10 = 10.0 if suivi.est_correct else 0.0
                 
+                # Construire les données élémentaires (n'ajouter à la liste que si < limit)
                 exercice_data = {
                     'id': suivi.id,
                     'exercice_id': exercice.id,
-                    'exercice_titre': exercice.titre,
+                    'exercice_titre': getattr(exercice, 'titre', ''),
                     'reponse_donnee': suivi.reponse_donnee,
                     'est_correct': suivi.est_correct,
                     'points_obtenus': suivi.points_obtenus,
@@ -242,29 +255,56 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
                     'score_on_10': score_on_10,
                     'date_creation': suivi.date_creation.isoformat(),
                     'chapitre': {
-                        'id': chapitre.id,
-                        'titre': chapitre.titre
+                        'id': getattr(chapitre, 'id', None),
+                        'titre': getattr(chapitre, 'titre', '')
                     },
                     'notion': {
-                        'id': notion.id,
-                        'titre': notion.titre
+                        'id': getattr(notion, 'id', None),
+                        'titre': getattr(notion, 'titre', '')
                     },
                     'theme': {
-                        'id': theme.id,
-                        'titre': theme.titre
+                        'id': getattr(theme, 'id', None),
+                        'titre': getattr(theme, 'titre', '')
                     },
                     'matiere': {
-                        'id': matiere.id,
-                        'titre': matiere.titre
+                        'id': getattr(matiere, 'id', None),
+                        'titre': getattr(matiere, 'titre', '')
                     }
                 }
-                
-                exercice_list.append(exercice_data)
+
+                # Appliquer la limite de taille sur la payload renvoyée
+                if limit is None or idx < limit:
+                    exercice_list.append(exercice_data)
+                total_all_count += 1
                 score_sum += score_on_10
                 if suivi.est_correct:
                     correct_count += 1
+                # Agrégats matière/notion
+                key = (exercice_data['matiere']['id'], exercice_data['notion']['id'])
+                if key not in matiere_notion_stats:
+                    matiere_notion_stats[key] = {
+                        'matiere': {
+                            'id': exercice_data['matiere']['id'],
+                            'titre': exercice_data['matiere']['titre']
+                        },
+                        'notion': {
+                            'id': exercice_data['notion']['id'],
+                            'titre': exercice_data['notion']['titre']
+                        },
+                        'exercice_count': 0,
+                        'correct_count': 0,
+                        'incorrect_count': 0,
+                    }
+                agg = matiere_notion_stats[key]
+                agg['exercice_count'] += 1
+                if suivi.est_correct:
+                    agg['correct_count'] += 1
+                else:
+                    agg['incorrect_count'] += 1
             
-            total_exercices = len(exercice_list)
+            # Compteurs finaux
+            total_exercices_display = len(exercice_list)  # ce qui est renvoyé en liste
+            total_exercices_all = total_all_count        # total réel pour les stats globales
             
             # Calculer les notions maîtrisées (au moins un exercice correct par notion)
             notions_with_correct = set()
@@ -273,15 +313,14 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
                     notions_with_correct.add(suivi.exercice.chapitre.notion.id)
             mastered_notions = len(notions_with_correct)
             
-            # Moyenne générale
-            average = round(score_sum / total_exercices, 1) if total_exercices > 0 else 0
+            # Moyenne générale (sur l'ensemble des suivis)
+            average = round(score_sum / total_exercices_all, 1) if total_exercices_all > 0 else 0
             
-            # Statistiques par matière
+            # Statistiques par matière (sur l'ensemble des suivis, pas uniquement la liste limitée)
             matiere_stats = {}
-            for exercice_data in exercice_list:
-                matiere_id = exercice_data['matiere']['id']
-                matiere_titre = exercice_data['matiere']['titre']
-                
+            for agg in matiere_notion_stats.values():
+                matiere_id = agg['matiere']['id']
+                matiere_titre = agg['matiere']['titre']
                 if matiere_id not in matiere_stats:
                     matiere_stats[matiere_id] = {
                         'id': matiere_id,
@@ -291,10 +330,8 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
                         'percentage': 0,
                         'average': 0
                     }
-                
-                matiere_stats[matiere_id]['exercice_count'] += 1
-                if exercice_data['est_correct']:
-                    matiere_stats[matiere_id]['correct_count'] += 1
+                matiere_stats[matiere_id]['exercice_count'] += int(agg.get('exercice_count', 0))
+                matiere_stats[matiere_id]['correct_count'] += int(agg.get('correct_count', 0))
             
             # Calculer les pourcentages et moyennes par matière
             for matiere_data in matiere_stats.values():
@@ -306,16 +343,25 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
                         (matiere_data['correct_count'] / matiere_data['exercice_count']) * 10, 1
                     )
             
+            # Trier l'agrégat matière/notion pour un rendu stable
+            matiere_notion_stats_list = list(matiere_notion_stats.values())
+            try:
+                matiere_notion_stats_list.sort(key=lambda x: (str(x['matiere']['titre']).lower(), str(x['notion']['titre']).lower()))
+            except Exception:
+                pass
+
             return Response({
                 'global_stats': {
-                    'completed': total_exercices,
+                    'completed': total_exercices_all,
                     'correct': correct_count,
-                    'percentage': round((correct_count / total_exercices) * 100, 1) if total_exercices > 0 else 0,
-                    'average': average,
+                    'incorrect': max(0, total_exercices_all - correct_count),
+                    'percentage': round((correct_count / total_exercices_all) * 100, 1) if total_exercices_all > 0 else 0,
+                    'average': round(score_sum / total_exercices_all, 1) if total_exercices_all > 0 else 0,
                     'masteredNotions': mastered_notions
                 },
                 'exercice_list': exercice_list,
                 'matiere_stats': list(matiere_stats.values()),
+                'matiere_notion_stats': matiere_notion_stats_list,
                 'filters_applied': {
                     'matiere': matiere_id,
                     'notion': notion_id,
@@ -577,6 +623,34 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 matiere_stats[matiere_id]['quiz_count'] += 1
                 matiere_stats[matiere_id]['total_score'] += attempt_data['score_on_10']
             
+            # Agrégat matière/notion (mêmes clés que exercices pour cohérence frontend)
+            matiere_notion_stats = {}
+            for attempt_data in quiz_list:
+                mat = attempt_data['matiere']
+                notion = attempt_data['notion']
+                key = (mat['id'], notion['id'])
+                if key not in matiere_notion_stats:
+                    matiere_notion_stats[key] = {
+                        'matiere': { 'id': mat['id'], 'titre': mat['titre'] },
+                        'notion': { 'id': notion['id'], 'titre': notion['titre'] },
+                        'exercice_count': 0,
+                        'correct_count': 0,
+                        'incorrect_count': 0,
+                    }
+                agg = matiere_notion_stats[key]
+                agg['exercice_count'] += 1
+                if (attempt_data.get('score_on_10') or 0) >= 7:
+                    agg['correct_count'] += 1
+                else:
+                    agg['incorrect_count'] += 1
+
+            # Liste triée pour stabilité d'affichage
+            matiere_notion_stats_list = list(matiere_notion_stats.values())
+            try:
+                matiere_notion_stats_list.sort(key=lambda x: (str(x['matiere']['titre']).lower(), str(x['notion']['titre']).lower()))
+            except Exception:
+                pass
+
             # Calculer les moyennes par matière
             for matiere_data in matiere_stats.values():
                 if matiere_data['quiz_count'] > 0:
@@ -590,6 +664,7 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 },
                 'quiz_list': quiz_list,
                 'matiere_stats': list(matiere_stats.values()),
+                'matiere_notion_stats': matiere_notion_stats_list,
                 'filters_applied': {
                     'matiere': matiere_id,
                     'notion': notion_id,

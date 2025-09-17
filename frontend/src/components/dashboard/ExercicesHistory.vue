@@ -5,6 +5,7 @@
     list-title="📝 Exercices effectués"
     loading-text="Chargement des exercices..."
     api-endpoint="/api/suivis/exercices/stats/"
+    :extra-params="{ limit: 6 }"
     :custom-filters="masteryFilters"
     :navigation-handler="navigateToExercice"
     :items-per-page="6"
@@ -12,6 +13,12 @@
     @data-loaded="onDataLoaded"
     @filter-changed="onFilterChanged"
   >
+    <!-- Actions en-tête: bouton Voir l'historique complet -->
+    <template #header-actions>
+      <button class="view-history-btn" @click="goToFullHistory" title="Voir tout l'historique" aria-label="Voir tout l'historique">
+        Voir l'historique
+      </button>
+    </template>
     <!-- Statistiques globales -->
     <template #global-stats="{ stats }">
       <div class="stats-grid">
@@ -45,6 +52,83 @@
             <span class="matiere-count">{{ matiere.exercice_count }} exercices</span>
           </div>
         </div>
+      </div>
+    </template>
+
+    <!-- Tableau récapitulatif matière / notion -->
+    <template #matiere-notion-stats="{ stats }">
+      <div class="summary-table">
+        <div class="summary-header">
+          <div>Matière</div>
+          <div>Notion</div>
+          <div class="sortable-header" @click="sortBy('exercice_count')">
+            Faits
+            <span class="sort-icon" :class="{ active: sortField === 'exercice_count' }">
+              {{ sortField === 'exercice_count' && sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </div>
+          <div class="sortable-header" @click="sortBy('correct_count')">
+            Réussis
+            <span class="sort-icon" :class="{ active: sortField === 'correct_count' }">
+              {{ sortField === 'correct_count' && sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </div>
+          <div class="sortable-header" @click="sortBy('incorrect_count')">
+            Ratés
+            <span class="sort-icon" :class="{ active: sortField === 'incorrect_count' }">
+              {{ sortField === 'incorrect_count' && sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </div>
+          <div class="sortable-header" @click="sortBy('average')">
+            Moyenne
+            <span class="sort-icon" :class="{ active: sortField === 'average' }">
+              {{ sortField === 'average' && sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </div>
+        </div>
+        <template v-for="row in sortedStats" :key="`${row.matiere.id}-${row.notion.id}`">
+          <div class="summary-row">
+            <div class="cell matiere">{{ row.matiere.titre }}</div>
+            <div class="cell notion">
+              <button class="notion-toggle" @click="toggleNotionDetails(row)">
+                <span class="notion-label">{{ row.notion.titre }}</span>
+                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :class="{ expanded: isNotionExpanded(row) }">
+                  <polyline points="6,9 12,15 18,9"></polyline>
+                </svg>
+              </button>
+            </div>
+            <div class="cell count">{{ row.exercice_count }}</div>
+            <div class="cell correct">{{ row.correct_count }}</div>
+            <div class="cell incorrect">{{ row.incorrect_count }}</div>
+            <div class="cell average" :class="getAverageClass(row.average)">{{ formatAverage(row.average) }}</div>
+          </div>
+          <div v-if="isNotionExpanded(row)" class="summary-details-row">
+            <div class="details-cell">
+              <div class="chapter-table">
+                <div class="chapter-header">
+                  <div>Chapitre</div>
+                  <div>Faits</div>
+                  <div>Réussis</div>
+                  <div>Ratés</div>
+                  <div>Réussite</div>
+                  <div>Moyenne</div>
+                </div>
+                <div v-if="getNotionDetails(row).loading" class="chapter-loading">Chargement des détails...</div>
+                <div v-else-if="getNotionDetails(row).error" class="chapter-error">{{ getNotionDetails(row).error }}</div>
+                <div v-else>
+                  <div v-for="ch in getNotionDetails(row).chapters" :key="ch.chapitre.id" class="chapter-row">
+                    <div class="cell chapitre">{{ ch.chapitre.titre }}</div>
+                    <div class="cell count">{{ ch.exercice_count }}</div>
+                    <div class="cell correct">{{ ch.correct_count }}</div>
+                    <div class="cell incorrect">{{ ch.incorrect_count }}</div>
+                    <div class="cell ratio">{{ Math.round(ch.ratio_percent) }}%</div>
+                    <div class="cell average" :class="getAverageClass(ch.average_10 * 10)">{{ ch.average_10 }}/10</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
       </div>
     </template>
 
@@ -126,6 +210,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import BaseHistory from './BaseHistory.vue'
+import apiClient from '@/api/client'
 
 // Router
 const router = useRouter()
@@ -143,6 +228,15 @@ const masteryFilters = [
 // État des filtres
 const selectedMastery = ref('all')
 const currentExercicesList = ref([])
+
+// État du tri pour le tableau matière/notion
+const sortField = ref('exercice_count')
+const sortDirection = ref('desc')
+const matiereNotionStats = ref([])
+
+// État d'expansion et détails par notion (clé: "matiereId-notionId")
+const expandedNotions = ref(new Set())
+const notionDetails = ref({})
 
 // Computed pour filtrer les exercices selon le niveau de maîtrise
 const filteredExercicesList = computed(() => {
@@ -167,7 +261,12 @@ const filteredExercicesList = computed(() => {
 
 // Méthodes
 const onDataLoaded = (data) => {
-  currentExercicesList.value = data.exercice_list || []
+  // Le backend peut limiter la payload avec ?limit=6, sinon on tronque côté front
+  const list = Array.isArray(data.exercice_list) ? data.exercice_list : []
+  currentExercicesList.value = list.slice(0, 6)
+  
+  // Sauvegarder les stats matière/notion pour le tri
+  matiereNotionStats.value = Array.isArray(data.matiere_notion_stats) ? data.matiere_notion_stats : []
 }
 
 const onFilterChanged = (filters) => {
@@ -194,6 +293,137 @@ const navigateToExercice = async (exercice) => {
   } catch (error) {
     console.error(`[ExercicesHistory] ❌ Erreur de navigation:`, error)
   }
+}
+
+const goToFullHistory = () => {
+  router.push({ name: 'ExercisesHistory' })
+}
+
+// Computed pour le tri des stats matière/notion
+const sortedStats = computed(() => {
+  if (!matiereNotionStats.value.length) return []
+  
+  // Ajouter la moyenne calculée à chaque ligne
+  const statsWithAverage = matiereNotionStats.value.map(row => ({
+    ...row,
+    average: row.exercice_count > 0 ? (row.correct_count / row.exercice_count) * 100 : 0
+  }))
+  
+  const sorted = [...statsWithAverage].sort((a, b) => {
+    const aValue = a[sortField.value] || 0
+    const bValue = b[sortField.value] || 0
+    
+    if (sortDirection.value === 'asc') {
+      return aValue - bValue
+    } else {
+      return bValue - aValue
+    }
+  })
+  
+  return sorted
+})
+
+// Méthode pour changer le tri
+const sortBy = (field) => {
+  if (sortField.value === field) {
+    // Inverser la direction si c'est le même champ
+    sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    // Nouveau champ, commencer par décroissant
+    sortField.value = field
+    sortDirection.value = 'desc'
+  }
+}
+
+// Méthodes utilitaires pour la moyenne
+const formatAverage = (average) => {
+  if (average === 0) return '0%'
+  return `${Math.round(average)}%`
+}
+
+const getAverageClass = (average) => {
+  if (average >= 90) return 'excellent'
+  if (average >= 75) return 'good'
+  if (average >= 50) return 'average'
+  return 'poor'
+}
+
+
+// Gestion de l'expansion des notions dans le tableau récapitulatif
+const buildNotionKey = (row) => `${row.matiere.id}-${row.notion.id}`
+
+const isNotionExpanded = (row) => {
+  return expandedNotions.value.has(buildNotionKey(row))
+}
+
+const getNotionDetails = (row) => {
+  const key = buildNotionKey(row)
+  if (!notionDetails.value[key]) {
+    notionDetails.value[key] = { loading: false, error: '', chapters: [] }
+  }
+  return notionDetails.value[key]
+}
+
+const toggleNotionDetails = async (row) => {
+  const key = buildNotionKey(row)
+  if (expandedNotions.value.has(key)) {
+    expandedNotions.value.delete(key)
+    return
+  }
+  expandedNotions.value.add(key)
+  // Charger les détails si pas déjà chargés
+  const details = getNotionDetails(row)
+  if (details.chapters && details.chapters.length > 0) return
+  await fetchNotionChapterDetails(row.matiere.id, row.notion.id)
+}
+
+const fetchNotionChapterDetails = async (matiereId, notionId) => {
+  const key = `${matiereId}-${notionId}`
+  notionDetails.value[key] = { loading: true, error: '', chapters: [] }
+  try {
+    const response = await apiClient.get('/api/suivis/exercices/stats/', {
+      params: { matiere: matiereId, notion: notionId }
+    })
+    const list = Array.isArray(response?.data?.exercice_list) ? response.data.exercice_list : []
+    const chapters = computeChapterStats(list)
+    notionDetails.value[key] = { loading: false, error: '', chapters }
+  } catch (error) {
+    const message = (error?.response?.data?.error) || 'Erreur lors du chargement des détails'
+    notionDetails.value[key] = { loading: false, error: message, chapters: [] }
+  }
+}
+
+const computeChapterStats = (exerciceList) => {
+  const map = new Map()
+  for (const item of exerciceList) {
+    const chap = item?.chapitre || {}
+    const chapId = chap?.id
+    if (!chapId) continue
+    if (!map.has(chapId)) {
+      map.set(chapId, {
+        chapitre: { id: chapId, titre: chap?.titre || 'Chapitre' },
+        exercice_count: 0,
+        correct_count: 0,
+        incorrect_count: 0,
+      })
+    }
+    const agg = map.get(chapId)
+    agg.exercice_count += 1
+    if (item.est_correct) agg.correct_count += 1
+    else agg.incorrect_count += 1
+  }
+  const chapters = Array.from(map.values()).map(ch => {
+    const ratio = ch.exercice_count > 0 ? (ch.correct_count / ch.exercice_count) : 0
+    const average10 = Math.round(ratio * 10 * 10) / 10 // arrondi 0.1
+    return {
+      ...ch,
+      ratio_percent: ratio * 100,
+      average_10: average10
+    }
+  })
+  // Trier par titre de chapitre
+  chapters.sort((a, b) => String(a.chapitre.titre).localeCompare(String(b.chapitre.titre), 'fr', { sensitivity: 'base' }))
+  return chapters
 }
 
 
@@ -562,6 +792,178 @@ defineExpose({
   font-size: 0.875rem;
   color: #9ca3af;
   margin-top: 0.5rem;
+}
+
+/* Bouton voir l'historique */
+.view-history-btn {
+  background: #111827;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.view-history-btn:hover { background: #1f2937; }
+
+/* Tableau résumé matière/notion - Version simple et pédagogique */
+.summary-table {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  margin-bottom: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.summary-header,
+.summary-row {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 0.8fr 0.8fr 0.8fr 0.8fr;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  align-items: center;
+}
+.summary-header {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+.summary-row {
+  border-bottom: 1px solid #f3f4f6;
+}
+.summary-row:last-child {
+  border-bottom: none;
+}
+.summary-row .cell {
+  font-size: 0.875rem;
+  color: #374151;
+}
+.summary-row .cell.count,
+.summary-row .cell.correct,
+.summary-row .cell.incorrect { 
+  text-align: center;
+  font-weight: 600;
+}
+.summary-row .cell.correct { 
+  color: #16a34a; 
+}
+.summary-row .cell.incorrect { 
+  color: #dc2626; 
+}
+
+/* Moyenne simple et claire */
+.summary-row .cell.average {
+  font-weight: 600;
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+.summary-row .cell.average.excellent { 
+  color: #16a34a; 
+  background: #dcfce7;
+}
+.summary-row .cell.average.good { 
+  color: #2563eb; 
+  background: #dbeafe;
+}
+.summary-row .cell.average.average { 
+  color: #d97706; 
+  background: #fef3c7;
+}
+.summary-row .cell.average.poor { 
+  color: #dc2626; 
+  background: #fee2e2;
+}
+
+/* En-têtes triables - Version simple */
+.sortable-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.25rem;
+  border-radius: 4px;
+  gap: 0.35rem;
+}
+.sortable-header:hover {
+  background-color: #f3f4f6;
+}
+.sort-icon {
+  font-size: 1rem;
+  color: #6b7280;
+  font-weight: 700;
+}
+.sort-icon.active {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .summary-header, .summary-row {
+    grid-template-columns: 1fr 1fr 0.7fr 0.7fr 0.7fr 0.7fr;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Notion toggle */
+.notion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  color: #1f2937;
+}
+.notion-toggle:hover { background: #f3f4f6; }
+.notion-toggle .chevron { transition: transform 0.2s; color: #6b7280; }
+.notion-toggle .chevron.expanded { transform: rotate(180deg); color: #374151; }
+
+/* Details row under notion */
+.summary-details-row {
+  display: block;
+  padding: 0 0.5rem 0.75rem 0.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+.summary-details-row .details-cell {
+  grid-column: 1 / -1;
+}
+.chapter-table {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  overflow: hidden;
+}
+.chapter-header,
+.chapter-row {
+  display: grid;
+  grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  align-items: center;
+}
+.chapter-header { background: #eef2f7; font-weight: 600; color: #374151; }
+.chapter-row { background: #fff; border-top: 1px solid #f3f4f6; }
+.chapter-loading { padding: 0.75rem; color: #6b7280; font-size: 0.85rem; }
+.chapter-error { padding: 0.75rem; color: #dc2626; font-size: 0.85rem; }
+.chapter-row .cell { font-size: 0.85rem; }
+.chapter-row .cell.count,
+.chapter-row .cell.correct,
+.chapter-row .cell.incorrect,
+.chapter-row .cell.ratio,
+.chapter-row .cell.average { text-align: center; font-weight: 600; }
+.chapter-row .cell.correct { color: #16a34a; }
+.chapter-row .cell.incorrect { color: #dc2626; }
+
+@media (max-width: 768px) {
+  .chapter-header, .chapter-row {
+    grid-template-columns: 1.4fr 0.7fr 0.7fr 0.7fr 0.7fr 0.7fr;
+    padding: 0.45rem 0.5rem;
+  }
 }
 
 /* Responsive */

@@ -2,6 +2,10 @@
   <div class="base-history">
     <div class="history-header">
       <h3 class="history-title">{{ title }}</h3>
+      <!-- Zone d'actions dans l'en-tête (ex: lien "Voir l'historique") -->
+      <div class="history-actions">
+        <slot name="header-actions" />
+      </div>
       
       <!-- Filtres -->
       <div class="history-filters">
@@ -36,6 +40,11 @@
     <!-- Slot pour les statistiques par matière -->
     <div v-if="!loading && matiereStats.length > 0" class="matiere-stats">
       <slot name="matiere-stats" :stats="matiereStats" />
+    </div>
+
+    <!-- Slot supplémentaire: stats matière/notion -->
+    <div v-if="!loading && matiereNotionStats.length > 0" class="matiere-stats">
+      <slot name="matiere-notion-stats" :stats="matiereNotionStats" />
     </div>
 
     <!-- Section principale (liste des items) -->
@@ -141,6 +150,11 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  // Paramètres additionnels à envoyer avec la requête (ex: { limit: 7 })
+  extraParams: {
+    type: Object,
+    default: () => ({})
+  },
   navigationHandler: {
     type: Function,
     default: null
@@ -167,6 +181,7 @@ const loading = ref(true)
 const globalStats = ref({})
 const itemsList = ref([])
 const matiereStats = ref([])
+const matiereNotionStats = ref([])
 
 // Données de référence
 const matieres = ref([])
@@ -404,7 +419,7 @@ const loadReferenceData = async () => {
 const loadData = async () => {
   loading.value = true
   try {
-    const params = {}
+    const params = { ...(props.extraParams || {}) }
     if (selectedMatiere.value) params.matiere = selectedMatiere.value
     if (selectedNotion.value) params.notion = selectedNotion.value
     if (selectedChapitre.value) params.chapitre = selectedChapitre.value
@@ -415,6 +430,7 @@ const loadData = async () => {
     globalStats.value = data.global_stats || {}
     itemsList.value = data.quiz_list || data.exercice_list || []
     matiereStats.value = data.matiere_stats || []
+    matiereNotionStats.value = data.matiere_notion_stats || []
     
     emit('data-loaded', data)
     
@@ -621,6 +637,13 @@ defineExpose({
 
 .history-header {
   margin-bottom: 1.5rem;
+}
+
+.history-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .history-title {

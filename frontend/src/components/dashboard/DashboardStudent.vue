@@ -73,7 +73,7 @@ import LeaderboardWidget from '@/components/dashboard/LeaderboardWidget.vue'
 
 import XPBadges from '@/components/dashboard/XPBadges.vue'
 import GameResetNotification from '@/components/notifications/GameResetNotification.vue'
-import QuizHistory from '@/components/dashboard/QuizHistory.vue'
+import QuizHistory from '@/components/dashboard/QuizHistoryRefactored.vue'
 import ExercicesHistory from '@/components/dashboard/ExercicesHistory.vue'
 import DailyObjectives from '@/components/dashboard/DailyObjectives.vue'
 

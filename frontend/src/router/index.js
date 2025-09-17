@@ -39,6 +39,8 @@ const routes = [
   { path: '/exercices/:chapitreId', name: 'Exercices', component: () => import('@/views/ChapterExercises.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
   { path: '/exercice/:exerciceId', name: 'ExerciceDetail', component: () => import('@/views/ExerciceDetail.vue'), meta: { requiresAuth: true } },
   { path: '/progress', name: 'Progress', component: () => import('@/views/Progress.vue'), meta: { requiresAuth: true } },
+  { path: '/historique-exercices', name: 'ExercisesHistory', component: () => import('@/views/ExercisesHistory.vue'), meta: { requiresAuth: true } },
+  { path: '/historique-quiz', name: 'QuizzesHistory', component: () => import('@/views/QuizzesHistory.vue'), meta: { requiresAuth: true } },
   { path: '/calculator', name: 'Calculator', component: () => import('@/views/Calculator.vue') },
   { path: '/test-filtrage-strict', name: 'TestFiltrageStrict', component: () => import('@/views/TestFiltrageStrict.vue') },
   {

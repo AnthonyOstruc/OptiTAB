@@ -62,6 +62,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     # Gamification
     xp = models.PositiveIntegerField(default=0, verbose_name="Points d'expérience")
+    streak = models.PositiveIntegerField(default=0, verbose_name="Streak (jours)")
 
     objects = CustomUserManager()
 

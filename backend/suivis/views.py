@@ -9,6 +9,7 @@ from .models import SuiviExercice, SuiviQuiz
 from .serializers import SuiviExerciceSerializer, SuiviQuizSerializer
 from django.db import transaction
 from users.models import UserNotification
+from users.services import StreakService
 from django.utils import timezone
 from datetime import timedelta
 import logging
@@ -179,11 +180,20 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Créer le suivi (les exercices guidés ne donnent pas d'XP)
         suivi = serializer.save(user=self.request.user)
+        try:
+            # Rafraîchir le streak à chaque activité d'exercice
+            StreakService.refresh_user_streak(self.request.user)
+        except Exception:
+            pass
         return suivi
 
     def perform_update(self, serializer):
         # Mettre à jour le suivi (les exercices guidés ne donnent pas d'XP)
         suivi = serializer.save(user=self.request.user)
+        try:
+            StreakService.refresh_user_streak(self.request.user)
+        except Exception:
+            pass
         return suivi
 
     @action(detail=False, methods=['get'], url_path='stats')
@@ -444,6 +454,12 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 
                 # Le niveau est calculé dynamiquement dans le serializer, pas stocké en BDD
                 user.save(update_fields=["xp"])
+
+                # Rafraîchir et persister le streak suite à l'activité de quiz
+                try:
+                    StreakService.refresh_user_streak(user)
+                except Exception:
+                    pass
                 
                 print(f"🆙 Utilisateur mis à jour: XP={user.xp}")
 

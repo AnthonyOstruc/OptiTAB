@@ -94,6 +94,8 @@
                   <div>Réussis</div>
                   <div>Ratés</div>
                   <div>Réussite</div>
+                  <div>Verrouillés</div>
+                  <div>Déverrouillage</div>
                   <div>Moyenne</div>
                 </div>
                 <div v-if="getNotionDetails(row).loading" class="chapter-loading">Chargement des détails...</div>
@@ -105,6 +107,8 @@
                     <div class="cell correct">{{ ch.correct_count }}</div>
                     <div class="cell incorrect">{{ ch.incorrect_count }}</div>
                     <div class="cell ratio">{{ Math.round(ch.ratio_percent) }}%</div>
+                    <div class="cell locked" :class="{ haslock: (ch.locked_count || 0) > 0 }">{{ ch.locked_count || 0 }}</div>
+                    <div class="cell unlock">{{ ch.next_unlock_formatted || '-' }}</div>
                     <div class="cell average" :class="getAverageClass(ch.average_percent)">{{ (Math.round(ch.average_10 * 10) / 10) }}/10</div>
                   </div>
                 </div>
@@ -144,10 +148,10 @@
 
     <!-- Liste des quiz -->
     <template #items-list="{ items, toggleDetails, isExpanded, navigateToItem }">
-      <div v-for="quiz in items" :key="quiz.id" class="quiz-card" :class="{ 'multiple-attempts': quiz.total_attempts > 1 }">
+      <div v-for="quiz in items" :key="quiz.id" class="quiz-card" :class="{ 'multiple-attempts': quiz.total_attempts > 1, locked: isQuizLocked(quiz) }">
         <div class="quiz-card-header" @click="toggleDetails(quiz.id)">
           <div class="quiz-card-title-section">
-            <h5 class="quiz-card-title clickable-title" @click.stop="navigateToItem(quiz)" :title="'Accéder au quiz: ' + quiz.quiz_titre">
+            <h5 class="quiz-card-title clickable-title" :class="{ locked: isQuizLocked(quiz) }" @click.stop="onNavigate(quiz)" :title="isQuizLocked(quiz) ? 'Verrouillé' : ('Accéder au quiz: ' + quiz.quiz_titre)">
               {{ quiz.quiz_titre }}
               <svg class="navigation-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M7 17l9.2-9.2M17 17V7H7"></path>
@@ -158,7 +162,10 @@
             </div>
           </div>
           <div class="quiz-card-actions">
-            <div class="quiz-score" :class="getScoreClass(quiz.score_on_10)">
+            <div v-if="isQuizLocked(quiz)" class="lock-badge" :title="getCooldownLabel(quiz)">
+              🔒 {{ getCooldownLabel(quiz) }}
+            </div>
+            <div v-else class="quiz-score" :class="getScoreClass(quiz.score_on_10)">
               {{ quiz.score_on_10 }}/10
               <span v-if="quiz.total_attempts > 1" class="retry-indicator">↻</span>
             </div>
@@ -207,6 +214,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import BaseHistory from './BaseHistory.vue'
 import apiClient from '@/api/client'
+import { checkQuizCooldown } from '@/api/quiz'
 
 // Router
 const router = useRouter()
@@ -214,6 +222,7 @@ const router = useRouter()
 // État
 const selectedMastery = ref('all')
 const currentQuizList = ref([])
+const cooldownByQuizId = ref(new Map())
 const matiereNotionStats = ref([])
 const sortField = ref('count')
 const sortDirection = ref('desc')
@@ -291,6 +300,8 @@ const onDataLoaded = (data) => {
   currentQuizList.value = fullList.slice(0, 6)
   // Construire l'agrégat matière/notion côté client
   matiereNotionStats.value = computeMatiereNotionFromQuizList(fullList)
+  // Charger les cooldowns pour l'affichage des verrous
+  loadCooldowns(currentQuizList.value)
 }
 
 const onFilterChanged = (filters) => {
@@ -301,6 +312,36 @@ const getScoreClass = (score) => {
   if (score >= 7) return 'score-good'
   if (score >= 5) return 'score-average'
   return 'score-poor'
+}
+
+const loadCooldowns = async (list) => {
+  const map = new Map(cooldownByQuizId.value)
+  await Promise.all((list || []).map(async (q) => {
+    try {
+      const info = await checkQuizCooldown(q.quiz_id)
+      map.set(q.quiz_id, info)
+    } catch (_) {}
+  }))
+  cooldownByQuizId.value = map
+}
+
+const isQuizLocked = (quiz) => {
+  const info = cooldownByQuizId.value.get(quiz.quiz_id)
+  return info && info.can_attempt === false
+}
+
+const getCooldownLabel = (quiz) => {
+  const info = cooldownByQuizId.value.get(quiz.quiz_id)
+  if (!info || info.can_attempt !== false) return ''
+  return info.time_remaining_formatted || info.message || 'Verrouillé'
+}
+
+const onNavigate = (quiz) => {
+  if (isQuizLocked(quiz)) {
+    alert(getCooldownLabel(quiz) || 'Quiz verrouillé')
+    return
+  }
+  navigateToQuiz(quiz)
 }
 
 const goToFullHistory = () => {
@@ -338,7 +379,7 @@ const fetchNotionChapterDetails = async (matiereId, notionId) => {
   try {
     const response = await apiClient.get('/api/suivis/quiz/stats/', { params: { matiere: matiereId, notion: notionId } })
     const list = Array.isArray(response?.data?.quiz_list) ? response.data.quiz_list : []
-    const chapters = computeChapterStats(list)
+    const chapters = await computeChapterStatsWithCooldown(list)
     notionDetails.value[key] = { loading: false, error: '', chapters }
   } catch (error) {
     const message = (error?.response?.data?.error) || 'Erreur lors du chargement des détails'
@@ -346,8 +387,11 @@ const fetchNotionChapterDetails = async (matiereId, notionId) => {
   }
 }
 
-const computeChapterStats = (quizList) => {
+const computeChapterStatsWithCooldown = async (quizList) => {
   const map = new Map()
+  const lockedMap = new Map()
+  const nextUnlockMap = new Map()
+
   for (const item of quizList) {
     const chap = item?.chapitre || {}
     const chapId = chap?.id
@@ -367,18 +411,44 @@ const computeChapterStats = (quizList) => {
     if ((item.score_on_10 || 0) >= 7) agg.correct_count += 1
     else agg.incorrect_count += 1
   }
+
+  await Promise.all(quizList.map(async (item) => {
+    try {
+      const info = await checkQuizCooldown(item.quiz_id)
+      if (info && info.can_attempt === false) {
+        const chapId = item?.chapitre?.id
+        if (!chapId) return
+        lockedMap.set(chapId, (lockedMap.get(chapId) || 0) + 1)
+        const secs = Number(info.time_remaining_seconds || 0)
+        const current = nextUnlockMap.get(chapId)
+        if (!current || secs < current) nextUnlockMap.set(chapId, secs)
+      }
+    } catch (_) {}
+  }))
+
   const chapters = Array.from(map.values()).map(ch => {
     const ratio = ch.count > 0 ? (ch.correct_count / ch.count) : 0
     const avg10 = ch.count > 0 ? ch.sum_score_10 / ch.count : 0
+    const remaining = nextUnlockMap.get(ch.chapitre.id) || 0
     return {
       ...ch,
       ratio_percent: ratio * 100,
       average_10: Math.round(avg10 * 10) / 10,
       average_percent: ratio * 100,
+      locked_count: lockedMap.get(ch.chapitre.id) || 0,
+      next_unlock_seconds: remaining,
+      next_unlock_formatted: remaining > 0 ? formatRemaining(remaining) : ''
     }
   })
   chapters.sort((a, b) => String(a.chapitre.titre).localeCompare(String(b.chapitre.titre), 'fr', { sensitivity: 'base' }))
   return chapters
+}
+
+const formatRemaining = (secs) => {
+  const hours = Math.floor(secs / 3600)
+  const minutes = Math.floor((secs % 3600) / 60)
+  if (hours > 0) return `${hours}h${String(minutes).padStart(2, '0')}min`
+  return `${minutes}min`
 }
 
 const computeMatiereNotionFromQuizList = (quizList) => {
@@ -524,15 +594,16 @@ defineExpose({
 .summary-details-row { display: block; padding: 0 0.5rem 0.75rem 0.5rem; border-bottom: 1px solid #f3f4f6; }
 .summary-details-row .details-cell { grid-column: 1 / -1; }
 .chapter-table { border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; overflow: hidden; }
-.chapter-header, .chapter-row { display: grid; grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr; gap: 0.75rem; padding: 0.5rem 0.75rem; align-items: center; }
+.chapter-header, .chapter-row { display: grid; grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr 0.8fr 0.9fr 1.2fr 0.8fr; gap: 0.75rem; padding: 0.5rem 0.75rem; align-items: center; }
 .chapter-header { background: #eef2f7; font-weight: 600; color: #374151; }
 .chapter-row { background: #fff; border-top: 1px solid #f3f4f6; }
 .chapter-loading { padding: 0.75rem; color: #6b7280; font-size: 0.85rem; }
 .chapter-error { padding: 0.75rem; color: #dc2626; font-size: 0.85rem; }
 .chapter-row .cell { font-size: 0.85rem; }
-.chapter-row .cell.count, .chapter-row .cell.correct, .chapter-row .cell.incorrect, .chapter-row .cell.ratio, .chapter-row .cell.average { text-align: center; font-weight: 600; }
+.chapter-row .cell.count, .chapter-row .cell.correct, .chapter-row .cell.incorrect, .chapter-row .cell.ratio, .chapter-row .cell.locked, .chapter-row .cell.unlock, .chapter-row .cell.average { text-align: center; font-weight: 600; }
 .chapter-row .cell.correct { color: #16a34a; }
 .chapter-row .cell.incorrect { color: #dc2626; }
+.chapter-row .cell.locked.haslock { color: #f59e0b; }
 
 @media (max-width: 768px) {
   .chapter-header, .chapter-row { grid-template-columns: 1.4fr 0.7fr 0.7fr 0.7fr 0.7fr 0.7fr; padding: 0.45rem 0.5rem; }
@@ -683,6 +754,12 @@ defineExpose({
   transition: all 0.2s;
 }
 
+.quiz-card.locked {
+  opacity: 0.75;
+  cursor: not-allowed;
+  border-left: 3px solid #f59e0b;
+}
+
 .quiz-card:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
@@ -732,6 +809,10 @@ defineExpose({
   margin: -0.25rem;
   border-radius: 4px;
   transition: all 0.2s;
+}
+
+.clickable-title.locked {
+  cursor: not-allowed;
 }
 
 .clickable-title:hover {
@@ -807,6 +888,15 @@ defineExpose({
   margin-left: 0.25rem;
   font-size: 0.8rem;
   opacity: 0.7;
+}
+
+.lock-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #92400e;
+  background: #fef3c7;
+  padding: 0.25rem 0.4rem;
+  border-radius: 4px;
 }
 
 .quiz-card-details {

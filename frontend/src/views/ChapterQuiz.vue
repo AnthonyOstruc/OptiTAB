@@ -1113,15 +1113,29 @@ function getEstimatedTime(questionCount) {
   return `${totalMinutes} min`
 }
 
-function startQuiz(quizData) {
+async function startQuiz(quizData) {
   // Vérifier l'authentification
   if (!userStore.isAuthenticated) {
     console.warn('⚠️ Utilisateur non authentifié, démarrage du quiz en mode local')
     // Continuer en mode local sans sauvegarde serveur
   }
   
-  // Vérifier le cooldown avant de commencer
-  const cooldownInfo = quizCooldowns.value.get(quizData.id)
+  // Vérifier/rafraîchir le cooldown avant de commencer (sécurisé contre l'auto-start)
+  let cooldownInfo = quizCooldowns.value.get(quizData.id)
+  if (!cooldownInfo) {
+    try {
+      cooldownInfo = await checkQuizCooldown(quizData.id)
+      quizCooldowns.value.set(quizData.id, cooldownInfo)
+    } catch (error) {
+      if (error.response?.status === 401) {
+        // Non connecté → autoriser en mode local
+        cooldownInfo = { can_attempt: true, message: 'Mode local' }
+      } else {
+        // En cas d'erreur réseau, ne pas bloquer
+        cooldownInfo = { can_attempt: true }
+      }
+    }
+  }
   if (cooldownInfo && !cooldownInfo.can_attempt) {
     alert(`⏰ ${cooldownInfo.message}`)
     return

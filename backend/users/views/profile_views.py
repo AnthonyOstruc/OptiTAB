@@ -13,6 +13,7 @@ from pays.models import Pays, Niveau
 from django.db.models import F, Q, Count, IntegerField
 from django.db.models.functions import Cast, TruncDate
 from users.models import CustomUser, ParentChild, UserNotification
+from users.services import StreakService
 from ..serializers.user_profile import UserNotificationSerializer
 from suivis.models import SuiviExercice
 from django.utils import timezone
@@ -50,6 +51,9 @@ class MeGamificationView(APIView):
         try:
             user = request.user
             total_xp = user.xp or 0
+            # Refresh streak to ensure admin shows the latest value
+            streak_data = StreakService.refresh_user_streak(user)
+            current_streak = streak_data.current_streak
             
             # Utiliser la nouvelle logique de niveaux progressifs
             from suivis.views import calculate_user_level
@@ -57,6 +61,7 @@ class MeGamificationView(APIView):
             
             data = {
                 'xp': total_xp,
+                'streak': current_streak,
                 'level': level,
                 'next_level_xp': next_level_xp,
                 'xp_to_next': xp_to_next
@@ -627,56 +632,22 @@ class MyStreaksView(APIView):
     def get(self, request):
         try:
             user = request.user
-            # Map activité par jour (90 derniers jours)
-            cut = timezone.now() - timedelta(days=90)
-            q = SuiviExercice.objects.filter(user=user, date_creation__gte=cut)
-            daily_raw = (
-                q.annotate(day=TruncDate('date_creation'))
-                 .values('day')
-                 .annotate(total=Count('id'))
-                 .order_by('day')
-            )
-            activity_map = {str(d['day']): (d['total'] or 0) for d in daily_raw}
+            # Compute and persist latest streak
+            streak_data = StreakService.refresh_user_streak(user)
 
-            # Calcul streaks sur 365 jours glissants
-            today = timezone.now().date()
-            def has_activity(d):
-                return activity_map.get(str(d), 0) > 0
-
-            # current streak
-            cur = 0
-            for i in range(0, 366):
-                day = today - timedelta(days=i)
-                if i == 0 and not has_activity(day):
-                    break
-                if has_activity(day):
-                    cur += 1
-                else:
-                    break
-
-            # longest streak
-            best = 0
-            streak = 0
-            for i in range(0, 366):
-                day = today - timedelta(days=i)
-                if has_activity(day):
-                    streak += 1
-                    best = max(best, streak)
-                else:
-                    streak = 0
-
-            # Derniers 60 jours pour heatmap
+            # Derniers 60 jours pour heatmap (from activity map)
             last_days = []
+            today = timezone.now().date()
             for i in range(59, -1, -1):
                 day = today - timedelta(days=i)
                 last_days.append({
                     'date': str(day),
-                    'count': activity_map.get(str(day), 0)
+                    'count': streak_data.activity_map.get(str(day), 0)
                 })
 
             data = {
-                'current_streak': cur,
-                'longest_streak': best,
+                'current_streak': streak_data.current_streak,
+                'longest_streak': streak_data.longest_streak,
                 'last_days': last_days,
             }
 

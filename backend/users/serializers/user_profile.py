@@ -45,6 +45,7 @@ class UserBaseSerializer(serializers.ModelSerializer):
             'is_active',
             'is_staff',
             'xp',
+            'streak',
             'level',
             'xp_to_next'
         ]

@@ -123,7 +123,15 @@ def redirect_to_frontend(request, path=""):
     This is useful when the apex domain accidentally points to the backend
     service: hitting e.g. "/dashboard" on the backend will issue a 301 to
     the configured frontend base URL with the same path.
+
+    Note: This function now explicitly checks that the path doesn't start
+    with 'admin/' or 'api/' to avoid conflicts with Django admin and API routes.
     """
+    # Don't redirect admin or API paths
+    if path.startswith(('admin/', 'api/')):
+        from django.http import HttpResponseNotFound
+        return HttpResponseNotFound("Page not found")
+
     base_url = getattr(settings, 'FRONTEND_BASE_URL', 'https://www.optitab.net')
     base_url = base_url.rstrip('/')
     preserved_path = ("/" + path.lstrip('/')) if path else "/"

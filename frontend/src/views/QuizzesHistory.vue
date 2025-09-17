@@ -8,8 +8,10 @@
         list-title="📝 Tous mes quiz"
         loading-text="Chargement de l'historique..."
         api-endpoint="/api/suivis/quiz/stats/"
-        :items-per-page="12"
+        :items-per-page="20"
         :navigation-handler="navigateToQuiz"
+        :custom-filters="masteryFilters"
+        :filtered-items="filteredQuizList"
         @data-loaded="onDataLoaded"
       >
         <!-- Tableau résumé matière/notion -->
@@ -91,7 +93,67 @@
           </div>
         </template>
 
-        <!-- Liste des items → gérée par BaseHistory avec pagination -->
+        <!-- Filtres personnalisés (même UI que dashboard) -->
+        <template #custom-filters="{ filters, selected }">
+          <button 
+            v-for="filter in filters" 
+            :key="filter.value"
+            @click="updateSelectedMastery(filter.value)"
+            :class="['inline-mastery-btn', { active: selectedMastery === filter.value }, filter.class]"
+          >
+            <span v-if="filter.icon" class="inline-mastery-icon">{{ filter.icon }}</span>
+            <span class="inline-mastery-label">{{ filter.label }}</span>
+          </button>
+        </template>
+
+        <!-- Liste des items (même rendu que sur le dashboard) -->
+        <template #items-list="{ items, toggleDetails, isExpanded, navigateToItem }">
+          <div v-for="quiz in items" :key="quiz.id" class="quiz-card" :class="{ 'multiple-attempts': quiz.total_attempts > 1, locked: isQuizLocked(quiz) }">
+            <div class="quiz-card-header" @click="toggleDetails(quiz.id)">
+              <div class="quiz-card-title-section">
+                <h5 class="quiz-card-title clickable-title" :class="{ locked: isQuizLocked(quiz) }" @click.stop="onNavigate(quiz)" :title="isQuizLocked(quiz) ? 'Verrouillé' : ('Accéder au quiz: ' + quiz.quiz_titre)">
+                  {{ quiz.quiz_titre }}
+                  <svg class="navigation-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17l9.2-9.2M17 17V7H7"></path>
+                  </svg>
+                </h5>
+                <div class="quiz-breadcrumb-compact">
+                  {{ quiz.matiere.titre }} → {{ quiz.notion.titre }}
+                </div>
+              </div>
+              <div class="quiz-card-actions">
+                <div v-if="isQuizLocked(quiz)" class="lock-badge" :title="getCooldownLabel(quiz)">🔒 {{ getCooldownLabel(quiz) }}</div>
+                <div v-else class="quiz-score" :class="getScoreClass(quiz.score_on_10)">
+                  {{ quiz.score_on_10 }}/10
+                  <span v-if="quiz.total_attempts > 1" class="retry-indicator">↻</span>
+                </div>
+                <button class="expand-toggle" :class="{ expanded: isExpanded(quiz.id) }">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6,9 12,15 18,9"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div v-if="isExpanded(quiz.id)" class="quiz-card-details">
+              <div class="quiz-breadcrumb">
+                <span class="breadcrumb-item">{{ quiz.matiere.titre }}</span>
+                <span class="breadcrumb-separator">→</span>
+                <span class="breadcrumb-item">{{ quiz.notion.titre }}</span>
+                <span class="breadcrumb-separator">→</span>
+                <span class="breadcrumb-item">{{ quiz.chapitre.titre }}</span>
+              </div>
+              <div class="quiz-meta">
+                <span class="quiz-attempt">
+                  Tentative #{{ quiz.tentative_numero }}
+                  <span v-if="quiz.total_attempts > 1" class="total-attempts">({{ quiz.total_attempts }} au total)</span>
+                </span>
+                <span class="quiz-date">{{ formatDate(quiz.date_creation) }}</span>
+                <span class="quiz-time" v-if="quiz.temps_total_seconde">{{ formatTime(quiz.temps_total_seconde) }}</span>
+              </div>
+            </div>
+          </div>
+        </template>
       </BaseHistory>
     </div>
   </DashboardLayout>
@@ -103,8 +165,18 @@ import { useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BaseHistory from '@/components/dashboard/BaseHistory.vue'
 import apiClient from '@/api/client'
+import { checkQuizCooldown } from '@/api/quiz'
 
 const router = useRouter()
+
+// Filtres de maîtrise comme sur le dashboard
+const selectedMastery = ref('all')
+const masteryFilters = [
+  { value: 'all', label: 'Tous', icon: '', class: 'all' },
+  { value: 'mastered', label: 'Maîtrisés', icon: '✅', class: 'mastered' },
+  { value: 'average', label: 'Moyens', icon: '⚠️', class: 'average' },
+  { value: 'poor', label: 'Non maîtrisés', icon: '❌', class: 'poor' }
+]
 
 const navigateToQuiz = (quiz) => {
   const chapitreId = quiz?.chapitre?.id
@@ -120,12 +192,35 @@ const sortField = ref('count')
 const sortDirection = ref('desc')
 const expandedNotions = ref(new Set())
 const notionDetails = ref({})
+const cooldownByQuizId = ref(new Map())
 
 const onDataLoaded = (data) => {
   const list = Array.isArray(data.quiz_list) ? data.quiz_list : []
   currentQuizList.value = list
   matiereNotionStats.value = computeMatiereNotionFromQuizList(list)
+  loadCooldowns(list)
 }
+
+// Liste filtrée selon la maîtrise (pour 20/page)
+const filteredQuizList = computed(() => {
+  let filtered = currentQuizList.value
+  if (selectedMastery.value !== 'all') {
+    filtered = filtered.filter(quiz => {
+      const score = Number(quiz.score_on_10 || 0)
+      switch (selectedMastery.value) {
+        case 'mastered':
+          return score >= 7
+        case 'average':
+          return score >= 5 && score < 7
+        case 'poor':
+          return score < 5
+        default:
+          return true
+      }
+    })
+  }
+  return filtered
+})
 
 const sortedStats = computed(() => {
   const rows = matiereNotionStats.value || []
@@ -155,6 +250,47 @@ const getAverageClass = (average) => {
   if (average >= 75) return 'good'
   if (average >= 50) return 'average'
   return 'poor'
+}
+
+const loadCooldowns = async (list) => {
+  const map = new Map(cooldownByQuizId.value)
+  await Promise.all((list || []).map(async (q) => {
+    try {
+      const info = await checkQuizCooldown(q.quiz_id)
+      map.set(q.quiz_id, info)
+    } catch (_) {}
+  }))
+  cooldownByQuizId.value = map
+}
+
+const isQuizLocked = (quiz) => {
+  const info = cooldownByQuizId.value.get(quiz.quiz_id)
+  return info && info.can_attempt === false
+}
+
+const getCooldownLabel = (quiz) => {
+  const info = cooldownByQuizId.value.get(quiz.quiz_id)
+  if (!info || info.can_attempt !== false) return ''
+  return info.time_remaining_formatted || info.message || 'Verrouillé'
+}
+
+const onNavigate = (quiz) => {
+  if (isQuizLocked(quiz)) {
+    alert(getCooldownLabel(quiz) || 'Quiz verrouillé')
+    return
+  }
+  navigateToQuiz(quiz)
+}
+
+const updateSelectedMastery = (value) => {
+  selectedMastery.value = value
+}
+
+// Score badge style on list items
+const getScoreClass = (score) => {
+  if (score >= 7) return 'score-good'
+  if (score >= 5) return 'score-average'
+  return 'score-poor'
 }
 
 // Expansion notion → chapitres
@@ -255,6 +391,24 @@ const computeChapterStats = (quizList) => {
   chapters.sort((a, b) => String(a.chapitre.titre).localeCompare(String(b.chapitre.titre), 'fr', { sensitivity: 'base' }))
   return chapters
 }
+
+// Formatting helpers for list metadata
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+const formatTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = seconds % 60
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
+}
 </script>
 
 <style scoped>
@@ -323,6 +477,61 @@ const computeChapterStats = (quizList) => {
 @media (max-width: 768px) {
   .chapter-header, .chapter-row { grid-template-columns: 1.4fr 0.7fr 0.7fr 0.7fr 0.7fr 0.7fr; padding: 0.45rem 0.5rem; }
 }
+
+/* Filtres personnalisés */
+.inline-mastery-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: white;
+  color: #6b7280;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 28px;
+}
+.inline-mastery-btn:hover { border-color: #d1d5db; background: #f9fafb; }
+.inline-mastery-btn.active { background: #3b82f6; border-color: #3b82f6; color: white; font-weight: 600; }
+.inline-mastery-icon { font-size: 0.75rem; }
+.inline-mastery-label { font-size: 0.75rem; }
+
+/* Cartes de quiz (identique au dashboard) */
+.quiz-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; transition: all 0.2s; }
+.quiz-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.quiz-card.multiple-attempts { border-left: 3px solid #f59e0b; }
+.quiz-card.locked { opacity: .75; cursor: not-allowed; border-left: 3px solid #f59e0b; }
+.clickable-title.locked { cursor: not-allowed; }
+.lock-badge { font-size: .8rem; font-weight: 700; color: #92400e; background: #fef3c7; padding: .25rem .4rem; border-radius: 4px; }
+.quiz-card-header { display: flex; justify-content: space-between; align-items: flex-start; cursor: pointer; padding: 0.5rem; margin: -0.5rem -0.5rem 0.75rem -0.5rem; border-radius: 6px; transition: background-color 0.2s; }
+.quiz-card-header:hover { background-color: #f8fafc; }
+.quiz-card-title-section { flex: 1; }
+.quiz-card-actions { display: flex; align-items: center; gap: 0.5rem; }
+.quiz-card-title { font-size: 0.9rem; font-weight: 600; color: #1f2937; margin: 0 0 0.25rem 0; }
+.clickable-title { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.25rem; margin: -0.25rem; border-radius: 4px; transition: all 0.2s; }
+.clickable-title:hover { color: #3b82f6; background: #f0f9ff; }
+.navigation-icon { opacity: 0; transition: opacity 0.2s; flex-shrink: 0; }
+.clickable-title:hover .navigation-icon { opacity: 1; }
+.quiz-breadcrumb-compact { font-size: 0.7rem; color: #6b7280; font-weight: 500; }
+.quiz-score { font-size: 0.9rem; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 4px; }
+.expand-toggle { background: none; border: none; cursor: pointer; padding: 0.25rem; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.2s; }
+.expand-toggle:hover { background-color: #e5e7eb; color: #374151; }
+.expand-toggle svg { transition: transform 0.2s; }
+.expand-toggle.expanded svg { transform: rotate(180deg); }
+.quiz-score.score-good { background: #dcfce7; color: #166534; }
+.quiz-score.score-average { background: #fef3c7; color: #92400e; }
+.quiz-score.score-poor { background: #fecaca; color: #991b1b; }
+.retry-indicator { margin-left: 0.25rem; font-size: 0.8rem; opacity: 0.7; }
+.quiz-card-details { border-top: 1px solid #f3f4f6; padding-top: 0.75rem; margin-top: 0.5rem; animation: slideDown 0.2s ease-out; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.quiz-breadcrumb { font-size: 0.75rem; color: #6b7280; margin-bottom: 0.5rem; }
+.breadcrumb-item { font-weight: 500; }
+.breadcrumb-separator { margin: 0 0.25rem; }
+.quiz-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: #9ca3af; }
+
 </style>
 
 

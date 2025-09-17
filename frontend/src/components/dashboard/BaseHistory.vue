@@ -8,8 +8,15 @@
       </div>
       
       <!-- Filtres -->
-      <div class="history-filters">
-        <select v-model="selectedMatiere" @change="onMatiereChange" class="filter-select" :key="'matieres-' + matieresComputed.length">
+    <div class="history-filters">
+      <select 
+        v-model="selectedMatiere" 
+        @change="onMatiereChange" 
+        @focus="ensureReferenceData"
+        @click="ensureReferenceData"
+        class="filter-select" 
+        :key="'matieres-' + matieresComputed.length"
+      >
           <option value="">Toutes les matières</option>
           <option v-for="matiere in matieresComputed" :key="`matiere-${matiere.id}`" :value="matiere.id">
             {{ matiere.titre || matiere.nom }}
@@ -125,7 +132,7 @@
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMatieres, getNotions, getChapitres, getChapitresByNotion } from '@/api'
-import apiClient from '@/api/client'
+import apiClient, { apiUtils } from '@/api/client'
 import { useUserStore } from '@/stores/user'
 
 // Props
@@ -188,6 +195,7 @@ const matieres = ref([])
 const notions = ref([])
 const chapitres = ref([])
 const themesById = ref({})
+const isReferenceLoaded = ref(false)
 
 // Filtres
 const selectedMatiere = ref('')
@@ -334,16 +342,10 @@ const matieresComputed = computed(() => {
 // Méthodes
 const loadReferenceData = async () => {
   try {
-    // Utiliser les endpoints spécialisés qui filtrent automatiquement selon l'utilisateur
-    const [mResponse, tnResponse, nResponse, cResponse] = await Promise.all([
-      // Matières pour l'utilisateur (endpoint spécialisé)
-      apiClient.get('/api/matieres/user_matieres/'),
-      // Thèmes + Notions pour utilisateur (donne le lien thème -> matière)
-      apiClient.get('/api/themes/notions-pour-utilisateur/', { timeout: 20000 }).catch(() => apiClient.get('/api/themes/notions-pour-utilisateur/')),
-      // Notions - essayer d'abord l'endpoint spécialisé, puis l'endpoint général
-      getNotions({}).catch(() => apiClient.get('/api/notions/pour-utilisateur/', { timeout: 20000 })),
-      // Chapitres via l'endpoint général mais on filtrera côté client
-      getChapitres({})
+    // Endpoints spécialisés uniquement, avec cache long
+    const [mResponse, tnResponse] = await Promise.all([
+      apiUtils.cachedGet('/api/matieres/user_matieres/', { ttl: 24 * 60 * 60 * 1000 }),
+      apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { ttl: 24 * 60 * 60 * 1000 }).catch(() => apiClient.get('/api/themes/notions-pour-utilisateur/'))
     ])
     
     // Extraire les données des réponses - gestion spécifique pour user_matieres
@@ -357,17 +359,8 @@ const loadReferenceData = async () => {
       matieresData = mResponse.data
     }
     
-    // Gestion spécifique pour les notions
+    // Notions depuis l'endpoint combiné
     let notionsData = []
-    if (nResponse?.data?.notions_disponibles) {
-      notionsData = nResponse.data.notions_disponibles
-    } else if (nResponse?.data?.data) {
-      notionsData = nResponse.data.data
-    } else if (Array.isArray(nResponse?.data)) {
-      notionsData = nResponse.data
-    } else if (nResponse?.data?.results) {
-      notionsData = nResponse.data.results
-    }
 
     // Récupérer thèmes + notions depuis l'endpoint combiné si disponible
     const themesData = tnResponse?.data?.themes || []
@@ -386,7 +379,8 @@ const loadReferenceData = async () => {
       notionsData = notionsFromThemesEndpoint
     }
     
-    const chapitresData = Array.isArray(cResponse?.data) ? cResponse.data : (cResponse?.results || [])
+    // Ne pas charger tous les chapitres au montage. Ils seront chargés paresseusement par notion.
+    const chapitresData = []
     
     matieres.value = Array.isArray(matieresData) ? matieresData : []
     notions.value = Array.isArray(notionsData) ? notionsData : []
@@ -394,37 +388,39 @@ const loadReferenceData = async () => {
     
     // Forcer la réactivité Vue
     await nextTick()
+    isReferenceLoaded.value = true
   } catch (error) {
     console.error('Erreur lors du chargement des données de référence:', error)
     // Fallback vers les données générales si les endpoints spécialisés échouent
     try {
-      const [mResponse, nResponse, cResponse] = await Promise.all([
+      const [mResponse, nResponse] = await Promise.all([
         getMatieres({}),
-        getNotions({}),
-        getChapitres({})
+        getNotions({})
       ])
       
       matieres.value = Array.isArray(mResponse?.data) ? mResponse.data : (mResponse?.results || [])
       notions.value = Array.isArray(nResponse?.data) ? nResponse.data : (nResponse?.results || [])
-      chapitres.value = Array.isArray(cResponse?.data) ? cResponse.data : (cResponse?.results || [])
+      chapitres.value = []
       
       // Forcer la réactivité Vue
       await nextTick()
+      isReferenceLoaded.value = true
     } catch (fallbackError) {
       console.error('Erreur fallback:', fallbackError)
     }
   }
 }
 
-const loadData = async () => {
-  loading.value = true
+const loadData = async (showLoading = true) => {
+  if (showLoading) loading.value = true
   try {
     const params = { ...(props.extraParams || {}) }
     if (selectedMatiere.value) params.matiere = selectedMatiere.value
     if (selectedNotion.value) params.notion = selectedNotion.value
     if (selectedChapitre.value) params.chapitre = selectedChapitre.value
     
-    const response = await apiClient.get(props.apiEndpoint, { params })
+    // Utiliser un cache mémoire pour éviter les doublons dans un court laps de temps
+    const response = await apiUtils.cachedGet(props.apiEndpoint, { params, ttl: 30000 })
     const data = response.data
     
     globalStats.value = data.global_stats || {}
@@ -432,12 +428,54 @@ const loadData = async () => {
     matiereStats.value = data.matiere_stats || []
     matiereNotionStats.value = data.matiere_notion_stats || []
     
+    // Sauvegarde localStorage pour affichage instantané au prochain rendu
+    try {
+      const cacheKey = buildLocalCacheKey(params)
+      localStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), data }))
+    } catch (_) {}
+
     emit('data-loaded', data)
     
   } catch (error) {
     console.error('Erreur lors du chargement des données:', error)
   } finally {
+    if (showLoading) loading.value = false
+  }
+}
+
+// Chargement différé des données de référence (au focus des filtres)
+const ensureReferenceData = async () => {
+  if (isReferenceLoaded.value) return
+  await loadReferenceData()
+}
+
+// Lecture du cache local pour affichage instantané
+const buildLocalCacheKey = (paramsObj) => {
+  let userId = 'anon'
+  try { userId = userStore?.id || 'anon' } catch (_) {}
+  const stableParams = Object.keys(paramsObj || {}).sort().map(k => `${k}:${paramsObj[k]}`).join('|')
+  return `BH_CACHE:${props.apiEndpoint}|${userId}|${stableParams}`
+}
+
+const tryHydrateFromLocalCache = async () => {
+  try {
+    const params = { ...(props.extraParams || {}) }
+    const key = buildLocalCacheKey(params)
+    const raw = localStorage.getItem(key)
+    if (!raw) return false
+    const { t, data } = JSON.parse(raw)
+    if (!data) return false
+    // Afficher immédiatement les données du cache
+    globalStats.value = data.global_stats || {}
+    itemsList.value = data.quiz_list || data.exercice_list || []
+    matiereStats.value = data.matiere_stats || []
+    matiereNotionStats.value = data.matiere_notion_stats || []
     loading.value = false
+    // Rafraîchir en arrière-plan
+    loadData(false)
+    return true
+  } catch (_) {
+    return false
   }
 }
 
@@ -610,8 +648,10 @@ onMounted(async () => {
     }
   }
   
-  await loadReferenceData()
-  await loadData()
+  // Affichage instantané si cache local
+  const hydrated = await tryHydrateFromLocalCache()
+  // Charger immédiatement les données (sans bloquer l'UI si déjà hydraté)
+  await loadData(!hydrated)
 })
 
 // Expose des méthodes utilitaires pour les slots

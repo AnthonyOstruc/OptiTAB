@@ -42,14 +42,29 @@
       <div class="cgv-content">
         <div class="container">
           <div class="content-wrapper">
-            <!-- Section 1: Responsable du traitement -->
+            <!-- Section 1: Responsable éditorial et du traitement -->
             <section id="responsable" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">1</span>
-                Responsable du traitement
+                Responsable éditorial et du traitement
               </h2>
               <div class="section-content">
-                <p>Le responsable du traitement des données est :</p>
+                <h3 class="subsection-title">Responsable éditorial :</h3>
+                <div class="contact-info">
+                  <div class="contact-item">
+                    <strong>TABET Anthony</strong>
+                    <a href="https://www.linkedin.com/in/anthony-tabet-a34aa6192/" target="_blank" class="linkedin-link" title="Profil LinkedIn">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="contact-item">
+                    <strong>Email :</strong> <a href="mailto:anthony@optitab.net" class="link">anthony@optitab.net</a>
+                  </div>
+                </div>
+                
+                <h3 class="subsection-title">Responsable du traitement des données :</h3>
                 <div class="contact-info">
                   <div class="contact-item">
                     <strong>OptiTAB</strong>
@@ -71,9 +86,9 @@
                 <p>Lors de l'utilisation de la plateforme, nous pouvons collecter :</p>
                 <ul class="content-list">
                   <li><strong>Informations d'inscription :</strong> nom, prénom, email, mot de passe.</li>
-                  <li><strong>Informations de paiement :</strong> carte bancaire ou autre méthode utilisée pour les abonnements.</li>
+                  <li><strong>Informations de paiement :</strong> carte bancaire ou autre moyen utilisé pour les abonnements.</li>
                   <li><strong>Données d'utilisation :</strong> historique de connexion, pages visitées, activités sur la plateforme.</li>
-                  <li><strong>Contenu généré par l'utilisateur :</strong> exercices envoyés pour correction, commentaires.</li>
+                  <li><strong>Contenu généré par l'utilisateur :</strong> données créées ou enregistrées par l'utilisateur sur son tableau de bord, telles que réponses aux exercices, notes, ou autres informations personnelles qu'il choisit de saisir.</li>
                 </ul>
                 <p>Toutes les données collectées sont utilisées exclusivement pour le fonctionnement et l'amélioration de nos services.</p>
               </div>
@@ -97,18 +112,18 @@
               </div>
             </section>
 
-            <!-- Section 4: Base légale -->
+            <!-- Section 4: Base légale du traitement -->
             <section id="base" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">4</span>
-                Base légale
+                Base légale du traitement
               </h2>
               <div class="section-content">
                 <p>Le traitement des données repose sur :</p>
                 <ul class="content-list">
-                  <li>L'exécution du contrat (gestion de votre compte et abonnements).</li>
-                  <li>Votre consentement pour certaines communications ou services.</li>
-                  <li>L'intérêt légitime de la plateforme pour sécuriser et améliorer le service.</li>
+                  <li><strong>Exécution du contrat :</strong> gestion du compte et des abonnements.</li>
+                  <li><strong>Consentement :</strong> pour certaines communications marketing ou services optionnels.</li>
+                  <li><strong>Intérêt légitime :</strong> sécurité du site et amélioration du service.</li>
                 </ul>
               </div>
             </section>
@@ -125,6 +140,7 @@
                   <li>Prestataires techniques nécessaires au fonctionnement de la plateforme (hébergement, paiement sécurisé).</li>
                   <li>Autorités légales si la loi l'exige.</li>
                 </ul>
+                <p>Les transferts hors Union Européenne (ex. Google Analytics, prestataires cloud) respectent les garanties légales (Clauses Contractuelles Types ou équivalent).</p>
               </div>
             </section>
 
@@ -139,7 +155,8 @@
                 <ul class="content-list">
                   <li>Chiffrement des informations sensibles (mot de passe, données financières).</li>
                   <li>Sauvegardes régulières.</li>
-                  <li>Limitation d'accès aux données aux seules personnes autorisées.</li>
+                  <li>Accès limité aux seules personnes autorisées.</li>
+                  <li>Tests et mises à jour réguliers pour prévenir toute faille de sécurité.</li>
                 </ul>
               </div>
             </section>
@@ -152,9 +169,9 @@
               </h2>
               <div class="section-content">
                 <ul class="content-list">
-                  <li>Les données liées au compte sont conservées tant que le compte existe.</li>
-                  <li>Les données financières sont conservées conformément aux obligations légales et fiscales.</li>
-                  <li>Les données anonymisées peuvent être utilisées à des fins statistiques.</li>
+                  <li><strong>Données liées au compte :</strong> conservées tant que le compte existe, puis archivées pour 1 an maximum.</li>
+                  <li><strong>Données financières :</strong> conservées selon les obligations légales et fiscales.</li>
+                  <li><strong>Données anonymisées :</strong> utilisées à des fins statistiques.</li>
                 </ul>
               </div>
             </section>
@@ -175,6 +192,7 @@
                   <li>Retirer votre consentement pour certaines communications.</li>
                 </ul>
                 <p>Pour exercer vos droits : <a href="mailto:support@optitab.net" class="link">support@optitab.net</a></p>
+                <p>Conformément au RGPD, une réponse sera fournie dans un délai d'un mois. Vous pouvez également saisir la CNIL en cas de problème.</p>
               </div>
             </section>
 
@@ -192,6 +210,7 @@
                   <li>Garder votre session active et personnaliser l'expérience utilisateur.</li>
                 </ul>
                 <p>Vous pouvez configurer votre navigateur pour refuser les cookies, mais certaines fonctionnalités pourraient être limitées.</p>
+                <p>Actuellement, seuls les cookies strictement nécessaires au fonctionnement de la plateforme sont utilisés. Aucun cookie de suivi ou publicitaire n'est présent. Cette liste sera mise à jour dès l'ajout de services d'analytics, de publicités ou d'autres cookies tiers.</p>
               </div>
             </section>
 
@@ -203,8 +222,8 @@
               </h2>
               <div class="section-content">
                 <ul class="content-list">
-                  <li>L'accès à OptiTAB est interdit aux enfants de moins de 13 ans sans consentement parental.</li>
-                  <li>Les parents ou tuteurs peuvent demander la suppression des données de leurs enfants.</li>
+                  <li>Pour les utilisateurs de moins de 15 ans, l'inscription nécessite un consentement parental vérifié.</li>
+                  <li>Les parents ou tuteurs peuvent demander la suppression des données de leurs enfants à tout moment.</li>
                 </ul>
               </div>
             </section>
@@ -289,10 +308,10 @@ const activeSection = ref('')
 
 // Sections pour le sommaire
 const sections = ref([
-  { id: 'responsable', title: 'Responsable du traitement' },
+  { id: 'responsable', title: 'Responsable éditorial et du traitement' },
   { id: 'donnees', title: 'Données collectées' },
   { id: 'finalite', title: 'Finalité du traitement' },
-  { id: 'base', title: 'Base légale' },
+  { id: 'base', title: 'Base légale du traitement' },
   { id: 'partage', title: 'Partage des données' },
   { id: 'securite', title: 'Sécurité des données' },
   { id: 'conservation', title: 'Conservation des données' },
@@ -621,6 +640,22 @@ onUnmounted(() => {
   margin-bottom: 0.5rem;
   color: #4b5563;
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.linkedin-link {
+  color: #0077b5;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.linkedin-link:hover {
+  color: #005885;
+  transform: scale(1.1);
 }
 
 .contact-item:last-child {

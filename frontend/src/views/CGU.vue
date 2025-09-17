@@ -50,10 +50,12 @@
               </h2>
               <div class="section-content">
                 <ul class="content-list">
-                  <li><strong>OptiTAB / la plateforme / le service :</strong> site et applications associées fournissant des cours particuliers, exercices guidés, fiches pédagogiques et outils éducatifs.</li>
+                  <li><strong>OptiTAB / la plateforme / le service :</strong> site Internet et applications associées fournissant des cours particuliers, exercices guidés, fiches pédagogiques et outils éducatifs.</li>
                   <li><strong>Utilisateur :</strong> toute personne s'inscrivant ou utilisant OptiTAB.</li>
                   <li><strong>Compte utilisateur :</strong> espace personnel créé lors de l'inscription permettant l'accès aux services.</li>
                   <li><strong>Abonnement :</strong> contrat d'accès payant aux services proposés par OptiTAB.</li>
+                  <li><strong>Contenu :</strong> textes, images, vidéos, logiciels, exercices, fiches pédagogiques, outils et tout matériel mis à disposition sur la plateforme.</li>
+                  <li><strong>Prestataire :</strong> tiers participant à l'hébergement, paiement ou services techniques.</li>
                 </ul>
               </div>
             </section>
@@ -69,7 +71,7 @@
                   <li>L'accès à OptiTAB nécessite la création d'un compte valide.</li>
                   <li>L'utilisateur doit fournir des informations exactes et à jour.</li>
                   <li>La confidentialité des identifiants est de la responsabilité de l'utilisateur. Toute activité sur le compte est imputable à l'utilisateur.</li>
-                  <li>OptiTAB peut suspendre ou supprimer un compte en cas de non-respect des CGU.</li>
+                  <li>OptiTAB peut suspendre ou supprimer un compte en cas de non-respect des CGU, pour maintenance, problème technique ou force majeure, sans responsabilité.</li>
                 </ul>
               </div>
             </section>
@@ -86,9 +88,8 @@
                   <li>Des cours particuliers en ligne avec réservation.</li>
                   <li>Des exercices guidés et fiches pédagogiques.</li>
                   <li>Des outils de calcul et d'aide aux devoirs.</li>
-                  <li>La possibilité d'envoyer des exercices pour correction.</li>
                 </ul>
-                <p>La plateforme peut modifier, suspendre ou interrompre tout service à tout moment, avec ou sans préavis.</p>
+                <p>La plateforme peut modifier, suspendre ou interrompre tout service à tout moment, temporairement ou définitivement, avec ou sans préavis.</p>
               </div>
             </section>
 
@@ -101,11 +102,13 @@
               <div class="section-content">
                 <ul class="content-list">
                   <li>Les services peuvent être proposés via des abonnements payants.</li>
-                  <li>Les paiements se font en ligne via les moyens proposés (carte bancaire, paiement sécurisé).</li>
+                  <li>Paiement en ligne par carte bancaire, PayPal ou virement sécurisé.</li>
                   <li>Les abonnements se renouvellent automatiquement sauf résiliation par l'utilisateur.</li>
                   <li>Aucun remboursement n'est possible pour les périodes déjà entamées, sauf dispositions légales.</li>
-                  <li>En cas de défaut de paiement, OptiTAB se réserve le droit de suspendre l'accès au compte.</li>
+                  <li>En cas de défaut de paiement, OptiTAB peut suspendre l'accès au compte.</li>
                 </ul>
+                <p>Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux services numériques fournis immédiatement après la commande.</p>
+                <p>En cas de problème technique majeur non résolu sous 48h, un remboursement au prorata peut être accordé.</p>
               </div>
             </section>
 
@@ -118,8 +121,9 @@
               <div class="section-content">
                 <ul class="content-list">
                   <li>Tous les contenus (textes, images, vidéos, logiciels, exercices, fiches) sont protégés par le droit d'auteur.</li>
+                  <li>Toute reproduction, diffusion, extraction ou exploitation commerciale sans autorisation écrite est interdite et passible de sanctions civiles et pénales.</li>
+                  <li>L'arborescence et la structure du site sont protégées.</li>
                   <li>L'utilisateur peut utiliser le contenu uniquement pour un usage personnel et non commercial.</li>
-                  <li>Toute reproduction, diffusion ou exploitation commerciale sans autorisation écrite est interdite.</li>
                 </ul>
               </div>
             </section>
@@ -133,8 +137,9 @@
               <div class="section-content">
                 <ul class="content-list">
                   <li>Les utilisateurs conservent la propriété des contenus qu'ils postent (exercices, commentaires).</li>
-                  <li>En publiant sur OptiTAB, l'utilisateur accorde à OptiTAB une licence non exclusive, gratuite et mondiale pour utiliser ce contenu afin d'améliorer les services.</li>
+                  <li>En publiant sur OptiTAB, l'utilisateur accorde une licence non exclusive, gratuite et mondiale à OptiTAB pour utiliser ce contenu afin d'améliorer les services.</li>
                   <li>Tout contenu illégal, injurieux ou portant atteinte aux droits d'autrui est interdit.</li>
+                  <li>L'utilisateur garantit être titulaire des droits sur le contenu publié. OptiTAB peut supprimer tout contenu non conforme.</li>
                 </ul>
               </div>
             </section>
@@ -146,12 +151,11 @@
                 Obligations de l'utilisateur
               </h2>
               <div class="section-content">
-                <p>L'utilisateur s'engage à :</p>
                 <ul class="content-list">
                   <li>Ne pas utiliser la plateforme à des fins illégales ou frauduleuses.</li>
                   <li>Ne pas perturber le fonctionnement du site ou tenter d'accéder à des données non autorisées.</li>
                   <li>Respecter les autres utilisateurs et le personnel d'OptiTAB.</li>
-                  <li>Respecter les règles relatives aux mineurs (âge minimum requis : 13 ans, consentement parental si nécessaire).</li>
+                  <li>Respecter les règles relatives aux mineurs : tout utilisateur de moins de 15 ans doit fournir un consentement parental explicite pour créer un compte et utiliser la plateforme. Les utilisateurs de 15 ans et plus peuvent consentir eux-mêmes au traitement de leurs données personnelles.</li>
                 </ul>
               </div>
             </section>
@@ -164,98 +168,120 @@
               </h2>
               <div class="section-content">
                 <ul class="content-list">
-                  <li>Les données collectées sont traitées conformément à la Politique de confidentialité de la plateforme.</li>
-                  <li>L'utilisateur peut accéder, rectifier ou supprimer ses données personnelles.</li>
+                  <li>Les données collectées sont traitées conformément à la Politique de confidentialité complète.</li>
+                  <li>L'utilisateur peut accéder, rectifier, supprimer ou demander la portabilité de ses données personnelles.</li>
                   <li>OptiTAB met en place des mesures de sécurité pour protéger les comptes et données, mais l'utilisateur reste responsable de la confidentialité de son mot de passe.</li>
+                  <li>Les données peuvent être partagées avec des prestataires (hébergement, paiement, emailing) sous garanties RGPD.</li>
                 </ul>
               </div>
             </section>
 
-            <!-- Section 9: Responsabilité -->
-            <section id="responsabilite" class="cgv-section">
+            <!-- Section 9: Cookies et tracking -->
+            <section id="cookies" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">9</span>
+                Cookies et tracking
+              </h2>
+              <div class="section-content">
+                <ul class="content-list">
+                  <li>OptiTAB utilise des cookies pour le fonctionnement du site, l'authentification et les statistiques (ex. Google Analytics, pixel Facebook).</li>
+                  <li>L'utilisateur peut refuser les cookies via les paramètres de son navigateur.</li>
+                  <li>Le refus des cookies peut limiter certaines fonctionnalités de la plateforme.</li>
+                </ul>
+              </div>
+            </section>
+
+            <!-- Section 10: Responsabilité -->
+            <section id="responsabilite" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">10</span>
                 Responsabilité
               </h2>
               <div class="section-content">
                 <ul class="content-list">
                   <li>OptiTAB s'efforce de fournir des contenus exacts et des services disponibles.</li>
-                  <li>La plateforme n'est pas responsable des erreurs ou omissions dans les contenus fournis.</li>
-                  <li>L'utilisateur utilise OptiTAB à ses risques et périls.</li>
-                  <li>OptiTAB ne peut être tenu responsable de dommages indirects liés à l'utilisation du service (perte de données, interruption de service, etc.).</li>
+                  <li>La plateforme n'est pas responsable des erreurs, omissions ou résultats scolaires obtenus par l'utilisateur.</li>
+                  <li>OptiTAB ne peut être tenu responsable des dommages indirects liés à l'utilisation du service (perte de données, interruption de service, etc.).</li>
+                  <li>OptiTAB n'est pas responsable des contenus publiés par les utilisateurs.</li>
                 </ul>
               </div>
             </section>
 
-            <!-- Section 10: Suspension et résiliation -->
+            <!-- Section 11: Suspension et résiliation -->
             <section id="suspension" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">10</span>
+                <span class="section-number">11</span>
                 Suspension et résiliation
               </h2>
               <div class="section-content">
                 <ul class="content-list">
                   <li>OptiTAB peut suspendre ou résilier un compte en cas de violation des CGU.</li>
                   <li>L'utilisateur peut supprimer son compte à tout moment depuis son espace personnel.</li>
-                  <li>En cas de résiliation, les contenus et données liés au compte peuvent être supprimés.</li>
+                  <li>La résiliation ou suspension peut entraîner la perte des contenus et données, sauf obligations légales.</li>
                 </ul>
               </div>
             </section>
 
-            <!-- Section 11: Modifications des CGU -->
+            <!-- Section 12: Modifications des CGU -->
             <section id="modifications" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">11</span>
+                <span class="section-number">12</span>
                 Modifications des CGU
               </h2>
               <div class="section-content">
                 <ul class="content-list">
                   <li>OptiTAB se réserve le droit de modifier les CGU à tout moment.</li>
-                  <li>Les utilisateurs seront informés de ces changements. L'usage continu du service vaut acceptation des nouvelles CGU.</li>
+                  <li>Les utilisateurs seront informés par email ou notification.</li>
+                  <li>La continuité d'utilisation vaut acceptation des nouvelles CGU.</li>
                 </ul>
               </div>
             </section>
 
-            <!-- Section 12: Mineurs -->
+            <!-- Section 13: Mineurs -->
             <section id="mineurs" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">12</span>
+                <span class="section-number">13</span>
                 Mineurs
               </h2>
               <div class="section-content">
                 <ul class="content-list">
-                  <li>L'âge minimum pour utiliser OptiTAB est de 13 ans.</li>
-                  <li>Pour les utilisateurs de moins de 18 ans, l'inscription nécessite le consentement parental.</li>
+                  <li>Pour les utilisateurs de moins de 15 ans, l'inscription nécessite un consentement parental explicite.</li>
+                  <li>Les utilisateurs de 15 ans et plus peuvent consentir eux-mêmes au traitement de leurs données personnelles.</li>
+                  <li>OptiTAB peut demander une preuve de consentement parental si nécessaire.</li>
                 </ul>
               </div>
             </section>
 
-            <!-- Section 13: Résolution des litiges -->
+            <!-- Section 14: Résolution des litiges -->
             <section id="litiges" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">13</span>
+                <span class="section-number">14</span>
                 Résolution des litiges
               </h2>
               <div class="section-content">
                 <ul class="content-list">
                   <li>Les présentes CGU sont régies par le droit français.</li>
                   <li>En cas de litige, les parties s'engagent à rechercher une solution amiable avant toute action judiciaire.</li>
-                  <li>À défaut d'accord amiable, le litige sera porté devant les tribunaux compétents en France.</li>
+                  <li>À défaut d'accord, le litige sera porté devant les tribunaux compétents en France.</li>
+                  <li>L'utilisateur peut également saisir un médiateur de la consommation.</li>
                 </ul>
               </div>
             </section>
 
-            <!-- Section 14: Contact -->
+            <!-- Section 15: Contact -->
             <section id="contact" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">14</span>
+                <span class="section-number">15</span>
                 Contact
               </h2>
               <div class="section-content">
                 <p>Pour toute question relative aux CGU ou à la plateforme :</p>
                 <div class="contact-info">
                   <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:support@optitab.net" class="link">support@optitab.net</a>
+                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
+                  </div>
+                  <div class="contact-item">
+                    <strong>WhatsApp :</strong> <a href="https://wa.me/33764040251" class="link">07 64 04 02 51</a>
                   </div>
                 </div>
               </div>
@@ -321,6 +347,7 @@ const sections = ref([
   { id: 'contenu', title: 'Contenu utilisateur' },
   { id: 'obligations', title: 'Obligations de l\'utilisateur' },
   { id: 'donnees', title: 'Données personnelles et sécurité' },
+  { id: 'cookies', title: 'Cookies et tracking' },
   { id: 'responsabilite', title: 'Responsabilité' },
   { id: 'suspension', title: 'Suspension et résiliation' },
   { id: 'modifications', title: 'Modifications des CGU' },

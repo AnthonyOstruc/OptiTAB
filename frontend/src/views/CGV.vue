@@ -51,124 +51,216 @@
               <div class="section-content">
                 <p>Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre OptiTAB et ses utilisateurs concernant :</p>
                 <ul class="content-list">
-                  <li>Les abonnements aux services pédagogiques en ligne</li>
-                  <li>L'accès aux contenus et ressources éducatives</li>
-                  <li>Les services de soutien scolaire personnalisé</li>
-                  <li>Les outils d'apprentissage interactifs</li>
-        </ul>
+                  <li>Les abonnements aux services pédagogiques en ligne,</li>
+                  <li>L'accès aux contenus et ressources éducatives,</li>
+                  <li>Les services de soutien scolaire personnalisé,</li>
+                  <li>Les outils d'apprentissage interactifs.</li>
+                </ul>
+                <p>La validation d'une commande ou d'un abonnement entraîne l'acceptation pleine et entière des présentes CGV.</p>
               </div>
-      </section>
+            </section>
 
-            <!-- Section 2: Services -->
-            <section id="services" class="cgv-section">
+            <!-- Section 2: Définitions -->
+            <section id="definitions" class="cgv-section">
               <h2 class="section-title">
                 <span class="section-number">2</span>
+                Définitions
+              </h2>
+              <div class="section-content">
+                <ul class="content-list">
+                  <li><strong>Service :</strong> ensemble des fonctionnalités proposées par OptiTAB (contenus pédagogiques, exercices, outils interactifs, suivi, support).</li>
+                  <li><strong>Utilisateur :</strong> toute personne naviguant sur le site ou utilisant les services.</li>
+                  <li><strong>Abonné :</strong> tout utilisateur disposant d'un abonnement payant.</li>
+                  <li><strong>Espace client :</strong> espace personnel permettant à l'abonné de gérer son compte et ses abonnements.</li>
+                </ul>
+              </div>
+            </section>
+
+            <!-- Section 3: Services -->
+            <section id="services" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">3</span>
                 Description des services
               </h2>
               <div class="section-content">
-                <h3 class="subsection-title">2.1 Services inclus</h3>
+                <h3 class="subsection-title">3.1 Services inclus</h3>
                 <ul class="content-list">
-                  <li>Accès illimité à la bibliothèque de contenus pédagogiques</li>
-                  <li>Exercices interactifs et corrigés automatiquement</li>
-                  <li>Suivi personnalisé des progrès</li>
-                  <li>Support technique et pédagogique</li>
-                  <li>Accès mobile et hors ligne (selon l'offre)</li>
-        </ul>
+                  <li>Accès illimité à la bibliothèque de contenus pédagogiques,</li>
+                  <li>Exercices interactifs et corrigés automatiquement,</li>
+                  <li>Suivi personnalisé des progrès,</li>
+                  <li>Support technique et pédagogique,</li>
+                  <li>Accès mobile et hors ligne (selon l'offre).</li>
+                </ul>
                 
-                <h3 class="subsection-title">2.2 Disponibilité</h3>
-                <p>Les services sont disponibles 24h/24, 7j/7, sous réserve des opérations de maintenance programmées.</p>
+                <h3 class="subsection-title">3.2 Disponibilité</h3>
+                <p>Les services sont disponibles 24h/24, 7j/7, sous réserve d'interruptions liées à la maintenance, aux mises à jour ou à des cas de force majeure.</p>
+                <p>OptiTAB met tout en œuvre pour assurer une disponibilité optimale mais ne garantit pas une disponibilité continue à 100 %.</p>
               </div>
-      </section>
+            </section>
 
-            <!-- Section 3: Abonnements -->
+            <!-- Section 4: Abonnements -->
             <section id="abonnements" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">3</span>
+                <span class="section-number">4</span>
                 Abonnements et tarifs
               </h2>
               <div class="section-content">
-                <h3 class="subsection-title">3.1 Formules d'abonnement</h3>
+                <h3 class="subsection-title">4.1 Formules d'abonnement</h3>
                 <ul class="content-list">
-                  <li><strong>Mensuel :</strong> 19,90€/mois</li>
-                  <li><strong>Annuel :</strong> 199€/an (soit 16,58€/mois)</li>
-                  <li><strong>Famille :</strong> 29,90€/mois (jusqu'à 3 enfants)</li>
-        </ul>
+                  <li><strong>Mensuel :</strong> 19,90 €/mois</li>
+                  <li><strong>Annuel :</strong> 199 €/an (soit 16,58 €/mois)</li>
+                  <li><strong>Famille :</strong> 29,90 €/mois (jusqu'à 3 enfants)</li>
+                </ul>
                 
-                <h3 class="subsection-title">3.2 Modalités de paiement</h3>
-                <p>Paiement par carte bancaire, PayPal ou virement. Les abonnements sont renouvelés automatiquement.</p>
+                <h3 class="subsection-title">4.2 Modalités de paiement</h3>
+                <p>Paiement par carte bancaire, PayPal ou virement.</p>
+                <p>Les abonnements sont renouvelés automatiquement à chaque échéance, sauf résiliation par l'utilisateur.</p>
               </div>
-      </section>
+            </section>
 
-            <!-- Section 4: Engagement -->
+            <!-- Section 5: Engagement -->
             <section id="engagement" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">4</span>
+                <span class="section-number">5</span>
                 Durée et engagement
               </h2>
               <div class="section-content">
                 <ul class="content-list">
-                  <li>Les abonnements mensuels se renouvellent automatiquement</li>
-                  <li>Les abonnements annuels sont sans engagement</li>
-                  <li>Résiliation possible à tout moment depuis l'espace client</li>
-                  <li>L'accès reste actif jusqu'à la fin de la période payée</li>
-        </ul>
+                  <li>Les abonnements mensuels se renouvellent automatiquement.</li>
+                  <li>Les abonnements annuels sont sans engagement.</li>
+                  <li>La résiliation est possible à tout moment depuis l'espace client.</li>
+                  <li>L'accès reste actif jusqu'à la fin de la période déjà réglée.</li>
+                </ul>
               </div>
-      </section>
+            </section>
 
-            <!-- Section 5: Remboursement -->
+            <!-- Section 6: Remboursement -->
             <section id="remboursement" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">5</span>
+                <span class="section-number">6</span>
                 Politique de remboursement
               </h2>
               <div class="section-content">
-                <h3 class="subsection-title">5.1 Droit de rétractation</h3>
-                <p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux services numériques fournis immédiatement après la commande.</p>
+                <h3 class="subsection-title">6.1 Droit de rétractation</h3>
+                <p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux services numériques fournis immédiatement après la commande et pleinement exécutés avant la fin du délai de rétractation.</p>
                 
-                <h3 class="subsection-title">5.2 Remboursement exceptionnel</h3>
-                <p>En cas de problème technique majeur non résolu sous 48h, un remboursement au prorata peut être accordé.</p>
+                <h3 class="subsection-title">6.2 Remboursement exceptionnel</h3>
+                <p>En cas de problème technique majeur non résolu dans un délai de 48h après signalement, un remboursement au prorata pourra être accordé.</p>
               </div>
-      </section>
+            </section>
 
-            <!-- Section 6: Responsabilités -->
+            <!-- Section 7: Conditions d'accès et sécurité -->
+            <section id="acces" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">7</span>
+                Conditions d'accès et sécurité
+              </h2>
+              <div class="section-content">
+                <ul class="content-list">
+                  <li>L'accès aux services nécessite la création d'un compte utilisateur.</li>
+                  <li>L'utilisateur s'engage à fournir des informations exactes et à jour.</li>
+                  <li>Les identifiants (email et mot de passe) sont strictement personnels et confidentiels.</li>
+                  <li>Le partage ou la revente d'un compte est strictement interdit.</li>
+                  <li>OptiTAB se réserve le droit de suspendre ou de résilier un compte en cas d'utilisation frauduleuse ou de non-respect des présentes CGV.</li>
+                </ul>
+              </div>
+            </section>
+
+            <!-- Section 8: Propriété intellectuelle -->
+            <section id="propriete" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">8</span>
+                Propriété intellectuelle
+              </h2>
+              <div class="section-content">
+                <ul class="content-list">
+                  <li>L'ensemble des contenus pédagogiques, outils, cours, exercices, fiches, textes, graphismes, vidéos, logos et marques restent la propriété exclusive d'OptiTAB.</li>
+                  <li>Toute reproduction, diffusion ou exploitation sans autorisation écrite préalable est interdite et pourra donner lieu à des poursuites.</li>
+                  <li>L'utilisateur dispose d'un droit personnel, non exclusif et non transférable d'utiliser les services à titre strictement personnel et non commercial.</li>
+                </ul>
+              </div>
+            </section>
+
+            <!-- Section 9: Responsabilités -->
             <section id="responsabilites" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">6</span>
+                <span class="section-number">9</span>
                 Responsabilités
               </h2>
               <div class="section-content">
-                <h3 class="subsection-title">6.1 OptiTAB</h3>
+                <h3 class="subsection-title">9.1 Responsabilité d'OptiTAB</h3>
                 <ul class="content-list">
-                  <li>Fournir un service de qualité conforme à la description</li>
-                  <li>Maintenir la disponibilité du service dans la mesure du possible</li>
-                  <li>Protéger les données personnelles des utilisateurs</li>
-        </ul>
+                  <li>Fournir un service conforme à la description,</li>
+                  <li>Maintenir une qualité de service dans la mesure du possible,</li>
+                  <li>Protéger les données personnelles conformément au RGPD.</li>
+                </ul>
+                <p>OptiTAB ne pourra être tenu responsable :</p>
+                <ul class="content-list">
+                  <li>Des interruptions indépendantes de sa volonté (hébergeur, force majeure, panne Internet),</li>
+                  <li>D'une mauvaise utilisation du service par l'utilisateur,</li>
+                  <li>Des résultats scolaires de l'utilisateur : les contenus pédagogiques sont fournis à titre éducatif, sans garantie de réussite à un examen ou concours.</li>
+                </ul>
                 
-                <h3 class="subsection-title">6.2 Utilisateur</h3>
+                <h3 class="subsection-title">9.2 Responsabilité de l'utilisateur</h3>
                 <ul class="content-list">
-                  <li>Utiliser le service conformément aux conditions d'utilisation</li>
-                  <li>Ne pas partager ses identifiants de connexion</li>
-                  <li>Respecter les droits de propriété intellectuelle</li>
-        </ul>
+                  <li>Utiliser le service conformément aux CGV et CGU,</li>
+                  <li>Ne pas nuire au bon fonctionnement du service,</li>
+                  <li>Respecter les droits de propriété intellectuelle.</li>
+                </ul>
               </div>
-      </section>
+            </section>
 
-            <!-- Section 7: Données personnelles -->
+            <!-- Section 10: Données personnelles -->
             <section id="donnees" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">7</span>
-                Protection des données
+                <span class="section-number">10</span>
+                Données personnelles et confidentialité
               </h2>
               <div class="section-content">
-                <p>Le traitement des données personnelles est régi par notre <a href="/politique-confidentialite" class="link">Politique de Confidentialité</a> conforme au RGPD.</p>
-                <p>Vous disposez d'un droit d'accès, de rectification, de suppression et d'opposition à vos données.</p>
+                <p>Le traitement des données personnelles est régi par la Politique de Confidentialité d'OptiTAB, conforme au RGPD.</p>
+                <p>L'utilisateur dispose d'un droit d'accès, de rectification, de suppression et d'opposition à ses données, en contactant : <a href="mailto:contact@optitab.com" class="link">contact@optitab.com</a>.</p>
               </div>
-      </section>
+            </section>
 
-            <!-- Section 8: Contact -->
+            <!-- Section 11: Évolution des services -->
+            <section id="evolution" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">11</span>
+                Évolution des services
+              </h2>
+              <div class="section-content">
+                <p>OptiTAB se réserve le droit de faire évoluer ses services et ses offres. Toute modification substantielle sera communiquée aux abonnés dans un délai raisonnable.</p>
+              </div>
+            </section>
+
+            <!-- Section 12: Archivage et preuve -->
+            <section id="archivage" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">12</span>
+                Archivage et preuve
+              </h2>
+              <div class="section-content">
+                <p>Les registres informatisés conservés par OptiTAB seront considérés comme preuve des communications, abonnements, paiements et transactions intervenus entre OptiTAB et l'utilisateur.</p>
+              </div>
+            </section>
+
+            <!-- Section 13: Droit applicable -->
+            <section id="droit" class="cgv-section">
+              <h2 class="section-title">
+                <span class="section-number">13</span>
+                Droit applicable et juridiction compétente
+              </h2>
+              <div class="section-content">
+                <p>Les présentes CGV sont régies par le droit français.</p>
+                <p>En cas de litige, les tribunaux français seront seuls compétents.</p>
+                <p>OptiTAB privilégiera toujours une résolution amiable avant toute procédure judiciaire.</p>
+              </div>
+            </section>
+
+            <!-- Section 14: Contact -->
             <section id="contact" class="cgv-section">
               <h2 class="section-title">
-                <span class="section-number">8</span>
+                <span class="section-number">14</span>
                 Contact et support
               </h2>
               <div class="section-content">
@@ -184,19 +276,7 @@
                   </div>
                 </div>
               </div>
-      </section>
-
-            <!-- Section 9: Droit applicable -->
-            <section id="droit" class="cgv-section">
-              <h2 class="section-title">
-                <span class="section-number">9</span>
-                Droit applicable et juridiction
-              </h2>
-              <div class="section-content">
-                <p>Les présentes CGV sont soumises au droit français. En cas de litige, les tribunaux français seront seuls compétents.</p>
-                <p>En cas de différend, nous privilégions toujours la résolution amiable.</p>
-              </div>
-      </section>
+            </section>
           </div>
         </div>
       </div>
@@ -251,14 +331,19 @@ const activeSection = ref('')
 // Sections pour le sommaire
 const sections = ref([
   { id: 'objet', title: 'Objet et champ d\'application' },
+  { id: 'definitions', title: 'Définitions' },
   { id: 'services', title: 'Description des services' },
   { id: 'abonnements', title: 'Abonnements et tarifs' },
   { id: 'engagement', title: 'Durée et engagement' },
   { id: 'remboursement', title: 'Politique de remboursement' },
+  { id: 'acces', title: 'Conditions d\'accès et sécurité' },
+  { id: 'propriete', title: 'Propriété intellectuelle' },
   { id: 'responsabilites', title: 'Responsabilités' },
-  { id: 'donnees', title: 'Protection des données' },
-  { id: 'contact', title: 'Contact et support' },
-  { id: 'droit', title: 'Droit applicable et juridiction' }
+  { id: 'donnees', title: 'Données personnelles et confidentialité' },
+  { id: 'evolution', title: 'Évolution des services' },
+  { id: 'archivage', title: 'Archivage et preuve' },
+  { id: 'droit', title: 'Droit applicable et juridiction compétente' },
+  { id: 'contact', title: 'Contact et support' }
 ])
 
 // Fonction pour retourner en haut

@@ -49,22 +49,27 @@
                 Éditeur du site
               </h2>
               <div class="section-content">
-                <p>Le présent site est édité par :</p>
+                <p><strong>Éditeur du site :</strong> OptiTAB</p>
+                
+                <h3 class="subsection-title">Responsable éditorial :</h3>
                 <div class="contact-info">
                   <div class="contact-item">
-                    <strong>Raison sociale :</strong> OptiTAB
+                    <strong>Nom :</strong> Anthony Tabet
+                    <a href="https://www.linkedin.com/in/anthony-tabet-a34aa6192/" target="_blank" class="linkedin-link" title="Profil LinkedIn">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
+                    </a>
                   </div>
                   <div class="contact-item">
-                    <strong>Forme juridique :</strong> [À compléter]
+                    <strong>Email :</strong> <a href="mailto:anthony@optitab.net" class="link">anthony@optitab.net</a>
                   </div>
+                </div>
+                
+                <h3 class="subsection-title">Responsable du traitement des données :</h3>
+                <div class="contact-info">
                   <div class="contact-item">
-                    <strong>Capital social :</strong> [À compléter]
-                  </div>
-                  <div class="contact-item">
-                    <strong>RCS :</strong> [À compléter]
-                  </div>
-                  <div class="contact-item">
-                    <strong>Siège social :</strong> [À compléter]
+                    <strong>Nom :</strong> OptiTAB
                   </div>
                   <div class="contact-item">
                     <strong>Email :</strong> <a href="mailto:support@optitab.net" class="link">support@optitab.net</a>
@@ -83,10 +88,10 @@
                 <p>Le directeur de la publication est :</p>
                 <div class="contact-info">
                   <div class="contact-item">
-                    <strong>Nom :</strong> [À compléter]
+                    <strong>Nom :</strong> TABET Anthony
                   </div>
                   <div class="contact-item">
-                    <strong>Fonction :</strong> [À compléter]
+                    <strong>Fonction :</strong> Fondateur / Responsable éditorial
                   </div>
                 </div>
               </div>
@@ -102,13 +107,13 @@
                 <p>Le site est hébergé par :</p>
                 <div class="contact-info">
                   <div class="contact-item">
-                    <strong>Hébergeur :</strong> [À compléter]
+                    <strong>Nom de l'hébergeur :</strong> Render
                   </div>
                   <div class="contact-item">
-                    <strong>Adresse :</strong> [À compléter]
+                    <strong>Adresse :</strong> 995 Market St, San Francisco, CA 94103, USA
                   </div>
                   <div class="contact-item">
-                    <strong>Téléphone :</strong> [À compléter]
+                    <strong>Site web :</strong> <a href="https://render.com" class="link" target="_blank">https://render.com</a>
                   </div>
                 </div>
               </div>
@@ -123,7 +128,7 @@
               <div class="section-content">
                 <p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.</p>
                 <p>La reproduction de tout ou partie de ce site sur un support électronique quel qu'il soit est formellement interdite sauf autorisation expresse du directeur de la publication.</p>
-                <p>La marque et le logo OptiTAB sont des marques déposées. Toute reproduction non autorisée de ces marques, dessins et modèles constitue une contrefaçon passible de sanctions pénales.</p>
+                <p>Le logo et le nom OptiTAB sont la propriété d'OptiTAB. Toute reproduction ou utilisation non autorisée est interdite.</p>
               </div>
             </section>
 
@@ -135,7 +140,7 @@
               </h2>
               <div class="section-content">
                 <p>Les informations contenues sur ce site sont aussi précises que possible et le site remis à jour à différentes périodes de l'année, mais peut toutefois contenir des inexactitudes ou des omissions.</p>
-                <p>Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, merci de bien vouloir le signaler par email, à l'adresse support@optitab.net, en décrivant le problème de la manière la plus précise possible.</p>
+                <p>Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, merci de bien vouloir le signaler par email, à l'adresse contact@optitab.net, en décrivant le problème de la manière la plus précise possible.</p>
                 <p>Tout contenu téléchargé se fait aux risques et périls de l'utilisateur et sous sa seule responsabilité. En conséquence, ne saurait être tenu responsable d'un quelconque dommage subi par l'ordinateur de l'utilisateur ou d'une quelconque perte de données consécutives au téléchargement.</p>
               </div>
             </section>
@@ -170,7 +175,7 @@
                 Droit applicable et juridiction compétente
               </h2>
               <div class="section-content">
-                <p>Tout litige en relation avec l'utilisation du site optitab.net est soumis au droit français. Il est fait attribution exclusive de juridiction aux tribunaux compétents de [Ville].</p>
+                <p>Tout litige en relation avec l'utilisation du site optitab.net est soumis au droit français. Il est fait attribution exclusive de juridiction aux tribunaux compétents d'Angers, France.</p>
               </div>
             </section>
 
@@ -184,7 +189,7 @@
                 <p>Pour toute question concernant ces mentions légales :</p>
                 <div class="contact-info">
                   <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:support@optitab.net" class="link">support@optitab.net</a>
+                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
                   </div>
                 </div>
               </div>
@@ -571,6 +576,22 @@ onUnmounted(() => {
   margin-bottom: 0.5rem;
   color: #4b5563;
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.linkedin-link {
+  color: #0077b5;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.linkedin-link:hover {
+  color: #005885;
+  transform: scale(1.1);
 }
 
 .contact-item:last-child {

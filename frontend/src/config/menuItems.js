@@ -77,8 +77,8 @@ export const menuItems = [
     key: 'contact',
     text: 'Nous contacter',
     icon: EnvelopeIcon,
-    href: 'mailto:contact@optitab.com',
-    external: true,
+    href: '/contact#informations',
+    external: false,
     description: 'Contactez notre équipe'
   },
   {

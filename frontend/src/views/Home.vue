@@ -14,6 +14,7 @@ import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import { ref, onMounted } from 'vue'
 import { getMatieres } from '@/api'
+import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 
 // Importation du contenu dynamique depuis la configuration centrale
 import {
@@ -31,11 +32,23 @@ import {
 } from '@/config/homeContent.js'
 
 const matieres = ref([])
+const { openModal } = useModalManager()
 
 // Handler pour la sélection d'une matière
 const handleSubjectSelected = (subject) => {
   console.log('Matière sélectionnée:', subject)
   alert(`Matière "${subject.nom}" sélectionnée !`)
+}
+
+// Handler pour le bouton CTA principal (Découvrir OptiTAB)
+const handleCtaMain = () => {
+  // Rediriger vers la page À propos
+  window.location.href = '/about'
+}
+
+// Handler pour le bouton CTA secondaire (supprimé)
+const handleCtaSecondary = () => {
+  // Bouton supprimé
 }
 
 onMounted(async () => {
@@ -61,6 +74,8 @@ onMounted(async () => {
       :message-parents="sectionHero.messageParents"
       :cta-text="sectionHero.ctaText"
       :cta-secondary="sectionHero.ctaSecondary"
+      @cta-main="handleCtaMain"
+      @cta-secondary="handleCtaSecondary"
     />
 
 

@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import CloseIcon from './CloseIcon.vue'
 
 export default {
@@ -106,6 +106,22 @@ export default {
         emit('close')
       }
     }
+
+    // Handle Escape key
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape' && props.isOpen && props.canClose) {
+        handleClose()
+      }
+    }
+
+    // Lifecycle
+    onMounted(() => {
+      document.addEventListener('keydown', handleKeyDown)
+    })
+
+    onUnmounted(() => {
+      document.removeEventListener('keydown', handleKeyDown)
+    })
 
     return {
       titleId,

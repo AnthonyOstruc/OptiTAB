@@ -96,7 +96,7 @@ export const etapesParcours = {
   ctaText: "Commencez Votre Essai Gratuit",
   ctaSecondary: "Découvrir les Fonctionnalités",
   ctaTop: "Prêt à commencer ?",
-  titreBas: "Rejoignez des milliers d'étudiants qui améliorent leurs compétences !"
+  titreBas: "Donnez à votre enfant les clés de la réussite avec un apprentissage adapté à ses besoins !"
 };
 
 export const introPiedDePage = {

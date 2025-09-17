@@ -156,17 +156,15 @@
           <div class="cta-content">
             <h3 class="cta-title">Donnez à votre enfant les clés de la réussite</h3>
             <p class="cta-text">
-              Rejoignez des milliers de familles qui font confiance à OptiTAB 
-              pour l'avenir scolaire de leurs enfants.
+              Des familles nous font déjà confiance pour soutenir l'apprentissage de leurs enfants, rejoignez-les !
             </p>
-            <div class="cta-buttons">
-              <router-link to="/" class="cta-button primary">
-                Commencer l'essai gratuit
-              </router-link>
-              <a href="mailto:contact@optitab.net" class="cta-button secondary">
-                <img src="/icons/mail.svg" alt="Contact" class="button-icon" />
+             <div class="cta-buttons">
+               <button @click="openSignupModal" class="cta-button primary">
+                 Commencer l'essai gratuit
+               </button>
+              <button @click="goToContact" class="cta-button secondary">
                 Parler à un expert
-              </a>
+              </button>
             </div>
             <div class="cta-guarantee">
               <span class="guarantee-text">Essai gratuit de 7 jours • Résultats garantis • Support 24/7</span>
@@ -189,6 +187,19 @@
 import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import about from '@/config/aboutContent.js'
+import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
+
+const { openModal } = useModalManager()
+
+// Fonction pour ouvrir le modal de création de compte
+const openSignupModal = () => {
+  openModal(MODAL_IDS.REGISTER)
+}
+
+// Fonction pour rediriger vers la page de contact
+const goToContact = () => {
+  window.location.href = '/contact'
+}
 
 // Fonction pour mapper les emojis vers les icônes SVG
 const getSectionIcon = (emoji) => {
@@ -661,11 +672,9 @@ const getSectionIcon = (emoji) => {
 
 /* CTA Section */
 .cta-section {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: transparent;
   padding: 4rem 2rem;
   margin-top: 0;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
 }
 
 .cta-card {
@@ -707,6 +716,7 @@ const getSectionIcon = (emoji) => {
   text-decoration: none;
   transition: all 0.3s ease;
   border: 2px solid transparent;
+  cursor: pointer;
 }
 
 .cta-button.primary {
@@ -730,6 +740,7 @@ const getSectionIcon = (emoji) => {
   background: #6366f1;
   color: #fff;
   transform: none;
+  cursor: pointer;
 }
 
 .button-icon {

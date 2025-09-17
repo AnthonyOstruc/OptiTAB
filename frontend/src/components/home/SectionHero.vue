@@ -30,8 +30,8 @@ const props = defineProps({
   image: { type: [String, Object], default: () => heroDefaultImage },
   highlight: { type: String, default: '' },
   messageParents: { type: String, default: "Un accompagnement sur-mesure pour la réussite de votre enfant. Rejoignez la communauté de parents qui font confiance à OptiTAB !" },
-  ctaText: { type: String, default: "Essayer gratuitement" },
-  ctaSecondary: { type: String, default: "Découvrir OptiTAB" },
+  ctaText: { type: String, default: "Découvrir OptiTAB" },
+  ctaSecondary: { type: String, default: "" },
   bg: { type: String, default: 'linear-gradient(90deg, #e0f2fe 60%, #d1fae5 100%)' }
 })
 </script>

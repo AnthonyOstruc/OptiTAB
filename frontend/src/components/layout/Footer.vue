@@ -7,8 +7,8 @@
         Posez vos questions, demandez conseil et trouvez la formule qui vous convient : nous sommes là pour vous accompagner à chaque étape
       </p>
       <div class="footer-contacts">
-        <a href="mailto:support@optitab.com" class="footer-contact">
-          <img src="/icons/envelope.svg" alt="Email" /> support@optitab.com
+        <a href="mailto:contact@optitab.net" class="footer-contact">
+          <img src="/icons/envelope.svg" alt="Email" /> contact@optitab.net
         </a>
         <a href="https://wa.me/33764040251" target="_blank" rel="noopener" class="footer-contact">
           <img src="/icons/whatsapp.svg" alt="WhatsApp" /> 07 64 04 02 51

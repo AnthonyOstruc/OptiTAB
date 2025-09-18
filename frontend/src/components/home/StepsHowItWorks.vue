@@ -71,17 +71,17 @@ function getStepShadow(idx) {
 .steps-how-title {
   font-size: 2.3rem;
   font-weight: 900;
-  color: $bleu-principal;
+  color: #0f172a;
   margin-bottom: 12px;
   /* Descendre le titre H2 */
   margin-top: 1.5rem;
   padding-top: 0.75rem;
 }
 .steps-how-highlight {
-  color: $bleu-principal;
+  color: #2563eb;
 }
 .steps-how-desc {
-  color: #52525b;
+  color: #475569;
   font-size: 1.15rem;
   margin-bottom: 0;
 }

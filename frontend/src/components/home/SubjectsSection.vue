@@ -40,7 +40,7 @@ function onSubjectClick(subject) {
 
 .subjects-section h2 {
   font-size: 2rem;
-  color: #193e8e;
+  color: #0f172a;
   margin-bottom: 40px;
   font-weight: 800;
   /* Descendre le titre H2 */

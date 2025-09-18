@@ -1,0 +1,1 @@
+import{b as t}from"./index-DCsGFNRY.js";const c=a=>t.post("/api/calc/derive/",a),i=a=>t.post("/api/calc/integrate/",a),s=a=>t.post("/api/calc/expand/",a),o=a=>t.post("/api/calc/factor/",a),r=a=>t.post("/api/calc/limit/",a);export{c as d,s as e,o as f,i,r as l};

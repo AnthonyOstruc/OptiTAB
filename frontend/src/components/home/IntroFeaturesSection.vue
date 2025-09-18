@@ -40,7 +40,7 @@ const props = defineProps({
 @use "sass:color";
 .intro-features-section {
   padding: 56px 0 32px 0;
-  background: color.adjust($bleu-principal, $lightness: 50%);
+  background: #ffffff;
   font-family: 'Poppins', 'Nunito', Arial, sans-serif;
 }
 .intro-features-header {
@@ -51,13 +51,13 @@ const props = defineProps({
 .intro-features-title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #2563eb;
+  color: #0f172a;
   margin-bottom: 18px;
   line-height: 1.1;
   letter-spacing: -1px;
 }
 .highlight {
-  color: #22c55e;
+  color: #2563eb;
   font-weight: 800;
   background: none;
   -webkit-background-clip: initial;
@@ -66,7 +66,7 @@ const props = defineProps({
 }
 .intro-features-desc {
   font-size: 1.18rem;
-  color: color.adjust($bleu-principal, $lightness: -30%);
+  color: #475569;
   margin-bottom: 0;
   max-width: 700px;
   margin-left: auto;
@@ -122,13 +122,13 @@ const props = defineProps({
 .intro-feature-title {
   font-size: 1.22rem;
   font-weight: 700;
-  color: $bleu-principal;
+  color: #0f172a;
   margin-bottom: 8px;
   text-align: left;
   letter-spacing: -0.5px;
 }
 .intro-feature-desc {
-  color: color.adjust($bleu-principal, $lightness: -30%);
+  color: #475569;
   font-size: 1.04rem;
   margin-bottom: 0;
   text-align: left;

@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 import logging
 logger = logging.getLogger(__name__)
 from rest_framework.response import Response
@@ -9,7 +10,37 @@ from .factor import FactorCalculator
 from .limit import LimitCalculator
 
 
-class DerivativeView(APIView):
+class BaseCalcView(APIView):
+    """Base view for calculator endpoints with public access and gated steps output."""
+
+    permission_classes = [AllowAny]
+
+    def format_response(self, result: dict, request) -> Response:
+        """
+        Return full result (with steps) for authenticated users.
+        For anonymous users, return only the final result without steps.
+        """
+        try:
+            is_auth = bool(getattr(request, "user", None) and request.user.is_authenticated)
+        except Exception:
+            is_auth = False
+
+        if is_auth:
+            return Response(result)
+
+        # Anonymous: only expose final result, hide steps for free tier
+        return Response({
+            'result_latex': result.get('result_latex'),
+            'steps': []
+        })
+
+    def error_response(self, error: Exception, message: str) -> Response:
+        import traceback
+        logger.error(f"{message}: {str(error)}\n{traceback.format_exc()}")
+        return Response({'detail': f'{message}: {str(error)}'}, status=400)
+
+
+class DerivativeView(BaseCalcView):
     """Vue pour calculer les dérivées avec étapes détaillées"""
     
     def __init__(self):
@@ -24,18 +55,12 @@ class DerivativeView(APIView):
 
         try:
             result = self.calculator.calculate_derivative(expr_latex)
-            return Response(result)
+            return self.format_response(result, request)
         except Exception as e:
-            return self._handle_error(e)
-
-    def _handle_error(self, error):
-        """Gère les erreurs de manière centralisée"""
-        import traceback
-        logger.error(f"Erreur lors du calcul: {str(error)}\n{traceback.format_exc()}")
-        return Response({'detail': f'Erreur lors du calcul: {str(error)}'}, status=400)
+            return self.error_response(e, "Erreur lors du calcul")
 
 
-class IntegralView(APIView):
+class IntegralView(BaseCalcView):
     """Vue pour calculer les intégrales avec étapes détaillées et pédagogiques"""
     
     def __init__(self):
@@ -53,18 +78,12 @@ class IntegralView(APIView):
 
         try:
             result = self.calculator.calculate_integral(expr_latex, lower_bound, upper_bound)
-            return Response(result)
+            return self.format_response(result, request)
         except Exception as e:
-            return self._handle_error(e)
-
-    def _handle_error(self, error):
-        """Gère les erreurs de manière centralisée"""
-        import traceback
-        logger.error(f"Erreur lors du calcul: {str(error)}\n{traceback.format_exc()}")
-        return Response({'detail': f'Erreur lors du calcul: {str(error)}'}, status=400)
+            return self.error_response(e, "Erreur lors du calcul")
 
 
-class ExpandView(APIView):
+class ExpandView(BaseCalcView):
     """Vue pour développer les expressions algébriques avec étapes détaillées et pédagogiques"""
     
     def __init__(self):
@@ -80,18 +99,12 @@ class ExpandView(APIView):
 
         try:
             result = self.calculator.calculate_expansion(expr_latex)
-            return Response(result)
+            return self.format_response(result, request)
         except Exception as e:
-            return self._handle_error(e)
-
-    def _handle_error(self, error):
-        """Gère les erreurs de manière centralisée"""
-        import traceback
-        logger.error(f"Erreur lors du développement: {str(error)}\n{traceback.format_exc()}")
-        return Response({'detail': f'Erreur lors du développement: {str(error)}'}, status=400)
+            return self.error_response(e, "Erreur lors du développement")
 
 
-class FactorView(APIView):
+class FactorView(BaseCalcView):
     """Vue pour factoriser les expressions algébriques avec étapes détaillées et pédagogiques"""
     
     def __init__(self):
@@ -107,18 +120,12 @@ class FactorView(APIView):
 
         try:
             result = self.calculator.calculate_factorization(expr_latex)
-            return Response(result)
+            return self.format_response(result, request)
         except Exception as e:
-            return self._handle_error(e)
-
-    def _handle_error(self, error):
-        """Gère les erreurs de manière centralisée"""
-        import traceback
-        logger.error(f"Erreur lors de la factorisation: {str(error)}\n{traceback.format_exc()}")
-        return Response({'detail': f'Erreur lors de la factorisation: {str(error)}'}, status=400)
+            return self.error_response(e, "Erreur lors de la factorisation")
 
 
-class LimitView(APIView):
+class LimitView(BaseCalcView):
     """Vue pour calculer les limites avec étapes détaillées et pédagogiques"""
     
     def __init__(self):
@@ -136,12 +143,6 @@ class LimitView(APIView):
 
         try:
             result = self.calculator.calculate_limit(expr_latex, limit_point, direction)
-            return Response(result)
+            return self.format_response(result, request)
         except Exception as e:
-            return self._handle_error(e)
-
-    def _handle_error(self, error):
-        """Gère les erreurs de manière centralisée"""
-        import traceback
-        logger.error(f"Erreur lors du calcul de limite: {str(error)}\n{traceback.format_exc()}")
-        return Response({'detail': f'Erreur lors du calcul de limite: {str(error)}'}, status=400)
+            return self.error_response(e, "Erreur lors du calcul de limite")

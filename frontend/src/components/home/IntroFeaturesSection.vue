@@ -121,7 +121,7 @@ const props = defineProps({
 }
 .intro-feature-title {
   font-size: 1.22rem;
-  font-weight: 700;
+  font-weight: 900;
   color: #0f172a;
   margin-bottom: 8px;
   text-align: left;

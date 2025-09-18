@@ -462,7 +462,7 @@ function handleTabClick(tabKey) {
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 450px) {
 
   .chapter-nav-label {
     display: none;

@@ -551,6 +551,18 @@ const apiClient = axios.create({
 })
 
 /**
+ * Détection robuste des annulations (AbortController / Axios)
+ */
+function isCanceledError(error) {
+  return (
+    error?.code === 'ERR_CANCELED' ||
+    error?.name === 'CanceledError' ||
+    error?.message === 'canceled' ||
+    (error?.config?.signal && error.config.signal.aborted === true)
+  )
+}
+
+/**
  * Intercepteur de requête
  * Ajoute automatiquement le token d'authentification
  */
@@ -589,6 +601,15 @@ apiClient.interceptors.response.use(
   },
   async (error) => {
     const { config, response } = error
+
+    // Ignorer silencieusement les requêtes annulées (prefetch/hover)
+    if (isCanceledError(error)) {
+      ApiLogger.debug('Requête annulée par le client', {
+        url: config?.url,
+        method: config?.method
+      })
+      return Promise.reject(error)
+    }
     
     // Vérifier si c'est une erreur 404 sur les notifications
     const isNotificationError = config?.url?.includes('/api/users/notifications/') && response?.status === 404

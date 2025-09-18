@@ -184,7 +184,7 @@ class ChapitreAdmin(admin.ModelAdmin):
             'fields': ('contenu',),
         }),
         (_('Configuration'), {
-            'fields': ('ordre', 'difficulty', 'couleur', 'svg_icon'),
+            'fields': ('ordre', 'difficulty'),
             'classes': ['collapse']
         }),
         (_('Statut et métadonnées'), {

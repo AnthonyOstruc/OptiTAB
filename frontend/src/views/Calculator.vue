@@ -1,5 +1,5 @@
 <template>
-  <DashboardLayout @subject-changed="handleSubjectChange">
+  <component :is="layoutComponent" v-on="layoutListeners">
     <section class="calc">
       <h2 class="title"><CalculatorIcon class="title-icon"/> Outil de Calcul Scientifique</h2>
 
@@ -291,7 +291,7 @@
         </div>
       </div> <!-- Fermeture de expr-box -->
 
-      <div v-if="steps.length" class="deriv-steps">
+      <div v-if="isAuthenticated && steps.length" class="deriv-steps">
         <h3 class="steps-title">{{ getStepsTitle() }}</h3>
         <ul class="steps-list">
           <li v-for="(step, i) in steps" :key="i">
@@ -308,6 +308,12 @@
         </div>
       </div>
 
+      <div v-else-if="!isAuthenticated && hasCalculated" class="steps-cta">
+        <h3 class="steps-title">Étapes du calcul</h3>
+        <p class="cta-text">Connectez-vous pour afficher les étapes détaillées du calcul.</p>
+        <button class="login-cta-btn" @click="openLogin">Se connecter</button>
+      </div>
+
       <!-- Conteneur du graphique -->
       <div v-if="selectedOperation === 'graph'" class="graph-section">
         <div class="graph-header">
@@ -320,11 +326,12 @@
         <div ref="graphContainer" class="graph-container"></div>
       </div>
     </section>
-  </DashboardLayout>
+  </component>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import MainLayout from '@/components/layout/MainLayout.vue'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import { deriveExpr, integrateExpr, expandExpr, factorExpr, limitExpr } from '@/api'
 import { 
@@ -343,9 +350,13 @@ import { normalizeAccents, fixAccentSpacing, cleanText, renderInlineMath } from 
 import Plotly from 'plotly.js-dist-min'
 
 import { useSubjectsStore } from '@/stores/subjects/index'
+import { useUserStore } from '@/stores/user'
+import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 
 // Store pour les matières
 const subjectsStore = useSubjectsStore()
+const userStore = useUserStore()
+const { openModal } = useModalManager()
 
 const preview = ref(null)
 const mf = ref(null)
@@ -363,6 +374,14 @@ const showCustomKeyboard = ref(false)
 const activeTab = ref('algebra')
 const isCalculating = ref(false)
 const selectedOperation = ref('derivative')
+const hasCalculated = ref(false)
+const isAuthenticated = computed(() => userStore.isAuthenticated)
+const layoutComponent = computed(() => isAuthenticated.value ? DashboardLayout : MainLayout)
+const layoutListeners = computed(() => isAuthenticated.value ? { 'subject-changed': handleSubjectChange } : {})
+
+function openLogin() {
+  openModal(MODAL_IDS.LOGIN)
+}
 
 // Variables pour les intégrales
 const lowerBound = ref('')
@@ -736,6 +755,7 @@ async function calculate() {
   
   try {
     isCalculating.value = true
+    hasCalculated.value = true
     
     // Afficher un indicateur de chargement
     if (preview.value) {
@@ -1204,19 +1224,19 @@ function initializeGraph() {
 
 <style scoped>
 .calc {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 60px 1rem 2rem;
 }
 
 .title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: #1e3a8a;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
   justify-content: center;
 }
@@ -1540,6 +1560,43 @@ function initializeGraph() {
   font-weight: bold;
   color: #1e3a8a;
   margin-right: 0.5rem;
+}
+
+/* Bloc d'incitation à la connexion pour les étapes */
+.steps-cta {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f0f9ff;
+  border-radius: 0.75rem;
+  border: 1px solid #bfdbfe;
+  text-align: center;
+}
+
+.steps-cta .cta-text {
+  color: #1e3a8a;
+  margin: 0.5rem 0 1rem;
+}
+
+.login-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.login-cta-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
 }
 
 /* Conteneur du clavier */

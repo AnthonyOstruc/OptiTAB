@@ -57,8 +57,8 @@ const route = useRoute()
 
 const currentComponent = computed(() => {
   const currentPage = route.name
-  // Affichage OBLIGATOIRE des tabs pour Quiz, QuizNotions et Dashboard
-  if (currentPage === 'Quiz' || currentPage === 'QuizNotions' || currentPage === 'Dashboard' || props.matierePages.includes(currentPage)) {
+  // Affichage OBLIGATOIRE des tabs pour Quiz, QuizNotions et Dashboard (sauf Calculator)
+  if ((currentPage === 'Quiz' || currentPage === 'QuizNotions' || currentPage === 'Dashboard' || props.matierePages.includes(currentPage)) && currentPage !== 'Calculator') {
     return SelectedMatiereHeader
   }
   if (props.chapterPages.includes(currentPage)) {
@@ -72,8 +72,8 @@ const currentComponent = computed(() => {
 
 const componentProps = computed(() => {
   const currentPage = route.name
-  // Props OBLIGATOIRES pour Quiz, QuizNotions et Dashboard
-  if (currentPage === 'Quiz' || currentPage === 'QuizNotions' || currentPage === 'Dashboard' || props.matierePages.includes(currentPage)) {
+  // Props OBLIGATOIRES pour Quiz, QuizNotions et Dashboard (sauf Calculator)
+  if ((currentPage === 'Quiz' || currentPage === 'QuizNotions' || currentPage === 'Dashboard' || props.matierePages.includes(currentPage)) && currentPage !== 'Calculator') {
     return {
       matiereId: props.matiereProps.matiereId,
       ...props.matiereProps

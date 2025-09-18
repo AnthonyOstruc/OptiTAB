@@ -87,10 +87,16 @@
           </div>
         </div>
         <template v-for="row in sortedStats" :key="`${row.matiere.id}-${row.notion.id}`">
-          <div class="summary-row">
+          <div class="summary-row" :ref="el => setSummaryRowRef(row, el)">
             <div class="cell matiere">{{ row.matiere.titre }}</div>
             <div class="cell notion">
-              <button class="notion-toggle" @click="toggleNotionDetails(row)">
+              <button
+                class="notion-toggle"
+                :class="{ active: isNotionExpanded(row) }"
+                @click="toggleNotionDetails(row)"
+                @mouseenter="prefetchNotionDetails(row)"
+                @focus="prefetchNotionDetails(row)"
+              >
                 <span class="notion-label">{{ row.notion.titre }}</span>
                 <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :class="{ expanded: isNotionExpanded(row) }">
                   <polyline points="6,9 12,15 18,9"></polyline>
@@ -107,13 +113,47 @@
               <div class="chapter-table">
                 <div class="chapter-header">
                   <div>Chapitre</div>
-                  <div>Faits</div>
-                  <div>Réussis</div>
-                  <div>Ratés</div>
-                  <div>Réussite</div>
-                  <div>Moyenne</div>
+                  <div class="sortable-header" @click="sortChapterBy('exercice_count')">
+                    Faits
+                    <span class="sort-icon" :class="{ active: chapterSortField === 'exercice_count' }">
+                      {{ chapterSortField === 'exercice_count' && chapterSortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                  </div>
+                  <div class="sortable-header" @click="sortChapterBy('correct_count')">
+                    Réussis
+                    <span class="sort-icon" :class="{ active: chapterSortField === 'correct_count' }">
+                      {{ chapterSortField === 'correct_count' && chapterSortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                  </div>
+                  <div class="sortable-header" @click="sortChapterBy('incorrect_count')">
+                    Ratés
+                    <span class="sort-icon" :class="{ active: chapterSortField === 'incorrect_count' }">
+                      {{ chapterSortField === 'incorrect_count' && chapterSortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                  </div>
+                  <div class="sortable-header" @click="sortChapterBy('ratio_percent')">
+                    Réussite
+                    <span class="sort-icon" :class="{ active: chapterSortField === 'ratio_percent' }">
+                      {{ chapterSortField === 'ratio_percent' && chapterSortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                  </div>
+                  <div class="sortable-header" @click="sortChapterBy('average_20')">
+                    Moyenne
+                    <span class="sort-icon" :class="{ active: chapterSortField === 'average_20' }">
+                      {{ chapterSortField === 'average_20' && chapterSortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                  </div>
                 </div>
-                <div v-if="getNotionDetails(row).loading" class="chapter-loading">Chargement des détails...</div>
+                <div v-if="getNotionDetails(row).loading" class="chapter-skeleton">
+                  <div class="skeleton-row" v-for="n in 3" :key="n">
+                    <div class="skeleton-cell title"></div>
+                    <div class="skeleton-cell num"></div>
+                    <div class="skeleton-cell num"></div>
+                    <div class="skeleton-cell num"></div>
+                    <div class="skeleton-cell num"></div>
+                    <div class="skeleton-cell num"></div>
+                  </div>
+                </div>
                 <div v-else-if="getNotionDetails(row).error" class="chapter-error">{{ getNotionDetails(row).error }}</div>
                 <div v-else>
                   <div v-for="ch in getNotionDetails(row).chapters" :key="ch.chapitre.id" class="chapter-row">
@@ -122,7 +162,7 @@
                     <div class="cell correct">{{ ch.correct_count }}</div>
                     <div class="cell incorrect">{{ ch.incorrect_count }}</div>
                     <div class="cell ratio">{{ Math.round(ch.ratio_percent) }}%</div>
-                    <div class="cell average" :class="getAverageClass(ch.average_10 * 10)">{{ ch.average_10 }}/10</div>
+                    <div class="cell average" :class="getAverageClass(ch.average_20)">{{ ch.average_20 }}/20</div>
                   </div>
                 </div>
               </div>
@@ -207,7 +247,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import BaseHistory from './BaseHistory.vue'
 import apiClient from '@/api/client'
@@ -234,9 +274,33 @@ const sortField = ref('exercice_count')
 const sortDirection = ref('desc')
 const matiereNotionStats = ref([])
 
+// État du tri pour le tableau des chapitres
+const chapterSortField = ref('exercice_count')
+const chapterSortDirection = ref('desc')
+
 // État d'expansion et détails par notion (clé: "matiereId-notionId")
 const expandedNotions = ref(new Set())
 const notionDetails = ref({})
+const notionFetchControllers = new Map()
+
+// Cache chapitres en sessionStorage (TTL)
+const CHAPTER_CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+const chaptersCacheKey = (matiereId, notionId) => `ex_hist:${matiereId}:${notionId}`
+const readChaptersCache = (matiereId, notionId) => {
+  try {
+    const raw = sessionStorage.getItem(chaptersCacheKey(matiereId, notionId))
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    if (!parsed || !Array.isArray(parsed.chapters)) return null
+    if (Date.now() - (parsed.ts || 0) > CHAPTER_CACHE_TTL) return null
+    return parsed
+  } catch (e) { return null }
+}
+const writeChaptersCache = (matiereId, notionId, chapters) => {
+  try {
+    sessionStorage.setItem(chaptersCacheKey(matiereId, notionId), JSON.stringify({ ts: Date.now(), chapters }))
+  } catch (e) {}
+}
 
 // Computed pour filtrer les exercices selon le niveau de maîtrise
 const filteredExercicesList = computed(() => {
@@ -303,10 +367,10 @@ const goToFullHistory = () => {
 const sortedStats = computed(() => {
   if (!matiereNotionStats.value.length) return []
   
-  // Ajouter la moyenne calculée à chaque ligne
+  // Ajouter la moyenne calculée à chaque ligne (sur 20)
   const statsWithAverage = matiereNotionStats.value.map(row => ({
     ...row,
-    average: row.exercice_count > 0 ? (row.correct_count / row.exercice_count) * 100 : 0
+    average: row.exercice_count > 0 ? Math.round((row.correct_count / row.exercice_count) * 20 * 10) / 10 : 0
   }))
   
   const sorted = [...statsWithAverage].sort((a, b) => {
@@ -335,17 +399,36 @@ const sortBy = (field) => {
   }
 }
 
+// Méthode pour changer le tri des chapitres
+const sortChapterBy = (field) => {
+  if (chapterSortField.value === field) {
+    // Inverser la direction si c'est le même champ
+    chapterSortDirection.value = chapterSortDirection.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    // Nouveau champ, commencer par décroissant
+    chapterSortField.value = field
+    chapterSortDirection.value = 'desc'
+  }
+  
+  // Recalculer les stats des chapitres pour tous les détails ouverts
+  Object.keys(notionDetails.value).forEach(key => {
+    const details = notionDetails.value[key]
+    if (details.chapters && details.chapters.length > 0) {
+      details.chapters = sortChapters(details.chapters)
+    }
+  })
+}
+
 // Méthodes utilitaires pour la moyenne
 const formatAverage = (average) => {
-  if (average === 0) return '0%'
-  return `${Math.round(average)}%`
+  if (average === 0) return '0/20'
+  return `${average}/20`
 }
 
 const getAverageClass = (average) => {
-  if (average >= 90) return 'excellent'
-  if (average >= 75) return 'good'
-  if (average >= 50) return 'average'
-  return 'poor'
+  if (average >= 15) return 'excellent'  // ≥ 15/20 = vert
+  if (average >= 10) return 'good'       // 10-14.9/20 = orange
+  return 'poor'                          // < 10/20 = rouge
 }
 
 
@@ -377,21 +460,88 @@ const toggleNotionDetails = async (row) => {
   await fetchNotionChapterDetails(row.matiere.id, row.notion.id)
 }
 
-const fetchNotionChapterDetails = async (matiereId, notionId) => {
+const fetchNotionChapterDetails = async (matiereId, notionId, options = {}) => {
   const key = `${matiereId}-${notionId}`
-  notionDetails.value[key] = { loading: true, error: '', chapters: [] }
+
+  // 1) Utiliser le cache si disponible et valable
+  const cached = readChaptersCache(matiereId, notionId)
+  if (cached && cached.chapters && cached.chapters.length > 0) {
+    // Afficher instantanément depuis le cache
+    notionDetails.value[key] = { loading: false, error: '', chapters: sortChapters(cached.chapters) }
+    // Si c'est un prefetch et que le cache est valide, on s'arrête là
+    if (options.prefetch) return
+  }
+
+  // Pour le prefetch, éviter d'afficher l'état de chargement visuellement
+  if (!options.prefetch) {
+    notionDetails.value[key] = { loading: true, error: '', chapters: cached?.chapters || [] }
+  }
+
+  // Annuler une requête précédente pour cette notion si nécessaire
+  if (notionFetchControllers.has(key)) {
+    try { notionFetchControllers.get(key).abort() } catch (e) {}
+  }
+  const controller = new AbortController()
+  notionFetchControllers.set(key, controller)
+
   try {
     const response = await apiClient.get('/api/suivis/exercices/stats/', {
-      params: { matiere: matiereId, notion: notionId }
+      params: { matiere: matiereId, notion: notionId },
+      signal: controller.signal
     })
     const list = Array.isArray(response?.data?.exercice_list) ? response.data.exercice_list : []
     const chapters = computeChapterStats(list)
+    // Écrire dans le cache (non trié à nouveau plus tard)
+    writeChaptersCache(matiereId, notionId, chapters)
     notionDetails.value[key] = { loading: false, error: '', chapters }
   } catch (error) {
+    // Ignorer si annulé (Axios/AbortController)
+    if (error?.name === 'CanceledError' || error?.name === 'AbortError' || error?.code === 'ERR_CANCELED' || error?.message === 'canceled') return
     const message = (error?.response?.data?.error) || 'Erreur lors du chargement des détails'
     notionDetails.value[key] = { loading: false, error: message, chapters: [] }
+  } finally {
+    notionFetchControllers.delete(key)
   }
 }
+
+// Prefetch au survol / focus
+const prefetchNotionDetails = (row) => {
+  const details = getNotionDetails(row)
+  if (details.chapters && details.chapters.length > 0) return
+  fetchNotionChapterDetails(row.matiere.id, row.notion.id, { prefetch: true })
+}
+
+// Prefetch quand la ligne entre dans le viewport
+const rowElToMeta = new Map()
+const summaryRowObserver = ref(null)
+const setSummaryRowRef = (row, el) => {
+  if (!el || typeof IntersectionObserver === 'undefined') return
+  const key = buildNotionKey(row)
+  rowElToMeta.set(el, { key, matiereId: row.matiere.id, notionId: row.notion.id })
+  if (!summaryRowObserver.value) {
+    summaryRowObserver.value = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const meta = rowElToMeta.get(entry.target)
+          if (meta) {
+            fetchNotionChapterDetails(meta.matiereId, meta.notionId, { prefetch: true })
+            summaryRowObserver.value.unobserve(entry.target)
+            rowElToMeta.delete(entry.target)
+          }
+        }
+      })
+    }, { rootMargin: '200px' })
+  }
+  summaryRowObserver.value.observe(el)
+}
+
+onBeforeUnmount(() => {
+  if (summaryRowObserver.value) {
+    try { summaryRowObserver.value.disconnect() } catch (e) {}
+  }
+  notionFetchControllers.forEach(ctrl => { try { ctrl.abort() } catch (e) {} })
+  notionFetchControllers.clear()
+})
 
 const computeChapterStats = (exerciceList) => {
   const map = new Map()
@@ -414,16 +564,58 @@ const computeChapterStats = (exerciceList) => {
   }
   const chapters = Array.from(map.values()).map(ch => {
     const ratio = ch.exercice_count > 0 ? (ch.correct_count / ch.exercice_count) : 0
-    const average10 = Math.round(ratio * 10 * 10) / 10 // arrondi 0.1
+    const average20 = Math.round(ratio * 20 * 10) / 10 // arrondi 0.1 sur 20
     return {
       ...ch,
       ratio_percent: ratio * 100,
-      average_10: average10
+      average_20: average20
     }
   })
-  // Trier par titre de chapitre
-  chapters.sort((a, b) => String(a.chapitre.titre).localeCompare(String(b.chapitre.titre), 'fr', { sensitivity: 'base' }))
-  return chapters
+  // Trier les chapitres selon le champ sélectionné
+  return sortChapters(chapters)
+}
+
+// Fonction pour trier les chapitres selon le champ et la direction sélectionnés
+const sortChapters = (chapters) => {
+  const sorted = [...chapters].sort((a, b) => {
+    let aValue, bValue
+    
+    switch (chapterSortField.value) {
+      case 'exercice_count':
+        aValue = a.exercice_count || 0
+        bValue = b.exercice_count || 0
+        break
+      case 'correct_count':
+        aValue = a.correct_count || 0
+        bValue = b.correct_count || 0
+        break
+      case 'incorrect_count':
+        aValue = a.incorrect_count || 0
+        bValue = b.incorrect_count || 0
+        break
+      case 'ratio_percent':
+        aValue = a.ratio_percent || 0
+        bValue = b.ratio_percent || 0
+        break
+      case 'average_20':
+        aValue = a.average_20 || 0
+        bValue = b.average_20 || 0
+        break
+      default:
+        // Par défaut, trier par titre de chapitre
+        aValue = String(a.chapitre.titre).toLowerCase()
+        bValue = String(b.chapitre.titre).toLowerCase()
+        return aValue.localeCompare(bValue, 'fr', { sensitivity: 'base' })
+    }
+    
+    if (chapterSortDirection.value === 'asc') {
+      return aValue - bValue
+    } else {
+      return bValue - aValue
+    }
+  })
+  
+  return sorted
 }
 
 
@@ -796,15 +988,22 @@ defineExpose({
 
 /* Bouton voir l'historique */
 .view-history-btn {
-  background: #111827;
+  background: #3b82f6;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
   font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
 }
-.view-history-btn:hover { background: #1f2937; }
+.view-history-btn:hover { 
+  background: #2563eb; 
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.4);
+}
 
 /* Tableau résumé matière/notion - Version simple et pédagogique */
 .summary-table {
@@ -864,10 +1063,6 @@ defineExpose({
   background: #dcfce7;
 }
 .summary-row .cell.average.good { 
-  color: #2563eb; 
-  background: #dbeafe;
-}
-.summary-row .cell.average.average { 
   color: #d97706; 
   background: #fef3c7;
 }
@@ -920,8 +1115,20 @@ defineExpose({
   color: #1f2937;
 }
 .notion-toggle:hover { background: #f3f4f6; }
+.notion-toggle.active { 
+  background: #dbeafe; 
+  color: #1e40af; 
+  border-color: #3b82f6;
+  font-weight: 600;
+}
+.notion-toggle.active:hover { 
+  background: #bfdbfe; 
+  border-color: #2563eb;
+}
 .notion-toggle .chevron { transition: transform 0.2s; color: #6b7280; }
 .notion-toggle .chevron.expanded { transform: rotate(180deg); color: #374151; }
+.notion-toggle.active .chevron { color: #1e40af; }
+.notion-toggle.active .chevron.expanded { color: #1e40af; }
 
 /* Details row under notion */
 .summary-details-row {
@@ -946,7 +1153,12 @@ defineExpose({
   padding: 0.5rem 0.75rem;
   align-items: center;
 }
-.chapter-header { background: #eef2f7; font-weight: 600; color: #374151; }
+.chapter-header { 
+  background: #eef2f7; 
+  font-weight: 600; 
+  color: #374151; 
+  font-size: 0.875rem;
+}
 .chapter-row { background: #fff; border-top: 1px solid #f3f4f6; }
 .chapter-loading { padding: 0.75rem; color: #6b7280; font-size: 0.85rem; }
 .chapter-error { padding: 0.75rem; color: #dc2626; font-size: 0.85rem; }
@@ -958,6 +1170,44 @@ defineExpose({
 .chapter-row .cell.average { text-align: center; font-weight: 600; }
 .chapter-row .cell.correct { color: #16a34a; }
 .chapter-row .cell.incorrect { color: #dc2626; }
+
+/* Couleurs des moyennes pour les chapitres - même système que les notions */
+.chapter-row .cell.average.excellent { 
+  color: #16a34a; 
+  background: #dcfce7;
+}
+.chapter-row .cell.average.good { 
+  color: #d97706; 
+  background: #fef3c7;
+}
+.chapter-row .cell.average.poor { 
+  color: #dc2626; 
+  background: #fee2e2;
+}
+
+/* En-têtes triables pour les chapitres - même style que les notions */
+.chapter-header .sortable-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.25rem;
+  border-radius: 4px;
+  gap: 0.35rem;
+}
+.chapter-header .sortable-header:hover {
+  background-color: #d1d5db;
+}
+.chapter-header .sort-icon {
+  font-size: 1rem;
+  color: #6b7280;
+  font-weight: 700;
+}
+.chapter-header .sort-icon.active {
+  color: #2563eb;
+  font-weight: 700;
+}
 
 @media (max-width: 768px) {
   .chapter-header, .chapter-row {
@@ -1012,4 +1262,12 @@ defineExpose({
   
 
 }
+
+/* Skeleton loader pour chapitres */
+.chapter-skeleton { padding: 0.5rem; background: #fff; border-top: 1px solid #f3f4f6; }
+.skeleton-row { display: grid; grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr; gap: 0.75rem; padding: 0.4rem 0.25rem; align-items: center; }
+.skeleton-cell { height: 12px; border-radius: 6px; background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%); background-size: 400% 100%; animation: skeleton-shimmer 1.2s ease-in-out infinite; }
+.skeleton-cell.title { height: 14px; }
+.skeleton-cell.num { width: 60%; justify-self: center; }
+@keyframes skeleton-shimmer { 0% { background-position: 100% 0 } 100% { background-position: -100% 0 } }
 </style>

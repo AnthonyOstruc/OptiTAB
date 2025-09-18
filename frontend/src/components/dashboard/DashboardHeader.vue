@@ -11,6 +11,7 @@
 
     <!-- Section centrale : Contenu conditionnel -->
     <ConditionalHeader 
+      v-if="!isCalculatorPage"
       :matiere-props="{ matiereId: null }"
       @subject-changed="handleSubjectChange"
       @search="handleSearch"
@@ -28,7 +29,8 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import UserMenu from './UserMenu.vue'
 import ConditionalHeader from '@/components/common/ConditionalHeader.vue'
 import NotificationCenter from '@/components/notifications/NotificationCenter.vue'
@@ -38,6 +40,10 @@ const emit = defineEmits(['toggle-sidebar', 'subject-changed', 'search'])
 
 // Router
 const router = useRouter()
+const route = useRoute()
+
+// Computed properties
+const isCalculatorPage = computed(() => route.name === 'Calculator')
 
 // Gestionnaires d'événements
 const handleSubjectChange = (subjectId) => {

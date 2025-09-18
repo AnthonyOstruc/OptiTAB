@@ -6,8 +6,9 @@
       <div class="history-actions">
         <slot name="header-actions" />
       </div>
-      
-      <!-- Filtres -->
+    </div>
+    
+    <!-- Filtres -->
     <div class="history-filters">
       <select 
         v-model="selectedMatiere" 
@@ -118,7 +119,6 @@
           </button>
         </div>
       </div>
-    </div>
 
     <!-- Loading state -->
     <div v-if="loading" class="loading-state">
@@ -676,6 +676,9 @@ defineExpose({
 }
 
 .history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.5rem;
 }
 
@@ -683,7 +686,6 @@ defineExpose({
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .history-title {

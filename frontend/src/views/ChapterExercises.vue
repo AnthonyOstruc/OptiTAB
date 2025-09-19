@@ -26,35 +26,6 @@
 
       <h2 class="exercices-title" style="margin-top: 1.5rem; padding-top: 0.75rem;">Exercices du {{ chapitreNom }}</h2>
       
-      <!-- Boutons de téléchargement en lot -->
-      <div v-if="!loading && !error && filteredExercices.length > 0" class="download-section">
-        <div class="download-actions">
-          <h3 class="download-title">📄 Téléchargement en lot</h3>
-          <div class="download-buttons">
-            <PDFDownloadButton
-              type="list"
-              :data="filteredExercices"
-              :title="`Exercices_${chapitreNom}_Enonces`"
-              text="📋 Énoncés seuls"
-              :useMathJax="true"
-              :includeSolution="false"
-              class="pdf-btn download-enonces-btn"
-            />
-            <PDFDownloadButton
-              type="list"
-              :data="filteredExercices"
-              :title="`Exercices_${chapitreNom}_Corriges`"
-              text="📝 Énoncés + Corrigés"
-              :useMathJax="true"
-              :includeSolution="true"
-              class="pdf-btn download-corriges-btn"
-            />
-          </div>
-          <p class="download-info">
-            📊 {{ filteredExercices.length }} exercice(s) disponible(s) selon vos filtres actuels
-          </p>
-        </div>
-      </div>
       
       <div v-if="loading" class="exercices-loader">Chargement...</div>
       <div v-else-if="error" class="exercices-error">{{ error }}</div>
@@ -113,40 +84,29 @@
 
             <div class="filter-divider"></div>
 
-            <div class="filter-item">
-              <span class="filter-label">Export PDF</span>
+            <div class="filter-item" v-if="!loading && !error && filteredExercices.length > 0">
+              <span class="filter-label">Téléchargement</span>
               <div class="filter-buttons">
-                <button
-                  class="filter-btn pdf-btn"
-                  @click="generatePDF(false)"
-                  :disabled="filteredExercices.length === 0"
-                  title="Télécharger exercices sans correction"
-                >
-                  📄 Énoncés
-                </button>
-                <button
-                  class="filter-btn pdf-btn"
-                  @click="generatePDF(true)"
-                  :disabled="filteredExercices.length === 0"
-                  title="Télécharger exercices avec correction"
-                >
-                  📋 Corrigés
-                </button>
-              </div>
-            </div>
-
-            <div class="filter-divider"></div>
-
-            <div class="filter-item">
-              <span class="filter-label">Actions</span>
-              <div class="filter-buttons">
-                <button
-                  class="filter-btn pdf-btn"
-                  @click="downloadAllPDF"
-                  title="Télécharger tous les exercices en PDF"
-                >
-                  📄 PDF
-                </button>
+                <PDFDownloadButton
+                  type="list"
+                  :data="filteredExercices"
+                  :title="`Exercices_${chapitreNom}_Enonces`"
+                  text="📋 Énoncés"
+                  :useMathJax="true"
+                  :includeSolution="false"
+                  class="filter-btn download-enonces-btn"
+                  style="min-width: auto; padding: 0.25rem 0.5rem; font-size: 0.8rem;"
+                />
+                <PDFDownloadButton
+                  type="list"
+                  :data="filteredExercices"
+                  :title="`Exercices_${chapitreNom}_Corriges`"
+                  text="📝 Corrigés"
+                  :useMathJax="true"
+                  :includeSolution="true"
+                  class="filter-btn download-corriges-btn"
+                  style="min-width: auto; padding: 0.25rem 0.5rem; font-size: 0.8rem;"
+                />
               </div>
             </div>
           </div>
@@ -309,7 +269,13 @@ const filteredExercices = computed(() => {
     // Filtre par statut précis (acquired ou not_acquired)
     list = list.filter(e => statusMap.value[e.id]?.status === activeTab.value)
   }
-  return list
+  
+  // Trier les exercices par ID pour avoir l'ordre 1, 2, 3, etc.
+  return list.sort((a, b) => {
+    const idA = parseInt(a.id) || 0
+    const idB = parseInt(b.id) || 0
+    return idA - idB
+  })
 })
 
 const paginated = computed(() => {
@@ -1039,19 +1005,33 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Style pour le bouton PDF */
-.pdf-btn {
-  background: #dc2626 !important;
+/* Style pour les boutons de téléchargement dans les filtres */
+.download-enonces-btn {
+  background: #3b82f6 !important;
   color: white !important;
-  border-color: #dc2626 !important;
+  border-color: #3b82f6 !important;
   transition: all 0.2s ease;
 }
 
-.pdf-btn:hover {
-  background: #b91c1c !important;
-  border-color: #b91c1c !important;
+.download-enonces-btn:hover {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.download-corriges-btn {
+  background: #10b981 !important;
+  color: white !important;
+  border-color: #10b981 !important;
+  transition: all 0.2s ease;
+}
+
+.download-corriges-btn:hover {
+  background: #059669 !important;
+  border-color: #059669 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 /* Responsive */
@@ -1116,94 +1096,4 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   }
 }
 
-/* Styles pour la section de téléchargement */
-.download-section {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin: 1.5rem 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.download-actions {
-  text-align: center;
-}
-
-.download-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.download-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.download-enonces-btn {
-  background: #3b82f6 !important;
-  border-color: #3b82f6 !important;
-}
-
-.download-enonces-btn:hover {
-  background: #2563eb !important;
-  border-color: #2563eb !important;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.download-corriges-btn {
-  background: #10b981 !important;
-  border-color: #10b981 !important;
-}
-
-.download-corriges-btn:hover {
-  background: #059669 !important;
-  border-color: #059669 !important;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-.download-info {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin: 0;
-  font-style: italic;
-}
-
-/* Responsive pour la section de téléchargement */
-@media (max-width: 640px) {
-  .download-buttons {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  .download-section {
-    padding: 1rem;
-    margin: 1rem 0;
-  }
-  
-  .download-title {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .download-section {
-    padding: 0.75rem;
-    border-radius: 8px;
-  }
-  
-  .download-title {
-    font-size: 0.9rem;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-}
 </style> 

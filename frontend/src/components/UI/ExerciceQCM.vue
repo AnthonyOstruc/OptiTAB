@@ -1,38 +1,30 @@
 <template>
-  <div class="exercice-card" :class="{ 'completed': current }">
-    <!-- Progress Indicator -->
-    <div class="progress-indicator">
-      <div class="progress-bar" :class="{ 'completed': current }"></div>
-      <div class="progress-status">
-        <span v-if="current === 'acquired'" class="status-text success">✅ Maîtrisé</span>
-        <span v-else-if="current === 'not_acquired'" class="status-text warning">❌ À revoir</span>
-        <span v-else class="status-text pending">⏳ En cours</span>
-      </div>
-    </div>
+  <div class="exercice-card" :class="{ 
+    'completed': current === 'acquired', 
+    'acquired': current === 'acquired',
+    'not-acquired': current === 'not_acquired'
+  }">
 
     <!-- Header with title and difficulty -->
     <div class="exercice-header">
       <div class="exercice-title-section">
         <div class="title-row">
           <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
-          <div class="difficulty-indicator">
-            <span v-if="difficulty" :class="['difficulty-dot', difficulty]"></span>
-            <span v-if="difficulty" class="difficulty-text">{{ diffLabel[difficulty] || difficulty }}</span>
+          <div class="header-controls">
+            <div class="difficulty-indicator">
+              <span v-if="difficulty" class="difficulty-stars">{{ diffStars[difficulty] || '★★' }}</span>
+            </div>
+            <button v-if="current" class="reset-status-btn" @click="resetStatus" title="Réinitialiser le statut">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                <path d="M21 3v5h-5"/>
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                <path d="M3 21v-5h5"/>
+              </svg>
+            </button>
           </div>
         </div>
-        <div class="exercice-meta">
-          <span class="exercice-number">Exercice #{{ eid }}</span>
-          <span class="exercice-type">Exercice guidé</span>
-        </div>
       </div>
-      <button v-if="current" class="reset-status-btn" @click="resetStatus" title="Réinitialiser le statut">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-          <path d="M21 3v5h-5"/>
-          <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-          <path d="M3 21v-5h5"/>
-        </svg>
-      </button>
     </div>
 
     <!-- Problem Statement -->
@@ -213,10 +205,10 @@ const showImageModal = ref(false)
 const selectedImage = ref(null)
 
 // Computed
-const diffLabel = computed(() => ({
-  easy: 'Facile',
-  medium: 'Moyen',
-  hard: 'Difficile'
+const diffStars = computed(() => ({
+  easy: '★',
+  medium: '★★',
+  hard: '★★★'
 }))
 
 // Methods
@@ -238,54 +230,84 @@ function resetStatus() {
 function unescapeLatex(text) {
   if (!text) return ''
 
-  // Traiter d'abord les éléments de base
-  let result = text
+  // 1) Unescape HTML de base et conserver les backslashes LaTeX
+  let base = text
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&amp;/g, '&')
     .replace(/\\/g, '\\')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
 
-  // Gérer les lignes par blocs avec indentation hiérarchique
-  const lines = result.split('\n')
+  // Séparer en segments pour préserver les blocs math (que MathJax doit traiter)
+  const mathRegex = /(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\))/g
+  const segments = []
+  let lastIndex = 0
+  let match
+  while ((match = mathRegex.exec(base)) !== null) {
+    if (match.index > lastIndex) {
+      segments.push({ type: 'text', value: base.slice(lastIndex, match.index) })
+    }
+    segments.push({ type: 'math', value: match[0] })
+    lastIndex = match.index + match[0].length
+  }
+  if (lastIndex < base.length) {
+    segments.push({ type: 'text', value: base.slice(lastIndex) })
+  }
 
-  const processedLines = lines.map((line, index) => {
-    // Ligne vide → petit espace pour séparation
-    if (line.trim() === '') {
-      return '<br/>'
+  const htmlParts = segments.map((seg) => {
+    if (seg.type === 'math') {
+      // Compat: remplacer tabular par array pour prise en charge MathJax
+      let mathBlock = seg.value
+        .replace(/\\begin\{tabular\}/g, '\\begin{array}')
+        .replace(/\\end\{tabular\}/g, '\\end{array}')
+
+      // Normaliser colonnes: p{...} -> c
+      mathBlock = mathBlock.replace(/\\begin\{array\}\{([^}]*)\}/, (m, spec) => {
+        const normalized = spec.replace(/p\{[^}]+\}/g, 'c')
+        return `\\begin{array}{${normalized}}`
+      })
+
+      // Retirer les $ visibles à l'intérieur des cellules (déjà en mode math)
+      mathBlock = mathBlock.replace(/\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}/g, (full, inner) => {
+        const cleanedInner = inner.replace(/\$/g, '')
+        return full.replace(inner, cleanedInner)
+      })
+
+      return `<div class=\"mathjax-block\">${mathBlock}</div>`
     }
 
-    // Ligne avec puce indentée
-    const bulletMatch = line.match(/^(?:(\s*))\s*●\s+(.+)$/)
-    if (bulletMatch) {
-      const indentSpaces = Math.max(bulletMatch[1] ? bulletMatch[1].length : 0, 4) // Minimum 4 espaces
-      const marginLeft = indentSpaces * 6 // Indentation proportionnelle
-      return `<div class="step-bullet" style="margin-left: ${marginLeft}px;"><span class="bullet-symbol">●</span> <span class="bullet-text">${bulletMatch[2]}</span></div>`
-    }
+    // Segment texte: markdown léger puis rendu par lignes
+    let textPart = seg.value
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
 
-    // Ligne indentée sans puce
-    const indentMatch = line.match(/^(\s+)(.+)$/)
-    if (indentMatch && !indentMatch[2].includes('<div') && !indentMatch[2].includes('<strong') && !indentMatch[2].includes('●')) {
-      const indentSpaces = indentMatch[1].length
-      const marginLeft = indentSpaces * 6
-      return `<div class="step-line" style="margin-left: ${marginLeft}px;">${indentMatch[2]}</div>`
-    }
+    const lines = textPart.split('\n')
+    const processed = lines.map((line) => {
+      if (line.trim() === '') return '<br/>'
 
-    // Ligne normale (titre de question ou autre)
-    if (line.trim()) {
-      return `<div class="step-title">${line}</div>`
-    }
+      const bulletMatch = line.match(/^(?:(\s*))\s*●\s+(.+)$/)
+      if (bulletMatch) {
+        const indentSpaces = Math.max(bulletMatch[1] ? bulletMatch[1].length : 0, 4)
+        const marginLeft = indentSpaces * 6
+        return `<div class=\"step-bullet\" style=\"margin-left: ${marginLeft}px;\"><span class=\"bullet-symbol\">●</span> <span class=\"bullet-text\">${bulletMatch[2]}</span></div>`
+      }
 
-    return line
+      const indentMatch = line.match(/^(\s+)(.+)$/)
+      if (indentMatch && !indentMatch[2].includes('<div') && !indentMatch[2].includes('<strong') && !indentMatch[2].includes('●')) {
+        const indentSpaces = indentMatch[1].length
+        const marginLeft = indentSpaces * 6
+        return `<div class=\"step-line\" style=\"margin-left: ${marginLeft}px;\">${indentMatch[2]}</div>`
+      }
+
+      return `<div class=\"step-title\">${line}</div>`
+    })
+
+    return processed.join('')
   })
 
-  result = processedLines.join('')
-
-  // Nettoyer et gérer les séparations - très compact
+  let result = htmlParts.join('')
   result = result
-    .replace(/(<br\/>\s*){3,}/g, '<br/><br/>') // Seulement 3+ br deviennent 2 br
-    .replace(/  +/g, '&nbsp;&nbsp;') // Espaces multiples
+    .replace(/(<br\/>\s*){3,}/g, '<br/><br/>')
+    .replace(/  +/g, '&nbsp;&nbsp;')
 
   return result
 }
@@ -488,7 +510,6 @@ onMounted(() => {
 
 .exercice-card:hover {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  transform: translateY(-4px);
 }
 
 .exercice-card.completed {
@@ -496,49 +517,16 @@ onMounted(() => {
   box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.1), 0 2px 4px -1px rgba(34, 197, 94, 0.06);
 }
 
-/* Progress Indicator */
-.progress-indicator {
-  position: relative;
-  height: 4px;
-  background: #f1f5f9;
-  overflow: hidden;
+.exercice-card.acquired {
+  border-color: #22c55e;
+  box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.1), 0 2px 4px -1px rgba(34, 197, 94, 0.06);
 }
 
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  width: 0%;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+.exercice-card.not-acquired {
+  border-color: #ef4444;
+  box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1), 0 2px 4px -1px rgba(239, 68, 68, 0.06);
 }
 
-.progress-bar.completed {
-  width: 100%;
-  background: linear-gradient(90deg, #22c55e, #16a34a);
-}
-
-.progress-status {
-  position: absolute;
-  top: 8px;
-  right: 16px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-}
-
-.status-text.success {
-  color: #15803d;
-}
-
-.status-text.warning {
-  color: #b91c1c;
-}
-
-.status-text.pending {
-  color: #92400e;
-}
 
 /* Header Section */
 .exercice-header {
@@ -570,6 +558,13 @@ onMounted(() => {
   flex: 1;
 }
 
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
 .difficulty-indicator {
   display: flex;
   align-items: center;
@@ -577,74 +572,37 @@ onMounted(() => {
   flex-shrink: 0;
 }
 
-.difficulty-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid #ffffff;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-}
-
-.difficulty-dot.easy {
-  background: #22c55e;
-}
-
-.difficulty-dot.medium {
-  background: #f59e0b;
-}
-
-.difficulty-dot.hard {
-  background: #ef4444;
-}
-
-.difficulty-text {
-  font-size: 0.75rem;
+.difficulty-stars {
+  font-size: 1rem;
+  color: #f59e0b;
   font-weight: 600;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(245, 158, 11, 0.3);
 }
 
-.exercice-meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
 
-.exercice-number {
-  font-size: 0.875rem;
-  color: #64748b;
-  font-weight: 500;
-  background: #f1f5f9;
-  padding: 4px 12px;
-  border-radius: 16px;
-}
-
-.exercice-type {
-  font-size: 0.875rem;
-  color: #3b82f6;
-  font-weight: 600;
-  background: #eff6ff;
-  padding: 4px 12px;
-  border-radius: 16px;
-}
 
 .reset-status-btn {
-  background: none;
-  border: none;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
   color: #64748b;
   cursor: pointer;
-  padding: 10px;
-  border-radius: 12px;
+  padding: 8px;
+  border-radius: 50%;
   transition: all 0.2s ease;
   flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .reset-status-btn:hover {
-  background: #f1f5f9;
-  color: #475569;
-  transform: scale(1.05);
+  background: #f8fafc;
+  border-color: #3b82f6;
+  color: #3b82f6;
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
 }
 
 /* Learning Path */
@@ -778,7 +736,6 @@ onMounted(() => {
   border-color: #3b82f6;
   background: #eff6ff;
   color: #1d4ed8;
-  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
@@ -983,8 +940,8 @@ onMounted(() => {
 .steps-content :deep(strong) {
   font-weight: 600;
   color: #1e293b;
-  display: block;
-  margin: 1rem 0 0.5rem 0;
+  display: inline;
+  margin: 0;
 }
 
 /* Style pour les expressions mathématiques dans les étapes */
@@ -1076,7 +1033,6 @@ onMounted(() => {
 }
 
 .assessment-btn:hover {
-  transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 

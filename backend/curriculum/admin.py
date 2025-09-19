@@ -262,7 +262,7 @@ class ExerciceAdmin(admin.ModelAdmin):
             'fields': ('contenu', 'question', 'reponse_correcte'),
         }),
         (_('Configuration'), {
-            'fields': ('ordre', 'difficulty', 'points', 'couleur', 'svg_icon'),
+            'fields': ('ordre', 'difficulty', 'points'),
             'classes': ['collapse']
         }),
         (_('Statut et métadonnées'), {

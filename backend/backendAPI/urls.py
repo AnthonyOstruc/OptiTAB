@@ -22,6 +22,10 @@ urlpatterns = [
 ]
 
 # Servir les fichiers statiques et médias
-# On sert aussi MEDIA en production derrière Gunicorn car les images sont stockées localement
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# - Statiques: déjà gérées par WhiteNoise en production
+# - Médias: exposés aussi en production (Render) via Django pour simplifier le déploiement
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Toujours servir les médias, même en production (faible volumétrie, simple à gérer sur Render)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

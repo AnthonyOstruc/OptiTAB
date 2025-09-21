@@ -134,23 +134,48 @@ export function getImageUrl(imagePath, type = 'cours') {
   if (imagePath && (imagePath.startsWith('blob:') || imagePath.startsWith('data:'))) {
     return imagePath
   }
-  
+  // Si imagePath est une URL absolue http(s), la renvoyer telle quelle
+  if (imagePath && /^(https?:)?\/\//i.test(imagePath)) {
+    return imagePath
+  }
+
+  // Détecter l'environnement et construire l'URL de base
+  const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
+  // En production, permettre la surcharge via VITE_MEDIA_BASE_URL / VITE_API_BASE_URL
+  let prodMediaBase = null
+  try {
+    // import.meta.env est remplacé au build par Vite
+    // eslint-disable-next-line no-undef
+    prodMediaBase = (import.meta && import.meta.env)
+      ? (import.meta.env.VITE_MEDIA_BASE_URL || import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL)
+      : null
+  } catch (_) {
+    prodMediaBase = null
+  }
+  const baseUrl = isProduction
+    ? (prodMediaBase || 'https://optitab-backend.onrender.com')
+    : 'http://localhost:8000'
+
   // Si imagePath est déjà un chemin complet (commence par /media/), l'utiliser tel quel
   if (imagePath && imagePath.startsWith('/media/')) {
-    return `http://localhost:8000${imagePath}`
+    return `${baseUrl}${imagePath}`
   }
-  
+  // Si l'API renvoie "media/..." (sans slash initial)
+  if (imagePath && imagePath.startsWith('media/')) {
+    return `${baseUrl}/${imagePath}`
+  }
+
   // Si imagePath est un chemin relatif, construire l'URL complète
   if (imagePath && imagePath.includes('/')) {
-    return `http://localhost:8000/media/${imagePath}`
+    return `${baseUrl}/media/${imagePath}`
   }
-  
+
   // Si imagePath est juste un nom de fichier, construire le chemin complet
   if (imagePath && !imagePath.startsWith('/')) {
     const folder = type === 'cours' ? 'cours_images' : 'exercice_images'
-    return `http://localhost:8000/media/${folder}/${imagePath}`
+    return `${baseUrl}/media/${folder}/${imagePath}`
   }
-  
+
   return imagePath
 }
 

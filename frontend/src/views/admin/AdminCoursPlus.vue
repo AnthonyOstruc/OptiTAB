@@ -427,7 +427,7 @@ function renderPreviewContent(cours) {
     if (imageFile) {
       return `
         <div class="preview-image-container" style="text-align: center; margin: 2em 0;">
-          <img src="${URL.createObjectURL(imageFile)}" alt="Image ${position}" class="preview-image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+          <img src="${URL.createObjectURL(imageFile)}" alt="Image ${position}" class="content-image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
           <div class="image-info" style="margin-top: 0.5rem; font-size: 0.875rem; color: #28a745; font-weight: 500;">✅ ${imageName}</div>
         </div>
       `
@@ -441,6 +441,22 @@ function renderPreviewContent(cours) {
       `
     }
   })
+  
+  // Fallback: s'il n'y a PAS de marqueurs [IMAGE_X] mais qu'on a des images,
+  // on les affiche automatiquement à la fin du contenu pour l'aperçu.
+  if (!/\[IMAGE_\d+\]/.test(cours.contenu || '') && images.length > 0) {
+    const autoGallery = images.map(img => `
+      <div class="content-image-container" style="text-align: center; margin: 2em 0;">
+        <img 
+          src="${img.image}" 
+          alt="Image ${img.position || ''}" 
+          class="content-image"
+          style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+        />
+      </div>
+    `).join('\n')
+    content = `${content}\n${autoGallery}`
+  }
   
   // Utiliser le nouveau rendu Markdown
   return renderContentWithImages(content, images)

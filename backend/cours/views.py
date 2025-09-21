@@ -12,6 +12,12 @@ class CoursViewSet(viewsets.ModelViewSet):
     serializer_class = CoursSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]  # Lecture publique, écriture authentifiée
 
+    def get_serializer_context(self):
+        # Injecter la requête pour construire des URLs absolues dans le serializer
+        ctx = super().get_serializer_context()
+        ctx['request'] = self.request
+        return ctx
+
     def get_queryset(self):
         queryset = super().get_queryset()
         chapitre = self.request.query_params.get('chapitre')
@@ -30,6 +36,11 @@ class CoursImageViewSet(viewsets.ModelViewSet):
     queryset = CoursImage.objects.all()
     serializer_class = CoursImageSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_serializer_context(self):
+        ctx = super().get_serializer_context()
+        ctx['request'] = self.request
+        return ctx
 
     def get_queryset(self):
         queryset = super().get_queryset()

@@ -22,6 +22,6 @@ urlpatterns = [
 ]
 
 # Servir les fichiers statiques et médias
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# On sert aussi MEDIA en production derrière Gunicorn car les images sont stockées localement
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

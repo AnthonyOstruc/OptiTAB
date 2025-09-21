@@ -3,6 +3,9 @@
 # Script de démarrage pour Render avec collecte des fichiers statiques
 echo "=== Démarrage OptiTAB Backend ==="
 
+# Créer les répertoires médias si manquants (Render persistent disk)
+mkdir -p media/exercice_images media/cours_images media/quiz_images
+
 # Collecte des fichiers statiques
 echo "Collecting static files..."
 python manage.py collectstatic --noinput --clear

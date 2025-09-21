@@ -12,6 +12,11 @@ services:
     rootDirectory: backend
     buildCommand: pip install -r requirements.txt
     startCommand: ./start.sh
+    # Disque persistant pour stocker les fichiers médias Django
+    disk:
+      name: media
+      mountPath: /opt/render/project/src/backend/media
+      sizeGB: 5
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: backendAPI.settings

@@ -16,10 +16,15 @@ class CoursSerializer(serializers.ModelSerializer):
         qs = getattr(obj, 'images', None)
         if qs is None:
             return []
+        request = self.context.get('request') if hasattr(self, 'context') else None
         return [
             {
                 'id': img.id,
-                'image': img.image.url if getattr(img.image, 'url', None) else '',
+                'image': (
+                    request.build_absolute_uri(img.image.url)
+                    if request and getattr(img.image, 'url', None)
+                    else (img.image.url if getattr(img.image, 'url', None) else '')
+                ),
                 'image_type': img.image_type,
                 'position': img.position,
                 'legende': img.legende,
@@ -36,3 +41,13 @@ class CoursImageSerializer(serializers.ModelSerializer):
             'legende': {'required': False, 'allow_blank': True},
             'position': {'required': False},
         }
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        try:
+            request = self.context.get('request') if hasattr(self, 'context') else None
+            if request and data.get('image') and not str(data['image']).startswith('http'):
+                data['image'] = request.build_absolute_uri(data['image'])
+        except Exception:
+            pass
+        return data

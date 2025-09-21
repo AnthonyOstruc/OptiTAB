@@ -16,7 +16,7 @@ services:
     disk:
       name: media
       # Monter en dehors du repo pour éviter un écrasement lors des déploiements
-      mountPath: /var/media
+      mountPath: /data
       sizeGB: 1
     envVars:
       - key: DJANGO_SETTINGS_MODULE
@@ -24,7 +24,7 @@ services:
       - key: PYTHONPATH
         value: /opt/render/project/src/backend:/opt/render/project/src
       - key: MEDIA_ROOT
-        value: /var/media
+        value: /data
       - key: FRONTEND_BASE_URL
         value: https://optitab.net
       # Configuration email pour la réinitialisation de mot de passe

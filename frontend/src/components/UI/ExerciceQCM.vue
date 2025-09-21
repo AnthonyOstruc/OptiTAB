@@ -378,17 +378,23 @@ function getImageUrl(imagePath) {
   if (!props.eid || !props.eid.toString().startsWith('preview-')) {
     console.log('getImageUrl - imagePath reçu:', imagePath, 'type:', typeof imagePath)
   }
-  
+
   // Si c'est un aperçu et que imagePath est déjà une URL (blob: ou data:)
-  if (props.eid && props.eid.toString().startsWith('preview-') && 
+  if (props.eid && props.eid.toString().startsWith('preview-') &&
       (imagePath && (imagePath.startsWith('blob:') || imagePath.startsWith('data:')))) {
     return imagePath
   }
-  
+
+  // Détecter l'environnement et construire l'URL de base
+  const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
+  const baseUrl = isProduction
+    ? 'https://optitab.net'
+    : 'http://localhost:8000'
+
   // Construire l'URL complète de l'image
   // Si imagePath est déjà un chemin complet (commence par /media/), l'utiliser tel quel
   if (imagePath && imagePath.startsWith('/media/')) {
-    const fullUrl = `http://localhost:8000${imagePath}`
+    const fullUrl = `${baseUrl}${imagePath}`
     if (!props.eid || !props.eid.toString().startsWith('preview-')) {
       console.log('getImageUrl - URL complète (déjà /media/):', fullUrl)
     }
@@ -396,7 +402,7 @@ function getImageUrl(imagePath) {
   }
   // Si imagePath est un chemin relatif (commence par exercice_images/), construire l'URL complète
   if (imagePath && imagePath.startsWith('exercice_images/')) {
-    const fullUrl = `http://localhost:8000/media/${imagePath}`
+    const fullUrl = `${baseUrl}/media/${imagePath}`
     if (!props.eid || !props.eid.toString().startsWith('preview-')) {
       console.log('getImageUrl - URL complète (chemin relatif):', fullUrl)
     }
@@ -404,7 +410,7 @@ function getImageUrl(imagePath) {
   }
   // Si imagePath est juste un nom de fichier, construire le chemin complet
   if (imagePath && !imagePath.startsWith('/') && !imagePath.includes('/')) {
-    const fullUrl = `http://localhost:8000/media/exercice_images/${imagePath}`
+    const fullUrl = `${baseUrl}/media/exercice_images/${imagePath}`
     if (!props.eid || !props.eid.toString().startsWith('preview-')) {
       console.log('getImageUrl - URL complète (nom fichier):', fullUrl)
     }

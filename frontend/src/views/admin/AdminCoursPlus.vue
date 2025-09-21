@@ -427,7 +427,7 @@ function renderPreviewContent(cours) {
     if (imageFile) {
       return `
         <div class="preview-image-container" style="text-align: center; margin: 2em 0;">
-          <img src="${URL.createObjectURL(imageFile)}" alt="Image ${position}" class="preview-image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+          <img src="${URL.createObjectURL(imageFile)}" alt="Image ${position}" class="content-image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
           <div class="image-info" style="margin-top: 0.5rem; font-size: 0.875rem; color: #28a745; font-weight: 500;">✅ ${imageName}</div>
         </div>
       `

@@ -22,6 +22,10 @@ urlpatterns = [
 ]
 
 # Servir les fichiers statiques et médias
+# - Statiques: déjà gérées par WhiteNoise en production
+# - Médias: exposés aussi en production (Render) via Django pour simplifier le déploiement
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Toujours servir les médias, même en production (faible volumétrie, simple à gérer sur Render)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

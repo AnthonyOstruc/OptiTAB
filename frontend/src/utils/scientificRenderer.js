@@ -160,6 +160,10 @@ export function getImageUrl(imagePath, type = 'cours') {
   if (imagePath && imagePath.startsWith('/media/')) {
     return `${baseUrl}${imagePath}`
   }
+  // Si l'API renvoie "media/..." (sans slash initial)
+  if (imagePath && imagePath.startsWith('media/')) {
+    return `${baseUrl}/${imagePath}`
+  }
 
   // Si imagePath est un chemin relatif, construire l'URL complète
   if (imagePath && imagePath.includes('/')) {

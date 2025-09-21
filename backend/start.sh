@@ -4,9 +4,17 @@
  echo "=== Démarrage OptiTAB Backend ==="
 
 # Créer les répertoires médias si manquants (Render persistent disk)
-mkdir -p media/exercice_images
-mkdir -p media/cours_images
-mkdir -p media/quiz_images
+# Utiliser MEDIA_ROOT si défini (Render) sinon ./media
+MEDIA_DIR=${MEDIA_ROOT:-media}
+mkdir -p "$MEDIA_DIR/exercice_images"
+mkdir -p "$MEDIA_DIR/cours_images"
+mkdir -p "$MEDIA_DIR/quiz_images"
+
+# Si MEDIA_DIR différent de ./media et que ./media contient des fichiers seed, les copier une fois
+if [ "$MEDIA_DIR" != "media" ] && [ -d "media" ] && [ -z "$(ls -A "$MEDIA_DIR" 2>/dev/null)" ]; then
+  echo "Seeding media folder from repo to $MEDIA_DIR..."
+  cp -r media/* "$MEDIA_DIR" || true
+fi
 
 # Collecte des fichiers statiques
 echo "Collecting static files..."

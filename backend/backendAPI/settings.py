@@ -284,7 +284,8 @@ FRONTEND_URL = os.getenv("FRONTEND_URL", FRONTEND_BASE_URL)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# Permettre de surcharger le dossier médias en production via variable d'env
+MEDIA_ROOT = Path(os.getenv('MEDIA_ROOT', BASE_DIR / 'media'))
 
 # Utiliser WhiteNoise pour servir les fichiers statiques en production
 # (Configuration compatible Django 5.x)

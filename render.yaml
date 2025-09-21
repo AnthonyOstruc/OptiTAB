@@ -15,13 +15,16 @@ services:
     # Disque persistant pour stocker les fichiers médias Django
     disk:
       name: media
-      mountPath: /opt/render/project/src/backend/media
+      # Monter en dehors du repo pour éviter un écrasement lors des déploiements
+      mountPath: /var/media
       sizeGB: 1
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: backendAPI.settings
       - key: PYTHONPATH
         value: /opt/render/project/src/backend:/opt/render/project/src
+      - key: MEDIA_ROOT
+        value: /var/media
       - key: FRONTEND_BASE_URL
         value: https://optitab.net
       # Configuration email pour la réinitialisation de mot de passe

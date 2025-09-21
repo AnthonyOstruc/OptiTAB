@@ -9,8 +9,8 @@ services:
         value: 20.19.0
   - type: web
     name: optitab-backend
-    rootDirectory: backend
-    buildCommand: pip install -r requirements.txt
+    rootDirectory: .
+    buildCommand: cd backend && pip install -r requirements.txt
     startCommand: ./start.sh
     # Disque persistant pour stocker les fichiers médias Django
     disk:
@@ -22,7 +22,7 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: backendAPI.settings
       - key: PYTHONPATH
-        value: /opt/render/project/src/backend:/opt/render/project/src
+        value: /opt/render/project/src:/opt/render/project/src/backend
       - key: MEDIA_ROOT
         value: /data
       - key: FRONTEND_BASE_URL

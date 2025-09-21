@@ -297,6 +297,16 @@ STORAGES = {
     },
 }
 
+# Configuration pour les uploads de fichiers
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.MemoryFileUploadHandler',
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]
+
+# Taille maximale des fichiers uploadés (10MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
+
 # Cache agressif côté client pour les assets versionnés
 WHITENOISE_MAX_AGE = 31536000  # 1 an
 

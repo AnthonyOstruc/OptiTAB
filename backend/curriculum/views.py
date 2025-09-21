@@ -5,7 +5,7 @@ Structure: Pays → Niveau → Matière → Thème → Notion → Chapitre → E
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.db.models import Q
 from django.db import models
 from django.core.cache import cache
@@ -631,9 +631,32 @@ class ExerciceImageViewSet(viewsets.ModelViewSet):
     serializer_class = ExerciceImageSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+    def get_permissions(self):
+        """Permettre la lecture publique mais authentification requise pour modification"""
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            # Seul les utilisateurs authentifiés peuvent modifier les images
+            return [IsAuthenticated()]
+        return [IsAuthenticatedOrReadOnly()]
+
     def get_queryset(self):
         queryset = super().get_queryset()
         exercice_id = self.request.query_params.get('exercice')
         if exercice_id:
             queryset = queryset.filter(exercice_id=exercice_id)
         return queryset.order_by('position', 'id')
+
+    def create(self, request, *args, **kwargs):
+        """Créer une image d'exercice avec upload de fichier"""
+        # Vérifier que l'utilisateur est authentifié
+        if not request.user.is_authenticated:
+            return Response(
+                {'error': 'Authentification requise pour uploader des images'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        # Créer l'instance via le serializer avec les données de la requête
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

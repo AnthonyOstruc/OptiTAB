@@ -317,9 +317,12 @@ class ExerciceImageSerializer(serializers.ModelSerializer):
             'position': {'required': False},
         }
 
+    def create(self, validated_data):
+        """Créer une instance ExerciceImage avec gestion d'upload"""
+        return ExerciceImage.objects.create(**validated_data)
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['nom'] = data.get('titre')
         # Convertir l'URL relative en URL absolue en production
         try:
             request = self.context.get('request') if hasattr(self, 'context') else None

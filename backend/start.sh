@@ -1,10 +1,12 @@
 #!/bin/bash
 
 # Script de démarrage pour Render avec collecte des fichiers statiques
-echo "=== Démarrage OptiTAB Backend ==="
+ echo "=== Démarrage OptiTAB Backend ==="
 
 # Créer les répertoires médias si manquants (Render persistent disk)
-mkdir -p media/exercice_images media/cours_images media/quiz_images
+mkdir -p media/exercice_images
+mkdir -p media/cours_images
+mkdir -p media/quiz_images
 
 # Collecte des fichiers statiques
 echo "Collecting static files..."

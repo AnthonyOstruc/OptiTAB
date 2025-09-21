@@ -29,3 +29,20 @@ if settings.DEBUG:
 
 # Toujours servir les médias, même en production (faible volumétrie, simple à gérer sur Render)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Vérifier la configuration média au démarrage (debug)
+if settings.DEBUG:
+    from django.core.management import execute_from_command_line
+    import sys
+    try:
+        execute_from_command_line(['manage.py', 'check', '--deploy'])
+    except SystemExit:
+        pass
+else:
+    # En production, vérifier que les répertoires médias existent
+    import os
+    media_root = settings.MEDIA_ROOT
+    if not os.path.exists(media_root):
+        print(f"AVERTISSEMENT: Répertoire médias manquant: {media_root}")
+    else:
+        print(f"Répertoire médias OK: {media_root}")

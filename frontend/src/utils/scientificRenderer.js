@@ -134,6 +134,10 @@ export function getImageUrl(imagePath, type = 'cours') {
   if (imagePath && (imagePath.startsWith('blob:') || imagePath.startsWith('data:'))) {
     return imagePath
   }
+  // Si imagePath est une URL absolue http(s), la renvoyer telle quelle
+  if (imagePath && /^(https?:)?\/\//i.test(imagePath)) {
+    return imagePath
+  }
 
   // Détecter l'environnement et construire l'URL de base
   const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'

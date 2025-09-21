@@ -16,10 +16,12 @@ class CoursSerializer(serializers.ModelSerializer):
         qs = getattr(obj, 'images', None)
         if qs is None:
             return []
+        request = self.context.get('request') if hasattr(self, 'context') else None
         return [
             {
                 'id': img.id,
-                'image': img.image.url if getattr(img.image, 'url', None) else '',
+                # Retourner une URL ABSOLUE si possible (évite les reconstructions côté frontend)
+                'image': (request.build_absolute_uri(img.image.url) if (request and getattr(img.image, 'url', None)) else (img.image.url if getattr(img.image, 'url', None) else '')),
                 'image_type': img.image_type,
                 'position': img.position,
                 'legende': img.legende,

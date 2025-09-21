@@ -10,10 +10,18 @@ mkdir -p "$MEDIA_DIR/exercice_images"
 mkdir -p "$MEDIA_DIR/cours_images"
 mkdir -p "$MEDIA_DIR/quiz_images"
 
-# Si MEDIA_DIR différent de ./media et que ./media contient des fichiers seed, les copier une fois
-if [ "$MEDIA_DIR" != "media" ] && [ -d "media" ] && [ -z "$(ls -A "$MEDIA_DIR" 2>/dev/null)" ]; then
-  echo "Seeding media folder from repo to $MEDIA_DIR..."
-  cp -r media/* "$MEDIA_DIR" || true
+# Si MEDIA_DIR différent de ./media et que ./media contient des fichiers seed,
+# copier tout fichier manquant (sans écraser ceux déjà présents)
+if [ "$MEDIA_DIR" != "media" ] && [ -d "media" ]; then
+  echo "Syncing seed media into $MEDIA_DIR (no overwrite)..."
+  cp -rn media/* "$MEDIA_DIR" 2>/dev/null || true
+  # Copier aussi récursivement l'intérieur des sous-dossiers si absents
+  for sub in exercice_images cours_images quiz_images; do
+    if [ -d "media/$sub" ]; then
+      mkdir -p "$MEDIA_DIR/$sub"
+      cp -rn media/$sub/* "$MEDIA_DIR/$sub" 2>/dev/null || true
+    fi
+  done
 fi
 
 # Collecte des fichiers statiques

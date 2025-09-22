@@ -3,6 +3,7 @@ import { useUserStore } from '@/stores/user'
 import { useNotificationStore } from '@/stores/notifications'
 import { useXP } from '@/composables/useXP'
 import { fetchMyStreaks, fetchUserGamification } from '@/api/users'
+import apiClient from '@/api/client'
 
 /**
  * Composable pour gérer le système de streaks quotidiens
@@ -62,6 +63,11 @@ export function useStreak() {
         return { success: false, reason: 'not_authenticated' }
       }
 
+      // Claim today's streak first (idempotent)
+      try {
+        await apiClient.post('/api/users/me/streaks/claim/')
+      } catch (_) {}
+
       const res = await fetchMyStreaks()
       const payload = res?.data?.data || res?.data || null
       if (!payload) {
@@ -103,6 +109,8 @@ export function useStreak() {
       return
     }
     try {
+      // Claim on app open to ensure up-to-date
+      try { await apiClient.post('/api/users/me/streaks/claim/') } catch (_) {}
       const res = await fetchMyStreaks()
       const payload = res?.data?.data || res?.data || null
       if (payload) {

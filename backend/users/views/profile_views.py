@@ -626,38 +626,106 @@ class MyOverviewView(APIView):
 
 
 class MyStreaksView(APIView):
-    """Renvoie streak actuel, meilleur streak et activité journalière récente pour l'élève courant."""
+    """Renvoie le streak actuel basé sur l'état serveur (visite quotidienne)."""
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
             user = request.user
-            # Compute and persist latest streak
-            streak_data = StreakService.refresh_user_streak(user)
-
-            # Derniers 60 jours pour heatmap (from activity map)
-            last_days = []
-            today = timezone.now().date()
-            for i in range(59, -1, -1):
-                day = today - timedelta(days=i)
-                last_days.append({
-                    'date': str(day),
-                    'count': streak_data.activity_map.get(str(day), 0)
-                })
-
             data = {
-                'current_streak': streak_data.current_streak,
-                'longest_streak': streak_data.longest_streak,
-                'last_days': last_days,
+                'current_streak': int(getattr(user, 'streak', 0) or 0),
             }
-
             return ResponseService.success(
-                message="Streaks récupérés",
+                message="Streak récupéré",
                 data=data
             )
         except Exception:
             return ResponseService.error(
-                message="Erreur lors de la récupération des streaks",
+                message="Erreur lors de la récupération du streak",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class DailyVisitStreakView(APIView):
+    """Incrémente de façon idempotente la série quotidienne lors d'une visite (une fois/jour).
+
+    Règles:
+    - Si déjà compté aujourd'hui: rien ne change
+    - Si dernière visite hier: streak += 1
+    - Sinon: streak = 1
+    - XP attribué par jour: 1..5 puis 5, identique au frontend
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            user = request.user
+            today = timezone.now().date()
+
+            # Idempotency: une seule revendication par jour via notification daily_streak
+            last_notif = (
+                UserNotification.objects
+                .filter(user=user, type='daily_streak')
+                .order_by('-created_at')
+                .first()
+            )
+            last_date = last_notif.created_at.date() if last_notif else None
+
+            prev_streak = int(getattr(user, 'streak', 0) or 0)
+
+            if last_date == today:
+                return ResponseService.success(
+                    message="Streak déjà compté aujourd'hui",
+                    data={
+                        'current_streak': prev_streak,
+                        'xp_awarded': 0,
+                        'already_counted_today': True,
+                    }
+                )
+
+            # Calcul du nouveau streak selon l'écart
+            if last_date and (today - last_date).days == 1:
+                new_streak = prev_streak + 1
+            else:
+                new_streak = 1
+
+            xp_awarded = int(StreakService._calculate_streak_xp(new_streak))
+
+            # Persister les changements + notification
+            try:
+                user.streak = int(max(0, new_streak))
+                user.xp = int(max(0, (user.xp or 0) + xp_awarded))
+                user.save(update_fields=['streak', 'xp'])
+            except Exception:
+                # En cas d'erreur, tenter de sauver à minima le streak
+                try:
+                    user.streak = int(max(0, new_streak))
+                    user.save(update_fields=['streak'])
+                except Exception:
+                    pass
+
+            try:
+                UserNotification.objects.create(
+                    user=user,
+                    type='daily_streak',
+                    title='🔥 Streak quotidien',
+                    message=f"{new_streak} jours consécutifs",
+                    data={'current_streak': new_streak, 'xp_awarded': xp_awarded}
+                )
+            except Exception:
+                pass
+
+            return ResponseService.success(
+                message="Streak mis à jour",
+                data={
+                    'current_streak': new_streak,
+                    'xp_awarded': xp_awarded,
+                    'already_counted_today': False,
+                }
+            )
+        except Exception:
+            return ResponseService.error(
+                message="Erreur lors de la mise à jour du streak",
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 

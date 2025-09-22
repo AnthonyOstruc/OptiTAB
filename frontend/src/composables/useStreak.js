@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useNotificationStore } from '@/stores/notifications'
 import { useXP } from '@/composables/useXP'
+import { fetchMyStreaks, fetchUserGamification } from '@/api/users'
 
 /**
  * Composable pour gérer le système de streaks quotidiens
@@ -32,14 +33,10 @@ export function useStreak() {
    */
   function isNewDay(lastDate) {
     if (!lastDate) return true
-    
     const today = new Date()
     const last = new Date(lastDate)
-    
-    // Comparer juste les dates (sans l'heure)
     const todayStr = today.toDateString()
     const lastStr = last.toDateString()
-    
     return todayStr !== lastStr
   }
 
@@ -48,13 +45,10 @@ export function useStreak() {
    */
   function isStreakValid(lastDate) {
     if (!lastDate) return false
-    
     const today = new Date()
     const last = new Date(lastDate)
     const diffTime = today - last
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
-    
-    // Streak valide si connexion hier (1 jour) ou aujourd'hui (0 jour)
     return diffDays <= 1
   }
 
@@ -62,80 +56,38 @@ export function useStreak() {
    * Met à jour le streak de l'utilisateur
    */
   async function updateStreak() {
+    // Server authoritative refresh: fetch from backend, which also awards XP if increased
     try {
-      // Vérifier si déjà traité aujourd'hui
-      if (isStreakCheckedToday.value) {
-        console.log('Streak deja verifie aujourdhui')
-        return { success: true, alreadyChecked: true }
+      if (!userStore.isAuthenticated) {
+        return { success: false, reason: 'not_authenticated' }
       }
 
-      const today = new Date().toISOString().split('T')[0] // Format YYYY-MM-DD
-      const storedLastLogin = localStorage.getItem('lastLoginDate')
-      const storedStreak = parseInt(localStorage.getItem('currentStreak') || '0')
-
-      console.log('Verification streak:', { 
-        today, 
-        storedLastLogin, 
-        storedStreak,
-        isNewDay: isNewDay(storedLastLogin)
-      })
-
-      // Si ce n'est pas un nouveau jour, pas de streak
-      if (!isNewDay(storedLastLogin)) {
-        isStreakCheckedToday.value = true
-        currentStreak.value = storedStreak
-        return { success: true, alreadyChecked: true }
+      const res = await fetchMyStreaks()
+      const payload = res?.data?.data || res?.data || null
+      if (!payload) {
+        return { success: false, error: 'no_payload' }
       }
 
-      let newStreak = 1 // Par défaut, redémarrer à 1
-
-      // Si la streak précédente est encore valide, l'incrémenter
-      if (isStreakValid(storedLastLogin)) {
-        newStreak = storedStreak + 1
-      }
-
-      // Calculer les XP à gagner
-      const xpToGain = calculateStreakXP(newStreak)
-
-      console.log('Nouveau streak:', { 
-        newStreak, 
-        xpToGain,
-        wasValid: isStreakValid(storedLastLogin)
-      })
-
-      // Mettre à jour les données locales
-      currentStreak.value = newStreak
-      lastLoginDate.value = today
+      // Update local state from server
+      currentStreak.value = Number(payload.current_streak || 0)
       isStreakCheckedToday.value = true
 
-      // Sauvegarder dans localStorage
-      localStorage.setItem('currentStreak', newStreak.toString())
-      localStorage.setItem('lastLoginDate', today)
-      localStorage.setItem('streakCheckedToday', 'true')
+      // Optionally refresh gamification to reflect XP awarded on server
+      try {
+        const g = await fetchUserGamification()
+        const gData = g?.data?.data || g?.data
+        if (gData && typeof gData.xp === 'number') {
+          userStore.xp = Number(gData.xp)
+        }
+      } catch (_) {}
 
-      // Donner les XP à l'utilisateur
-      if (xpToGain > 0) {
-        await updateUserXPInstantly(xpToGain, 'streak_daily')
-      }
+      // Client-side notification for visibility
+      const xpToGain = calculateStreakXP(currentStreak.value)
+      notificationStore.notifyDailyStreak(currentStreak.value, xpToGain)
 
-      // Afficher la notification
-      notificationStore.notifyDailyStreak(newStreak, xpToGain)
-
-      console.log('Streak mis a jour:', { 
-        streak: newStreak, 
-        xp: xpToGain,
-        userXP: userStore.xp 
-      })
-
-      return {
-        success: true,
-        streakDays: newStreak,
-        xpGained: xpToGain,
-        isNewStreak: newStreak === 1 && !isStreakValid(storedLastLogin)
-      }
-
+      return { success: true, streakDays: currentStreak.value }
     } catch (error) {
-      console.error('Erreur lors de la mise a jour du streak:', error)
+      console.error('Erreur lors de la mise a jour du streak (server):', error)
       return { success: false, error }
     }
   }
@@ -143,34 +95,22 @@ export function useStreak() {
   /**
    * Initialise le système de streaks depuis le localStorage
    */
-  function initializeStreak() {
-    try {
-      const storedStreak = parseInt(localStorage.getItem('currentStreak') || '0')
-      const storedLastLogin = localStorage.getItem('lastLoginDate')
-      const checkedToday = localStorage.getItem('streakCheckedToday') === 'true'
-      
-      currentStreak.value = storedStreak
-      lastLoginDate.value = storedLastLogin
-      
-      // Vérifier si c'est un nouveau jour
-      if (isNewDay(storedLastLogin)) {
-        isStreakCheckedToday.value = false
-        localStorage.removeItem('streakCheckedToday')
-      } else {
-        isStreakCheckedToday.value = checkedToday
-      }
-
-      console.log('Streak initialise:', {
-        streak: currentStreak.value,
-        lastLogin: lastLoginDate.value,
-        checkedToday: isStreakCheckedToday.value
-      })
-
-    } catch (error) {
-      console.warn('Erreur initialisation streak:', error)
+  async function initializeStreak() {
+    // Initialize from server for cross-device consistency
+    if (!userStore.isAuthenticated) {
       currentStreak.value = 0
-      lastLoginDate.value = null
       isStreakCheckedToday.value = false
+      return
+    }
+    try {
+      const res = await fetchMyStreaks()
+      const payload = res?.data?.data || res?.data || null
+      if (payload) {
+        currentStreak.value = Number(payload.current_streak || 0)
+        isStreakCheckedToday.value = true
+      }
+    } catch (error) {
+      // Do not block UI; keep defaults
     }
   }
 
@@ -181,12 +121,6 @@ export function useStreak() {
     currentStreak.value = 0
     lastLoginDate.value = null
     isStreakCheckedToday.value = false
-    
-    localStorage.removeItem('currentStreak')
-    localStorage.removeItem('lastLoginDate')
-    localStorage.removeItem('streakCheckedToday')
-    
-    console.log('Streak remis a zero')
   }
 
   /**

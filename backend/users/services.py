@@ -18,6 +18,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import timedelta
+from django.db import transaction
 from django.db.models import Count
 from django.db.models.functions import TruncDate
 from django.utils import timezone
@@ -32,6 +33,14 @@ class StreakData:
 
 
 class StreakService:
+    @staticmethod
+    def _calculate_streak_xp(streak_days: int) -> int:
+        """XP rules: day 1..5 => 1..5 XP, then capped at 5 XP/day."""
+        if streak_days <= 0:
+            return 0
+        if streak_days <= 5:
+            return int(streak_days)
+        return 5
     @staticmethod
     def _fetch_activity_map(user, days: int = 365) -> dict[str, int]:
         from suivis.models import SuiviExercice
@@ -96,27 +105,55 @@ class StreakService:
             # Persist the current streak on the user model for admin display
             # Do not overwrite other fields to avoid race conditions
             if prev_streak != data.current_streak:
-                user.streak = int(max(0, data.current_streak))
-                user.save(update_fields=['streak'])
+                # If streak increased, we may also award XP once per day (server-authoritative)
+                increased = data.current_streak > prev_streak
+                today = timezone.now().date()
 
-                # Notify only on increase and only once per day
-                if notify_on_increase and data.current_streak > prev_streak:
-                    try:
-                        today = timezone.now().date()
+                # Use a transaction for atomicity when awarding XP and creating notification
+                with transaction.atomic():
+                    # Always persist the latest streak value
+                    user.streak = int(max(0, data.current_streak))
+
+                    xp_awarded = 0
+                    if notify_on_increase and increased:
+                        # Ensure idempotency using the presence of today's daily_streak notification
                         already = UserNotification.objects.filter(
                             user=user,
                             type='daily_streak',
                             created_at__date=today
                         ).exists()
                         if not already:
-                            UserNotification.objects.create(
-                                user=user,
-                                type='daily_streak',
-                                title='🔥 Streak quotidien',
-                                message=f"{data.current_streak} jours consécutifs",
-                                data={'current_streak': data.current_streak}
-                            )
+                            # Compute XP for the new streak day
+                            xp_awarded = int(cls._calculate_streak_xp(data.current_streak))
+                            try:
+                                # Safely increment XP
+                                new_xp = int((user.xp or 0)) + xp_awarded
+                                user.xp = max(0, new_xp)
+                            except Exception:
+                                # In case of unexpected values, do not block the flow
+                                xp_awarded = 0
+
+                            # Create the daily streak notification (includes XP info)
+                            try:
+                                UserNotification.objects.create(
+                                    user=user,
+                                    type='daily_streak',
+                                    title='🔥 Streak quotidien',
+                                    message=f"{data.current_streak} jours consécutifs",
+                                    data={'current_streak': data.current_streak, 'xp_awarded': xp_awarded}
+                                )
+                            except Exception:
+                                # Notification errors should not break the request
+                                pass
+
+                    # Save user updates (streak and maybe xp)
+                    try:
+                        if xp_awarded > 0:
+                            user.save(update_fields=['streak', 'xp'])
+                        else:
+                            user.save(update_fields=['streak'])
                     except Exception:
+                        # Avoid breaking request flow on persistence errors
                         pass
         except Exception:
             # Avoid breaking request flow on persistence errors

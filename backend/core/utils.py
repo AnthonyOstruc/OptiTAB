@@ -45,7 +45,6 @@ def upload_file_to_s3(file_content, filename, content_type=None):
             Bucket=settings.AWS_STORAGE_BUCKET_NAME,
             Key=filename,
             Body=file_content,
-            ACL='public-read',
             ContentType=content_type or 'application/octet-stream'
         )
 

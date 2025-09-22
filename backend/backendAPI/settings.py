@@ -324,7 +324,9 @@ if S3_ENABLED:
             'bucket_name': AWS_STORAGE_BUCKET_NAME,
             'region_name': AWS_S3_REGION_NAME,
             'custom_domain': AWS_S3_CUSTOM_DOMAIN,
-            'default_acl': 'public-read',
+            # Les buckets "ACLs disabled" requièrent aucun ACL explicite
+            'default_acl': None,
+            # Rendre les URLs lisibles sans signature (objets doivent être publics via policy)
             'querystring_auth': False,
         }
     }

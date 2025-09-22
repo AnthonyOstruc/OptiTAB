@@ -20,8 +20,13 @@ class CoursSerializer(serializers.ModelSerializer):
         return [
             {
                 'id': img.id,
-                # Retourner une URL ABSOLUE si possible (évite les reconstructions côté frontend)
-                'image': (request.build_absolute_uri(img.image.url) if (request and getattr(img.image, 'url', None)) else (img.image.url if getattr(img.image, 'url', None) else '')),
+                # Retourner une URL absolue; si S3 renvoie déjà absolue, la garder
+                'image': (
+                    img.image.url if (getattr(img.image, 'url', None) and str(img.image.url).startswith(('http://', 'https://')))
+                    else (
+                        request.build_absolute_uri(img.image.url) if (request and getattr(img.image, 'url', None)) else (img.image.url if getattr(img.image, 'url', None) else '')
+                    )
+                ),
                 'image_type': img.image_type,
                 'position': img.position,
                 'legende': img.legende,

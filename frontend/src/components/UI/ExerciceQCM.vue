@@ -390,6 +390,31 @@ function getImageUrl(imagePath) {
     return imagePath
   }
 
+  // Vérifier si S3 est utilisé en priorité
+  const s3MediaUrl = window.__ENV__?.VITE_S3_MEDIA_URL || import.meta.env?.VITE_S3_MEDIA_URL
+
+  // Si une URL S3 est configurée, l'utiliser
+  if (s3MediaUrl && imagePath) {
+    // Nettoyer le chemin d'image et construire l'URL S3
+    let cleanImagePath = imagePath.replace(/^\/+/, '') // Supprimer les / de début
+
+    // Si c'est un chemin relatif comme 'exercice_images/filename.png', l'utiliser tel quel
+    if (cleanImagePath.includes('/')) {
+      const fullUrl = `${s3MediaUrl}/${cleanImagePath}`
+      if (!props.eid || !props.eid.toString().startsWith('preview-')) {
+        console.log('getImageUrl - URL S3 (chemin relatif):', fullUrl)
+      }
+      return fullUrl
+    }
+
+    // Si c'est juste un nom de fichier, l'utiliser tel quel avec S3
+    const fullUrl = `${s3MediaUrl}/${cleanImagePath}`
+    if (!props.eid || !props.eid.toString().startsWith('preview-')) {
+      console.log('getImageUrl - URL S3 (nom fichier):', fullUrl)
+    }
+    return fullUrl
+  }
+
   // Détecter l'environnement et construire l'URL de base (backend pour les médias)
   const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
   let prodMediaBase = null

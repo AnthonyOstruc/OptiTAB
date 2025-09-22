@@ -296,9 +296,12 @@ class ExerciceSerializer(serializers.ModelSerializer):
             {
                 'id': img.id,
                 'image': (
-                    request.build_absolute_uri(img.image.url)
-                    if request and getattr(img.image, 'url', None)
-                    else (img.image.url if getattr(img.image, 'url', None) else '')
+                    img.image.url if (getattr(img.image, 'url', None) and str(img.image.url).startswith(('http://', 'https://')))
+                    else (
+                        request.build_absolute_uri(img.image.url)
+                        if (request and getattr(img.image, 'url', None))
+                        else (img.image.url if getattr(img.image, 'url', None) else '')
+                    )
                 ),
                 'image_type': img.image_type,
                 'position': img.position,

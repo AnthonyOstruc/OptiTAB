@@ -48,6 +48,7 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     "dj_rest_auth",
+    'storages',
 ]
 
 LOCAL_APPS = [
@@ -298,6 +299,43 @@ STORAGES = {
     },
 }
 
+# ========================================
+# CONFIGURATION AWS S3
+# ========================================
+
+# Configuration S3 (optionnel - seulement si les variables d'environnement sont définies)
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME', 'optitab-media')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-west-3')
+AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_S3_CUSTOM_DOMAIN')
+
+# Indicateur simple pour savoir si S3 est activé
+S3_ENABLED = bool(AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY)
+
+# Utiliser S3 pour les médias si les clés AWS sont configurées
+if S3_ENABLED:
+    # Configurer le stockage par défaut pour utiliser S3
+    STORAGES['default'] = {
+        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+        'OPTIONS': {
+            'access_key': AWS_ACCESS_KEY_ID,
+            'secret_key': AWS_SECRET_ACCESS_KEY,
+            'bucket_name': AWS_STORAGE_BUCKET_NAME,
+            'region_name': AWS_S3_REGION_NAME,
+            'custom_domain': AWS_S3_CUSTOM_DOMAIN,
+            'default_acl': 'public-read',
+            'querystring_auth': False,
+        }
+    }
+
+    # URL pour les médias S3
+    if AWS_S3_CUSTOM_DOMAIN:
+        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+    else:
+        MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/'
+
+
 # Configuration pour les uploads de fichiers
 FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.MemoryFileUploadHandler',
@@ -498,8 +536,11 @@ if not DEBUG:
     # Les chemins de base restent identiques
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+    # Ne pas écraser la configuration S3 si elle est active
+    if not S3_ENABLED:
+        MEDIA_URL = '/media/'
+        MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
     # Cache pour la production (optionnel)
     # CACHES = {

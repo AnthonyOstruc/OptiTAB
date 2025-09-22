@@ -27,8 +27,10 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# Toujours servir les médias, même en production (faible volumétrie, simple à gérer sur Render)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Servir les médias depuis le disque local uniquement si MEDIA_URL est un chemin local
+# En mode S3 (MEDIA_URL absolue https), ne pas ajouter de route /media/
+if isinstance(settings.MEDIA_URL, str) and settings.MEDIA_URL.startswith('/'):
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Vérifier la configuration média au démarrage (debug)
 if settings.DEBUG:

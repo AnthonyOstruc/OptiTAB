@@ -78,8 +78,8 @@
               
               <div class="cours-content" v-html="renderContentWithImages(coursItem.contenu, coursItem.images)" @click="handleImageClick"></div>
               
-              <!-- Images du cours -->
-              <div v-if="coursItem.images && coursItem.images.length > 0" class="cours-images">
+              <!-- Images du cours (affichées uniquement s'il n'y a PAS de marqueurs [IMAGE_X]) -->
+              <div v-if="shouldShowGallery(coursItem)" class="cours-images">
                 <div v-for="image in coursItem.images" :key="image.id" class="cours-image">
                   <img :src="getImageUrl(image.image)" :alt="image.legende || image.image_type" />
                   <div v-if="image.legende" class="image-legende">{{ image.legende }}</div>
@@ -176,6 +176,17 @@ function handleImageClick(event) {
 
 function toggleDisplayMode() {
   isWideDisplay.value = !isWideDisplay.value
+}
+
+// Détecte la présence de marqueurs d'image [IMAGE_X]
+function hasImageMarkers(content) {
+  return /\[IMAGE_\d+\]/.test(content || '')
+}
+
+// Affiche la galerie seulement si aucune image n'est intégrée dans le contenu
+function shouldShowGallery(coursItem) {
+  const hasImages = Array.isArray(coursItem?.images) && coursItem.images.length > 0
+  return hasImages && !hasImageMarkers(coursItem?.contenu)
 }
 
 // Cache simple pour les cours d'un chapitre (localStorage)

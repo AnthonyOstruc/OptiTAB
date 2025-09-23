@@ -1404,12 +1404,11 @@ onMounted(() => {
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
   object-fit: contain; /* Garde les proportions */
 }
 
 .exercice-image:hover {
-  transform: scale(1.02);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -1521,13 +1520,12 @@ onMounted(() => {
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
   object-fit: contain;
   margin: 0.5rem 0;
 }
 
 .exercice-image.inline:hover {
-  transform: scale(1.02);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 

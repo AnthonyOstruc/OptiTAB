@@ -549,12 +549,9 @@ watch(cours, () => {
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
 }
 
-.cours-content :deep(.content-image:hover) {
-  transform: scale(1.02);
-}
+/* Pas d'effet de zoom au survol pour éviter tout mouvement */
 
 .cours-content :deep(.image-legende) {
   margin-top: 0.5rem;

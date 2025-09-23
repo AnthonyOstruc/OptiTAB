@@ -5,6 +5,11 @@ import { useXP } from '@/composables/useXP'
 import { fetchMyStreaks, fetchUserGamification } from '@/api/users'
 import apiClient from '@/api/client'
 
+// Shared singleton state so all components see the same streak values
+const __currentStreak = ref(0)
+const __lastLoginDate = ref(null)
+const __isStreakCheckedToday = ref(false)
+
 /**
  * Composable pour gérer le système de streaks quotidiens
  * Compte les JOURS CONSECUTIFS où l'utilisateur ouvre le site (pas les connexions)
@@ -15,10 +20,8 @@ export function useStreak() {
   const notificationStore = useNotificationStore()
   const { updateUserXPInstantly } = useXP()
 
-  // État des streaks
-  const currentStreak = ref(0)
-  const lastLoginDate = ref(null)
-  const isStreakCheckedToday = ref(false)
+  // État partagé des streaks (singleton)
+  // Utiliser les refs de module définies ci‑dessus
 
   /**
    * Calcule les XP à gagner selon le nombre de jours de streak
@@ -74,9 +77,9 @@ export function useStreak() {
         return { success: false, error: 'no_payload' }
       }
 
-      // Update local state from server
-      currentStreak.value = Number(payload.current_streak || 0)
-      isStreakCheckedToday.value = true
+      // Update shared state from server
+      __currentStreak.value = Number(payload.current_streak || 0)
+      __isStreakCheckedToday.value = true
 
       // Optionally refresh gamification to reflect XP awarded on server
       try {
@@ -88,8 +91,8 @@ export function useStreak() {
       } catch (_) {}
 
       // Client-side notification for visibility
-      const xpToGain = calculateStreakXP(currentStreak.value)
-      notificationStore.notifyDailyStreak(currentStreak.value, xpToGain)
+      const xpToGain = calculateStreakXP(__currentStreak.value)
+      notificationStore.notifyDailyStreak(__currentStreak.value, xpToGain)
 
       return { success: true, streakDays: currentStreak.value }
     } catch (error) {
@@ -114,8 +117,8 @@ export function useStreak() {
       const res = await fetchMyStreaks()
       const payload = res?.data?.data || res?.data || null
       if (payload) {
-        currentStreak.value = Number(payload.current_streak || 0)
-        isStreakCheckedToday.value = true
+        __currentStreak.value = Number(payload.current_streak || 0)
+        __isStreakCheckedToday.value = true
       }
     } catch (error) {
       // Do not block UI; keep defaults
@@ -126,9 +129,9 @@ export function useStreak() {
    * Remet à zéro le streak (pour tests ou reset)
    */
   function resetStreak() {
-    currentStreak.value = 0
-    lastLoginDate.value = null
-    isStreakCheckedToday.value = false
+    __currentStreak.value = 0
+    __lastLoginDate.value = null
+    __isStreakCheckedToday.value = false
   }
 
   /**
@@ -142,7 +145,7 @@ export function useStreak() {
     }
 
     // Initialiser d'abord
-    initializeStreak()
+    await initializeStreak()
 
     // Puis vérifier/mettre à jour
     return await updateStreak()
@@ -150,25 +153,25 @@ export function useStreak() {
 
   // Computed properties pour l'affichage
   const nextStreakXP = computed(() => {
-    return calculateStreakXP(currentStreak.value + 1)
+    return calculateStreakXP(__currentStreak.value + 1)
   })
 
   // XP gagné pour le jour courant (utile pour affichage/test)
   const todayStreakXP = computed(() => {
-    return calculateStreakXP(currentStreak.value)
+    return calculateStreakXP(__currentStreak.value)
   })
 
   const streakMessage = computed(() => {
-    if (currentStreak.value === 0) return "Connectez-vous quotidiennement pour gagner des XP !"
-    if (currentStreak.value <= 5) return `${currentStreak.value} jour${currentStreak.value > 1 ? 's' : ''} de suite ! Prochain: +${nextStreakXP.value} XP`
-    return `${currentStreak.value} jours consécutifs ! +5 XP quotidiens`
+    if (__currentStreak.value === 0) return "Connectez-vous quotidiennement pour gagner des XP !"
+    if (__currentStreak.value <= 5) return `${__currentStreak.value} jour${__currentStreak.value > 1 ? 's' : ''} de suite ! Prochain: +${nextStreakXP.value} XP`
+    return `${__currentStreak.value} jours consécutifs ! +5 XP quotidiens`
   })
 
   return {
     // État
-    currentStreak: computed(() => currentStreak.value),
-    lastLoginDate: computed(() => lastLoginDate.value),
-    isStreakCheckedToday: computed(() => isStreakCheckedToday.value),
+    currentStreak: computed(() => __currentStreak.value),
+    lastLoginDate: computed(() => __lastLoginDate.value),
+    isStreakCheckedToday: computed(() => __isStreakCheckedToday.value),
     nextStreakXP,
     todayStreakXP,
     streakMessage,

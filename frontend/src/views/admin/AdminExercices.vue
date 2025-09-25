@@ -49,6 +49,93 @@
         <label>Solution:</label>
         <textarea v-model="form.solution" rows="4"></textarea>
       </div>
+
+      <!-- Images (optionnel) pour la prévisualisation immédiate lors de la création/édition -->
+      <div class="form-group">
+        <label>Images (optionnel):</label>
+        <input
+          type="file"
+          ref="imagesInput"
+          @change="handleImagesSelect"
+          accept="image/*"
+          multiple
+          class="images-file-input"
+        />
+        <small style="color: #666; font-size: 0.875rem;">
+          Utilisez [IMAGE_1], [IMAGE_2], … dans l'énoncé/étapes/solution. Les fichiers sélectionnés servent à la prévisualisation et peuvent être enregistrés ci-dessous.
+        </small>
+        <div v-if="selectedImages.length > 0" class="selected-images">
+          <h5>Images sélectionnées (aperçu uniquement) :</h5>
+          <div v-for="(img, index) in selectedImages" :key="index" class="selected-image-item">
+            <img :src="getImagePreview(img)" :alt="img.name" class="image-preview" />
+            <span class="image-name">{{ img.name }}</span>
+            <button type="button" class="btn-remove" @click="removeSelectedImage(index)">×</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gestion des images enregistrées (mode édition) -->
+      <div v-if="form.id" class="server-images-section">
+        <h5>Images de l'exercice (enregistrées)</h5>
+        <div v-if="imageManageLoading" class="muted">Chargement…</div>
+        <div v-else>
+          <div v-if="serverImages.length === 0" class="muted">Aucune image enregistrée.</div>
+          <table v-else class="images-table">
+            <thead>
+              <tr>
+                <th>Aperçu</th>
+                <th>Type</th>
+                <th>Position</th>
+                <th>Légende</th>
+                <th>Remplacer</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(img, i) in serverImages" :key="img.id || i">
+                <td style="width:120px">
+                  <img :src="img.image" alt="apercu" class="srv-preview" />
+                </td>
+                <td>
+                  <select v-model="img.image_type">
+                    <option value="donnee">Donnée</option>
+                    <option value="solution">Solution</option>
+                    <option value="illustration">Illustration</option>
+                  </select>
+                </td>
+                <td style="width:100px">
+                  <input v-model.number="img.position" type="number" min="0" />
+                </td>
+                <td>
+                  <input v-model="img.legende" placeholder="Légende" />
+                </td>
+                <td>
+                  <input type="file" accept="image/*" @change="onSelectReplaceFile(i, $event)" />
+                </td>
+                <td style="white-space:nowrap">
+                  <button type="button" class="btn-secondary small" @click="saveImageRow(img)">Enregistrer</button>
+                  <button type="button" class="btn-danger small" @click="removeImageRow(img)">Supprimer</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="add-image-form">
+            <h6>Ajouter une image</h6>
+            <div class="add-grid">
+              <input type="file" accept="image/*" ref="newImageInput" @change="onSelectNewImage($event)" />
+              <select v-model="newImage.image_type">
+                <option value="donnee">Donnée</option>
+                <option value="solution">Solution</option>
+                <option value="illustration">Illustration</option>
+              </select>
+              <input v-model.number="newImage.position" type="number" min="0" placeholder="Position" />
+              <input v-model="newImage.legende" placeholder="Légende (optionnel)" />
+              <button type="button" class="btn-primary" @click="addNewImage">Ajouter</button>
+            </div>
+          </div>
+        </div>
+      </div>
       
       <div class="form-group">
         <label>Difficulté:</label>
@@ -84,7 +171,8 @@
           :instruction="previewData.instruction" 
           :etapes="previewData.etapes" 
           :solution="previewData.solution" 
-          :difficulty="previewData.difficulty" 
+          :difficulty="previewData.difficulty"
+          :preview-images="previewImages"
         />
       </div>
     </div>
@@ -181,7 +269,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { getExercices, createExercice, updateExercice, deleteExercice, getChapitres, getNotions } from '@/api'
+import { getExercices, createExercice, updateExercice, deleteExercice, getChapitres, getNotions, getExerciceImages, createExerciceImage, updateExerciceImage, deleteExerciceImage } from '@/api'
 import PaysNiveauxSelector from '@/components/admin/PaysNiveauxSelector.vue'
 import PaysNiveauxDisplay from '@/components/admin/PaysNiveauxDisplay.vue'
 import { AdminActionsButtons } from '@/components/admin'
@@ -208,6 +296,13 @@ const filters = ref({
 })
 const showPreview = ref(false)
 const previewData = ref(null)
+const previewImages = ref([])
+const selectedImages = ref([])
+const imagesInput = ref(null)
+const serverImages = ref([])
+const imageManageLoading = ref(false)
+const newImage = ref({ file: null, image_type: 'donnee', position: 0, legende: '' })
+const newImageInput = ref(null)
 const showDuplicateModal = ref(false)
 const duplicateForm = ref({
   originalExercice: null,
@@ -298,6 +393,10 @@ function resetForm() {
   }
   showPreview.value = false
   previewData.value = null
+  previewImages.value = []
+  selectedImages.value = []
+  serverImages.value = []
+  if (imagesInput.value) imagesInput.value.value = ''
 }
 
 async function handleSave() {
@@ -358,6 +457,18 @@ function editExercice(exercice) {
   // Masquer la prévisualisation lors de l'édition
   showPreview.value = false
   previewData.value = null
+  // Charger les images existantes depuis l'API
+  imageManageLoading.value = true
+  ;(async () => {
+    try {
+      const { data } = await getExerciceImages(exercice.id)
+      serverImages.value = (data || []).slice().sort((a, b) => (a.position || 0) - (b.position || 0))
+    } catch (e) {
+      serverImages.value = []
+    } finally {
+      imageManageLoading.value = false
+    }
+  })()
   
   console.log('🔍 Exercice à éditer:', exercice)
   console.log('📝 Formulaire rempli:', form.value)
@@ -452,6 +563,15 @@ function handlePreview() {
     solution: form.value.solution || '',
     difficulty: difficultyMap[form.value.difficulte] || 'medium'
   }
+
+  // Construire les images d'aperçu à partir des fichiers sélectionnés
+  previewImages.value = selectedImages.value.map((file, index) => ({
+    id: `preview-${index}`,
+    image: URL.createObjectURL(file),
+    image_type: 'donnee',
+    position: index + 1,
+    legende: file.name
+  }))
   
   showPreview.value = true
 }
@@ -460,6 +580,7 @@ function handlePreview() {
 function closePreview() {
   showPreview.value = false
   previewData.value = null
+  previewImages.value = []
 }
 
 // Helpers d'affichage
@@ -769,6 +890,11 @@ function getContextCodeByChapitre(chapitreId) {
   font-weight: 500;
 }
 
+.btn-danger.small, .btn-secondary.small {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+}
+
 .filters {
   display: flex;
   gap: 1rem;
@@ -931,6 +1057,22 @@ function getContextCodeByChapitre(chapitreId) {
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
+/* Images UI */
+.images-file-input { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; margin-bottom: 0.5rem; }
+.selected-images { margin-top: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; background: #f9fafb; }
+.selected-image-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.375rem; margin-bottom: 0.5rem; background: white; }
+.image-preview { width: 40px; height: 30px; object-fit: cover; border-radius: 4px; }
+.image-name { flex: 1; font-size: 0.875rem; color: #374151; }
+.btn-remove { background: #ef4444; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 1rem; line-height: 1; display: flex; align-items: center; justify-content: center; }
+
+.server-images-section { margin: 1rem 0 1.5rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 8px; background: #fafafa; }
+.images-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+.images-table th, .images-table td { border-bottom: 1px solid #e5e7eb; padding: 0.5rem; }
+.srv-preview { width: 100px; height: 70px; object-fit: cover; border-radius: 4px; }
+.add-image-form { margin-top: 1rem; }
+.add-grid { display: grid; grid-template-columns: 1.2fr 0.8fr 0.5fr 1fr auto; gap: 0.5rem; align-items: center; }
+.muted { color: #6b7280; font-style: italic; }
 
 /* Styles pour la modale de duplication */
 .modal-overlay {

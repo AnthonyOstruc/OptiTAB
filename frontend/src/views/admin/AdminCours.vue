@@ -54,6 +54,69 @@
           </div>
         </div>
       </div>
+
+      <!-- Section de gestion des images déjà enregistrées (mode édition) -->
+      <div v-if="form.id" class="server-images-section">
+        <h5>Images du cours (enregistrées)</h5>
+        <div v-if="imageManageLoading" class="muted">Chargement…</div>
+        <div v-else>
+          <div v-if="serverImages.length === 0" class="muted">Aucune image enregistrée.</div>
+          <table v-else class="images-table">
+            <thead>
+              <tr>
+                <th>Aperçu</th>
+                <th>Type</th>
+                <th>Position</th>
+                <th>Légende</th>
+                <th>Remplacer</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(img, i) in serverImages" :key="img.id || i">
+                <td style="width:120px">
+                  <img :src="img.image" alt="apercu" class="srv-preview" />
+                </td>
+                <td>
+                  <select v-model="img.image_type">
+                    <option value="illustration">Illustration</option>
+                    <option value="donnee">Donnée</option>
+                    <option value="solution">Solution</option>
+                  </select>
+                </td>
+                <td style="width:100px">
+                  <input v-model.number="img.position" type="number" min="0" />
+                </td>
+                <td>
+                  <input v-model="img.legende" placeholder="Légende" />
+                </td>
+                <td>
+                  <input type="file" accept="image/*" @change="onSelectReplaceFile(i, $event)" />
+                </td>
+                <td style="white-space:nowrap">
+                  <button type="button" class="btn-secondary small" @click="saveImageRow(img)">Enregistrer</button>
+                  <button type="button" class="btn-danger small" @click="removeImageRow(img)">Supprimer</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="add-image-form">
+            <h6>Ajouter une image</h6>
+            <div class="add-grid">
+              <input type="file" accept="image/*" ref="newImageInput" @change="onSelectNewImage($event)" />
+              <select v-model="newImage.image_type">
+                <option value="illustration">Illustration</option>
+                <option value="donnee">Donnée</option>
+                <option value="solution">Solution</option>
+              </select>
+              <input v-model.number="newImage.position" type="number" min="0" placeholder="Position" />
+              <input v-model="newImage.legende" placeholder="Légende (optionnel)" />
+              <button type="button" class="btn-primary" @click="addNewImage">Ajouter</button>
+            </div>
+          </div>
+        </div>
+      </div>
       
       <div class="form-group">
         <label>Ordre d'affichage:</label>
@@ -195,7 +258,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import { getCours, createCours, updateCours, deleteCours } from '@/api/cours'
+import { getCours, createCours, updateCours, deleteCours, getCoursImages, createCoursImage, updateCoursImage, deleteCoursImage } from '@/api/cours'
 import { getChapitres, getNotions } from '@/api'
 import { AdminActionsButtons } from '@/components/admin'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
@@ -226,7 +289,11 @@ const filters = ref({
 const showPreview = ref(false)
 const previewData = ref(null)
 const selectedImages = ref([])
+const serverImages = ref([]) // images déjà enregistrées pour le cours en édition
 const imagesInput = ref(null)
+const imageManageLoading = ref(false)
+const newImage = ref({ file: null, image_type: 'illustration', position: 0, legende: '' })
+const newImageInput = ref(null)
 const showDuplicateModal = ref(false)
 const duplicateForm = ref({
   originalCours: null,
@@ -299,6 +366,7 @@ function resetForm() {
   showPreview.value = false
   previewData.value = null
   selectedImages.value = []
+  serverImages.value = []
   if (imagesInput.value) imagesInput.value.value = ''
 }
 
@@ -332,6 +400,87 @@ function removeSelectedImage(index) {
 
 function getImagePreview(file) {
   return URL.createObjectURL(file)
+}
+
+// =========================
+// Gestion des images côté serveur (édition)
+// =========================
+function onSelectReplaceFile(rowIndex, event) {
+  const file = event?.target?.files?.[0]
+  if (!file) return
+  serverImages.value[rowIndex].__replace_file = file
+}
+
+async function saveImageRow(row) {
+  try {
+    const payload = {
+      cours: form.value.id,
+      image_type: row.image_type,
+      position: row.position,
+      legende: row.legende
+    }
+    if (row.__replace_file) {
+      payload.image = row.__replace_file
+    }
+    if (row.id) {
+      await updateCoursImage(row.id, payload)
+    }
+    const res = await getCoursImages(form.value.id)
+    const imgs = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : [])
+    serverImages.value = imgs
+      .slice()
+      .sort((a, b) => (a.position || 0) - (b.position || 0))
+  } catch (e) {
+    console.error('Erreur saveImageRow', e)
+    alert('Erreur lors de la sauvegarde de l\'image')
+  }
+}
+
+async function removeImageRow(row) {
+  if (!row.id) return
+  if (!confirm('Supprimer cette image ?')) return
+  try {
+    await deleteCoursImage(row.id)
+    serverImages.value = serverImages.value.filter(img => img.id !== row.id)
+  } catch (e) {
+    console.error('Erreur removeImageRow', e)
+    alert('Suppression impossible')
+  }
+}
+
+function onSelectNewImage(event) {
+  const file = event?.target?.files?.[0]
+  newImage.value.file = file || null
+}
+
+async function addNewImage() {
+  if (!form.value.id) return
+  if (!newImage.value.file) {
+    alert('Choisissez un fichier image')
+    return
+  }
+  try {
+    const payload = {
+      cours: form.value.id,
+      image: newImage.value.file,
+      image_type: newImage.value.image_type || 'illustration',
+      position: newImage.value.position || (serverImages.value.length + 1),
+      legende: newImage.value.legende || ''
+    }
+    const res = await createCoursImage(payload)
+    const created = res?.data || null
+    if (created) {
+      serverImages.value.push(created)
+    } else {
+      // fallback d'affichage immédiat
+      serverImages.value.push({ id: Math.random().toString(36).slice(2), image: '', ...payload })
+    }
+    newImage.value = { file: null, image_type: 'illustration', position: 0, legende: '' }
+    if (newImageInput.value) newImageInput.value.value = ''
+  } catch (e) {
+    console.error('Erreur addNewImage', e)
+    alert('Erreur lors de l\'ajout de l\'image')
+  }
 }
 
 // Fonction pour obtenir le label de difficulté (comme dans AdminCoursPlus)
@@ -395,6 +544,22 @@ function editCours(cours) {
   // Masquer la prévisualisation lors de l'édition
   showPreview.value = false
   previewData.value = null
+  // Charger les images existantes (depuis l'API) pour l'édition et la prévisualisation
+  imageManageLoading.value = true
+  ;(async () => {
+    try {
+      const res = await getCoursImages(cours.id)
+      const imgs = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : [])
+      serverImages.value = imgs
+        .slice()
+        .sort((a, b) => (a.position || 0) - (b.position || 0))
+    } catch (e) {
+      console.error('[AdminCours] Chargement images serveur échoué', e)
+      serverImages.value = []
+    } finally {
+      imageManageLoading.value = false
+    }
+  })()
 }
 
 async function removeCours(id) {
@@ -512,7 +677,9 @@ function handlePreview() {
     difficulte: form.value.difficulte || 'moyen',
     difficulty: form.value.difficulte === 'facile' ? 'easy' : form.value.difficulte === 'moyen' ? 'medium' : 'hard',
     image: imageNames, // Chaîne de noms d'images séparés par des virgules
-    images: selectedImages.value
+    images: selectedImages.value,
+    // Images côté serveur (existant) pour le mode édition, utilisées si aucune nouvelle image sélectionnée
+    serverImages: serverImages.value
   }
 
   showPreview.value = true
@@ -551,6 +718,20 @@ const currentContext = computed(() => {
 
 // Fonction pour créer les données d'images pour la prévisualisation (comme dans AdminCoursPlus)
 function getPreviewImages(imageString, coursData = null) {
+  // 1) Si l'utilisateur a sélectionné de nouvelles images, on les utilise pour l'aperçu
+  const hasNew = !!(coursData && Array.isArray(coursData.images) && coursData.images.length > 0)
+  const server = coursData && Array.isArray(coursData.serverImages) ? coursData.serverImages : []
+  if (!hasNew && server.length > 0) {
+    return server.map((img, index) => ({
+      id: img.id ?? `server-${index}`,
+      image: img.image, // URL absolue fournie par le backend
+      image_type: img.image_type || 'illustration',
+      position: img.position || index + 1,
+      legende: img.legende || ''
+    }))
+  }
+
+  // 2) Sinon, reconstituer à partir des fichiers sélectionnés (création ou remplacement)
   const names = (imageString || '')
     .split(',')
     .map(n => n.trim())
@@ -575,31 +756,28 @@ function getImageFile(filename) {
 function renderPreviewContent(cours) {
   const images = getPreviewImages(cours.image, cours)
 
-  // Pour l'aperçu admin, remplacer les images manquantes par des placeholders
+  // Pour l'aperçu admin, remplacer les marqueurs [IMAGE_X] par l'image correspondante (priorité: images serveur)
   let content = cours.contenu
-  const imageNames = (cours.image || '').split(',').map(n => n.trim()).filter(Boolean)
 
-  content = content.replace(/\[IMAGE_(\d+)\]/g, (match, position) => {
-    const index = parseInt(position) - 1
-    const imageName = imageNames[index]
-    const imageFile = getImageFile(imageName)
+  content = content.replace(/\[IMAGE_(\d+)\]/g, (match, positionStr) => {
+    const position = parseInt(positionStr)
+    const byPos = images.find(img => Number(img.position) === position) || images[position - 1]
 
-    if (imageFile) {
+    if (byPos && byPos.image) {
       return `
         <div class="preview-image-container" style="text-align: center; margin: 2em 0;">
-          <img src="${URL.createObjectURL(imageFile)}" alt="Image ${position}" class="content-image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
-          <div class="image-info" style="margin-top: 0.5rem; font-size: 0.875rem; color: #28a745; font-weight: 500;">✅ ${imageName}</div>
-        </div>
-      `
-    } else {
-      return `
-        <div class="preview-image-placeholder">
-          <div class="placeholder-icon">🖼️</div>
-          <div class="placeholder-text">Image manquante: ${imageName || `IMAGE_${position}`}</div>
-          <div class="placeholder-hint">Uploadez cette image dans la section ci-dessus</div>
+          <img src="${byPos.image}" alt="Image ${position}" class="content-image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
         </div>
       `
     }
+
+    return `
+      <div class="preview-image-placeholder">
+        <div class="placeholder-icon">🖼️</div>
+        <div class="placeholder-text">Image manquante: IMAGE_${position}</div>
+        <div class="placeholder-hint">Uploadez cette image dans la section ci-dessus</div>
+      </div>
+    `
   })
 
   // Fallback: s'il n'y a PAS de marqueurs [IMAGE_X] mais qu'on a des images,
@@ -761,6 +939,11 @@ function getContextCodeByChapitre(chapitreId) {
   border-radius: 0.375rem;
   cursor: pointer;
   font-weight: 500;
+}
+
+.btn-danger.small, .btn-secondary.small {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
 }
 
 .filters {
@@ -964,6 +1147,48 @@ function getContextCodeByChapitre(chapitreId) {
 /* Styles pour la prévisualisation des images (comme dans AdminCoursPlus) */
 .preview-image-info {
   margin-bottom: 1rem;
+}
+
+.server-images-section {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.images-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.images-table th, .images-table td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.5rem;
+}
+
+.srv-preview {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.add-image-form {
+  margin-top: 1rem;
+}
+
+.add-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 0.5fr 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.muted {
+  color: #6b7280;
+  font-style: italic;
 }
 
 .image-indicator {

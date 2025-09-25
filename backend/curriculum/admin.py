@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from core.admin import ContentModelAdmin, BaseModelAdmin
-from .models import Matiere, Theme, Notion, Chapitre, Exercice, MatiereContexte
+from .models import Matiere, Theme, Notion, Chapitre, Exercice, MatiereContexte, ExerciceImage
 
 
 @admin.register(Matiere)
@@ -253,6 +253,26 @@ class ExerciceAdmin(admin.ModelAdmin):
     list_editable = ['ordre', 'points']
     ordering = ['chapitre', 'ordre', 'titre']
     
+    # Inline pour gérer les images d'exercice
+    class ExerciceImageInline(admin.TabularInline):
+        model = ExerciceImage
+        extra = 1
+        fields = ("preview", "image", "image_type", "position", "legende")
+        readonly_fields = ("preview",)
+        can_delete = True
+
+        def preview(self, obj):
+            if getattr(obj, "image", None):
+                try:
+                    return format_html('<img src="{}" style="height: 80px; max-width: 140px; object-fit: cover;" />', obj.image.url)
+                except Exception:
+                    return "(aperçu indisponible)"
+            return "-"
+
+        preview.short_description = _("Aperçu")
+    
+    inlines = [ExerciceImageInline]
+    
     # Utiliser fieldsets au lieu de fields
     fieldsets = (
         (_('Informations de base'), {
@@ -313,6 +333,24 @@ class ExerciceAdmin(admin.ModelAdmin):
             'chapitre__notion__theme__matiere'
         )
 
+
+# Administration dédiée aux images d'exercice
+@admin.register(ExerciceImage)
+class ExerciceImageAdmin(admin.ModelAdmin):
+    list_display = ("id", "exercice", "image_type", "position", "legende", "image_link")
+    list_filter = ("image_type",)
+    search_fields = ("exercice__titre", "legende")
+    ordering = ("exercice", "position", "id")
+
+    def image_link(self, obj):
+        if getattr(obj, "image", None):
+            try:
+                return format_html('<a href="{}" target="_blank">Voir</a>', obj.image.url)
+            except Exception:
+                return "(lien indisponible)"
+        return "-"
+
+    image_link.short_description = _("Image")
 
 # Configuration des titres de l'interface admin
 admin.site.site_header = "Administration OptiTAB - Exercices"

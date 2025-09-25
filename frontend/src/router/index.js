@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { apiUtils } from '@/api/client'
 import { matiereMiddleware, exercicesMiddleware, quizMiddleware } from './middlewares/matiereMiddleware'
 import { requireNiveau, routeRequiresNiveau } from './middlewares/niveauMiddleware'
 
@@ -77,7 +78,7 @@ const router = createRouter({
 
 // Navigation guard pour protéger le dashboard
 router.beforeEach(async (to, from, next) => {
-  const token = localStorage.getItem('access_token')
+  let token = localStorage.getItem('access_token')
   const refreshToken = localStorage.getItem('refresh_token')
   const userStore = useUserStore()
   let isAuthenticated = userStore.isAuthenticated
@@ -100,14 +101,31 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  // Si on a un token mais qu'il est expiré, nettoyer et rediriger
+  // Si on a un token mais qu'il est expiré, tenter un rafraîchissement plutôt que de supprimer le refresh token
   if (token && isTokenExpired(token)) {
-    console.warn('Token d\'accès expiré détecté dans le navigation guard, nettoyage...')
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
-    userStore.clearUser()
-    isAuthenticated = false
-    isAdmin = false
+    console.warn("Token d'accès expiré détecté dans le navigation guard, tentative de rafraîchissement...")
+    if (refreshToken) {
+      try {
+        await apiUtils.refreshToken()
+        // Mettre à jour la variable locale token après rafraîchissement
+        token = localStorage.getItem('access_token')
+        // Recharger le profil si le store n'est pas encore prêt (admin, etc.)
+        if (!userStore.isAuthenticated) {
+          await userStore.fetchUser()
+        }
+        isAuthenticated = userStore.isAuthenticated
+        isAdmin = userStore.isAdmin
+      } catch (e) {
+        console.warn('Échec du rafraîchissement dans le navigation guard:', e?.message || e)
+        userStore.clearUser()
+        isAuthenticated = false
+        isAdmin = false
+      }
+    } else {
+      userStore.clearUser()
+      isAuthenticated = false
+      isAdmin = false
+    }
   }
 
   // Si on a un token valide mais que le store n'est pas prêt (ex: après refresh), on recharge l'utilisateur

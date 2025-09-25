@@ -524,13 +524,21 @@ class AuthManager {
     // Nettoyer le store utilisateur
           try {
             const userStore = useUserStore()
+            // Afficher un spinner global pendant la déconnexion déclenchée par l'API
+            userStore.isLoading = true
             userStore.clearUser()
     } catch (error) {
       ApiLogger.secureLog('warn', 'Erreur lors du nettoyage du store utilisateur', { error: error.message })
     }
     
     // Rediriger vers la page d'accueil
-          router.push('/')
+          // Utiliser une navigation awaitable pour une meilleure UX
+          Promise.resolve().then(() => router.push('/')).finally(() => {
+            try {
+              const userStore = useUserStore()
+              userStore.isLoading = false
+            } catch (_) {}
+          })
   }
 }
 

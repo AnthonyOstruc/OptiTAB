@@ -183,7 +183,7 @@ export default {
           refresh: refreshToken.substring(0, 20) + '...'
         }) // Debug
 
-        // Mémoriser les infos utilisateur de base dans Pinia (si disponibles)
+        // Mémoriser immédiatement si des infos utilisateur sont présentes
         const userData = responseData || response.data
         if (userData.user_id || userData.id) {
           userStore.setUser(userData)
@@ -203,16 +203,14 @@ export default {
           }
         } catch (_) {}
 
-        // Naviguer immédiatement, récupérer le profil en arrière-plan
+        // Charger le profil avant de rediriger pour éviter les redirections en zigzag
+        await userStore.fetchUser()
+
+        // Fermer et rediriger une fois l'utilisateur chargé
         emit('login', { email: data.email })
         handleClose()
         closeModal(MODAL_IDS.LOGIN)
-        router.push('/dashboard')
-
-        console.log('📡 Récupération du profil utilisateur en arrière-plan...')
-        userStore.fetchUser().catch((e) => {
-          console.error('Erreur fetchUser en arrière-plan:', e)
-        })
+        await router.push('/dashboard')
       } catch (error) {
         console.error('Erreur lors de la connexion:', error)
         // Gestion de l'erreur backend : DRF renvoie généralement 'detail'

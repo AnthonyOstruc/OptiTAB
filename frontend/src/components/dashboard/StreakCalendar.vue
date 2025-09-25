@@ -25,12 +25,13 @@ const props = defineProps({
   statuses: { type: Array, default: () => [] }
 })
 
-const { currentStreak, todayStreakXP, initializeStreak } = useStreak()
+const { currentStreak, todayStreakXP, initializeStreak, checkDailyStreak } = useStreak()
 
 const todayXP = computed(() => todayStreakXP.value)
 
-onMounted(() => {
-  initializeStreak()
+onMounted(async () => {
+  try { await initializeStreak() } catch (_) {}
+  try { await checkDailyStreak() } catch (_) {}
 })
 </script>
 

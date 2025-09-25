@@ -10,14 +10,15 @@ from ..serializers.user_profile import UserDetailSerializer, UserUpdateSerialize
 from rest_framework.decorators import api_view
 from ..serializers.geographic_data import UserPaysNiveauUpdateSerializer
 from pays.models import Pays, Niveau
-from django.db.models import F, Q, Count, IntegerField
-from django.db.models.functions import Cast, TruncDate
+from django.db.models import F, Q, Count, IntegerField, Window
+from django.db.models.functions import Cast, TruncDate, Rank
 from users.models import CustomUser, ParentChild, UserNotification
 from users.services import StreakService
 from ..serializers.user_profile import UserNotificationSerializer
 from suivis.models import SuiviExercice
 from django.utils import timezone
 from datetime import timedelta
+from django.core.cache import cache
 import logging
 logger = logging.getLogger(__name__)
 import secrets
@@ -168,19 +169,21 @@ class LeaderboardView(APIView):
 
             user = request.user
 
-            qs = CustomUser.objects.filter(is_active=True)
+            base_qs = CustomUser.objects.filter(is_active=True)
             if scope == 'pays' and user.pays_id:
-                qs = qs.filter(pays_id=user.pays_id)
+                base_qs = base_qs.filter(pays_id=user.pays_id)
             elif scope == 'niveau' and user.niveau_pays_id:
-                qs = qs.filter(niveau_pays_id=user.niveau_pays_id)
+                base_qs = base_qs.filter(niveau_pays_id=user.niveau_pays_id)
             # sinon: global
 
-            qs = qs.select_related('pays', 'niveau_pays').order_by('-xp', 'date_joined')
+            base_qs = base_qs.select_related('pays', 'niveau_pays')
 
-            total = qs.count()
+            # Total utilisateurs pour le scope
+            total = base_qs.count()
 
-            # Top N
-            top_qs = qs[:limit]
+            # Cache court pour le top (clé sensible au scope et au limit)
+            cache_key = f"leaderboard:{scope}:top:{limit}"
+            cached = cache.get(cache_key)
 
             def abbreviate_name(first_name: str, last_name: str):
                 first = (first_name or '').strip()
@@ -190,27 +193,50 @@ class LeaderboardView(APIView):
                 initial = (last[:1] + '.').upper() if last else ''
                 return (first + ' ' + initial).strip()
 
-            top = []
-            # Calcul des rangs pour le top par cumul des XP supérieurs
-            # (OK à cette échelle, optimisable plus tard avec Window/Rank si besoin)
-            for u in top_qs:
-                better = qs.filter(xp__gt=u.xp).count()
-                rank = better + 1
-                top.append({
-                    'id': u.id,
-                    'display_name': abbreviate_name(u.first_name, u.last_name),
-                    'xp': u.xp or 0,
-                    'pays_flag': getattr(u.pays, 'drapeau_emoji', None),
-                    'niveau': getattr(u.niveau_pays, 'nom', None),
-                    'rank': rank,
-                })
+            if cached is None:
+                ranked_qs = (
+                    base_qs
+                    .annotate(
+                        rank=Window(
+                            expression=Rank(),
+                            order_by=[F('xp').desc(nulls_last=True), F('date_joined').asc()]
+                        )
+                    )
+                    .order_by(F('xp').desc(nulls_last=True), F('date_joined').asc())
+                )
 
-            # Rang de l'utilisateur courant
+                rows = list(ranked_qs.values(
+                    'id', 'first_name', 'last_name', 'xp',
+                    'pays__drapeau_emoji', 'niveau_pays__nom', 'rank'
+                )[:limit])
+
+                top = []
+                for r in rows:
+                    top.append({
+                        'id': r['id'],
+                        'display_name': abbreviate_name(r['first_name'], r['last_name']),
+                        'xp': r['xp'] or 0,
+                        'pays_flag': r['pays__drapeau_emoji'],
+                        'niveau': r['niveau_pays__nom'],
+                        'rank': r['rank'],
+                    })
+
+                cached = {'top': top, 'total': total}
+                # 60s de cache suffisent pour lisser la charge
+                cache.set(cache_key, cached, 60)
+
+            top = cached['top']
+            total = cached['total']
+
+            # Rang de l'utilisateur courant (1 COUNT rapide)
             me = None
             if total > 0:
-                my_better = qs.filter(xp__gt=(user.xp or 0)).count()
+                my_xp = user.xp or 0
+                # En cas d'égalité d'XP, on départage par date_joined (plus ancien est mieux classé)
+                my_better = base_qs.filter(
+                    Q(xp__gt=my_xp) | Q(xp=my_xp, date_joined__lt=(user.date_joined or timezone.now()))
+                ).count()
                 my_rank = my_better + 1
-                percentile = 0.0
                 try:
                     percentile = round(100.0 * (1.0 - ((my_rank - 1) / float(total))), 2)
                 except Exception:
@@ -219,7 +245,7 @@ class LeaderboardView(APIView):
                 me = {
                     'id': user.id,
                     'display_name': abbreviate_name(user.first_name, user.last_name),
-                    'xp': user.xp or 0,
+                    'xp': my_xp,
                     'rank': my_rank,
                     'total': total,
                     'percentile': percentile,
@@ -238,7 +264,7 @@ class LeaderboardView(APIView):
                 message="Leaderboard récupéré avec succès",
                 data=data
             )
-        except Exception as e:
+        except Exception:
             return ResponseService.error(
                 message="Erreur lors de la récupération du leaderboard",
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR

@@ -161,8 +161,8 @@ function parseName(name) {
 async function load() {
   loading.value = true
   try {
-    // Charge maximum 50 utilisateurs (limite fixe)
-    const res = await fetchLeaderboard({ scope: scope.value, limit: 50 })
+    // Chargement initial léger (20)
+    const res = await fetchLeaderboard({ scope: scope.value, limit: 20 })
     const data = res?.data?.data || {}
     const leaderboard = data.leaderboard || []
     
@@ -179,7 +179,17 @@ async function load() {
 }
 
 async function loadMore() {
-  // On a déjà tous les utilisateurs, on change juste l'affichage
+  try {
+    // Si on n'a que 20 entrées, récupérer jusqu'à 50 de façon paresseuse
+    if (allLeaderboard.value.length < 50) {
+      const res = await fetchLeaderboard({ scope: scope.value, limit: 50 })
+      const data = res?.data?.data || {}
+      const leaderboard = data.leaderboard || []
+      allLeaderboard.value = leaderboard.slice(0, 50)
+      me.value = data.me || me.value
+    }
+  } catch (e) {}
+  // Afficher la section étendue quoi qu'il arrive
   isExpanded.value = true
 }
 

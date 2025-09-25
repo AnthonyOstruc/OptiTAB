@@ -66,9 +66,11 @@ export function useStreak() {
         return { success: false, reason: 'not_authenticated' }
       }
 
-      // Claim today's streak first (idempotent)
+      // Always call server claim (idempotent on backend). Avoids client desync.
+      let claimPayload = null
       try {
-        await apiClient.post('/api/users/me/streaks/claim/')
+        const claimRes = await apiClient.post('/api/users/me/streaks/claim/')
+        claimPayload = claimRes?.data?.data || claimRes?.data || null
       } catch (_) {}
 
       const res = await fetchMyStreaks()
@@ -90,11 +92,23 @@ export function useStreak() {
         }
       } catch (_) {}
 
-      // Client-side notification for visibility
-      const xpToGain = calculateStreakXP(__currentStreak.value)
-      notificationStore.notifyDailyStreak(__currentStreak.value, xpToGain)
+      // If claim provided an authoritative streak value, sync it immediately
+      if (claimPayload && typeof claimPayload.current_streak === 'number') {
+        __currentStreak.value = Number(claimPayload.current_streak)
+      }
 
-      return { success: true, streakDays: currentStreak.value }
+      // Client-side notification only if XP was actually awarded today
+      if (claimPayload && claimPayload.already_counted_today === false) {
+        const xpToGain = Number(claimPayload?.xp_awarded ?? calculateStreakXP(__currentStreak.value))
+        notificationStore.notifyDailyStreak(__currentStreak.value, xpToGain)
+      }
+
+      return {
+        success: true,
+        streakDays: __currentStreak.value,
+        alreadyChecked: !!(claimPayload && claimPayload.already_counted_today === true),
+        xpGained: Number(claimPayload?.xp_awarded || 0)
+      }
     } catch (error) {
       console.error('Erreur lors de la mise a jour du streak (server):', error)
       return { success: false, error }
@@ -107,13 +121,12 @@ export function useStreak() {
   async function initializeStreak() {
     // Initialize from server for cross-device consistency
     if (!userStore.isAuthenticated) {
-      currentStreak.value = 0
-      isStreakCheckedToday.value = false
+      __currentStreak.value = 0
+      __isStreakCheckedToday.value = false
       return
     }
     try {
-      // Claim on app open to ensure up-to-date
-      try { await apiClient.post('/api/users/me/streaks/claim/') } catch (_) {}
+      // Do not claim here (updateStreak will handle claiming and idempotency)
       const res = await fetchMyStreaks()
       const payload = res?.data?.data || res?.data || null
       if (payload) {

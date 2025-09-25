@@ -65,8 +65,9 @@
               <div class="user-email">{{ userStore.user?.email }}</div>
             </div>
           </div>
-          <button class="logout-button" @click="handleLogout">
-            Déconnexion
+          <button class="logout-button" @click="handleLogout" :disabled="isLoggingOut">
+            <template v-if="isLoggingOut">Déconnexion...</template>
+            <template v-else>Déconnexion</template>
           </button>
         </div>
       </div>
@@ -96,6 +97,7 @@ export default {
     // State
     const isOpen = ref(false)
     const userStore = useUserStore()
+    const isLoggingOut = ref(false)
 
     // Computed
     const navigationItems = menuItems.filter(item =>
@@ -131,11 +133,36 @@ export default {
     }
 
     const handleLogout = async () => {
+      if (isLoggingOut.value) return
+      isLoggingOut.value = true
+      userStore.isLoading = true
       try {
-        await userStore.logout()
+        // Récupération du refresh token si présent
+        const refresh = localStorage.getItem('refresh_token')
+        if (refresh && refresh !== 'null' && refresh !== 'undefined' && refresh.trim() !== '') {
+          try {
+            const { logoutUser } = await import('@/api')
+            await logoutUser({ refresh })
+          } catch (_) {}
+        }
+
+        // Nettoyage local forcé
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
+        userStore.clearUser()
         closeMenu()
+        // Rediriger vers l'accueil
+        const { useRouter } = await import('vue-router')
+        const router = useRouter()
+        await router.push('/')
       } catch (error) {
         console.error('Erreur lors de la déconnexion:', error)
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
+        userStore.clearUser()
+      } finally {
+        userStore.isLoading = false
+        isLoggingOut.value = false
       }
     }
 
@@ -163,6 +190,7 @@ export default {
       // Computed
       navigationItems,
       isAuthenticated,
+      isLoggingOut,
       
       // Methods
       toggleMenu,

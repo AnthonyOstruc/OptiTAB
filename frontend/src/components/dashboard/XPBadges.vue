@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useStreak } from '@/composables/useStreak'
 
@@ -159,9 +159,18 @@ const dashArray = computed(() => {
 
 
 // Initialiser le streak au montage
-onMounted(() => {
-  initializeStreak()
+onMounted(async () => {
+  // Initialise puis vérifie (idempotent côté serveur + garde locale côté client)
+  try { await initializeStreak() } catch (_) {}
+  try { await checkDailyStreak() } catch (_) {}
 })
+
+// Re-vérifier quand l'utilisateur devient authentifié
+watch(() => userStore.isAuthenticated, async (isAuth) => {
+  if (isAuth) {
+    try { await checkDailyStreak() } catch (_) {}
+  }
+}, { immediate: false })
 </script>
 
 <style scoped>

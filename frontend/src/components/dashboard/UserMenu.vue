@@ -67,9 +67,13 @@
           <button 
             class="menu-option logout-option"
             @click="handleLogout"
+            :disabled="isLoggingOut"
           >
             <span class="option-icon"><ArrowRightOnRectangleIcon class="user-menu-heroicon" /></span>
-            <span class="option-label">Déconnexion</span>
+            <span class="option-label">
+              <template v-if="isLoggingOut">Déconnexion...</template>
+              <template v-else>Déconnexion</template>
+            </span>
           </button>
         </div>
       </div>
@@ -95,6 +99,7 @@ const router = useRouter()
 
 // Références réactives
 const isOpen = ref(false)
+const isLoggingOut = ref(false)
 const menuContainer = ref(null)
 
 // Computed properties pour les données utilisateur
@@ -162,6 +167,10 @@ const handleProfile = () => {
 
 const handleLogout = async () => {
   closeMenu()
+  if (isLoggingOut.value) return
+  isLoggingOut.value = true
+  // Afficher un spinner pleine page
+  userStore.isLoading = true
   
   try {
     // Récupération du refresh token
@@ -186,7 +195,7 @@ const handleLogout = async () => {
     emit('logout')
     
     // Redirection vers la page d'accueil
-    router.push('/')
+    await router.push('/')
     
   } catch (error) {
     console.error('Erreur lors de la déconnexion:', error)
@@ -194,7 +203,10 @@ const handleLogout = async () => {
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
     userStore.clearUser()
-    router.push('/')
+    await router.push('/')
+  } finally {
+    isLoggingOut.value = false
+    userStore.isLoading = false
   }
 }
 

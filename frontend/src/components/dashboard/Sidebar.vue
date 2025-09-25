@@ -270,21 +270,33 @@ onUnmounted(() => {
 })
 
 const handleLogout = async () => {
-  // Récupère le refresh token
-  const refresh = localStorage.getItem('refresh_token')
-  // Si le token existe et semble valide, on tente de le blacklister côté backend
-  if (refresh && refresh !== 'null' && refresh !== 'undefined' && refresh.trim() !== '') {
-    try {
-      await logoutUser({ refresh })
-    } catch (e) {
-      // On ignore toute erreur de déconnexion (le backend renvoie toujours un succès désormais)
+  // Afficher le spinner global
+  userStore.isLoading = true
+  try {
+    // Récupère le refresh token
+    const refresh = localStorage.getItem('refresh_token')
+    // Si le token existe et semble valide, on tente de le blacklister côté backend
+    if (refresh && refresh !== 'null' && refresh !== 'undefined' && refresh.trim() !== '') {
+      try {
+        await logoutUser({ refresh })
+      } catch (e) {
+        // On ignore toute erreur de déconnexion (le backend renvoie toujours un succès désormais)
+      }
     }
+    // Nettoyage local côté frontend
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    userStore.clearUser()
+    await router.push('/')
+  } catch (e) {
+    // En cas d'erreur, forcer la déconnexion locale
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    userStore.clearUser()
+    await router.push('/')
+  } finally {
+    userStore.isLoading = false
   }
-  // Nettoyage local côté frontend
-  localStorage.removeItem('access_token')
-  localStorage.removeItem('refresh_token')
-  userStore.clearUser()
-  router.push('/')
 }
 
 // Exposer les fonctions pour le template

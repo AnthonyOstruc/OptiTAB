@@ -94,7 +94,7 @@ export function useXP() {
   /**
    * Met à jour instantanément le store utilisateur avec de nouveaux XP
    */
-  async function updateUserXPInstantly(xpDelta, reason = 'streak_daily') {
+  async function updateUserXPInstantly(xpDelta, reason = 'manual_update') {
     if (xpDelta === null || xpDelta === undefined) return { success: false }
 
     const oldXp = Number(userStore.xp || 0)

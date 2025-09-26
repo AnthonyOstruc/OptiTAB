@@ -135,7 +135,7 @@ export const useUserStore = defineStore('user', {
         // Mettre à jour le store avec les nouvelles données
         this.setUser(userData)
         
-        // Le streak sera géré au niveau de l'App entière, pas juste à la connexion
+        
         
         // Redémarrer la surveillance des tokens après récupération réussie
         setTimeout(() => {

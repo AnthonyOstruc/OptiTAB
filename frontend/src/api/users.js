@@ -68,10 +68,7 @@ export const fetchLeaderboard = (params = {}) => {
  */
 export const fetchMyOverview = () => apiClient.get('/api/users/me/overview/')
 
-/**
- * Streaks élève courant (streak actuel, meilleur, heatmap)
- */
-export const fetchMyStreaks = () => apiClient.get('/api/users/me/streaks/')
+// Streak supprimé
 
 /**
  * Recommandations (révision due, exercice non tenté, ...)

@@ -131,8 +131,7 @@ const {
   simulateQuizMedium,
   simulateQuizHard,
   simulateQuizPerfect,
-  simulateExerciseCompleted,
-  simulateQuizStreak
+  simulateExerciseCompleted
 } = useDailyObjectives()
 
 // Calculer le nombre de défis complétés
@@ -210,7 +209,6 @@ const testQuizMedium = () => simulateQuizMedium()
 const testQuizHard = () => simulateQuizHard()
 const testQuizPerfect = () => simulateQuizPerfect()
 const testExerciseCompleted = () => simulateExerciseCompleted()
-const testQuizStreak = () => simulateQuizStreak(Math.floor(Math.random() * 8) + 1)
 
 // Mise à jour en temps réel des objectifs
 const handleObjectiveProgress = (event) => {
@@ -273,8 +271,7 @@ window.testDailyObjectives = {
   quizMedium: testQuizMedium,
   quizHard: testQuizHard,
   quizPerfect: testQuizPerfect,
-  exerciseCompleted: testExerciseCompleted,
-  quizStreak: testQuizStreak
+  exerciseCompleted: testExerciseCompleted
 }
 </script>
 

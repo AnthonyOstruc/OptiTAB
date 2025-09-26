@@ -43,13 +43,7 @@
 
 
 
-    <!-- Composant de test pour le système de streak (à supprimer en production) -->
-    <div v-if="userStore.isAdmin" class="section">
-      <div class="section-header">
-        <h3 class="section-title">🧪 Tests (Admin uniquement)</h3>
-      </div>
-      <StreakTestButton />
-    </div>
+    
   </div>
 </template>
 
@@ -74,7 +68,7 @@ import ExercicesHistory from '@/components/dashboard/ExercicesHistory.vue'
 import DailyObjectives from '@/components/dashboard/DailyObjectives.vue'
 
 
-import StreakTestButton from '@/components/debug/StreakTestButton.vue'
+// StreakTestButton supprimé
 
 const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()

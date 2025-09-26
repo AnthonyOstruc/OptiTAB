@@ -44,7 +44,7 @@ class CustomUserAdmin(UserAdmin):
             'classes': ('collapse',)
         }),
         ('Gamification', {
-            'fields': ('xp', 'streak'),
+            'fields': ('xp',),
             'classes': ('collapse',)
         }),
         ('Permissions', {

@@ -18,126 +18,21 @@
     <!-- Prochain niveau -->
     <div class="xp-next">{{ xpToNext }} XP pour le prochain niveau</div>
     
-    <!-- Section Streak Professionnelle -->
-    <div class="streak-section">
-      <div class="streak-header">
-        <div class="streak-icon-container">
-          <span class="streak-icon" :class="{ 'streak-active': streakDays > 0 }">🔥</span>
-          <div class="streak-badge" v-if="streakDays > 0">{{ streakDays }}</div>
-        </div>
-        <div class="streak-info">
-          <h4 class="streak-title">Streak Quotidien</h4>
-          <p class="streak-subtitle">{{ getStreakSubtitle() }}</p>
-          <p class="streak-next-xp" v-if="streakDays > 0">Prochain: +{{ nextStreakXP }} XP</p>
-        </div>
-        <!-- XP à côté du streak -->
-        <div class="streak-xp-display">
-          <span class="xp-icon">{{ getXPIcon() }}</span>
-          <span class="xp-value">+{{ getCurrentStreakXP() }} XP</span>
-        </div>
-      </div>
-      
-      <!-- Barre de progression du streak -->
-      <div class="streak-progress-container">
-        <div class="streak-progress-bar">
-          <div class="streak-progress-fill" :style="{ width: streakProgressPercentage + '%' }"></div>
-        </div>
-        <div class="streak-progress-text">{{ streakProgressText }}</div>
-      </div>
-      
-
-      
-      <!-- Message de motivation -->
-      <div class="streak-motivation" v-if="streakDays > 0">
-        <p class="motivation-text">{{ getMotivationMessage() }}</p>
-      </div>
-    </div>
     
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { useStreak } from '@/composables/useStreak'
-
 const userStore = useUserStore()
-const { 
-  initializeStreak, 
-  currentStreak, 
-  nextStreakXP, 
-  isStreakCheckedToday,
-  checkDailyStreak
-} = useStreak()
 
 const level = computed(() => userStore.level || 0)
 const xp = computed(() => userStore.xp || 0)
 const xpToNext = computed(() => userStore.xp_to_next || 0)
 
 
-// Streak data for display
-const streakDays = computed(() => currentStreak.value)
-
-// Calcul du pourcentage de progression du streak
-const streakProgressPercentage = computed(() => {
-  if (streakDays.value === 0) return 0
-  if (streakDays.value <= 7) {
-    // Progression linéaire jusqu'à 7 jours
-    return (streakDays.value / 7) * 100
-  }
-  // Au-delà de 7 jours, progression par paliers hebdomadaires
-  const daysInCurrentWeek = ((streakDays.value - 1) % 7) + 1
-  return (daysInCurrentWeek / 7) * 100
-})
-
-// Texte de progression du streak
-const streakProgressText = computed(() => {
-  if (streakDays.value === 0) return 'Commencez votre streak !'
-  if (streakDays.value <= 7) {
-    return `${streakDays.value}/7 jours`
-  }
-  const daysInCurrentWeek = ((streakDays.value - 1) % 7) + 1
-  const weekNumber = Math.floor((streakDays.value - 1) / 7) + 1
-  return `${daysInCurrentWeek}/7 jours (semaine ${weekNumber})`
-})
-
-// Sous-titre du streak
-const getStreakSubtitle = () => {
-  if (streakDays.value === 0) return 'Connectez-vous chaque jour pour gagner des XP'
-  if (streakDays.value === 1) return 'Excellent début ! Continuez demain'
-  if (streakDays.value < 7) return `${streakDays.value} jours consécutifs`
-  if (streakDays.value < 30) return `${streakDays.value} jours - Vous êtes régulier !`
-  return `${streakDays.value} jours - Vous êtes un champion !`
-}
-
-// Message de motivation
-const getMotivationMessage = () => {
-  const messages = [
-    "Continuez comme ça ! Chaque jour compte.",
-    "Vous construisez une habitude d'apprentissage solide !",
-    "Impressionnant ! Votre persévérance paie.",
-    "Vous êtes sur la bonne voie vers la maîtrise !",
-    "Chaque jour d'apprentissage vous rapproche de vos objectifs."
-  ]
-  const index = Math.min(Math.floor(streakDays.value / 5), messages.length - 1)
-  return messages[index]
-}
-
-// XP actuel du streak (pour affichage)
-const getCurrentStreakXP = () => {
-  if (streakDays.value === 0) return 1 // Premier jour = 1 XP
-  if (streakDays.value <= 5) return streakDays.value // 1, 2, 3, 4, 5 XP
-  return 5 // 5 XP constant au-delà du 5ème jour
-}
-
-// Icône XP selon la valeur
-const getXPIcon = () => {
-  const xp = getCurrentStreakXP()
-  if (xp >= 5) return '👑'      // Couronne pour 5+ XP
-  if (xp >= 3) return '🏆'      // Trophée pour 3-4 XP
-  if (xp >= 2) return '⭐'      // Étoile pour 2 XP
-  return '💎'                   // Diamant pour 1 XP
-}
+ 
 
 
 
@@ -158,19 +53,9 @@ const dashArray = computed(() => {
 })
 
 
-// Initialiser le streak au montage
-onMounted(async () => {
-  // Initialise puis vérifie (idempotent côté serveur + garde locale côté client)
-  try { await initializeStreak() } catch (_) {}
-  try { await checkDailyStreak() } catch (_) {}
-})
+ 
 
-// Re-vérifier quand l'utilisateur devient authentifié
-watch(() => userStore.isAuthenticated, async (isAuth) => {
-  if (isAuth) {
-    try { await checkDailyStreak() } catch (_) {}
-  }
-}, { immediate: false })
+//
 </script>
 
 <style scoped>

@@ -8,7 +8,6 @@ const sharedUserStats = ref({
   quizMedium: 0,
   quizHard: 0,
   quizPerfect: 0,
-  quizStreak: 0,
   exercicesCompleted: 0
 })
 
@@ -53,12 +52,6 @@ export function useDailyObjectives() {
       xpReward: 9,
       getProgress: () => userStats.value.quizPerfect
     },
-    quiz_streak: {
-      icon: '⚡',
-      getText: (target) => `Réussir ${target} quiz d'affilée`,
-      xpReward: 9,
-      getProgress: () => userStats.value.quizStreak
-    },
     exercices_completed: {
       icon: '📚',
       getText: (target) => `Réussir ${target} exercices`,
@@ -74,7 +67,6 @@ export function useDailyObjectives() {
       quiz_medium: 'quizMedium',
       quiz_hard: 'quizHard',
       quiz_perfect: 'quizPerfect',
-      quiz_streak: 'quizStreak',
       exercices_completed: 'exercicesCompleted'
     }
     return map[type] || null
@@ -86,7 +78,6 @@ export function useDailyObjectives() {
     { name: 'Quiz moyens', type: 'quiz_medium', target: 5 },
     { name: 'Quiz difficiles', type: 'quiz_hard', target: 6 },
     { name: 'Quiz parfaits', type: 'quiz_perfect', target: 2 },
-    { name: 'Série de quiz', type: 'quiz_streak', target: 7 },
     { name: 'Exercices réussis', type: 'exercices_completed', target: 2 }
   ]
 
@@ -446,19 +437,7 @@ export function useDailyObjectives() {
   const simulateQuizHard = () => incrementStat('quiz_hard')
   const simulateQuizPerfect = () => incrementStat('quiz_perfect')
   const simulateExerciseCompleted = () => incrementStat('exercices_completed')
-  const simulateQuizStreak = (count) => {
-    userStats.value.quizStreak = Math.max(userStats.value.quizStreak, count)
-    saveStats()
-    // Notifier le dashboard et tenter d'attribuer les récompenses
-    try {
-      window.dispatchEvent(new CustomEvent('dailyObjectiveProgress', {
-        detail: { type: 'quiz_streak', value: userStats.value.quizStreak }
-      }))
-    } catch {}
-    setTimeout(() => {
-      checkAndAwardObjectives()
-    }, 100)
-  }
+  // Streak d'objectifs supprimé
 
   // Watcher pour sauvegarder automatiquement (une fois)
   if (!objectivesInitialized) {
@@ -490,24 +469,16 @@ export function useDailyObjectives() {
     simulateQuizMedium,
     simulateQuizHard,
     simulateQuizPerfect,
-    simulateExerciseCompleted,
-    simulateQuizStreak
+    simulateExerciseCompleted
   }
 }
 
 // Intégration avec les vraies actions utilisateur
 export function useDailyObjectivesIntegration() {
-  const { incrementStat, simulateQuizStreak } = useDailyObjectives()
+  const { incrementStat } = useDailyObjectives()
   
   // Gestion du streak quotidien (succès consécutifs)
   const getTodayKey = (suffix) => `${suffix}_${new Date().toDateString()}`
-  const loadCurrentSuccessStreak = () => {
-    const raw = localStorage.getItem(getTodayKey('daily_quiz_success_streak'))
-    return raw ? parseInt(raw, 10) || 0 : 0
-  }
-  const saveCurrentSuccessStreak = (value) => {
-    localStorage.setItem(getTodayKey('daily_quiz_success_streak'), String(value))
-  }
 
   // Fonctions à appeler lors des vraies actions utilisateur
   const onQuizCompleted = (quizResult) => {
@@ -531,17 +502,10 @@ export function useDailyObjectivesIntegration() {
         incrementStat('quiz_hard')
       }
 
-      // Mettre à jour le streak de succès consécutifs
-      let streak = loadCurrentSuccessStreak()
-      streak = streak + 1
-      saveCurrentSuccessStreak(streak)
-      console.log('[DailyObjectives] Streak success mis à jour:', streak)
-      simulateQuizStreak(streak)
+      // Streak supprimé
     } else {
       console.log('[DailyObjectives] Quiz échoué - Pas d\'incrémentation')
-      // Échec: réinitialiser le streak
-      saveCurrentSuccessStreak(0)
-      simulateQuizStreak(0)
+      // Streak supprimé
     }
     
     // Gérer les quiz parfaits (100% de bonnes réponses)
@@ -552,10 +516,7 @@ export function useDailyObjectivesIntegration() {
   }
 
   // Gérer les séries de quiz réussis
-  const onQuizStreak = (streakCount) => {
-    console.log('[DailyObjectives] Quiz streak:', streakCount)
-    simulateQuizStreak(streakCount)
-  }
+  // Streak supprimé
 
   // Gérer la complétion d'exercices
   const onExerciseCompleted = (exerciseResult) => {
@@ -571,7 +532,7 @@ export function useDailyObjectivesIntegration() {
 
   return {
     onQuizCompleted,
-    onQuizStreak,
+    
     onExerciseCompleted
   }
 }

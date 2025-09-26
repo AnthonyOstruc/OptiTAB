@@ -190,8 +190,7 @@ function getNotificationIcon(type) {
     level_up: '🏆', 
     exercise_unlocked: '🔓',
     chapter_completed: '✅',
-    achievement: '🏅',
-    daily_streak: '🔥'
+    achievement: '🏅'
   }
   return icons[type] || '🔔'
 }
@@ -472,9 +471,7 @@ onUnmounted(() => {
   color: #f59e0b;
 }
 
-.notification-item.type-daily_streak .notification-item-icon .icon {
-  color: #ef4444;
-}
+
 
 /* État vide */
 .notification-empty {

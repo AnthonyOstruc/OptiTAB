@@ -13,7 +13,7 @@ from pays.models import Pays, Niveau
 from django.db.models import F, Q, Count, IntegerField, Window
 from django.db.models.functions import Cast, TruncDate, Rank
 from users.models import CustomUser, ParentChild, UserNotification
-from users.services import StreakService
+# StreakService supprimé
 from ..serializers.user_profile import UserNotificationSerializer
 from suivis.models import SuiviExercice
 from django.utils import timezone
@@ -52,9 +52,6 @@ class MeGamificationView(APIView):
         try:
             user = request.user
             total_xp = user.xp or 0
-            # Refresh streak to ensure admin shows the latest value
-            streak_data = StreakService.refresh_user_streak(user)
-            current_streak = streak_data.current_streak
             
             # Utiliser la nouvelle logique de niveaux progressifs
             from suivis.views import calculate_user_level
@@ -62,7 +59,6 @@ class MeGamificationView(APIView):
             
             data = {
                 'xp': total_xp,
-                'streak': current_streak,
                 'level': level,
                 'next_level_xp': next_level_xp,
                 'xp_to_next': xp_to_next
@@ -651,109 +647,8 @@ class MyOverviewView(APIView):
             )
 
 
-class MyStreaksView(APIView):
-    """Renvoie le streak actuel basé sur l'état serveur (visite quotidienne)."""
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        try:
-            user = request.user
-            data = {
-                'current_streak': int(getattr(user, 'streak', 0) or 0),
-            }
-            return ResponseService.success(
-                message="Streak récupéré",
-                data=data
-            )
-        except Exception:
-            return ResponseService.error(
-                message="Erreur lors de la récupération du streak",
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-
-class DailyVisitStreakView(APIView):
-    """Incrémente de façon idempotente la série quotidienne lors d'une visite (une fois/jour).
-
-    Règles:
-    - Si déjà compté aujourd'hui: rien ne change
-    - Si dernière visite hier: streak += 1
-    - Sinon: streak = 1
-    - XP attribué par jour: 1..5 puis 5, identique au frontend
-    """
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        try:
-            user = request.user
-            today = timezone.now().date()
-
-            # Idempotency: une seule revendication par jour via notification daily_streak
-            last_notif = (
-                UserNotification.objects
-                .filter(user=user, type='daily_streak')
-                .order_by('-created_at')
-                .first()
-            )
-            last_date = last_notif.created_at.date() if last_notif else None
-
-            prev_streak = int(getattr(user, 'streak', 0) or 0)
-
-            if last_date == today:
-                return ResponseService.success(
-                    message="Streak déjà compté aujourd'hui",
-                    data={
-                        'current_streak': prev_streak,
-                        'xp_awarded': 0,
-                        'already_counted_today': True,
-                    }
-                )
-
-            # Calcul du nouveau streak selon l'écart
-            if last_date and (today - last_date).days == 1:
-                new_streak = prev_streak + 1
-            else:
-                new_streak = 1
-
-            xp_awarded = int(StreakService._calculate_streak_xp(new_streak))
-
-            # Persister les changements + notification
-            try:
-                user.streak = int(max(0, new_streak))
-                user.xp = int(max(0, (user.xp or 0) + xp_awarded))
-                user.save(update_fields=['streak', 'xp'])
-            except Exception:
-                # En cas d'erreur, tenter de sauver à minima le streak
-                try:
-                    user.streak = int(max(0, new_streak))
-                    user.save(update_fields=['streak'])
-                except Exception:
-                    pass
-
-            try:
-                UserNotification.objects.create(
-                    user=user,
-                    type='daily_streak',
-                    title='🔥 Streak quotidien',
-                    message=f"{new_streak} jours consécutifs",
-                    data={'current_streak': new_streak, 'xp_awarded': xp_awarded}
-                )
-            except Exception:
-                pass
-
-            return ResponseService.success(
-                message="Streak mis à jour",
-                data={
-                    'current_streak': new_streak,
-                    'xp_awarded': xp_awarded,
-                    'already_counted_today': False,
-                }
-            )
-        except Exception:
-            return ResponseService.error(
-                message="Erreur lors de la mise à jour du streak",
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+class DummyRemoved:
+    pass
 
 
 class RecommendationsView(APIView):

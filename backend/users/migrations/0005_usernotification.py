@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='UserNotification',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('xp_gained', 'XP Gained'), ('level_up', 'Level Up'), ('exercise_unlocked', 'Exercise Unlocked'), ('chapter_completed', 'Chapter Completed'), ('achievement', 'Achievement'), ('daily_streak', 'Daily Streak')], max_length=50)),
+                ('type', models.CharField(choices=[('xp_gained', 'XP Gained'), ('level_up', 'Level Up'), ('exercise_unlocked', 'Exercise Unlocked'), ('chapter_completed', 'Chapter Completed'), ('achievement', 'Achievement')], max_length=50)),
                 ('title', models.CharField(blank=True, max_length=200, null=True)),
                 ('message', models.TextField(blank=True, null=True)),
                 ('data', models.JSONField(blank=True, null=True)),

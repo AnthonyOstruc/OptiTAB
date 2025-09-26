@@ -20,8 +20,7 @@ export const useNotificationStore = defineStore('notifications', () => {
     LEVEL_UP: 'level_up', 
     EXERCISE_UNLOCKED: 'exercise_unlocked',
     CHAPTER_COMPLETED: 'chapter_completed',
-    ACHIEVEMENT: 'achievement',
-    DAILY_STREAK: 'daily_streak'
+    ACHIEVEMENT: 'achievement'
   }
 
   // Durées d'affichage (en ms)
@@ -30,8 +29,7 @@ export const useNotificationStore = defineStore('notifications', () => {
     LEVEL_UP: 6000,
     EXERCISE_UNLOCKED: 5000,
     CHAPTER_COMPLETED: 5000,
-    ACHIEVEMENT: 7000,
-    DAILY_STREAK: 5000
+    ACHIEVEMENT: 7000
   }
 
   /**
@@ -130,29 +128,7 @@ export const useNotificationStore = defineStore('notifications', () => {
     })
   }
 
-  function notifyDailyStreak(streakDays, xpGained) {
-    const getStreakMessage = (days) => {
-      if (days === 1) return "Première connexion aujourd'hui !"
-      if (days <= 5) return `${days} jours consécutifs ! Bravo !`
-      return `${days} jours de suite ! Incroyable série !`
-    }
-
-    const getStreakIcon = (days) => {
-      if (days === 1) return '🌟'
-      if (days === 2) return '⭐'
-      if (days === 3) return '🔥'
-      if (days === 4) return '💫'
-      if (days >= 5) return '🏆'
-      return '🌟'
-    }
-
-    return addNotification({
-      type: NOTIFICATION_TYPES.DAILY_STREAK,
-      title: `${getStreakIcon(streakDays)} Série Quotidienne !`,
-      message: `${getStreakMessage(streakDays)} +${xpGained} XP`,
-      data: { streakDays, xpGained }
-    })
-  }
+  // Streak supprimé
 
   /**
    * Marque une notification comme lue
@@ -252,7 +228,6 @@ export const useNotificationStore = defineStore('notifications', () => {
     notifyLevelUp,
     notifyExerciseUnlocked,
     notifyChapterCompleted,
-    notifyAchievement,
-    notifyDailyStreak
+    notifyAchievement
   }
 })

@@ -63,14 +63,12 @@ import { registerUser } from '@/api'
 import { useUserStore } from '@/stores/user'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import FullPageSpinner from '@/components/common/FullPageSpinner.vue'
-import { useStreak } from '@/composables/useStreak'
 import { useNotificationStore } from '@/stores/notifications'
 
 const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()
 const router = useRouter()
 const { isModalOpen, closeModal, openModal } = useModalManager()
-const { checkDailyStreak } = useStreak()
 const notificationStore = useNotificationStore()
 
 // Verification flow removed
@@ -185,19 +183,10 @@ const checkAndShowPaysNiveauModal = () => {
 }
 
 // Watcher pour vérifier quand l'utilisateur se connecte
-watch(() => userStore.isAuthenticated, (isAuthenticated) => {
+watch(() => userStore.isAuthenticated, async (isAuthenticated) => {
   if (isAuthenticated) {
-    // Vérifier/attribuer le streak dès que l'utilisateur est authentifié
-    setTimeout(async () => {
-      try {
-        await checkDailyStreak()
-      } catch (e) {
-        console.warn('Erreur verification streak (auth watcher):', e)
-      }
-      checkAndShowPaysNiveauModal()
-      // Charger notifications persistées à la connexion
-      try { await notificationStore.loadFromServer() } catch (_) {}
-    }, 200)
+    checkAndShowPaysNiveauModal()
+    try { await notificationStore.loadFromServer() } catch (_) {}
   }
 }, { immediate: true })
 
@@ -227,13 +216,6 @@ watch([() => userStore.pays, () => userStore.niveau_pays, () => userStore.isLoad
 
 // Vérifier au montage de l'application
 onMounted(async () => {
-  // Vérifier le streak quotidien dès l'ouverture du site
-  try {
-    await checkDailyStreak()
-  } catch (error) {
-    console.warn('Erreur verification streak:', error)
-  }
-
   if (userStore.isAuthenticated) {
     checkAndShowPaysNiveauModal()
     
@@ -242,7 +224,6 @@ onMounted(async () => {
       initializeSubjectsStoreWhenReady()
     }
 
-    // Charger les notifications persistées
     try { await notificationStore.loadFromServer() } catch (_) {}
   }
 })

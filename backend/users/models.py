@@ -62,7 +62,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     # Gamification
     xp = models.PositiveIntegerField(default=0, verbose_name="Points d'expérience")
-    streak = models.PositiveIntegerField(default=0, verbose_name="Streak (jours)")
 
     objects = CustomUserManager()
 
@@ -183,7 +182,6 @@ class UserNotification(models.Model):
         ('exercise_unlocked', 'Exercise Unlocked'),
         ('chapter_completed', 'Chapter Completed'),
         ('achievement', 'Achievement'),
-        ('daily_streak', 'Daily Streak'),
     ]
 
     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='notifications')

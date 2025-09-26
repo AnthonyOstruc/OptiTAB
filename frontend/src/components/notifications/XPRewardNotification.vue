@@ -45,8 +45,7 @@ const getObjectiveLabel = (objectiveType) => {
     'quiz_easy': 'Quiz simples',
     'quiz_medium': 'Quiz moyens',
     'quiz_hard': 'Quiz difficiles',
-    'quiz_perfect': 'Quiz parfaits',
-    'quiz_streak': 'Série de quiz'
+    'quiz_perfect': 'Quiz parfaits'
   }
   return labels[objectiveType] || 'Objectif'
 }

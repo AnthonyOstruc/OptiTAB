@@ -564,14 +564,29 @@ function handlePreview() {
     difficulty: difficultyMap[form.value.difficulte] || 'medium'
   }
 
-  // Construire les images d'aperçu à partir des fichiers sélectionnés
-  previewImages.value = selectedImages.value.map((file, index) => ({
-    id: `preview-${index}`,
-    image: URL.createObjectURL(file),
-    image_type: 'donnee',
-    position: index + 1,
-    legende: file.name
-  }))
+  // Construire les images d'aperçu: priorité aux nouveaux fichiers, sinon images enregistrées
+  if (selectedImages.value.length > 0) {
+    previewImages.value = selectedImages.value.map((file, index) => ({
+      id: `preview-${index}`,
+      image: URL.createObjectURL(file),
+      image_type: 'donnee',
+      position: index + 1,
+      legende: file.name
+    }))
+  } else if (serverImages.value.length > 0) {
+    previewImages.value = serverImages.value
+      .slice()
+      .sort((a, b) => (a.position || 0) - (b.position || 0))
+      .map((img, idx) => ({
+        id: img.id ?? `server-${idx}`,
+        image: img.image,
+        image_type: img.image_type || 'donnee',
+        position: img.position || idx + 1,
+        legende: img.legende || ''
+      }))
+  } else {
+    previewImages.value = []
+  }
   
   showPreview.value = true
 }
@@ -581,6 +596,93 @@ function closePreview() {
   showPreview.value = false
   previewData.value = null
   previewImages.value = []
+}
+
+// ============================
+// Images – preview (nouveaux fichiers) + gestion serveur
+// ============================
+function handleImagesSelect(event) {
+  const files = Array.from(event.target.files || [])
+  files.forEach(file => {
+    try {
+      selectedImages.value.push(file)
+    } catch (_) {}
+  })
+}
+
+function removeSelectedImage(index) {
+  selectedImages.value.splice(index, 1)
+}
+
+function getImagePreview(file) {
+  return URL.createObjectURL(file)
+}
+
+function onSelectReplaceFile(rowIndex, event) {
+  const file = event?.target?.files?.[0]
+  if (!file) return
+  serverImages.value[rowIndex].__replace_file = file
+}
+
+async function saveImageRow(row) {
+  try {
+    if (!form.value.id || !row?.id) return
+    const payload = {
+      exercice: form.value.id,
+      image_type: row.image_type,
+      position: row.position,
+      legende: row.legende
+    }
+    if (row.__replace_file) payload.image = row.__replace_file
+    await updateExerciceImage(row.id, payload)
+    const { data } = await getExerciceImages(form.value.id)
+    serverImages.value = (data || []).slice().sort((a, b) => (a.position || 0) - (b.position || 0))
+  } catch (e) {
+    console.error('[AdminExercices] saveImageRow error', e)
+    alert("Erreur lors de l'enregistrement de l'image")
+  }
+}
+
+async function removeImageRow(row) {
+  if (!row?.id) return
+  if (!confirm('Supprimer cette image ?')) return
+  try {
+    await deleteExerciceImage(row.id)
+    serverImages.value = serverImages.value.filter(img => img.id !== row.id)
+  } catch (e) {
+    console.error('[AdminExercices] removeImageRow error', e)
+    alert('Suppression impossible')
+  }
+}
+
+function onSelectNewImage(event) {
+  const file = event?.target?.files?.[0]
+  newImage.value.file = file || null
+}
+
+async function addNewImage() {
+  if (!form.value.id) return
+  if (!newImage.value.file) {
+    alert('Choisissez un fichier image')
+    return
+  }
+  try {
+    const payload = {
+      exercice: form.value.id,
+      image: newImage.value.file,
+      image_type: newImage.value.image_type || 'donnee',
+      position: newImage.value.position || (serverImages.value.length + 1),
+      legende: newImage.value.legende || ''
+    }
+    const res = await createExerciceImage(payload)
+    const created = res?.data || null
+    if (created) serverImages.value.push(created)
+    newImage.value = { file: null, image_type: 'donnee', position: 0, legende: '' }
+    if (newImageInput.value) newImageInput.value.value = ''
+  } catch (e) {
+    console.error('[AdminExercices] addNewImage error', e)
+    alert("Erreur lors de l'ajout de l'image")
+  }
 }
 
 // Helpers d'affichage

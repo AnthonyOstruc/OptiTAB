@@ -354,22 +354,32 @@ function renderInstructionWithImages(instruction) {
 
 function renderMath() {
   nextTick(() => {
-    // Attendre que MathJax soit disponible
-    if (window.MathJax && window.MathJax.typesetPromise) {
-      window.MathJax.typesetPromise()
-    } else {
-      // Si MathJax n'est pas encore chargé, attendre un peu
-      const maxRetries = 10
-      let tries = 0
-      const tryRender = () => {
+    const doTypeset = () => {
+      try {
         if (window.MathJax && window.MathJax.typesetPromise) {
-          window.MathJax.typesetPromise()
-        } else if (tries++ < maxRetries) {
-          setTimeout(tryRender, 150)
+          return window.MathJax.typesetPromise()
         }
-      }
-      setTimeout(tryRender, 100)
+      } catch (_) {}
+      return Promise.resolve()
     }
+
+    // Si MathJax expose sa promesse de démarrage, l'utiliser pour garantir le chargement
+    if (window.MathJax && window.MathJax.startup && window.MathJax.startup.promise) {
+      window.MathJax.startup.promise.then(() => doTypeset())
+      return
+    }
+
+    // Sinon, attendre jusqu'à disponibilité (durée plus longue qu'avant)
+    let tries = 0
+    const maxRetries = 50 // ~10s à 200ms d'intervalle
+    const tryRender = () => {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        doTypeset()
+      } else if (tries++ < maxRetries) {
+        setTimeout(tryRender, 200)
+      }
+    }
+    tryRender()
   })
 }
 

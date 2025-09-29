@@ -577,6 +577,13 @@ function normalizeLineBreaks(text) {
   t = t.replace(/\\(\s|$)/g, '\n')
   // Séquence littérale \n
   t = t.replace(/\\n/g, '\n')
+  // Alias de retours à la ligne saisis par l'admin:
+  // - "//" seul entre espaces → saut de ligne
+  t = t.replace(/(^|\s)\/{2}(?=\s|$)/g, '$1\n')
+  // - "/n" seul entre espaces → saut de ligne
+  t = t.replace(/(^|\s)\/n(?=\s|$)/g, '$1\n')
+  // - "$//$" → saut de ligne
+  t = t.replace(/(^|\s)\$\/{2}\$(?=\s|$)/g, '$1\n')
   return t
 }
 

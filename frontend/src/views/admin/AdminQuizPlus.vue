@@ -567,6 +567,19 @@ function getTotalQuestions() {
   return previewList.value.reduce((total, quiz) => total + quiz.questions.length, 0)
 }
 
+// Normalise les retours à la ligne saisis par l'utilisateur
+// - "\\" (LaTeX fin de ligne) suivi d'un espace/fin → saut de ligne
+// - "\n" littéral → saut de ligne
+function normalizeLineBreaks(text) {
+  if (!text) return text
+  let t = String(text)
+  // LaTeX line break: \\ en fin de morceau
+  t = t.replace(/\\(\s|$)/g, '\n')
+  // Séquence littérale \n
+  t = t.replace(/\\n/g, '\n')
+  return t
+}
+
 // Fonction pour rendre les formules LaTeX avec MathJax
 const renderMath = () => {
   nextTick(() => {
@@ -615,55 +628,61 @@ function parseBlockFormat(text) {
     let image = ''
     const questions = []
     let currentQuestion = null
+    let inExplanation = false
 
-    const lines = block.split('\n').map(l => l.trim())
+    const lines = block.split('\n')
     
     for (const line of lines) {
-      if (line.startsWith('Titre:')) {
-        titre = line.slice(6).trim()
-      } else if (line.startsWith('Instructions:')) {
-        instruction = line.slice(12).trim()
-      } else if (line.startsWith('Difficulté:') || line.startsWith('Difficulty:')) {
-        difficulty = line.split(':')[1].trim().toLowerCase()
-      } else if (line.startsWith('Images:')) {
-        image = line.slice(7).trim()
-      } else if (line.startsWith('Question:')) {
+      const trimmed = line.trim()
+      if (trimmed.startsWith('Titre:')) {
+        titre = trimmed.slice(6).trim()
+        inExplanation = false
+      } else if (trimmed.startsWith('Instructions:')) {
+        instruction = trimmed.slice(12).trim()
+        inExplanation = false
+      } else if (trimmed.startsWith('Difficulté:') || trimmed.startsWith('Difficulty:')) {
+        difficulty = trimmed.split(':')[1].trim().toLowerCase()
+        inExplanation = false
+      } else if (trimmed.startsWith('Images:')) {
+        image = trimmed.slice(7).trim()
+        inExplanation = false
+      } else if (trimmed.startsWith('Question:')) {
         // Sauver la question précédente
         if (currentQuestion && currentQuestion.question) {
           questions.push({ ...currentQuestion })
         }
         // Nouvelle question
         currentQuestion = {
-          question: line.slice(9).trim(),
+          question: normalizeLineBreaks(trimmed.slice(9).trim()),
           options: [],
           correct_answer: 0,
           explanation: ''
         }
-      } else if (line.match(/^[A-F]:/)) {
+        inExplanation = false
+      } else if (/^[A-F]:/.test(trimmed)) {
         if (currentQuestion) {
-          currentQuestion.options.push(line.slice(2).trim())
+          currentQuestion.options.push(normalizeLineBreaks(trimmed.slice(2).trim()))
         }
-      } else if (line.startsWith('Correct:')) {
+        inExplanation = false
+      } else if (trimmed.startsWith('Correct:')) {
         if (currentQuestion) {
-          const answer = line.slice(8).trim().toUpperCase()
+          const answer = trimmed.slice(8).trim().toUpperCase()
           currentQuestion.correct_answer = answer.charCodeAt(0) - 65 // A=0, B=1, etc.
         }
-      } else if (line.startsWith('Explication:')) {
+        inExplanation = false
+      } else if (trimmed.startsWith('Explication:')) {
         if (currentQuestion) {
-          let explanation = line.slice(12).trim()
-          // Corriger les doubles backslashes pour MathJax
-          explanation = explanation.replace(/\\/g, '\\')
-          currentQuestion.explanation = explanation
+          let explanation = trimmed.slice(12).trim()
+          currentQuestion.explanation = normalizeLineBreaks(explanation)
+          inExplanation = true
         }
-      } else if (currentQuestion && currentQuestion.explanation && line.trim()) {
-        // Continuer l'explication sur plusieurs lignes
-        let additionalText = line.trim()
-        // Corriger les doubles backslashes pour MathJax
-        additionalText = additionalText.replace(/\\/g, '\\')
-        currentQuestion.explanation += ' ' + additionalText
-      } else if (currentQuestion && line.trim()) {
+      } else if (currentQuestion && inExplanation) {
+        // Conserver exactement les retours à la ligne dans l'explication
+        const additionalText = normalizeLineBreaks(line)
+        currentQuestion.explanation += '\n' + additionalText.trim()
+      } else if (currentQuestion && trimmed) {
         // Lignes supplémentaires (ex: [IMAGE_1]) rattachées à l'énoncé
-        const extra = line.trim()
+        const extra = normalizeLineBreaks(trimmed)
         currentQuestion.question = currentQuestion.question
           ? currentQuestion.question + '\n' + extra
           : extra
@@ -861,15 +880,16 @@ function getImagePreview(file) {
 function renderWithImages(text, imageString) {
   if (!text || !imageString) return text
   
+  let processed = normalizeLineBreaks(text)
   const imageNames = imageManager.parseImageString(imageString)
   
   // Debug: afficher les informations d'images
-  console.log('renderWithImages - text:', text)
+  console.log('renderWithImages - text:', processed)
   console.log('renderWithImages - imageString:', imageString)
   console.log('renderWithImages - imageNames:', imageNames)
   console.log('renderWithImages - available images:', Array.from(imageManager.images.keys()))
   
-  return text.replace(/\[IMAGE_(\d+)\]/g, (match, imageNumber) => {
+  processed = processed.replace(/\[IMAGE_(\d+)\]/g, (match, imageNumber) => {
     const imageIndex = parseInt(imageNumber) - 1
     
     console.log(`renderWithImages - processing ${match}: imageNumber=${imageNumber}, imageIndex=${imageIndex}`)
@@ -893,6 +913,11 @@ function renderWithImages(text, imageString) {
     // Si l'image n'est pas trouvée, afficher un placeholder
     return `<span class="image-placeholder" style="background: #fee2e2; color: #dc2626; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; border: 1px dashed #dc2626;">🖼️ Image ${imageNumber} manquante</span>`
   })
+
+  // Convertir les sauts de ligne en <br/> pour l'affichage HTML
+  processed = processed.replace(/\n/g, '<br/>')
+
+  return processed
 }
 </script>
 

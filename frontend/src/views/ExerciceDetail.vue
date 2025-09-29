@@ -66,11 +66,14 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getExerciceDetail } from '@/api'
 import { useUserStore } from '@/stores/user'
 import { useExerciseStatus } from '@/composables/useExerciseStatus'
 import ExercisePageLayout from '@/components/common/ExercisePageLayout.vue'
+
+defineOptions({ name: 'ExerciceDetail' })
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import PDFDownloadButton from '@/components/common/PDFDownloadButton.vue'

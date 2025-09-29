@@ -133,15 +133,18 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
-import { getExercices, getChapitres, getStatuses, createStatus, updateStatus, deleteStatus } from '@/api'
+import { getExercices, getChapitreDetail, getStatuses, createStatus, updateStatus, deleteStatus } from '@/api'
 import { useUserStore } from '@/stores/user'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import Tabs from '@/components/common/Tabs.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import PDFDownloadButton from '@/components/common/PDFDownloadButton.vue'
+
+defineOptions({ name: 'ChapterExercises' })
 
 const route = useRoute()
 const router = useRouter()
@@ -219,20 +222,25 @@ const chapitres = ref([]) // Ajouter un ref pour stocker les chapitres
 onMounted(async () => {
   loading.value = true
   try {
-    // Récupérer la liste de chapitres (format data direct via API unifiée)
-    const chapitresData = await getChapitres()
-    chapitres.value = Array.isArray(chapitresData) ? chapitresData : []
-    const chapitre = chapitres.value.find(c => c.id == chapitreId)
-    chapitreNom.value = chapitre ? chapitre.nom : 'Chapitre'
-    
-    // Récupérer les exercices (API unifiée attend un objet params)
     const niveauId = userStore.niveau_pays?.id
-    const exercicesData = await getExercices({ chapitre: chapitreId, niveau: niveauId })
+
+    // Charger en parallèle: chapitre (détail), exercices, statuts
+    const [chapitreDetail, exercicesData, statusesResp] = await Promise.all([
+      getChapitreDetail(chapitreId),
+      getExercices({ chapitre: chapitreId, niveau: niveauId }),
+      getStatuses()
+    ])
+
+    // Chapitre
+    chapitreNom.value = chapitreDetail?.nom || chapitreDetail?.titre || 'Chapitre'
+    chapitres.value = chapitreDetail ? [chapitreDetail] : []
+
+    // Exercices
     exercices.value = Array.isArray(exercicesData) ? exercicesData : []
     console.log(`[ChapterExercises] Exercices chargés pour niveau ${niveauId}:`, exercices.value.length)
-    
-    // fetch statuses (adapter au nouveau modèle SuiviExercice)
-    const { data: stats } = await getStatuses()
+
+    // Statuts
+    const stats = statusesResp?.data || []
     const list = Array.isArray(stats) ? stats : (stats?.results || [])
     statusMap.value = Object.fromEntries(
       list.map(s => [
@@ -241,9 +249,6 @@ onMounted(async () => {
       ])
     )
 
-    const notionId = chapitre ? chapitre.notion : chapitre?.notion_id
-    // const { data: ficheData } = await getFiches(notionId ? `?notion=${notionId}` : '')
-    // fiche.value = ficheData.length ? ficheData[0] : null
     currentPage.value = 1
     error.value = ''
   } catch (e) {

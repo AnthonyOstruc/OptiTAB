@@ -36,7 +36,7 @@ export class BaseAPI {
    */
   async getById(id) {
     try {
-      const response = await apiClient.get(`${this.endpoint}${id}/`)
+      const response = await clientUtils.cachedGet(`${this.endpoint}${id}/`, { ttl: 120000 })
       return response.data
     } catch (error) {
       this.handleError(`récupération de l'élément ${id}`, error)
@@ -50,6 +50,8 @@ export class BaseAPI {
   async create(data) {
     try {
       const response = await apiClient.post(this.endpoint, data)
+      // Invalider le cache de la collection
+      try { clientUtils.invalidateUrl(this.endpoint) } catch (_) {}
       return response.data
     } catch (error) {
       this.handleError('création', error)
@@ -63,6 +65,11 @@ export class BaseAPI {
   async update(id, data) {
     try {
       const response = await apiClient.patch(`${this.endpoint}${id}/`, data)
+      // Invalider le cache de la collection et de l'élément
+      try {
+        clientUtils.invalidateUrl(this.endpoint)
+        clientUtils.invalidateUrl(`${this.endpoint}${id}/`)
+      } catch (_) {}
       return response.data
     } catch (error) {
       this.handleError(`mise à jour de l'élément ${id}`, error)
@@ -76,6 +83,11 @@ export class BaseAPI {
   async delete(id) {
     try {
       await apiClient.delete(`${this.endpoint}${id}/`)
+      // Invalider le cache de la collection et de l'élément
+      try {
+        clientUtils.invalidateUrl(this.endpoint)
+        clientUtils.invalidateUrl(`${this.endpoint}${id}/`)
+      } catch (_) {}
     } catch (error) {
       this.handleError(`suppression de l'élément ${id}`, error)
       throw error

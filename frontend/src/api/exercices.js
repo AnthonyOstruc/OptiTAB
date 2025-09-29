@@ -1,4 +1,4 @@
-import apiClient from './client'
+import apiClient, { apiUtils } from './client'
 
 /**
  * Récupère dynamiquement la liste des exercices depuis le backend.
@@ -70,11 +70,26 @@ export const updateExerciceImage = (id, payload) => {
 export const deleteExerciceImage = (id) => apiClient.delete(`/api/exercice-images/${id}/`)
 
 // ----- Exercice status -----
-export const getStatuses = () => apiClient.get('/api/suivis/status/')
-export const createStatus = (payload) => apiClient.post('/api/suivis/status/', payload)
-export const updateStatus = (id, payload) => apiClient.patch(`/api/suivis/status/${id}/`, payload)
+export const getStatuses = () => apiUtils.cachedGet('/api/suivis/status/', { ttl: 60000 })
+export const createStatus = async (payload) => {
+  const res = await apiClient.post('/api/suivis/status/', payload)
+  try { apiUtils.invalidateUrl('/api/suivis/status/') } catch (_) {}
+  return res
+}
+export const updateStatus = async (id, payload) => {
+  const res = await apiClient.patch(`/api/suvis/status/${id}/`, payload)
+  try {
+    apiUtils.invalidateUrl('/api/suivis/status/')
+    apiUtils.invalidateUrl(`/api/suivis/status/${id}/`)
+  } catch (_) {}
+  return res
+}
 // Supprime un statut d'exercice
-export const deleteStatus = (id) => apiClient.delete(`/api/suivis/status/${id}/`) 
+export const deleteStatus = async (id) => {
+  const res = await apiClient.delete(`/api/suivis/status/${id}/`)
+  try { apiUtils.invalidateUrl('/api/suivis/status/') } catch (_) {}
+  return res
+}
 
 // ----- Backend PDF (rendu serveur, qualité éditoriale) -----
 export const downloadExercicePDF = async (exerciceId, includeSolution = false) => {

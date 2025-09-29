@@ -825,6 +825,28 @@ export const apiUtils = {
   },
   
   /**
+   * Invalide les entrées de cache GET pour une URL donnée
+   * Supprime toutes les clés commençant par `GET|<url>|`
+   */
+  invalidateUrl(url) {
+    try {
+      const cache = window.__API_RESPONSE_CACHE__
+      if (!cache) return 0
+      const prefix = `GET|${url}|`
+      let removed = 0
+      for (const key of Array.from(cache.keys())) {
+        if (key.startsWith(prefix)) {
+          cache.delete(key)
+          removed++
+        }
+      }
+      return removed
+    } catch (_) {
+      return 0
+    }
+  },
+  
+  /**
    * Vérifie si l'utilisateur est authentifié
    */
   isAuthenticated() {

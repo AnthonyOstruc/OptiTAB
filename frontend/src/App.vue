@@ -1,7 +1,11 @@
 <template>
   <FullPageSpinner v-if="userStore.isLoading" />
   <div v-else id="app">
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <keep-alive include="ChapterExercises,ExerciceDetail">
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
     <!-- Login Modal -->
     <LoginModal 
       :is-open="isLoginModalOpen"

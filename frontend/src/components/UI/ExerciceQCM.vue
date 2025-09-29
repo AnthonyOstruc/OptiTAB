@@ -525,9 +525,12 @@ async function loadExerciceImages() {
   try {
     const { data } = await getExerciceImages(props.eid)
     exerciceImages.value = data
+    // Re-typeset après insertion des images dans le DOM via v-html
+    nextTick(() => renderMath())
   } catch (error) {
     // Backend sans endpoint d'images → ignorer silencieusement
     exerciceImages.value = []
+    nextTick(() => renderMath())
   }
 }
 
@@ -538,8 +541,14 @@ watch(() => [props.instruction, props.etapes, props.solution], renderMath, { imm
 watch(() => props.previewImages, () => {
   if (props.eid && props.eid.toString().startsWith('preview-')) {
     exerciceImages.value = props.previewImages || []
+    nextTick(() => renderMath())
   }
 }, { immediate: true })
+
+// Re-render MathJax when exercise images change (API or preview)
+watch(exerciceImages, () => {
+  nextTick(() => renderMath())
+}, { deep: true })
 
 // Lifecycle
 onMounted(() => {

@@ -176,7 +176,7 @@ Explication: 2+2=4, c'est mathématique !
 
           <!-- Aperçu des questions -->
           <div class="questions-preview">
-            <div v-for="(q, qIdx) in quiz.questions.slice(0, 2)" :key="qIdx" class="question-mini">
+            <div v-for="(q, qIdx) in quiz.questions" :key="qIdx" class="question-mini">
               <div class="question-header">
                 <strong>Q{{ qIdx + 1 }}:</strong> 
                 <div v-html="renderWithImages(q.question, quiz.image)"></div>
@@ -199,12 +199,6 @@ Explication: 2+2=4, c'est mathématique !
                   <em>⚠️ Aucune explication fournie pour cette question</em>
                 </div>
               </div>
-            </div>
-            <div v-if="quiz.questions.length > 2" class="more-questions">
-              ... et {{ quiz.questions.length - 2 }} autres questions
-              <span v-if="showExplanations">
-                ({{ quiz.questions.slice(2).filter(q => q.explanation).length }} explications dans les autres questions)
-              </span>
             </div>
           </div>
         </div>

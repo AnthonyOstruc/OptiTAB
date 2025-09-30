@@ -2,7 +2,7 @@ import { apiUtils } from './base'
 
 /**
  * API Curriculum - Architecture DRY et professionnelle
- * Matières → Thèmes → Notions → Chapitres → Exercices
+ * Matières → Thèmes → Notions → Exercices (chapitres supprimés)
  */
 
 // ========================================
@@ -78,35 +78,8 @@ export const getNotionsByTheme = (themeId, params = {}) =>
   getNotionsAPI().getByRelation('theme', themeId, params)
 
 // ========================================
-// CHAPITRES API
+// CHAPITRES SUPPRIMÉS → pas d'API
 // ========================================
-
-// Fonction pour obtenir l'API chapitres de manière paresseuse
-const getChapitresAPI = () => {
-  if (!getChapitresAPI._instance) {
-    getChapitresAPI._instance = apiUtils.createCRUDFunctions('/api/chapitres/')
-  }
-  return getChapitresAPI._instance
-}
-
-// Fonctions de base
-export const getChapitres = (params) => getChapitresAPI().getAll(params)
-export const getChapitreDetail = (id) => getChapitresAPI().getById(id)
-export const createChapitre = (data) => {
-  const payload = { ...data }
-  if (payload.nom != null && payload.titre == null) payload.titre = payload.nom
-  return getChapitresAPI().create(payload)
-}
-export const updateChapitre = (id, data) => {
-  const payload = { ...data }
-  if (payload.nom != null && payload.titre == null) payload.titre = payload.nom
-  return getChapitresAPI().update(id, payload)
-}
-export const deleteChapitre = (id) => getChapitresAPI().delete(id)
-
-// Fonctions spécialisées
-export const getChapitresByNotion = (notionId, params = {}) => 
-  getChapitresAPI().getByRelation('notion', notionId, params)
 
 // ========================================
 // EXERCICES API
@@ -128,8 +101,8 @@ export const updateExercice = (id, data) => getExercicesAPI().update(id, data)
 export const deleteExercice = (id) => getExercicesAPI().delete(id)
 
 // Fonctions spécialisées
-export const getExercicesByChapitre = (chapitreId, params = {}) => 
-  getExercicesAPI().getByRelation('chapitre', chapitreId, params)
+export const getExercicesByNotion = (notionId, params = {}) => 
+  getExercicesAPI().getByRelation('notion', notionId, params)
 
 // ========================================
 // ENDPOINTS HIÉRARCHIQUES
@@ -141,17 +114,9 @@ export const getMatiereThemes = (matiereId) =>
 export const getThemeNotions = (themeId) => 
   getThemesAPI().getHierarchical(themeId, 'notions')
 
-export const getNotionChapitres = (notionId) => 
-  getNotionsAPI().getHierarchical(notionId, 'chapitres')
+// Les notions ne renvoient plus des chapitres
 
-export const getNotionChapitresAvecMeta = async (notionId) => {
-  // Utiliser cachedGet pour bénéficier du cache (5 minutes)
-  const { apiUtils } = await import('./client')
-  return apiUtils.cachedGet(`/api/notions/${notionId}/chapitres-avec-meta/`, { ttl: 300000 })
-}
-
-export const getChapitreExercices = (chapitreId) => 
-  getChapitresAPI().getHierarchical(chapitreId, 'exercices')
+// Endpoints hiérarchiques remplacés par notion → exercices/cours/quiz directement
 
 // ========================================
 // UTILITAIRES HIÉRARCHIQUES
@@ -163,8 +128,5 @@ export const getMatiereHierarchy = (matiereId) =>
 export const getThemeHierarchy = (themeId) => 
   getThemesAPI().getHierarchy(themeId, 'notions')
 
-export const getNotionHierarchy = (notionId) => 
-  getNotionsAPI().getHierarchy(notionId, 'chapitres')
-
-export const getChapitreHierarchy = (chapitreId) => 
-  getExercicesAPI().getHierarchy(chapitreId, 'exercices')
+// Hiérarchie notions/chapitres supprimée
+export const getNotionHierarchy = undefined

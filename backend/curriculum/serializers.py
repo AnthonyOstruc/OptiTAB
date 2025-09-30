@@ -3,7 +3,7 @@ SERIALIZERS ULTRA SIMPLES pour exercices
 """
 from rest_framework import serializers
 from django.db.models import Max
-from .models import Matiere, Theme, Notion, Chapitre, Exercice, MatiereContexte, ExerciceImage
+from .models import Matiere, Theme, Notion, Exercice, MatiereContexte, ExerciceImage
 from pays.models import Niveau
 
 
@@ -233,52 +233,6 @@ class NotionSerializer(serializers.ModelSerializer):
             validated_data['ordre'] = last_order + 1
         obj = super().update(instance, validated_data)
         return obj
-
-
-class ChapitreSerializer(serializers.ModelSerializer):
-    notion_detail = serializers.SerializerMethodField(read_only=True)
-    theme_detail = serializers.SerializerMethodField(read_only=True)
-    matiere_detail = serializers.SerializerMethodField(read_only=True)
-    
-    class Meta:
-        model = Chapitre
-        fields = '__all__'
-        extra_kwargs = {
-            'contenu': {'required': False, 'allow_blank': True, 'default': ''},
-            'difficulty': {'required': False}
-        }
-
-    def get_notion_detail(self, obj):
-        if not obj.notion:
-            return None
-        return {
-            'id': obj.notion.id,
-            'titre': obj.notion.titre,
-            'theme': self.get_theme_detail(obj)
-        }
-    
-    def get_theme_detail(self, obj):
-        if not obj.notion or not obj.notion.theme:
-            return None
-        return {
-            'id': obj.notion.theme.id,
-            'titre': obj.notion.theme.titre,
-            'matiere': self.get_matiere_detail(obj)
-        }
-    
-    def get_matiere_detail(self, obj):
-        if not obj.notion or not obj.notion.theme or not obj.notion.theme.matiere:
-            return None
-        return {
-            'id': obj.notion.theme.matiere.id,
-            'nom': obj.notion.theme.matiere.titre
-        }
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        # Alias 'nom' pour compatibilité frontend admin
-        data['nom'] = data.get('titre')
-        return data
 
 
 class ExerciceSerializer(serializers.ModelSerializer):

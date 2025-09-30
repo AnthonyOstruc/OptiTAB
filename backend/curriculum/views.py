@@ -17,14 +17,14 @@ import os
 import base64
 from io import BytesIO
 import logging
-from .models import Matiere, Theme, Notion, Chapitre, Exercice, MatiereContexte, ExerciceImage
+from .models import Matiere, Theme, Notion, Exercice, MatiereContexte, ExerciceImage
 from cours.models import Cours, CoursImage
 from quiz.models import Quiz, QuizImage
 from synthesis.models import SynthesisSheet
-from .services import duplicate_theme_deep, duplicate_notion_deep, duplicate_chapitre_deep
+from .services import duplicate_theme_deep, duplicate_notion_deep
 from .serializers import (
     MatiereSerializer, ThemeSerializer, NotionSerializer, 
-    ChapitreSerializer, ExerciceSerializer, MatiereContexteSerializer,
+    ExerciceSerializer, MatiereContexteSerializer,
     ExerciceImageSerializer
 )
 
@@ -582,113 +582,6 @@ class NotionViewSet(viewsets.ModelViewSet):
         serializer = NotionSerializer(new_notion)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['get'])
-    def chapitres(self, request, pk=None):
-        """GET /api/notions/{id}/chapitres/ - Récupère les chapitres d'une notion"""
-        notion = self.get_object()
-        chapitres = Chapitre.objects.filter(
-            notion=notion,
-            est_actif=True
-        ).order_by('ordre', 'titre')
-        
-        serializer = ChapitreSerializer(chapitres, many=True)
-        return Response(serializer.data)
-
-    @action(detail=True, methods=['get'], url_path='chapitres-avec-meta')
-    def chapitres_avec_meta(self, request, pk=None):
-        """GET /api/notions/{id}/chapitres-avec-meta/
-        Retourne notion + chapitres dans une seule réponse. Cache 300s (5 minutes).
-        Optimisé avec select_related pour éviter les requêtes N+1.
-        """
-        cache_key = f"chapitres_meta:{pk}"
-        cached = cache.get(cache_key)
-        if cached is not None:
-            return Response(cached)
-
-        # Optimisation: recharger la notion avec toutes ses relations pour éviter les requêtes N+1
-        notion = Notion.objects.select_related('theme', 'theme__matiere', 'theme__contexte', 'theme__contexte__niveau', 'theme__contexte__niveau__pays').get(pk=pk)
-        
-        # Optimisation: charger toutes les relations nécessaires en une seule requête
-        # Le serializer accède à notion.theme.matiere, donc on doit tout précharger
-        chapitres = (
-            Chapitre.objects
-            .filter(notion=notion, est_actif=True)
-            .select_related('notion', 'notion__theme', 'notion__theme__matiere')
-            .order_by('ordre', 'titre')
-        )
-        
-        # Sérialiser en une seule fois
-        notion_data = NotionSerializer(notion).data
-        chapitres_data = ChapitreSerializer(chapitres, many=True).data
-        
-        data = {
-            'notion': notion_data,
-            'chapitres': chapitres_data,
-        }
-        
-        # Cache 300s (5 minutes) pour alléger la charge
-        cache.set(cache_key, data, timeout=300)
-        return Response(data)
-
-
-class ChapitreViewSet(viewsets.ModelViewSet):
-    """ViewSet pour les chapitres avec actions hiérarchiques"""
-    queryset = Chapitre.objects.all()
-    serializer_class = ChapitreSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Lecture publique, écriture authentifiée
-
-    def get_queryset(self):
-        # Optimisation: charger toutes les relations nécessaires pour éviter N+1 queries
-        # Le serializer accède à notion.theme.matiere
-        queryset = super().get_queryset().select_related('notion', 'notion__theme', 'notion__theme__matiere')
-        notion = self.request.query_params.get('notion')
-        
-        if notion:
-            queryset = queryset.filter(notion_id=notion)
-            
-        return queryset.filter(est_actif=True).order_by('ordre', 'titre')
-    
-    @action(detail=True, methods=['get'])
-    def exercices(self, request, pk=None):
-        """GET /api/chapitres/{id}/exercices/ - Récupère les exercices d'un chapitre"""
-        chapitre = self.get_object()
-        exercices = Exercice.objects.filter(
-            chapitre=chapitre,
-            est_actif=True
-        ).order_by('ordre', 'titre')
-        
-        serializer = ExerciceSerializer(exercices, many=True)
-        return Response(serializer.data)
-
-    @action(detail=True, methods=['post'])
-    def duplicate(self, request, pk=None):
-        """POST /api/chapitres/{id}/duplicate/
-        Duplique un chapitre et tout son contenu (cours + images, quiz + images, exercices + images)
-        vers une notion cible.
-
-        Body JSON:
-          - notion (int, requis): ID de la Notion cible
-          - titre|nom (str, optionnel): nouveau titre (suffixe "(Copie)" si nécessaire)
-        """
-        try:
-            original = Chapitre.objects.select_related('notion', 'notion__theme').get(pk=pk)
-        except Chapitre.DoesNotExist:
-            return Response({'detail': 'Chapitre introuvable'}, status=status.HTTP_404_NOT_FOUND)
-
-        target_notion_id = request.data.get('notion')
-        new_title = (request.data.get('titre') or request.data.get('nom') or '').strip()
-
-        if not target_notion_id:
-            return Response({'detail': "Le champ 'notion' est requis"}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            target_notion = Notion.objects.get(pk=target_notion_id)
-        except Notion.DoesNotExist:
-            return Response({'detail': 'Notion cible introuvable'}, status=status.HTTP_404_NOT_FOUND)
-
-        new_chapitre = duplicate_chapitre_deep(original, target_notion, new_title or None)
-        serializer = ChapitreSerializer(new_chapitre)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ExerciceViewSet(viewsets.ModelViewSet):
@@ -699,10 +592,10 @@ class ExerciceViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        chapitre = self.request.query_params.get('chapitre')
+        notion = self.request.query_params.get('notion')
         
-        if chapitre:
-            queryset = queryset.filter(chapitre_id=chapitre)
+        if notion:
+            queryset = queryset.filter(notion_id=notion)
             
         return queryset.filter(est_actif=True)
 

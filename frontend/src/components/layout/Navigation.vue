@@ -127,7 +127,7 @@ const availableMatieres = computed(() => {
 
 // Pages où afficher les onglets de matières
 const shouldShowMatieresTab = computed(() => {
-  return ['Quiz', 'Exercises', 'Sheets', 'Notions', 'QuizNotions', 'QuizChapitres', 'Chapitres', 'ChapterExercises', 'ChapterQuiz'].includes(route.name)
+  return ['Quiz', 'Exercises', 'Sheets', 'Notions', 'QuizNotions', 'QuizByNotion', 'ExercicesByNotion', 'ChapterExercises', 'ChapterQuiz', 'CourseByNotion'].includes(route.name)
 })
 
 const handleItemClick = async (item) => {

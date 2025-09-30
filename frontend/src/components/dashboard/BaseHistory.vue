@@ -31,12 +31,7 @@
           </option>
         </select>
         
-        <select v-model="selectedChapitre" @change="onChapitreChange" class="filter-select" :disabled="!selectedNotion">
-          <option value="">Tous les chapitres</option>
-          <option v-for="chapitre in filteredChapitres" :key="chapitre.id" :value="chapitre.id">
-            {{ chapitre.titre }}
-          </option>
-        </select>
+        <!-- Chapitres supprimés -->
       </div>
     </div>
 
@@ -131,7 +126,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import { getMatieres, getNotions, getChapitres, getChapitresByNotion } from '@/api'
+import { getMatieres, getNotions } from '@/api'
 import apiClient, { apiUtils } from '@/api/client'
 import { useUserStore } from '@/stores/user'
 
@@ -193,14 +188,14 @@ const matiereNotionStats = ref([])
 // Données de référence
 const matieres = ref([])
 const notions = ref([])
-const chapitres = ref([])
+// Chapitres supprimés
 const themesById = ref({})
 const isReferenceLoaded = ref(false)
 
 // Filtres
 const selectedMatiere = ref('')
 const selectedNotion = ref('')
-const selectedChapitre = ref('')
+// Chapitres supprimés
 const selectedCustomFilter = ref('all')
 
 // Pagination
@@ -237,16 +232,7 @@ const filteredNotions = computed(() => {
   return filtered
 })
 
-const filteredChapitres = computed(() => {
-  if (!selectedNotion.value) return []
-  
-  const selectedNotionId = parseInt(selectedNotion.value)
-  
-  return chapitres.value.filter(chapitre => {
-    const chapNotionId = chapitre.notion_id ?? chapitre.notion?.id ?? (typeof chapitre.notion === 'number' ? chapitre.notion : null)
-    return parseInt(chapNotionId) === selectedNotionId
-  })
-})
+// Chapitres supprimés
 
 const filteredItemsList = computed(() => {
   // Si le composant parent fournit une liste filtrée, l'utiliser
@@ -380,11 +366,11 @@ const loadReferenceData = async () => {
     }
     
     // Ne pas charger tous les chapitres au montage. Ils seront chargés paresseusement par notion.
-    const chapitresData = []
+    const chapitresData = [] // Chapitres supprimés
     
     matieres.value = Array.isArray(matieresData) ? matieresData : []
     notions.value = Array.isArray(notionsData) ? notionsData : []
-    chapitres.value = Array.isArray(chapitresData) ? chapitresData : []
+    // Chapitres supprimés
     
     // Forcer la réactivité Vue
     await nextTick()
@@ -400,7 +386,7 @@ const loadReferenceData = async () => {
       
       matieres.value = Array.isArray(mResponse?.data) ? mResponse.data : (mResponse?.results || [])
       notions.value = Array.isArray(nResponse?.data) ? nResponse.data : (nResponse?.results || [])
-      chapitres.value = []
+      // Chapitres supprimés
       
       // Forcer la réactivité Vue
       await nextTick()
@@ -417,7 +403,7 @@ const loadData = async (showLoading = true) => {
     const params = { ...(props.extraParams || {}) }
     if (selectedMatiere.value) params.matiere = selectedMatiere.value
     if (selectedNotion.value) params.notion = selectedNotion.value
-    if (selectedChapitre.value) params.chapitre = selectedChapitre.value
+    // Chapitres supprimés
     
     // Utiliser un cache mémoire pour éviter les doublons dans un court laps de temps
     const response = await apiUtils.cachedGet(props.apiEndpoint, { params, ttl: 30000 })
@@ -481,7 +467,6 @@ const tryHydrateFromLocalCache = async () => {
 
 const onMatiereChange = async () => {
   selectedNotion.value = ''
-  selectedChapitre.value = ''
   resetPagination()
   
   // Recharger les notions pour la matière sélectionnée si nécessaire
@@ -520,70 +505,20 @@ const onMatiereChange = async () => {
   }
   
   loadData()
-  emit('filter-changed', { matiere: selectedMatiere.value, notion: selectedNotion.value, chapitre: selectedChapitre.value })
+  emit('filter-changed', { matiere: selectedMatiere.value, notion: selectedNotion.value })
 }
 
 const onNotionChange = async () => {
-  selectedChapitre.value = ''
+  // Chapitres supprimés
   resetPagination()
   
-  // Recharger les chapitres pour la notion sélectionnée
-  if (selectedNotion.value) {
-    try {
-      // Essayer getChapitresByNotion
-      let cResponse = await getChapitresByNotion(selectedNotion.value)
-      
-      let newChapitresData = []
-      if (Array.isArray(cResponse?.data)) {
-        newChapitresData = cResponse.data
-      } else if (cResponse?.data?.results) {
-        newChapitresData = cResponse.data.results
-      }
-      
-      // Si pas de résultats, essayer l'endpoint général avec paramètre
-      if (newChapitresData.length === 0) {
-        const cResponse2 = await getChapitres({ notion: selectedNotion.value })
-        
-        if (Array.isArray(cResponse2?.data)) {
-          newChapitresData = cResponse2.data
-        } else if (cResponse2?.data?.results) {
-          newChapitresData = cResponse2.data.results
-        }
-      }
-      
-      // Si toujours pas de résultats, essayer l'endpoint direct du backend
-      if (newChapitresData.length === 0) {
-        const cResponse3 = await apiClient.get(`/api/notions/${selectedNotion.value}/chapitres/`)
-        
-        if (Array.isArray(cResponse3?.data)) {
-          newChapitresData = cResponse3.data
-        } else if (cResponse3?.data?.results) {
-          newChapitresData = cResponse3.data.results
-        }
-      }
-      
-      // Mettre à jour les chapitres si on a trouvé quelque chose
-      if (newChapitresData.length > 0) {
-        // Fusionner avec les chapitres existants (éviter les doublons)
-        const existingIds = chapitres.value.map(c => c.id)
-        const newChapitres = newChapitresData.filter(c => !existingIds.includes(c.id))
-        chapitres.value = [...chapitres.value, ...newChapitres]
-      }
-      
-    } catch (error) {
-      console.error('Erreur lors du rechargement des chapitres:', error)
-    }
-  }
+  // Chapitres supprimés
   
   loadData()
-  emit('filter-changed', { matiere: selectedMatiere.value, notion: selectedNotion.value, chapitre: selectedChapitre.value })
+  emit('filter-changed', { matiere: selectedMatiere.value, notion: selectedNotion.value })
 }
 
-const onChapitreChange = () => {
-  resetPagination()
-  loadData()
-  emit('filter-changed', { matiere: selectedMatiere.value, notion: selectedNotion.value, chapitre: selectedChapitre.value })
-}
+// Chapitres supprimés
 
 const toggleItemDetails = (itemId) => {
   if (expandedItems.value.has(itemId)) {

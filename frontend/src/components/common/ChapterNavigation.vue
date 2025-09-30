@@ -39,53 +39,32 @@ const router = useRouter()
 const tabs = computed(() => {
   const currentPath = route.path
   const notionId = route.params.notionId
-  const chapitreId = props.chapitreId || route.params.chapitreId
+  const chapitreId = null // chapitres supprimés
   const matiereId = route.params.matiereId
   
   // Cas 1: On est dans un chapitre spécifique (avec chapitreId) - PRIORITÉ MAXIMALE
-  if (chapitreId && chapitreId !== null) {
-    return [
-      { 
-        key: 'cours', 
-        label: 'Cours', 
-        icon: BookOpenIcon,
-        route: `/course/${chapitreId}`
-      },
-      { 
-        key: 'exercices', 
-        label: 'Exercices', 
-        icon: AcademicCapIcon,
-        route: `/exercices/${chapitreId}`
-      },
-      { 
-        key: 'quiz', 
-        label: 'Quiz', 
-        icon: QuestionMarkCircleIcon,
-        route: `/quiz-exercices/${chapitreId}`
-      }
-    ]
-  }
+  // Cas chapitres supprimés → pas de tabs par chapitre
   
   // Cas 2: On est dans une notion spécifique (liste des chapitres)
-  if (notionId && currentPath.includes('/chapitres/') && !currentPath.includes('/quiz-chapitres/') && !currentPath.includes('/course-chapitres/')) {
+  if (notionId && currentPath.includes('/exercices-notion/')) {
     return [
       { 
         key: 'cours', 
         label: 'Cours', 
         icon: BookOpenIcon,
-        route: `/course-chapitres/${notionId}`
+        route: `/course-notion/${notionId}`
       },
       { 
         key: 'exercices', 
         label: 'Exercices', 
         icon: AcademicCapIcon,
-        route: `/chapitres/${notionId}`
+        route: `/exercices-notion/${notionId}`
       },
       { 
         key: 'quiz', 
         label: 'Quiz', 
         icon: QuestionMarkCircleIcon,
-        route: `/quiz-chapitres/${notionId}`
+        route: `/quiz-notion/${notionId}`
       }
     ]
   }
@@ -115,49 +94,49 @@ const tabs = computed(() => {
   }
   
   // Cas 4: On est dans une notion de cours (liste des chapitres de cours)
-  if (notionId && currentPath.includes('/course-chapitres/')) {
+  if (notionId && currentPath.includes('/course-notion/')) {
     return [
       { 
         key: 'cours', 
         label: 'Cours', 
         icon: BookOpenIcon,
-        route: `/course-chapitres/${notionId}`
+        route: `/course-notion/${notionId}`
       },
       { 
         key: 'exercices', 
         label: 'Exercices', 
         icon: AcademicCapIcon,
-        route: `/chapitres/${notionId}`
+        route: `/exercices-notion/${notionId}`
       },
       { 
         key: 'quiz', 
         label: 'Quiz', 
         icon: QuestionMarkCircleIcon,
-        route: `/quiz-chapitres/${notionId}`
+        route: `/quiz-notion/${notionId}`
       }
     ]
   }
   
   // Cas 5: On est dans une notion de quiz
-  if (notionId && currentPath.includes('/quiz-chapitres/')) {
+  if (notionId && currentPath.includes('/quiz-notion/')) {
     return [
       { 
         key: 'cours', 
         label: 'Cours', 
         icon: BookOpenIcon,
-        route: `/course-chapitres/${notionId}`
+        route: `/course-notion/${notionId}`
       },
       { 
         key: 'exercices', 
         label: 'Exercices ', 
         icon: AcademicCapIcon,
-        route: `/chapitres/${notionId}`
+        route: `/exercices-notion/${notionId}`
       },
       { 
         key: 'quiz', 
         label: 'Quiz', 
         icon: QuestionMarkCircleIcon,
-        route: `/quiz-chapitres/${notionId}`
+        route: `/quiz-notion/${notionId}`
       }
     ]
   }
@@ -256,14 +235,11 @@ function updateActiveTab() {
     }
   } else {
     // Navigation générale (notions, matières, etc.)
-    if (currentPath.includes('/course/') || currentPath.includes('/course-chapitres/') || currentPath.includes('/course-notions/')) {
+    if (currentPath.includes('/course-notion/') || currentPath.includes('/course-notions/')) {
       activeTab.value = 'cours'
-    } else if (currentPath.includes('/exercices/') || 
-               (currentPath.includes('/chapitres/') && !currentPath.includes('/quiz-chapitres/') && !currentPath.includes('/course-chapitres/')) ||
-               currentPath.includes('/notions/')) {
+    } else if (currentPath.includes('/exercices-notion/') || currentPath.includes('/notions/')) {
       activeTab.value = 'exercices'
-    } else if (currentPath.includes('/quiz-exercices/') || 
-               currentPath.includes('/quiz-chapitres/') || 
+    } else if (currentPath.includes('/quiz-notion/') || 
                (currentPath.includes('/quiz/') && route.params.matiereId)) {
       activeTab.value = 'quiz'
     } else {

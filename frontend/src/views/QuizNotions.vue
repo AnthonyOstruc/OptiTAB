@@ -19,7 +19,7 @@
           <p>Chargement...</p>
         </div>
         <div v-else class="notions-container">
-          <ThemeNotionsView :matiere-id="currentMatiereId" :notion-route-name="'QuizChapitres'" />
+          <ThemeNotionsView :matiere-id="currentMatiereId" :notion-route-name="'QuizByNotion'" />
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@ const loading = ref(true)
 onMounted(() => { loading.value = false })
 
 function onNotionClick(notionId) {
-  router.push({ name: 'QuizChapitres', params: { notionId } })
+  router.push({ name: 'QuizByNotion', params: { notionId } })
 }
 </script>
 

@@ -24,11 +24,11 @@ const props = defineProps({
   },
   searchPages: {
     type: Array,
-    default: () => ['Dashboard', 'Chapitres', 'Notions']
+    default: () => ['Dashboard', 'Notions']
   },
   chapterPages: {
     type: Array,
-    default: () => ['Exercices', 'ChapterQuiz', 'CourseChapitre', 'QuizChapitres', 'CourseChapitres', 'Chapitres']
+    default: () => ['ExercicesByNotion', 'QuizByNotion', 'CourseByNotion']
   },
   matierePages: {
     type: Array,
@@ -81,7 +81,7 @@ const componentProps = computed(() => {
   }
   if (props.chapterPages.includes(currentPage)) {
     return {
-      chapitreId: route.params.chapitreId,
+      // chapitres supprimés; aucun id nécessaire
       ...props.chapterProps
     }
   }

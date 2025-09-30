@@ -28,7 +28,7 @@ class NiveauSerializer(serializers.ModelSerializer):
     def get_statistiques(self, obj):
         # Importer localement pour éviter les imports circulaires
         try:
-            from curriculum.models import MatiereContexte, Theme, Notion, Chapitre, Exercice
+            from curriculum.models import MatiereContexte, Theme, Notion, Exercice
             from cours.models import Cours
             from quiz.models import Quiz
         except Exception:
@@ -42,16 +42,15 @@ class NiveauSerializer(serializers.ModelSerializer):
         )
         themes_count = Theme.objects.filter(contexte__niveau=obj, est_actif=True).count()
         notions_count = Notion.objects.filter(theme__contexte__niveau=obj, est_actif=True).count()
-        chapitres_count = Chapitre.objects.filter(notion__theme__contexte__niveau=obj, est_actif=True).count()
-        exercices_count = Exercice.objects.filter(chapitre__notion__theme__contexte__niveau=obj, est_actif=True).count()
-        cours_count = Cours.objects.filter(chapitre__notion__theme__contexte__niveau=obj).count()
-        quiz_count = Quiz.objects.filter(chapitre__notion__theme__contexte__niveau=obj).count()
+        # Chapitres supprimés → calcul direct via Notion
+        exercices_count = Exercice.objects.filter(notion__theme__contexte__niveau=obj).count()
+        cours_count = Cours.objects.filter(notion__theme__contexte__niveau=obj).count()
+        quiz_count = Quiz.objects.filter(notion__theme__contexte__niveau=obj).count()
 
         return {
             'matieres': len(matiere_ids),
             'themes': themes_count,
             'notions': notions_count,
-            'chapitres': chapitres_count,
             'exercices': exercices_count,
             'cours': cours_count,
             'quiz': quiz_count,

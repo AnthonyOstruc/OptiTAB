@@ -195,13 +195,13 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
         try:
             # Récupérer tous les exercices de l'utilisateur avec les relations
             user_exercice_suivis = SuiviExercice.objects.filter(user=request.user).select_related(
-                'exercice__chapitre__notion__theme__matiere'
+                'exercice__notion__theme__matiere'
             ).order_by('-date_creation')
             
             # Filtres optionnels
             matiere_id = request.query_params.get('matiere')
             notion_id = request.query_params.get('notion')
-            chapitre_id = request.query_params.get('chapitre')
+            chapitre_id = request.query_params.get('chapitre')  # obsolète
             # Limite optionnelle sur le nombre d'éléments renvoyés dans "exercice_list"
             # (utile pour alléger le dashboard tout en conservant les stats globales)
             limit_param = request.query_params.get('limit')
@@ -214,16 +214,13 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
             
             if matiere_id:
                 user_exercice_suivis = user_exercice_suivis.filter(
-                    exercice__chapitre__notion__theme__matiere_id=matiere_id
+                    exercice__notion__theme__matiere_id=matiere_id
                 )
             if notion_id:
                 user_exercice_suivis = user_exercice_suivis.filter(
-                    exercice__chapitre__notion_id=notion_id
+                    exercice__notion_id=notion_id
                 )
-            if chapitre_id:
-                user_exercice_suivis = user_exercice_suivis.filter(
-                    exercice__chapitre_id=chapitre_id
-                )
+            # chapitre_id ignoré désormais
             
             # Construire la liste des exercices (avec limitation facultative pour la réponse)
             exercice_list = []  # liste limitée renvoyée au front (payload)
@@ -235,8 +232,7 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
             
             for idx, suivi in enumerate(user_exercice_suivis):
                 exercice = suivi.exercice
-                chapitre = exercice.chapitre
-                notion = chapitre.notion
+                notion = exercice.notion
                 theme = notion.theme
                 matiere = theme.matiere
                 
@@ -254,10 +250,6 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
                     'temps_seconde': suivi.temps_seconde,
                     'score_on_10': score_on_10,
                     'date_creation': suivi.date_creation.isoformat(),
-                    'chapitre': {
-                        'id': getattr(chapitre, 'id', None),
-                        'titre': getattr(chapitre, 'titre', '')
-                    },
                     'notion': {
                         'id': getattr(notion, 'id', None),
                         'titre': getattr(notion, 'titre', '')
@@ -309,9 +301,9 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
             # Calculer les notions maîtrisées (au moins un exercice correct par notion)
             notions_with_correct = set()
             for suivi in user_exercice_suivis:
-                if suivi.est_correct:
-                    notions_with_correct.add(suivi.exercice.chapitre.notion.id)
-            mastered_notions = len(notions_with_correct)
+                if suivi.est_correct and getattr(suivi.exercice, 'notion', None):
+                    notions_with_correct.add(getattr(suivi.exercice.notion, 'id', None))
+            mastered_notions = len([n for n in notions_with_correct if n is not None])
             
             # Moyenne générale (sur l'ensemble des suivis)
             average = round(score_sum / total_exercices_all, 1) if total_exercices_all > 0 else 0
@@ -516,13 +508,13 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
         try:
             # Récupérer tous les quiz de l'utilisateur avec les relations
             user_quiz_attempts = SuiviQuiz.objects.filter(user=request.user).select_related(
-                'quiz__chapitre__notion__theme__matiere'
+                'quiz__notion__theme__matiere'
             ).order_by('-date_creation')
             
             # Filtres optionnels
             matiere_id = request.query_params.get('matiere')
             notion_id = request.query_params.get('notion')
-            chapitre_id = request.query_params.get('chapitre')
+            chapitre_id = request.query_params.get('chapitre')  # obsolète
             
             # Paramètre facultatif pour limiter la taille de la payload renvoyée dans "quiz_list"
             # Les statistiques globales sont toujours calculées sur l'ensemble des données
@@ -536,16 +528,13 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
 
             if matiere_id:
                 user_quiz_attempts = user_quiz_attempts.filter(
-                    quiz__chapitre__notion__theme__matiere_id=matiere_id
+                    quiz__notion__theme__matiere_id=matiere_id
                 )
             if notion_id:
                 user_quiz_attempts = user_quiz_attempts.filter(
-                    quiz__chapitre__notion_id=notion_id
+                    quiz__notion_id=notion_id
                 )
-            if chapitre_id:
-                user_quiz_attempts = user_quiz_attempts.filter(
-                    quiz__chapitre_id=chapitre_id
-                )
+            # chapitre_id ignoré désormais
             
             # Construire la liste des quiz avec seulement la dernière tentative de chaque quiz
             quiz_latest_attempts = {}
@@ -561,8 +550,7 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 # Garder seulement la dernière tentative (date la plus récente)
                 if quiz_id not in quiz_latest_attempts or attempt.date_creation > quiz_latest_attempts[quiz_id]['date_creation']:
                     quiz = attempt.quiz
-                    chapitre = quiz.chapitre
-                    notion = chapitre.notion
+                    notion = quiz.notion
                     theme = notion.theme
                     matiere = theme.matiere
                     
@@ -577,10 +565,6 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                         'date_creation': attempt.date_creation,
                         'temps_total_seconde': attempt.temps_total_seconde,
                         'total_attempts': user_quiz_attempts.filter(quiz_id=quiz_id).count(),
-                        'chapitre': {
-                            'id': chapitre.id,
-                            'titre': chapitre.titre
-                        },
                         'notion': {
                             'id': notion.id,
                             'titre': notion.titre

@@ -5,7 +5,7 @@ from .models import SuiviExercice, SuiviQuiz
 @admin.register(SuiviExercice)
 class SuiviExerciceAdmin(admin.ModelAdmin):
     list_display = ['user', 'exercice', 'est_correct', 'points_obtenus', 'date_creation']
-    list_filter = ['est_correct', 'exercice__chapitre']
+    list_filter = ['est_correct', 'exercice__notion']
     search_fields = ['user__email', 'exercice__titre']
     ordering = ['-date_creation']
 
@@ -13,6 +13,6 @@ class SuiviExerciceAdmin(admin.ModelAdmin):
 @admin.register(SuiviQuiz)
 class SuiviQuizAdmin(admin.ModelAdmin):
     list_display = ['user', 'quiz', 'score', 'total_points', 'date_creation']
-    list_filter = ['quiz__chapitre']
+    list_filter = ['quiz__notion']
     search_fields = ['user__email', 'quiz__titre']
     ordering = ['-date_creation']

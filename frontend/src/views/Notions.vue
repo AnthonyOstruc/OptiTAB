@@ -63,9 +63,7 @@
                 >
                   <div class="card-content">
                     <div class="card-title">{{ notion.nom }}</div>
-                    <div class="card-subtitle">
-                      CHAPITRE {{ index + 1 }}
-                    </div>
+                    <div class="card-subtitle">NOTION</div>
                     <div class="progress-bar">
                       <div class="progress-fill"></div>
                     </div>
@@ -86,9 +84,7 @@
               >
                 <div class="card-content">
                   <div class="card-title">{{ notion.nom }}</div>
-                  <div class="card-subtitle">
-                    CHAPITRE {{ index + 1 }}
-                  </div>
+                  <div class="card-subtitle">NOTION</div>
                   <div class="progress-bar">
                     <div class="progress-fill"></div>
                   </div>
@@ -260,7 +256,8 @@ watch(() => userStore.niveau_pays, async (newNiveau) => {
 }, { immediate: false })
 
 function onNotionClick(notionId) {
-  router.push({ name: 'Chapitres', params: { notionId } })
+  // Par défaut aller aux exercices par notion
+  router.push({ name: 'ExercicesByNotion', params: { notionId } })
 }
 </script>
 

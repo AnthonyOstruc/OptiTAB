@@ -2,7 +2,8 @@ import apiClient, { apiUtils } from './client'
 
 // ----- Quiz QCM -----
 // Remarque: le backend monte le router sous /api/quiz/ + register('quiz') → endpoints réels: /api/quiz/quiz/
-export const getQuiz = (chapitreId) => apiClient.get(`/api/quiz/quiz/?chapitre=${chapitreId}`)
+// Désormais filtrage par notion directement (suppression chapitres)
+export const getQuiz = (notionId) => apiClient.get(`/api/quiz/quiz/?notion=${notionId}`)
 export const getQuizAdmin = () => apiClient.get('/api/quiz/quiz/')
 export const createQuiz = (payload) => apiClient.post('/api/quiz/quiz/', payload)
 export const updateQuiz = (id, payload) => apiClient.patch(`/api/quiz/quiz/${id}/`, payload)
@@ -77,19 +78,7 @@ export const getQuizAttempts = async (quizId) => {
  * @param {number} chapitreId - ID du chapitre
  * @returns {Promise<Array>} Liste des tentatives pour le chapitre
  */
-export const getChapterQuizAttempts = async (chapitreId) => {
-  try {
-    console.log('📤 Récupération tentatives pour chapitre:', chapitreId)
-    const response = await apiClient.get(`/api/suivis/quiz/?chapitre=${chapitreId}`)
-    console.log('📥 Tentatives reçues:', response.data)
-    return response.data
-  } catch (error) {
-    console.error('❌ Erreur lors de la récupération des tentatives du chapitre:', error)
-    console.error('❌ Détails de l\'erreur:', error.response?.data)
-    console.error('❌ Status de l\'erreur:', error.response?.status)
-    throw error
-  }
-}
+// Legacy supprimé: tentatives par chapitre remplacées par tentatives par quiz
 
 /**
  * Vérifie le cooldown pour un quiz spécifique

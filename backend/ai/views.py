@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.conf import settings
 import logging
-from curriculum.models import MatiereContexte, Chapitre, Exercice
+from curriculum.models import MatiereContexte, Exercice
 from cours.models import Cours
 from .models import AIConversation
 from .serializers import AIQuerySerializer, AIConversationSerializer

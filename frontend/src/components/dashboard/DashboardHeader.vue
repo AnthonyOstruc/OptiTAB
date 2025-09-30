@@ -24,7 +24,7 @@
         <router-link to="/admin/matieres" class="admin-link" :class="{ active: isActive('AdminMatieres') }">Matières</router-link>
         <router-link to="/admin/themes" class="admin-link" :class="{ active: isActive('AdminThemes') }">Thèmes</router-link>
         <router-link to="/admin/notions" class="admin-link" :class="{ active: isActive('AdminNotions') }">Notions</router-link>
-        <router-link to="/admin/chapitres" class="admin-link" :class="{ active: isActive('AdminChapitres') }">Chapitres</router-link>
+        <!-- Chapitres supprimés -->
       </div>
       
       <div class="nav-separator"></div>

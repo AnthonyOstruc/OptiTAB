@@ -7,22 +7,23 @@ from core.models import BaseEducational
 
 
 class Quiz(BaseEducational):
-    """Un quiz pour un chapitre"""
-    chapitre = models.ForeignKey(
-        'curriculum.Chapitre', 
+    """Un quiz pour une notion"""
+    notion = models.ForeignKey(
+        'curriculum.Notion', 
         on_delete=models.CASCADE, 
-        related_name='quiz'
+        related_name='quiz',
+        null=True  # Temporaire pour migration
     )
     questions_data = models.JSONField(default=list)  # Questions en JSON
     duree_minutes = models.PositiveIntegerField(default=30)
     
     class Meta:
-        ordering = ['chapitre', 'ordre']
+        ordering = ['notion', 'ordre']
         verbose_name = "Quiz"
         verbose_name_plural = "Quiz"
 
     def __str__(self):
-        return f"Quiz - {self.chapitre.titre} - {self.titre}"
+        return f"Quiz - {self.notion.titre} - {self.titre}"
 
 
 class QuizImage(models.Model):

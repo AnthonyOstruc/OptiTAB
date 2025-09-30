@@ -24,10 +24,10 @@ class CoursImageInline(admin.TabularInline):
 
 @admin.register(Cours)
 class CoursAdmin(admin.ModelAdmin):
-    list_display = ['titre', 'chapitre', 'difficulty', 'est_actif']
+    list_display = ['titre', 'notion', 'difficulty', 'est_actif']
     list_filter = ['difficulty', 'est_actif']
-    search_fields = ['titre', 'chapitre__titre']
-    ordering = ['chapitre']
+    search_fields = ['titre', 'notion__titre']
+    ordering = ['notion']
     list_editable = ['est_actif']
     inlines = [CoursImageInline]
 
@@ -36,7 +36,7 @@ class CoursAdmin(admin.ModelAdmin):
 class CoursImageAdmin(admin.ModelAdmin):
     list_display = ("id", "cours", "image_type", "position", "legende", "image_link")
     list_filter = ("image_type",)
-    search_fields = ("cours__chapitre__titre", "legende")
+    search_fields = ("cours__notion__titre", "legende")
     ordering = ("cours", "position", "id")
 
     def image_link(self, obj):

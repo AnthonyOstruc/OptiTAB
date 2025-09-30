@@ -297,16 +297,18 @@ class MyChildrenView(APIView):
 
                     # Dernière activité
                     last = q.select_related(
-                        'exercice',
-                        'exercice__chapitre',
-                        'exercice__chapitre__notion',
-                        'exercice__chapitre__notion__theme',
-                        'exercice__chapitre__notion__theme__matiere',
+                    'exercice',
+                    'exercice__notion',
+                    'exercice__notion__theme',
+                    'exercice__notion__theme__matiere',
                     ).order_by('-date_creation').first()
                     last_payload = None
                     if last and getattr(last, 'exercice', None):
                         ex = last.exercice
-                        chapitre_title = getattr(ex.chapitre, 'titre', None)
+                        chapitre_title = (
+                            getattr(getattr(ex, 'notion', None), 'titre', None)
+                            or getattr(getattr(ex, 'notion', None), 'nom', None)
+                        )
                         last_payload = {
                             'exercice_id': ex.id,
                             'exercice_title': getattr(ex, 'titre', None) or f"Exercice {ex.id}",
@@ -431,19 +433,21 @@ class ChildOverviewView(APIView):
             last_qs = (
                 q.select_related(
                     'exercice',
-                    'exercice__chapitre',
-                    'exercice__chapitre__notion',
-                    'exercice__chapitre__notion__theme',
-                    'exercice__chapitre__notion__theme__matiere',
+                    'exercice__notion',
+                    'exercice__notion__theme',
+                    'exercice__notion__theme__matiere',
                 ).order_by('-date_creation')[:10]
             )
             last_activities = []
             for s in last_qs:
                 ex = s.exercice
-                chapitre_title = getattr(ex.chapitre, 'titre', None) or getattr(ex.chapitre, 'nom', None)
+                chapitre_title = (
+                    getattr(getattr(ex, 'notion', None), 'titre', None)
+                    or getattr(getattr(ex, 'notion', None), 'nom', None)
+                )
                 matiere_name = None
                 try:
-                    matiere_name = getattr(ex.chapitre.notion.theme.matiere, 'titre', None)
+                    matiere_name = getattr(ex.notion.theme.matiere, 'titre', None)
                 except Exception:
                     matiere_name = None
                 last_activities.append({
@@ -459,11 +463,11 @@ class ChildOverviewView(APIView):
             # Répartition par matière (acquis / à revoir)
             by_matiere_raw = (
                 q.select_related(
-                    'exercice__chapitre__notion__theme__matiere'
+                    'exercice__notion__theme__matiere'
                 )
                 .values(
-                    'exercice__chapitre__notion__theme__matiere_id',
-                    'exercice__chapitre__notion__theme__matiere__titre'
+                    'exercice__notion__theme__matiere_id',
+                    'exercice__notion__theme__matiere__titre'
                 )
                 .annotate(
                     total=Count('id'),
@@ -477,8 +481,8 @@ class ChildOverviewView(APIView):
                 correct = row['correct'] or 0
                 not_correct = max(0, total - correct)
                 by_matieres.append({
-                    'id': row['exercice__chapitre__notion__theme__matiere_id'],
-                    'name': row['exercice__chapitre__notion__theme__matiere__titre'] or 'Matière',
+                    'id': row['exercice__notion__theme__matiere_id'],
+                    'name': row['exercice__notion__theme__matiere__titre'] or 'Matière',
                     'total': total,
                     'acquired': correct,
                     'to_review': not_correct,
@@ -574,19 +578,21 @@ class MyOverviewView(APIView):
             last_qs = (
                 q.select_related(
                     'exercice',
-                    'exercice__chapitre',
-                    'exercice__chapitre__notion',
-                    'exercice__chapitre__notion__theme',
-                    'exercice__chapitre__notion__theme__matiere',
+                    'exercice__notion',
+                    'exercice__notion__theme',
+                    'exercice__notion__theme__matiere',
                 ).order_by('-date_creation')[:10]
             )
             last_activities = []
             for s in last_qs:
                 ex = s.exercice
-                chapitre_title = getattr(ex.chapitre, 'titre', None) or getattr(ex.chapitre, 'nom', None)
+                chapitre_title = (
+                    getattr(getattr(ex, 'notion', None), 'titre', None)
+                    or getattr(getattr(ex, 'notion', None), 'nom', None)
+                )
                 matiere_name = None
                 try:
-                    matiere_name = getattr(ex.chapitre.notion.theme.matiere, 'titre', None)
+                    matiere_name = getattr(ex.notion.theme.matiere, 'titre', None)
                 except Exception:
                     matiere_name = None
                 last_activities.append({
@@ -601,10 +607,10 @@ class MyOverviewView(APIView):
 
             # Répartition par matière
             by_matiere_raw = (
-                q.select_related('exercice__chapitre__notion__theme__matiere')
+                q.select_related('exercice__notion__theme__matiere')
                  .values(
-                    'exercice__chapitre__notion__theme__matiere_id',
-                    'exercice__chapitre__notion__theme__matiere__titre'
+                    'exercice__notion__theme__matiere_id',
+                    'exercice__notion__theme__matiere__titre'
                  )
                  .annotate(total=Count('id'), correct=Count('id', filter=Q(est_correct=True)))
                  .order_by('-total')
@@ -615,8 +621,8 @@ class MyOverviewView(APIView):
                 correct = row['correct'] or 0
                 not_correct = max(0, total - correct)
                 by_matieres.append({
-                    'id': row['exercice__chapitre__notion__theme__matiere_id'],
-                    'name': row['exercice__chapitre__notion__theme__matiere__titre'] or 'Matière',
+                    'id': row['exercice__notion__theme__matiere_id'],
+                    'name': row['exercice__notion__theme__matiere__titre'] or 'Matière',
                     'total': total,
                     'acquired': correct,
                     'to_review': not_correct,
@@ -659,7 +665,7 @@ class RecommendationsView(APIView):
         try:
             user = request.user
             q = SuiviExercice.objects.select_related(
-                'exercice', 'exercice__chapitre', 'exercice__chapitre__notion', 'exercice__chapitre__notion__theme', 'exercice__chapitre__notion__theme__matiere'
+                'exercice', 'exercice__notion', 'exercice__notion__theme', 'exercice__notion__theme__matiere'
             ).filter(user=user)
 
             # Index par exercice
@@ -703,13 +709,15 @@ class RecommendationsView(APIView):
             review = None
             if review_candidate and getattr(review_candidate, 'exercice', None):
                 ex = review_candidate.exercice
-                chapitre = ex.chapitre
+                notion = getattr(ex, 'notion', None)
                 review = {
                     'type': 'review',
                     'exercice_id': ex.id,
-                    'chapitre_id': getattr(chapitre, 'id', None),
+                    'chapitre_id': getattr(notion, 'id', None),
                     'title': getattr(ex, 'titre', None) or f"Exercice {ex.id}",
-                    'chapitre_title': getattr(chapitre, 'titre', None) or getattr(chapitre, 'nom', None)
+                    'chapitre_title': (
+                        getattr(notion, 'titre', None) or getattr(notion, 'nom', None)
+                    )
                 }
 
             # 2) Exercice non tenté: on propose un exercice du chapitre le plus faible (simple heuristique: matière avec plus d'erreurs)
@@ -717,7 +725,7 @@ class RecommendationsView(APIView):
             by_matiere = {}
             for s in q:
                 try:
-                    mid = s.exercice.chapitre.notion.theme.matiere_id
+                    mid = s.exercice.notion.theme.matiere_id
                 except Exception:
                     mid = None
                 if not mid:
@@ -735,17 +743,20 @@ class RecommendationsView(APIView):
                 # choisir un exercice non tenté dans cette matière (requête légère, best-effort)
                 from curriculum.models import Exercice
                 tried_ids = set(by_ex.keys())
-                ex_qs = Exercice.objects.select_related('chapitre').filter(
-                    chapitre__notion__theme__matiere_id=weakest_matiere_id
+                ex_qs = Exercice.objects.select_related('notion').filter(
+                    notion__theme__matiere_id=weakest_matiere_id
                 ).exclude(id__in=tried_ids)[:1]
                 ex = ex_qs.first()
                 if ex:
+                    n = getattr(ex, 'notion', None)
                     new_ex = {
                         'type': 'new_exercice',
                         'exercice_id': ex.id,
-                        'chapitre_id': getattr(ex.chapitre, 'id', None),
+                        'chapitre_id': getattr(n, 'id', None),
                         'title': getattr(ex, 'titre', None) or f"Exercice {ex.id}",
-                        'chapitre_title': getattr(ex.chapitre, 'titre', None) or getattr(ex.chapitre, 'nom', None)
+                        'chapitre_title': (
+                            getattr(n, 'titre', None) or getattr(n, 'nom', None)
+                        )
                     }
 
             # 3) Quick quiz (placeholder): à brancher sur modèle Quiz si besoin

@@ -147,7 +147,7 @@ const loadThemeNotions = async (themeId) => {
 
 // Fonction appelée quand on clique sur une notion
 function onNotionClick(notionId) {
-  router.push({ name: 'Chapitres', params: { notionId } })
+  router.push({ name: 'ExercicesByNotion', params: { notionId } })
 }
 
 // Lifecycle

@@ -187,7 +187,7 @@ export const quizMiddleware = (to, from, next) => {
     const subjectsStore = useSubjectsStore()
     
     // Pour les routes de quiz spécifiques, s'assurer que la matière est bien définie
-    if (['QuizNotions', 'QuizChapitres', 'ChapterQuiz'].includes(to.name)) {
+    if (['QuizNotions', 'QuizByNotion', 'ChapterQuiz'].includes(to.name)) {
       // Extraire l'ID de matière depuis les paramètres ou via l'API
       if (to.params.matiereId) {
         syncMatiereFromRoute(to, subjectsStore)

@@ -20,11 +20,17 @@ class CoursViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        chapitre = self.request.query_params.get('chapitre')
-        
-        if chapitre:
-            queryset = queryset.filter(chapitre_id=chapitre)
-            
+        # Nouveau filtrage direct par notion (suppression des chapitres)
+        notion = self.request.query_params.get('notion')
+        matiere = self.request.query_params.get('matiere')
+
+        if notion:
+            queryset = queryset.filter(notion_id=notion)
+        if matiere:
+            # Joindre via Notion -> Theme -> Matiere
+            queryset = queryset.select_related('notion', 'notion__theme', 'notion__theme__matiere')
+            queryset = queryset.filter(notion__theme__matiere_id=matiere)
+
         return queryset.filter(est_actif=True)
 
 

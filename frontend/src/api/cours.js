@@ -12,7 +12,7 @@ export const getCours = (matiereId = null, notionId = null, chapitreId = null) =
   
   if (matiereId) params.push(`matiere=${matiereId}`)
   if (notionId) params.push(`notion=${notionId}`)
-  if (chapitreId) params.push(`chapitre=${chapitreId}`)
+  // chapitreId obsolète
   
   if (params.length > 0) {
     url += '?' + params.join('&')

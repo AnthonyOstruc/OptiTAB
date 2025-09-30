@@ -108,7 +108,16 @@ class QuerySetService:
     def get_curriculum_queryset():
         """QuerySet optimisé pour le curriculum avec toutes les relations"""
         from curriculum.models import Matiere
-        return Matiere.objects.select_related('niveau__pays').prefetch_related('themes__notions__chapitres__exercices')
+        # Chapitres supprimés → précharger directement via Notion
+        return (
+            Matiere.objects
+            .select_related('niveau__pays')
+            .prefetch_related(
+                'themes__notions__exercices',
+                'themes__notions__cours',
+                'themes__notions__quiz',
+            )
+        )
 
 
 class BaseQuerySet(models.QuerySet):

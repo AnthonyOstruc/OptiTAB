@@ -182,10 +182,10 @@ Description: [Description courte expliquant l'objectif du cours]
     </div>
 
     <div class="bulk-form">
-      <input v-model="chapitreFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
-      <select v-model="selectedChapitre" required>
-        <option disabled value="">Choisir chapitre</option>
-        <option v-for="c in filteredChapitres" :key="c.id" :value="c.id">{{ formatChapitreOption(c) }}</option>
+      <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
+      <select v-model="selectedNotion" required>
+        <option disabled value="">Choisir notion</option>
+        <option v-for="n in filteredNotions" :key="n.id" :value="n.id">{{ formatNotionOption(n) }}</option>
       </select>
 
       <!-- Upload d'images -->
@@ -213,7 +213,7 @@ Description: [Description courte expliquant l'objectif du cours]
       <textarea v-model="rawInput" placeholder="Coller ici vos cours…" rows="20"></textarea>
       <div class="btn-group">
         <button class="btn-secondary" @click="handlePreview" :disabled="!rawInput.trim()" type="button">Prévisualiser</button>
-        <button class="btn-primary" @click="handleCreate" :disabled="!selectedChapitre || !rawInput.trim()">Créer les cours</button>
+        <button class="btn-primary" @click="handleCreate" :disabled="!selectedNotion || !rawInput.trim()">Créer les cours</button>
       </div>
     </div>
 
@@ -255,7 +255,7 @@ Description: [Description courte expliquant l'objectif du cours]
 
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue'
-import { getChapitres, getNotions } from '@/api'
+import { getNotions } from '@/api'
 import { createCours, createCoursImage, getCours, updateCours } from '@/api/cours'
 import { renderContentWithImages, renderMath, markdownToHtml } from '@/utils/scientificRenderer'
 
@@ -271,10 +271,9 @@ const IMAGE_MARKER_REGEX = /\[IMAGE_(\d+)\]/g
 // ÉTAT RÉACTIF
 // ============================================================================
 
-const chapitres = ref([])
 const notions = ref([])
-const chapitreFilter = ref('')
-const selectedChapitre = ref('')
+const notionFilter = ref('')
+const selectedNotion = ref('')
 const rawInput = ref('')
 const successMsg = ref('')
 const errorMsg = ref('')
@@ -348,17 +347,15 @@ const imageManager = new ImageManager()
 
 function getNotionName(notionId) {
   const notion = notions.value.find(n => n.id == notionId)
-  return notion ? notion.nom : 'N/A'
+  return notion ? (notion.nom || notion.titre) : 'N/A'
 }
 
-// Helpers contextuels (comme AdminExercicesPlus)
+// Helpers contextuels basés sur Notion
 function getNotionById(id) {
   return notions.value.find(x => String(x.id) === String(id))
 }
 
-function chapterContext(c) {
-  if (!c) return null
-  const notion = getNotionById(c.notion)
+function notionContext(notion) {
   if (!notion) return { themeNom: '', matiereNom: '', paysNom: '', niveauNom: '' }
   const matiereNom = notion.matiere_nom || (notion.contexte_detail && notion.contexte_detail.matiere_nom) || ''
   const themeNom = notion.theme_nom || ''
@@ -367,12 +364,10 @@ function chapterContext(c) {
   return { matiereNom, themeNom, paysNom, niveauNom }
 }
 
-function formatChapitreOption(c) {
-  const n = getNotionById(c.notion)
-  const ctx = chapterContext(c)
+function formatNotionOption(n) {
+  const ctx = notionContext(n)
   const parts = [
-    c.nom,
-    n ? `— ${n.nom}` : '',
+    n.nom || n.titre,
     ctx && ctx.matiereNom ? `— ${ctx.matiereNom}` : '',
     ctx && (ctx.paysNom || ctx.niveauNom) ? `— ${[ctx.paysNom, ctx.niveauNom].filter(Boolean).join(' · ')}` : ''
   ].filter(Boolean)
@@ -520,15 +515,12 @@ function parseCoursBlock(block) {
     notion: null
   }
 
-  // Récupérer la matière et notion à partir du chapitre sélectionné
-  if (selectedChapitre.value) {
-    const selectedChapitreObj = chapitres.value.find(c => c.id == selectedChapitre.value)
-    if (selectedChapitreObj) {
-      const notionObj = notions.value.find(n => n.id == selectedChapitreObj.notion)
-      if (notionObj) {
-        cours.notion = notionObj.id
-        cours.matiere = notionObj.matiere
-      }
+  // Récupérer la notion sélectionnée
+  if (selectedNotion.value) {
+    const notionObj = notions.value.find(n => n.id == selectedNotion.value)
+    if (notionObj) {
+      cours.notion = notionObj.id
+      cours.matiere = notionObj.matiere || (notionObj.contexte_detail && notionObj.contexte_detail.matiere)
     }
   }
 
@@ -566,7 +558,7 @@ function parseCoursBlock(block) {
   cours.contenu = contentLines.join('\n')
 
   // Validation
-  if (!cours.titre || !cours.contenu || !cours.matiere || !cours.chapitre) {
+  if (!cours.titre || !cours.contenu || !cours.notion) {
     console.warn('Cours invalide:', cours)
     return null
   }
@@ -594,21 +586,15 @@ function handlePreview() {
 }
 
 async function handleCreate() {
-  if (!selectedChapitre.value) {
-    errorMsg.value = 'Veuillez sélectionner un chapitre'
+  if (!selectedNotion.value) {
+    errorMsg.value = 'Veuillez sélectionner une notion'
     return
   }
 
-  // Vérifier que le chapitre sélectionné a une notion et une matière
-  const selectedChapitreObj = chapitres.value.find(c => c.id == selectedChapitre.value)
-  if (!selectedChapitreObj) {
-    errorMsg.value = 'Chapitre invalide'
-    return
-  }
-
-  const notionObj = notions.value.find(n => n.id == selectedChapitreObj.notion)
+  // Vérifier que la notion sélectionnée existe
+  const notionObj = notions.value.find(n => n.id == selectedNotion.value)
   if (!notionObj) {
-    errorMsg.value = 'Notion invalide pour ce chapitre'
+    errorMsg.value = 'Notion invalide'
     return
   }
 
@@ -626,10 +612,10 @@ async function handleCreate() {
     let updatedCount = 0
     let errorCount = 0
 
-    // Un cours par chapitre (OneToOne). Vérifier l'existant pour éviter 400.
+    // Un cours par notion (OneToOne). Vérifier l'existant pour éviter 400.
     let existingCourseId = null
     try {
-      const existingRes = await getCours(null, null, Number(selectedChapitre.value))
+      const existingRes = await getCours(null, Number(selectedNotion.value))
       const list = Array.isArray(existingRes?.data) ? existingRes.data : (Array.isArray(existingRes) ? existingRes : [])
       if (list && list.length > 0) existingCourseId = list[0].id
     } catch (_) {}
@@ -639,7 +625,7 @@ async function handleCreate() {
         console.log('Création du cours avec les données:', coursData)
         // Créer le cours (payload minimal)
         const payload = {
-          chapitre: Number(coursData.chapitre),
+          notion: Number(coursData.notion || selectedNotion.value),
           titre: coursData.titre,
           contenu: coursData.contenu,
           ordre: coursData.ordre || 0,
@@ -683,8 +669,8 @@ async function handleCreate() {
     if (createdCount > 0 || updatedCount > 0) {
       successMsg.value = `${createdCount} créé(s)${updatedCount ? `, ${updatedCount} mis à jour` : ''}${errorCount > 0 ? `, ${errorCount} erreur(s)` : ''}`
 
-      // Sauvegarder le chapitre actuel avant de nettoyer le formulaire
-      const currentChapitre = selectedChapitre.value
+      // Sauvegarder la notion actuelle avant de nettoyer le formulaire
+      const currentNotion = selectedNotion.value
 
       // Nettoyer le formulaire
       rawInput.value = ''
@@ -693,8 +679,8 @@ async function handleCreate() {
       imageManager.images.clear()
       if (imagesInput.value) imagesInput.value.value = ''
 
-      // Remettre le chapitre sélectionné pour permettre d'ajouter d'autres cours dans le même chapitre
-      selectedChapitre.value = currentChapitre
+      // Remettre la notion sélectionnée pour permettre d'ajouter d'autres cours dans la même notion
+      selectedNotion.value = currentNotion
     } else {
       errorMsg.value = 'Aucun cours n\'a pu être créé'
     }
@@ -708,14 +694,14 @@ async function handleCreate() {
 // COMPUTED PROPERTIES
 // ============================================================================
 
-// Chapitres filtrés (par texte seulement)
-const filteredChapitres = computed(() => {
-  if (!chapitreFilter.value) {
-    return chapitres.value
+// Notions filtrées (par texte seulement)
+const filteredNotions = computed(() => {
+  if (!notionFilter.value) {
+    return notions.value
   }
-  const filter = chapitreFilter.value.toLowerCase()
-  return chapitres.value.filter(chapitre =>
-    formatChapitreOption(chapitre).toLowerCase().includes(filter)
+  const filter = notionFilter.value.toLowerCase()
+  return notions.value.filter(notion =>
+    formatNotionOption(notion).toLowerCase().includes(filter)
   )
 })
 
@@ -725,11 +711,7 @@ const filteredChapitres = computed(() => {
 
 onMounted(async () => {
   try {
-    const [ch, nt] = await Promise.all([
-      getChapitres(),
-      getNotions()
-    ])
-    chapitres.value = Array.isArray(ch) ? ch : (ch?.data || [])
+    const nt = await getNotions()
     notions.value = Array.isArray(nt) ? nt : (nt?.data || [])
   } catch (error) {
     console.error('Erreur lors du chargement:', error)

@@ -3,8 +3,8 @@
     <section class="exercices-section">
       <!-- Bouton de retour -->
       <BackButton 
-        text="Retour aux chapitres" 
-        :customAction="goBackToChapitres"
+        text="Retour aux notions" 
+        :customAction="goBackToNotions"
         position="top-left"
       />
       
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <h2 class="exercices-title" style="margin-top: 1.5rem; padding-top: 0.75rem;">Exercices du {{ chapitreNom }}</h2>
+      <h2 class="exercices-title" style="margin-top: 1.5rem; padding-top: 0.75rem;">Exercices - {{ notionNom }}</h2>
       
       
       <div v-if="loading" class="exercices-loader">Chargement...</div>
@@ -90,7 +90,7 @@
                 <PDFDownloadButton
                   type="list"
                   :data="filteredExercices"
-                  :title="`Exercices_${chapitreNom}_Enonces`"
+                  :title="`Exercices_${notionNom}_Enonces`"
                   text="📋 Énoncés"
                   :useMathJax="true"
                   :includeSolution="false"
@@ -100,7 +100,7 @@
                 <PDFDownloadButton
                   type="list"
                   :data="filteredExercices"
-                  :title="`Exercices_${chapitreNom}_Corriges`"
+                  :title="`Exercices_${notionNom}_Corriges`"
                   text="📝 Corrigés"
                   :useMathJax="true"
                   :includeSolution="true"
@@ -136,7 +136,7 @@ import { ref, onMounted, computed } from 'vue'
 import { defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
-import { getExercices, getChapitreDetail, getStatuses, createStatus, updateStatus, deleteStatus } from '@/api'
+import { getExercices, getStatuses, createStatus, updateStatus, deleteStatus } from '@/api'
 import { useUserStore } from '@/stores/user'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import Pagination from '@/components/common/Pagination.vue'
@@ -144,12 +144,12 @@ import Tabs from '@/components/common/Tabs.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import PDFDownloadButton from '@/components/common/PDFDownloadButton.vue'
 
-defineOptions({ name: 'ChapterExercises' })
+defineOptions({ name: 'ExercisesByNotion' })
 
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
-const chapitreId = route.params.chapitreId
+const notionId = route.params.notionId
 
 const exercices = ref([])
 const perPageOptions = [1,3,5]
@@ -204,7 +204,7 @@ const downloadAllPDF = async () => {
     
     // Import dynamique pour éviter les erreurs
     const { generateExercicesListPDF } = await import('@/utils/pdfGenerator')
-    await generateExercicesListPDF(filteredExercices.value, `Exercices_${chapitreNom.value}`)
+    await generateExercicesListPDF(filteredExercices.value, `Exercices_${notionNom.value}`)
     alert('PDF généré avec succès !')
   } catch (error) {
     console.error('Erreur PDF:', error)
@@ -214,10 +214,10 @@ const downloadAllPDF = async () => {
 
 const statusMap = ref({}) // exerciceId -> { status, id }
 
-const chapitreNom = ref('')
+const notionNom = ref('')
 const loading = ref(true)
 const error = ref('')
-const chapitres = ref([]) // Ajouter un ref pour stocker les chapitres
+const chapitres = ref([])
 
 onMounted(async () => {
   loading.value = true
@@ -225,19 +225,16 @@ onMounted(async () => {
     const niveauId = userStore.niveau_pays?.id
 
     // Charger en parallèle: chapitre (détail), exercices, statuts
-    const [chapitreDetail, exercicesData, statusesResp] = await Promise.all([
-      getChapitreDetail(chapitreId),
-      getExercices({ chapitre: chapitreId, niveau: niveauId }),
+    const [exercicesData, statusesResp] = await Promise.all([
+      getExercices({ notion: notionId, niveau: niveauId }),
       getStatuses()
     ])
 
-    // Chapitre
-    chapitreNom.value = chapitreDetail?.nom || chapitreDetail?.titre || 'Chapitre'
-    chapitres.value = chapitreDetail ? [chapitreDetail] : []
+    notionNom.value = 'Notion'
 
     // Exercices
     exercices.value = Array.isArray(exercicesData) ? exercicesData : []
-    console.log(`[ChapterExercises] Exercices chargés pour niveau ${niveauId}:`, exercices.value.length)
+    console.log(`[ExercisesByNotion] Exercices chargés pour niveau ${niveauId}:`, exercices.value.length)
 
     // Statuts
     const stats = statusesResp?.data || []
@@ -252,7 +249,7 @@ onMounted(async () => {
     currentPage.value = 1
     error.value = ''
   } catch (e) {
-    console.error('[ChapterExercises] Erreur chargement:', e)
+    console.error('[ExercisesByNotion] Erreur chargement:', e)
     error.value = "Impossible de charger les exercices."
   } finally {
     loading.value = false
@@ -374,15 +371,9 @@ async function handleStatus({ exerciceId, status }) {
   }
 }
 
-function goBackToChapitres() {
+function goBackToNotions() {
   try {
-    const chapitre = chapitres.value?.find?.(c => c.id == chapitreId)
-    const notionId = chapitre ? (chapitre.notion || chapitre.notion_id) : null
-    if (notionId) {
-      router.push({ name: 'Chapitres', params: { notionId: String(notionId) } })
-    } else {
-      router.back()
-    }
+    router.back()
   } catch (err) {
     router.back()
   }
@@ -420,8 +411,8 @@ async function generatePDF(includeCorrection = false) {
     pdf.setFont('helvetica', 'bold')
     pdf.setTextColor(30, 64, 175)
     const title = includeCorrection ? 
-      `Exercices de ${chapitreNom.value}` : 
-      `Feuille d'exercices - ${chapitreNom.value}`
+      `Exercices de ${notionNom.value}` : 
+      `Feuille d'exercices - ${notionNom.value}`
     
     const titleWidth = pdf.getTextWidth(title)
     pdf.text(title, (pageWidth - titleWidth) / 2, 20)
@@ -590,7 +581,7 @@ async function generatePDF(includeCorrection = false) {
     }
     
     // Generate filename
-    const sanitizedChapterName = chapitreNom.value
+    const sanitizedChapterName = notionNom.value
       .replace(/[^a-zA-Z0-9\sàâäéèêëïîôöùûüÿç]/g, '')
       .replace(/\s+/g, '_')
       .toLowerCase()

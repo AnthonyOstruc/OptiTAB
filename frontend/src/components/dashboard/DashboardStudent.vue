@@ -52,7 +52,7 @@ import { useUserStore } from '@/stores/user'
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSubjectsStore } from '@/stores/subjects/index'
-import { getStatuses, getExercices, getChapitres, getMatieres } from '@/api'
+import { getStatuses, getExercices, getMatieres } from '@/api'
 import { fetchUserGamification, fetchMyOverview } from '@/api/users'
 // Verification disabled: no imports
 import LeaderboardWidget from '@/components/dashboard/LeaderboardWidget.vue'
@@ -122,9 +122,8 @@ function goToLastChapter() {
 
 onMounted(async () => {
   try {
-    const [ex, ch, stResponse, mResponse, gam, ov] = await Promise.all([
+    const [ex, stResponse, mResponse, gam, ov] = await Promise.all([
       getExercices({}),
-      getChapitres({}),
       getStatuses(),
       getMatieres(),
       fetchUserGamification().catch(() => null),
@@ -134,7 +133,7 @@ onMounted(async () => {
     const normalizeList = (val) => Array.isArray(val) ? val : (val?.results || [])
 
     exercices.value = normalizeList(ex)
-    chapitres.value = normalizeList(ch)
+    chapitres.value = []
     statuses.value = normalizeList(stResponse?.data)
     matieres.value = normalizeList(mResponse?.data ?? mResponse)
     overview.value = ov?.data?.data || null

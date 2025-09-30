@@ -40,7 +40,7 @@ Solution:
                  <p><strong>Notes importantes :</strong></p>
                  <ul>
                    <li>Utilisez <code>===</code> pour délimiter chaque exercice</li>
-                   <li><strong>⚠️ IMPORTANT :</strong> Sélectionnez d'abord le chapitre dans la liste déroulante ci-dessus</li>
+                   <li><strong>⚠️ IMPORTANT :</strong> Sélectionnez d'abord la notion dans la liste déroulante ci-dessus</li>
                    <li>Difficulté : <code>easy</code>, <code>medium</code> ou <code>hard</code> uniquement</li>
                    <li>Images multiples : Séparez les noms de fichiers par des virgules : <code>image1.jpg,image2.png</code></li>
                    <li>Positionnement d'images : Utilisez <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code>, etc. dans l'énoncé pour positionner les images</li>
@@ -55,10 +55,10 @@ Solution:
     </div>
 
     <div class="bulk-form">
-      <input v-model="chapitreFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
-      <select v-model="selectedChapitre" required>
-        <option disabled value="">Choisir chapitre</option>
-        <option v-for="c in filteredChapitres" :key="c.id" :value="c.id">{{ formatChapitreOption(c) }}</option>
+      <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
+      <select v-model="selectedNotion" required>
+        <option disabled value="">Choisir notion</option>
+        <option v-for="n in filteredNotions" :key="n.id" :value="n.id">{{ (n.nom || n.titre) }}</option>
       </select>
 
       <!-- Upload d'images -->
@@ -86,7 +86,7 @@ Solution:
       <textarea v-model="rawInput" placeholder="Coller ici vos exercices…"></textarea>
       <div class="btn-group">
         <button class="btn-secondary" @click="handlePreview" :disabled="!rawInput.trim()" type="button">Prévisualiser</button>
-        <button class="btn-primary" @click="handleCreate" :disabled="!selectedChapitre || !rawInput.trim()">Créer les exercices</button>
+        <button class="btn-primary" @click="handleCreate" :disabled="!selectedNotion || !rawInput.trim()">Créer les exercices</button>
       </div>
     </div>
 
@@ -127,7 +127,7 @@ Solution:
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { getChapitres, getNotions, createExercice, createExerciceImage } from '@/api'
+import { getNotions, createExercice, createExerciceImage } from '@/api'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 
 // ============================================================================
@@ -142,10 +142,9 @@ const IMAGE_MARKER_REGEX = /\[IMAGE_(\d+)\]/g
 // ÉTAT RÉACTIF
 // ============================================================================
 
-const chapitres = ref([])
 const notions = ref([])
-const chapitreFilter = ref('')
-const selectedChapitre = ref('')
+const notionFilter = ref('')
+const selectedNotion = ref('')
 const rawInput = ref('')
 const successMsg = ref('')
 const errorMsg = ref('')
@@ -344,7 +343,7 @@ class ExerciceParser {
       solution: '',
       image: '',
       difficulty: 'medium',
-      chapitre: Number(selectedChapitre.value)
+      notion: Number(selectedNotion.value)
     }
 
     let currentSection = null
@@ -415,7 +414,7 @@ class ExerciceParser {
         etapes: parts[2] || '',
         solution: parts[3] || '',
         difficulty: (parts[4] || 'medium').toLowerCase(),
-        chapitre: Number(selectedChapitre.value),
+        notion: Number(selectedNotion.value),
         image: parts[5] || ''
       }
     })
@@ -442,7 +441,7 @@ class ExerciceCreator {
       const safeInstruction = (exerciceData.instruction && exerciceData.instruction.trim()) ? exerciceData.instruction.trim() : safeTitre
       const safeSolution = (exerciceData.solution && exerciceData.solution.trim()) ? exerciceData.solution.trim() : 'A compléter'
       const payload = {
-        chapitre: Number(exerciceData.chapitre || selectedChapitre.value),
+        notion: Number(selectedNotion.value),
         titre: safeTitre,
         contenu: safeInstruction,
         difficulty: ['easy','medium','hard'].includes(difficulty) ? difficulty : 'medium',
@@ -520,11 +519,7 @@ const exerciceCreator = new ExerciceCreator(imageManager)
 
 async function load() {
   try {
-    const [ch, nt] = await Promise.all([
-      getChapitres(),
-      getNotions()
-    ])
-    chapitres.value = Array.isArray(ch) ? ch : (ch?.data || [])
+    const nt = await getNotions()
     notions.value = Array.isArray(nt) ? nt : (nt?.data || [])
   } catch (error) {
     console.error('Erreur lors du chargement:', error)
@@ -603,16 +598,18 @@ function getPreviewImages(imageString, exerciceData = null) {
 }
 
 function parseInput() {
-  return exerciceParser.parseExercices(rawInput.value)
+  const parsed = exerciceParser.parseExercices(rawInput.value)
+  // Injecter notion pour chaque exercice
+  return parsed.map(ex => ({ ...ex, notion: Number(selectedNotion.value) }))
 }
 
 async function handleCreate() {
   errorMsg.value = ''
   successMsg.value = ''
   
-  // Validation du chapitre sélectionné
-  if (!selectedChapitre.value) {
-    errorMsg.value = '⚠️ Veuillez sélectionner un chapitre dans la liste déroulante.'
+  // Validation de la notion sélectionnée
+  if (!selectedNotion.value) {
+    errorMsg.value = '⚠️ Veuillez sélectionner une notion dans la liste déroulante.'
     return
   }
   
@@ -667,8 +664,8 @@ async function handleCreate() {
         successMsg.value += ` (${errors.length} erreur(s) mineure(s))`
       }
 
-      // Sauvegarder le chapitre actuel avant de nettoyer le formulaire
-      const currentChapitre = selectedChapitre.value
+      // Sauvegarder la notion actuelle avant de nettoyer le formulaire
+      const currentNotion = selectedNotion.value
 
       // Nettoyer le formulaire
       rawInput.value = ''
@@ -677,8 +674,8 @@ async function handleCreate() {
       if (imagesInput.value) imagesInput.value.value = ''
       previewList.value = []
 
-      // Remettre le chapitre sélectionné pour permettre d'ajouter d'autres exercices dans le même chapitre
-      selectedChapitre.value = currentChapitre
+      // Remettre la notion sélectionnée pour permettre d'ajouter d'autres exercices dans la même notion
+      selectedNotion.value = currentNotion
     }
     
     if (errors.length > 0) {
@@ -705,14 +702,14 @@ function handlePreview() {
 // COMPUTED PROPERTIES
 // ============================================================================
 
-// Chapitres filtrés (par texte seulement)
-const filteredChapitres = computed(() => {
-  if (!chapitreFilter.value) {
-    return chapitres.value
+// Notions filtrées (par texte seulement)
+const filteredNotions = computed(() => {
+  if (!notionFilter.value) {
+    return notions.value
   }
-  const filter = chapitreFilter.value.toLowerCase()
-  return chapitres.value.filter(chapitre =>
-    formatChapitreOption(chapitre).toLowerCase().includes(filter)
+  const filter = notionFilter.value.toLowerCase()
+  return notions.value.filter(notion =>
+    (notion.nom || notion.titre || '').toLowerCase().includes(filter)
   )
 })
 

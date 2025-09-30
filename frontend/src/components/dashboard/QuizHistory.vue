@@ -211,7 +211,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import { getMatieres, getNotions, getChapitres, getChapitresByNotion } from '@/api'
+import { getMatieres, getNotions } from '@/api'
 import apiClient from '@/api/client'
 import { useUserStore } from '@/stores/user'
 import { checkQuizCooldown } from '@/api/quiz'
@@ -290,16 +290,7 @@ const filteredNotions = computed(() => {
   return filtered
 })
 
-const filteredChapitres = computed(() => {
-  if (!selectedNotion.value) return []
-  
-  const selectedNotionId = parseInt(selectedNotion.value)
-  
-  return chapitres.value.filter(chapitre => {
-    const chapNotionId = chapitre.notion_id ?? chapitre.notion?.id ?? (typeof chapitre.notion === 'number' ? chapitre.notion : null)
-    return parseInt(chapNotionId) === selectedNotionId
-  })
-})
+const filteredChapitres = computed(() => [])
 
 const filteredQuizList = computed(() => {
   let filtered = quizList.value
@@ -442,8 +433,7 @@ const loadReferenceData = async () => {
       apiClient.get('/api/themes/notions-pour-utilisateur/', { timeout: 20000 }).catch(() => apiClient.get('/api/themes/notions-pour-utilisateur/')),
       // Notions - essayer d'abord l'endpoint spécialisé, puis l'endpoint général
       getNotions({}).catch(() => apiClient.get('/api/notions/pour-utilisateur/', { timeout: 20000 })),
-      // Chapitres via l'endpoint général mais on filtrera côté client
-      getChapitres({})
+      // Chapitres supprimés: plus de chargement
     ])
     
     // Extraire les données des réponses - gestion spécifique pour user_matieres
@@ -500,8 +490,7 @@ const loadReferenceData = async () => {
     try {
       const [mResponse, nResponse, cResponse] = await Promise.all([
         getMatieres({}),
-        getNotions({}),
-        getChapitres({})
+        getNotions({})
       ])
       
       matieres.value = Array.isArray(mResponse?.data) ? mResponse.data : (mResponse?.results || [])
@@ -591,55 +580,7 @@ const onMatiereChange = async () => {
 const onNotionChange = async () => {
   selectedChapitre.value = ''
   resetPagination()
-  
-  // Recharger les chapitres pour la notion sélectionnée
-  if (selectedNotion.value) {
-    try {
-      // Essayer getChapitresByNotion
-      let cResponse = await getChapitresByNotion(selectedNotion.value)
-      
-      let newChapitresData = []
-      if (Array.isArray(cResponse?.data)) {
-        newChapitresData = cResponse.data
-      } else if (cResponse?.data?.results) {
-        newChapitresData = cResponse.data.results
-      }
-      
-      // Si pas de résultats, essayer l'endpoint général  je veux pour a prmeiere fois sauvgarder dans un repersortryavec paramètre
-      if (newChapitresData.length === 0) {
-        const cResponse2 = await getChapitres({ notion: selectedNotion.value })
-        
-        if (Array.isArray(cResponse2?.data)) {
-          newChapitresData = cResponse2.data
-        } else if (cResponse2?.data?.results) {
-          newChapitresData = cResponse2.data.results
-        }
-      }
-      
-      // Si toujours pas de résultats, essayer l'endpoint direct du backend
-      if (newChapitresData.length === 0) {
-        const cResponse3 = await apiClient.get(`/api/notions/${selectedNotion.value}/chapitres/`)
-        
-        if (Array.isArray(cResponse3?.data)) {
-          newChapitresData = cResponse3.data
-        } else if (cResponse3?.data?.results) {
-          newChapitresData = cResponse3.data.results
-        }
-      }
-      
-      // Mettre à jour les chapitres si on a trouvé quelque chose
-      if (newChapitresData.length > 0) {
-        // Fusionner avec les chapitres existants (éviter les doublons)
-        const existingIds = chapitres.value.map(c => c.id)
-        const newChapitres = newChapitresData.filter(c => !existingIds.includes(c.id))
-        chapitres.value = [...chapitres.value, ...newChapitres]
-      }
-      
-    } catch (error) {
-      console.error('Erreur lors du rechargement des chapitres:', error)
-    }
-  }
-  
+  // Plus de chapitres: recharger uniquement les quiz
   loadQuizData()
 }
 

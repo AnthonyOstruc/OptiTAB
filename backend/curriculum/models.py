@@ -79,36 +79,22 @@ class Notion(BaseOrganizational):
         return f"{self.theme.titre} - {self.titre}"
 
 
-class Chapitre(BaseEducational):
-    """Un chapitre dans une notion"""
-    notion = models.ForeignKey(Notion, on_delete=models.CASCADE, related_name='chapitres')
-    
-    class Meta:
-        unique_together = [['notion', 'titre']]
-        ordering = ['notion', 'ordre', 'titre']
-        verbose_name = "Chapitre"
-        verbose_name_plural = "Chapitres"
-
-    def __str__(self):
-        return f"{self.notion.titre} - {self.titre}"
-
-
 class Exercice(BaseEducational):
-    """Un exercice dans un chapitre"""
-    chapitre = models.ForeignKey(Chapitre, on_delete=models.CASCADE, related_name='exercices')
+    """Un exercice dans une notion"""
+    notion = models.ForeignKey(Notion, on_delete=models.CASCADE, related_name='exercices', null=True)  # Temporaire pour migration
     question = models.TextField()
     reponse_correcte = models.TextField()
     etapes = models.TextField(blank=True, null=True, verbose_name="Étapes de résolution")
     points = models.PositiveIntegerField(default=1)
     
     class Meta:
-        unique_together = [['chapitre', 'titre']]
-        ordering = ['chapitre', 'ordre', 'titre']
+        unique_together = [['notion', 'titre']]
+        ordering = ['notion', 'ordre', 'titre']
         verbose_name = "Exercice"
         verbose_name_plural = "Exercices"
 
     def __str__(self):
-        return f"{self.chapitre.titre} - {self.titre}"
+        return f"{self.notion.titre} - {self.titre}"
 
 
 class ExerciceImage(models.Model):

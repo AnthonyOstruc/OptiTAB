@@ -5,7 +5,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     MatiereViewSet, ThemeViewSet, NotionViewSet,
-    ChapitreViewSet, ExerciceViewSet, MatiereContexteViewSet,
+    ExerciceViewSet, MatiereContexteViewSet,
     ExerciceImageViewSet
 )
 # Deprecated legacy endpoints (kept temporarily for compatibility)
@@ -16,7 +16,6 @@ router.register(r'matieres', MatiereViewSet)
 router.register(r'contextes', MatiereContexteViewSet, basename='contextes')
 router.register(r'themes', ThemeViewSet)
 router.register(r'notions', NotionViewSet)
-router.register(r'chapitres', ChapitreViewSet)
 router.register(r'exercices', ExerciceViewSet)
 router.register(r'exercice-images', ExerciceImageViewSet, basename='exercice-image')
 # Ancien endpoint déprécié; à supprimer si plus utilisé par le frontend

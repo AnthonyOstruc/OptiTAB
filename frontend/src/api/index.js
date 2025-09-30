@@ -57,22 +57,12 @@ import {
   updateNotion,
   deleteNotion,
   getNotionsByTheme,
-  getNotionChapitres,
-  getNotionHierarchy,
-  getChapitres,
-  getChapitreDetail,
-  createChapitre,
-  updateChapitre,
-  deleteChapitre,
-  getChapitresByNotion,
-  getChapitreExercices,
-  getChapitreHierarchy,
   getExercices,
   getExerciceDetail,
   createExercice,
   updateExercice,
   deleteExercice,
-  getExercicesByChapitre
+  getExercicesByNotion
 } from './curriculum'
 
 import {
@@ -145,6 +135,10 @@ export * from './auth'
 export * from './calculator'
 export * from './matiere-contextes'
 
+// Compat stubs for removed Chapitre layer to avoid import errors in legacy views
+export const getChapitres = undefined
+export const getChapitresByNotion = undefined
+
 // ========================================
 // API UNIFIÉE
 // ========================================
@@ -209,25 +203,16 @@ export const API = {
     create: createNotion,
     update: updateNotion,
     delete: deleteNotion,
-    getChapitres: getNotionChapitres,
-    getHierarchy: getNotionHierarchy
+    getChapitres: undefined,
+    getHierarchy: undefined
   },
 
-  chapitres: {
-    getAll: getChapitres,
-    getById: getChapitreDetail,
-    getByNotion: getChapitresByNotion,
-    create: createChapitre,
-    update: updateChapitre,
-    delete: deleteChapitre,
-    getExercices: getChapitreExercices,
-    getHierarchy: getChapitreHierarchy
-  },
+  chapitres: undefined,
 
   exercices: {
     getAll: getExercices,
     getById: getExerciceDetail,
-    getByChapitre: getExercicesByChapitre,
+    getByNotion: getExercicesByNotion,
     create: createExercice,
     update: updateExercice,
     delete: deleteExercice
@@ -289,12 +274,11 @@ export const getFullCurriculum = async (paysId) => {
  */
 export const searchCurriculum = async (searchTerm) => {
   try {
-    const [pays, matieres, themes, notions, chapitres, exercices] = await Promise.all([
+    const [pays, matieres, themes, notions, exercices] = await Promise.all([
       searchPays(searchTerm),
       getMatieres({ search: searchTerm }),
       getThemes({ search: searchTerm }),
       getNotions({ search: searchTerm }),
-      getChapitres({ search: searchTerm }),
       getExercices({ search: searchTerm })
     ])
     
@@ -303,7 +287,6 @@ export const searchCurriculum = async (searchTerm) => {
       matieres,
       themes,
       notions,
-      chapitres,
       exercices
     }
   } catch (error) {
@@ -322,7 +305,6 @@ export const ENDPOINTS = {
   MATIERES: '/api/matieres/',
   THEMES: '/api/themes/',
   NOTIONS: '/api/notions/',
-  CHAPITRES: '/api/chapitres/',
   EXERCICES: '/api/exercices/'
 }
 
@@ -330,9 +312,7 @@ export const RELATIONS = {
   PAYS_NIVEAUX: 'pays_id',
   NIVEAU_MATIERES: 'niveau',
   MATIERE_THEMES: 'matiere',
-  THEME_NOTIONS: 'theme',
-  NOTION_CHAPITRES: 'notion',
-  CHAPITRE_EXERCICES: 'chapitre'
+  THEME_NOTIONS: 'theme'
 }
 
 // Export par défaut

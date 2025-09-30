@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from core.admin import ContentModelAdmin, BaseModelAdmin
-from .models import Matiere, Theme, Notion, Chapitre, Exercice, MatiereContexte, ExerciceImage
+from .models import Matiere, Theme, Notion, Exercice, MatiereContexte, ExerciceImage
 from .services import duplicate_theme_deep
 
 
@@ -241,30 +241,62 @@ class NotionAdmin(admin.ModelAdmin):
         return super().get_queryset(request).select_related('theme', 'theme__matiere')
 
 
-@admin.register(Chapitre)
-class ChapitreAdmin(admin.ModelAdmin):
+@admin.register(Exercice)
+class ExerciceAdmin(admin.ModelAdmin):
     """
-    Administration des chapitres
+    Administration des exercices
     """
-    list_display = ['titre', 'notion_info', 'difficulty_display', 'ordre', 'status_display', 'date_creation']
-    list_filter = ['notion__theme__matiere', 'notion__theme', 'notion', 'difficulty', 'est_actif', 'date_creation']
-    search_fields = [
-        'titre', 'contenu',
-        'notion__titre', 'notion__theme__titre', 'notion__theme__matiere__titre'
+    list_display = [
+        'titre', 'notion_info', 'points', 'difficulty_display', 
+        'ordre', 'status_display', 'date_creation'
     ]
-    list_editable = ['ordre']
+    list_filter = [
+        'notion__theme__matiere',
+        'notion__theme',
+        'notion',
+        'difficulty',
+        'points',
+        'est_actif',
+        'date_creation'
+    ]
+    search_fields = [
+        'titre', 'contenu', 'question', 'reponse_correcte',
+        'notion__titre',
+        'notion__theme__titre', 'notion__theme__matiere__titre'
+    ]
+    list_editable = ['ordre', 'points']
     ordering = ['notion', 'ordre', 'titre']
+    
+    # Inline pour gérer les images d'exercice
+    class ExerciceImageInline(admin.TabularInline):
+        model = ExerciceImage
+        extra = 1
+        fields = ("preview", "image", "image_type", "position", "legende")
+        readonly_fields = ("preview",)
+        can_delete = True
+
+        def preview(self, obj):
+            if getattr(obj, "image", None):
+                try:
+                    return format_html('<img src="{}" style="height: 80px; max-width: 140px; object-fit: cover;" />', obj.image.url)
+                except Exception:
+                    return "(aperçu indisponible)"
+            return "-"
+
+        preview.short_description = _("Aperçu")
+    
+    inlines = [ExerciceImageInline]
     
     # Utiliser fieldsets au lieu de fields
     fieldsets = (
         (_('Informations de base'), {
             'fields': ('titre', 'notion')  # ✅ notion est obligatoire
         }),
-        (_('Contenu'), {
-            'fields': ('contenu',),
+        (_('Contenu de l\'exercice'), {
+            'fields': ('contenu', 'question', 'reponse_correcte'),
         }),
         (_('Configuration'), {
-            'fields': ('ordre', 'difficulty'),
+            'fields': ('ordre', 'difficulty', 'points'),
             'classes': ['collapse']
         }),
         (_('Statut et métadonnées'), {
@@ -276,7 +308,13 @@ class ChapitreAdmin(admin.ModelAdmin):
     readonly_fields = ('date_creation', 'date_modification')
     
     def notion_info(self, obj):
-        return format_html('<strong>{}</strong><br><small>{} | {}</small>', obj.notion.titre, obj.notion.theme.titre, obj.notion.theme.matiere.titre)
+        """Affiche les informations de la notion"""
+        return format_html(
+            '<strong>{}</strong><br><small>{} | {}</small>',
+            obj.notion.titre,
+            obj.notion.theme.titre,
+            obj.notion.theme.matiere.titre
+        )
     notion_info.short_description = _('Notion')
     
     def difficulty_display(self, obj):
@@ -303,114 +341,9 @@ class ChapitreAdmin(admin.ModelAdmin):
     status_display.short_description = _('Statut')
     
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related('notion', 'notion__theme', 'notion__theme__matiere')
-
-
-@admin.register(Exercice)
-class ExerciceAdmin(admin.ModelAdmin):
-    """
-    Administration des exercices
-    """
-    list_display = [
-        'titre', 'chapitre_info', 'points', 'difficulty_display', 
-        'ordre', 'status_display', 'date_creation'
-    ]
-    list_filter = [
-        'chapitre__notion__theme__matiere',
-        'chapitre__notion__theme',
-        'chapitre__notion',
-        'chapitre',
-        'difficulty',
-        'points',
-        'est_actif',
-        'date_creation'
-    ]
-    search_fields = [
-        'titre', 'contenu', 'question', 'reponse_correcte',
-        'chapitre__titre', 'chapitre__notion__titre',
-        'chapitre__notion__theme__titre', 'chapitre__notion__theme__matiere__titre'
-    ]
-    list_editable = ['ordre', 'points']
-    ordering = ['chapitre', 'ordre', 'titre']
-    
-    # Inline pour gérer les images d'exercice
-    class ExerciceImageInline(admin.TabularInline):
-        model = ExerciceImage
-        extra = 1
-        fields = ("preview", "image", "image_type", "position", "legende")
-        readonly_fields = ("preview",)
-        can_delete = True
-
-        def preview(self, obj):
-            if getattr(obj, "image", None):
-                try:
-                    return format_html('<img src="{}" style="height: 80px; max-width: 140px; object-fit: cover;" />', obj.image.url)
-                except Exception:
-                    return "(aperçu indisponible)"
-            return "-"
-
-        preview.short_description = _("Aperçu")
-    
-    inlines = [ExerciceImageInline]
-    
-    # Utiliser fieldsets au lieu de fields
-    fieldsets = (
-        (_('Informations de base'), {
-            'fields': ('titre', 'chapitre')  # ✅ chapitre est obligatoire
-        }),
-        (_('Contenu de l\'exercice'), {
-            'fields': ('contenu', 'question', 'reponse_correcte'),
-        }),
-        (_('Configuration'), {
-            'fields': ('ordre', 'difficulty', 'points'),
-            'classes': ['collapse']
-        }),
-        (_('Statut et métadonnées'), {
-            'fields': ('est_actif', 'date_creation', 'date_modification'),
-            'classes': ['collapse']
-        }),
-    )
-    
-    readonly_fields = ('date_creation', 'date_modification')
-    
-    def chapitre_info(self, obj):
-        """Affiche les informations du chapitre"""
-        return format_html(
-            '<strong>{}</strong><br><small>{} | {} | {}</small>',
-            obj.chapitre.titre,
-            obj.chapitre.notion.titre,
-            obj.chapitre.notion.theme.titre,
-            obj.chapitre.notion.theme.matiere.titre
-        )
-    chapitre_info.short_description = _('Chapitre')
-    
-    def difficulty_display(self, obj):
-        """Affiche la difficulté avec couleur"""
-        colors = {
-            'facile': 'green',
-            'moyen': 'orange',
-            'difficile': 'red'
-        }
-        color = colors.get(obj.difficulty, 'gray')
-        return format_html(
-            '<span style="color: {};">● {}</span>',
-            color,
-            obj.get_difficulty_display()
-        )
-    difficulty_display.short_description = _('Difficulté')
-    
-    def status_display(self, obj):
-        """Affiche le statut avec indicateur visuel"""
-        if obj.est_actif:
-            return format_html('<span style="color: green;">●</span> Actif')
-        else:
-            return format_html('<span style="color: red;">●</span> Inactif')
-    status_display.short_description = _('Statut')
-    
-    def get_queryset(self, request):
         return super().get_queryset(request).select_related(
-            'chapitre', 'chapitre__notion', 'chapitre__notion__theme',
-            'chapitre__notion__theme__matiere'
+            'notion', 'notion__theme',
+            'notion__theme__matiere'
         )
 
 

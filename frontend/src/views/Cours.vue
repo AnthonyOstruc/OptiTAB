@@ -3,15 +3,39 @@
     <section class="cours-section">
       <!-- Bouton de retour -->
       <BackButton 
-        text="Retour aux chapitres" 
-        :customAction="goBackToChapitres"
+        text="Retour aux notions" 
+        :customAction="goBackToNotions"
         position="top-left"
       />
       
-      <h2 class="cours-title">Cours disponibles</h2>
+      <h2 class="cours-title">Cours</h2>
       
       <div v-if="loading" class="loading-container">
         <LoadingSpinner />
+      </div>
+      
+      <div v-else-if="selectedCours" class="cours-container">
+        <header class="cours-header">
+          <h1 class="cours-title">{{ selectedCours.titre }}</h1>
+          <div class="cours-meta">
+            <span class="cours-difficulty" :class="selectedCours.difficulty">
+              {{ getDifficultyLabel(selectedCours.difficulty) }}
+            </span>
+            <span class="cours-date">
+              {{ formatDate(selectedCours.date_creation) }}
+            </span>
+          </div>
+          <p v-if="selectedCours.description" class="cours-description">
+            {{ selectedCours.description }}
+          </p>
+        </header>
+        <div class="cours-content" v-html="renderedContent"></div>
+        <div v-if="selectedCours.video_url" class="cours-video">
+          <h3>Vidéo explicative</h3>
+          <div class="video-container">
+            <iframe :src="selectedCours.video_url" title="Vidéo du cours" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
       </div>
       
       <div v-else-if="cours.length === 0" class="no-cours">
@@ -19,27 +43,14 @@
       </div>
       
       <div v-else class="cours-grid">
-        <div
-          v-for="coursItem in cours"
-          :key="coursItem.id"
-          class="cours-card"
-          @click="viewCours(coursItem)"
-        >
+        <div v-for="coursItem in cours" :key="coursItem.id" class="cours-card" @click="viewCours(coursItem)">
           <div class="cours-card-header">
             <h3 class="cours-card-title">{{ coursItem.titre }}</h3>
-            <span class="cours-difficulty" :class="coursItem.difficulty">
-              {{ getDifficultyLabel(coursItem.difficulty) }}
-            </span>
+            <span class="cours-difficulty" :class="coursItem.difficulty">{{ getDifficultyLabel(coursItem.difficulty) }}</span>
           </div>
-          
-          <p v-if="coursItem.description" class="cours-description">
-            {{ coursItem.description }}
-          </p>
-          
+          <p v-if="coursItem.description" class="cours-description">{{ coursItem.description }}</p>
           <div class="cours-meta">
-            <span class="cours-date">
-              Créé le {{ formatDate(coursItem.date_creation) }}
-            </span>
+            <span class="cours-date">Créé le {{ formatDate(coursItem.date_creation) }}</span>
           </div>
         </div>
       </div>
@@ -62,6 +73,7 @@ const router = useRouter()
 const subjectsStore = useSubjectsStore()
 
 const cours = ref([])
+const selectedCours = ref(null)
 const loading = ref(true)
 
 // Récupérer les paramètres de la route
@@ -73,10 +85,10 @@ const currentNotionId = computed(() => route.params.notionId)
 const currentChapitreId = computed(() => route.params.chapitreId)
 
 // Fonction pour revenir aux chapitres
-function goBackToChapitres() {
+function goBackToNotions() {
   if (currentChapitreId.value) {
     router.push({ 
-      name: 'CourseChapitres', 
+      name: 'CourseByNotion', 
       params: { 
         matiereId: currentMatiereId.value,
         notionId: currentNotionId.value 
@@ -89,15 +101,7 @@ function goBackToChapitres() {
 
 // Fonction pour afficher un cours
 function viewCours(coursItem) {
-  router.push({ 
-    name: 'CoursDetail', 
-    params: { 
-      coursId: coursItem.id,
-      matiereId: currentMatiereId.value,
-      notionId: currentNotionId.value,
-      chapitreId: currentChapitreId.value
-    } 
-  })
+  selectedCours.value = coursItem
 }
 
 // Fonction pour obtenir le label de difficulté
@@ -131,6 +135,14 @@ onMounted(async () => {
     )
     
     cours.value = data
+    if (Array.isArray(cours.value) && cours.value.length === 1) {
+      selectedCours.value = cours.value[0]
+    }
+    // Si le backend renvoie directement un objet
+    if (data && !Array.isArray(data)) {
+      selectedCours.value = data
+      cours.value = [data]
+    }
     
     // Rendre le contenu MathJax après le chargement
     nextTick(() => {
@@ -142,6 +154,12 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
+})
+
+const renderedContent = computed(() => {
+  if (!selectedCours.value?.contenu) return ''
+  const images = selectedCours.value.images || []
+  return renderContentWithImages(selectedCours.value.contenu, images)
 })
 </script>
 

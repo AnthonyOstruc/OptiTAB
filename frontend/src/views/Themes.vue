@@ -13,7 +13,7 @@
       <!-- Contenu principal -->
       <div class="main-content-base">
         <div class="notions-container">
-          <ThemeNotionsView :matiere-id="currentMatiereId" :notion-route-name="'Chapitres'" />
+          <ThemeNotionsView :matiere-id="currentMatiereId" :notion-route-name="'ExercicesByNotion'" />
         </div>
       </div>
     </section>
@@ -60,7 +60,7 @@ function onMatiereChanged(newMatiereId) {
 
 // Fonction appelée quand on clique sur une notion (fallback)
 function onNotionClick(notionId) {
-  router.push({ name: 'Chapitres', params: { notionId } })
+  router.push({ name: 'ExercicesByNotion', params: { notionId } })
 }
 
 // Le composant enfant gère le chargement et le cache

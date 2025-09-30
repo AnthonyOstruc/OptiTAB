@@ -3,11 +3,11 @@
     <h2 class="admin-title">Gestion des Quiz</h2>
     <form class="admin-form" @submit.prevent="handleSave">
       <div class="form-group">
-        <label>Chapitre:</label>
-        <input v-model="chapitreFormFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
-        <select v-model="form.chapitre" required>
-          <option value="">Choisir un chapitre</option>
-          <option v-for="c in filteredChapitresForForm" :key="c.id" :value="c.id">{{ formatChapitreOption(c) }}</option>
+        <label>Notion:</label>
+        <input v-model="notionFormFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
+        <select v-model="form.notion" required>
+          <option value="">Choisir une notion</option>
+          <option v-for="n in filteredNotionsForForm" :key="n.id" :value="n.id">{{ n.titre || n.nom }}</option>
         </select>
       </div>
       <div v-if="currentContext" class="context-panel">
@@ -15,8 +15,8 @@
         <div class="context-row"><strong>Thème:</strong> <span>{{ currentContext.themeNom || '—' }}</span></div>
         <div class="context-row"><strong>Pays:</strong> <span>{{ currentContext.paysNom || '—' }}</span></div>
         <div class="context-row"><strong>Niveau:</strong> <span>{{ currentContext.niveauNom || '—' }}</span></div>
-        <div class="context-row"><strong>Chemin:</strong> <span>{{ getContextLabelByChapitre(form.chapitre) }}</span></div>
-        <div class="context-row"><strong>Code:</strong> <code>{{ getContextCodeByChapitre(form.chapitre) }}</code></div>
+        <div class="context-row"><strong>Chemin:</strong> <span>{{ getContextLabelByNotion(form.notion) }}</span></div>
+        <div class="context-row"><strong>Code:</strong> <code>{{ getContextCodeByNotion(form.notion) }}</code></div>
       </div>
       
       <div class="form-group">
@@ -75,12 +75,12 @@
     <!-- Filtres -->
     <div class="filters">
       <div class="filter-group">
-        <label>Filtrer par chapitre:</label>
-        <input v-model="chapitreFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
-        <select v-model="filters.chapitre">
-          <option value="">Tous les chapitres</option>
-          <option v-for="chapitre in filteredChapitres" :key="chapitre.id" :value="chapitre.id">
-            {{ chapitre.nom }} ({{ chapitre.notion_nom }})
+        <label>Filtrer par notion:</label>
+        <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
+        <select v-model="filters.notion">
+          <option value="">Toutes les notions</option>
+          <option v-for="n in filteredNotions" :key="n.id" :value="n.id">
+            {{ n.titre || n.nom }}
           </option>
         </select>
       </div>
@@ -93,7 +93,7 @@
         <tr>
           <th>ID</th>
           <th>Titre</th>
-          <th>Chapitre</th>
+          <th>Notion</th>
           <th>Contexte</th>
           <th>Questions</th>
           <th>Temps</th>
@@ -105,8 +105,8 @@
         <tr v-for="quiz in filteredQuiz" :key="quiz.id">
           <td>{{ quiz.id }}</td>
           <td>{{ quiz.titre }}</td>
-          <td>{{ getChapitreName(quiz.chapitre) }}</td>
-          <td class="ctx-cell">{{ getContextLabelByChapitre(quiz.chapitre) }}</td>
+          <td>{{ (getNotionById(quiz.notion)?.titre || getNotionById(quiz.notion)?.nom || quiz.notion) }}</td>
+          <td class="ctx-cell">{{ getContextLabelByNotion(quiz.notion) }}</td>
           <td>{{ (quiz.questions_data && quiz.questions_data.length) || quiz.nombre_questions || 0 }}</td>
           <td>{{ quiz.temps_limite || 0 }} min</td>
           <td><span class="difficulte-badge" :class="`difficulte-${quiz.difficulte || quiz.difficulty || 'moyen'}`">{{ quiz.difficulte || quiz.difficulty || 'moyen' }}</span></td>
@@ -139,10 +139,10 @@
 
         <div class="modal-form">
           <div class="form-group">
-            <label>Nouveau chapitre:</label>
-            <select v-model="duplicateForm.newChapitre" required>
-              <option value="">Choisir un chapitre</option>
-              <option v-for="chapitre in chapitres" :key="chapitre.id" :value="chapitre.id">{{ formatChapitreOption(chapitre) }}</option>
+            <label>Nouvelle notion:</label>
+            <select v-model="duplicateForm.newNotion" required>
+              <option value="">Choisir une notion</option>
+              <option v-for="n in notions" :key="n.id" :value="n.id">{{ n.titre || n.nom }}</option>
             </select>
           </div>
 
@@ -166,17 +166,17 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { getQuizAdmin, createQuiz, updateQuiz, deleteQuiz } from '@/api/quiz'
-import { getChapitres, getNotions } from '@/api'
+import { getNotions } from '@/api'
 import { AdminActionsButtons } from '@/components/admin'
 
 const quiz = ref([])
-const chapitres = ref([])
+// Chapitres supprimés
 const notions = ref([])
-const chapitreFormFilter = ref('')
-const chapitreFilter = ref('')
+const notionFormFilter = ref('')
+const notionFilter = ref('')
 const form = ref({ 
   id: null, 
-  chapitre: '', 
+  notion: '', 
   titre: '', 
   description: '', 
   nombre_questions: 10,
@@ -184,9 +184,7 @@ const form = ref({
   difficulte: 'moyen',
   questions_json: ''
 })
-const filters = ref({
-  chapitre: ''
-})
+const filters = ref({ notion: '' })
 const showDuplicateModal = ref(false)
 const duplicateForm = ref({
   originalQuiz: null,
@@ -198,44 +196,32 @@ const duplicateForm = ref({
 const filteredQuiz = computed(() => {
   let filtered = quiz.value
   
-  if (filters.value.chapitre) {
-    filtered = filtered.filter(q => q.chapitre == filters.value.chapitre)
+  if (filters.value.notion) {
+    filtered = filtered.filter(q => String(q.notion) === String(filters.value.notion))
   }
 
   return filtered
 })
 
-// Chapitres filtrés pour le formulaire (par texte seulement)
-const filteredChapitresForForm = computed(() => {
-  if (!chapitreFormFilter.value) {
-    return chapitres.value
-  }
-  const filter = chapitreFormFilter.value.toLowerCase()
-  return chapitres.value.filter(chapitre =>
-    formatChapitreOption(chapitre).toLowerCase().includes(filter)
-  )
+const filteredNotionsForForm = computed(() => {
+  if (!notionFormFilter.value) return notions.value
+  const q = notionFormFilter.value.toLowerCase()
+  return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(q))
 })
 
-// Chapitres filtrés pour les filtres (par texte seulement)
-const filteredChapitres = computed(() => {
-  if (!chapitreFilter.value) {
-    return chapitres.value
-  }
-  const filter = chapitreFilter.value.toLowerCase()
-  return chapitres.value.filter(chapitre =>
-    formatChapitreOption(chapitre).toLowerCase().includes(filter)
-  )
+const filteredNotions = computed(() => {
+  if (!notionFilter.value) return notions.value
+  const q = notionFilter.value.toLowerCase()
+  return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(q))
 })
 
 async function load() {
   try {
-    const [qRes, ch, nt] = await Promise.all([
+    const [qRes, nt] = await Promise.all([
       getQuizAdmin(),
-      getChapitres(),
       getNotions()
     ])
     quiz.value = Array.isArray(qRes?.data) ? qRes.data : (Array.isArray(qRes) ? qRes : [])
-    chapitres.value = Array.isArray(ch) ? ch : (ch?.data || [])
     notions.value = Array.isArray(nt) ? nt : (nt?.data || [])
   } catch (error) {
     console.error('[AdminQuiz] Erreur lors du chargement:', error)
@@ -250,7 +236,7 @@ onMounted(load)
 function resetForm() {
   form.value = { 
     id: null, 
-    chapitre: '', 
+    notion: '', 
     titre: '', 
     description: '', 
     nombre_questions: 10,
@@ -261,7 +247,7 @@ function resetForm() {
 }
 
 async function handleSave() {
-  if (!form.value.chapitre || !form.value.titre) return
+  if (!form.value.notion || !form.value.titre) return
 
   try {
     const difficultyMap = { 'facile': 'easy', 'moyen': 'medium', 'difficile': 'hard' }
@@ -270,7 +256,7 @@ async function handleSave() {
       try { questions = JSON.parse(form.value.questions_json) } catch (_) { questions = [] }
     }
     const payload = {
-      chapitre: Number(form.value.chapitre),
+      notion: Number(form.value.notion),
       titre: form.value.titre,
       contenu: form.value.description || form.value.titre,
       // aligné au modèle Quiz
@@ -307,7 +293,7 @@ function editQuiz(quiz) {
   
   form.value = { 
     id: quiz.id,
-    chapitre: quiz.chapitre,
+    notion: quiz.notion,
     titre: quiz.titre || '',
     description: quiz.description || '',
     nombre_questions: quiz.nombre_questions || 10,
@@ -413,21 +399,16 @@ function chapterContext(c) {
 }
 
 const currentContext = computed(() => {
-  const c = chapitres.value.find(x => String(x.id) === String(form.value.chapitre))
-  return c ? chapterContext(c) : null
+  const n = notions.value.find(x => String(x.id) === String(form.value.notion))
+  if (!n) return null
+  const matiereNom = n.matiere_nom || (n.contexte_detail && n.contexte_detail.matiere_nom) || ''
+  const themeNom = n.theme_nom || ''
+  const paysNom = n.contexte_detail && n.contexte_detail.pays ? n.contexte_detail.pays.nom : ''
+  const niveauNom = n.contexte_detail && n.contexte_detail.niveau ? n.contexte_detail.niveau.nom : ''
+  return { matiereNom, themeNom, paysNom, niveauNom }
 })
 
-function formatChapitreOption(c) {
-  const n = getNotionById(c.notion)
-  const ctx = chapterContext(c)
-  const parts = [
-    c.nom,
-    n ? `— ${n.nom}` : '',
-    ctx && ctx.matiereNom ? `— ${ctx.matiereNom}` : '',
-    ctx && (ctx.paysNom || ctx.niveauNom) ? `— ${[ctx.paysNom, ctx.niveauNom].filter(Boolean).join(' · ')}` : ''
-  ].filter(Boolean)
-  return parts.join(' ')
-}
+// format notion option helper not required; render directly
 
 function slugify(text) {
   return String(text || '')
@@ -437,34 +418,19 @@ function slugify(text) {
     .replace(/^_+|_+$/g, '')
 }
 
-function getContextLabelByChapitre(chapitreId) {
-  const c = chapitres.value.find(x => String(x.id) === String(chapitreId))
-  if (!c) return ''
-  const n = getNotionById(c.notion)
-  const ctx = chapterContext(c)
-  const path = [
-    ctx?.matiereNom,
-    ctx?.themeNom,
-    n?.nom,
-    c.nom,
-    ctx?.paysNom,
-    ctx?.niveauNom
-  ].filter(Boolean)
+function getContextLabelByNotion(notionId) {
+  const n = getNotionById(notionId)
+  if (!n) return ''
+  const matiereNom = n.matiere_nom || (n.contexte_detail && n.contexte_detail.matiere_nom) || ''
+  const themeNom = n.theme_nom || ''
+  const path = [matiereNom, themeNom, n.titre || n.nom].filter(Boolean)
   return path.join(' › ')
 }
 
-function getContextCodeByChapitre(chapitreId) {
-  const c = chapitres.value.find(x => String(x.id) === String(chapitreId))
-  if (!c) return ''
-  const n = getNotionById(c.notion)
-  const ctx = chapterContext(c)
-  const tokens = [
-    slugify(n?.nom),
-    slugify(ctx?.themeNom),
-    slugify(ctx?.matiereNom),
-    slugify(ctx?.paysNom),
-    slugify(ctx?.niveauNom)
-  ].filter(Boolean)
+function getContextCodeByNotion(notionId) {
+  const n = getNotionById(notionId)
+  if (!n) return ''
+  const tokens = [n.titre || n.nom, n.theme_nom, n.matiere_nom].filter(Boolean).map(t => slugify(t))
   return tokens.join('_')
 }
 </script>

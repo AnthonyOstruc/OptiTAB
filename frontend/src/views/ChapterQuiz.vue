@@ -3,8 +3,8 @@
     <section class="chapter-quiz-section">
       <!-- Bouton de retour -->
       <BackButton 
-        text="Retour aux chapitres" 
-        :customAction="goBackToChapitres"
+        text="Retour aux notions" 
+        :customAction="goBackToNotions"
         position="top-left"
       />
       
@@ -27,7 +27,7 @@
       </div>
 
       <div class="quiz-header">
-        <h2 class="quiz-title">Quiz QCM - {{ chapitreNom }}</h2>
+        <h2 class="quiz-title">Quiz QCM - {{ notionNom }}</h2>
         <p class="quiz-subtitle">{{ totalQuestions }} {{ totalQuestions > 1 ? 'questions' : 'question' }} disponibles dans {{ quiz.length }} {{ quiz.length > 1 ? 'quiz' : 'quiz' }}</p>
       </div>
 
@@ -403,8 +403,7 @@
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
-import { getQuiz, submitQuizResult, getQuizAttempts, getChapterQuizAttempts, checkQuizCooldown } from '@/api/quiz'
-import { getChapitres, getChapitreDetail } from '@/api'
+import { getQuiz, submitQuizResult, getQuizAttempts, checkQuizCooldown } from '@/api/quiz'
 import { useUserStore } from '@/stores/user'
 import { useXP } from '@/composables/useXP'
 import { calculateUserLevel } from '@/composables/useLevel'
@@ -417,8 +416,7 @@ const userStore = useUserStore()
 const { handleQuizCompletion, updateUserXPInstantly } = useXP()
 const { onQuizCompleted } = useDailyObjectivesIntegration()
 const quiz = ref([])
-const chapitreNom = ref('')
-const chapitres = ref([]) // Ajouter un ref pour stocker les chapitres
+const notionNom = ref('')
 
 // État du quiz en cours
 const currentQuiz = ref(null)
@@ -959,20 +957,19 @@ watch(showAnswer, () => {
 async function loadChapterQuizAttempts() {
   try {
     loadingStats.value = true
-    const chapitreId = route.params.chapitreId
-    const response = await getChapterQuizAttempts(chapitreId)
-    const attempts = Array.isArray(response) ? response : (response?.data || response?.results || [])
-    
-    chapterQuizAttempts.value = attempts
-    
-  } catch (error) {
-    if (error.response?.status === 401) {
-      console.warn('⚠️ Utilisateur non authentifié, mode local activé')
-      chapterQuizAttempts.value = []
-    } else {
-      console.error('❌ Erreur lors du chargement des tentatives:', error)
-      chapterQuizAttempts.value = []
+    const map = []
+    // Charger tentatives par quiz courant
+    for (const q of (quiz.value || [])) {
+      try {
+        const resp = await getQuizAttempts(q.id)
+        const attempts = Array.isArray(resp) ? resp : (resp?.data || resp?.results || [])
+        map.push(...attempts)
+      } catch (_) {}
     }
+    chapterQuizAttempts.value = map
+  } catch (error) {
+    console.error('❌ Erreur lors du chargement des tentatives:', error)
+    chapterQuizAttempts.value = []
   } finally {
     loadingStats.value = false
   }
@@ -988,22 +985,19 @@ onMounted(async () => {
   })
   
   try {
-    const chapitreId = route.params.chapitreId
+    const notionId = route.params.notionId
     const targetQuizId = route.query.quizId
     
-    console.log(`[ChapterQuiz] 🚀 Chargement optimisé - Chapitre: ${chapitreId}, Quiz cible: ${targetQuizId || 'Aucun'}`)
+    console.log(`[ChapterQuiz] 🚀 Chargement optimisé - Notion: ${notionId}, Quiz cible: ${targetQuizId || 'Aucun'}`)
     
     // Paralléliser les opérations de chargement pour plus de fluidité
-    const [chapitreData, quizData] = await Promise.all([
-      // Charger le chapitre pour la navigation
-      getChapitreDetail(chapitreId).catch(() => null),
-      // Charger les quiz du chapitre
-      getQuiz(chapitreId)
+    const [quizData] = await Promise.all([
+      // Charger les quiz par notion
+      getQuiz(notionId)
     ])
     
     // Traitement des données de chapitre
-    chapitres.value = chapitreData ? [chapitreData] : []
-    chapitreNom.value = chapitreData?.nom || 'Chapitre'
+    notionNom.value = 'Notion'
     
     // Traitement des données de quiz
     const rawList = Array.isArray(quizData.data) ? quizData.data : (quizData.data?.quiz || [])
@@ -1951,23 +1945,10 @@ function updateCooldownsRealTime() {
 }
 
 // Fonction pour revenir aux chapitres
-function goBackToChapitres() {
-  console.log('🔍 [ChapterQuiz] goBackToChapitres appelé')
-  console.log('🔍 [ChapterQuiz] chapitreId:', route.params.chapitreId)
-  console.log('🔍 [ChapterQuiz] chapitres.value:', chapitres.value)
-  
-  // Récupérer l'ID de la notion depuis le chapitre actuel
-  const chapitre = chapitres.value.find(c => c.id == route.params.chapitreId)
-  console.log('🔍 [ChapterQuiz] chapitre trouvé:', chapitre)
-  
-  if (chapitre && chapitre.notion) {
-    console.log('🔍 [ChapterQuiz] Navigation vers QuizChapitres avec notionId:', chapitre.notion)
-    router.push({ name: 'QuizChapitres', params: { notionId: chapitre.notion } })
-  } else {
-    console.log('🔍 [ChapterQuiz] Fallback: router.back()')
-    // Fallback : retour simple
-    router.back()
-  }
+function goBackToNotions() {
+  const matiereId = route.params.matiereId
+  if (matiereId) router.push({ name: 'QuizNotions', params: { matiereId } })
+  else router.back()
 }
 
 // Détecter les tentatives de fermeture/rafraîchissement

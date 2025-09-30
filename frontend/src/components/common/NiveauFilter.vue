@@ -79,14 +79,7 @@
           </div>
         </div>
         
-        <div class="result-section">
-          <h5>Chapitres ({{ chapitres.length }})</h5>
-          <div class="result-list">
-            <div v-for="chapitre in chapitres" :key="chapitre.id" class="result-item">
-              {{ chapitre.notion?.matiere?.nom }} > {{ chapitre.notion?.nom }} > {{ chapitre.nom }}
-            </div>
-          </div>
-        </div>
+        <!-- Chapitres supprimés -->
         
         <div class="result-section">
           <h5>Exercices ({{ exercices.length }})</h5>
@@ -107,7 +100,6 @@ import { getNiveaux } from '@/api/niveaux'
 import { getMatieres } from '@/api/matieres'
 import { getThemes } from '@/api/themes'
 import { getNotions } from '@/api/notions'
-import { getChapitres } from '@/api/chapitres'
 import { getExercices } from '@/api/exercices'
 
 const emit = defineEmits(['filter-applied', 'filter-cleared'])
@@ -120,7 +112,6 @@ const loading = ref(false)
 const matieres = ref([])
 const themes = ref([])
 const notions = ref([])
-const chapitres = ref([])
 const exercices = ref([])
 
 // Niveau sélectionné
@@ -148,18 +139,16 @@ async function applyFilter() {
   
   try {
     // Charger toutes les données filtrées par niveau
-    const [matieresRes, themesRes, notionsRes, chapitresRes, exercicesRes] = await Promise.all([
+    const [matieresRes, themesRes, notionsRes, exercicesRes] = await Promise.all([
       getMatieres(selectedNiveauId.value),
       getThemes(null, selectedNiveauId.value),
       getNotions(null, selectedNiveauId.value),
-      getChapitres(null, selectedNiveauId.value),
       getExercices(null, selectedNiveauId.value)
     ])
     
     matieres.value = matieresRes.data || []
     themes.value = themesRes.data || []
     notions.value = notionsRes.data || []
-    chapitres.value = chapitresRes.data || []
     exercices.value = exercicesRes.data || []
     
     emit('filter-applied', selectedNiveauId.value)
@@ -168,7 +157,6 @@ async function applyFilter() {
       matieres: matieres.value.length,
       themes: themes.value.length,
       notions: notions.value.length,
-      chapitres: chapitres.value.length,
       exercices: exercices.value.length
     })
   } catch (error) {
@@ -183,7 +171,6 @@ function clearFilter() {
   matieres.value = []
   themes.value = []
   notions.value = []
-  chapitres.value = []
   exercices.value = []
   
   emit('filter-cleared')

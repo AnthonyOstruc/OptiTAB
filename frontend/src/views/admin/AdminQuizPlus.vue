@@ -49,12 +49,12 @@ Instructions: Quiz sur les intégrales simples
     </div>
 
     <div class="bulk-form">
-      <input v-model="chapitreFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
+      <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
       <div class="form-row">
-        <select v-model="selectedChapitre" required class="chapter-select">
-          <option disabled value="">📚 Choisir le chapitre</option>
-          <option v-for="c in filteredChapitres" :key="c.id" :value="c.id">
-            {{ formatChapitreOption(c) }}
+        <select v-model="selectedNotion" required class="chapter-select">
+          <option disabled value="">📘 Choisir la notion</option>
+          <option v-for="n in filteredNotions" :key="n.id" :value="n.id">
+            {{ (n.nom || n.titre) }}
           </option>
         </select>
         
@@ -125,7 +125,7 @@ Explication: 2+2=4, c'est mathématique !
         <button 
           class="btn-create" 
           @click="handleCreate" 
-          :disabled="!selectedChapitre || !previewList.length"
+          :disabled="!selectedNotion || !previewList.length"
         >
           ✨ Créer {{ previewList.length || '' }} quiz
         </button>
@@ -209,13 +209,13 @@ Explication: 2+2=4, c'est mathématique !
 
 <script setup>
 import { ref, onMounted, nextTick, watch, computed } from 'vue'
-import { getChapitres, getNotions } from '@/api'
+import { getNotions } from '@/api'
 import { createQuiz, createQuizImage, updateQuiz } from '@/api/quiz'
 
 const chapitres = ref([])
 const notions = ref([])
-const chapitreFilter = ref('')
-const selectedChapitre = ref('')
+const notionFilter = ref('')
+const selectedNotion = ref('')
 const rawInput = ref('')
 const successMsg = ref('')
 const errorMsg = ref('')
@@ -345,7 +345,7 @@ class QuizCreator {
     try {
       // 1. Créer le quiz d'abord
       const quizRes = await createQuiz({
-        chapitre: Number(quizData.chapitre),
+        notion: Number(quizData.notion),
         titre: quizData.titre,
         contenu: quizData.instruction || quizData.titre || 'Quiz',
         difficulty: quizData.difficulty || 'medium',
@@ -490,11 +490,7 @@ const quizCreator = new QuizCreator(imageManager)
 
 async function load() {
   try {
-    const [ch, nt] = await Promise.all([
-      getChapitres(), 
-      getNotions()
-    ])
-    chapitres.value = Array.isArray(ch) ? ch : (ch?.data || [])
+    const nt = await getNotions()
     notions.value = Array.isArray(nt) ? nt : (nt?.data || [])
   } catch (e) {
     console.error('Erreur chargement:', e)
@@ -502,13 +498,13 @@ async function load() {
 }
 
 // Chapitres filtrés (par texte seulement)
-const filteredChapitres = computed(() => {
-  if (!chapitreFilter.value) {
-    return chapitres.value
+const filteredNotions = computed(() => {
+  if (!notionFilter.value) {
+    return notions.value
   }
-  const filter = chapitreFilter.value.toLowerCase()
-  return chapitres.value.filter(chapitre =>
-    formatChapitreOption(chapitre).toLowerCase().includes(filter)
+  const filter = notionFilter.value.toLowerCase()
+  return notions.value.filter(notion =>
+    (notion.nom || notion.titre || '').toLowerCase().includes(filter)
   )
 })
 
@@ -538,16 +534,19 @@ function chapterContext(chapitre) {
 }
 
 const currentContext = computed(() => {
-  const c = chapitres.value.find(x => String(x.id) === String(selectedChapitre.value))
-  return c ? chapterContext(c) : null
+  const n = notions.value.find(x => String(x.id) === String(selectedNotion.value))
+  return n ? {
+    matiereNom: n.matiere_nom || (n.contexte_detail && n.contexte_detail.matiere_nom) || '',
+    themeNom: n.theme_nom || '',
+    paysNom: n.contexte_detail && n.contexte_detail.pays ? n.contexte_detail.pays.nom : '',
+    niveauNom: n.contexte_detail && n.contexte_detail.niveau ? n.contexte_detail.niveau.nom : ''
+  } : null
 })
 
-function formatChapitreOption(c) {
-  const n = getNotionById(c.notion)
-  const ctx = chapterContext(c)
+function formatNotionOption(n) {
+  const ctx = currentContext.value
   const parts = [
-    c.nom,
-    n ? `— ${n.nom}` : '',
+    n.nom || n.titre,
     ctx && ctx.matiereNom ? `— ${ctx.matiereNom}` : '',
     ctx && (ctx.paysNom || ctx.niveauNom) ? `— ${[ctx.paysNom, ctx.niveauNom].filter(Boolean).join(' · ')}` : ''
   ].filter(Boolean)
@@ -707,7 +706,8 @@ function parseBlockFormat(text) {
       difficulty,
       image,
       questions,
-      chapitre: Number(selectedChapitre.value)
+      chapitre: undefined,
+      notion: Number(selectedNotion.value)
     }
   })
 }
@@ -730,7 +730,8 @@ function parseLineFormat(text) {
       instruction: parts[1] || 'Quiz',
       difficulty: (parts[2] || 'medium').toLowerCase(),
       questions,
-      chapitre: Number(selectedChapitre.value)
+      chapitre: undefined,
+      notion: Number(selectedNotion.value)
     }
   })
 }
@@ -779,14 +780,14 @@ async function handleCreate() {
     }
     
     // Sauvegarder le chapitre actuel avant de nettoyer le formulaire
-    const currentChapitre = selectedChapitre.value
+    const currentNotion = selectedNotion.value
 
     successMsg.value = message
     rawInput.value = ''
     previewList.value = []
 
     // Remettre le chapitre sélectionné pour permettre d'ajouter d'autres quiz dans le même chapitre
-    selectedChapitre.value = currentChapitre
+    selectedNotion.value = currentNotion
     
   } catch (e) {
     console.error('Erreur création:', e)

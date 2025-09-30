@@ -3,11 +3,11 @@
     <h2 class="admin-title">Gestion des Cours</h2>
     <form class="admin-form" @submit.prevent="handleSave">
       <div class="form-group">
-        <label>Chapitre:</label>
-        <input v-model="chapitreFormFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
-        <select v-model="form.chapitre" required>
-          <option value="">Choisir un chapitre</option>
-          <option v-for="chapitre in filteredChapitresForForm" :key="chapitre.id" :value="chapitre.id">{{ formatChapitreOption(chapitre) }}</option>
+        <label>Notion:</label>
+        <input v-model="notionFormFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
+        <select v-model="form.notion" required>
+          <option value="">Choisir une notion</option>
+          <option v-for="notion in filteredNotionsForForm" :key="notion.id" :value="notion.id">{{ formatNotionOption(notion) }}</option>
         </select>
       </div>
       <div v-if="currentContext" class="context-panel">
@@ -15,8 +15,8 @@
         <div class="context-row"><strong>Thème:</strong> <span>{{ currentContext.themeNom || '—' }}</span></div>
         <div class="context-row"><strong>Pays:</strong> <span>{{ currentContext.paysNom || '—' }}</span></div>
         <div class="context-row"><strong>Niveau:</strong> <span>{{ currentContext.niveauNom || '—' }}</span></div>
-        <div class="context-row"><strong>Chemin:</strong> <span>{{ getContextLabelByChapitre(form.chapitre) }}</span></div>
-        <div class="context-row"><strong>Code:</strong> <code>{{ getContextCodeByChapitre(form.chapitre) }}</code></div>
+        <div class="context-row"><strong>Chemin:</strong> <span>{{ getNotionContextLabel(form.notion) }}</span></div>
+        <div class="context-row"><strong>Code:</strong> <code>{{ getNotionContextCode(form.notion) }}</code></div>
       </div>
       
       <div class="form-group">
@@ -170,16 +170,15 @@
     <!-- Filtres -->
     <div class="filters">
       <div class="filter-group">
-        <label>Filtrer par chapitre:</label>
-        <input v-model="chapitreFilter" type="text" placeholder="Filtrer les chapitres..." class="filter-input" />
-        <select v-model="filters.chapitre">
-          <option value="">Tous les chapitres</option>
-          <option v-for="chapitre in filteredChapitres" :key="chapitre.id" :value="chapitre.id">
-            {{ chapitre.nom }} ({{ chapitre.notion_nom }})
+        <label>Filtrer par notion:</label>
+        <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
+        <select v-model="filters.notion">
+          <option value="">Toutes les notions</option>
+          <option v-for="notion in filteredNotionsForFilter" :key="notion.id" :value="notion.id">
+            {{ notion.titre || notion.nom }}
           </option>
         </select>
       </div>
-      
     </div>
 
     <!-- Tableau des cours -->
@@ -188,7 +187,7 @@
         <tr>
           <th>ID</th>
           <th>Titre</th>
-          <th>Chapitre</th>
+          <th>Notion</th>
           <th>Contexte</th>
           <th>Ordre</th>
           <th>Difficulté</th>
@@ -199,8 +198,8 @@
         <tr v-for="cours in paginatedCours" :key="cours.id">
           <td>{{ cours.id }}</td>
           <td>{{ cours.titre }}</td>
-          <td>{{ getChapitreName(cours.chapitre) }}</td>
-          <td class="ctx-cell">{{ getContextLabelByChapitre(cours.chapitre) }}</td>
+          <td>{{ getNotionName(cours.notion) }}</td>
+          <td class="ctx-cell">{{ getNotionContextLabel(cours.notion) }}</td>
           <td>{{ cours.ordre || 0 }}</td>
           <td><span class="difficulte-badge" :class="`difficulte-${cours.difficulte || cours.difficulty || 'moyen'}`">{{ cours.difficulte || cours.difficulty || 'moyen' }}</span></td>
           <td>
@@ -294,7 +293,7 @@
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { getCours, createCours, updateCours, deleteCours, getCoursImages, createCoursImage, updateCoursImage, deleteCoursImage } from '@/api/cours'
-import { getChapitres, getNotions } from '@/api'
+import { getNotions } from '@/api'
 import { AdminActionsButtons } from '@/components/admin'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
 
@@ -306,21 +305,20 @@ const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gi
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024 // 10MB
 
 const cours = ref([])
-const chapitres = ref([])
+// Chapitres supprimés
 const notions = ref([])
-const chapitreFormFilter = ref('')
-const chapitreFilter = ref('')
+const notionFormFilter = ref('')
+const notionFilter = ref('')
+// Chapitres supprimés
 const form = ref({ 
   id: null, 
-  chapitre: '', 
+  notion: '', 
   titre: '', 
   contenu: '', 
   ordre: 0,
   difficulte: 'moyen'
 })
-const filters = ref({
-  chapitre: ''
-})
+const filters = ref({})
 
 // Pagination
 const currentPage = ref(1)
@@ -344,34 +342,22 @@ const duplicateForm = ref({
 // Computed properties
 const filteredCours = computed(() => {
   let filtered = cours.value
-  
-  if (filters.value.chapitre) {
-    filtered = filtered.filter(c => c.chapitre == filters.value.chapitre)
+  if (filters.value.notion) {
+    filtered = filtered.filter(c => String(c.notion) === String(filters.value.notion))
   }
-
   return filtered.sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
 })
 
-// Chapitres filtrés pour le formulaire (par texte seulement)
-const filteredChapitresForForm = computed(() => {
-  if (!chapitreFormFilter.value) {
-    return chapitres.value
-  }
-  const filter = chapitreFormFilter.value.toLowerCase()
-  return chapitres.value.filter(chapitre =>
-    formatChapitreOption(chapitre).toLowerCase().includes(filter)
-  )
+const filteredNotionsForForm = computed(() => {
+  if (!notionFormFilter.value) return notions.value
+  const q = notionFormFilter.value.toLowerCase()
+  return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(q))
 })
 
-// Chapitres filtrés pour les filtres (par texte seulement)
-const filteredChapitres = computed(() => {
-  if (!chapitreFilter.value) {
-    return chapitres.value
-  }
-  const filter = chapitreFilter.value.toLowerCase()
-  return chapitres.value.filter(chapitre =>
-    formatChapitreOption(chapitre).toLowerCase().includes(filter)
-  )
+const filteredNotionsForFilter = computed(() => {
+  if (!notionFilter.value) return notions.value
+  const q = notionFilter.value.toLowerCase()
+  return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(q))
 })
 
 // Computed properties pour la pagination
@@ -413,18 +399,16 @@ const displayedPages = computed(() => {
 
 async function load() {
   try {
-    const [chs, nts, cResp] = await Promise.all([
-      getChapitres(),
+    const [nts, cResp] = await Promise.all([
       getNotions(),
       getCours()
     ])
-    chapitres.value = Array.isArray(chs) ? chs : (chs?.data || [])
     notions.value = Array.isArray(nts) ? nts : (nts?.data || [])
     cours.value = Array.isArray(cResp?.data) ? cResp.data : (Array.isArray(cResp) ? cResp : [])
   } catch (error) {
     console.error('[AdminCours] Erreur lors du chargement:', error)
     cours.value = []
-    chapitres.value = []
+    // Chapitres supprimés
     notions.value = []
   }
 }
@@ -432,14 +416,14 @@ async function load() {
 onMounted(load)
 
 // Watcher pour réinitialiser la page courante quand les filtres changent
-watch(() => filters.value.chapitre, () => {
+watch(() => filters.value.notion, () => {
   currentPage.value = 1
 })
 
 function resetForm() {
   form.value = {
     id: null,
-    chapitre: '',
+    notion: '',
     titre: '',
     contenu: '',
     ordre: 0,
@@ -576,12 +560,12 @@ function getDifficultyLabel(difficulty) {
 }
 
 async function handleSave() {
-  if (!form.value.chapitre || !form.value.titre || !form.value.contenu) return
+  if (!form.value.notion || !form.value.titre || !form.value.contenu) return
 
   try {
     const difficultyMap = { 'facile': 'easy', 'moyen': 'medium', 'difficile': 'hard' }
     const payload = {
-      chapitre: Number(form.value.chapitre),
+      notion: Number(form.value.notion),
       titre: form.value.titre,
       contenu: form.value.contenu,
       ordre: form.value.ordre,
@@ -595,12 +579,12 @@ async function handleSave() {
     }
 
     // Sauvegarder le chapitre actuel avant de reset le formulaire
-    const currentChapitre = form.value.chapitre
+    const currentNotion = form.value.notion
 
     resetForm()
 
     // Remettre le chapitre sélectionné pour permettre d'ajouter un autre cours dans le même chapitre
-    form.value.chapitre = currentChapitre
+    form.value.notion = currentNotion
 
     await load()
   } catch (e) {
@@ -616,7 +600,7 @@ function editCours(cours) {
   
   form.value = { 
     id: cours.id,
-    chapitre: cours.chapitre,
+    notion: cours.notion,
     titre: cours.titre || '',
     contenu: cours.contenu || '',
     ordre: cours.ordre || 0,
@@ -782,6 +766,38 @@ function getNotionById(id) {
   return notions.value.find(x => String(x.id) === String(id))
 }
 
+function getNotionName(id) {
+  const n = getNotionById(id)
+  return n ? (n.titre || n.nom) : id
+}
+
+function formatNotionOption(n) {
+  const parts = [
+    n.titre || n.nom,
+    n.theme_nom ? `— ${n.theme_nom}` : '',
+    n.matiere_nom ? `— ${n.matiere_nom}` : ''
+  ].filter(Boolean)
+  return parts.join(' ')
+}
+
+function getNotionContextLabel(notionId) {
+  const n = getNotionById(notionId)
+  if (!n) return ''
+  const matiereNom = n.matiere_nom || (n.contexte_detail && n.contexte_detail.matiere_nom) || ''
+  const themeNom = n.theme_nom || ''
+  const path = [matiereNom, themeNom, n.titre || n.nom].filter(Boolean)
+  return path.join(' › ')
+}
+
+function getNotionContextCode(notionId) {
+  const n = getNotionById(notionId)
+  if (!n) return ''
+  const tokens = [n.titre || n.nom, n.theme_nom, n.matiere_nom]
+    .filter(Boolean)
+    .map(t => slugify(t))
+  return tokens.join('_')
+}
+
 function chapterContext(chapitre) {
   if (!chapitre) return null
   const notion = getNotionById(chapitre.notion)
@@ -794,8 +810,8 @@ function chapterContext(chapitre) {
 }
 
 const currentContext = computed(() => {
-  const c = chapitres.value.find(x => String(x.id) === String(form.value.chapitre))
-  return c ? chapterContext(c) : null
+  // Chapitres supprimés
+  return null
 })
 
 // Fonction pour créer les données d'images pour la prévisualisation (comme dans AdminCoursPlus)
@@ -888,17 +904,7 @@ const previewRenderedContent = computed(() => {
   return renderPreviewContent(previewData.value)
 })
 
-function formatChapitreOption(c) {
-  const n = getNotionById(c.notion)
-  const ctx = chapterContext(c)
-  const parts = [
-    c.nom,
-    n ? `— ${n.nom}` : '',
-    ctx && ctx.matiereNom ? `— ${ctx.matiereNom}` : '',
-    ctx && (ctx.paysNom || ctx.niveauNom) ? `— ${[ctx.paysNom, ctx.niveauNom].filter(Boolean).join(' · ')}` : ''
-  ].filter(Boolean)
-  return parts.join(' ')
-}
+// Chapitres supprimés
 
 function slugify(text) {
   return String(text || '')
@@ -908,36 +914,9 @@ function slugify(text) {
     .replace(/^_+|_+$/g, '')
 }
 
-function getContextLabelByChapitre(chapitreId) {
-  const c = chapitres.value.find(x => String(x.id) === String(chapitreId))
-  if (!c) return ''
-  const n = getNotionById(c.notion)
-  const ctx = chapterContext(c)
-  const path = [
-    ctx?.matiereNom,
-    ctx?.themeNom,
-    n?.nom,
-    c.nom,
-    ctx?.paysNom,
-    ctx?.niveauNom
-  ].filter(Boolean)
-  return path.join(' › ')
-}
+// Chapitres supprimés
 
-function getContextCodeByChapitre(chapitreId) {
-  const c = chapitres.value.find(x => String(x.id) === String(chapitreId))
-  if (!c) return ''
-  const n = getNotionById(c.notion)
-  const ctx = chapterContext(c)
-  const tokens = [
-    slugify(n?.nom),
-    slugify(ctx?.themeNom),
-    slugify(ctx?.matiereNom),
-    slugify(ctx?.paysNom),
-    slugify(ctx?.niveauNom)
-  ].filter(Boolean)
-  return tokens.join('_')
-}
+// Chapitres supprimés
 </script>
 
 <style scoped>

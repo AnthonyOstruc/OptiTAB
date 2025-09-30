@@ -152,7 +152,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { getChapitres, createChapitre, updateChapitre, deleteChapitre } from '@/api'
+import { createChapitre, updateChapitre, deleteChapitre } from '@/api'
 import { getNotions } from '@/api'
 import { apiClient } from '@/api'
 import SimpleModal from '@/components/debug/SimpleModal.vue'
@@ -257,11 +257,10 @@ const displayedPages = computed(() => {
 
 async function load() {
   try {
-    const [cData, nData] = await Promise.all([
-      getChapitres(),
+    const [nData] = await Promise.all([
       getNotions()
     ])
-    chapitres.value = cData || []
+    chapitres.value = []
     notions.value = nData || []
   } catch (error) {
     console.error('[AdminChapitres] Erreur lors du chargement:', error)

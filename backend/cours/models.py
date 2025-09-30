@@ -8,21 +8,22 @@ from django.db import models
 
 
 class Cours(BaseEducational):
-    """Un cours pour un chapitre"""
-    chapitre = models.OneToOneField(
-        'curriculum.Chapitre', 
+    """Un cours pour une notion"""
+    notion = models.OneToOneField(
+        'curriculum.Notion', 
         on_delete=models.CASCADE, 
-        related_name='cours'
+        related_name='cours',
+        null=True  # Temporaire pour migration
     )
     video_url = models.URLField(blank=True, null=True)
     
     class Meta:
-        ordering = ['chapitre']
+        ordering = ['notion']
         verbose_name = "Cours"
         verbose_name_plural = "Cours"
 
     def __str__(self):
-        return f"Cours - {self.chapitre.titre}"
+        return f"Cours - {self.notion.titre}"
 
 
 class CoursImage(models.Model):

@@ -1,5 +1,5 @@
 from django.db import transaction
-from .models import Theme, Notion, Chapitre, Exercice, MatiereContexte, ExerciceImage
+from .models import Theme, Notion, Exercice, MatiereContexte, ExerciceImage
 from cours.models import Cours, CoursImage
 from quiz.models import Quiz, QuizImage
 from synthesis.models import SynthesisSheet
@@ -37,7 +37,7 @@ def duplicate_theme_deep(original: Theme, target_contexte: MatiereContexte, new_
         est_actif=original.est_actif,
     )
 
-    # Notions → (sheets) → Chapitres → Cours(+images), Quiz(+images), Exercices(+images)
+    # Notions → (sheets) → Cours(+images), Quiz(+images), Exercices(+images)
     for notion in original.notions.all().order_by('ordre', 'id'):
         new_notion = Notion.objects.create(
             theme=new_theme,
@@ -64,80 +64,70 @@ def duplicate_theme_deep(original: Theme, target_contexte: MatiereContexte, new_
                 reading_time_minutes=sheet.reading_time_minutes,
             )
 
-        for chapitre in notion.chapitres.all().order_by('ordre', 'id'):
-            new_chapitre = Chapitre.objects.create(
+        # Cours (one-to-one)
+        cours = getattr(notion, 'cours', None)
+        if cours:
+            new_cours = Cours.objects.create(
                 notion=new_notion,
-                titre=chapitre.titre,
-                contenu=chapitre.contenu,
-                difficulty=chapitre.difficulty,
-                ordre=chapitre.ordre,
-                est_actif=chapitre.est_actif,
+                titre=cours.titre,
+                contenu=cours.contenu,
+                difficulty=cours.difficulty,
+                ordre=cours.ordre,
+                est_actif=cours.est_actif,
+                video_url=cours.video_url,
             )
-
-            # Cours (one-to-one)
-            cours = getattr(chapitre, 'cours', None)
-            if cours:
-                new_cours = Cours.objects.create(
-                    chapitre=new_chapitre,
-                    titre=cours.titre,
-                    contenu=cours.contenu,
-                    difficulty=cours.difficulty,
-                    ordre=cours.ordre,
-                    est_actif=cours.est_actif,
-                    video_url=cours.video_url,
+            for img in cours.images.all().order_by('position', 'id'):
+                CoursImage.objects.create(
+                    cours=new_cours,
+                    image=img.image,
+                    image_type=img.image_type,
+                    position=img.position,
+                    legende=img.legende,
                 )
-                for img in cours.images.all().order_by('position', 'id'):
-                    CoursImage.objects.create(
-                        cours=new_cours,
-                        image=img.image,
-                        image_type=img.image_type,
-                        position=img.position,
-                        legende=img.legende,
-                    )
 
-            # Quiz
-            for quiz in chapitre.quiz.all().order_by('ordre', 'id'):
-                new_quiz = Quiz.objects.create(
-                    chapitre=new_chapitre,
-                    titre=quiz.titre,
-                    contenu=quiz.contenu,
-                    difficulty=quiz.difficulty,
-                    ordre=quiz.ordre,
-                    est_actif=quiz.est_actif,
-                    questions_data=quiz.questions_data,
-                    duree_minutes=quiz.duree_minutes,
+        # Quiz
+        for quiz in notion.quiz.all().order_by('ordre', 'id'):
+            new_quiz = Quiz.objects.create(
+                notion=new_notion,
+                titre=quiz.titre,
+                contenu=quiz.contenu,
+                difficulty=quiz.difficulty,
+                ordre=quiz.ordre,
+                est_actif=quiz.est_actif,
+                questions_data=quiz.questions_data,
+                duree_minutes=quiz.duree_minutes,
+            )
+            for qimg in quiz.images.all().order_by('position', 'id'):
+                QuizImage.objects.create(
+                    quiz=new_quiz,
+                    image=qimg.image,
+                    image_type=qimg.image_type,
+                    position=qimg.position,
+                    legende=qimg.legende,
                 )
-                for qimg in quiz.images.all().order_by('position', 'id'):
-                    QuizImage.objects.create(
-                        quiz=new_quiz,
-                        image=qimg.image,
-                        image_type=qimg.image_type,
-                        position=qimg.position,
-                        legende=qimg.legende,
-                    )
 
-            # Exercices
-            for ex in chapitre.exercices.all().order_by('ordre', 'id'):
-                new_ex = Exercice.objects.create(
-                    chapitre=new_chapitre,
-                    titre=ex.titre,
-                    contenu=ex.contenu,
-                    difficulty=ex.difficulty,
-                    ordre=ex.ordre,
-                    est_actif=ex.est_actif,
-                    question=ex.question,
-                    reponse_correcte=ex.reponse_correcte,
-                    etapes=ex.etapes,
-                    points=ex.points,
+        # Exercices
+        for ex in notion.exercices.all().order_by('ordre', 'id'):
+            new_ex = Exercice.objects.create(
+                notion=new_notion,
+                titre=ex.titre,
+                contenu=ex.contenu,
+                difficulty=ex.difficulty,
+                ordre=ex.ordre,
+                est_actif=ex.est_actif,
+                question=ex.question,
+                reponse_correcte=ex.reponse_correcte,
+                etapes=ex.etapes,
+                points=ex.points,
+            )
+            for eimg in ex.images.all().order_by('position', 'id'):
+                ExerciceImage.objects.create(
+                    exercice=new_ex,
+                    image=eimg.image,
+                    image_type=eimg.image_type,
+                    position=eimg.position,
+                    legende=eimg.legende,
                 )
-                for eimg in ex.images.all().order_by('position', 'id'):
-                    ExerciceImage.objects.create(
-                        exercice=new_ex,
-                        image=eimg.image,
-                        image_type=eimg.image_type,
-                        position=eimg.position,
-                        legende=eimg.legende,
-                    )
 
     return new_theme
 
@@ -190,119 +180,11 @@ def duplicate_notion_deep(original: Notion, target_theme: Theme, new_title: str 
             reading_time_minutes=sheet.reading_time_minutes,
         )
 
-    # Chapitres et ressources
-    for chapitre in original.chapitres.all().order_by('ordre', 'id'):
-        new_chapitre = Chapitre.objects.create(
-            notion=new_notion,
-            titre=chapitre.titre,
-            contenu=chapitre.contenu,
-            difficulty=chapitre.difficulty,
-            ordre=chapitre.ordre,
-            est_actif=chapitre.est_actif,
-        )
-
-        # Cours (one-to-one)
-        cours = getattr(chapitre, 'cours', None)
-        if cours:
-            new_cours = Cours.objects.create(
-                chapitre=new_chapitre,
-                titre=cours.titre,
-                contenu=cours.contenu,
-                difficulty=cours.difficulty,
-                ordre=cours.ordre,
-                est_actif=cours.est_actif,
-                video_url=cours.video_url,
-            )
-            for img in cours.images.all().order_by('position', 'id'):
-                CoursImage.objects.create(
-                    cours=new_cours,
-                    image=img.image,
-                    image_type=img.image_type,
-                    position=img.position,
-                    legende=img.legende,
-                )
-
-        # Quiz
-        for quiz in chapitre.quiz.all().order_by('ordre', 'id'):
-            new_quiz = Quiz.objects.create(
-                chapitre=new_chapitre,
-                titre=quiz.titre,
-                contenu=quiz.contenu,
-                difficulty=quiz.difficulty,
-                ordre=quiz.ordre,
-                est_actif=quiz.est_actif,
-                questions_data=quiz.questions_data,
-                duree_minutes=quiz.duree_minutes,
-            )
-            for qimg in quiz.images.all().order_by('position', 'id'):
-                QuizImage.objects.create(
-                    quiz=new_quiz,
-                    image=qimg.image,
-                    image_type=qimg.image_type,
-                    position=qimg.position,
-                    legende=qimg.legende,
-                )
-
-        # Exercices
-        for ex in chapitre.exercices.all().order_by('ordre', 'id'):
-            new_ex = Exercice.objects.create(
-                chapitre=new_chapitre,
-                titre=ex.titre,
-                contenu=ex.contenu,
-                difficulty=ex.difficulty,
-                ordre=ex.ordre,
-                est_actif=ex.est_actif,
-                question=ex.question,
-                reponse_correcte=ex.reponse_correcte,
-                etapes=ex.etapes,
-                points=ex.points,
-            )
-            for eimg in ex.images.all().order_by('position', 'id'):
-                ExerciceImage.objects.create(
-                    exercice=new_ex,
-                    image=eimg.image,
-                    image_type=eimg.image_type,
-                    position=eimg.position,
-                    legende=eimg.legende,
-                )
-
-    return new_notion
-
-
-@transaction.atomic
-def duplicate_chapitre_deep(original: Chapitre, target_notion: Notion, new_title: str | None = None) -> Chapitre:
-    """Clone un chapitre et tout son contenu (cours + images, quiz + images, exercices + images)
-    vers une notion cible. Garantit un titre unique dans la notion cible.
-
-    Args:
-        original: Chapitre d'origine à dupliquer
-        target_notion: Notion cible
-        new_title: Titre souhaité (optionnel); sinon, suffixe (Copie) si collision
-    """
-    base_title = (new_title or original.titre or 'Chapitre').strip()
-
-    # Générer un titre unique dans la notion cible
-    candidate = base_title
-    index = 1
-    while Chapitre.objects.filter(notion=target_notion, titre=candidate).exists():
-        suffix = '' if index == 1 else f' {index}'
-        candidate = f"{base_title} (Copie{suffix})"
-        index += 1
-
-    new_chapitre = Chapitre.objects.create(
-        notion=target_notion,
-        titre=candidate,
-        contenu=original.contenu,
-        difficulty=original.difficulty,
-        ordre=original.ordre,
-        est_actif=original.est_actif,
-    )
-
     # Cours (one-to-one)
     cours = getattr(original, 'cours', None)
     if cours:
         new_cours = Cours.objects.create(
-            chapitre=new_chapitre,
+            notion=new_notion,
             titre=cours.titre,
             contenu=cours.contenu,
             difficulty=cours.difficulty,
@@ -322,7 +204,7 @@ def duplicate_chapitre_deep(original: Chapitre, target_notion: Notion, new_title
     # Quiz
     for quiz in original.quiz.all().order_by('ordre', 'id'):
         new_quiz = Quiz.objects.create(
-            chapitre=new_chapitre,
+            notion=new_notion,
             titre=quiz.titre,
             contenu=quiz.contenu,
             difficulty=quiz.difficulty,
@@ -343,7 +225,7 @@ def duplicate_chapitre_deep(original: Chapitre, target_notion: Notion, new_title
     # Exercices
     for ex in original.exercices.all().order_by('ordre', 'id'):
         new_ex = Exercice.objects.create(
-            chapitre=new_chapitre,
+            notion=new_notion,
             titre=ex.titre,
             contenu=ex.contenu,
             difficulty=ex.difficulty,
@@ -363,5 +245,5 @@ def duplicate_chapitre_deep(original: Chapitre, target_notion: Notion, new_title
                 legende=eimg.legende,
             )
 
-    return new_chapitre
+    return new_notion
 

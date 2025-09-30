@@ -84,10 +84,10 @@ const isActiveRoute = (menuKey) => {
   // Mapping des clés de menu vers les chemins de route
   const routeMapping = {
     'dashboard': '/dashboard',
-    'cours': ['/online-courses', '/course-notions', '/course-chapitres', '/course', '/cours'],
-    'exercices': ['/exercises', '/notions', '/exercicies', '/theme-notions', '/chapitres', '/exercices', '/chapter-exercises'],
+    'cours': ['/online-courses', '/course-notions', '/course-notion', '/cours'],
+    'exercices': ['/exercises', '/notions', '/exercicies', '/theme-notions', '/exercices-notion', '/exercices', '/chapter-exercises'],
     'fiches': ['/sheets'],
-    'quiz': ['/quiz', '/quiz-notions', '/quiz-chapitres', '/quiz-exercices', '/chapter-quiz'],
+    'quiz': ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
     'progress': '/progress',
     'calculator': '/calculator',
     'admin': '/admin' // Spécialement pour les routes admin

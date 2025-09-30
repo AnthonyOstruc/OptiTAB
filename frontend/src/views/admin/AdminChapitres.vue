@@ -61,7 +61,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="chapitre in filteredChapitres" :key="chapitre.id">
+        <tr v-for="chapitre in paginatedChapitres" :key="chapitre.id">
           <td>{{ chapitre.id }}</td>
           <td>{{ chapitre.nom }}</td>
           <td>{{ getNotionLabelById(chapitre.notion) }}</td>
@@ -69,26 +69,93 @@
           <td>
             <AdminActionsButtons
               :item="chapitre"
-              :actions="['edit', 'delete']"
+              :actions="['edit', 'duplicate', 'delete']"
               edit-label="Éditer"
+              duplicate-label="Dupliquer"
               confirm-message="Êtes-vous sûr de vouloir supprimer ce chapitre ?"
               @edit="editChapitre"
+              @duplicate="openDuplicateModal(chapitre)"
               @delete="handleDeleteChapitre"
             />
           </td>
         </tr>
-        <tr v-if="filteredChapitres.length === 0">
+        <tr v-if="paginatedChapitres.length === 0">
           <td colspan="5" style="text-align:center; font-style: italic;">Aucun chapitre trouvé.</td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Pagination -->
+    <div v-if="totalPages > 1" class="pagination">
+      <button 
+        class="pagination-btn" 
+        @click="currentPage--" 
+        :disabled="currentPage === 1"
+      >
+        Précédent
+      </button>
+      
+      <div class="pagination-numbers">
+        <button
+          v-for="page in displayedPages"
+          :key="page"
+          class="pagination-number"
+          :class="{ active: page === currentPage }"
+          @click="currentPage = page"
+        >
+          {{ page }}
+        </button>
+      </div>
+      
+      <button 
+        class="pagination-btn" 
+        @click="currentPage++" 
+        :disabled="currentPage === totalPages"
+      >
+        Suivant
+      </button>
+    </div>
+    
+    <div v-if="totalPages > 1" class="pagination-info">
+      Page {{ currentPage }} sur {{ totalPages }} ({{ filteredChapitres.length }} chapitre(s) au total)
+    </div>
   </div>
+  <!-- Duplication Modal -->
+  <SimpleModal :isOpen="duplicateState.open" title="Dupliquer le chapitre" @close="closeDuplicateModal">
+    <div>
+      <div class="form-group">
+        <label>Notion cible</label>
+        <input v-model="notionFilter" type="text" placeholder="Rechercher une notion..." class="filter-input" />
+        <select v-model="duplicateState.targetNotion" required>
+          <option value="">Choisir une notion cible</option>
+          <option
+            v-for="n in filteredNotions"
+            :key="n.id"
+            :value="n.id"
+          >
+            {{ formatNotionOption(n) }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Nouveau nom (optionnel)</label>
+        <input v-model="duplicateState.newTitle" placeholder="Nom de la copie (laisser vide pour suffixe (Copie))" />
+      </div>
+    </div>
+    <template #footer>
+      <button class="btn-secondary" @click="closeDuplicateModal">Annuler</button>
+      <button class="btn-primary" :disabled="!duplicateState.targetNotion" @click="confirmDuplicate">Dupliquer</button>
+    </template>
+  </SimpleModal>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { getChapitres, createChapitre, updateChapitre, deleteChapitre } from '@/api'
 import { getNotions } from '@/api'
+import { apiClient } from '@/api'
+import SimpleModal from '@/components/debug/SimpleModal.vue'
 import { AdminActionsButtons } from '@/components/admin'
 
 const chapitres = ref([])
@@ -104,6 +171,18 @@ const form = ref({
 })
 const filters = ref({
   notion: ''
+})
+
+// Pagination
+const currentPage = ref(1)
+const itemsPerPage = 5
+
+// UI state for duplication modal
+const duplicateState = ref({
+  open: false,
+  sourceChapitre: null,
+  targetNotion: '',
+  newTitle: ''
 })
 
 // Computed properties
@@ -139,6 +218,43 @@ const filteredNotions = computed(() => {
   )
 })
 
+// Computed properties pour la pagination
+const totalPages = computed(() => {
+  const total = filteredChapitres.value.length
+  return Math.ceil(total / itemsPerPage)
+})
+
+const paginatedChapitres = computed(() => {
+  const allFiltered = filteredChapitres.value
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return allFiltered.slice(start, end)
+})
+
+const displayedPages = computed(() => {
+  const pages = []
+  const total = totalPages.value
+  const current = currentPage.value
+  
+  // Afficher au maximum 5 numéros de page
+  let startPage = Math.max(1, current - 2)
+  let endPage = Math.min(total, current + 2)
+  
+  // Ajuster si on est proche du début ou de la fin
+  if (current <= 3) {
+    endPage = Math.min(5, total)
+  }
+  if (current >= total - 2) {
+    startPage = Math.max(1, total - 4)
+  }
+  
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i)
+  }
+  
+  return pages
+})
+
 async function load() {
   try {
     const [cData, nData] = await Promise.all([
@@ -155,6 +271,11 @@ async function load() {
 }
 
 onMounted(load)
+
+// Watcher pour réinitialiser la page courante quand les filtres changent
+watch(() => filters.value.notion, () => {
+  currentPage.value = 1
+})
 
 function resetForm() {
   form.value = { 
@@ -233,6 +354,34 @@ async function removeChapitre(id) {
 // Nouvelle fonction qui utilise le composant AdminActionsButtons
 function handleDeleteChapitre(chapitre) {
   removeChapitre(chapitre.id)
+}
+
+function openDuplicateModal(chapitre) {
+  duplicateState.value = {
+    open: true,
+    sourceChapitre: chapitre,
+    targetNotion: chapitre.notion || '',
+    newTitle: chapitre.nom || ''
+  }
+}
+
+function closeDuplicateModal() {
+  duplicateState.value.open = false
+}
+
+async function confirmDuplicate() {
+  const src = duplicateState.value.sourceChapitre
+  const targetNotionId = Number(duplicateState.value.targetNotion)
+  const newTitle = (duplicateState.value.newTitle || '').trim()
+  if (!src || !targetNotionId) return
+  try {
+    await apiClient.post(`/api/chapitres/${src.id}/duplicate/`, { notion: targetNotionId, titre: newTitle })
+    closeDuplicateModal()
+    await load()
+  } catch (e) {
+    console.error('[AdminChapitres] Erreur de duplication:', e)
+    alert('Erreur lors de la duplication du chapitre')
+  }
 }
 </script>
 
@@ -370,5 +519,74 @@ function handleDeleteChapitre(chapitre) {
 
 .admin-table tr:hover {
   background: #f9fafb;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
+.pagination-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.pagination-number {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s;
+  min-width: 2.5rem;
+}
+
+.pagination-number:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.pagination-number.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
+.pagination-info {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
 }
 </style> 

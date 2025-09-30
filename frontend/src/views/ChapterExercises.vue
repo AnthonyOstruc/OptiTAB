@@ -76,7 +76,7 @@
                   :title="isFullWidth ? 'Réduire la largeur' : 'Pleine largeur'"
                 >
                   <span v-if="isFullWidth">📐</span>
-                  <span v-else">↔️</span>
+                  <span v-else>↔️</span>
                   {{ isFullWidth ? 'Normal' : 'Large' }}
                 </button>
               </div>

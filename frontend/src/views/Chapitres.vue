@@ -70,8 +70,8 @@ const notionNom = ref('')
 const loading = ref(true)
 const error = ref('')
 
-// Cache simple pour chapitres (mémoire + localStorage)
-const CHAP_CACHE_TTL_MS = 120000
+// Cache simple pour chapitres (mémoire + localStorage) - 5 minutes
+const CHAP_CACHE_TTL_MS = 300000
 function chapStorageKey(notionId) { return `chapitres_meta:${notionId}` }
 function readChapitresFromStorage(notionId) {
   try {

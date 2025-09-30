@@ -21,7 +21,7 @@ from .models import Matiere, Theme, Notion, Chapitre, Exercice, MatiereContexte,
 from cours.models import Cours, CoursImage
 from quiz.models import Quiz, QuizImage
 from synthesis.models import SynthesisSheet
-from .services import duplicate_theme_deep
+from .services import duplicate_theme_deep, duplicate_notion_deep, duplicate_chapitre_deep
 from .serializers import (
     MatiereSerializer, ThemeSerializer, NotionSerializer, 
     ChapitreSerializer, ExerciceSerializer, MatiereContexteSerializer,
@@ -337,6 +337,53 @@ class ThemeViewSet(viewsets.ModelViewSet):
         serializer = ThemeSerializer(queryset.order_by('ordre', 'titre'), many=True)
         return Response(serializer.data)
 
+    @action(detail=True, methods=['post'])
+    def duplicate(self, request, pk=None):
+        """POST /api/themes/{id}/duplicate/
+        Duplique un thème et tout son contenu imbriqué (notions, chapitres, cours, quiz,
+        exercices, fiches de synthèse et images) vers un nouveau contexte.
+
+        Body JSON:
+          - contexte (int, requis): ID du `MatiereContexte` cible
+          - titre|nom (str, optionnel): nouveau titre du thème (sinon suffixe "(Copie)")
+        """
+        # Récupérer l'original sans filtrage
+        try:
+            original = Theme.objects.select_related('matiere', 'contexte').get(pk=pk)
+        except Theme.DoesNotExist:
+            return Response({'detail': 'Thème introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        target_contexte_id = request.data.get('contexte')
+        new_title = (request.data.get('titre') or request.data.get('nom') or '').strip()
+
+        if not target_contexte_id:
+            return Response({'detail': "Le champ 'contexte' est requis"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            target_contexte = MatiereContexte.objects.get(pk=target_contexte_id)
+        except MatiereContexte.DoesNotExist:
+            return Response({'detail': 'Contexte cible introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Générer un titre unique dans le contexte cible
+        base_title = new_title or (original.titre or 'Thème')
+
+        def generate_unique_title(base: str) -> str:
+            candidate = base
+            index = 1
+            while Theme.objects.filter(contexte=target_contexte, titre=candidate).exists():
+                suffix = '' if index == 1 else f' {index}'
+                candidate = f"{base} (Copie{suffix})"
+                index += 1
+            return candidate
+
+        unique_title = generate_unique_title(base_title)
+
+        # Dupliquer via le service centralisé
+        new_theme = duplicate_theme_deep(original, target_contexte, unique_title)
+
+        serializer = ThemeSerializer(new_theme)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     @action(detail=False, methods=['get'], url_path='notions-pour-utilisateur')
     def notions_pour_utilisateur(self, request):
         """GET /api/themes/notions-pour-utilisateur/
@@ -353,60 +400,54 @@ class ThemeViewSet(viewsets.ModelViewSet):
         user_niveau = getattr(user, 'niveau_pays', None)
         matiere_id = request.query_params.get('matiere')
 
-        # Logs de debug (niveau debug seulement)
-        logger.debug(
-            "Filtrage themes/notions", 
-            extra={
-                'user': getattr(user, 'email', None),
-                'user_pays': getattr(user_pays, 'id', None),
-                'user_niveau': getattr(user_niveau, 'id', None),
-                'matiere_id': matiere_id,
-            }
-        )
-
         # Clé de cache par utilisateur + contexte
         cache_key = f"themes_notions:{user.id}:{matiere_id or 'all'}:{getattr(user_pays, 'id', 'np')}:{getattr(user_niveau, 'id', 'nn')}"
         cached = cache.get(cache_key)
         if cached is not None:
             return Response(cached)
 
-        # Thèmes filtrés
-        themes_qs = (
-            Theme.objects.select_related('matiere', 'contexte', 'contexte__niveau', 'contexte__niveau__pays')
-            .filter(est_actif=True)
-        )
-        if matiere_id:
-            themes_qs = themes_qs.filter(matiere_id=matiere_id)
+        # Construire le queryset de base pour les notions (filtré par pays/niveau)
+        notions_base_qs = Notion.objects.filter(est_actif=True)
+        
+        # Appliquer les filtres contexte sur les notions directement
         if user_niveau:
-            # Si l'utilisateur a un niveau spécifique, filtrer UNIQUEMENT par ce niveau
-            themes_qs = themes_qs.filter(contexte__niveau=user_niveau).distinct()
+            notions_base_qs = notions_base_qs.filter(theme__contexte__niveau=user_niveau)
         elif user_pays:
-            # Si l'utilisateur n'a qu'un pays (sans niveau), filtrer par tous les niveaux de ce pays
-            themes_qs = themes_qs.filter(contexte__niveau__pays=user_pays).distinct()
+            notions_base_qs = notions_base_qs.filter(theme__contexte__niveau__pays=user_pays)
         else:
-            # Aucun contexte défini -> aucun résultat
-            themes_qs = themes_qs.none()
+            notions_base_qs = notions_base_qs.none()
 
-        # Annoter le nombre de notions actives
-        themes_qs = themes_qs.annotate(
-            notion_count=models.Count('notions', filter=models.Q(notions__est_actif=True), distinct=True)
-        ).order_by('ordre', 'titre')
+        if matiere_id:
+            notions_base_qs = notions_base_qs.filter(theme__matiere_id=matiere_id)
 
-        # Notions pour ces thèmes (une seule requête)
-        theme_ids = list(themes_qs.values_list('id', flat=True))
-        notions_qs = (
-            Notion.objects.select_related('theme', 'theme__matiere', 'theme__contexte', 'theme__contexte__niveau', 'theme__contexte__niveau__pays')
-            .filter(est_actif=True, theme_id__in=theme_ids)
+        # Récupérer les IDs des thèmes qui ont des notions actives (une seule requête)
+        theme_ids_with_notions = list(notions_base_qs.values_list('theme_id', flat=True).distinct())
+
+        # Thèmes filtrés (seulement ceux qui ont des notions)
+        themes_qs = (
+            Theme.objects
+            .select_related('matiere', 'contexte')
+            .filter(id__in=theme_ids_with_notions, est_actif=True)
+            .annotate(
+                notion_count=models.Count('notions', filter=models.Q(notions__est_actif=True), distinct=True)
+            )
             .order_by('ordre', 'titre')
         )
 
+        # Notions avec sélection minimale des relations
+        notions_qs = notions_base_qs.select_related('theme').order_by('theme_id', 'ordre', 'titre')
+
+        # Sérialiser en une seule fois (plus rapide)
+        themes_data = ThemeSerializer(themes_qs, many=True).data
+        notions_data = NotionSerializer(notions_qs, many=True).data
+
         data = {
-            'themes': ThemeSerializer(themes_qs.order_by('ordre', 'titre'), many=True).data,
-            'notions': NotionSerializer(notions_qs, many=True).data,
+            'themes': themes_data,
+            'notions': notions_data,
         }
 
-        # Cache 120s pour alléger la charge lors de navigations rapides
-        cache.set(cache_key, data, timeout=120)
+        # Cache 300s (5 minutes) pour alléger la charge lors de navigations rapides
+        cache.set(cache_key, data, timeout=300)
         return Response(data)
 
     @action(detail=True, methods=['get'])
@@ -508,57 +549,39 @@ class NotionViewSet(viewsets.ModelViewSet):
 
         serializer = NotionSerializer(queryset.order_by('ordre', 'titre'), many=True)
         return Response(serializer.data)
-
+    
     @action(detail=True, methods=['post'])
     def duplicate(self, request, pk=None):
-        """POST /api/themes/{id}/duplicate/
-        Duplique un thème et tout son contenu imbriqué (notions, chapitres, cours, quiz,
-        exercices, fiches de synthèse et images) vers un nouveau contexte.
+        """POST /api/notions/{id}/duplicate/
+        Duplique une notion et tout son contenu (synthèse, chapitres, cours, quiz, exercices et images)
+        dans un thème cible.
 
         Body JSON:
-          - contexte (int, requis): ID du `MatiereContexte` cible
-          - titre (str, optionnel): nouveau titre du thème (sinon suffixe "(Copie)")
+          - theme (int, requis): ID du `Theme` cible
+          - titre|nom (str, optionnel): nouveau titre de la notion (suffixe "(Copie)" si nécessaire)
         """
-        # Utiliser une récupération non filtrée (y compris inactifs)
         try:
-            original = Theme.objects.select_related('matiere', 'contexte').get(pk=pk)
-        except Theme.DoesNotExist:
-            return Response({'detail': 'Thème introuvable'}, status=status.HTTP_404_NOT_FOUND)
-        target_contexte_id = request.data.get('contexte')
+            original = Notion.objects.select_related('theme', 'theme__matiere').get(pk=pk)
+        except Notion.DoesNotExist:
+            return Response({'detail': 'Notion introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        target_theme_id = request.data.get('theme')
         new_title = (request.data.get('titre') or request.data.get('nom') or '').strip()
 
-        if not target_contexte_id:
-            return Response({'detail': "Le champ 'contexte' est requis"}, status=status.HTTP_400_BAD_REQUEST)
+        if not target_theme_id:
+            return Response({'detail': "Le champ 'theme' est requis"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            target_contexte = MatiereContexte.objects.get(pk=target_contexte_id)
-        except MatiereContexte.DoesNotExist:
-            return Response({'detail': 'Contexte cible introuvable'}, status=status.HTTP_404_NOT_FOUND)
+            target_theme = Theme.objects.get(pk=target_theme_id)
+        except Theme.DoesNotExist:
+            return Response({'detail': 'Thème cible introuvable'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Générer un titre unique dans le contexte cible
-        base_title = new_title or original.titre
-        if not base_title:
-            base_title = 'Thème'
+        # Dupliquer via le service
+        new_notion = duplicate_notion_deep(original, target_theme, new_title or None)
 
-        def generate_unique_title(base: str) -> str:
-            # Si le titre est libre, le garder tel quel, sinon ajouter suffixes (Copie), (Copie 2), ...
-            candidate = base
-            index = 1
-            while Theme.objects.filter(contexte=target_contexte, titre=candidate).exists():
-                suffix = '' if index == 1 else f' {index}'
-                candidate = f"{base} (Copie{suffix})"
-                index += 1
-            return candidate
-
-        unique_title = generate_unique_title(base_title)
-
-        # Dupliquer en utilisant le service centralisé
-        new_theme = duplicate_theme_deep(original, target_contexte, unique_title)
-
-        # Retourner le thème dupliqué
-        serializer = ThemeSerializer(new_theme)
+        serializer = NotionSerializer(new_notion)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     @action(detail=True, methods=['get'])
     def chapitres(self, request, pk=None):
         """GET /api/notions/{id}/chapitres/ - Récupère les chapitres d'une notion"""
@@ -574,23 +597,37 @@ class NotionViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'], url_path='chapitres-avec-meta')
     def chapitres_avec_meta(self, request, pk=None):
         """GET /api/notions/{id}/chapitres-avec-meta/
-        Retourne notion + chapitres dans une seule réponse. Cache 120s.
+        Retourne notion + chapitres dans une seule réponse. Cache 300s (5 minutes).
+        Optimisé avec select_related pour éviter les requêtes N+1.
         """
         cache_key = f"chapitres_meta:{pk}"
         cached = cache.get(cache_key)
         if cached is not None:
             return Response(cached)
 
-        notion = self.get_object()
+        # Optimisation: recharger la notion avec toutes ses relations pour éviter les requêtes N+1
+        notion = Notion.objects.select_related('theme', 'theme__matiere', 'theme__contexte', 'theme__contexte__niveau', 'theme__contexte__niveau__pays').get(pk=pk)
+        
+        # Optimisation: charger toutes les relations nécessaires en une seule requête
+        # Le serializer accède à notion.theme.matiere, donc on doit tout précharger
         chapitres = (
-            Chapitre.objects.filter(notion=notion, est_actif=True)
+            Chapitre.objects
+            .filter(notion=notion, est_actif=True)
+            .select_related('notion', 'notion__theme', 'notion__theme__matiere')
             .order_by('ordre', 'titre')
         )
+        
+        # Sérialiser en une seule fois
+        notion_data = NotionSerializer(notion).data
+        chapitres_data = ChapitreSerializer(chapitres, many=True).data
+        
         data = {
-            'notion': NotionSerializer(notion).data,
-            'chapitres': ChapitreSerializer(chapitres, many=True).data,
+            'notion': notion_data,
+            'chapitres': chapitres_data,
         }
-        cache.set(cache_key, data, timeout=120)
+        
+        # Cache 300s (5 minutes) pour alléger la charge
+        cache.set(cache_key, data, timeout=300)
         return Response(data)
 
 
@@ -601,13 +638,15 @@ class ChapitreViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]  # Lecture publique, écriture authentifiée
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        # Optimisation: charger toutes les relations nécessaires pour éviter N+1 queries
+        # Le serializer accède à notion.theme.matiere
+        queryset = super().get_queryset().select_related('notion', 'notion__theme', 'notion__theme__matiere')
         notion = self.request.query_params.get('notion')
         
         if notion:
             queryset = queryset.filter(notion_id=notion)
             
-        return queryset.filter(est_actif=True)
+        return queryset.filter(est_actif=True).order_by('ordre', 'titre')
     
     @action(detail=True, methods=['get'])
     def exercices(self, request, pk=None):
@@ -620,6 +659,36 @@ class ChapitreViewSet(viewsets.ModelViewSet):
         
         serializer = ExerciceSerializer(exercices, many=True)
         return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def duplicate(self, request, pk=None):
+        """POST /api/chapitres/{id}/duplicate/
+        Duplique un chapitre et tout son contenu (cours + images, quiz + images, exercices + images)
+        vers une notion cible.
+
+        Body JSON:
+          - notion (int, requis): ID de la Notion cible
+          - titre|nom (str, optionnel): nouveau titre (suffixe "(Copie)" si nécessaire)
+        """
+        try:
+            original = Chapitre.objects.select_related('notion', 'notion__theme').get(pk=pk)
+        except Chapitre.DoesNotExist:
+            return Response({'detail': 'Chapitre introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        target_notion_id = request.data.get('notion')
+        new_title = (request.data.get('titre') or request.data.get('nom') or '').strip()
+
+        if not target_notion_id:
+            return Response({'detail': "Le champ 'notion' est requis"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            target_notion = Notion.objects.get(pk=target_notion_id)
+        except Notion.DoesNotExist:
+            return Response({'detail': 'Notion cible introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        new_chapitre = duplicate_chapitre_deep(original, target_notion, new_title or None)
+        serializer = ChapitreSerializer(new_chapitre)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ExerciceViewSet(viewsets.ModelViewSet):

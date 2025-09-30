@@ -1,4 +1,9 @@
 <template>
+  <!-- Spinner global pour la connexion - persiste pendant la navigation -->
+  <Teleport to="body">
+    <FullPageSpinner v-if="isLoggingIn" />
+  </Teleport>
+  
   <Modal
     :is-open="isOpen"
     title="Connexion"
@@ -75,10 +80,11 @@ import { useAuthForm } from '@/composables/useAuthForms'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import Modal from '@/components/common/Modal.vue'
 import DynamicForm from '@/components/forms/DynamicForm.vue'
+import FullPageSpinner from '@/components/common/FullPageSpinner.vue'
 import { socialProviders } from '@/config/socialProviders'
 import { loginUser, mapLoginFormToPayload } from '@/api'
 import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useGoogleAuth } from '@/composables/useGoogleAuth'
 
@@ -86,7 +92,8 @@ export default {
   name: 'LoginModal',
   components: {
     Modal,
-    DynamicForm
+    DynamicForm,
+    FullPageSpinner
   },
   props: {
     isOpen: {
@@ -117,6 +124,7 @@ export default {
     const fieldNames = getFieldNames()
 
     const loginError = ref('')
+    const isLoggingIn = ref(false) // Contrôle du spinner global pendant toute l'opération
 
     // Initialiser Google Sign-In et pré-remplir si "Se souvenir" est actif
     onMounted(async () => {
@@ -151,9 +159,18 @@ export default {
     }
 
     const handleFormSubmit = async () => {
-      const success = await submitForm(processLogin)
-      if (!success) {
-        return
+      // Activer le spinner global
+      isLoggingIn.value = true
+      
+      try {
+        const success = await submitForm(processLogin)
+        if (!success) {
+          isLoggingIn.value = false
+          return
+        }
+        // isLoggingIn sera mis à false dans processLogin après la redirection
+      } catch (error) {
+        isLoggingIn.value = false
       }
     }
 
@@ -183,12 +200,6 @@ export default {
           refresh: refreshToken.substring(0, 20) + '...'
         }) // Debug
 
-        // Mémoriser immédiatement si des infos utilisateur sont présentes
-        const userData = responseData || response.data
-        if (userData.user_id || userData.id) {
-          userStore.setUser(userData)
-        }
-        
         // Enregistrer les identifiants si "Se souvenir de moi" est coché (30 jours)
         try {
           if (data.rememberMe) {
@@ -203,19 +214,47 @@ export default {
           }
         } catch (_) {}
 
-        // Charger le profil avant de rediriger pour éviter les redirections en zigzag
+        // IMPORTANT: Charger le profil pour mettre à jour isAuthenticated
         await userStore.fetchUser()
+        
+        console.log('✅ Utilisateur chargé, état authentifié:', userStore.isAuthenticated)
 
-        // Fermer et rediriger une fois l'utilisateur chargé
+        // Fermer le modal AVANT la redirection
         emit('login', { email: data.email })
         handleClose()
         closeModal(MODAL_IDS.LOGIN)
-        await router.push('/dashboard')
+        
+        // Attendre que tout soit synchronisé
+        await nextTick()
+        
+        // Double vérification de l'état d'authentification
+        const finalAuthState = userStore.isAuthenticated
+        console.log('🔍 État final avant redirection:', { isAuthenticated: finalAuthState })
+        
+        if (finalAuthState) {
+          console.log('🚀 Redirection vers le dashboard...')
+          
+          // Redirection avec le spinner global actif (isLoggingIn reste true)
+          await router.push('/dashboard')
+          
+          // Attendre que le Dashboard soit complètement chargé et monté
+          // Premier chargement (sans cache) peut prendre jusqu'à 2-3s
+          // On attend 2 secondes pour s'assurer que toutes les requêtes initiales sont terminées
+          await new Promise(resolve => setTimeout(resolve, 2000))
+          
+          // Désactiver le spinner - maintenant le Dashboard est vraiment prêt
+          isLoggingIn.value = false
+        } else {
+          console.error('❌ Erreur: isAuthenticated est false après fetchUser')
+          // Fallback: recharger la page
+          window.location.href = '/dashboard'
+        }
       } catch (error) {
         console.error('Erreur lors de la connexion:', error)
         // Gestion de l'erreur backend : DRF renvoie généralement 'detail'
         const backendMessage = error.response?.data?.detail || error.response?.data?.error
         loginError.value = backendMessage || "Erreur lors de la connexion"
+        isLoggingIn.value = false
       }
     }
 
@@ -243,9 +282,10 @@ export default {
 
       // Form data
       formData,
-      isSubmitting,
+      isSubmitting: computed(() => isSubmitting.value || isLoggingIn.value), // Combiner les deux spinners
       isValid,
       isGoogleLoading,
+      isLoggingIn,
 
       // Methods
       getFieldError,

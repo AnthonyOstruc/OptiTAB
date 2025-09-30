@@ -29,68 +29,19 @@
             <span v-if="!collapsed" class="sidebar-label">{{ item.text }}</span>
           </li>
           
-          <!-- Liens spécifiques admin -->
+          <!-- Lien admin -->
           <template v-if="userStore.isAdmin">
             <li class="sidebar-section-header" v-if="!collapsed">
               <span class="section-title">⚙️ Administration</span>
             </li>
-            <li 
-              class="sidebar-item" 
+            <li
+              class="sidebar-item"
+              :class="{ active: isAdminActive }"
               @click="router.push('/admin/matieres')"
-              :title="collapsed ? 'Matières' : ''"
+              :title="collapsed ? 'Admin' : ''"
             >
               <span class="sidebar-icon"><AcademicCapIcon class="h-6 w-6" /></span>
-              <span v-if="!collapsed" class="sidebar-label">Matières</span>
-            </li>
-            <li 
-              class="sidebar-item" 
-              @click="router.push('/admin/notions')"
-              :title="collapsed ? 'Notions' : ''"
-            >
-              <span class="sidebar-icon"><LightBulbIcon class="h-6 w-6" /></span>
-              <span v-if="!collapsed" class="sidebar-label">Notions</span>
-            </li>
-            <li 
-              class="sidebar-item" 
-              @click="router.push('/admin/chapitres')"
-              :title="collapsed ? 'Chapitres' : ''"
-            >
-              <span class="sidebar-icon"><BookOpenIcon class="h-6 w-6" /></span>
-              <span v-if="!collapsed" class="sidebar-label">Chapitres</span>
-            </li>
-            <li 
-              class="sidebar-item" 
-              @click="router.push('/admin/exercices')"
-              :title="collapsed ? 'Exercices' : ''"
-            >
-              <span class="sidebar-icon"><PencilSquareIcon class="h-6 w-6" /></span>
-              <span v-if="!collapsed" class="sidebar-label">Exercices</span>
-            </li>
-            <li 
-              class="sidebar-item" 
-              @click="router.push('/admin/exercices-plus')"
-              :title="collapsed ? 'Exercices+' : ''"
-            >
-               <span class="sidebar-icon">
-                 <PlusCircleIcon />
-               </span>
-               <span v-if="!collapsed" class="sidebar-label">Exercices+</span>
-            </li>
-            <li 
-              class="sidebar-item" 
-              @click="router.push('/admin/fiches')"
-              :title="collapsed ? 'Fiches' : ''"
-            >
-              <span class="sidebar-icon"><DocumentTextIcon class="h-6 w-6" /></span>
-              <span v-if="!collapsed" class="sidebar-label">Fiches</span>
-            </li>
-            <li 
-              class="sidebar-item" 
-              @click="router.push('/admin/quiz')"
-              :title="collapsed ? 'Quiz' : ''"
-            >
-              <span class="sidebar-icon"><QuestionMarkCircleIcon class="h-6 w-6" /></span>
-              <span v-if="!collapsed" class="sidebar-label">Quiz</span>
+              <span v-if="!collapsed" class="sidebar-label">Admin</span>
             </li>
           </template>
         </ul>
@@ -108,7 +59,7 @@ import { getInitials } from '@/utils'
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { apiUtils } from '@/api/client'
 
-import { AcademicCapIcon, LightBulbIcon, BookOpenIcon, PencilSquareIcon, PlusCircleIcon, DocumentTextIcon, QuestionMarkCircleIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
+import { AcademicCapIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
 import { useRoute } from 'vue-router'
 import { useSubjectsStore } from '@/stores/subjects/index'
 
@@ -129,30 +80,36 @@ const otherMenuItems = computed(() => {
 // Fonction pour déterminer si une route est active
 const isActiveRoute = (menuKey) => {
   const currentPath = route.path
-  
+
   // Mapping des clés de menu vers les chemins de route
   const routeMapping = {
     'dashboard': '/dashboard',
     'cours': ['/online-courses', '/course-notions', '/course-chapitres', '/course', '/cours'],
-    'exercices': ['/exercises', '/notions', '/themes', '/theme-notions', '/chapitres', '/exercices', '/chapter-exercises'],
+    'exercices': ['/exercises', '/notions', '/exercicies', '/theme-notions', '/chapitres', '/exercices', '/chapter-exercises'],
     'fiches': ['/sheets'],
     'quiz': ['/quiz', '/quiz-notions', '/quiz-chapitres', '/quiz-exercices', '/chapter-quiz'],
     'progress': '/progress',
-    'calculator': '/calculator'
+    'calculator': '/calculator',
+    'admin': '/admin' // Spécialement pour les routes admin
   }
-  
+
   const targetRoutes = routeMapping[menuKey]
-  
+
   if (!targetRoutes) return false
-  
+
   // Si c'est un tableau, vérifier si le chemin actuel correspond à l'un des chemins
   if (Array.isArray(targetRoutes)) {
     return targetRoutes.some(route => currentPath.startsWith(route))
   }
-  
+
   // Sinon, vérifier l'égalité exacte
   return currentPath === targetRoutes
 }
+
+// Fonction pour déterminer si l'onglet Admin doit être actif
+const isAdminActive = computed(() => {
+  return route.path.startsWith('/admin')
+})
 
 async function handleSidebarClick(item) {
   // Routes simples sans matière
@@ -169,7 +126,7 @@ async function handleSidebarClick(item) {
       if (activeId) {
         router.push({ name: 'Themes', params: { matiereId: String(activeId) } })
         // Prefetch discret: thèmes + notions pour accélérer la page suivante
-        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 120000 }) } catch (_) {}
+        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 300000 }) } catch (_) {}
       } else {
         router.push({ name: 'Exercises' })
       }
@@ -182,14 +139,14 @@ async function handleSidebarClick(item) {
     } else if (item.key === 'quiz') {
       if (activeId) {
         router.push({ name: 'QuizNotions', params: { matiereId: String(activeId) } })
-        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 120000 }) } catch (_) {}
+        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 300000 }) } catch (_) {}
       } else {
         router.push({ name: 'Quiz' })
       }
     } else if (item.key === 'cours') {
       if (activeId) {
         router.push({ name: 'CourseNotions', params: { matiereId: String(activeId) } })
-        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 120000 }) } catch (_) {}
+        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 300000 }) } catch (_) {}
       } else {
         router.push({ name: 'OnlineCourses' })
       }
@@ -441,6 +398,10 @@ defineExpose({
 
 .sidebar-item.active .sidebar-icon {
   color: #1d4ed8;
+}
+
+.sidebar-item.active .sidebar-icon svg {
+  color: #1d4ed8 !important;
 }
 .sidebar-icon {
   font-size: 1.3rem;

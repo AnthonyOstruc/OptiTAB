@@ -28,6 +28,15 @@ export const createNotion = (payload) => apiClient.post('/api/notions/', normali
 export const updateNotion = (id, payload) => apiClient.patch(`/api/notions/${id}/`, normalizeNotionPayload(payload))
 export const deleteNotion = (id) => apiClient.delete(`/api/notions/${id}/`)
 
+// Dupliquer une notion (profonde) vers un thème cible
+export const duplicateNotion = (id, payload) => {
+  const body = {}
+  if (payload?.theme != null) body.theme = payload.theme
+  if (payload?.nom != null) body.titre = payload.nom
+  if (payload?.titre != null) body.titre = payload.titre
+  return apiClient.post(`/api/notions/${id}/duplicate/`, body)
+}
+
 /**
  * Récupère les notions pour l'utilisateur connecté (selon son pays et niveau)
  * @returns {Promise<Array>} Liste des notions de l'utilisateur

@@ -74,8 +74,8 @@
       </div>
 
       <!-- Liste simple des thèmes (le contexte inclut déjà la matière/niveau) -->
-      <div class="themes-grid">
-        <div v-for="theme in filteredThemes()" :key="theme.id" class="theme-card">
+      <div v-if="paginatedThemes.length > 0" class="themes-grid">
+        <div v-for="theme in paginatedThemes" :key="theme.id" class="theme-card">
             <div class="theme-header">
               <div class="theme-color" :style="{ backgroundColor: theme.couleur }"></div>
               <h4 class="theme-name">{{ theme.titre || theme.nom }}</h4>
@@ -103,6 +103,46 @@
               />
             </div>
         </div>
+      </div>
+      
+      <!-- Message si aucun thème -->
+      <div v-if="paginatedThemes.length === 0" class="no-themes">
+        Aucun thème à afficher
+      </div>
+      
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="pagination">
+        <button 
+          class="pagination-btn" 
+          @click="currentPage--" 
+          :disabled="currentPage === 1"
+        >
+          Précédent
+        </button>
+        
+        <div class="pagination-numbers">
+          <button
+            v-for="page in displayedPages"
+            :key="page"
+            class="pagination-number"
+            :class="{ active: page === currentPage }"
+            @click="currentPage = page"
+          >
+            {{ page }}
+          </button>
+        </div>
+        
+        <button 
+          class="pagination-btn" 
+          @click="currentPage++" 
+          :disabled="currentPage === totalPages"
+        >
+          Suivant
+        </button>
+      </div>
+      
+      <div v-if="totalPages > 1" class="pagination-info">
+        Page {{ currentPage }} sur {{ totalPages }} ({{ filteredThemes().length }} thème(s) au total)
       </div>
     </div>
     <div v-if="showDuplicateModal" class="modal-backdrop">
@@ -132,7 +172,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { getThemes, getThemesByContexte, duplicateTheme } from '@/api/themes.js'
 import { getContextes } from '@/api/matiere-contextes.js'
 import { createTheme, updateTheme, deleteTheme } from '@/api/themes.js'
@@ -154,6 +194,10 @@ const form = ref({
 const filters = ref({
   contexte: ''
 })
+
+// Pagination
+const currentPage = ref(1)
+const itemsPerPage = 5
 
 // Modal duplication
 const showDuplicateModal = ref(false)
@@ -188,6 +232,43 @@ const filteredThemes = () => {
 
   return filtered.sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
 }
+
+// Computed properties pour la pagination
+const totalPages = computed(() => {
+  const total = filteredThemes().length
+  return Math.ceil(total / itemsPerPage)
+})
+
+const paginatedThemes = computed(() => {
+  const allFiltered = filteredThemes()
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return allFiltered.slice(start, end)
+})
+
+const displayedPages = computed(() => {
+  const pages = []
+  const total = totalPages.value
+  const current = currentPage.value
+  
+  // Afficher au maximum 5 numéros de page
+  let startPage = Math.max(1, current - 2)
+  let endPage = Math.min(total, current + 2)
+  
+  // Ajuster si on est proche du début ou de la fin
+  if (current <= 3) {
+    endPage = Math.min(5, total)
+  }
+  if (current >= total - 2) {
+    startPage = Math.max(1, total - 4)
+  }
+  
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i)
+  }
+  
+  return pages
+})
 
 // Methods
 async function load() {
@@ -383,6 +464,11 @@ async function confirmDuplicate() {
 function cancelDuplicate() {
   showDuplicateModal.value = false
 }
+
+// Réinitialiser la page courante lorsque les filtres changent
+watch(() => filters.value.contexte, () => {
+  currentPage.value = 1
+})
 
 // Plus nécessaire: on affiche maintenant les niveaux propres au thème depuis l'API
 
@@ -645,7 +731,85 @@ onMounted(load)
   padding: 0.5rem;
   font-size: 0.875rem;
 }
-.
+
+.context-chip {
+  font-size: 0.75rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.375rem 0.625rem;
+  border-radius: 0.375rem;
+  margin-bottom: 0.75rem;
+  display: inline-block;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
+.pagination-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.pagination-number {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s;
+  min-width: 2.5rem;
+}
+
+.pagination-number:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.pagination-number.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
+.pagination-info {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
 .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 50; }
 .modal { background: white; padding: 1rem; border-radius: 0.5rem; width: 480px; max-width: 90vw; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 </style>

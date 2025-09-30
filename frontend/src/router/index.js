@@ -34,7 +34,7 @@ const routes = [
   { path: '/cookies', name: 'Cookies', component: () => import('@/views/Cookies.vue') },
   { path: '/conditions', name: 'Conditions', component: () => import('@/views/Conditions.vue') },
   { path: '/notions/:matiereId', name: 'Notions', component: () => import('@/views/Notions.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
-  { path: '/themes/:matiereId', name: 'Themes', component: () => import('@/views/Themes.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
+  { path: '/exercicies/:matiereId', name: 'Themes', component: () => import('@/views/Themes.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
   { path: '/theme-notions/:themeId', name: 'ThemeNotions', component: () => import('@/views/ThemeNotions.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
   { path: '/chapitres/:notionId', name: 'Chapitres', component: () => import('@/views/Chapitres.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
   { path: '/exercices/:chapitreId', name: 'Exercices', component: () => import('@/views/ChapterExercises.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
@@ -146,14 +146,21 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
+  // Protection des routes authentifiées
   if ((to.meta.requiresAuth || to.name === 'Dashboard') && !isAuthenticated) {
     next({ name: 'Home' })
-  } else if (to.meta.requiresAdmin && (!isAuthenticated || !isAdmin)) {
+  } 
+  // Protection des routes admin
+  else if (to.meta.requiresAdmin && (!isAuthenticated || !isAdmin)) {
     next({ name: 'Home' })
-  } else if (isAuthenticated && (to.name === 'Home' || to.path === '/')) {
-    // Si connecté et essaie d'aller sur la home, redirige vers le dashboard
+  } 
+  // Redirection Home -> Dashboard pour utilisateurs connectés
+  // MAIS seulement si on ne vient PAS déjà du Dashboard (évite les boucles)
+  else if (isAuthenticated && (to.name === 'Home' || to.path === '/') && from.name !== 'Dashboard') {
     next({ name: 'Dashboard' })
-  } else {
+  } 
+  // Autres routes
+  else {
     // Vérifier si la route nécessite un niveau
     if (isAuthenticated && routeRequiresNiveau(to.name)) {
       requireNiveau(to, from, next)

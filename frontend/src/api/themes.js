@@ -25,8 +25,8 @@ export const getThemesWithNotionsForUser = async (params = {}) => {
   const isAuth = apiUtils.isAuthenticated()
   if (isAuth) {
     try {
-      // Utiliser le cache GET pour réduire les délais perçus
-      return await apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: query, ttl: 120000, signal })
+      // Cache de 5 minutes pour réduire drastiquement les délais lors de la navigation
+      return await apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: query, ttl: 300000, signal })
     } catch (error) {
       if (error?.response?.status !== 401) throw error
       // 401 -> fallback public
@@ -35,8 +35,8 @@ export const getThemesWithNotionsForUser = async (params = {}) => {
   // Public fallback: retourne la même forme { data: { themes, notions } }
   const matiere = query?.matiere
   const [themesRes, notionsRes] = await Promise.all([
-    apiUtils.cachedGet('/api/themes/', { params: { matiere }, ttl: 120000, signal }),
-    apiUtils.cachedGet('/api/notions/', { params: { matiere }, ttl: 180000, signal })
+    apiUtils.cachedGet('/api/themes/', { params: { matiere }, ttl: 300000, signal }),
+    apiUtils.cachedGet('/api/notions/', { params: { matiere }, ttl: 300000, signal })
   ])
   return { data: { themes: themesRes?.data || [], notions: notionsRes?.data || [] } }
 }

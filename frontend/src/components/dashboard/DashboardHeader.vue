@@ -9,9 +9,53 @@
       <span class="burger-icon-fixed">&#9776;</span>
     </button>
 
-    <!-- Section centrale : Contenu conditionnel -->
+    <!-- Navigation admin (visible uniquement dans les pages admin) -->
+    <nav v-if="isAdminPage" class="admin-nav">
+      <!-- Groupe 1: Configuration -->
+      <div class="nav-group">
+        <router-link to="/admin/pays" class="admin-link" :class="{ active: isActive('AdminPays') }">Pays</router-link>
+        <router-link to="/admin/niveaux" class="admin-link" :class="{ active: isActive('AdminNiveaux') }">Niveaux</router-link>
+      </div>
+      
+      <div class="nav-separator"></div>
+      
+      <!-- Groupe 2: Structure/Curriculum -->
+      <div class="nav-group">
+        <router-link to="/admin/matieres" class="admin-link" :class="{ active: isActive('AdminMatieres') }">Matières</router-link>
+        <router-link to="/admin/themes" class="admin-link" :class="{ active: isActive('AdminThemes') }">Thèmes</router-link>
+        <router-link to="/admin/notions" class="admin-link" :class="{ active: isActive('AdminNotions') }">Notions</router-link>
+        <router-link to="/admin/chapitres" class="admin-link" :class="{ active: isActive('AdminChapitres') }">Chapitres</router-link>
+      </div>
+      
+      <div class="nav-separator"></div>
+      
+      <!-- Groupe 3: Contenu de base -->
+      <div class="nav-group">
+        <router-link to="/admin/cours" class="admin-link" :class="{ active: isActive('AdminCours') }">Cours</router-link>
+        <router-link to="/admin/exercices" class="admin-link" :class="{ active: isActive('AdminExercices') }">Exercices</router-link>
+        <router-link to="/admin/quiz" class="admin-link" :class="{ active: isActive('AdminQuiz') }">Quiz</router-link>
+      </div>
+      
+      <div class="nav-separator"></div>
+      
+      <!-- Groupe 4: Contenu avancé -->
+      <div class="nav-group">
+        <router-link to="/admin/cours-plus" class="admin-link" :class="{ active: isActive('AdminCoursPlus') }">Cours+</router-link>
+        <router-link to="/admin/exercices-plus" class="admin-link" :class="{ active: isActive('AdminExercicesPlus') }">Exercices+</router-link>
+        <router-link to="/admin/quiz-plus" class="admin-link" :class="{ active: isActive('AdminQuizPlus') }">Quiz+</router-link>
+      </div>
+      
+      <div class="nav-separator"></div>
+      
+      <!-- Groupe 5: Fiches -->
+      <div class="nav-group">
+        <router-link to="/admin/sheets" class="admin-link" :class="{ active: isActive('AdminSheets') }">Fiches</router-link>
+      </div>
+    </nav>
+
+    <!-- Section centrale : Contenu conditionnel (masqué si admin) -->
     <ConditionalHeader 
-      v-if="!isCalculatorPage"
+      v-if="!isCalculatorPage && !isAdminPage"
       :matiere-props="{ matiereId: null }"
       @subject-changed="handleSubjectChange"
       @search="handleSearch"
@@ -44,6 +88,12 @@ const route = useRoute()
 
 // Computed properties
 const isCalculatorPage = computed(() => route.name === 'Calculator')
+const isAdminPage = computed(() => route.path.startsWith('/admin'))
+
+// Fonction pour déterminer si un onglet admin est actif
+function isActive(routeName) {
+  return route.name === routeName
+}
 
 // Gestionnaires d'événements
 const handleSubjectChange = (subjectId) => {
@@ -224,6 +274,60 @@ const handleLogout = () => {
 
 .header-icon:active {
   transform: translateY(0);
+}
+
+/* Navigation admin dans le header */
+.admin-nav {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex: 1;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  padding: 0.25rem 0;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE et Edge */
+}
+
+.admin-nav::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.nav-group {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.nav-separator {
+  width: 1px;
+  height: 20px;
+  background: #d1d5db;
+  margin: 0 0.15rem;
+  flex-shrink: 0;
+}
+
+.admin-link {
+  text-decoration: none;
+  color: #374151;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.admin-link:hover {
+  background: #f3f4f6;
+  color: #6366f1;
+}
+
+.admin-link.active {
+  background: #6366f1;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
 }
 
 /* Styles pour le composant NotificationCenter intégré */

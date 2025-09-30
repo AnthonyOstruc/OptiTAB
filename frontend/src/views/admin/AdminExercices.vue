@@ -204,7 +204,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="exercice in filteredExercices" :key="exercice.id">
+        <tr v-for="exercice in paginatedExercices" :key="exercice.id">
           <td>{{ exercice.id }}</td>
           <td>{{ exercice.titre || exercice.nom }}</td>
           <td>{{ getChapitreName(exercice.chapitre) }}</td>
@@ -227,11 +227,46 @@
             />
           </td>
         </tr>
-        <tr v-if="filteredExercices.length === 0">
+        <tr v-if="paginatedExercices.length === 0">
           <td colspan="6" style="text-align:center; font-style: italic;">Aucun exercice trouvé.</td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Pagination -->
+    <div v-if="totalPages > 1" class="pagination">
+      <button 
+        class="pagination-btn" 
+        @click="currentPage--" 
+        :disabled="currentPage === 1"
+      >
+        Précédent
+      </button>
+      
+      <div class="pagination-numbers">
+        <button
+          v-for="page in displayedPages"
+          :key="page"
+          class="pagination-number"
+          :class="{ active: page === currentPage }"
+          @click="currentPage = page"
+        >
+          {{ page }}
+        </button>
+      </div>
+      
+      <button 
+        class="pagination-btn" 
+        @click="currentPage++" 
+        :disabled="currentPage === totalPages"
+      >
+        Suivant
+      </button>
+    </div>
+    
+    <div v-if="totalPages > 1" class="pagination-info">
+      Page {{ currentPage }} sur {{ totalPages }} ({{ filteredExercices.length }} exercice(s) au total)
+    </div>
 
     <!-- Modale de duplication -->
     <div v-if="showDuplicateModal" class="modal-overlay" @click="cancelDuplicate">
@@ -294,6 +329,11 @@ const form = ref({
 const filters = ref({
   chapitre: ''
 })
+
+// Pagination
+const currentPage = ref(1)
+const itemsPerPage = 5
+
 const showPreview = ref(false)
 const previewData = ref(null)
 const previewImages = ref([])
@@ -343,6 +383,43 @@ const filteredChapitres = computed(() => {
   )
 })
 
+// Computed properties pour la pagination
+const totalPages = computed(() => {
+  const total = filteredExercices.value.length
+  return Math.ceil(total / itemsPerPage)
+})
+
+const paginatedExercices = computed(() => {
+  const allFiltered = filteredExercices.value
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return allFiltered.slice(start, end)
+})
+
+const displayedPages = computed(() => {
+  const pages = []
+  const total = totalPages.value
+  const current = currentPage.value
+  
+  // Afficher au maximum 5 numéros de page
+  let startPage = Math.max(1, current - 2)
+  let endPage = Math.min(total, current + 2)
+  
+  // Ajuster si on est proche du début ou de la fin
+  if (current <= 3) {
+    endPage = Math.min(5, total)
+  }
+  if (current >= total - 2) {
+    startPage = Math.max(1, total - 4)
+  }
+  
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i)
+  }
+  
+  return pages
+})
+
 async function loadInitial() {
   try {
     const [chs, nts] = await Promise.all([
@@ -363,6 +440,11 @@ onMounted(loadInitial)
 
 watch(() => form.value.chapitre, async () => {
   await reloadExercices()
+})
+
+// Watcher pour réinitialiser la page courante quand les filtres changent
+watch(() => filters.value.chapitre, () => {
+  currentPage.value = 1
 })
 
 async function reloadExercices() {
@@ -1234,6 +1316,75 @@ function getContextCodeByChapitre(chapitreId) {
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
+.pagination-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.pagination-number {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s;
+  min-width: 2.5rem;
+}
+
+.pagination-number:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.pagination-number.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
+.pagination-info {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+}
 
 /* Responsive pour la prévisualisation */
 @media (max-width: 768px) {

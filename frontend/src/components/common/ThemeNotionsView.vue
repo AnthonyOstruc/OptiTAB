@@ -100,8 +100,8 @@ function goToNotion(notionId) {
   router.push({ name: props.notionRouteName, params: { notionId } })
 }
 
-// Cache hybride mémoire + localStorage pour accélérer l'affichage
-const CACHE_TTL_MS = 120000
+// Cache hybride mémoire + localStorage pour accélérer l'affichage (5 minutes)
+const CACHE_TTL_MS = 300000
 const cache = new Map()
 
 function storageKey(matiereId) {
@@ -160,37 +160,21 @@ async function load(matiereId) {
     }
     currentAbortController = new AbortController()
     const { data } = await getThemesWithNotionsForUser({ matiere: matiereId, signal: currentAbortController.signal })
+    
+    // Les données sont déjà triées par le backend - pas besoin de re-trier
     const themesList = Array.isArray(data?.themes) ? data.themes : []
-    // Tri de secours côté client des thèmes: ordre puis nom/titre
-    const sortedThemes = [...themesList].sort((a, b) => {
-      const ao = Number(a?.ordre ?? 0)
-      const bo = Number(b?.ordre ?? 0)
-      if (ao !== bo) return ao - bo
-      const an = (a?.nom ?? a?.titre ?? '').toString()
-      const bn = (b?.nom ?? b?.titre ?? '').toString()
-      return an.localeCompare(bn)
-    })
     const notions = Array.isArray(data?.notions) ? data.notions : []
 
-    // Tri des notions: ordre croissant puis nom/titre
-    const sortNotions = (a, b) => {
-      const ao = Number(a?.ordre ?? 0)
-      const bo = Number(b?.ordre ?? 0)
-      if (ao !== bo) return ao - bo
-      const an = (a?.nom ?? a?.titre ?? '').toString()
-      const bn = (b?.nom ?? b?.titre ?? '').toString()
-      return an.localeCompare(bn)
-    }
-
+    // Grouper les notions par thème (notions déjà triées par theme_id, ordre, titre)
     const grouped = {}
-    for (const n of [...notions].sort(sortNotions)) {
+    for (const n of notions) {
       if (!grouped[n.theme]) grouped[n.theme] = []
       grouped[n.theme].push(n)
     }
 
-    themes.value = sortedThemes
+    themes.value = themesList
     themeToNotions.value = grouped
-    directNotions.value = themesList.length === 0 ? [...notions.filter(n => !n.theme)].sort(sortNotions) : []
+    directNotions.value = themesList.length === 0 ? notions.filter(n => !n.theme) : []
 
     const cachePayload = { themes: themes.value, themeToNotions: themeToNotions.value, directNotions: directNotions.value }
     cache.set(key, { t: Date.now(), v: cachePayload })

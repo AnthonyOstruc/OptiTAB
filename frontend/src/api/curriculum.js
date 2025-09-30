@@ -145,9 +145,9 @@ export const getNotionChapitres = (notionId) =>
   getNotionsAPI().getHierarchical(notionId, 'chapitres')
 
 export const getNotionChapitresAvecMeta = async (notionId) => {
-  // Appel direct via apiClient.get pour éviter la dépendance à apiUtils.request
-  const { default: apiClient } = await import('./client')
-  return apiClient.get(`/api/notions/${notionId}/chapitres-avec-meta/`)
+  // Utiliser cachedGet pour bénéficier du cache (5 minutes)
+  const { apiUtils } = await import('./client')
+  return apiUtils.cachedGet(`/api/notions/${notionId}/chapitres-avec-meta/`, { ttl: 300000 })
 }
 
 export const getChapitreExercices = (chapitreId) => 

@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+  <div class="module" style="max-width: 760px;">
+    <h1>{% trans "Dupliquer le thème" %}: {{ original.titre }}</h1>
+    <p style="color:#555;">{% trans "Cette opération crée une nouvelle copie dans le contexte cible. L'original n'est pas modifié." %}</p>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="form-row" style="margin:12px 0;">
+        <label for="id_contexte"><strong>{% trans "Contexte cible" %}</strong></label><br>
+        <select name="contexte" id="id_contexte" required style="width: 100%; max-width: 420px;">
+          <option value="">-- {% trans "Choisir" %} --</option>
+          {% for c in duplicate_contextes %}
+            <option value="{{ c.id }}">{{ c.matiere.titre }} — {{ c.niveau.pays.nom }} - {{ c.niveau.nom }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-row" style="margin:12px 0;">
+        <label for="id_titre"><strong>{% trans "Nouveau titre (optionnel)" %}</strong></label><br>
+        <input type="text" name="titre" id="id_titre" style="width:100%; max-width: 420px;" placeholder="{{ original.titre }} (Copie)" />
+      </div>
+      <div class="submit-row">
+        <input type="submit" value="{% trans 'Créer la copie' %}" class="default" />
+        <a href="{% url 'admin:curriculum_theme_change' original.pk %}" class="button">{% trans 'Annuler' %}</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+

@@ -2,10 +2,14 @@
 Administration pour les exercices - Interface admin Django
 """
 from django.contrib import admin
+from django.urls import path
+from django.shortcuts import redirect
+from django.contrib import messages
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from core.admin import ContentModelAdmin, BaseModelAdmin
 from .models import Matiere, Theme, Notion, Chapitre, Exercice, MatiereContexte, ExerciceImage
+from .services import duplicate_theme_deep
 
 
 @admin.register(Matiere)
@@ -80,8 +84,84 @@ class ThemeAdmin(admin.ModelAdmin):
             return format_html('<span style="color: red;">●</span> Inactif')
     status_display.short_description = _('Statut')
     
+    # Template personnalisé pour ajouter un formulaire de duplication sur la page de modification
+    change_form_template = 'admin/curriculum/theme/change_form.html'
+
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('matiere', 'contexte', 'contexte__niveau', 'contexte__niveau__pays')
+
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['duplicate_contextes'] = (
+            MatiereContexte.objects.select_related('matiere', 'niveau', 'niveau__pays')
+            .all()
+            .order_by('matiere__ordre', 'niveau__pays__nom', 'niveau__ordre')
+        )
+        return super().changeform_view(request, object_id, form_url, extra_context)
+
+    def save_model(self, request, obj, form, change):
+        # Assurer l'alignement: matiere = contexte.matiere
+        if getattr(obj, 'contexte', None) and getattr(obj.contexte, 'matiere_id', None):
+            if obj.matiere_id != obj.contexte.matiere_id:
+                obj.matiere_id = obj.contexte.matiere_id
+        super().save_model(request, obj, form, change)
+
+    # Actions d'objet personnalisées: ajouter un bouton "Dupliquer" sur la page de modification
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                '<path:object_id>/duplicate/',
+                self.admin_site.admin_view(self.process_duplicate),
+                name='curriculum_theme_duplicate',
+            ),
+        ]
+        return custom_urls + urls
+
+    def process_duplicate(self, request, object_id):
+        theme = self.get_object(request, object_id)
+        if theme is None:
+            messages.error(request, "Thème introuvable")
+            return redirect('admin:curriculum_theme_changelist')
+
+        if request.method == 'GET':
+            # Page dédiée avec un vrai formulaire pour éviter tout conflit avec le change form
+            from django.template.response import TemplateResponse
+            context = {
+                **self.admin_site.each_context(request),
+                'original': theme,
+                'title': _('Dupliquer le thème'),
+                'opts': self.model._meta,
+                'duplicate_contextes': MatiereContexte.objects.select_related('matiere', 'niveau', 'niveau__pays')
+                    .all().order_by('matiere__ordre', 'niveau__pays__nom', 'niveau__ordre'),
+                'media': self.media,
+                'has_view_permission': self.has_view_permission(request, theme),
+            }
+            return TemplateResponse(request, 'admin/curriculum/theme/duplicate_form.html', context)
+
+        # POST: créer la copie
+        contexte_id = request.POST.get('contexte')
+        titre = (request.POST.get('titre') or '').strip()
+        if not contexte_id:
+            messages.error(request, "Veuillez sélectionner un contexte cible")
+            return redirect(request.path)
+        try:
+            target_contexte = MatiereContexte.objects.get(pk=contexte_id)
+        except MatiereContexte.DoesNotExist:
+            messages.error(request, "Contexte cible introuvable")
+            return redirect(request.path)
+
+        try:
+            new_theme = duplicate_theme_deep(theme, target_contexte, titre or None)
+            messages.success(request, format_html(
+                "Copie créée: <a href=\"{}\"><strong>{}</strong></a>",
+                request.build_absolute_uri(f"/admin/curriculum/theme/{new_theme.pk}/change/"),
+                new_theme.titre
+            ))
+            return redirect('admin:curriculum_theme_change', theme.pk)
+        except Exception as e:
+            messages.error(request, f"Erreur lors de la duplication: {e}")
+            return redirect(request.path)
 
 
 @admin.register(MatiereContexte)

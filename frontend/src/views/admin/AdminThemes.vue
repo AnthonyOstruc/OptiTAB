@@ -93,13 +93,38 @@
             <div class="theme-actions">
               <AdminActionsButtons
                 :item="theme"
-                :actions="['edit', 'delete']"
+                :actions="['edit', 'duplicate', 'delete']"
                 edit-label="Modifier"
+                duplicate-label="Dupliquer"
                 confirm-message="Êtes-vous sûr de vouloir supprimer ce thème ?"
                 @edit="editTheme"
+                @duplicate="handleDuplicateTheme"
                 @delete="handleDeleteTheme"
               />
             </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="showDuplicateModal" class="modal-backdrop">
+      <div class="modal">
+        <h3>Dupliquer le thème</h3>
+        <div class="form-group">
+          <label>Nouveau contexte</label>
+          <select v-model="duplicateForm.newContexte">
+            <option value="">Choisir un contexte</option>
+            <option v-for="c in contextesOptions" :key="c.id" :value="String(c.id)">
+              {{ c.matiere_nom }} — {{ c.pays?.nom }} - {{ c.niveau?.nom }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nouveau titre (optionnel)</label>
+          <input v-model="duplicateForm.newTitre" type="text" placeholder="Titre de la copie" />
+          <div class="help-text">Si laissé vide, un suffixe (Copie) sera ajouté automatiquement.</div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-primary" @click="confirmDuplicate">Dupliquer</button>
+          <button class="btn-secondary" @click="cancelDuplicate">Annuler</button>
         </div>
       </div>
     </div>
@@ -108,7 +133,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { getThemes, getThemesByContexte } from '@/api/themes.js'
+import { getThemes, getThemesByContexte, duplicateTheme } from '@/api/themes.js'
 import { getContextes } from '@/api/matiere-contextes.js'
 import { createTheme, updateTheme, deleteTheme } from '@/api/themes.js'
 import PaysNiveauxDisplay from '@/components/admin/PaysNiveauxDisplay.vue'
@@ -128,6 +153,14 @@ const form = ref({
 
 const filters = ref({
   contexte: ''
+})
+
+// Modal duplication
+const showDuplicateModal = ref(false)
+const duplicateForm = ref({
+  originalTheme: null,
+  newContexte: '',
+  newTitre: ''
 })
 
 // Computed properties
@@ -313,6 +346,42 @@ async function removeTheme(id) {
 // Nouvelle fonction qui utilise le composant AdminActionsButtons
 function handleDeleteTheme(theme) {
   removeTheme(theme.id)
+}
+
+function handleDuplicateTheme(theme) {
+  duplicateForm.value = {
+    originalTheme: theme,
+    newContexte: String(theme.contexte || ''),
+    newTitre: theme.titre || theme.nom || ''
+  }
+  showDuplicateModal.value = true
+}
+
+async function confirmDuplicate() {
+  if (!duplicateForm.value.newContexte) {
+    alert('Veuillez choisir un contexte cible.')
+    return
+  }
+  const id = duplicateForm.value.originalTheme?.id
+  if (!id) return
+  try {
+    await duplicateTheme(id, {
+      contexte: Number(duplicateForm.value.newContexte),
+      nom: (duplicateForm.value.newTitre || '').trim()
+    })
+    showDuplicateModal.value = false
+    duplicateForm.value = { originalTheme: null, newContexte: '', newTitre: '' }
+    await load()
+    alert('Thème dupliqué avec succès !')
+  } catch (e) {
+    console.error('Erreur duplication thème:', e)
+    const msg = e?.response?.data?.detail || 'Erreur lors de la duplication.'
+    alert(msg)
+  }
+}
+
+function cancelDuplicate() {
+  showDuplicateModal.value = false
 }
 
 // Plus nécessaire: on affiche maintenant les niveaux propres au thème depuis l'API
@@ -576,4 +645,7 @@ onMounted(load)
   padding: 0.5rem;
   font-size: 0.875rem;
 }
+.
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.modal { background: white; padding: 1rem; border-radius: 0.5rem; width: 480px; max-width: 90vw; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 </style>

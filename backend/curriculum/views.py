@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.db.models import Q
 from django.db import models
+from django.db import transaction
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -17,6 +18,10 @@ import base64
 from io import BytesIO
 import logging
 from .models import Matiere, Theme, Notion, Chapitre, Exercice, MatiereContexte, ExerciceImage
+from cours.models import Cours, CoursImage
+from quiz.models import Quiz, QuizImage
+from synthesis.models import SynthesisSheet
+from .services import duplicate_theme_deep
 from .serializers import (
     MatiereSerializer, ThemeSerializer, NotionSerializer, 
     ChapitreSerializer, ExerciceSerializer, MatiereContexteSerializer,
@@ -503,6 +508,56 @@ class NotionViewSet(viewsets.ModelViewSet):
 
         serializer = NotionSerializer(queryset.order_by('ordre', 'titre'), many=True)
         return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def duplicate(self, request, pk=None):
+        """POST /api/themes/{id}/duplicate/
+        Duplique un thème et tout son contenu imbriqué (notions, chapitres, cours, quiz,
+        exercices, fiches de synthèse et images) vers un nouveau contexte.
+
+        Body JSON:
+          - contexte (int, requis): ID du `MatiereContexte` cible
+          - titre (str, optionnel): nouveau titre du thème (sinon suffixe "(Copie)")
+        """
+        # Utiliser une récupération non filtrée (y compris inactifs)
+        try:
+            original = Theme.objects.select_related('matiere', 'contexte').get(pk=pk)
+        except Theme.DoesNotExist:
+            return Response({'detail': 'Thème introuvable'}, status=status.HTTP_404_NOT_FOUND)
+        target_contexte_id = request.data.get('contexte')
+        new_title = (request.data.get('titre') or request.data.get('nom') or '').strip()
+
+        if not target_contexte_id:
+            return Response({'detail': "Le champ 'contexte' est requis"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            target_contexte = MatiereContexte.objects.get(pk=target_contexte_id)
+        except MatiereContexte.DoesNotExist:
+            return Response({'detail': 'Contexte cible introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Générer un titre unique dans le contexte cible
+        base_title = new_title or original.titre
+        if not base_title:
+            base_title = 'Thème'
+
+        def generate_unique_title(base: str) -> str:
+            # Si le titre est libre, le garder tel quel, sinon ajouter suffixes (Copie), (Copie 2), ...
+            candidate = base
+            index = 1
+            while Theme.objects.filter(contexte=target_contexte, titre=candidate).exists():
+                suffix = '' if index == 1 else f' {index}'
+                candidate = f"{base} (Copie{suffix})"
+                index += 1
+            return candidate
+
+        unique_title = generate_unique_title(base_title)
+
+        # Dupliquer en utilisant le service centralisé
+        new_theme = duplicate_theme_deep(original, target_contexte, unique_title)
+
+        # Retourner le thème dupliqué
+        serializer = ThemeSerializer(new_theme)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     @action(detail=True, methods=['get'])
     def chapitres(self, request, pk=None):

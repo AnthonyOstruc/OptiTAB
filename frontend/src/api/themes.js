@@ -65,6 +65,27 @@ export const deleteTheme = (id) => {
   return client.delete(`/api/themes/${id}/`)
 }
 
+// Dupliquer un thème avec tout son contenu
+export const duplicateTheme = (id, payload) => {
+  const body = normalizeThemePayload(payload)
+  // Le backend attend 'contexte' et éventuellement 'titre'
+  if (payload?.contexte != null) body.contexte = payload.contexte
+  if (payload?.nom != null && body.titre == null) body.titre = payload.nom
+  // Essai principal via proxy Vite (/api → backend local en dev)
+  return client.post(`/api/themes/${id}/duplicate/`, body).catch(async (err) => {
+    // Fallback: si 404 en DEV, forcer l'URL du backend local (au cas où le proxy pointe vers un backend distant non à jour)
+    const status = err?.response?.status
+    if ((status === 404 || status === 405) && (import.meta?.env?.DEV || import.meta?.env?.MODE === 'development')) {
+      try {
+        return await client.post(`http://localhost:8000/api/themes/${id}/duplicate/`, body)
+      } catch (_) {
+        // Laisser l'erreur initiale remonter si le fallback échoue
+      }
+    }
+    throw err
+  })
+}
+
 /**
  * Récupère les thèmes pour l'utilisateur connecté (selon son pays et niveau)
  * @returns {Promise<Array>} Liste des thèmes de l'utilisateur

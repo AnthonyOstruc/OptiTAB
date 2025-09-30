@@ -28,10 +28,14 @@
 
       <div class="quiz-header">
         <h2 class="quiz-title">Quiz QCM - {{ notionNom }}</h2>
-        <p class="quiz-subtitle">{{ totalQuestions }} {{ totalQuestions > 1 ? 'questions' : 'question' }} disponibles dans {{ quiz.length }} {{ quiz.length > 1 ? 'quiz' : 'quiz' }}</p>
+        <p v-if="!initialLoading" class="quiz-subtitle">{{ totalQuestions }} {{ totalQuestions > 1 ? 'questions' : 'question' }} disponibles dans {{ quiz.length }} {{ quiz.length > 1 ? 'quiz' : 'quiz' }}</p>
       </div>
 
-      <div v-if="!currentQuiz && !showResults" class="quiz-list">
+      <div v-if="initialLoading" class="loading-skeleton-container">
+        <SkeletonList :count="3" />
+      </div>
+
+      <div v-else-if="!currentQuiz && !showResults" class="quiz-list">
         <div 
           v-for="q in paginatedQuiz" 
           :key="q.id" 
@@ -403,6 +407,7 @@
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
+import SkeletonList from '@/components/common/SkeletonList.vue'
 import { getQuiz, submitQuizResult, getQuizAttempts, checkQuizCooldown } from '@/api/quiz'
 import { useUserStore } from '@/stores/user'
 import { useXP } from '@/composables/useXP'
@@ -417,6 +422,7 @@ const { handleQuizCompletion, updateUserXPInstantly } = useXP()
 const { onQuizCompleted } = useDailyObjectivesIntegration()
 const quiz = ref([])
 const notionNom = ref('')
+const initialLoading = ref(true)
 
 // État du quiz en cours
 const currentQuiz = ref(null)
@@ -1008,6 +1014,9 @@ onMounted(async () => {
     
     console.log(`[ChapterQuiz] ✅ Quiz chargés: ${quiz.value.length}`)
     
+    // Désactiver le skeleton de chargement initial
+    initialLoading.value = false
+    
     // Mettre à jour les quiz sauvegardés IMMÉDIATEMENT après le chargement des quiz
     refreshSavedQuizzes()
     
@@ -1067,6 +1076,9 @@ onMounted(async () => {
   } catch (e) {
     console.error(`[ChapterQuiz] ❌ Erreur de chargement:`, e)
     quiz.value = []
+  } finally {
+    // S'assurer que le skeleton disparaît même en cas d'erreur
+    initialLoading.value = false
   }
 })
 

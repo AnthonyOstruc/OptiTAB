@@ -1,14 +1,10 @@
 <template>
   <div>
-    <h2 class="admin-title">🚀 Bulk – Création de Quiz QCM</h2>
-    <div class="help-section">
-      <p><strong>1.</strong> Sélectionnez le chapitre • <strong>2.</strong> Collez vos quiz au format structuré</p>
-      
-      <details class="format-help">
-        <summary>📖 Guide du format (cliquez pour voir)</summary>
+    <FormatHelp :format-template="QUIZ_FORMAT_TEMPLATE">
+      <template #notes>
         <div class="format-examples">
           <h4>Format recommandé avec blocs ===</h4>
-          <pre><code>Titre: Quiz Dérivées - Niveau 1
+          <pre><code>Titre: Quiz Dérivées
 Instructions: Testez vos connaissances sur les dérivées
 Difficulté: medium
 Images: image1.png, image2.jpg
@@ -20,18 +16,6 @@ C: $2$
 D: $x^2$
 Correct: A
 Explication: La dérivée de $x^2$ est $2x$ d'après la règle...
-
-Question: Quelle est la dérivée de $f(x) = \\sin(x)$ ?
-A: $-\\cos(x)$
-B: $\\cos(x)$
-C: $\\sin(x)$
-D: $-\\sin(x)$
-Correct: B
-Explication: La dérivée de $\\sin(x)$ est $\\cos(x)$...
-===
-Titre: Quiz Intégrales - Niveau 1
-Instructions: Quiz sur les intégrales simples
-...
 ===</code></pre>
           
           <h4>Support des images</h4>
@@ -40,37 +24,20 @@ Instructions: Quiz sur les intégrales simples
             <li>Référencez les images avec : <code>Images: nom_image1.png, nom_image2.jpg</code></li>
             <li>Types supportés : JPG, PNG, GIF, WebP (max 10MB)</li>
             <li>Les images seront associées aux questions du quiz</li>
+            <li>Format alternatif : <code>Titre ;; Instructions ;; Difficulté ;; JSON_Questions</code></li>
           </ul>
-          
-          <h4>Format alternatif (une ligne par quiz)</h4>
-          <p><code>Titre ;; Instructions ;; Difficulté ;; JSON_Questions</code></p>
         </div>
-      </details>
-    </div>
+      </template>
+    </FormatHelp>
 
     <div class="bulk-form">
       <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
-      <div class="form-row">
-        <select v-model="selectedNotion" required class="chapter-select">
-          <option disabled value="">📘 Choisir la notion</option>
-          <option v-for="n in filteredNotions" :key="n.id" :value="n.id">
-            {{ (n.nom || n.titre) }}
-          </option>
-        </select>
-        
-        <div class="stats">
-          <span v-if="previewList.length" class="stat-item">
-            📊 {{ previewList.length }} quiz • {{ getTotalQuestions() }} questions
-          </span>
-        </div>
-      </div>
-
-      <div v-if="currentContext" class="context-panel">
-        <div class="context-row"><strong>Matière:</strong> <span>{{ currentContext.matiereNom || '—' }}</span></div>
-        <div class="context-row"><strong>Thème:</strong> <span>{{ currentContext.themeNom || '—' }}</span></div>
-        <div class="context-row"><strong>Pays:</strong> <span>{{ currentContext.paysNom || '—' }}</span></div>
-        <div class="context-row"><strong>Niveau:</strong> <span>{{ currentContext.niveauNom || '—' }}</span></div>
-      </div>
+      <select v-model="selectedNotion" required>
+        <option disabled value="">Choisir notion</option>
+        <option v-for="n in filteredNotions" :key="n.id" :value="n.id">
+          {{ (n.nom || n.titre) }}
+        </option>
+      </select>
 
       <!-- Upload d'images -->
       <div class="images-upload-section">
@@ -96,21 +63,7 @@ Instructions: Quiz sur les intégrales simples
 
       <textarea 
         v-model="rawInput" 
-        placeholder="📝 Collez vos quiz ici au format structuré...
-
-Exemple rapide :
-Titre: Quiz Exemple
-Instructions: Quiz d'exemple
-Difficulté: easy
-
-Question: Combien font 2+2 ?
-A: 3
-B: 4
-C: 5
-D: 6
-Correct: B
-Explication: 2+2=4, c'est mathématique !
-==="
+        placeholder="Collez ici vos quiz"
         class="quiz-textarea"
       ></textarea>
       
@@ -120,21 +73,21 @@ Explication: 2+2=4, c'est mathématique !
           @click="handlePreview" 
           :disabled="!rawInput.trim()"
         >
-          👁️ Prévisualiser
+          Prévisualiser
         </button>
         <button 
           class="btn-create" 
           @click="handleCreate" 
           :disabled="!selectedNotion || !previewList.length"
         >
-          ✨ Créer {{ previewList.length || '' }} quiz
+          Créer {{ previewList.length || '' }} quiz
         </button>
         <button 
           class="btn-clear" 
           @click="clearAll"
           v-if="rawInput || previewList.length"
         >
-          🗑️ Vider
+          Vider
         </button>
       </div>
     </div>
@@ -153,7 +106,7 @@ Explication: 2+2=4, c'est mathématique !
           class="btn-toggle-explanations"
           @click="showExplanations = !showExplanations"
         >
-          {{ showExplanations ? '🙈 Masquer' : '👁️ Voir' }} explications
+          {{ showExplanations ? 'Masquer' : 'Voir' }} explications
         </button>
       </div>
       
@@ -211,6 +164,7 @@ Explication: 2+2=4, c'est mathématique !
 import { ref, onMounted, nextTick, watch, computed } from 'vue'
 import { getNotions } from '@/api'
 import { createQuiz, createQuizImage, updateQuiz } from '@/api/quiz'
+import FormatHelp from '@/components/admin/FormatHelp.vue'
 
 const chapitres = ref([])
 const notions = ref([])
@@ -223,6 +177,32 @@ const previewList = ref([])
 const showExplanations = ref(true)
 const selectedImages = ref([])
 const imagesInput = ref(null)
+
+// ============================================================================
+// CONSTANTES DU FORMAT
+// ============================================================================
+
+const QUIZ_FORMAT_TEMPLATE = `{{ QUIZ_FORMAT_TEMPLATE }}
+Instructions: Testez vos connaissances sur les dérivées
+Difficulté: medium
+Images: image1.png, image2.jpg
+
+Question: Quelle est la dérivée de $f(x) = x^2$ ?
+A: $2x$
+B: $x$
+C: $2$
+D: $x^2$
+Correct: A
+Explication: La dérivée de $x^2$ est $2x$ d'après la règle...
+
+Question: Quelle est la dérivée de $f(x) = \\sin(x)$ ?
+A: $-\\cos(x)$
+B: $\\cos(x)$
+C: $\\sin(x)$
+D: $-\\sin(x)$
+Correct: B
+Explication: La dérivée de $\\sin(x)$ est $\\cos(x)$...
+===`
 
 // ============================================================================
 // CONSTANTES POUR IMAGES
@@ -856,7 +836,7 @@ function clearAll() {
 
 function handleImagesSelect(event) {
   const files = Array.from(event.target.files)
-  
+
   files.forEach(file => {
     try {
       imageManager.addImage(file)
@@ -864,7 +844,7 @@ function handleImagesSelect(event) {
       errorMsg.value = error.message
     }
   })
-  
+
   selectedImages.value = Array.from(imageManager.images.values())
 }
 
@@ -929,28 +909,10 @@ function renderWithImages(text, imageString) {
 }
 </script>
 
+<style src="@/styles/admin-common.css"></style>
+
 <style scoped>
-.admin-title {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.help-section {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 2rem;
-}
-
-.format-help summary {
-  cursor: pointer;
-  font-weight: 600;
-  color: #3b82f6;
-  margin-bottom: 0.5rem;
-}
+/* Styles spécifiques à AdminQuizPlus */
 
 .format-examples {
   margin-top: 1rem;
@@ -971,52 +933,9 @@ function renderWithImages(text, imageString) {
   line-height: 1.4;
 }
 
-.bulk-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 1000px;
-}
-
-.filter-input {
-  margin-bottom: 0.5rem;
-  width: 100%;
-  padding: 0.5rem;
-  border: 2px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-.form-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.chapter-select {
-  padding: 10px 12px;
-  border: 2px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
-  min-width: 300px;
-  background: white;
-}
-
-.stats {
-  color: #6b7280;
-  font-size: 0.9rem;
-}
-
-.stat-item {
-  background: #eff6ff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  color: #1d4ed8;
-}
 
 .quiz-textarea {
-  height: 300px;
+  height: 200px;
   padding: 12px;
   border: 2px solid #d1d5db;
   border-radius: 6px;
@@ -1026,38 +945,32 @@ function renderWithImages(text, imageString) {
   resize: vertical;
 }
 
-.btn-group {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
 .btn-preview, .btn-create, .btn-clear {
   border: none;
-  padding: 10px 20px;
+  padding: 0.75rem 1.5rem;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 1rem;
   font-weight: 600;
   transition: all 0.2s;
 }
 
 .btn-preview {
-  background: #f3f4f6;
-  color: #374151;
+  background: #6b7280;
+  color: white;
 }
 
 .btn-preview:hover:not(:disabled) {
-  background: #e5e7eb;
+  background: #4b5563;
 }
 
 .btn-create {
-  background: #10b981;
+  background: #3b82f6;
   color: white;
 }
 
 .btn-create:hover:not(:disabled) {
-  background: #059669;
+  background: #2563eb;
 }
 
 .btn-clear {
@@ -1072,47 +985,6 @@ function renderWithImages(text, imageString) {
 .btn-preview:disabled, .btn-create:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.success-msg {
-  color: #10b981;
-  font-weight: 600;
-  margin-top: 1rem;
-  padding: 10px;
-  background: #d1fae5;
-  border-radius: 6px;
-}
-
-.error-msg {
-  color: #ef4444;
-  font-weight: 600;
-  margin-top: 1rem;
-  padding: 10px;
-  background: #fee2e2;
-  border-radius: 6px;
-}
-
-.preview-section {
-  margin-top: 2rem;
-}
-
-.context-panel {
-  margin-top: 0.75rem;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-}
-
-.context-row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  margin-bottom: 0.25rem;
-}
-
-.context-row:last-child {
-  margin-bottom: 0;
 }
 
 .preview-header {
@@ -1180,28 +1052,6 @@ function renderWithImages(text, imageString) {
   font-weight: 600;
   color: #1e293b;
   margin: 0;
-}
-
-.difficulty-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.difficulty-badge.easy {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.difficulty-badge.medium {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.difficulty-badge.hard {
-  background: #fecaca;
-  color: #991b1b;
 }
 
 .quiz-instructions {
@@ -1315,18 +1165,6 @@ function renderWithImages(text, imageString) {
   color: #991b1b;
 }
 
-.more-questions {
-  font-style: italic;
-  color: #6b7280;
-  font-size: 0.8rem;
-  text-align: center;
-  padding: 8px;
-}
-
-/* ============================================================================
-   STYLES POUR LES IMAGES DE PRÉVISUALISATION
-   ============================================================================ */
-
 .quiz-preview-image {
   max-width: 300px !important;
   height: auto !important;
@@ -1348,128 +1186,14 @@ function renderWithImages(text, imageString) {
   margin: 4px 0;
 }
 
-/* Images dans les options (plus petites) */
 .option-mini .quiz-preview-image {
   max-width: 150px !important;
   margin: 4px 0 !important;
 }
 
-/* ============================================================================
-   STYLES POUR LA SECTION D'UPLOAD D'IMAGES
-   ============================================================================ */
-
-.images-upload-section {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.images-upload-section h4 {
-  margin: 0 0 0.5rem 0;
-  color: #374151;
-  font-size: 1.1rem;
-}
-
-.upload-help {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin-bottom: 1rem;
-}
-
-.images-file-input {
-  width: 100%;
-  padding: 8px;
-  border: 2px dashed #d1d5db;
-  border-radius: 6px;
-  background: white;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.images-file-input:hover {
-  border-color: #3b82f6;
-}
-
-.selected-images {
-  margin-top: 1rem;
-}
-
-.selected-images h5 {
-  margin: 0 0 0.75rem 0;
-  color: #374151;
-  font-size: 0.95rem;
-}
-
-.selected-image-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
-}
-
-.image-preview {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 4px;
-  border: 1px solid #d1d5db;
-}
-
-.image-name {
-  flex: 1;
-  font-size: 0.9rem;
-  color: #374151;
-  word-break: break-all;
-}
-
-.btn-remove {
-  background: #ef4444;
-  color: white;
-  border: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
-  transition: background-color 0.2s;
-}
-
-.btn-remove:hover {
-  background: #dc2626;
-}
-
 @media (max-width: 768px) {
   .quiz-grid {
     grid-template-columns: 1fr;
-  }
-  
-  .form-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .chapter-select {
-    min-width: auto;
-  }
-  
-  .selected-image-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .image-preview {
-    align-self: center;
   }
 }
 </style> 

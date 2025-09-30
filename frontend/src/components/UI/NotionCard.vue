@@ -1,5 +1,5 @@
 <template>
-  <div class="notion-card" @click="$emit('click')">
+  <div class="notion-card" @click="$emit('click')" @mouseenter="handleMouseEnter">
     <div class="notion-card-inner">
       <!-- Icône de la notion -->
       <div class="notion-icon">
@@ -28,10 +28,37 @@
 </template>
 
 <script setup>
-defineProps({
+import { useDataPrefetch } from '@/composables/useDataPrefetch'
+
+const props = defineProps({
   title: { type: String, required: true },
-  description: { type: String, default: '' }
+  description: { type: String, default: '' },
+  notionId: { type: [Number, String], default: null }
 })
+
+const { prefetchNotionContent } = useDataPrefetch()
+
+// Debounce pour éviter trop de prefetch
+let hoverTimeout = null
+
+function handleMouseEnter() {
+  // Annuler le timeout précédent si l'utilisateur survole rapidement plusieurs cartes
+  if (hoverTimeout) {
+    clearTimeout(hoverTimeout)
+  }
+  
+  // Si pas d'ID de notion, ne rien faire
+  if (!props.notionId) {
+    return
+  }
+  
+  // Lancer le prefetch après 150ms de survol
+  hoverTimeout = setTimeout(() => {
+    prefetchNotionContent(props.notionId).catch(() => {
+      // Ignorer les erreurs de prefetch silencieusement
+    })
+  }, 150)
+}
 </script>
 
 <style scoped>

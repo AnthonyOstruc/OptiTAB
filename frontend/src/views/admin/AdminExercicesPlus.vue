@@ -1,58 +1,22 @@
 <template>
   <div>
-    <h2 class="admin-title">Bulk – Ajout d'Exercices</h2>
-    <div class="format-help">
-      <h3>📋 Format requis :</h3>
-             <div class="format-example">
-         <pre><code>=== [Titre de l'exercice]
-Difficulté: [easy/medium/hard]
-Image: [nom_fichier1.jpg,nom_fichier2.png] (optionnel)
-
-Énoncé: [description de l'exercice]
-
-[IMAGE_1]
-
-[suite de l'énoncé]
-
-[IMAGE_2]
-
-[fin de l'énoncé]
-
-Étapes: [étapes de résolution détaillées]
-
-**Question 1 : [Titre de la première question]**
-    ● [Première étape]
-    ● [Deuxième étape]
-    ● [Troisième étape]
-
-**Question 2 : [Titre de la deuxième question]**
-    ● [Première étape]
-    ● [Deuxième étape]
-
-Solution:
-1. [Réponse à la question 1]
-2. [Réponse à la question 2]
-
-===
-</code></pre>
-       </div>
-                     <div class="format-notes">
-                 <p><strong>Notes importantes :</strong></p>
-                 <ul>
-                   <li>Utilisez <code>===</code> pour délimiter chaque exercice</li>
-                   <li><strong>⚠️ IMPORTANT :</strong> Sélectionnez d'abord la notion dans la liste déroulante ci-dessus</li>
-                   <li>Difficulté : <code>easy</code>, <code>medium</code> ou <code>hard</code> uniquement</li>
-                   <li>Images multiples : Séparez les noms de fichiers par des virgules : <code>image1.jpg,image2.png</code></li>
-                   <li>Positionnement d'images : Utilisez <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code>, etc. dans l'énoncé pour positionner les images</li>
-                   <li>Ordre des images : Les images sont assignées dans l'ordre de leur déclaration (1ère = [IMAGE_1], 2ème = [IMAGE_2], etc.)</li>
-                   <li>Types d'images automatiques : Les images dans l'énoncé = "Donnée", dans les étapes/solution = "Solution"</li>
-                   <li>Étapes : Décrivez les étapes de résolution pour guider l'élève</li>
-                   <li>MathJax supporté : <code>$formule$</code> (inline) et <code>$$formule$$</code> (bloc)</li>
-                   <li>Markdown supporté : <code>**gras**</code> et <code>*italique*</code></li>
-                   <li>Laissez <code>Image:</code> vide si pas d'image</li>
-                 </ul>
-               </div>
-    </div>
+    <FormatHelp :format-template="FORMAT_TEMPLATE">
+      <template #notes>
+        <ul>
+          <li>Utilisez <code>===</code> pour délimiter chaque exercice</li>
+          <li><strong>⚠️ IMPORTANT :</strong> Sélectionnez d'abord la notion dans la liste déroulante ci-dessus</li>
+          <li>Difficulté : <code>easy</code>, <code>medium</code> ou <code>hard</code> uniquement</li>
+          <li>Images multiples : Séparez les noms de fichiers par des virgules : <code>image1.jpg,image2.png</code></li>
+          <li>Positionnement d'images : Utilisez <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code>, etc. dans l'énoncé pour positionner les images</li>
+          <li>Ordre des images : Les images sont assignées dans l'ordre de leur déclaration (1ère = [IMAGE_1], 2ème = [IMAGE_2], etc.)</li>
+          <li>Types d'images automatiques : Les images dans l'énoncé = "Donnée", dans les étapes/solution = "Solution"</li>
+          <li>Étapes : Décrivez les étapes de résolution pour guider l'élève</li>
+          <li>MathJax supporté : <code>$formule$</code> (inline) et <code>$$formule$$</code> (bloc)</li>
+          <li>Markdown supporté : <code>**gras**</code> et <code>*italique*</code></li>
+          <li>Laissez <code>Image:</code> vide si pas d'image</li>
+        </ul>
+      </template>
+    </FormatHelp>
 
     <div class="bulk-form">
       <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
@@ -83,7 +47,7 @@ Solution:
         </div>
       </div>
 
-      <textarea v-model="rawInput" placeholder="Coller ici vos exercices…"></textarea>
+      <textarea v-model="rawInput" placeholder="Collez ici vos exercices"></textarea>
       <div class="btn-group">
         <button class="btn-secondary" @click="handlePreview" :disabled="!rawInput.trim()" type="button">Prévisualiser</button>
         <button class="btn-primary" @click="handleCreate" :disabled="!selectedNotion || !rawInput.trim()">Créer les exercices</button>
@@ -129,6 +93,7 @@ Solution:
 import { ref, computed, onMounted } from 'vue'
 import { getNotions, createExercice, createExerciceImage } from '@/api'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
+import FormatHelp from '@/components/admin/FormatHelp.vue'
 
 // ============================================================================
 // CONSTANTES ET CONFIGURATION
@@ -152,6 +117,41 @@ const previewList = ref([])
 const hasValidExercices = ref(false)
 const selectedImages = ref([])
 const imagesInput = ref(null)
+
+// ============================================================================
+// CONSTANTES DU FORMAT
+// ============================================================================
+
+const FORMAT_TEMPLATE = `=== [Titre de l'exercice]
+Difficulté: [easy/medium/hard]
+Image: [nom_fichier1.jpg,nom_fichier2.png] (optionnel)
+
+Énoncé: [description de l'exercice]
+
+[IMAGE_1]
+
+[suite de l'énoncé]
+
+[IMAGE_2]
+
+[fin de l'énoncé]
+
+Étapes: [étapes de résolution détaillées]
+
+**Question 1 : [Titre de la première question]**
+    ● [Première étape]
+    ● [Deuxième étape]
+    ● [Troisième étape]
+
+**Question 2 : [Titre de la deuxième question]**
+    ● [Première étape]
+    ● [Deuxième étape]
+
+Solution:
+1. [Réponse à la question 1]
+2. [Réponse à la question 2]
+
+===`
 
 // ============================================================================
 // CLASSES UTILITAIRES
@@ -563,7 +563,7 @@ function formatChapitreOption(c) {
 
 function handleImagesSelect(event) {
   const files = Array.from(event.target.files)
-  
+
   files.forEach(file => {
     try {
       imageManager.addImage(file)
@@ -571,7 +571,7 @@ function handleImagesSelect(event) {
       errorMsg.value = error.message
     }
   })
-  
+
   selectedImages.value = Array.from(imageManager.images.values())
 }
 
@@ -720,166 +720,8 @@ const filteredNotions = computed(() => {
 onMounted(load)
 </script>
 
+<style src="@/styles/admin-common.css"></style>
+
 <style scoped>
-.admin-title {font-size: 1.4rem;margin-bottom:1rem;}
-.format-help{margin-bottom:2rem;padding:1rem;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;}
-.format-example{margin:1rem 0;}
-.format-example pre{background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:6px;overflow-x:auto;}
-.format-notes ul{margin:0.5rem 0;padding-left:1.5rem;}
-.format-notes li{margin:0.25rem 0;}
-.bulk-form{display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem;}
-.bulk-form select,.bulk-form textarea{padding:0.75rem;border:1px solid #d1d5db;border-radius:6px;font-size:1rem;}
-.bulk-form textarea{min-height:200px;resize:vertical;}
-.filter-input{margin-bottom:0.5rem;width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:6px;font-size:1rem;}
-.btn-group{display:flex;gap:1rem;}
-.btn-primary{background:#3b82f6;color:#fff;border:none;padding:0.75rem 1.5rem;border-radius:6px;cursor:pointer;font-weight:600;}
-.btn-secondary{background:#6b7280;color:#fff;border:none;padding:0.75rem 1.5rem;border-radius:6px;cursor:pointer;}
-.btn-primary:disabled,.btn-secondary:disabled{opacity:0.5;cursor:not-allowed;}
-.success-msg{color:#059669;background:#d1fae5;padding:1rem;border-radius:6px;margin:1rem 0;white-space:pre-line;}
-.error-msg{color:#dc2626;background:#fee2e2;padding:1rem;border-radius:6px;margin:1rem 0;white-space:pre-line;}
-.info-msg{color:#7c3aed;background:#ede9fe;padding:1rem;border-radius:6px;margin:1rem 0;}
-.preview-section{margin-top:2rem;}
-.preview-item{margin-bottom:2rem;padding:1rem;border:1px solid #e5e7eb;border-radius:8px;background:#fff;}
-
-/* Styles pour les images */
-.images-upload-section {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1rem;
-  background: #f9fafb;
-  margin-bottom: 1rem;
-}
-
-.images-upload-section h4 {
-  margin: 0 0 0.5rem 0;
-  color: #374151;
-  font-size: 1.1rem;
-}
-
-.upload-help {
-  margin: 0 0 1rem 0;
-  color: #6b7280;
-  font-size: 0.9rem;
-}
-
-.images-file-input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px dashed #d1d5db;
-  border-radius: 6px;
-  background: white;
-  cursor: pointer;
-  margin-bottom: 1rem;
-}
-
-.images-file-input:hover {
-  border-color: #3b82f6;
-}
-
-.selected-images {
-  margin-top: 1rem;
-}
-
-.selected-images h5 {
-  margin: 0 0 0.75rem 0;
-  color: #374151;
-  font-size: 0.9rem;
-}
-
-.selected-image-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-}
-
-.image-preview {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 4px;
-  border: 1px solid #d1d5db;
-}
-
-.image-name {
-  flex: 1;
-  font-size: 0.9rem;
-  color: #374151;
-}
-
-.btn-remove {
-  background: #dc2626;
-  color: white;
-  border: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-remove:hover {
-  background: #b91c1c;
-}
-
-.preview-image-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin: 0.5rem 0;
-  padding: 0.75rem;
-  background: #f3f4f6;
-  border-radius: 6px;
-}
-
-.image-indicator {
-  font-size: 0.9rem;
-  color: #374151;
-  font-weight: 600;
-}
-
-.image-status-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.image-status {
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  display: inline-block;
-  width: fit-content;
-}
-
-.image-status.available {
-  color: #059669;
-  background: #d1fae5;
-}
-
-.image-status.missing {
-  color: #dc2626;
-  background: #fee2e2;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .btn-group {
-    flex-direction: column;
-  }
-  
-  .selected-image-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-}
+/* Styles spécifiques à AdminExercicesPlus - ajoutés si nécessaire */
 </style> 

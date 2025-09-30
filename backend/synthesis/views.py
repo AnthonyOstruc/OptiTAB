@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import SynthesisSheet
+from .models import SynthesisSheet, SynthesisImage
 from .serializers import (
     SynthesisSheetSerializer, 
     SynthesisSheetCreateSerializer,
@@ -79,6 +79,28 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             )
         
         return queryset
+
+    @action(detail=True, methods=['post'])
+    def add_image(self, request, pk=None):
+        """Uploader une image pour une fiche de synthèse"""
+        sheet = self.get_object()
+        image_file = request.FILES.get('image')
+        image_type = request.data.get('image_type', 'illustration')
+        position = request.data.get('position')
+        caption = request.data.get('caption')
+
+        if not image_file:
+            return Response({'detail': 'Image manquante'}, status=status.HTTP_400_BAD_REQUEST)
+
+        img = SynthesisImage.objects.create(
+            sheet=sheet,
+            image=image_file,
+            image_type=image_type,
+            position=position,
+            caption=caption,
+        )
+
+        return Response({'id': img.id, 'image': request.build_absolute_uri(img.image.url) if hasattr(img.image, 'url') else ''}, status=status.HTTP_201_CREATED)
     
     @action(detail=True, methods=['post'])
     def duplicate(self, request, pk=None):

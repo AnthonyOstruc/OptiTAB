@@ -37,3 +37,14 @@ export const getSynthesisMatieres = () => {
 export const getPreviewData = (params) => {
   return apiClient.get('/api/sheets/preview_data/', { params })
 }
+
+// Upload d'image pour une fiche de synthèse
+export const createSynthesisImage = ({ sheet, image, image_type = 'illustration', position }) => {
+  const formData = new FormData()
+  formData.append('image', image)
+  if (image_type) formData.append('image_type', image_type)
+  if (position !== undefined && position !== null) formData.append('position', position)
+  return apiClient.post(`/api/sheets/${sheet}/add_image/`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
+}

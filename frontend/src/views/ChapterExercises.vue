@@ -27,7 +27,9 @@
       <h2 class="exercices-title" style="margin-top: 1.5rem; padding-top: 0.75rem;">Exercices - {{ notionNom }}</h2>
       
       
-      <div v-if="loading" class="exercices-loader">Chargement...</div>
+      <div v-if="loading" class="loading-skeleton-container">
+        <SkeletonList :count="4" />
+      </div>
       <div v-else-if="error" class="exercices-error">{{ error }}</div>
       <div v-else>
         <div class="exercices-controls">
@@ -136,6 +138,7 @@ import { ref, onMounted, computed } from 'vue'
 import { defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
+import SkeletonList from '@/components/common/SkeletonList.vue'
 import { getExercices, getStatuses, createStatus, updateStatus, deleteStatus } from '@/api'
 import { useUserStore } from '@/stores/user'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'

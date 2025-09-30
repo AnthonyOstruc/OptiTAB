@@ -11,7 +11,7 @@
       <h2 class="cours-title">Cours</h2>
       
       <div v-if="loading" class="loading-container">
-        <LoadingSpinner />
+        <SkeletonList :count="3" />
       </div>
       
       <div v-else-if="selectedCours" class="cours-container">
@@ -63,7 +63,7 @@ import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
-import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
+import SkeletonList from '@/components/common/SkeletonList.vue'
 import { getCours } from '@/api/cours'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'

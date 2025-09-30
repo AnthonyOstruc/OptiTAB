@@ -1,9 +1,15 @@
 <template>
   <div class="tnv-wrapper">
-    <!-- Loading -->
-    <div v-if="loading" class="tnv-state tnv-loading">
-      <div class="tnv-spinner"></div>
-      <p>Chargement des concepts...</p>
+    <!-- Loading with Skeleton -->
+    <div v-if="loading" class="tnv-loading-skeleton">
+      <div v-for="i in 2" :key="i" class="tnv-theme-skeleton">
+        <div class="skeleton-theme-header">
+          <div class="skeleton-line skeleton-theme-title"></div>
+        </div>
+        <div class="tnv-skeleton-grid">
+          <SkeletonCard v-for="j in 4" :key="j" />
+        </div>
+      </div>
     </div>
 
     <!-- Error -->
@@ -34,6 +40,7 @@
             <NotionCard
               v-for="notion in (themeToNotions[theme.id] || [])"
               :key="notion.id"
+              :notion-id="notion.id"
               :title="notion.nom"
               :description="notion.description || ''"
               @click="goToNotion(notion.id)"
@@ -64,6 +71,7 @@
           <NotionCard
             v-for="notion in directNotions"
             :key="notion.id"
+            :notion-id="notion.id"
             :title="notion.nom"
             :description="notion.description || ''"
             @click="goToNotion(notion.id)"
@@ -75,12 +83,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, onBeforeUnmount } from 'vue'
+import { ref, onMounted, watch, onBeforeUnmount, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { getNotionsPourUtilisateur } from '@/api'
 import { getThemesWithNotionsForUser } from '@/api/themes'
 import NotionCard from '@/components/UI/NotionCard.vue'
+import SkeletonCard from '@/components/common/SkeletonCard.vue'
+import { useDataPrefetch } from '@/composables/useDataPrefetch'
 
 const props = defineProps({
   matiereId: { type: [Number, String], required: true },
@@ -89,6 +99,7 @@ const props = defineProps({
 
 const router = useRouter()
 const userStore = useUserStore()
+const { prefetchNotionContent } = useDataPrefetch()
 
 const loading = ref(false)
 const error = ref('')
@@ -179,6 +190,10 @@ async function load(matiereId) {
     const cachePayload = { themes: themes.value, themeToNotions: themeToNotions.value, directNotions: directNotions.value }
     cache.set(key, { t: Date.now(), v: cachePayload })
     writeToStorage(matiereId, cachePayload)
+    
+    // Précharger automatiquement les 3 premières notions en arrière-plan (non-bloquant)
+    await nextTick()
+    prefetchTopNotions()
   } catch (e) {
     if (e?.name === 'CanceledError' || e?.name === 'AbortError') {
       // navigation rapide: ignorer l'erreur annulée
@@ -188,6 +203,31 @@ async function load(matiereId) {
   } finally {
     loading.value = false
   }
+}
+
+/**
+ * Précharge les 3 premières notions en arrière-plan
+ * pour accélérer la navigation utilisateur
+ */
+function prefetchTopNotions() {
+  // Collecter les 3 premières notions de tous les thèmes
+  const topNotions = []
+  for (const theme of themes.value) {
+    const notionsInTheme = themeToNotions.value[theme.id] || []
+    topNotions.push(...notionsInTheme.slice(0, 1)) // 1ère notion de chaque thème
+    if (topNotions.length >= 3) break
+  }
+  
+  // Précharger en arrière-plan (fire and forget)
+  topNotions.slice(0, 3).forEach(notion => {
+    if (notion?.id) {
+      setTimeout(() => {
+        prefetchNotionContent(notion.id).catch(() => {
+          // Ignorer les erreurs silencieusement
+        })
+      }, 500) // Délai de 500ms pour ne pas bloquer l'UI
+    }
+  })
 }
 
 onMounted(() => load(props.matiereId))
@@ -209,6 +249,61 @@ onBeforeUnmount(() => {
 }
 
 /* États de chargement et d'erreur */
+/* Loading Skeleton */
+.tnv-loading-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.tnv-theme-skeleton {
+  background: transparent;
+  border-radius: 0;
+}
+
+.skeleton-theme-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.skeleton-line {
+  height: 12px;
+  background: linear-gradient(
+    90deg,
+    #f3f4f6 0%,
+    #e5e7eb 50%,
+    #f3f4f6 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 4px;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.skeleton-theme-title {
+  height: 24px;
+  width: 200px;
+}
+
+.tnv-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 280px);
+  gap: 1rem;
+  justify-content: start;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 .tnv-state {
   display: flex;
   flex-direction: column;
@@ -219,21 +314,6 @@ onBeforeUnmount(() => {
   border-radius: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   text-align: center;
-}
-
-.tnv-spinner {
-  width: 48px;
-  height: 48px;
-  border: 3px solid #e5e7eb;
-  border-top: 3px solid #3b82f6;
-  border-radius: 50%;
-  animation: tnvspin 1s linear infinite;
-  margin-bottom: 1rem;
-}
-
-@keyframes tnvspin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 .tnv-error-icon {
@@ -379,6 +459,10 @@ onBeforeUnmount(() => {
     gap: 1rem;
     justify-content: start;
   }
+  
+  .tnv-skeleton-grid {
+    grid-template-columns: repeat(3, 280px);
+  }
 }
 
 @media (max-width: 1200px) {
@@ -386,6 +470,10 @@ onBeforeUnmount(() => {
     grid-template-columns: repeat(2, 280px);
     gap: 1rem;
     justify-content: start;
+  }
+  
+  .tnv-skeleton-grid {
+    grid-template-columns: repeat(2, 280px);
   }
   
   .tnv-theme-block {
@@ -397,6 +485,10 @@ onBeforeUnmount(() => {
   .tnv-notions-grid {
     grid-template-columns: 280px;
     gap: 1rem;
+  }
+  
+  .tnv-skeleton-grid {
+    grid-template-columns: 280px;
   }
 
   .tnv-theme-block {

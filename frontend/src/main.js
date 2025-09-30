@@ -75,4 +75,11 @@ if (hasValidToken) {
 // app.use(MathJax)
 // Mais pour l'instant, l'import local dans ExerciceQCM.vue suffit.
 
+// Charger les outils de test de performance en développement
+if (import.meta.env.DEV) {
+  import('@/utils/performance-test.js').then(() => {
+    console.log('🎯 Outils de test de performance chargés! Tapez "window.perfTest" dans la console.')
+  })
+}
+
 app.mount('#app')

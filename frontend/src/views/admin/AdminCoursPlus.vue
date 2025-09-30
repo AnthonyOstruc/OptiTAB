@@ -1,167 +1,10 @@
 <template>
   <div>
-    <h2 class="admin-title">Bulk – Ajout de Cours</h2>
-    <div class="format-help">
-      <h3>📋 Format requis :</h3>
-      <div class="format-example">
-        <pre><code>=== [NOM DU COURS - SOUS-TITRE]
-Difficulté: [easy/medium/hard]
-Ordre: [numéro]
-
-Titre: [Titre détaillé du cours]
-Description: [Description courte expliquant l'objectif du cours]
-
-&lt;div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;"&gt;
-
-    &lt;h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;"&gt;I. Définition&lt;/h2&gt;
-    &lt;div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;"&gt;
-        &lt;p&gt;Une &lt;strong&gt;[CONCEPT PRINCIPAL]&lt;/strong&gt; est [définition simple et claire].&lt;/p&gt;
-        &lt;div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;"&gt;
-            $$[FORMULE DE BASE OU DEFINITION MATHEMATIQUE]$$
-        &lt;/div&gt;
-        &lt;p&gt;&lt;strong&gt;Explication :&lt;/strong&gt; [Explication pédagogique du concept]&lt;/p&gt;
-    &lt;/div&gt;
-
-    &lt;h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;"&gt;II. [CONCEPT THEORIQUE PRINCIPAL]&lt;/h2&gt;
-    &lt;div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;"&gt;
-        &lt;p&gt;[Explication du concept théorique principal]&lt;/p&gt;
-        &lt;div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;"&gt;
-            $$[FORMULE PRINCIPALE A RETENIR]$$
-        &lt;/div&gt;
-        &lt;p&gt;&lt;strong&gt;💡 [CONSEIL IMPORTANT] :&lt;/strong&gt; [Conseil méthodologique]&lt;/p&gt;
-    &lt;/div&gt;
-
-    &lt;h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;"&gt;III. Exemples détaillés&lt;/h2&gt;
-
-    &lt;div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;"&gt;
-        &lt;h3 style="color:#34495e; margin-top:0;"&gt;Exemple 1 : [TITRE SPECIFIQUE]&lt;/h3&gt;
-        &lt;p&gt;&lt;strong&gt;Énoncé :&lt;/strong&gt; [Description de l'exemple]&lt;/p&gt;
-        &lt;p&gt;&lt;strong&gt;Données :&lt;/strong&gt; [Valeurs numériques ou paramètres]&lt;/p&gt;
-
-        &lt;p&gt;&lt;strong&gt;Résolution :&lt;/strong&gt;&lt;/p&gt;
-        &lt;div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;"&gt;
-            &lt;ul style="margin:0; padding-left:20px;"&gt;
-                &lt;li&gt;$[Première étape de calcul]$&lt;/li&gt;
-                &lt;li&gt;$[Deuxième étape de calcul]$&lt;/li&gt;
-                &lt;li&gt;$[Troisième étape de calcul]$&lt;/li&gt;
-                &lt;li&gt;$[Conclusion de l'étape]$&lt;/li&gt;
-            &lt;/ul&gt;
-        &lt;/div&gt;
-
-        &lt;div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;"&gt;
-            &lt;strong&gt;Résultat final :&lt;/strong&gt; [Conclusion de l'exemple]
-        &lt;/div&gt;
-    &lt;/div&gt;
-
-    &lt;div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;"&gt;
-        &lt;h3 style="color:#34495e; margin-top:0;"&gt;Exemple 2 : [TITRE SPECIFIQUE]&lt;/h3&gt;
-        &lt;p&gt;&lt;strong&gt;Situation :&lt;/strong&gt; [Contexte de l'exemple]&lt;/p&gt;
-
-        &lt;div style="text-align:center; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;"&gt;
-            $$[APPLICATION DE LA FORMULE]$$
-        &lt;/div&gt;
-
-        &lt;p&gt;&lt;strong&gt;Calculs détaillés :&lt;/strong&gt;&lt;/p&gt;
-        &lt;div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;"&gt;
-            &lt;ul style="margin:0; padding-left:20px;"&gt;
-                &lt;li&gt;$[Calcul étape 1]$&lt;/li&gt;
-                &lt;li&gt;$[Calcul étape 2]$&lt;/li&gt;
-                &lt;li&gt;$[Résultat final]$&lt;/li&gt;
-            &lt;/ul&gt;
-        &lt;/div&gt;
-
-        &lt;div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;"&gt;
-            &lt;strong&gt;✅ Vérification :&lt;/strong&gt; [Vérification du résultat]
-        &lt;/div&gt;
-    &lt;/div&gt;
-
-    &lt;h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;"&gt;IV. [SECTION D'APPLICATION - CALCULS]&lt;/h2&gt;
-
-    &lt;div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;"&gt;
-        &lt;h3 style="color:#34495e; margin-top:0;"&gt;[SOUS-TITRE DE LA METHODE]&lt;/h3&gt;
-        &lt;p&gt;[Explication de la méthode ou du calcul principal]&lt;/p&gt;
-
-        &lt;div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;"&gt;
-            &lt;strong&gt;Formule [NOM DE LA FORMULE] :&lt;/strong&gt;&lt;br&gt;
-            $$[FORMULE MATHEMATIQUE PRINCIPALE]$$
-        &lt;/div&gt;
-
-        &lt;div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;"&gt;
-            &lt;strong&gt;💡 Démarche à suivre :&lt;/strong&gt;&lt;br&gt;
-            • [Étape 1 de la méthode]&lt;br&gt;
-            • [Étape 2 de la méthode]&lt;br&gt;
-            • [Étape 3 de la méthode]
-        &lt;/div&gt;
-    &lt;/div&gt;
-
-    &lt;div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;"&gt;
-        &lt;h3 style="color:#34495e; margin-top:0;"&gt;Application pratique&lt;/h3&gt;
-        &lt;p&gt;&lt;strong&gt;Problème :&lt;/strong&gt; [Énoncé du problème d'application]&lt;/p&gt;
-
-        &lt;div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;"&gt;
-            &lt;strong&gt;Éléments donnés :&lt;/strong&gt;&lt;br&gt;
-            • [Donnée 1]&lt;br&gt;
-            • [Donnée 2]&lt;br&gt;
-            • [Donnée 3]
-        &lt;/div&gt;
-
-        &lt;div style="text-align:center; margin:15px 0;"&gt;
-            &lt;strong&gt;Résolution :&lt;/strong&gt;
-            &lt;div style="font-size:1.1em; margin:10px 0; padding:10px; background:#ecf0f1; border-radius:4px;"&gt;
-                $$[CALCUL DETAILLE ETAPE PAR ETAPE]$$
-            &lt;/div&gt;
-        &lt;/div&gt;
-
-        &lt;div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;"&gt;
-            &lt;strong&gt;✅ Solution finale :&lt;/strong&gt; [Résultat avec justification]
-        &lt;/div&gt;
-    &lt;/div&gt;
-
-    &lt;h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;"&gt;V. Propriétés et caractéristiques&lt;/h2&gt;
-    &lt;div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;"&gt;
-        &lt;ul style="margin:0; padding-left:20px;"&gt;
-            &lt;li&gt;&lt;strong&gt;Propriété 1 :&lt;/strong&gt; [Description de la première propriété importante]&lt;/li&gt;
-            &lt;li&gt;&lt;strong&gt;Propriété 2 :&lt;/strong&gt; [Description de la deuxième propriété importante]&lt;/li&gt;
-            &lt;li&gt;&lt;strong&gt;Propriété 3 :&lt;/strong&gt; [Description de la troisième propriété importante]&lt;/li&gt;
-            &lt;li&gt;&lt;strong&gt;Aspect graphique :&lt;/strong&gt; [Description de la représentation visuelle]&lt;/li&gt;
-        &lt;/ul&gt;
-    &lt;/div&gt;
-
-    &lt;h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;"&gt;VI. Erreurs fréquentes et conseils&lt;/h2&gt;
-    &lt;div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;"&gt;
-        &lt;div style="background:#fdf2f2; padding:12px; border-radius:4px; margin-bottom:10px;"&gt;
-            &lt;strong&gt;❌ Pièges à éviter :&lt;/strong&gt;
-            &lt;div style="margin:8px 0;"&gt;
-                &lt;ul style="margin:0; padding-left:20px;"&gt;
-                    &lt;li&gt;[Erreur fréquente 1]&lt;/li&gt;
-                    &lt;li&gt;[Erreur fréquente 2]&lt;/li&gt;
-                    &lt;li&gt;[Erreur fréquente 3]&lt;/li&gt;
-                &lt;/ul&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-
-        &lt;div style="background:#f0f9f0; padding:12px; border-radius:4px;"&gt;
-            &lt;strong&gt;✅ Conseils méthodologiques :&lt;/strong&gt;
-            &lt;div style="margin:8px 0;"&gt;
-                &lt;ul style="margin:0; padding-left:20px;"&gt;
-                    &lt;li&gt;[Conseil pratique 1]&lt;/li&gt;
-                    &lt;li&gt;[Conseil pratique 2]&lt;/li&gt;
-                    &lt;li&gt;[Conseil pratique 3]&lt;/li&gt;
-                &lt;/ul&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-
-&lt;/div&gt;
-
-===</code></pre>
-      </div>
-      <div class="format-notes">
-        <p><strong>Notes importantes :</strong></p>
+    <FormatHelp :format-template="FORMAT_TEMPLATE">
+      <template #notes>
         <ul>
           <li>Utilisez <code>===</code> pour délimiter chaque cours</li>
-          <li><strong>⚠️ IMPORTANT :</strong> Sélectionnez d'abord le chapitre dans la liste déroulante ci-dessus</li>
-          <li><strong>Chapitre :</strong> Le chapitre est automatiquement défini par votre sélection dans le dropdown</li>
+          <li><strong>⚠️ IMPORTANT :</strong> Sélectionnez d'abord la notion dans la liste déroulante ci-dessus</li>
           <li>Difficulté : <code>easy</code>, <code>medium</code> ou <code>hard</code> uniquement</li>
           <li>Ordre : Numéro pour l'ordre d'affichage (0, 1, 2, etc.)</li>
           <li><strong>Images multiples :</strong> Séparez les noms de fichiers par des virgules : <code>image1.jpg,image2.png</code></li>
@@ -176,10 +19,8 @@ Description: [Description courte expliquant l'objectif du cours]
           <li><strong>Champs optionnels :</strong> <code>Difficulté:</code>, <code>Ordre:</code>, <code>Images:</code>, <code>Description:</code></li>
           <li><strong>Template uniforme :</strong> Utilisez le template ci-dessus pour maintenir la cohérence de tous vos cours</li>
         </ul>
-      </div>
-      
-
-    </div>
+      </template>
+    </FormatHelp>
 
     <div class="bulk-form">
       <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
@@ -210,7 +51,7 @@ Description: [Description courte expliquant l'objectif du cours]
         </div>
       </div>
 
-      <textarea v-model="rawInput" placeholder="Coller ici vos cours…" rows="20"></textarea>
+      <textarea v-model="rawInput" placeholder="Collez ici vos cours"></textarea>
       <div class="btn-group">
         <button class="btn-secondary" @click="handlePreview" :disabled="!rawInput.trim()" type="button">Prévisualiser</button>
         <button class="btn-primary" @click="handleCreate" :disabled="!selectedNotion || !rawInput.trim()">Créer les cours</button>
@@ -258,6 +99,7 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import { getNotions } from '@/api'
 import { createCours, createCoursImage, getCours, updateCours } from '@/api/cours'
 import { renderContentWithImages, renderMath, markdownToHtml } from '@/utils/scientificRenderer'
+import FormatHelp from '@/components/admin/FormatHelp.vue'
 
 // ============================================================================
 // CONSTANTES ET CONFIGURATION
@@ -281,6 +123,162 @@ const previewList = ref([])
 const hasValidCours = ref(false)
 const selectedImages = ref([])
 const imagesInput = ref(null)
+
+// ============================================================================
+// CONSTANTES DU FORMAT
+// ============================================================================
+
+const FORMAT_TEMPLATE = `=== [NOM DU COURS - SOUS-TITRE]
+Difficulté: [easy/medium/hard]
+Ordre: [numéro]
+
+Titre: [Titre détaillé du cours]
+Description: [Description courte expliquant l'objectif du cours]
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Une <strong>[CONCEPT PRINCIPAL]</strong> est [définition simple et claire].</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$[FORMULE DE BASE OU DEFINITION MATHEMATIQUE]$$
+        </div>
+        <p><strong>Explication :</strong> [Explication pédagogique du concept]</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. [CONCEPT THEORIQUE PRINCIPAL]</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>[Explication du concept théorique principal]</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$[FORMULE PRINCIPALE A RETENIR]$$
+        </div>
+        <p><strong>💡 [CONSEIL IMPORTANT] :</strong> [Conseil méthodologique]</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Exemples détaillés</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : [TITRE SPECIFIQUE]</h3>
+        <p><strong>Énoncé :</strong> [Description de l'exemple]</p>
+        <p><strong>Données :</strong> [Valeurs numériques ou paramètres]</p>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li>$[Première étape de calcul]$</li>
+                <li>$[Deuxième étape de calcul]$</li>
+                <li>$[Troisième étape de calcul]$</li>
+                <li>$[Conclusion de l'étape]$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Résultat final :</strong> [Conclusion de l'exemple]
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : [TITRE SPECIFIQUE]</h3>
+        <p><strong>Situation :</strong> [Contexte de l'exemple]</p>
+
+        <div style="text-align:center; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$[APPLICATION DE LA FORMULE]$$
+        </div>
+
+        <p><strong>Calculs détaillés :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li>$[Calcul étape 1]$</li>
+                <li>$[Calcul étape 2]$</li>
+                <li>$[Résultat final]$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Vérification :</strong> [Vérification du résultat]
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. [SECTION D'APPLICATION - CALCULS]</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">[SOUS-TITRE DE LA METHODE]</h3>
+        <p>[Explication de la méthode ou du calcul principal]</p>
+
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            <strong>Formule [NOM DE LA FORMULE] :</strong><br>
+            $$[FORMULE MATHEMATIQUE PRINCIPALE]$$
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Démarche à suivre :</strong><br>
+            • [Étape 1 de la méthode]<br>
+            • [Étape 2 de la méthode]<br>
+            • [Étape 3 de la méthode]
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Application pratique</h3>
+        <p><strong>Problème :</strong> [Énoncé du problème d'application]</p>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Éléments donnés :</strong><br>
+            • [Donnée 1]<br>
+            • [Donnée 2]<br>
+            • [Donnée 3]
+        </div>
+
+        <div style="text-align:center; margin:15px 0;">
+            <strong>Résolution :</strong>
+            <div style="font-size:1.1em; margin:10px 0; padding:10px; background:#ecf0f1; border-radius:4px;">
+                $$[CALCUL DETAILLE ETAPE PAR ETAPE]$$
+            </div>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Solution finale :</strong> [Résultat avec justification]
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Propriétés et caractéristiques</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <ul style="margin:0; padding-left:20px;">
+            <li><strong>Propriété 1 :</strong> [Description de la première propriété importante]</li>
+            <li><strong>Propriété 2 :</strong> [Description de la deuxième propriété importante]</li>
+            <li><strong>Propriété 3 :</strong> [Description de la troisième propriété importante]</li>
+            <li><strong>Aspect graphique :</strong> [Description de la représentation visuelle]</li>
+        </ul>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Erreurs fréquentes et conseils</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fdf2f2; padding:12px; border-radius:4px; margin-bottom:10px;">
+            <strong>❌ Pièges à éviter :</strong>
+            <div style="margin:8px 0;">
+                <ul style="margin:0; padding-left:20px;">
+                    <li>[Erreur fréquente 1]</li>
+                    <li>[Erreur fréquente 2]</li>
+                    <li>[Erreur fréquente 3]</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <div style="margin:8px 0;">
+                <ul style="margin:0; padding-left:20px;">
+                    <li>[Conseil pratique 1]</li>
+                    <li>[Conseil pratique 2]</li>
+                    <li>[Conseil pratique 3]</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+===`
 
 // ============================================================================
 // CLASSES UTILITAIRES
@@ -719,298 +717,10 @@ onMounted(async () => {
 })
 </script>
 
+<style src="@/styles/admin-common.css"></style>
+
 <style scoped>
-.admin-title {
-  font-size: 2rem;
-  color: #193e8e;
-  margin-bottom: 2rem;
-  text-align: center;
-  font-weight: 800;
-}
-
-.format-help {
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.format-help h3 {
-  color: #193e8e;
-  margin-bottom: 1rem;
-}
-
-.format-example {
-  background: #2d3748;
-  color: #e2e8f0;
-  border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  overflow-x: auto;
-}
-
-.format-example pre {
-  margin: 0;
-  font-family: 'Courier New', monospace;
-  font-size: 0.875rem;
-}
-
-.format-notes {
-  background: #fff3cd;
-  border: 1px solid #ffeaa7;
-  border-radius: 6px;
-  padding: 1rem;
-}
-
-.format-notes p {
-  margin: 0 0 0.5rem 0;
-  font-weight: 600;
-}
-
-.format-notes ul {
-  margin: 0;
-  padding-left: 1.5rem;
-}
-
-.format-notes li {
-  margin-bottom: 0.5rem;
-  line-height: 1.5;
-}
-
-.format-notes code {
-  background: #f1f2f6;
-  padding: 0.125rem 0.25rem;
-  border-radius: 3px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.875rem;
-}
-
-.bulk-form {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-}
-
-.bulk-form select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.filter-input {
-  margin-bottom: 0.5rem;
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.images-upload-section {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.images-upload-section h4 {
-  margin: 0 0 0.5rem 0;
-  color: #193e8e;
-}
-
-.upload-help {
-  color: #666;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-}
-
-.images-file-input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-}
-
-.selected-images {
-  margin-top: 1rem;
-}
-
-.selected-images h5 {
-  margin: 0 0 0.5rem 0;
-  color: #193e8e;
-}
-
-.selected-image-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
-}
-
-.image-preview {
-  width: 40px;
-  height: 30px;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-.image-name {
-  flex: 1;
-  font-size: 0.875rem;
-}
-
-.btn-remove {
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.bulk-form textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: 'Courier New', monospace;
-  resize: vertical;
-  margin-bottom: 1rem;
-}
-
-.btn-group {
-  display: flex;
-  gap: 1rem;
-}
-
-.btn-primary {
-  background: #193e8e;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.btn-secondary {
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.btn-primary:disabled,
-.btn-secondary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.success-msg {
-  background: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-  border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.error-msg {
-  background: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-  border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.info-msg {
-  background: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #bee5eb;
-  border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.preview-section {
-  background: white;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  padding: 1.5rem;
-}
-
-.preview-section h3 {
-  color: #193e8e;
-  margin-bottom: 1rem;
-}
-
-.preview-item {
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  overflow: hidden;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.preview-item h4 {
-  color: #193e8e;
-  margin: 0 0 0.5rem 0;
-}
-
-.preview-image-info {
-  margin-bottom: 1rem;
-}
-
-.image-indicator {
-  font-weight: 600;
-  color: #666;
-}
-
-.image-status-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.image-status {
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.image-status.available {
-  background: #d4edda;
-  color: #155724;
-}
-
-.image-status.missing {
-  background: #f8d7da;
-  color: #721c24;
-}
-
+/* Styles spécifiques à AdminCoursPlus */
 .preview-cours {
   background: #f8f9fa;
   border-radius: 6px;
@@ -1021,29 +731,6 @@ onMounted(async () => {
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
-}
-
-.difficulty-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-.difficulty-badge.easy {
-  background: #e8f5e8;
-  color: #2e7d32;
-}
-
-.difficulty-badge.medium {
-  background: #fff3e0;
-  color: #f57c00;
-}
-
-.difficulty-badge.hard {
-  background: #ffebee;
-  color: #c62828;
 }
 
 .ordre-badge {
@@ -1091,81 +778,10 @@ onMounted(async () => {
   padding-left: 1.5rem;
 }
 
-.preview-image-placeholder {
-  background: #f8f9fa;
-  border: 2px dashed #dee2e6;
-  border-radius: 8px;
-  padding: 2rem;
-  text-align: center;
-  margin: 1rem 0;
-  color: #6c757d;
-}
-
-.placeholder-icon {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-}
-
-.placeholder-text {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  color: #dc3545;
-}
-
-.placeholder-hint {
-  font-size: 0.875rem;
-  color: #6c757d;
-  font-style: italic;
-}
-
-.working-example {
-  background: #e9ecef;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.working-example h4 {
-  color: #193e8e;
-  margin-bottom: 1rem;
-}
-
-.example-code {
-  background: #2d3748;
-  color: #e2e8f0;
-  border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  overflow-x: auto;
-}
-
-.example-code pre {
-  margin: 0;
-  font-family: 'Courier New', monospace;
-  font-size: 0.875rem;
-}
-
-.example-note {
-  font-size: 0.875rem;
-  color: #666;
-  margin-top: 0.5rem;
-}
-
 @media (max-width: 768px) {
-  .btn-group {
-    flex-direction: column;
-  }
-  
   .preview-header {
     flex-direction: column;
     gap: 0.5rem;
-  }
-  
-  .image-status-list {
-    flex-direction: column;
   }
 }
 </style> 

@@ -21,6 +21,7 @@
             v-for="item in otherMenuItems" 
             :key="item.key" 
             @click="handleSidebarClick(item)"
+            @mouseenter="handleSidebarHover(item)"
             :title="collapsed ? item.text : ''"
           >
             <span class="sidebar-icon">
@@ -58,6 +59,7 @@ import { logoutUser } from '@/api'
 import { getInitials } from '@/utils'
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { apiUtils } from '@/api/client'
+import { useDataPrefetch } from '@/composables/useDataPrefetch'
 
 import { AcademicCapIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
 import { useRoute } from 'vue-router'
@@ -70,6 +72,10 @@ const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
 const subjectsStore = useSubjectsStore()
+const { prefetchThemesNotions } = useDataPrefetch()
+
+// Debounce pour éviter trop de prefetch
+let hoverTimeout = null
 
 
 // Tous les éléments du menu dans l'ordre défini
@@ -111,7 +117,36 @@ const isAdminActive = computed(() => {
   return route.path.startsWith('/admin')
 })
 
+// Prefetch au survol (hover) - déclenché 150ms après le survol
+function handleSidebarHover(item) {
+  // Annuler le timeout précédent si l'utilisateur survole rapidement plusieurs items
+  if (hoverTimeout) {
+    clearTimeout(hoverTimeout)
+  }
+  
+  // Seulement pour les routes qui utilisent des matières
+  if (!['exercices', 'fiches', 'quiz', 'cours'].includes(item.key)) {
+    return
+  }
+  
+  hoverTimeout = setTimeout(() => {
+    const activeId = subjectsStore.activeMatiereId || subjectsStore.selectedMatieresIds?.[0] || null
+    if (activeId) {
+      // Prefetch en arrière-plan de manière non-bloquante
+      prefetchThemesNotions(activeId).catch(() => {
+        // Ignorer les erreurs de prefetch silencieusement
+      })
+    }
+  }, 150) // Délai de 150ms pour éviter les survols accidentels
+}
+
 async function handleSidebarClick(item) {
+  // Nettoyer le timeout de hover au clic
+  if (hoverTimeout) {
+    clearTimeout(hoverTimeout)
+    hoverTimeout = null
+  }
+  
   // Routes simples sans matière
   if (item.key === 'calculator') {
     router.push('/calculator')
@@ -124,9 +159,9 @@ async function handleSidebarClick(item) {
     const activeId = subjectsStore.activeMatiereId || subjectsStore.selectedMatieresIds?.[0] || null
     if (item.key === 'exercices') {
       if (activeId) {
+        // Prefetch immédiat au clic (si pas déjà fait au hover)
+        prefetchThemesNotions(activeId).catch(() => {})
         router.push({ name: 'Themes', params: { matiereId: String(activeId) } })
-        // Prefetch discret: thèmes + notions pour accélérer la page suivante
-        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 300000 }) } catch (_) {}
       } else {
         router.push({ name: 'Exercises' })
       }
@@ -138,15 +173,17 @@ async function handleSidebarClick(item) {
       }
     } else if (item.key === 'quiz') {
       if (activeId) {
+        // Prefetch immédiat au clic
+        prefetchThemesNotions(activeId).catch(() => {})
         router.push({ name: 'QuizNotions', params: { matiereId: String(activeId) } })
-        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 300000 }) } catch (_) {}
       } else {
         router.push({ name: 'Quiz' })
       }
     } else if (item.key === 'cours') {
       if (activeId) {
+        // Prefetch immédiat au clic
+        prefetchThemesNotions(activeId).catch(() => {})
         router.push({ name: 'CourseNotions', params: { matiereId: String(activeId) } })
-        try { apiUtils.cachedGet('/api/themes/notions-pour-utilisateur/', { params: { matiere: activeId }, ttl: 300000 }) } catch (_) {}
       } else {
         router.push({ name: 'OnlineCourses' })
       }

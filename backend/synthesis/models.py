@@ -71,3 +71,29 @@ class SynthesisSheet(BaseContent):
 
     def __str__(self):
         return f"Fiche - {self.notion.titre} - {self.titre}"
+
+
+class SynthesisImage(models.Model):
+    """Image associée à une fiche de synthèse"""
+    TYPE_CHOICES = [
+        ('illustration', 'Illustration'),
+    ]
+
+    sheet = models.ForeignKey(SynthesisSheet, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='synthesis_images/')
+    image_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='illustration')
+    position = models.PositiveIntegerField(null=True, blank=True)
+    caption = models.CharField(max_length=255, null=True, blank=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    date_modification = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['sheet', 'position', 'id']
+        verbose_name = "Image de fiche de synthèse"
+        verbose_name_plural = "Images de fiches de synthèse"
+        indexes = [
+            models.Index(fields=['sheet', 'position']),
+        ]
+
+    def __str__(self):
+        return f"Image {self.id} - Sheet {self.sheet_id}"

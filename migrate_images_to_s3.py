@@ -6,6 +6,7 @@ import os
 import sys
 import django
 from pathlib import Path
+import argparse
 
 # Configuration Django
 sys.path.append(str(Path(__file__).parent / 'backend'))
@@ -19,7 +20,7 @@ except Exception as e:
 
 from curriculum.models import ExerciceImage
 from quiz.models import QuizImage
-from cours.models import CoursImage
+from cours.models import CoursImage, Cours
 from core.utils import upload_file_to_s3, is_s3_configured
 import logging
 
@@ -171,6 +172,51 @@ def migrate_cours_images():
     return migrated > 0
 
 
+def migrate_cours_pdfs():
+    """Migre les PDF des cours vers S3"""
+    print("\n=== Migration des PDF de cours ===")
+
+    if not is_s3_configured():
+        print("❌ S3 n'est pas configuré. Migration impossible.")
+        return False
+
+    migrated = 0
+    failed = 0
+
+    for cours in Cours.objects.all():
+        try:
+            pdf_field = getattr(cours, 'pdf_file', None)
+            if pdf_field and getattr(pdf_field, 'path', None):
+                print(f"Migration: {pdf_field.name}")
+
+                with open(pdf_field.path, 'rb') as f:
+                    file_content = f.read()
+
+                # Forcer le type MIME PDF
+                content_type = 'application/pdf'
+
+                # Conserver la clé existante (ex: cours_pdfs/monfichier.pdf)
+                result = upload_file_to_s3(
+                    file_content,
+                    pdf_field.name,
+                    content_type
+                )
+
+                if result['success']:
+                    print(f"  ✅ Migré vers: {result['url']}")
+                    migrated += 1
+                else:
+                    print(f"  ❌ Erreur: {result['error']}")
+                    failed += 1
+
+        except Exception as e:
+            print(f"  ❌ Erreur lors de la migration: {e}")
+            failed += 1
+
+    print(f"PDF de cours: {migrated} migrés, {failed} erreurs")
+    return migrated > 0
+
+
 def main():
     """Fonction principale"""
     print("Migration des images vers S3")
@@ -181,22 +227,28 @@ def main():
         print("Veuillez configurer les variables d'environnement AWS.")
         return
 
-    # Demander confirmation
-    print("⚠️  Cette opération va migrer toutes les images existantes vers S3.")
-    print("   Assurez-vous que S3 est correctement configuré.")
-    print("   Les fichiers locaux ne seront pas supprimés.")
-    print()
+    # Arguments CLI
+    parser = argparse.ArgumentParser(description="Migrer les médias existants vers S3")
+    parser.add_argument('-y', '--yes', action='store_true', help="Confirmer sans demander")
+    args = parser.parse_args()
 
-    confirm = input("Voulez-vous continuer? (y/N): ")
-    if confirm.lower() != 'y':
-        print("Migration annulée.")
-        return
+    # Demander confirmation si nécessaire
+    if not args.yes:
+        print("⚠️  Cette opération va migrer toutes les images et PDF existants vers S3.")
+        print("   Assurez-vous que S3 est correctement configuré.")
+        print("   Les fichiers locaux ne seront pas supprimés.")
+        print()
+        confirm = input("Voulez-vous continuer? (y/N): ")
+        if confirm.lower() != 'y':
+            print("Migration annulée.")
+            return
 
     # Migrer les images
     success = False
     success |= migrate_exercice_images()
     success |= migrate_quiz_images()
     success |= migrate_cours_images()
+    success |= migrate_cours_pdfs()
 
     print("\n" + "=" * 40)
     if success:

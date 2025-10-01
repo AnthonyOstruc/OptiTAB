@@ -14,31 +14,82 @@
       
       <div v-else-if="selectedCours" class="cours-container">
         <header class="cours-header">
-          <div class="cours-header-top">
-            <h1 class="cours-title">{{ selectedCours.titre }}</h1>
-            <template v-if="selectedCours.pdf_url">
-              <a :href="selectedCours.pdf_url" class="btn-pdf" :download="`${selectedCours.titre}.pdf`">Télécharger PDF</a>
-            </template>
-          </div>
-          <div class="cours-meta">
-            <span class="cours-difficulty" :class="selectedCours.difficulty">
-              {{ getDifficultyLabel(selectedCours.difficulty) }}
-            </span>
-            <span class="cours-date">
-              {{ formatDate(selectedCours.date_creation) }}
-            </span>
-          </div>
+          <h1 class="cours-title">{{ selectedCours.titre }}</h1>
+          <template v-if="selectedCours.pdf_url">
+            <a :href="selectedCours.pdf_url" class="btn-pdf" :download="`${selectedCours.titre}.pdf`">Télécharger PDF</a>
+          </template>
           <p v-if="selectedCours.description" class="cours-description">
             {{ selectedCours.description }}
           </p>
         </header>
-        <div class="cours-content" v-html="renderedContent"></div>
+
+        <!-- Sommaire -->
+        <nav v-if="tableOfContents.length > 0" class="toc-container">
+          <div class="toc-header" @click="isTocExpanded = !isTocExpanded">
+            <div class="toc-header-content">
+              <svg class="toc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"/>
+                <line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/>
+                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                <line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+              <h3 class="toc-title">Sommaire</h3>
+            </div>
+            <svg 
+              class="toc-toggle-icon" 
+              :class="{ 'expanded': isTocExpanded }"
+              width="20" 
+              height="20" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <transition name="toc-expand">
+            <ul v-show="isTocExpanded" class="toc-list">
+              <li 
+                v-for="(item, index) in tableOfContents" 
+                :key="index"
+                :class="['toc-item', `toc-level-${item.level}`]"
+              >
+                <a 
+                  class="toc-link"
+                  :href="`#${item.id}`"
+                  @click.prevent="scrollToSection(item.id)"
+                >
+                  {{ item.text }}
+                </a>
+              </li>
+            </ul>
+          </transition>
+        </nav>
+
+        <div class="cours-content" ref="coursContentRef" v-html="renderedContent"></div>
         <div v-if="selectedCours.video_url" class="cours-video">
           <h3>Vidéo explicative</h3>
           <div class="video-container">
             <iframe :src="selectedCours.video_url" title="Vidéo du cours" frameborder="0" allowfullscreen></iframe>
           </div>
         </div>
+
+        <!-- Bouton retour en haut -->
+        <transition name="scroll-top-fade">
+          <button
+            v-show="showScrollTopButton"
+            class="scroll-top-btn"
+            @click="scrollToTop"
+            aria-label="Retour en haut"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="18 15 12 9 6 15"/>
+            </svg>
+          </button>
+        </transition>
       </div>
       
       <div v-else-if="cours.length === 0" class="no-cours">
@@ -62,7 +113,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, nextTick, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
@@ -78,6 +129,13 @@ const subjectsStore = useSubjectsStore()
 const cours = ref([])
 const selectedCours = ref(null)
 const loading = ref(true)
+const coursContentRef = ref(null)
+const tableOfContents = ref([])
+const isTocExpanded = ref(false)
+const showScrollTopButton = ref(false)
+let tocObserver = null
+let tocDebounce = null
+let scrollCleanup = null
 
 // Récupérer les paramètres de la route
 const currentMatiereId = computed(() => {
@@ -150,6 +208,13 @@ onMounted(async () => {
     // Rendre le contenu MathJax après le chargement
     nextTick(() => {
       renderMath()
+      // Attendre que le DOM soit vraiment mis à jour
+      setTimeout(() => {
+        extractTableOfContents()
+        setupTocObserver()
+        // Ajouter l'écouteur de scroll pour le bouton retour en haut
+        setupScrollListener()
+      }, 150)
     })
   } catch (error) {
     console.error('Erreur lors du chargement des cours:', error)
@@ -213,14 +278,153 @@ const renderedContent = computed(() => {
   return renderContentWithImages(content, images)
 })
 
-// Relancer renderMath() quand le contenu change
+// Extraire la table des matières depuis le contenu HTML
+function extractTableOfContents() {
+  tableOfContents.value = []
+  
+  if (!coursContentRef.value) return
+  
+  const headings = coursContentRef.value.querySelectorAll('h2, h3')
+  
+  headings.forEach((heading, index) => {
+    const level = parseInt(heading.tagName.substring(1)) // h2 -> 2, h3 -> 3
+    const text = heading.textContent.trim()
+    
+    // Ignorer les titres vides ou trop courts
+    if (!text || text.length < 2) return
+    
+    const id = `toc-section-${index}`
+    
+    // Ajouter l'ID à l'élément pour le scroll
+    heading.id = id
+    
+    tableOfContents.value.push({
+      id,
+      text,
+      level
+    })
+  })
+}
+
+// Observer pour ré-extraire le sommaire quand le DOM du contenu change
+function setupTocObserver() {
+  if (!coursContentRef.value || typeof MutationObserver === 'undefined') return
+  if (tocObserver) {
+    try { tocObserver.disconnect() } catch (e) {}
+  }
+  tocObserver = new MutationObserver(() => {
+    if (tocDebounce) clearTimeout(tocDebounce)
+    tocDebounce = setTimeout(() => {
+      extractTableOfContents()
+    }, 200)
+  })
+  tocObserver.observe(coursContentRef.value, {
+    childList: true,
+    subtree: true
+  })
+}
+
+// Fonction pour scroller vers une section
+function scrollToSection(sectionId) {
+  const element = document.getElementById(sectionId)
+  if (!element) return
+
+  const container = getScrollContainer(coursContentRef.value)
+  const offset = 100 // Offset pour header fixe
+
+  if (container && container !== document.body && container !== document.documentElement) {
+    const rect = element.getBoundingClientRect()
+    const containerRect = container.getBoundingClientRect()
+    const targetTop = container.scrollTop + (rect.top - containerRect.top) - offset
+    container.scrollTo({ top: targetTop, behavior: 'smooth' })
+  } else {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop || 0
+    const elementPosition = element.getBoundingClientRect().top + currentScroll
+    const offsetPosition = elementPosition - offset
+    window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+  }
+}
+
+// Trouver le conteneur scrollable le plus proche
+function getScrollContainer(el) {
+  let parent = el ? el.parentElement : null
+  while (parent) {
+    const style = window.getComputedStyle(parent)
+    const overflowY = style.overflowY
+    const canScroll = (overflowY === 'auto' || overflowY === 'scroll') && parent.scrollHeight > parent.clientHeight
+    if (canScroll) return parent
+    parent = parent.parentElement
+  }
+  return document.scrollingElement || document.documentElement
+}
+
+// Gérer l'apparition du bouton retour en haut
+function setupScrollListener() {
+  const container = getScrollContainer(coursContentRef.value)
+
+  const handleScroll = () => {
+    const scrollTop = container === document.documentElement || container === document.body
+      ? window.pageYOffset || document.documentElement.scrollTop
+      : container.scrollTop
+
+    showScrollTopButton.value = scrollTop > 300
+  }
+
+  if (container === document.documentElement || container === document.body) {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+  } else {
+    container.addEventListener('scroll', handleScroll, { passive: true })
+  }
+
+  // Nettoyer l'écouteur au démontage
+  scrollCleanup = () => {
+    if (container === document.documentElement || container === document.body) {
+      window.removeEventListener('scroll', handleScroll)
+    } else {
+      container.removeEventListener('scroll', handleScroll)
+    }
+  }
+}
+
+// Fonction pour remonter en haut
+function scrollToTop() {
+  const container = getScrollContainer(coursContentRef.value)
+
+  if (container === document.documentElement || container === document.body) {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  } else {
+    container.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
+
+// Relancer renderMath() et extraire le sommaire quand le contenu change
 watch(selectedCours, () => {
   if (selectedCours.value) {
     nextTick(() => {
       renderMath()
+      // Attendre que le DOM soit vraiment mis à jour
+      setTimeout(() => {
+        extractTableOfContents()
+        setupTocObserver()
+        // Réinitialiser l'écouteur de scroll pour le nouveau cours
+        if (scrollCleanup) scrollCleanup()
+        setupScrollListener()
+      }, 100)
     })
   }
 }, { deep: true })
+
+onBeforeUnmount(() => {
+  if (tocObserver) {
+    try { tocObserver.disconnect() } catch (e) {}
+  }
+  if (tocDebounce) {
+    try { clearTimeout(tocDebounce) } catch (e) {}
+  }
+  if (scrollCleanup) {
+    try { scrollCleanup() } catch (e) {}
+  }
+})
 </script>
 
 <style scoped>
@@ -236,6 +440,7 @@ watch(selectedCours, () => {
   color: #193e8e;
   margin-bottom: 40px;
   font-weight: 800;
+  text-align: center;
 }
 
 .loading-container {
@@ -326,6 +531,7 @@ watch(selectedCours, () => {
   overflow-wrap: break-word;
   hyphens: auto;
   max-width: 100%;
+  text-align: center;
 }
 
 .cours-meta {
@@ -360,10 +566,18 @@ watch(selectedCours, () => {
   text-decoration: none;
   font-weight: 600;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin: 1rem auto;
 }
 
 .btn-pdf:hover {
   background: #b91c1c;
+}
+
+.cours-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 @media (max-width: 640px) {
@@ -399,10 +613,8 @@ watch(selectedCours, () => {
   hyphens: auto;
   line-height: 1.6;
   color: #333;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 2rem 0;
+  background: transparent;
 }
 
 /* Styles pour les titres dans le contenu */
@@ -445,5 +657,238 @@ watch(selectedCours, () => {
 
 .cours-content :deep(.MathJax_SVG) {
   font-size: 1em !important;
+}
+
+/* Styles du sommaire */
+.toc-container {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  text-align: left;
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  border-bottom: none;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.toc-header:hover {
+  opacity: 0.8;
+}
+
+.toc-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toc-icon {
+  color: #193e8e;
+  flex-shrink: 0;
+}
+
+.toc-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #193e8e;
+  margin: 0;
+  letter-spacing: 0.025em;
+}
+
+.toc-toggle-icon {
+  color: #193e8e;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.toc-toggle-icon.expanded {
+  transform: rotate(180deg);
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 2px solid #cbd5e1;
+  margin-top: 1rem;
+}
+
+.toc-item {
+  margin: 0;
+}
+
+.toc-level-2 {
+  margin-top: 0.5rem;
+}
+
+.toc-level-3 {
+  margin-left: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.toc-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.625rem 0.875rem;
+  color: #334155;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  cursor: pointer;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-family: inherit;
+}
+
+.toc-link:hover {
+  background: #ffffff;
+  color: #193e8e;
+  transform: translateX(4px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.toc-level-2 .toc-link {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.toc-level-3 .toc-link {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.toc-level-3 .toc-link:hover {
+  color: #193e8e;
+}
+
+/* Transition pour l'expansion/réduction */
+.toc-expand-enter-active,
+.toc-expand-leave-active {
+  transition: all 0.3s ease;
+  max-height: 1000px;
+  overflow: hidden;
+}
+
+.toc-expand-enter-from,
+.toc-expand-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .toc-container {
+    padding: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .toc-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .toc-title {
+    font-size: 1rem;
+  }
+
+  .toc-level-3 {
+    margin-left: 1rem;
+  }
+
+  .toc-link {
+    font-size: 0.875rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .toc-level-2 .toc-link {
+    font-size: 0.95rem;
+  }
+
+  .toc-level-3 .toc-link {
+    font-size: 0.85rem;
+  }
+}
+
+/* Bouton retour en haut */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  width: 50px;
+  height: 50px;
+  background: #193e8e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(25, 62, 142, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.scroll-top-btn:hover {
+  background: #0f2866;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(25, 62, 142, 0.4);
+}
+
+.scroll-top-btn:active {
+  transform: translateY(-1px);
+}
+
+.scroll-top-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Animation de transition pour le bouton */
+.scroll-top-fade-enter-active,
+.scroll-top-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.scroll-top-fade-enter-from,
+.scroll-top-fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+@media (max-width: 768px) {
+  .scroll-top-btn {
+    bottom: 1.5rem;
+    left: 1.5rem;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-top-btn {
+    bottom: 1rem;
+    left: 1rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .scroll-top-btn svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 </style> 

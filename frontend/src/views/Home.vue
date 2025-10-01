@@ -74,6 +74,7 @@ onMounted(async () => {
       :message-parents="sectionHero.messageParents"
       :cta-text="sectionHero.ctaText"
       :cta-secondary="sectionHero.ctaSecondary"
+      :bg="sectionHero.bg"
       @cta-main="handleCtaMain"
       @cta-secondary="handleCtaSecondary"
     />

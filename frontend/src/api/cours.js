@@ -38,6 +38,7 @@ export const getCoursPourUtilisateur = async () => {
 // ----- Admin CRUD Cours -----
 export const createCours = (payload) => apiClient.post('/api/cours/cours/', payload)
 export const updateCours = (id, payload) => apiClient.patch(`/api/cours/cours/${id}/`, payload)
+export const updateCoursFormData = (id, formData) => apiClient.patch(`/api/cours/cours/${id}/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 export const deleteCours = (id) => apiClient.delete(`/api/cours/cours/${id}/`)
 
 // ----- Cours Images -----

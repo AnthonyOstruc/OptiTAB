@@ -47,6 +47,7 @@ const props = defineProps({
 .section-hero {
   position: relative;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   min-height: 480px;
@@ -54,8 +55,8 @@ const props = defineProps({
   border-radius: 0;
   gap: 40px;
   overflow: hidden;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   @media (max-width: 800px) {
     flex-direction: column;
     text-align: center;
@@ -63,17 +64,24 @@ const props = defineProps({
     border-radius: 0;
     gap: 0px;
     min-height: 420px;
+    max-width: none;
   }
 }
 .section-hero__content {
   position: relative;
   z-index: 2;
-  flex: 1 1 350px;
+  flex: 0 1 auto;
   max-width: 520px;
   color: #18181b;
   text-shadow: 0 2px 8px rgba(255,255,255,0.08);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   @media (max-width: 800px) {
     margin: 0 auto;
+    text-align: center;
   }
 }
 .section-hero__title {
@@ -150,11 +158,10 @@ const props = defineProps({
 .section-hero__image-wrapper {
   position: relative;
   z-index: 2;
-  flex: 1 1 320px;
+  flex: 0 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 220px;
   padding: 20px;
   
   &::before {

@@ -1,0 +1,685 @@
+
+=== Suites Numériques - Cours Complet Terminal
+Difficulté: medium
+Ordre: 1
+
+Titre: Les Suites Numériques : Définitions, Types et Calculs
+Description: Cours complet sur les suites numériques : définitions générales, suites explicites, récurrentes, arithmétiques, géométriques, étude des variations et limites avec exemples détaillés.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition générale d'une suite</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Une <strong>suite numérique</strong> est une fonction définie sur l'ensemble des entiers naturels $\mathbb{N}$ (ou à partir d'un certain rang $n_0$) et à valeurs dans $\mathbb{R}$.</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u : \mathbb{N} \to \mathbb{R}, \quad n \mapsto u_n$$
+        </div>
+        <p><strong>Notation :</strong> On note la suite $(u_n)$ ou $(u_n)_{n \in \mathbb{N}}$. Le nombre $u_n$ est appelé <em>terme de rang n</em> ou <em>terme général</em>.</p>
+        <p><strong>💡 À retenir :</strong> Une suite associe à chaque entier naturel $n$ un unique nombre réel $u_n$.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Suite définie par une formule explicite</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Une suite est dite <strong>définie explicitement</strong> lorsque chaque terme $u_n$ peut être calculé directement en fonction de $n$, sans avoir besoin de connaître les termes précédents.</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u_n = f(n)$$
+        </div>
+        <p><strong>Exemples :</strong></p>
+        <ul style="margin:10px 0; padding-left:30px;">
+            <li>$u_n = 2n + 3$ pour tout $n \in \mathbb{N}$</li>
+            <li>$u_n = n^2 - 1$ pour tout $n \in \mathbb{N}$</li>
+            <li>$u_n = \frac{1}{n+1}$ pour tout $n \in \mathbb{N}$</li>
+        </ul>
+        <p><strong>Avantage :</strong> On peut calculer directement n'importe quel terme sans calculer tous les termes précédents.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Suite définie par récurrence</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Une suite est dite <strong>définie par récurrence</strong> lorsque chaque terme est calculé à partir du (ou des) terme(s) précédent(s).</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\begin{cases} u_0 = a \text{ (terme initial)} \\ u_{n+1} = f(u_n) \text{ (relation de récurrence)} \end{cases}$$
+        </div>
+        <p><strong>Exemples :</strong></p>
+        <ul style="margin:10px 0; padding-left:30px;">
+            <li>$u_0 = 1$ et $u_{n+1} = 2u_n + 3$</li>
+            <li>$u_0 = 5$ et $u_{n+1} = u_n^2 - 1$</li>
+            <li>Suite de Fibonacci : $u_0 = 0$, $u_1 = 1$ et $u_{n+2} = u_{n+1} + u_n$</li>
+        </ul>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Suite arithmético-géométrique</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Une suite $(u_n)$ est dite <strong>arithmético-géométrique</strong> si elle est définie par une relation de récurrence de la forme :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u_{n+1} = a \cdot u_n + b$$
+        </div>
+        <p>où $a$ et $b$ sont des réels constants avec $a \neq 0$, $a \neq 1$ et $b \neq 0$.</p>
+        
+        <p><strong>Méthode de résolution :</strong> On cherche le point fixe $\ell$ tel que $\ell = a\ell + b$, donc $\ell = \frac{b}{1-a}$.</p>
+        <p>On pose alors $v_n = u_n - \ell$. La suite $(v_n)$ est géométrique de raison $a$.</p>
+        <div style="text-align:center; font-size:1.1em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$v_n = v_0 \times a^n \quad \Rightarrow \quad u_n = \ell + (u_0 - \ell) \times a^n$$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Suite arithmétique et somme</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <p>Une suite $(u_n)$ est <strong>arithmétique</strong> s'il existe un nombre réel $r$ appelé <em>raison</em> tel que :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u_{n+1} = u_n + r \quad \text{pour tout } n \in \mathbb{N}$$
+        </div>
+        
+        <h3 style="color:#34495e;">Terme général</h3>
+        <p>Si $(u_n)$ est arithmétique de premier terme $u_0$ et de raison $r$ :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u_n = u_0 + n \times r$$
+        </div>
+        
+        <h3 style="color:#34495e;">Somme des termes</h3>
+        <p>La somme des $(n+1)$ premiers termes d'une suite arithmétique (de $u_0$ à $u_n$) est :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$S_n = u_0 + u_1 + u_2 + \cdots + u_n = \frac{(n+1)(u_0 + u_n)}{2}$$
+        </div>
+        <p><strong>Formule alternative :</strong></p>
+        <div style="text-align:center; font-size:1.1em; margin:15px 0; padding:10px; background:#f8f9fa; border-radius:4px;">
+            $$S_n = \frac{\text{(nombre de termes)} \times (\text{premier terme} + \text{dernier terme})}{2}$$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Propriété importante :</strong> Dans une suite arithmétique, la somme de termes équidistants des extrêmes est constante : $u_0 + u_n = u_1 + u_{n-1} = u_2 + u_{n-2} = \ldots$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Exemple détaillé : Suite arithmétique</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Calcul d'un terme</h3>
+        <p><strong>Énoncé :</strong> Soit $(u_n)$ une suite arithmétique telle que $u_0 = 7$ et $r = -3$. Calculer $u_{15}$.</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li>On applique la formule : $u_n = u_0 + n \times r$</li>
+                <li>$u_{15} = u_0 + 15 \times r$</li>
+                <li>$u_{15} = 7 + 15 \times (-3)$</li>
+                <li>$u_{15} = 7 - 45 = -38$</li>
+            </ul>
+        </div>
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Réponse :</strong> $u_{15} = -38$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Calcul d'une somme</h3>
+        <p><strong>Énoncé :</strong> Calculer la somme des 20 premiers termes de la suite arithmétique définie par $u_0 = 5$ et $r = 4$.</p>
+        
+        <p><strong>Données :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            • Premier terme : $u_0 = 5$<br>
+            • Raison : $r = 4$<br>
+            • On cherche : $S_{19} = u_0 + u_1 + \cdots + u_{19}$ (20 termes)
+        </div>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Étape 1 :</strong> Calculer le dernier terme $u_{19}$
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$u_{19} = u_0 + 19 \times r = 5 + 19 \times 4 = 5 + 76 = 81$$
+            </div>
+            
+            <strong>Étape 2 :</strong> Appliquer la formule de la somme
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$S_{19} = \frac{20 \times (u_0 + u_{19})}{2} = \frac{20 \times (5 + 81)}{2}$$
+                $$S_{19} = \frac{20 \times 86}{2} = 10 \times 86 = 860$$
+            </div>
+        </div>
+        
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Résultat final :</strong> La somme des 20 premiers termes est $S_{19} = 860$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Suite géométrique et somme</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <p>Une suite $(u_n)$ est <strong>géométrique</strong> s'il existe un nombre réel $q \neq 0$ appelé <em>raison</em> tel que :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u_{n+1} = q \times u_n \quad \text{pour tout } n \in \mathbb{N}$$
+        </div>
+        
+        <h3 style="color:#34495e;">Terme général</h3>
+        <p>Si $(u_n)$ est géométrique de premier terme $u_0$ et de raison $q$ :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u_n = u_0 \times q^n$$
+        </div>
+        
+        <h3 style="color:#34495e;">Somme des termes</h3>
+        <p>La somme des $(n+1)$ premiers termes d'une suite géométrique (de $u_0$ à $u_n$) est :</p>
+        
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Cas où $q = 1$ :</strong>
+            <div style="margin:8px 0; text-align:center; font-size:1.1em;">
+                $$S_n = (n+1) \times u_0$$
+            </div>
+        </div>
+        
+        <div style="background:#f0f9ff; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #3498db;">
+            <strong>📘 Cas où $q \neq 1$ :</strong>
+            <div style="margin:8px 0; text-align:center; font-size:1.2em;">
+                $$S_n = u_0 + u_1 + u_2 + \cdots + u_n = u_0 \times \frac{1 - q^{n+1}}{1 - q}$$
+            </div>
+            <p style="margin:8px 0;"><strong>Formule alternative :</strong></p>
+            <div style="text-align:center; font-size:1.1em;">
+                $$S_n = u_0 \times \frac{q^{n+1} - 1}{q - 1}$$
+            </div>
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Astuce mnémotechnique :</strong> La somme s'écrit toujours avec le premier terme multiplié par une fraction contenant des puissances de $q$ et $(1-q)$ ou $(q-1)$ au dénominateur.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Exemple détaillé : Suite géométrique</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Calcul d'un terme</h3>
+        <p><strong>Énoncé :</strong> Soit $(v_n)$ une suite géométrique telle que $v_0 = 3$ et $q = 2$. Calculer $v_8$.</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li>On applique la formule : $v_n = v_0 \times q^n$</li>
+                <li>$v_8 = v_0 \times q^8$</li>
+                <li>$v_8 = 3 \times 2^8$</li>
+                <li>$v_8 = 3 \times 256 = 768$</li>
+            </ul>
+        </div>
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Réponse :</strong> $v_8 = 768$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Calcul d'une somme</h3>
+        <p><strong>Énoncé :</strong> Calculer la somme des 10 premiers termes de la suite géométrique définie par $v_0 = 2$ et $q = 3$.</p>
+        
+        <p><strong>Données :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            • Premier terme : $v_0 = 2$<br>
+            • Raison : $q = 3 \neq 1$<br>
+            • On cherche : $S_9 = v_0 + v_1 + \cdots + v_9$ (10 termes)
+        </div>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Vérification :</strong> $q = 3 \neq 1$, donc on utilise la formule avec $q \neq 1$
+            
+            <div style="margin:15px auto; max-width:fit-content; text-align:left;">
+                $$S_9 = v_0 \times \frac{1 - q^{10}}{1 - q} = 2 \times \frac{1 - 3^{10}}{1 - 3}$$
+                $$S_9 = 2 \times \frac{1 - 59049}{-2} = 2 \times \frac{-59048}{-2}$$
+                $$S_9 = 2 \times 29524 = 59048$$
+            </div>
+            
+            <strong>Ou avec la formule alternative :</strong>
+            <div style="margin:15px auto; max-width:fit-content; text-align:left;">
+                $$S_9 = v_0 \times \frac{q^{10} - 1}{q - 1} = 2 \times \frac{3^{10} - 1}{3 - 1}$$
+                $$S_9 = 2 \times \frac{59049 - 1}{2} = 2 \times \frac{59048}{2} = 59048$$
+            </div>
+        </div>
+        
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Résultat final :</strong> La somme des 10 premiers termes est $S_9 = 59\,048$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 3 : Application avec $q < 1$</h3>
+        <p><strong>Énoncé :</strong> On considère la suite géométrique $(w_n)$ avec $w_0 = 100$ et $q = 0{,}5$. Calculer $S_5$.</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            On calcule la somme des 6 premiers termes (de $w_0$ à $w_5$) :
+            <div style="margin:15px auto; max-width:fit-content; text-align:left;">
+                $$S_5 = w_0 \times \frac{1 - q^6}{1 - q} = 100 \times \frac{1 - (0{,}5)^6}{1 - 0{,}5}$$
+                $$S_5 = 100 \times \frac{1 - 0{,}015625}{0{,}5} = 100 \times \frac{0{,}984375}{0{,}5}$$
+                $$S_5 = 100 \times 1{,}96875 = 196{,}875$$
+            </div>
+        </div>
+        
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Réponse :</strong> $S_5 = 196{,}875$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Étude des suites - Sens de variation</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définitions</h3>
+        
+        <p><strong>Suite croissante :</strong> Une suite $(u_n)$ est <strong>croissante</strong> si chaque terme est supérieur ou égal au précédent.</p>
+        <div style="text-align:center; font-size:1.1em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u_{n+1} \geq u_n \quad \text{pour tout } n \in \mathbb{N}$$
+        </div>
+        <p>Si l'inégalité est stricte ($u_{n+1} > u_n$), la suite est dite <strong>strictement croissante</strong>.</p>
+        
+        <p style="margin-top:20px;"><strong>Suite décroissante :</strong> Une suite $(u_n)$ est <strong>décroissante</strong> si chaque terme est inférieur ou égal au précédent.</p>
+        <div style="text-align:center; font-size:1.1em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u_{n+1} \leq u_n \quad \text{pour tout } n \in \mathbb{N}$$
+        </div>
+        <p>Si l'inégalité est stricte ($u_{n+1} < u_n$), la suite est dite <strong>strictement décroissante</strong>.</p>
+        
+        <p style="margin-top:20px;"><strong>Suite constante :</strong> Une suite $(u_n)$ est <strong>constante</strong> si tous ses termes sont égaux.</p>
+        <div style="text-align:center; font-size:1.1em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u_{n+1} = u_n \quad \text{pour tout } n \in \mathbb{N}$$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes pour étudier le sens de variation</h3>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Méthode 1 : Étude du signe de $u_{n+1} - u_n$</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Si $u_{n+1} - u_n \geq 0$ pour tout $n$, alors $(u_n)$ est croissante</li>
+                <li>Si $u_{n+1} - u_n \leq 0$ pour tout $n$, alors $(u_n)$ est décroissante</li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Méthode 2 : Étude du quotient $\frac{u_{n+1}}{u_n}$ (si $u_n > 0$)</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Si $\frac{u_{n+1}}{u_n} \geq 1$ pour tout $n$, alors $(u_n)$ est croissante</li>
+                <li>Si $\frac{u_{n+1}}{u_n} \leq 1$ pour tout $n$, alors $(u_n)$ est décroissante</li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Méthode 3 : Étude de la fonction associée</strong>
+            <p style="margin:8px 0;">Si $u_n = f(n)$ avec $f$ dérivable, on étudie le signe de $f'(x)$ :</p>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Si $f'(x) \geq 0$, alors $(u_n)$ est croissante</li>
+                <li>Si $f'(x) \leq 0$, alors $(u_n)$ est décroissante</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Tableau comparatif - Sens de variation des suites usuelles</h3>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #2c3e50;">
+            <thead>
+                <tr style="background:#2c3e50; border-bottom:2px solid #2c3e50;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:left; font-weight:700; color:#ffffff;">Type de suite</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Condition</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Sens de variation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Suite arithmétique</strong><br>$u_{n+1} = u_n + r$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">
+                        $r > 0$<br>
+                        $r = 0$<br>
+                        $r < 0$
+                    </td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">
+                        ↗ Croissante<br>
+                        → Constante<br>
+                        ↘ Décroissante
+                    </td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Suite géométrique</strong><br>$u_{n+1} = q \times u_n$<br>(avec $u_0 > 0$)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">
+                        $q > 1$<br>
+                        $q = 1$<br>
+                        $0 < q < 1$<br>
+                        $q < 0$
+                    </td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">
+                        ↗ Croissante<br>
+                        → Constante<br>
+                        ↘ Décroissante<br>
+                        ⚡ Non monotone (alterne)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#fff8dc; padding:10px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Attention :</strong> Pour une suite géométrique avec $u_0 < 0$, les variations sont inversées !
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Limites de suites</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition intuitive</h3>
+        <p>La <strong>limite d'une suite</strong> $(u_n)$ quand $n$ tend vers l'infini représente la valeur vers laquelle se rapprochent les termes de la suite lorsque $n$ devient très grand.</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Limite finie :</strong> On dit que $(u_n)$ a pour limite $\ell$ (où $\ell \in \mathbb{R}$) si les termes $u_n$ se rapprochent de $\ell$ quand $n$ devient très grand.
+            <div style="text-align:center; margin:10px 0; font-size:1.1em;">
+                $$\lim_{n \to +\infty} u_n = \ell$$
+            </div>
+            <p style="margin:8px 0;">On dit alors que la suite est <strong>convergente</strong>.</p>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Limite infinie :</strong> On dit que $(u_n)$ a pour limite $+\infty$ (ou $-\infty$) si les termes $u_n$ deviennent aussi grands que l'on veut (en valeur absolue).
+            <div style="text-align:center; margin:10px 0; font-size:1.1em;">
+                $$\lim_{n \to +\infty} u_n = +\infty \quad \text{ou} \quad \lim_{n \to +\infty} u_n = -\infty$$
+            </div>
+            <p style="margin:8px 0;">On dit alors que la suite est <strong>divergente</strong>.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Limites des suites usuelles</h3>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #2c3e50;">
+            <thead>
+                <tr style="background:#2c3e50; border-bottom:2px solid #2c3e50;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Suite $(u_n)$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Limite quand $n \to +\infty$</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$u_n = n$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$+\infty$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$u_n = n^2$, $n^3$, ... $n^k$ ($k > 0$)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$+\infty$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$u_n = \frac{1}{n}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$0$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$u_n = \frac{1}{n^2}$, $\frac{1}{n^3}$, ... $\frac{1}{n^k}$ ($k > 0$)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$0$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$u_n = \sqrt{n}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$+\infty$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$u_n = q^n$ avec $q > 1$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$+\infty$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$u_n = q^n$ avec $0 < q < 1$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$0$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$u_n = q^n$ avec $q = 1$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$1$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$u_n = q^n$ avec $q \leq -1$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">Pas de limite</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Limites remarquables importantes (Terminal)</h3>
+        
+        <p style="margin:10px 0;"><strong>⭐ Limite fondamentale : Le nombre $e$</strong></p>
+        <div style="text-align:center; font-size:1.15em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:6px;">
+            $$\left(1 + \frac{k}{n}\right)^n \to e^k \text{ quand } n \to +\infty$$
+        </div>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #2c3e50;">
+            <thead>
+                <tr style="background:#2c3e50; border-bottom:2px solid #2c3e50;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Suite $(u_n)$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Limite quand $n \to +\infty$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Remarque</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#fff8e1;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\left(1 + \frac{1}{n}\right)^n$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;"><strong>$e \approx 2{,}718$</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">💡 <strong>À retenir absolument !</strong> Définition du nombre d'Euler</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\left(1 + \frac{k}{n}\right)^n$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$e^k$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Généralisation avec $k$ réel quelconque</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\left(1 + \frac{2}{n}\right)^n$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$e^2$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Cas particulier avec $k = 2$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\left(1 - \frac{1}{n}\right)^n$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$e^{-1} = \frac{1}{e}$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Cas particulier avec $k = -1$</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p style="margin:20px 0 10px 0;"><strong>Autres limites remarquables :</strong></p>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #2c3e50;">
+            <thead>
+                <tr style="background:#2c3e50; border-bottom:2px solid #2c3e50;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Limite</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Valeur</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\lim\limits_{n \to +\infty} \frac{\ln(n)}{n}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$0$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\lim\limits_{n \to +\infty} \frac{\sqrt{n}}{n}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$0$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\lim\limits_{n \to +\infty} \frac{n^k}{e^n}$ (pour tout $k > 0$)</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$0$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\lim\limits_{n \to +\infty} \frac{\sin(n)}{n}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$0$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\lim\limits_{n \to +\infty} \frac{\cos(n)}{n}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$0$</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:6px; margin:15px 0;">
+            <p style="margin:0;"><strong>💡 Croissance comparée :</strong> $\ln(n) \ll n^{\alpha} \ll e^n$ pour tout $\alpha > 0$</p>
+            <p style="margin:5px 0 0 0; font-size:0.95em;">L'exponentielle domine toutes les puissances, et toutes les puissances dominent le logarithme.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Limites des suites arithmétiques et géométriques</h3>
+        
+        <p style="margin:10px 0;"><strong>Suite arithmétique</strong> $u_n = u_0 + nr$</p>
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #2c3e50;">
+            <thead>
+                <tr style="background:#2c3e50; border-bottom:2px solid #2c3e50;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Condition sur $r$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Limite</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$r > 0$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$+\infty$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$r = 0$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$u_0$ (suite constante)</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$r < 0$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$-\infty$</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p style="margin:20px 0 10px 0;"><strong>Suite géométrique</strong> $u_n = u_0 \times q^n$ (avec $u_0 > 0$)</p>
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #2c3e50;">
+            <thead>
+                <tr style="background:#2c3e50; border-bottom:2px solidrgb(95, 152, 209);">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Condition sur $q$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#ffffff;">Limite</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$q > 1$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$+\infty$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$q = 1$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$u_0$ (suite constante)</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$0 < q < 1$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$0$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$-1 < q < 0$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$0$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$q = -1$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Pas de limite (oscille)</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$q < -1$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Pas de limite</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérations sur les limites</h3>
+        
+        <p>Si $\lim\limits_{n \to +\infty} u_n = \ell$ et $\lim\limits_{n \to +\infty} v_n = \ell'$, alors :</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:6px; margin:15px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li><strong>Somme :</strong> $\lim\limits_{n \to +\infty} (u_n + v_n) = \ell + \ell'$</li>
+                <li><strong>Produit :</strong> $\lim\limits_{n \to +\infty} (u_n \times v_n) = \ell \times \ell'$</li>
+                <li><strong>Quotient :</strong> Si $\ell' \neq 0$, $\lim\limits_{n \to +\infty} \frac{u_n}{v_n} = \frac{\ell}{\ell'}$</li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:6px; margin:15px 0;">
+            <p style="margin:0 0 8px 0;"><strong>⚠️ Formes indéterminées :</strong> Il existe des cas où on ne peut pas conclure directement :</p>
+            <ul style="margin:0; padding-left:20px;">
+                <li>$+\infty - \infty$ (différence de deux limites infinies)</li>
+                <li>$0 \times \infty$ (produit de zéro et l'infini)</li>
+                <li>$\frac{\infty}{\infty}$ ou $\frac{0}{0}$ (quotients indéterminés)</li>
+            </ul>
+            <p style="margin:8px 0 0 0;"><strong>💡 Solution :</strong> Factoriser, simplifier ou utiliser d'autres techniques (gendarmes, croissance comparée...).</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorèmes spécifiques sur les limites</h3>
+        
+        <div style="background:#f8f9fa; padding:15px; border-radius:6px; margin:15px 0;">
+            <h4 style="color:#2c3e50; margin-top:0;">📌 Théorème des gendarmes (ou d'encadrement)</h4>
+            <p>Si $(u_n)$, $(v_n)$ et $(w_n)$ sont trois suites telles que :</p>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>À partir d'un certain rang : $u_n \leq v_n \leq w_n$</li>
+                <li>$\lim\limits_{n \to +\infty} u_n = \lim\limits_{n \to +\infty} w_n = \ell$</li>
+            </ul>
+            <p><strong>Alors :</strong> $\lim\limits_{n \to +\infty} v_n = \ell$</p>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0; padding:10px; background:#ffffff; border-radius:4px;">
+                $$u_n \leq v_n \leq w_n \text{ et } \lim u_n = \lim w_n = \ell \quad \Rightarrow \quad \lim v_n = \ell$$
+            </div>
+            <p style="margin:8px 0;"><strong>💡 Usage :</strong> Utile pour les suites avec expressions trigonométriques ou compliquées.</p>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:15px; border-radius:6px; margin:15px 0;">
+            <h4 style="color:#2c3e50; margin-top:0;">📌 Théorème de comparaison</h4>
+            <p><strong>Cas 1 :</strong> Si à partir d'un certain rang $u_n \leq v_n$ et $\lim\limits_{n \to +\infty} u_n = +\infty$</p>
+            <p><strong>Alors :</strong> $\lim\limits_{n \to +\infty} v_n = +\infty$</p>
+            
+            <p style="margin-top:15px;"><strong>Cas 2 :</strong> Si à partir d'un certain rang $u_n \leq v_n$ et $\lim\limits_{n \to +\infty} v_n = -\infty$</p>
+            <p><strong>Alors :</strong> $\lim\limits_{n \to +\infty} u_n = -\infty$</p>
+            
+            <p style="margin:8px 0;"><strong>💡 Usage :</strong> Permet de prouver qu'une suite tend vers l'infini par comparaison.</p>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:15px; border-radius:6px; margin:15px 0;">
+            <h4 style="color:#2c3e50; margin-top:0;">📌 Suite monotone et bornée</h4>
+            <p><strong>Théorème :</strong> Toute suite <strong>croissante et majorée</strong> est convergente.</p>
+            <p>Toute suite <strong>décroissante et minorée</strong> est convergente.</p>
+            <div style="background:#ffffff; padding:10px; border-radius:4px; margin:10px 0;">
+                <strong>Définitions :</strong>
+                <ul style="margin:8px 0; padding-left:20px;">
+                    <li><strong>Suite majorée :</strong> Il existe un réel $M$ tel que $u_n \leq M$ pour tout $n$</li>
+                    <li><strong>Suite minorée :</strong> Il existe un réel $m$ tel que $u_n \geq m$ pour tout $n$</li>
+                    <li><strong>Suite bornée :</strong> Suite à la fois majorée et minorée</li>
+                </ul>
+            </div>
+            <p style="margin:8px 0;"><strong>💡 Usage :</strong> Garantit l'existence d'une limite sans forcément la calculer.</p>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:15px; border-radius:6px; margin:15px 0;">
+            <h4 style="color:#2c3e50; margin-top:0;">📌 Limite et valeur absolue</h4>
+            <p>Si $\lim\limits_{n \to +\infty} |u_n| = 0$, alors $\lim\limits_{n \to +\infty} u_n = 0$</p>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0; padding:10px; background:#ffffff; border-radius:4px;">
+                $$\lim_{n \to +\infty} |u_n| = 0 \quad \Rightarrow \quad \lim_{n \to +\infty} u_n = 0$$
+            </div>
+            <p style="margin:8px 0;"><strong>💡 Usage :</strong> Très utile pour les suites avec sinus ou cosinus : $\left|\frac{\sin(n)}{n}\right| \leq \frac{1}{n}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Erreurs fréquentes et conseils</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fdf2f2; padding:15px; border-radius:6px; margin-bottom:15px;">
+            <strong>❌ Pièges à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Confondre addition (suite arithmétique) et multiplication (suite géométrique)</li>
+                <li>Oublier de compter le bon nombre de termes : de $u_0$ à $u_n$, il y a $(n+1)$ termes</li>
+                <li>Utiliser la formule de somme géométrique avec $q=1$ (elle n'est valable que pour $q \neq 1$)</li>
+                <li>Confondre $u_n$ et $S_n$ : $u_n$ est un terme, $S_n$ est une somme</li>
+                <li>Ne pas faire attention au signe de la raison dans les suites arithmétiques</li>
+                <li>Étudier la variation sans vérifier le signe des termes pour la méthode du quotient</li>
+                <li>Confondre convergence et croissance : une suite peut être croissante et divergente !</li>
+            </ul>
+        </div>
+
+        <div style="background:#f0f9f0; padding:15px; border-radius:6px;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Toujours identifier le type de suite avant de choisir la formule</li>
+                <li>Pour une suite arithmétique : vérifier si $u_{n+1} - u_n$ est constant</li>
+                <li>Pour une suite géométrique : vérifier si $\frac{u_{n+1}}{u_n}$ est constant (avec $u_n \neq 0$)</li>
+                <li>Bien noter le premier terme et son indice ($u_0$ ou $u_1$)</li>
+                <li>Pour les sommes géométriques, vérifier systématiquement si $q = 1$ avant d'appliquer la formule</li>
+                <li>Pour étudier la variation, choisir la méthode adaptée (différence, quotient ou dérivée)</li>
+                <li>Pour les limites, mémoriser les limites de référence ($n^k$, $\frac{1}{n^k}$, $q^n$)</li>
+                <li>Faire des calculs intermédiaires clairs pour éviter les erreurs</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===
+

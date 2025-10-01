@@ -16,6 +16,8 @@ class Cours(BaseEducational):
         null=True  # Temporaire pour migration
     )
     video_url = models.URLField(blank=True, null=True)
+    # PDF optionnel associé au cours (uploadé manuellement via l'admin/outil interne)
+    pdf_file = models.FileField(upload_to='cours_pdfs/', blank=True, null=True)
     
     class Meta:
         ordering = ['notion']

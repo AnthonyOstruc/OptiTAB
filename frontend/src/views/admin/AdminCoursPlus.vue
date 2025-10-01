@@ -41,6 +41,11 @@
           multiple
           class="images-file-input"
         />
+        <!-- Upload PDF optionnel -->
+        <div class="pdf-upload" style="margin-top: 12px;">
+          <h4>📄 PDF du cours (optionnel)</h4>
+          <input type="file" ref="pdfInput" @change="handlePdfSelect" accept="application/pdf" />
+        </div>
         <div v-if="selectedImages.length > 0" class="selected-images">
           <h5>Images sélectionnées :</h5>
           <div v-for="(img, index) in selectedImages" :key="index" class="selected-image-item">
@@ -97,7 +102,7 @@
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { getNotions } from '@/api'
-import { createCours, createCoursImage, getCours, updateCours } from '@/api/cours'
+import { createCours, createCoursImage, getCours, updateCoursFormData, updateCours } from '@/api/cours'
 import { renderContentWithImages, renderMath, markdownToHtml } from '@/utils/scientificRenderer'
 import FormatHelp from '@/components/admin/FormatHelp.vue'
 
@@ -123,6 +128,8 @@ const previewList = ref([])
 const hasValidCours = ref(false)
 const selectedImages = ref([])
 const imagesInput = ref(null)
+const selectedPdf = ref(null)
+const pdfInput = ref(null)
 
 // ============================================================================
 // CONSTANTES DU FORMAT
@@ -471,6 +478,11 @@ function handleImagesSelect(event) {
   })
 }
 
+function handlePdfSelect(event) {
+  const file = (event.target.files || [])[0]
+  selectedPdf.value = file || null
+}
+
 function removeSelectedImage(index) {
   const file = selectedImages.value[index]
   imageManager.removeImage(file.name)
@@ -508,7 +520,6 @@ function parseCoursBlock(block) {
     difficulty: 'medium',
     ordre: 0,
     image: '',
-    chapitre: selectedChapitre.value,
     matiere: null,
     notion: null
   }
@@ -537,7 +548,7 @@ function parseCoursBlock(block) {
       } else if (line.startsWith('Ordre:')) {
         cours.ordre = parseInt(line.split(':')[1].trim()) || 0
       } else if (line.startsWith('Chapitre:')) {
-        // Ignore, on utilise selectedChapitre
+        // Ignore, chapitre déduit via la notion
       } else if (line.toLowerCase().startsWith('image:') || line.toLowerCase().startsWith('images:')) {
         cours.image = line.split(':')[1].trim()
       } else if (line.startsWith('Titre:')) {
@@ -596,7 +607,6 @@ async function handleCreate() {
     return
   }
 
-  console.log('Chapitre sélectionné:', selectedChapitreObj)
   console.log('Notion trouvée:', notionObj)
 
   try {
@@ -656,6 +666,17 @@ async function handleCreate() {
               }
               await createCoursImage(payload)
             }
+          }
+        }
+
+        // Uploader le PDF si présent
+        if (selectedPdf.value && courseId) {
+          try {
+            const formData = new FormData()
+            formData.append('pdf_file', selectedPdf.value)
+            await updateCoursFormData(courseId, formData)
+          } catch (e) {
+            console.error('Erreur upload PDF:', e)
           }
         }
       } catch (error) {

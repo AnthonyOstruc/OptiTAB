@@ -55,6 +55,12 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <label>PDF du cours (optionnel):</label>
+        <input type="file" accept="application/pdf" @change="onSelectPdf($event)" />
+        <small v-if="form.__pdf_file" class="muted">PDF sélectionné: {{ form.__pdf_file.name }}</small>
+      </div>
+
       <!-- Section de gestion des images déjà enregistrées (mode édition) -->
       <div v-if="form.id" class="server-images-section">
         <h5>Images du cours (enregistrées)</h5>
@@ -292,7 +298,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import { getCours, createCours, updateCours, deleteCours, getCoursImages, createCoursImage, updateCoursImage, deleteCoursImage } from '@/api/cours'
+import { getCours, createCours, updateCours, deleteCours, getCoursImages, createCoursImage, updateCoursImage, deleteCoursImage, updateCoursFormData } from '@/api/cours'
 import { getNotions } from '@/api'
 import { AdminActionsButtons } from '@/components/admin'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
@@ -316,7 +322,8 @@ const form = ref({
   titre: '', 
   contenu: '', 
   ordre: 0,
-  difficulte: 'moyen'
+  difficulte: 'moyen',
+  __pdf_file: null
 })
 const filters = ref({})
 
@@ -434,6 +441,7 @@ function resetForm() {
   selectedImages.value = []
   serverImages.value = []
   if (imagesInput.value) imagesInput.value.value = ''
+  form.value.__pdf_file = null
 }
 
 // ============================================================================
@@ -466,6 +474,15 @@ function removeSelectedImage(index) {
 
 function getImagePreview(file) {
   return URL.createObjectURL(file)
+}
+
+function onSelectPdf(event) {
+  const file = event?.target?.files?.[0]
+  if (file && file.type !== 'application/pdf') {
+    alert('Veuillez sélectionner un fichier PDF')
+    return
+  }
+  form.value.__pdf_file = file || null
 }
 
 // =========================
@@ -572,10 +589,19 @@ async function handleSave() {
       difficulty: difficultyMap[form.value.difficulte] || 'medium'
     }
 
-    if (form.value.id) {
-      await updateCours(form.value.id, payload)
+    let courseId = form.value.id
+    if (courseId) {
+      await updateCours(courseId, payload)
     } else {
-      await createCours(payload)
+      const created = await createCours(payload)
+      courseId = created?.data?.id || courseId
+    }
+
+    // Upload PDF si sélectionné
+    if (form.value.__pdf_file && courseId) {
+      const fd = new FormData()
+      fd.append('pdf_file', form.value.__pdf_file)
+      await updateCoursFormData(courseId, fd)
     }
 
     // Sauvegarder le chapitre actuel avant de reset le formulaire
@@ -604,7 +630,8 @@ function editCours(cours) {
     titre: cours.titre || '',
     contenu: cours.contenu || '',
     ordre: cours.ordre || 0,
-    difficulte: difficulteFr
+    difficulte: difficulteFr,
+    __pdf_file: null
   }
   
   // Masquer la prévisualisation lors de l'édition

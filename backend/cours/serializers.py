@@ -7,6 +7,7 @@ from .models import Cours, CoursImage
 
 class CoursSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField(read_only=True)
+    pdf_url = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Cours
@@ -33,6 +34,19 @@ class CoursSerializer(serializers.ModelSerializer):
             }
             for img in qs.all().order_by('position', 'id')
         ]
+
+    def get_pdf_url(self, obj):
+        try:
+            pdf = getattr(obj, 'pdf_file', None)
+            if not pdf:
+                return ''
+            url = getattr(pdf, 'url', '')
+            request = self.context.get('request') if hasattr(self, 'context') else None
+            if url and not str(url).startswith(('http://', 'https://')) and request:
+                return request.build_absolute_uri(url)
+            return url
+        except Exception:
+            return ''
 
 
 class CoursImageSerializer(serializers.ModelSerializer):

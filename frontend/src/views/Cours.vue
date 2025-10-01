@@ -226,55 +226,12 @@ onMounted(async () => {
 
 const renderedContent = computed(() => {
   if (!selectedCours.value?.contenu) return ''
-  
-  let content = selectedCours.value.contenu
+
+  const content = selectedCours.value.contenu
   const images = selectedCours.value.images || []
-  
-  // Remplacer les marqueurs [IMAGE_X] par les vraies images
-  content = content.replace(/\[IMAGE_(\d+)\]/g, (match, position) => {
-    const index = parseInt(position) - 1
-    const image = images[index]
-    
-    if (image) {
-      return `
-        <div class="content-image-container" style="text-align: center; margin: 2em 0;">
-          <img 
-            src="${image.image}" 
-            alt="${image.legende || `Image ${position}`}" 
-            class="content-image"
-            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
-          />
-          ${image.legende ? `<div class="image-caption" style="margin-top: 0.5rem; font-size: 0.875rem; color: #666; font-style: italic;">${image.legende}</div>` : ''}
-        </div>
-      `
-    } else {
-      return `
-        <div class="image-placeholder" style="text-align: center; padding: 2em; background: #f5f5f5; border-radius: 8px; margin: 2em 0;">
-          <div style="font-size: 2rem;">🖼️</div>
-          <div style="color: #999; margin-top: 0.5rem;">Image ${position} non disponible</div>
-        </div>
-      `
-    }
-  })
-  
-  // Fallback: s'il n'y a PAS de marqueurs [IMAGE_X] mais qu'on a des images,
-  // on les affiche automatiquement à la fin du contenu
-  if (!/\[IMAGE_\d+\]/.test(selectedCours.value.contenu || '') && images.length > 0) {
-    const autoGallery = images.map(img => `
-      <div class="content-image-container" style="text-align: center; margin: 2em 0;">
-        <img 
-          src="${img.image}" 
-          alt="${img.legende || ''}" 
-          class="content-image"
-          style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
-        />
-        ${img.legende ? `<div class="image-caption" style="margin-top: 0.5rem; font-size: 0.875rem; color: #666; font-style: italic;">${img.legende}</div>` : ''}
-      </div>
-    `).join('\n')
-    content = `${content}\n${autoGallery}`
-  }
-  
-  // Utiliser le rendu Markdown/HTML
+
+  // Déléguer entièrement l'injection des images au renderer pour éviter que
+  // le Markdown n'insère des balises <p> au milieu des balises <img>.
   return renderContentWithImages(content, images)
 })
 

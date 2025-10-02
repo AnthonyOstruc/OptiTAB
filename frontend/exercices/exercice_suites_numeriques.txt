@@ -1,64 +1,102 @@
-=== Étude d'une Suite Arithmético-Géométrique
-Difficulté: medium
-Image: suite_arithmetico_geometrique.png,calcul_somme.png (optionnel)
+=== Suite Arithmétique - Calcul de Terme et Somme
+Difficulté: easy
 
-Énoncé: On considère la suite $(u_n)$ définie par :
-$$\begin{cases}
-u_0 = 2 \\
-u_{n+1} = 3u_n - 4 \quad \text{pour tout } n \in \mathbb{N}
-\end{cases}$$
+Énoncé: On considère une suite arithmétique $(u_n)$ définie par son premier terme $u_0 = 5$ et sa raison $r = 3$.
 
-[IMAGE_1]
+Cette suite est définie par la relation de récurrence $u_{n+1} = u_n + 3$ pour tout $n \in \mathbb{N}$.
 
-Cette suite est dite "arithmético-géométrique" car elle combine les propriétés des suites arithmétiques et géométriques.
+**Question 1 : Calculer le terme $u_{10}$**
 
-[IMAGE_2]
+**Question 2 : Calculer la somme des 8 premiers termes**
 
-On souhaite étudier cette suite et calculer certaines de ses propriétés.
+Étapes:
 
-**Question 1 : Déterminer le terme général de la suite**
+**Question 1 : Calculer le terme $u_{10}$**
+    ● Formule générale du terme d'une suite arithmétique : $u_n = u_0 + n \times r$
+    ● Application numérique : $u_0 = 5$, $r = 3$, $n = 10$
+    ● Calcul : $u_{10} = 5 + 10 \times 3 = 35$
 
-Étapes de résolution :
-    ● Identifier le type de suite et ses paramètres
-    ● Identifier les paramètres $a$ et $b$ de la relation de récurrence
-    ● Déterminer le point fixe de la suite
-    ● Calculer le point fixe $\ell$ tel que $\ell = 3\ell - 4$
-    ● Poser $v_n = u_n - \ell$ et montrer que $(v_n)$ est géométrique
-    ● Exprimer $u_n$ en fonction de $n$
-
-**Question 2 : Calculer la somme des 10 premiers termes**
-
-Étapes de résolution :
-    ● Utiliser la formule du terme général trouvée précédemment
-    ● Calculer $u_0$, $u_1$, ..., $u_9$
-    ● Appliquer la formule de la somme des termes d'une suite géométrique
-    ● Vérifier le résultat
-
-**Question 3 : Étudier le comportement asymptotique**
-
-Étapes de résolution :
-    ● Déterminer la limite de $(u_n)$ quand $n$ tend vers $+\infty$
-    ● Justifier la convergence ou divergence
-    ● Interpréter géométriquement le résultat
+**Question 2 : Calculer la somme des 8 premiers termes**
+    ● Formule générale de la somme : $S_n = \frac{(n+1) \times (u_0 + u_n)}{2}$
+    ● Application numérique : $n = 7$, $u_0 = 5$, $u_n = u_7 = 26$
+    ● Calcul : $S_7 = \frac{8 \times (5 + 26)}{2} = 124$
 
 Solution:
-1. **Terme général :** 
-   - Paramètres : $a = 3$, $b = -4$
-   - Point fixe : $\ell = 3\ell - 4 \implies \ell = 2$
-   - Suite auxiliaire : $v_n = u_n - 2$ avec $v_0 = u_0 - 2 = 0$
-   - Comme $v_0 = 0$, on a $v_n = 0$ pour tout $n$, donc $u_n = 2$ pour tout $n$
-   - **Réponse :** $u_n = 2$ pour tout $n \in \mathbb{N}$
+1. $u_{10} = 35$
+2. $S_7 = 124$
 
-2. **Somme des 10 premiers termes :**
-   - Comme $u_n = 2$ pour tout $n$, tous les termes sont égaux à $2$
-   - $S_9 = u_0 + u_1 + \cdots + u_9 = 10 \times 2 = 20$
-   - **Réponse :** $S_9 = 20$
+===
 
-3. **Comportement asymptotique :**
-   - $\lim_{n \to +\infty} u_n = \lim_{n \to +\infty} 2 = 2$
-   - La suite est constante, donc convergente vers $2$
-   - **Interprétation :** La suite reste constante à la valeur $2$, qui est le point fixe de la relation de récurrence
+=== Suite Arithmétique - Raison Fractionnaire
+Difficulté: medium
 
-**Remarque importante :** Dans ce cas particulier, la suite est en fait constante car le point fixe coïncide avec la condition initiale. C'est un cas dégénéré de suite arithmético-géométrique.
+Énoncé: On considère la suite arithmétique $(w_n)$ définie par $w_0 = 12$ et $w_{n+1} = w_n + \frac{3}{2}$ pour tout $n \in \mathbb{N}$.
+
+**Question 1 : Calculer le terme général $w_n$**
+
+**Question 2 : Calculer la somme des 12 premiers termes**
+
+**Question 3 : Déterminer le plus petit n tel que $w_n > 50$**
+
+Étapes:
+
+**Question 1 : Calculer le terme général $w_n$**
+    ● Formule générale du terme d'une suite arithmétique : $w_n = w_0 + n \times r$
+    ● Application numérique : $w_0 = 12$, $r = \frac{3}{2}$
+    ● Calcul : $w_n = 12 + n \times \frac{3}{2} = 12 + \frac{3n}{2}$
+
+**Question 2 : Calculer la somme des 12 premiers termes**
+    ● Formule générale de la somme : $S_n = \frac{(n+1) \times (w_0 + w_n)}{2}$
+    ● Application numérique : $n = 11$, $w_0 = 12$, $w_n = w_{11} = 28,5$
+    ● Calcul : $S_{11} = \frac{12 \times (12 + 28,5)}{2} = 243$
+
+**Question 3 : Déterminer le plus petit n tel que $w_n > 50$**
+    ● Formule générale : résoudre $w_n > 50$ avec $w_n = 12 + \frac{3n}{2}$
+    ● Application numérique : $12 + \frac{3n}{2} > 50$
+    ● Résolution : $\frac{3n}{2} > 38$, $n > 25,333$
+    ● Plus petit entier : $n = 26$
+
+Solution:
+1. $w_n = 12 + \frac{3n}{2}$
+2. $S_{11} = 243$
+3. $n = 26$
+
+===
+
+=== Suite Arithmétique - Identification et Calculs
+Difficulté: easy
+
+Énoncé: On donne les termes suivants d'une suite : $u_5 = 17$, $u_8 = 26$, $u_{12} = 38$.
+
+**Question 1 : Vérifier si cette suite est arithmétique et déterminer la raison r**
+
+**Question 2 : Calculer le premier terme $u_0$**
+
+**Question 3 : Calculer $u_{20}$**
+
+Étapes:
+
+**Question 1 : Vérifier si cette suite est arithmétique et déterminer la raison r**
+    ● Formule générale d'une suite arithmétique : $u_k - u_m = (k - m) \times r$
+    ● Application numérique : calculer les différences pour les mêmes intervalles
+    ● Entre $u_5$ et $u_8$ : $(u_8 - u_5) = (8 - 5) \times r \implies 9 = 3r \implies r = 3$
+    ● Entre $u_8$ et $u_{12}$ : $(u_{12} - u_8) = (12 - 8) \times r \implies 12 = 4r \implies r = 3$
+    ● Conclusion : même raison $r = 3$, donc la suite est arithmétique
+
+**Question 2 : Calculer le premier terme $u_0$**
+    ● Formule générale : $u_0 = u_n - n \times r$
+    ● Application avec $u_5 = 17$ : $u_0 = 17 - 5 \times 3 = 17 - 15 = 2$
+    ● Vérification avec $u_8 = 26$ : $u_0 = 26 - 8 \times 3 = 26 - 24 = 2$
+    ● Conclusion : $u_0 = 2$
+
+**Question 3 : Calculer $u_{20}$**
+    ● Formule générale : $u_n = u_0 + n \times r$
+    ● Application numérique : $u_{20} = 2 + 20 \times 3 = 2 + 60 = 62$
+    ● Conclusion : $u_{20} = 62$
+
+Solution:
+1. La suite est arithmétique avec $r = 3$
+2. $u_0$ = 2
+3. $u_{20}$ = 62
 
 ===

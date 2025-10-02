@@ -1,7 +1,7 @@
 === Limites des Fonctions - Programme Bac France Terminal
 Difficulté: medium
 Ordre: 2
-Images: limite_finie.png, limite_infinie.png, formes_indeterminees.png, theoreme_gendarmes.png
+Images: asymptotes_horizontale.png, asymptotes_verticales.png, asymptotes_obliques.png
 
 Titre: Limites des Fonctions : Définition, Calcul et Applications
 Description: Cours sur les limites des fonctions selon le programme du bac français : définition, propriétés, méthodes de calcul, formes indéterminées et théorème des gendarmes.
@@ -152,16 +152,144 @@ Description: Cours sur les limites des fonctions selon le programme du bac fran�
             $$\displaystyle\lim_{x \to a} f(x) = \dfrac{P(a)}{Q(a)} \quad \text{si } Q(a) \neq 0$$
         </div>
 
+        <h3 style="color:#2980b9; margin-top:20px;">Méthode pour les limites en un point fini $x \to a$</h3>
+        
+        <div style="background:#e8f4f8; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>📐 Principe :</strong> Pour calculer $\displaystyle\lim_{x \to a} \dfrac{P(x)}{Q(x)}$, on substitue d'abord $x = a$ pour voir si c'est défini.
+        </div>
+
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemples :</strong>
+            <strong>Étapes de la méthode :</strong>
+            <ol style="margin:8px 0; padding-left:20px;">
+                <li><strong>Substitution directe :</strong> Calculer $\dfrac{P(a)}{Q(a)}$</li>
+                <li><strong>Si $Q(a) \neq 0$ :</strong> La limite est $\dfrac{P(a)}{Q(a)}$</li>
+                <li><strong>Si $Q(a) = 0$ et $P(a) \neq 0$ :</strong> Asymptote verticale en $x = a$</li>
+                <li><strong>Si $P(a) = Q(a) = 0$ :</strong> Forme indéterminée $\dfrac{0}{0}$ → factoriser</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple 1 - Substitution directe :</strong> $\displaystyle\lim_{x \to 3} \dfrac{x^2 - 2x + 1}{x - 1}$
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                <p style="margin:8px 0;"><strong>Étape 1 :</strong> Substitution : $\dfrac{3^2 - 2(3) + 1}{3 - 1} = \dfrac{9 - 6 + 1}{2} = \dfrac{4}{2} = 2$</p>
+                <p style="margin:8px 0;"><strong>Résultat :</strong> $\displaystyle\lim_{x \to 3} \dfrac{x^2 - 2x + 1}{x - 1} = 2$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple 2 - Asymptote verticale :</strong> $\displaystyle\lim_{x \to 2} \dfrac{x + 1}{x - 2}$
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                <p style="margin:8px 0;"><strong>Étape 1 :</strong> Substitution : $\dfrac{2 + 1}{2 - 2} = \dfrac{3}{0}$ → Dénominateur nul</p>
+                <p style="margin:8px 0;"><strong>Étape 2 :</strong> Étude du signe :</p>
+                <ul style="margin:8px 0; padding-left:20px;">
+                    <li>$x \to 2^-$ : $x - 2 < 0$ → $\displaystyle\lim_{x \to 2^-} \dfrac{x + 1}{x - 2} = -\infty$</li>
+                    <li>$x \to 2^+$ : $x - 2 > 0$ → $\displaystyle\lim_{x \to 2^+} \dfrac{x + 1}{x - 2} = +\infty$</li>
+                </ul>
+                <p style="margin:8px 0;"><strong>Résultat :</strong> Asymptote verticale en $x = 2$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple 3 - Forme indéterminée $\dfrac{0}{0}$ :</strong> $\displaystyle\lim_{x \to 1} \dfrac{x^2 - 1}{x - 1}$
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                <p style="margin:8px 0;"><strong>Étape 1 :</strong> Substitution : $\dfrac{1^2 - 1}{1 - 1} = \dfrac{0}{0}$ → Forme indéterminée</p>
+                <p style="margin:8px 0;"><strong>Étape 2 :</strong> Factorisation : $x^2 - 1 = (x-1)(x+1)$</p>
+                <p style="margin:8px 0;"><strong>Étape 3 :</strong> Simplification :</p>
+                <div style="margin:8px 0; text-align:center;">
+                    $$\dfrac{x^2 - 1}{x - 1} = \dfrac{(x-1)(x+1)}{x-1} = x+1 \quad \text{pour } x \neq 1$$
+                </div>
+                <p style="margin:8px 0;"><strong>Étape 4 :</strong> Calcul de la limite : $\displaystyle\lim_{x \to 1} (x+1) = 1 + 1 = 2$</p>
+            </div>
+        </div>
+
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Méthodes de factorisation courantes :</strong>
             <ul style="margin:8px 0; padding-left:20px;">
-                <li>$\displaystyle\lim_{x \to 2} \dfrac{x-1}{x-2} = \dfrac{1}{-1} = -1$</li>
-                <li>$\displaystyle\lim_{x \to +\infty} \dfrac{2x^2 + 1}{3x^2 - x} = \dfrac{2}{3}$</li>
+                <li><strong>Identités remarquables :</strong> $a^2 - b^2 = (a-b)(a+b)$, $a^2 \pm 2ab + b^2 = (a \pm b)^2$</li>
+                <li><strong>Factorisation par $x-a$ :</strong> Si $P(a) = 0$, alors $(x-a)$ divise $P(x)$</li>
+                <li><strong>Division polynomiale :</strong> Pour les cas complexes</li>
+            </ul>
+        </div>
+
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Astuce :</strong> Toujours vérifier le domaine de définition et les valeurs interdites avant de calculer une limite.
+        </div>
+
+        <h3 style="color:#2980b9; margin-top:20px;">Méthode pour les limites à l'infini</h3>
+        
+        <div style="background:#e8f4f8; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>📐 Principe :</strong> Pour calculer $\displaystyle\lim_{x \to \pm\infty} \dfrac{P(x)}{Q(x)}$, on factorise par le terme de plus haut degré au numérateur et au dénominateur.
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Étapes de la méthode :</strong>
+            <ol style="margin:8px 0; padding-left:20px;">
+                <li><strong>Identifier les degrés :</strong> degré du numérateur = $n$, degré du dénominateur = $m$</li>
+                <li><strong>Factoriser :</strong> Factoriser par $x^n$ au numérateur et $x^m$ au dénominateur</li>
+                <li><strong>Simplifier :</strong> Les termes en $\dfrac{1}{x^k}$ tendent vers 0</li>
+                <li><strong>Conclure :</strong> Selon la comparaison des degrés</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple détaillé :</strong> $\displaystyle\lim_{x \to +\infty} \dfrac{2x^2 + 3x - 1}{3x^2 - x + 2}$
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                <p style="margin:8px 0;"><strong>Étape 1 :</strong> Degré numérateur = 2, degré dénominateur = 2</p>
+                <p style="margin:8px 0;"><strong>Étape 2 :</strong> Factorisation par $x^2$ :</p>
+                <div style="margin:8px 0; text-align:center;">
+                    $$\dfrac{2x^2 + 3x - 1}{3x^2 - x + 2} = \dfrac{x^2\left(2 + \dfrac{3}{x} - \dfrac{1}{x^2}\right)}{x^2\left(3 - \dfrac{1}{x} + \dfrac{2}{x^2}\right)}$$
+                </div>
+                <p style="margin:8px 0;"><strong>Étape 3 :</strong> Simplification :</p>
+                <div style="margin:8px 0; text-align:center;">
+                    $$= \dfrac{2 + \dfrac{3}{x} - \dfrac{1}{x^2}}{3 - \dfrac{1}{x} + \dfrac{2}{x^2}} \to \dfrac{2 + 0 - 0}{3 - 0 + 0} = \dfrac{2}{3}$$
+                </div>
+            </div>
+        </div>
+
+        <h3 style="color:#2980b9; margin-top:20px;">Règles générales pour $x \to \pm\infty$</h3>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Cas</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Condition</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Limite</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$n < m$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Degré num < degré denom</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$0$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$n = m$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Degrés égaux</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\dfrac{a_n}{b_m}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$n > m$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Degré num > degré denom</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\pm\infty$</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemples d'application :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>$\displaystyle\lim_{x \to +\infty} \dfrac{2x + 1}{x^2 - 3} = 0$ (degré 1 < degré 2)</li>
+                <li>$\displaystyle\lim_{x \to +\infty} \dfrac{3x^2 - 2x}{2x^2 + 1} = \dfrac{3}{2}$ (degrés égaux)</li>
+                <li>$\displaystyle\lim_{x \to +\infty} \dfrac{x^3 + 1}{x^2 - 1} = +\infty$ (degré 3 > degré 2)</li>
             </ul>
         </div>
 
         <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
-            <strong>⚠️ Cas particulier :</strong> Si le degré du numérateur est supérieur d'au moins 2 au degré du dénominateur, limite = ±∞
+            <strong>⚠️ Attention au signe :</strong> Pour $n > m$, le signe de la limite dépend du signe du quotient des coefficients dominants et de la parité de $(n-m)$.
+        </div>
+
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Astuce :</strong> Pour $x \to -\infty$, penser à $x = -|x|$ et adapter le signe selon la parité des puissances.
         </div>
     </div>
 
@@ -288,9 +416,13 @@ Description: Cours sur les limites des fonctions selon le programme du bac fran�
             <strong>Exemples :</strong>
             <ul style="margin:8px 0; padding-left:20px;">
                 <li>$f(x) = \dfrac{1}{x}$ : asymptote $y = 0$ en $\pm\infty$</li>
-                <li>$f(x) = \dfrac{2x+1}{x-1}$ : asymptote $y = 2$ en $\pm\infty$</li>
+                <li>$f(x) = \dfrac{2x+1}{x+3}$ : asymptote $y = 2$ en $\pm\infty$</li>
                 <li>$f(x) = e^{-x}$ : asymptote $y = 0$ en $+\infty$</li>
             </ul>
+        </div>
+
+        <div style="text-align:center; margin:20px 0;">
+            [IMAGE_1]
         </div>
 
         <h3 style="color:#2980b9; margin-top:20px;">2. Asymptote verticale</h3>
@@ -303,9 +435,13 @@ Description: Cours sur les limites des fonctions selon le programme du bac fran�
             <strong>Exemples :</strong>
             <ul style="margin:8px 0; padding-left:20px;">
                 <li>$f(x) = \dfrac{1}{x}$ : asymptote $x = 0$</li>
-                <li>$f(x) = \dfrac{1}{x-2}$ : asymptote $x = 2$</li>
+                <li>$f(x) = \dfrac{1}{x-3}$ : asymptote $x = 3$</li>
                 <li>$f(x) = \ln(x)$ : asymptote $x = 0$</li>
             </ul>
+        </div>
+
+        <div style="text-align:center; margin:20px 0;">
+            [IMAGE_2]
         </div>
 
         <h3 style="color:#2980b9; margin-top:20px;">3. Asymptote oblique</h3>
@@ -315,20 +451,58 @@ Description: Cours sur les limites des fonctions selon le programme du bac fran�
         </div>
 
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Méthode :</strong>
+            <strong>Méthode 1 - Par les limites :</strong>
             <ol style="margin:8px 0; padding-left:20px;">
                 <li>$a = \displaystyle\lim_{x \to +\infty} \dfrac{f(x)}{x}$</li>
                 <li>$b = \displaystyle\lim_{x \to +\infty} [f(x) - ax]$</li>
             </ol>
         </div>
 
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> $f(x) = \dfrac{x^2 + 1}{x}$
-            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                <p style="margin:8px 0;">$a = \displaystyle\lim_{x \to +\infty} \dfrac{x^2 + 1}{x^2} = 1$</p>
-                <p style="margin:8px 0;">$b = \displaystyle\lim_{x \to +\infty} \left(\dfrac{x^2 + 1}{x} - x\right) = \displaystyle\lim_{x \to +\infty} \dfrac{1}{x} = 0$</p>
-                <p style="margin:8px 0;">Asymptote oblique : $y = x$</p>
+        <div style="background:#e8f4f8; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>📐 Méthode 2 - Division euclidienne :</strong> Pour $f(x) = \dfrac{P(x)}{Q(x)}$ où $\deg(P) = \deg(Q) + 1$
+            <div style="margin:10px 0;">
+                <p style="margin:8px 0;"><strong>Principe :</strong> On effectue la division euclidienne de $P(x)$ par $Q(x)$ :</p>
+                <div style="text-align:center; margin:10px 0;">
+                    $$P(x) = Q(x) \times (ax + b) + R(x)$$
+                </div>
+                <p style="margin:8px 0;">où $\deg(R) < \deg(Q)$</p>
+                <p style="margin:8px 0;">Alors : $f(x) = ax + b + \dfrac{R(x)}{Q(x)}$</p>
+                <p style="margin:8px 0;">L'asymptote oblique est : <strong>$y = ax + b$</strong></p>
             </div>
+        </div>
+
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Quand y a-t-il une asymptote oblique ?</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><strong>Pour les fonctions rationnelles :</strong> Si $\deg(P) = \deg(Q) + 1$</li>
+                <li><strong>Pour les autres fonctions :</strong> Si $\displaystyle\lim_{x \to +\infty} \dfrac{f(x)}{x}$ existe et est fini non nul</li>
+                <li><strong>Pas d'asymptote oblique si :</strong> $\deg(P) \leq \deg(Q)$ (asymptote horizontale ou pas d'asymptote)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple avec Méthode 1 (limites) :</strong> $f(x) = \dfrac{x^2 + 1}{x+1}$
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                <p style="margin:8px 0;">$a = \displaystyle\lim_{x \to +\infty} \dfrac{f(x)}{x} = \displaystyle\lim_{x \to +\infty} \dfrac{x^2 + 1}{x(x+1)} = \displaystyle\lim_{x \to +\infty} \dfrac{x^2 + 1}{x^2 + x} = 1$</p>
+                <p style="margin:8px 0;">$b = \displaystyle\lim_{x \to +\infty} (f(x) - ax)$</p>
+                <p style="margin:8px 0;">$\quad = \displaystyle\lim_{x \to +\infty} \left(\dfrac{x^2 + 1}{x+1} - x\right) = \displaystyle\lim_{x \to +\infty} \dfrac{x^2 + 1 - x(x+1)}{x+1}$</p>
+                <p style="margin:8px 0;">$\quad = \displaystyle\lim_{x \to +\infty} \dfrac{x^2 + 1 - x^2 - x}{x+1} = \displaystyle\lim_{x \to +\infty} \dfrac{1 - x}{x+1} = -1$</p>
+                <p style="margin:8px 0;">Asymptote oblique : $y = x - 1$</p>
+            </div>
+        </div>
+
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple avec Méthode 2 (division euclidienne) :</strong> $f(x) = \dfrac{x^2 + 1}{x+1}$
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                <p style="margin:8px 0;"><strong>Étape 1 :</strong> On effectue la division euclidienne : $x^2 + 1 = (x+1)(x-1) + 2$</p>
+                <p style="margin:8px 0;"><strong>Étape 2 :</strong> Donc $f(x) = \dfrac{x^2 + 1}{x+1} = \dfrac{(x+1)(x-1) + 2}{x+1} = x - 1 + \dfrac{2}{x+1}$</p>
+                <p style="margin:8px 0;"><strong>Étape 3 :</strong> Quand $x \to +\infty$, $\dfrac{2}{x+1} \to 0$</p>
+                <p style="margin:8px 0;"><strong>Résultat :</strong> Asymptote oblique $y = x - 1$</p>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin:20px 0;">
+            [IMAGE_3]
         </div>
 
         <div style="background:#fff3cd; padding:12px; border-radius:4px; border-left:4px solid #ffc107; margin:10px 0;">
@@ -337,6 +511,27 @@ Description: Cours sur les limites des fonctions selon le programme du bac fran�
     </div>
 
     <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Théorème des gendarmes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Majoration et minoration</h3>
+
+        <div style="background:#e8f4f8; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>📊 Définitions :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><strong>Majoration :</strong> On dit que $g(x)$ majore $f(x)$ si $f(x) \leq g(x)$ pour tout $x$ proche de $a$</li>
+                <li><strong>Minoration :</strong> On dit que $h(x)$ minore $f(x)$ si $h(x) \leq f(x)$ pour tout $x$ proche de $a$</li>
+                <li><strong>Encadrement :</strong> Si $g(x) \leq f(x) \leq h(x)$, alors $g(x)$ minore $f(x)$ et $h(x)$ majore $f(x)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>$-\dfrac{1}{|x|} \leq \dfrac{\sin x}{x} \leq \dfrac{1}{|x|}$ pour $x \to 0, x \neq 0$</li>
+                <li>$-\dfrac{1}{x} \leq \dfrac{\sin x}{x} \leq \dfrac{1}{x}$ pour $x \to +\infty$</li>
+            </ul>
+        </div>
+    </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Énoncé du théorème</h3>
@@ -350,6 +545,14 @@ Description: Cours sur les limites des fonctions selon le programme du bac fran�
 
         <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
             <strong>💡 Intuition :</strong> Si $f(x)$ est "coincée" entre $g(x)$ et $h(x)$ qui tendent vers la même limite $L$, alors $f(x)$ tend aussi vers $L$.
+        </div>
+
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Théorèmes de comparaison :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><strong>Minoration :</strong> Si $g(x) \leq f(x)$ et $\displaystyle\lim_{x \to a} g(x) = +\infty$, alors $\displaystyle\lim_{x \to a} f(x) = +\infty$</li>
+                <li><strong>Majoration :</strong> Si $f(x) \leq g(x)$ et $\displaystyle\lim_{x \to a} g(x) = -\infty$, alors $\displaystyle\lim_{x \to a} f(x) = -\infty$</li>
+            </ul>
         </div>
     </div>
 
@@ -371,6 +574,24 @@ Description: Cours sur les limites des fonctions selon le programme du bac fran�
                 <p style="margin:8px 0;">On a : $-\dfrac{1}{x} \leq \dfrac{\sin x}{x} \leq \dfrac{1}{x}$</p>
                 <p style="margin:8px 0;">$\displaystyle\lim_{x \to +\infty} \left(-\dfrac{1}{x}\right) = 0$ et $\displaystyle\lim_{x \to +\infty} \dfrac{1}{x} = 0$</p>
                 <p style="margin:8px 0;">Donc $\displaystyle\lim_{x \to +\infty} \dfrac{\sin x}{x} = 0$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple 3 - Cas limite infini :</strong> $\displaystyle\lim_{x \to 0^+} \dfrac{1}{x^2}$
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                <p style="margin:8px 0;">On a : $\dfrac{1}{x} \leq \dfrac{1}{x^2}$ pour $x > 0$ proche de 0</p>
+                <p style="margin:8px 0;">$\displaystyle\lim_{x \to 0^+} \dfrac{1}{x} = +\infty$</p>
+                <p style="margin:8px 0;">Donc $\displaystyle\lim_{x \to 0^+} \dfrac{1}{x^2} = +\infty$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple 4 - Minoration infinie :</strong> $\displaystyle\lim_{x \to 0^+} \dfrac{1}{\sqrt{x}}$
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                <p style="margin:8px 0;">On a : $\dfrac{1}{\sqrt{x}} \leq \dfrac{1}{x}$ pour $x > 0$ proche de 0</p>
+                <p style="margin:8px 0;">$\displaystyle\lim_{x \to 0^+} \dfrac{1}{x} = +\infty$</p>
+                <p style="margin:8px 0;">Donc $\displaystyle\lim_{x \to 0^+} \dfrac{1}{\sqrt{x}} = +\infty$</p>
             </div>
         </div>
     </div>
@@ -403,51 +624,11 @@ Description: Cours sur les limites des fonctions selon le programme du bac fran�
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Exercices d'application</h2>
-
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exercices de base</h3>
+        <h3 style="color:#34495e; margin-top:0;">VIII. Erreurs fréquentes et conseils</h3>
 
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exercice 1 :</strong> Calculer $\displaystyle\lim_{x \to 2} (x^2 - 3x + 2)$
-            <p style="margin:8px 0; color:#666;">Solution : $2^2 - 3\cdot2 + 2 = 4 - 6 + 2 = 0$</p>
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exercice 2 :</strong> Calculer $\displaystyle\lim_{x \to +\infty} \dfrac{3x^2 - 2x + 1}{2x^2 + x - 3}$
-            <p style="margin:8px 0; color:#666;">Solution : $\dfrac{3}{2}$</p>
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exercice 3 :</strong> Calculer $\displaystyle\lim_{x \to 0} \dfrac{\sin(2x)}{x}$
-            <p style="margin:8px 0; color:#666;">Solution : $2$</p>
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exercice 4 :</strong> Calculer $\displaystyle\lim_{x \to 1} \dfrac{x^2 - 1}{x - 1}$
-            <p style="margin:8px 0; color:#666;">Solution : $2$</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exercices avancés</h3>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exercice 5 :</strong> Calculer $\displaystyle\lim_{x \to 0} \dfrac{e^x - 1 - x}{x^2}$
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exercice 6 :</strong> Calculer $\displaystyle\lim_{x \to +\infty} x \left(1 - \dfrac{1}{x}\right)^x$
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exercice 7 :</strong> Calculer $\displaystyle\lim_{x \to 0} x^2 \sin\left(\dfrac{1}{x}\right)$
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <div style="background:#fdf2f2; padding:15px; border-radius:6px; margin-bottom:15px;">
-            <strong>❌ Erreurs fréquentes :</strong>
+            <strong>❌ Pièges à éviter :</strong>
             <ul style="margin:8px 0; padding-left:20px;">
                 <li>Confondre $\displaystyle\lim_{x \to a} f(x)$ avec $f(a)$</li>
                 <li>Oublier de vérifier les conditions de validité (division par zéro)</li>

@@ -622,8 +622,11 @@ async function handleCreate() {
     const createdTitles = new Set() // Pour tracker les titres créés dans cette session
     
     for (const exerciceData of exercices) {
-      // Normaliser chapitre pour la nouvelle API
-      exerciceData.chapitre = Number(selectedChapitre.value)
+      // Normalisation legacy: la couche "chapitre" a été retirée.
+      // Certains anciens écrans s'attendent encore à passer un chapitre.
+      // On mappe donc sur la notion sélectionnée pour éviter les erreurs runtime.
+      // Le backend utilise déjà le champ "notion" dans le payload (cf. ExerciceCreator.createExerciceWithImages).
+      exerciceData.chapitre = Number(selectedNotion.value)
       
       // Assurer l'unicité du titre au sein du chapitre (backend unique_together)
       let baseTitle = (exerciceData.titre && exerciceData.titre.trim()) ? exerciceData.titre.trim() : 'Exercice'

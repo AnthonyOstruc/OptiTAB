@@ -1,31 +1,120 @@
 === Calcul Intégral - Cours Complet Terminal
 Difficulté: medium
-Ordre: 7
-Images: aire_sous_courbe.png, volume_rotation.png, longueur_arc.png, aire_polaire.png
+Ordre: 3
+Images: aire_sous_la_courbe.png, aire_entre_courbes.png
 
-Titre: Le Calcul Intégral Défini : Applications Géométriques et Physiques
-Description: Cours complet sur les intégrales définies : définition, théorème fondamental, applications géométriques (aires, volumes, longueurs) et physiques.
+Titre: Le Calcul Intégral : Intégrales Définies et Applications
+Description: Cours complet sur le calcul intégral : intégrales définies, propriétés, méthodes de calcul et applications géométriques pour le calcul d'aires et de volumes.
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition et théorème fondamental</h2>
-
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition de l'intégrale définie</h2>
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Intégrale définie</h3>
-
-        <div style="text-align:center; font-size:1.3em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <p>Si $F$ est une primitive de $f$ continue sur $[a, b]$, alors :</p>
-            $$\int_a^b f(x) \, dx = \left[ F(x) \right]_a^b = F(b) - F(a)$$
+        <h3 style="color:#34495e; margin-top:0;">Notion d'intégrale définie</h3>
+        <p>Soit $f$ une fonction continue sur $[a, b]$. L'<strong>intégrale définie</strong> de $f$ de $a$ à $b$ est notée :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\int_a^b f(x) dx$$
         </div>
-
+        <p>Cette intégrale représente l'<strong>aire algébrique</strong> entre la courbe de $f$, l'axe des abscisses et les droites $x = a$ et $x = b$.</p>
+        
         <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Théorème fondamental de l'analyse :</strong> La dérivée de l'intégrale définie est la fonction intégrée : $\dfrac{d}{dx} \left( \int_a^x f(t) \, dt \right) = f(x)$
+            <strong>💡 Interprétation géométrique :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Si $f(x) \geq 0$ sur $[a, b]$ : l'intégrale donne l'aire sous la courbe</li>
+                <li>Si $f(x) \leq 0$ sur $[a, b]$ : l'intégrale donne l'opposé de l'aire</li>
+                <li>Si $f$ change de signe : l'intégrale donne l'aire algébrique (positive - négative)</li>
+            </ul>
         </div>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Propriétés fondamentales</h3>
+        <h3 style="color:#34495e; margin-top:0;">Théorème fondamental du calcul intégral</h3>
+        <p>Si $F$ est une primitive de $f$ sur $[a, b]$, alors :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\int_a^b f(x) dx = F(b) - F(a) = [F(x)]_a^b$$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Méthode de calcul :</strong>
+            <ol style="margin:8px 0; padding-left:20px;">
+                <li>On trouve une primitive $F$ de $f$</li>
+                <li>On calcule $F(b) - F(a)$</li>
+                <li>Le résultat est l'intégrale définie</li>
+            </ol>
+        </div>
+    </div>
 
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Tableau récapitulatif des primitives usuelles</h3>
+        <p><strong>Pour le calcul des intégrales définies, voici les primitives les plus courantes :</strong></p>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Fonction $f(x)$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Primitive $F(x)$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Domaine</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$k$ (constante)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$kx$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\mathbb{R}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$x^n$ avec $n \neq -1$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\frac{x^{n+1}}{n+1}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\mathbb{R}$ si $n \geq 0$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\frac{1}{x}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\ln|x|$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\mathbb{R} \setminus \{0\}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\frac{1}{\sqrt{x}}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$2\sqrt{x}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$]0, +\infty[$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$e^x$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$e^x$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\mathbb{R}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$e^{ax}$ avec $a \neq 0$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\frac{e^{ax}}{a}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\mathbb{R}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\sin(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$-\cos(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\mathbb{R}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\cos(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\sin(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\mathbb{R}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\frac{1}{x^2}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$-\frac{1}{x}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\mathbb{R} \setminus \{0\}$</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>📚 Pour plus d'informations :</strong> Consultez le cours complet sur les <strong>primitives</strong> pour connaître toutes les formules, les méthodes de calcul et les primitives de fonctions composées.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Propriétés des intégrales définies</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Propriétés fondamentales</h3>
+        
         <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
             <thead>
                 <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
@@ -36,202 +125,255 @@ Description: Cours complet sur les intégrales définies : définition, théorè
             <tbody>
                 <tr style="background:#f8f9fa;">
                     <td style="border:1px solid #ddd; padding:12px; text-align:center;">Linéarité</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\int_a^b (a f + b g) = a \int_a^b f + b \int_a^b g$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\int_a^b (kf + g) dx = k\int_a^b f dx + \int_a^b g dx$</td>
                 </tr>
                 <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Changement de bornes</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\int_a^b f = -\int_b^a f$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Relation de Chasles</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\int_a^b f dx + \int_b^c f dx = \int_a^c f dx$</td>
                 </tr>
                 <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Additivité</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\int_a^c f = \int_a^b f + \int_b^c f$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Inversion des bornes</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\int_a^b f dx = -\int_b^a f dx$</td>
                 </tr>
                 <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Inégalité triangulaire</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\left| \int_a^b f \right| \leq \int_a^b |f|$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Intégrale nulle</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\int_a^a f dx = 0$</td>
                 </tr>
             </tbody>
         </table>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Applications pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><strong>Linéarité :</strong> On peut "sortir" les constantes et séparer les sommes</li>
+                <li><strong>Relation de Chasles :</strong> Permet de découper l'intervalle d'intégration</li>
+                <li><strong>Inversion :</strong> Attention au signe quand on inverse les bornes</li>
+            </ul>
+        </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Applications géométriques</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Exemples de calculs d'intégrales définies</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Intégrale d'un polynôme</h3>
+        <p><strong>Énoncé :</strong> Calculer $\int_0^2 (3x^2 - 2x + 1) dx$</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Étape 1 :</strong> Trouver une primitive
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$F(x) = 3 \times \frac{x^3}{3} - 2 \times \frac{x^2}{2} + x = x^3 - x^2 + x$$
+            </div>
+            
+            <strong>Étape 2 :</strong> Appliquer la formule
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$\int_0^2 (3x^2 - 2x + 1) dx = F(2) - F(0)$$
+                $$= (2^3 - 2^2 + 2) - (0^3 - 0^2 + 0)$$
+                $$= (8 - 4 + 2) - 0 = 6$$
+            </div>
+        </div>
+        
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Réponse :</strong> $\int_0^2 (3x^2 - 2x + 1) dx = 6$
+        </div>
+    </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Aire sous une courbe</h3>
-
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <p>L'aire comprise entre la courbe $y = f(x)$, l'axe des abscisses et les droites $x = a$, $x = b$ est :</p>
-            $$A = \int_a^b |f(x)| \, dx$$
-            <p>Si $f(x) \geq 0$ sur $[a, b]$ : $A = \int_a^b f(x) \, dx$</p>
-        </div>
-
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Intégrale avec exponentielle</h3>
+        <p><strong>Énoncé :</strong> Calculer $\int_0^1 e^{2x} dx$</p>
+        
+        <p><strong>Résolution :</strong></p>
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> Aire sous $y = x^2$ de $0$ à $1$
+            <strong>Étape 1 :</strong> Trouver une primitive
             <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                $$\int_0^1 x^2 \, dx = \left[ \dfrac{x^3}{3} \right]_0^1 = \dfrac{1}{3} - 0 = \dfrac{1}{3}$$
+                $$F(x) = \frac{e^{2x}}{2}$$
+            </div>
+            
+            <strong>Étape 2 :</strong> Appliquer la formule
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$\int_0^1 e^{2x} dx = F(1) - F(0) = \frac{e^2}{2} - \frac{e^0}{2} = \frac{e^2 - 1}{2}$$
             </div>
         </div>
+        
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Réponse :</strong> $\int_0^1 e^{2x} dx = \frac{e^2 - 1}{2}$
+        </div>
+    </div>
 
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> Aire entre $y = \sin(x)$ et $y = \cos(x)$ de $0$ à $\dfrac{\pi}{4}$
-            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                $$\int_0^{\pi/4} (\cos(x) - \sin(x)) \, dx = \left[ \sin(x) + \cos(x) \right]_0^{\pi/4} = (\dfrac{\sqrt{2}}{2} + \dfrac{\sqrt{2}}{2}) - (0 + 1) = \sqrt{2} - 1$$
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Applications géométriques : Calcul d'aires</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:20px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">1. Aire sous la courbe d'une fonction</h3>
+        
+        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:15px 0; border-left:4px solid #3498db;">
+            <h4 style="color:#2c3e50; margin-top:0;">Définition et interprétation géométrique</h4>
+            <p>L'intégrale définie $\int_a^b f(x) dx$ représente l'<strong>aire algébrique</strong> de la région délimitée par :</p>
+            <ul style="margin:10px 0; padding-left:20px;">
+                <li>La courbe représentative de la fonction $f$</li>
+                <li>L'axe des abscisses ($y = 0$)</li>
+                <li>Les droites verticales $x = a$ et $x = b$</li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:15px 0; border-left:4px solid #3498db;">
+            <h4 style="color:#2c3e50; margin-top:0;">Convention de signe</h4>
+            <table style="width:100%; border-collapse:collapse; margin:10px 0; border:1px solid #ddd;">
+                <thead>
+                    <tr style="background:#e9ecef;">
+                        <th style="padding:10px; border:1px solid #ddd; font-weight:bold; text-align:center;">Signe de $f(x)$</th>
+                        <th style="padding:10px; border:1px solid #ddd; font-weight:bold; text-align:center;">Interprétation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding:10px; border:1px solid #ddd; text-align:center;">$f(x) \geq 0$</td>
+                        <td style="padding:10px; border:1px solid #ddd;">L'intégrale donne l'aire "positive"</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="padding:10px; border:1px solid #ddd; text-align:center;">$f(x) \leq 0$</td>
+                        <td style="padding:10px; border:1px solid #ddd;">L'intégrale donne l'opposé de l'aire</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px; border:1px solid #ddd; text-align:center;">$f(x)$ change de signe</td>
+                        <td style="padding:10px; border:1px solid #ddd;">L'intégrale donne l'aire algébrique</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:15px 0; border-left:4px solid #3498db;">
+            <h4 style="color:#2c3e50; margin-top:0;">Exemple : Aire sous une parabole</h4>
+            <p><strong>Énoncé :</strong> Calculer l'aire de la région délimitée par la courbe $y = x^2$, l'axe des abscisses et les droites $x = 0$ et $x = 2$.</p>
+            
+            <div style="background:#ffffff; padding:15px; border-radius:4px; margin:15px 0;">
+                <p><strong>Analyse préliminaire :</strong></p>
+                <ul style="margin:10px 0; padding-left:20px;">
+                    <li>La fonction $f(x) = x^2$ est continue sur $[0, 2]$</li>
+                    <li>$x^2 \geq 0$ pour tout $x \in [0, 2]$, donc l'aire sera positive</li>
+                    <li>La région est délimitée par une parabole, l'axe $Ox$ et deux droites verticales</li>
+                </ul>
+            </div>
+            
+            <div style="background:#ffffff; padding:15px; border-radius:4px; margin:15px 0;">
+                <p><strong>Calcul de l'intégrale :</strong></p>
+                <div style="text-align:center; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+                    $$\mathcal{A} = \int_0^2 x^2 \, dx = \left[\frac{x^3}{3}\right]_0^2 = \frac{2^3}{3} - \frac{0^3}{3} = \frac{8}{3} - 0 = \frac{8}{3}$$
+                </div>
+                <p style="text-align:center; font-weight:bold; color:#2c3e50;">L'aire de la région est $\frac{8}{3}$ unités d'aire</p>
             </div>
         </div>
-
+        
         [IMAGE_1]
     </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Volume de révolution</h3>
-
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <p>Volume obtenu en faisant tourner la courbe $y = f(x)$ autour de l'axe des abscisses :</p>
-            $$V = \pi \int_a^b [f(x)]^2 \, dx$$
-            <p>Autour de l'axe des ordonnées : $V = 2\pi \int_a^b x |f(x)| \, dx$</p>
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> Sphère de rayon $r$ : rotation de $y = \sqrt{r^2 - x^2}$
-            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                $$V = 2\pi \int_{-r}^r (r^2 - x^2) \, dx = 2\pi \left[ r^2 x - \dfrac{x^3}{3} \right]_{-r}^r = 2\pi \left(2 \cdot \dfrac{2r^3}{3}\right) = \dfrac{4\pi r^3}{3}$$
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:20px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">2. Aire entre deux courbes</h3>
+        
+        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:15px 0; border-left:4px solid #3498db;">
+            <h4 style="color:#2c3e50; margin-top:0;">Formule générale</h4>
+            <p>Soient $f$ et $g$ deux fonctions continues sur $[a, b]$ avec $f(x) \geq g(x)$ sur cet intervalle. L'aire de la région comprise entre les deux courbes est :</p>
+            <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:15px; background:#f8f9fa; border-radius:4px;">
+                $$\mathcal{A} = \int_a^b [f(x) - g(x)] \, dx$$
             </div>
         </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> Cône : rotation de $y = \dfrac{r}{h} x$ autour de l'axe des ordonnées
-            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                $$V = 2\pi \int_0^h x \cdot \dfrac{r}{h} \, dx = 2\pi \dfrac{r}{h} \int_0^h x \, dx = 2\pi \dfrac{r}{h} \left[ \dfrac{x^2}{2} \right]_0^h = 2\pi \dfrac{r}{h} \cdot \dfrac{h^2}{2} = \pi r h$$
+        
+        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:15px 0; border-left:4px solid #3498db;">
+            <h4 style="color:#2c3e50; margin-top:0;">Méthode de résolution</h4>
+            <ol style="margin:10px 0; padding-left:25px;">
+                <li><strong>Déterminer les points d'intersection</strong> : résoudre $f(x) = g(x)$</li>
+                <li><strong>Étudier les positions relatives</strong> : déterminer sur quels intervalles $f(x) \geq g(x)$</li>
+                <li><strong>Découper l'intervalle</strong> si nécessaire selon les points d'intersection</li>
+                <li><strong>Calculer l'intégrale</strong> : $\int_a^b |f(x) - g(x)| \, dx$</li>
+                <li><strong>Interpréter le résultat</strong> en unités d'aire</li>
+            </ol>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:15px 0; border-left:4px solid #3498db;">
+            <h4 style="color:#2c3e50; margin-top:0;">Exemple : Aire entre une parabole et une droite</h4>
+            <p><strong>Énoncé :</strong> Calculer l'aire de la région délimitée par les courbes $y = x^2$ et $y = 2x$ sur l'intervalle $[0, 2]$.</p>
+            
+            <div style="background:#ffffff; padding:15px; border-radius:4px; margin:15px 0;">
+                <p><strong>Étape 1 : Points d'intersection</strong></p>
+                <div style="text-align:center; margin:10px 0; padding:10px; background:#f8f9fa; border-radius:4px;">
+                    $$x^2 = 2x \Rightarrow x^2 - 2x = 0 \Rightarrow x(x-2) = 0$$
+                    <p>Les courbes se coupent en $x = 0$ et $x = 2$</p>
+                </div>
+            </div>
+            
+            <div style="background:#ffffff; padding:15px; border-radius:4px; margin:15px 0;">
+                <p><strong>Étape 2 : Position relative</strong></p>
+                <p>Pour $x \in [0, 2]$ : $2x \geq x^2$ car $2x - x^2 = x(2-x) \geq 0$</p>
+                <p><strong>La droite $y = 2x$ est au-dessus de la parabole $y = x^2$</strong></p>
+            </div>
+            
+            <div style="background:#ffffff; padding:15px; border-radius:4px; margin:15px 0;">
+                <p><strong>Étape 3 : Calcul de l'aire</strong></p>
+                <div style="text-align:center; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+                    $$\mathcal{A} = \int_0^2 (2x - x^2) \, dx = \left[x^2 - \frac{x^3}{3}\right]_0^2$$
+                    $$= \left(4 - \frac{8}{3}\right) - \left(0 - 0\right) = \frac{12}{3} - \frac{8}{3} = \frac{4}{3}$$
+                </div>
+                <p style="text-align:center; font-weight:bold; color:#2c3e50;">L'aire entre les deux courbes est $\frac{4}{3}$ unités d'aire</p>
             </div>
         </div>
-
+        
         [IMAGE_2]
     </div>
 
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Valeur moyenne d'une fonction</h2>
+    
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Longueur d'une courbe</h3>
-
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <p>La <strong>valeur moyenne</strong> d'une fonction $f$ continue sur $[a, b]$ est :</p>
         <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <p>Longueur d'arc de la courbe $y = f(x)$ de $x = a$ à $x = b$ :</p>
-            $$L = \int_a^b \sqrt{1 + [f'(x)]^2} \, dx$$
+            $$\mu = \frac{1}{b-a} \int_a^b f(x) dx$$
         </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> Longueur du cercle $x^2 + y^2 = r^2$ (demi-cercle supérieur)
-            <p style="margin:8px 0;">$y = \sqrt{r^2 - x^2}$, $y' = -\dfrac{x}{\sqrt{r^2 - x^2}}$</p>
-            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                $$\sqrt{1 + \left( -\dfrac{x}{\sqrt{r^2 - x^2}} \right)^2} = \dfrac{r}{\sqrt{r^2 - x^2}}$$
-                $$L = \int_{-r}^r \dfrac{r}{\sqrt{r^2 - x^2}} \, dx = r \left[ \arcsin\left(\dfrac{x}{r}\right) \right]_{-r}^r = r (\dfrac{\pi}{2} - (-\dfrac{\pi}{2})) = r\pi$$
-            </div>
-        </div>
-
-        [IMAGE_3]
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Aires en coordonnées polaires</h3>
-
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <p>Aire délimitée par une courbe $r = f(\theta)$ de $\theta = \alpha$ à $\theta = \beta$ :</p>
-            $$A = \dfrac{1}{2} \int_\alpha^\beta [f(\theta)]^2 \, d\theta$$
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> Aire du cercle $r = 2a \cos(\theta)$ (cerclé de cardioïde)
-            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                $$A = \dfrac{1}{2} \int_{-\pi/2}^{\pi/2} (2a \cos\theta)^2 \, d\theta = \dfrac{1}{2} \int_{-\pi/2}^{\pi/2} 4a^2 \cos^2\theta \, d\theta = 2a^2 \int_{-\pi/2}^{\pi/2} \dfrac{1 + \cos(2\theta)}{2} \, d\theta$$
-                $$= 2a^2 \left[ \dfrac{\theta}{2} + \dfrac{\sin(2\theta)}{4} \right]_{-\pi/2}^{\pi/2} = 2a^2 \left( \dfrac{\pi}{4} + 0 \right) = \dfrac{\pi a^2}{2}$$
-            </div>
-        </div>
-
-        [IMAGE_4]
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Applications physiques</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Travail d'une force variable</h3>
-
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <p>Travail effectué par une force $F(x)$ le long d'un déplacement de $x = a$ à $x = b$ :</p>
-            $$W = \int_a^b F(x) \, dx$$
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> Ressort : $F(x) = kx$, travail pour étirer de $0$ à $L$
-            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                $$W = \int_0^L kx \, dx = k \left[ \dfrac{x^2}{2} \right]_0^L = \dfrac{k L^2}{2}$$
-            </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation :</strong> La valeur moyenne est la hauteur d'un rectangle de base $[a, b]$ ayant la même aire que la région sous la courbe de $f$.
         </div>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Centre de masse</h3>
-
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <p>Coordonnée $\bar{x}$ du centre de masse d'une barre de densité $\rho(x)$ de $a$ à $b$ :</p>
-            $$\bar{x} = \dfrac{\int_a^b x \rho(x) \, dx}{\int_a^b \rho(x) \, dx}$$
-        </div>
-
+        <h3 style="color:#34495e; margin-top:0;">Exemple de calcul de valeur moyenne</h3>
+        <p><strong>Énoncé :</strong> Calculer la valeur moyenne de $f(x) = x^2$ sur $[0, 3]$</p>
+        
+        <p><strong>Résolution :</strong></p>
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> Barre uniforme de longueur $L$, masse totale $M$
             <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                $$\bar{x} = \dfrac{\int_0^L x \cdot \dfrac{M}{L} \, dx}{\int_0^L \dfrac{M}{L} \, dx} = \dfrac{\dfrac{M}{L} \cdot \dfrac{L^2}{2}}{\dfrac{M}{L} \cdot L} = \dfrac{L^2/2}{L} = \dfrac{L}{2}$$
+                $$\mu = \frac{1}{3-0} \int_0^3 x^2 dx = \frac{1}{3} \left[\frac{x^3}{3}\right]_0^3$$
+                $$= \frac{1}{3} \times \frac{27}{3} = \frac{1}{3} \times 9 = 3$$
             </div>
+        </div>
+        
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Réponse :</strong> La valeur moyenne est $3$
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Intégrales impropres</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Convergence et calcul</h3>
-
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <p>Intégrale impropre convergente si $\lim_{t \to +\infty} \int_a^t f(x) \, dx$ existe</p>
-            $$\int_a^{+\infty} f(x) \, dx = \lim_{t \to +\infty} \int_a^t f(x) \, dx$$
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> $\int_1^{+\infty} \dfrac{1}{x^2} \, dx$
-            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                $$\lim_{t \to +\infty} \int_1^t x^{-2} \, dx = \lim_{t \to +\infty} \left[ -\dfrac{1}{x} \right]_1^t = \lim_{t \to +\infty} \left( -\dfrac{1}{t} + 1 \right) = 1$$
-            </div>
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> $\int_0^1 \dfrac{1}{\sqrt{x}} \, dx$ (diverge)
-            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
-                $$\lim_{t \to 0^+} \int_t^1 x^{-1/2} \, dx = \lim_{t \to 0^+} \left[ 2\sqrt{x} \right]_t^1 = 2 - \lim_{t \to 0^+} 2\sqrt{t} = 2 - 0 = 2$$
-                <p style="margin:8px 0; color:#c62828;">⚠️ Converge ! (contrairement à ce qu'on pourrait penser)</p>
-            </div>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Erreurs fréquentes et conseils</h2>
-
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Erreurs fréquentes et conseils</h2>
+    
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <div style="background:#fdf2f2; padding:15px; border-radius:6px; margin-bottom:15px;">
             <strong>❌ Pièges à éviter :</strong>
             <ul style="margin:8px 0; padding-left:20px;">
-                <li>Confondre primitive et intégrale définie : $F(b) - F(a)$ vs $\int_a^b f$</li>
-                <li>Oublier de vérifier la continuité de $f$ sur $[a, b]$</li>
-                <li>Mauvais choix des bornes pour les intégrales impropres</li>
-                <li>Confondre longueur d'arc avec aire sous la courbe</li>
-                <li>Oublier le facteur $2\pi$ pour les volumes de révolution autour de l'axe des ordonnées</li>
-                <li>Appliquer le théorème fondamental à des fonctions non continues</li>
+                <li>Confondre aire et intégrale : l'intégrale peut être négative, pas l'aire</li>
+                <li>Oublier de vérifier la continuité de la fonction sur l'intervalle d'intégration</li>
+                <li>Se tromper dans l'ordre des bornes : $\int_a^b f dx = -\int_b^a f dx$</li>
+                <li>Négliger le signe de la fonction pour le calcul d'aires</li>
+                <li>Oublier de simplifier l'expression avant d'intégrer</li>
+                <li>Confondre valeur moyenne et valeur de la fonction au milieu de l'intervalle</li>
             </ul>
         </div>
 
         <div style="background:#f0f9f0; padding:15px; border-radius:6px;">
             <strong>✅ Conseils méthodologiques :</strong>
             <ul style="margin:8px 0; padding-left:20px;">
-                <li>Toujours vérifier la <strong>continuité</strong> de la fonction sur l'intervalle</li>
-                <li>Maîtriser les <strong>primitives élémentaires</strong> pour appliquer le théorème fondamental</li>
-                <li>Pour les volumes : identifier correctement l'axe de rotation</li>
-                <li>Pour les longueurs d'arc : ne pas oublier le facteur $\sqrt{1 + (f')^2}$</li>
-                <li>Pour les intégrales impropres : bien identifier le type de divergence</li>
-                <li>S'entraîner aux calculs de <strong>limites</strong> pour les bornes infinies</li>
-                <li>Utiliser la <strong>linéarité</strong> pour décomposer les intégrales complexes</li>
+                <li>Pour les intégrales définies, vérifier que la fonction est continue sur l'intervalle</li>
+                <li>Simplifier l'expression avant d'intégrer si possible</li>
+                <li>Pour les aires, faire attention au signe de la fonction</li>
+                <li>Utiliser la relation de Chasles pour découper l'intervalle si nécessaire</li>
+                <li>Vérifier ses résultats en dérivant la primitive trouvée</li>
+                <li>S'entraîner régulièrement sur les formules de base</li>
             </ul>
         </div>
     </div>

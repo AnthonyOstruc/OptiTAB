@@ -32,6 +32,43 @@ class CoursAdmin(admin.ModelAdmin):
     fields = ('notion', 'titre', 'contenu', 'difficulty', 'ordre', 'video_url', 'pdf_file', 'est_actif', 'date_creation', 'date_modification')
     readonly_fields = ('date_creation', 'date_modification')
     inlines = [CoursImageInline]
+    
+    def get_form(self, request, obj=None, **kwargs):
+        """Personnaliser le formulaire pour nettoyer l'affichage du contenu"""
+        form = super().get_form(request, obj, **kwargs)
+        
+        # Personnaliser le widget du champ contenu pour un meilleur affichage
+        if 'contenu' in form.base_fields:
+            from django.forms import Textarea
+            form.base_fields['contenu'].widget = Textarea(attrs={
+                'rows': 15,
+                'cols': 80,
+                'style': 'white-space: pre-wrap; font-family: monospace;'
+            })
+        
+        return form
+    
+    def save_model(self, request, obj, form, change):
+        """Nettoyer le contenu avant sauvegarde pour supprimer les lignes vides multiples"""
+        if obj.contenu:
+            # Supprimer les lignes vides multiples et les espaces en fin de ligne
+            lines = obj.contenu.split('\n')
+            cleaned_lines = []
+            prev_empty = False
+            
+            for line in lines:
+                stripped_line = line.rstrip()
+                if stripped_line:  # Ligne non vide
+                    cleaned_lines.append(stripped_line)
+                    prev_empty = False
+                elif not prev_empty:  # Première ligne vide consécutive
+                    cleaned_lines.append('')
+                    prev_empty = True
+                # Ignorer les lignes vides supplémentaires
+            
+            obj.contenu = '\n'.join(cleaned_lines)
+        
+        super().save_model(request, obj, form, change)
 
     def pdf_link(self, obj):
         pdf = getattr(obj, 'pdf_file', None)

@@ -346,6 +346,15 @@ const duplicateForm = ref({
   newTitre: ''
 })
 
+// Normaliser le contenu pour ignorer les lignes vides (aligné sur AdminCoursPlus)
+function normalizeContent(raw) {
+  return String(raw || '')
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n')
+}
+
 // Computed properties
 const filteredCours = computed(() => {
   let filtered = cours.value
@@ -584,7 +593,7 @@ async function handleSave() {
     const payload = {
       notion: Number(form.value.notion),
       titre: form.value.titre,
-      contenu: form.value.contenu,
+      contenu: normalizeContent(form.value.contenu),
       ordre: form.value.ordre,
       difficulty: difficultyMap[form.value.difficulte] || 'medium'
     }
@@ -765,7 +774,7 @@ function handlePreview() {
 
   previewData.value = {
     titre: form.value.titre,
-    contenu: form.value.contenu,
+    contenu: normalizeContent(form.value.contenu),
     ordre: form.value.ordre || 0,
     difficulte: form.value.difficulte || 'moyen',
     difficulty: form.value.difficulte === 'facile' ? 'easy' : form.value.difficulte === 'moyen' ? 'medium' : 'hard',
@@ -882,7 +891,7 @@ function renderPreviewContent(cours) {
   const images = getPreviewImages(cours.image, cours)
 
   // Pour l'aperçu admin, remplacer les marqueurs [IMAGE_X] par l'image correspondante (priorité: images serveur)
-  let content = cours.contenu
+  let content = normalizeContent(cours.contenu)
 
   content = content.replace(/\[IMAGE_(\d+)\]/g, (match, positionStr) => {
     const position = parseInt(positionStr)

@@ -1,0 +1,323 @@
+=== Variables Aléatoires et Lois de Probabilité - Cours Complet Terminal
+Difficulté: medium
+Ordre: 3
+
+Titre: Variables Aléatoires et Lois de Probabilité : Définitions, Calculs et Applications
+Description: Cours complet sur les variables aléatoires : définitions, lois de probabilité discrètes et continues, espérance, variance, loi binomiale et loi normale.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Variable aléatoire : définition et exemples</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition d'une variable aléatoire</h3>
+        <p>Une <strong>variable aléatoire</strong> $X$ est une fonction qui associe à chaque issue d'une expérience aléatoire un nombre réel.</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$X : \Omega \to \mathbb{R}$$
+        </div>
+        <p>où $\Omega$ est l'univers des possibles de l'expérience aléatoire.</p>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 À retenir :</strong> Une variable aléatoire transforme des résultats qualitatifs en nombres, permettant ainsi de faire des calculs probabilistes.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Types de variables aléatoires</h3>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Variable aléatoire discrète :</strong>
+            <p style="margin:8px 0;">Une variable aléatoire $X$ est dite <strong>discrète</strong> si elle ne peut prendre qu'un nombre fini ou dénombrable de valeurs.</p>
+            <p style="margin:8px 0;"><strong>Exemples :</strong> nombre de "pile" en lançant une pièce 5 fois, nombre de boules rouges tirées, etc.</p>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Variable aléatoire continue :</strong>
+            <p style="margin:8px 0;">Une variable aléatoire $X$ est dite <strong>continue</strong> si elle peut prendre toutes les valeurs d'un intervalle de $\mathbb{R}$.</p>
+            <p style="margin:8px 0;"><strong>Exemples :</strong> durée de vie d'un composant, taille d'un individu, etc.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemples concrets</h3>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple 1 : Lancer de dé</strong>
+            <p style="margin:8px 0;">On lance un dé équilibré. On définit $X$ = "nombre obtenu"</p>
+            <p style="margin:8px 0;">$X$ peut prendre les valeurs : 1, 2, 3, 4, 5, 6</p>
+            <p style="margin:8px 0;">$P(X = k) = \frac{1}{6}$ pour $k \in \{1, 2, 3, 4, 5, 6\}$</p>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple 2 : Nombre de "pile"</strong>
+            <p style="margin:8px 0;">On lance une pièce 3 fois. On définit $X$ = "nombre de pile obtenus"</p>
+            <p style="margin:8px 0;">$X$ peut prendre les valeurs : 0, 1, 2, 3</p>
+            <p style="margin:8px 0;">$P(X = 0) = \frac{1}{8}$, $P(X = 1) = \frac{3}{8}$, $P(X = 2) = \frac{3}{8}$, $P(X = 3) = \frac{1}{8}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Loi de probabilité d'une variable aléatoire discrète</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <p>La <strong>loi de probabilité</strong> d'une variable aléatoire discrète $X$ est l'ensemble des valeurs possibles $x_i$ et des probabilités $P(X = x_i)$ associées.</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Propriétés :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Pour toute valeur $x_i$ : $0 \leq P(X = x_i) \leq 1$</li>
+                <li>$\sum_{i} P(X = x_i) = 1$ (probabilité totale)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Représentation d'une loi de probabilité</h3>
+        
+        <p><strong>Tableau de la loi de probabilité :</strong></p>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Valeurs $x_i$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">$P(X = x_i)$</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$x_1$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$p_1$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$x_2$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$p_2$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vdots$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vdots$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$x_n$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$p_n$</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Vérification :</strong> Il faut toujours vérifier que $\sum_{i=1}^{n} p_i = 1$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Espérance et variance d'une variable aléatoire</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Espérance mathématique</h3>
+        <p>L'<strong>espérance</strong> d'une variable aléatoire discrète $X$ est le nombre réel noté $E(X)$ défini par :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$E(X) = \sum_{i} x_i \times P(X = x_i)$$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation :</strong> L'espérance représente la <strong>valeur moyenne</strong> que prend la variable aléatoire sur un grand nombre de répétitions de l'expérience.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Variance et écart-type</h3>
+        <p>La <strong>variance</strong> d'une variable aléatoire $X$ est le nombre réel noté $V(X)$ défini par :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$V(X) = E(X^2) - [E(X)]^2$$
+        </div>
+        <p>ou encore :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$V(X) = \sum_{i} (x_i - E(X))^2 \times P(X = x_i)$$
+        </div>
+        
+        <p>L'<strong>écart-type</strong> est défini par :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\sigma(X) = \sqrt{V(X)}$$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation :</strong> La variance mesure la <strong>dispersion</strong> des valeurs autour de l'espérance. Plus la variance est grande, plus les valeurs sont dispersées.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Propriétés de l'espérance et de la variance</h3>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Propriétés de l'espérance :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>$E(aX + b) = aE(X) + b$ (linéarité)</li>
+                <li>$E(X + Y) = E(X) + E(Y)$ (additivité)</li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Propriétés de la variance :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>$V(aX + b) = a^2V(X)$</li>
+                <li>$V(X) \geq 0$ (toujours positive)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Transformation affine d'une variable aléatoire</h3>
+        <p>Soit $X$ une variable aléatoire et $Y = aX + b$ où $a$ et $b$ sont des constantes réelles.</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Formules de transformation :</strong>
+            <div style="text-align:center; font-size:1.2em; margin:10px 0;">
+                $$E(Y) = E(aX + b) = aE(X) + b$$
+            </div>
+            <div style="text-align:center; font-size:1.2em; margin:10px 0;">
+                $$V(Y) = V(aX + b) = a^2V(X)$$
+            </div>
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>L'espérance est <strong>linéaire</strong> : $E(aX + b) = aE(X) + b$</li>
+                <li>La variance est <strong>quadratique</strong> : $V(aX + b) = a^2V(X)$</li>
+                <li>La constante $b$ n'affecte pas la variance</li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple :</strong> Si $X$ a pour espérance 3 et variance 4, alors $Y = 2X + 5$ a pour espérance $E(Y) = 2 \times 3 + 5 = 11$ et variance $V(Y) = 2^2 \times 4 = 16$.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Somme de deux variables aléatoires indépendantes</h3>
+        <p>Soient $X$ et $Y$ deux variables aléatoires <strong>indépendantes</strong>.</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Espérance de la somme :</strong>
+            <div style="text-align:center; font-size:1.2em; margin:10px 0;">
+                $$E(X + Y) = E(X) + E(Y)$$
+            </div>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Variance de la somme :</strong>
+            <div style="text-align:center; font-size:1.2em; margin:10px 0;">
+                $$V(X + Y) = V(X) + V(Y)$$
+            </div>
+        </div>
+        
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Attention :</strong> Ces formules ne sont valables que si $X$ et $Y$ sont <strong>indépendantes</strong>. Si elles ne le sont pas, il faut ajouter un terme de covariance.
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Généralisation :</strong> Pour $n$ variables aléatoires indépendantes $X_1, X_2, \ldots, X_n$ :
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$E(X_1 + X_2 + \ldots + X_n) = E(X_1) + E(X_2) + \ldots + E(X_n)$$
+            </div>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$V(X_1 + X_2 + \ldots + X_n) = V(X_1) + V(X_2) + \ldots + V(X_n)$$
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Exemple complet de calcul</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Calcul d'espérance et variance</h3>
+        <p><strong>Énoncé :</strong> On lance un dé équilibré. On définit $X$ = "nombre obtenu". Calculer $E(X)$ et $V(X)$.</p>
+        
+        <p><strong>Résolution :</strong></p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Étape 1 :</strong> Loi de probabilité de $X$
+            <table style="width:100%; border-collapse:collapse; margin:10px 0; border:1px solid #ddd;">
+                <tr style="background:#e8f4f8;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">$x_i$</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">1</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">2</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">3</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">4</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">5</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">6</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">$P(X = x_i)$</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\frac{1}{6}$</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\frac{1}{6}$</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\frac{1}{6}$</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\frac{1}{6}$</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\frac{1}{6}$</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\frac{1}{6}$</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Étape 2 :</strong> Calcul de l'espérance
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$E(X) = \sum_{i=1}^{6} x_i \times P(X = x_i)$$
+                $$E(X) = 1 \times \frac{1}{6} + 2 \times \frac{1}{6} + 3 \times \frac{1}{6} + 4 \times \frac{1}{6} + 5 \times \frac{1}{6} + 6 \times \frac{1}{6}$$
+                $$E(X) = \frac{1+2+3+4+5+6}{6} = \frac{21}{6} = 3,5$$
+            </div>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Étape 3 :</strong> Calcul de $E(X^2)$
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$E(X^2) = 1^2 \times \frac{1}{6} + 2^2 \times \frac{1}{6} + 3^2 \times \frac{1}{6} + 4^2 \times \frac{1}{6} + 5^2 \times \frac{1}{6} + 6^2 \times \frac{1}{6}$$
+                $$E(X^2) = \frac{1+4+9+16+25+36}{6} = \frac{91}{6}$$
+            </div>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Étape 4 :</strong> Calcul de la variance
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$V(X) = E(X^2) - [E(X)]^2 = \frac{91}{6} - (3,5)^2 = \frac{91}{6} - \frac{49}{4}$$
+                $$V(X) = \frac{182}{12} - \frac{147}{12} = \frac{35}{12}$$
+            </div>
+        </div>
+        
+        <div style="background:#e8f5e8; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Réponse :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>$E(X) = 3,5$</li>
+                <li>$V(X) = \frac{35}{12} \approx 2,92$</li>
+                <li>$\sigma(X) = \sqrt{\frac{35}{12}} \approx 1,71$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Erreurs fréquentes et conseils</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fdf2f2; padding:15px; border-radius:6px; margin-bottom:15px;">
+            <strong>❌ Pièges à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Confondre $E(X^2)$ et $[E(X)]^2$ dans le calcul de la variance</li>
+                <li>Oublier la correction de continuité lors de l'approximation binomiale</li>
+                <li>Ne pas vérifier les conditions d'approximation avant d'utiliser la loi normale</li>
+                <li>Confondre les paramètres $\mu$ et $\sigma$ de la loi normale</li>
+                <li>Oublier de standardiser avant d'utiliser les tables de la loi normale centrée réduite</li>
+                <li>Négliger l'indépendance des répétitions dans la loi binomiale</li>
+            </ul>
+        </div>
+
+        <div style="background:#f0f9f0; padding:15px; border-radius:6px;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Toujours identifier le type de loi avant de commencer les calculs</li>
+                <li>Vérifier les conditions d'approximation avant d'utiliser la loi normale</li>
+                <li>Utiliser la correction de continuité pour les approximations</li>
+                <li>Bien distinguer les paramètres de position ($\mu$, $E(X)$) et de dispersion ($\sigma$, $\sqrt{V(X)}$)</li>
+                <li>S'entraîner sur les calculs de coefficients binomiaux</li>
+                <li>Maîtriser l'utilisation de la calculatrice pour les lois de probabilité</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===

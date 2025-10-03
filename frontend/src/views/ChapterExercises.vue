@@ -24,7 +24,6 @@
         </div>
       </div>
 
-      <h2 class="exercices-title" style="margin-top: 1.5rem; padding-top: 0.75rem;">Exercices - {{ notionNom }}</h2>
       
       
       <div v-if="loading" class="loading-skeleton-container">

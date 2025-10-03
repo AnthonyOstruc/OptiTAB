@@ -1,0 +1,374 @@
+=== Combinaisons Linéaires et Indépendance - Cours Complet Terminal
+Difficulté: medium
+Ordre: 4
+
+Titre: Combinaisons Linéaires et Indépendance : Définitions, Propriétés et Applications
+Description: Cours complet sur les combinaisons linéaires et l'indépendance linéaire : définitions, propriétés, méthodes de détermination, applications géométriques et algébriques.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Rappels</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Vecteurs : définition, notation, représentation</h3>
+        <p>Un <strong>vecteur</strong> est un objet mathématique caractérisé par sa direction, son sens, sa norme et son point d'application.</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p style="margin:0;"><strong>Notation :</strong> $\vec{u}$, $\vec{v}$, $\vec{w}$ ou $\overrightarrow{AB}$</p>
+            <p style="margin:8px 0;"><strong>Coordonnées :</strong> $\vec{u} = \begin{pmatrix} x \\ y \end{pmatrix}$ dans le plan</p>
+            <p style="margin:8px 0;"><strong>Coordonnées :</strong> $\vec{u} = \begin{pmatrix} x \\ y \\ z \end{pmatrix}$ dans l'espace</p>
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 À retenir :</strong> Un vecteur est défini par ses coordonnées dans une base donnée.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Calcul du vecteur $\overrightarrow{AB}$</h3>
+        <p>Pour calculer le vecteur $\overrightarrow{AB}$ à partir des coordonnées des points $A$ et $B$ :</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Formule générale :</strong>
+            <div style="text-align:center; font-size:1.2em; margin:10px 0;">
+                $$\overrightarrow{AB} = \begin{pmatrix} x_B - x_A \\ y_B - y_A \end{pmatrix} \text{ dans le plan}$$
+            </div>
+            <div style="text-align:center; font-size:1.2em; margin:10px 0;">
+                $$\overrightarrow{AB} = \begin{pmatrix} x_B - x_A \\ y_B - y_A \\ z_B - z_A \end{pmatrix} \text{ dans l'espace}$$
+            </div>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple concret :</strong>
+            <p style="margin:8px 0;">Soient $A(2, 3)$ et $B(5, -1)$ dans le plan.</p>
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$\overrightarrow{AB} = \begin{pmatrix} 5 - 2 \\ -1 - 3 \end{pmatrix} = \begin{pmatrix} 3 \\ -4 \end{pmatrix}$$
+            </div>
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Propriété importante :</strong> $\overrightarrow{AB} = -\overrightarrow{BA}$ (vecteurs opposés)
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérations : somme, différence, produit par un scalaire</h3>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Opération</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Définition</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Exemple</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Addition</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vec{u} + \vec{v}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\begin{pmatrix} x_1 \\ y_1 \end{pmatrix} + \begin{pmatrix} x_2 \\ y_2 \end{pmatrix} = \begin{pmatrix} x_1+x_2 \\ y_1+y_2 \end{pmatrix}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Différence</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vec{u} - \vec{v}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\begin{pmatrix} x_1 \\ y_1 \end{pmatrix} - \begin{pmatrix} x_2 \\ y_2 \end{pmatrix} = \begin{pmatrix} x_1-x_2 \\ y_1-y_2 \end{pmatrix}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Produit par scalaire</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$k\vec{u}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$k\begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} kx \\ ky \end{pmatrix}$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Combinaisons linéaires</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <p>Soient $\vec{u_1}, \vec{u_2}, \ldots, \vec{u_n}$ des vecteurs et $a_1, a_2, \ldots, a_n$ des scalaires.</p>
+        <p>Le vecteur $\vec{v} = a_1\vec{u_1} + a_2\vec{u_2} + \ldots + a_n\vec{u_n}$ est appelé <strong>combinaison linéaire</strong> des vecteurs $\vec{u_1}, \vec{u_2}, \ldots, \vec{u_n}$.</p>
+        
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\vec{v} = a_1\vec{u_1} + a_2\vec{u_2} + \ldots + a_n\vec{u_n}$$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Exemple :</strong> $\vec{u} + 2\vec{v}$ est une combinaison linéaire de $\vec{u}$ et $\vec{v}$.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemples concrets dans le plan et dans l'espace</h3>
+        <p><strong>Exemple 1 (Plan) :</strong> Soient $\vec{u} = \begin{pmatrix} 1 \\ 2 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} 3 \\ -1 \end{pmatrix}$.</p>
+        <p>Exprimer $\vec{w} = \begin{pmatrix} 7 \\ 1 \end{pmatrix}$ comme combinaison linéaire de $\vec{u}$ et $\vec{v}$.</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p style="margin:8px 0;">On cherche $a$ et $b$ tels que $\vec{w} = a\vec{u} + b\vec{v}$</p>
+            <p style="margin:8px 0;">C'est-à-dire : $\begin{pmatrix} 7 \\ 1 \end{pmatrix} = a\begin{pmatrix} 1 \\ 2 \end{pmatrix} + b\begin{pmatrix} 3 \\ -1 \end{pmatrix}$</p>
+            
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$\begin{pmatrix} 7 \\ 1 \end{pmatrix} = \begin{pmatrix} a + 3b \\ 2a - b \end{pmatrix}$$
+            </div>
+            
+            <p style="margin:8px 0;">On obtient le système :</p>
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$\begin{cases} a + 3b = 7 \\ 2a - b = 1 \end{cases}$$
+            </div>
+            
+            <p style="margin:8px 0;">Résolution : $a = 2$ et $b = \frac{5}{3}$</p>
+        </div>
+        
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Réponse :</strong> $\vec{w} = 2\vec{u} + \frac{5}{3}\vec{v}$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 (Espace) :</h3>
+        <p><strong>Énoncé :</strong> Soient $\vec{u} = \begin{pmatrix} 1 \\ 0 \\ 2 \end{pmatrix}$, $\vec{v} = \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}$ et $\vec{w} = \begin{pmatrix} 2 \\ 1 \\ 5 \end{pmatrix}$.</p>
+        <p>Exprimer $\vec{w}$ comme combinaison linéaire de $\vec{u}$ et $\vec{v}$.</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p style="margin:8px 0;">On cherche $a$ et $b$ tels que $\vec{w} = a\vec{u} + b\vec{v}$</p>
+            
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$\begin{pmatrix} 2 \\ 1 \\ 5 \end{pmatrix} = a\begin{pmatrix} 1 \\ 0 \\ 2 \end{pmatrix} + b\begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix} = \begin{pmatrix} a \\ b \\ 2a + b \end{pmatrix}$$
+            </div>
+            
+            <p style="margin:8px 0;">On obtient le système :</p>
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$\begin{cases} a = 2 \\ b = 1 \\ 2a + b = 5 \end{cases}$$
+            </div>
+            
+            <p style="margin:8px 0;">Vérification : $2 \times 2 + 1 = 5$ ✓</p>
+        </div>
+        
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Réponse :</strong> $\vec{w} = 2\vec{u} + \vec{v}$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Indépendance des vecteurs</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <p>Des vecteurs $\vec{u_1}, \vec{u_2}, \ldots, \vec{u_n}$ sont dits <strong>linéairement indépendants</strong> si la seule combinaison linéaire qui donne le vecteur nul est celle où tous les coefficients sont nuls.</p>
+        
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$a_1\vec{u_1} + a_2\vec{u_2} + \ldots + a_n\vec{u_n} = \vec{0} \Rightarrow a_1 = a_2 = \ldots = a_n = 0$$
+        </div>
+        
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Attention :</strong> Si on peut trouver des coefficients non tous nuls tels que la combinaison linéaire donne le vecteur nul, alors les vecteurs sont <strong>linéairement dépendants</strong>.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode de vérification</h3>
+        <p>Pour déterminer si des vecteurs sont linéairement indépendants :</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Étape 1 :</strong> Écrire la combinaison linéaire égale au vecteur nul
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$a_1\vec{u_1} + a_2\vec{u_2} + \ldots + a_n\vec{u_n} = \vec{0}$$
+            </div>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Étape 2 :</strong> Résoudre le système d'équations obtenu
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Étape 3 :</strong> Conclure
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Si la seule solution est $a_1 = a_2 = \ldots = a_n = 0$ : <strong>indépendants</strong></li>
+                <li>Sinon : <strong>dépendants</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple d'étude d'indépendance</h3>
+        <p><strong>Énoncé :</strong> Étudier l'indépendance linéaire de $\vec{u} = \begin{pmatrix} 1 \\ 2 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} 3 \\ 1 \end{pmatrix}$</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p style="margin:8px 0;">On cherche $a$ et $b$ tels que $a\vec{u} + b\vec{v} = \vec{0}$</p>
+            
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$a\begin{pmatrix} 1 \\ 2 \end{pmatrix} + b\begin{pmatrix} 3 \\ 1 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$$
+            </div>
+            
+            <p style="margin:8px 0;">Ce qui donne le système :</p>
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$\begin{cases} a + 3b = 0 \\ 2a + b = 0 \end{cases}$$
+            </div>
+            
+            <p style="margin:8px 0;">Résolution : $a = 0$ et $b = 0$ (solution unique)</p>
+        </div>
+        
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Conclusion :</strong> Les vecteurs $\vec{u}$ et $\vec{v}$ sont <strong>linéairement indépendants</strong>.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Colinéarité</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <p>Deux vecteurs sont <strong>colinéaires</strong> si leurs coordonnées sont proportionnelles.</p>
+        
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\vec{u} \text{ et } \vec{v} \text{ sont colinéaires } \Leftrightarrow \vec{u} = k\vec{v} \text{ pour un certain } k \in \mathbb{R}$$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation géométrique :</strong> Deux vecteurs colinéaires ont la même direction (parallèles).
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Vérification pratique : déterminant nul en 2D</h3>
+        <p>Pour vérifier la colinéarité de deux vecteurs :</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Méthode 1 - Déterminant :</strong>
+            <p style="margin:8px 0;">Pour $\vec{u} = \begin{pmatrix} x_1 \\ y_1 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} x_2 \\ y_2 \end{pmatrix}$ :</p>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$\vec{u} \text{ et } \vec{v} \text{ sont colinéaires } \Leftrightarrow \det(\vec{u}, \vec{v}) = x_1y_2 - x_2y_1 = 0$$
+            </div>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Méthode 2 - Rapport des coordonnées :</strong>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$\vec{u} \text{ et } \vec{v} \text{ sont colinéaires } \Leftrightarrow \frac{x_1}{x_2} = \frac{y_1}{y_2} \text{ (si } x_2 \neq 0 \text{ et } y_2 \neq 0)$$
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Coplanarité (en 3D)</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <p>Trois vecteurs sont <strong>coplanaires</strong> s'ils appartiennent à un même plan.</p>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation géométrique :</strong> Trois vecteurs coplanaires peuvent être représentés dans un même plan, même s'ils ont des points d'application différents.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Vérification pratique : déterminant 3×3 nul</h3>
+        <p>Pour vérifier la coplanarité de trois vecteurs :</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Méthode 1 - Déterminant :</strong>
+            <p style="margin:8px 0;">Pour $\vec{u} = \begin{pmatrix} x_1 \\ y_1 \\ z_1 \end{pmatrix}$, $\vec{v} = \begin{pmatrix} x_2 \\ y_2 \\ z_2 \end{pmatrix}$, $\vec{w} = \begin{pmatrix} x_3 \\ y_3 \\ z_3 \end{pmatrix}$ :</p>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$\det(\vec{u}, \vec{v}, \vec{w}) = 0 \Leftrightarrow \text{ les vecteurs sont coplanaires}$$
+            </div>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Méthode 2 - Système d'équations :</strong>
+            <p style="margin:8px 0;">Les vecteurs sont coplanaires s'il existe des réels $a$, $b$, $c$ non tous nuls tels que :</p>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$a\vec{u} + b\vec{v} + c\vec{w} = \vec{0}$$
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Méthodes pratiques</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Calcul des déterminants</h3>
+        <p>Les déterminants sont des outils essentiels pour vérifier l'indépendance des vecteurs.</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Déterminant 2×2 :</strong>
+            <div style="text-align:center; font-size:1.2em; margin:10px 0;">
+                $$\det\begin{pmatrix} a & b \\ c & d \end{pmatrix} = ad - bc$$
+            </div>
+            <p style="margin:8px 0;"><strong>Exemple :</strong> $\det\begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix} = 2 \times 4 - 3 \times 1 = 8 - 3 = 5$</p>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Déterminant 3×3 (développement par la première ligne) :</strong>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$\det\begin{pmatrix} a & b & c \\ d & e & f \\ g & h & i \end{pmatrix} = a \begin{vmatrix} e & f \\ h & i \end{vmatrix} - b \begin{vmatrix} d & f \\ g & i \end{vmatrix} + c \begin{vmatrix} d & e \\ g & h \end{vmatrix}$$
+            </div>
+            <p style="margin:8px 0; font-size:0.9em; color:#666;">On développe par rapport à la première ligne avec alternance des signes + et -</p>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple de calcul :</strong>
+            <p style="margin:8px 0;">$\det\begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{pmatrix}$</p>
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$= 1 \begin{vmatrix} 5 & 6 \\ 8 & 9 \end{vmatrix} - 2 \begin{vmatrix} 4 & 6 \\ 7 & 9 \end{vmatrix} + 3 \begin{vmatrix} 4 & 5 \\ 7 & 8 \end{vmatrix}$$
+            </div>
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$= 1(5 \times 9 - 6 \times 8) - 2(4 \times 9 - 6 \times 7) + 3(4 \times 8 - 5 \times 7)$$
+            </div>
+            <div style="margin:10px auto; max-width:fit-content; text-align:left;">
+                $$= 1(45 - 48) - 2(36 - 42) + 3(32 - 35) = -3 + 12 - 9 = 0$$
+            </div>
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Application :</strong> Si le déterminant est nul, les vecteurs sont liés (colinéaires ou coplanaires)
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Utilisation des déterminants en 2D et 3D</h3>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Déterminant 2×2 :</strong>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$\det(\vec{u}, \vec{v}) = \begin{vmatrix} x_1 & x_2 \\ y_1 & y_2 \end{vmatrix} = x_1y_2 - x_2y_1$$
+            </div>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Si $\det(\vec{u}, \vec{v}) = 0$ : $\vec{u}$ et $\vec{v}$ sont <strong>colinéaires</strong></li>
+                <li>Si $\det(\vec{u}, \vec{v}) \neq 0$ : $\vec{u}$ et $\vec{v}$ sont <strong>indépendants</strong></li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Déterminant 3×3 :</strong>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$\det(\vec{u}, \vec{v}, \vec{w}) = \begin{vmatrix} x_1 & x_2 & x_3 \\ y_1 & y_2 & y_3 \\ z_1 & z_2 & z_3 \end{vmatrix}$$
+            </div>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Si $\det(\vec{u}, \vec{v}, \vec{w}) = 0$ : les vecteurs sont <strong>coplanaires</strong></li>
+                <li>Si $\det(\vec{u}, \vec{v}, \vec{w}) \neq 0$ : les vecteurs sont <strong>indépendants</strong></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Erreurs fréquentes et conseils</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fdf2f2; padding:15px; border-radius:6px; margin-bottom:15px;">
+            <strong>❌ Pièges à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Confondre "colinéaires" et "égaux" : deux vecteurs colinéaires peuvent avoir des normes différentes</li>
+                <li>Oublier de vérifier que les coefficients ne sont pas tous nuls dans le cas de dépendance</li>
+                <li>Négliger le cas particulier du vecteur nul (toujours dépendant avec n'importe quel autre vecteur)</li>
+                <li>Confondre "coplanaires" et "colinéaires" : la coplanarité concerne 3 vecteurs, la colinéarité 2 vecteurs</li>
+                <li>Oublier de simplifier les équations avant de résoudre le système</li>
+            </ul>
+        </div>
+
+        <div style="background:#f0f9f0; padding:15px; border-radius:6px;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Utiliser le déterminant pour deux vecteurs dans le plan (colinéarité)</li>
+                <li>Utiliser le déterminant 3×3 pour trois vecteurs dans l'espace (coplanarité)</li>
+                <li>Vérifier la cohérence des dimensions (on ne peut pas avoir plus de vecteurs indépendants que la dimension de l'espace)</li>
+                <li>Pour les applications géométriques, bien identifier les vecteurs directeurs</li>
+                <li>S'entraîner sur des exemples concrets pour bien comprendre les concepts</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===

@@ -1,0 +1,508 @@
+=== Application de la Loi Binomiale : Jeu de Cartes
+Difficulté: easy
+
+Énoncé: Un jeu de société contient 20 cartes : 12 cartes bleues et 8 cartes rouges. On tire successivement 5 cartes avec remise. Nous considérons le tirage d'une carte bleue comme un succès.
+
+**Question 1 : Modélisation par la loi binomiale**
+
+**Question 2 : Déterminer la probabilité d'avoir exactement 3 cartes bleues**
+
+**Question 3 : Calculer la probabilité d'avoir au plus 2 cartes bleues**
+
+**Question 4 : Déterminer l'espérance et la variance du nombre de cartes bleues**
+
+**Question 5 : Calculer la probabilité d'avoir au moins 4 cartes bleues**
+
+Étapes:
+
+**Question 1 : Modélisation par la loi binomiale**
+    ● Chaque tirage suit un schéma de Bernoulli avec $p = 12/20 = 0,6$
+    ● Succès : tirer une carte bleue, Échec : tirer une carte rouge
+    ● Nombre d'essais indépendants : $n = 5$
+    ● $X \sim \mathcal{B}(5; 0,6)$
+    $\\$
+**Question 2 : Probabilité d'exactement 3 cartes bleues**
+    ● $P(X = 3) = \binom{5}{3} \times 0,6^3 \times 0,4^2$
+    ● $\binom{5}{3} = 10$
+    ● $P(X = 3) = 10 \times 0,216 \times 0,16 = 10 \times 0,03456 = 0,3456$
+    $\\$
+**Question 3 : Probabilité d'au plus 2 cartes bleues**
+    ● $P(X \leq 2) = P(X = 0) + P(X = 1) + P(X = 2)$
+    ● $P(X = 0) = \binom{5}{0} \times 0,6^0 \times 0,4^5 = 1 \times 1 \times 0,01024 = 0,01024$
+    ● $P(X = 1) = \binom{5}{1} \times 0,6^1 \times 0,4^4 = 5 \times 0,6 \times 0,0256 = 5 \times 0,01536 = 0,0768$
+    ● $P(X = 2) = \binom{5}{2} \times 0,6^2 \times 0,4^3 = 10 \times 0,36 \times 0,064 = 10 \times 0,02304 = 0,2304$
+    ● $P(X \leq 2) = 0,01024 + 0,0768 + 0,2304 = 0,31744$
+    $\\$
+**Question 4 : Espérance et variance**
+    ● $E(X) = n \times p = 5 \times 0,6 = 3$
+    ● $V(X) = n \times p \times q = 5 \times 0,6 \times 0,4 = 1,2$
+    ● $\sigma(X) = \sqrt{1,2} \approx 1,095$
+    $\\$
+**Question 5 : Probabilité d'au moins 4 cartes bleues**
+    ● $P(X \geq 4) = P(X = 4) + P(X = 5)$
+    ● $P(X = 4) = \binom{5}{4} \times 0,6^4 \times 0,4^1 = 5 \times 0,1296 \times 0,4 = 5 \times 0,05184 = 0,2592$
+    ● $P(X = 5) = \binom{5}{5} \times 0,6^5 \times 0,4^0 = 1 \times 0,07776 \times 1 = 0,07776$
+    ● $P(X \geq 4) = 0,2592 + 0,07776 = 0,33696$
+    ● Alternative : $P(X \geq 4) = 1 - P(X \leq 3) = 1 - 0,31744 - 0,3456 = 1 - 0,66304 = 0,33696$
+
+Solution:
+1. $X \sim \mathcal{B}(5; 0,6)$
+2. $P(X = 3) = 0,3456$
+3. $P(X \leq 2) = 0,3174$
+4. $E(X) = 3$, $V(X) = 1,2$, $\sigma(X) \approx 1,095$
+5. $P(X \geq 4) = 0,337$
+
+===
+
+=== Contrôle Qualité : Analyse Statistique des Défauts
+Difficulté: hard
+
+Énoncé: Un contrôle qualité teste 15 produits identiques. Chaque produit a une probabilité de 0,1 d'être défectueux, indépendamment des autres.
+
+**Question 1 : Quelle est la probabilité d'avoir exactement 2 produits défectueux ?**
+
+**Question 2 : Quelle est la probabilité d'avoir au plus 1 produit défectueux ?**
+
+**Question 3 : Quelle est la probabilité d'avoir au moins 3 produits défectueux ?**
+
+**Question 4 : Calculer l'espérance et l'écart-type du nombre de produits défectueux**
+
+**Question 5 : Si le coût de remplacement d'un produit défectueux est de 50€, quel est le coût moyen attendu ?**
+
+Étapes:
+
+**Question 1 : Probabilité d'exactement 2 défectueux**
+    ● $X \sim \mathcal{B}(15; 0,1)$
+    ● $P(X = 2) = \binom{15}{2} \times 0,1^2 \times 0,9^{13}$
+    ● $\binom{15}{2} = 105$
+    ● $P(X = 2) = 105 \times 0,01 \times 0,9^{13} \approx 105 \times 0,01 \times 0,2542 = 0,2669$
+    $\\$
+**Question 2 : Probabilité d'au plus 1 défectueux**
+    ● $P(X \leq 1) = P(X = 0) + P(X = 1)$
+    ● $P(X = 0) = \binom{15}{0} \times 0,1^0 \times 0,9^{15} = 1 \times 1 \times 0,2059 = 0,2059$
+    ● $P(X = 1) = \binom{15}{1} \times 0,1^1 \times 0,9^{14} = 15 \times 0,1 \times 0,2288 = 15 \times 0,02288 = 0,3432$
+    ● $P(X \leq 1) = 0,2059 + 0,3432 = 0,5491$
+    $\\$
+**Question 3 : Probabilité d'au moins 3 défectueux**
+    ● $P(X \geq 3) = 1 - P(X \leq 2)$
+    ● $P(X \leq 2) = 0,5491 + 0,2669 = 0,8160$
+    ● $P(X \geq 3) = 1 - 0,8160 = 0,1840$
+    $\\$
+**Question 4 : Espérance et écart-type**
+    ● $E(X) = n \times p = 15 \times 0,1 = 1,5$
+    ● $V(X) = n \times p \times q = 15 \times 0,1 \times 0,9 = 1,35$
+    ● $\sigma(X) = \sqrt{1,35} \approx 1,162$
+    $\\$
+**Question 5 : Coût moyen attendu**
+    ● Coût moyen = $E(X) \times 50 = 1,5 \times 50 = 75$€
+
+Solution:
+1. $P(X = 2) \approx 0,267$
+2. $P(X \leq 1) \approx 0,549$
+3. $P(X \geq 3) \approx 0,184$
+4. $E(X) = 1,5$, $\sigma(X) \approx 1,162$
+5. Coût moyen = 75€
+
+===
+
+=== Sondage Politique : Intentions de Vote
+Difficulté: medium
+
+Énoncé: Dans une ville de 5000 habitants, un candidat à une élection municipale a 35% d'intentions de vote favorables selon un sondage. On interroge un échantillon aléatoire de 25 habitants. Nous considérons qu'une réponse favorable constitue un succès.
+
+**Question 1 : Modélisation par la loi binomiale**
+
+**Question 2 : Probabilité d'au moins 10 votes favorables**
+
+**Question 3 : Nombre moyen de votes favorables attendu**
+
+**Question 4 : Probabilité d'avoir exactement 8 votes favorables**
+
+**Question 5 : Si le candidat doit obtenir au moins 40% des voix pour être élu, quelle est la probabilité qu'il atteigne ce seuil ?**
+
+Étapes:
+
+**Question 1 : Modélisation par la loi binomiale**
+    ● Chaque interrogation suit un schéma de Bernoulli avec $p = 0,35$
+    ● Succès : réponse favorable, Échec : réponse défavorable
+    ● Nombre d'essais indépendants : $n = 25$
+    ● $X \sim \mathcal{B}(25; 0,35)$
+    $\\$
+**Question 2 : Probabilité d'au moins 10 votes favorables**
+    ● $P(X \geq 10) = 1 - P(X \leq 9)$
+    ● $P(X \leq 9) = P(X = 0) + P(X = 1) + ... + P(X = 9)$
+    ● Calcul avec calculatrice : $P(X \leq 9) \approx 0,692$
+    ● $P(X \geq 10) = 1 - 0,692 = 0,308$
+    $\\$
+**Question 3 : Nombre moyen de votes favorables attendu**
+    ● $E(X) = n \times p = 25 \times 0,35 = 8,75$
+    ● Le candidat peut espérer environ 9 votes favorables
+    $\\$
+**Question 4 : Probabilité d'avoir exactement 8 votes favorables**
+    ● $P(X = 8) = \binom{25}{8} \times 0,35^8 \times 0,65^{17}$
+    ● $\binom{25}{8} = 1081575$
+    ● $P(X = 8) \approx 1081575 \times 1,83 \times 10^{-6} \times 0,0035 \approx 0,0069$
+    $\\$
+**Question 5 : Probabilité d'atteindre 40% des voix**
+    ● 40% de 25 = 10 votes
+    ● $P(X \geq 10) \approx 0,308$ (même que question 2)
+
+Solution:
+1. $X \sim \mathcal{B}(25; 0,35)$
+2. $P(X \geq 10) \approx 0,308$
+3. $E(X) = 8,75$ (environ 9 votes)
+4. $P(X = 8) \approx 0,0069$
+5. $P(X \geq 10) \approx 0,308$ (30,8% de chances)
+
+===
+
+=== Contrôle Qualité : Tests de Résistance
+Difficulté: hard
+
+Énoncé: Un fabricant teste la résistance de composants électroniques. Chaque composant a une probabilité de 0,08 de présenter un défaut de fabrication. On teste un lot de 30 composants identiques. Nous considérons qu'un composant défectueux constitue un succès pour notre étude statistique.
+
+**Question 1 : Modélisation par la loi binomiale**
+
+**Question 2 : Probabilité d'observer au plus 2 composants défectueux**
+
+**Question 3 : Calcul de l'écart-type du nombre de défauts**
+
+**Question 4 : Probabilité d'avoir entre 3 et 5 défauts inclus**
+
+**Question 5 : Si le coût de remplacement d'un composant défectueux est de 25€, quel est le coût moyen attendu pour le lot ?**
+
+Étapes:
+
+**Question 1 : Modélisation par la loi binomiale**
+    ● Chaque test suit un schéma de Bernoulli avec $p = 0,08$
+    ● Succès : composant défectueux, Échec : composant conforme
+    ● Nombre d'essais indépendants : $n = 30$
+    ● $X \sim \mathcal{B}(30; 0,08)$
+    $\\$
+**Question 2 : Probabilité d'au plus 2 composants défectueux**
+    ● $P(X \leq 2) = P(X = 0) + P(X = 1) + P(X = 2)$
+    ● $P(X = 0) = \binom{30}{0} \times 0,08^0 \times 0,92^{30} \approx 0,0907$
+    ● $P(X = 1) = \binom{30}{1} \times 0,08^1 \times 0,92^{29} \approx 0,2478$
+    ● $P(X = 2) = \binom{30}{2} \times 0,08^2 \times 0,92^{28} \approx 0,3478$
+    ● $P(X \leq 2) \approx 0,0907 + 0,2478 + 0,3478 = 0,6863$
+    $\\$
+**Question 3 : Calcul de l'écart-type du nombre de défauts**
+    ● $E(X) = n \times p = 30 \times 0,08 = 2,4$
+    ● $V(X) = n \times p \times q = 30 \times 0,08 \times 0,92 = 2,208$
+    ● $\sigma(X) = \sqrt{2,208} \approx 1,486$
+    $\\$
+**Question 4 : Probabilité d'avoir entre 3 et 5 défauts inclus**
+    ● $P(3 \leq X \leq 5) = P(X = 3) + P(X = 4) + P(X = 5)$
+    ● $P(X = 3) = \binom{30}{3} \times 0,08^3 \times 0,92^{27} \approx 0,2368$
+    ● $P(X = 4) = \binom{30}{4} \times 0,08^4 \times 0,92^{26} \approx 0,1686$
+    ● $P(X = 5) = \binom{30}{5} \times 0,08^5 \times 0,92^{25} \approx 0,1037$
+    ● $P(3 \leq X \leq 5) \approx 0,2368 + 0,1686 + 0,1037 = 0,5091$
+    $\\$
+**Question 5 : Coût moyen attendu pour le lot**
+    ● Coût moyen = $E(X) \times 25 = 2,4 \times 25 = 60$€
+
+Solution:
+1. $X \sim \mathcal{B}(30; 0,08)$
+2. $P(X \leq 2) \approx 0,686$
+3. $\sigma(X) \approx 1,486$
+4. $P(3 \leq X \leq 5) \approx 0,509$
+5. Coût moyen = 60€
+
+===
+
+=== Médecine : Efficacité d'un Traitement
+Difficulté: medium
+
+Énoncé: Un nouveau médicament contre les migraines a une efficacité de 75% selon les essais cliniques. Un médecin traite 12 patients souffrant de migraines chroniques. Nous considérons qu'une guérison constitue un succès.
+
+**Question 1 : Modélisation par la loi binomiale**
+
+**Question 2 : Probabilité de guérir exactement 10 patients**
+
+**Question 3 : Probabilité de guérir au moins 8 patients**
+
+**Question 4 : Nombre moyen de patients guéris attendu**
+
+**Question 5 : Si chaque traitement coûte 150€, quel est le coût moyen par patient guéri ?**
+
+Étapes:
+
+**Question 1 : Modélisation par la loi binomiale**
+    ● Chaque traitement suit un schéma de Bernoulli avec $p = 0,75$
+    ● Succès : guérison du patient, Échec : absence de guérison
+    ● Nombre d'essais indépendants : $n = 12$
+    ● $X \sim \mathcal{B}(12; 0,75)$
+    $\\$
+**Question 2 : Probabilité de guérir exactement 10 patients**
+    ● $P(X = 10) = \binom{12}{10} \times 0,75^{10} \times 0,25^{2}$
+    ● $\binom{12}{10} = 66$
+    ● $P(X = 10) = 66 \times 0,0563 \times 0,0625 \approx 66 \times 0,00352 = 0,2323$
+    $\\$
+**Question 3 : Probabilité de guérir au moins 8 patients**
+    ● $P(X \geq 8) = P(X = 8) + P(X = 9) + P(X = 10) + P(X = 11) + P(X = 12)$
+    ● Calcul approché : $P(X \geq 8) \approx 0,775$
+    $\\$
+**Question 4 : Nombre moyen de patients guéris attendu**
+    ● $E(X) = n \times p = 12 \times 0,75 = 9$
+    ● Le médecin peut espérer guérir 9 patients sur 12
+    $\\$
+**Question 5 : Coût moyen par patient guéri**
+    ● Coût total moyen = $E(X) \times 150 = 9 \times 150 = 1350$€
+    ● Coût par patient guéri = $1350 / 9 = 150$€
+
+Solution:
+1. $X \sim \mathcal{B}(12; 0,75)$
+2. $P(X = 10) \approx 0,232$
+3. $P(X \geq 8) \approx 0,775$
+4. $E(X) = 9$
+5. Coût moyen par patient guéri = 150€
+
+===
+
+=== Sécurité Routière : Contrôle d'Alcoolémie
+Difficulté: hard
+
+Énoncé: Lors d'un contrôle routier, 15% des conducteurs contrôlés présentent un taux d'alcoolémie supérieur à la limite légale. Les forces de l'ordre contrôlent 40 conducteurs. Nous considérons qu'un conducteur en infraction constitue un succès.
+
+**Question 1 : Modélisation par la loi binomiale**
+
+**Question 2 : Probabilité d'interpeller exactement 6 conducteurs en infraction**
+
+**Question 3 : Probabilité d'interpeller au plus 4 conducteurs en infraction**
+
+**Question 4 : Calcul de la variance du nombre d'infractions**
+
+**Question 5 : Si chaque infraction coûte 135€ d'amende, quel est le montant total moyen d'amendes ?**
+
+Étapes:
+
+**Question 1 : Modélisation par la loi binomiale**
+    ● Chaque contrôle suit un schéma de Bernoulli avec $p = 0,15$
+    ● Succès : conducteur en infraction, Échec : conducteur conforme
+    ● Nombre d'essais indépendants : $n = 40$
+    ● $X \sim \mathcal{B}(40; 0,15)$
+    $\\$
+**Question 2 : Probabilité d'interpeller exactement 6 conducteurs en infraction**
+    ● $P(X = 6) = \binom{40}{6} \times 0,15^{6} \times 0,85^{34}$
+    ● Calcul approché : $P(X = 6) \approx 0,176$
+    $\\$
+**Question 3 : Probabilité d'interpeller au plus 4 conducteurs en infraction**
+    ● $P(X \leq 4) = P(X = 0) + P(X = 1) + P(X = 2) + P(X = 3) + P(X = 4)$
+    ● Calcul approché : $P(X \leq 4) \approx 0,289$
+    $\\$
+**Question 4 : Calcul de la variance du nombre d'infractions**
+    ● $E(X) = n \times p = 40 \times 0,15 = 6$
+    ● $V(X) = n \times p \times q = 40 \times 0,15 \times 0,85 = 5,1$
+    ● $\sigma(X) = \sqrt{5,1} \approx 2,258$
+    $\\$
+**Question 5 : Montant total moyen d'amendes**
+    ● Montant moyen = $E(X) \times 135 = 6 \times 135 = 810$€
+
+Solution:
+1. $X \sim \mathcal{B}(40; 0,15)$
+2. $P(X = 6) \approx 0,176$
+3. $P(X \leq 4) \approx 0,289$
+4. $V(X) = 5,1$, $\sigma(X) \approx 2,258$
+5. Montant moyen d'amendes = 810€
+
+===
+
+=== Biologie : Génétique des Pois
+Difficulté: medium
+
+Énoncé: Dans une expérience de génétique, on croise des pois hybrides (hétérozygotes) pour le caractère "forme de la gousse". Chaque pois a 50% de chances d'avoir une gousse lisse (dominant) ou ridée (récessif). On observe 16 descendants. Nous considérons qu'une gousse lisse constitue un succès.
+
+**Question 1 : Modélisation par la loi binomiale**
+
+**Question 2 : Probabilité d'observer exactement 9 gousses lisses**
+
+**Question 3 : Probabilité d'observer plus de 10 gousses lisses**
+
+**Question 4 : Calcul de l'espérance mathématique**
+
+**Question 5 : Interprétation biologique du résultat**
+
+Étapes:
+
+**Question 1 : Modélisation par la loi binomiale**
+    ● Chaque croisement suit un schéma de Bernoulli avec $p = 0,5$
+    ● Succès : gousse lisse, Échec : gousse ridée
+    ● Nombre d'essais indépendants : $n = 16$
+    ● $X \sim \mathcal{B}(16; 0,5)$
+    $\\$
+**Question 2 : Probabilité d'observer exactement 9 gousses lisses**
+    ● $P(X = 9) = \binom{16}{9} \times 0,5^{9} \times 0,5^{7}$
+    ● $\binom{16}{9} = 11440$
+    ● $P(X = 9) = 11440 \times (0,5)^{16} \approx 11440 \times 0,00001526 = 0,1745$
+    $\\$
+**Question 3 : Probabilité d'observer plus de 10 gousses lisses**
+    ● $P(X > 10) = P(X = 11) + P(X = 12) + \ldots + P(X = 16)$
+    ● Calcul approché : $P(X > 10) \approx 0,227$
+    $\\$
+**Question 4 : Calcul de l'espérance mathématique**
+    ● $E(X) = n \times p = 16 \times 0,5 = 8$
+    ● Espérance égale à la variance pour p = 0,5
+    ● $V(X) = 16 \times 0,5 \times 0,5 = 4$
+    ● $\sigma(X) = \sqrt{4} = 2$
+    $\\$
+**Question 5 : Interprétation biologique du résultat**
+    ● Avec p = 0,5, on s'attend à 8 gousses lisses sur 16
+    ● Résultat cohérent avec la loi de Mendel (3:1 mais ici 1:1 pour hétérozygotes)
+
+Solution:
+1. $X \sim \mathcal{B}(16; 0,5)$
+2. $P(X = 9) \approx 0,175$
+3. $P(X > 10) \approx 0,227$
+4. $E(X) = 8$, $V(X) = 4$, $\sigma(X) = 2$
+5. Résultat conforme à la génétique mendélienne
+
+===
+
+=== Commerce : Satisfaction Clientèle
+Difficulté: medium
+
+Énoncé: Une entreprise de e-commerce a un taux de satisfaction client de 82%. Un commercial contacte 20 clients potentiels. Nous considérons qu'un client satisfait constitue un succès.
+
+**Question 1 : Modélisation par la loi binomiale**
+
+**Question 2 : Probabilité d'avoir exactement 16 clients satisfaits**
+
+**Question 3 : Probabilité d'avoir au moins 18 clients satisfaits**
+
+**Question 4 : Calcul de l'écart-type du nombre de clients satisfaits**
+
+**Question 5 : Si chaque client satisfait rapporte 200€ de chiffre d'affaires, quel est le chiffre d'affaires moyen attendu ?**
+
+Étapes:
+
+**Question 1 : Modélisation par la loi binomiale**
+    ● Chaque contact suit un schéma de Bernoulli avec $p = 0,82$
+    ● Succès : client satisfait, Échec : client insatisfait
+    ● Nombre d'essais indépendants : $n = 20$
+    ● $X \sim \mathcal{B}(20; 0,82)$
+    $\\$
+**Question 2 : Probabilité d'avoir exactement 16 clients satisfaits**
+    ● $P(X = 16) = \binom{20}{16} \times 0,82^{16} \times 0,18^{4}$
+    ● $\binom{20}{16} = 4845$
+    ● $P(X = 16) = 4845 \times 0,0824 \times 0,00105 \approx 4845 \times 0,0000865 = 0,419$
+    $\\$
+**Question 3 : Probabilité d'avoir au moins 18 clients satisfaits**
+    ● $P(X \geq 18) = P(X = 18) + P(X = 19) + P(X = 20)$
+    ● Calcul approché : $P(X \geq 18) \approx 0,206$
+    $\\$
+**Question 4 : Calcul de l'écart-type du nombre de clients satisfaits**
+    ● $E(X) = n \times p = 20 \times 0,82 = 16,4$
+    ● $V(X) = n \times p \times q = 20 \times 0,82 \times 0,18 = 2,952$
+    ● $\sigma(X) = \sqrt{2,952} \approx 1,718$
+    $\\$
+**Question 5 : Chiffre d'affaires moyen attendu**
+    ● CA moyen = $E(X) \times 200 = 16,4 \times 200 = 3280$€
+
+Solution:
+1. $X \sim \mathcal{B}(20; 0,82)$
+2. $P(X = 16) \approx 0,419$
+3. $P(X \geq 18) \approx 0,206$
+4. $\sigma(X) \approx 1,718$
+5. Chiffre d'affaires moyen = 3280€
+
+===
+
+=== Environnement : Recyclage des Déchets
+Difficulté: hard
+
+Énoncé: Dans une ville, 25% des ménages trient correctement leurs déchets recyclables. On contrôle 35 ménages sélectionnés au hasard. Chaque ménage qui trie correctement rapporte 200€ d'économies à la collectivité. Nous considérons qu'un ménage qui trie correctement constitue un succès.
+
+**Question 1 : Modélisation par la loi binomiale**
+
+**Question 2 : Probabilité de contrôler exactement 10 ménages conformes**
+
+**Question 3 : Probabilité de contrôler entre 6 et 12 ménages conformes**
+
+**Question 4 : Calcul de la variance du nombre de ménages conformes**
+
+**Question 5 : Si une campagne de sensibilisation coûte 5000€ et améliore le taux de tri de 5%, quel est le bénéfice net attendu ?**
+
+Étapes:
+
+**Question 1 : Modélisation par la loi binomiale**
+    ● Chaque contrôle suit un schéma de Bernoulli avec $p = 0,25$
+    ● Succès : ménage conforme, Échec : ménage non-conforme
+    ● Nombre d'essais indépendants : $n = 35$
+    ● $X \sim \mathcal{B}(35; 0,25)$
+    $\\$
+**Question 2 : Probabilité de contrôler exactement 10 ménages conformes**
+    ● $P(X = 10) = \binom{35}{10} \times 0,25^{10} \times 0,75^{25}$
+    ● Calcul approché : $P(X = 10) \approx 0,148$
+    $\\$
+**Question 3 : Probabilité de contrôler entre 6 et 12 ménages conformes**
+    ● $P(6 \leq X \leq 12) = P(X = 6) + P(X = 7) + \ldots + P(X = 12)$
+    ● Calcul approché : $P(6 \leq X \leq 12) \approx 0,723$
+    $\\$
+**Question 4 : Calcul de la variance du nombre de ménages conformes**
+    ● $E(X) = n \times p = 35 \times 0,25 = 8,75$
+    ● $V(X) = n \times p \times q = 35 \times 0,25 \times 0,75 = 6,5625$
+    ● $\sigma(X) = \sqrt{6,5625} \approx 2,562$
+    $\\$
+**Question 5 : Bénéfice net attendu**
+    ● Gain avec campagne : $E(X_{après}) = 35 \times 0,30 = 10,5$ (où $0,30 = 0,25 + 0,05$)
+    ● Gain actuel : $E(X_{actuel}) = 8,75$
+    ● Gain supplémentaire = $10,5 - 8,75 = 1,75$
+    ● Bénéfice net = $1,75 \times 200 - 5000 = 350 - 5000 = -4650$€ (perte)
+
+Solution:
+1. $X \sim \mathcal{B}(35; 0,25)$
+2. $P(X = 10) \approx 0,148$
+3. $P(6 \leq X \leq 12) \approx 0,723$
+4. $V(X) = 6,5625$, $\sigma(X) \approx 2,562$
+5. Bénéfice net = -4650€ (campagne non rentable)
+
+===
+
+=== Informatique : Tests de Logiciels
+Difficulté: easy
+
+Énoncé: Un développeur teste un algorithme sur 14 jeux de données différents. Chaque jeu de données a une probabilité de 0,6 de passer tous les tests avec succès. Nous considérons qu'un jeu de données réussi constitue un succès.
+
+**Question 1 : Modélisation par la loi binomiale**
+
+**Question 2 : Probabilité d'avoir exactement 9 jeux de données réussis**
+
+**Question 3 : Probabilité d'avoir au moins 7 jeux de données réussis**
+
+**Question 4 : Calcul de l'espérance et de l'écart-type**
+
+**Question 5 : Si chaque jeu de données réussi rapporte 100€ de prime, quel est le gain moyen attendu ?**
+
+Étapes:
+
+**Question 1 : Modélisation par la loi binomiale**
+    ● Chaque test suit un schéma de Bernoulli avec $p = 0,6$
+    ● Succès : jeu de données réussi, Échec : jeu de données échoué
+    ● Nombre d'essais indépendants : $n = 14$
+    ● $X \sim \mathcal{B}(14; 0,6)$
+    $\\$
+**Question 2 : Probabilité d'avoir exactement 9 jeux de données réussis**
+    ● $P(X = 9) = \binom{14}{9} \times 0,6^{9} \times 0,4^{5}$
+    ● $\binom{14}{9} = 2002$
+    ● $P(X = 9) = 2002 \times 0,010077 \times 0,01024 \approx 2002 \times 0,000103 = 0,206$
+    $\\$
+**Question 3 : Probabilité d'avoir au moins 7 jeux de données réussis**
+    ● $P(X \geq 7) = 1 - P(X \leq 6)$
+    ● Calcul approché : $P(X \geq 7) \approx 0,756$
+    $\\$
+**Question 4 : Calcul de l'espérance et de l'écart-type**
+    ● $E(X) = n \times p = 14 \times 0,6 = 8,4$
+    ● $V(X) = n \times p \times q = 14 \times 0,6 \times 0,4 = 3,36$
+    ● $\sigma(X) = \sqrt{3,36} \approx 1,833$
+    $\\$
+**Question 5 : Gain moyen attendu**
+    ● Gain moyen = $E(X) \times 100 = 8,4 \times 100 = 840$€
+
+Solution:
+1. $X \sim \mathcal{B}(14; 0,6)$
+2. $P(X = 9) \approx 0,206$
+3. $P(X \geq 7) \approx 0,756$
+4. $E(X) = 8,4$, $\sigma(X) \approx 1,833$
+5. Gain moyen = 840€
+
+===

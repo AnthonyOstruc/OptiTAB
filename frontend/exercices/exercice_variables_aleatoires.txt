@@ -1,1167 +1,1550 @@
-=== Variables Aléatoires - Loi de Probabilité et Calculs de Base
+=== Variables Aléatoires - Définitions et Lois de Probabilité
 Difficulté: easy
 
-Énoncé: Déterminer la loi de probabilité d'une variable aléatoire et vérifier les propriétés.
+Énoncé: Définir des variables aléatoires et établir leurs lois de probabilité.
 
-**Question 1 :** On lance une pièce équilibrée 2 fois. Soit $\displaystyle X$ le nombre de "pile" obtenus. Déterminer la loi de probabilité de $\displaystyle X$.
+**Question 1 :** On lance un dé équilibré. On définit $X$ = "nombre obtenu". Donner la loi de probabilité de $X$.
 $\\$
-**Question 2 :** On lance un dé équilibré. Soit $\displaystyle X$ le nombre obtenu. Vérifier que $\displaystyle\sum P(X = x_i) = 1$.
+**Question 2 :** On lance une pièce 3 fois. On définit $Y$ = "nombre de pile obtenus". Donner la loi de probabilité de $Y$.
 $\\$
-**Question 3 :** Une variable aléatoire $\displaystyle X$ prend les valeurs 1, 2, 3, 4 avec les probabilités respectives $\displaystyle\frac{1}{4}$, $\displaystyle\frac{1}{4}$, $\displaystyle\frac{1}{4}$, $\displaystyle a$. Déterminer la valeur de $\displaystyle a$.
+**Question 3 :** Une urne contient 3 boules rouges et 2 boules bleues. On tire 2 boules simultanément. On définit $Z$ = "nombre de boules rouges tirées". Donner la loi de probabilité de $Z$.
 $\\$
-**Question 4 :** On tire au hasard une boule dans une urne contenant 3 boules rouges et 2 boules bleues. Soit $\displaystyle X = 1$ si la boule est rouge et $\displaystyle X = 0$ si elle est bleue. Donner la loi de probabilité de $\displaystyle X$.
+**Question 4 :** On lance deux dés équilibrés. On définit $T$ = "somme des deux dés". Donner la loi de probabilité de $T$.
 $\\$
-**Question 5 :** Une variable aléatoire $\displaystyle Y$ a pour loi : $\displaystyle P(Y = 0) = 0,3$, $\displaystyle P(Y = 1) = 0,5$, $\displaystyle P(Y = 2) = 0,2$. Calculer $\displaystyle P(Y \geq 1)$ et $\displaystyle P(Y < 2)$.
+**Question 5 :** Vérifier que la loi de probabilité de $X$ (Question 1) est bien une loi de probabilité.
 
 Étapes:
 
-**Question 1 :** On lance une pièce équilibrée 2 fois. Soit $\displaystyle X$ le nombre de "pile" obtenus. Déterminer la loi de probabilité de $\displaystyle X$.
+**Question 1 :** Loi de probabilité de $X$ (dé équilibré)
 
-    ● **Méthode :** Dénombrer tous les résultats possibles
+    ● **Méthode :** Définition d'une variable aléatoire
+    $\\$
+    
+    ● **Étape 1 :** Identifier l'univers et la variable
+        $\qquad$• Univers : $\displaystyle \Omega = \{1, 2, 3, 4, 5, 6\}$
+        $\qquad$• Variable aléatoire : $\displaystyle X : \Omega \to \mathbb{R}$ avec $\displaystyle X(\omega) = \omega$
+    $\\$
+    
+    ● **Étape 2 :** Calculer les probabilités
+        $\qquad$• Pour un dé équilibré : $\displaystyle P(X = k) = \frac{1}{6}$ pour $\displaystyle k \in \{1, 2, 3, 4, 5, 6\}$
+    $\\$
+    
+    ● **Étape 3 :** Présenter la loi sous forme de tableau
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$x_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(X = x_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">2</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">3</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">4</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">5</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">6</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Étape 1 :** Univers des possibles :
-        $\qquad$• $\displaystyle\Omega = \{PP, PF, FP, FF\}$ où P = "pile" et F = "face"
-        $\\$
-        $\qquad$• Nombre total de résultats : 4 (équiprobables)
-    
+    ● **Résultat :** La loi de probabilité de $X$ est uniforme sur $\displaystyle \{1, 2, 3, 4, 5, 6\}$
+    $\\$
+
+**Question 2 :** Loi de probabilité de $Y$ (nombre de pile en 3 lancers)
+
+    ● **Méthode :** Dénombrement des cas favorables
     $\\$
     
-    ● **Étape 2 :** Valeurs possibles de $\displaystyle X$ :
-        $\qquad$• $\displaystyle X$ peut prendre les valeurs : 0, 1, 2
-    
-    $\\$
-    
-    ● **Étape 3 :** Calcul des probabilités :
-        $\qquad$• $\displaystyle P(X = 0)$ : 0 pile → événement {FF} → $\displaystyle P(X = 0) = \frac{1}{4}$
-        $\\$
-        $\qquad$• $\displaystyle P(X = 1)$ : 1 pile → événement {PF, FP} → $\displaystyle P(X = 1) = \frac{2}{4} = \frac{1}{2}$
-        $\\$
-        $\qquad$• $\displaystyle P(X = 2)$ : 2 pile → événement {PP} → $\displaystyle P(X = 2) = \frac{1}{4}$
-    
-    $\\$
-    
-    ● **Étape 4 :** Tableau de la loi :
+    ● **Étape 1 :** Identifier l'univers
+        $\qquad$• Univers : $\displaystyle \Omega = \{PPP, PPF, PFP, PFF, FPP, FPF, FFP, FFF\}$
         
-        | $\displaystyle x_i$ | 0 | 1 | 2 |
-        |-----|---|---|---|
-        | $\displaystyle P(X = x_i)$ | $\displaystyle\frac{1}{4}$ | $\displaystyle\frac{1}{2}$ | $\displaystyle\frac{1}{4}$ |
+        $\qquad$• Variable : $\displaystyle Y$ = nombre de P (pile)
+    $\\$
+    
+    ● **Étape 2 :** Calculer les probabilités
+        $\qquad$• $\displaystyle P(Y = 0) = P(FFF) = \frac{1}{8}$
+         $\\$
+        $\qquad$• $\displaystyle P(Y = 1) = P(PFF) + P(FPF) + P(FFP) = \frac{3}{8}$
+         $\\$
+        $\qquad$• $\displaystyle P(Y = 2) = P(PPF) + P(PFP) + P(FPP) = \frac{3}{8}$
+         $\\$
+        $\qquad$• $\displaystyle P(Y = 3) = P(PPP) = \frac{1}{8}$
+    $\\$
+    
+    ● **Étape 3 :** Présenter la loi
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$y_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(Y = y_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">0</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{8}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{3}{8}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">2</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{3}{8}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">3</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{8}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Vérification :** $\displaystyle\frac{1}{4} + \frac{1}{2} + \frac{1}{4} = 1$ ✓
-    
-    $\\$
-
-**Question 2 :** On lance un dé équilibré. Soit $\displaystyle X$ le nombre obtenu. Vérifier que $\displaystyle\sum P(X = x_i) = 1$.
-
-    ● **Rappel :** Pour un dé équilibré, chaque face a la même probabilité $\displaystyle\frac{1}{6}$
-    
-    $\\$
-    
-    ● **Loi de probabilité :**
-        $\qquad$• $\displaystyle X \in \{1, 2, 3, 4, 5, 6\}$
-        $\\$
-        $\qquad$• $\displaystyle P(X = k) = \frac{1}{6}$ pour tout $\displaystyle k \in \{1, 2, 3, 4, 5, 6\}$
-    
-    $\\$
-    
-    ● **Vérification :**
-        $\qquad$• $\displaystyle\sum_{k=1}^{6} P(X = k) = P(X=1) + P(X=2) + P(X=3) + P(X=4) + P(X=5) + P(X=6)$
-        $\\$
-        $\qquad$• $\displaystyle = \frac{1}{6} + \frac{1}{6} + \frac{1}{6} + \frac{1}{6} + \frac{1}{6} + \frac{1}{6} = \frac{6}{6} = 1$ ✓
-    
-    $\\$
-    
-    ● **Résultat :** La somme des probabilités vaut bien 1.
-    
-    $\\$
-
-**Question 3 :** Une variable aléatoire $\displaystyle X$ prend les valeurs 1, 2, 3, 4 avec les probabilités respectives $\displaystyle\frac{1}{4}$, $\displaystyle\frac{1}{4}$, $\displaystyle\frac{1}{4}$, $\displaystyle a$. Déterminer la valeur de $\displaystyle a$.
-
-    ● **Propriété :** La somme de toutes les probabilités doit valoir 1
-    
-    $\\$
-    
-    ● **Mise en équation :**
-        $\qquad$• $\displaystyle P(X = 1) + P(X = 2) + P(X = 3) + P(X = 4) = 1$
-        $\\$
-        $\qquad$• $\displaystyle\frac{1}{4} + \frac{1}{4} + \frac{1}{4} + a = 1$
-    
-    $\\$
-    
-    ● **Résolution :**
-        $\qquad$• $\displaystyle\frac{3}{4} + a = 1$
-        $\\$
-        $\qquad$• $\displaystyle a = 1 - \frac{3}{4} = \frac{1}{4}$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle a = \frac{1}{4}$
-    
+    ● **Résultat :** La loi de probabilité de $Y$ est symétrique
     $\\$
 
-**Question 4 :** On tire au hasard une boule dans une urne contenant 3 boules rouges et 2 boules bleues. Soit $\displaystyle X = 1$ si la boule est rouge et $\displaystyle X = 0$ si elle est bleue. Donner la loi de probabilité de $\displaystyle X$.
+**Question 3 :** Loi de probabilité de $Z$ (nombre de rouges parmi 2 tirages)
 
-    ● **Méthode :** Calcul de probabilités élémentaires
+    ● **Méthode :** Combinaisons
+    $\\$
+    
+    ● **Étape 1 :** Identifier l'univers
+        $\qquad$• Total : 5 boules (3 rouges + 2 bleues)
+        $\qquad$• On tire 2 boules simultanément
+    $\\$
+    
+    ● **Étape 2 :** Calculer les probabilités
+    $\\$
+        $\qquad$• $\displaystyle P(Z = 0) = \frac{\binom{2}{2}}{\binom{5}{2}} = \frac{1}{10}$ (2 bleues)
+         $\\$
+        $\qquad$• $\displaystyle P(Z = 1) = \frac{\binom{3}{1} \times \binom{2}{1}}{\binom{5}{2}} = \frac{6}{10} = \frac{3}{5}$ (1 rouge + 1 bleue)
+         $\\$
+        $\qquad$• $\displaystyle P(Z = 2) = \frac{\binom{3}{2}}{\binom{5}{2}} = \frac{3}{10}$ (2 rouges)
+    $\\$
+    
+    ● **Étape 3 :** Présenter la loi
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$z_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(Z = z_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">0</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{10}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{3}{5}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">2</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{3}{10}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Données :**
-        $\qquad$• Nombre total de boules : $\displaystyle 3 + 2 = 5$
-        $\\$
-        $\qquad$• Boules rouges : 3
-        $\\$
-        $\qquad$• Boules bleues : 2
-    
-    $\\$
-    
-    ● **Calcul des probabilités :**
-        $\qquad$• $\displaystyle P(X = 1) = P(\text{"rouge"}) = \frac{3}{5}$
-        $\\$
-        $\qquad$• $\displaystyle P(X = 0) = P(\text{"bleue"}) = \frac{2}{5}$
-    
-    $\\$
-    
-    ● **Tableau de la loi :**
-        
-        | $\displaystyle x_i$ | 0 | 1 |
-        |-----|---|---|
-        | $\displaystyle P(X = x_i)$ | $\displaystyle\frac{2}{5}$ | $\displaystyle\frac{3}{5}$ |
-    
-    $\\$
-    
-    ● **Vérification :** $\displaystyle\frac{2}{5} + \frac{3}{5} = 1$ ✓
-    
+    ● **Résultat :** La loi de probabilité de $Z$ est centrée sur 1
     $\\$
 
-**Question 5 :** Une variable aléatoire $\displaystyle Y$ a pour loi : $\displaystyle P(Y = 0) = 0,3$, $\displaystyle P(Y = 1) = 0,5$, $\displaystyle P(Y = 2) = 0,2$. Calculer $\displaystyle P(Y \geq 1)$ et $\displaystyle P(Y < 2)$.
+**Question 4 :** Loi de probabilité de $T$ (somme de deux dés)
 
-    ● **Méthode :** Utiliser les propriétés des événements
+    ● **Méthode :** Dénombrement des cas favorables
+    $\\$
+    
+    ● **Étape 1 :** Identifier les valeurs possibles
+        $\qquad$• $T$ peut prendre les valeurs : 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+    $\\$
+    
+    ● **Étape 2 :** Calculer les probabilités
+        $\qquad$• $\displaystyle P(T = 2) = \frac{1}{36}$ (,)
+         $\\$
+        $\qquad$• $\displaystyle P(T = 3) = \frac{2}{36}$ (,) et (,)
+         $\\$
+        $\qquad$• $\displaystyle P(T = 4) = \frac{3}{36}$ (,), (,), (,)
+         $\\$
+        $\qquad$• $\displaystyle P(T = 5) = \frac{4}{36}$ (,), (,), (,), (,)
+         $\\$
+        $\qquad$• $\displaystyle P(T = 6) = \frac{5}{36}$ (,), (,), (,), (,), (,)
+         $\\$
+        $\qquad$• $\displaystyle P(T = 7) = \frac{6}{36}$ (,), (,), (,), (,), (,), (,)
+         $\\$
+        $\qquad$• Puis symétrie : $\displaystyle P(T = k) = P(T = 14-k)$
+    $\\$
+    
+    ● **Étape 3 :** Présenter la loi (valeurs principales)
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:500px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$t_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(T = t_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">2</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{36}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">3</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{2}{36}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">4</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{3}{36}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">5</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{4}{36}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">6</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{5}{36}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">7</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{6}{36}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">8</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{5}{36}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">9</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{4}{36}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">10</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{3}{36}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">11</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{2}{36}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">12</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{36}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Calcul de $\displaystyle P(Y \geq 1)$ :**
-        $\qquad$• $\displaystyle P(Y \geq 1) = P(Y = 1) + P(Y = 2)$
-        $\\$
-        $\qquad$• $\displaystyle P(Y \geq 1) = 0,5 + 0,2 = 0,7$
-        $\\$
-        $\qquad$• Ou bien : $\displaystyle P(Y \geq 1) = 1 - P(Y = 0) = 1 - 0,3 = 0,7$
-    
+    ● **Résultat :** La loi de probabilité de $T$ est symétrique avec maximum en 7
+    $\\$
+
+**Question 5 :** Vérification de la loi de probabilité
+
+    ● **Méthode :** Propriétés d'une loi de probabilité
     $\\$
     
-    ● **Calcul de $\displaystyle P(Y < 2)$ :**
-        $\qquad$• $\displaystyle P(Y < 2) = P(Y = 0) + P(Y = 1)$
-        $\\$
-        $\qquad$• $\displaystyle P(Y < 2) = 0,3 + 0,5 = 0,8$
-        $\\$
-        $\qquad$• Ou bien : $\displaystyle P(Y < 2) = 1 - P(Y = 2) = 1 - 0,2 = 0,8$
-    
+    ● **Étape 1 :** Vérifier que $\displaystyle 0 \leq P(X = x_i) \leq 1$
+        $\qquad$• Pour tout $\displaystyle x_i$ : $\displaystyle P(X = x_i) = \frac{1}{6} > 0$ ✓
+        $\qquad$• Et $\displaystyle \frac{1}{6} < 1$ ✓
     $\\$
     
-    ● **Résultat :** $\displaystyle P(Y \geq 1) = 0,7$ et $\displaystyle P(Y < 2) = 0,8$
+    ● **Étape 2 :** Vérifier que $\displaystyle \sum_{i} P(X = x_i) = 1$
+        $\qquad$• $\displaystyle \sum_{k=1}^{6} P(X = k) = 6 \times \frac{1}{6} = 1$ ✓
+    $\\$
     
+    ● **Résultat :** La loi de probabilité de $X$ est bien une loi de probabilité
     $\\$
 
 Solution:
-1. Loi de $\displaystyle X$ : $\displaystyle P(X=0)=\frac{1}{4}$, $\displaystyle P(X=1)=\frac{1}{2}$, $\displaystyle P(X=2)=\frac{1}{4}$
-2. $\displaystyle\sum P(X = k) = 1$ ✓
-3. $\displaystyle a = \frac{1}{4}$
-4. Loi de $\displaystyle X$ : $\displaystyle P(X=0)=\frac{2}{5}$, $\displaystyle P(X=1)=\frac{3}{5}$
-5. $\displaystyle P(Y \geq 1) = 0,7$ et $\displaystyle P(Y < 2) = 0,8$
+1. Loi uniforme : $\displaystyle P(X = k) = \frac{1}{6}$ pour $\displaystyle k \in \{,,,,,\}$
+$\\$
+2. Loi symétrique : $\displaystyle P(Y = 0) = \frac{1}{8}$, $\displaystyle P(Y = 1) = \frac{3}{8}$, $\displaystyle P(Y = 2) = \frac{3}{8}$, $\displaystyle P(Y = 3) = \frac{1}{8}$
+$\\$
+3. Loi centrée : $\displaystyle P(Z = 0) = \frac{1}{10}$, $\displaystyle P(Z = 1) = \frac{3}{5}$, $\displaystyle P(Z = 2) = \frac{3}{10}$
+$\\$
+4. Loi triangulaire : maximum en 7, symétrique
+$\\$
+5. Vérification : $\displaystyle \sum P(X = x_i) = 1$ ✓
 
 ===
 
 === Variables Aléatoires - Espérance et Variance
 Difficulté: easy
 
-Énoncé: Calculer l'espérance et la variance d'une variable aléatoire.
+Énoncé: Calculer l'espérance et la variance des variables aléatoires suivantes.
 
-**Question 1 :** Soit $\displaystyle X$ une variable aléatoire de loi :
-
-| $\displaystyle x_i$ | 1 | 2 | 3 |
-|-----|---|---|---|
-| $\displaystyle P(X = x_i)$ | $\displaystyle\frac{1}{2}$ | $\displaystyle\frac{1}{3}$ | $\displaystyle\frac{1}{6}$ |
-
-Calculer $\displaystyle E(X)$ et $\displaystyle V(X)$.
-
+**Question 1 :** Calculer l'espérance et la variance de $X$ où $X$ est le nombre obtenu en lançant un dé équilibré.
 $\\$
-**Question 2 :** On lance un dé équilibré. Soit $\displaystyle X$ le nombre obtenu. Calculer $\displaystyle E(X)$, $\displaystyle V(X)$ et $\displaystyle\sigma(X)$.
+**Question 2 :** Soit $Y$ la variable aléatoire définie par la loi : $P(Y = 0) = ,$, $P(Y = 1) = ,$, $P(Y = 2) = ,$. Calculer $E(Y)$ et $V(Y)$.
 $\\$
-**Question 3 :** Une variable aléatoire $\displaystyle Y$ prend les valeurs 0 et 1 avec $\displaystyle P(Y = 0) = 0,6$ et $\displaystyle P(Y = 1) = 0,4$. Calculer $\displaystyle E(Y)$ et $\displaystyle V(Y)$.
+**Question 3 :** On lance une pièce 4 fois. Soit $Z$ = "nombre de pile obtenus". Calculer $E(Z)$ et $V(Z)$.
 $\\$
-**Question 4 :** Soit $\displaystyle Z$ une variable aléatoire de loi :
-
-| $\displaystyle z_i$ | -1 | 0 | 1 |
-|-----|---|---|---|
-| $\displaystyle P(Z = z_i)$ | $\displaystyle 0,2$ | $\displaystyle 0,5$ | $\displaystyle 0,3$ |
-
-Calculer $\displaystyle E(Z)$ et $\displaystyle V(Z)$.
-
+**Question 4 :** Soit $T$ la somme de deux dés équilibrés. Calculer $E(T)$ et $V(T)$.
 $\\$
-**Question 5 :** On lance une pièce équilibrée 2 fois. Soit $\displaystyle X$ le nombre de "pile". Calculer $\displaystyle E(X)$ et $\displaystyle V(X)$.
+**Question 5 :** Une variable aléatoire $U$ a pour espérance 3 et variance 4. Calculer $E(2U + 5)$ et $V(2U + 5)$.
 
 Étapes:
 
-**Question 1 :** Calculer $\displaystyle E(X)$ et $\displaystyle V(X)$
+**Question 1 :** Espérance et variance d'un dé équilibré
 
-    ● **Formules :**
-        $\qquad$• $\displaystyle E(X) = \sum x_i \times P(X = x_i)$
-        $\\$
-        $\qquad$• $\displaystyle V(X) = E(X^2) - [E(X)]^2$
+    ● **Méthode :** Formules de l'espérance et de la variance
+    $\\$
+    
+    ● **Étape 1 :** Loi de probabilité de $X$
+        $\qquad$• $\displaystyle P(X = k) = \frac{1}{6}$ pour $\displaystyle k \in \{1, 2, 3, 4, 5, 6\}$
+    $\\$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$k$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(X = k)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">2</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">3</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">4</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">5</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">6</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Étape 1 :** Calcul de $\displaystyle E(X)$ :
-        $\qquad$• $\displaystyle E(X) = 1 \times \frac{1}{2} + 2 \times \frac{1}{3} + 3 \times \frac{1}{6}$
-        $\\$
-        $\qquad$• $\displaystyle E(X) = \frac{1}{2} + \frac{2}{3} + \frac{1}{2} = \frac{3}{6} + \frac{4}{6} + \frac{3}{6} = \frac{10}{6} = \frac{5}{3}$
-    
+    ● **Étape 2 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(X) = \sum_{k=1}^{6} k \times P(X = k) = \sum_{k=1}^{6} k \times \frac{1}{6}$
+        $\qquad$• $\displaystyle E(X) = \frac{1}{6}(1 + 2 + 3 + 4 + 5 + 6) = \frac{21}{6} = 3,5$
     $\\$
     
-    ● **Étape 2 :** Calcul de $\displaystyle E(X^2)$ :
-        $\qquad$• $\displaystyle E(X^2) = 1^2 \times \frac{1}{2} + 2^2 \times \frac{1}{3} + 3^2 \times \frac{1}{6}$
-        $\\$
-        $\qquad$• $\displaystyle E(X^2) = 1 \times \frac{1}{2} + 4 \times \frac{1}{3} + 9 \times \frac{1}{6}$
-        $\\$
-        $\qquad$• $\displaystyle E(X^2) = \frac{1}{2} + \frac{4}{3} + \frac{3}{2} = \frac{3}{6} + \frac{8}{6} + \frac{9}{6} = \frac{20}{6} = \frac{10}{3}$
-    
+    ● **Étape 3 :** Calcul de $E(X^2)$
+        $\qquad$• $\displaystyle E(X^2) = \sum_{k=1}^{6} k^2 \times P(X = k) = \frac{1}{6}(1^2 + 2^2 + 3^2 + 4^2 + 5^2 + 6^2)$
+        $\qquad$• $\displaystyle E(X^2) = \frac{1}{6}(1 + 4 + 9 + 16 + 25 + 36) = \frac{91}{6}$
     $\\$
     
-    ● **Étape 3 :** Calcul de $\displaystyle V(X)$ :
-        $\qquad$• $\displaystyle V(X) = E(X^2) - [E(X)]^2 = \frac{10}{3} - \left(\frac{5}{3}\right)^2$
-        $\\$
-        $\qquad$• $\displaystyle V(X) = \frac{10}{3} - \frac{25}{9} = \frac{30}{9} - \frac{25}{9} = \frac{5}{9}$
-    
+    ● **Étape 4 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(X) = E(X^2) - [E(X)]^2 = \frac{91}{6} - (3,5)^2$
+        $\qquad$• $\displaystyle V(X) = \frac{91}{6} - \frac{49}{4} = \frac{182}{12} - \frac{147}{12} = \frac{35}{12}$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(X) = \frac{5}{3}$ et $\displaystyle V(X) = \frac{5}{9}$
-    
-    $\\$
-
-**Question 2 :** Calculer $\displaystyle E(X)$, $\displaystyle V(X)$ et $\displaystyle\sigma(X)$ pour un dé équilibré
-
-    ● **Loi de probabilité :** $\displaystyle P(X = k) = \frac{1}{6}$ pour $\displaystyle k \in \{1,2,3,4,5,6\}$
-    
-    $\\$
-    
-    ● **Étape 1 :** Calcul de $\displaystyle E(X)$ :
-        $\qquad$• $\displaystyle E(X) = \sum_{k=1}^{6} k \times \frac{1}{6} = \frac{1}{6}(1+2+3+4+5+6)$
-        $\\$
-        $\qquad$• $\displaystyle E(X) = \frac{21}{6} = \frac{7}{2} = 3,5$
-    
-    $\\$
-    
-    ● **Étape 2 :** Calcul de $\displaystyle E(X^2)$ :
-        $\qquad$• $\displaystyle E(X^2) = \sum_{k=1}^{6} k^2 \times \frac{1}{6} = \frac{1}{6}(1+4+9+16+25+36)$
-        $\\$
-        $\qquad$• $\displaystyle E(X^2) = \frac{91}{6}$
-    
-    $\\$
-    
-    ● **Étape 3 :** Calcul de $\displaystyle V(X)$ :
-        $\qquad$• $\displaystyle V(X) = \frac{91}{6} - \left(\frac{7}{2}\right)^2 = \frac{91}{6} - \frac{49}{4}$
-        $\\$
-        $\qquad$• $\displaystyle V(X) = \frac{182}{12} - \frac{147}{12} = \frac{35}{12}$
-    
-    $\\$
-    
-    ● **Étape 4 :** Calcul de $\displaystyle\sigma(X)$ :
-        $\qquad$• $\displaystyle\sigma(X) = \sqrt{V(X)} = \sqrt{\frac{35}{12}} \approx 1,71$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle E(X) = 3,5$, $\displaystyle V(X) = \frac{35}{12} \approx 2,92$, $\displaystyle\sigma(X) \approx 1,71$
-    
+    ● **Résultat :** $\displaystyle E(X) = 3,5$ et $\displaystyle V(X) = \frac{35}{12} \approx 2,92$
     $\\$
 
-**Question 3 :** Calculer $\displaystyle E(Y)$ et $\displaystyle V(Y)$ pour une variable de Bernoulli
+**Question 2 :** Espérance et variance d'une loi donnée
 
-    ● **Loi de probabilité :** $\displaystyle P(Y = 0) = 0,6$ et $\displaystyle P(Y = 1) = 0,4$
-    
+    ● **Méthode :** Application directe des formules
     $\\$
     
-    ● **Étape 1 :** Calcul de $\displaystyle E(Y)$ :
-        $\qquad$• $\displaystyle E(Y) = 0 \times 0,6 + 1 \times 0,4 = 0,4$
-    
+    ● **Étape 1 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(Y) = 0 \times 0,2 + 1 \times 0,5 + 2 \times 0,3$
+        $\qquad$• $\displaystyle E(Y) = 0 + 0,5 + 0,6 = 1,1$
     $\\$
     
-    ● **Étape 2 :** Calcul de $\displaystyle E(Y^2)$ :
-        $\qquad$• $\displaystyle E(Y^2) = 0^2 \times 0,6 + 1^2 \times 0,4 = 0,4$
-        $\\$
-        $\qquad$• Note : Pour une variable de Bernoulli, $\displaystyle Y^2 = Y$ donc $\displaystyle E(Y^2) = E(Y)$
-    
+    ● **Étape 2 :** Calcul de $E(Y^2)$
+        $\qquad$• $\displaystyle E(Y^2) = 0^2 \times 0,2 + 1^2 \times 0,5 + 2^2 \times 0,3$
+        $\qquad$• $\displaystyle E(Y^2) = 0 + 0,5 + 1,2 = 1,7$
     $\\$
     
-    ● **Étape 3 :** Calcul de $\displaystyle V(Y)$ :
-        $\qquad$• $\displaystyle V(Y) = E(Y^2) - [E(Y)]^2 = 0,4 - (0,4)^2$
-        $\\$
-        $\qquad$• $\displaystyle V(Y) = 0,4 - 0,16 = 0,24$
-        $\\$
-        $\qquad$• Formule directe : $\displaystyle V(Y) = p(1-p) = 0,4 \times 0,6 = 0,24$
-    
+    ● **Étape 3 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(Y) = E(Y^2) - [E(Y)]^2 = 1,7 - (1,1)^2$
+        $\qquad$• $\displaystyle V(Y) = 1,7 - 1,21 = 0,49$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(Y) = 0,4$ et $\displaystyle V(Y) = 0,24$
-    
+    ● **Résultat :** $\displaystyle E(Y) = 1,1$ et $\displaystyle V(Y) = 0,49$
     $\\$
 
-**Question 4 :** Calculer $\displaystyle E(Z)$ et $\displaystyle V(Z)$
+**Question 3 :** Espérance et variance du nombre de pile (4 lancers)
 
-    ● **Loi de probabilité :** $\displaystyle P(Z=-1)=0,2$, $\displaystyle P(Z=0)=0,5$, $\displaystyle P(Z=1)=0,3$
-    
+    ● **Méthode :** Loi binomiale
     $\\$
     
-    ● **Étape 1 :** Calcul de $\displaystyle E(Z)$ :
-        $\qquad$• $\displaystyle E(Z) = (-1) \times 0,2 + 0 \times 0,5 + 1 \times 0,3$
-        $\\$
-        $\qquad$• $\displaystyle E(Z) = -0,2 + 0 + 0,3 = 0,1$
-    
+    ● **Étape 1 :** Identifier la loi
+        $\qquad$• $Z$ suit une loi binomiale $\displaystyle \mathcal{B}(4, \frac{1}{2})$
+         $\\$
+        $\qquad$• $\displaystyle P(Z = k) = \binom{4}{k} \left(\frac{1}{2}\right)^k \left(\frac{1}{2}\right)^{4-k} = \binom{4}{k} \left(\frac{1}{2}\right)^4$
     $\\$
     
-    ● **Étape 2 :** Calcul de $\displaystyle E(Z^2)$ :
-        $\qquad$• $\displaystyle E(Z^2) = (-1)^2 \times 0,2 + 0^2 \times 0,5 + 1^2 \times 0,3$
-        $\\$
-        $\qquad$• $\displaystyle E(Z^2) = 1 \times 0,2 + 0 + 1 \times 0,3 = 0,5$
-    
+    ● **Étape 2 :** Formules générales de la loi binomiale
+        $\qquad$• **Formule générale :** Pour $\displaystyle X \sim \mathcal{B}(n, p)$ :
+        $\qquad$• $\displaystyle E(X) = np$
+        $\qquad$• $\displaystyle V(X) = np(1-p)$
     $\\$
     
-    ● **Étape 3 :** Calcul de $\displaystyle V(Z)$ :
-        $\qquad$• $\displaystyle V(Z) = E(Z^2) - [E(Z)]^2 = 0,5 - (0,1)^2$
-        $\\$
-        $\qquad$• $\displaystyle V(Z) = 0,5 - 0,01 = 0,49$
-    
+    ● **Étape 3 :** Application numérique
+        $\qquad$• Ici : $\displaystyle n = 4$ et $\displaystyle p = \frac{1}{2}$
+        $\qquad$• $\displaystyle E(Z) = 4 \times \frac{1}{2} = 2$
+        $\qquad$• $\displaystyle V(Z) = 4 \times \frac{1}{2} \times \frac{1}{2} = 1$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(Z) = 0,1$ et $\displaystyle V(Z) = 0,49$
-    
+    ● **Résultat :** $\displaystyle E(Z) = 2$ et $\displaystyle V(Z) = 1$
     $\\$
 
-**Question 5 :** Calculer $\displaystyle E(X)$ et $\displaystyle V(X)$ pour le nombre de "pile" en 2 lancers
+**Question 4 :** Espérance et variance de la somme de deux dés
 
-    ● **Loi de probabilité :** (cf. Question 1 de l'exercice précédent)
-        $\qquad$• $\displaystyle P(X=0)=\frac{1}{4}$, $\displaystyle P(X=1)=\frac{1}{2}$, $\displaystyle P(X=2)=\frac{1}{4}$
-    
+    ● **Méthode :** Propriétés de l'espérance et de la variance
     $\\$
     
-    ● **Étape 1 :** Calcul de $\displaystyle E(X)$ :
-        $\qquad$• $\displaystyle E(X) = 0 \times \frac{1}{4} + 1 \times \frac{1}{2} + 2 \times \frac{1}{4}$
-        $\\$
-        $\qquad$• $\displaystyle E(X) = 0 + \frac{1}{2} + \frac{1}{2} = 1$
-    
+    ● **Étape 1 :** Décomposer la variable
+        $\qquad$• $\displaystyle T = D_1 + D_2$ où $\displaystyle D_1$ et $\displaystyle D_2$ sont les résultats des deux dés
+        $\qquad$• $\displaystyle D_1$ et $\displaystyle D_2$ sont indépendantes avec $\displaystyle E(D_1) = E(D_2) = ,$
     $\\$
     
-    ● **Étape 2 :** Calcul de $\displaystyle E(X^2)$ :
-        $\qquad$• $\displaystyle E(X^2) = 0^2 \times \frac{1}{4} + 1^2 \times \frac{1}{2} + 2^2 \times \frac{1}{4}$
-        $\\$
-        $\qquad$• $\displaystyle E(X^2) = 0 + \frac{1}{2} + 1 = \frac{3}{2}$
-    
+    ● **Étape 2 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(T) = E(D_1 + D_2) = E(D_1) + E(D_2) = , + , = 7$
     $\\$
     
-    ● **Étape 3 :** Calcul de $\displaystyle V(X)$ :
-        $\qquad$• $\displaystyle V(X) = E(X^2) - [E(X)]^2 = \frac{3}{2} - 1^2 = \frac{3}{2} - 1 = \frac{1}{2}$
-    
+    ● **Étape 3 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(T) = V(D_1 + D_2) = V(D_1) + V(D_2)$ (car indépendantes)
+        $\qquad$• $\displaystyle V(T) = \frac{35}{12} + \frac{35}{12} = \frac{70}{12} = \frac{35}{6}$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(X) = 1$ et $\displaystyle V(X) = \frac{1}{2}$
+    ● **Résultat :** $\displaystyle E(T) = 7$ et $\displaystyle V(T) = \frac{35}{6} \approx ,3$
+    $\\$
+
+**Question 5 :** Transformation affine d'une variable aléatoire
+
+    ● **Méthode :** Propriétés des transformations affines
+    $\\$
     
+    ● **Étape 1 :** Rappel des formules
+        $\qquad$• Pour $\displaystyle W = aU + b$ : $\displaystyle E(W) = aE(U) + b$ et $\displaystyle V(W) = a^2V(U)$
+    $\\$
+    
+    ● **Étape 2 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(2U + 5) = 2E(U) + 5 = 2 \times 3 + 5 = 11$
+    $\\$
+    
+    ● **Étape 3 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(2U + 5) = 2^2V(U) = 4 \times 4 = 16$
+    $\\$
+    
+    ● **Résultat :** $\displaystyle E(2U + 5) = 11$ et $\displaystyle V(2U + 5) = 16$
     $\\$
 
 Solution:
-1. $\displaystyle E(X) = \frac{5}{3}$ et $\displaystyle V(X) = \frac{5}{9}$
-2. $\displaystyle E(X) = 3,5$, $\displaystyle V(X) = \frac{35}{12} \approx 2,92$, $\displaystyle\sigma(X) \approx 1,71$
-3. $\displaystyle E(Y) = 0,4$ et $\displaystyle V(Y) = 0,24$
-4. $\displaystyle E(Z) = 0,1$ et $\displaystyle V(Z) = 0,49$
-5. $\displaystyle E(X) = 1$ et $\displaystyle V(X) = \frac{1}{2}$
+1. $\displaystyle E(X) = ,$ et $\displaystyle V(X) = \frac{35}{12}$
+$\\$
+2. $\displaystyle E(Y) = ,$ et $\displaystyle V(Y) = ,9$
+$\\$
+3. $\displaystyle E(Z) = 2$ et $\displaystyle V(Z) = 1$
+$\\$
+4. $\displaystyle E(T) = 7$ et $\displaystyle V(T) = \frac{35}{6}$
+$\\$
+5. $\displaystyle E(2U + 5) = 11$ et $\displaystyle V(2U + 5) = 16$
 
 ===
 
 === Variables Aléatoires - Transformation Affine
 Difficulté: medium
 
-Énoncé: Appliquer les formules de transformation affine $\displaystyle Y = aX + b$.
+Énoncé: Étudier les transformations affines de variables aléatoires.
 
-**Question 1 :** Soit $\displaystyle X$ une variable aléatoire telle que $\displaystyle E(X) = 5$ et $\displaystyle V(X) = 4$. On définit $\displaystyle Y = 2X + 3$. Calculer $\displaystyle E(Y)$ et $\displaystyle V(Y)$.
+**Question 1 :** Soit $X$ une variable aléatoire avec $E(X) = 2$ et $V(X) = 3$. Calculer $E(3X - 1)$ et $V(3X - 1)$.
 $\\$
-**Question 2 :** Soit $\displaystyle X$ une variable aléatoire telle que $\displaystyle E(X) = 10$ et $\displaystyle\sigma(X) = 2$. On définit $\displaystyle Y = 3X - 5$. Calculer $\displaystyle E(Y)$ et $\displaystyle\sigma(Y)$.
+**Question 2 :** On définit $Y = 2X + 5$ où $X$ suit la loi : $P(X = 1) = ,$, $P(X = 2) = ,$, $P(X = 3) = ,$. Donner la loi de probabilité de $Y$.
 $\\$
-**Question 3 :** Une variable aléatoire $\displaystyle X$ représente une note sur 20 avec $\displaystyle E(X) = 12$ et $\displaystyle V(X) = 9$. On convertit la note sur 100 : $\displaystyle Y = 5X$. Calculer $\displaystyle E(Y)$ et $\displaystyle V(Y)$.
+**Question 3 :** Soit $Z = -X + 4$ où $X$ a pour espérance 1 et variance 2. Calculer $E(Z)$ et $V(Z)$.
 $\\$
-**Question 4 :** Soit $\displaystyle T$ une température en degrés Celsius avec $\displaystyle E(T) = 20$ et $\displaystyle V(T) = 25$. On convertit en Fahrenheit : $\displaystyle F = 1,8T + 32$. Calculer $\displaystyle E(F)$ et $\displaystyle V(F)$.
+**Question 4 :** On définit $T = \frac{X - E(X)}{\sqrt{V(X)}}$ (variable centrée réduite). Si $E(X) = 5$ et $V(X) = 4$, calculer $E(T)$ et $V(T)$.
 $\\$
-**Question 5 :** Soit $\displaystyle X$ une variable aléatoire telle que $\displaystyle E(X) = 8$ et $\displaystyle V(X) = 16$. Pour quelle valeur de $\displaystyle a$ la variable $\displaystyle Y = aX$ a-t-elle une variance égale à 64 ?
+**Question 5 :** Soit $U = aX + b$ une transformation affine. Si $E(U) = 7$ et $V(U) = 12$, et que $E(X) = 2$ et $V(X) = 3$, déterminer $a$ et $b$.
 
 Étapes:
 
-**Question 1 :** $\displaystyle Y = 2X + 3$ avec $\displaystyle E(X) = 5$ et $\displaystyle V(X) = 4$
+**Question 1 :** Transformation $Y = 3X - 1$
 
-    ● **Formules :**
-        $\qquad$• $\displaystyle E(aX + b) = aE(X) + b$
-        $\\$
-        $\qquad$• $\displaystyle V(aX + b) = a^2V(X)$
-    
+    ● **Méthode :** Propriétés des transformations affines
     $\\$
     
-    ● **Étape 1 :** Identification des paramètres :
-        $\qquad$• $\displaystyle a = 2$, $\displaystyle b = 3$
-    
+    ● **Étape 1 :** Rappel des formules
+        $\qquad$• Pour $\displaystyle Y = aX + b$ : $\displaystyle E(Y) = aE(X) + b$ et $\displaystyle V(Y) = a^2V(X)$
     $\\$
     
-    ● **Étape 2 :** Calcul de $\displaystyle E(Y)$ :
-        $\qquad$• $\displaystyle E(Y) = E(2X + 3) = 2E(X) + 3$
-        $\\$
-        $\qquad$• $\displaystyle E(Y) = 2 \times 5 + 3 = 13$
-    
+    ● **Étape 2 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(3X - 1) = 3E(X) - 1 = 3 \times 2 - 1 = 5$
     $\\$
     
-    ● **Étape 3 :** Calcul de $\displaystyle V(Y)$ :
-        $\qquad$• $\displaystyle V(Y) = V(2X + 3) = 2^2V(X)$
-        $\\$
-        $\qquad$• $\displaystyle V(Y) = 4 \times 4 = 16$
-    
+    ● **Étape 3 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(3X - 1) = 3^2V(X) = 9 \times 3 = 27$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(Y) = 13$ et $\displaystyle V(Y) = 16$
-    
+    ● **Résultat :** $\displaystyle E(3X - 1) = 5$ et $\displaystyle V(3X - 1) = 27$
     $\\$
 
-**Question 2 :** $\displaystyle Y = 3X - 5$ avec $\displaystyle E(X) = 10$ et $\displaystyle\sigma(X) = 2$
+**Question 2 :** Loi de probabilité de $Y = 2X + 5$
 
-    ● **Données :** $\displaystyle V(X) = [\sigma(X)]^2 = 2^2 = 4$
+    ● **Méthode :** Transformation de la loi de probabilité
+    $\\$
+    
+    ● **Étape 1 :** Loi de probabilité de $X$
+        $\qquad$• $\displaystyle P(X = 1) = ,$, $\displaystyle P(X = 2) = ,$, $\displaystyle P(X = 3) = ,$
+    $\\$
+    
+    ● **Étape 2 :** Calculer les valeurs de $Y$
+        $\qquad$• Si $\displaystyle X = 1$ : $\displaystyle Y = 2 \times 1 + 5 = 7$
+        $\qquad$• Si $\displaystyle X = 2$ : $\displaystyle Y = 2 \times 2 + 5 = 9$
+        $\qquad$• Si $\displaystyle X = 3$ : $\displaystyle Y = 2 \times 3 + 5 = 11$
+    $\\$
+    
+    ● **Étape 3 :** Loi de probabilité de $Y$
+        $\qquad$• $\displaystyle P(Y = 7) = P(X = 1) = ,$
+        $\qquad$• $\displaystyle P(Y = 9) = P(X = 2) = ,$
+        $\qquad$• $\displaystyle P(Y = 11) = P(X = 3) = ,$
+    $\\$
+    
+    ● **Étape 4 :** Présenter la loi
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$y_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(Y = y_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">7</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">,</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">9</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">,</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">11</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">,</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Étape 1 :** Calcul de $\displaystyle E(Y)$ :
-        $\qquad$• $\displaystyle E(Y) = 3E(X) - 5 = 3 \times 10 - 5 = 25$
-    
-    $\\$
-    
-    ● **Étape 2 :** Calcul de $\displaystyle V(Y)$ :
-        $\qquad$• $\displaystyle V(Y) = 3^2V(X) = 9 \times 4 = 36$
-    
-    $\\$
-    
-    ● **Étape 3 :** Calcul de $\displaystyle\sigma(Y)$ :
-        $\qquad$• $\displaystyle\sigma(Y) = \sqrt{V(Y)} = \sqrt{36} = 6$
-        $\\$
-        $\qquad$• Formule directe : $\displaystyle\sigma(aX + b) = |a|\sigma(X) = 3 \times 2 = 6$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle E(Y) = 25$ et $\displaystyle\sigma(Y) = 6$
-    
-    $\\$
-
-**Question 3 :** $\displaystyle Y = 5X$ avec $\displaystyle E(X) = 12$ et $\displaystyle V(X) = 9$
-
-    ● **Application :** Conversion d'une note sur 20 vers une note sur 100
-    
-    $\\$
-    
-    ● **Étape 1 :** Calcul de $\displaystyle E(Y)$ :
-        $\qquad$• $\displaystyle E(Y) = 5E(X) = 5 \times 12 = 60$
-        $\\$
-        $\qquad$• Interprétation : La moyenne sur 100 est 60
-    
-    $\\$
-    
-    ● **Étape 2 :** Calcul de $\displaystyle V(Y)$ :
-        $\qquad$• $\displaystyle V(Y) = 5^2V(X) = 25 \times 9 = 225$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle E(Y) = 60$ et $\displaystyle V(Y) = 225$
-    
+    ● **Résultat :** La loi de probabilité de $Y$ est décalée et étirée par rapport à celle de $X$
     $\\$
 
-**Question 4 :** $\displaystyle F = 1,8T + 32$ avec $\displaystyle E(T) = 20$ et $\displaystyle V(T) = 25$
+**Question 3 :** Transformation $Z = -X + 4$
 
-    ● **Application :** Conversion Celsius vers Fahrenheit
-    
+    ● **Méthode :** Application des formules avec coefficient négatif
     $\\$
     
-    ● **Étape 1 :** Calcul de $\displaystyle E(F)$ :
-        $\qquad$• $\displaystyle E(F) = 1,8E(T) + 32 = 1,8 \times 20 + 32$
-        $\\$
-        $\qquad$• $\displaystyle E(F) = 36 + 32 = 68$°F
-    
+    ● **Étape 1 :** Identifier les coefficients
+        $\qquad$• $\displaystyle Z = -X + 4$ correspond à $\displaystyle a = -1$ et $\displaystyle b = 4$
     $\\$
     
-    ● **Étape 2 :** Calcul de $\displaystyle V(F)$ :
-        $\qquad$• $\displaystyle V(F) = 1,8^2V(T) = 3,24 \times 25 = 81$
-        $\\$
-        $\qquad$• Note : La constante +32 n'affecte pas la variance
-    
+    ● **Étape 2 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(Z) = (-1) \times E(X) + 4 = (-1) \times 1 + 4 = 3$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(F) = 68$°F et $\displaystyle V(F) = 81$
+    ● **Étape 3 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(Z) = (-1)^2V(X) = 1 \times 2 = 2$
+    $\\$
     
+    ● **Résultat :** $\displaystyle E(Z) = 3$ et $\displaystyle V(Z) = 2$
     $\\$
 
-**Question 5 :** Trouver $\displaystyle a$ tel que $\displaystyle V(Y) = V(aX) = 64$
+**Question 4 :** Variable centrée réduite $T$
 
-    ● **Données :** $\displaystyle E(X) = 8$, $\displaystyle V(X) = 16$, $\displaystyle Y = aX$
-    
+    ● **Méthode :** Standardisation d'une variable aléatoire
     $\\$
     
-    ● **Formule :** $\displaystyle V(aX) = a^2V(X)$
-    
+    ● **Étape 1 :** Identifier la transformation
+        $\qquad$• $\displaystyle T = \frac{X - E(X)}{\sqrt{V(X)}} = \frac{X - 5}{2}$
+        $\qquad$• C'est une transformation affine avec $\displaystyle a = \frac{1}{2}$ et $\displaystyle b = -\frac{5}{2}$
     $\\$
     
-    ● **Mise en équation :**
-        $\qquad$• $\displaystyle a^2V(X) = 64$
-        $\\$
-        $\qquad$• $\displaystyle a^2 \times 16 = 64$
-    
+    ● **Étape 2 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(T) = \frac{1}{2}E(X) - \frac{5}{2} = \frac{1}{2} \times 5 - \frac{5}{2} = 0$
     $\\$
     
-    ● **Résolution :**
-        $\qquad$• $\displaystyle a^2 = \frac{64}{16} = 4$
-        $\\$
-        $\qquad$• $\displaystyle a = \pm 2$
-    
+    ● **Étape 3 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(T) = \left(\frac{1}{2}\right)^2V(X) = \frac{1}{4} \times 4 = 1$
     $\\$
     
-    ● **Résultat :** $\displaystyle a = 2$ ou $\displaystyle a = -2$
+    ● **Résultat :** $\displaystyle E(T) = 0$ et $\displaystyle V(T) = 1$ (variable centrée réduite)
+    $\\$
+
+**Question 5 :** Déterminer les coefficients $a$ et $b$
+
+    ● **Méthode :** Résolution d'un système d'équations
+    $\\$
     
+    ● **Étape 1 :** Écrire les équations
+        $\qquad$• $\displaystyle E(U) = aE(X) + b = 7$ → $\displaystyle 2a + b = 7$
+        $\qquad$• $\displaystyle V(U) = a^2V(X) = 12$ → $\displaystyle 3a^2 = 12$ → $\displaystyle a^2 = 4$
+    $\\$
+    
+    ● **Étape 2 :** Résoudre pour $a$
+        $\qquad$• $\displaystyle a^2 = 4$ → $\displaystyle a = 2$ ou $\displaystyle a = -2$
+    $\\$
+    
+    ● **Étape 3 :** Résoudre pour $b$ dans chaque cas
+        $\qquad$• Si $\displaystyle a = 2$ : $\displaystyle 2 \times 2 + b = 7$ → $\displaystyle b = 3$
+        $\qquad$• Si $\displaystyle a = -2$ : $\displaystyle 2 \times (-2) + b = 7$ → $\displaystyle b = 11$
+    $\\$
+    
+    ● **Résultat :** Deux solutions possibles :
+        $\qquad$• $\displaystyle a = 2$ et $\displaystyle b = 3$ → $\displaystyle U = 2X + 3$
+        $\qquad$• $\displaystyle a = -2$ et $\displaystyle b = 11$ → $\displaystyle U = -2X + 11$
     $\\$
 
 Solution:
-1. $\displaystyle E(Y) = 13$ et $\displaystyle V(Y) = 16$
+1. $\displaystyle E(3X - 1) = 5$ et $\displaystyle V(3X - 1) = 27$
 $\\$
-2. $\displaystyle E(Y) = 25$ et $\displaystyle\sigma(Y) = 6$
+2. Loi de $Y$ : $\displaystyle P(Y = 7) = ,$, $\displaystyle P(Y = 9) = ,$, $\displaystyle P(Y = 11) = ,$
 $\\$
-3. $\displaystyle E(Y) = 60$ et $\displaystyle V(Y) = 225$
+3. $\displaystyle E(Z) = 3$ et $\displaystyle V(Z) = 2$
 $\\$
-4. $\displaystyle E(F) = 68$°F et $\displaystyle V(F) = 81$
+4. $\displaystyle E(T) = 0$ et $\displaystyle V(T) = 1$ (centrée réduite)
 $\\$
-5. $\displaystyle a = 2$ ou $\displaystyle a = -2$
+5. Deux solutions : $\displaystyle U = 2X + 3$ ou $\displaystyle U = -2X + 11$
 
 ===
 
 === Variables Aléatoires - Somme de Variables Indépendantes
 Difficulté: medium
 
-Énoncé: Utiliser les propriétés de la somme de variables aléatoires indépendantes.
+Énoncé: Calculer l'espérance et la variance de sommes de variables aléatoires indépendantes.
 
-**Question 1 :** Soient $\displaystyle X$ et $\displaystyle Y$ deux variables aléatoires indépendantes avec $\displaystyle E(X) = 3$, $\displaystyle V(X) = 2$, $\displaystyle E(Y) = 5$ et $\displaystyle V(Y) = 4$. Calculer $\displaystyle E(X + Y)$ et $\displaystyle V(X + Y)$.
+**Question 1 :** Soient $X$ et $Y$ deux variables aléatoires indépendantes avec $E(X) = 2$, $V(X) = 3$, $E(Y) = 1$, $V(Y) = 2$. Calculer $E(X + Y)$ et $V(X + Y)$.
 $\\$
-**Question 2 :** On lance deux dés indépendants. Soit $\displaystyle S$ la somme des deux nombres obtenus. Calculer $\displaystyle E(S)$ et $\displaystyle V(S)$.
+**Question 2 :** On lance 5 dés équilibrés. Soit $S$ = "somme des 5 dés". Calculer $E(S)$ et $V(S)$.
 $\\$
-**Question 3 :** Soient $\displaystyle X_1, X_2, X_3$ trois variables aléatoires indépendantes de même loi avec $\displaystyle E(X_i) = 4$ et $\displaystyle V(X_i) = 1$ pour tout $\displaystyle i$. Calculer $\displaystyle E(X_1 + X_2 + X_3)$ et $\displaystyle V(X_1 + X_2 + X_3)$.
+**Question 3 :** Soient $X_1, X_2, X_3$ trois variables aléatoires indépendantes avec $E(X_i) = 4$ et $V(X_i) = 2$ pour $i = 1, 2, 3$. Calculer $E(X_1 + X_2 + X_3)$ et $V(X_1 + X_2 + X_3)$.
 $\\$
-**Question 4 :** Soient $\displaystyle A$ et $\displaystyle B$ deux variables aléatoires indépendantes avec $\displaystyle E(A) = 10$, $\displaystyle\sigma(A) = 2$, $\displaystyle E(B) = 6$ et $\displaystyle\sigma(B) = 3$. Calculer $\displaystyle E(A + B)$ et $\displaystyle\sigma(A + B)$.
+**Question 4 :** On lance une pièce 6 fois. Soit $N$ = "nombre de pile obtenus". Calculer $E(N)$ et $V(N)$.
 $\\$
-**Question 5 :** On lance 5 fois une pièce équilibrée. Soit $\displaystyle X_i$ le résultat du $\displaystyle i$-ème lancer (1 pour "pile", 0 pour "face"). Calculer l'espérance et la variance du nombre total de "pile" : $\displaystyle S = X_1 + X_2 + X_3 + X_4 + X_5$.
+**Question 5 :** Soient $A$ et $B$ deux variables aléatoires indépendantes avec $E(A) = 3$, $V(A) = 1$, $E(B) = 5$, $V(B) = 4$. Calculer $E(2A + 3B)$ et $V(2A + 3B)$.
 
 Étapes:
 
-**Question 1 :** Calculer $\displaystyle E(X + Y)$ et $\displaystyle V(X + Y)$
+**Question 1 :** Somme de deux variables indépendantes
 
-    ● **Formules :** Pour $\displaystyle X$ et $\displaystyle Y$ indépendantes :
-        $\qquad$• $\displaystyle E(X + Y) = E(X) + E(Y)$
-        $\\$
-        $\qquad$• $\displaystyle V(X + Y) = V(X) + V(Y)$
-    
+    ● **Méthode :** Propriétés de l'espérance et de la variance pour des variables indépendantes
     $\\$
     
-    ● **Calcul de $\displaystyle E(X + Y)$ :**
-        $\qquad$• $\displaystyle E(X + Y) = E(X) + E(Y) = 3 + 5 = 8$
-    
+    ● **Étape 1 :** Rappel des formules
+        $\qquad$• Si $X$ et $Y$ sont indépendantes : $\displaystyle E(X + Y) = E(X) + E(Y)$
+        $\qquad$• Et : $\displaystyle V(X + Y) = V(X) + V(Y)$
     $\\$
     
-    ● **Calcul de $\displaystyle V(X + Y)$ :**
-        $\qquad$• $\displaystyle V(X + Y) = V(X) + V(Y) = 2 + 4 = 6$
-    
+    ● **Étape 2 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(X + Y) = E(X) + E(Y) = 2 + 1 = 3$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(X + Y) = 8$ et $\displaystyle V(X + Y) = 6$
+    ● **Étape 3 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(X + Y) = V(X) + V(Y) = 3 + 2 = 5$
+    $\\$
     
+    ● **Résultat :** $\displaystyle E(X + Y) = 3$ et $\displaystyle V(X + Y) = 5$
     $\\$
 
-**Question 2 :** Somme de deux dés indépendants
+**Question 2 :** Somme de 5 dés équilibrés
 
-    ● **Rappel :** Pour un dé équilibré : $\displaystyle E = 3,5$ et $\displaystyle V = \frac{35}{12}$
-    
+    ● **Méthode :** Décomposition en variables indépendantes
     $\\$
     
-    ● **Notations :**
-        $\qquad$• Soit $\displaystyle X_1$ le résultat du premier dé
-        $\\$
-        $\qquad$• Soit $\displaystyle X_2$ le résultat du deuxième dé
-        $\\$
-        $\qquad$• $\displaystyle S = X_1 + X_2$
-    
+    ● **Étape 1 :** Décomposer la variable
+        $\qquad$• $\displaystyle S = D_1 + D_2 + D_3 + D_4 + D_5$ où chaque $\displaystyle D_i$ est le résultat d'un dé
+        $\qquad$• Les $\displaystyle D_i$ sont indépendantes avec $\displaystyle E(D_i) = ,$ et $\displaystyle V(D_i) = \frac{35}{12}$
     $\\$
     
-    ● **Calcul de $\displaystyle E(S)$ :**
-        $\qquad$• $\displaystyle E(S) = E(X_1) + E(X_2) = 3,5 + 3,5 = 7$
-    
+    ● **Étape 2 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(S) = E(D_1) + E(D_2) + E(D_3) + E(D_4) + E(D_5)$
+        $\qquad$• $\displaystyle E(S) = 5 \times , = 1,$
     $\\$
     
-    ● **Calcul de $\displaystyle V(S)$ :**
-        $\qquad$• $\displaystyle V(S) = V(X_1) + V(X_2) = \frac{35}{12} + \frac{35}{12} = \frac{70}{12} = \frac{35}{6}$
-    
+    ● **Étape 3 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(S) = V(D_1) + V(D_2) + V(D_3) + V(D_4) + V(D_5)$
+        $\qquad$• $\displaystyle V(S) = 5 \times \frac{35}{12} = \frac{175}{12} \approx 1,8$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(S) = 7$ et $\displaystyle V(S) = \frac{35}{6} \approx 5,83$
-    
+    ● **Résultat :** $\displaystyle E(S) = 1,$ et $\displaystyle V(S) = \frac{175}{12}$
     $\\$
 
-**Question 3 :** Somme de trois variables identiques indépendantes
+**Question 3 :** Somme de trois variables identiques
 
-    ● **Données :** $\displaystyle E(X_i) = 4$ et $\displaystyle V(X_i) = 1$ pour $\displaystyle i \in \{1,2,3\}$
-    
+    ● **Méthode :** Application directe des propriétés
     $\\$
     
-    ● **Formules :** Pour $\displaystyle n$ variables indépendantes de même loi :
-        $\qquad$• $\displaystyle E(X_1 + \ldots + X_n) = nE(X_1)$
-        $\\$
-        $\qquad$• $\displaystyle V(X_1 + \ldots + X_n) = nV(X_1)$
-    
-    $\\$
-    
-    ● **Calcul de $\displaystyle E(X_1 + X_2 + X_3)$ :**
+    ● **Étape 1 :** Calcul de l'espérance
         $\qquad$• $\displaystyle E(X_1 + X_2 + X_3) = E(X_1) + E(X_2) + E(X_3)$
-        $\\$
-        $\qquad$• $\displaystyle = 4 + 4 + 4 = 12$
-        $\\$
-        $\qquad$• Ou directement : $\displaystyle 3 \times 4 = 12$
-    
+        $\qquad$• $\displaystyle E(X_1 + X_2 + X_3) = 4 + 4 + 4 = 12$
     $\\$
     
-    ● **Calcul de $\displaystyle V(X_1 + X_2 + X_3)$ :**
+    ● **Étape 2 :** Calcul de la variance
         $\qquad$• $\displaystyle V(X_1 + X_2 + X_3) = V(X_1) + V(X_2) + V(X_3)$
-        $\\$
-        $\qquad$• $\displaystyle = 1 + 1 + 1 = 3$
-        $\\$
-        $\qquad$• Ou directement : $\displaystyle 3 \times 1 = 3$
-    
+        $\qquad$• $\displaystyle V(X_1 + X_2 + X_3) = 2 + 2 + 2 = 6$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(X_1 + X_2 + X_3) = 12$ et $\displaystyle V(X_1 + X_2 + X_3) = 3$
-    
+    ● **Résultat :** $\displaystyle E(X_1 + X_2 + X_3) = 12$ et $\displaystyle V(X_1 + X_2 + X_3) = 6$
     $\\$
 
-**Question 4 :** Calculer $\displaystyle E(A + B)$ et $\displaystyle\sigma(A + B)$
+**Question 4 :** Nombre de pile en 6 lancers
 
-    ● **Données :** $\displaystyle V(A) = [\sigma(A)]^2 = 4$ et $\displaystyle V(B) = [\sigma(B)]^2 = 9$
-    
+    ● **Méthode :** Loi binomiale
     $\\$
     
-    ● **Calcul de $\displaystyle E(A + B)$ :**
-        $\qquad$• $\displaystyle E(A + B) = E(A) + E(B) = 10 + 6 = 16$
-    
+    ● **Étape 1 :** Identifier la loi
+        $\qquad$• $N$ suit une loi binomiale $\displaystyle \mathcal{B}(6, \frac{1}{2})$
     $\\$
     
-    ● **Calcul de $\displaystyle V(A + B)$ :**
-        $\qquad$• $\displaystyle V(A + B) = V(A) + V(B) = 4 + 9 = 13$
-    
+    ● **Étape 2 :** Formules générales de la loi binomiale
+        $\qquad$• **Formule générale :** Pour $\displaystyle X \sim \mathcal{B}(n, p)$ :
+        $\qquad$• $\displaystyle E(X) = np$
+        $\qquad$• $\displaystyle V(X) = np(1-p)$
     $\\$
     
-    ● **Calcul de $\displaystyle\sigma(A + B)$ :**
-        $\qquad$• $\displaystyle\sigma(A + B) = \sqrt{V(A + B)} = \sqrt{13} \approx 3,61$
-    
+    ● **Étape 3 :** Application numérique
+        $\qquad$• Ici : $\displaystyle n = 6$ et $\displaystyle p = \frac{1}{2}$
+        $\qquad$• $\displaystyle E(N) = 6 \times \frac{1}{2} = 3$
+        $\qquad$• $\displaystyle V(N) = 6 \times \frac{1}{2} \times \frac{1}{2} = \frac{3}{2}$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(A + B) = 16$ et $\displaystyle\sigma(A + B) = \sqrt{13} \approx 3,61$
-    
+    ● **Résultat :** $\displaystyle E(N) = 3$ et $\displaystyle V(N) = \frac{3}{2}$
     $\\$
 
-**Question 5 :** Nombre total de "pile" en 5 lancers
+**Question 5 :** Combinaison linéaire de variables indépendantes
 
-    ● **Modélisation :**
-        $\qquad$• Chaque $\displaystyle X_i$ suit une loi de Bernoulli de paramètre $\displaystyle p = 0,5$
-        $\\$
-        $\qquad$• $\displaystyle E(X_i) = p = 0,5$
-        $\\$
-        $\qquad$• $\displaystyle V(X_i) = p(1-p) = 0,5 \times 0,5 = 0,25$
-    
+    ● **Méthode :** Propriétés des combinaisons linéaires
     $\\$
     
-    ● **Calcul de $\displaystyle E(S)$ :**
-        $\qquad$• $\displaystyle E(S) = E(X_1 + X_2 + X_3 + X_4 + X_5)$
-        $\\$
-        $\qquad$• $\displaystyle E(S) = 5 \times E(X_1) = 5 \times 0,5 = 2,5$
-    
+    ● **Étape 1 :** Décomposer la variable
+        $\qquad$• $\displaystyle W = 2A + 3B$ où $A$ et $B$ sont indépendantes
     $\\$
     
-    ● **Calcul de $\displaystyle V(S)$ :**
-        $\qquad$• $\displaystyle V(S) = V(X_1 + X_2 + X_3 + X_4 + X_5)$
-        $\\$
-        $\qquad$• $\displaystyle V(S) = 5 \times V(X_1) = 5 \times 0,25 = 1,25$
-    
+    ● **Étape 2 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(W) = E(2A + 3B) = 2E(A) + 3E(B)$
+        $\qquad$• $\displaystyle E(W) = 2 \times 3 + 3 \times 5 = 6 + 15 = 21$
     $\\$
     
-    ● **Interprétation :** En moyenne, on obtient 2,5 "pile" sur 5 lancers.
-    
+    ● **Étape 3 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(W) = V(2A + 3B) = 2^2V(A) + 3^2V(B)$ (car $A$ et $B$ indépendantes)
+        $\qquad$• $\displaystyle V(W) = 4 \times 1 + 9 \times 4 = 4 + 36 = 40$
     $\\$
     
-    ● **Résultat :** $\displaystyle E(S) = 2,5$ et $\displaystyle V(S) = 1,25$
-    
+    ● **Résultat :** $\displaystyle E(2A + 3B) = 21$ et $\displaystyle V(2A + 3B) = 40$
     $\\$
 
 Solution:
-1. $\displaystyle E(X + Y) = 8$ et $\displaystyle V(X + Y) = 6$
+1. $\displaystyle E(X + Y) = 3$ et $\displaystyle V(X + Y) = 5$
 $\\$
-2. $\displaystyle E(S) = 7$ et $\displaystyle V(S) = \frac{35}{6} \approx 5,83$
+2. $\displaystyle E(S) = 1,$ et $\displaystyle V(S) = \frac{175}{12}$
 $\\$
-3. $\displaystyle E(X_1 + X_2 + X_3) = 12$ et $\displaystyle V(X_1 + X_2 + X_3) = 3$
+3. $\displaystyle E(X_1 + X_2 + X_3) = 12$ et $\displaystyle V(X_1 + X_2 + X_3) = 6$
 $\\$
-4. $\displaystyle E(A + B) = 16$ et $\displaystyle\sigma(A + B) = \sqrt{13} \approx 3,61$
+4. $\displaystyle E(N) = 3$ et $\displaystyle V(N) = \frac{3}{2}$
 $\\$
-5. $\displaystyle E(S) = 2,5$ et $\displaystyle V(S) = 1,25$
+5. $\displaystyle E(2A + 3B) = 21$ et $\displaystyle V(2A + 3B) = 40$
 
 ===
 
 === Variables Aléatoires - Problèmes de Synthèse
 Difficulté: hard
 
-Énoncé: Résoudre des problèmes combinant plusieurs concepts.
+Énoncé: Résoudre des problèmes complexes combinant plusieurs concepts de variables aléatoires.
 
-**Question 1 :** Une urne contient 3 boules numérotées 1, 2, 3. On tire une boule au hasard, on note son numéro $\displaystyle X$, puis on tire une deuxième boule et on note son numéro $\displaystyle Y$ (sans remise). Calculer $\displaystyle E(X + Y)$.
+**Question 1 :** Une urne contient 4 boules rouges et 6 boules bleues. On tire 3 boules simultanément. Soit $X$ = "nombre de boules rouges tirées". Donner la loi de probabilité de $X$, puis calculer $E(X)$ et $V(X)$.
 $\\$
-**Question 2 :** Un jeu consiste à lancer un dé. Si on obtient 6, on gagne 10€. Si on obtient 1, on perd 5€. Sinon, on ne gagne ni ne perd rien. Soit $\displaystyle G$ le gain algébrique. Calculer $\displaystyle E(G)$ et $\displaystyle V(G)$.
+**Question 2 :** On lance 3 dés équilibrés. Soit $Y$ = "nombre de 6 obtenus". Donner la loi de probabilité de $Y$, puis calculer $E(Y)$ et $V(Y)$.
 $\\$
-**Question 3 :** Une variable aléatoire $\displaystyle X$ représente le temps d'attente (en minutes) avec $\displaystyle E(X) = 15$ et $\displaystyle\sigma(X) = 3$. On mesure le temps en secondes : $\displaystyle Y = 60X$. Calculer $\displaystyle E(Y)$ et $\displaystyle\sigma(Y)$.
+**Question 3 :** Soit $Z = 2X - 3Y$ où $X$ et $Y$ sont indépendantes avec $E(X) = 1$, $V(X) = 2$, $E(Y) = 3$, $V(Y) = 1$. Calculer $E(Z)$ et $V(Z)$.
 $\\$
-**Question 4 :** On lance 3 dés indépendants. Soit $\displaystyle M$ la moyenne des trois résultats : $\displaystyle M = \frac{X_1 + X_2 + X_3}{3}$. Calculer $\displaystyle E(M)$ et $\displaystyle V(M)$.
+**Question 4 :** Un jeu consiste à lancer un dé. Si on obtient 1 ou 2, on gagne 5€. Si on obtient 3 ou 4, on gagne 2€. Si on obtient 5 ou 6, on perd 3€. Soit $G$ = "gain du joueur". Calculer $E(G)$ et $V(G)$.
 $\\$
-**Question 5 :** Un professeur donne deux notes $\displaystyle N_1$ et $\displaystyle N_2$ indépendantes avec $\displaystyle E(N_1) = 12$, $\displaystyle V(N_1) = 9$, $\displaystyle E(N_2) = 14$ et $\displaystyle V(N_2) = 4$. La moyenne finale est $\displaystyle M = 0,4N_1 + 0,6N_2$. Calculer $\displaystyle E(M)$ et $\displaystyle V(M)$.
+**Question 5 :** Soit $T = X + Y$ où $X$ suit la loi : $P(X = 0) = ,$, $P(X = 1) = ,$ et $Y$ suit la loi : $P(Y = 0) = ,$, $P(Y = 1) = ,$. Si $X$ et $Y$ sont indépendantes, donner la loi de probabilité de $T$.
 
 Étapes:
 
-**Question 1 :** Tirage sans remise : $\displaystyle E(X + Y)$
+**Question 1 :** Loi de probabilité et caractéristiques de $X$
 
-    ● **Analyse :** Les deux tirages ne sont pas indépendants (sans remise)
+    ● **Méthode :** Combinaisons et calculs d'espérance/variance
+    $\\$
+    
+    ● **Étape 1 :** Identifier l'univers
+        $\qquad$• Total : 10 boules (4 rouges + 6 bleues)
+        $\qquad$• On tire 3 boules simultanément
+    $\\$
+    
+    ● **Étape 2 :** Calculer les probabilités
+         $\\$
+        $\qquad$• $\displaystyle P(X = 0) = \frac{\binom{6}{3}}{\binom{10}{3}} = \frac{20}{120} = \frac{1}{6}$ (3 bleues)
+         $\\$
+        $\qquad$• $\displaystyle P(X = 1) = \frac{\binom{4}{1} \times \binom{6}{2}}{\binom{10}{3}} = \frac{4 \times 15}{120} = \frac{1}{2}$ (1 rouge + 2 bleues)
+         $\\$
+        $\qquad$• $\displaystyle P(X = 2) = \frac{\binom{4}{2} \times \binom{6}{1}}{\binom{10}{3}} = \frac{6 \times 6}{120} = \frac{3}{10}$ (2 rouges + 1 bleue)
+         $\\$
+        $\qquad$• $\displaystyle P(X = 3) = \frac{\binom{4}{3}}{\binom{10}{3}} = \frac{4}{120} = \frac{1}{30}$ (3 rouges)
+    $\\$
+    
+    ● **Étape 3 :** Loi de probabilité de $X$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$x_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(X = x_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">0</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{2}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">2</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{3}{10}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">3</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{30}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Méthode :** Utiliser $\displaystyle E(X + Y) = E(X) + E(Y)$ (valable même sans indépendance)
-    
+    ● **Étape 4 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(X) = 0 \times \frac{1}{6} + 1 \times \frac{1}{2} + 2 \times \frac{3}{10} + 3 \times \frac{1}{30}$
+         $\\$
+        $\qquad$• $\displaystyle E(X) = 0 + \frac{1}{2} + \frac{3}{5} + \frac{1}{10} = \frac{5 + 6 + 1}{10} = \frac{12}{10} = \frac{6}{5}$
     $\\$
     
-    ● **Calcul de $\displaystyle E(X)$ :**
-        $\qquad$• Au premier tirage : $\displaystyle P(X = 1) = P(X = 2) = P(X = 3) = \frac{1}{3}$
-        $\\$
-        $\qquad$• $\displaystyle E(X) = 1 \times \frac{1}{3} + 2 \times \frac{1}{3} + 3 \times \frac{1}{3} = \frac{6}{3} = 2$
-    
+    ● **Étape 5 :** Calcul de $E(X^2)$
+        $\qquad$• $\displaystyle E(X^2) = 0^2 \times \frac{1}{6} + 1^2 \times \frac{1}{2} + 2^2 \times \frac{3}{10} + 3^2 \times \frac{1}{30}$
+         $\\$
+        $\qquad$• $\displaystyle E(X^2) = 0 + \frac{1}{2} + \frac{12}{10} + \frac{9}{30} = \frac{1}{2} + \frac{6}{5} + \frac{3}{10} = \frac{5 + 12 + 3}{10} = 2$
     $\\$
     
-    ● **Calcul de $\displaystyle E(Y)$ :**
-        $\qquad$• Par symétrie, chaque numéro a la même probabilité d'être tiré en second
-        $\\$
-        $\qquad$• $\displaystyle E(Y) = 2$ (même calcul que pour $\displaystyle X$)
-    
+    ● **Étape 6 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(X) = E(X^2) - [E(X)]^2 = 2 - \left(\frac{6}{5}\right)^2 = 2 - \frac{36}{25} = \frac{50 - 36}{25} = \frac{14}{25}$
     $\\$
     
-    ● **Calcul de $\displaystyle E(X + Y)$ :**
-        $\qquad$• $\displaystyle E(X + Y) = E(X) + E(Y) = 2 + 2 = 4$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle E(X + Y) = 4$
-    
-    $\\$
-
-**Question 2 :** Jeu avec gain algébrique
-
-    ● **Étape 1 :** Déterminer la loi de probabilité de $\displaystyle G$
-        $\qquad$• $\displaystyle P(G = 10) = P(\text{obtenir 6}) = \frac{1}{6}$
-        $\\$
-        $\qquad$• $\displaystyle P(G = -5) = P(\text{obtenir 1}) = \frac{1}{6}$
-        $\\$
-        $\qquad$• $\displaystyle P(G = 0) = P(\text{obtenir 2,3,4 ou 5}) = \frac{4}{6} = \frac{2}{3}$
-    
-    $\\$
-    
-    ● **Étape 2 :** Calcul de $\displaystyle E(G)$ :
-        $\qquad$• $\displaystyle E(G) = 10 \times \frac{1}{6} + (-5) \times \frac{1}{6} + 0 \times \frac{2}{3}$
-        $\\$
-        $\qquad$• $\displaystyle E(G) = \frac{10}{6} - \frac{5}{6} + 0 = \frac{5}{6} \approx 0,83$€
-    
-    $\\$
-    
-    ● **Étape 3 :** Calcul de $\displaystyle E(G^2)$ :
-        $\qquad$• $\displaystyle E(G^2) = 10^2 \times \frac{1}{6} + (-5)^2 \times \frac{1}{6} + 0^2 \times \frac{2}{3}$
-        $\\$
-        $\qquad$• $\displaystyle E(G^2) = \frac{100}{6} + \frac{25}{6} = \frac{125}{6}$
-    
-    $\\$
-    
-    ● **Étape 4 :** Calcul de $\displaystyle V(G)$ :
-        $\qquad$• $\displaystyle V(G) = E(G^2) - [E(G)]^2 = \frac{125}{6} - \left(\frac{5}{6}\right)^2$
-        $\\$
-        $\qquad$• $\displaystyle V(G) = \frac{125}{6} - \frac{25}{36} = \frac{750}{36} - \frac{25}{36} = \frac{725}{36} \approx 20,14$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle E(G) = \frac{5}{6} \approx 0,83$€ et $\displaystyle V(G) = \frac{725}{36} \approx 20,14$
-    
+    ● **Résultat :** $\displaystyle E(X) = \frac{6}{5} = ,$ et $\displaystyle V(X) = \frac{14}{25} = ,6$
     $\\$
 
-**Question 3 :** Conversion minutes → secondes : $\displaystyle Y = 60X$
+**Question 2 :** Loi de probabilité et caractéristiques de $Y$
 
-    ● **Données :** $\displaystyle E(X) = 15$ min, $\displaystyle\sigma(X) = 3$ min
+    ● **Méthode :** Loi binomiale
+    $\\$
+    
+    ● **Étape 1 :** Identifier la loi
+        $\qquad$• $Y$ suit une loi binomiale $\displaystyle \mathcal{B}(3, \frac{1}{6})$
+         $\\$
+        $\qquad$• $\displaystyle P(Y = k) = \binom{3}{k} \left(\frac{1}{6}\right)^k \left(\frac{5}{6}\right)^{3-k}$
+    $\\$
+    
+    ● **Étape 2 :** Calculer les probabilités
+        $\qquad$• $\displaystyle P(Y = 0) = \left(\frac{5}{6}\right)^3 = \frac{125}{216}$
+         $\\$
+        $\qquad$• $\displaystyle P(Y = 1) = 3 \times \frac{1}{6} \times \left(\frac{5}{6}\right)^2 = \frac{75}{216}$
+         $\\$
+        $\qquad$• $\displaystyle P(Y = 2) = 3 \times \left(\frac{1}{6}\right)^2 \times \frac{5}{6} = \frac{15}{216}$
+         $\\$
+        $\qquad$• $\displaystyle P(Y = 3) = \left(\frac{1}{6}\right)^3 = \frac{1}{216}$
+    $\\$
+    
+    ● **Étape 3 :** Loi de probabilité de $Y$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$y_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(Y = y_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">0</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{125}{216}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{75}{216}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">2</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{15}{216}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">3</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{216}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Transformation :** $\displaystyle Y = 60X$ (donc $\displaystyle a = 60$, $\displaystyle b = 0$)
-    
+    ● **Étape 4 :** Formules générales et calculs
+        $\qquad$• **Formule générale :** Pour $\displaystyle X \sim \mathcal{B}(n, p)$ :
+        $\qquad$• $\displaystyle E(X) = np$
+        $\qquad$• $\displaystyle V(X) = np(1-p)$
     $\\$
     
-    ● **Calcul de $\displaystyle E(Y)$ :**
-        $\qquad$• $\displaystyle E(Y) = 60E(X) = 60 \times 15 = 900$ secondes
-    
+    ● **Étape 5 :** Application numérique
+        $\qquad$• Ici : $\displaystyle n = 3$ et $\displaystyle p = \frac{1}{6}$
+        $\qquad$• $\displaystyle E(Y) = 3 \times \frac{1}{6} = \frac{1}{2}$
+         $\\$
+        $\qquad$• $\displaystyle V(Y) = 3 \times \frac{1}{6} \times \frac{5}{6} = \frac{5}{12}$
     $\\$
     
-    ● **Calcul de $\displaystyle\sigma(Y)$ :**
-        $\qquad$• $\displaystyle\sigma(Y) = |60| \times \sigma(X) = 60 \times 3 = 180$ secondes
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle E(Y) = 900$ secondes et $\displaystyle\sigma(Y) = 180$ secondes
-    
+    ● **Résultat :** $\displaystyle E(Y) = \frac{1}{2}$ et $\displaystyle V(Y) = \frac{5}{12}$
     $\\$
 
-**Question 4 :** Moyenne de trois dés : $\displaystyle M = \frac{X_1 + X_2 + X_3}{3}$
+**Question 3 :** Combinaison linéaire de variables indépendantes
 
-    ● **Données :** Pour un dé : $\displaystyle E(X_i) = 3,5$ et $\displaystyle V(X_i) = \frac{35}{12}$
-    
+    ● **Méthode :** Propriétés des combinaisons linéaires
     $\\$
     
-    ● **Méthode :** $\displaystyle M = \frac{1}{3}(X_1 + X_2 + X_3) = \frac{1}{3}S$ où $\displaystyle S = X_1 + X_2 + X_3$
-    
+    ● **Étape 1 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(Z) = E(2X - 3Y) = 2E(X) - 3E(Y)$
+        $\qquad$• $\displaystyle E(Z) = 2 \times 1 - 3 \times 3 = 2 - 9 = -7$
     $\\$
     
-    ● **Calcul de $\displaystyle E(M)$ :**
-        $\qquad$• $\displaystyle E(S) = E(X_1) + E(X_2) + E(X_3) = 3 \times 3,5 = 10,5$
-        $\\$
-        $\qquad$• $\displaystyle E(M) = E\left(\frac{S}{3}\right) = \frac{1}{3}E(S) = \frac{10,5}{3} = 3,5$
-    
+    ● **Étape 2 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(Z) = V(2X - 3Y) = 2^2V(X) + (-3)^2V(Y)$ (car $X$ et $Y$ indépendantes)
+        $\qquad$• $\displaystyle V(Z) = 4 \times 2 + 9 \times 1 = 8 + 9 = 17$
     $\\$
     
-    ● **Calcul de $\displaystyle V(M)$ :**
-        $\qquad$• $\displaystyle V(S) = V(X_1) + V(X_2) + V(X_3) = 3 \times \frac{35}{12} = \frac{35}{4}$
-        $\\$
-        $\qquad$• $\displaystyle V(M) = V\left(\frac{S}{3}\right) = \left(\frac{1}{3}\right)^2 V(S) = \frac{1}{9} \times \frac{35}{4} = \frac{35}{36}$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle E(M) = 3,5$ et $\displaystyle V(M) = \frac{35}{36} \approx 0,97$
-    
+    ● **Résultat :** $\displaystyle E(Z) = -7$ et $\displaystyle V(Z) = 17$
     $\\$
 
-**Question 5 :** Moyenne pondérée : $\displaystyle M = 0,4N_1 + 0,6N_2$
+**Question 4 :** Gain d'un jeu de dé
 
-    ● **Données :** $\displaystyle E(N_1) = 12$, $\displaystyle V(N_1) = 9$, $\displaystyle E(N_2) = 14$, $\displaystyle V(N_2) = 4$
+    ● **Méthode :** Définition d'une variable aléatoire et calculs
+    $\\$
+    
+    ● **Étape 1 :** Loi de probabilité de $G$
+        $\qquad$• $\displaystyle P(G = 5) = \frac{2}{6} = \frac{1}{3}$ (1 ou 2)
+         $\\$
+        $\qquad$• $\displaystyle P(G = 2) = \frac{2}{6} = \frac{1}{3}$ (3 ou 4)
+         $\\$
+        $\qquad$• $\displaystyle P(G = -3) = \frac{2}{6} = \frac{1}{3}$ (5 ou 6)
+    $\\$
+    
+    ● **Étape 2 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(G) = 5 \times \frac{1}{3} + 2 \times \frac{1}{3} + (-3) \times \frac{1}{3}$
+         $\\$
+        $\qquad$• $\displaystyle E(G) = \frac{5 + 2 - 3}{3} = \frac{4}{3}$
+    $\\$
+    
+    ● **Étape 3 :** Calcul de $E(G^2)$
+        $\qquad$• $\displaystyle E(G^2) = 5^2 \times \frac{1}{3} + 2^2 \times \frac{1}{3} + (-3)^2 \times \frac{1}{3}$
+         $\\$
+        $\qquad$• $\displaystyle E(G^2) = \frac{25 + 4 + 9}{3} = \frac{38}{3}$
+    $\\$
+    
+    ● **Étape 4 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(G) = E(G^2) - [E(G)]^2 = \frac{38}{3} - \left(\frac{4}{3}\right)^2 = \frac{38}{3} - \frac{16}{9} = \frac{114 - 16}{9} = \frac{98}{9}$
+    $\\$
+    
+    ● **Résultat :** $\displaystyle E(G) = \frac{4}{3}$ et $\displaystyle V(G) = \frac{98}{9}$
+    $\\$
+
+**Question 5 :** Loi de probabilité de $T = X + Y$
+
+    ● **Méthode :** Convolution de lois de probabilité
+    $\\$
+    
+    ● **Étape 1 :** Loi de probabilité de $X$
+        $\qquad$• $\displaystyle P(X = 0) = ,$, $\displaystyle P(X = 1) = ,$
+    $\\$
+    
+    ● **Étape 2 :** Loi de probabilité de $Y$
+        $\qquad$• $\displaystyle P(Y = 0) = ,$, $\displaystyle P(Y = 1) = ,$
+    $\\$
+    
+    ● **Étape 3 :** Calculer les probabilités de $T$
+        $\qquad$• $\displaystyle P(T = 0) = P(X = 0 \text{ et } Y = 0) = , \times , = ,2$
+         $\\$
+        $\qquad$• $\displaystyle P(T = 1) = P(X = 0 \text{ et } Y = 1) + P(X = 1 \text{ et } Y = 0) = , \times , + , \times , = ,8 + ,8 = ,6$
+         $\\$
+        $\qquad$• $\displaystyle P(T = 2) = P(X = 1 \text{ et } Y = 1) = , \times , = ,2$
+    $\\$
+    
+    ● **Étape 4 :** Loi de probabilité de $T$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$t_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(T = t_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">0</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">,2</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">,6</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">2</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">,2</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Calcul de $\displaystyle E(M)$ :**
-        $\qquad$• $\displaystyle E(M) = E(0,4N_1 + 0,6N_2)$
-        $\\$
-        $\qquad$• $\displaystyle E(M) = 0,4E(N_1) + 0,6E(N_2)$
-        $\\$
-        $\qquad$• $\displaystyle E(M) = 0,4 \times 12 + 0,6 \times 14 = 4,8 + 8,4 = 13,2$
-    
-    $\\$
-    
-    ● **Calcul de $\displaystyle V(M)$ :**
-        $\qquad$• $\displaystyle M = 0,4N_1 + 0,6N_2$ avec $\displaystyle N_1$ et $\displaystyle N_2$ indépendantes
-        $\\$
-        $\qquad$• $\displaystyle V(M) = V(0,4N_1) + V(0,6N_2)$
-        $\\$
-        $\qquad$• $\displaystyle V(M) = 0,4^2V(N_1) + 0,6^2V(N_2)$
-        $\\$
-        $\qquad$• $\displaystyle V(M) = 0,16 \times 9 + 0,36 \times 4 = 1,44 + 1,44 = 2,88$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle E(M) = 13,2$ et $\displaystyle V(M) = 2,88$
-    
+    ● **Résultat :** La loi de probabilité de $T$ est centrée sur 1
     $\\$
 
 Solution:
-1. $\displaystyle E(X + Y) = 4$
+1. Loi de $X$ : $\displaystyle P(X = 0) = \frac{1}{6}$, $\displaystyle P(X = 1) = \frac{1}{2}$, $\displaystyle P(X = 2) = \frac{3}{10}$, $\displaystyle P(X = 3) = \frac{1}{30}$ ; $\displaystyle E(X) = \frac{6}{5}$ et $\displaystyle V(X) = \frac{14}{25}$
 $\\$
-2. $\displaystyle E(G) = \frac{5}{6} \approx 0,83$€ et $\displaystyle V(G) = \frac{725}{36} \approx 20,14$
+2. Loi de $Y$ : $\displaystyle P(Y = 0) = \frac{125}{216}$, $\displaystyle P(Y = 1) = \frac{75}{216}$, $\displaystyle P(Y = 2) = \frac{15}{216}$, $\displaystyle P(Y = 3) = \frac{1}{216}$ ; $\displaystyle E(Y) = \frac{1}{2}$ et $\displaystyle V(Y) = \frac{5}{12}$
 $\\$
-3. $\displaystyle E(Y) = 900$ secondes et $\displaystyle\sigma(Y) = 180$ secondes
+3. $\displaystyle E(Z) = -7$ et $\displaystyle V(Z) = 17$
 $\\$
-4. $\displaystyle E(M) = 3,5$ et $\displaystyle V(M) = \frac{35}{36} \approx 0,97$
+4. $\displaystyle E(G) = \frac{4}{3}$ et $\displaystyle V(G) = \frac{98}{9}$
 $\\$
-5. $\displaystyle E(M) = 13,2$ et $\displaystyle V(M) = 2,88$
+5. Loi de $T$ : $\displaystyle P(T = 0) = ,2$, $\displaystyle P(T = 1) = ,6$, $\displaystyle P(T = 2) = ,2$
 
 ===
 
-=== Variables Aléatoires - Arbres de Probabilité
+=== Variables Aléatoires - Applications Pratiques (Jeux et Paris)
 Difficulté: medium
 
-Énoncé: Utiliser des arbres pondérés pour calculer des probabilités et déterminer des lois.
+Énoncé: Analyser des situations de jeux et de paris à l'aide de variables aléatoires.
 
-**Question 1 :** Une urne contient 3 boules rouges et 2 boules bleues. On tire deux boules successivement sans remise. Construire l'arbre pondéré et calculer la probabilité d'obtenir deux boules de couleurs différentes.
+**Question 1 :** Un jeu coûte 2€. On lance un dé. Si on obtient 6, on gagne 10€. Sinon, on ne gagne rien. Soit $B$ = "bénéfice net du joueur". Calculer $E(B)$. Le jeu est-il favorable au joueur ?
 $\\$
-**Question 2 :** Un test de dépistage a une fiabilité de 95% pour les personnes malades et de 90% pour les personnes saines. On sait que 2% de la population est malade. Une personne choisie au hasard a un test positif. Quelle est la probabilité qu'elle soit réellement malade ?
+**Question 2 :** Une loterie vend des tickets à 5€. Il y a 1000 tickets. Le gros lot est de 2000€, il y a 5 lots de 100€ et 20 lots de 20€. Soit $G$ = "gain net d'un ticket". Calculer $E(G)$.
 $\\$
-**Question 3 :** On lance une pièce. Si on obtient "pile" (probabilité 0,6), on tire dans l'urne A (2 boules rouges, 3 bleues). Si on obtient "face", on tire dans l'urne B (4 rouges, 1 bleue). Calculer la probabilité d'obtenir une boule rouge.
+**Question 3 :** On joue à pile ou face avec une mise de 1€. Si pile sort, on gagne 2€. Si face sort, on perd sa mise. On joue 10 fois. Soit $S$ = "gain total". Calculer $E(S)$ et $V(S)$.
 $\\$
-**Question 4 :** Un étudiant révise avec une probabilité 0,7. S'il révise, il réussit son examen avec une probabilité 0,9. S'il ne révise pas, il réussit avec une probabilité 0,3. Sachant qu'il a réussi, quelle est la probabilité qu'il ait révisé ?
+**Question 4 :** Un casino propose un jeu : on tire une carte au hasard. Si c'est un As, on gagne 50€. Si c'est une figure (Valet, Dame, Roi), on gagne 10€. Sinon, on perd 5€. Calculer l'espérance de gain.
 $\\$
-**Question 5 :** Une usine possède deux machines A et B. La machine A produit 60% des pièces et a un taux de défaut de 5%. La machine B produit 40% avec un taux de défaut de 8%. Calculer le taux de défaut global et la probabilité qu'une pièce défectueuse provienne de la machine A.
+**Question 5 :** On lance deux dés. Si la somme est 7 ou 11, on gagne 20€. Si la somme est 2, 3 ou 12, on perd 10€. Sinon, on ne gagne ni ne perd rien. Quelle mise maximale rend ce jeu équitable ?
 
 Étapes:
 
-**Question 1 :** Tirage de deux boules sans remise
+**Question 1 :** Bénéfice net d'un jeu de dé
 
-    ● **Situation :** Urne avec 3 rouges (R) et 2 bleues (B), tirage sans remise
+    ● **Méthode :** Variable aléatoire et espérance
+    $\\$
+    
+    ● **Étape 1 :** Définir la variable aléatoire
+        $\qquad$• Coût du jeu : 2€
+        $\qquad$• Si dé = 6 : gain = 10€, bénéfice = 10 - 2 = 8€
+        $\qquad$• Si dé ≠ 6 : gain = 0€, bénéfice = 0 - 2 = -2€
+    $\\$
+    
+    ● **Étape 2 :** Loi de probabilité de $B$
+        $\qquad$• $\displaystyle P(B = 8) = \frac{1}{6}$ (obtenir 6)
+        $\qquad$• $\displaystyle P(B = -2) = \frac{5}{6}$ (obtenir 1, 2, 3, 4 ou 5)
+    $\\$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$b_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(B = b_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">-2€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{5}{6}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">8€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Étape 1 :** Construction de l'arbre pondéré
-    
-    ```
-                        Premier tirage          Deuxième tirage
-                                
-                        ─── 2/4 ──→ B    Probabilité : 3/5 × 2/4 = 6/20
-                   3/5 ↗
-        Départ ────────→ R                      
-                   2/5 ↘    ─── 3/4 ──→ R    Probabilité : 3/5 × 3/4 = 9/20
-                        └── 2/4 ──→ R    Probabilité : 2/5 × 3/4 = 6/20
-                             
-                        ─── 3/4 ──→ R    Probabilité : 2/5 × 3/4 = 6/20
-                             
-                        └── 1/4 ──→ B    Probabilité : 2/5 × 1/4 = 2/20
-    ```
-    
+    ● **Étape 3 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(B) = 8 \times \frac{1}{6} + (-2) \times \frac{5}{6}$
+         $\\$
+        $\qquad$• $\displaystyle E(B) = \frac{8 - 10}{6} = -\frac{2}{6} = -\frac{1}{3} \approx -0,33$ €
     $\\$
     
-    ● **Explication de l'arbre :**
-        $\qquad$• **1er tirage :** P(R) = 3/5 et P(B) = 2/5
-        $\\$
-        $\qquad$• **Si 1er tirage = R :** reste 2R et 2B → P(R|1er R) = 2/4, P(B|1er R) = 2/4
-        $\\$
-        $\qquad$• **Si 1er tirage = B :** reste 3R et 1B → P(R|1er B) = 3/4, P(B|1er B) = 1/4
-    
-    $\\$
-    
-    ● **Étape 2 :** Calcul des probabilités
-        $\qquad$• $\displaystyle P(RR) = \frac{3}{5} \times \frac{2}{4} = \frac{6}{20}$
-        $\\$
-        $\qquad$• $\displaystyle P(RB) = \frac{3}{5} \times \frac{2}{4} = \frac{6}{20}$
-        $\\$
-        $\qquad$• $\displaystyle P(BR) = \frac{2}{5} \times \frac{3}{4} = \frac{6}{20}$
-        $\\$
-        $\qquad$• $\displaystyle P(BB) = \frac{2}{5} \times \frac{1}{4} = \frac{2}{20}$
-    
-    $\\$
-    
-    ● **Étape 3 :** Probabilité de deux couleurs différentes
-        $\qquad$• $\displaystyle P(\text{couleurs différentes}) = P(RB) + P(BR)$
-        $\\$
-        $\qquad$• $\displaystyle = \frac{6}{20} + \frac{6}{20} = \frac{12}{20} = \frac{3}{5}$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle P(\text{couleurs différentes}) = \frac{3}{5} = 0,6$
-    
+    ● **Résultat :** $\displaystyle E(B) = -\frac{1}{3}$ €. Le jeu est **défavorable** au joueur (perte moyenne de 0,33€ par partie)
     $\\$
 
-**Question 2 :** Test de dépistage (formule de Bayes)
+**Question 2 :** Gain net d'un ticket de loterie
 
-    ● **Données :**
-        $\qquad$• P(Malade) = 0,02 donc P(Sain) = 0,98
-        $\\$
-        $\qquad$• P(Test+|Malade) = 0,95 (sensibilité)
-        $\\$
-        $\qquad$• P(Test-|Sain) = 0,90 donc P(Test+|Sain) = 0,10 (faux positif)
+    ● **Méthode :** Variable aléatoire avec plusieurs issues
+    $\\$
+    
+    ● **Étape 1 :** Définir la variable aléatoire
+        $\qquad$• Coût du ticket : 5€
+        $\qquad$• Gros lot : 2000€ → gain net = 1995€
+        $\qquad$• Lot de 100€ → gain net = 95€
+        $\qquad$• Lot de 20€ → gain net = 15€
+        $\qquad$• Rien → gain net = -5€
+    $\\$
+    
+    ● **Étape 2 :** Loi de probabilité de $G$
+        $\qquad$• $\displaystyle P(G = 1995) = \frac{1}{1000}$ (1 gros lot)
+         $\\$
+        $\qquad$• $\displaystyle P(G = 95) = \frac{5}{1000}$ (5 lots de 100€)
+         $\\$
+        $\qquad$• $\displaystyle P(G = 15) = \frac{20}{1000}$ (20 lots de 20€)
+         $\\$
+        $\qquad$• $\displaystyle P(G = -5) = \frac{974}{1000}$ (rien)
+    $\\$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:500px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$g_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(G = g_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">-5€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{974}{1000}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">15€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{20}{1000}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">95€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{5}{1000}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1995€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{1000}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Étape 1 :** Construction de l'arbre pondéré
-    
-    ```
-                              État              Test
-                                    
-                         0,02 ──→ Malade ─── 0,95 ──→ Test+   P = 0,02 × 0,95 = 0,019
-        Départ                              └── 0,05 ──→ Test-   P = 0,02 × 0,05 = 0,001
-                                                  
-                         0,98 ──→ Sain   ─── 0,10 ──→ Test+   P = 0,98 × 0,10 = 0,098
-                                         └── 0,90 ──→ Test-   P = 0,98 × 0,90 = 0,882
-    ```
-    
+    ● **Étape 3 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(G) = 1995 \times \frac{1}{1000} + 95 \times \frac{5}{1000} + 15 \times \frac{20}{1000} + (-5) \times \frac{974}{1000}$
+         $\\$
+        $\qquad$• $\displaystyle E(G) = \frac{1995 + 475 + 300 - 4870}{1000} = \frac{-2100}{1000} = -2,1$ €
     $\\$
     
-    ● **Étape 2 :** Calcul de P(Test+) (probabilité totale)
-        $\qquad$• $\displaystyle P(\text{Test+}) = P(\text{Malade}) \times P(\text{Test+|Malade}) + P(\text{Sain}) \times P(\text{Test+|Sain})$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Test+}) = 0,02 \times 0,95 + 0,98 \times 0,10$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Test+}) = 0,019 + 0,098 = 0,117$
-    
-    $\\$
-    
-    ● **Étape 3 :** Formule de Bayes
-        $\qquad$• $\displaystyle P(\text{Malade|Test+}) = \frac{P(\text{Malade}) \times P(\text{Test+|Malade})}{P(\text{Test+})}$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Malade|Test+}) = \frac{0,019}{0,117} \approx 0,162$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle P(\text{Malade|Test+}) \approx 0,162$ soit environ 16,2%
-    
-    $\\$
-
-**Question 3 :** Tirages dans deux urnes selon un lancer de pièce
-
-    ● **Données :**
-        $\qquad$• P(Pile) = 0,6 → Urne A : 2R, 3B (total 5)
-        $\\$
-        $\qquad$• P(Face) = 0,4 → Urne B : 4R, 1B (total 5)
-    
-    $\\$
-    
-    ● **Étape 1 :** Construction de l'arbre pondéré
-    
-    ```
-                    Pièce          Urne           Couleur
-                                    
-                              ─── 2/5 ──→ R    P = 0,6 × 2/5 = 0,24
-                   0,6 ──→ Pile → Urne A     
-        Départ                └── 3/5 ──→ B    P = 0,6 × 3/5 = 0,36
-                              
-                              ─── 4/5 ──→ R    P = 0,4 × 4/5 = 0,32
-                   0,4 ──→ Face → Urne B     
-                              └── 1/5 ──→ B    P = 0,4 × 1/5 = 0,08
-    ```
-    
-    $\\$
-    
-    ● **Étape 2 :** Probabilités de chaque branche
-        $\qquad$• $\displaystyle P(\text{Pile et R}) = 0,6 \times \frac{2}{5} = 0,24$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Pile et B}) = 0,6 \times \frac{3}{5} = 0,36$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Face et R}) = 0,4 \times \frac{4}{5} = 0,32$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Face et B}) = 0,4 \times \frac{1}{5} = 0,08$
-    
-    $\\$
-    
-    ● **Étape 3 :** Probabilité totale d'obtenir une boule rouge
-        $\qquad$• $\displaystyle P(\text{Rouge}) = P(\text{Pile et R}) + P(\text{Face et R})$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Rouge}) = 0,24 + 0,32 = 0,56$
-    
-    $\\$
-    
-    ● **Résultat :** $\displaystyle P(\text{Rouge}) = 0,56$ soit 56%
-    
+    ● **Résultat :** $\displaystyle E(G) = -2,1$ €. En moyenne, on perd 2,1€ par ticket
     $\\$
 
-**Question 4 :** Probabilité conditionnelle (formule de Bayes)
+**Question 3 :** Gain total sur 10 parties de pile ou face
 
-    ● **Données :**
-        $\qquad$• P(Révise) = 0,7 donc P(Ne révise pas) = 0,3
-        $\\$
-        $\qquad$• P(Réussit|Révise) = 0,9
-        $\\$
-        $\qquad$• P(Réussit|Ne révise pas) = 0,3
-    
+    ● **Méthode :** Somme de variables aléatoires indépendantes
     $\\$
     
-    ● **Étape 1 :** Construction de l'arbre pondéré
-    
-    ```
-                    Révision           Examen
-                                    
-                              ─── 0,9 ──→ Réussit   P = 0,7 × 0,9 = 0,63
-                   0,7 ──→ Révise      
-        Départ                └── 0,1 ──→ Échoue    P = 0,7 × 0,1 = 0,07
-                              
-                              ─── 0,3 ──→ Réussit   P = 0,3 × 0,3 = 0,09
-                   0,3 ──→ Ne révise pas     
-                              └── 0,7 ──→ Échoue    P = 0,3 × 0,7 = 0,21
-    ```
-    
+    ● **Étape 1 :** Définir une partie
+        $\qquad$• Soit $X_i$ = gain net de la partie $i$
+        $\qquad$• Si pile : gain = 2€, bénéfice = 2 - 1 = 1€
+        $\qquad$• Si face : gain = 0€, bénéfice = 0 - 1 = -1€
+        $\qquad$• $\displaystyle P(X_i = 1) = \frac{1}{2}$ et $\displaystyle P(X_i = -1) = \frac{1}{2}$
     $\\$
     
-    ● **Étape 2 :** Calcul de P(Réussit) (probabilité totale)
-        $\qquad$• $\displaystyle P(\text{Réussit}) = P(\text{Révise}) \times P(\text{Réussit|Révise}) + P(\text{Ne révise pas}) \times P(\text{Réussit|Ne révise pas})$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Réussit}) = 0,7 \times 0,9 + 0,3 \times 0,3$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Réussit}) = 0,63 + 0,09 = 0,72$
-    
+    ● **Étape 2 :** Espérance et variance d'une partie
+        $\qquad$• $\displaystyle E(X_i) = 1 \times \frac{1}{2} + (-1) \times \frac{1}{2} = 0$
+        $\qquad$• $\displaystyle E(X_i^2) = 1^2 \times \frac{1}{2} + (-1)^2 \times \frac{1}{2} = 1$
+        $\qquad$• $\displaystyle V(X_i) = E(X_i^2) - [E(X_i)]^2 = 1 - 0 = 1$
     $\\$
     
-    ● **Étape 3 :** Formule de Bayes
-        $\qquad$• $\displaystyle P(\text{Révise|Réussit}) = \frac{P(\text{Révise}) \times P(\text{Réussit|Révise})}{P(\text{Réussit})}$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Révise|Réussit}) = \frac{0,63}{0,72} = \frac{63}{72} = \frac{7}{8} = 0,875$
-    
+    ● **Étape 3 :** Gain total sur 10 parties
+        $\qquad$• $\displaystyle S = X_1 + X_2 + \cdots + X_{10}$
+        $\qquad$• $\displaystyle E(S) = 10 \times E(X_i) = 10 \times 0 = 0$
+        $\qquad$• $\displaystyle V(S) = 10 \times V(X_i) = 10 \times 1 = 10$
     $\\$
     
-    ● **Résultat :** $\displaystyle P(\text{Révise|Réussit}) = \frac{7}{8} = 0,875$ soit 87,5%
-    
+    ● **Résultat :** $\displaystyle E(S) = 0$ € et $\displaystyle V(S) = 10$. Le jeu est équitable en moyenne
     $\\$
 
-**Question 5 :** Production avec deux machines (probabilité totale et Bayes)
+**Question 4 :** Espérance de gain au casino
 
-    ● **Données :**
-        $\qquad$• Machine A : 60% de la production, 5% de défauts
-        $\\$
-        $\qquad$• Machine B : 40% de la production, 8% de défauts
+    ● **Méthode :** Variable aléatoire avec plusieurs issues
+    $\\$
+    
+    ● **Étape 1 :** Identifier les événements
+        $\qquad$• As : 4 cartes sur 52 → $\displaystyle P(\text{As}) = \frac{4}{52} = \frac{1}{13}$
+         $\\$
+        $\qquad$• Figure : 12 cartes sur 52 → $\displaystyle P(\text{Figure}) = \frac{12}{52} = \frac{3}{13}$
+         $\\$
+        $\qquad$• Autre : 36 cartes sur 52 → $\displaystyle P(\text{Autre}) = \frac{36}{52} = \frac{9}{13}$
+    $\\$
+    
+    ● **Étape 2 :** Loi de probabilité du gain $G$
+        $\qquad$• $\displaystyle P(G = 50) = \frac{1}{13}$ (As)
+         $\\$
+        $\qquad$• $\displaystyle P(G = 10) = \frac{3}{13}$ (Figure)
+         $\\$
+        $\qquad$• $\displaystyle P(G = -5) = \frac{9}{13}$ (Autre)
+    $\\$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$g_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(G = g_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">-5€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{9}{13}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">10€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{3}{13}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">50€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{13}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Étape 1 :** Construction de l'arbre pondéré
+    ● **Étape 3 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(G) = 50 \times \frac{1}{13} + 10 \times \frac{3}{13} + (-5) \times \frac{9}{13}$
+         $\\$
+        $\qquad$• $\displaystyle E(G) = \frac{50 + 30 - 45}{13} = \frac{35}{13} \approx 2,69$ €
+    $\\$
     
-    ```
-                    Machine          Qualité
-                                    
-                              ─── 0,95 ──→ Bonne    P = 0,6 × 0,95 = 0,57
-                   0,6 ──→ Machine A      
-        Départ                └── 0,05 ──→ Défaut   P = 0,6 × 0,05 = 0,03
-                              
-                              ─── 0,92 ──→ Bonne    P = 0,4 × 0,92 = 0,368
-                   0,4 ──→ Machine B     
-                              └── 0,08 ──→ Défaut   P = 0,4 × 0,08 = 0,032
-    ```
+    ● **Résultat :** $\displaystyle E(G) = \frac{35}{13} \approx 2,69$ €. Le jeu est favorable au joueur
+    $\\$
+
+**Question 5 :** Mise maximale pour un jeu équitable
+
+    ● **Méthode :** Équilibre de l'espérance
+    $\\$
+    
+    ● **Étape 1 :** Calculer les probabilités
+        $\qquad$• Somme = 7 : 6 cas sur 36 → $\displaystyle P(7) = \frac{6}{36} = \frac{1}{6}$
+         $\\$
+        $\qquad$• Somme = 11 : 2 cas sur 36 → $\displaystyle P(11) = \frac{2}{36} = \frac{1}{18}$
+         $\\$
+        $\qquad$• Somme = 2 : 1 cas sur 36 → $\displaystyle P(2) = \frac{1}{36}$
+         $\\$
+        $\qquad$• Somme = 3 : 2 cas sur 36 → $\displaystyle P(3) = \frac{2}{36} = \frac{1}{18}$
+         $\\$
+        $\qquad$• Somme = 12 : 1 cas sur 36 → $\displaystyle P(12) = \frac{1}{36}$
+         $\\$
+        $\qquad$• Autre : $\displaystyle 1 - \frac{6 + 2 + 1 + 2 + 1}{36} = \frac{24}{36} = \frac{2}{3}$
+    $\\$
+    
+    ● **Étape 2 :** Loi de probabilité du gain brut $G$
+        $\qquad$• $\displaystyle P(G = 20) = \frac{6 + 2}{36} = \frac{8}{36} = \frac{2}{9}$ (7 ou 11)
+         $\\$
+        $\qquad$• $\displaystyle P(G = -10) = \frac{1 + 2 + 1}{36} = \frac{4}{36} = \frac{1}{9}$ (2, 3 ou 12)
+         $\\$
+        $\qquad$• $\displaystyle P(G = 0) = \frac{24}{36} = \frac{2}{3}$ (autre)
+    $\\$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$g_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(G = g_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">-10€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{9}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">0€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{2}{3}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">20€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{2}{9}$</td>
+        </tr>
+    </table>
     
     $\\$
     
-    ● **Étape 2 :** Taux de défaut global (probabilité totale)
-        $\qquad$• $\displaystyle P(\text{Défaut}) = P(A) \times P(\text{Défaut|A}) + P(B) \times P(\text{Défaut|B})$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Défaut}) = 0,6 \times 0,05 + 0,4 \times 0,08$
-        $\\$
-        $\qquad$• $\displaystyle P(\text{Défaut}) = 0,03 + 0,032 = 0,062$
-    
+    ● **Étape 3 :** Espérance du gain brut
+        $\qquad$• $\displaystyle E(G) = 20 \times \frac{2}{9} + (-10) \times \frac{1}{9} + 0 \times \frac{2}{3}$
+         $\\$
+        $\qquad$• $\displaystyle E(G) = \frac{40 - 10}{9} = \frac{30}{9} = \frac{10}{3}$ €
     $\\$
     
-    ● **Étape 3 :** Probabilité qu'une pièce défectueuse vienne de A (Bayes)
-        $\qquad$• $\displaystyle P(A|\text{Défaut}) = \frac{P(A) \times P(\text{Défaut|A})}{P(\text{Défaut})}$
-        $\\$
-        $\qquad$• $\displaystyle P(A|\text{Défaut}) = \frac{0,03}{0,062} = \frac{30}{62} = \frac{15}{31} \approx 0,484$
-    
+    ● **Étape 4 :** Mise maximale pour un jeu équitable
+        $\qquad$• Pour que le jeu soit équitable : $\displaystyle E(\text{bénéfice}) = 0$
+         $\\$
+        $\qquad$• $\displaystyle E(\text{bénéfice}) = E(G) - \text{mise} = 0$
+         $\\$
+        $\qquad$• Mise maximale = $\displaystyle \frac{10}{3} \approx 3,33$ €
     $\\$
     
-    ● **Résultat :** Taux de défaut global = 6,2% et $\displaystyle P(A|\text{Défaut}) \approx 0,484$ soit 48,4%
-    
+    ● **Résultat :** La mise maximale pour un jeu équitable est $\displaystyle \frac{10}{3} \approx 3,33$ €
     $\\$
 
 Solution:
-1. $\displaystyle P(\text{couleurs différentes}) = \frac{3}{5} = 0,6$
+1. $\displaystyle E(B) = -\frac{1}{3}$ €. Jeu défavorable au joueur
 $\\$
-2. $\displaystyle P(\text{Malade|Test+}) \approx 0,162$ soit 16,2%
+2. $\displaystyle E(G) = -2,1$ €. Perte moyenne de 2,1€ par ticket
 $\\$
-3. $\displaystyle P(\text{Rouge}) = 0,56$ soit 56%
+3. $\displaystyle E(S) = 0$ € et $\displaystyle V(S) = 10$. Jeu équitable
 $\\$
-4. $\displaystyle P(\text{Révise|Réussit}) = \frac{7}{8} = 0,875$ soit 87,5%
+4. $\displaystyle E(G) = \frac{35}{13} \approx 2,69$ €. Jeu favorable au joueur
 $\\$
-5. Taux de défaut global = 6,2% et $\displaystyle P(A|\text{Défaut}) \approx 48,4\%$
+5. Mise maximale : $\displaystyle \frac{10}{3} \approx 3,33$ €
 
 ===
 
+=== Variables Aléatoires - Probabilités Conditionnelles
+Difficulté: hard
+
+Énoncé: Calculer des espérances et variances avec des probabilités conditionnelles.
+
+**Question 1 :** Une urne contient 3 boules rouges et 2 boules bleues. On tire une boule. Si elle est rouge, on gagne 5€. Si elle est bleue, on tire une seconde boule : si elle est rouge, on gagne 3€, sinon on gagne 1€. Soit $G$ = "gain". Calculer $E(G)$.
+$\\$
+**Question 2 :** On lance un dé. Si on obtient 1 ou 2, on lance une pièce et on gagne 10€ si pile sort. Si on obtient 3, 4, 5 ou 6, on gagne directement 5€. Soit $G$ = "gain". Calculer $E(G)$ et $V(G)$.
+$\\$
+**Question 3 :** Une boîte A contient 2 boules rouges et 3 bleues. Une boîte B contient 4 rouges et 1 bleue. On choisit une boîte au hasard et on tire une boule. Si elle est rouge, on gagne 10€, sinon 2€. Calculer l'espérance de gain.
+$\\$
+**Question 4 :** Un étudiant révise avec probabilité 0,6. S'il révise, il réussit avec probabilité 0,9 et gagne 100€. S'il ne révise pas, il réussit avec probabilité 0,3 et gagne 100€. S'il échoue, il perd 50€. Calculer son espérance de gain.
+$\\$
+**Question 5 :** On tire une carte. Si c'est un cœur, on gagne son rang en euros (As = 1€, 2 = 2€, ..., Roi = 13€). Sinon, on perd 2€. Calculer l'espérance de gain.
+
+Étapes:
+
+**Question 1 :** Gain avec tirage conditionnel
+
+    ● **Méthode :** Formule des probabilités totales
+    $\\$
+    
+    ● **Étape 1 :** Identifier les cas
+        $\qquad$• Cas 1 : 1ère boule rouge → gain = 5€
+        $\qquad$• Cas 2 : 1ère boule bleue, 2ème rouge → gain = 3€
+        $\qquad$• Cas 3 : 1ère boule bleue, 2ème bleue → gain = 1€
+    $\\$
+    
+    ● **Étape 2 :** Calculer les probabilités
+        $\qquad$• $\displaystyle P(\text{Cas 1}) = \frac{3}{5}$
+         $\\$
+        $\qquad$• $\displaystyle P(\text{Cas 2}) = \frac{2}{5} \times \frac{3}{4} = \frac{6}{20} = \frac{3}{10}$
+         $\\$
+        $\qquad$• $\displaystyle P(\text{Cas 3}) = \frac{2}{5} \times \frac{1}{4} = \frac{2}{20} = \frac{1}{10}$
+    $\\$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:500px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">Cas</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">Gain</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">Probabilité</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1ère rouge</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">5€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{3}{5}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1ère bleue, 2ème rouge</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">3€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{3}{10}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1ère bleue, 2ème bleue</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">1€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{10}$</td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Étape 3 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(G) = 5 \times \frac{3}{5} + 3 \times \frac{3}{10} + 1 \times \frac{1}{10}$
+         $\\$
+        $\qquad$• $\displaystyle E(G) = 3 + \frac{9}{10} + \frac{1}{10} = 3 + 1 = 4$ €
+    $\\$
+    
+    ● **Résultat :** $\displaystyle E(G) = 4$ €
+    $\\$
+
+**Question 2 :** Gain avec dé et pièce
+
+    ● **Méthode :** Arbre de probabilités
+    $\\$
+    
+    ● **Étape 1 :** Identifier les cas
+        $\qquad$• Cas 1 : Dé = 1 ou 2, puis Pile → gain = 10€
+        $\qquad$• Cas 2 : Dé = 1 ou 2, puis Face → gain = 0€
+        $\qquad$• Cas 3 : Dé = 3, 4, 5 ou 6 → gain = 5€
+    $\\$
+    
+    ● **Étape 2 :** Calculer les probabilités
+        $\qquad$• $\displaystyle P(\text{Cas 1}) = \frac{2}{6} \times \frac{1}{2} = \frac{1}{6}$
+         $\\$
+        $\qquad$• $\displaystyle P(\text{Cas 2}) = \frac{2}{6} \times \frac{1}{2} = \frac{1}{6}$
+         $\\$
+        $\qquad$• $\displaystyle P(\text{Cas 3}) = \frac{4}{6} = \frac{2}{3}$
+    $\\$
+    
+    ● **Étape 3 :** Loi de probabilité de $G$
+        $\qquad$• $\displaystyle P(G = 10) = \frac{1}{6}$
+         $\\$
+        $\qquad$• $\displaystyle P(G = 0) = \frac{1}{6}$
+         $\\$
+        $\qquad$• $\displaystyle P(G = 5) = \frac{2}{3}$
+    $\\$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$g_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(G = g_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">0€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">5€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{2}{3}$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">10€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\frac{1}{6}$</td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Étape 4 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(G) = 10 \times \frac{1}{6} + 0 \times \frac{1}{6} + 5 \times \frac{2}{3}$
+         $\\$
+        $\qquad$• $\displaystyle E(G) = \frac{10}{6} + \frac{10}{3} = \frac{10 + 20}{6} = 5$ €
+    $\\$
+    
+    ● **Étape 5 :** Calcul de $E(G^2)$
+        $\qquad$• $\displaystyle E(G^2) = 10^2 \times \frac{1}{6} + 0^2 \times \frac{1}{6} + 5^2 \times \frac{2}{3}$
+         $\\$
+        $\qquad$• $\displaystyle E(G^2) = \frac{100}{6} + \frac{50}{3} = \frac{100 + 100}{6} = \frac{200}{6} = \frac{100}{3}$
+    $\\$
+    
+    ● **Étape 6 :** Calcul de la variance
+        $\qquad$• $\displaystyle V(G) = E(G^2) - [E(G)]^2 = \frac{100}{3} - 25 = \frac{100 - 75}{3} = \frac{25}{3}$
+    $\\$
+    
+    ● **Résultat :** $\displaystyle E(G) = 5$ € et $\displaystyle V(G) = \frac{25}{3}$
+    $\\$
+
+**Question 3 :** Gain avec choix de boîte
+
+    ● **Méthode :** Formule des probabilités totales
+    $\\$
+    
+    ● **Étape 1 :** Probabilités de tirer une boule rouge
+        $\qquad$• Boîte A : $\displaystyle P(R|A) = \frac{2}{5}$
+         $\\$
+        $\qquad$• Boîte B : $\displaystyle P(R|B) = \frac{4}{5}$
+         $\\$
+        $\qquad$• $\displaystyle P(A) = P(B) = \frac{1}{2}$
+    $\\$
+    
+    ● **Étape 2 :** Probabilité totale de rouge
+        $\qquad$• $\displaystyle P(R) = P(R|A) \times P(A) + P(R|B) \times P(B)$
+         $\\$
+        $\qquad$• $\displaystyle P(R) = \frac{2}{5} \times \frac{1}{2} + \frac{4}{5} \times \frac{1}{2} = \frac{1}{5} + \frac{2}{5} = \frac{3}{5}$
+    $\\$
+    
+    ● **Étape 3 :** Probabilité de bleue
+        $\qquad$• $\displaystyle P(B) = 1 - P(R) = 1 - \frac{3}{5} = \frac{2}{5}$
+    $\\$
+    
+    ● **Étape 4 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(G) = 10 \times \frac{3}{5} + 2 \times \frac{2}{5}$
+         $\\$
+        $\qquad$• $\displaystyle E(G) = 6 + \frac{4}{5} = \frac{34}{5} = 6,8$ €
+    $\\$
+    
+    ● **Résultat :** $\displaystyle E(G) = \frac{34}{5} = 6,8$ €
+    $\\$
+
+**Question 4 :** Gain d'un étudiant selon révision
+
+    ● **Méthode :** Formule des probabilités totales
+    $\\$
+    
+    ● **Étape 1 :** Identifier les cas
+        $\qquad$• $\displaystyle P(R) = 0,6$ (révise), $\displaystyle P(\overline{R}) = 0,4$ (ne révise pas)
+         $\\$
+        $\qquad$• $\displaystyle P(S|R) = 0,9$ (succès si révise)
+         $\\$
+        $\qquad$• $\displaystyle P(S|\overline{R}) = 0,3$ (succès si ne révise pas)
+    $\\$
+    
+    ● **Étape 2 :** Calculer les probabilités des gains
+        $\qquad$• $\displaystyle P(G = 100) = P(S|R) \times P(R) + P(S|\overline{R}) \times P(\overline{R})$
+         $\\$
+        $\qquad$• $\displaystyle P(G = 100) = 0,9 \times 0,6 + 0,3 \times 0,4 = 0,54 + 0,12 = 0,66$
+         $\\$
+        $\qquad$• $\displaystyle P(G = -50) = 1 - 0,66 = 0,34$
+    $\\$
+    
+    <table style="width:100%; border-collapse:collapse; margin:10px auto; max-width:400px; border:2px solid #3498db;">
+        <tr style="background:#e8f4f8;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$g_i$</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">$P(G = g_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">-50€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">0,34</td>
+        </tr>
+        <tr style="background:#ffffff;">
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">100€</td>
+            <td style="border:1px solid #ddd; padding:12px; text-align:center;">0,66</td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Étape 3 :** Calcul de l'espérance
+        $\qquad$• $\displaystyle E(G) = 100 \times 0,66 + (-50) \times 0,34$
+        $\qquad$• $\displaystyle E(G) = 66 - 17 = 49$ €
+    $\\$
+    
+    ● **Résultat :** $\displaystyle E(G) = 49$ €
+    $\\$
+
+**Question 5 :** Gain avec tirage de carte
+
+    ● **Méthode :** Calcul d'espérance par cas
+    $\\$
+    
+    ● **Étape 1 :** Probabilité de tirer un cœur
+        $\qquad$• $\displaystyle P(\text{cœur}) = \frac{13}{52} = \frac{1}{4}$
+         $\\$
+        $\qquad$• $\displaystyle P(\text{non-cœur}) = \frac{39}{52} = \frac{3}{4}$
+    $\\$
+    
+    ● **Étape 2 :** Espérance conditionnelle sachant cœur
+        $\qquad$• Si cœur, le gain est le rang : 1, 2, 3, ..., 13
+         $\\$
+        $\qquad$• Chaque rang a probabilité $\displaystyle \frac{1}{13}$ parmi les cœurs
+         $\\$
+        $\qquad$• $\displaystyle E(G|\text{cœur}) = \frac{1 + 2 + 3 + \cdots + 13}{13} = \frac{91}{13} = 7$ €
+    $\\$
+    
+    ● **Étape 3 :** Espérance conditionnelle sachant non-cœur
+        $\qquad$• $\displaystyle E(G|\text{non-cœur}) = -2$ €
+    $\\$
+    
+    ● **Étape 4 :** Espérance totale
+        $\qquad$• $\displaystyle E(G) = E(G|\text{cœur}) \times P(\text{cœur}) + E(G|\text{non-cœur}) \times P(\text{non-cœur})$
+         $\\$
+        $\qquad$• $\displaystyle E(G) = 7 \times \frac{1}{4} + (-2) \times \frac{3}{4}$
+         $\\$
+        $\qquad$• $\displaystyle E(G) = \frac{7}{4} - \frac{6}{4} = \frac{1}{4} = 0,25$ €
+    $\\$
+    
+    ● **Résultat :** $\displaystyle E(G) = \frac{1}{4} = 0,25$ €
+    $\\$
+
+Solution:
+1. $\displaystyle E(G) = 4$ €
+$\\$
+2. $\displaystyle E(G) = 5$ € et $\displaystyle V(G) = \frac{25}{3}$
+$\\$
+3. $\displaystyle E(G) = \frac{34}{5} = 6,8$ €
+$\\$
+4. $\displaystyle E(G) = 49$ €
+$\\$
+5. $\displaystyle E(G) = \frac{1}{4} = 0,25$ €
+
+===

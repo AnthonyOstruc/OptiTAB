@@ -163,7 +163,7 @@ const difficultyOptions = ['all','easy','medium','hard']
 const selectedDifficulty = ref('all')
 
 // Contrôle de largeur
-const isFullWidth = ref(false)
+const isFullWidth = ref(true)
 
 // Status filtering tabs avec design amélioré
 const tabs = computed(() => [

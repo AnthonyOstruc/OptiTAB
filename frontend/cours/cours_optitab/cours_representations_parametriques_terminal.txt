@@ -1,384 +1,519 @@
-=== Représentations paramétriques et équations cartésiennes - Cours Complet Terminal
+=== Représentations Paramétriques et Équations Cartésiennes - Cours Complet Terminal
 Difficulté: medium
-Ordre: 4
-Images: representation_parametrique_droite.png, equation_cartesienne_plan.png, intersection_droite_plan.png, vecteur_directeur_normal.png, distance_point_droite_3d.png
+Ordre: 5
+Images: courbe_parametrique.png, droite_parametrique.png, cercle_parametrique.png, conversion_parametrique_cartesienne.png, parabole_parametrique.png, plan_parametrique.png
 
-Titre: Représentations Paramétriques et Équations Cartésiennes : Droites et Plans dans l'Espace
-Description: Cours complet sur les représentations paramétriques et équations cartésiennes : droites et plans dans l'espace, vecteurs directeurs, vecteurs normaux, intersections et applications géométriques.
+Titre: Représentations Paramétriques et Équations Cartésiennes : Maîtriser les Deux Approches
+Description: Cours complet sur les représentations paramétriques et cartésiennes des courbes, droites et plans : définitions, conversions, applications aux coniques et résolution de problèmes géométriques dans le plan et l'espace.
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Représentation paramétrique d'une droite</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Représentation paramétrique : Définition</h2>
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <p>Une <strong>droite dans l'espace</strong> est définie par un point et un vecteur directeur.</p>
+        <h3 style="color:#34495e; margin-top:0;">Principe général</h3>
+        <p>Une <strong>représentation paramétrique</strong> d'une courbe exprime les coordonnées des points de la courbe en fonction d'un paramètre, généralement noté $t$.</p>
         <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            $\begin{cases} x = x_A + at \\ y = y_A + bt \\ z = z_A + ct \end{cases} \quad \text{avec } t \in \mathbb{R}$
+            $$\begin{cases} x = f(t) \\ y = g(t) \end{cases} \quad \text{avec } t \in I \subset \mathbb{R}$$
         </div>
-        <p><strong>Explication :</strong> Le paramètre $t$ "parcourt" la droite, donnant tous les points de la droite.</p>
+        <p><strong>Explication :</strong> Pour chaque valeur du paramètre $t$, on obtient un point $M(x, y)$ de la courbe. Quand $t$ varie dans l'intervalle $I$, le point $M$ décrit la courbe.</p>
         
         <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Éléments nécessaires :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li><strong>Un point</strong> $A(x_A, y_A, z_A)$ par lequel passe la droite</li>
-                <li><strong>Un vecteur directeur</strong> $\vec{u} = \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ qui donne la direction</li>
-            </ul>
+            <strong>💡 Analogie :</strong> Le paramètre $t$ peut être vu comme le temps : la courbe est le chemin parcouru par un point mobile au cours du temps.
         </div>
         
-        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
-            <strong>⚠️ Important :</strong> Le vecteur directeur $\vec{u}$ ne doit PAS être nul !
+        [IMAGE_1]
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Représentation paramétrique dans l'espace</h3>
+        <p>Dans l'espace à trois dimensions, une courbe a une représentation paramétrique de la forme :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\begin{cases} x = f(t) \\ y = g(t) \\ z = h(t) \end{cases} \quad \text{avec } t \in I \subset \mathbb{R}$$
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Équation cartésienne d'un plan</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Équation cartésienne : Définition</h2>
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <p>Un <strong>plan dans l'espace</strong> est défini par un point et un vecteur normal.</p>
+        <h3 style="color:#34495e; margin-top:0;">Principe général</h3>
+        <p>Une <strong>équation cartésienne</strong> d'une courbe est une relation entre les coordonnées $x$ et $y$ qui caractérise tous les points de la courbe.</p>
         <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            $ax + by + cz + d = 0$
+            $$F(x, y) = 0$$
         </div>
-        <p><strong>💡 Comment comprendre :</strong> Le vecteur normal est "perpendiculaire" au plan, et $d = -ax_A - by_A - cz_A$.</p>
+        <p><strong>Explication :</strong> Un point $M(x, y)$ appartient à la courbe si et seulement si ses coordonnées vérifient l'équation $F(x, y) = 0$.</p>
         
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Éléments nécessaires :</strong>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Exemples classiques :</strong>
             <ul style="margin:8px 0; padding-left:20px;">
-                <li><strong>Un point</strong> $A(x_A, y_A, z_A)$ par lequel passe le plan</li>
-                <li><strong>Un vecteur normal</strong> $\vec{n} = \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ qui est perpendiculaire au plan</li>
+                <li>Droite : $ax + by + c = 0$</li>
+                <li>Cercle : $(x - a)^2 + (y - b)^2 = r^2$</li>
+                <li>Parabole : $y = ax^2 + bx + c$</li>
             </ul>
-        </div>
-        
-        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
-            <strong>⚠️ Important :</strong> Le vecteur normal $\vec{n}$ ne doit PAS être nul !
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Exemples détaillés</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Représentation paramétrique d'une droite</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Droite passant par deux points</h3>
-        <p><strong>Énoncé :</strong> Déterminer la représentation paramétrique de la droite passant par $A(1, 2, 3)$ et $B(4, 5, 6)$</p>
-        <p><strong>Données :</strong> $A(1, 2, 3)$ et $B(4, 5, 6)$</p>
+        <h3 style="color:#34495e; margin-top:0;">Droite dans le plan</h3>
+        <p>Une droite passant par un point $A(x_A, y_A)$ et de vecteur directeur $\vec{u} = \begin{pmatrix} a \\ b \end{pmatrix}$ a pour représentation paramétrique :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\begin{cases} x = x_A + at \\ y = y_A + bt \end{cases} \quad \text{avec } t \in \mathbb{R}$$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation géométrique :</strong> $\overrightarrow{AM} = t\vec{u}$, donc $M$ appartient à la droite $(A, \vec{u})$.
+        </div>
+        
+        [IMAGE_2]
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Droite dans le plan</h3>
+        <p><strong>Énoncé :</strong> Déterminer une représentation paramétrique de la droite passant par $A(2, -1)$ et de vecteur directeur $\vec{u} = \begin{pmatrix} 3 \\ 4 \end{pmatrix}$.</p>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p style="margin:8px 0;">On applique directement la formule :</p>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$\begin{cases} x = 2 + 3t \\ y = -1 + 4t \end{cases} \quad t \in \mathbb{R}$$
+            </div>
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Résultat final :</strong> La représentation paramétrique est $\begin{cases} x = 2 + 3t \\ y = -1 + 4t \end{cases}$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Vérification :</strong> Pour $t = 0$, on obtient bien le point $A(2, -1)$.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Droite dans l'espace</h3>
+        <p>Une droite dans l'espace passant par $A(x_A, y_A, z_A)$ et de vecteur directeur $\vec{u} = \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ a pour représentation paramétrique :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\begin{cases} x = x_A + at \\ y = y_A + bt \\ z = z_A + ct \end{cases} \quad \text{avec } t \in \mathbb{R}$$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Conversion paramétrique → cartésienne</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode générale</h3>
+        <p>Pour passer d'une représentation paramétrique à une équation cartésienne, il faut <strong>éliminer le paramètre</strong> $t$ entre les deux équations.</p>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Démarche à suivre :</strong><br>
+            • <strong>Méthode 1 :</strong> Exprimer $t$ en fonction de $x$ dans la première équation, puis substituer dans la seconde<br>
+            • <strong>Méthode 2 :</strong> Utiliser des identités remarquables (pour les fonctions trigonométriques)<br>
+            • <strong>Méthode 3 :</strong> Combiner linéairement les équations pour éliminer $t$
+        </div>
+        
+        [IMAGE_4]
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Droite - Conversion paramétrique vers cartésienne</h3>
+        <p><strong>Énoncé :</strong> Déterminer l'équation cartésienne de la droite de représentation paramétrique $\begin{cases} x = 2 + 3t \\ y = -1 + 4t \end{cases}$</p>
 
         <p><strong>Résolution :</strong></p>
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
             <ul style="margin:0; padding-left:20px;">
-                <li>$\overrightarrow{AB} = \begin{pmatrix} 4-1 \\ 5-2 \\ 6-3 \end{pmatrix} = \begin{pmatrix} 3 \\ 3 \\ 3 \end{pmatrix}$</li>
-                <li>$\vec{u} = \overrightarrow{AB}$ est le vecteur directeur</li>
-                <li>Point de passage : $A(1, 2, 3)$</li>
-                <li>Représentation paramétrique : $\begin{cases} x = 1 + 3t \\ y = 2 + 3t \\ z = 3 + 3t \end{cases}$</li>
+                <li>De la première équation : $t = \frac{x - 2}{3}$</li>
+                <li>Substitution dans la seconde : $y = -1 + 4 \times \frac{x - 2}{3}$</li>
+                <li>Simplification : $y = -1 + \frac{4(x - 2)}{3} = -1 + \frac{4x - 8}{3}$</li>
+                <li>$3y = -3 + 4x - 8 = 4x - 11$</li>
+                <li>Équation cartésienne : $4x - 3y - 11 = 0$</li>
             </ul>
         </div>
 
-        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
-            <strong>Résultat final :</strong> $\begin{cases} x = 1 + 3t \\ y = 2 + 3t \\ z = 3 + 3t \end{cases} \quad \text{avec } t \in \mathbb{R}$
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Vérification :</strong> Le point $A(2, -1)$ vérifie bien $4(2) - 3(-1) - 11 = 8 + 3 - 11 = 0$ ✓
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Conversion cartésienne → paramétrique</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode générale pour une droite</h3>
+        <p>Pour passer d'une équation cartésienne à une représentation paramétrique :</p>
+
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            <strong>Étapes à suivre :</strong><br>
+            1. Identifier un vecteur directeur de la droite<br>
+            2. Trouver un point particulier de la droite<br>
+            3. Écrire la représentation paramétrique
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Astuce :</strong> Pour la droite $ax + by + c = 0$, un vecteur directeur est $\vec{u} = \begin{pmatrix} -b \\ a \end{pmatrix}$ ou $\vec{u} = \begin{pmatrix} b \\ -a \end{pmatrix}$
         </div>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Plan défini par trois points</h3>
-        <p><strong>Situation :</strong> Plan passant par $A(1, 0, 0)$, $B(0, 1, 0)$, $C(0, 0, 1)$</p>
+        <h3 style="color:#34495e; margin-top:0;">Exemple 3 : Conversion cartésienne vers paramétrique</h3>
+        <p><strong>Énoncé :</strong> Déterminer une représentation paramétrique de la droite d'équation $2x + 3y - 6 = 0$</p>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p style="margin:8px 0;"><strong>Étape 1 :</strong> Vecteur directeur</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$\vec{u} = \begin{pmatrix} -3 \\ 2 \end{pmatrix} \text{ ou } \vec{u} = \begin{pmatrix} 3 \\ -2 \end{pmatrix}$$
+            </div>
+            
+            <p style="margin:8px 0;"><strong>Étape 2 :</strong> Point particulier (on prend $x = 0$)</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$2(0) + 3y - 6 = 0 \Rightarrow y = 2 \quad \text{donc } A(0, 2)$$
+            </div>
+            
+            <p style="margin:8px 0;"><strong>Étape 3 :</strong> Représentation paramétrique</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$\begin{cases} x = 0 + 3t = 3t \\ y = 2 - 2t \end{cases} \quad t \in \mathbb{R}$$
+            </div>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Vérification :</strong> Substituons dans l'équation cartésienne : $2(3t) + 3(2 - 2t) - 6 = 6t + 6 - 6t - 6 = 0$ ✓
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Courbes paramétriques : Le cercle</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Cercle : représentation paramétrique</h3>
+        <p>Le cercle de centre $\Omega(a, b)$ et de rayon $r$ a pour représentation paramétrique :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\begin{cases} x = a + r\cos(t) \\ y = b + r\sin(t) \end{cases} \quad \text{avec } t \in [0, 2\pi[$$
+        </div>
+        
+        <p><strong>Équation cartésienne correspondante :</strong></p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$(x - a)^2 + (y - b)^2 = r^2$$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Justification :</strong> On utilise l'identité remarquable $\cos^2(t) + \sin^2(t) = 1$
+        </div>
+        
+        [IMAGE_3]
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 4 : Cercle paramétrique</h3>
+        <p><strong>Énoncé :</strong> Montrer que la courbe de représentation paramétrique $\begin{cases} x = 2 + 3\cos(t) \\ y = -1 + 3\sin(t) \end{cases}$ est un cercle. Déterminer son centre et son rayon.</p>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p style="margin:8px 0;">On cherche à éliminer le paramètre $t$ :</p>
+            <ul style="margin:0; padding-left:20px;">
+                <li>$x - 2 = 3\cos(t)$ donc $\cos(t) = \frac{x - 2}{3}$</li>
+                <li>$y + 1 = 3\sin(t)$ donc $\sin(t) = \frac{y + 1}{3}$</li>
+                <li>En utilisant $\cos^2(t) + \sin^2(t) = 1$ :</li>
+                <li>$\left(\frac{x - 2}{3}\right)^2 + \left(\frac{y + 1}{3}\right)^2 = 1$</li>
+                <li>$(x - 2)^2 + (y + 1)^2 = 9$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Résultat final :</strong> C'est un cercle de centre $\Omega(2, -1)$ et de rayon $r = 3$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Autres courbes paramétriques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">L'ellipse</h3>
+        <p>Une ellipse de centre $(0, 0)$ et de demi-axes $a$ et $b$ a pour représentation paramétrique :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\begin{cases} x = a\cos(t) \\ y = b\sin(t) \end{cases} \quad t \in [0, 2\pi[$$
+        </div>
+        
+        <p><strong>Équation cartésienne :</strong></p>
+        <div style="text-align:center; font-size:1.2em; margin:10px 0;">
+            $$\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">La parabole</h3>
+        <p>Une parabole peut avoir plusieurs représentations paramétriques. Exemple classique :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\begin{cases} x = t \\ y = t^2 \end{cases} \quad t \in \mathbb{R}$$
+        </div>
+        
+        <p><strong>Équation cartésienne :</strong> En éliminant $t$, on obtient $y = x^2$</p>
+        
+        [IMAGE_5]
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 5 : Trajectoire paramétrique</h3>
+        <p><strong>Situation :</strong> Un point $M$ se déplace selon la représentation paramétrique $\begin{cases} x = t^2 \\ y = 2t \end{cases}$ avec $t \geq 0$. Quelle est la nature de sa trajectoire ?</p>
 
         <div style="text-align:center; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <strong>Méthode :</strong> Utiliser un point et un vecteur normal donné
+            <strong>Élimination du paramètre :</strong>
         </div>
 
         <p><strong>Calculs détaillés :</strong></p>
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
             <ul style="margin:0; padding-left:20px;">
-                <li>Point de passage : $A(1, 0, 0)$</li>
-                <li>Vecteur normal donné : $\vec{n} = \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}$</li>
-                <li>Équation : $1(x-1) + 1(y-0) + 1(z-0) = 0$</li>
-                <li>Développement : $x - 1 + y + z = 0$</li>
-                <li>Final : $x + y + z - 1 = 0$</li>
+                <li>De la deuxième équation : $t = \frac{y}{2}$</li>
+                <li>Substitution dans la première : $x = \left(\frac{y}{2}\right)^2 = \frac{y^2}{4}$</li>
+                <li>Équation cartésienne : $y^2 = 4x$</li>
             </ul>
         </div>
 
         <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
-            <strong>✅ Vérification :</strong> Équation du plan : $x + y + z - 1 = 0$
+            <strong>✅ Conclusion :</strong> La trajectoire est une parabole d'équation $y^2 = 4x$ (parabole "horizontale")
+        </div>
+        
+        <div style="background:#fff8dc; padding:8px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Attention :</strong> La condition $t \geq 0$ implique que seule la partie avec $y \geq 0$ est parcourue.
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Positions relatives et intersections</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Plans dans l'espace</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Positions relatives de deux droites</h3>
-        <p>Deux droites dans l'espace peuvent être :</p>
+        <h3 style="color:#34495e; margin-top:0;">Représentation paramétrique d'un plan</h3>
+        <p>Un plan passant par un point $A(x_A, y_A, z_A)$ et dirigé par deux vecteurs non colinéaires $\vec{u} = \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} a' \\ b' \\ c' \end{pmatrix}$ a pour représentation paramétrique :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\begin{cases} x = x_A + as + a't \\ y = y_A + bs + b't \\ z = z_A + cs + c't \end{cases} \quad \text{avec } s, t \in \mathbb{R}$$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation géométrique :</strong> $\overrightarrow{AM} = s\vec{u} + t\vec{v}$, donc tout point $M$ du plan est obtenu par combinaison linéaire des vecteurs directeurs.
+        </div>
+        
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Condition essentielle :</strong> Les vecteurs $\vec{u}$ et $\vec{v}$ doivent être <strong>non colinéaires</strong> pour définir un plan. Si $\vec{u}$ et $\vec{v}$ sont colinéaires, on obtient une droite, pas un plan.
+        </div>
+        
+        [IMAGE_6]
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Équation cartésienne d'un plan</h3>
+        <p>Un plan a pour équation cartésienne générale :</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$ax + by + cz + d = 0$$
+        </div>
+        <p>où $\vec{n} = \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ est un <strong>vecteur normal</strong> au plan (orthogonal à tous les vecteurs du plan).</p>
         
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Classification :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li><strong>Sécantes :</strong> Un point d'intersection unique</li>
-                <li><strong>Parallèles :</strong> Vecteurs directeurs colinéaires, pas d'intersection</li>
-                <li><strong>Confondues :</strong> Vecteurs directeurs colinéaires, même droite</li>
-                <li><strong>Non coplanaires :</strong> Ni sécantes ni parallèles (dans l'espace uniquement)</li>
-            </ul>
-        </div>
-        
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <strong>Méthode de vérification :</strong><br>
-            Vérifier si $\vec{u}_1$ et $\vec{u}_2$ sont colinéaires (parallèles) ou non
+            <strong>Propriété clé :</strong> Si le plan a pour vecteurs directeurs $\vec{u}$ et $\vec{v}$, alors le vecteur normal vérifie :
+            <div style="text-align:center; margin:10px 0;">
+                $$\vec{n} \cdot \vec{u} = 0 \quad \text{et} \quad \vec{n} \cdot \vec{v} = 0$$
+            </div>
         </div>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Positions relatives de deux plans</h3>
-        <p>Deux plans dans l'espace peuvent être :</p>
-        
+        <h3 style="color:#34495e; margin-top:0;">Exemple 7 : Plan paramétrique</h3>
+        <p><strong>Énoncé :</strong> Écrire une représentation paramétrique du plan passant par $A(1, 2, 0)$ et dirigé par les vecteurs $\vec{u} = \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}$.</p>
+
+        <p><strong>Résolution :</strong></p>
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Classification :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li><strong>Sécants :</strong> Vecteurs normaux non colinéaires → intersection = droite</li>
-                <li><strong>Parallèles :</strong> Vecteurs normaux colinéaires, pas d'intersection</li>
-                <li><strong>Confondus :</strong> Vecteurs normaux colinéaires, même plan</li>
-            </ul>
+            <p style="margin:8px 0;">On applique directement la formule avec $A(1, 2, 0)$, $\vec{u} = \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}$ et $\vec{v} = \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}$ :</p>
+            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
+                $$\begin{cases} x = 1 + s \\ y = 2 + t \\ z = 0 + s + t \end{cases} \quad s, t \in \mathbb{R}$$
+            </div>
         </div>
-        
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <strong>Méthode de vérification :</strong><br>
-            Vérifier si $\vec{n}_1$ et $\vec{n}_2$ sont colinéaires (parallèles) ou non
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Vérification :</strong> Pour $s = t = 0$, on retrouve bien le point $A(1, 2, 0)$ ✓
         </div>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Intersection droite-plan</h3>
-        <p>Pour déterminer l'intersection d'une droite et d'un plan, on substitue les équations paramétriques dans l'équation du plan.</p>
+        <h3 style="color:#34495e; margin-top:0;">Conversion paramétrique → cartésienne (plan)</h3>
+        <p><strong>Méthode :</strong> Pour obtenir l'équation cartésienne d'un plan à partir de sa représentation paramétrique, on utilise le <strong>produit vectoriel</strong> des vecteurs directeurs pour trouver un vecteur normal.</p>
 
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <strong>Méthode :</strong><br>
-            $a(x_A + at) + b(y_A + bt) + c(z_A + ct) + d = 0$
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Rappel - Produit vectoriel :</strong>
+            <div style="text-align:center; margin:10px 0;">
+                $$\vec{u} \wedge \vec{v} = \begin{pmatrix} a \\ b \\ c \end{pmatrix} \wedge \begin{pmatrix} a' \\ b' \\ c' \end{pmatrix} = \begin{pmatrix} bc' - cb' \\ ca' - ac' \\ ab' - ba' \end{pmatrix}$$
+            </div>
         </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 8 : Conversion plan paramétrique → cartésien</h3>
+        <p><strong>Énoncé :</strong> Trouver l'équation cartésienne du plan de représentation paramétrique $\begin{cases} x = 1 + s \\ y = 2 + t \\ z = s + t \end{cases}$</p>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p style="margin:8px 0;"><strong>Étape 1 :</strong> Identifier les vecteurs directeurs</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$\vec{u} = \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} \quad \text{et} \quad \vec{v} = \begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}$$
+            </div>
+            
+            <p style="margin:8px 0;"><strong>Étape 2 :</strong> Calculer le vecteur normal par produit vectoriel</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$\vec{n} = \vec{u} \wedge \vec{v} = \begin{pmatrix} 0 \times 1 - 1 \times 1 \\ 1 \times 0 - 1 \times 1 \\ 1 \times 1 - 0 \times 0 \end{pmatrix} = \begin{pmatrix} -1 \\ -1 \\ 1 \end{pmatrix}$$
+            </div>
+            
+            <p style="margin:8px 0;"><strong>Étape 3 :</strong> Écrire l'équation avec le point $A(1, 2, 0)$</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$-1(x - 1) - 1(y - 2) + 1(z - 0) = 0$$
+                $$-x + 1 - y + 2 + z = 0$$
+                $$-x - y + z + 3 = 0$$
+            </div>
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Résultat final :</strong> L'équation cartésienne du plan est $-x - y + z + 3 = 0$ ou $x + y - z - 3 = 0$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Conversion cartésienne → paramétrique (plan)</h3>
+        <p><strong>Méthode :</strong> Pour passer d'une équation cartésienne à une représentation paramétrique :</p>
 
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
             <strong>💡 Démarche à suivre :</strong><br>
-            • Remplacer $x$, $y$, $z$ par les expressions paramétriques<br>
-            • Résoudre l'équation en $t$<br>
-            • Si solution unique : la droite coupe le plan<br>
-            • Si pas de solution : la droite est parallèle au plan<br>
-            • Si infinité de solutions : la droite est dans le plan
+            • <strong>Étape 1 :</strong> Trouver deux vecteurs directeurs du plan (orthogonaux au vecteur normal)<br>
+            • <strong>Étape 2 :</strong> Trouver un point particulier du plan (en donnant des valeurs à deux variables)<br>
+            • <strong>Étape 3 :</strong> Écrire la représentation paramétrique
         </div>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Application pratique</h3>
-        <p><strong>Problème :</strong> Intersection de la droite $\begin{cases} x = 1 + t \\ y = 2 + 2t \\ z = 3 + 3t \end{cases}$ et du plan $x + y + z = 6$</p>
+        <h3 style="color:#34495e; margin-top:0;">Exemple 9 : Conversion plan cartésien → paramétrique</h3>
+        <p><strong>Énoncé :</strong> Déterminer une représentation paramétrique du plan d'équation $x + 2y - z + 1 = 0$</p>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p style="margin:8px 0;"><strong>Étape 1 :</strong> Le vecteur normal est $\vec{n} = \begin{pmatrix} 1 \\ 2 \\ -1 \end{pmatrix}$</p>
+            
+            <p style="margin:8px 0;">On cherche deux vecteurs orthogonaux à $\vec{n}$ :</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$\vec{u} = \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} \quad \text{(car } 1 \times 1 + 2 \times 0 - 1 \times 1 = 0\text{)}$$
+                $$\vec{v} = \begin{pmatrix} 0 \\ 1 \\ 2 \end{pmatrix} \quad \text{(car } 1 \times 0 + 2 \times 1 - 1 \times 2 = 0\text{)}$$
+            </div>
+            
+            <p style="margin:8px 0;"><strong>Étape 2 :</strong> Point particulier (on prend $y = 0$ et $z = 0$)</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$x + 2(0) - 0 + 1 = 0 \Rightarrow x = -1$$
+                $$\text{Point } A(-1, 0, 0)$$
+            </div>
+            
+            <p style="margin:8px 0;"><strong>Étape 3 :</strong> Représentation paramétrique</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$\begin{cases} x = -1 + s \\ y = t \\ z = s + 2t \end{cases} \quad s, t \in \mathbb{R}$$
+            </div>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Vérification :</strong> Substituons dans l'équation cartésienne :
+            <div style="text-align:center; margin:8px 0;">
+                $$(-1 + s) + 2t - (s + 2t) + 1 = -1 + s + 2t - s - 2t + 1 = 0$$ ✓
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Applications pratiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Application pratique : Intersection de courbes</h3>
+        <p><strong>Problème :</strong> Déterminer les points d'intersection de la droite $\begin{cases} x = 1 + 2t \\ y = 3 + t \end{cases}$ et du cercle $x^2 + y^2 = 10$.</p>
 
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
             <strong>Éléments donnés :</strong><br>
-            • Droite : $\begin{cases} x = 1 + t \\ y = 2 + 2t \\ z = 3 + 3t \end{cases}$<br>
-            • Plan : $x + y + z = 6$<br>
-            • On cherche le point d'intersection
+            • Droite en représentation paramétrique<br>
+            • Cercle en équation cartésienne<br>
+            • On cherche les valeurs de $t$ pour lesquelles le point de la droite appartient au cercle
         </div>
 
         <div style="text-align:center; margin:15px 0;">
             <strong>Résolution :</strong>
-            <div style="font-size:1.1em; margin:10px 0; padding:10px; background:#ecf0f1; border-radius:4px;">
-                $(1 + t) + (2 + 2t) + (3 + 3t) = 6$<br>
-                $6 + 6t = 6$<br>
-                $6t = 0$ donc $t = 0$
+            <div style="font-size:1.1em; margin:10px 0; padding:10px; background:#ecf0f1; border-radius:4px; text-align:left;">
+                <p style="margin:8px 0;">Substitution des coordonnées de la droite dans l'équation du cercle :</p>
+                $$(1 + 2t)^2 + (3 + t)^2 = 10$$
+                $$1 + 4t + 4t^2 + 9 + 6t + t^2 = 10$$
+                $$5t^2 + 10t + 10 = 10$$
+                $$5t^2 + 10t = 0$$
+                $$5t(t + 2) = 0$$
+                <p style="margin:8px 0;">Solutions : $t = 0$ ou $t = -2$</p>
             </div>
         </div>
 
         <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
-            <strong>✅ Solution finale :</strong> Point d'intersection $(1, 2, 3)$ pour $t = 0$
+            <strong>✅ Solution finale :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Pour $t = 0$ : point $M_1(1, 3)$</li>
+                <li>Pour $t = -2$ : point $M_2(-3, 1)$</li>
+            </ul>
+            La droite coupe le cercle en deux points distincts.
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Distances et applications géométriques</h2>
-    
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Distance d'un point à un plan</h3>
-        <p>La <strong>distance d'un point à un plan</strong> se calcule avec une formule spécifique.</p>
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            $d(M, \mathcal{P}) = \frac{|ax_0 + by_0 + cz_0 + d|}{\sqrt{a^2 + b^2 + c^2}}$
-        </div>
-        
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Comment utiliser :</strong>
-            <ol style="margin:8px 0; padding-left:20px;">
-                <li>Remplacer $x_0$, $y_0$, $z_0$ dans $ax + by + cz + d$</li>
-                <li>Prendre la valeur absolue du résultat</li>
-                <li>Diviser par $\sqrt{a^2 + b^2 + c^2}$</li>
-            </ol>
-        </div>
-        
+        <h3 style="color:#34495e; margin-top:0;">Exemple 6 : Vecteur tangent</h3>
+        <p><strong>Énoncé :</strong> Pour la courbe $\begin{cases} x = t^3 \\ y = t^2 \end{cases}$, déterminer un vecteur directeur de la tangente au point correspondant à $t = 1$.</p>
+
+        <p><strong>Résolution :</strong></p>
         <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemple :</strong> Distance de $M(1, 2, 3)$ au plan $2x + 3y + z + 5 = 0$
-            <div style="text-align:center; font-size:1.1em; margin:10px 0;">
-                $d = \frac{|2 \times 1 + 3 \times 2 + 1 \times 3 + 5|}{\sqrt{2^2 + 3^2 + 1^2}} = \frac{|2 + 6 + 3 + 5|}{\sqrt{14}} = \frac{16}{\sqrt{14}}$
+            <p style="margin:8px 0;">Le vecteur tangent est donné par les dérivées :</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$\vec{v} = \begin{pmatrix} \frac{dx}{dt} \\ \frac{dy}{dt} \end{pmatrix} = \begin{pmatrix} 3t^2 \\ 2t \end{pmatrix}$$
             </div>
+            <p style="margin:8px 0;">Pour $t = 1$ :</p>
+            <div style="text-align:center; margin:10px 0;">
+                $$\vec{v}(1) = \begin{pmatrix} 3 \\ 2 \end{pmatrix}$$
+            </div>
+            <p style="margin:8px 0;">Le point correspondant est $M(1, 1)$</p>
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Résultat :</strong> La tangente au point $M(1, 1)$ a pour vecteur directeur $\begin{pmatrix} 3 \\ 2 \end{pmatrix}$ et pour représentation paramétrique $\begin{cases} x = 1 + 3s \\ y = 1 + 2s \end{cases}$
         </div>
     </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Distance d'un point à une droite</h3>
-        <p>La <strong>distance d'un point à une droite</strong> dans l'espace nécessite une méthode spécifique.</p>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Méthode (niveau Terminale) :</strong>
-            <ol style="margin:8px 0; padding-left:20px;">
-                <li>Prendre un point $A$ sur la droite</li>
-                <li>Calculer la distance de $M$ au plan perpendiculaire à la droite passant par $A$</li>
-                <li>Utiliser la formule de distance point-plan</li>
-            </ol>
-        </div>
-        
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <strong>Note :</strong> Cette méthode sera vue en post-bac
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Distance entre deux droites parallèles</h3>
-        <p>Pour deux droites parallèles, la distance est la distance d'un point de l'une à l'autre.</p>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Méthode :</strong>
-            <ol style="margin:8px 0; padding-left:20px;">
-                <li>Prendre un point $A$ sur la première droite</li>
-                <li>Calculer la distance de $A$ à la deuxième droite</li>
-                <li>Utiliser la formule précédente</li>
-            </ol>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Plans particuliers et méthodes de construction</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Plans de coordonnées</h3>
-        <p>Les plans de coordonnées ont des équations simples :</p>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Plans principaux :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li><strong>Plan $(Oxy)$ :</strong> $z = 0$</li>
-                <li><strong>Plan $(Oxz)$ :</strong> $y = 0$</li>
-                <li><strong>Plan $(Oyz)$ :</strong> $x = 0$</li>
-            </ul>
-        </div>
-        
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Plans parallèles aux axes :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li><strong>Plan parallèle à $(Oxy)$ :</strong> $z = k$ (constante)</li>
-                <li><strong>Plan parallèle à $(Oxz)$ :</strong> $y = k$ (constante)</li>
-                <li><strong>Plan parallèle à $(Oyz)$ :</strong> $x = k$ (constante)</li>
-            </ul>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Méthodes de construction d'un plan</h3>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Méthode 1 : Un point et un vecteur normal</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li>Point $A(x_A, y_A, z_A)$</li>
-                <li>Vecteur normal $\vec{n} = \begin{pmatrix} a \\ b \\ c \end{pmatrix}$</li>
-                <li>Équation : $a(x-x_A) + b(y-y_A) + c(z-z_A) = 0$</li>
-            </ul>
-        </div>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Méthode 2 : Trois points non alignés</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li>Points $A$, $B$, $C$ non alignés</li>
-                <li>Le vecteur normal sera donné dans l'énoncé</li>
-                <li>Utiliser la méthode 1 avec ce vecteur normal</li>
-            </ul>
-        </div>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Méthode 3 : Plan défini par des contraintes</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li>Plan parallèle à un autre plan</li>
-                <li>Plan perpendiculaire à une droite</li>
-                <li>Le vecteur normal sera donné ou déductible</li>
-            </ul>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Propriétés et caractéristiques</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Propriétés et caractéristiques</h2>
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <ul style="margin:0; padding-left:20px;">
-            <li><strong>Vecteur directeur :</strong> Détermine la direction de la droite, ne doit jamais être nul</li>
-            <li><strong>Vecteur normal :</strong> Perpendiculaire au plan, détermine l'orientation du plan</li>
-            <li><strong>Paramètre t :</strong> Variable réelle qui "parcourt" la droite, donne tous les points</li>
-            <li><strong>Aspect graphique :</strong> Les droites sont des lignes infinies, les plans divisent l'espace en deux demi-espaces</li>
-            <li><strong>Colinéarité :</strong> Deux vecteurs sont colinéaires si et seulement si leurs coordonnées sont proportionnelles</li>
-            <li><strong>Orthogonalité :</strong> Deux vecteurs sont orthogonaux si et seulement si leur produit scalaire est nul</li>
+            <li><strong>Unicité :</strong> Une même courbe peut avoir plusieurs représentations paramétriques différentes (changement de paramètre possible)</li>
+            <li><strong>Sens de parcours :</strong> La représentation paramétrique indique un sens de parcours de la courbe (quand $t$ augmente)</li>
+            <li><strong>Domaine de définition :</strong> L'ensemble des points de la courbe dépend de l'intervalle de variation du paramètre</li>
+            <li><strong>Aspect graphique :</strong> La représentation paramétrique est particulièrement adaptée pour tracer des courbes avec un logiciel ou une calculatrice</li>
+            <li><strong>Conversion :</strong> La conversion paramétrique → cartésienne n'est pas toujours possible explicitement (certaines courbes n'ont pas d'équation cartésienne simple)</li>
+            <li><strong>Dérivation :</strong> Les représentations paramétriques permettent de calculer facilement des vecteurs tangents</li>
         </ul>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Applications pratiques</h2>
-    
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Erreurs fréquentes et conseils</h2>
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Problèmes de géométrie dans l'espace</h3>
-        <p>Ces notions sont essentielles pour résoudre des problèmes de géométrie dans l'espace :</p>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Applications courantes :</strong>
+        <div style="background:#fdf2f2; padding:15px; border-radius:6px; margin-bottom:15px;">
+            <strong>❌ Pièges à éviter :</strong>
             <ul style="margin:8px 0; padding-left:20px;">
-                <li><strong>Architecture :</strong> Calcul d'intersections de poutres, plans de construction</li>
-                <li><strong>Physique :</strong> Trajectoires de particules, réflexions sur des surfaces</li>
-                <li><strong>Informatique :</strong> Graphisme 3D, calculs de rendu</li>
-                <li><strong>Géométrie :</strong> Polyèdres, sections de solides</li>
+                <li>Oublier le domaine de variation du paramètre : une restriction sur $t$ peut limiter la portion de courbe représentée</li>
+                <li>Confondre représentation paramétrique et équation cartésienne : les deux décrivent la même courbe mais de manière différente</li>
+                <li>Négliger le sens de parcours de la courbe dans une représentation paramétrique</li>
+                <li>Erreurs de calcul lors de l'élimination du paramètre : bien vérifier les identités trigonométriques</li>
+                <li>Oublier de vérifier la solution en substituant dans l'équation d'origine</li>
+                <li>Pour les intersections, oublier qu'il peut y avoir 0, 1 ou plusieurs points d'intersection</li>
+                <li>Confondre vecteur directeur et vecteur tangent (le vecteur tangent dépend du point considéré)</li>
+                <li>Pour les plans : utiliser des vecteurs colinéaires (il faut deux vecteurs <strong>non colinéaires</strong>)</li>
+                <li>Erreurs dans le calcul du produit vectoriel : bien respecter l'ordre et les signes</li>
+                <li>Oublier de vérifier l'orthogonalité des vecteurs directeurs avec le vecteur normal</li>
             </ul>
         </div>
-    </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemple d'application : Pyramide</h3>
-        <p><strong>Problème :</strong> Déterminer l'équation du plan de base d'une pyramide définie par ses sommets.</p>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Méthode :</strong>
-            <ol style="margin:8px 0; padding-left:20px;">
-                <li>Identifier trois points non alignés de la base</li>
-                <li>Le vecteur normal sera donné dans l'énoncé</li>
-                <li>Utiliser un point de la base et le vecteur normal</li>
-                <li>Écrire l'équation du plan</li>
-            </ol>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Erreurs fréquentes et conseils</h2>
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#fdf2f2; padding:12px; border-radius:4px; margin-bottom:10px;">
-            <strong>❌ Pièges à éviter :</strong>
-            <div style="margin:8px 0;">
-                <ul style="margin:0; padding-left:20px;">
-                    <li><strong>Confondre vecteur directeur et vecteur normal :</strong> Un vecteur directeur est parallèle à la droite, un vecteur normal est perpendiculaire au plan</li>
-                    <li><strong>Oublier de vérifier que les vecteurs ne sont pas nuls</strong> avant d'utiliser les formules</li>
-                    <li><strong>Se tromper dans les calculs de vecteurs :</strong> Bien faire attention aux signes et aux soustractions</li>
-                    <li><strong>Oublier la valeur absolue</strong> dans les formules de distance</li>
-                    <li><strong>Mal interpréter les positions relatives :</strong> Parallèle ≠ sécant</li>
-                    <li><strong>Confondre colinéarité et orthogonalité :</strong> Deux vecteurs colinéaires ne sont pas orthogonaux</li>
-                    <li><strong>Oublier de vérifier les conditions d'existence</strong> (trois points non alignés, etc.)</li>
-                </ul>
-            </div>
-        </div>
-
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px;">
+        <div style="background:#f0f9f0; padding:15px; border-radius:6px;">
             <strong>✅ Conseils méthodologiques :</strong>
-            <div style="margin:8px 0;">
-                <ul style="margin:0; padding-left:20px;">
-                    <li><strong>Toujours vérifier</strong> que les vecteurs ne sont pas nuls</li>
-                    <li><strong>Pour une droite :</strong> Identifier clairement le point de passage et le vecteur directeur</li>
-                    <li><strong>Pour un plan :</strong> Identifier clairement le point de passage et le vecteur normal</li>
-                    <li><strong>Utiliser les représentations paramétriques</strong> pour les calculs d'intersection</li>
-                    <li><strong>Vérifier les résultats</strong> en testant des points particuliers</li>
-                    <li><strong>S'entraîner régulièrement</strong> sur les calculs de base</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div style="background:#e8f4f8; padding:12px; border-radius:4px; margin-top:10px;">
-            <strong>🎯 Méthode de travail :</strong>
-            <ol style="margin:8px 0; padding-left:20px;">
-                <li>Lire attentivement l'énoncé</li>
-                <li>Identifier ce qu'on cherche (droite, plan, intersection, distance...)</li>
-                <li>Choisir la bonne méthode selon les données</li>
-                <li>Calculer étape par étape</li>
-                <li>Vérifier le résultat</li>
-            </ol>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Pour éliminer un paramètre, chercher d'abord à isoler le paramètre dans l'équation la plus simple</li>
+                <li>Avec des fonctions trigonométriques, penser aux identités $\cos^2(t) + \sin^2(t) = 1$ ou $1 + \tan^2(t) = \frac{1}{\cos^2(t)}$</li>
+                <li>Toujours vérifier la solution en substituant un point particulier (par exemple $t = 0$)</li>
+                <li>Pour passer d'une équation cartésienne à une représentation paramétrique, il y a souvent plusieurs possibilités : choisir la plus simple</li>
+                <li>Faire un schéma graphique aide beaucoup à visualiser la situation</li>
+                <li>Pour les cercles et ellipses, privilégier les paramétrisations trigonométriques</li>
+                <li>En cas de difficulté, revenir aux définitions fondamentales</li>
+                <li>Pour les plans : vérifier systématiquement que les deux vecteurs directeurs ne sont pas colinéaires</li>
+                <li>Le produit vectoriel donne directement un vecteur orthogonal aux deux vecteurs (utile pour trouver le vecteur normal d'un plan)</li>
+                <li>Pour trouver un point d'un plan à partir de son équation cartésienne, fixer deux coordonnées et calculer la troisième</li>
+            </ul>
         </div>
     </div>
 

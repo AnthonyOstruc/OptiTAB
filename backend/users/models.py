@@ -39,6 +39,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         db_index=True
     )
     
+    # Partage de l'historique avec les parents
+    share_history_with_parents = models.BooleanField(
+        default=False,
+        verbose_name="Partager l'historique avec les parents",
+        help_text="Autoriser les parents à voir l'historique d'apprentissage"
+    )
+    
     # Informations personnelles ajoutées
     civilite = models.CharField(max_length=10, choices=[('M', 'Monsieur'), ('Mme', 'Madame')], null=True, blank=True)
     date_naissance = models.DateField(null=True, blank=True, verbose_name="Date de naissance")

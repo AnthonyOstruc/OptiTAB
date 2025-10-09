@@ -1,0 +1,535 @@
+=== Structures Conditionnelles - Tests Simples et Comparaisons
+Difficulté: easy
+
+Énoncé: Écrire des programmes Python simples utilisant des structures conditionnelles pour résoudre les problèmes suivants.
+
+**Question 1 :** Écrire un programme qui prend un nombre `n = 15` et affiche "Positif" si le nombre est strictement positif, "Négatif" si le nombre est strictement négatif, et "Zéro" si le nombre est égal à zéro.
+$\\$
+**Question 2 :** Écrire un programme qui vérifie si un nombre `age = 20` permet l'accès à un site (âge minimum 18 ans). Afficher "Accès autorisé" ou "Accès refusé".
+
+Étapes:
+
+**Méthode générale :** Structure conditionnelle simple
+
+    ● **Structure `if`** : Exécute un bloc si une condition est vraie
+    
+    $\\$
+    
+    ● **Structure `if... else`** : Exécute un bloc ou l'autre selon la condition
+    
+    $\\$
+    
+    ● **Structure `if... elif... else`** : Teste plusieurs conditions successives
+    
+    $\\$
+    
+    ● **Syntaxe Python** : Ne pas oublier les deux-points `:` et l'indentation (4 espaces)
+
+$\\$
+
+**Question 1 :** Test du signe d'un nombre avec `n = 15`
+    
+    $\\$
+    
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        n = <span style="color:#bd93f9;">15</span><br>
+        <br>
+        <span style="color:#ff79c6;">if</span> n > <span style="color:#bd93f9;">0</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Positif"</span>)<br>
+        <span style="color:#ff79c6;">elif</span> n < <span style="color:#bd93f9;">0</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Négatif"</span>)<br>
+        <span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Zéro"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** `15 > 0` → `True`, donc on exécute le premier bloc
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Positif"
+    
+    $\\$
+
+**Question 2 :** Vérification d'âge avec `age = 20`
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        age = <span style="color:#bd93f9;">20</span><br>
+        <br>
+        <span style="color:#ff79c6;">if</span> age >= <span style="color:#bd93f9;">18</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès autorisé"</span>)<br>
+        <span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès refusé"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** `20 >= 18` → `True`, donc on exécute le bloc `if`
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Accès autorisé"
+    
+    $\\$
+
+Solution:
+1. Le programme affiche "Positif"
+ $\\$
+2. Le programme affiche "Accès autorisé"
+
+===
+
+=== Structures Conditionnelles - Opérateurs Logiques
+Difficulté: easy
+
+Énoncé: Résoudre les problèmes suivants en utilisant les opérateurs logiques (`and`, `or`, `not`) en Python.
+
+**Question 1 :** Un utilisateur peut accéder à un service si son `age = 25` est compris entre 18 et 65 ans (inclus). Écrire le code et déterminer l'affichage.
+$\\$
+**Question 2 :** Une remise est accordée si c'est le week-end (`jour = "Samedi"`) OU si le client a une carte de fidélité (`carte = False`). Écrire le code et déterminer l'affichage.
+
+Étapes:
+
+**Méthode générale :** Opérateurs logiques en Python
+
+    ● **Opérateur `and`** : Retourne `True` si toutes les conditions sont vraies
+    
+    $\\$
+    
+    ● **Opérateur `or`** : Retourne `True` si au moins une condition est vraie
+    
+    $\\$
+    
+    ● **Opérateur `not`** : Inverse la valeur de vérité d'une condition
+    
+    $\\$
+    
+    ● **Évaluation** : Bien analyser chaque sous-condition avant de combiner
+
+$\\$
+
+**Question 1 :** Accès entre 18 et 65 ans avec `age = 25`
+    
+    $\\$
+    
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        age = <span style="color:#bd93f9;">25</span><br>
+        <br>
+        <span style="color:#ff79c6;">if</span> age >= <span style="color:#bd93f9;">18</span> <span style="color:#ff79c6;">and</span> age <= <span style="color:#bd93f9;">65</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès autorisé"</span>)<br>
+        <span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès refusé"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse de la condition :** `(25 >= 18) and (25 <= 65)`
+        $\qquad$• `25 >= 18` → `True`
+        $\qquad$• `25 <= 65` → `True`
+        $\qquad$• `True and True` → `True`
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Accès autorisé"
+    
+    $\\$
+
+**Question 2 :** Remise week-end ou carte fidélité avec `jour = "Samedi"` et `carte = False`
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        jour = <span style="color:#f1fa8c;">"Samedi"</span><br>
+        carte = <span style="color:#bd93f9;">False</span><br>
+        <br>
+        <span style="color:#ff79c6;">if</span> jour == <span style="color:#f1fa8c;">"Samedi"</span> <span style="color:#ff79c6;">or</span> jour == <span style="color:#f1fa8c;">"Dimanche"</span> <span style="color:#ff79c6;">or</span> carte == <span style="color:#bd93f9;">True</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Remise accordée"</span>)<br>
+        <span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Pas de remise"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse de la condition :** `(jour == "Samedi") or (jour == "Dimanche") or (carte == True)`
+        $\qquad$• `jour == "Samedi"` → `True`
+        $\qquad$• `jour == "Dimanche"` → `False`
+        $\qquad$• `carte == True` → `False`
+        $\qquad$• `True or False or False` → `True`
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Remise accordée"
+    
+    $\\$
+
+Solution:
+1. Le programme affiche "Accès autorisé"
+ $\\$
+2. Le programme affiche "Remise accordée"
+
+===
+
+=== Structures Conditionnelles - Structures Multiples (if, elif, else)
+Difficulté: medium
+
+Énoncé: Utiliser la structure `if... elif... else` pour résoudre les problèmes suivants.
+
+**Question 1 :** Écrire un programme qui détermine la catégorie d'un film selon l'âge de l'utilisateur (`age = 14`) : "Tout public" (tout âge), "Accord parental" (moins de 13 ans), "Interdit -16" (moins de 16 ans), "Interdit -18" (moins de 18 ans), "Adulte" (18 ans et plus). Pour cet exercice, utiliser la classification : moins de 13 ans → "Accord parental".
+$\\$
+**Question 2 :** Calculer le prix d'un billet de train selon l'âge (`age = 67`) : gratuit (moins de 4 ans), 8€ (4-17 ans), 15€ (18-64 ans), 10€ (65 ans et plus).
+
+Étapes:
+
+**Méthode générale :** Structure `if... elif... else`
+
+    ● **Principe** : Tester plusieurs conditions dans l'ordre d'apparition
+    
+    $\\$
+    
+    ● **Important** : Dès qu'une condition est vraie, son bloc est exécuté et les autres ne sont pas testés
+    
+    $\\$
+    
+    ● **Ordre** : Commencer par les conditions les plus restrictives ou dans l'ordre logique
+    
+    $\\$
+    
+    ● **else final** : Facultatif mais recommandé pour gérer tous les cas restants
+
+$\\$
+
+**Question 1 :** Catégorie film avec `age = 14`
+    
+    $\\$
+    
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        age = <span style="color:#bd93f9;">14</span><br>
+        <br>
+        <span style="color:#ff79c6;">if</span> age < <span style="color:#bd93f9;">13</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;categorie = <span style="color:#f1fa8c;">"Accord parental"</span><br>
+        <span style="color:#ff79c6;">elif</span> age < <span style="color:#bd93f9;">16</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;categorie = <span style="color:#f1fa8c;">"Interdit -16"</span><br>
+        <span style="color:#ff79c6;">elif</span> age < <span style="color:#bd93f9;">18</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;categorie = <span style="color:#f1fa8c;">"Interdit -18"</span><br>
+        <span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;categorie = <span style="color:#f1fa8c;">"Adulte"</span><br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Catégorie : </span><span style="color:#8be9fd;">{categorie}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :**
+        $\qquad$• `14 < 13` → `False`
+        $\qquad$• `14 < 16` → `True` ✓ (on s'arrête ici)
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Catégorie : Interdit -16"
+    
+    $\\$
+
+**Question 2 :** Prix billet train avec `age = 67`
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        age = <span style="color:#bd93f9;">67</span><br>
+        <br>
+        <span style="color:#ff79c6;">if</span> age < <span style="color:#bd93f9;">4</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;prix = <span style="color:#bd93f9;">0</span><br>
+        <span style="color:#ff79c6;">elif</span> age < <span style="color:#bd93f9;">18</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;prix = <span style="color:#bd93f9;">8</span><br>
+        <span style="color:#ff79c6;">elif</span> age < <span style="color:#bd93f9;">65</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;prix = <span style="color:#bd93f9;">15</span><br>
+        <span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;prix = <span style="color:#bd93f9;">10</span><br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Prix du billet : </span><span style="color:#8be9fd;">{prix}</span><span style="color:#f1fa8c;">€"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :**
+        $\qquad$• `67 < 4` → `False`
+        $\qquad$• `67 < 18` → `False`
+        $\qquad$• `67 < 65` → `False`
+        $\qquad$• On arrive au `else` → `prix = 10`
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Prix du billet : 10€"
+    
+    $\\$
+
+Solution:
+1. Le programme affiche "Catégorie : Interdit -16"
+ $\\$
+2. Le programme affiche "Prix du billet : 10€"
+
+===
+
+=== Structures Conditionnelles - Conditions Imbriquées
+Difficulté: medium
+
+Énoncé: Résoudre les problèmes suivants en utilisant des structures conditionnelles imbriquées (une condition à l'intérieur d'une autre).
+
+**Question 1 :** Un cinéma applique les tarifs suivants : si l'âge est inférieur à 18 ans, le tarif est de 7€. Si l'âge est entre 18 et 64 ans, le tarif est de 12€, sauf si c'est lundi (tarif réduit à 9€). Si l'âge est 65 ans ou plus, le tarif est de 8€. Avec `age = 25` et `jour = "Lundi"`, quel est le tarif ?
+$\\$
+**Question 2 :** Pour accéder à une salle VIP, il faut soit être membre premium (`membre_premium = False`), soit avoir plus de 1000 points (`points = 1200`) ET avoir validé son email (`email_valide = True`). Avec ces valeurs, déterminer l'affichage.
+
+Étapes:
+
+**Méthode générale :** Conditions imbriquées
+
+    ● **Principe** : Placer une structure conditionnelle à l'intérieur d'une autre
+    
+    $\\$
+    
+    ● **Indentation** : Cruciale en Python ! Chaque niveau de condition ajoute 4 espaces
+    
+    $\\$
+    
+    ● **Lisibilité** : Bien organiser les niveaux pour comprendre la logique
+    
+    $\\$
+    
+    ● **Alternative** : Parfois, utiliser des opérateurs logiques (`and`, `or`) est plus simple
+
+$\\$
+
+**Question 1 :** Tarif cinéma avec `age = 25` et `jour = "Lundi"`
+    
+    $\\$
+    
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        age = <span style="color:#bd93f9;">25</span><br>
+        jour = <span style="color:#f1fa8c;">"Lundi"</span><br>
+        <br>
+        <span style="color:#ff79c6;">if</span> age < <span style="color:#bd93f9;">18</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style="color:#bd93f9;">7</span><br>
+        <span style="color:#ff79c6;">elif</span> age < <span style="color:#bd93f9;">65</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> jour == <span style="color:#f1fa8c;">"Lundi"</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style="color:#bd93f9;">9</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style="color:#bd93f9;">12</span><br>
+        <span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style="color:#bd93f9;">8</span><br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Tarif : </span><span style="color:#8be9fd;">{tarif}</span><span style="color:#f1fa8c;">€"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :**
+        $\qquad$• `25 < 18` → `False`
+        $\qquad$• `25 < 65` → `True` ✓ (on entre dans ce bloc)
+        $\qquad$• Condition imbriquée : `jour == "Lundi"` → `True`
+        $\qquad$• `tarif = 9`
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Tarif : 9€"
+    
+    $\\$
+
+**Question 2 :** Accès VIP avec `membre_premium = False`, `points = 1200`, `email_valide = True`
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        membre_premium = <span style="color:#bd93f9;">False</span><br>
+        points = <span style="color:#bd93f9;">1200</span><br>
+        email_valide = <span style="color:#bd93f9;">True</span><br>
+        <br>
+        <span style="color:#ff79c6;">if</span> membre_premium:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès VIP accordé"</span>)<br>
+        <span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> points > <span style="color:#bd93f9;">1000</span> <span style="color:#ff79c6;">and</span> email_valide:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès VIP accordé"</span>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès VIP refusé"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :**
+        $\qquad$• `membre_premium` → `False`, on va dans le `else`
+        $\qquad$• Condition imbriquée : `(1200 > 1000) and (email_valide == True)`
+        $\qquad$• `True and True` → `True`
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Accès VIP accordé"
+    
+    $\\$
+
+Solution:
+1. Le programme affiche "Tarif : 9€"
+ $\\$
+2. Le programme affiche "Accès VIP accordé"
+
+===
+
+=== Structures Conditionnelles - Problèmes de Synthèse
+Difficulté: hard
+
+Énoncé: Résoudre les problèmes complexes suivants en combinant plusieurs concepts de structures conditionnelles.
+
+**Question 1 :** Une compagnie aérienne calcule le prix d'un billet selon plusieurs critères :
+    • Prix de base selon la destination : "Paris" → 100€, "Londres" → 150€, "New York" → 500€
+    • Réduction de 20% si réservation plus de 30 jours à l'avance (`jours_avance = 45`)
+    • Supplément de 50€ pour la classe affaires (`classe = "Economique"`)
+    • Réduction supplémentaire de 10% si membre du club (`membre_club = True`)
+    $\\$
+    Avec `destination = "Londres"`, `jours_avance = 45`, `classe = "Economique"`, `membre_club = True`, calculer le prix final.
+$\\$
+**Question 2 :** Un système de sécurité valide l'accès selon les critères suivants :
+    • Badge valide requis (`badge_valide = True`)
+    • Si badge valide, vérifier l'heure : accès autorisé entre 8h et 18h (`heure = 15`)
+    • Si heure valide, vérifier le niveau d'accréditation : "Admin" → accès total, "Employé" → accès limité, "Stagiaire" → accès refusé après 17h
+    $\\$
+    Avec `badge_valide = True`, `heure = 15`, `niveau = "Employé"`, déterminer le message d'accès.
+
+Étapes:
+
+**Question 1 :** Prix billet avion avec multiples critères
+
+    ● **Données :** `destination = "Londres"`, `jours_avance = 45`, `classe = "Economique"`, `membre_club = True`
+    
+    $\\$
+    
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        destination = <span style="color:#f1fa8c;">"Londres"</span><br>
+        jours_avance = <span style="color:#bd93f9;">45</span><br>
+        classe = <span style="color:#f1fa8c;">"Economique"</span><br>
+        membre_club = <span style="color:#bd93f9;">True</span><br>
+        <br>
+        <span style="color:#6272a4;"># Prix de base selon destination</span><br>
+        <span style="color:#ff79c6;">if</span> destination <span style="color:#ffffff;">==</span> <span style="color:#f1fa8c;">"Paris"</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffffff;">prix</span> <span style="color:#ffffff;">=</span> <span style="color:#bd93f9;">100</span><br>
+        <span style="color:#ff79c6;">elif</span> destination <span style="color:#ffffff;">==</span> <span style="color:#f1fa8c;">"Londres"</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffffff;">prix</span> <span style="color:#ffffff;">=</span> <span style="color:#bd93f9;">150</span><br>
+        <span style="color:#ff79c6;">elif</span> destination <span style="color:#ffffff;">==</span> <span style="color:#f1fa8c;">"New York"</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffffff;">prix</span> <span style="color:#ffffff;">=</span> <span style="color:#bd93f9;">500</span><br>
+        <br>
+        <span style="color:#6272a4;"># Réduction anticipation</span><br>
+        <span style="color:#ff79c6;">if</span> jours_avance > <span style="color:#bd93f9;">30</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffffff;">prix</span> <span style="color:#ffffff;">=</span> <span style="color:#ffffff;">prix</span> <span style="color:#ffffff;">$\ast$</span> <span style="color:#bd93f9;">0.80</span><br>
+        <br>
+        <span style="color:#6272a4;"># Supplément classe affaires</span><br>
+        <span style="color:#ff79c6;">if</span> <span style="color:#ffffff;">classe</span> <span style="color:#ffffff;">==</span> <span style="color:#f1fa8c;">"Affaires"</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffffff;">prix</span> <span style="color:#ffffff;">=</span> <span style="color:#ffffff;">prix</span> <span style="color:#ffffff;">+</span> <span style="color:#bd93f9;">50</span><br>
+        <br>
+        <span style="color:#6272a4;"># Réduction membre club</span><br>
+        <span style="color:#ff79c6;">if</span> <span style="color:#ffffff;">membre_club</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ffffff;">prix</span> <span style="color:#ffffff;">=</span> <span style="color:#ffffff;">prix</span> <span style="color:#ffffff;">$\ast$</span> <span style="color:#bd93f9;">0.90</span><br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Prix final : </span><span style="color:#8be9fd;">{prix}</span><span style="color:#f1fa8c;">€"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Calculs détaillés :**
+        $\qquad$• Prix de base : `destination == "Londres"` → `150€`
+        $\qquad$• Réduction anticipation : `45 > 30` → `True` → `150 $\ast$ 0.80 = 120€`
+        $\qquad$• Classe : `"Economique"` ≠ `"Affaires"` → pas de supplément → `120€`
+        $\qquad$• Membre club : `True` → `120 $\ast$ 0.90 = 108€`
+    
+    $\\$
+    
+    ● **Résultat :** Prix final : **108.0€**
+    
+    $\\$
+
+**Question 2 :** Système de sécurité avec `badge_valide = True`, `heure = 15`, `niveau = "Employé"`
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        badge_valide = <span style="color:#bd93f9;">True</span><br>
+        heure = <span style="color:#bd93f9;">15</span><br>
+        niveau = <span style="color:#f1fa8c;">"Employé"</span><br>
+        <br>
+        <span style="color:#ff79c6;">if</span> <span style="color:#ff79c6;">not</span> badge_valide:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;message = <span style="color:#f1fa8c;">"Accès refusé - Badge invalide"</span><br>
+        <span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> heure < <span style="color:#bd93f9;">8</span> <span style="color:#ff79c6;">or</span> heure > <span style="color:#bd93f9;">18</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message = <span style="color:#f1fa8c;">"Accès refusé - Hors horaires"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> niveau == <span style="color:#f1fa8c;">"Admin"</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message = <span style="color:#f1fa8c;">"Accès total accordé"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">elif</span> niveau == <span style="color:#f1fa8c;">"Employé"</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message = <span style="color:#f1fa8c;">"Accès limité accordé"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">elif</span> niveau == <span style="color:#f1fa8c;">"Stagiaire"</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> heure > <span style="color:#bd93f9;">17</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message = <span style="color:#f1fa8c;">"Accès refusé - Stagiaire après 17h"</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message = <span style="color:#f1fa8c;">"Accès limité accordé"</span><br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(message)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :**
+        $\qquad$• `badge_valide` → `True`, on continue
+        $\qquad$• `15 < 8` → `False`, `15 > 18` → `False`, donc horaire valide
+        $\qquad$• `niveau == "Employé"` → `True`
+        $\qquad$• `message = "Accès limité accordé"`
+    
+    $\\$
+    
+    ● **Résultat :** "Accès limité accordé"
+    
+    $\\$
+
+Solution:
+1. Prix final : **108.0€**
+ $\\$
+2. Message : **"Accès limité accordé"**
+
+===

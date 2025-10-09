@@ -1,0 +1,609 @@
+=== Algorithme et Programmation - Structures Conditionnelles en Python
+Difficulté: easy
+Ordre: 1
+
+Titre: Les Structures Conditionnelles et la Logique en Python
+Description: Comprendre et maîtriser les instructions conditionnelles (if, else, elif) et les opérateurs logiques en Python pour créer des programmes qui prennent des décisions.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Une <strong>structure conditionnelle</strong> est une instruction qui permet à un programme d'exécuter différents blocs de code en fonction de conditions logiques (vraies ou fausses).</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\text{Si (condition vraie) Alors (action 1) Sinon (action 2)}$$
+        </div>
+        <p><strong>Explication :</strong> Les structures conditionnelles permettent au programme de "prendre des décisions" en testant si une condition est vérifiée. Si la condition est vraie, une action est exécutée ; sinon, une autre action peut être réalisée.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Les Opérateurs de Comparaison en Python</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Les opérateurs de comparaison permettent de comparer deux valeurs et retournent un booléen (<code>True</code> ou <code>False</code>).</p>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0;">
+            <tr style="background:#e8f4f8;">
+                <th style="border:1px solid #ddd; padding:10px; text-align:left;">Opérateur Python</th>
+                <th style="border:1px solid #ddd; padding:10px; text-align:left;">Signification</th>
+                <th style="border:1px solid #ddd; padding:10px; text-align:left;">Exemple Python</th>
+                <th style="border:1px solid #ddd; padding:10px; text-align:left;">Résultat</th>
+            </tr>
+            <tr>
+                <td style="border:1px solid #ddd; padding:10px;"><code>==</code></td>
+                <td style="border:1px solid #ddd; padding:10px;">Égal à</td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>5 == 5</code></td>
+                <td style="border:1px solid #ddd; padding:10px; color:#2e7d32;"><code>True</code></td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:10px;"><code>!=</code></td>
+                <td style="border:1px solid #ddd; padding:10px;">Différent de</td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>5 != 3</code></td>
+                <td style="border:1px solid #ddd; padding:10px; color:#2e7d32;"><code>True</code></td>
+            </tr>
+            <tr>
+                <td style="border:1px solid #ddd; padding:10px;"><code>&lt;</code></td>
+                <td style="border:1px solid #ddd; padding:10px;">Strictement inférieur à</td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>3 &lt; 7</code></td>
+                <td style="border:1px solid #ddd; padding:10px; color:#2e7d32;"><code>True</code></td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:10px;"><code>&gt;</code></td>
+                <td style="border:1px solid #ddd; padding:10px;">Strictement supérieur à</td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>8 &gt; 10</code></td>
+                <td style="border:1px solid #ddd; padding:10px; color:#e74c3c;"><code>False</code></td>
+            </tr>
+            <tr>
+                <td style="border:1px solid #ddd; padding:10px;"><code>&lt;=</code></td>
+                <td style="border:1px solid #ddd; padding:10px;">Inférieur ou égal à</td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>5 &lt;= 5</code></td>
+                <td style="border:1px solid #ddd; padding:10px; color:#2e7d32;"><code>True</code></td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:10px;"><code>&gt;=</code></td>
+                <td style="border:1px solid #ddd; padding:10px;">Supérieur ou égal à</td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>4 &gt;= 9</code></td>
+                <td style="border:1px solid #ddd; padding:10px; color:#e74c3c;"><code>False</code></td>
+            </tr>
+        </table>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>⚠️ Attention en Python :</strong><br>
+            • <code>=</code> est l'affectation : <code>x = 5</code> (on assigne 5 à x)<br>
+            • <code>==</code> est la comparaison : <code>x == 5</code> (on teste si x vaut 5)
+        </div>
+
+        <p><strong>💡 Conseil Important :</strong> Les opérateurs de comparaison sont la base des structures conditionnelles. Ils permettent de tester des conditions avant d'exécuter une action.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Les Opérateurs Logiques en Python</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Les opérateurs logiques permettent de combiner plusieurs conditions en Python.</p>
+
+        <h3 style="color:#34495e; margin-top:15px;">1. L'opérateur <code>and</code></h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p>L'opérateur <strong><code>and</code></strong> retourne <code>True</code> si <strong>toutes</strong> les conditions sont vraies.</p>
+            <div style="text-align:center; margin:10px 0; font-family:monospace;">
+                <code>(condition1) and (condition2)</code> → <code>True</code> si les deux sont vraies
+            </div>
+        </div>
+
+        <table style="width:60%; border-collapse:collapse; margin:15px auto;">
+            <tr style="background:#e8f4f8;">
+                <th style="border:1px solid #ddd; padding:8px;">Condition 1</th>
+                <th style="border:1px solid #ddd; padding:8px;">Condition 2</th>
+                <th style="border:1px solid #ddd; padding:8px;"><code>C1 and C2</code></th>
+            </tr>
+            <tr>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32; font-weight:bold;"><code>True</code></td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c; font-weight:bold;"><code>False</code></td>
+            </tr>
+            <tr>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c; font-weight:bold;"><code>False</code></td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c; font-weight:bold;"><code>False</code></td>
+            </tr>
+        </table>
+
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple Python :</strong> <code>(age >= 18) and (permis == True)</code>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:15px;">2. L'opérateur <code>or</code></h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p>L'opérateur <strong><code>or</code></strong> retourne <code>True</code> si <strong>au moins une</strong> des conditions est vraie.</p>
+            <div style="text-align:center; margin:10px 0; font-family:monospace;">
+                <code>(condition1) or (condition2)</code> → <code>True</code> si au moins une est vraie
+            </div>
+        </div>
+
+        <table style="width:60%; border-collapse:collapse; margin:15px auto;">
+            <tr style="background:#e8f4f8;">
+                <th style="border:1px solid #ddd; padding:8px;">Condition 1</th>
+                <th style="border:1px solid #ddd; padding:8px;">Condition 2</th>
+                <th style="border:1px solid #ddd; padding:8px;"><code>C1 or C2</code></th>
+            </tr>
+            <tr>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32; font-weight:bold;"><code>True</code></td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32; font-weight:bold;"><code>True</code></td>
+            </tr>
+            <tr>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32; font-weight:bold;"><code>True</code></td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c; font-weight:bold;"><code>False</code></td>
+            </tr>
+        </table>
+
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple Python :</strong> <code>(jour == "Samedi") or (jour == "Dimanche")</code>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:15px;">3. L'opérateur <code>not</code></h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p>L'opérateur <strong><code>not</code></strong> inverse la valeur d'une condition.</p>
+            <div style="text-align:center; margin:10px 0; font-family:monospace;">
+                <code>not (condition)</code> → Inverse la valeur
+            </div>
+        </div>
+
+        <table style="width:40%; border-collapse:collapse; margin:15px auto;">
+            <tr style="background:#e8f4f8;">
+                <th style="border:1px solid #ddd; padding:8px;">Condition</th>
+                <th style="border:1px solid #ddd; padding:8px;"><code>not Condition</code></th>
+            </tr>
+            <tr>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c; font-weight:bold;"><code>False</code></td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32; font-weight:bold;"><code>True</code></td>
+            </tr>
+        </table>
+
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple Python :</strong> <code>not (age < 18)</code> équivaut à <code>age >= 18</code>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. La Structure IF en Python</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Structure de base</h3>
+        <p>La structure <strong>if</strong> permet d'exécuter un bloc d'instructions uniquement si une condition est vraie.</p>
+
+        <div style="text-align:center; font-size:1.1em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            <strong>Syntaxe Python :</strong><br><br>
+            <div style="text-align:left; display:inline-block; font-family:monospace; background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px;">
+                <span style="color:#ff79c6;">if</span> condition:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instruction1<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instruction2
+            </div>
+        </div>
+
+        <div style="background:#fef5e7; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>⚠️ Important en Python :</strong><br>
+            • Le <strong>deux-points <code>:</code></strong> après la condition est obligatoire<br>
+            • L'<strong>indentation</strong> (4 espaces ou 1 tabulation) est obligatoire pour définir le bloc<br>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Fonctionnement :</strong><br>
+            • Si la condition est vraie, les instructions indentées sont exécutées<br>
+            • Si la condition est fausse, le programme passe directement après le bloc indenté
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. La Structure IF... ELSE en Python</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Structure avec alternative</h3>
+        <p>La structure <strong>if... else</strong> permet d'exécuter un bloc d'instructions si la condition est vraie, et un autre bloc si elle est fausse.</p>
+
+        <div style="text-align:center; font-size:1.1em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            <strong>Syntaxe Python :</strong><br><br>
+            <div style="text-align:left; display:inline-block; font-family:monospace; background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px;">
+                <span style="color:#ff79c6;">if</span> condition:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># si condition vraie</span><br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># si condition fausse</span>
+            </div>
+        </div>
+
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>✅ À retenir :</strong> Exactement un des deux blocs sera exécuté, jamais les deux en même temps.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. La Structure IF... ELIF... ELSE en Python</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Structure avec plusieurs alternatives</h3>
+        <p>Cette structure permet de tester plusieurs conditions successives. <strong><code>elif</code></strong> est l'abréviation de "else if".</p>
+
+        <div style="text-align:center; font-size:1.1em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            <strong>Syntaxe Python :</strong><br><br>
+            <div style="text-align:left; display:inline-block; font-family:monospace; background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px;">
+                <span style="color:#ff79c6;">if</span> condition1:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># si condition1 vraie</span><br>
+                <span style="color:#ff79c6;">elif</span> condition2:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># si condition2 vraie</span><br>
+                <span style="color:#ff79c6;">elif</span> condition3:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># si condition3 vraie</span><br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># par défaut</span>
+            </div>
+        </div>
+
+        <div style="background:#fef5e7; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>⚠️ Important :</strong> Les conditions sont testées dans l'ordre. Dès qu'une condition est vraie, son bloc est exécuté et les autres conditions ne sont pas testées.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Exemples détaillés</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Test de Majorité</h3>
+        <p><strong>Énoncé :</strong> Déterminer si une personne est majeure (18 ans ou plus).</p>
+        <p><strong>Données :</strong> <code>age = 17</code></p>
+
+        <p><strong>Code Python :</strong></p>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            age = <span style="color:#bd93f9;">17</span><br>
+            <br>
+            <span style="color:#ff79c6;">if</span> age >= <span style="color:#bd93f9;">18</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Majeur"</span>)<br>
+            <span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Mineur"</span>)
+        </div>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li><code>17 >= 18</code> → <code>False</code></li>
+                <li>La condition est fausse, donc on exécute le bloc <code>else</code></li>
+                <li>Le programme affiche : <strong>"Mineur"</strong></li>
+            </ul>
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Résultat final :</strong> Le programme affiche "Mineur"
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Calcul de Réduction</h3>
+        <p><strong>Situation :</strong> Un magasin applique une réduction de 10% si le montant des achats dépasse 100€.</p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            montant = <span style="color:#bd93f9;">120</span><br>
+            <br>
+            <span style="color:#ff79c6;">if</span> montant > <span style="color:#bd93f9;">100</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;reduction = montant * <span style="color:#bd93f9;">0.10</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;prix_final = montant - reduction<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Réduction : </span><span style="color:#8be9fd;">{reduction}</span><span style="color:#f1fa8c;">€"</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Prix final : </span><span style="color:#8be9fd;">{prix_final}</span><span style="color:#f1fa8c;">€"</span>)<br>
+            <span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;prix_final = montant<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Pas de réduction - Prix : </span><span style="color:#8be9fd;">{prix_final}</span><span style="color:#f1fa8c;">€"</span>)
+        </div>
+
+        <p><strong>Calculs détaillés :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li><code>120 > 100</code> → <code>True</code></li>
+                <li><code>reduction = 120 * 0.10 = 12.0€</code></li>
+                <li><code>prix_final = 120 - 12 = 108.0€</code></li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Sortie du programme :</strong><br>
+            <code>Réduction : 12.0€</code><br>
+            <code>Prix final : 108.0€</code>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 3 : Attribution de Mention au Baccalauréat</h3>
+        <p><strong>Énoncé :</strong> Attribuer une mention selon la moyenne obtenue au baccalauréat.</p>
+        <p><strong>Données :</strong> <code>moyenne = 14.5</code></p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            moyenne = <span style="color:#bd93f9;">14.5</span><br>
+            <br>
+            <span style="color:#ff79c6;">if</span> moyenne >= <span style="color:#bd93f9;">16</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mention = <span style="color:#f1fa8c;">"Très Bien"</span><br>
+            <span style="color:#ff79c6;">elif</span> moyenne >= <span style="color:#bd93f9;">14</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mention = <span style="color:#f1fa8c;">"Bien"</span><br>
+            <span style="color:#ff79c6;">elif</span> moyenne >= <span style="color:#bd93f9;">12</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mention = <span style="color:#f1fa8c;">"Assez Bien"</span><br>
+            <span style="color:#ff79c6;">elif</span> moyenne >= <span style="color:#bd93f9;">10</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mention = <span style="color:#f1fa8c;">"Passable"</span><br>
+            <span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mention = <span style="color:#f1fa8c;">"Échec"</span><br>
+            <br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Mention : </span><span style="color:#8be9fd;">{mention}</span><span style="color:#f1fa8c;">"</span>)
+        </div>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li><code>14.5 >= 16</code> → <code>False</code></li>
+                <li><code>14.5 >= 14</code> → <code>True</code> ✓</li>
+                <li>La deuxième condition est vraie, on exécute son bloc : <code>mention = "Bien"</code></li>
+                <li>Les autres conditions ne sont pas testées</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Résultat final :</strong> Le programme affiche "Mention : Bien"
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 4 : Conditions Combinées avec <code>and</code></h3>
+        <p><strong>Situation :</strong> Pour accéder à une réduction étudiante, il faut avoir moins de 26 ans ET être inscrit dans un établissement.</p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            age = <span style="color:#bd93f9;">23</span><br>
+            inscrit = <span style="color:#bd93f9;">True</span><br>
+            <br>
+            <span style="color:#ff79c6;">if</span> age < <span style="color:#bd93f9;">26</span> <span style="color:#ff79c6;">and</span> inscrit == <span style="color:#bd93f9;">True</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Réduction accordée"</span>)<br>
+            <span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Pas de réduction"</span>)
+        </div>
+
+        <div style="text-align:center; margin:15px 0;">
+            <strong>Analyse de la condition :</strong>
+            <div style="font-size:1.1em; margin:10px 0; padding:10px; background:#ecf0f1; border-radius:4px; font-family:monospace;">
+                (23 < 26) and (inscrit == True)<br>
+                True and True = True
+            </div>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Solution finale :</strong> "Réduction accordée" car les deux conditions sont vérifiées
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 5 : Conditions Combinées avec <code>or</code></h3>
+        <p><strong>Situation :</strong> Un article est en promotion si c'est le week-end OU si c'est une période de soldes.</p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            jour = <span style="color:#f1fa8c;">"Samedi"</span><br>
+            soldes = <span style="color:#bd93f9;">False</span><br>
+            <br>
+            <span style="color:#ff79c6;">if</span> jour == <span style="color:#f1fa8c;">"Samedi"</span> <span style="color:#ff79c6;">or</span> jour == <span style="color:#f1fa8c;">"Dimanche"</span> <span style="color:#ff79c6;">or</span> soldes == <span style="color:#bd93f9;">True</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Promotion -20%"</span>)<br>
+            <span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Prix normal"</span>)
+        </div>
+
+        <div style="text-align:center; margin:15px 0;">
+            <strong>Analyse de la condition :</strong>
+            <div style="font-size:1.1em; margin:10px 0; padding:10px; background:#ecf0f1; border-radius:4px; font-family:monospace;">
+                (jour == "Samedi") or (jour == "Dimanche") or (soldes == True)<br>
+                True or False or False = True
+            </div>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Solution finale :</strong> "Promotion -20%" car au moins une condition est vraie (c'est samedi)
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Application pratique complète</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Calcul de Tarif de Transport</h3>
+        <p><strong>Problème :</strong> Une compagnie de transport applique les tarifs suivants :
+        <ul style="margin:5px 0; padding-left:20px;">
+            <li>Gratuit pour les enfants de moins de 4 ans</li>
+            <li>5€ pour les enfants de 4 à 11 ans</li>
+            <li>8€ pour les jeunes de 12 à 17 ans</li>
+            <li>12€ pour les adultes de 18 à 64 ans</li>
+            <li>6€ pour les seniors de 65 ans et plus</li>
+        </ul>
+        </p>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Éléments donnés :</strong><br>
+            • <code>age = 15</code><br>
+            • On cherche le tarif applicable
+        </div>
+
+        <div style="text-align:center; margin:15px 0;">
+            <strong>Code Python complet :</strong>
+            <div style="font-size:1em; margin:10px 0; padding:15px; background:#2c3e50; color:#ffffff; border-radius:6px; text-align:left; display:inline-block; font-family:monospace;">
+                age = <span style="color:#bd93f9;">15</span><br>
+                <br>
+                <span style="color:#ff79c6;">if</span> age < <span style="color:#bd93f9;">4</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style="color:#bd93f9;">0</span><br>
+                <span style="color:#ff79c6;">elif</span> age < <span style="color:#bd93f9;">12</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style="color:#bd93f9;">5</span><br>
+                <span style="color:#ff79c6;">elif</span> age < <span style="color:#bd93f9;">18</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style="color:#bd93f9;">8</span><br>
+                <span style="color:#ff79c6;">elif</span> age < <span style="color:#bd93f9;">65</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style="color:#bd93f9;">12</span><br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;tarif = <span style="color:#bd93f9;">6</span><br>
+                <br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Tarif : </span><span style="color:#8be9fd;">{tarif}</span><span style="color:#f1fa8c;">€"</span>)
+            </div>
+        </div>
+
+        <p><strong>Résolution pas à pas :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li><code>15 < 4</code> → <code>False</code></li>
+                <li><code>15 < 12</code> → <code>False</code></li>
+                <li><code>15 < 18</code> → <code>True</code> ✓</li>
+                <li>On exécute : <code>tarif = 8</code></li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Solution finale :</strong> Le programme affiche "Tarif : 8€" (catégorie jeunes 12-17 ans)
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Conditions Imbriquées en Python</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Il est possible de placer des structures conditionnelles à l'intérieur d'autres structures conditionnelles. <strong>Attention à l'indentation !</strong></p>
+
+        <h3 style="color:#34495e; margin-top:15px;">Exemple : Accès à un Parc d'Attractions</h3>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            age = <span style="color:#bd93f9;">10</span><br>
+            taille = <span style="color:#bd93f9;">145</span><br>
+            <br>
+            <span style="color:#ff79c6;">if</span> age >= <span style="color:#bd93f9;">12</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès à toutes les attractions"</span>)<br>
+            <span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Condition imbriquée pour les moins de 12 ans</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> taille >= <span style="color:#bd93f9;">140</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès aux attractions moyennes"</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès aux attractions enfants uniquement"</span>)
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Analyse :</strong><br>
+            • Premier test : <code>10 >= 12</code> → <code>False</code>, on va dans le bloc <code>else</code><br>
+            • Deuxième test (imbriqué) : <code>145 >= 140</code> → <code>True</code><br>
+            • Résultat : "Accès aux attractions moyennes"
+        </div>
+
+        <div style="background:#fef5e7; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>⚠️ Attention à l'indentation :</strong> Le <code>if</code> imbriqué a 4 espaces, et ses instructions ont 8 espaces !
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Propriétés et caractéristiques en Python</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <ul style="margin:0; padding-left:20px;">
+            <li><strong>Exclusivité :</strong> Dans une structure <code>if...else</code>, un seul bloc d'instructions sera exécuté (jamais les deux).</li>
+            <li><strong>Ordre d'évaluation :</strong> Les conditions sont testées dans l'ordre d'apparition. Dès qu'une condition est vraie, son bloc est exécuté et les <code>elif</code> suivants ne sont pas testés.</li>
+            <li><strong>Bloc optionnel :</strong> Le bloc <code>else</code> est optionnel. Si la condition est fausse et qu'il n'y a pas de <code>else</code>, le programme continue simplement.</li>
+            <li><strong>Indentation obligatoire :</strong> Python utilise l'indentation (4 espaces) pour définir les blocs de code. C'est obligatoire et doit être cohérent.</li>
+            <li><strong>Deux-points obligatoires :</strong> Chaque ligne <code>if</code>, <code>elif</code>, <code>else</code> doit se terminer par <code>:</code></li>
+        </ul>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Tableau récapitulatif des structures Python</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:10px 0;">
+            <tr style="background:#e8f4f8;">
+                <th style="border:1px solid #ddd; padding:10px; text-align:left;">Structure Python</th>
+                <th style="border:1px solid #ddd; padding:10px; text-align:left;">Utilisation</th>
+                <th style="border:1px solid #ddd; padding:10px; text-align:left;">Syntaxe</th>
+            </tr>
+            <tr>
+                <td style="border:1px solid #ddd; padding:10px;"><strong><code>if</code></strong></td>
+                <td style="border:1px solid #ddd; padding:10px;">Une seule action conditionnelle</td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">if cond:<br>&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:10px;"><strong><code>if... else</code></strong></td>
+                <td style="border:1px solid #ddd; padding:10px;">Deux alternatives possibles</td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">if cond:<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+            </tr>
+            <tr>
+                <td style="border:1px solid #ddd; padding:10px;"><strong><code>if... elif... else</code></strong></td>
+                <td style="border:1px solid #ddd; padding:10px;">Plusieurs conditions à tester</td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">if c1:<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>elif c2:<br>&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:10px;"><strong>Conditions imbriquées</strong></td>
+                <td style="border:1px solid #ddd; padding:10px;">Tests successifs complexes</td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">if ...<br>&nbsp;&nbsp;&nbsp;&nbsp;if ...<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XII. Résumé des points clés en Python</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4f8; padding:15px; border-radius:4px;">
+            <p><strong>📌 À retenir absolument :</strong></p>
+            <ul style="margin:5px 0; padding-left:20px;">
+                <li><strong><code>if</code></strong> : Exécute un bloc si la condition est vraie</li>
+                <li><strong><code>if... else</code></strong> : Exécute un bloc ou l'autre (jamais les deux)</li>
+                <li><strong><code>if... elif... else</code></strong> : Teste plusieurs conditions dans l'ordre</li>
+                <li><strong><code>and</code></strong> : Toutes les conditions doivent être vraies</li>
+                <li><strong><code>or</code></strong> : Au moins une condition doit être vraie</li>
+                <li><strong><code>not</code></strong> : Inverse la valeur de vérité</li>
+                <li><strong>Deux-points <code>:</code></strong> : Obligatoires après <code>if</code>, <code>elif</code>, <code>else</code></li>
+                <li><strong>Indentation</strong> : 4 espaces obligatoires pour définir les blocs de code</li>
+            </ul>
+        </div>
+
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin-top:15px;">
+            <strong>🎯 Méthodologie générale :</strong>
+            <ol style="margin:5px 0; padding-left:20px;">
+                <li>Identifier clairement la ou les conditions à tester</li>
+                <li>Choisir la structure appropriée (<code>if</code>, <code>if...else</code>, <code>if...elif...else</code>)</li>
+                <li>Ne pas oublier les deux-points après chaque condition</li>
+                <li>Respecter l'indentation (4 espaces par niveau)</li>
+                <li>Ordonner les conditions du plus spécifique au plus général</li>
+                <li>Tester le programme avec plusieurs valeurs pour valider tous les cas</li>
+            </ol>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XIII. Erreurs fréquentes et conseils en Python</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fdf2f2; padding:12px; border-radius:4px; margin-bottom:10px;">
+            <strong>❌ Pièges à éviter :</strong>
+            <div style="margin:8px 0;">
+                <ul style="margin:0; padding-left:20px;">
+                    <li><strong>Oublier les deux-points :</strong> <code>if age >= 18:</code> (correct) vs <code>if age >= 18</code> (erreur)</li>
+                    <li><strong>Mauvaise indentation :</strong> Python génère une erreur <code>IndentationError</code> si l'indentation n'est pas correcte</li>
+                    <li><strong>Confondre = et ==</strong> : <code>x = 5</code> (affectation) vs <code>x == 5</code> (test de comparaison)</li>
+                    <li><strong>Mal ordonner les conditions</strong> : tester <code>age >= 10</code> avant <code>age >= 18</code> capturera aussi les adultes !</li>
+                    <li><strong>Confondre and et or</strong> : <code>(x > 5 and x < 10)</code> signifie "entre 5 et 10" alors que <code>(x < 5 or x > 10)</code> signifie "en dehors de [5,10]"</li>
+                    <li><strong>Majuscules/minuscules</strong> : En Python, c'est <code>True</code> et <code>False</code> (avec majuscule), pas <code>true</code> ou <code>false</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <div style="margin:8px 0;">
+                <ul style="margin:0; padding-left:20px;">
+                    <li>Toujours utiliser <strong>4 espaces</strong> pour l'indentation (ne pas mélanger espaces et tabulations)</li>
+                    <li>Dans une structure <code>if...elif</code> avec plusieurs conditions, ordonner les tests du plus restrictif au plus général</li>
+                    <li>Utiliser des noms de variables explicites : <code>est_majeur</code> plutôt que <code>x</code></li>
+                    <li>Tester votre code avec plusieurs valeurs différentes pour vérifier tous les cas possibles</li>
+                    <li>Utiliser des parenthèses pour clarifier les conditions complexes : <code>(a > 5) and (b < 10)</code></li>
+                    <li>Commenter votre code pour expliquer les conditions complexes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+===
+

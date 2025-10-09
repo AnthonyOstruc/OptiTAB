@@ -1,0 +1,554 @@
+=== Algorithme et Programmation - Les Listes en Python
+Difficulté: easy
+Ordre: 3
+
+Titre: Les Listes en Python
+Description: Comprendre et maîtriser les listes Python pour stocker et manipuler des collections d'éléments ordonnés et modifiables.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Une <strong>liste</strong> est une structure de données qui permet de stocker une collection ordonnée d'éléments. Elle est modifiable et peut contenir des éléments de différents types.</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$\text{Liste} = [\text{élément}_1, \text{élément}_2, ..., \text{élément}_n]$$
+        </div>
+        <p><strong>Explication :</strong> Une liste est comme un tableau où chaque élément a une position précise (index). On peut ajouter, supprimer ou modifier des éléments facilement.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Création et Syntaxe des Listes</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Structure de base</h3>
+        <p>Une liste se crée avec des <strong>crochets <code>[]</code></strong> et les éléments sont séparés par des <strong>virgules</strong>.</p>
+
+        <div style="text-align:center; font-size:1.1em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            <strong>Syntaxe Python :</strong><br><br>
+            <div style="text-align:left; display:inline-block; font-family:monospace; background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px;">
+                nom_liste = [<span style="color:#bd93f9;">élément1</span>, <span style="color:#bd93f9;">élément2</span>, <span style="color:#bd93f9;">élément3</span>]
+            </div>
+        </div>
+
+        <div style="background:#fef5e7; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>⚠️ Important :</strong><br>
+            • Les éléments peuvent être de <strong>types différents</strong> (nombres, chaînes, booléens)<br>
+            • Une liste peut être <strong>vide</strong> : <code>[]</code><br>
+            • Les éléments sont <strong>ordonnés</strong> (l'ordre compte)<br>
+            • Une liste est <strong>modifiable</strong> (on peut changer ses éléments)
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Accès aux Éléments (Indexation)</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Chaque élément d'une liste a une <strong>position</strong> (index) qui commence à <strong>0</strong>.</p>
+
+        <h3 style="color:#34495e; margin-top:15px;">1. Indexation positive (de gauche à droite)</h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p>L'index commence à <strong>0</strong> pour le premier élément</p>
+            <div style="text-align:center; margin:10px 0; font-family:monospace;">
+                <code>ma_liste = ["A", "B", "C", "D"]</code><br>
+                <code>ma_liste[0]</code> → "A" (premier élément)<br>
+                <code>ma_liste[1]</code> → "B" (deuxième élément)<br>
+                <code>ma_liste[2]</code> → "C" (troisième élément)
+            </div>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:15px;">2. Indexation négative (de droite à gauche)</h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p>L'index <strong>-1</strong> donne le dernier élément</p>
+            <div style="text-align:center; margin:10px 0; font-family:monospace;">
+                <code>ma_liste = ["A", "B", "C", "D"]</code><br>
+                <code>ma_liste[-1]</code> → "D" (dernier élément)<br>
+                <code>ma_liste[-2]</code> → "C" (avant-dernier)<br>
+                <code>ma_liste[-3]</code> → "B"
+            </div>
+        </div>
+
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>💡 À retenir :</strong> L'index <strong>0</strong> = premier élément, l'index <strong>-1</strong> = dernier élément
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Modification des Listes</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">1. Modifier un élément existant</h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p>On peut changer la valeur d'un élément en utilisant son index</p>
+            <div style="text-align:center; margin:10px 0; font-family:monospace;">
+                <code>nombres = [10, 20, 30]</code><br>
+                <code>nombres[1] = 25</code> → <code>[10, 25, 30]</code>
+            </div>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:15px;">2. Ajouter des éléments</h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p><strong><code>append()</code></strong> : Ajoute un élément à la fin</p>
+            <div style="text-align:center; margin:10px 0; font-family:monospace;">
+                <code>fruits = ["pomme", "banane"]</code><br>
+                <code>fruits.append("orange")</code> → <code>["pomme", "banane", "orange"]</code>
+            </div>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:15px;">3. Insérer un élément</h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p><strong><code>insert()</code></strong> : Insère un élément à une position donnée</p>
+            <div style="text-align:center; margin:10px 0; font-family:monospace;">
+                <code>lettres = ["A", "C"]</code><br>
+                <code>lettres.insert(1, "B")</code> → <code>["A", "B", "C"]</code>
+            </div>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:15px;">4. Supprimer des éléments</h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <p><strong><code>remove()</code></strong> : Supprime la première occurrence d'un élément</p>
+            <div style="text-align:center; margin:10px 0; font-family:monospace;">
+                <code>couleurs = ["rouge", "bleu", "vert", "bleu"]</code><br>
+                <code>couleurs.remove("bleu")</code> → <code>["rouge", "vert", "bleu"]</code>
+            </div>
+        </div>
+
+        <div style="background:#fdf2f2; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>⚠️ Attention :</strong> Si l'élément n'existe pas, <code>remove()</code> provoque une erreur !
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Méthodes Utiles des Listes</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Informations sur la liste</h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li><strong><code>len()</code></strong> : Donne la longueur (nombre d'éléments)</li>
+                <li><strong><code>index()</code></strong> : Trouve la position d'un élément</li>
+                <li><strong><code>count()</code></strong> : Compte les occurrences d'un élément</li>
+            </ul>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:15px;">Tri et ordre</h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li><strong><code>sort()</code></strong> : Trie la liste par ordre croissant</li>
+                <li><strong><code>reverse()</code></strong> : Inverse l'ordre des éléments</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Note :</strong> <code>sort()</code> et <code>reverse()</code> modifient la liste directement
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Exemples détaillés</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Création et Accès</h3>
+        <p><strong>Énoncé :</strong> Créer une liste de notes et accéder aux différents éléments.</p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            notes = [<span style="color:#bd93f9;">15</span>, <span style="color:#bd93f9;">12</span>, <span style="color:#bd93f9;">18</span>, <span style="color:#bd93f9;">10</span>, <span style="color:#bd93f9;">16</span>]<br>
+            <br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Première note : </span><span style="color:#8be9fd;">{notes[0]}</span><span style="color:#f1fa8c;">"</span>)<br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Dernière note : </span><span style="color:#8be9fd;">{notes[-1]}</span><span style="color:#f1fa8c;">"</span>)<br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Troisième note : </span><span style="color:#8be9fd;">{notes[2]}</span><span style="color:#f1fa8c;">"</span>)
+        </div>
+
+        <p><strong>Exécution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li><code>notes[0]</code> → 15 (premier élément)</li>
+                <li><code>notes[-1]</code> → 16 (dernier élément)</li>
+                <li><code>notes[2]</code> → 18 (troisième élément)</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Résultat final :</strong> Le programme affiche "Première note : 15", "Dernière note : 16", "Troisième note : 18"
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Modification d'une Liste</h3>
+        <p><strong>Énoncé :</strong> Créer une liste et la modifier en ajoutant, supprimant et changeant des éléments.</p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            fruits = [<span style="color:#f1fa8c;">"pomme"</span>, <span style="color:#f1fa8c;">"banane"</span>]<br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Liste initiale : </span><span style="color:#8be9fd;">{fruits}</span><span style="color:#f1fa8c;">"</span>)<br>
+            <br>
+            <span style="color:#6272a4;"># Ajouter un fruit</span><br>
+            fruits.append(<span style="color:#f1fa8c;">"orange"</span>)<br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après append : </span><span style="color:#8be9fd;">{fruits}</span><span style="color:#f1fa8c;">"</span>)<br>
+            <br>
+            <span style="color:#6272a4;"># Insérer un fruit</span><br>
+            fruits.insert(<span style="color:#bd93f9;">1</span>, <span style="color:#f1fa8c;">"kiwi"</span>)<br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après insert : </span><span style="color:#8be9fd;">{fruits}</span><span style="color:#f1fa8c;">"</span>)<br>
+            <br>
+            <span style="color:#6272a4;"># Modifier un élément</span><br>
+            fruits[<span style="color:#bd93f9;">0</span>] = <span style="color:#f1fa8c;">"cerise"</span><br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après modification : </span><span style="color:#8be9fd;">{fruits}</span><span style="color:#f1fa8c;">"</span>)
+        </div>
+
+        <p><strong>Déroulement :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li>Liste initiale : <code>["pomme", "banane"]</code></li>
+                <li>Après <code>append("orange")</code> : <code>["pomme", "banane", "orange"]</code></li>
+                <li>Après <code>insert(1, "kiwi")</code> : <code>["pomme", "kiwi", "banane", "orange"]</code></li>
+                <li>Après <code>fruits[0] = "cerise"</code> : <code>["cerise", "kiwi", "banane", "orange"]</code></li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Résultat :</strong> La liste évolue à chaque modification
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 3 : Informations sur une Liste</h3>
+        <p><strong>Énoncé :</strong> Utiliser les méthodes pour obtenir des informations sur une liste.</p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            nombres = [<span style="color:#bd93f9;">5</span>, <span style="color:#bd93f9;">2</span>, <span style="color:#bd93f9;">8</span>, <span style="color:#bd93f9;">2</span>, <span style="color:#bd93f9;">1</span>]<br>
+            <br>
+            <span style="color:#6272a4;"># Longueur de la liste</span><br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Longueur : </span><span style="color:#8be9fd;">{len(nombres)}</span><span style="color:#f1fa8c;">"</span>)<br>
+            <br>
+            <span style="color:#6272a4;"># Position d'un élément</span><br>
+            position = nombres.index(<span style="color:#bd93f9;">8</span>)<br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Position de 8 : </span><span style="color:#8be9fd;">{position}</span><span style="color:#f1fa8c;">"</span>)<br>
+            <br>
+            <span style="color:#6272a4;"># Nombre d'occurrences</span><br>
+            nb_2 = nombres.count(<span style="color:#bd93f9;">2</span>)<br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Nombre de 2 : </span><span style="color:#8be9fd;">{nb_2}</span><span style="color:#f1fa8c;">"</span>)
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Sortie du programme :</strong><br>
+            <code>Longueur : 5</code><br>
+            <code>Position de 8 : 2</code><br>
+            <code>Nombre de 2 : 2</code>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 4 : Tri et Organisation</h3>
+        <p><strong>Situation :</strong> Trier une liste de notes et l'inverser.</p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            notes = [<span style="color:#bd93f9;">15</span>, <span style="color:#bd93f9;">8</span>, <span style="color:#bd93f9;">20</span>, <span style="color:#bd93f9;">12</span>]<br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Notes initiales : </span><span style="color:#8be9fd;">{notes}</span><span style="color:#f1fa8c;">"</span>)<br>
+            <br>
+            <span style="color:#6272a4;"># Tri par ordre croissant</span><br>
+            notes.sort()<br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après tri : </span><span style="color:#8be9fd;">{notes}</span><span style="color:#f1fa8c;">"</span>)<br>
+            <br>
+            <span style="color:#6272a4;"># Inverser l'ordre</span><br>
+            notes.reverse()<br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après reverse : </span><span style="color:#8be9fd;">{notes}</span><span style="color:#f1fa8c;">"</span>)
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Sortie du programme :</strong><br>
+            <code>Notes initiales : [15, 8, 20, 12]</code><br>
+            <code>Après tri : [8, 12, 15, 20]</code><br>
+            <code>Après reverse : [20, 15, 12, 8]</code>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Parcourir une Liste</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 5 : Parcours avec FOR</h3>
+        <p><strong>Énoncé :</strong> Parcourir une liste et afficher chaque élément.</p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            couleurs = [<span style="color:#f1fa8c;">"rouge"</span>, <span style="color:#f1fa8c;">"vert"</span>, <span style="color:#f1fa8c;">"bleu"</span>]<br>
+            <br>
+            <span style="color:#ff79c6;">for</span> couleur <span style="color:#ff79c6;">in</span> couleurs:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Couleur : </span><span style="color:#8be9fd;">{couleur}</span><span style="color:#f1fa8c;">"</span>)
+        </div>
+
+        <p><strong>Exécution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li><code>couleur = "rouge"</code> → Affiche "Couleur : rouge"</li>
+                <li><code>couleur = "vert"</code> → Affiche "Couleur : vert"</li>
+                <li><code>couleur = "bleu"</code> → Affiche "Couleur : bleu"</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Résultat :</strong> Le programme affiche chaque couleur sur une ligne séparée
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 6 : Parcours avec Index</h3>
+        <p><strong>Situation :</strong> Parcourir une liste en utilisant les index pour accéder aux éléments.</p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            fruits = [<span style="color:#f1fa8c;">"pomme"</span>, <span style="color:#f1fa8c;">"banane"</span>, <span style="color:#f1fa8c;">"orange"</span>]<br>
+            <br>
+            <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#50fa7b;">len</span>(fruits)):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;fruit = fruits[i]<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"</span><span style="color:#8be9fd;">{i}</span><span style="color:#f1fa8c;"> : </span><span style="color:#8be9fd;">{fruit}</span><span style="color:#f1fa8c;">"</span>)
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Sortie du programme :</strong><br>
+            <code>0 : pomme</code><br>
+            <code>1 : banane</code><br>
+            <code>2 : orange</code>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Application pratique complète</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Gestion d'une Liste de Notes</h3>
+        <p><strong>Problème :</strong> Créer un système de gestion de notes avec calcul de moyenne.</p>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Données :</strong><br>
+            • Liste de notes : <code>[14, 12, 16, 10, 18, 15]</code><br>
+            • Calculer la moyenne et trouver la meilleure/pire note
+        </div>
+
+        <div style="text-align:center; margin:15px 0;">
+            <strong>Code Python complet :</strong>
+            <div style="font-size:1em; margin:10px 0; padding:15px; background:#2c3e50; color:#ffffff; border-radius:6px; text-align:left; display:inline-block; font-family:monospace;">
+                notes = [<span style="color:#bd93f9;">14</span>, <span style="color:#bd93f9;">12</span>, <span style="color:#bd93f9;">16</span>, <span style="color:#bd93f9;">10</span>, <span style="color:#bd93f9;">18</span>, <span style="color:#bd93f9;">15</span>]<br>
+                <br>
+                <span style="color:#6272a4;"># Affichage des notes</span><br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Notes : </span><span style="color:#8be9fd;">{notes}</span><span style="color:#f1fa8c;">"</span>)<br>
+                <br>
+                <span style="color:#6272a4;"># Calcul de la moyenne</span><br>
+                somme = <span style="color:#bd93f9;">0</span><br>
+                <span style="color:#ff79c6;">for</span> note <span style="color:#ff79c6;">in</span> notes:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;somme = somme + note<br>
+                moyenne = somme / <span style="color:#50fa7b;">len</span>(notes)<br>
+                <br>
+                <span style="color:#6272a4;"># Meilleure et pire note</span><br>
+                meilleure = <span style="color:#50fa7b;">max</span>(notes)<br>
+                pire = <span style="color:#50fa7b;">min</span>(notes)<br>
+                <br>
+                <span style="color:#6272a4;"># Affichage des résultats</span><br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Moyenne : </span><span style="color:#8be9fd;">{moyenne:.1f}</span><span style="color:#f1fa8c;">/20"</span>)<br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Meilleure note : </span><span style="color:#8be9fd;">{meilleure}</span><span style="color:#f1fa8c;">/20"</span>)<br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Pire note : </span><span style="color:#8be9fd;">{pire}</span><span style="color:#f1fa8c;">/20"</span>)
+            </div>
+        </div>
+
+        <p><strong>Résolution pas à pas :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li>Liste initiale : <code>[14, 12, 16, 10, 18, 15]</code></li>
+                <li>Calcul somme : <code>14 + 12 + 16 + 10 + 18 + 15 = 85</code></li>
+                <li>Calcul moyenne : <code>85 / 6 = 14.2</code></li>
+                <li>Meilleure note : <code>max(notes) = 18</code></li>
+                <li>Pire note : <code>min(notes) = 10</code></li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Solution finale :</strong> Le programme affiche la moyenne (14.2/20), la meilleure note (18/20) et la pire note (10/20)
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Recherche dans une Liste</h3>
+        <p><strong>Problème :</strong> Créer une liste d'élèves et rechercher un élève spécifique.</p>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Données :</strong><br>
+            • Liste d'élèves : <code>["Alice", "Bob", "Charlie", "Diana"]</code><br>
+            • Rechercher "Charlie" et afficher sa position
+        </div>
+
+        <div style="text-align:center; margin:15px 0;">
+            <strong>Code Python :</strong>
+            <div style="font-size:1em; margin:10px 0; padding:15px; background:#2c3e50; color:#ffffff; border-radius:6px; text-align:left; display:inline-block; font-family:monospace;">
+                eleves = [<span style="color:#f1fa8c;">"Alice"</span>, <span style="color:#f1fa8c;">"Bob"</span>, <span style="color:#f1fa8c;">"Charlie"</span>, <span style="color:#f1fa8c;">"Diana"</span>]<br>
+                recherche = <span style="color:#f1fa8c;">"Charlie"</span><br>
+                <br>
+                <span style="color:#6272a4;"># Vérifier si l'élève existe</span><br>
+                <span style="color:#ff79c6;">if</span> recherche <span style="color:#ff79c6;">in</span> eleves:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;position = eleves.index(recherche)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"</span><span style="color:#8be9fd;">{recherche}</span><span style="color:#f1fa8c;"> est à la position </span><span style="color:#8be9fd;">{position}</span><span style="color:#f1fa8c;">"</span>)<br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"</span><span style="color:#8be9fd;">{recherche}</span><span style="color:#f1fa8c;"> n'est pas dans la liste"</span>)
+            </div>
+        </div>
+
+        <p><strong>Calculs détaillés :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li><code>"Charlie" in eleves</code> → <code>True</code> (Charlie est dans la liste)</li>
+                <li><code>eleves.index("Charlie")</code> → <code>2</code> (position 2)</li>
+                <li>Résultat : "Charlie est à la position 2"</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Résultat :</strong> Le programme affiche "Charlie est à la position 2"
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Listes et Boucles Avancées</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Les listes s'utilisent souvent avec des boucles pour traiter plusieurs éléments.</p>
+
+        <h3 style="color:#34495e; margin-top:15px;">Exemple : Filtrer une Liste</h3>
+        <p><strong>Énoncé :</strong> Créer une nouvelle liste avec seulement les notes supérieures à 12.</p>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            notes = [<span style="color:#bd93f9;">15</span>, <span style="color:#bd93f9;">8</span>, <span style="color:#bd93f9;">18</span>, <span style="color:#bd93f9;">10</span>, <span style="color:#bd93f9;">16</span>, <span style="color:#bd93f9;">14</span>]<br>
+            bonnes_notes = []<br>
+            <br>
+            <span style="color:#ff79c6;">for</span> note <span style="color:#ff79c6;">in</span> notes:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> note > <span style="color:#bd93f9;">12</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bonnes_notes.append(note)<br>
+            <br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Notes > 12 : </span><span style="color:#8be9fd;">{bonnes_notes}</span><span style="color:#f1fa8c;">"</span>)
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Sortie du programme :</strong><br>
+            <code>Notes > 12 : [15, 18, 16, 14]</code>
+        </div>
+
+        <div style="background:#fef5e7; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>⚠️ Fonctionnement :</strong> Pour chaque note, si elle est > 12, on l'ajoute à la nouvelle liste
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Tableau récapitulatif des listes Python</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:10px 0;">
+            <tr style="background:#e8f4f8;">
+                <th style="border:1px solid #ddd; padding:10px; text-align:left;">Opération</th>
+                <th style="border:1px solid #ddd; padding:10px; text-align:left;">Syntaxe</th>
+                <th style="border:1px solid #ddd; padding:10px; text-align:left;">Exemple</th>
+            </tr>
+            <tr style="background:#ffffff;">
+                <td style="border:1px solid #ddd; padding:10px;"><strong>Créer une liste</strong></td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>[]</code></td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">ma_liste = [1, 2, 3]</td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:10px;"><strong>Accéder à un élément</strong></td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>[index]</code></td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">ma_liste[0]</td>
+            </tr>
+            <tr style="background:#ffffff;">
+                <td style="border:1px solid #ddd; padding:10px;"><strong>Longueur</strong></td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>len()</code></td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">len(ma_liste)</td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:10px;"><strong>Ajouter à la fin</strong></td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>append()</code></td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">ma_liste.append(4)</td>
+            </tr>
+            <tr style="background:#ffffff;">
+                <td style="border:1px solid #ddd; padding:10px;"><strong>Insérer</strong></td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>insert()</code></td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">ma_liste.insert(1, 5)</td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:10px;"><strong>Supprimer</strong></td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>remove()</code></td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">ma_liste.remove(2)</td>
+            </tr>
+            <tr style="background:#ffffff;">
+                <td style="border:1px solid #ddd; padding:10px;"><strong>Trier</strong></td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>sort()</code></td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">ma_liste.sort()</td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border:1px solid #ddd; padding:10px;"><strong>Inverser</strong></td>
+                <td style="border:1px solid #ddd; padding:10px;"><code>reverse()</code></td>
+                <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">ma_liste.reverse()</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Résumé des points clés</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4f8; padding:15px; border-radius:4px;">
+            <p><strong>📌 À retenir absolument :</strong></p>
+            <ul style="margin:5px 0; padding-left:20px;">
+                <li><strong>Création :</strong> <code>ma_liste = [élément1, élément2]</code></li>
+                <li><strong>Accès :</strong> <code>ma_liste[0]</code> (premier élément), <code>ma_liste[-1]</code> (dernier)</li>
+                <li><strong>Longueur :</strong> <code>len(ma_liste)</code> donne le nombre d'éléments</li>
+                <li><strong>Ajouter :</strong> <code>append()</code> à la fin, <code>insert()</code> à une position</li>
+                <li><strong>Supprimer :</strong> <code>remove()</code> supprime la première occurrence</li>
+                <li><strong>Modifier :</strong> <code>ma_liste[index] = nouvelle_valeur</code></li>
+                <li><strong>Trier :</strong> <code>sort()</code> trie par ordre croissant</li>
+                <li><strong>Parcourir :</strong> <code>for élément in ma_liste:</code></li>
+            </ul>
+        </div>
+
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin-top:15px;">
+            <strong>🎯 Caractéristiques importantes :</strong>
+            <table style="width:100%; border-collapse:collapse; margin:10px 0;">
+                <tr style="background:#e8f4f8;">
+                    <th style="border:1px solid #ddd; padding:8px; text-align:left;">Propriété</th>
+                    <th style="border:1px solid #ddd; padding:8px; text-align:left;">Description</th>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px;">Ordre</td>
+                    <td style="border:1px solid #ddd; padding:8px;">Les éléments gardent leur position</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px;">Modifiable</td>
+                    <td style="border:1px solid #ddd; padding:8px;">On peut changer, ajouter, supprimer</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px;">Types mixtes</td>
+                    <td style="border:1px solid #ddd; padding:8px;">Peut contenir différents types</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px;">Doublons</td>
+                    <td style="border:1px solid #ddd; padding:8px;">Peut contenir des éléments identiques</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XII. Erreurs fréquentes et conseils</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fdf2f2; padding:12px; border-radius:4px; margin-bottom:10px;">
+            <strong>❌ Pièges à éviter :</strong>
+            <div style="margin:8px 0;">
+                <ul style="margin:0; padding-left:20px;">
+                    <li><strong>Index out of range :</strong> Accéder à un index qui n'existe pas (ex: <code>ma_liste[10]</code> sur une liste de 3 éléments)</li>
+                    <li><strong>remove() sur un élément inexistant :</strong> <code>remove()</code> provoque une erreur si l'élément n'est pas trouvé</li>
+                    <li><strong>Confondre index et position :</strong> Le premier élément est à l'index 0, pas 1</li>
+                    <li><strong>Modifier une liste pendant qu'on la parcourt :</strong> Peut causer des comportements inattendus</li>
+                    <li><strong>Oublier les crochets :</strong> <code>ma_liste = 1, 2, 3</code> crée un tuple, pas une liste</li>
+                    <li><strong>Confondre sort() et sorted() :</strong> <code>sort()</code> modifie la liste, <code>sorted()</code> retourne une nouvelle liste</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <div style="margin:8px 0;">
+                <ul style="margin:0; padding-left:20px;">
+                    <li>Toujours vérifier la longueur avec <code>len()</code> avant d'accéder à un index</li>
+                    <li>Utiliser <code>in</code> pour vérifier si un élément existe avant de le supprimer</li>
+                    <li>Utiliser des noms de variables explicites : <code>liste_notes</code> plutôt que <code>l</code></li>
+                    <li>Initialiser les listes vides avec <code>[]</code> quand on veut les remplir progressivement</li>
+                    <li>Utiliser <code>append()</code> pour ajouter un élément, <code>extend()</code> pour ajouter plusieurs éléments</li>
+                    <li>Tester avec de petites listes d'abord avant de travailler sur de grandes collections</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background:#e8f5e8; padding:12px; border-radius:4px; margin-top:10px;">
+            <strong>💡 Astuce pour éviter les erreurs d'index :</strong><br>
+            Toujours vérifier : <code>if index < len(ma_liste):</code> avant d'accéder à <code>ma_liste[index]</code>
+        </div>
+    </div>
+
+</div>
+
+===
+

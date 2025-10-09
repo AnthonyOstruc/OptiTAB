@@ -1,0 +1,466 @@
+=== Création et Accès aux Listes - Exercices de Base
+Difficulté: easy
+
+Énoncé: Écrire des programmes Python utilisant des listes pour résoudre les problèmes suivants.
+
+**Question 1 :** Créer une liste de notes <code>notes = [12, 15, 18, 10, 14]</code> et afficher la première note, la dernière note et la note du milieu.
+$\\$
+**Question 2 :** Créer une liste de fruits <code>fruits = ["pomme", "banane", "orange", "kiwi"]</code> et afficher le fruit à l'index 2 et le fruit à l'index -2.
+
+Étapes:
+
+**Méthode générale :** Création et accès aux listes
+
+    ● **Création de liste** : Utiliser des crochets <code>[]</code> avec des éléments séparés par des virgules
+    
+    $\\$
+    
+    ● **Accès par index** : <code>liste[index]</code> pour accéder à un élément
+    
+    $\\$
+    
+    ● **Indexation positive** : Commence à 0 pour le premier élément
+    
+    $\\$
+    
+    ● **Indexation négative** : -1 pour le dernier élément, -2 pour l'avant-dernier
+
+$\\$
+
+**Question 1 :** Accès aux notes avec différents index
+    
+    $\\$
+    
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        notes = [<span style="color:#bd93f9;">12</span>, <span style="color:#bd93f9;">15</span>, <span style="color:#bd93f9;">18</span>, <span style="color:#bd93f9;">10</span>, <span style="color:#bd93f9;">14</span>]<br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Première note : </span><span style="color:#8be9fd;">{notes[0]}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Dernière note : </span><span style="color:#8be9fd;">{notes[-1]}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Note du milieu : </span><span style="color:#8be9fd;">{notes[2]}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** <code>notes[0] = 12</code>, <code>notes[-1] = 14</code>, <code>notes[2] = 18</code>
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Première note : 12", "Dernière note : 14", "Note du milieu : 18"
+    
+    $\\$
+
+**Question 2 :** Accès aux fruits avec index positif et négatif
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        fruits = [<span style="color:#f1fa8c;">"pomme"</span>, <span style="color:#f1fa8c;">"banane"</span>, <span style="color:#f1fa8c;">"orange"</span>, <span style="color:#f1fa8c;">"kiwi"</span>]<br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Fruit index 2 : </span><span style="color:#8be9fd;">{fruits[2]}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Fruit index -2 : </span><span style="color:#8be9fd;">{fruits[-2]}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** <code>fruits[2] = "orange"</code>, <code>fruits[-2] = "orange"</code>
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Fruit index 2 : orange", "Fruit index -2 : orange"
+    
+    $\\$
+
+Solution:
+1. Le programme affiche la première (12), dernière (14) et note du milieu (18)
+ $\\$
+2. Le programme affiche "orange" pour les deux index (2 et -2)
+
+===
+
+=== Modification des Listes - Ajout et Suppression
+Difficulté: easy
+
+Énoncé: Utiliser les méthodes de modification des listes pour ajouter, supprimer et modifier des éléments.
+
+**Question 1 :** Créer une liste vide <code>nombres = []</code> et y ajouter les nombres 5, 10, 15 en utilisant <code>append()</code>, puis insérer 8 à la position 1 avec <code>insert()</code>.
+$\\$
+**Question 2 :** Partir de la liste <code>couleurs = ["rouge", "bleu", "vert", "bleu"]</code>, supprimer le premier "bleu" avec <code>remove()</code> et modifier "vert" en "jaune".
+
+Étapes:
+
+**Méthode générale :** Modification des listes
+
+    ● **append()** : Ajoute un élément à la fin de la liste
+    
+    $\\$
+    
+    ● **insert(index, élément)** : Insère un élément à une position donnée
+    
+    $\\$
+    
+    ● **remove(élément)** : Supprime la première occurrence d'un élément
+    
+    $\\$
+    
+    ● **Modification directe** : <code>liste[index] = nouvelle_valeur</code>
+
+$\\$
+
+**Question 1 :** Construction d'une liste avec append() et insert()
+    
+    $\\$
+    
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        nombres = []<br>
+        <br>
+        nombres.append(<span style="color:#bd93f9;">5</span>)<br>
+        nombres.append(<span style="color:#bd93f9;">10</span>)<br>
+        nombres.append(<span style="color:#bd93f9;">15</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après append : </span><span style="color:#8be9fd;">{nombres}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <br>
+        nombres.insert(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">8</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après insert : </span><span style="color:#8be9fd;">{nombres}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** append → <code>[5, 10, 15]</code>, insert(1, 8) → <code>[5, 8, 10, 15]</code>
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "[5, 10, 15]" puis "[5, 8, 10, 15]"
+    
+    $\\$
+
+**Question 2 :** Suppression et modification d'éléments
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        couleurs = [<span style="color:#f1fa8c;">"rouge"</span>, <span style="color:#f1fa8c;">"bleu"</span>, <span style="color:#f1fa8c;">"vert"</span>, <span style="color:#f1fa8c;">"bleu"</span>]<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Liste initiale : </span><span style="color:#8be9fd;">{couleurs}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <br>
+        couleurs.remove(<span style="color:#f1fa8c;">"bleu"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après remove : </span><span style="color:#8be9fd;">{couleurs}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <br>
+        couleurs[<span style="color:#bd93f9;">1</span>] = <span style="color:#f1fa8c;">"jaune"</span><br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après modification : </span><span style="color:#8be9fd;">{couleurs}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** remove("bleu") → <code>["rouge", "vert", "bleu"]</code>, modification → <code>["rouge", "jaune", "bleu"]</code>
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche les trois étapes de modification
+    
+    $\\$
+
+Solution:
+1. Le programme affiche "[5, 10, 15]" puis "[5, 8, 10, 15]"
+ $\\$
+2. Le programme affiche les trois étapes : initiale, après remove, après modification
+
+===
+
+=== Méthodes d'Information sur les Listes
+Difficulté: easy
+
+Énoncé: Utiliser les méthodes d'information des listes pour obtenir des données sur le contenu.
+
+**Question 1 :** Avec la liste <code>notes = [15, 12, 18, 12, 10]</code>, calculer et afficher la longueur avec <code>len()</code>, la position du premier 12 avec <code>index()</code>, et le nombre d'occurrences de 12 avec <code>count()</code>.
+$\\$
+**Question 2 :** Avec la liste <code>eleves = ["Alice", "Bob", "Charlie", "Alice"]</code>, vérifier si "Alice" est dans la liste avec <code>in</code>, trouver sa première position avec <code>index()</code>, et compter combien de fois elle apparaît avec <code>count()</code>.
+
+Étapes:
+
+**Méthode générale :** Méthodes d'information
+
+    ● **len(liste)** : Donne le nombre d'éléments dans la liste
+    
+    $\\$
+    
+    ● **liste.index(élément)** : Trouve la position de la première occurrence
+    
+    $\\$
+    
+    ● **liste.count(élément)** : Compte le nombre d'occurrences d'un élément
+    
+    $\\$
+    
+    ● **élément in liste** : Vérifie si un élément existe dans la liste
+
+$\\$
+
+**Question 1 :** Informations sur une liste de notes
+    
+    $\\$
+    
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        notes = [<span style="color:#bd93f9;">15</span>, <span style="color:#bd93f9;">12</span>, <span style="color:#bd93f9;">18</span>, <span style="color:#bd93f9;">12</span>, <span style="color:#bd93f9;">10</span>]<br>
+        <br>
+        longueur = <span style="color:#50fa7b;">len</span>(notes)<br>
+        position = notes.index(<span style="color:#bd93f9;">12</span>)<br>
+        nb_occurrences = notes.count(<span style="color:#bd93f9;">12</span>)<br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Longueur : </span><span style="color:#8be9fd;">{longueur}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Position de 12 : </span><span style="color:#8be9fd;">{position}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Occurrences de 12 : </span><span style="color:#8be9fd;">{nb_occurrences}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** <code>len(notes) = 5</code>, <code>index(12) = 1</code>, <code>count(12) = 2</code>
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Longueur : 5", "Position de 12 : 1", "Occurrences de 12 : 2"
+    
+    $\\$
+
+**Question 2 :** Recherche dans une liste d'élèves
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        eleves = [<span style="color:#f1fa8c;">"Alice"</span>, <span style="color:#f1fa8c;">"Bob"</span>, <span style="color:#f1fa8c;">"Charlie"</span>, <span style="color:#f1fa8c;">"Alice"</span>]<br>
+        <br>
+        existe = <span style="color:#f1fa8c;">"Alice"</span> <span style="color:#ff79c6;">in</span> eleves<br>
+        position = eleves.index(<span style="color:#f1fa8c;">"Alice"</span>)<br>
+        nb_fois = eleves.count(<span style="color:#f1fa8c;">"Alice"</span>)<br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Alice existe : </span><span style="color:#8be9fd;">{existe}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Position d'Alice : </span><span style="color:#8be9fd;">{position}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Alice apparaît </span><span style="color:#8be9fd;">{nb_fois}</span><span style="color:#f1fa8c;"> fois"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** <code>"Alice" in eleves = True</code>, <code>index("Alice") = 0</code>, <code>count("Alice") = 2</code>
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Alice existe : True", "Position d'Alice : 0", "Alice apparaît 2 fois"
+    
+    $\\$
+
+Solution:
+1. Le programme affiche "Longueur : 5", "Position de 12 : 1", "Occurrences de 12 : 2"
+ $\\$
+2. Le programme affiche "Alice existe : True", "Position d'Alice : 0", "Alice apparaît 2 fois"
+
+===
+
+=== Tri et Organisation des Listes
+Difficulté: medium
+
+Énoncé: Utiliser les méthodes de tri et d'organisation pour ordonner les éléments des listes.
+
+**Question 1 :** Avec la liste <code>notes = [15, 8, 20, 12]</code>, trier la liste par ordre croissant avec <code>sort()</code> puis l'inverser avec <code>reverse()</code>. Afficher les étapes.
+$\\$
+**Question 2 :** Créer une liste de prénoms <code>prenoms = ["Charlie", "Alice", "Bob"]</code>, la trier par ordre alphabétique avec <code>sort()</code>, puis afficher le premier et le dernier prénom.
+
+Étapes:
+
+**Méthode générale :** Tri et organisation
+
+    ● **sort()** : Trie la liste par ordre croissant (modifie la liste directement)
+    
+    $\\$
+    
+    ● **reverse()** : Inverse l'ordre des éléments
+    
+    $\\$
+    
+    ● **Attention** : <code>sort()</code> et <code>reverse()</code> modifient la liste originale
+    
+    $\\$
+    
+    ● **Ordre alphabétique** : Fonctionne aussi avec les chaînes de caractères
+
+$\\$
+
+**Question 1 :** Tri et inversion d'une liste de notes
+    
+    $\\$
+    
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        notes = [<span style="color:#bd93f9;">15</span>, <span style="color:#bd93f9;">8</span>, <span style="color:#bd93f9;">20</span>, <span style="color:#bd93f9;">12</span>]<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Liste initiale : </span><span style="color:#8be9fd;">{notes}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <br>
+        notes.sort()<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après tri : </span><span style="color:#8be9fd;">{notes}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <br>
+        notes.reverse()<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après reverse : </span><span style="color:#8be9fd;">{notes}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** Initiale → <code>[15, 8, 20, 12]</code>, sort → <code>[8, 12, 15, 20]</code>, reverse → <code>[20, 15, 12, 8]</code>
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche les trois étapes de transformation
+    
+    $\\$
+
+**Question 2 :** Tri alphabétique de prénoms
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        prenoms = [<span style="color:#f1fa8c;">"Charlie"</span>, <span style="color:#f1fa8c;">"Alice"</span>, <span style="color:#f1fa8c;">"Bob"</span>]<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Liste initiale : </span><span style="color:#8be9fd;">{prenoms}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <br>
+        prenoms.sort()<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Après tri alphabétique : </span><span style="color:#8be9fd;">{prenoms}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Premier : </span><span style="color:#8be9fd;">{prenoms[0]}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Dernier : </span><span style="color:#8be9fd;">{prenoms[-1]}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** Initiale → <code>["Charlie", "Alice", "Bob"]</code>, sort → <code>["Alice", "Bob", "Charlie"]</code>
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Premier : Alice", "Dernier : Charlie"
+    
+    $\\$
+
+Solution:
+1. Le programme affiche les trois étapes : [15, 8, 20, 12] → [8, 12, 15, 20] → [20, 15, 12, 8]
+ $\\$
+2. Le programme affiche "Premier : Alice", "Dernier : Charlie"
+
+===
+
+=== Parcours et Calculs avec les Listes
+Difficulté: medium
+
+Énoncé: Utiliser des boucles pour parcourir des listes et effectuer des calculs sur leurs éléments.
+
+**Question 1 :** Avec la liste <code>notes = [14, 12, 16, 10, 18]</code>, calculer la somme et la moyenne des notes en utilisant une boucle <code>for</code>.
+$\\$
+**Question 2 :** Créer une liste de nombres <code>nombres = [5, 8, 12, 3, 15]</code> et trouver le plus grand nombre en utilisant une boucle <code>for</code> (sans utiliser <code>max()</code>).
+
+Étapes:
+
+**Méthode générale :** Parcours et calculs
+
+    ● **Parcours avec for** : <code>for element in liste:</code> pour traiter chaque élément
+    
+    $\\$
+    
+    ● **Accumulation** : Utiliser une variable pour accumuler les valeurs
+    
+    $\\$
+    
+    ● **Calcul de moyenne** : somme ÷ nombre d'éléments
+    
+    $\\$
+    
+    ● **Recherche de maximum** : Comparer chaque élément avec le maximum actuel
+
+$\\$
+
+**Question 1 :** Calcul de somme et moyenne
+    
+    $\\$
+    
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        notes = [<span style="color:#bd93f9;">14</span>, <span style="color:#bd93f9;">12</span>, <span style="color:#bd93f9;">16</span>, <span style="color:#bd93f9;">10</span>, <span style="color:#bd93f9;">18</span>]<br>
+        <br>
+        somme = <span style="color:#bd93f9;">0</span><br>
+        <span style="color:#ff79c6;">for</span> note <span style="color:#ff79c6;">in</span> notes:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;somme = somme + note<br>
+        <br>
+        moyenne = somme / <span style="color:#50fa7b;">len</span>(notes)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Somme : </span><span style="color:#8be9fd;">{somme}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Moyenne : </span><span style="color:#8be9fd;">{moyenne:.1f}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** <code>somme = 14 + 12 + 16 + 10 + 18 = 70</code>, <code>moyenne = 70 / 5 = 14.0</code>
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Somme : 70", "Moyenne : 14.0"
+    
+    $\\$
+
+**Question 2 :** Recherche du maximum
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        nombres = [<span style="color:#bd93f9;">5</span>, <span style="color:#bd93f9;">8</span>, <span style="color:#bd93f9;">12</span>, <span style="color:#bd93f9;">3</span>, <span style="color:#bd93f9;">15</span>]<br>
+        <br>
+        maximum = nombres[<span style="color:#bd93f9;">0</span>]<br>
+        <span style="color:#ff79c6;">for</span> nombre <span style="color:#ff79c6;">in</span> nombres:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> nombre > maximum:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum = nombre<br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Le plus grand nombre : </span><span style="color:#8be9fd;">{maximum}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Analyse :** <code>maximum = 5</code> initialement, puis comparaisons : 8 > 5 → max = 8, 12 > 8 → max = 12, 3 < 12, 15 > 12 → max = 15
+    
+    $\\$
+    
+    ● **Résultat :** Le programme affiche "Le plus grand nombre : 15"
+    
+    $\\$
+
+Solution:
+1. Le programme affiche "Somme : 70", "Moyenne : 14.0"
+ $\\$
+2. Le programme affiche "Le plus grand nombre : 15"
+
+===

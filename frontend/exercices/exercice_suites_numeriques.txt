@@ -598,6 +598,229 @@ Solution:
 
 ===
 
+=== Suites Numériques - Suites Récurrentes et Programmation Python
+Difficulté: medium
+
+Énoncé: On considère la suite $\displaystyle (u_n)$ définie par $\displaystyle u_0 = 1$ et $\displaystyle u_{n+1} = \displaystyle\frac{2u_n + 3}{u_n + 2}$ pour tout $\displaystyle n \in \mathbb{N}$.
+
+**Question 1 :** Calculer à la main les termes $\displaystyle u_1$, $\displaystyle u_2$ et $\displaystyle u_3$ (donner les valeurs exactes sous forme de fractions).
+$\\$
+**Question 2 :** Écrire un programme Python qui calcule et affiche les 10 premiers termes de la suite. Que peut-on conjecturer sur le comportement de la suite ?
+$\\$
+**Question 3 :** On conjecture que la suite converge vers une limite $\displaystyle \ell$. Déterminer cette limite en résolvant l'équation $\displaystyle \ell = \displaystyle\frac{2\ell + 3}{\ell + 2}$.
+$\\$
+**Question 4 :** Écrire un programme Python qui détermine le plus petit entier $\displaystyle n$ tel que $\displaystyle |u_n - \ell| < 10^{-6}$ (où $\displaystyle \ell$ est la limite trouvée).
+$\\$
+**Question 5 :** Étudier le sens de variation de la suite en calculant $\displaystyle u_{n+1} - u_n$ et en utilisant Python pour vérifier numériquement votre résultat.
+
+Étapes:
+
+**Méthode générale :** Suite récurrente et algorithme
+
+    ● **Calcul manuel :** Appliquer la relation de récurrence pour les premiers termes
+    
+    $\\$
+    
+    ● **Programmation :** Utiliser une boucle <code>for</code> pour calculer les termes successifs
+    
+    $\\$
+    
+    ● **Limite (point fixe) :** Résoudre $\displaystyle \ell = f(\ell)$ où $\displaystyle f(x) = \displaystyle\frac{2x + 3}{x + 2}$
+    
+    $\\$
+    
+    ● **Convergence :** Tester la distance entre $\displaystyle u_n$ et $\displaystyle \ell$
+
+$\\$
+
+**Question 1 :** Calcul manuel des premiers termes
+
+    $\\$
+    
+    ● **Calcul de $\displaystyle u_1$ :** 
+        $\qquad$ $\displaystyle u_1 = \displaystyle\frac{2u_0 + 3}{u_0 + 2} = \displaystyle\frac{2 \times 1 + 3}{1 + 2} = \displaystyle\frac{5}{3}$
+    
+    $\\$
+    
+    ● **Calcul de $\displaystyle u_2$ :** 
+        $\qquad$ $\displaystyle u_2 = \displaystyle\frac{2u_1 + 3}{u_1 + 2} = \displaystyle\frac{2 \times \displaystyle\frac{5}{3} + 3}{\displaystyle\frac{5}{3} + 2} = \displaystyle\frac{\displaystyle\frac{10}{3} + \displaystyle\frac{9}{3}}{\displaystyle\frac{5}{3} + \displaystyle\frac{6}{3}} = \displaystyle\frac{\displaystyle\frac{19}{3}}{\displaystyle\frac{11}{3}} = \displaystyle\frac{19}{11}$
+    
+    $\\$
+    
+    ● **Calcul de $\displaystyle u_3$ :** 
+        $\qquad$ $\displaystyle u_3 = \displaystyle\frac{2u_2 + 3}{u_2 + 2} = \displaystyle\frac{2 \times \displaystyle\frac{19}{11} + 3}{\displaystyle\frac{19}{11} + 2} = \displaystyle\frac{\displaystyle\frac{38}{11} + \displaystyle\frac{33}{11}}{\displaystyle\frac{19}{11} + \displaystyle\frac{22}{11}} = \displaystyle\frac{\displaystyle\frac{71}{11}}{\displaystyle\frac{41}{11}} = \displaystyle\frac{71}{41}$
+    
+    $\\$
+
+**Question 2 :** Programme Python pour calculer les 10 premiers termes
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        <span style="color:#6272a4;"># Initialisation</span><br>
+        u = <span style="color:#bd93f9;">1.0</span><br>
+        <br>
+        <span style="color:#6272a4;"># Affichage de u_0</span><br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"u_0 = </span><span style="color:#8be9fd;">{u:.6f}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <br>
+        <span style="color:#6272a4;"># Calcul et affichage des termes suivants</span><br>
+        <span style="color:#ff79c6;">for</span> n <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">11</span>):<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;u = (<span style="color:#bd93f9;">2</span> <span style="color:#ffffff;">$\ast$</span> u + <span style="color:#bd93f9;">3</span>) / (u + <span style="color:#bd93f9;">2</span>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"u_</span><span style="color:#8be9fd;">{n}</span><span style="color:#f1fa8c;"> = </span><span style="color:#8be9fd;">{u:.6f}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Résultat du programme :**
+        $\qquad$• $\displaystyle u_0 = 1.000000$
+        $\\$
+        $\qquad$• $\displaystyle u_1 = 1.666667$ (≈ $\displaystyle\frac{5}{3}$)
+        $\\$
+        $\qquad$• $\displaystyle u_2 = 1.727273$ (≈ $\displaystyle\frac{19}{11}$)
+        $\\$
+        $\qquad$• $\displaystyle u_3 = 1.731707$ (≈ $\displaystyle\frac{71}{41}$)
+        $\\$
+        $\qquad$• Les termes suivants : $\displaystyle u_4 \approx 1.732026$, $\displaystyle u_5 \approx 1.732049$, ...
+    
+    $\\$
+    
+    ● **Conjecture :** La suite semble converger vers une valeur proche de $\displaystyle 1.732$ (qui ressemble à $\displaystyle\sqrt{3} \approx 1.732051$)
+    
+    $\\$
+
+**Question 3 :** Détermination de la limite
+
+    ● **Équation du point fixe :** $\displaystyle \ell = \displaystyle\frac{2\ell + 3}{\ell + 2}$
+    
+    $\\$
+    
+    ● **Résolution :**
+        $\qquad$ $\displaystyle \ell(\ell + 2) = 2\ell + 3$
+        $\\$
+        $\qquad$ $\displaystyle \ell^2 + 2\ell = 2\ell + 3$
+        $\\$
+        $\qquad$ $\displaystyle \ell^2 = 3$
+        $\\$
+        $\qquad$ $\displaystyle \ell = \pm\sqrt{3}$
+    
+    $\\$
+    
+    ● **Choix de la solution :** Puisque $\displaystyle u_0 = 1 > 0$ et que la relation de récurrence préserve la positivité,
+        $\qquad\qquad\qquad$ on a $\displaystyle \ell = \sqrt{3}$
+    
+    $\\$
+    
+    ● **Conclusion :** La suite converge vers $\displaystyle \ell = \sqrt{3} \approx 1.732051$
+    
+    $\\$
+
+**Question 4 :** Programme pour trouver le rang de convergence
+
+    <p><strong>Code Python :</strong></p>
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        <span style="color:#ff79c6;">import</span> math<br>
+        <br>
+        <span style="color:#6272a4;"># Initialisation</span><br>
+        u = <span style="color:#bd93f9;">1.0</span><br>
+        limite = math.sqrt(<span style="color:#bd93f9;">3</span>)<br>
+        epsilon = <span style="color:#bd93f9;">1e-6</span><br>
+        n = <span style="color:#bd93f9;">0</span><br>
+        <br>
+        <span style="color:#6272a4;"># Recherche du rang</span><br>
+        <span style="color:#ff79c6;">while</span> <span style="color:#50fa7b;">abs</span>(u - limite) >= epsilon:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;u = (<span style="color:#bd93f9;">2</span> <span style="color:#ffffff;">$\ast$</span> u + <span style="color:#bd93f9;">3</span>) / (u + <span style="color:#bd93f9;">2</span>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;n = n + <span style="color:#bd93f9;">1</span><br>
+        <br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"n = </span><span style="color:#8be9fd;">{n}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"u_</span><span style="color:#8be9fd;">{n}</span><span style="color:#f1fa8c;"> = </span><span style="color:#8be9fd;">{u:.10f}</span><span style="color:#f1fa8c;">"</span>)<br>
+        <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Distance à la limite : </span><span style="color:#8be9fd;">{abs(u - limite):.2e}</span><span style="color:#f1fa8c;">"</span>)
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Résultat du programme :**
+        $\qquad$• $\displaystyle n = 8$
+        $\\$
+        $\qquad$• $\displaystyle u_8 \approx 1.7320507764$
+        $\\$
+        $\qquad$• Distance à la limite : $\displaystyle 9.24 \times 10^{-7} < 10^{-6}$
+    
+    $\\$
+    
+    ● **Conclusion :** À partir du rang $\displaystyle n = 8$, la suite est à moins de $\displaystyle 10^{-6}$ de $\displaystyle\sqrt{3}$
+    
+    $\\$
+
+**Question 5 :** Étude du sens de variation
+
+    ● **Calcul théorique de $\displaystyle u_{n+1} - u_n$ :**
+        $\qquad$ $\displaystyle u_{n+1} - u_n = \displaystyle\frac{2u_n + 3}{u_n + 2} - u_n = \displaystyle\frac{2u_n + 3 - u_n(u_n + 2)}{u_n + 2}$
+        $\\$
+        $\qquad$ $\displaystyle = \displaystyle\frac{2u_n + 3 - u_n^2 - 2u_n}{u_n + 2} = \displaystyle\frac{3 - u_n^2}{u_n + 2}$
+    
+    $\\$
+    
+    ● **Étude du signe :**
+        $\qquad$• Si $\displaystyle u_n < \sqrt{3}$ : $\displaystyle u_n^2 < 3$ donc $\displaystyle 3 - u_n^2 > 0$ → $\displaystyle u_{n+1} - u_n > 0$ (croissante)
+        $\\$
+        $\qquad$• Si $\displaystyle u_n > \sqrt{3}$ : $\displaystyle u_n^2 > 3$ donc $\displaystyle 3 - u_n^2 < 0$ → $\displaystyle u_{n+1} - u_n < 0$ (décroissante)
+    
+    $\\$
+    
+    ● **Vérification Python :**
+    
+    <table style="border-collapse: collapse; margin:10px 0;">
+        <tr>
+            <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+        <span style="color:#6272a4;"># Vérification numérique</span><br>
+        u = <span style="color:#bd93f9;">1.0</span><br>
+        <br>
+        <span style="color:#ff79c6;">for</span> n <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">10</span>):<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;u_suivant = (<span style="color:#bd93f9;">2</span> <span style="color:#ffffff;">$\ast$</span> u + <span style="color:#bd93f9;">3</span>) / (u + <span style="color:#bd93f9;">2</span>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;variation = u_suivant - u<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"u_</span><span style="color:#8be9fd;">{n+1}</span><span style="color:#f1fa8c;"> - u_</span><span style="color:#8be9fd;">{n}</span><span style="color:#f1fa8c;"> = </span><span style="color:#8be9fd;">{variation:.6f}</span><span style="color:#f1fa8c;">"</span>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;u = u_suivant
+            </td>
+        </tr>
+    </table>
+    
+    $\\$
+    
+    ● **Résultat :** Toutes les variations sont positives et décroissantes
+        $\qquad$• $\displaystyle u_1 - u_0 \approx 0.666667$
+        $\\$
+        $\qquad$• $\displaystyle u_2 - u_1 \approx 0.060606$
+        $\\$
+        $\qquad$• $\displaystyle u_3 - u_2 \approx 0.004434$
+        $\\$
+        $\qquad$• Les variations tendent vers 0
+    
+    $\\$
+    
+    ● **Conclusion :** Puisque $\displaystyle u_0 = 1 < \sqrt{3}$, la suite est **strictement croissante** et converge vers $\displaystyle\sqrt{3}$
+    
+    $\\$
+
+Solution:
+1. $\displaystyle u_1 = \displaystyle\frac{5}{3}$, $\displaystyle u_2 = \displaystyle\frac{19}{11}$, $\displaystyle u_3 = \displaystyle\frac{71}{41}$
+ $\\$
+2. Programme Python fourni - Conjecture : la suite converge vers $\displaystyle\sqrt{3} \approx 1.732$
+ $\\$
+3. Limite : $\displaystyle \ell = \sqrt{3}$ (point fixe de la relation de récurrence)
+ $\\$
+4. Rang de convergence : $\displaystyle n = 8$ pour une précision de $\displaystyle 10^{-6}$
+ $\\$
+5. Suite **strictement croissante** (car $\displaystyle u_0 < \sqrt{3}$) et convergente vers $\displaystyle\sqrt{3}$
+
+===
+
 === Suites Numériques - Sens de Variation
 Difficulté: medium
 

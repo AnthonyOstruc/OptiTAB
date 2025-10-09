@@ -56,7 +56,8 @@ export function usePaysNiveauConfig() {
       if (userNiveau.value) {
         selectedNiveauId.value = userNiveau.value.id
       }
-      selectedRole.value = userRole.value
+      // S'assurer que les utilisateurs normaux ont toujours le rôle "student"
+      selectedRole.value = userStore.isAdmin ? userRole.value : 'student'
     } catch (error) {
       console.error('Error loading data:', error)
       showToast('Erreur lors du chargement des données', 'error')
@@ -142,8 +143,12 @@ export function usePaysNiveauConfig() {
   }
 
   const selectRole = (role) => {
-    if (role === 'student' || role === 'parent') {
+    // Seuls les admins peuvent sélectionner le rôle "parent"
+    if (role === 'student' || (role === 'parent' && userStore.isAdmin)) {
       selectedRole.value = role
+    } else if (role === 'parent' && !userStore.isAdmin) {
+      // Forcer le rôle "student" pour les utilisateurs normaux
+      selectedRole.value = 'student'
     }
   }
 

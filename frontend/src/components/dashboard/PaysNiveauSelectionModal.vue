@@ -92,7 +92,15 @@
           <p>Choisissez le type de compte pour personnaliser l'expérience.</p>
           <div class="role-options">
             <button type="button" class="role-btn" :class="{ active: selectedRole === 'student' }" @click="selectRole('student')">Élève</button>
-            <button type="button" class="role-btn" :class="{ active: selectedRole === 'parent' }" @click="selectRole('parent')">Parent</button>
+            <button 
+              v-if="isAdmin" 
+              type="button" 
+              class="role-btn" 
+              :class="{ active: selectedRole === 'parent' }" 
+              @click="selectRole('parent')"
+            >
+              Parent
+            </button>
           </div>
         </div>
       </div>
@@ -114,6 +122,7 @@
 
 <script setup>
 import { watch, onMounted, onUnmounted, computed } from 'vue'
+import { useUserStore } from '@/stores/user'
 import SelectionCard from '@/components/common/SelectionCard.vue'
 
 const props = defineProps({
@@ -168,6 +177,10 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'select-pays', 'select-niveau', 'select-role', 'save', 'prefetch-niveaux'])
+
+// Store utilisateur pour vérifier les permissions admin
+const userStore = useUserStore()
+const isAdmin = computed(() => userStore.isAdmin)
 
 const closeModal = () => {
   emit('update:modelValue', false)

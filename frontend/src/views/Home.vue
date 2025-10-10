@@ -46,9 +46,27 @@ const handleCtaMain = () => {
   window.location.href = '/about'
 }
 
-// Handler pour le bouton CTA secondaire (supprimé)
+// Handler pour le bouton CTA secondaire (Découvrir les Fonctionnalités)
 const handleCtaSecondary = () => {
-  // Bouton supprimé
+  // Ouvrir le modal d'inscription
+  openModal(MODAL_IDS.REGISTER)
+}
+
+// Handler pour le bouton CTA principal des étapes (Commencez Votre Essai Gratuit)
+const handleStepsCtaMain = () => {
+  // Ouvrir le modal d'inscription
+  openModal(MODAL_IDS.REGISTER)
+}
+
+// Handler pour le bouton CTA secondaire des étapes (Découvrir les Fonctionnalités)
+const handleStepsCtaSecondary = () => {
+  // Faire défiler vers la section des fonctionnalités
+  setTimeout(() => {
+    const featuresSection = document.querySelector('.intro-features-section')
+    if (featuresSection) {
+      featuresSection.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, 100) // Petit délai pour s'assurer que la page est chargée
 }
 
 onMounted(async () => {
@@ -99,6 +117,8 @@ onMounted(async () => {
       :cta-secondary="etapesParcours.ctaSecondary"
       :cta-top="etapesParcours.ctaTop"
       :titre-bas="etapesParcours.titreBas"
+      @cta-main="handleStepsCtaMain"
+      @cta-secondary="handleStepsCtaSecondary"
     />
 
 
@@ -109,14 +129,14 @@ onMounted(async () => {
       @subject-selected="handleSubjectSelected"
     />
 
-    <!-- Section Tarifs / Pricing -->
-    <PricingSection
+    <!-- Section Tarifs / Pricing - TEMPORAIREMENT CACHÉE -->
+    <!-- <PricingSection
       :titre="pricingPlans.titre"
       :description="pricingPlans.description"
       :plans="pricingPlans.plans"
       :garantie="pricingPlans.garantie"
       :legal="pricingPlans.legal"
-    />
+    /> -->
     <!-- Section FAQ -->
     <FaqSection :faq="faq" />
 

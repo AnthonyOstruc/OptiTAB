@@ -27,8 +27,8 @@
     <div class="steps-how-bottom">
       <h4 class="steps-how-title-bas">{{ titreBas }}</h4>
       <div class="steps-how-cta-group">
-        <button class="steps-how-cta-main">{{ ctaText }}</button>
-        <button class="steps-how-cta-secondary">{{ ctaSecondary }}</button>
+        <button class="steps-how-cta-main" @click="$emit('cta-main')">{{ ctaText }}</button>
+        <button class="steps-how-cta-secondary" @click="$emit('cta-secondary')">{{ ctaSecondary }}</button>
       </div>
     </div>
   </section>
@@ -46,6 +46,8 @@ const props = defineProps({
   ctaTop: { type: String, default: '' },
   titreBas: { type: String, default: '' }
 })
+
+const emit = defineEmits(['cta-main', 'cta-secondary'])
 
 const bleu = '#2a38b7'
 const vert = '#3ec28f'

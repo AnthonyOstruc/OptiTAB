@@ -100,7 +100,7 @@
           :key="provider.key"
           :class="['social-btn', provider.btnClass]"
           @click="() => handleSocialRegister(provider.key)"
-          :disabled="isSubmitting"
+          :disabled="isSubmitting || (provider.key === 'google' && isGoogleLoading)"
         >
           <img :src="provider.icon" :alt="provider.key" class="social-icon" />
           {{ provider.label }}
@@ -120,6 +120,7 @@ import FormField from '@/components/forms/FormField.vue'
 import { socialProviders } from '@/config/socialProviders'
 import PasswordStrength from '@/components/forms/PasswordStrength.vue'
 import { useUserStore } from '@/stores/user'
+import { useGoogleAuth } from '@/composables/useGoogleAuth'
 
 export default {
   name: 'RegisterModal',
@@ -150,6 +151,7 @@ export default {
     } = useAuthForm('REGISTER')
 
     const userStore = useUserStore()
+    const { setupGoogleSignIn, signInWithGoogle, isGoogleLoading } = useGoogleAuth()
 
     // Name fields for the top section
     const nameFields = ['firstName', 'lastName']
@@ -161,6 +163,11 @@ export default {
     // Feedback message state
     const feedbackMessage = ref('')
     const feedbackType = ref('') // 'success' ou 'error'
+
+    // Initialiser Google Sign-In
+    onMounted(async () => {
+      await setupGoogleSignIn()
+    })
 
     // Méthode pour afficher un message
     function showFeedback(message, type = 'error') {
@@ -246,7 +253,11 @@ export default {
       setFieldTouched(fieldName)
     }
     const handleSocialRegister = (providerKey) => {
-      emit('register', { provider: providerKey })
+      if (providerKey === 'google') {
+        signInWithGoogle()
+      } else {
+        emit('register', { provider: providerKey })
+      }
     }
     const handleLogin = () => {
       emit('login')
@@ -271,6 +282,7 @@ export default {
       nameFields,
       mainFieldNames,
       socialProviders,
+      isGoogleLoading,
       handleClose,
       handleFormSubmit,
       handleFieldBlur,

@@ -140,6 +140,7 @@ import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import SkeletonList from '@/components/common/SkeletonList.vue'
 import { getExercices, getStatuses, createStatus, updateStatus, deleteStatus } from '@/api'
 import { useUserStore } from '@/stores/user'
+import { useSubjectsStore } from '@/stores/subjects/index'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import Tabs from '@/components/common/Tabs.vue'
@@ -151,6 +152,7 @@ defineOptions({ name: 'ExercisesByNotion' })
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
+const subjectsStore = useSubjectsStore()
 const notionId = route.params.notionId
 
 const exercices = ref([])
@@ -374,9 +376,16 @@ async function handleStatus({ exerciceId, status }) {
 }
 
 function goBackToNotions() {
-  try {
-    router.back()
-  } catch (err) {
+  // Rediriger vers exercicies/id (liste des notions d'exercices)
+  const matiereId = route.params.matiereId || subjectsStore.activeMatiereId
+  if (matiereId) {
+    router.push({ 
+      name: 'Themes', 
+      params: { 
+        matiereId: matiereId
+      } 
+    })
+  } else {
     router.back()
   }
 }

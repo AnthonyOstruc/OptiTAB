@@ -219,12 +219,10 @@ const handleResize = () => {
   // Attendre 30ms avant d'exécuter l'action (très rapide)
   resizeTimeout = setTimeout(() => {
     if (isSmallScreen() && !props.collapsed) {
-      // Plier automatiquement sur petit écran
-      emit('toggle-collapsed')
-    } else if (!isSmallScreen() && props.collapsed) {
-      // Déplier automatiquement sur grand écran
+      // Plier automatiquement sur petit écran seulement
       emit('toggle-collapsed')
     }
+    // Sur grand écran : ne pas forcer le dépliement, respecter le choix utilisateur
   }, 30)
 }
 

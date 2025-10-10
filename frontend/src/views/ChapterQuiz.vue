@@ -410,6 +410,7 @@ import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import SkeletonList from '@/components/common/SkeletonList.vue'
 import { getQuiz, submitQuizResult, getQuizAttempts, checkQuizCooldown } from '@/api/quiz'
 import { useUserStore } from '@/stores/user'
+import { useSubjectsStore } from '@/stores/subjects/index'
 import { useXP } from '@/composables/useXP'
 import { calculateUserLevel } from '@/composables/useLevel'
 import { useDailyObjectivesIntegration } from '@/composables/useDailyObjectives'
@@ -418,6 +419,7 @@ import BackButton from '@/components/common/BackButton.vue'
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
+const subjectsStore = useSubjectsStore()
 const { handleQuizCompletion, updateUserXPInstantly } = useXP()
 const { onQuizCompleted } = useDailyObjectivesIntegration()
 const quiz = ref([])
@@ -1958,9 +1960,18 @@ function updateCooldownsRealTime() {
 
 // Fonction pour revenir aux chapitres
 function goBackToNotions() {
-  const matiereId = route.params.matiereId
-  if (matiereId) router.push({ name: 'QuizNotions', params: { matiereId } })
-  else router.back()
+  // Rediriger vers quiz/id (liste des notions de quiz)
+  const matiereId = route.params.matiereId || subjectsStore.activeMatiereId
+  if (matiereId) {
+    router.push({ 
+      name: 'QuizNotions', 
+      params: { 
+        matiereId: matiereId
+      } 
+    })
+  } else {
+    router.back()
+  }
 }
 
 // Détecter les tentatives de fermeture/rafraîchissement

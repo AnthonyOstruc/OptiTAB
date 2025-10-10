@@ -33,9 +33,11 @@ import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import { getSynthesisSheets } from '@/api/synthesis'
+import { useSubjectsStore } from '@/stores/subjects/index'
 
 const route = useRoute()
 const router = useRouter()
+const subjectsStore = useSubjectsStore()
 
 const notionId = computed(() => Number(route.params.notionId))
 const loading = ref(true)
@@ -50,7 +52,18 @@ const rendered = computed(() => {
 })
 
 function goBack() {
-  router.push({ name: 'SynthesisNotions', params: { matiereId: route.params.matiereId || '' } })
+  // Rediriger vers sheets?matiereId=id (liste des notions de synthèse)
+  const matiereId = route.params.matiereId || subjectsStore.activeMatiereId
+  if (matiereId) {
+    router.push({ 
+      name: 'Sheets', 
+      query: { 
+        matiereId: matiereId
+      } 
+    })
+  } else {
+    router.back()
+  }
 }
 
 onMounted(async () => {

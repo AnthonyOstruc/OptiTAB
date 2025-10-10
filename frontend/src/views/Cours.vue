@@ -147,12 +147,13 @@ const currentChapitreId = computed(() => route.params.chapitreId)
 
 // Fonction pour revenir aux chapitres
 function goBackToNotions() {
-  if (currentChapitreId.value) {
+  // Rediriger vers course-notions/id (liste des notions de cours)
+  const matiereId = currentMatiereId.value
+  if (matiereId) {
     router.push({ 
-      name: 'CourseByNotion', 
+      name: 'CourseNotions', 
       params: { 
-        matiereId: currentMatiereId.value,
-        notionId: currentNotionId.value 
+        matiereId: matiereId
       } 
     })
   } else {

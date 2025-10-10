@@ -1,105 +1,97 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.patches import Circle, Arc
+import matplotlib.patches as patches
 
 # Configuration de la figure
-plt.figure(figsize=(10, 10))
-ax = plt.gca()
-
-# Paramètres du cercle unité
-theta = np.pi/4  # Angle θ = 45° (premier quadrant)
-radius = 1
-
-# Coordonnées du point M sur le cercle
-M_x = radius * np.cos(theta)
-M_y = radius * np.sin(theta)
-
-# Coordonnées des projections
-B_x = M_x  # Projection sur l'axe des cosinus
-B_y = 0
-C_x = 0    # Projection sur l'axe des sinus
-C_y = M_y
-
-# Tracer le cercle unité
-circle = plt.Circle((0, 0), radius, fill=False, color='blue', linewidth=2)
-ax.add_patch(circle)
-
-# Tracer les axes
-ax.axhline(y=0, color='black', linewidth=1.5)
-ax.axvline(x=0, color='black', linewidth=1.5)
-
-# Tracer le rayon OM (vecteur rouge)
-ax.plot([0, M_x], [0, M_y], 'r-', linewidth=2)
-
-# Tracer les projections (lignes pointillées)
-ax.plot([M_x, B_x], [M_y, B_y], 'k--', linewidth=1.5, alpha=0.7)
-ax.plot([M_x, C_x], [M_y, C_y], 'k--', linewidth=1.5, alpha=0.7)
-
-# Marquer les points
-ax.plot(M_x, M_y, 'ro', markersize=8, label='M')
-ax.plot(B_x, B_y, 'ko', markersize=6, label='B')
-ax.plot(C_x, C_y, 'ko', markersize=6, label='C')
-ax.plot(0, 0, 'ko', markersize=6, label='O')
-
-# Tracer l'arc d'angle θ
-arc_theta = np.linspace(0, theta, 100)
-arc_x = 0.3 * np.cos(arc_theta)
-arc_y = 0.3 * np.sin(arc_theta)
-ax.plot(arc_x, arc_y, 'purple', linewidth=2)
-
-# Ajouter le label θ
-theta_label_x = 0.4 * np.cos(theta/2)
-theta_label_y = 0.4 * np.sin(theta/2)
-ax.text(theta_label_x, theta_label_y, r'$\theta$', fontsize=14, color='purple', 
-        ha='center', va='center', fontweight='bold')
-
-# Configuration des axes
-ax.set_xlim(-1.3, 1.3)
-ax.set_ylim(-1.3, 1.3)
+fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+ax.set_xlim(-1.5, 1.5)
+ax.set_ylim(-1.5, 1.5)
 ax.set_aspect('equal')
 
-# Supprimer les ticks automatiques
+# Cercle trigonométrique (rayon 1)
+cercle = Circle((0, 0), 1, fill=False, color='black', linewidth=2)
+ax.add_patch(cercle)
+
+# Annotation pour spécifier que c'est un cercle unitaire
+ax.text(0, -1.3, 'Cercle unitaire (rayon = 1)', fontsize=12, ha='center', 
+        bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgray", alpha=0.8))
+
+# Axes
+ax.axhline(y=0, color='black', linewidth=1, alpha=0.7)
+ax.axvline(x=0, color='black', linewidth=1, alpha=0.7)
+
+# Angle θ (en radians)
+theta = np.pi/4  # 45 degrés
+x_point = np.cos(theta)
+y_point = np.sin(theta)
+
+# Point M sur le cercle
+ax.plot(x_point, y_point, 'ro', markersize=8, label=f'Point M(cos(θ), sin(θ))')
+
+# Rayon OM
+ax.plot([0, x_point], [0, y_point], 'r-', linewidth=2, alpha=0.7)
+
+# Arc pour l'angle θ
+arc = Arc((0, 0), 0.3, 0.3, angle=0, theta1=0, theta2=np.degrees(theta), 
+          color='blue', linewidth=2)
+ax.add_patch(arc)
+
+# Projections sur les axes
+# Projection sur l'axe des abscisses (cos)
+ax.plot([x_point, x_point], [0, y_point], 'g--', linewidth=1, alpha=0.7)
+ax.plot([0, x_point], [0, 0], 'g-', linewidth=2, label='cos(θ)')
+
+# Projection sur l'axe des ordonnées (sin)
+ax.plot([0, x_point], [y_point, y_point], 'b--', linewidth=1, alpha=0.7)
+ax.plot([0, 0], [0, y_point], 'b-', linewidth=2, label='sin(θ)')
+
+
+# Marques sur les axes
+ax.plot(1, 0, 'ko', markersize=4)
+ax.plot(0, 1, 'ko', markersize=4)
+ax.plot(-1, 0, 'ko', markersize=4)
+ax.plot(0, -1, 'ko', markersize=4)
+
+# Annotations
+ax.annotate('O', (0, 0), xytext=(-0.1, -0.1), fontsize=12, fontweight='bold')
+ax.annotate('M', (x_point, y_point), xytext=(x_point+0.1, y_point+0.1), 
+           fontsize=12, fontweight='bold', color='red')
+ax.annotate('θ', (0.25, 0.1), fontsize=14, fontweight='bold', color='blue')
+
+# Labels des axes
+ax.text(1.3, 0, 'x', fontsize=12, fontweight='bold')
+ax.text(0, 1.3, 'y', fontsize=12, fontweight='bold')
+
+# Valeurs trigonométriques
+cos_val = np.cos(theta)
+sin_val = np.sin(theta)
+
+
+# Quadrants
+ax.text(0.6, 0.5, 'I', fontsize=16, fontweight='bold', alpha=0.5, ha='center', va='center')
+ax.text(-0.5, 0.5, 'II', fontsize=16, fontweight='bold', alpha=0.5, ha='center', va='center')
+ax.text(-0.5, -0.5, 'III', fontsize=16, fontweight='bold', alpha=0.5, ha='center', va='center')
+ax.text(0.5, -0.5, 'IV', fontsize=16, fontweight='bold', alpha=0.5, ha='center', va='center')
+
+# Configuration de l'affichage
+ax.grid(True, alpha=0.3)
+ax.set_xlabel('Axe des abscisses', fontsize=12)
+ax.set_ylabel('Axe des ordonnées', fontsize=12)
+
+# Légende
+ax.legend(loc='upper right', bbox_to_anchor=(0.95, 0.95))
+
+# Supprimer les graduations des axes
 ax.set_xticks([])
 ax.set_yticks([])
 
-# Supprimer les spines
-for spine in ax.spines.values():
-    spine.set_visible(False)
+# Supprimer le titre principal noir
+plt.suptitle('', fontsize=0)
 
-# Ajouter les flèches aux axes
-ax.annotate("", xy=(1.3, 0), xytext=(-1.3, 0),
-            arrowprops=dict(arrowstyle="->", color="black", linewidth=1.5))
-ax.annotate("", xy=(0, 1.3), xytext=(0, -1.3),
-            arrowprops=dict(arrowstyle="->", color="black", linewidth=1.5))
-
-# Labels des axes
-ax.text(1.15, -0.1, 'cos', fontsize=14, ha='center', va='center')
-ax.text(-0.1, 1.15, 'sin', fontsize=14, ha='center', va='center')
-
-# Marquer l'origine
-ax.text(-0.1, -0.1, '0', fontsize=12, ha='center', va='center')
-
-# Marquer le point 1 sur l'axe des cosinus
-ax.plot([1, 1], [-0.05, 0.05], 'k-', linewidth=1.5)
-ax.text(1.05, -0.12, '1', fontsize=12, ha='center', va='top')
-
-# Marquer le point 1 sur l'axe des sinus
-ax.plot([-0.05, 0.05], [1, 1], 'k-', linewidth=1.5)
-ax.text(-0.12, 1.05, '1', fontsize=12, ha='right', va='center')
-
-# Labels des points
-ax.text(M_x + 0.1, M_y + 0.1, 'M', fontsize=12, ha='left', va='bottom', color='red', fontweight='bold')
-ax.text(B_x + 0.1, B_y - 0.1, 'B', fontsize=12, ha='left', va='top', fontweight='bold')
-ax.text(C_x - 0.1, C_y + 0.1, 'C', fontsize=12, ha='right', va='bottom', fontweight='bold')
-
-# Pas de titre
-
-# Légende avec les définitions
-plt.legend(['Cercle unité', 'Rayon OM', 'Projection cos', 'Projection sin', 
-           r'$\cos \theta = \overline{OB}$', r'$\sin \theta = \overline{OC}$'], 
-          fontsize=12, loc='upper right', frameon=True, fancybox=True, shadow=True)
-
-# Ajuster l'espacement
+# Ajuster la mise en page
 plt.tight_layout()
 
-# Afficher le graphique
+# Sauvegarder
+plt.savefig('cercle_trigonometrique.png', dpi=300, bbox_inches='tight')
 plt.show()

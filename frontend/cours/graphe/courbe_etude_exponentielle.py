@@ -4,22 +4,17 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(16, 10))
 ax = plt.gca()
 
-# Fonction rationnelle
+# Fonction f(x) = (2x - 1)e^x
 def f(x):
-    return 1 / (x - 3)
+    return (2*x - 1) * np.exp(x)
 
-# Intervalles - on évite x = 3 (asymptote verticale)
-x1 = np.linspace(-20, 2.95, 1000)  # Avant l'asymptote
-x2 = np.linspace(3.05, 20, 1000)   # Après l'asymptote
+# Intervalle pour la fonction
+x = np.linspace(-20, 20, 1000)
 
-# Courbes
-plt.plot(x1, f(x1), 'b-', linewidth=2, label=r'$f(x) = \frac{1}{x-3}$')
-plt.plot(x2, f(x2), 'b-', linewidth=2)
+# Courbe
+plt.plot(x, f(x), 'b-', linewidth=2, label=r'$f(x) = (2x - 1)e^x$')
 
-# Asymptote verticale en x = 3
-plt.axvline(x=3, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote x = 3')
-
-# Asymptote horizontale en y = 0 (limite quand x tend vers ±∞)
+# Asymptote horizontale en y = 0 (limite quand x tend vers -∞)
 plt.axhline(y=0, color='green', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote y = 0')
 
 # Limites
@@ -61,13 +56,27 @@ for y in yticks_major:
 # --- Petites graduations intermédiaires (tous les 1) ---
 # Axe X
 for x in range(1, 20):
-    if x not in xticks_major and x != 3:  # évite l'asymptote
-        ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=0.5)
+    ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=0.5)
 
 # Axe Y
 for y in range(1, 20):
     if y not in yticks_major and y < 19:
         ax.plot([-0.1, 0.1], [y, y], color="black", linewidth=0.5)
+
+# Point clé - zéro de la fonction
+# f(x) = 0 ⟺ (2x - 1)e^x = 0 ⟺ 2x - 1 = 0 ⟺ x = 1/2
+zero_x = 0.5
+zero_y = f(zero_x)
+ax.plot(zero_x, zero_y, 'ro', markersize=6)
+ax.annotate(r'$(\frac{1}{2}, 0)$', (zero_x, zero_y), xytext=(zero_x+0.5, zero_y+1), fontsize=10)
+
+# Point clé - minimum
+# f'(x) = 2e^x + (2x-1)e^x = e^x(2 + 2x - 1) = e^x(2x + 1)
+# f'(x) = 0 ⟺ 2x + 1 = 0 ⟺ x = -0.5
+min_x = -0.5
+min_y = f(min_x)
+ax.plot(min_x, min_y, 'ro', markersize=6)
+ax.annotate(r'$(-\frac{1}{2}, -2e^{-\frac{1}{2}})$', (min_x, min_y), xytext=(min_x+0.5, min_y-1), fontsize=10)
 
 # Labels
 plt.xlabel('x', fontsize=14, labelpad=15)
@@ -77,6 +86,5 @@ ax.yaxis.set_label_coords(0.48, 1.02)
 
 # Légende
 plt.legend(fontsize=10, loc='upper right')
-
 
 plt.show()

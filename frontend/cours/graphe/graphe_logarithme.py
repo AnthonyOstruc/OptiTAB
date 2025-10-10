@@ -4,23 +4,18 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(16, 10))
 ax = plt.gca()
 
-# Fonction rationnelle
+# Fonction logarithme népérien
 def f(x):
-    return 1 / (x - 3)
+    return np.log(x)
 
-# Intervalles - on évite x = 3 (asymptote verticale)
-x1 = np.linspace(-20, 2.95, 1000)  # Avant l'asymptote
-x2 = np.linspace(3.05, 20, 1000)   # Après l'asymptote
+# Intervalle pour la fonction - on évite x = 0 (ln(0) n'existe pas)
+x = np.linspace(0.01, 20, 1000)  # Commence à 0.01 pour éviter ln(0)
 
-# Courbes
-plt.plot(x1, f(x1), 'b-', linewidth=2, label=r'$f(x) = \frac{1}{x-3}$')
-plt.plot(x2, f(x2), 'b-', linewidth=2)
+# Courbe
+plt.plot(x, f(x), 'b-', linewidth=2, label=r'$f(x) = \ln(x)$')
 
-# Asymptote verticale en x = 3
-plt.axvline(x=3, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote x = 3')
-
-# Asymptote horizontale en y = 0 (limite quand x tend vers ±∞)
-plt.axhline(y=0, color='green', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote y = 0')
+# Asymptote verticale en x = 0
+plt.axvline(x=0, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote x = 0')
 
 # Limites
 plt.xlim(-20, 20)
@@ -61,13 +56,15 @@ for y in yticks_major:
 # --- Petites graduations intermédiaires (tous les 1) ---
 # Axe X
 for x in range(1, 20):
-    if x not in xticks_major and x != 3:  # évite l'asymptote
-        ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=0.5)
+    ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=0.5)
 
 # Axe Y
 for y in range(1, 20):
     if y not in yticks_major and y < 19:
         ax.plot([-0.1, 0.1], [y, y], color="black", linewidth=0.5)
+
+# Point clé
+ax.plot(1, f(1), 'ro', markersize=6, label='Point clé $(1, 0)$')
 
 # Labels
 plt.xlabel('x', fontsize=14, labelpad=15)
@@ -77,6 +74,5 @@ ax.yaxis.set_label_coords(0.48, 1.02)
 
 # Légende
 plt.legend(fontsize=10, loc='upper right')
-
 
 plt.show()

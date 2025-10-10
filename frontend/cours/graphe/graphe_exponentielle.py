@@ -4,22 +4,17 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(16, 10))
 ax = plt.gca()
 
-# Fonction rationnelle
+# Fonction exponentielle
 def f(x):
-    return 1 / (x - 3)
+    return np.exp(x)
 
-# Intervalles - on évite x = 3 (asymptote verticale)
-x1 = np.linspace(-20, 2.95, 1000)  # Avant l'asymptote
-x2 = np.linspace(3.05, 20, 1000)   # Après l'asymptote
+# Intervalle pour la fonction exponentielle
+x = np.linspace(-20, 20, 1000)
 
-# Courbes
-plt.plot(x1, f(x1), 'b-', linewidth=2, label=r'$f(x) = \frac{1}{x-3}$')
-plt.plot(x2, f(x2), 'b-', linewidth=2)
+# Courbe
+plt.plot(x, f(x), 'b-', linewidth=2, label=r'$f(x) = e^x$')
 
-# Asymptote verticale en x = 3
-plt.axvline(x=3, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote x = 3')
-
-# Asymptote horizontale en y = 0 (limite quand x tend vers ±∞)
+# Asymptote horizontale en y = 0 (limite quand x tend vers -∞)
 plt.axhline(y=0, color='green', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote y = 0')
 
 # Limites
@@ -61,13 +56,16 @@ for y in yticks_major:
 # --- Petites graduations intermédiaires (tous les 1) ---
 # Axe X
 for x in range(1, 20):
-    if x not in xticks_major and x != 3:  # évite l'asymptote
-        ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=0.5)
+    ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=0.5)
 
 # Axe Y
 for y in range(1, 20):
     if y not in yticks_major and y < 19:
         ax.plot([-0.1, 0.1], [y, y], color="black", linewidth=0.5)
+
+# Point clé
+ax.plot(0, f(0), 'ro', markersize=6)
+ax.annotate('(0, 1)', (0, f(0)), xytext=(-1.5, f(0)+0.5), fontsize=10)
 
 # Labels
 plt.xlabel('x', fontsize=14, labelpad=15)
@@ -77,6 +75,5 @@ ax.yaxis.set_label_coords(0.48, 1.02)
 
 # Légende
 plt.legend(fontsize=10, loc='upper right')
-
 
 plt.show()

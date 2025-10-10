@@ -4,19 +4,23 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(16, 10))
 ax = plt.gca()
 
-# Fonctions polynomiales
+# Fonction rationnelle
 def f(x):
-    return x**2
+    return (2*x + 1) / (x + 3)
 
-def g(x):
-    return x**3
-
-# Intervalles
-x = np.linspace(-20, 20, 1000)
+# Intervalles - on évite x = -3 (asymptote verticale)
+x1 = np.linspace(-20, -3.1, 1000)  # Avant l'asymptote
+x2 = np.linspace(-2.9, 20, 1000)   # Après l'asymptote
 
 # Courbes
-plt.plot(x, f(x), 'b-', linewidth=2, label=r'$f(x) = x^2$')
-plt.plot(x, g(x), 'r-', linewidth=2, label=r'$g(x) = x^3$')
+plt.plot(x1, f(x1), 'b-', linewidth=2, label=r'$f(x) = \frac{2x+1}{x+3}$')
+plt.plot(x2, f(x2), 'b-', linewidth=2)
+
+# Asymptote verticale en x = -3
+plt.axvline(x=-3, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote x = -3')
+
+# Asymptote horizontale en y = 2 (limite quand x tend vers ±∞)
+plt.axhline(y=2, color='green', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote y = 2')
 
 # Limites
 plt.xlim(-20, 20)
@@ -45,25 +49,25 @@ yticks_major = [5, 10, 15, 19]
 
 # Axe X grandes graduations
 for x in xticks_major:
-    ax.plot([x, x], [-0.3, 0.3], color="black", linewidth=1.5)
+    ax.plot([x, x], [-0.3, 0.3], color="black", linewidth=0.8)
     ax.text(x, -1.0, str(x), ha='center', va='top', fontsize=12)
 
 # Axe Y grandes graduations
 for y in yticks_major:
     if y < 19:  # évite chevauchement avec la flèche
-        ax.plot([-0.2, 0.2], [y, y], color="black", linewidth=1.5)
+        ax.plot([-0.2, 0.2], [y, y], color="black", linewidth=0.8)
         ax.text(-1.0, y, str(y), ha='right', va='center', fontsize=12)
 
 # --- Petites graduations intermédiaires (tous les 1) ---
 # Axe X
 for x in range(1, 20):
-    if x not in xticks_major:
-        ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=1)
+    if x not in xticks_major and x != -3:  # évite l'asymptote
+        ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=0.5)
 
 # Axe Y
 for y in range(1, 20):
     if y not in yticks_major and y < 19:
-        ax.plot([-0.1, 0.1], [y, y], color="black", linewidth=1)
+        ax.plot([-0.1, 0.1], [y, y], color="black", linewidth=0.5)
 
 # Labels
 plt.xlabel('x', fontsize=14, labelpad=15)
@@ -73,5 +77,6 @@ ax.yaxis.set_label_coords(0.48, 1.02)
 
 # Légende
 plt.legend(fontsize=10, loc='upper right')
+
 
 plt.show()

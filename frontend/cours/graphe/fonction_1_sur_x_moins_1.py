@@ -4,27 +4,27 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(16, 10))
 ax = plt.gca()
 
-# Fonction rationnelle
+# Fonction rationnelle f(x) = 1/(x-1)
 def f(x):
-    return 1 / (x - 3)
+    return 1 / (x - 1)
 
-# Intervalles - on évite x = 3 (asymptote verticale)
-x1 = np.linspace(-20, 2.95, 1000)  # Avant l'asymptote
-x2 = np.linspace(3.05, 20, 1000)   # Après l'asymptote
+# Intervalles - on évite x = 1 (asymptote verticale)
+x1 = np.linspace(-10, 0.95, 1000)  # Avant l'asymptote
+x2 = np.linspace(1.05, 10, 1000)   # Après l'asymptote
 
 # Courbes
-plt.plot(x1, f(x1), 'b-', linewidth=2, label=r'$f(x) = \frac{1}{x-3}$')
+plt.plot(x1, f(x1), 'b-', linewidth=2, label=r'$f(x) = \frac{1}{x-1}$')
 plt.plot(x2, f(x2), 'b-', linewidth=2)
 
-# Asymptote verticale en x = 3
-plt.axvline(x=3, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote x = 3')
+# Asymptote verticale en x = 1
+plt.axvline(x=1, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote x = 1')
 
 # Asymptote horizontale en y = 0 (limite quand x tend vers ±∞)
 plt.axhline(y=0, color='green', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote y = 0')
 
 # Limites
-plt.xlim(-20, 20)
-plt.ylim(-20, 20)
+plt.xlim(-10, 10)
+plt.ylim(-10, 10)
 
 # Désactiver ticks automatiques
 ax.set_xticks([])
@@ -35,17 +35,17 @@ for spine in ax.spines.values():
     spine.set_visible(False)
 
 # Tracer les axes avec flèches
-ax.annotate("", xy=(20, 0), xytext=(-20, 0),
+ax.annotate("", xy=(10, 0), xytext=(-10, 0),
             arrowprops=dict(arrowstyle="->", color="black", linewidth=1.5))
-ax.annotate("", xy=(0, 20), xytext=(0, -20),
+ax.annotate("", xy=(0, 10), xytext=(0, -10),
             arrowprops=dict(arrowstyle="->", color="black", linewidth=1.5))
 
 # Texte "0"
 ax.text(-0.8, -1.2, '0', fontsize=12)
 
 # --- Graduation manuelle ---
-xticks_major = [5, 10, 15, 19]
-yticks_major = [5, 10, 15, 19]
+xticks_major = [-8, -6, -4, -2, 2, 4, 6, 8]
+yticks_major = [-8, -6, -4, -2, 2, 4, 6, 8]
 
 # Axe X grandes graduations
 for x in xticks_major:
@@ -54,19 +54,19 @@ for x in xticks_major:
 
 # Axe Y grandes graduations
 for y in yticks_major:
-    if y < 19:  # évite chevauchement avec la flèche
+    if y < 9:  # évite chevauchement avec la flèche
         ax.plot([-0.2, 0.2], [y, y], color="black", linewidth=0.8)
         ax.text(-1.0, y, str(y), ha='right', va='center', fontsize=12)
 
 # --- Petites graduations intermédiaires (tous les 1) ---
 # Axe X
-for x in range(1, 20):
-    if x not in xticks_major and x != 3:  # évite l'asymptote
+for x in range(-9, 10):
+    if x not in xticks_major and x != 1:  # évite l'asymptote
         ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=0.5)
 
 # Axe Y
-for y in range(1, 20):
-    if y not in yticks_major and y < 19:
+for y in range(-9, 10):
+    if y not in yticks_major and y < 9:
         ax.plot([-0.1, 0.1], [y, y], color="black", linewidth=0.5)
 
 # Labels
@@ -78,5 +78,17 @@ ax.yaxis.set_label_coords(0.48, 1.02)
 # Légende
 plt.legend(fontsize=10, loc='upper right')
 
+# Annotations pour les limites
+ax.annotate(r'$\lim_{x \to 1^-} f(x) = -\infty$', 
+            xy=(0.5, -5), xytext=(-3, -7),
+            arrowprops=dict(arrowstyle='->', color='red', lw=2),
+            fontsize=12, ha='center',
+            bbox=dict(boxstyle="round,pad=0.3", facecolor='#FFE6E6', alpha=0.9))
+
+ax.annotate(r'$\lim_{x \to 1^+} f(x) = +\infty$', 
+            xy=(1.5, 5), xytext=(3, 7),
+            arrowprops=dict(arrowstyle='->', color='red', lw=2),
+            fontsize=12, ha='center',
+            bbox=dict(boxstyle="round,pad=0.3", facecolor='#FFE6E6', alpha=0.9))
 
 plt.show()

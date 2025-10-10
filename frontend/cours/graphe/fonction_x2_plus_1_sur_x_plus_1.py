@@ -6,21 +6,23 @@ ax = plt.gca()
 
 # Fonction rationnelle
 def f(x):
-    return 1 / (x - 3)
+    return (x**2 + 1) / (x + 1)
 
-# Intervalles - on évite x = 3 (asymptote verticale)
-x1 = np.linspace(-20, 2.95, 1000)  # Avant l'asymptote
-x2 = np.linspace(3.05, 20, 1000)   # Après l'asymptote
+# Intervalles - on évite x = -1 (asymptote verticale)
+x1 = np.linspace(-20, -1.05, 1000)  # Avant l'asymptote
+x2 = np.linspace(-0.95, 20, 1000)   # Après l'asymptote
 
 # Courbes
-plt.plot(x1, f(x1), 'b-', linewidth=2, label=r'$f(x) = \frac{1}{x-3}$')
+plt.plot(x1, f(x1), 'b-', linewidth=2, label=r'$f(x) = \frac{x^2+1}{x+1}$')
 plt.plot(x2, f(x2), 'b-', linewidth=2)
 
-# Asymptote verticale en x = 3
-plt.axvline(x=3, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote x = 3')
+# Asymptote verticale en x = -1
+plt.axvline(x=-1, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote x = -1')
 
-# Asymptote horizontale en y = 0 (limite quand x tend vers ±∞)
-plt.axhline(y=0, color='green', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote y = 0')
+# Asymptote oblique y = x - 1 (division polynomiale)
+x_asymptote = np.linspace(-20, 20, 1000)
+y_asymptote = x_asymptote - 1
+plt.plot(x_asymptote, y_asymptote, 'green', linestyle='--', linewidth=1.5, alpha=0.7, label='Asymptote y = x - 1')
 
 # Limites
 plt.xlim(-20, 20)
@@ -61,7 +63,7 @@ for y in yticks_major:
 # --- Petites graduations intermédiaires (tous les 1) ---
 # Axe X
 for x in range(1, 20):
-    if x not in xticks_major and x != 3:  # évite l'asymptote
+    if x not in xticks_major and x != -1:  # évite l'asymptote
         ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=0.5)
 
 # Axe Y

@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { defineAsyncComponent } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { apiUtils } from '@/api/client'
 import { matiereMiddleware, exercicesMiddleware, quizMiddleware } from './middlewares/matiereMiddleware'
+import RouteLoader from '@/components/common/RouteLoader.vue'
 import { requireNiveau, routeRequiresNiveau } from './middlewares/niveauMiddleware'
 
 const routes = [
@@ -14,15 +16,44 @@ const routes = [
   { path: '/exercises', name: 'Exercises', component: () => import('@/views/Exercises.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
   { path: '/online-courses', name: 'OnlineCourses', component: () => import('@/views/OnlineCourses.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
   { path: '/quiz', name: 'Quiz', component: () => import('@/views/Quiz.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
-  { path: '/quiz/:matiereId', name: 'QuizNotions', component: () => import('@/views/QuizNotions.vue'), meta: { requiresAuth: true }, beforeEnter: quizMiddleware },
+  { 
+    path: '/quiz/:matiereId', 
+    name: 'QuizNotions', 
+    component: defineAsyncComponent({ 
+      loader: () => import('@/views/QuizNotions.vue'), 
+      loadingComponent: RouteLoader, 
+      delay: 0 
+    }), 
+    meta: { requiresAuth: true }, 
+    beforeEnter: quizMiddleware 
+  },
   // Accès direct au quiz par notion (chapitres supprimés)
   { path: '/quiz-notion/:notionId', name: 'QuizByNotion', component: () => import('@/views/ChapterQuiz.vue'), meta: { requiresAuth: true }, beforeEnter: quizMiddleware },
-  { path: '/course-notions/:matiereId', name: 'CourseNotions', component: () => import('@/views/CourseNotions.vue'), meta: { requiresAuth: true } },
+  { 
+    path: '/course-notions/:matiereId', 
+    name: 'CourseNotions', 
+    component: defineAsyncComponent({ 
+      loader: () => import('@/views/CourseNotions.vue'), 
+      loadingComponent: RouteLoader, 
+      delay: 0 
+    }), 
+    meta: { requiresAuth: true } 
+  },
   // Cours par notion (chapitres supprimés)
   { path: '/course-notion/:notionId', name: 'CourseByNotion', component: () => import('@/views/Cours.vue'), meta: { requiresAuth: true } },
   { path: '/cours/:matiereId/:notionId/:chapitreId', name: 'Cours', component: () => import('@/views/Cours.vue'), meta: { requiresAuth: true } },
   { path: '/cours/:matiereId/:notionId/:chapitreId/:coursId', name: 'CoursDetail', component: () => import('@/views/CoursDetail.vue'), meta: { requiresAuth: true } },
-  { path: '/sheets', name: 'Sheets', component: () => import('@/views/SynthesisNotions.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
+  { 
+    path: '/sheets', 
+    name: 'Sheets', 
+    component: defineAsyncComponent({ 
+      loader: () => import('@/views/SynthesisNotions.vue'), 
+      loadingComponent: RouteLoader, 
+      delay: 0 
+    }), 
+    meta: { requiresAuth: true }, 
+    beforeEnter: matiereMiddleware 
+  },
   { path: '/sheets-notion/:notionId', name: 'SynthesisByNotion', component: () => import('@/views/SheetByNotion.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
   { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
   { path: '/contact', name: 'Contact', component: () => import('@/views/Contact.vue') },
@@ -35,7 +66,17 @@ const routes = [
   { path: '/cookies', name: 'Cookies', component: () => import('@/views/Cookies.vue') },
   { path: '/conditions', name: 'Conditions', component: () => import('@/views/Conditions.vue') },
   { path: '/notions/:matiereId', name: 'Notions', component: () => import('@/views/Notions.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
-  { path: '/exercicies/:matiereId', name: 'Themes', component: () => import('@/views/Themes.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
+  { 
+    path: '/exercicies/:matiereId', 
+    name: 'Themes', 
+    component: defineAsyncComponent({ 
+      loader: () => import('@/views/Themes.vue'), 
+      loadingComponent: RouteLoader, 
+      delay: 0 
+    }), 
+    meta: { requiresAuth: true }, 
+    beforeEnter: exercicesMiddleware 
+  },
   { path: '/theme-notions/:themeId', name: 'ThemeNotions', component: () => import('@/views/ThemeNotions.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
   // Exercices par notion directement
   { path: '/exercices-notion/:notionId', name: 'ExercicesByNotion', component: () => import('@/views/ChapterExercises.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
@@ -158,7 +199,7 @@ router.beforeEach(async (to, from, next) => {
   // Redirection Home -> Dashboard pour utilisateurs connectés
   // MAIS seulement si on ne vient PAS déjà du Dashboard (évite les boucles)
   else if (isAuthenticated && (to.name === 'Home' || to.path === '/') && from.name !== 'Dashboard') {
-    next({ name: 'Dashboard' })
+    next({ name: 'Dashboard', replace: true })
   } 
   // Autres routes
   else {

@@ -3,7 +3,8 @@ import apiClient, { apiUtils } from './client'
 // ----- Quiz QCM -----
 // Remarque: le backend monte le router sous /api/quiz/ + register('quiz') → endpoints réels: /api/quiz/quiz/
 // Désormais filtrage par notion directement (suppression chapitres)
-export const getQuiz = (notionId) => apiClient.get(`/api/quiz/quiz/?notion=${notionId}`)
+// Accélérer via cache mémoire (TTL court mais suffisant)
+export const getQuiz = (notionId) => apiUtils.cachedGet(`/api/quiz/quiz/`, { params: { notion: notionId }, ttl: 180000 })
 export const getQuizAdmin = () => apiClient.get('/api/quiz/quiz/')
 export const createQuiz = (payload) => apiClient.post('/api/quiz/quiz/', payload)
 export const updateQuiz = (id, payload) => apiClient.patch(`/api/quiz/quiz/${id}/`, payload)

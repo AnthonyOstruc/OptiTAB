@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import { getMatieresUtilisateur } from '@/api'
@@ -30,6 +30,9 @@ import SelectedMatiereHeader from '@/components/common/SelectedMatiereHeader.vue
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useUserStore } from '@/stores/user'
 import BackButton from '@/components/common/BackButton.vue'
+
+// Nom explicite pour KeepAlive
+defineOptions({ name: 'Themes' })
 
 const route = useRoute()
 const router = useRouter()

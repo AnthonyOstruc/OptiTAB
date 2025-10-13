@@ -28,7 +28,7 @@ const props = defineProps({
   },
   chapterPages: {
     type: Array,
-    default: () => ['ExercicesByNotion', 'QuizByNotion', 'CourseByNotion']
+    default: () => ['ExercicesByNotion', 'QuizByNotion', 'CourseByNotion', 'SynthesisByNotion']
   },
   matierePages: {
     type: Array,

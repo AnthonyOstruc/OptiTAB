@@ -7,6 +7,7 @@
       :aria-pressed="tab.key === activeTab"
       :aria-label="tab.label"
       @click="handleTabClick(tab.key)"
+      @mouseenter="prefetchTab(tab.key)"
     >
       <component :is="tab.icon" class="chapter-nav-icon" />
       <span class="chapter-nav-label">{{ tab.label }}</span>
@@ -20,8 +21,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { 
   BookOpenIcon, 
   AcademicCapIcon, 
-  QuestionMarkCircleIcon 
+  QuestionMarkCircleIcon,
+  DocumentTextIcon
 } from '@heroicons/vue/24/outline'
+// Prefetch APIs to warm cache on hover
+import { getCours } from '@/api/cours'
+import { getExercices } from '@/api'
+import { getQuiz } from '@/api/quiz'
+import { getSynthesisSheets } from '@/api/synthesis'
 
 // Props
 const props = defineProps({
@@ -61,6 +68,12 @@ const tabs = computed(() => {
         route: `/exercices-notion/${notionId}`
       },
       { 
+        key: 'sheets', 
+        label: 'Synthèse', 
+        icon: DocumentTextIcon,
+        route: `/sheets-notion/${notionId}`
+      },
+      { 
         key: 'quiz', 
         label: 'Quiz', 
         icon: QuestionMarkCircleIcon,
@@ -83,6 +96,12 @@ const tabs = computed(() => {
         label: 'Exercices', 
         icon: AcademicCapIcon,
         route: `/notions/${matiereId}`
+      },
+      { 
+        key: 'sheets', 
+        label: 'Synthèse', 
+        icon: DocumentTextIcon,
+        route: `/sheets?matiereId=${matiereId}`
       },
       { 
         key: 'quiz', 
@@ -109,6 +128,12 @@ const tabs = computed(() => {
         route: `/exercices-notion/${notionId}`
       },
       { 
+        key: 'sheets', 
+        label: 'Synthèse', 
+        icon: DocumentTextIcon,
+        route: `/sheets-notion/${notionId}`
+      },
+      { 
         key: 'quiz', 
         label: 'Quiz', 
         icon: QuestionMarkCircleIcon,
@@ -131,6 +156,42 @@ const tabs = computed(() => {
         label: 'Exercices ', 
         icon: AcademicCapIcon,
         route: `/exercices-notion/${notionId}`
+      },
+      { 
+        key: 'sheets', 
+        label: 'Synthèse', 
+        icon: DocumentTextIcon,
+        route: `/sheets-notion/${notionId}`
+      },
+      { 
+        key: 'quiz', 
+        label: 'Quiz', 
+        icon: QuestionMarkCircleIcon,
+        route: `/quiz-notion/${notionId}`
+      }
+    ]
+  }
+
+  // Cas 6: On est dans une notion de synthèse (fiches)
+  if (notionId && currentPath.includes('/sheets-notion/')) {
+    return [
+      { 
+        key: 'cours', 
+        label: 'Cours', 
+        icon: BookOpenIcon,
+        route: `/course-notion/${notionId}`
+      },
+      { 
+        key: 'exercices', 
+        label: 'Exercices', 
+        icon: AcademicCapIcon,
+        route: `/exercices-notion/${notionId}`
+      },
+      { 
+        key: 'sheets', 
+        label: 'Synthèse', 
+        icon: DocumentTextIcon,
+        route: `/sheets-notion/${notionId}`
       },
       { 
         key: 'quiz', 
@@ -157,6 +218,12 @@ const tabs = computed(() => {
         route: `/notions/${matiereId}`
       },
       { 
+        key: 'sheets', 
+        label: 'Synthèse', 
+        icon: DocumentTextIcon,
+        route: `/sheets?matiereId=${matiereId}`
+      },
+      { 
         key: 'quiz', 
         label: 'Quiz', 
         icon: QuestionMarkCircleIcon,
@@ -181,6 +248,12 @@ const tabs = computed(() => {
         route: `/notions/${matiereId}`
       },
       { 
+        key: 'sheets', 
+        label: 'Synthèse', 
+        icon: DocumentTextIcon,
+        route: `/sheets?matiereId=${matiereId}`
+      },
+      { 
         key: 'quiz', 
         label: 'Quiz', 
         icon: QuestionMarkCircleIcon,
@@ -202,6 +275,12 @@ const tabs = computed(() => {
       label: 'Exercices', 
       icon: AcademicCapIcon,
       route: '/exercises'
+    },
+    { 
+      key: 'sheets', 
+      label: 'Synthèse', 
+      icon: DocumentTextIcon,
+      route: '/sheets'
     },
     { 
       key: 'quiz', 
@@ -229,6 +308,8 @@ function updateActiveTab() {
       activeTab.value = 'exercices'
     } else if (currentPath.includes(`/quiz-exercices/${chapitreId}`)) {
       activeTab.value = 'quiz'
+    } else if (currentPath.includes(`/sheets/${chapitreId}`)) {
+      activeTab.value = 'sheets'
     } else {
       // Si on est dans un chapitre mais pas sur une route spécifique, on reste sur exercices par défaut
       activeTab.value = 'exercices'
@@ -239,6 +320,8 @@ function updateActiveTab() {
       activeTab.value = 'cours'
     } else if (currentPath.includes('/exercices-notion/') || currentPath.includes('/notions/')) {
       activeTab.value = 'exercices'
+    } else if (currentPath.includes('/sheets-notion/') || currentPath.includes('/sheets')) {
+      activeTab.value = 'sheets'
     } else if (currentPath.includes('/quiz-notion/') || 
                (currentPath.includes('/quiz/') && route.params.matiereId)) {
       activeTab.value = 'quiz'
@@ -259,6 +342,30 @@ watch(() => route.path, () => {
   updateActiveTab()
 })
 
+// Prefetch data for a tab (warms in-memory cache)
+function prefetchTab(key) {
+  const notionId = route.params.notionId
+  const matiereId = route.params.matiereId || route.query?.matiereId
+  if (!notionId) return
+  try {
+    if (key === 'cours') {
+      getCours(null, notionId)
+    } else if (key === 'exercices') {
+      getExercices({ notion: notionId })
+    } else if (key === 'quiz') {
+      getQuiz(notionId)
+    } else if (key === 'sheets') {
+      if (notionId) {
+        getSynthesisSheets({ notion: notionId })
+      } else if (matiereId) {
+        getSynthesisSheets({ matiere: matiereId })
+      } else {
+        getSynthesisSheets()
+      }
+    }
+  } catch (_) {}
+}
+
 // Handle tab navigation
 function handleTabClick(tabKey) {
   const tab = tabs.value.find(t => t.key === tabKey)
@@ -266,6 +373,21 @@ function handleTabClick(tabKey) {
     // Mise à jour immédiate de l'onglet actif pour un feedback visuel instantané
     activeTab.value = tabKey
     
+    // Sauvegarder la position de scroll de la page actuelle pour une meilleure reprise
+    try {
+      const notionId = route.params.notionId
+      const pageType =
+        route.path.includes('/exercices-notion/') ? 'exercices' :
+        route.path.includes('/course-notion/') ? 'cours' :
+        route.path.includes('/quiz-notion/') ? 'quiz' :
+        route.path.includes('/sheets-notion/') ? 'sheets' : null
+      if (pageType && notionId) {
+        const key = `optitab_scroll_${pageType}_${notionId}`
+        const state = { scrollY: window.scrollY || window.pageYOffset || 0, t: Date.now() }
+        sessionStorage.setItem(key, JSON.stringify(state))
+      }
+    } catch (_) {}
+
     // Navigation avec transition fluide
     router.push({
       path: tab.route,

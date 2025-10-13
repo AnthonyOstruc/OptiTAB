@@ -23,13 +23,16 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import ThemeNotionsView from '@/components/common/ThemeNotionsView.vue'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useUserStore } from '@/stores/user'
+
+// Nom explicite pour KeepAlive
+defineOptions({ name: 'CourseNotions' })
 
 const route = useRoute()
 const router = useRouter()

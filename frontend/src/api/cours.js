@@ -1,4 +1,4 @@
-import apiClient from './client'
+import apiClient, { apiUtils } from './client'
 
 /**
  * Récupère dynamiquement la liste des cours pour une matière, notion ou chapitre donné depuis le backend.
@@ -17,8 +17,9 @@ export const getCours = (matiereId = null, notionId = null, chapitreId = null) =
   if (params.length > 0) {
     url += '?' + params.join('&')
   }
-  
-  return apiClient.get(url)
+  // Utiliser un cache mémoire avec TTL pour accélérer les rechargements
+  // Contenus de cours changent rarement → TTL généreux (5 minutes)
+  return apiUtils.cachedGet(url, { ttl: 300000 })
 }
 
 /**

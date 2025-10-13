@@ -1,0 +1,188 @@
+=== Suites Numériques - Résumé Terminal
+Difficulté: medium
+Ordre: 1
+
+Titre: Les Suites Numériques : Formules essentielles et méthodes de calcul
+Description: Résumé des suites arithmétiques et géométriques avec formules de terme général, sommes, variations et limites. Exemples de calculs pratiques.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Une <strong>suite numérique</strong> est une fonction qui associe à chaque entier naturel $n$ un nombre réel $u_n$.</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u : \mathbb{N} \to \mathbb{R}, \quad n \mapsto u_n$$
+        </div>
+        <p><strong>Explication :</strong> On note la suite $(u_n)$ et chaque $u_n$ est appelé terme de rang $n$. Une suite peut être définie explicitement ($u_n = f(n)$) ou par récurrence ($u_{n+1} = f(u_n)$).</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Suite arithmétique</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <p>Une suite est <strong>arithmétique</strong> si on passe d'un terme au suivant en ajoutant toujours le même nombre $r$ (appelé raison).</p>
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$u_{n+1} = u_n + r$$
+        </div>
+        
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Formule du terme général :</strong>
+            <div style="text-align:center; margin:8px 0;">
+                $$u_n = u_0 + n \times r$$
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Somme des termes :</strong>
+            <div style="text-align:center; margin:8px 0;">
+                $$S_n = u_0 + u_1 + \cdots + u_n = \frac{(n+1)(u_0 + u_n)}{2}$$
+            </div>
+        </div>
+
+        <p><strong>💡 Sens de variation :</strong> Si $r > 0$ : croissante | Si $r = 0$ : constante | Si $r < 0$ : décroissante</p>
+        <p><strong>💡 Limite :</strong> Si $r > 0$ : $+\infty$ | Si $r = 0$ : $u_0$ | Si $r < 0$ : $-\infty$</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Exemples détaillés</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Calcul d'un terme arithmétique</h3>
+        <p><strong>Énoncé :</strong> Soit $(u_n)$ arithmétique avec $u_0 = 7$ et $r = -3$. Calculer $u_{15}$.</p>
+        <p><strong>Données :</strong> Premier terme $u_0 = 7$, raison $r = -3$</p>
+
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li>$u_n = u_0 + n \times r$</li>
+                <li>$u_{15} = 7 + 15 \times (-3)$</li>
+                <li>$u_{15} = 7 - 45$</li>
+                <li>$u_{15} = -38$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Résultat final :</strong> $u_{15} = -38$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Somme arithmétique</h3>
+        <p><strong>Situation :</strong> Calculer la somme des 20 premiers termes de $(u_n)$ avec $u_0 = 5$ et $r = 4$.</p>
+
+        <div style="text-align:center; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            $$S_{19} = \frac{20 \times (u_0 + u_{19})}{2}$$
+        </div>
+
+        <p><strong>Calculs détaillés :</strong></p>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <ul style="margin:0; padding-left:20px;">
+                <li>$u_{19} = u_0 + 19 \times r = 5 + 19 \times 4 = 81$</li>
+                <li>$S_{19} = \frac{20 \times (5 + 81)}{2} = \frac{20 \times 86}{2}$</li>
+                <li>$S_{19} = 10 \times 86 = 860$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Vérification :</strong> La somme des 20 premiers termes est bien $860$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Suite géométrique</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et formules</h3>
+        <p>Une suite est <strong>géométrique</strong> si on passe d'un terme au suivant en multipliant toujours par le même nombre $q \neq 0$ (appelé raison).</p>
+
+        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
+            <strong>Formule de récurrence :</strong><br>
+            $$u_{n+1} = q \times u_n$$
+        </div>
+
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Formule du terme général :</strong>
+            <div style="text-align:center; margin:8px 0;">
+                $$u_n = u_0 \times q^n$$
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Somme des termes (si $q \neq 1$) :</strong>
+            <div style="text-align:center; margin:8px 0;">
+                $$S_n = u_0 + u_1 + \cdots + u_n = u_0 \times \frac{1 - q^{n+1}}{1 - q}$$
+            </div>
+        </div>
+
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Démarche à suivre :</strong><br>
+            • Vérifier d'abord si $q = 1$ (dans ce cas : $S_n = (n+1) \times u_0$)<br>
+            • Si $q \neq 1$, utiliser la formule avec la fraction<br>
+            • Calculer $q^{n+1}$ puis appliquer la formule
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Application pratique</h3>
+        <p><strong>Problème :</strong> Calculer la somme des 10 premiers termes de $(v_n)$ avec $v_0 = 2$ et $q = 3$.</p>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Éléments donnés :</strong><br>
+            • Premier terme : $v_0 = 2$<br>
+            • Raison : $q = 3 \neq 1$<br>
+            • Nombre de termes : 10 (de $v_0$ à $v_9$)
+        </div>
+
+        <div style="text-align:center; margin:15px 0;">
+            <strong>Résolution :</strong>
+            <div style="font-size:1.1em; margin:10px 0; padding:10px; background:#ecf0f1; border-radius:4px;">
+                $$S_9 = v_0 \times \frac{1 - q^{10}}{1 - q} = 2 \times \frac{1 - 3^{10}}{1 - 3}$$
+                $$S_9 = 2 \times \frac{1 - 59049}{-2} = 2 \times 29524 = 59048$$
+            </div>
+        </div>
+
+        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Solution finale :</strong> La somme des 10 premiers termes est $S_9 = 59\,048$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Propriétés et caractéristiques</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <ul style="margin:0; padding-left:20px;">
+            <li><strong>Variation suite géométrique ($u_0 > 0$) :</strong> Si $q > 1$ : croissante | Si $0 < q < 1$ : décroissante | Si $q < 0$ : non monotone</li>
+            <li><strong>Limite suite géométrique ($u_0 > 0$) :</strong> Si $q > 1$ : $+\infty$ | Si $0 < q < 1$ : $0$ | Si $q = 1$ : $u_0$ | Si $|q| < 1$ : $0$</li>
+            <li><strong>Suite arithmético-géométrique :</strong> Si $u_{n+1} = a \cdot u_n + b$ avec $a \neq 1$, poser $v_n = u_n - \ell$ où $\ell = \frac{b}{1-a}$, alors $(v_n)$ est géométrique</li>
+            <li><strong>Aspect graphique :</strong> Suite arithmétique : points alignés | Suite géométrique : croissance/décroissance exponentielle</li>
+        </ul>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Erreurs fréquentes et conseils</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fdf2f2; padding:12px; border-radius:4px; margin-bottom:10px;">
+            <strong>❌ Pièges à éviter :</strong>
+            <div style="margin:8px 0;">
+                <ul style="margin:0; padding-left:20px;">
+                    <li>Confondre addition (arithmétique) et multiplication (géométrique)</li>
+                    <li>Oublier de compter : de $u_0$ à $u_n$, il y a $(n+1)$ termes, pas $n$ termes</li>
+                    <li>Utiliser la formule de somme géométrique avec $q=1$ (elle n'est valable que pour $q \neq 1$)</li>
+                    <li>Confondre $u_n$ (un terme) et $S_n$ (une somme de termes)</li>
+                    <li>Ne pas faire attention au signe de la raison dans les études de variation</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <div style="margin:8px 0;">
+                <ul style="margin:0; padding-left:20px;">
+                    <li>Toujours identifier le type de suite avant de choisir la formule (arithmétique ou géométrique)</li>
+                    <li>Pour une suite arithmétique : vérifier si $u_{n+1} - u_n$ est constant</li>
+                    <li>Pour une suite géométrique : vérifier si $\frac{u_{n+1}}{u_n}$ est constant</li>
+                    <li>Bien noter le premier terme et son indice ($u_0$ ou $u_1$) avant de calculer</li>
+                    <li>Pour les sommes géométriques, vérifier systématiquement si $q = 1$ avant d'appliquer la formule</li>
+                    <li>Mémoriser les limites de référence : $n^k \to +\infty$, $\frac{1}{n^k} \to 0$, $q^n$ dépend de $q$</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+===
+

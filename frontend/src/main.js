@@ -82,4 +82,7 @@ if (import.meta.env.DEV) {
   })
 }
 
-app.mount('#app')
+// Monter l'app seulement quand le routeur est prêt pour éviter les flashes
+router.isReady().then(() => {
+  app.mount('#app')
+})

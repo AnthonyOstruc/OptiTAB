@@ -66,53 +66,9 @@
               </div>
             </div>
 
-            <div class="filter-divider"></div>
-
-            <div class="filter-item">
-              <span class="filter-label">Affichage</span>
-              <div class="filter-buttons">
-                <button
-                  :class="['filter-btn', 'width-toggle-btn', { active: isFullWidth }]"
-                  @click="toggleFullWidth"
-                  :title="isFullWidth ? 'Réduire la largeur' : 'Pleine largeur'"
-                >
-                  <span v-if="isFullWidth">📐</span>
-                  <span v-else>↔️</span>
-                  {{ isFullWidth ? 'Normal' : 'Large' }}
-                </button>
-              </div>
-            </div>
-
-            <div class="filter-divider"></div>
-
-            <div class="filter-item" v-if="!loading && !error && filteredExercices.length > 0">
-              <span class="filter-label">Téléchargement</span>
-              <div class="filter-buttons">
-                <PDFDownloadButton
-                  type="list"
-                  :data="filteredExercices"
-                  :title="`Exercices_${notionNom}_Enonces`"
-                  text="📋 Énoncés"
-                  :useMathJax="true"
-                  :includeSolution="false"
-                  class="filter-btn download-enonces-btn"
-                  style="min-width: auto; padding: 0.25rem 0.5rem; font-size: 0.8rem;"
-                />
-                <PDFDownloadButton
-                  type="list"
-                  :data="filteredExercices"
-                  :title="`Exercices_${notionNom}_Corriges`"
-                  text="📝 Corrigés"
-                  :useMathJax="true"
-                  :includeSolution="true"
-                  class="filter-btn download-corriges-btn"
-                  style="min-width: auto; padding: 0.25rem 0.5rem; font-size: 0.8rem;"
-                />
-              </div>
-            </div>
           </div>
         </div>
-        <div :class="['exercices-list', { 'full-width': isFullWidth }]">
+        <div class="exercices-list">
           <ExerciceQCM
             v-for="exercice in paginated"
             :key="exercice.id"
@@ -133,7 +89,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick, watch, computed } from 'vue'
 import { defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
@@ -145,7 +101,6 @@ import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import Tabs from '@/components/common/Tabs.vue'
 import BackButton from '@/components/common/BackButton.vue'
-import PDFDownloadButton from '@/components/common/PDFDownloadButton.vue'
 
 defineOptions({ name: 'ExercisesByNotion' })
 
@@ -153,19 +108,17 @@ const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()
-const notionId = route.params.notionId
+const notionId = ref(route.params.notionId)
 
 const exercices = ref([])
 const perPageOptions = [1,3,5]
-const perPage = ref(1)
+const perPage = ref(5)
 const currentPage = ref(1)
 
 // Filtre difficulté
 const difficultyOptions = ['all','easy','medium','hard']
 const selectedDifficulty = ref('all')
 
-// Contrôle de largeur
-const isFullWidth = ref(true)
 
 // Status filtering tabs avec design amélioré
 const tabs = computed(() => [
@@ -200,6 +153,39 @@ const tabs = computed(() => [
 ])
 const activeTab = ref('all')
 
+// --- Persistence (sessionStorage) ---
+const storageKey = `optitab_page_exercices_${notionId}`
+
+function saveViewState() {
+  try {
+    const state = {
+      perPage: perPage.value,
+      currentPage: currentPage.value,
+      selectedDifficulty: selectedDifficulty.value,
+      activeTab: activeTab.value,
+      scrollY: typeof window !== 'undefined' ? (window.scrollY || window.pageYOffset || 0) : 0,
+      t: Date.now()
+    }
+    sessionStorage.setItem(storageKey, JSON.stringify(state))
+  } catch (_) {}
+}
+
+function restoreViewState() {
+  try {
+    const raw = sessionStorage.getItem(storageKey)
+    if (!raw) return null
+    const s = JSON.parse(raw)
+    if (s && typeof s === 'object') {
+      if (typeof s.perPage === 'number') perPage.value = s.perPage
+      if (typeof s.currentPage === 'number') currentPage.value = Math.max(1, s.currentPage)
+      if (typeof s.selectedDifficulty === 'string') selectedDifficulty.value = s.selectedDifficulty
+      if (typeof s.activeTab === 'string') activeTab.value = s.activeTab
+      return s
+    }
+  } catch (_) {}
+  return null
+}
+
 // Fonction pour télécharger tous les exercices en PDF
 const downloadAllPDF = async () => {
   try {
@@ -224,23 +210,28 @@ const error = ref('')
 const chapitres = ref([])
 
 onMounted(async () => {
+  await loadData()
+})
+
+async function loadData() {
   loading.value = true
   try {
     const niveauId = userStore.niveau_pays?.id
 
-    // Charger en parallèle: chapitre (détail), exercices, statuts
+    // Reset data when notion changes
+    exercices.value = []
+    statusMap.value = {}
+
     const [exercicesData, statusesResp] = await Promise.all([
-      getExercices({ notion: notionId, niveau: niveauId }),
+      getExercices({ notion: notionId.value, niveau: niveauId }),
       getStatuses()
     ])
 
     notionNom.value = 'Notion'
 
-    // Exercices
     exercices.value = Array.isArray(exercicesData) ? exercicesData : []
     console.log(`[ExercisesByNotion] Exercices chargés pour niveau ${niveauId}:`, exercices.value.length)
 
-    // Statuts
     const stats = statusesResp?.data || []
     const list = Array.isArray(stats) ? stats : (stats?.results || [])
     statusMap.value = Object.fromEntries(
@@ -250,13 +241,37 @@ onMounted(async () => {
       ])
     )
 
-    currentPage.value = 1
+    // Restaurer l'état de vue
+    restoreViewState()
+
+    const total = Math.max(1, Math.ceil((filteredExercices?.value?.length || 0) / Math.max(1, perPage.value)))
+    if (currentPage.value > total) currentPage.value = total
     error.value = ''
   } catch (e) {
     console.error('[ExercisesByNotion] Erreur chargement:', e)
     error.value = "Impossible de charger les exercices."
   } finally {
     loading.value = false
+    await nextTick()
+    setTimeout(() => {
+      try {
+        const raw = sessionStorage.getItem(storageKey)
+        if (raw) {
+          const s = JSON.parse(raw)
+          if (s && typeof s.scrollY === 'number') {
+            window.scrollTo({ top: s.scrollY, behavior: 'auto' })
+          }
+        }
+      } catch (_) {}
+    }, 50)
+  }
+}
+
+// Recharger si l'ID de notion change sous KeepAlive
+watch(() => route.params.notionId, async (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    notionId.value = newId
+    await loadData()
   }
 })
 
@@ -293,6 +308,8 @@ function handlePageChange(page) {
   currentPage.value = page
   // scroll to top of exercises
   window.scrollTo({ top: 0, behavior: 'smooth' })
+  // Sauvegarder l'état
+  saveViewState()
 }
 
 async function handleStatus({ exerciceId, status }) {
@@ -390,9 +407,15 @@ function goBackToNotions() {
   }
 }
 
-function toggleFullWidth() {
-  isFullWidth.value = !isFullWidth.value
-}
+
+// Sauvegarder à chaque changement significatif
+watch([perPage, currentPage, selectedDifficulty, activeTab], () => {
+  saveViewState()
+})
+
+onBeforeUnmount(() => {
+  saveViewState()
+})
 
 async function generatePDF(includeCorrection = false) {
   try {

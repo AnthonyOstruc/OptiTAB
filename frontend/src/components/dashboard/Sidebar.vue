@@ -137,6 +137,18 @@ function handleSidebarHover(item) {
         // Ignorer les erreurs de prefetch silencieusement
       })
     }
+    // Précharger aussi les chunks de vues associées pour éviter le blanc initial
+    try {
+      if (item.key === 'exercices') {
+        import('@/views/Themes.vue')
+      } else if (item.key === 'fiches') {
+        import('@/views/SynthesisNotions.vue')
+      } else if (item.key === 'quiz') {
+        import('@/views/QuizNotions.vue')
+      } else if (item.key === 'cours') {
+        import('@/views/CourseNotions.vue')
+      }
+    } catch (_) {}
   }, 150) // Délai de 150ms pour éviter les survols accidentels
 }
 

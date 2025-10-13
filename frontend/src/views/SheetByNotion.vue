@@ -28,7 +28,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick, watch } from 'vue'
+import { defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
@@ -39,9 +40,14 @@ const route = useRoute()
 const router = useRouter()
 const subjectsStore = useSubjectsStore()
 
+defineOptions({ name: 'SynthesisByNotion' })
+
 const notionId = computed(() => Number(route.params.notionId))
 const loading = ref(true)
 const sheet = ref(null)
+
+// Simple cache en mémoire pour accélérer les retours sur la même notion
+const sheetCache = typeof window !== 'undefined' ? (window.__sheetCache ||= new Map()) : new Map()
 
 const rendered = computed(() => {
   const html = sheet.value?.summary || ''
@@ -66,16 +72,35 @@ function goBack() {
   }
 }
 
-onMounted(async () => {
+async function fetchSheet(nId) {
+  loading.value = true
   try {
-    const { data } = await getSynthesisSheets({ notion: notionId.value })
-    sheet.value = Array.isArray(data) ? data[0] : (Array.isArray(data?.results) ? data.results[0] : null)
+    if (sheetCache.has(nId)) {
+      sheet.value = sheetCache.get(nId)
+    } else {
+      const { data } = await getSynthesisSheets({ notion: nId })
+      const result = Array.isArray(data) ? data[0] : (Array.isArray(data?.results) ? data.results[0] : null)
+      sheet.value = result
+      sheetCache.set(nId, result)
+    }
   } finally {
     loading.value = false
     await nextTick()
     if (window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise()
     }
+  }
+}
+
+onMounted(() => {
+  fetchSheet(notionId.value)
+})
+
+// Si l'utilisateur change de notion, recharger intelligemment avec le cache
+watch(() => route.params.notionId, (newId, oldId) => {
+  const n = Number(newId)
+  if (n && n !== Number(oldId)) {
+    fetchSheet(n)
   }
 })
 </script>
@@ -89,4 +114,3 @@ onMounted(async () => {
 .badge { background:#eef2ff; color:#1d4ed8; padding:.25rem .5rem; border-radius: 999px; font-size:.75rem; font-weight:600; }
 .sheet-content { background:white; border:1px solid #e5e7eb; border-radius:8px; padding:1rem; }
 </style>
-

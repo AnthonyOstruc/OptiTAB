@@ -1,9 +1,9 @@
 <template>
   <FullPageSpinner v-if="userStore.isLoading" />
   <div v-else id="app">
-    <router-view v-slot="{ Component }">
-      <keep-alive include="ChapterExercises,ExerciceDetail">
-        <component :is="Component" />
+    <router-view v-slot="{ Component, route }">
+      <keep-alive include="ExercisesByNotion,ExerciceDetail,CourseByNotion,ChapterQuiz,Themes,QuizNotions,CourseNotions,SynthesisNotions,SynthesisByNotion">
+        <component :is="Component" :key="route.fullPath" />
       </keep-alive>
     </router-view>
     <!-- Login Modal -->

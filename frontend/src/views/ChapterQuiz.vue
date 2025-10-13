@@ -404,6 +404,9 @@
 </template>
 
 <script setup>
+import { defineOptions } from 'vue'
+// Nom explicite pour KeepAlive
+defineOptions({ name: 'ChapterQuiz' })
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
@@ -539,6 +542,39 @@ function stopQuestionTimer() {
 
 // Variables pour les onglets
 const activeTab = ref('todo')
+
+// --- Persistence (sessionStorage) for list state ---
+const quizStorageKey = computed(() => {
+  const notionId = route.params.notionId
+  return notionId ? `optitab_page_quiz_${notionId}` : 'optitab_page_quiz_generic'
+})
+
+function saveQuizListState(extra = {}) {
+  try {
+    const state = {
+      activeTab: activeTab.value,
+      currentPage: currentPage?.value ?? 1,
+      scrollY: typeof window !== 'undefined' ? (window.scrollY || window.pageYOffset || 0) : 0,
+      t: Date.now(),
+      ...extra
+    }
+    sessionStorage.setItem(quizStorageKey.value, JSON.stringify(state))
+  } catch (_) {}
+}
+
+function restoreQuizListState() {
+  try {
+    const raw = sessionStorage.getItem(quizStorageKey.value)
+    if (!raw) return null
+    const s = JSON.parse(raw)
+    if (s && typeof s === 'object') {
+      if (typeof s.activeTab === 'string') activeTab.value = s.activeTab
+      if (typeof s.currentPage === 'number' && currentPage) currentPage.value = Math.max(1, s.currentPage)
+      return s
+    }
+  } catch (_) {}
+  return null
+}
 const chapterQuizAttempts = ref([])
 const loadingStats = ref(false)
 
@@ -838,12 +874,14 @@ const totalPages = computed(() => {
 // Fonction pour changer de page
 function changePage(page) {
   currentPage.value = page
+  saveQuizListState()
 }
 
 // Fonction pour aller à la page précédente
 function previousPage() {
   if (currentPage.value > 1) {
     currentPage.value--
+    saveQuizListState()
   }
 }
 
@@ -851,12 +889,14 @@ function previousPage() {
 function nextPage() {
   if (currentPage.value < totalPages.value) {
     currentPage.value++
+    saveQuizListState()
   }
 }
 
 // Réinitialiser la pagination quand l'onglet change
 watch(activeTab, () => {
   currentPage.value = 1
+  saveQuizListState()
 })
 
 // Fonction de debug pour vérifier l'état des quiz
@@ -1075,6 +1115,26 @@ onMounted(async () => {
     await nextTick()
     renderMath()
     
+    // Restaurer l'état de la liste (onglet/page) et le scroll
+    const saved = restoreQuizListState()
+    // Clamp la page si hors bornes
+    try {
+      const pages = Math.max(1, Math.ceil((filteredQuiz?.value?.length || 0) / (itemsPerPage || 1)))
+      if (currentPage.value > pages) currentPage.value = pages
+    } catch (_) {}
+    await nextTick()
+    setTimeout(() => {
+      try {
+        const raw = sessionStorage.getItem(quizStorageKey.value)
+        if (raw) {
+          const s = JSON.parse(raw)
+          if (s && typeof s.scrollY === 'number') {
+            window.scrollTo({ top: s.scrollY, behavior: 'auto' })
+          }
+        }
+      } catch (_) {}
+    }, 50)
+    
   } catch (e) {
     console.error(`[ChapterQuiz] ❌ Erreur de chargement:`, e)
     quiz.value = []
@@ -1082,6 +1142,62 @@ onMounted(async () => {
     // S'assurer que le skeleton disparaît même en cas d'erreur
     initialLoading.value = false
   }
+})
+
+// Recharger proprement quand on change de notion sous KeepAlive
+async function reloadForNotion(notionId) {
+  try {
+    // Reset des états clés
+    initialLoading.value = true
+    quiz.value = []
+    currentQuiz.value = null
+    currentQuestionIndex.value = 0
+    showAnswer.value = false
+    userAnswers.value = []
+    showResults.value = false
+
+    const targetQuizId = route.query.quizId
+    const [quizData] = await Promise.all([
+      getQuiz(notionId)
+    ])
+
+    notionNom.value = 'Notion'
+    const rawList = Array.isArray(quizData.data) ? quizData.data : (quizData.data?.quiz || [])
+    quiz.value = rawList.map((q) => ({
+      ...q,
+      questions: Array.isArray(q?.questions) ? q.questions : (Array.isArray(q?.questions_data) ? q.questions_data : [])
+    }))
+
+    // Charger annexes pour la liste
+    await Promise.all([
+      loadChapterQuizAttempts(),
+      loadQuizCooldowns()
+    ])
+
+    refreshSavedQuizzes()
+
+    // Auto-start si demandé
+    if (targetQuizId) {
+      const targetQuiz = quiz.value.find(q => q.id == targetQuizId)
+      if (targetQuiz && route.query.autoStart === 'true') {
+        startQuiz(targetQuiz)
+      }
+    }
+  } catch (e) {
+    console.error('[ChapterQuiz] Erreur lors du rechargement:', e)
+  } finally {
+    initialLoading.value = false
+  }
+}
+
+watch(() => route.params.notionId, async (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    await reloadForNotion(newId)
+  }
+})
+
+onUnmounted(() => {
+  saveQuizListState()
 })
 
 function getDifficultyLabel(difficulty) {

@@ -23,12 +23,15 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import ThemeNotionsView from '@/components/common/ThemeNotionsView.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import { useSubjectsStore } from '@/stores/subjects/index'
+
+// Nom explicite pour KeepAlive
+defineOptions({ name: 'SynthesisNotions' })
 
 const route = useRoute()
 const router = useRouter()
@@ -52,4 +55,3 @@ onMounted(() => { loading.value = false })
 .loading-spinner { width: 40px; height: 40px; border: 3px solid #e5e7eb; border-top: 3px solid #60a5fa; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
 @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 </style>
-

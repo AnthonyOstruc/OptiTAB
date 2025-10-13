@@ -159,18 +159,22 @@ export default {
     }
 
     const handleFormSubmit = async () => {
-      // Activer le spinner global
+      // Activer les spinners (local + global App.vue)
       isLoggingIn.value = true
-      
+      userStore.isLoading = true
+
       try {
         const success = await submitForm(processLogin)
         if (!success) {
+          // Validation échouée ou erreur déjà gérée
           isLoggingIn.value = false
+          userStore.isLoading = false
           return
         }
-        // isLoggingIn sera mis à false dans processLogin après la redirection
+        // isLoggingIn et userStore.isLoading seront désactivés dans processLogin après redirection
       } catch (error) {
         isLoggingIn.value = false
+        userStore.isLoading = false
       }
     }
 
@@ -233,17 +237,23 @@ export default {
         
         if (finalAuthState) {
           console.log('🚀 Redirection vers le dashboard...')
-          
-          // Redirection avec le spinner global actif (isLoggingIn reste true)
-          await router.push('/dashboard')
-          
-          // Attendre que le Dashboard soit complètement chargé et monté
-          // Premier chargement (sans cache) peut prendre jusqu'à 2-3s
-          // On attend 2 secondes pour s'assurer que toutes les requêtes initiales sont terminées
+
+          // Assurer le spinner global pendant la transition
+          userStore.isLoading = true
+
+          // Redirection avec remplacements d'historique (évite l'état Home précédent)
+          await router.replace('/dashboard')
+
+          // S'assurer que la vue est montée
+          await nextTick()
+
+          // Attendre un court délai pour laisser les requêtes initiales se terminer
+          // (peut être ajusté au besoin)
           await new Promise(resolve => setTimeout(resolve, 2000))
-          
-          // Désactiver le spinner - maintenant le Dashboard est vraiment prêt
+
+          // Désactiver les spinners (local + global App.vue)
           isLoggingIn.value = false
+          userStore.isLoading = false
         } else {
           console.error('❌ Erreur: isAuthenticated est false après fetchUser')
           // Fallback: recharger la page
@@ -255,6 +265,7 @@ export default {
         const backendMessage = error.response?.data?.detail || error.response?.data?.error
         loginError.value = backendMessage || "Erreur lors de la connexion"
         isLoggingIn.value = false
+        userStore.isLoading = false
       }
     }
 

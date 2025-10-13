@@ -113,6 +113,9 @@
 </template>
 
 <script setup>
+import { defineOptions } from 'vue'
+// Nom explicite pour KeepAlive
+defineOptions({ name: 'CourseByNotion' })
 import { ref, onMounted, onBeforeUnmount, computed, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
@@ -136,6 +139,35 @@ const showScrollTopButton = ref(false)
 let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
+
+// --- Persistence (sessionStorage) for keeping place between tabs ---
+const pageStorageKey = computed(() => {
+  const notionId = route.params.notionId
+  return notionId ? `optitab_page_cours_${notionId}` : 'optitab_page_cours_generic'
+})
+
+function saveCoursViewState(extra = {}) {
+  try {
+    const state = {
+      selectedCoursId: selectedCours.value?.id ?? null,
+      scrollY: typeof window !== 'undefined' ? (window.scrollY || window.pageYOffset || 0) : 0,
+      t: Date.now(),
+      ...extra
+    }
+    sessionStorage.setItem(pageStorageKey.value, JSON.stringify(state))
+  } catch (_) {}
+}
+
+function restoreCoursViewState() {
+  try {
+    const raw = sessionStorage.getItem(pageStorageKey.value)
+    if (!raw) return null
+    const s = JSON.parse(raw)
+    return s && typeof s === 'object' ? s : null
+  } catch (_) {
+    return null
+  }
+}
 
 // Récupérer les paramètres de la route
 const currentMatiereId = computed(() => {
@@ -164,6 +196,8 @@ function goBackToNotions() {
 // Fonction pour afficher un cours
 function viewCours(coursItem) {
   selectedCours.value = coursItem
+  // Sauvegarder l'élément sélectionné pour reprise ultérieure
+  saveCoursViewState()
 }
 
 // Fonction pour obtenir le label de difficulté
@@ -187,15 +221,24 @@ function formatDate(dateString) {
 }
 
 onMounted(async () => {
+  await loadCoursData()
+})
+
+// Fonction de chargement (réutilisable au changement de notion)
+async function loadCoursData() {
   try {
     loading.value = true
+    tableOfContents.value = []
+    selectedCours.value = null
+    cours.value = []
+    if (tocObserver) { try { tocObserver.disconnect() } catch (_) {} }
     
     const { data } = await getCours(
       currentMatiereId.value,
       currentNotionId.value,
       currentChapitreId.value
     )
-    
+
     cours.value = data
     if (Array.isArray(cours.value) && cours.value.length === 1) {
       selectedCours.value = cours.value[0]
@@ -205,16 +248,26 @@ onMounted(async () => {
       selectedCours.value = data
       cours.value = [data]
     }
-    
+
+    // Restaurer l'état sauvegardé (cours sélectionné)
+    const saved = restoreCoursViewState()
+    if (saved && saved.selectedCoursId) {
+      const found = cours.value.find(c => c.id === saved.selectedCoursId)
+      if (found) selectedCours.value = found
+    }
+
     // Rendre le contenu MathJax après le chargement
     nextTick(() => {
       renderMath()
-      // Attendre que le DOM soit vraiment mis à jour
       setTimeout(() => {
         extractTableOfContents()
         setupTocObserver()
-        // Ajouter l'écouteur de scroll pour le bouton retour en haut
         setupScrollListener()
+        // Restaurer la position de scroll si disponible
+        const s = restoreCoursViewState()
+        if (s && typeof s.scrollY === 'number') {
+          try { window.scrollTo({ top: s.scrollY, behavior: 'auto' }) } catch {}
+        }
       }, 150)
     })
   } catch (error) {
@@ -222,6 +275,13 @@ onMounted(async () => {
     cours.value = []
   } finally {
     loading.value = false
+  }
+}
+
+// Recharger quand l'ID de notion change (navigation vers un nouveau chapitre/notion)
+watch(() => route.params.notionId, async (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    await loadCoursData()
   }
 })
 
@@ -326,6 +386,8 @@ function setupScrollListener() {
       : container.scrollTop
 
     showScrollTopButton.value = scrollTop > 300
+    // Persister la position de scroll pour une reprise fluide entre onglets
+    saveCoursViewState({ scrollY: scrollTop })
   }
 
   if (container === document.documentElement || container === document.body) {
@@ -382,6 +444,8 @@ onBeforeUnmount(() => {
   if (scrollCleanup) {
     try { scrollCleanup() } catch (e) {}
   }
+  // Sauvegarder l'état courant (cours sélectionné + scroll)
+  saveCoursViewState()
 })
 </script>
 

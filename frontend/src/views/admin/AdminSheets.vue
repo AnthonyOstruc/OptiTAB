@@ -3,21 +3,14 @@
     <FormatHelp :format-template="FORMAT_TEMPLATE">
       <template #notes>
         <ul>
-          <li>Utilisez <code>===</code> pour délimiter chaque cours</li>
-          <li><strong>⚠️ IMPORTANT :</strong> Sélectionnez d'abord la notion dans la liste déroulante ci-dessus</li>
-          <li>Difficulté : <code>easy</code>, <code>medium</code> ou <code>hard</code> uniquement</li>
-          <li>Ordre : Numéro pour l'ordre d'affichage (0, 1, 2, etc.)</li>
-          <li><strong>Images multiples :</strong> Séparez les noms de fichiers par des virgules : <code>image1.jpg,image2.png</code></li>
-          <li><strong>Positionnement d'images :</strong> Utilisez <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code>, etc. dans le contenu pour positionner les images</li>
-          <li><strong>Ordre des images :</strong> Les images sont assignées dans l'ordre de leur déclaration (1ère = [IMAGE_1], 2ème = [IMAGE_2], etc.)</li>
-          <li><strong>Types d'images automatiques :</strong> Toutes les images = "Illustration" par défaut</li>
-          <li><strong>Contenu :</strong> Supporte HTML et LaTeX (MathJax)</li>
-          <li>MathJax supporté : <code>$formule$</code> (inline) et <code>$$formule$$</code> (bloc)</li>
-          <li>HTML supporté : <code>&lt;strong&gt;gras&lt;/strong&gt;</code>, <code>&lt;em&gt;italique&lt;/em&gt;</code>, etc.</li>
-          <li>Laissez <code>Images:</code> vide si pas d'image</li>
-          <li><strong>Champs obligatoires :</strong> Seuls <code>Titre:</code> et le contenu sont obligatoires</li>
-          <li><strong>Champs optionnels :</strong> <code>Difficulté:</code>, <code>Ordre:</code>, <code>Images:</code>, <code>Description:</code></li>
-          <li><strong>Template uniforme :</strong> Utilisez le template ci-dessus pour maintenir la cohérence de tous vos cours</li>
+          <li>Utilisez <code>===</code> pour délimiter chaque fiche</li>
+          <li><strong>Important :</strong> Sélectionnez d'abord la notion dans la liste</li>
+          <li>Difficulté : <code>easy</code>, <code>medium</code> ou <code>hard</code></li>
+          <li>Images multiples : séparez par virgules: <code>img1.jpg,img2.png</code></li>
+          <li>Positionnement d'images : utilisez <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code> dans le contenu</li>
+          <li>Ordre des images : selon la déclaration (1 = [IMAGE_1], 2 = [IMAGE_2], ...)</li>
+          <li>MathJax supporté : <code>$formule$</code> (inline), <code>$$formule$$</code> (bloc)</li>
+          <li>Markdown supporté : <code>**gras**</code>, <code>*italique*</code></li>
         </ul>
       </template>
     </FormatHelp>
@@ -26,15 +19,13 @@
       <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
       <select v-model="selectedNotion" required>
         <option disabled value="">Choisir notion</option>
-        <option v-for="n in filteredNotions" :key="n.id" :value="n.id">
-          {{ formatNotionOption(n) }}
-        </option>
+        <option v-for="n in filteredNotions" :key="n.id" :value="n.id">{{ formatNotionOption(n) }}</option>
       </select>
 
       <!-- Upload d'images -->
       <div class="images-upload-section">
-        <h4>📁 Images pour les fiches</h4>
-        <p class="upload-help">Uploadez les images qui seront référencées dans vos fiches :</p>
+        <h4>Images pour les fiches</h4>
+        <p class="upload-help">Uploadez les images référencées dans vos fiches :</p>
         <input 
           type="file" 
           ref="imagesInput" 
@@ -48,240 +39,284 @@
           <div v-for="(img, index) in selectedImages" :key="index" class="selected-image-item">
             <img :src="getImagePreview(img)" :alt="img.name" class="image-preview" />
             <span class="image-name">{{ img.name }}</span>
-            <button type="button" class="btn-remove" @click="removeSelectedImage(index)">×</button>
+            <button type="button" class="btn-remove" @click="removeSelectedImage(index)">Supprimer</button>
           </div>
         </div>
       </div>
 
-      <textarea 
-        v-model="rawInput" 
-        placeholder="Collez ici vos fiches de synthèse"
-      ></textarea>
-      
+      <textarea v-model="rawInput" placeholder="Collez ici vos fiches de synthèse"></textarea>
       <div class="btn-group">
-        <button 
-          class="btn-secondary" 
-          @click="handlePreview" 
-          :disabled="!rawInput.trim()"
-          type="button"
-        >
-          Prévisualiser
-        </button>
-        <button 
-          class="btn-primary" 
-          @click="handleCreate" 
-          :disabled="!selectedNotion || !rawInput.trim()"
-        >
-          Créer les fiches
-        </button>
+        <button class="btn-secondary" @click="handlePreview" :disabled="!rawInput.trim()" type="button">Prévisualiser</button>
+        <button class="btn-primary" @click="handleCreate" :disabled="!selectedNotion || !rawInput.trim()">{{ currentEditSheetId ? 'Mettre à jour' : 'Créer les fiches' }}</button>
       </div>
     </div>
 
     <div v-if="successMsg" class="success-msg">{{ successMsg }}</div>
     <div v-if="errorMsg" class="error-msg">{{ errorMsg }}</div>
+    <div v-if="previewList.length === 0 && rawInput.trim() && hasValidSheets" class="info-msg">Aucune fiche valide trouvée. Vérifiez le format.</div>
+
+    <!-- Images enregistrées (mode édition) -->
+    <div v-if="serverImages.length" class="server-images-section">
+      <h5>Images de la fiche (enregistrées)</h5>
+      <div v-if="imageManageLoading" class="muted">Chargement…</div>
+      <table v-else class="images-table">
+        <thead>
+          <tr>
+            <th>Aperçu</th>
+            <th>Type</th>
+            <th>Position</th>
+            <th>Légende</th>
+            <th>Remplacer</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(img, i) in serverImages" :key="img.id || i">
+            <td style="width:120px">
+              <img :src="img.image" alt="apercu" class="srv-preview" />
+            </td>
+            <td>
+              <select v-model="img.image_type">
+                <option value="illustration">Illustration</option>
+              </select>
+            </td>
+            <td style="width:100px">
+              <input v-model.number="img.position" type="number" min="0" />
+            </td>
+            <td>
+              <input v-model="img.caption" placeholder="Légende" />
+            </td>
+            <td>
+              <input type="file" accept="image/*" @change="onSelectReplaceFile(i, $event)" />
+            </td>
+            <td style="white-space:nowrap">
+              <button type="button" class="btn-secondary small" @click="saveImageRow(currentEditSheetId, img, i)">Sauvegarder</button>
+              <button type="button" class="btn-secondary small" :disabled="!img._file" @click="replaceImageRow(currentEditSheetId, img, i)">Remplacer</button>
+              <button type="button" class="btn-danger small" @click="deleteImageRow(currentEditSheetId, img, i)">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="add-image-form">
+        <h6>Ajouter une image</h6>
+        <div class="add-image-row">
+          <select v-model="newImage.image_type">
+            <option value="illustration">Illustration</option>
+          </select>
+          <input v-model.number="newImage.position" type="number" min="0" placeholder="Position" />
+          <input v-model="newImage.caption" type="text" placeholder="Légende (optionnel)" />
+          <input type="file" accept="image/*" @change="onSelectNewImage($event)" />
+          <button type="button" class="btn-primary small" :disabled="!newImage.file" @click="addNewImage(currentEditSheetId)">Ajouter</button>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:6px">Astuce: "Remplacer" met à jour l'image de la même ligne. Utilisez "Supprimer" pour retirer une image.</p>
+    </div>
 
     <!-- Aperçu -->
     <div v-if="previewList.length" class="preview-section">
       <h3>Aperçu ({{ previewList.length }})</h3>
       <div v-for="(sheet, idx) in previewList" :key="idx" class="preview-item">
         <h4>{{ sheet.titre }}</h4>
+        <div v-if="sheet.image" class="preview-image-info">
+          <span class="image-indicator">Images: {{ sheet.image }}</span>
+          <div class="image-status-list">
+            <span 
+              v-for="imgName in sheet.image.split(',').map(name => name.trim()).filter(Boolean)" 
+              :key="imgName"
+              :class="['image-status', getImageFile(imgName) ? 'available' : 'missing']"
+            >
+              {{ imgName }}: {{ getImageFile(imgName) ? 'Disponible' : 'Manquante' }}
+            </span>
+          </div>
+        </div>
         <div class="preview-sheet">
           <div class="preview-header">
             <span class="difficulty-badge" :class="sheet.difficulty">{{ getDifficultyLabel(sheet.difficulty) }}</span>
-            <span class="time-badge">{{ sheet.temps_lecture || 5 }} min</span>
-        </div>
-          <div v-if="sheet.points_cles" class="preview-keys">
-            <strong>Points clés :</strong> {{ sheet.points_cles }}
-        </div>
+            <span class="time-badge">{{ Math.max(1, Math.round((sheet.summary || '').split(/\s+/).length / 200)) }} min</span>
+          </div>
           <div class="preview-content" v-html="renderPreviewContent(sheet)"></div>
         </div>
       </div>
     </div>
+
+    <!-- Filtres -->
+    <div class="filters">
+      <div class="filter-group">
+        <label>Filtrer par notion:</label>
+        <input v-model="notionTableFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
+        <select v-model="filters.notion">
+          <option value="">Toutes les notions</option>
+          <option v-for="notion in filteredNotionsForFilter" :key="notion.id" :value="notion.id">
+            {{ notion.titre || notion.nom }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tableau des fiches de synthèse -->
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Titre</th>
+          <th>Notion</th>
+          <th>Contexte</th>
+          <th>Ordre</th>
+          <th>Difficulté</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="s in paginatedSheets" :key="s.id">
+          <td>{{ s.id }}</td>
+          <td>{{ s.titre }}</td>
+          <td>{{ getNotionName(s.notion) }}</td>
+          <td class="ctx-cell">{{ getNotionContextLabel(s.notion) }}</td>
+          <td>{{ s.ordre || 0 }}</td>
+          <td>{{ getDifficultyLabel(s.difficulty) }}</td>
+          <td>
+            <AdminActionsButtons
+              :item="s"
+              :actions="['edit', 'duplicate', 'delete']"
+              edit-label="Éditer"
+              duplicate-label="Dupliquer"
+              confirm-message="Êtes-vous sûr de vouloir supprimer cette fiche ?"
+              @edit="editSheet"
+              @duplicate="handleDuplicateSheet"
+              @delete="handleDeleteSheet"
+            />
+          </td>
+        </tr>
+        <tr v-if="paginatedSheets.length === 0">
+          <td colspan="7" style="text-align:center; font-style: italic;">Aucune fiche trouvée.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div v-if="totalPages > 1" class="pagination">
+      <button 
+        class="pagination-btn" 
+        @click="currentPage--" 
+        :disabled="currentPage === 1"
+      >
+        Précédent
+      </button>
+      
+      <div class="pagination-numbers">
+        <button
+          v-for="page in displayedPages"
+          :key="page"
+          class="pagination-number"
+          :class="{ active: page === currentPage }"
+          @click="currentPage = page"
+        >
+          {{ page }}
+        </button>
+      </div>
+      
+      <button 
+        class="pagination-btn" 
+        @click="currentPage++" 
+        :disabled="currentPage === totalPages"
+      >
+        Suivant
+      </button>
+    </div>
+    
+    <div v-if="totalPages > 1" class="pagination-info">
+      Page {{ currentPage }} sur {{ totalPages }} ({{ filteredSheets.length }} fiches au total)
+    </div>
   </div>
+  
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { getNotions } from '@/api'
-import { createSynthesisSheet, createSynthesisImage } from '@/api/synthesis'
-import FormatHelp from '@/components/admin/FormatHelp.vue'
+import { getSynthesisSheets, getSynthesisSheet, createSynthesisSheet, updateSynthesisSheet, createSynthesisImage, deleteSynthesisSheet, duplicateSynthesisSheet, updateSynthesisImage, deleteSynthesisImage } from '@/api/synthesis'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
+import FormatHelp from '@/components/admin/FormatHelp.vue'
+import { AdminActionsButtons } from '@/components/admin'
 
 // ============================================================================
-// CONSTANTES DU FORMAT
+// CONSTANTES ET ÉTAT
 // ============================================================================
 
-const FORMAT_TEMPLATE = `=== [NOM DU COURS - SOUS-TITRE]
-Difficulté: [easy/medium/hard]
-Ordre: [numéro]
-
-Titre: [Titre détaillé du cours]
-Description: [Description courte expliquant l'objectif du cours]
-
-<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition</h2>
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <p>Une <strong>[CONCEPT PRINCIPAL]</strong> est [définition simple et claire].</p>
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            $$[FORMULE DE BASE OU DEFINITION MATHEMATIQUE]$$
-        </div>
-        <p><strong>Explication :</strong> [Explication pédagogique du concept]</p>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. [CONCEPT THEORIQUE PRINCIPAL]</h2>
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <p>[Explication du concept théorique principal]</p>
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            $$[FORMULE PRINCIPALE A RETENIR]$$
-        </div>
-        <p><strong>💡 [CONSEIL IMPORTANT] :</strong> [Conseil méthodologique]</p>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Exemples détaillés</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : [TITRE SPECIFIQUE]</h3>
-        <p><strong>Énoncé :</strong> [Description de l'exemple]</p>
-        <p><strong>Données :</strong> [Valeurs numériques ou paramètres]</p>
-
-        <p><strong>Résolution :</strong></p>
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <ul style="margin:0; padding-left:20px;">
-                <li>$[Première étape de calcul]$</li>
-                <li>$[Deuxième étape de calcul]$</li>
-                <li>$[Troisième étape de calcul]$</li>
-                <li>$[Conclusion de l'étape]$</li>
-            </ul>
-        </div>
-
-        <div style="background:#ecf0f1; padding:10px; border-radius:4px; margin:10px 0;">
-            <strong>Résultat final :</strong> [Conclusion de l'exemple]
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : [TITRE SPECIFIQUE]</h3>
-        <p><strong>Situation :</strong> [Contexte de l'exemple]</p>
-
-        <div style="text-align:center; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            $$[APPLICATION DE LA FORMULE]$$
-        </div>
-
-        <p><strong>Calculs détaillés :</strong></p>
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <ul style="margin:0; padding-left:20px;">
-                <li>$[Calcul étape 1]$</li>
-                <li>$[Calcul étape 2]$</li>
-                <li>$[Résultat final]$</li>
-            </ul>
-        </div>
-
-        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
-            <strong>✅ Vérification :</strong> [Vérification du résultat]
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. [SECTION D'APPLICATION - CALCULS]</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">[SOUS-TITRE DE LA METHODE]</h3>
-        <p>[Explication de la méthode ou du calcul principal]</p>
-
-        <div style="text-align:center; font-size:1.2em; margin:15px 0; padding:12px; background:#f8f9fa; border-radius:4px;">
-            <strong>Formule [NOM DE LA FORMULE] :</strong><br>
-            $$[FORMULE MATHEMATIQUE PRINCIPALE]$$
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Démarche à suivre :</strong><br>
-            • [Étape 1 de la méthode]<br>
-            • [Étape 2 de la méthode]<br>
-            • [Étape 3 de la méthode]
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Application pratique</h3>
-        <p><strong>Problème :</strong> [Énoncé du problème d'application]</p>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Éléments donnés :</strong><br>
-            • [Donnée 1]<br>
-            • [Donnée 2]<br>
-            • [Donnée 3]
-        </div>
-
-        <div style="text-align:center; margin:15px 0;">
-            <strong>Résolution :</strong>
-            <div style="font-size:1.1em; margin:10px 0; padding:10px; background:#ecf0f1; border-radius:4px;">
-                $$[CALCUL DETAILLE ETAPE PAR ETAPE]$$
-            </div>
-        </div>
-
-        <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0;">
-            <strong>✅ Solution finale :</strong> [Résultat avec justification]
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Propriétés et caractéristiques</h2>
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <ul style="margin:0; padding-left:20px;">
-            <li><strong>Propriété 1 :</strong> [Description de la première propriété importante]</li>
-            <li><strong>Propriété 2 :</strong> [Description de la deuxième propriété importante]</li>
-            <li><strong>Propriété 3 :</strong> [Description de la troisième propriété importante]</li>
-            <li><strong>Aspect graphique :</strong> [Description de la représentation visuelle]</li>
-        </ul>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Erreurs fréquentes et conseils</h2>
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#fdf2f2; padding:12px; border-radius:4px; margin-bottom:10px;">
-            <strong>❌ Pièges à éviter :</strong>
-            <div style="margin:8px 0;">
-                <ul style="margin:0; padding-left:20px;">
-                    <li>[Erreur fréquente 1]</li>
-                    <li>[Erreur fréquente 2]</li>
-                    <li>[Erreur fréquente 3]</li>
-                </ul>
-            </div>
-        </div>
-
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px;">
-            <strong>✅ Conseils méthodologiques :</strong>
-            <div style="margin:8px 0;">
-                <ul style="margin:0; padding-left:20px;">
-                    <li>[Conseil pratique 1]</li>
-                    <li>[Conseil pratique 2]</li>
-                    <li>[Conseil pratique 3]</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-===`
-
-// ============================================================================
-// ÉTAT RÉACTIF
-// ============================================================================
+const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml']
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024 // 10MB
 
 const notions = ref([])
+const sheets = ref([])
 const notionFilter = ref('')
 const selectedNotion = ref('')
 const rawInput = ref('')
 const successMsg = ref('')
 const errorMsg = ref('')
 const previewList = ref([])
+const hasValidSheets = ref(false)
 const selectedImages = ref([])
 const imagesInput = ref(null)
+// Images déjà enregistrées pour la fiche en édition
+const serverImages = ref([])
+const imageManageLoading = ref(false)
+const currentEditSheetId = ref(null)
+
+// Filtres et pagination pour le tableau (mêmes patterns que AdminCours)
+const filters = ref({})
+const notionTableFilter = ref('')
+const currentPage = ref(1)
+const itemsPerPage = 5
 
 // ============================================================================
-// FONCTIONS DE PARSING
+// FORMAT D'ENTRÉE (exemple copiable)
 // ============================================================================
 
-// Helpers contextuels basés sur Notion (alignés sur AdminCoursPlus)
+const FORMAT_TEMPLATE = `=== [NOM DE LA FICHE - SOUS-TITRE]
+Difficulté: [easy/medium/hard]
+Ordre: [numero]
+Images: [image1.png,image2.jpg]
+
+Titre: [Titre de la fiche]
+
+## Résumé
+Contenu principal de la fiche: texte, listes, formules, etc.
+- Point clé 1
+- Point clé 2
+
+[IMAGE_1]
+
+### Formule principale
+$$a^2 + b^2 = c^2$$
+
+### Exemple
+Voici un exemple avec [IMAGE_2]
+
+`
+
+// ============================================================================
+// CLASSE DE GESTION D'IMAGES
+// ============================================================================
+
+class ImageManager {
+  constructor() {
+    this.images = new Map()
+  }
+  addImage(file) {
+    if (!SUPPORTED_IMAGE_TYPES.includes(file.type)) throw new Error('Type non supporté')
+    if (file.size > MAX_IMAGE_SIZE) throw new Error('Fichier trop volumineux')
+    this.images.set(file.name, file)
+  }
+  removeImage(filename) { this.images.delete(filename) }
+  getImage(filename) { return this.images.get(filename) }
+  clear() { this.images.clear() }
+}
+const imageManager = new ImageManager()
+
+// ============================================================================
+// HELPERS NOTIONS ET AFFICHAGE
+// ============================================================================
+
 function notionContext(notion) {
   if (!notion) return { themeNom: '', matiereNom: '', paysNom: '', niveauNom: '' }
   const matiereNom = notion.matiere_nom || (notion.contexte_detail && notion.contexte_detail.matiere_nom) || ''
@@ -295,112 +330,135 @@ function formatNotionOption(n) {
   const ctx = notionContext(n)
   const parts = [
     n.nom || n.titre,
-    ctx && ctx.matiereNom ? `— ${ctx.matiereNom}` : '',
-    ctx && (ctx.paysNom || ctx.niveauNom) ? `— ${[ctx.paysNom, ctx.niveauNom].filter(Boolean).join(' · ')}` : ''
+    ctx && ctx.matiereNom ? `- ${ctx.matiereNom}` : '',
+    ctx && (ctx.paysNom || ctx.niveauNom) ? `- ${[ctx.paysNom, ctx.niveauNom].filter(Boolean).join(' / ')}` : ''
   ].filter(Boolean)
   return parts.join(' ')
 }
 
-function parseSheets(rawText) {
-  const blocks = rawText.split('===').filter(block => block.trim())
-  const sheets = []
+function getDifficultyLabel(difficulty) {
+  const labels = { easy: 'Facile', medium: 'Moyen', hard: 'Difficile' }
+  return labels[difficulty] || difficulty
+}
 
-  for (const block of blocks) {
-    try {
-      const sheetData = parseSheetBlock(block.trim())
-      if (sheetData) {
-        sheets.push(sheetData)
-      }
-    } catch (error) {
-      console.error('Erreur lors du parsing d\'une fiche:', error)
+function getImagePreview(file) { return URL.createObjectURL(file) }
+function getImageFile(filename) { return imageManager.getImage(filename) }
+
+function getPreviewImages(imageString) {
+  const names = (imageString || '')
+    .split(',')
+    .map(n => n.trim())
+    .filter(Boolean)
+  return names.map((name, index) => {
+    const file = getImageFile(name)
+    return {
+      id: `preview-${index}`,
+      image: file ? URL.createObjectURL(file) : name,
+      image_type: 'illustration',
+      position: index + 1
     }
+  })
+}
+
+function renderPreviewContent(sheet) {
+  const images = getPreviewImages(sheet.image)
+  let content = sheet.summary || ''
+
+  // Inject images by markers; if no markers and images provided, append gallery
+  if (!/\[IMAGE_\d+\]/.test(content || '') && images.length > 0) {
+    const autoGallery = images.map(img => `
+      <div class="content-image-container" style="text-align: center; margin: 2em 0;">
+        <img src="${img.image}" alt="Image ${img.position || ''}" class="content-image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+      </div>
+    `).join('\n')
+    content = `${content}\n${autoGallery}`
   }
 
-  return sheets
+  return renderContentWithImages(content, images)
+}
+
+// ============================================================================
+// GESTION DES IMAGES
+// ============================================================================
+
+function handleImagesSelect(event) {
+  const files = Array.from(event.target.files || [])
+  files.forEach(file => {
+    try {
+      imageManager.addImage(file)
+      selectedImages.value.push(file)
+    } catch (e) {
+      console.error('Image invalide:', e)
+    }
+  })
+}
+
+function removeSelectedImage(index) {
+  const file = selectedImages.value[index]
+  imageManager.removeImage(file.name)
+  selectedImages.value.splice(index, 1)
+}
+
+// ============================================================================
+// PARSING
+// ============================================================================
+
+function parseSheets(rawText) {
+  const blocks = rawText.split('===').filter(b => b.trim())
+  const out = []
+  for (const block of blocks) {
+    const d = parseSheetBlock(block.trim())
+    if (d) out.push(d)
+  }
+  return out
 }
 
 function parseSheetBlock(block) {
   const lines = block.split('\n')
   const sheet = {
     titre: '',
-    contenu: '',
+    summary: '',
     difficulty: 'medium',
-    temps_lecture: 5,
-    points_cles: '',
-    notion: selectedNotion.value,
+    ordre: 0,
     image: '',
-    ordre: 0
+    notion: null
   }
+
+  if (selectedNotion.value) sheet.notion = Number(selectedNotion.value)
 
   let currentSection = 'header'
   let contentLines = []
 
-  for (const rawLine of lines) {
-    const line = rawLine.trim()
+  for (let i = 0; i < lines.length; i++) {
+    const line = (lines[i] || '').trim()
     if (!line) continue
 
-    // Sections explicites (ancien format fiches)
-    if (line === '=== CONTENU ===') { currentSection = 'contenu'; continue }
-    if (line === '=== EXEMPLES ===') { currentSection = 'exemples'; continue }
-    if (line === '=== CONSEILS ===') { currentSection = 'conseils'; continue }
-
     if (currentSection === 'header') {
-      if (line.startsWith('Titre:')) {
-        sheet.titre = line.split(':')[1].trim()
-        continue
-      }
-      if (/^Difficult[eé]:/i.test(line)) {
-        sheet.difficulty = line.split(':')[1].trim().toLowerCase()
-        continue
-      }
-      if (/^Temps de lecture:/i.test(line)) {
-        sheet.temps_lecture = parseInt(line.split(':')[1].trim()) || 5
-        continue
-      }
-      if (/^Points cl[eé]s:/i.test(line)) {
-        sheet.points_cles = line.split(':')[1].trim()
-        continue
-      }
-      if (/^Images?:/i.test(line)) {
+      if (line.startsWith('Difficulté:')) {
+        sheet.difficulty = line.split(':')[1].trim()
+      } else if (line.startsWith('Ordre:')) {
+        sheet.ordre = parseInt(line.split(':')[1].trim()) || 0
+      } else if (line.toLowerCase().startsWith('image:') || line.toLowerCase().startsWith('images:')) {
         sheet.image = line.split(':')[1].trim()
-        continue
-      }
-      if (/^Ordre:/i.test(line)) {
-        const n = parseInt(line.split(':')[1].trim())
-        sheet.ordre = Number.isFinite(n) ? n : 0
-        continue
-      }
-      if (/^Description:/i.test(line)) {
-        // Basculer dans le contenu et ajouter la description comme intro
-        const desc = line.split(':').slice(1).join(':').trim()
-        if (desc) contentLines.push(desc)
-        currentSection = 'contenu'
-        continue
-      }
-      if (!line.startsWith('===')) {
-        // Ligne de titre libre si "Titre:" manquant
-        if (!sheet.titre) {
-          sheet.titre = line
-          continue
-        }
-        // Début du contenu
-        currentSection = 'contenu'
+      } else if (line.startsWith('Titre:')) {
+        sheet.titre = line.split(':')[1].trim()
+      } else if (line.startsWith('Description:')) {
+        currentSection = 'content'
+      } else if (!sheet.titre && !line.startsWith('===')) {
+        sheet.titre = line
+      } else {
+        currentSection = 'content'
         contentLines.push(line)
-        continue
       }
     } else {
-      // En contenu ou autres sections: accumuler
       contentLines.push(line)
     }
   }
 
-  sheet.contenu = contentLines.join('\n')
+  sheet.summary = contentLines.join('\n')
 
-  // Validation minimale
-  if (!sheet.titre || !sheet.contenu || !sheet.notion) {
-    return null
-  }
-
+  // Pour la prévisualisation, ne pas exiger la notion.
+  if (!sheet.titre || !sheet.summary) return null
   return sheet
 }
 
@@ -410,10 +468,11 @@ function parseSheetBlock(block) {
 
 function handlePreview() {
   try {
+    hasValidSheets.value = true
     previewList.value = parseSheets(rawInput.value)
     nextTick(() => renderMath())
-  } catch (error) {
-    console.error('Erreur lors de la prévisualisation:', error)
+  } catch (e) {
+    console.error('Erreur de prévisualisation:', e)
     errorMsg.value = 'Erreur lors de la prévisualisation'
   }
 }
@@ -425,199 +484,317 @@ async function handleCreate() {
   }
 
   try {
-    const sheetsList = parseSheets(rawInput.value)
-    if (sheetsList.length === 0) {
+    const list = parseSheets(rawInput.value)
+    if (list.length === 0) {
       errorMsg.value = 'Aucune fiche valide trouvée'
       return
     }
 
+    // Récupérer les fiches existantes pour gérer les doublons (notion+titre)
+    let existing = []
+    try {
+      const res = await getSynthesisSheets({ notion: Number(selectedNotion.value) })
+      existing = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : [])
+    } catch (_) {}
+    const byTitle = new Map(existing.map(s => [String((s.titre || '').toLowerCase()), s.id]))
+
     let createdCount = 0
+    let updatedCount = 0
     let errorCount = 0
 
-    for (const sheetData of sheetsList) {
+    const isSingleEdit = !!currentEditSheetId.value && list.length === 1
+
+    for (const sheetData of list) {
       try {
         const payload = {
-          notion: Number(selectedNotion.value),
+          notion: Number(sheetData.notion || selectedNotion.value),
           titre: sheetData.titre,
-          summary: sheetData.contenu,
+          summary: sheetData.summary,
+          ordre: sheetData.ordre || 0,
           difficulty: sheetData.difficulty || 'medium',
-          reading_time_minutes: sheetData.temps_lecture || 5,
-          key_points: sheetData.points_cles ? sheetData.points_cles.split(',').map(k => k.trim()) : [],
-          ...(Number.isFinite(sheetData.ordre) ? { ordre: sheetData.ordre } : {})
+          reading_time_minutes: Math.max(1, Math.round(sheetData.summary.split(/\s+/).length / 200))
         }
 
-        const created = await createSynthesisSheet(payload)
-        const sheetId = created?.data?.id || created?.id
+        const existingId = byTitle.get((sheetData.titre || '').toLowerCase())
+        let sheetId
+        if (isSingleEdit) {
+          // Forcer la mise à jour par ID quand en mode édition
+          const updated = await updateSynthesisSheet(currentEditSheetId.value, payload)
+          sheetId = updated?.id || currentEditSheetId.value
+          updatedCount++
+        } else if (existingId) {
+          const updated = await updateSynthesisSheet(existingId, payload)
+          sheetId = updated?.id || existingId
+          updatedCount++
+        } else {
+          const created = await createSynthesisSheet(payload)
+          sheetId = created?.id || created?.data?.id
+          createdCount++
+          if (sheetId) byTitle.set((sheetData.titre || '').toLowerCase(), sheetId)
+        }
 
-        // Uploader les images sélectionnées si présentes
-        if (sheetId && selectedImages.value.length) {
-          for (let i = 0; i < selectedImages.value.length; i++) {
-            const file = selectedImages.value[i]
-            await createSynthesisImage({
-              sheet: sheetId,
-              image: file,
-              image_type: 'illustration',
-              position: i + 1,
-            })
+        // Ajouter images si présentes
+        if (sheetData.image && sheetId) {
+          const imageNames = sheetData.image.split(',').map(n => n.trim()).filter(Boolean)
+          for (let i = 0; i < imageNames.length; i++) {
+            const file = imageManager.getImage(imageNames[i])
+            if (file) {
+              await createSynthesisImage({ sheet: sheetId, image: file, image_type: 'illustration', position: i + 1 })
+            }
           }
         }
-        createdCount++
-      } catch (error) {
-        console.error('Erreur lors de la création de la fiche:', error, error?.response?.data)
+      } catch (e) {
+        console.error('Erreur création/mise à jour fiche:', e)
         errorCount++
       }
     }
 
-    if (createdCount > 0) {
-      successMsg.value = `${createdCount} fiche(s) créée(s)${errorCount > 0 ? `, ${errorCount} erreur(s)` : ''}`
-      
-      // Sauvegarder la notion actuelle
+    if (createdCount > 0 || updatedCount > 0) {
+      successMsg.value = `${createdCount} créé(es)${updatedCount ? `, ${updatedCount} mis à jour` : ''}${errorCount ? `, ${errorCount} erreur(s)` : ''}`
+
+      // Sauvegarder la notion, puis nettoyer le formulaire
       const currentNotion = selectedNotion.value
-      
-      // Nettoyer le formulaire
       rawInput.value = ''
       previewList.value = []
       selectedImages.value = []
+      imageManager.clear()
       if (imagesInput.value) imagesInput.value.value = ''
-      
-      // Remettre la notion sélectionnée
       selectedNotion.value = currentNotion
+      currentEditSheetId.value = null
+      await loadTable()
     } else {
-      errorMsg.value = 'Aucune fiche n\'a pu être créée'
+      errorMsg.value = 'Aucune fiche enregistrée'
     }
-  } catch (error) {
-    console.error('Erreur lors de la création:', error)
+  } catch (e) {
+    console.error('Erreur globale:', e)
     errorMsg.value = 'Erreur lors de la création des fiches'
   }
 }
 
-function getDifficultyLabel(difficulty) {
-  const labels = {
-    'easy': 'Facile',
-    'medium': 'Moyen',
-    'hard': 'Difficile'
-  }
-  return labels[difficulty] || difficulty
-}
-
 // ============================================================================
-// GESTION DES IMAGES
+// TABLE ACTIONS
 // ============================================================================
 
-function handleImagesSelect(event) {
-  const files = Array.from(event.target.files)
-  selectedImages.value.push(...files)
+function getNotionName(notionId) {
+  const n = notions.value.find(x => String(x.id) === String(notionId))
+  return n ? (n.nom || n.titre) : '—'
 }
 
-function getImagePreview(file) {
-  return URL.createObjectURL(file)
+function getNotionById(id) { return notions.value.find(x => String(x.id) === String(id)) }
+
+function getNotionContextLabel(notionId) {
+  const n = getNotionById(notionId)
+  const ctx = notionContext(n)
+  const parts = [ctx.matiereNom, ctx.themeNom].filter(Boolean)
+  return parts.join(' › ')
 }
 
-function getImageFileByName(filename) {
-  return selectedImages.value.find(f => f.name === filename)
-}
-function removeSelectedImage(index) {
-  selectedImages.value.splice(index, 1)
-}
+async function editSheet(s) {
+  // Pré-remplir le bloc unique pour édition via le form bulk
+  selectedNotion.value = s.notion
+  currentEditSheetId.value = s.id
 
-// ============================================================================
-// PRÉVISUALISATION AVEC IMAGES (alignée sur AdminCoursPlus)
-// ============================================================================
-
-function getPreviewImagesForSheets(sheet) {
-  const names = (sheet.image || '')
-    .split(',')
-    .map(n => n.trim())
-    .filter(Boolean)
-  if (names.length > 0) {
-    return names.map((name, index) => {
-      const file = getImageFileByName(name)
-      return {
-        id: `preview-${index}`,
-        image: file ? URL.createObjectURL(file) : name,
-        image_type: 'illustration',
-        position: index + 1
-      }
-    })
-  }
-  return selectedImages.value.map((file, index) => ({
-    id: `preview-${index}`,
-    image: URL.createObjectURL(file),
-    image_type: 'illustration',
-    position: index + 1
-  }))
-}
-
-function renderPreviewContent(sheet) {
-  const images = getPreviewImagesForSheets(sheet)
-  let content = sheet.contenu || ''
-
-  const imageNames = (sheet.image || selectedImages.value.map(f => f.name).join(','))
-    .split(',')
-    .map(n => n.trim())
-    .filter(Boolean)
-
-  content = content.replace(/\[IMAGE_(\d+)\]/g, (match, position) => {
-    const index = parseInt(position) - 1
-    const imageName = imageNames[index]
-    const imageFile = imageName ? getImageFileByName(imageName) : null
-    if (imageFile) {
-      return `
-        <div class="preview-image-container" style="text-align: center; margin: 2em 0;">
-          <img src="${URL.createObjectURL(imageFile)}" alt="Image ${position}" class="content-image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
-          <div class="image-info" style="margin-top: 0.5rem; font-size: 0.875rem; color: #28a745; font-weight: 500;">✅ ${imageName}</div>
-        </div>
-      `
+  // Récupérer les images existantes pour préremplir la ligne "Images:"
+  let imageNames = ''
+  try {
+    const detail = await getSynthesisSheet(s.id)
+    const data = detail?.data || detail
+    if (Array.isArray(data?.images)) {
+      // Ordonner par position puis extraire le nom de fichier
+      const sorted = [...data.images].sort((a, b) => (a.position || 0) - (b.position || 0))
+      imageNames = sorted
+        .map(img => {
+          const src = img.image || ''
+          // extraire le basename de l'URL et retirer la query (?...)
+          try {
+            const clean = String(src).split('?')[0]
+            const parts = clean.split('/')
+            return parts[parts.length - 1] || ''
+          } catch (_) {
+            return ''
+          }
+        })
+        .filter(Boolean)
+        .join(',')
     }
-    return `
-      <div class="preview-image-placeholder">
-        <div class="placeholder-icon">🖼️</div>
-        <div class="placeholder-text">Image manquante: ${imageName || `IMAGE_${position}`}</div>
-        <div class="placeholder-hint">Uploadez cette image dans la section ci-dessus</div>
-      </div>
-    `
-  })
-
-  // Si pas de marqueurs [IMAGE_X] mais des images sélectionnées, ajouter une galerie auto en fin
-  if (!/\[IMAGE_\d+\]/.test(sheet.contenu || '') && images.length > 0) {
-    const autoGallery = images.map(img => `
-      <div class="content-image-container" style="text-align: center; margin: 2em 0;">
-        <img 
-          src="${img.image}" 
-          alt="Image ${img.position || ''}" 
-          class="content-image"
-          style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
-        />
-      </div>
-    `).join('\n')
-    content = `${content}\n${autoGallery}`
+    // Alimente aussi l'aperçu des images serveur
+    serverImages.value = Array.isArray(data?.images) ? data.images.map(img => ({ ...img, _file: null })) : []
+  } catch (e) {
+    // En cas d'erreur on laisse vide et on continue
+    console.error('[AdminSheets] Impossible de charger les images de la fiche:', e)
+    serverImages.value = []
   }
 
-  return renderContentWithImages(content, images)
+  const header = [
+    '=== ' + (s.titre || ''),
+    'Difficulté: ' + (s.difficulty || 'medium'),
+    'Ordre: ' + (s.ordre || 0),
+    'Images: ' + imageNames
+  ].join('\n')
+
+  rawInput.value = `${header}\n\n${s.summary || ''}`
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+async function handleDeleteSheet(s) {
+  try {
+    await deleteSynthesisSheet(s.id)
+    await loadTable()
+  } catch (e) {
+    console.error('Suppression échouée:', e)
+    errorMsg.value = 'Erreur lors de la suppression'
+  }
+}
+
+async function handleDuplicateSheet(s) {
+  try {
+    await duplicateSynthesisSheet(s.id)
+    await loadTable()
+  } catch (e) {
+    console.error('Duplication échouée:', e)
+    errorMsg.value = 'Erreur lors de la duplication'
+  }
 }
 
 // ============================================================================
-// COMPUTED PROPERTIES
+// COMPUTED & INIT
 // ============================================================================
 
 const filteredNotions = computed(() => {
-  if (!notionFilter.value) {
-    return notions.value
-  }
-  const filter = notionFilter.value.toLowerCase()
-  return notions.value.filter(notion =>
-    formatNotionOption(notion).toLowerCase().includes(filter)
-  )
+  if (!notionFilter.value) return notions.value
+  const f = notionFilter.value.toLowerCase()
+  return notions.value.filter(n => (formatNotionOption(n) || '').toLowerCase().includes(f))
 })
 
-// ============================================================================
-// INITIALISATION
-// ============================================================================
+const filteredNotionsForFilter = computed(() => {
+  if (!notionTableFilter.value) return notions.value
+  const f = notionTableFilter.value.toLowerCase()
+  return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(f))
+})
+
+const filteredSheets = computed(() => {
+  let arr = sheets.value
+  if (filters.value.notion) arr = arr.filter(s => String(s.notion) === String(filters.value.notion))
+  return arr.slice().sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
+})
+
+const totalPages = computed(() => Math.ceil((filteredSheets.value.length || 0) / itemsPerPage))
+const paginatedSheets = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return filteredSheets.value.slice(start, end)
+})
+const displayedPages = computed(() => {
+  const pages = []
+  const total = totalPages.value
+  const current = currentPage.value
+  let startPage = Math.max(1, current - 2)
+  let endPage = Math.min(total, current + 2)
+  if (current <= 3) endPage = Math.min(5, total)
+  if (current >= total - 2) startPage = Math.max(1, total - 4)
+  for (let i = startPage; i <= endPage; i++) pages.push(i)
+  return pages
+})
+
+watch(() => filters.value.notion, () => { currentPage.value = 1 })
+
+async function loadTable() {
+  try {
+    const res = await getSynthesisSheets()
+    sheets.value = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : [])
+  } catch (e) {
+    console.error('[AdminSheets] Erreur chargement des fiches:', e)
+    sheets.value = []
+  }
+}
+
+async function loadServerImages(sheetId) {
+  if (!sheetId) { serverImages.value = []; return }
+  imageManageLoading.value = true
+  try {
+    const detail = await getSynthesisSheet(sheetId)
+    const data = detail?.data || detail
+    serverImages.value = Array.isArray(data?.images) ? data.images.map(img => ({ ...img, _file: null })) : []
+    const maxPos = serverImages.value.reduce((m, it) => Math.max(m, Number(it.position) || 0), 0)
+    if (newImage && newImage.value) newImage.value.position = maxPos + 1
+  } catch (e) {
+    console.error('[AdminSheets] Erreur chargement images fiche:', e)
+    serverImages.value = []
+  } finally {
+    imageManageLoading.value = false
+  }
+}
+
+function onSelectReplaceFile(index, event) {
+  const f = (event.target.files || [])[0]
+  if (!f) return
+  const row = serverImages.value[index]
+  if (row) row._file = f
+}
+
+async function replaceImageRow(sheetId, row, index) {
+  try {
+    const file = row._file
+    if (!file) return
+    await updateSynthesisImage(row.id, { image: file, image_type: row.image_type || 'illustration', position: row.position, caption: row.caption })
+    await loadServerImages(sheetId)
+    serverImages.value[index]._file = null
+  } catch (e) {
+    console.error('Erreur remplacement image:', e)
+    errorMsg.value = 'Erreur lors du remplacement de l\'image'
+  }
+}
+
+async function saveImageRow(sheetId, row, index) {
+  try {
+    await updateSynthesisImage(row.id, { image_type: row.image_type, position: row.position, caption: row.caption })
+    await loadServerImages(sheetId)
+  } catch (e) {
+    console.error('Erreur sauvegarde image:', e)
+    errorMsg.value = 'Erreur lors de la sauvegarde de l\'image'
+  }
+}
+
+async function deleteImageRow(sheetId, row, index) {
+  try {
+    await deleteSynthesisImage(row.id)
+    await loadServerImages(sheetId)
+  } catch (e) {
+    console.error('Erreur suppression image:', e)
+    errorMsg.value = 'Erreur lors de la suppression de l\'image'
+  }
+}
+
+const newImage = ref({ file: null, image_type: 'illustration', position: 0, caption: '' })
+function onSelectNewImage(event) {
+  const f = (event.target.files || [])[0]
+  newImage.value.file = f || null
+}
+
+async function addNewImage(sheetId) {
+  try {
+    if (!newImage.value.file) return
+    await createSynthesisImage({
+      sheet: sheetId,
+      image: newImage.value.file,
+      image_type: newImage.value.image_type,
+      position: newImage.value.position || null,
+      caption: newImage.value.caption || ''
+    })
+    // reset form
+    newImage.value = { file: null, image_type: 'illustration', position: 0, caption: '' }
+    await loadServerImages(sheetId)
+  } catch (e) {
+    console.error('Erreur ajout image:', e)
+    errorMsg.value = 'Erreur lors de l\'ajout de l\'image'
+  }
+}
 
 onMounted(async () => {
   try {
     const nt = await getNotions()
     notions.value = Array.isArray(nt) ? nt : (nt?.data || [])
+    await loadTable()
   } catch (error) {
     console.error('Erreur lors du chargement:', error)
   }
@@ -628,7 +805,6 @@ onMounted(async () => {
 
 <style scoped>
 /* Styles spécifiques à AdminSheets */
-
 .preview-sheet {
   background: #f8f9fa;
   border-radius: 6px;
@@ -651,14 +827,6 @@ onMounted(async () => {
   font-weight: 500;
 }
 
-.preview-keys {
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  background: #fffbeb;
-  border-radius: 6px;
-  font-size: 0.875rem;
-}
-
 .preview-content {
   line-height: 1.6;
   color: #333;
@@ -666,20 +834,44 @@ onMounted(async () => {
   overflow-wrap: break-word;
 }
 
-.preview-content :deep(h3),
-.preview-content :deep(h4) {
-  color: #193e8e;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+/* Tableau admin (repris de AdminCours) */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  margin-top: 1.5rem;
+}
+.admin-table th,
+.admin-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+.admin-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #374151;
+}
+.admin-table tr:hover {
+  background: #f9fafb;
+}
+.ctx-cell {
+  color: #64748b;
+  font-size: 0.85rem;
+  max-width: 360px;
 }
 
-.preview-content :deep(p) {
-  margin-bottom: 0.5rem;
-}
-
-.preview-content :deep(ul),
-.preview-content :deep(ol) {
-  margin-bottom: 0.5rem;
-  padding-left: 1.5rem;
-}
+/* Pagination */
+.pagination { display:flex; align-items:center; justify-content:center; gap:0.5rem; margin-top: 1.25rem; padding: 0.75rem 0; }
+.pagination-btn { padding: 0.5rem 1rem; border: 1px solid #d1d5db; background: white; border-radius: 0.375rem; cursor: pointer; font-size: 0.875rem; font-weight: 500; color: #374151; }
+.pagination-btn:hover:not(:disabled) { background: #f3f4f6; border-color: #9ca3af; }
+.pagination-btn:disabled { opacity: .5; cursor: not-allowed; }
+.pagination-numbers { display:flex; gap: .25rem; }
+.pagination-number { padding: .5rem .75rem; border:1px solid #d1d5db; background:white; border-radius:.375rem; cursor:pointer; font-size:.875rem; font-weight:500; color:#374151; min-width:2.5rem; }
+.pagination-number:hover { background:#f3f4f6; border-color:#9ca3af; }
+.pagination-number.active { background:#3b82f6; border-color:#3b82f6; color:#fff; }
+.pagination-info { text-align:center; font-size:.875rem; color:#6b7280; margin-top:.5rem; margin-bottom:1.5rem; }
 </style>

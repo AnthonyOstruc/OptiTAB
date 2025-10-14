@@ -39,12 +39,29 @@ export const getPreviewData = (params) => {
 }
 
 // Upload d'image pour une fiche de synthèse
-export const createSynthesisImage = ({ sheet, image, image_type = 'illustration', position }) => {
+export const createSynthesisImage = ({ sheet, image, image_type = 'illustration', position, caption }) => {
   const formData = new FormData()
   formData.append('image', image)
   if (image_type) formData.append('image_type', image_type)
   if (position !== undefined && position !== null) formData.append('position', position)
+  if (caption) formData.append('caption', caption)
   return apiClient.post(`/api/sheets/${sheet}/add_image/`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   })
 }
+
+// Liste/CRUD des images d'une fiche
+export const getSynthesisImages = (sheetId) => apiClient.get(`/api/sheet-images/?sheet=${sheetId}`)
+
+export const updateSynthesisImage = (id, { image, image_type, position, caption } = {}) => {
+  const formData = new FormData()
+  if (image) formData.append('image', image)
+  if (image_type) formData.append('image_type', image_type)
+  if (position !== undefined && position !== null) formData.append('position', position)
+  if (caption !== undefined) formData.append('caption', caption)
+  return apiClient.patch(`/api/sheet-images/${id}/`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
+}
+
+export const deleteSynthesisImage = (id) => apiClient.delete(`/api/sheet-images/${id}/`)

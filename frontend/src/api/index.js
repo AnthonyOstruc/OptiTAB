@@ -127,7 +127,10 @@ export {
   updateSynthesisSheet,
   deleteSynthesisSheet,
   duplicateSynthesisSheet,
-  getPreviewData
+  getPreviewData,
+  getSynthesisImages,
+  updateSynthesisImage,
+  deleteSynthesisImage
 } from './synthesis'
 export * from './quiz'
 export * from './users'

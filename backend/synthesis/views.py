@@ -5,9 +5,10 @@ from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import SynthesisSheet, SynthesisImage
 from .serializers import (
-    SynthesisSheetSerializer, 
+    SynthesisSheetSerializer,
     SynthesisSheetCreateSerializer,
-    SynthesisSheetListSerializer
+    SynthesisSheetListSerializer,
+    SynthesisImageSerializer,
 )
 
 
@@ -143,3 +144,33 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             'rendered_html': summary,  # En production, utiliser un renderer markdown
             'reading_time': len(summary.split()) // 200 if summary else 1  # Estimation
         })
+
+
+class SynthesisImageViewSet(viewsets.ModelViewSet):
+    """CRUD pour les images des fiches de synthèse.
+
+    Endpoint attendu par le frontend: /api/sheet-images/?sheet=<id>
+    Autorise lecture publique; écriture pour utilisateurs authentifiés.
+    """
+    queryset = SynthesisImage.objects.all()
+    serializer_class = SynthesisImageSerializer
+    permission_classes = [IsAuthenticated]  # lecture via list/retrieve protégée par is_authenticated (aligné aux sheets)
+
+    def get_permissions(self):
+        # Lecture: utilisateurs authentifiés
+        if self.action in ["list", "retrieve"]:
+            return [IsAuthenticated()]
+        # Écriture réservée aux admins
+        return [IsAdminUser()]
+
+    def get_serializer_context(self):
+        ctx = super().get_serializer_context()
+        ctx['request'] = self.request
+        return ctx
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sheet_id = self.request.query_params.get('sheet')
+        if sheet_id:
+            queryset = queryset.filter(sheet_id=sheet_id)
+        return queryset.order_by('position', 'id')

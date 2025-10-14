@@ -1,4 +1,4 @@
-from rest_framework import serializers
+﻿from rest_framework import serializers
 from .models import SynthesisSheet, SynthesisImage
 from curriculum.serializers import NotionSerializer
 
@@ -17,16 +17,37 @@ class SynthesisSheetSerializer(serializers.ModelSerializer):
         read_only_fields = ['date_creation', 'date_modification']
 
     def validate(self, data):
-        """Validation personnalisée"""
+        """Validation personnalisÃ©e"""
         if not data.get('summary'):
             raise serializers.ValidationError(
-                "Le champ 'summary' doit être rempli"
+                "Le champ 'summary' doit Ãªtre rempli"
             )
         return data
 
+    def get_images(self, obj):
+        qs = getattr(obj, 'images', None)
+        if qs is None:
+            return []
+        request = self.context.get('request') if hasattr(self, 'context') else None
+        return [
+            {
+                'id': img.id,
+                'image': (
+                    img.image.url if (getattr(img.image, 'url', None) and str(img.image.url).startswith(('http://', 'https://')))
+                    else (
+                        request.build_absolute_uri(img.image.url) if (request and getattr(img.image, 'url', None)) else (img.image.url if getattr(img.image, 'url', None) else '')
+                    )
+                ),
+                'image_type': img.image_type,
+                'position': img.position,
+                'caption': img.caption,
+            }
+            for img in qs.all().order_by('position', 'id')
+        ]
+
 
 class SynthesisSheetCreateSerializer(serializers.ModelSerializer):
-    """Sérialiseur simplifié pour la création"""
+    """SÃ©rialiseur simplifiÃ© pour la crÃ©ation"""
     
     class Meta:
         model = SynthesisSheet
@@ -56,31 +77,8 @@ class SynthesisImageSerializer(serializers.ModelSerializer):
         return data
 
 
-    
-def get_images(self, obj):
-    qs = getattr(obj, 'images', None)
-    if qs is None:
-        return []
-    request = self.context.get('request') if hasattr(self, 'context') else None
-    return [
-        {
-            'id': img.id,
-            'image': (
-                img.image.url if (getattr(img.image, 'url', None) and str(img.image.url).startswith(('http://', 'https://')))
-                else (
-                    request.build_absolute_uri(img.image.url) if (request and getattr(img.image, 'url', None)) else (img.image.url if getattr(img.image, 'url', None) else '')
-                )
-            ),
-            'image_type': img.image_type,
-            'position': img.position,
-            'caption': img.caption,
-        }
-        for img in qs.all().order_by('position', 'id')
-    ]
-
-
 class SynthesisSheetListSerializer(serializers.ModelSerializer):
-    """Sérialiseur pour la liste (plus léger)"""
+    """SÃ©rialiseur pour la liste (plus lÃ©ger)"""
     notion_nom = serializers.CharField(source='notion.titre', read_only=True)
     theme_nom = serializers.CharField(source='notion.theme.titre', read_only=True)
     matiere_nom = serializers.CharField(source='notion.theme.matiere.titre', read_only=True)

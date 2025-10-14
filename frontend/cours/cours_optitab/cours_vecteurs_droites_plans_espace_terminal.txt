@@ -1,0 +1,428 @@
+
+=== Vecteurs, Droites et Plans dans l'Espace - Cours Complet Terminal
+Difficulté: medium
+Ordre: 15
+Images: vecteurs_espace.png, droites_plans_espace.png
+
+Titre: Vecteurs, Droites et Plans dans l'Espace : Géométrie dans l'espace à trois dimensions
+Description: Cours spécialisé sur la géométrie dans l'espace : repérage 3D, représentations paramétriques de droites, équations cartésiennes de plans, positions relatives (droite/droite, droite/plan, plan/plan), applications pratiques.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Repérage dans l'espace et rappels</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Repère de l'espace à trois dimensions</h3>
+        <p style="font-size:1em;">Un <strong>repère de l'espace</strong> est défini par un point origine $O$ et trois vecteurs non coplanaires $\vec{i}$, $\vec{j}$ et $\vec{k}$.</p>
+        
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            <strong>Notation :</strong> $\displaystyle (O; \vec{i}, \vec{j}, \vec{k})$
+        </div>
+        
+        <p style="font-size:1em;">Tout point $M$ de l'espace peut être repéré par ses <strong>coordonnées</strong> $(x; y; z)$ telles que :</p>
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            $\displaystyle \overrightarrow{OM} = x\vec{i} + y\vec{j} + z\vec{k}$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; font-size:1em;">
+            <strong>💡 À retenir :</strong> Dans un repère orthonormé, les vecteurs $\vec{i}$, $\vec{j}$ et $\vec{k}$ sont <strong>perpendiculaires deux à deux</strong> et de <strong>norme 1</strong>.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Rappels essentiels</h3>
+        <p style="font-size:1em;">Pour deux points $A(x_A; y_A; z_A)$ et $B(x_B; y_B; z_B)$ :</p>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Coordonnées d'un vecteur :</strong>
+            <div style="text-align:left; font-size:1em; margin:10px 0;">
+                $\displaystyle \overrightarrow{AB} \begin{pmatrix} x_B - x_A \\ y_B - y_A \\ z_B - z_A \end{pmatrix}$
+            </div>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Produit scalaire :</strong>
+            <div style="text-align:left; font-size:1em; margin:10px 0;">
+                $\displaystyle \vec{u} \cdot \vec{v} = xx' + yy' + zz'$
+            </div>
+            <p style="margin:8px 0; font-size:1em;">Deux vecteurs sont <strong>orthogonaux</strong> ssi $\vec{u} \cdot \vec{v} = 0$</p>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Colinéarité (2 vecteurs) :</strong>
+            <div style="text-align:left; font-size:1em; margin:10px 0;">
+                $\vec{u}$ et $\vec{v}$ colinéaires $\displaystyle \Leftrightarrow \vec{u} = k\vec{v}$ $\displaystyle \Leftrightarrow \frac{x}{x'} = \frac{y}{y'} = \frac{z}{z'}$
+            </div>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Coplanarité (3 vecteurs) :</strong>
+            <div style="text-align:left; font-size:1em; margin:10px 0;">
+                $\vec{u}$, $\vec{v}$, $\vec{w}$ coplanaires $\displaystyle \Leftrightarrow \begin{vmatrix} x & y & z \\ x' & y' & z' \\ x'' & y'' & z'' \end{vmatrix} = 0$
+            </div>
+        </div>
+        
+        <div style="background:#e8f4f8; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #3498db; font-size:1em;">
+            <strong>📖 Pré-requis :</strong> Ces notions sont détaillées dans les cours sur le produit scalaire et les combinaisons linéaires.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Représentations paramétriques de droites dans l'espace</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et équation</h3>
+        <p style="font-size:1em;">Une <strong>droite</strong> $d$ de l'espace est entièrement définie par :</p>
+        <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
+            <li>Un point $A(x_0; y_0; z_0)$ appartenant à la droite</li>
+            <li>Un vecteur directeur $\vec{u} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ non nul</li>
+        </ul>
+        
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            <strong>Représentation paramétrique :</strong> Un point $M(x; y; z)$ appartient à $d$ si et seulement si :<br><br>
+            $\displaystyle \begin{cases} x = x_0 + ta \\ y = y_0 + tb \\ z = z_0 + tc \end{cases}$ où $t \in \mathbb{R}$
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; font-size:1em;">
+            <strong>💡 Interprétation :</strong> Le paramètre $t$ permet de parcourir tous les points de la droite. Pour chaque valeur de $t$, on obtient un point différent de la droite.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemples d'applications</h3>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Exemple 1 :</strong> Déterminer une représentation paramétrique de la droite passant par $A(1; -2; 3)$ et de vecteur directeur $\vec{u} \begin{pmatrix} 2 \\ 1 \\ -1 \end{pmatrix}$
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                <strong>Solution :</strong><br>
+                $\displaystyle d : \begin{cases} x = 1 + 2t \\ y = -2 + t \\ z = 3 - t \end{cases}, \quad t \in \mathbb{R}$
+            </div>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Exemple 2 :</strong> Déterminer une représentation paramétrique de la droite $(AB)$ avec $A(2; 1; -1)$ et $B(5; 3; 2)$
+            <p style="margin:8px 0; font-size:1em;"><strong>Étape 1 :</strong> Calculer un vecteur directeur</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\displaystyle \overrightarrow{AB} \begin{pmatrix} 5-2 \\ 3-1 \\ 2-(-1) \end{pmatrix} = \begin{pmatrix} 3 \\ 2 \\ 3 \end{pmatrix}$
+        </div>
+            <p style="margin:8px 0; font-size:1em;"><strong>Étape 2 :</strong> Écrire la représentation paramétrique avec le point $A$</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\displaystyle (AB) : \begin{cases} x = 2 + 3t \\ y = 1 + 2t \\ z = -1 + 3t \end{cases}, \quad t \in \mathbb{R}$
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Exemple 3 :</strong> Le point $M(7; 5; 5)$ appartient-il à la droite $d : \begin{cases} x = 1 + 2t \\ y = -1 + 3t \\ z = 1 + 2t \end{cases}$ ?
+            <p style="margin:8px 0; font-size:1em;">Il faut trouver $t$ tel que les trois égalités soient vérifiées simultanément :</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                • $7 = 1 + 2t \Rightarrow t = 3$<br>
+                • $5 = -1 + 3t \Rightarrow t = 2$<br>
+                • $5 = 1 + 2t \Rightarrow t = 2$
+            </div>
+            <p style="margin:8px 0; font-size:1em;">Les valeurs de $t$ ne sont pas toutes égales, donc $M$ <strong>n'appartient pas</strong> à $d$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Équations cartésiennes de plans</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Équation cartésienne d'un plan</h3>
+        <p style="font-size:1em;">Un <strong>plan</strong> $\mathcal{P}$ de l'espace admet une équation cartésienne de la forme :</p>
+        
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            $\displaystyle ax + by + cz + d = 0$ où $(a; b; c) \neq (0; 0; 0)$
+        </div>
+        
+        <p style="font-size:1em;">Le vecteur $\vec{n} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ est appelé <strong>vecteur normal</strong> au plan : il est orthogonal à tous les vecteurs du plan.</p>
+        
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500; font-size:1em;">
+            <strong>⚠️ Important :</strong> Un plan peut avoir plusieurs équations cartésiennes (on peut multiplier par un coefficient non nul), mais tous les vecteurs normaux sont colinéaires.
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Exemple :</strong> Déterminer un vecteur normal au plan d'équation $2x - 3y + z + 5 = 0$
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                <strong>Solution :</strong> On lit directement les coefficients : $\vec{n} \begin{pmatrix} 2 \\ -3 \\ 1 \end{pmatrix}$
+            </div>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Déterminer l'équation d'un plan</h3>
+        
+        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Méthode 1 :</strong> Plan défini par un point et un vecteur normal<br><br>
+            Si $\mathcal{P}$ passe par $A(x_0; y_0; z_0)$ et admet $\vec{n} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ comme vecteur normal :<br><br>
+            Un point $M(x; y; z)$ appartient à $\mathcal{P}$ si et seulement si $\overrightarrow{AM} \perp \vec{n}$, c'est-à-dire :<br>
+            <div style="text-align:left; font-size:1em; margin:10px 0;">
+                $\displaystyle a(x - x_0) + b(y - y_0) + c(z - z_0) = 0$
+            </div>
+            </div>
+            
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Exemple :</strong> Déterminer une équation du plan passant par $A(1; 2; -1)$ et de vecteur normal $\vec{n} \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix}$
+            <p style="margin:8px 0; font-size:1em;"><strong>Résolution :</strong></p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\displaystyle 2(x - 1) + (-1)(y - 2) + 3(z - (-1)) = 0$<br>
+                $\displaystyle 2x - 2 - y + 2 + 3z + 3 = 0$<br>
+                $\displaystyle 2x - y + 3z + 3 = 0$
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Méthode 2 :</strong> Plan défini par trois points non alignés<br><br>
+            Si $\mathcal{P}$ passe par trois points $A$, $B$ et $C$ non alignés :<br>
+            • On calcule $\overrightarrow{AB}$ et $\overrightarrow{AC}$<br>
+            • On détermine un vecteur normal $\vec{n}$ orthogonal à ces deux vecteurs<br>
+            • On utilise la méthode 1 avec l'un des trois points
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Exemple complet :</strong> Déterminer une équation du plan passant par $A(1; 0; 2)$, $B(2; 1; 1)$ et $C(0; 1; 3)$
+            <p style="margin:8px 0; font-size:1em;"><strong>Étape 1 :</strong> Calculer les vecteurs</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\displaystyle \overrightarrow{AB} \begin{pmatrix} 1 \\ 1 \\ -1 \end{pmatrix}$ et $\displaystyle \overrightarrow{AC} \begin{pmatrix} -1 \\ 1 \\ 1 \end{pmatrix}$
+            </div>
+            <p style="margin:8px 0; font-size:1em;"><strong>Étape 2 :</strong> Trouver un vecteur normal $\vec{n} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ tel que :</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\vec{n} \cdot \overrightarrow{AB} = 0$ : $a + b - c = 0$<br>
+                $\vec{n} \cdot \overrightarrow{AC} = 0$ : $-a + b + c = 0$
+            </div>
+            <p style="margin:8px 0; font-size:1em;">En additionnant : $2b = 0 \Rightarrow b = 0$</p>
+            <p style="margin:8px 0; font-size:1em;">Puis : $a = c$. On choisit $a = 1$ et $c = 1$ : $\vec{n} \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}$</p>
+            <p style="margin:8px 0; font-size:1em;"><strong>Étape 3 :</strong> Équation avec le point $A(1; 0; 2)$</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\displaystyle 1(x - 1) + 0(y - 0) + 1(z - 2) = 0$<br>
+                $\displaystyle x + z - 3 = 0$
+        </div>
+            <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0; font-size:1em;">
+                <strong>✅ Équation du plan :</strong> $x + z - 3 = 0$
+    </div>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Représentation paramétrique d'un plan</h3>
+        <p style="font-size:1em;">Un plan $\mathcal{P}$ passant par $A(x_0; y_0; z_0)$ et de vecteurs directeurs $\vec{u} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ et $\vec{v} \begin{pmatrix} a' \\ b' \\ c' \end{pmatrix}$ (non colinéaires) admet la représentation paramétrique :</p>
+        
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            $\displaystyle \begin{cases} x = x_0 + sa + ta' \\ y = y_0 + sb + tb' \\ z = z_0 + sc + tc' \end{cases}$ où $(s, t) \in \mathbb{R}^2$
+        </div>
+
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; font-size:1em;">
+            <strong>💡 À retenir :</strong> Il faut <strong>deux paramètres</strong> pour décrire un plan (contre un seul pour une droite).
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Positions relatives dans l'espace</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Position relative de deux droites</h3>
+        <p style="font-size:1em;">Soient deux droites $d$ et $d'$ de vecteurs directeurs $\vec{u}$ et $\vec{u'}$ :</p>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Situation</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Condition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px;">$d$ et $d'$ sont <strong>parallèles</strong></td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vec{u}$ et $\vec{u'}$ colinéaires</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px;">$d$ et $d'$ sont <strong>confondues</strong></td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Parallèles + un point commun</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px;">$d$ et $d'$ sont <strong>sécantes</strong></td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Non parallèles + coplanaires</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px;">$d$ et $d'$ sont <strong>non coplanaires</strong></td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Non parallèles + non coplanaires</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Exemple :</strong> Étudier la position relative des droites :<br>
+            $d : \begin{cases} x = 1 + 2t \\ y = 3 - t \\ z = 2 + t \end{cases}$ et $d' : \begin{cases} x = 3 + 4s \\ y = 1 - 2s \\ z = 4 + 2s \end{cases}$
+            <p style="margin:8px 0; font-size:1em;"><strong>Étape 1 :</strong> Vecteurs directeurs</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\vec{u} \begin{pmatrix} 2 \\ -1 \\ 1 \end{pmatrix}$ et $\vec{u'} \begin{pmatrix} 4 \\ -2 \\ 2 \end{pmatrix}$
+        </div>
+            <p style="margin:8px 0; font-size:1em;">On vérifie : $\vec{u'} = 2\vec{u}$, donc les vecteurs sont colinéaires.</p>
+            <p style="margin:8px 0; font-size:1em;"><strong>Étape 2 :</strong> Vérifier s'il existe un point commun</p>
+            <p style="margin:8px 0; font-size:1em;">Le point $A(1; 3; 2)$ de $d$ appartient-il à $d'$ ?</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $1 = 3 + 4s \Rightarrow s = -\frac{1}{2}$<br>
+                $3 = 1 - 2s \Rightarrow s = -1$ (contradiction !)
+    </div>
+            <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0; font-size:1em;">
+                <strong>✅ Conclusion :</strong> Les droites sont <strong>strictement parallèles</strong>.
+            </div>
+        </div>
+    </div>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Position relative d'une droite et d'un plan</h3>
+        <p style="font-size:1em;">Soit $d$ une droite de vecteur directeur $\vec{u}$ et $\mathcal{P}$ un plan de vecteur normal $\vec{n}$ :</p>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Situation</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Condition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px;">$d$ est <strong>parallèle</strong> à $\mathcal{P}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vec{u} \cdot \vec{n} = 0$ et $d \cap \mathcal{P} = \emptyset$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px;">$d$ est <strong>incluse</strong> dans $\mathcal{P}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vec{u} \cdot \vec{n} = 0$ et $d \subset \mathcal{P}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px;">$d$ est <strong>sécante</strong> à $\mathcal{P}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vec{u} \cdot \vec{n} \neq 0$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px;">$d$ est <strong>perpendiculaire</strong> à $\mathcal{P}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vec{u}$ et $\vec{n}$ colinéaires</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Position relative de deux plans</h3>
+        <p style="font-size:1em;">Soient deux plans $\mathcal{P}$ et $\mathcal{P}'$ de vecteurs normaux $\vec{n}$ et $\vec{n'}$ :</p>
+        
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Situation</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Condition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px;">$\mathcal{P}$ et $\mathcal{P}'$ sont <strong>parallèles</strong></td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vec{n}$ et $\vec{n'}$ colinéaires</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px;">$\mathcal{P}$ et $\mathcal{P}'$ sont <strong>confondus</strong></td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Parallèles + un point commun</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px;">$\mathcal{P}$ et $\mathcal{P}'$ sont <strong>sécants</strong></td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vec{n}$ et $\vec{n'}$ non colinéaires</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px;">$\mathcal{P}$ et $\mathcal{P}'$ sont <strong>perpendiculaires</strong></td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\vec{n} \cdot \vec{n'} = 0$</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; font-size:1em;">
+            <strong>💡 À retenir :</strong> Lorsque deux plans sont sécants, leur intersection est une <strong>droite</strong>.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Application : Exercice type complet</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Problème complet de géométrie dans l'espace</h3>
+        <p style="font-size:1em;"><strong>Énoncé :</strong> On considère les points $A(1; 2; 0)$, $B(3; 0; 1)$, $C(2; 1; 2)$ et $D(0; 3; -1)$.</p>
+        <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
+            <li>Montrer que les points $A$, $B$ et $C$ ne sont pas alignés</li>
+            <li>Déterminer une équation du plan $(ABC)$</li>
+            <li>Le point $D$ appartient-il au plan $(ABC)$ ?</li>
+        </ul>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Question 1 :</strong> Points $A$, $B$ et $C$ non alignés
+            <p style="margin:8px 0; font-size:1em;">Calculons $\overrightarrow{AB}$ et $\overrightarrow{AC}$ :</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\displaystyle \overrightarrow{AB} \begin{pmatrix} 2 \\ -2 \\ 1 \end{pmatrix}$ et $\displaystyle \overrightarrow{AC} \begin{pmatrix} 1 \\ -1 \\ 2 \end{pmatrix}$
+            </div>
+            <p style="margin:8px 0; font-size:1em;">Les vecteurs sont-ils colinéaires ? Vérifions les rapports :</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\displaystyle \frac{2}{1} = 2 \quad ; \quad \frac{-2}{-1} = 2 \quad ; \quad \frac{1}{2} = 0{,}5$
+            </div>
+            <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0; font-size:1em;">
+                <strong>✅ Conclusion :</strong> Les rapports ne sont pas tous égaux, donc $\overrightarrow{AB}$ et $\overrightarrow{AC}$ ne sont pas colinéaires : les points $A$, $B$ et $C$ ne sont <strong>pas alignés</strong>.
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Question 2 :</strong> Équation du plan $(ABC)$
+            <p style="margin:8px 0; font-size:1em;">Cherchons un vecteur normal $\vec{n} \begin{pmatrix} a \\ b \\ c \end{pmatrix}$ orthogonal à $\overrightarrow{AB}$ et $\overrightarrow{AC}$ :</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\vec{n} \cdot \overrightarrow{AB} = 0$ : $2a - 2b + c = 0$ ... (1)<br>
+                $\vec{n} \cdot \overrightarrow{AC} = 0$ : $a - b + 2c = 0$ ... (2)
+            </div>
+            <p style="margin:8px 0; font-size:1em;">De (1) : $c = 2b - 2a$</p>
+            <p style="margin:8px 0; font-size:1em;">Dans (2) : $a - b + 2(2b - 2a) = 0 \Rightarrow a - b + 4b - 4a = 0 \Rightarrow -3a + 3b = 0 \Rightarrow b = a$</p>
+            <p style="margin:8px 0; font-size:1em;">Donc $c = 2a - 2a = 0$. Choisissons $a = 1$ : $\vec{n} \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}$</p>
+            <p style="margin:8px 0; font-size:1em;">Équation avec le point $A(1; 2; 0)$ :</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\displaystyle 1(x - 1) + 1(y - 2) + 0(z - 0) = 0$<br>
+                $\displaystyle x + y - 3 = 0$
+            </div>
+            <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0; font-size:1em;">
+                <strong>✅ Équation :</strong> $(ABC) : x + y - 3 = 0$
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Question 3 :</strong> $D$ appartient-il à $(ABC)$ ?
+            <p style="margin:8px 0; font-size:1em;">Vérifions si $D(0; 3; -1)$ vérifie l'équation :</p>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                $\displaystyle 0 + 3 - 3 = 0$ ✓
+            </div>
+            <div style="background:#e8f5e8; padding:8px; border-radius:4px; margin:10px 0; font-size:1em;">
+                <strong>✅ Conclusion :</strong> Oui, $D$ <strong>appartient</strong> au plan $(ABC)$.
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Erreurs fréquentes et conseils</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fdf2f2; padding:15px; border-radius:6px; margin-bottom:15px;">
+            <strong>❌ Pièges à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
+                <li>Confondre vecteur directeur et vecteur normal : un vecteur directeur est <strong>parallèle</strong> à la droite, un vecteur normal est <strong>perpendiculaire</strong> au plan</li>
+                <li>Oublier de vérifier que trois points ne sont pas alignés avant de chercher l'équation d'un plan</li>
+                <li>Confondre colinéarité (2 vecteurs) et coplanarité (3 vecteurs ou 3 points)</li>
+                <li>Croire que deux droites qui ne sont pas parallèles sont forcément sécantes : elles peuvent être <strong>non coplanaires</strong> (cas spécifique à l'espace 3D !)</li>
+                <li>Oublier de vérifier <strong>toutes les coordonnées</strong> lors d'un test d'appartenance d'un point à une droite</li>
+                <li>Confondre les paramètres : utiliser le même paramètre $t$ pour deux droites différentes (utiliser $t$, $s$, etc.)</li>
+                <li>Confondre plan parallèle et plan perpendiculaire : vérifier si les vecteurs normaux sont colinéaires (parallèles) ou orthogonaux (perpendiculaires)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f0f9f0; padding:15px; border-radius:6px;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
+                <li>Toujours <strong>nommer différemment</strong> les paramètres de droites différentes ($t$, $s$, etc.)</li>
+                <li>Pour montrer qu'un point appartient à une droite/plan, vérifier <strong>toutes</strong> les équations simultanément</li>
+                <li>Pour un plan défini par 3 points, calculer deux vecteurs du plan puis trouver un vecteur normal <strong>orthogonal aux deux</strong></li>
+                <li>Pour trouver un vecteur normal, résoudre le système issu des <strong>produits scalaires nuls</strong></li>
+                <li>Faire des <strong>schémas</strong> dans l'espace pour visualiser les situations (même approximatifs !)</li>
+                <li>Vérifier ses résultats en testant un point particulier dans l'équation trouvée</li>
+                <li>Bien distinguer les 4 cas de droites dans l'espace : <strong>confondues, parallèles strictes, sécantes, non coplanaires</strong></li>
+                <li>Pour les positions relatives, toujours commencer par étudier les <strong>vecteurs directeurs/normaux</strong></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===

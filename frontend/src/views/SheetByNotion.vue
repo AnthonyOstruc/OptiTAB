@@ -33,8 +33,9 @@ import { defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
-import { getSynthesisSheets } from '@/api/synthesis'
+import { getSynthesisSheets, getSynthesisSheet } from '@/api/synthesis'
 import { useSubjectsStore } from '@/stores/subjects/index'
+import { renderContentWithImages } from '@/utils/scientificRenderer'
 
 const route = useRoute()
 const router = useRouter()
@@ -50,11 +51,12 @@ const sheet = ref(null)
 const sheetCache = typeof window !== 'undefined' ? (window.__sheetCache ||= new Map()) : new Map()
 
 const rendered = computed(() => {
-  const html = sheet.value?.summary || ''
-  return html
+  const html = (sheet.value?.summary || '')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&amp;/g, '&')
+  const images = sheet.value?.images || []
+  return renderContentWithImages(html, images)
 })
 
 function goBack() {
@@ -80,8 +82,17 @@ async function fetchSheet(nId) {
     } else {
       const { data } = await getSynthesisSheets({ notion: nId })
       const result = Array.isArray(data) ? data[0] : (Array.isArray(data?.results) ? data.results[0] : null)
-      sheet.value = result
-      sheetCache.set(nId, result)
+      let full = result
+      if (result?.id) {
+        try {
+          const detail = await getSynthesisSheet(result.id)
+          full = detail?.data || detail
+        } catch (_) {
+          full = result
+        }
+      }
+      sheet.value = full
+      sheetCache.set(nId, full)
     }
   } finally {
     loading.value = false

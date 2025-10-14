@@ -16,10 +16,6 @@
         </div>
         <div v-else class="sheet-container">
           <h1 class="sheet-title">{{ sheet.titre }}</h1>
-          <div class="meta">
-            <span class="badge">{{ sheet.matiere_nom || sheet.notion?.theme?.matiere?.titre }}</span>
-            <span class="badge">{{ sheet.reading_time_minutes || 5 }} min</span>
-          </div>
           <div class="sheet-content" v-html="rendered"></div>
         </div>
       </div>
@@ -120,8 +116,16 @@ watch(() => route.params.notionId, (newId, oldId) => {
 .loading { text-align:center; padding:2rem; }
 .spinner { width:36px; height:36px; border:3px solid #e5e7eb; border-top:3px solid #2563eb; border-radius:50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.sheet-title { font-size: 1.5rem; font-weight: 800; margin: 0.25rem 0 0.5rem; color:#1e293b; }
-.meta { display:flex; gap:.5rem; margin-bottom: .75rem; }
-.badge { background:#eef2ff; color:#1d4ed8; padding:.25rem .5rem; border-radius: 999px; font-size:.75rem; font-weight:600; }
-.sheet-content { background:white; border:1px solid #e5e7eb; border-radius:8px; padding:1rem; }
+.sheet-title { font-size: 1.5rem; font-weight: 800; margin: 0.25rem 0 0.5rem; color:#1e293b; text-align: center; }
+.sheet-content { padding:1rem; }
+/* Réduire l'espace autour des titres dans le contenu de fiche */
+.sheet-content :deep(h1),
+.sheet-content :deep(h2),
+.sheet-content :deep(h3),
+.sheet-content :deep(h4),
+.sheet-content :deep(h5),
+.sheet-content :deep(h6) {
+  margin-top: 0.25rem !important;
+  margin-bottom: 0.5rem !important;
+}
 </style>

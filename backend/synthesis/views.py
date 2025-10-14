@@ -48,7 +48,7 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             'notion',
             'notion__theme',
             'notion__theme__matiere'
-        ).order_by('notion', 'ordre', 'titre')
+        ).order_by('notion', 'titre', 'id')
         
         # Filtrage par notion
         notion_id = self.request.query_params.get('notion', None)
@@ -116,8 +116,6 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             'key_points': original.key_points,
             'formulas': original.formulas,
             'examples': original.examples,
-            'difficulty': original.difficulty,
-            'ordre': original.ordre + 1,
             'reading_time_minutes': original.reading_time_minutes
         }
         

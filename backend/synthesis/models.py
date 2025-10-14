@@ -64,7 +64,7 @@ class SynthesisSheet(BaseContent):
     )
     
     class Meta:
-        ordering = ['notion', 'ordre']
+        ordering = ['notion', 'titre']
         verbose_name = "Fiche de synthèse"
         verbose_name_plural = "Fiches de synthèse"
         unique_together = [['notion', 'titre']]

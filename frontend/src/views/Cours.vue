@@ -635,7 +635,8 @@ onBeforeUnmount(() => {
   hyphens: auto;
   line-height: 1.6;
   color: #333;
-  padding: 2rem 0;
+  /* Réduire le padding global pour limiter les grands espaces verticaux */
+  padding: 1rem 0;
   background: transparent;
 }
 
@@ -647,12 +648,21 @@ onBeforeUnmount(() => {
 .cours-content :deep(h5),
 .cours-content :deep(h6) {
   color: #193e8e;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+  /* Réduire l'espace vertical autour des titres pour éviter les grands blancs */
+  margin-top: 0.25rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
-.cours-content :deep(p) {
-  margin-bottom: 0.5rem;
+.cours-content :deep(p) { margin-top: 0; margin-bottom: 0.5rem; }
+
+/* Limiter l'espace quand un titre suit un bloc */
+.cours-content :deep(div) + :deep(h1),
+.cours-content :deep(div) + :deep(h2),
+.cours-content :deep(div) + :deep(h3),
+.cours-content :deep(div) + :deep(h4),
+.cours-content :deep(div) + :deep(h5),
+.cours-content :deep(div) + :deep(h6) {
+  margin-top: 0.4rem !important;
 }
 
 .cours-content :deep(ul),

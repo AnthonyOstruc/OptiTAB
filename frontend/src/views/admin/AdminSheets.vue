@@ -5,7 +5,7 @@
         <ul>
           <li>Utilisez <code>===</code> pour délimiter chaque fiche</li>
           <li><strong>Important :</strong> Sélectionnez d'abord la notion dans la liste</li>
-          <li>Difficulté : <code>easy</code>, <code>medium</code> ou <code>hard</code></li>
+          
           <li>Images multiples : séparez par virgules: <code>img1.jpg,img2.png</code></li>
           <li>Positionnement d'images : utilisez <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code> dans le contenu</li>
           <li>Ordre des images : selon la déclaration (1 = [IMAGE_1], 2 = [IMAGE_2], ...)</li>
@@ -44,10 +44,19 @@
         </div>
       </div>
 
-      <textarea v-model="rawInput" placeholder="Collez ici vos fiches de synthèse"></textarea>
+      <textarea v-model="rawInput" placeholder="Collez ici vos fiches de synthèse (Titre, Description, Images, contenu)"></textarea>
       <div class="btn-group">
         <button class="btn-secondary" @click="handlePreview" :disabled="!rawInput.trim()" type="button">Prévisualiser</button>
         <button class="btn-primary" @click="handleCreate" :disabled="!selectedNotion || !rawInput.trim()">{{ currentEditSheetId ? 'Mettre à jour' : 'Créer les fiches' }}</button>
+        <button 
+          v-if="currentEditSheetId" 
+          class="btn-secondary" 
+          type="button" 
+          title="Annuler l'édition et revenir en mode création"
+          @click="cancelEdit"
+        >
+          Nouveau résumé
+        </button>
       </div>
     </div>
 
@@ -133,7 +142,6 @@
         </div>
         <div class="preview-sheet">
           <div class="preview-header">
-            <span class="difficulty-badge" :class="sheet.difficulty">{{ getDifficultyLabel(sheet.difficulty) }}</span>
             <span class="time-badge">{{ Math.max(1, Math.round((sheet.summary || '').split(/\s+/).length / 200)) }} min</span>
           </div>
           <div class="preview-content" v-html="renderPreviewContent(sheet)"></div>
@@ -163,8 +171,6 @@
           <th>Titre</th>
           <th>Notion</th>
           <th>Contexte</th>
-          <th>Ordre</th>
-          <th>Difficulté</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -174,8 +180,6 @@
           <td>{{ s.titre }}</td>
           <td>{{ getNotionName(s.notion) }}</td>
           <td class="ctx-cell">{{ getNotionContextLabel(s.notion) }}</td>
-          <td>{{ s.ordre || 0 }}</td>
-          <td>{{ getDifficultyLabel(s.difficulty) }}</td>
           <td>
             <AdminActionsButtons
               :item="s"
@@ -190,7 +194,7 @@
           </td>
         </tr>
         <tr v-if="paginatedSheets.length === 0">
-          <td colspan="7" style="text-align:center; font-style: italic;">Aucune fiche trouvée.</td>
+          <td colspan="5" style="text-align:center; font-style: italic;">Aucune fiche trouvée.</td>
         </tr>
       </tbody>
     </table>
@@ -275,8 +279,6 @@ const itemsPerPage = 5
 // ============================================================================
 
 const FORMAT_TEMPLATE = `=== [NOM DE LA FICHE - SOUS-TITRE]
-Difficulté: [easy/medium/hard]
-Ordre: [numero]
 Images: [image1.png,image2.jpg]
 
 Titre: [Titre de la fiche]
@@ -314,6 +316,14 @@ class ImageManager {
   clear() { this.images.clear() }
 }
 const imageManager = new ImageManager()
+// Mémoire locale des noms déclarés dans "Images:" par fiche (clé: notionId::titre)
+const lastDeclaredImagesByKey = (typeof window !== 'undefined')
+  ? (window.__lastDeclaredSheetImages ||= new Map())
+  : new Map()
+
+function getSheetKey(notionId, title) {
+  return `${String(notionId || '')}::${String((title || '').toLowerCase())}`
+}
 
 // ============================================================================
 // HELPERS NOTIONS ET AFFICHAGE
@@ -338,10 +348,7 @@ function formatNotionOption(n) {
   return parts.join(' ')
 }
 
-function getDifficultyLabel(difficulty) {
-  const labels = { easy: 'Facile', medium: 'Moyen', hard: 'Difficile' }
-  return labels[difficulty] || difficulty
-}
+// Difficulté supprimée
 
 function getImagePreview(file) { return URL.createObjectURL(file) }
 function getImageFile(filename) { return imageManager.getImage(filename) }
@@ -409,7 +416,8 @@ function parseSheets(rawText) {
   const blocks = rawText.split('===').filter(b => b.trim())
   const out = []
   for (const block of blocks) {
-    const d = parseSheetBlock(block.trim())
+    // Ne pas trim ici pour préserver les espaces et lignes vides du contenu
+    const d = parseSheetBlock(block)
     if (d) out.push(d)
   }
   return out
@@ -420,8 +428,6 @@ function parseSheetBlock(block) {
   const sheet = {
     titre: '',
     summary: '',
-    difficulty: 'medium',
-    ordre: 0,
     image: '',
     notion: null
   }
@@ -432,32 +438,55 @@ function parseSheetBlock(block) {
   let contentLines = []
 
   for (let i = 0; i < lines.length; i++) {
-    const line = (lines[i] || '').trim()
-    if (!line) continue
+    const rawLine = (lines[i] ?? '')
+    const line = rawLine.trim()
 
     if (currentSection === 'header') {
-      if (line.startsWith('Difficulté:')) {
-        sheet.difficulty = line.split(':')[1].trim()
-      } else if (line.startsWith('Ordre:')) {
-        sheet.ordre = parseInt(line.split(':')[1].trim()) || 0
-      } else if (line.toLowerCase().startsWith('image:') || line.toLowerCase().startsWith('images:')) {
-        sheet.image = line.split(':')[1].trim()
+      if (!line) continue
+
+      // Helpers pour récupérer le texte après le premier ':'
+      const afterColonTrim = (l) => l.split(':').slice(1).join(':').trim()
+      const afterColonRaw = (l) => {
+        const idx = l.indexOf(':')
+        return idx >= 0 ? l.slice(idx + 1) : ''
+      }
+
+      if (line.toLowerCase().startsWith('image:') || line.toLowerCase().startsWith('images:')) {
+        sheet.image = afterColonTrim(rawLine)
       } else if (line.startsWith('Titre:')) {
-        sheet.titre = line.split(':')[1].trim()
+        sheet.titre = afterColonTrim(rawLine)
       } else if (line.startsWith('Description:')) {
+        // Passer en mode contenu et conserver exactement ce qui suit ':'
         currentSection = 'content'
+        const firstContent = afterColonRaw(rawLine)
+        // Ne pas trim: respecter l'espacement initial
+        contentLines.push(firstContent)
       } else if (!sheet.titre && !line.startsWith('===')) {
-        sheet.titre = line
+        // Titre libre sur une ligne sans préfixe
+        sheet.titre = rawLine
       } else {
+        // Tout le reste est considéré comme contenu, et on conserve la ligne telle quelle
         currentSection = 'content'
-        contentLines.push(line)
+        contentLines.push(rawLine)
       }
     } else {
-      contentLines.push(line)
+      // Section contenu: conserver exactement la ligne (y compris vides)
+      contentLines.push(rawLine)
     }
   }
 
   sheet.summary = contentLines.join('\n')
+
+  // Si aucune ligne Images n'a été fournie, utiliser par défaut les noms
+  // des images actuellement sélectionnées (pour éviter toute perte au submit)
+  if (!sheet.image && selectedImages.value && selectedImages.value.length) {
+    sheet.image = selectedImages.value.map(f => f.name).join(',')
+  }
+
+  // Mémo: enregistrer les noms déclarés pour cette fiche (utilisé en fallback en édition)
+  if (sheet.notion && sheet.titre && sheet.image) {
+    lastDeclaredImagesByKey.set(getSheetKey(sheet.notion, sheet.titre), sheet.image)
+  }
 
   // Pour la prévisualisation, ne pas exiger la notion.
   if (!sheet.titre || !sheet.summary) return null
@@ -498,7 +527,7 @@ async function handleCreate() {
       const res = await getSynthesisSheets({ notion: Number(selectedNotion.value) })
       existing = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : [])
     } catch (_) {}
-    const byTitle = new Map(existing.map(s => [String((s.titre || '').toLowerCase()), s.id]))
+        const byTitle = new Map(existing.map(s => [String((s.titre || '').toLowerCase()), s.id]))
 
     let createdCount = 0
     let updatedCount = 0
@@ -512,8 +541,6 @@ async function handleCreate() {
           notion: Number(sheetData.notion || selectedNotion.value),
           titre: sheetData.titre,
           summary: sheetData.summary,
-          ordre: sheetData.ordre || 0,
-          difficulty: sheetData.difficulty || 'medium',
           reading_time_minutes: Math.max(1, Math.round(sheetData.summary.split(/\s+/).length / 200))
         }
 
@@ -535,15 +562,21 @@ async function handleCreate() {
           if (sheetId) byTitle.set((sheetData.titre || '').toLowerCase(), sheetId)
         }
 
-        // Ajouter images si présentes
-        if (sheetData.image && sheetId) {
-          const imageNames = sheetData.image.split(',').map(n => n.trim()).filter(Boolean)
+        // Ajouter images si présentes (déclarées ou via fichiers sélectionnés)
+        if (sheetId) {
+          const declared = (sheetData.image && sheetData.image.trim())
+            ? sheetData.image
+            : (selectedImages.value || []).map(f => f.name).join(',')
+          const imageNames = (declared || '').split(',').map(n => n.trim()).filter(Boolean)
           for (let i = 0; i < imageNames.length; i++) {
             const file = imageManager.getImage(imageNames[i])
             if (file) {
               await createSynthesisImage({ sheet: sheetId, image: file, image_type: 'illustration', position: i + 1 })
             }
           }
+          // Mémoriser les images déclarées pour cette fiche
+          const key = getSheetKey(payload.notion, payload.titre)
+          if (declared) lastDeclaredImagesByKey.set(key, declared)
         }
       } catch (e) {
         console.error('Erreur création/mise à jour fiche:', e)
@@ -561,8 +594,19 @@ async function handleCreate() {
       if (isSingleEdit) {
         serverImages.value = []
         currentEditSheetId.value = null
+        // En mode édition, vider la zone de saisie après mise à jour
+        rawInput.value = ''
       }
       await loadTable()
+      // Reset prévisualisation pour éviter l'affichage périmé
+      previewList.value = []
+      hasValidSheets.value = false
+      // Effacer le texte saisi après création (pas en mode édition)
+      if (!isSingleEdit) {
+        rawInput.value = ''
+        // Conserver les images sélectionnées pour enchaîner des créations sans re-sélection
+        // (ne pas vider selectedImages ni imageManager ici)
+      }
       // Auto-hide messages après 4s
       setTimeout(() => { successMsg.value = '' }, 4000)
     } else {
@@ -572,6 +616,17 @@ async function handleCreate() {
     console.error('Erreur globale:', e)
     errorMsg.value = 'Erreur lors de la création des fiches'
   }
+}
+
+// Sortir du mode édition et repasser en mode création
+function cancelEdit() {
+  currentEditSheetId.value = null
+  serverImages.value = []
+  previewList.value = []
+  hasValidSheets.value = false
+  // On vide le contenu pour repartir d'une fiche vierge
+  rawInput.value = ''
+  try { window.scrollTo({ top: 0, behavior: 'smooth' }) } catch (_) {}
 }
 
 // ============================================================================
@@ -628,10 +683,19 @@ async function editSheet(s) {
     serverImages.value = []
   }
 
+  // Fallback: si aucune image retournée par le serveur, utiliser la dernière
+  // déclaration locale pour cette fiche (même session)
+  if (!imageNames) {
+    const key = getSheetKey(s.notion, s.titre)
+    const memo = lastDeclaredImagesByKey.get(key)
+    if (memo) imageNames = memo
+    else if (selectedImages.value && selectedImages.value.length) {
+      imageNames = selectedImages.value.map(f => f.name).join(',')
+    }
+  }
+
   const header = [
     '=== ' + (s.titre || ''),
-    'Difficulté: ' + (s.difficulty || 'medium'),
-    'Ordre: ' + (s.ordre || 0),
     'Images: ' + imageNames
   ].join('\n')
 
@@ -678,7 +742,7 @@ const filteredNotionsForFilter = computed(() => {
 const filteredSheets = computed(() => {
   let arr = sheets.value
   if (filters.value.notion) arr = arr.filter(s => String(s.notion) === String(filters.value.notion))
-  return arr.slice().sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
+  return arr.slice().sort((a, b) => String(a.titre || '').localeCompare(String(b.titre || '')))
 })
 
 const totalPages = computed(() => Math.ceil((filteredSheets.value.length || 0) / itemsPerPage))

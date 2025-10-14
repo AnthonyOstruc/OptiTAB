@@ -11,13 +11,13 @@ class SynthesisSheetSerializer(serializers.ModelSerializer):
         model = SynthesisSheet
         fields = [
             'id', 'titre', 'notion', 'notion_info', 'summary',
-            'key_points', 'formulas', 'examples', 'difficulty', 'ordre',
+            'key_points', 'formulas', 'examples',
             'reading_time_minutes', 'est_actif', 'date_creation', 'date_modification', 'images'
         ]
         read_only_fields = ['date_creation', 'date_modification']
 
     def validate(self, data):
-        """Validation personnalisÃ©e"""
+        """Validation personnalisée"""
         if not data.get('summary'):
             raise serializers.ValidationError(
                 "Le champ 'summary' doit Ãªtre rempli"
@@ -53,7 +53,7 @@ class SynthesisSheetCreateSerializer(serializers.ModelSerializer):
         model = SynthesisSheet
         fields = [
             'titre', 'notion', 'summary', 'key_points', 
-            'formulas', 'examples', 'difficulty', 'ordre', 'reading_time_minutes'
+            'formulas', 'examples', 'reading_time_minutes'
         ]
 
 
@@ -87,6 +87,6 @@ class SynthesisSheetListSerializer(serializers.ModelSerializer):
         model = SynthesisSheet
         fields = [
             'id', 'titre', 'notion', 'notion_nom', 
-            'theme_nom', 'matiere_nom', 'difficulty', 'reading_time_minutes',
-            'est_actif', 'date_creation', 'ordre', 'summary'
+            'theme_nom', 'matiere_nom', 'reading_time_minutes',
+            'est_actif', 'date_creation', 'summary'
         ]

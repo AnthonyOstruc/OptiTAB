@@ -26,10 +26,11 @@ export function markdownToHtml(text) {
   let html = text
   
   // Traitement des titres (avec espacement)
-  html = html.replace(/^#### (.*$)/gm, '<h4 style="margin-top: 1.5em; margin-bottom: 0.8em; color: #193e8e; font-weight: 600;">$1</h4>')
-  html = html.replace(/^### (.*$)/gm, '<h3 style="margin-top: 2em; margin-bottom: 1em; color: #193e8e; font-weight: 600;">$1</h3>')
-  html = html.replace(/^## (.*$)/gm, '<h2 style="margin-top: 2.5em; margin-bottom: 1.2em; color: #193e8e; font-weight: 600; font-size: 1.5em;">$1</h2>')
-  html = html.replace(/^# (.*$)/gm, '<h1 style="margin-top: 3em; margin-bottom: 1.5em; color: #193e8e; font-weight: 700; font-size: 1.8em;">$1</h1>')
+  // Réduire les espacements par défaut autour des titres pour éviter les grands blancs
+  html = html.replace(/^#### (.*$)/gm, '<h4 style="margin-top: 0.5em; margin-bottom: 0.5em; color: #193e8e; font-weight: 600;">$1</h4>')
+  html = html.replace(/^### (.*$)/gm, '<h3 style="margin-top: 0.6em; margin-bottom: 0.5em; color: #193e8e; font-weight: 600;">$1</h3>')
+  html = html.replace(/^## (.*$)/gm, '<h2 style="margin-top: 0.7em; margin-bottom: 0.5em; color: #193e8e; font-weight: 600; font-size: 1.5em;">$1</h2>')
+  html = html.replace(/^# (.*$)/gm, '<h1 style="margin-top: 0.8em; margin-bottom: 0.6em; color: #193e8e; font-weight: 700; font-size: 1.8em;">$1</h1>')
   
   // Traitement des listes avec puces
   const lines = html.split('\n')
@@ -84,9 +85,13 @@ export function markdownToHtml(text) {
  */
 export function renderContentWithImages(content, images = []) {
   if (!content) return ''
-  
-  // D'abord, traiter le contenu Markdown
-  let processedText = markdownToHtml(content)
+
+  // Détecter si le contenu est déjà du HTML structuré
+  const looksLikeHtml = /<\s*(h[1-6]|p|div|table|ul|ol|li|img|section|article|header|footer|span|br|hr)\b/i.test(content)
+
+  // Si c'est du HTML, ne pas passer par le convertisseur Markdown pour éviter
+  // l'injection de <p> vides et les espaces excessifs entre les blocs.
+  let processedText = looksLikeHtml ? content : markdownToHtml(content)
   
   // Ensuite, traiter LaTeX et HTML de base
   processedText = unescapeLatex(processedText)

@@ -9,9 +9,6 @@
             Aperçu de la fiche
           </h2>
           <div class="preview-meta">
-            <span class="difficulty-badge" :class="sheet?.difficulty">
-              {{ getDifficultyLabel(sheet?.difficulty) }}
-            </span>
             <span class="reading-time">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -195,15 +192,7 @@ const estimatedReadingTime = computed(() => {
   return Math.max(1, minutes)
 })
 
-// Méthodes
-const getDifficultyLabel = (difficulty) => {
-  const labels = {
-    easy: 'Facile',
-    medium: 'Moyen',
-    hard: 'Difficile'
-  }
-  return labels[difficulty] || difficulty
-}
+// Méthodes (difficulté supprimée)
 
 const handleOverlayClick = (e) => {
   if (e.target === e.currentTarget) {

@@ -47,32 +47,10 @@
                 </select>
               </div>
               
-              <div class="form-group">
-                <label for="difficulty">Difficulté</label>
-                <select
-                  id="difficulty"
-                  v-model="form.difficulty"
-                  class="form-select"
-                >
-                  <option value="easy">Facile</option>
-                  <option value="medium">Moyen</option>
-                  <option value="hard">Difficile</option>
-                </select>
-              </div>
+              
             </div>
 
             <div class="form-row">
-              <div class="form-group">
-                <label for="ordre">Ordre d'affichage</label>
-                <input
-                  id="ordre"
-                  v-model.number="form.ordre"
-                  type="number"
-                  min="0"
-                  class="form-input"
-                />
-              </div>
-              
               <div class="form-group">
                 <label for="reading_time">Temps de lecture (min)</label>
                 <input
@@ -435,8 +413,7 @@ const form = reactive({
   titre: '',
   notion: '',
   summary: '',
-  difficulty: 'medium',
-  ordre: 0,
+  // difficulté et ordre supprimés
   reading_time_minutes: 5
 })
 
@@ -526,8 +503,7 @@ const initializeForm = () => {
       titre: props.sheet.titre,
       notion: props.sheet.notion,
       summary: props.sheet.summary,
-      difficulty: props.sheet.difficulty,
-      ordre: props.sheet.ordre,
+      // difficulté/ordre supprimés
       reading_time_minutes: props.sheet.reading_time_minutes
     })
     
@@ -535,8 +511,7 @@ const initializeForm = () => {
       titre: props.sheet.titre || '',
       notion: props.sheet.notion || '',
       summary: props.sheet.summary || '',
-      difficulty: props.sheet.difficulty || 'medium',
-      ordre: props.sheet.ordre || 0,
+      // difficulté/ordre supprimés
       reading_time_minutes: props.sheet.reading_time_minutes || 5
     })
     
@@ -571,7 +546,7 @@ const handlePreview = () => {
     key_points: [], // Supprimer les points clés
     formulas: [], // Supprimer les formules
     examples: [], // Supprimer les exemples
-    difficulty: form.difficulty,
+    // difficulté supprimée
     reading_time_minutes: form.reading_time_minutes
   }
   

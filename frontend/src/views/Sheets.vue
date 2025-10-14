@@ -59,7 +59,6 @@
           <div class="card-header">
             <div class="card-meta">
               <span class="matiere-badge">{{ fiche.matiere_nom }}</span>
-              <span class="reading-time">{{ fiche.reading_time_minutes || 5 }}min</span>
                   </div>
                 </div>
                 
@@ -95,7 +94,6 @@
               <h2 class="modal-title">{{ selectedFiche?.titre }}</h2>
               <div class="modal-meta">
                 <span class="meta-badge matiere">{{ selectedFiche?.matiere_nom }}</span>
-                <span class="meta-badge time">{{ selectedFiche?.reading_time_minutes || 5 }}min</span>
         </div>
             </div>
             <button @click="closeModal" class="close-button">
@@ -485,11 +483,6 @@ onMounted(loadData)
   font-weight: 600;
 }
 
-.reading-time {
-  color: #64748b;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
 
 .card-body {
   margin-bottom: 1rem;
@@ -572,14 +565,11 @@ onMounted(loadData)
 }
 
 .modal-container {
-  background: white;
-  border-radius: 20px;
   width: 100%;
   max-width: 900px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 }
 
@@ -620,10 +610,6 @@ onMounted(loadData)
   color: white;
 }
 
-.meta-badge.time {
-  background: #f1f5f9;
-  color: #64748b;
-}
 
 .close-button {
   background: #f8fafc;

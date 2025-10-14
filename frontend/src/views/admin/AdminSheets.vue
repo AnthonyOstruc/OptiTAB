@@ -89,10 +89,12 @@
             <td>
               <input type="file" accept="image/*" @change="onSelectReplaceFile(i, $event)" />
             </td>
-            <td style="white-space:nowrap">
-              <button type="button" class="btn-secondary small" @click="saveImageRow(currentEditSheetId, img, i)">Sauvegarder</button>
-              <button type="button" class="btn-secondary small" :disabled="!img._file" @click="replaceImageRow(currentEditSheetId, img, i)">Remplacer</button>
-              <button type="button" class="btn-danger small" @click="deleteImageRow(currentEditSheetId, img, i)">Supprimer</button>
+            <td>
+              <div class="img-row-actions">
+                <button type="button" class="btn-primary small" @click="saveImageRow(currentEditSheetId, img, i)">Sauvegarder</button>
+                <button type="button" class="btn-secondary small" :disabled="!img._file" @click="replaceImageRow(currentEditSheetId, img, i)">Remplacer</button>
+                <button type="button" class="btn-danger small" @click="deleteImageRow(currentEditSheetId, img, i)">Supprimer</button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -552,16 +554,17 @@ async function handleCreate() {
     if (createdCount > 0 || updatedCount > 0) {
       successMsg.value = `${createdCount} créé(es)${updatedCount ? `, ${updatedCount} mis à jour` : ''}${errorCount ? `, ${errorCount} erreur(s)` : ''}`
 
-      // Sauvegarder la notion, puis nettoyer le formulaire
-      const currentNotion = selectedNotion.value
-      rawInput.value = ''
-      previewList.value = []
-      selectedImages.value = []
-      imageManager.clear()
-      if (imagesInput.value) imagesInput.value.value = ''
-      selectedNotion.value = currentNotion
-      currentEditSheetId.value = null
+      // Garder le contenu dans la zone de saisie pour éviter la sensation de perte (UX)
+      // Ne pas vider les images sélectionnées; l'utilisateur peut ré-appuyer pour mettre à jour.
+
+      // En mode édition simple, fermer le panneau d'images après la mise à jour
+      if (isSingleEdit) {
+        serverImages.value = []
+        currentEditSheetId.value = null
+      }
       await loadTable()
+      // Auto-hide messages après 4s
+      setTimeout(() => { successMsg.value = '' }, 4000)
     } else {
       errorMsg.value = 'Aucune fiche enregistrée'
     }
@@ -874,4 +877,15 @@ onMounted(async () => {
 .pagination-number:hover { background:#f3f4f6; border-color:#9ca3af; }
 .pagination-number.active { background:#3b82f6; border-color:#3b82f6; color:#fff; }
 .pagination-info { text-align:center; font-size:.875rem; color:#6b7280; margin-top:.5rem; margin-bottom:1.5rem; }
+
+/* Images manager UI */
+.images-table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 10px; }
+.images-table th, .images-table td { padding: 8px 10px; border-bottom: 1px solid #e5e7eb; vertical-align: middle; }
+.srv-preview { max-width: 110px; max-height: 70px; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.img-row-actions { display: flex; gap: 8px; align-items: center; }
+.btn-danger { background: #ef4444; color: #fff; border: 1px solid #ef4444; border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+.btn-danger:hover { background: #dc2626; border-color: #dc2626; }
+.btn-primary.small, .btn-secondary.small, .btn-danger.small { font-size: 0.85rem; padding: 6px 10px; }
+.add-image-form { margin-top: 10px; background: #f9fafb; padding: 10px; border: 1px dashed #d1d5db; border-radius: 8px; }
+.add-image-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 </style>

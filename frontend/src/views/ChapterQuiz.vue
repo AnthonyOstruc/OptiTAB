@@ -407,7 +407,7 @@
 import { defineOptions } from 'vue'
 // Nom explicite pour KeepAlive
 defineOptions({ name: 'ChapterQuiz' })
-import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { ref, computed, onMounted, onActivated, onUnmounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import SkeletonList from '@/components/common/SkeletonList.vue'
@@ -1142,6 +1142,18 @@ onMounted(async () => {
     // S'assurer que le skeleton disparaît même en cas d'erreur
     initialLoading.value = false
   }
+})
+
+// Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
+onActivated(() => {
+  // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
+  nextTick(() => {
+    renderMath()
+    // S'assurer que le rendu est bien appliqué avec un second appel après un délai
+    setTimeout(() => {
+      renderMath()
+    }, 100)
+  })
 })
 
 // Recharger proprement quand on change de notion sous KeepAlive

@@ -161,7 +161,7 @@ Explication: La dérivée de $x^2$ est $2x$ d'après la règle...
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch, computed } from 'vue'
+import { ref, onMounted, onActivated, nextTick, watch, computed } from 'vue'
 import { getNotions } from '@/api'
 import { createQuiz, createQuizImage, updateQuiz } from '@/api/quiz'
 import FormatHelp from '@/components/admin/FormatHelp.vue'
@@ -489,6 +489,27 @@ const filteredNotions = computed(() => {
 })
 
 onMounted(load)
+
+// Hook onActivated - force le rendu MathJax pour l'aperçu
+onActivated(() => {
+  nextTick(() => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      try {
+        if (window.MathJax.typesetClear) {
+          window.MathJax.typesetClear()
+        }
+        window.MathJax.typesetPromise()
+      } catch (error) {
+        console.warn('[MathJax] Erreur:', error)
+      }
+    }
+    setTimeout(() => {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise()
+      }
+    }, 100)
+  })
+})
 
 function getNotionName(id) {
   const n = notions.value.find((n) => n.id === id)

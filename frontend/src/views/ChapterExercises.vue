@@ -119,7 +119,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick, watch, computed } from 'vue'
+import { ref, onMounted, onActivated, onBeforeUnmount, nextTick, watch, computed } from 'vue'
 import { defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
@@ -248,6 +248,31 @@ onMounted(async () => {
   await loadData()
 })
 
+// Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
+onActivated(() => {
+  // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
+  // Les composants ExerciceQCM enfants gèrent leur propre rendu, mais on force quand même ici
+  nextTick(() => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      try {
+        // Vider le cache de MathJax pour forcer un nouveau rendu
+        if (window.MathJax.typesetClear) {
+          window.MathJax.typesetClear()
+        }
+        window.MathJax.typesetPromise()
+      } catch (error) {
+        console.warn('[MathJax] Erreur:', error)
+      }
+    }
+    // S'assurer que le rendu est bien appliqué avec un second appel après un délai
+    setTimeout(() => {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise()
+      }
+    }, 100)
+  })
+})
+
 async function loadData() {
   loading.value = true
   try {
@@ -288,6 +313,21 @@ async function loadData() {
   } finally {
     loading.value = false
     await nextTick()
+    
+    // Forcer le rendu MathJax après le chargement des exercices
+    setTimeout(() => {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        try {
+          if (window.MathJax.typesetClear) {
+            window.MathJax.typesetClear()
+          }
+          window.MathJax.typesetPromise()
+        } catch (error) {
+          console.warn('[MathJax] Erreur:', error)
+        }
+      }
+    }, 100)
+    
     setTimeout(() => {
       try {
         const raw = sessionStorage.getItem(storageKey)
@@ -361,6 +401,19 @@ function handlePageChange(page) {
   window.scrollTo({ top: 0, behavior: 'smooth' })
   // Sauvegarder l'état
   saveViewState()
+  // Forcer le rendu MathJax après le changement de page
+  nextTick(() => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      try {
+        if (window.MathJax.typesetClear) {
+          window.MathJax.typesetClear()
+        }
+        window.MathJax.typesetPromise()
+      } catch (error) {
+        console.warn('[MathJax] Erreur:', error)
+      }
+    }
+  })
 }
 
 async function handleStatus({ exerciceId, status }) {
@@ -475,6 +528,22 @@ function clearSearch() {
 watch([perPage, currentPage, selectedDifficulty, activeTab, searchQuery], () => {
   saveViewState()
 })
+
+// Forcer le rendu MathJax quand les exercices affichés changent
+watch(paginated, () => {
+  nextTick(() => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      try {
+        if (window.MathJax.typesetClear) {
+          window.MathJax.typesetClear()
+        }
+        window.MathJax.typesetPromise()
+      } catch (error) {
+        console.warn('[MathJax] Erreur:', error)
+      }
+    }
+  })
+}, { deep: true })
 
 onBeforeUnmount(() => {
   saveViewState()

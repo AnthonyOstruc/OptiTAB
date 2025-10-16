@@ -135,7 +135,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onActivated, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import { getSynthesisSheets, getSynthesisMatieres } from '@/api/synthesis'
@@ -298,6 +298,29 @@ function closeModal() {
 
 // Lifecycle
 onMounted(loadData)
+
+// Hook onActivated - force le rendu MathJax dans le modal
+onActivated(() => {
+  nextTick(() => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      try {
+        // Vider le cache de MathJax pour forcer un nouveau rendu
+        if (window.MathJax.typesetClear) {
+          window.MathJax.typesetClear()
+        }
+        window.MathJax.typesetPromise()
+      } catch (error) {
+        console.warn('[MathJax] Erreur:', error)
+      }
+    }
+    // S'assurer que le rendu est bien appliqué avec un second appel après un délai
+    setTimeout(() => {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise()
+      }
+    }, 100)
+  })
+})
 </script>
 
 <style scoped>

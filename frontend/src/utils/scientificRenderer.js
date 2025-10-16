@@ -185,34 +185,51 @@ export function getImageUrl(imagePath, type = 'cours') {
 }
 
 /**
- * Rend le contenu MathJax
+ * Rend le contenu MathJax - Force le rendu même si le contenu est en cache
+ * Cette fonction réinitialise complètement le rendu pour éviter les problèmes de cache
  */
 export function renderMath() {
-  // Attendre que MathJax soit disponible
-  if (window.MathJax && window.MathJax.typesetPromise) {
-    window.MathJax.typesetPromise()
-  } else {
-    // Si MathJax n'est pas encore chargé, attendre un peu
-    setTimeout(() => {
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise()
-      }
-    }, 100)
-  }
-  
-  // Retry multiple times if MathJax is not ready
-  let retryCount = 0
-  const maxRetries = 10
-  
-  const tryRender = () => {
+  // Fonction pour forcer le rendu MathJax
+  const forceRender = () => {
     if (window.MathJax && window.MathJax.typesetPromise) {
-      window.MathJax.typesetPromise()
-    } else if (retryCount < maxRetries) {
-      retryCount++
-      setTimeout(tryRender, 200)
+      try {
+        // Vider le cache de MathJax pour forcer un nouveau rendu
+        if (window.MathJax.typesetClear) {
+          window.MathJax.typesetClear()
+        }
+        // Forcer le rendu complet
+        window.MathJax.typesetPromise()
+          .catch((err) => {
+            console.warn('[MathJax] Erreur lors du rendu:', err)
+          })
+      } catch (error) {
+        console.warn('[MathJax] Erreur:', error)
+      }
     }
   }
   
+  // Première tentative immédiate
+  forceRender()
+  
+  // Deuxième tentative après un court délai (au cas où MathJax n'est pas encore prêt)
+  setTimeout(forceRender, 50)
+  
+  // Retry multiple times if MathJax is not ready
+  let retryCount = 0
+  const maxRetries = 8
+  
+  const tryRender = () => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      forceRender()
+    } else if (retryCount < maxRetries) {
+      retryCount++
+      setTimeout(tryRender, 150)
+    } else {
+      console.warn('[MathJax] MathJax n\'est pas disponible après plusieurs tentatives')
+    }
+  }
+  
+  // Tentatives supplémentaires pour s'assurer que MathJax est chargé
   setTimeout(tryRender, 100)
 }
 

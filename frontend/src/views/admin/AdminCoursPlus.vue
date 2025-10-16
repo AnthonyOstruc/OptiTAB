@@ -100,7 +100,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onActivated, nextTick } from 'vue'
 import { getNotions } from '@/api'
 import { createCours, createCoursImage, getCours, updateCoursFormData, updateCours } from '@/api/cours'
 import { renderContentWithImages, renderMath, markdownToHtml } from '@/utils/scientificRenderer'
@@ -735,6 +735,16 @@ onMounted(async () => {
   } catch (error) {
     console.error('Erreur lors du chargement:', error)
   }
+})
+
+// Hook onActivated - force le rendu MathJax pour l'aperçu
+onActivated(() => {
+  nextTick(() => {
+    renderMath()
+    setTimeout(() => {
+      renderMath()
+    }, 100)
+  })
 })
 </script>
 

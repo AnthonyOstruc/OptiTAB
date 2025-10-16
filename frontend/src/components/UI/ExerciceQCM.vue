@@ -197,7 +197,14 @@ const diffStars = computed(() => ({
 function toggleSolution() {
   showSolution.value = !showSolution.value
   if (showSolution.value) {
-    renderMath()
+    // Forcer le rendu MathJax quand on affiche la solution
+    nextTick(() => {
+      renderMath()
+      // Double appel pour s'assurer du rendu
+      setTimeout(() => {
+        renderMath()
+      }, 100)
+    })
   }
 }
 
@@ -539,6 +546,24 @@ onMounted(() => {
     loadExerciceImages()
   }
   renderMath()
+})
+
+// Watcher sur showSolution pour forcer le rendu quand on affiche/cache la solution
+watch(showSolution, (newVal) => {
+  if (newVal) {
+    nextTick(() => {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        try {
+          if (window.MathJax.typesetClear) {
+            window.MathJax.typesetClear()
+          }
+          window.MathJax.typesetPromise()
+        } catch (error) {
+          // Ignorer les erreurs silencieusement
+        }
+      }
+    })
+  }
 })
 </script>
 

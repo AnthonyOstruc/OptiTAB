@@ -116,7 +116,7 @@
 import { defineOptions } from 'vue'
 // Nom explicite pour KeepAlive
 defineOptions({ name: 'CourseByNotion' })
-import { ref, onMounted, onBeforeUnmount, computed, nextTick, watch } from 'vue'
+import { ref, onMounted, onActivated, onBeforeUnmount, computed, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
@@ -222,6 +222,18 @@ function formatDate(dateString) {
 
 onMounted(async () => {
   await loadCoursData()
+})
+
+// Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
+onActivated(() => {
+  // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
+  nextTick(() => {
+    renderMath()
+    // S'assurer que le rendu est bien appliqué avec un second appel après un délai
+    setTimeout(() => {
+      renderMath()
+    }, 100)
+  })
 })
 
 // Fonction de chargement (réutilisable au changement de notion)

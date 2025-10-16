@@ -1,0 +1,434 @@
+===
+Résumé Boucles Python 
+
+Images: boucle_for.png, boucle_while.png, break_continue.png
+
+Titre: Résumé : Boucles et Itérations en Python
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">I. Définition et principe</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Boucle :</strong> Structure qui permet de répéter un bloc d'instructions plusieurs fois automatiquement
+        </div>
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Objectif :</strong> Automatiser des tâches répétitives sans réécrire le même code plusieurs fois
+        </div>
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Deux types :</strong> <code>for</code> (nombre d'itérations connu) et <code>while</code> (condition à vérifier)
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">II. La boucle FOR</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Syntaxe de base</h3>
+        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
+            <p style="margin:8px 0;"><strong>Structure :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:10px; border-radius:4px; font-family:monospace; margin:8px 0;">
+                <span style="color:#ff79c6;">for</span> variable <span style="color:#ff79c6;">in</span> sequence:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions
+            </div>
+            <p style="margin:8px 0;"><strong>Principe :</strong> Parcourt chaque élément de la séquence et exécute les instructions</p>
+        </div>
+        
+        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #f59e0b;">
+            <strong>⚠️ Règles importantes :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Le <strong>deux-points <code>:</code></strong> après la séquence est obligatoire</li>
+                <li>L'<strong>indentation</strong> (4 espaces) est obligatoire</li>
+                <li>La variable prend successivement toutes les valeurs de la séquence</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">III. La fonction range()</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px;">Syntaxe</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Description</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Exemple</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>range(n)</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">De 0 à n-1</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>range(5)</code> → 0, 1, 2, 3, 4</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>range(début, fin)</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">De début à fin-1</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>range(2, 7)</code> → 2, 3, 4, 5, 6</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>range(début, fin, pas)</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Avec incrément</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>range(0, 10, 2)</code> → 0, 2, 4, 6, 8</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>range(fin, début, -pas)</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Décompte</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>range(10, 0, -1)</code> → 10, 9, ..., 1</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>💡 À retenir :</strong> La borne de fin est <strong>toujours exclue</strong> dans <code>range()</code>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IV. La boucle WHILE</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Syntaxe de base</h3>
+        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
+            <p style="margin:8px 0;"><strong>Structure :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:10px; border-radius:4px; font-family:monospace; margin:8px 0;">
+                <span style="color:#ff79c6;">while</span> condition:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions
+            </div>
+            <p style="margin:8px 0;"><strong>Principe :</strong> Répète tant que la condition est vraie</p>
+        </div>
+        
+        <div style="background:#fdf2f2; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>⚠️ Attention - Boucle infinie :</strong><br>
+            Si la condition reste toujours vraie, la boucle ne s'arrête jamais ! Toujours s'assurer que la condition deviendra fausse
+        </div>
+        
+        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #f59e0b;">
+            <strong>💡 Différence FOR vs WHILE :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><code>for</code> : Nombre d'itérations connu à l'avance</li>
+                <li><code>while</code> : Répète tant qu'une condition est vraie</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">V. Instructions break et continue</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:20%;">Instruction</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Action</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Utilisation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>break</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Sort <strong>immédiatement</strong> de la boucle</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Arrêter une boucle de manière anticipée</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>continue</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Passe à l'<strong>itération suivante</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Sauter certaines itérations</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VI. Exemples avec FOR</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Afficher les nombres de 1 à 5</h3>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(i)
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Résultat :</strong> Affiche 1, 2, 3, 4, 5 (chacun sur une ligne)
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Calculer la somme de 1 à 10</h3>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            somme = <span style="color:#bd93f9;">0</span><br>
+            <br>
+            <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">11</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;somme = somme + i<br>
+            <br>
+            <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"La somme est : </span><span style="color:#8be9fd;">{somme}</span><span style="color:#f1fa8c;">"</span>)
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Calcul :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Initialisation : <code>somme = 0</code></li>
+                <li><code>i = 1</code> : <code>somme = 0 + 1 = 1</code></li>
+                <li><code>i = 2</code> : <code>somme = 1 + 2 = 3</code></li>
+                <li>... (continue jusqu'à i = 10)</li>
+                <li><code>i = 10</code> : <code>somme = 45 + 10 = 55</code></li>
+            </ul>
+            <strong>Résultat :</strong> La somme est : 55
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 3 : Parcourir une liste</h3>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            prenoms = [<span style="color:#f1fa8c;">"Alice"</span>, <span style="color:#f1fa8c;">"Bob"</span>, <span style="color:#f1fa8c;">"Charlie"</span>]<br>
+            <br>
+            <span style="color:#ff79c6;">for</span> prenom <span style="color:#ff79c6;">in</span> prenoms:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Bonjour </span><span style="color:#8be9fd;">{prenom}</span><span style="color:#f1fa8c;"> !"</span>)
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Résultat :</strong> Affiche "Bonjour Alice !", "Bonjour Bob !", "Bonjour Charlie !"
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VII. Exemples avec WHILE</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 4 : Compter jusqu'à 5</h3>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            compteur = <span style="color:#bd93f9;">1</span><br>
+            <br>
+            <span style="color:#ff79c6;">while</span> compteur <= <span style="color:#bd93f9;">5</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(compteur)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;compteur = compteur + <span style="color:#bd93f9;">1</span>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Déroulement :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><code>compteur = 1</code>, test <code>1 <= 5</code> → <code>True</code>, affiche 1, <code>compteur = 2</code></li>
+                <li>... (continue)</li>
+                <li><code>compteur = 5</code>, test <code>5 <= 5</code> → <code>True</code>, affiche 5, <code>compteur = 6</code></li>
+                <li><code>compteur = 6</code>, test <code>6 <= 5</code> → <code>False</code>, sortie de la boucle</li>
+            </ul>
+            <strong>Résultat :</strong> Affiche 1, 2, 3, 4, 5
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VIII. Exemples avec break et continue</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 5 : Utilisation de break</h3>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            nombres = [<span style="color:#bd93f9;">12</span>, <span style="color:#bd93f9;">35</span>, <span style="color:#bd93f9;">67</span>, <span style="color:#bd93f9;">23</span>, <span style="color:#bd93f9;">89</span>]<br>
+            <br>
+            <span style="color:#ff79c6;">for</span> nombre <span style="color:#ff79c6;">in</span> nombres:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> nombre > <span style="color:#bd93f9;">50</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Trouvé : </span><span style="color:#8be9fd;">{nombre}</span><span style="color:#f1fa8c;">"</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">break</span>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Analyse :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><code>12 > 50</code> → <code>False</code>, continue</li>
+                <li><code>35 > 50</code> → <code>False</code>, continue</li>
+                <li><code>67 > 50</code> → <code>True</code>, affiche "Trouvé : 67" et <strong>sort de la boucle</strong></li>
+                <li>23 et 89 ne sont jamais traités</li>
+            </ul>
+            <strong>Résultat :</strong> Affiche "Trouvé : 67" et s'arrête
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 6 : Utilisation de continue</h3>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">11</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> i % <span style="color:#bd93f9;">2</span> == <span style="color:#bd93f9;">0</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">continue</span> <span style="color:#6272a4;"># Passe à l'itération suivante</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(i)
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Analyse :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><code>i = 1</code> : <code>1 % 2 = 1 ≠ 0</code> → Affiche 1</li>
+                <li><code>i = 2</code> : <code>2 % 2 = 0</code> → <code>continue</code>, passe à i = 3</li>
+                <li><code>i = 3</code> : <code>3 % 2 = 1 ≠ 0</code> → Affiche 3</li>
+                <li>... (continue ce schéma)</li>
+            </ul>
+            <strong>Résultat :</strong> Affiche 1, 3, 5, 7, 9 (nombres impairs uniquement)
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IX. Boucles imbriquées</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
+            <p style="margin:8px 0;"><strong>Principe :</strong> Placer une boucle à l'intérieur d'une autre boucle</p>
+            <p style="margin:8px 0;"><strong>Attention :</strong> Respecter l'indentation (4 espaces par niveau)</p>
+        </div>
+        
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">for</span> table <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">4</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Table de </span><span style="color:#8be9fd;">{table}</span><span style="color:#f1fa8c;"> :"</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"  </span><span style="color:#8be9fd;">{table}</span><span style="color:#f1fa8c;"> × </span><span style="color:#8be9fd;">{i}</span><span style="color:#f1fa8c;"> = </span><span style="color:#8be9fd;">{table * i}</span><span style="color:#f1fa8c;">"</span>)
+        </div>
+        
+        <div style="background:#fef3c7; padding:10px; border-radius:4px; margin:10px 0; border-left:6px solid #f59e0b;">
+            <strong>⚠️ Fonctionnement :</strong> Pour chaque valeur de <code>table</code> (boucle externe), on exécute complètement la boucle interne avec <code>i</code>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">X. Tableau récapitulatif des boucles</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:10px; width:30%;">Structure</th>
+                    <th style="border:1px solid #ddd; padding:10px;">Utilisation</th>
+                    <th style="border:1px solid #ddd; padding:10px;">Exemple</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>for ... in range()</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Répéter n fois avec compteur</td>
+                    <td style="border:1px solid #ddd; padding:8px;"><code>for i in range(10):</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>for ... in liste</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Parcourir une liste/séquence</td>
+                    <td style="border:1px solid #ddd; padding:8px;"><code>for element in liste:</code></td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>while</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Répéter tant qu'une condition est vraie</td>
+                    <td style="border:1px solid #ddd; padding:8px;"><code>while condition:</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>break</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Sortir immédiatement de la boucle</td>
+                    <td style="border:1px solid #ddd; padding:8px;"><code>if cond: break</code></td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>continue</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Passer à l'itération suivante</td>
+                    <td style="border:1px solid #ddd; padding:8px;"><code>if cond: continue</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="background:#ffffff; padding:15px; border-radius:6px; margin:15px 0; border:1px solid #e1e8ed;">
+        <h3 style="color:#2c3e50; margin-top:0;">✅ Points clés à retenir</h3>
+
+        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+        <thead>
+        <tr style="background:#3498db; color:white;">
+        <th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
+        <th style="border:1px solid #ddd; padding:12px;">À retenir</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Boucle FOR</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Parcourt une séquence ou répète n fois avec <code>range()</code></td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Boucle WHILE</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Répète tant qu'une condition est vraie</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>range(n)</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Génère 0, 1, 2, ..., n-1 (la borne de fin est <strong>exclue</strong>)</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>range(a, b)</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Génère a, a+1, ..., b-1 (b est exclu)</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>break</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Sort immédiatement de la boucle</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>continue</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Passe directement à l'itération suivante</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Indentation</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">4 espaces obligatoires pour le bloc de la boucle</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Deux-points</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Obligatoires après <code>for</code> et <code>while</code></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">XI. Quand utiliser quelle boucle ?</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px;">Situation</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Boucle à utiliser</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">Répéter n fois (nombre connu)</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>for i in range(n)</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">Parcourir une liste</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>for element in liste</code></td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">Répéter jusqu'à une condition</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>while condition</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">Saisie utilisateur répétée</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>while</code></td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">Calculer une somme/produit</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>for</code> avec initialisation avant la boucle</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">XII. Erreurs fréquentes à éviter</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fdf2f2; padding:15px; border-radius:6px; margin-bottom:15px;">
+            <strong>❌ Pièges à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
+                <li><strong>Boucle infinie avec while :</strong> Oublier d'incrémenter le compteur ou de modifier la condition</li>
+                <li><strong>Erreur de borne avec range() :</strong> <code>range(10)</code> va de 0 à 9, pas jusqu'à 10 !</li>
+                <li><strong>Modifier une liste pendant le parcours :</strong> Ne pas modifier une liste qu'on parcourt avec <code>for</code></li>
+                <li><strong>Oublier l'initialisation :</strong> Toujours initialiser un compteur ou une somme avant la boucle</li>
+                <li><strong>Mauvaise indentation :</strong> Les instructions dans la boucle doivent être indentées de 4 espaces</li>
+                <li><strong>Confondre range(5) et range(1, 5) :</strong> Le premier génère [0,1,2,3,4], le second [1,2,3,4]</li>
+            </ul>
+        </div>
+
+        <div style="background:#f0f9f0; padding:15px; border-radius:6px;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
+                <li>Toujours <strong>initialiser</strong> les variables (somme, compteur) avant la boucle</li>
+                <li>Pour <code>while</code>, s'assurer que la condition deviendra fausse pour éviter les boucles infinies</li>
+                <li>Utiliser <code>for</code> quand on connaît le nombre d'itérations, <code>while</code> sinon</li>
+                <li>Utiliser des noms de variables explicites : <code>for eleve in classe:</code> plutôt que <code>for x in y:</code></li>
+                <li>Tester avec de petites valeurs d'abord (<code>range(3)</code>) avant de grandes valeurs</li>
+                <li>Utiliser <code>print()</code> dans la boucle pour déboguer et voir ce qui se passe</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+===

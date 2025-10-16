@@ -1,0 +1,530 @@
+===
+Résumé Structures Conditionnelles Python 
+
+Images: structure_if_else.png, operateurs_logiques.png, conditions_imbriquees.png
+
+Titre: Résumé : Structures Conditionnelles et Logique en Python
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">I. Définition et principe</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Structure conditionnelle :</strong> Instruction qui permet d'exécuter différents blocs de code selon des conditions logiques (vraies ou fausses)
+        </div>
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Principe :</strong> Si (condition vraie) Alors (action 1) Sinon (action 2)
+        </div>
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Objectif :</strong> Permettre au programme de "prendre des décisions" en testant des conditions
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">II. Opérateurs de comparaison</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px;">Opérateur</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Signification</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Exemple</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Résultat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>==</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Égal à</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>5 == 5</code></td>
+                    <td style="border:1px solid #ddd; padding:10px; color:#2e7d32;"><code>True</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>!=</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Différent de</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>5 != 3</code></td>
+                    <td style="border:1px solid #ddd; padding:10px; color:#2e7d32;"><code>True</code></td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>&lt;</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Strictement inférieur</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>3 &lt; 7</code></td>
+                    <td style="border:1px solid #ddd; padding:10px; color:#2e7d32;"><code>True</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>&gt;</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Strictement supérieur</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>8 &gt; 10</code></td>
+                    <td style="border:1px solid #ddd; padding:10px; color:#e74c3c;"><code>False</code></td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>&lt;=</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Inférieur ou égal</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>5 &lt;= 5</code></td>
+                    <td style="border:1px solid #ddd; padding:10px; color:#2e7d32;"><code>True</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><code>&gt;=</code></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Supérieur ou égal</td>
+                    <td style="border:1px solid #ddd; padding:10px;"><code>4 &gt;= 9</code></td>
+                    <td style="border:1px solid #ddd; padding:10px; color:#e74c3c;"><code>False</code></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #f59e0b;">
+            <strong>⚠️ Attention :</strong> <code>=</code> est l'affectation, <code>==</code> est la comparaison
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">III. Opérateurs logiques</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérateur AND</h3>
+        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
+            <p style="margin:8px 0;"><strong>Principe :</strong> Retourne <code>True</code> si <strong>toutes</strong> les conditions sont vraies</p>
+            <p style="margin:8px 0;"><strong>Syntaxe :</strong> <code>(condition1) and (condition2)</code></p>
+        </div>
+        
+        <table style="width:60%; border-collapse:collapse; margin:15px auto; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:8px;">Condition 1</th>
+                    <th style="border:1px solid #ddd; padding:8px;">Condition 2</th>
+                    <th style="border:1px solid #ddd; padding:8px;"><code>C1 and C2</code></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32; font-weight:bold;"><code>True</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c; font-weight:bold;"><code>False</code></td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c; font-weight:bold;"><code>False</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c; font-weight:bold;"><code>False</code></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple :</strong> <code>(age >= 18) and (permis == True)</code>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérateur OR</h3>
+        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
+            <p style="margin:8px 0;"><strong>Principe :</strong> Retourne <code>True</code> si <strong>au moins une</strong> condition est vraie</p>
+            <p style="margin:8px 0;"><strong>Syntaxe :</strong> <code>(condition1) or (condition2)</code></p>
+        </div>
+        
+        <table style="width:60%; border-collapse:collapse; margin:15px auto; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:8px;">Condition 1</th>
+                    <th style="border:1px solid #ddd; padding:8px;">Condition 2</th>
+                    <th style="border:1px solid #ddd; padding:8px;"><code>C1 or C2</code></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32; font-weight:bold;"><code>True</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32; font-weight:bold;"><code>True</code></td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32; font-weight:bold;"><code>True</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c; font-weight:bold;"><code>False</code></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple :</strong> <code>(jour == "Samedi") or (jour == "Dimanche")</code>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérateur NOT</h3>
+        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
+            <p style="margin:8px 0;"><strong>Principe :</strong> Inverse la valeur d'une condition</p>
+            <p style="margin:8px 0;"><strong>Syntaxe :</strong> <code>not (condition)</code></p>
+        </div>
+        
+        <table style="width:40%; border-collapse:collapse; margin:15px auto; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:8px;">Condition</th>
+                    <th style="border:1px solid #ddd; padding:8px;"><code>not Condition</code></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>True</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#e74c3c; font-weight:bold;"><code>False</code></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;"><code>False</code></td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center; color:#2e7d32; font-weight:bold;"><code>True</code></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>Exemple :</strong> <code>not (age < 18)</code> équivaut à <code>age >= 18</code>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IV. Structures conditionnelles Python</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Structure IF simple</h3>
+        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
+            <p style="margin:8px 0;"><strong>Syntaxe :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:10px; border-radius:4px; font-family:monospace; margin:8px 0;">
+                <span style="color:#ff79c6;">if</span> condition:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instruction1<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instruction2
+            </div>
+        </div>
+        
+        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #f59e0b;">
+            <strong>⚠️ Règles importantes :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Le <strong>deux-points <code>:</code></strong> après la condition est obligatoire</li>
+                <li>L'<strong>indentation</strong> (4 espaces) est obligatoire pour définir le bloc</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Structure IF... ELSE</h3>
+        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
+            <p style="margin:8px 0;"><strong>Syntaxe :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:10px; border-radius:4px; font-family:monospace; margin:8px 0;">
+                <span style="color:#ff79c6;">if</span> condition:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># si condition vraie</span><br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># si condition fausse</span>
+            </div>
+        </div>
+        
+        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Principe :</strong> Exactement un des deux blocs sera exécuté, jamais les deux
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Structure IF... ELIF... ELSE</h3>
+        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
+            <p style="margin:8px 0;"><strong>Syntaxe :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:10px; border-radius:4px; font-family:monospace; margin:8px 0;">
+                <span style="color:#ff79c6;">if</span> condition1:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># si condition1 vraie</span><br>
+                <span style="color:#ff79c6;">elif</span> condition2:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># si condition2 vraie</span><br>
+                <span style="color:#ff79c6;">elif</span> condition3:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># si condition3 vraie</span><br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;instructions <span style="color:#6272a4;"># par défaut</span>
+            </div>
+        </div>
+        
+        <div style="background:#fef3c7; padding:10px; border-radius:4px; margin:10px 0; border-left:6px solid #f59e0b;">
+            <strong>⚠️ Important :</strong> Les conditions sont testées dans l'ordre. Dès qu'une condition est vraie, son bloc est exécuté et les autres ne sont pas testées
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">V. Exemples pratiques</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Test de majorité</h3>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            age = <span style="color:#bd93f9;">17</span><br>
+            <br>
+            <span style="color:#ff79c6;">if</span> age >= <span style="color:#bd93f9;">18</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Majeur"</span>)<br>
+            <span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Mineur"</span>)
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Résolution :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><code>17 >= 18</code> → <code>False</code></li>
+                <li>La condition est fausse, on exécute le bloc <code>else</code></li>
+                <li>Résultat : <strong>"Mineur"</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Attribution de mention</h3>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            moyenne = <span style="color:#bd93f9;">14.5</span><br>
+            <br>
+            <span style="color:#ff79c6;">if</span> moyenne >= <span style="color:#bd93f9;">16</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mention = <span style="color:#f1fa8c;">"Très Bien"</span><br>
+            <span style="color:#ff79c6;">elif</span> moyenne >= <span style="color:#bd93f9;">14</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mention = <span style="color:#f1fa8c;">"Bien"</span><br>
+            <span style="color:#ff79c6;">elif</span> moyenne >= <span style="color:#bd93f9;">12</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mention = <span style="color:#f1fa8c;">"Assez Bien"</span><br>
+            <span style="color:#ff79c6;">elif</span> moyenne >= <span style="color:#bd93f9;">10</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mention = <span style="color:#f1fa8c;">"Passable"</span><br>
+            <span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;mention = <span style="color:#f1fa8c;">"Échec"</span>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Résolution :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><code>14.5 >= 16</code> → <code>False</code></li>
+                <li><code>14.5 >= 14</code> → <code>True</code> ✓</li>
+                <li>On exécute : <code>mention = "Bien"</code></li>
+                <li>Les autres conditions ne sont pas testées</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 3 : Conditions combinées avec AND</h3>
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            age = <span style="color:#bd93f9;">23</span><br>
+            inscrit = <span style="color:#bd93f9;">True</span><br>
+            <br>
+            <span style="color:#ff79c6;">if</span> age < <span style="color:#bd93f9;">26</span> <span style="color:#ff79c6;">and</span> inscrit == <span style="color:#bd93f9;">True</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Réduction accordée"</span>)<br>
+            <span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Pas de réduction"</span>)
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Analyse :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><code>(23 < 26) and (inscrit == True)</code></li>
+                <li><code>True and True = True</code></li>
+                <li>Résultat : <strong>"Réduction accordée"</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VI. Conditions imbriquées</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
+            <p style="margin:8px 0;"><strong>Principe :</strong> Placer des structures conditionnelles à l'intérieur d'autres structures</p>
+            <p style="margin:8px 0;"><strong>Attention :</strong> Respecter l'indentation (4 espaces par niveau)</p>
+        </div>
+        
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            age = <span style="color:#bd93f9;">10</span><br>
+            taille = <span style="color:#bd93f9;">145</span><br>
+            <br>
+            <span style="color:#ff79c6;">if</span> age >= <span style="color:#bd93f9;">12</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès à toutes les attractions"</span>)<br>
+            <span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Condition imbriquée</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> taille >= <span style="color:#bd93f9;">140</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès aux attractions moyennes"</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Accès aux attractions enfants"</span>)
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
+            <strong>Analyse :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Premier test : <code>10 >= 12</code> → <code>False</code></li>
+                <li>Deuxième test (imbriqué) : <code>145 >= 140</code> → <code>True</code></li>
+                <li>Résultat : <strong>"Accès aux attractions moyennes"</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VII. Tableau récapitulatif des structures</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px;">Structure</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Utilisation</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Syntaxe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong><code>if</code></strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Une seule action conditionnelle</td>
+                    <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">if cond:<br>&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong><code>if... else</code></strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Deux alternatives possibles</td>
+                    <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">if cond:<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong><code>if... elif... else</code></strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Plusieurs conditions à tester</td>
+                    <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">if c1:<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>elif c2:<br>&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Conditions imbriquées</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Tests successifs complexes</td>
+                    <td style="border:1px solid #ddd; padding:10px; font-family:monospace;">if ...<br>&nbsp;&nbsp;&nbsp;&nbsp;if ...<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VIII. Formules rapides - Mémo</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:10px; width:40%;">Opérateur</th>
+                    <th style="border:1px solid #ddd; padding:10px;">Signification</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>==</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Égal à</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>!=</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Différent de</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>&lt;</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Strictement inférieur</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>&gt;</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Strictement supérieur</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>&lt;=</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Inférieur ou égal</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>&gt;=</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">Supérieur ou égal</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>and</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">ET logique (toutes vraies)</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>or</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">OU logique (au moins une vraie)</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:8px;"><code>not</code></td>
+                    <td style="border:1px solid #ddd; padding:8px;">NON logique (inverse)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="background:#ffffff; padding:15px; border-radius:6px; margin:15px 0; border:1px solid #e1e8ed;">
+        <h3 style="color:#2c3e50; margin-top:0;">✅ Points clés à retenir</h3>
+
+        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+        <thead>
+        <tr style="background:#3498db; color:white;">
+        <th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
+        <th style="border:1px solid #ddd; padding:12px;">À retenir</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Opérateurs de comparaison</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;"><code>==</code> (égal), <code>!=</code> (différent), <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Opérateurs logiques</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;"><code>and</code> (toutes vraies), <code>or</code> (au moins une vraie), <code>not</code> (inverse)</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Structure IF</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Exécute un bloc si la condition est vraie</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Structure IF... ELSE</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Exécute un bloc ou l'autre (jamais les deux)</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Structure IF... ELIF... ELSE</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Teste plusieurs conditions dans l'ordre</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Conditions imbriquées</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Structures conditionnelles à l'intérieur d'autres</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Deux-points</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Obligatoires après <code>if</code>, <code>elif</code>, <code>else</code></td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Indentation</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">4 espaces obligatoires pour définir les blocs</td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IX. Erreurs fréquentes à éviter</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fdf2f2; padding:15px; border-radius:6px; margin-bottom:15px;">
+            <strong>❌ Pièges à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
+                <li>Oublier les <strong>deux-points</strong> : <code>if age >= 18:</code> (correct) vs <code>if age >= 18</code> (erreur)</li>
+                <li>Mauvaise <strong>indentation</strong> : Python génère une erreur <code>IndentationError</code></li>
+                <li>Confondre <strong>= et ==</strong> : <code>x = 5</code> (affectation) vs <code>x == 5</code> (comparaison)</li>
+                <li>Mal ordonner les conditions : tester <code>age >= 10</code> avant <code>age >= 18</code> capturera aussi les adultes</li>
+                <li>Confondre <strong>and et or</strong> : <code>(x > 5 and x < 10)</code> vs <code>(x < 5 or x > 10)</code></li>
+                <li>Majuscules/minuscules : <code>True</code> et <code>False</code> (avec majuscule), pas <code>true</code> ou <code>false</code></li>
+            </ul>
+        </div>
+
+        <div style="background:#f0f9f0; padding:15px; border-radius:6px;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
+                <li>Toujours utiliser <strong>4 espaces</strong> pour l'indentation</li>
+                <li>Ordonner les tests du plus restrictif au plus général</li>
+                <li>Utiliser des noms de variables explicites : <code>est_majeur</code> plutôt que <code>x</code></li>
+                <li>Tester le code avec plusieurs valeurs différentes</li>
+                <li>Utiliser des parenthèses pour clarifier les conditions complexes</li>
+                <li>Commenter le code pour expliquer les conditions complexes</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+===

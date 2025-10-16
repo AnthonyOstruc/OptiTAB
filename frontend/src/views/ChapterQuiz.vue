@@ -3,8 +3,8 @@
     <section class="chapter-quiz-section">
       <!-- Bouton de retour -->
       <BackButton 
-        text="Retour aux chapitres" 
-        :customAction="goBackToNotions"
+        :text="currentQuiz ? 'Retour aux quiz' : 'Retour aux chapitres'" 
+        :customAction="currentQuiz ? backToList : goBackToNotions"
         position="top-left"
       />
       
@@ -26,10 +26,6 @@
         </div>
       </div>
 
-      <div class="quiz-header">
-        <h2 class="quiz-title">Quiz QCM - {{ notionNom }}</h2>
-        <p v-if="!initialLoading" class="quiz-subtitle">{{ totalQuestions }} {{ totalQuestions > 1 ? 'questions' : 'question' }} disponibles dans {{ quiz.length }} {{ quiz.length > 1 ? 'quiz' : 'quiz' }}</p>
-      </div>
 
       <div v-if="initialLoading" class="loading-skeleton-container">
         <SkeletonList :count="3" />
@@ -597,11 +593,13 @@ function refreshSavedQuizzes() {
     quiz.value.forEach(q => {
       if (hasSavedProgress(q.id)) {
         newSet.add(q.id)
+        console.log(`✅ Quiz ${q.id} (${q.titre}) détecté comme sauvegardé`)
       }
     })
     // Remplacer la référence pour déclencher la réactivité
     savedQuizzesSet.value = newSet
-    console.log('🔄 Rafraîchissement des quiz sauvegardés:', newSet.size)
+    console.log('🔄 Rafraîchissement des quiz sauvegardés:', newSet.size, 'quiz trouvés')
+    console.log('🔄 IDs des quiz sauvegardés:', Array.from(newSet))
   } catch (e) {
     console.warn('⚠️ Impossible de rafraîchir les quiz sauvegardés:', e)
   }
@@ -1146,6 +1144,9 @@ onMounted(async () => {
 
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
 onActivated(() => {
+  // Rafraîchir les quiz sauvegardés à chaque réactivation
+  refreshSavedQuizzes()
+  
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
   nextTick(() => {
     renderMath()
@@ -1715,6 +1716,8 @@ function saveQuizState() {
     progressInfoCache.delete(currentQuiz.value.id)
     
     console.log(`💾 État du quiz sauvegardé - Question ${currentQuestionIndex.value + 1}`)
+    console.log(`💾 Quiz ${currentQuiz.value.id} ajouté aux quiz sauvegardés`)
+    console.log(`💾 Total des quiz sauvegardés: ${savedQuizzes.value.size}`)
   } catch (error) {
     console.error('❌ Erreur lors de la sauvegarde:', error)
   }
@@ -2135,47 +2138,37 @@ onUnmounted(() => {
 
 <style scoped>
 .chapter-quiz-section {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.quiz-header {
+  background: #fff;
+  min-height: 100vh;
+  padding: 0 5vw 40px 5vw;
   text-align: center;
-  margin-bottom: 2rem;
 }
 
-.quiz-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #1e3a8a;
-  margin: 0;
-}
-
-.quiz-subtitle {
-  font-size: 1.1rem;
-  color: #64748b;
-  margin: 0.5rem 0 0 0;
-}
 
 .quiz-list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
+  max-width: 100%;
+  margin: 0 auto;
+  align-items: stretch;
 }
 
 .quiz-card {
   background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .quiz-card:hover {
   border-color: #3b82f6;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .quiz-card.completed {
@@ -2639,12 +2632,9 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .chapter-quiz-section {
-    padding: 1rem;
+    padding: 0 3vw 30px 3vw;
   }
 
-  .quiz-title {
-    font-size: 2rem;
-  }
 
   .question-title {
     font-size: 1.25rem;
@@ -2769,59 +2759,71 @@ onUnmounted(() => {
 }
 
 .nav-grid {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  max-width: 500px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  width: 100%;
   margin: 0 auto;
 }
 
 .nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.75rem 1rem;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   min-width: 100px;
   text-align: center;
+  font-weight: 500;
+  color: #6b7280;
 }
 
 .nav-item:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  border-color: #3b82f6;
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-item.active {
   background: #3b82f6;
   border-color: #3b82f6;
-  color: white;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
 .nav-icon {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .nav-label {
   font-size: 0.875rem;
   font-weight: 600;
+  flex-grow: 1;
+  text-align: left;
+  margin-left: 0.5rem;
 }
 
 .nav-count {
   font-size: 0.75rem;
   font-weight: 700;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
   padding: 0.125rem 0.5rem;
   border-radius: 10px;
   min-width: 20px;
+  text-align: center;
 }
 
 .nav-item.active .nav-count {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
 }
 
 /* Animation de chargement pour l'onglet "À continuer" */
@@ -2886,6 +2888,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 0.75rem;
   flex-shrink: 0;
+  min-width: 0;
 }
 
 /* Quiz attempts (à gauche) */
@@ -3074,6 +3077,7 @@ onUnmounted(() => {
   min-width: 100px;
   text-align: center;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .continue-text {
@@ -3452,6 +3456,12 @@ onUnmounted(() => {
 }
 
 /* Responsive pour gamification */
+@media (max-width: 680px) {
+  .chapter-quiz-section {
+    padding: 0 2vw 20px 2vw;
+  }
+}
+
 @media (max-width: 640px) {
   .xp-earned {
     flex-direction: column;
@@ -3471,12 +3481,14 @@ onUnmounted(() => {
   }
   
   .nav-grid {
-    gap: 0.25rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.3rem;
+    width: 100%;
   }
   
   .nav-item {
-    min-width: 80px;
-    padding: 0.5rem 0.75rem;
+    padding: 0.4rem 0.4rem;
+    min-height: 45px;
   }
   
   .nav-label {
@@ -3521,6 +3533,19 @@ onUnmounted(() => {
 
   .cooldown-time-left {
     justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .nav-grid {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+    width: 100%;
+  }
+  
+  .nav-item {
+    padding: 0.4rem 0.6rem;
+    min-height: 40px;
   }
 
   .pagination-controls {

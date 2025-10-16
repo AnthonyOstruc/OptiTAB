@@ -32,13 +32,11 @@ def _compute_quiz_xp(
     tentative_numero: int = 1,
 ) -> int:
     """
-    Logique XP pour quiz (avec coefficients de difficulté et bonus vitesse):
-    - Difficulté → coefficient XP : easy=1.0, medium=1.5, hard/difficile=2.0
-    - SEULE la 1ère tentative donne des XP : XP = score * coeff (+1 bonus si temps total < 50% du temps autorisé)
-    - Tentatives suivantes : 0 XP (système de cooldown de 1h30)
-
-    Le temps autorisé est calculé par question: easy=20s, medium=25s, hard=30s,
-    donc total_autorisé = nb_questions * temps_par_question.
+    Nouvelle logique XP pour quiz (seulement première tentative):
+    - EASY: 1 XP par bonne réponse + 2 XP bonus si sans faute
+    - MEDIUM: 2 XP par bonne réponse + 3 XP bonus si sans faute  
+    - HARD: 3 XP par bonne réponse + 3 XP bonus si sans faute
+    - Tentatives suivantes : 0 XP
     """
     # Seule la première tentative donne des XP
     if tentative_numero > 1:
@@ -47,43 +45,44 @@ def _compute_quiz_xp(
     if total_points <= 0:
         return 0
 
-    # Coefficients selon la difficulté
+    # Déterminer la difficulté
     difficulty = (getattr(quiz, 'difficulty', None) or getattr(quiz, 'difficulte', None) or 'easy')
     difficulty = str(difficulty).lower()
-    coeff_map = {
-        'easy': 1.0,
-        'facile': 1.0,
-        'medium': 1.5,
-        'moyen': 1.5,
-        'hard': 2.0,
-        'difficile': 2.0,
+    
+    # XP par bonne réponse selon la difficulté
+    xp_per_correct_map = {
+        'easy': 1,
+        'facile': 1,
+        'medium': 2,
+        'moyen': 2,
+        'hard': 3,
+        'difficile': 3,
     }
-    coeff = coeff_map.get(difficulty, 1.0)
-
-    # Temps par question selon difficulté
-    per_question_time_map = {
-        'easy': 20,
-        'facile': 20,
-        'medium': 25,
-        'moyen': 25,
-        'hard': 30,
-        'difficile': 30,
+    
+    # Bonus sans faute selon la difficulté
+    perfect_bonus_map = {
+        'easy': 2,
+        'facile': 2,
+        'medium': 3,
+        'moyen': 3,
+        'hard': 3,
+        'difficile': 3,
     }
-    per_q_time = per_question_time_map.get(difficulty, 20)
-
-    # 1ère tentative : score * coeff (+ éventuel bonus vitesse)
-    base_xp = score * coeff
-    # Bonus vitesse: +1 XP si répondu à toutes les questions en moins de 50% du temps autorisé
-    bonus = 0
-    try:
-        if temps_total_seconde is not None and total_points > 0:
-            allowed_total = total_points * per_q_time
-            if temps_total_seconde < 0.5 * allowed_total:
-                bonus = 1
-    except Exception:
-        bonus = 0
-    # DB XP est un entier → arrondir à l'entier le plus proche
-    return max(0, int(round(base_xp)) + bonus)
+    
+    xp_per_correct = xp_per_correct_map.get(difficulty, 1)
+    perfect_bonus = perfect_bonus_map.get(difficulty, 2)
+    
+    # Calculer les XP de base (bonnes réponses)
+    base_xp = score * xp_per_correct
+    
+    # Bonus si sans faute (score = total_points)
+    perfect_bonus_xp = 0
+    if score == total_points and total_points > 0:
+        perfect_bonus_xp = perfect_bonus
+    
+    total_xp = base_xp + perfect_bonus_xp
+    
+    return max(0, total_xp)
 
 
 def calculate_user_level(total_xp: int) -> tuple[int, int, int]:
@@ -120,52 +119,6 @@ def get_next_quiz_attempt_number(user, quiz_id: int) -> int:
         return 1
 
 
-def check_quiz_cooldown(user, quiz_id: int) -> dict:
-    """
-    Vérifie si l'utilisateur peut faire une nouvelle tentative du quiz.
-    Cooldown de 1h30 entre chaque tentative.
-    """
-    try:
-        last_attempt = SuiviQuiz.objects.filter(
-            user=user,
-            quiz_id=quiz_id
-        ).order_by('-date_creation').first()
-        
-        if not last_attempt:
-            return {
-                'can_attempt': True,
-                'message': 'Première tentative autorisée'
-            }
-        
-        # Calculer le temps écoulé depuis la dernière tentative
-        now = timezone.now()
-        time_since_last = now - last_attempt.date_creation
-        cooldown_duration = timedelta(hours=1, minutes=30)  # 1h30
-        
-        if time_since_last >= cooldown_duration:
-            return {
-                'can_attempt': True,
-                'message': 'Nouvelle tentative autorisée'
-            }
-        else:
-            # Calculer le temps restant
-            time_remaining = cooldown_duration - time_since_last
-            hours = int(time_remaining.total_seconds() // 3600)
-            minutes = int((time_remaining.total_seconds() % 3600) // 60)
-            
-            return {
-                'can_attempt': False,
-                'message': f'Prochaine tentative dans {hours}h{minutes:02d}min',
-                'time_remaining_seconds': int(time_remaining.total_seconds()),
-                'time_remaining_formatted': f'{hours}h{minutes:02d}min',
-                'next_attempt_time': (last_attempt.date_creation + cooldown_duration).isoformat()
-            }
-    except Exception as e:
-        logger.warning(f"Erreur vérification cooldown: {e}")
-        return {
-            'can_attempt': True,
-            'message': 'Tentative autorisée (erreur de vérification)'
-        }
 
 
 class SuiviExerciceViewSet(viewsets.ModelViewSet):
@@ -394,14 +347,6 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
             # Déterminer le numéro de tentative
             quiz_id = serializer.validated_data.get('quiz').id
             
-            # Vérifier le cooldown avant de créer la tentative
-            cooldown_info = check_quiz_cooldown(self.request.user, quiz_id)
-            if not cooldown_info['can_attempt']:
-                from rest_framework.exceptions import ValidationError
-                raise ValidationError({
-                    'detail': cooldown_info['message'],
-                    'cooldown_info': cooldown_info
-                })
             
             tentative_numero = get_next_quiz_attempt_number(self.request.user, quiz_id)
             
@@ -441,18 +386,7 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 
                 print(f"🆙 Utilisateur mis à jour: XP={user.xp}")
 
-                # Notification persistante si XP gagnés
-                if int(max(0, xp_gain)) > 0:
-                    try:
-                        UserNotification.objects.create(
-                            user=user,
-                            type='xp_gained',
-                            title='🎉 XP Gagnés !',
-                            message=f"+{int(max(0, xp_gain))} XP pour \"{getattr(quiz_obj, 'titre', 'Quiz')}\"",
-                            data={'quiz_id': getattr(quiz_obj, 'id', None), 'tentative': tentative_numero}
-                        )
-                    except Exception:
-                        pass
+                # Notification XP gérée par le frontend (notificationStore)
             except Exception as e:
                 logger.error(f"Erreur mise à jour utilisateur: {e}")
                 pass
@@ -479,25 +413,6 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
         # Une fois un quiz terminé, le résultat ne peut plus être modifié
         pass
 
-    @action(detail=False, methods=['get'], url_path='check-cooldown/(?P<quiz_id>[^/.]+)')
-    def check_cooldown(self, request, quiz_id=None):
-        """
-        Endpoint pour vérifier le cooldown d'un quiz spécifique
-        """
-        try:
-            quiz_id = int(quiz_id)
-            cooldown_info = check_quiz_cooldown(request.user, quiz_id)
-            return Response(cooldown_info)
-        except (ValueError, TypeError):
-            return Response(
-                {'error': 'ID de quiz invalide'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        except Exception as e:
-            return Response(
-                {'error': f'Erreur lors de la vérification: {str(e)}'}, 
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
     
     @action(detail=False, methods=['get'], url_path='stats')
     def stats(self, request):

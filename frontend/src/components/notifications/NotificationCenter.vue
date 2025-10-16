@@ -223,7 +223,7 @@ function handleKeyDown(event) {
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeyDown)
-  try { loadFromServer() } catch (_) {}
+  // Notifications déjà chargées dans App.vue, pas besoin de les recharger ici
 })
 
 onUnmounted(() => {

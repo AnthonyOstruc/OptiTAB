@@ -152,15 +152,6 @@ export function useXP() {
     notificationStore.notifyXPGained(xpDelta, quizTitle, attempt)
 
     if (xpDelta > 0) {
-      // Messages différents selon la tentative (ancienne notification pour compatibilité)
-      let message = 'Quiz réussi !'
-      if (attempt === 1) {
-        message = 'Premier essai réussi !'
-      }
-
-      // Afficher l'ancienne notification (peut être supprimée plus tard)
-      showXpGain(xpDelta, message)
-
       // Mettre à jour instantanément les XP (avec vérification de level up)
       const updateResult = await updateUserXPInstantly(xpDelta, 'quiz_completion')
 
@@ -170,9 +161,6 @@ export function useXP() {
       console.log('🎯 Quiz XP:', { quizId, xpGained: xpDelta, attempt, result, updateResult })
 
       return result
-    } else if (attempt > 1) {
-      // Afficher une notification pour les tentatives sans XP (ancienne pour compatibilité)
-      showXpGain(0, 'Tentative supplémentaire (cooldown 1h30)')
     }
 
     return { success: true, gainedXp: 0 }

@@ -38,7 +38,6 @@
           class="quiz-card"
           :class="{ 
             'completed': hasAttemptedQuiz(q.id),
-            'cooldown': isQuizInCooldown(q.id),
             'saved-progress': savedQuizzes.value && savedQuizzes.value.has(q.id)
           }"
           @click="startQuiz(q)"
@@ -53,28 +52,9 @@
             <span class="quiz-time">~{{ getEstimatedTime(q.questions?.length || 0) }}</span>
           </div>
           
-          <!-- Affichage pour les quiz en cooldown -->
-          <div v-if="isQuizInCooldown(q.id)" class="quiz-status-container">
-            <!-- Temps restant à gauche -->
-            <div class="cooldown-time-left">
-              <span class="cooldown-icon">⏰</span>
-              <span class="cooldown-time">{{ getQuizCooldown(q.id).time_remaining_formatted }}</span>
-            </div>
-            
-            <!-- Tentative et note à droite -->
-            <div class="quiz-right-info">
-              <div class="quiz-attempts">
-                <span class="attempts-label">Tentative:</span>
-                <span class="attempts-number">{{ getAttemptCount(q.id) }}</span>
-              </div>
-              <div class="quiz-score" :class="getScoreColorClass(getLastScore(q.id))">
-                <span class="score-value">{{ getLastScore(q.id) }}/10</span>
-              </div>
-            </div>
-          </div>
           
           <!-- Affichage pour les quiz sauvegardés (à continuer) -->
-          <div v-else-if="savedQuizzes.value && savedQuizzes.value.has(q.id)" class="quiz-status-container">
+          <div v-if="savedQuizzes.value && savedQuizzes.value.has(q.id)" class="quiz-status-container">
             <!-- Progression à gauche -->
             <div class="quiz-progress-info">
               <span class="progress-icon">🔄</span>
@@ -113,7 +93,7 @@
             </div>
           </div>
           
-          <!-- Affichage pour les quiz terminés (sans cooldown) -->
+          <!-- Affichage pour les quiz terminés -->
           <div v-else-if="hasAttemptedQuiz(q.id)" class="quiz-status-container">
             <!-- Espace à gauche (vide) -->
             <div class="quiz-left-spacer"></div>
@@ -190,31 +170,6 @@
 
       <!-- Interface du Quiz -->
       <div v-if="currentQuiz && !showResults" class="quiz-interface">
-        <!-- Indicateur de session restaurée -->
-        <div v-if="isRestoringSession" class="session-restored-banner">
-          <div class="session-restored-content">
-            <span class="session-restored-icon">🔄</span>
-            <div class="session-restored-text">
-              <strong>Session restaurée</strong>
-              <p v-if="getSavedProgressInfo(currentQuiz?.id)?.isJustStarted">
-                Vous reprenez là où vous vous étiez arrêté. <strong class="info-text">ℹ️ Quiz débuté - Vous commencez à la question 1.</strong>
-              </p>
-              <p v-else-if="userAnswers.length === 0">
-                Vous reprenez là où vous vous étiez arrêté. <strong class="warning-text">⚠️ La première question a été perdue car vous n'aviez pas encore répondu.</strong> Vous commencez à la question 2.
-              </p>
-              <p v-else>
-                Vous reprenez là où vous vous étiez arrêté. {{ userAnswers.length }} réponse(s) précédente(s) sauvegardée(s). 
-                <span v-if="getSavedProgressInfo(currentQuiz?.id)?.questionLost">
-                  <strong class="warning-text">⚠️ La question précédente a été perdue car vous n'aviez pas encore répondu.</strong>
-                </span>
-                <span v-else>
-                  <strong class="success-text">✅ La question précédente a été sauvegardée avec votre réponse.</strong>
-                </span>
-              </p>
-            </div>
-            <button @click="isRestoringSession = false" class="session-restored-close">✕</button>
-          </div>
-        </div>
         
         <div class="quiz-progress">
           <div class="progress-bar">
@@ -264,7 +219,7 @@
                 'selected': selectedAnswer === index,
                 'correct': showAnswer && index === currentQuestion.correct_answer,
                 'incorrect': showAnswer && selectedAnswer === index && index !== currentQuestion.correct_answer,
-                'disabled': showAnswer && questionTimeLeft <= 0
+                'disabled': showAnswer && questionTimeLeft <= 0 && index !== currentQuestion.correct_answer
               }"
               @click="selectAnswer(index)"
             >
@@ -336,9 +291,9 @@
                 <span v-else>0 XP</span>
               </div>
               <div class="xp-info">
-                <span v-if="currentAttempt === 1 && lastXpGained > 0">🥇 Premier essai réussi ! XP = ton score × difficulté</span>
+                <span v-if="currentAttempt === 1 && lastXpGained > 0">🥇 Premier essai réussi ! XP = bonnes réponses × difficulté + bonus sans faute</span>
                 <span v-else-if="currentAttempt === 1 && lastXpGained === 0">💪 Premier essai - Continue à t'améliorer !</span>
-                <span v-else-if="currentAttempt > 1">🔄 Tentative supplémentaire - Aucun XP (cooldown 1h30)</span>
+                <span v-else-if="currentAttempt > 1">🔄 Tentative supplémentaire - Aucun XP</span>
                 <span v-else>Continue tes efforts !</span>
               </div>
             </div>
@@ -363,33 +318,13 @@
             <span class="stat-number">{{ totalQuestionsInCurrentQuiz }}</span>
             <span class="stat-label">Total questions</span>
           </div>
-          <div v-if="lostQuestions > 0" class="stat-card lost-questions">
-            <span class="stat-number">{{ lostQuestions }}</span>
-            <span class="stat-label">Questions perdues</span>
-          </div>
           <div class="stat-card gamification">
             <span class="stat-number">{{ currentAttempt }}</span>
             <span class="stat-label">Tentative #</span>
           </div>
         </div>
 
-        <!-- Information sur le cooldown -->
-        <div class="cooldown-info">
-          <div class="cooldown-info-icon">⏰</div>
-          <div class="cooldown-info-text">
-            <strong>Prochaine tentative possible dans 1h30</strong>
-            <p>Le système de cooldown empêche la mémorisation des réponses et encourage la préparation.</p>
-          </div>
-        </div>
 
-        <!-- Information sur les questions perdues -->
-        <div v-if="lostQuestions > 0" class="lost-questions-info">
-          <div class="lost-questions-info-icon">⚠️</div>
-          <div class="lost-questions-info-text">
-            <strong>{{ lostQuestions }} question(s) perdue(s) pour éviter la tricherie</strong>
-            <p>En cas de rafraîchissement ou de perte de connexion, la question en cours est automatiquement perdue pour maintenir l'intégrité du quiz.</p>
-          </div>
-        </div>
 
         <div class="results-actions">
           <button class="btn-primary" @click="backToList">Retour à la liste</button>
@@ -407,7 +342,7 @@ import { ref, computed, onMounted, onActivated, onUnmounted, nextTick, watch } f
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import SkeletonList from '@/components/common/SkeletonList.vue'
-import { getQuiz, submitQuizResult, getQuizAttempts, checkQuizCooldown } from '@/api/quiz'
+import { getQuiz, submitQuizResult, getQuizAttempts } from '@/api/quiz'
 import { useUserStore } from '@/stores/user'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useXP } from '@/composables/useXP'
@@ -442,7 +377,6 @@ const quizStartTime = ref(null)
 
 // Variables de sauvegarde automatique
 const quizSessionId = ref(null)
-const isRestoringSession = ref(false)
 const lastSavedState = ref(null)
 // Timers par question
 const questionStartTime = ref(null)
@@ -574,10 +508,6 @@ function restoreQuizListState() {
 const chapterQuizAttempts = ref([])
 const loadingStats = ref(false)
 
-// Variables pour le cooldown
-const quizCooldowns = ref(new Map())
-const cooldownCheckLoading = ref(false)
-let cooldownUpdateInterval = null
 
 // Ensemble réactif des quiz sauvegardés (À continuer)
 const savedQuizzesSet = ref(new Set())
@@ -618,10 +548,6 @@ const totalQuestions = computed(() => {
 const correctAnswers = computed(() => userAnswers.value.filter(answer => answer.correct).length)
 const wrongAnswers = computed(() => userAnswers.value.filter(answer => !answer.correct).length)
 const totalQuestionsInCurrentQuiz = computed(() => userAnswers.value.length)
-const lostQuestions = computed(() => {
-  if (!currentQuiz.value) return 0
-  return currentQuiz.value.questions.length - userAnswers.value.length
-})
 const score = computed(() => totalQuestionsInCurrentQuiz.value > 0 ? (correctAnswers.value / totalQuestionsInCurrentQuiz.value) * 100 : 0)
 
 // Computed pour les onglets (logique pédagogique claire)
@@ -1022,6 +948,9 @@ async function loadChapterQuizAttempts() {
 }
 
 onMounted(async () => {
+  // Nettoyer les sauvegardes corrompues au démarrage
+  cleanupCorruptedSaves()
+  
   // Ajouter les event listeners pour la détection de déconnexion
   window.addEventListener('beforeunload', handleBeforeUnload)
   window.addEventListener('pagehide', () => {
@@ -1071,20 +1000,13 @@ onMounted(async () => {
           // Mode turbo: démarrage ultra-rapide
           console.log(`[ChapterQuiz] ⚡ Mode turbo activé`)
           
-          // Pré-charger uniquement les cooldowns (critique)
-          loadQuizCooldowns().then(() => {
-            console.log(`[ChapterQuiz] 🔒 Cooldowns vérifiés`)
-          })
           
           // Démarrage immédiat sans attendre
           startQuiz(targetQuiz)
           return
         } else {
           // Mode standard avec toutes les données
-          Promise.all([
-            loadChapterQuizAttempts(),
-            loadQuizCooldowns()
-          ]).then(() => {
+          loadChapterQuizAttempts().then(() => {
             console.log(`[ChapterQuiz] 📊 Toutes les données chargées`)
           })
           
@@ -1098,10 +1020,7 @@ onMounted(async () => {
     }
     
     // Pour l'affichage normal de la liste, charger toutes les données
-    await Promise.all([
-      loadChapterQuizAttempts(),
-      loadQuizCooldowns()
-    ])
+    await loadChapterQuizAttempts()
     
     // Mettre à jour l'ensemble réactif des quiz sauvegardés IMMÉDIATEMENT
     refreshSavedQuizzes()
@@ -1182,10 +1101,7 @@ async function reloadForNotion(notionId) {
     }))
 
     // Charger annexes pour la liste
-    await Promise.all([
-      loadChapterQuizAttempts(),
-      loadQuizCooldowns()
-    ])
+    await loadChapterQuizAttempts()
 
     refreshSavedQuizzes()
 
@@ -1257,26 +1173,6 @@ async function startQuiz(quizData) {
     // Continuer en mode local sans sauvegarde serveur
   }
   
-  // Vérifier/rafraîchir le cooldown avant de commencer (sécurisé contre l'auto-start)
-  let cooldownInfo = quizCooldowns.value.get(quizData.id)
-  if (!cooldownInfo) {
-    try {
-      cooldownInfo = await checkQuizCooldown(quizData.id)
-      quizCooldowns.value.set(quizData.id, cooldownInfo)
-    } catch (error) {
-      if (error.response?.status === 401) {
-        // Non connecté → autoriser en mode local
-        cooldownInfo = { can_attempt: true, message: 'Mode local' }
-      } else {
-        // En cas d'erreur réseau, ne pas bloquer
-        cooldownInfo = { can_attempt: true }
-      }
-    }
-  }
-  if (cooldownInfo && !cooldownInfo.can_attempt) {
-    alert(`⏰ ${cooldownInfo.message}`)
-    return
-  }
   
   // Démarrage immédiat pour une expérience fluide
   console.log(`[ChapterQuiz] 🚀 Démarrage rapide du quiz: ${quizData.titre}`)
@@ -1308,7 +1204,7 @@ async function startQuiz(quizData) {
     // Sauvegarder immédiatement l'état pour que le quiz apparaisse dans "À continuer"
     saveQuizState()
   } else {
-    // Session restaurée - réinitialiser seulement les variables d'interface
+    // Réinitialiser seulement les variables d'interface
     selectedAnswer.value = null
     showAnswer.value = false
     // Ne pas écraser l'état des résultats si la restauration a décidé d'afficher le score
@@ -1319,10 +1215,6 @@ async function startQuiz(quizData) {
     console.log(`🔄 Quiz restauré - Session: ${quizSessionId.value}`)
     console.log(`📍 Reprise à la question ${currentQuestionIndex.value + 1}/${currentQuiz.value.questions.length}`)
     
-    // Si c'est la première question perdue, afficher un message spécial
-    if (userAnswers.value.length === 0 && currentQuestionIndex.value === 1) {
-      console.log(`⚠️ Première question perdue - Quiz considéré comme "débuté"`)
-    }
   }
   
   // Sauvegarder l'état initial
@@ -1476,27 +1368,7 @@ async function finishQuiz() {
     console.log('🎯 [DailyObjectives] Quiz difficulté normalisée:', normalizedDifficulty.value)
     onQuizCompleted(quizResult)
     
-    // Mettre à jour immédiatement le store utilisateur avec les XP gagnés
-    console.log('🎯 Avant mise à jour instantanée:', {
-      currentXP: userStore.xp,
-      currentLevel: userStore.level,
-      xpToGain: xpGained
-    })
-    
-            const updateResult = await updateUserXPInstantly(xpGained, 'quiz_completion')
-    
-    console.log('🎯 Après mise à jour instantanée:', {
-      newXP: userStore.xp,
-      newLevel: userStore.level,
-      newXpToNext: userStore.xp_to_next,
-      updateResult
-    })
-    
-    if (updateResult.success && updateResult.levelUp) {
-      levelUp.value = true
-    }
-    
-    // Utiliser le système de notification XP
+    // Utiliser le système de notification XP (gère aussi la mise à jour des XP)
     try {
       await handleQuizCompletion(
         currentQuiz.value.id, 
@@ -1540,11 +1412,9 @@ async function finishQuiz() {
   } catch (error) {
     console.error('Erreur lors de la soumission du quiz:', error)
     
-    // Vérifier si c'est une erreur de cooldown
+    // Gérer les erreurs de soumission
     if (error.response?.status === 400 && error.response?.data?.detail) {
       alert(error.response.data.detail)
-      // Recharger les cooldowns pour mettre à jour l'interface
-      await loadQuizCooldowns()
       // Revenir à la liste des quiz
       await backToList()
       return
@@ -1555,19 +1425,17 @@ async function finishQuiz() {
     quizResultSubmitted.value = false
   }
   
-  // Recharger les cooldowns après chaque tentative pour mettre à jour les timers
-  await loadQuizCooldowns()
   
   // Les quiz sauvegardés sont maintenant mis à jour automatiquement via computed
 }
 
-// Fonction retryQuiz supprimée car système de cooldown 1h30
 
 async function backToList() {
-  // Nettoyer la sauvegarde si on quitte le quiz sans le terminer
-  if (currentQuiz.value && !showResults.value) {
-    clearQuizSave(currentQuiz.value.id)
-  }
+  // NE PAS nettoyer la sauvegarde pour permettre à l'utilisateur de reprendre plus tard
+  // La sauvegarde sera automatiquement nettoyée soit:
+  // - Quand le quiz est terminé (dans finishQuiz)
+  // - Quand elle expire (1 heure max)
+  // - Quand l'utilisateur redémarre le quiz
   
   currentQuiz.value = null
   showResults.value = false
@@ -1575,12 +1443,15 @@ async function backToList() {
   // Recharger les tentatives pour s'assurer que les onglets sont à jour
   await loadChapterQuizAttempts()
   
+  // Rafraîchir les quiz sauvegardés pour afficher le bouton "Continuer"
+  refreshSavedQuizzes()
+  
   // Forcer la mise à jour réactive des computed pour les onglets
   nextTick(() => {
     console.log('🔄 Mise à jour réactive des onglets après retour à la liste')
   })
   
-  console.log('🔄 Retour à la liste, tentatives rechargées')
+  console.log('🔄 Retour à la liste, tentatives rechargées, quiz sauvegardés rafraîchis')
 }
 
 function getScoreClass(score) {
@@ -1597,85 +1468,7 @@ function getScoreColorClass(scoreOn10) {
   return 'score-above-average' // Vert : au-dessus de la moyenne
 }
 
-// Fonction pour charger les cooldowns des quiz
-async function loadQuizCooldowns() {
-  if (!quiz.value.length) return
-  
-  cooldownCheckLoading.value = true
-  
-  try {
-    for (const q of quiz.value) {
-      try {
-        const cooldownInfo = await checkQuizCooldown(q.id)
-        quizCooldowns.value.set(q.id, cooldownInfo)
-      } catch (error) {
-        if (error.response?.status === 401) {
-          console.warn(`⚠️ Utilisateur non authentifié pour quiz ${q.id}, cooldown désactivé`)
-          // En mode non authentifié, désactiver le cooldown
-          quizCooldowns.value.set(q.id, { can_attempt: true, message: 'Mode local' })
-        } else {
-          console.warn(`Erreur cooldown pour quiz ${q.id}:`, error)
-          // En cas d'erreur, autoriser la tentative
-          quizCooldowns.value.set(q.id, { can_attempt: true })
-        }
-      }
-    }
-    
-    // Démarrer la mise à jour automatique des cooldowns
-    startCooldownAutoUpdate()
-    console.log('🎯 Système de cooldown automatique démarré')
-    
-  } catch (error) {
-    console.error('Erreur lors du chargement des cooldowns:', error)
-  } finally {
-    cooldownCheckLoading.value = false
-  }
-}
 
-// Fonction pour obtenir le cooldown d'un quiz
-function getQuizCooldown(quizId) {
-  return quizCooldowns.value.get(quizId) || { can_attempt: true }
-}
-
-// Fonction pour savoir si un quiz est en cooldown
-function isQuizInCooldown(quizId) {
-  const cooldown = getQuizCooldown(quizId)
-  return !cooldown.can_attempt
-}
-
-// Fonction pour démarrer la mise à jour automatique des cooldowns
-function startCooldownAutoUpdate() {
-  if (cooldownUpdateInterval) {
-    clearInterval(cooldownUpdateInterval)
-  }
-  
-  // Optimisation : intervalle adaptatif selon le contexte
-  const hasActiveCooldowns = Array.from(quizCooldowns.value.values()).some(c => !c.can_attempt)
-  const interval = hasActiveCooldowns ? 30000 : 120000 // 30s si actifs, 2min sinon (moins de charge)
-  
-  cooldownUpdateInterval = setInterval(() => {
-    updateCooldownsRealTime()
-    
-    // Réajuster l'intervalle si nécessaire
-    const stillHasCooldowns = Array.from(quizCooldowns.value.values()).some(c => !c.can_attempt)
-    if (!stillHasCooldowns && interval !== 60000) {
-      // Plus de cooldowns actifs, ralentir les vérifications
-      startCooldownAutoUpdate()
-    }
-  }, interval)
-  
-  if (import.meta.env && import.meta.env.DEV) {
-    console.debug(`🎯 Timer cooldown: ${interval/1000}s (cooldowns actifs: ${hasActiveCooldowns})`)
-  }
-}
-
-// Fonction pour arrêter la mise à jour automatique
-function stopCooldownAutoUpdate() {
-  if (cooldownUpdateInterval) {
-    clearInterval(cooldownUpdateInterval)
-    cooldownUpdateInterval = null
-  }
-}
 
 // ===== SYSTÈME DE SAUVEGARDE AUTOMATIQUE =====
 
@@ -1739,17 +1532,23 @@ function restoreQuizState(quizData) {
       const totalQuestions = quizData.questions?.length || 0
       const correctedState = { ...savedState }
       
-      // Si l'index dépasse le nombre de questions, le corriger
-      if (savedState.currentQuestionIndex >= totalQuestions) {
-        correctedState.currentQuestionIndex = Math.min(savedState.userAnswers.length, totalQuestions - 1)
-        console.log('🔧 Index de question corrigé:', savedState.currentQuestionIndex, '→', correctedState.currentQuestionIndex)
-      }
+      // Stratégie de récupération plus intelligente
+      const answeredQuestions = savedState.userAnswers.length
       
-      // Si l'écart est trop important mais récupérable, ajuster
-      const indexDiff = Math.abs(savedState.currentQuestionIndex - savedState.userAnswers.length)
-      if (indexDiff > 3 && savedState.currentQuestionIndex < totalQuestions) {
-        correctedState.currentQuestionIndex = savedState.userAnswers.length
-        console.log('🔧 Index de question ajusté:', savedState.currentQuestionIndex, '→', correctedState.currentQuestionIndex)
+      // Cas 1: Index dépasse le nombre de questions
+      if (savedState.currentQuestionIndex >= totalQuestions) {
+        correctedState.currentQuestionIndex = Math.min(answeredQuestions, totalQuestions - 1)
+        console.log('🔧 Index de question corrigé (hors limites):', savedState.currentQuestionIndex, '→', correctedState.currentQuestionIndex)
+      }
+      // Cas 2: Index en retard par rapport aux réponses (utilisateur a répondu plus que l'index ne l'indique)
+      else if (savedState.currentQuestionIndex < answeredQuestions) {
+        correctedState.currentQuestionIndex = answeredQuestions
+        console.log('🔧 Index de question corrigé (en retard):', savedState.currentQuestionIndex, '→', correctedState.currentQuestionIndex)
+      }
+      // Cas 3: Index trop en avance (plus de 1 question d'écart)
+      else if (savedState.currentQuestionIndex > answeredQuestions + 1) {
+        correctedState.currentQuestionIndex = answeredQuestions
+        console.log('🔧 Index de question corrigé (en avance):', savedState.currentQuestionIndex, '→', correctedState.currentQuestionIndex)
       }
       
       // Vérifier si l'état corrigé est valide
@@ -1761,6 +1560,8 @@ function restoreQuizState(quizData) {
       } else {
         console.warn('⚠️ Impossible de récupérer l\'état - Suppression pour sécurité')
         clearQuizSave(quizData.id)
+        // Nettoyer aussi les autres sauvegardes potentiellement corrompues
+        cleanupCorruptedSaves()
         return false
       }
     }
@@ -1773,11 +1574,10 @@ function restoreQuizState(quizData) {
       return false
     }
     
-    isRestoringSession.value = true
     
-    // LOGIQUE ANTI-TRICHERIE AMÉLIORÉE
+    // LOGIQUE DE RESTAURATION
     // Si l'utilisateur a répondu à la question actuelle, il reprend à la question suivante
-    // Si l'utilisateur n'a pas répondu, la question est perdue et il reprend à la question suivante
+    // Si l'utilisateur n'a pas répondu, il reprend à la question suivante
     const hasAnsweredCurrentQuestion = savedState.userAnswers.some(answer => answer.questionIndex === savedState.currentQuestionIndex)
     const totalQuestions = quizData.questions?.length || 0
     
@@ -1787,7 +1587,7 @@ function restoreQuizState(quizData) {
     const hasCompletedAllQuestions = savedState.userAnswers.length >= totalQuestions
     
     if (wasOnLastQuestion || hasCompletedAllQuestions) {
-      console.log('🎯 Dernière question perdue ou quiz terminé - Affichage des résultats')
+      console.log('🎯 Quiz terminé - Affichage des résultats')
       
       // Restaurer les réponses précédentes
       userAnswers.value = [...savedState.userAnswers]
@@ -1815,18 +1615,8 @@ function restoreQuizState(quizData) {
     currentAttempt.value = savedState.currentAttempt
     lastSavedState.value = savedState
     
-    // Déterminer si une question a été perdue
-    const questionLost = !hasAnsweredCurrentQuestion
-    const lostQuestionNumber = savedState.currentQuestionIndex + 1
-    
     console.log(`🔄 État du quiz restauré - Reprise à la question ${currentQuestionIndex.value + 1}`)
     console.log(`📊 Réponses précédentes: ${userAnswers.value.length}`)
-    
-    if (questionLost) {
-      console.log(`⚠️ Question ${lostQuestionNumber} perdue (non répondue) pour éviter la tricherie`)
-    } else {
-      console.log(`✅ Question ${lostQuestionNumber} sauvegardée (réponse donnée)`)
-    }
     
     return true
   } catch (error) {
@@ -1848,6 +1638,21 @@ function isValidSavedState(savedState, quizData) {
     return false
   }
   
+  // Vérifier la cohérence des réponses sauvegardées
+  if (savedState.userAnswers && Array.isArray(savedState.userAnswers)) {
+    // Vérifier que chaque réponse a un index de question valide
+    for (const answer of savedState.userAnswers) {
+      if (answer.questionIndex < 0 || answer.questionIndex >= quizData.questions.length) {
+        console.warn('⚠️ Réponse avec index de question invalide')
+        return false
+      }
+    }
+  } else {
+    console.warn('⚠️ userAnswers invalide ou manquant')
+    return false
+  }
+  
+  // Vérifier la cohérence du nombre de questions complétées
   if (savedState.questionsCompleted !== savedState.userAnswers.length) {
     console.warn('⚠️ Incohérence dans le nombre de questions')
     return false
@@ -1859,30 +1664,32 @@ function isValidSavedState(savedState, quizData) {
     return false
   }
   
-  // Vérifier que l'index de question est cohérent (optimisé)
-  const expectedIndex = savedState.userAnswers.length
-  const indexDiff = Math.abs(savedState.currentQuestionIndex - expectedIndex)
-  
-  // Cas légitimes où l'écart peut être plus important :
-  // 1. Quiz terminé (currentQuestionIndex >= totalQuestions - 1)
-  // 2. Question perdue par timeout (currentQuestionIndex = userAnswers.length + 1)
-  // 3. Dernière question répondue mais pas encore terminée
+  // Vérifier que l'index de question est cohérent (plus flexible)
   const totalQuestions = quizData.questions?.length || 0
-  const isOnLastQuestion = savedState.currentQuestionIndex >= totalQuestions - 1
-  const isQuizCompleted = savedState.userAnswers.length >= totalQuestions
+  const expectedIndex = savedState.userAnswers.length
   
-  // Si le quiz est terminé ou sur la dernière question, être plus tolérant
-  if (isOnLastQuestion || isQuizCompleted) {
-    if (indexDiff > 3) {
-      console.warn('⚠️ Index de question incohérent - écart trop important (quiz terminé)')
-      return false
-    }
-  } else {
-    // Pour les questions normales, accepter un écart de ±2
-    if (indexDiff > 2) {
-      console.warn('⚠️ Index de question incohérent - écart trop important')
-      return false
-    }
+  // Cas légitimes pour l'index de question :
+  // 1. Index normal : currentQuestionIndex = userAnswers.length (question suivante à répondre)
+  // 2. Question non répondue par timeout : currentQuestionIndex = userAnswers.length (même position)
+  // 3. Quiz terminé : currentQuestionIndex peut être >= totalQuestions - 1
+  // 4. Dernière question : currentQuestionIndex peut être totalQuestions - 1
+  
+  // Vérifications de base
+  if (savedState.currentQuestionIndex < 0) {
+    console.warn('⚠️ Index de question négatif')
+    return false
+  }
+  
+  if (savedState.currentQuestionIndex > totalQuestions) {
+    console.warn('⚠️ Index de question dépasse le nombre total de questions')
+    return false
+  }
+  
+  // Accepter un écart raisonnable (l'utilisateur peut être sur la question suivante)
+  const indexDiff = Math.abs(savedState.currentQuestionIndex - expectedIndex)
+  if (indexDiff > 1 && savedState.currentQuestionIndex < totalQuestions - 1) {
+    console.warn('⚠️ Index de question incohérent - écart trop important')
+    return false
   }
   
   console.log('✅ État sauvegardé valide')
@@ -1906,6 +1713,49 @@ function clearQuizSave(quizId) {
     console.log('🧹 Sauvegarde nettoyée')
   } catch (error) {
     console.error('❌ Erreur lors du nettoyage:', error)
+  }
+}
+
+// Nettoyer automatiquement les sauvegardes corrompues
+function cleanupCorruptedSaves() {
+  try {
+    console.log('🧹 Nettoyage des sauvegardes corrompues...')
+    
+    // Parcourir toutes les clés de localStorage
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const key = localStorage.key(i)
+      if (key && key.startsWith('optitab_quiz_save_')) {
+        try {
+          const savedStateJson = localStorage.getItem(key)
+          if (!savedStateJson) continue
+          
+          const savedState = JSON.parse(savedStateJson)
+          
+          // Vérifier si l'état est basique valide (sans vérifier les questions spécifiques)
+          if (!savedState.userId || !savedState.quizId || !savedState.userAnswers || !Array.isArray(savedState.userAnswers)) {
+            console.log('🗑️ Suppression sauvegarde corrompue:', key)
+            localStorage.removeItem(key)
+            continue
+          }
+          
+          // Vérifier l'âge de la sauvegarde (plus de 24h = corrompue)
+          const maxAge = 24 * 60 * 60 * 1000 // 24 heures
+          if (!savedState.timestamp || (Date.now() - savedState.timestamp > maxAge)) {
+            console.log('🗑️ Suppression sauvegarde expirée:', key)
+            localStorage.removeItem(key)
+          }
+          
+        } catch (error) {
+          // Si on ne peut pas parser la sauvegarde, la supprimer
+          console.log('🗑️ Suppression sauvegarde non-parseable:', key)
+          localStorage.removeItem(key)
+        }
+      }
+    }
+    
+    console.log('✅ Nettoyage terminé')
+  } catch (error) {
+    console.error('❌ Erreur lors du nettoyage automatique:', error)
   }
 }
 
@@ -1998,15 +1848,13 @@ function getSavedProgressInfo(quizId) {
     
     const savedState = JSON.parse(savedStateJson)
     
-    // Calculer la progression en tenant compte de la question perdue
+    // Calculer la progression
     const totalQuestions = quiz.value.find(q => q.id === quizId)?.questions?.length || 0
     const nextQuestionIndex = Math.min(savedState.currentQuestionIndex + 1, totalQuestions)
     
     // Vérifier si la question actuelle a été répondue
     const hasAnsweredCurrentQuestion = savedState.userAnswers.some(answer => answer.questionIndex === savedState.currentQuestionIndex)
-    const questionLost = !hasAnsweredCurrentQuestion
-    
-    // Si la première question a été perdue (currentQuestionIndex = 0, pas de réponse)
+    // Si la première question n'a pas été répondue (currentQuestionIndex = 0, pas de réponse)
     const isFirstQuestionLost = savedState.currentQuestionIndex === 0 && !hasAnsweredCurrentQuestion
     
     // Si le quiz vient d'être démarré (currentQuestionIndex = 0, pas de réponse, pas de temps écoulé)
@@ -2023,9 +1871,7 @@ function getSavedProgressInfo(quizId) {
       answersGiven: savedState.userAnswers.length,
       lastSaved: new Date(savedState.timestamp),
       progress: nextQuestionIndex,
-      lostQuestion: savedState.currentQuestionIndex + 1, // Question perdue
-      isFirstQuestionLost: isFirstQuestionLost, // Indicateur spécial pour la première question perdue
-      questionLost: questionLost, // Si la question a été perdue
+      isFirstQuestionLost: isFirstQuestionLost, // Indicateur spécial pour la première question non répondue
       hasAnsweredCurrentQuestion: hasAnsweredCurrentQuestion, // Si l'utilisateur a répondu à la question actuelle
       isJustStarted: isJustStarted, // Si le quiz vient d'être démarré
       isQuizCompleted: isQuizCompleted // Si le quiz est terminé (dernière question)
@@ -2044,50 +1890,6 @@ function getSavedProgressInfo(quizId) {
   }
 }
 
-// Fonction pour mettre à jour les cooldowns en temps réel
-function updateCooldownsRealTime() {
-  const now = Date.now()
-  let hasChanges = false
-  
-  // Parcourir tous les cooldowns existants
-  quizCooldowns.value.forEach((cooldownInfo, quizId) => {
-    if (!cooldownInfo.can_attempt && cooldownInfo.next_attempt_time) {
-      const nextAttemptTime = new Date(cooldownInfo.next_attempt_time).getTime()
-      const timeRemaining = Math.max(0, nextAttemptTime - now)
-      
-      if (timeRemaining <= 0) {
-        // Le cooldown est terminé, débloquer le quiz
-        quizCooldowns.value.set(quizId, {
-          can_attempt: true,
-          message: 'Nouvelle tentative autorisée'
-        })
-        hasChanges = true
-        console.log(`🎯 Quiz ${quizId} débloqué automatiquement`)
-      } else {
-        // Mettre à jour le temps restant seulement si la minute a changé
-        const hours = Math.floor(timeRemaining / (1000 * 60 * 60))
-        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60))
-        const timeRemainingFormatted = `${hours}h${minutes.toString().padStart(2, '0')}min`
-        
-        // Vérifier si le temps formaté a changé pour éviter les mises à jour inutiles
-        if (cooldownInfo.time_remaining_formatted !== timeRemainingFormatted) {
-          quizCooldowns.value.set(quizId, {
-            ...cooldownInfo,
-            time_remaining_seconds: Math.floor(timeRemaining / 1000),
-            time_remaining_formatted: timeRemainingFormatted
-          })
-          hasChanges = true
-        }
-      }
-    }
-  })
-  
-  // Si des changements ont eu lieu, forcer la réactivité
-  if (hasChanges) {
-    // Déclencher une nouvelle référence pour Vue
-    quizCooldowns.value = new Map(quizCooldowns.value)
-  }
-}
 
 // Fonction pour revenir aux chapitres
 function goBackToNotions() {
@@ -2121,7 +1923,6 @@ function handleBeforeUnload(event) {
 // Nettoyage des timers et event listeners
 onUnmounted(() => {
   stopQuestionTimer()
-  stopCooldownAutoUpdate()
   
   // Retirer les event listeners
   window.removeEventListener('beforeunload', handleBeforeUnload)
@@ -2131,7 +1932,6 @@ onUnmounted(() => {
     saveQuizState()
   }
   
-  console.log('🎯 Système de cooldown automatique arrêté')
   console.log('💾 Sauvegarde automatique désactivée')
 })
 </script>
@@ -2148,46 +1948,33 @@ onUnmounted(() => {
 .quiz-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   max-width: 100%;
   margin: 0 auto;
   align-items: stretch;
 }
 
 .quiz-card {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 20px;
-  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 16px;
+  padding: 1.75rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .quiz-card:hover {
-  border-color: #3b82f6;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-color: #3b82f6 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .quiz-card.completed {
-  border-color: #10b981;
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #f1f5f9;
+  background: #ffffff;
 }
 
-.quiz-card.cooldown {
-  border-color: #f59e0b;
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-  cursor: not-allowed;
-  opacity: 0.8;
-}
-
-.quiz-card.cooldown:hover {
-  transform: none;
-  box-shadow: none;
-  border-color: #f59e0b;
-}
 
 .quiz-card.saved-progress {
   background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
@@ -2203,51 +1990,62 @@ onUnmounted(() => {
 .quiz-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .quiz-card-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e293b;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
   margin: 0;
+  line-height: 1.4;
+  flex: 1;
 }
 
 .quiz-difficulty {
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
 }
 
 .quiz-difficulty.easy {
-  background: #dcfce7;
+  background: #f0fdf4;
   color: #166534;
+  border: 1px solid #bbf7d0;
 }
 
 .quiz-difficulty.medium {
-  background: #fef3c7;
+  background: #fffbeb;
   color: #92400e;
+  border: 1px solid #fed7aa;
 }
 
 .quiz-difficulty.hard {
-  background: #fecaca;
+  background: #fef2f2;
   color: #991b1b;
+  border: 1px solid #fecaca;
 }
 
 .quiz-card-description {
   color: #64748b;
-  margin: 0 0 1rem 0;
-  line-height: 1.5;
+  margin: 0 0 1.25rem 0;
+  line-height: 1.6;
+  font-size: 0.875rem;
 }
 
 .quiz-card-meta {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 0.875rem;
   color: #64748b;
+  gap: 1rem;
 }
 
 .quiz-interface {
@@ -2285,7 +2083,8 @@ onUnmounted(() => {
 }
 
 .question-container {
-  max-width: 800px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -2295,12 +2094,16 @@ onUnmounted(() => {
   color: #1e293b;
   margin: 0 0 2rem 0;
   line-height: 1.4;
+  width: 100%;
+  max-width: 100%;
 }
 
 .options-container {
   display: grid;
   gap: 1rem;
   margin-bottom: 2rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .option-card {
@@ -2312,6 +2115,8 @@ onUnmounted(() => {
   border-radius: 0.75rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 100%;
+  max-width: 100%;
 }
 
 .option-card:hover {
@@ -2326,6 +2131,11 @@ onUnmounted(() => {
 .option-card.correct {
   border-color: #10b981;
   background: #d1fae5;
+}
+
+.option-card.correct .option-text {
+  color: #065f46;
+  font-weight: 600;
 }
 
 .option-card.incorrect {
@@ -2530,14 +2340,6 @@ onUnmounted(() => {
   border: 1px solid #0ea5e9;
 }
 
-.stat-card.lost-questions {
-  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-  border: 1px solid #ef4444;
-}
-
-.stat-card.lost-questions .stat-number {
-  color: #dc2626;
-}
 
 .stat-number {
   display: block;
@@ -2551,78 +2353,7 @@ onUnmounted(() => {
   color: #64748b;
 }
 
-.cooldown-info {
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-  border: 2px solid #f59e0b;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin: 2rem 0;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
 
-.cooldown-info-icon {
-  font-size: 2rem;
-  animation: cooldown-pulse 2s ease-in-out infinite;
-}
-
-.cooldown-info-text {
-  flex: 1;
-}
-
-.cooldown-info-text strong {
-  color: #92400e;
-  font-size: 1.1rem;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.cooldown-info-text p {
-  color: #78350f;
-  font-size: 0.9rem;
-  margin: 0;
-  line-height: 1.4;
-}
-
-.lost-questions-info {
-  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-  border: 2px solid #ef4444;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin: 2rem 0;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.lost-questions-info-icon {
-  font-size: 2rem;
-  animation: lost-questions-pulse 2s ease-in-out infinite;
-}
-
-.lost-questions-info-text {
-  flex: 1;
-}
-
-.lost-questions-info-text strong {
-  color: #dc2626;
-  font-size: 1.1rem;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.lost-questions-info-text p {
-  color: #991b1b;
-  font-size: 0.9rem;
-  margin: 0;
-  line-height: 1.4;
-}
-
-@keyframes lost-questions-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
 
 .results-actions {
   display: flex;
@@ -2743,15 +2474,6 @@ onUnmounted(() => {
   }
 }
 
-/* Quiz card styles */
-.quiz-card.completed {
-  background: #f0fdf4;
-  border-color: #22c55e;
-}
-
-.quiz-card.completed:hover {
-  border-color: #16a34a;
-}
 
 /* Navigation onglets */
 .clean-navigation {
@@ -2865,19 +2587,7 @@ onUnmounted(() => {
   width: 100%;
 }
 
-/* Temps restant à gauche */
-.cooldown-time-left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  background: #fffbeb;
-  border: 2px solid #f59e0b;
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-
-/* Spacer pour les quiz sans cooldown */
+/* Spacer pour les quiz */
 .quiz-left-spacer {
   flex-shrink: 0;
 }
@@ -2895,60 +2605,93 @@ onUnmounted(() => {
 .quiz-attempts {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
   background: #f8fafc;
-  border-radius: 6px;
-  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
   flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.quiz-attempts:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
 }
 
 .attempts-label {
   font-size: 0.75rem;
   color: #64748b;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .attempts-number {
-  font-size: 1rem;
-  font-weight: 800;
-  color: #475569;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #334155;
+  background: #e2e8f0;
+  padding: 0.125rem 0.375rem;
+  border-radius: 6px;
+  min-width: 1.25rem;
+  text-align: center;
 }
 
 /* Quiz score (à droite) */
 .quiz-score {
   padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  border: 2px solid;
+  border-radius: 10px;
+  border: 1px solid;
   transition: all 0.2s ease;
-  min-width: 80px;
+  min-width: 70px;
   text-align: center;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.quiz-score::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.quiz-score:hover::before {
+  left: 100%;
 }
 
 /* Couleurs selon la note */
 .quiz-score.score-above-average {
-  background: #f0fdf4;
-  border-color: #22c55e;
-  box-shadow: 0 2px 4px rgba(34, 197, 94, 0.1);
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #bbf7d0;
+  color: #166534;
+  box-shadow: 0 2px 4px rgba(34, 197, 94, 0.08);
 }
 
 .quiz-score.score-average {
-  background: #fffbeb;
-  border-color: #f59e0b;
-  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);
+  background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
+  border-color: #fed7aa;
+  color: #92400e;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.08);
 }
 
 .quiz-score.score-below-average {
-  background: #fef2f2;
-  border-color: #ef4444;
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+  border-color: #fecaca;
+  color: #991b1b;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.08);
 }
 
 .score-value {
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: 0.875rem;
+  font-weight: 700;
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
 /* Couleurs du texte selon la note */
@@ -2964,23 +2707,7 @@ onUnmounted(() => {
   color: #dc2626;
 }
 
-/* Quiz cooldown (ancien style supprimé - remplacé par cooldown-time-left) */
 
-.cooldown-icon {
-  font-size: 1rem;
-  animation: cooldown-pulse 2s ease-in-out infinite;
-}
-
-.cooldown-time {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #d97706;
-}
-
-@keyframes cooldown-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
 
 /* Quiz à continuer */
 .quiz-progress-info {
@@ -3284,87 +3011,6 @@ onUnmounted(() => {
   color: #991b1b;
 }
 
-/* Indicateur de session restaurée */
-.session-restored-banner {
-  background: linear-gradient(135deg, #e0f2fe 0%, #b3e5fc 100%);
-  border: 2px solid #0288d1;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-  animation: slideDown 0.5s ease-out;
-}
-
-.session-restored-content {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem;
-}
-
-.session-restored-icon {
-  font-size: 1.5rem;
-  animation: rotate 2s linear infinite;
-  flex-shrink: 0;
-}
-
-.session-restored-text {
-  flex: 1;
-}
-
-.session-restored-text strong {
-  color: #01579b;
-  font-size: 1.1rem;
-  display: block;
-  margin-bottom: 0.25rem;
-}
-
-.session-restored-text p {
-  color: #0277bd;
-  font-size: 0.9rem;
-  margin: 0;
-  line-height: 1.4;
-}
-
-.warning-text {
-  color: #dc2626 !important;
-  font-weight: 600;
-}
-
-.success-text {
-  color: #10b981 !important;
-  font-weight: 600;
-}
-
-.info-text {
-  color: #3b82f6 !important;
-  font-weight: 600;
-}
-
-.session-restored-close {
-  background: none;
-  border: none;
-  color: #0288d1;
-  font-size: 1.25rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 4px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.session-restored-close:hover {
-  background: rgba(2, 136, 209, 0.1);
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 @keyframes rotate {
   from {
@@ -3531,9 +3177,6 @@ onUnmounted(() => {
     min-width: 100px;
   }
 
-  .cooldown-time-left {
-    justify-content: center;
-  }
 }
 
 @media (max-width: 360px) {

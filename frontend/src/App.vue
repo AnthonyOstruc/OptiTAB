@@ -190,7 +190,7 @@ const checkAndShowPaysNiveauModal = () => {
 watch(() => userStore.isAuthenticated, async (isAuthenticated) => {
   if (isAuthenticated) {
     checkAndShowPaysNiveauModal()
-    try { await notificationStore.loadFromServer() } catch (_) {}
+    // Notifications chargées dans onMounted, pas ici pour éviter les doublons
   }
 }, { immediate: true })
 

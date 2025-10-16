@@ -79,7 +79,7 @@ export const useNotificationStore = defineStore('notifications', () => {
     if (isFirstAttempt && xpAmount > 0) {
       message = `+${xpAmount} XP pour "${quizTitle}"`
     } else {
-      message = `Quiz "${quizTitle}" terminé (cooldown 1h30)`
+      message = `Quiz "${quizTitle}" terminé (aucun XP)`
     }
 
     return addNotification({

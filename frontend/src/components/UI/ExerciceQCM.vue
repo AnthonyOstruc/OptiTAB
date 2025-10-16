@@ -41,38 +41,20 @@
       <div class="problem-content" v-html="renderInstructionWithImages(instruction)" @click="handleImageClick"></div>
     </div>
 
-    <!-- Learning Path -->
-    <div class="learning-path">
-      <div class="path-step active">
-        <div class="step-indicator">1</div>
-        <span class="step-text">Lecture de l'énoncé</span>
-      </div>
-      <div class="path-step" :class="{ 'active': showSolution }">
-        <div class="step-indicator">2</div>
-        <span class="step-text">Analyse de la solution</span>
-      </div>
-      <div class="path-step" :class="{ 'active': current }">
-        <div class="step-indicator">3</div>
-        <span class="step-text">Auto-évaluation</span>
-      </div>
-    </div>
 
     <!-- Solution Toggle -->
     <div class="solution-toggle">
       <button class="toggle-btn" @click="toggleSolution" :class="{ 'expanded': showSolution }">
         <div class="toggle-content">
-          <span class="toggle-icon">{{ showSolution ? '−' : '+' }}</span>
-          <div class="toggle-text-group">
-            <span class="toggle-text">{{ showSolution ? 'Masquer la solution' : 'Voir la solution' }}</span>
-            <span class="toggle-subtext">{{ showSolution ? 'Cliquez pour replier' : 'Cliquez pour découvrir la méthode' }}</span>
-          </div>
-        </div>
-        <div class="toggle-arrow" :class="{ 'rotated': showSolution }">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg class="toggle-icon" :class="{ 'rotated': showSolution }" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="m6 9 6 6 6-6"/>
           </svg>
+          <div class="toggle-text-group">
+            <span class="toggle-text">Voir la solution</span>
+            <span class="toggle-subtext">Découvrez la méthode de résolution</span>
+          </div>
         </div>
-    </button>
+      </button>
     </div>
 
     <!-- Solution Content -->
@@ -574,7 +556,7 @@ onMounted(() => {
 }
 
 .exercice-card:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .exercice-card.completed {
@@ -670,56 +652,6 @@ onMounted(() => {
   box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
 }
 
-/* Learning Path */
-.learning-path {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 28px;
-  background: #fafbfc;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.path-step {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  opacity: 0.5;
-  transition: all 0.3s ease;
-}
-
-.path-step.active {
-  opacity: 1;
-}
-
-.step-indicator {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #e2e8f0;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.path-step.active .step-indicator {
-  background: #3b82f6;
-  color: #ffffff;
-}
-
-.step-text {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #64748b;
-  transition: color 0.3s ease;
-}
-
-.path-step.active .step-text {
-  color: #1e293b;
-}
 
 /* Problem Section */
 .problem-section {
@@ -777,37 +709,46 @@ onMounted(() => {
 
 /* Solution Toggle */
 .solution-toggle {
-  padding: 20px 28px;
-  background: #f8fafc;
+  padding: 0;
+  background: transparent;
   border-bottom: 1px solid #e2e8f0;
 }
 
 .toggle-btn {
   width: 100%;
-  background: #ffffff;
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 16px 20px;
+  background: #eef5ff; /* bleu très clair */
+  border: none;
+  border-radius: 0;
+  padding: 18px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 600;
-  color: #374151;
+  transition: background 0.2s ease, color 0.2s ease;
+  font-weight: 700;
+  color: #1e3a8a; /* bleu texte */
 }
 
 .toggle-btn:hover {
-  border-color: #3b82f6;
-  background: #eff6ff;
-  color: #1d4ed8;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  background: #d1e7ff;
 }
 
 .toggle-btn.expanded {
   background: #3b82f6;
-  border-color: #3b82f6;
   color: #ffffff;
+}
+
+.toggle-btn.expanded .toggle-icon {
+  color: #ffffff;
+}
+
+.toggle-btn.expanded .toggle-text {
+  color: #ffffff;
+}
+
+.toggle-btn.expanded .toggle-subtext {
+  color: #ffffff;
+  opacity: 0.9;
 }
 
 .toggle-content {
@@ -817,10 +758,12 @@ onMounted(() => {
 }
 
 .toggle-icon {
-  font-size: 1.5rem;
-  font-weight: bold;
-  width: 24px;
-  text-align: center;
+  color: #1e3a8a;
+  transition: transform 0.2s ease;
+}
+
+.toggle-icon.rotated {
+  transform: rotate(180deg);
 }
 
 .toggle-text-group {
@@ -830,22 +773,16 @@ onMounted(() => {
 }
 
 .toggle-text {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e3a8a;
 }
 
 .toggle-subtext {
-  font-size: 0.875rem;
-  font-weight: 400;
-  opacity: 0.8;
-}
-
-.toggle-arrow {
-  transition: transform 0.3s ease;
-}
-
-.toggle-arrow.rotated {
-  transform: rotate(180deg);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1e3a8a;
+  opacity: 0.9;
 }
 
 /* Solution Content */
@@ -863,13 +800,13 @@ onMounted(() => {
 }
 
 .steps-section {
-  background: #fef7ff;
-  border-bottom: 1px solid #f3e8ff;
+  background: #f0f9ff;
+  border-bottom: 1px solid #bae6fd;
 }
 
 .steps-section .section-icon-wrapper {
-  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-  border-color: #e9d5ff;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border-color: #93c5fd;
 }
 
 .answer-section {
@@ -1253,16 +1190,6 @@ onMounted(() => {
     font-size: 1.25rem;
   }
   
-  .learning-path {
-    padding: 16px 24px;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .path-step {
-    width: 100%;
-    justify-content: center;
-  }
   
   .problem-section,
   .solution-section {
@@ -1270,7 +1197,7 @@ onMounted(() => {
   }
   
   .solution-toggle {
-    padding: 16px 24px;
+    padding: 0;
   }
   
   .assessment-section {
@@ -1327,9 +1254,6 @@ onMounted(() => {
     font-size: 1.125rem;
   }
   
-  .learning-path {
-    padding: 12px 20px;
-  }
   
   .problem-section,
   .solution-section {
@@ -1337,7 +1261,7 @@ onMounted(() => {
   }
   
   .solution-toggle {
-    padding: 12px 20px;
+    padding: 0;
   }
   
   .assessment-section {

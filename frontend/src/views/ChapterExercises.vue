@@ -30,9 +30,38 @@
         <SkeletonList :count="4" />
       </div>
       <div v-else-if="error" class="exercices-error">{{ error }}</div>
-      <div v-else>
-        <div class="exercices-controls">
-          <div class="filter-row">
+        <div v-else>
+          <div class="exercices-controls">
+            <div class="controls-row">
+              <!-- Barre de recherche -->
+              <div class="search-section">
+                <div class="search-container">
+                  <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                  </svg>
+                  <input
+                    v-model="searchQuery"
+                    type="text"
+                    placeholder="Rechercher un exercice..."
+                    class="search-input"
+                    @input="handleSearch"
+                  />
+                  <button
+                    v-if="searchQuery"
+                    @click="clearSearch"
+                    class="clear-search-btn"
+                    aria-label="Effacer la recherche"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"/>
+                      <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="filter-row">
             <div class="filter-item">
               <span class="filter-label">Exercices par page</span>
               <div class="filter-buttons">
@@ -64,6 +93,7 @@
                   </span>
                 </button>
               </div>
+            </div>
             </div>
 
           </div>
@@ -119,6 +149,9 @@ const currentPage = ref(1)
 const difficultyOptions = ['all','easy','medium','hard']
 const selectedDifficulty = ref('all')
 
+// Recherche
+const searchQuery = ref('')
+
 
 // Status filtering tabs avec design amélioré
 const tabs = computed(() => [
@@ -163,6 +196,7 @@ function saveViewState() {
       currentPage: currentPage.value,
       selectedDifficulty: selectedDifficulty.value,
       activeTab: activeTab.value,
+      searchQuery: searchQuery.value,
       scrollY: typeof window !== 'undefined' ? (window.scrollY || window.pageYOffset || 0) : 0,
       t: Date.now()
     }
@@ -180,6 +214,7 @@ function restoreViewState() {
       if (typeof s.currentPage === 'number') currentPage.value = Math.max(1, s.currentPage)
       if (typeof s.selectedDifficulty === 'string') selectedDifficulty.value = s.selectedDifficulty
       if (typeof s.activeTab === 'string') activeTab.value = s.activeTab
+      if (typeof s.searchQuery === 'string') searchQuery.value = s.searchQuery
       return s
     }
   } catch (_) {}
@@ -279,7 +314,23 @@ const totalPages = computed(() => Math.ceil(exercices.value.length / perPage.val
 
 const filteredExercices = computed(() => {
   let list = exercices.value
-  if (selectedDifficulty.value !== 'all') list = list.filter(e=> e.difficulty === selectedDifficulty.value)
+  
+  // Filtre par recherche
+  if (searchQuery.value.trim()) {
+    const query = searchQuery.value.toLowerCase().trim()
+    list = list.filter(e => {
+      const title = (e.titre || e.nom || '').toLowerCase()
+      const content = (e.instruction || e.contenu || e.question || '').toLowerCase()
+      return title.includes(query) || content.includes(query)
+    })
+  }
+  
+  // Filtre par difficulté
+  if (selectedDifficulty.value !== 'all') {
+    list = list.filter(e => e.difficulty === selectedDifficulty.value)
+  }
+  
+  // Filtre par statut
   if (activeTab.value === 'done') {
     // Tous les exercices déjà traités (peu importe le résultat)
     list = list.filter(e => statusMap.value[e.id])
@@ -407,9 +458,21 @@ function goBackToNotions() {
   }
 }
 
+// Fonctions de recherche
+function handleSearch() {
+  currentPage.value = 1
+  saveViewState()
+}
+
+function clearSearch() {
+  searchQuery.value = ''
+  currentPage.value = 1
+  saveViewState()
+}
+
 
 // Sauvegarder à chaque changement significatif
-watch([perPage, currentPage, selectedDifficulty, activeTab], () => {
+watch([perPage, currentPage, selectedDifficulty, activeTab, searchQuery], () => {
   saveViewState()
 })
 
@@ -768,7 +831,7 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 680px) {
   .exercices-section {
     padding: 0 2vw 20px 2vw;
   }
@@ -793,7 +856,7 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   display: flex;
   flex-direction: column;
   gap: 32px;
-  max-width: 700px;
+  max-width: 100%;
   margin: 0 auto;
   align-items: stretch;
   transition: max-width 0.3s ease;
@@ -816,7 +879,7 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 680px) {
   .exercices-loader, .exercices-error {
     font-size: 0.9rem;
     margin: 25px 0;
@@ -829,17 +892,85 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   background: #f8fafc;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
-  max-width: 600px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Barre de recherche */
+.search-section {
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.search-container:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-icon {
+  color: #6b7280;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.875rem;
+  color: #374151;
+  padding: 0;
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+.clear-search-btn {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin-left: 0.5rem;
+}
+
+.clear-search-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
 }
 
 .filter-row {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 1.5rem;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .filter-item {
@@ -942,15 +1073,40 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 }
 
 /* Responsive design for filters */
-@media (max-width: 768px) {
+@media (max-width: 680px) {
   .exercices-controls {
     padding: 0.5rem;
     margin: 0.5rem;
   }
 
+  .controls-row {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .search-section {
+    min-width: auto;
+    flex: none;
+  }
+
+  .search-container {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .search-input {
+    font-size: 0.8rem;
+  }
+
+  .search-icon {
+    width: 14px;
+    height: 14px;
+  }
+
   .filter-row {
     flex-direction: column;
     gap: 0.75rem;
+    align-items: center;
   }
 
   .filter-item {
@@ -976,63 +1132,76 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 
 /* Navigation ultra-propre */
 .clean-navigation {
-  margin: 1.5rem 0;
-  padding: 0 1rem;
+  margin: 1.5rem 0 1rem 0;
 }
 
 .nav-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-  max-width: 500px;
+  gap: 0.4rem;
+  width: 100%;
   margin: 0 auto;
 }
 
 .nav-item {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 0.75rem 0.5rem;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 0.25rem;
-  text-align: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  text-align: left;
+  min-height: 50px;
 }
 
 .nav-item:hover {
   border-color: #3b82f6;
   background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-item.active {
   background: #3b82f6;
   border-color: #3b82f6;
   color: #ffffff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
 .nav-icon {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .nav-label {
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
+  line-height: 1.2;
+  flex: 1;
+  text-align: left;
 }
 
 .nav-count {
-  font-size: 0.625rem;
-  font-weight: 600;
+  font-size: 0.6rem;
+  font-weight: 700;
   background: rgba(0, 0, 0, 0.1);
-  padding: 0.125rem 0.25rem;
-  border-radius: 4px;
-  min-width: 1.25rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 10px;
+  min-width: 1.2rem;
+  height: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .nav-item.active .nav-count {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* Style pour les boutons de téléchargement dans les filtres */
@@ -1065,64 +1234,68 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 680px) {
   .clean-navigation {
-    margin: 2.5rem 0 1rem 0; /* Plus d'espace en haut pour éviter le chevauchement */
+    margin: 1.5rem 0 1rem 0;
     padding: 0 0.5rem;
   }
 
   .nav-grid {
-    gap: 0.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.3rem;
+    width: 100%;
   }
 
   .nav-item {
-    padding: 0.5rem 0.25rem;
+    padding: 0.4rem 0.4rem;
+    min-height: 45px;
   }
 
   .nav-icon {
-    font-size: 1.125rem;
+    font-size: 0.9rem;
   }
 
   .nav-label {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
 
   .nav-count {
-    font-size: 0.6rem;
-    padding: 0.1rem 0.2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .clean-navigation {
-    margin: 3rem 0 1rem 0; /* Encore plus d'espace pour les petits écrans */
-  }
-
-  .nav-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.375rem;
-  }
-
-  .nav-item {
-    padding: 0.625rem 0.25rem;
+    font-size: 0.5rem;
+    padding: 0.1rem 0.25rem;
+    min-width: 1rem;
+    height: 1rem;
   }
 }
 
 @media (max-width: 360px) {
   .clean-navigation {
-    margin: 3.5rem 0 1rem 0; /* Maximum d'espace pour les très petits écrans */
+    margin: 1.5rem 0 1rem 0;
   }
 
   .nav-grid {
     grid-template-columns: 1fr;
-    gap: 0.5rem;
+    gap: 0.3rem;
+    width: 100%;
   }
 
   .nav-item {
-    flex-direction: row;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.6rem;
+    min-height: 40px;
+  }
+
+  .nav-icon {
+    font-size: 0.85rem;
+  }
+
+  .nav-label {
+    font-size: 0.6rem;
+  }
+
+  .nav-count {
+    font-size: 0.5rem;
+    padding: 0.1rem 0.2rem;
+    min-width: 0.9rem;
+    height: 0.9rem;
   }
 }
 

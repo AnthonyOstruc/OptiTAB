@@ -53,6 +53,13 @@ export const menuItems = [
     description: 'Accédez à nos cours en ligne'
   },
   {
+    key: 'fiches',
+    text: 'Fiches Synthèse',
+    icon: DocumentTextIcon,
+    href: '/sheets',
+    description: 'Résumés et fiches de révision'
+  },
+  {
     key: 'exercices',
     text: 'Exercices Guidés',
     icon: AcademicCapIcon,
@@ -65,13 +72,6 @@ export const menuItems = [
     icon: QuestionMarkCircleIcon,
     href: '/quiz',
     description: 'Quiz à choix multiples'
-  },
-  {
-    key: 'fiches',
-    text: 'Fiches Synthèse',
-    icon: DocumentTextIcon,
-    href: '/sheets',
-    description: 'Résumés et fiches de révision'
   },
   {
     key: 'contact',

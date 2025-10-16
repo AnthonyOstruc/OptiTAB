@@ -62,16 +62,16 @@ const tabs = computed(() => {
         route: `/course-notion/${notionId}`
       },
       { 
-        key: 'exercices', 
-        label: 'Exercices', 
-        icon: AcademicCapIcon,
-        route: `/exercices-notion/${notionId}`
-      },
-      { 
         key: 'sheets', 
         label: 'Synthèse', 
         icon: DocumentTextIcon,
         route: `/sheets-notion/${notionId}`
+      },
+      { 
+        key: 'exercices', 
+        label: 'Exercices', 
+        icon: AcademicCapIcon,
+        route: `/exercices-notion/${notionId}`
       },
       { 
         key: 'quiz', 
@@ -92,16 +92,16 @@ const tabs = computed(() => {
         route: `/course-notions/${matiereId}`
       },
       { 
-        key: 'exercices', 
-        label: 'Exercices', 
-        icon: AcademicCapIcon,
-        route: `/notions/${matiereId}`
-      },
-      { 
         key: 'sheets', 
         label: 'Synthèse', 
         icon: DocumentTextIcon,
         route: `/sheets?matiereId=${matiereId}`
+      },
+      { 
+        key: 'exercices', 
+        label: 'Exercices', 
+        icon: AcademicCapIcon,
+        route: `/notions/${matiereId}`
       },
       { 
         key: 'quiz', 
@@ -122,16 +122,16 @@ const tabs = computed(() => {
         route: `/course-notion/${notionId}`
       },
       { 
-        key: 'exercices', 
-        label: 'Exercices', 
-        icon: AcademicCapIcon,
-        route: `/exercices-notion/${notionId}`
-      },
-      { 
         key: 'sheets', 
         label: 'Synthèse', 
         icon: DocumentTextIcon,
         route: `/sheets-notion/${notionId}`
+      },
+      { 
+        key: 'exercices', 
+        label: 'Exercices', 
+        icon: AcademicCapIcon,
+        route: `/exercices-notion/${notionId}`
       },
       { 
         key: 'quiz', 
@@ -152,16 +152,16 @@ const tabs = computed(() => {
         route: `/course-notion/${notionId}`
       },
       { 
-        key: 'exercices', 
-        label: 'Exercices ', 
-        icon: AcademicCapIcon,
-        route: `/exercices-notion/${notionId}`
-      },
-      { 
         key: 'sheets', 
         label: 'Synthèse', 
         icon: DocumentTextIcon,
         route: `/sheets-notion/${notionId}`
+      },
+      { 
+        key: 'exercices', 
+        label: 'Exercices ', 
+        icon: AcademicCapIcon,
+        route: `/exercices-notion/${notionId}`
       },
       { 
         key: 'quiz', 
@@ -182,16 +182,16 @@ const tabs = computed(() => {
         route: `/course-notion/${notionId}`
       },
       { 
-        key: 'exercices', 
-        label: 'Exercices', 
-        icon: AcademicCapIcon,
-        route: `/exercices-notion/${notionId}`
-      },
-      { 
         key: 'sheets', 
         label: 'Synthèse', 
         icon: DocumentTextIcon,
         route: `/sheets-notion/${notionId}`
+      },
+      { 
+        key: 'exercices', 
+        label: 'Exercices', 
+        icon: AcademicCapIcon,
+        route: `/exercices-notion/${notionId}`
       },
       { 
         key: 'quiz', 
@@ -212,16 +212,16 @@ const tabs = computed(() => {
         route: `/course-notions/${matiereId}`
       },
       { 
-        key: 'exercices', 
-        label: 'Exercices', 
-        icon: AcademicCapIcon,
-        route: `/notions/${matiereId}`
-      },
-      { 
         key: 'sheets', 
         label: 'Synthèse', 
         icon: DocumentTextIcon,
         route: `/sheets?matiereId=${matiereId}`
+      },
+      { 
+        key: 'exercices', 
+        label: 'Exercices', 
+        icon: AcademicCapIcon,
+        route: `/notions/${matiereId}`
       },
       { 
         key: 'quiz', 
@@ -242,16 +242,16 @@ const tabs = computed(() => {
         route: `/course-notions/${matiereId}`
       },
       { 
-        key: 'exercices', 
-        label: 'Exercices ', 
-        icon: AcademicCapIcon,
-        route: `/notions/${matiereId}`
-      },
-      { 
         key: 'sheets', 
         label: 'Synthèse', 
         icon: DocumentTextIcon,
         route: `/sheets?matiereId=${matiereId}`
+      },
+      { 
+        key: 'exercices', 
+        label: 'Exercices ', 
+        icon: AcademicCapIcon,
+        route: `/notions/${matiereId}`
       },
       { 
         key: 'quiz', 
@@ -271,16 +271,16 @@ const tabs = computed(() => {
       route: '/online-courses'
     },
     { 
-      key: 'exercices', 
-      label: 'Exercices', 
-      icon: AcademicCapIcon,
-      route: '/exercises'
-    },
-    { 
       key: 'sheets', 
       label: 'Synthèse', 
       icon: DocumentTextIcon,
       route: '/sheets'
+    },
+    { 
+      key: 'exercices', 
+      label: 'Exercices', 
+      icon: AcademicCapIcon,
+      route: '/exercises'
     },
     { 
       key: 'quiz', 
@@ -407,12 +407,12 @@ function handleTabClick(tabKey) {
   display: flex;
   gap: 0.25rem;
   align-items: center;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
   padding: 0.375rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f1f5f9;
-  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  backdrop-filter: blur(8px);
   max-width: fit-content;
   margin: 0 auto;
 }
@@ -420,65 +420,47 @@ function handleTabClick(tabKey) {
 .chapter-nav-btn {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
-  padding: 0.875rem 1.25rem;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
   border: none;
   background: transparent;
-  border-radius: 12px;
+  border-radius: 8px;
   color: #64748b;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   white-space: nowrap;
   position: relative;
-  overflow: hidden;
+}
+
+.chapter-nav-btn:hover {
+  background: rgba(248, 250, 252, 0.8);
+  color: #334155;
 }
 
 /* Info-bulle pédagogique au survol */
 .chapter-nav-btn:hover::after {
   content: attr(aria-label);
   position: absolute;
-  bottom: -36px;
+  bottom: -32px;
   left: 50%;
   transform: translateX(-50%);
-  background: #111827;
+  background: #1f2937;
   color: #fff;
-  font-size: 12px;
-  padding: 6px 8px;
-  border-radius: 6px;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
   white-space: nowrap;
-  box-shadow: 0 8px 20px rgba(0,0,0,.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
   pointer-events: none;
-}
-
-.chapter-nav-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 12px;
-}
-
-.chapter-nav-btn:hover::before {
-  opacity: 1;
-}
-
-.chapter-nav-btn:hover {
-  color: #1e293b;
-  transform: translateY(-1px);
+  z-index: 10;
 }
 
 .chapter-nav-btn.active {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: #3b82f6;
   color: white;
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
-  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
 .chapter-nav-btn:focus-visible {
@@ -486,31 +468,15 @@ function handleTabClick(tabKey) {
   outline-offset: 2px;
 }
 
-.chapter-nav-btn.active::before {
-  display: none;
-}
-
 .chapter-nav-icon {
-  width: 1.375rem;
-  height: 1.375rem;
+  width: 1.25rem;
+  height: 1.25rem;
   flex-shrink: 0;
-  transition: transform 0.3s ease;
-  position: relative;
-  z-index: 1;
-}
-
-.chapter-nav-btn:hover .chapter-nav-icon {
-  transform: scale(1.1);
-}
-
-.chapter-nav-btn.active .chapter-nav-icon {
-  transform: scale(1.05);
+  transition: all 0.2s ease;
 }
 
 .chapter-nav-label {
-  font-weight: 600;
-  position: relative;
-  z-index: 1;
+  font-weight: 500;
   letter-spacing: 0.025em;
 }
 
@@ -519,18 +485,16 @@ function handleTabClick(tabKey) {
   .chapter-navigation {
     gap: 0.125rem;
     padding: 0.25rem;
-    border-radius: 14px;
   }
   
   .chapter-nav-btn {
     padding: 0.625rem 0.875rem;
     gap: 0.375rem;
-    border-radius: 10px;
+    font-size: 0.8rem;
   }
   
   .chapter-nav-label {
     font-size: 0.8rem;
-    line-height: 1.2;
   }
   
   .chapter-nav-icon {
@@ -540,11 +504,6 @@ function handleTabClick(tabKey) {
 }
 
 @media (max-width: 480px) {
-  .chapter-navigation {
-    padding: 0.25rem;
-    gap: 0.125rem;
-  }
-  
   .chapter-nav-btn {
     padding: 0.5rem 0.75rem;
     gap: 0.25rem;
@@ -561,7 +520,6 @@ function handleTabClick(tabKey) {
 }
 
 @media (max-width: 450px) {
-
   .chapter-nav-label {
     display: none;
   }
@@ -570,6 +528,11 @@ function handleTabClick(tabKey) {
     padding: 0.5rem;
     min-width: 2.5rem;
     justify-content: center;
+  }
+  
+  .chapter-nav-icon {
+    width: 1.125rem;
+    height: 1.125rem;
   }
 }
 </style> 

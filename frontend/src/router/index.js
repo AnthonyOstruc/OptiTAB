@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { defineAsyncComponent } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { apiUtils } from '@/api/client'
 import { matiereMiddleware, exercicesMiddleware, quizMiddleware } from './middlewares/matiereMiddleware'
-import RouteLoader from '@/components/common/RouteLoader.vue'
 import { requireNiveau, routeRequiresNiveau } from './middlewares/niveauMiddleware'
 
 const routes = [
@@ -19,11 +17,7 @@ const routes = [
   { 
     path: '/quiz/:matiereId', 
     name: 'QuizNotions', 
-    component: defineAsyncComponent({ 
-      loader: () => import('@/views/QuizNotions.vue'), 
-      loadingComponent: RouteLoader, 
-      delay: 0 
-    }), 
+    component: () => import('@/views/QuizNotions.vue'), 
     meta: { requiresAuth: true }, 
     beforeEnter: quizMiddleware 
   },
@@ -32,11 +26,7 @@ const routes = [
   { 
     path: '/course-notions/:matiereId', 
     name: 'CourseNotions', 
-    component: defineAsyncComponent({ 
-      loader: () => import('@/views/CourseNotions.vue'), 
-      loadingComponent: RouteLoader, 
-      delay: 0 
-    }), 
+    component: () => import('@/views/CourseNotions.vue'), 
     meta: { requiresAuth: true } 
   },
   // Cours par notion (chapitres supprimés)
@@ -46,11 +36,7 @@ const routes = [
   { 
     path: '/sheets', 
     name: 'Sheets', 
-    component: defineAsyncComponent({ 
-      loader: () => import('@/views/SynthesisNotions.vue'), 
-      loadingComponent: RouteLoader, 
-      delay: 0 
-    }), 
+    component: () => import('@/views/SynthesisNotions.vue'), 
     meta: { requiresAuth: true }, 
     beforeEnter: matiereMiddleware 
   },
@@ -69,11 +55,7 @@ const routes = [
   { 
     path: '/exercicies/:matiereId', 
     name: 'Themes', 
-    component: defineAsyncComponent({ 
-      loader: () => import('@/views/Themes.vue'), 
-      loadingComponent: RouteLoader, 
-      delay: 0 
-    }), 
+    component: () => import('@/views/Themes.vue'), 
     meta: { requiresAuth: true }, 
     beforeEnter: exercicesMiddleware 
   },

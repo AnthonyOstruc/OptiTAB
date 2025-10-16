@@ -1,9 +1,9 @@
-<template>
+﻿<template>
   <DashboardLayout>
     <section class="chapter-quiz-section">
       <!-- Bouton de retour -->
       <BackButton 
-        text="Retour aux notions" 
+        text="Retour aux chapitres" 
         :customAction="goBackToNotions"
         position="top-left"
       />

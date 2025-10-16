@@ -3,7 +3,7 @@
     <section class="exercices-section">
       <!-- Bouton de retour -->
       <BackButton 
-        text="Retour aux notions" 
+        text="Retour aux chapitres" 
         :customAction="goBackToNotions"
         position="top-left"
       />

@@ -3,7 +3,7 @@
     <section class="cours-section">
       <!-- Bouton de retour -->
       <BackButton 
-        text="Retour aux notions" 
+        text="Retour aux chapitres" 
         :customAction="goBackToNotions"
         position="top-left"
       />
@@ -460,7 +460,7 @@ onBeforeUnmount(() => {
 .cours-title {
   font-size: 2rem;
   color: #193e8e;
-  margin-bottom: 40px;
+  margin: 0.25rem 0 0.5rem;
   font-weight: 800;
   text-align: center;
 }

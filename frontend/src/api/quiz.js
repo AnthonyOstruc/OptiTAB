@@ -82,30 +82,6 @@ export const getQuizAttempts = async (quizId) => {
 // Legacy supprimé: tentatives par chapitre remplacées par tentatives par quiz
 
 /**
- * Vérifie le cooldown pour un quiz spécifique
- * @param {number} quizId - ID du quiz
- * @returns {Promise<Object>} Informations sur le cooldown
- */
-export const checkQuizCooldown = async (quizId) => {
-  try {
-    const DEBUG = import.meta.env && import.meta.env.DEV
-    if (DEBUG) console.debug('📤 Vérification cooldown pour quiz:', quizId)
-    // Utiliser un cache court pour éviter le spam serveur (TTL 20s)
-    const response = await apiUtils.cachedGet(`/api/suivis/quiz/check-cooldown/${quizId}/`, { ttl: 20000 })
-    if (DEBUG) console.debug('📥 Cooldown reçu:', response.data)
-    return response.data
-  } catch (error) {
-    const DEBUG = import.meta.env && import.meta.env.DEV
-    if (DEBUG) {
-      console.error('❌ Erreur lors de la vérification du cooldown:', error)
-      console.error('❌ Détails de l\'erreur:', error.response?.data)
-      console.error('❌ Status de l\'erreur:', error.response?.status)
-    }
-    throw error
-  }
-}
-
-/**
  * Récupère les statistiques des quiz pour le dashboard
  * @returns {Promise<Object>} Statistiques des quiz par notion
  */

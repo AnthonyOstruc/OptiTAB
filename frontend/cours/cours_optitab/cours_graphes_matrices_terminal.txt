@@ -1,10 +1,10 @@
 === Graphes et Matrices - Cours Complet Terminal Maths Expertes
 Difficulté: hard
 Ordre: 11
-Images: graphe_simple.png, matrice_adjacence.png, parcours_graphe.png
+Images: graphe_simple.png, graphe_oriente.png, puissance_matrice.png, graphe_connexe.png
 
-Titre: Graphes et Matrices : Théorie des Graphes, Matrices d'Adjacence et Algorithmes
-Description: Cours complet sur les graphes et matrices en Terminal Maths Expertes : définitions, représentation matricielle, parcours, connexité, arbres, et applications algorithmiques.
+Titre: Graphes et Matrices : Théorie des Graphes et Matrices d'Adjacence
+Description: Cours complet sur les graphes et matrices en Terminal Maths Expertes : définitions, représentation matricielle, puissances de matrices et connexité.
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
 
@@ -58,6 +58,8 @@ Description: Cours complet sur les graphes et matrices en Terminal Maths Experte
         <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500; font-size:1em;">
             <strong>⚠️ Important :</strong> Dans un graphe orienté, l'ordre compte : $(u,v) \neq (v,u)$ sauf si les deux arcs existent.
         </div>
+
+        [IMAGE_2]
     </div>
 
     <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Matrices d'adjacence</h2>
@@ -89,7 +91,66 @@ Description: Cours complet sur les graphes et matrices en Terminal Maths Experte
             </ul>
         </div>
 
-        [IMAGE_2]
+        <div style="background:#f8f9fa; padding:15px; border-radius:6px; margin:15px 0; border:1px solid #ddd;">
+            <strong>📊 Tableau de lecture de la matrice d'adjacence :</strong>
+            
+            <table style="width:60%; border-collapse:collapse; margin:15px auto; border:1px solid #333;">
+                <thead>
+                    <tr>
+                        <th style="border:1px solid #333; padding:8px; text-align:center; background:#f0f0f0;">-</th>
+                        <th style="border:1px solid #333; padding:8px; text-align:center; background:#f0f0f0;">A</th>
+                        <th style="border:1px solid #333; padding:8px; text-align:center; background:#f0f0f0;">B</th>
+                        <th style="border:1px solid #333; padding:8px; text-align:center; background:#f0f0f0;">C</th>
+                        <th style="border:1px solid #333; padding:8px; text-align:center; background:#f0f0f0;">D</th>
+                        <th style="border:1px solid #333; padding:8px; text-align:center; background:#e0e0e0;">Degré</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#f0f0f0; font-weight:bold;">A</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center;">0</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e8f5e8;">1</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center;">0</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e8f5e8;">1</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e0e0e0; font-weight:bold;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#f0f0f0; font-weight:bold;">B</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e8f5e8;">1</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center;">0</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e8f5e8;">1</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center;">0</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e0e0e0; font-weight:bold;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#f0f0f0; font-weight:bold;">C</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center;">0</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e8f5e8;">1</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center;">0</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e8f5e8;">1</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e0e0e0; font-weight:bold;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#f0f0f0; font-weight:bold;">D</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e8f5e8;">1</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center;">0</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e8f5e8;">1</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center;">0</td>
+                        <td style="border:1px solid #333; padding:8px; text-align:center; background:#e0e0e0; font-weight:bold;">2</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin:10px 0; font-size:0.9em;">
+                <p><strong>Comment lire :</strong></p>
+                <ul style="margin:5px 0; padding-left:20px;">
+                    <li><strong>0</strong> = pas d'arête entre les sommets</li>
+                    <li><strong>1</strong> = il y a une arête entre les sommets</li>
+                    <li><strong>Degré</strong> = nombre d'arêtes du sommet (somme de la ligne)</li>
+                </ul>
+                <p><strong>Symétrie :</strong> La matrice est symétrique ($A_{ij} = A_{ji}$) car si A est relié à B, alors B est relié à A.</p>
+            </div>
+        </div>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
@@ -137,6 +198,8 @@ Description: Cours complet sur les graphes et matrices en Terminal Maths Experte
             <strong>Application :</strong> Détection de cycles
             <p style="margin:8px 0; font-size:1em;">Un graphe contient un cycle si et seulement si $A^k$ a un élément diagonal non nul pour un certain $k \geq 1$.</p>
         </div>
+
+        [IMAGE_3]
     </div>
 
     <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Connexité et composantes connexes</h2>
@@ -159,6 +222,8 @@ Description: Cours complet sur les graphes et matrices en Terminal Maths Experte
         <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; font-size:1em;">
             <strong>💡 Test de connexité :</strong> Un graphe d'ordre $n$ est connexe si et seulement si la matrice $(I + A)^{n-1}$ ne contient aucun zéro (où $I$ est la matrice identité).
         </div>
+
+        [IMAGE_4]
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
@@ -184,200 +249,7 @@ Description: Cours complet sur les graphes et matrices en Terminal Maths Experte
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Arbres et forêts</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Définition d'un arbre</h3>
-        
-        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
-            <strong>Définition :</strong> Un <strong>arbre</strong> est un graphe connexe sans cycle. Une <strong>forêt</strong> est un graphe dont chaque composante connexe est un arbre.
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
-            <strong>Exemple :</strong> Arbre avec 6 sommets
-            <p style="margin:8px 0; font-size:1em;">$V = \{A, B, C, D, E, F\}$, $E = \{\{A,B\}, \{B,C\}, \{B,D\}, \{D,E\}, \{D,F\}\}$</p>
-            <p style="margin:8px 0; font-size:1em;">Cet arbre a 5 arêtes et 6 sommets : $|E| = |V| - 1$ ✓</p>
-        </div>
-
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Théorème :</strong> Pour un graphe connexe d'ordre $n$, les propriétés suivantes sont équivalentes :
-            <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
-                <li>Le graphe est un arbre</li>
-                <li>Le graphe a exactement $n-1$ arêtes</li>
-                <li>Le graphe est connexe et sans cycle</li>
-                <li>Entre deux sommets quelconques, il existe une unique chaîne</li>
-            </ul>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Arbre couvrant</h3>
-        
-        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
-            <strong>Définition :</strong> Un <strong>arbre couvrant</strong> d'un graphe connexe $G$ est un sous-graphe de $G$ qui est un arbre et contient tous les sommets de $G$.
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
-            <strong>Exemple :</strong> Graphe complet $K_4$ et un de ses arbres couvrants
-            <p style="margin:8px 0; font-size:1em;">Graphe : $V = \{1, 2, 3, 4\}$, $E = \{\{1,2\}, \{1,3\}, \{1,4\}, \{2,3\}, \{2,4\}, \{3,4\}\}$</p>
-            <p style="margin:8px 0; font-size:1em;">Arbre couvrant : $E' = \{\{1,2\}, \{2,3\}, \{3,4\}\}$</p>
-        </div>
-
-        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Algorithme de Kruskal (arbre couvrant minimal) :</strong>
-            <ol style="margin:8px 0; padding-left:20px; font-size:1em;">
-                <li>Trier les arêtes par poids croissant</li>
-                <li>Initialiser une forêt avec tous les sommets isolés</li>
-                <li>Pour chaque arête (dans l'ordre) : si elle ne crée pas de cycle, l'ajouter</li>
-                <li>S'arrêter quand on a $n-1$ arêtes</li>
-            </ol>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Parcours de graphes</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Parcours en profondeur (DFS)</h3>
-        
-        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
-            <strong>Principe :</strong> Explorer un chemin le plus loin possible avant de revenir en arrière.
-        </div>
-
-        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Algorithme DFS :</strong>
-            <ol style="margin:8px 0; padding-left:20px; font-size:1em;">
-                <li>Marquer le sommet de départ comme visité</li>
-                <li>Pour chaque voisin non visité du sommet courant :</li>
-                <li style="margin-left:20px;">Appliquer récursivement DFS sur ce voisin</li>
-                <li>Revenir au sommet parent</li>
-            </ol>
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
-            <strong>Exemple :</strong> DFS sur le graphe $G = (V, E)$ avec $V = \{A, B, C, D, E\}$ et $E = \{\{A,B\}, \{A,C\}, \{B,D\}, \{C,E\}\}$
-            <p style="margin:8px 0; font-size:1em;"><strong>Ordre de visite :</strong> $A \to B \to D \to C \to E$</p>
-            <p style="margin:8px 0; font-size:1em;"><strong>Arbre DFS :</strong> $E' = \{\{A,B\}, \{B,D\}, \{A,C\}, \{C,E\}\}$</p>
-        </div>
-
-        [IMAGE_3]
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Parcours en largeur (BFS)</h3>
-        
-        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
-            <strong>Principe :</strong> Explorer tous les voisins d'un sommet avant de passer aux voisins de ses voisins.
-        </div>
-
-        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Algorithme BFS :</strong>
-            <ol style="margin:8px 0; padding-left:20px; font-size:1em;">
-                <li>Initialiser une file avec le sommet de départ</li>
-                <li>Tant que la file n'est pas vide :</li>
-                <li style="margin-left:20px;">Retirer le premier élément de la file</li>
-                <li style="margin-left:20px;">Marquer comme visité</li>
-                <li style="margin-left:20px;">Ajouter tous les voisins non visités à la file</li>
-            </ol>
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
-            <strong>Exemple :</strong> BFS sur le même graphe
-            <p style="margin:8px 0; font-size:1em;"><strong>Niveau 0 :</strong> $A$</p>
-            <p style="margin:8px 0; font-size:1em;"><strong>Niveau 1 :</strong> $B, C$</p>
-            <p style="margin:8px 0; font-size:1em;"><strong>Niveau 2 :</strong> $D, E$</p>
-            <p style="margin:8px 0; font-size:1em;"><strong>Ordre de visite :</strong> $A \to B \to C \to D \to E$</p>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Applications algorithmiques</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Plus court chemin</h3>
-        
-        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
-            <strong>Problème :</strong> Trouver le chemin de longueur minimale entre deux sommets dans un graphe pondéré.
-        </div>
-
-        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Algorithme de Dijkstra :</strong>
-            <ol style="margin:8px 0; padding-left:20px; font-size:1em;">
-                <li>Initialiser les distances : $d(s) = 0$, $d(v) = +\infty$ pour $v \neq s$</li>
-                <li>Marquer tous les sommets comme non traités</li>
-                <li>Tant qu'il reste des sommets non traités :</li>
-                <li style="margin-left:20px;">Choisir le sommet $u$ non traité avec la plus petite distance</li>
-                <li style="margin-left:20px;">Marquer $u$ comme traité</li>
-                <li style="margin-left:20px;">Pour chaque voisin $v$ de $u$ : mettre à jour $d(v) = \min(d(v), d(u) + w(u,v))$</li>
-            </ol>
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
-            <strong>Exemple :</strong> Graphe pondéré avec distances
-            <p style="margin:8px 0; font-size:1em;">$V = \{A, B, C, D\}$, arêtes avec poids : $\{A,B\}: 3$, $\{A,C\}: 1$, $\{B,D\}: 2$, $\{C,D\}: 4$</p>
-            <p style="margin:8px 0; font-size:1em;"><strong>Plus court chemin de $A$ à $D$ :</strong> $A \to C \to D$ (longueur 5)</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Coloration de graphes</h3>
-        
-        <div style="text-align:left; font-size:1em; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
-            <strong>Définition :</strong> Une <strong>$k$-coloration</strong> d'un graphe est une fonction $c : V \to \{1, 2, \ldots, k\}$ telle que deux sommets adjacents ont des couleurs différentes.
-        </div>
-
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
-            <strong>Exemple :</strong> 3-coloration du graphe cycle $C_4$
-            <p style="margin:8px 0; font-size:1em;">$V = \{A, B, C, D\}$, $E = \{\{A,B\}, \{B,C\}, \{C,D\}, \{D,A\}\}$</p>
-            <p style="margin:8px 0; font-size:1em;"><strong>Coloration :</strong> $c(A) = 1$, $c(B) = 2$, $c(C) = 1$, $c(D) = 3$</p>
-        </div>
-
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Théorème des quatre couleurs :</strong> Tout graphe planaire peut être colorié avec au plus 4 couleurs.
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Complexité algorithmique</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Complexité des algorithmes de graphes</h3>
-        
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
-                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Algorithme</th>
-                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Complexité</th>
-                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Cas d'usage</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">DFS/BFS</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$O(|V| + |E|)$</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Parcours, connexité</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Dijkstra</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$O(|V|^2)$ ou $O((|V| + |E|) \log |V|)$</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Plus court chemin</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Kruskal</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$O(|E| \log |E|)$</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Arbre couvrant minimal</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Multiplication matricielle</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$O(|V|^3)$</td>
-                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Chaînes de longueur $k$</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; font-size:1em;">
-            <strong>💡 Notation :</strong> $|V|$ = nombre de sommets, $|E|$ = nombre d'arêtes. La complexité dépend de la représentation du graphe (matrice d'adjacence vs liste d'adjacence).
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Erreurs fréquentes et conseils</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Erreurs fréquentes et conseils</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <div style="background:#fdf2f2; padding:15px; border-radius:6px; margin-bottom:15px;">
@@ -385,26 +257,22 @@ Description: Cours complet sur les graphes et matrices en Terminal Maths Experte
             <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
                 <li>Confondre graphe orienté et non orienté dans la construction de la matrice d'adjacence</li>
                 <li>Oublier que la matrice d'adjacence est symétrique pour un graphe non orienté</li>
-                <li>Confondre "connexe" et "complet" : un graphe complet est connexe, mais l'inverse est faux</li>
-                <li>Penser qu'un arbre a toujours un centre unique (peut avoir deux centres)</li>
-                <li>Oublier que DFS et BFS donnent des résultats différents sur le même graphe</li>
-                <li>Confondre "chaîne" et "cycle" : une chaîne peut passer plusieurs fois par le même sommet</li>
-                <li>Ne pas vérifier la connexité avant d'appliquer des algorithmes qui la supposent</li>
-                <li>Oublier que la complexité dépend de la représentation choisie</li>
+                <li>Oublier que dans un graphe orienté, $(u,v) \neq (v,u)$</li>
+                <li>Confondre les puissances de matrices et le nombre de chemins directs</li>
+                <li>Penser que tous les graphes connexes ont le même nombre d'arêtes</li>
             </ul>
         </div>
 
         <div style="background:#f0f9f0; padding:15px; border-radius:6px;">
             <strong>✅ Conseils méthodologiques :</strong>
             <ul style="margin:8px 0; padding-left:20px; font-size:1em;">
-                <li>Toujours préciser si le graphe est orienté ou non orienté</li>
+                <li>Toujours préciser si le graphe est orienté ou non orienté avant de commencer</li>
                 <li>Vérifier la symétrie de la matrice d'adjacence pour les graphes non orientés</li>
-                <li>Utiliser DFS pour détecter les cycles et BFS pour les plus courts chemins (graphes non pondérés)</li>
-                <li>Bien distinguer les concepts : connexité, complétude, régularité</li>
-                <li>Choisir la représentation appropriée selon l'algorithme (matrice vs liste)</li>
-                <li>Analyser la complexité avant d'implémenter un algorithme</li>
-                <li>Utiliser les propriétés des arbres pour simplifier les problèmes</li>
-                <li>S'entraîner à tracer des graphes pour visualiser les concepts</li>
+                <li>Bien distinguer les concepts : connexité, ordre et taille d'un graphe</li>
+                <li>Calculer les puissances de matrices pour trouver le nombre de chaînes de longueur $k$</li>
+                <li>Dessiner le graphe pour visualiser les relations entre sommets</li>
+                <li>Utiliser la matrice $(I + A)^{n-1}$ pour tester la connexité d'un graphe</li>
+                <li>S'entraîner à passer de la représentation graphique à la matrice d'adjacence et inversement</li>
             </ul>
         </div>
     </div>

@@ -97,16 +97,14 @@
         </div>
         
         <div v-else class="quiz-grid">
-         <div v-for="quiz in paginatedQuizList" :key="quiz.id" class="quiz-card" :class="{ 'multiple-attempts': quiz.total_attempts > 1, 'cooldown': isQuizInCooldown(quiz.quiz_id) }">
+         <div v-for="quiz in paginatedQuizList" :key="quiz.id" class="quiz-card" :class="{ 'multiple-attempts': quiz.total_attempts > 1 }">
            <div class="quiz-card-header" @click="toggleQuizDetails(quiz.id)">
              <div class="quiz-card-title-section">
                <h5 class="quiz-card-title clickable-title" 
                    @click.stop="navigateToQuiz(quiz)" 
-                   :title="isQuizInCooldown(quiz.quiz_id) ? 'Quiz en cooldown - Accès temporairement bloqué' : 'Accéder au quiz: ' + quiz.quiz_titre"
-                   :class="{ 'cooldown-title': isQuizInCooldown(quiz.quiz_id) }">
-                 <span v-if="isQuizInCooldown(quiz.quiz_id)" class="cooldown-lock" title="Quiz en cooldown">🔒</span>
+                   :title="'Accéder au quiz: ' + quiz.quiz_titre">
                  {{ quiz.quiz_titre }}
-                 <svg v-if="!isQuizInCooldown(quiz.quiz_id)" class="navigation-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                 <svg class="navigation-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                    <path d="M7 17l9.2-9.2M17 17V7H7"></path>
                  </svg>
                </h5>
@@ -147,16 +145,6 @@
                <span class="quiz-time" v-if="quiz.temps_total_seconde">
                  {{ formatTime(quiz.temps_total_seconde) }}
                </span>
-             </div>
-             
-             <!-- Affichage du cooldown si le quiz est en cooldown -->
-             <div v-if="isQuizInCooldown(quiz.quiz_id)" class="quiz-cooldown-info">
-               <div class="cooldown-warning">
-                 <span class="cooldown-icon">⏰</span>
-                 <span class="cooldown-text">
-                   Prochaine tentative possible dans {{ getQuizCooldown(quiz.quiz_id).time_remaining_formatted }}
-                 </span>
-               </div>
              </div>
            </div>
          </div>
@@ -214,7 +202,6 @@ import { useRouter } from 'vue-router'
 import { getMatieres, getNotions } from '@/api'
 import apiClient from '@/api/client'
 import { useUserStore } from '@/stores/user'
-import { checkQuizCooldown } from '@/api/quiz'
 
 // Store utilisateur
 const userStore = useUserStore()
@@ -250,10 +237,6 @@ const expandedQuizzes = ref(new Set())
 
 // État d'expansion de la section quiz
 const isQuizListExpanded = ref(true)
-
-// Cooldown des quiz
-const quizCooldowns = ref(new Map())
-const cooldownLoading = ref(false)
 
 // Responsive helper (mobile detection)
 const isMobile = ref(false)
@@ -387,41 +370,6 @@ const masteryFilters = [
   { value: 'poor', label: 'Non maîtrisés', icon: '❌', class: 'poor' }
 ]
 
-// Fonctions de cooldown
-const loadQuizCooldowns = async () => {
-  if (!quizList.value.length) return
-  
-  cooldownLoading.value = true
-  
-  try {
-    for (const quiz of quizList.value) {
-      try {
-        const cooldownInfo = await checkQuizCooldown(quiz.quiz_id)
-        quizCooldowns.value.set(quiz.quiz_id, cooldownInfo)
-      } catch (error) {
-        console.warn(`Erreur cooldown pour quiz ${quiz.quiz_id}:`, error)
-        // En cas d'erreur, autoriser la tentative
-        quizCooldowns.value.set(quiz.quiz_id, { can_attempt: true })
-      }
-    }
-  } catch (error) {
-    if (import.meta.env && import.meta.env.DEV) {
-      console.error('Erreur lors du chargement des cooldowns:', error)
-    }
-  } finally {
-    cooldownLoading.value = false
-  }
-}
-
-const getQuizCooldown = (quizId) => {
-  return quizCooldowns.value.get(quizId) || { can_attempt: true }
-}
-
-const isQuizInCooldown = (quizId) => {
-  const cooldown = getQuizCooldown(quizId)
-  return !cooldown.can_attempt
-}
-
 // Méthodes
 const loadReferenceData = async () => {
   try {
@@ -519,11 +467,6 @@ const loadQuizData = async () => {
     globalStats.value = data.global_stats || { completed: 0, average: 0, masteredNotions: 0 }
     quizList.value = data.quiz_list || []
     matiereStats.value = data.matiere_stats || []
-    
-    // Charger les cooldowns des quiz après avoir chargé les données
-    if (quizList.value.length > 0) {
-      await loadQuizCooldowns()
-    }
     
   } catch (error) {
     console.error('Erreur lors du chargement des quiz:', error)
@@ -630,13 +573,6 @@ const toggleQuizListSection = () => {
 
 const navigateToQuiz = async (quiz) => {
   try {
-    // Vérifier le cooldown avant de naviguer
-    if (isQuizInCooldown(quiz.quiz_id)) {
-      const cooldownInfo = getQuizCooldown(quiz.quiz_id)
-      alert(`⏰ Ce quiz est en cooldown. ${cooldownInfo.message}`)
-      return
-    }
-    
     console.log(`[QuizHistory] 🚀 Navigation rapide vers quiz: ${quiz.quiz_titre}`)
     
     const chapitreId = quiz.chapitre.id
@@ -973,16 +909,6 @@ onUnmounted(() => {
   border-left: 3px solid #f59e0b;
 }
 
-.quiz-card.cooldown {
-  opacity: 0.7;
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-  border-color: #f59e0b;
-}
-
-.quiz-card.cooldown .quiz-card-header {
-  cursor: default;
-}
-
 .quiz-card-header {
   display: flex;
   justify-content: space-between;
@@ -1029,17 +955,6 @@ onUnmounted(() => {
 .clickable-title:hover {
   color: #3b82f6;
   background: #f0f9ff;
-}
-
-.cooldown-title {
-  color: #92400e !important;
-  cursor: not-allowed !important;
-}
-
-.cooldown-lock {
-  margin-right: 0.5rem;
-  font-size: 1.1em;
-  animation: cooldown-pulse 2s ease-in-out infinite;
 }
 
 .navigation-icon {
@@ -1147,36 +1062,6 @@ onUnmounted(() => {
 
 .total-attempts {
   color: #9ca3af;
-}
-
-.quiz-cooldown-info {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-  border: 2px solid #f59e0b;
-  border-radius: 8px;
-}
-
-.cooldown-warning {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #92400e;
-}
-
-.cooldown-icon {
-  font-size: 1.2rem;
-  animation: cooldown-pulse 2s ease-in-out infinite;
-}
-
-.cooldown-text {
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-@keyframes cooldown-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
 }
 
 /* Loading */

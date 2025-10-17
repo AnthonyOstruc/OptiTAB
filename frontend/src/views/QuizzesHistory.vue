@@ -108,10 +108,10 @@
 
         <!-- Liste des items (même rendu que sur le dashboard) -->
         <template #items-list="{ items, toggleDetails, isExpanded, navigateToItem }">
-          <div v-for="quiz in items" :key="quiz.id" class="quiz-card" :class="{ 'multiple-attempts': quiz.total_attempts > 1, locked: isQuizLocked(quiz) }">
+          <div v-for="quiz in items" :key="quiz.id" class="quiz-card" :class="{ 'multiple-attempts': quiz.total_attempts > 1 }">
             <div class="quiz-card-header" @click="toggleDetails(quiz.id)">
               <div class="quiz-card-title-section">
-                <h5 class="quiz-card-title clickable-title" :class="{ locked: isQuizLocked(quiz) }" @click.stop="onNavigate(quiz)" :title="isQuizLocked(quiz) ? 'Verrouillé' : ('Accéder au quiz: ' + quiz.quiz_titre)">
+                <h5 class="quiz-card-title clickable-title" @click.stop="navigateToItem(quiz)" :title="'Accéder au quiz: ' + quiz.quiz_titre">
                   {{ quiz.quiz_titre }}
                   <svg class="navigation-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17l9.2-9.2M17 17V7H7"></path>
@@ -122,8 +122,7 @@
                 </div>
               </div>
               <div class="quiz-card-actions">
-                <div v-if="isQuizLocked(quiz)" class="lock-badge" :title="getCooldownLabel(quiz)">🔒 {{ getCooldownLabel(quiz) }}</div>
-                <div v-else class="quiz-score" :class="getScoreClass(quiz.score_on_10)">
+                <div class="quiz-score" :class="getScoreClass(quiz.score_on_10)">
                   {{ quiz.score_on_10 }}/10
                   <span v-if="quiz.total_attempts > 1" class="retry-indicator">↻</span>
                 </div>
@@ -165,7 +164,6 @@ import { useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BaseHistory from '@/components/dashboard/BaseHistory.vue'
 import apiClient from '@/api/client'
-import { checkQuizCooldown } from '@/api/quiz'
 
 const router = useRouter()
 
@@ -192,13 +190,11 @@ const sortField = ref('count')
 const sortDirection = ref('desc')
 const expandedNotions = ref(new Set())
 const notionDetails = ref({})
-const cooldownByQuizId = ref(new Map())
 
 const onDataLoaded = (data) => {
   const list = Array.isArray(data.quiz_list) ? data.quiz_list : []
   currentQuizList.value = list
   matiereNotionStats.value = computeMatiereNotionFromQuizList(list)
-  loadCooldowns(list)
 }
 
 // Liste filtrée selon la maîtrise (pour 20/page)
@@ -250,36 +246,6 @@ const getAverageClass = (average) => {
   if (average >= 75) return 'good'
   if (average >= 50) return 'average'
   return 'poor'
-}
-
-const loadCooldowns = async (list) => {
-  const map = new Map(cooldownByQuizId.value)
-  await Promise.all((list || []).map(async (q) => {
-    try {
-      const info = await checkQuizCooldown(q.quiz_id)
-      map.set(q.quiz_id, info)
-    } catch (_) {}
-  }))
-  cooldownByQuizId.value = map
-}
-
-const isQuizLocked = (quiz) => {
-  const info = cooldownByQuizId.value.get(quiz.quiz_id)
-  return info && info.can_attempt === false
-}
-
-const getCooldownLabel = (quiz) => {
-  const info = cooldownByQuizId.value.get(quiz.quiz_id)
-  if (!info || info.can_attempt !== false) return ''
-  return info.time_remaining_formatted || info.message || 'Verrouillé'
-}
-
-const onNavigate = (quiz) => {
-  if (isQuizLocked(quiz)) {
-    alert(getCooldownLabel(quiz) || 'Quiz verrouillé')
-    return
-  }
-  navigateToQuiz(quiz)
 }
 
 const updateSelectedMastery = (value) => {
@@ -503,9 +469,6 @@ const formatTime = (seconds) => {
 .quiz-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; transition: all 0.2s; }
 .quiz-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 .quiz-card.multiple-attempts { border-left: 3px solid #f59e0b; }
-.quiz-card.locked { opacity: .75; cursor: not-allowed; border-left: 3px solid #f59e0b; }
-.clickable-title.locked { cursor: not-allowed; }
-.lock-badge { font-size: .8rem; font-weight: 700; color: #92400e; background: #fef3c7; padding: .25rem .4rem; border-radius: 4px; }
 .quiz-card-header { display: flex; justify-content: space-between; align-items: flex-start; cursor: pointer; padding: 0.5rem; margin: -0.5rem -0.5rem 0.75rem -0.5rem; border-radius: 6px; transition: background-color 0.2s; }
 .quiz-card-header:hover { background-color: #f8fafc; }
 .quiz-card-title-section { flex: 1; }

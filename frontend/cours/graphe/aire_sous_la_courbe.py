@@ -5,23 +5,23 @@ from matplotlib.patches import Polygon
 plt.figure(figsize=(16, 10))
 ax = plt.gca()
 
-# Fonction f(x) = x²
+# Fonction f(x) = e^x
 def f(x):
-    return x**2
+    return np.exp(x)
 
 # Bornes d'intégration
 a = 0
-b = 2
+b = 1
 
 # Intervalles - même template que fonction_1_sur_x_moins_3.py
 x1 = np.linspace(-20, 4, 1000)  # Même intervalle que le template
 
 # Courbes
-plt.plot(x1, f(x1), 'b-', linewidth=2, label=r'$f(x) = x^2$')
+plt.plot(x1, f(x1), 'b-', linewidth=2, label=r'$f(x) = e^x$')
 
 # Remplissage de l'aire sous la courbe
 x_fill = np.linspace(a, b, 100)
-y_fill = x_fill**2
+y_fill = np.exp(x_fill)
 
 # Création du polygone pour l'aire
 vertices = [(a, 0)] + list(zip(x_fill, y_fill)) + [(b, 0)]
@@ -30,7 +30,7 @@ ax.add_patch(polygon)
 
 # Droites verticales aux bornes
 plt.axvline(x=a, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='$x = 0$')
-plt.axvline(x=b, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='$x = 2$')
+plt.axvline(x=b, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='$x = 1$')
 
 # Limites - EXACTEMENT comme le template
 plt.xlim(-20, 20)
@@ -89,8 +89,12 @@ ax.yaxis.set_label_coords(0.48, 1.02)
 plt.legend(fontsize=10, loc='upper right')
 
 # Ajout du calcul de l'aire dans la légende
-aire = (b**3)/3 - (a**3)/3  # ∫₀² x² dx = [x³/3]₀² = 8/3
-plt.text(0.02, 0.98, f'$A = \\frac{{8}}{{3}} \\approx {aire:.3f}$', 
+# Calcul de l'intégrale : ∫₀¹ e^x dx = [e^x]₀¹
+# En x=1: e^1 = e
+# En x=0: e^0 = 1
+# Aire = e - 1 ≈ 1.718
+aire = np.e - 1  # ≈ 1.718
+plt.text(0.02, 0.98, f'$A = e - 1 \\approx {aire:.3f}$', 
          transform=plt.gca().transAxes, fontsize=14, fontweight='bold',
          bbox=dict(boxstyle='round', facecolor='lightgreen', alpha=0.8),
          verticalalignment='top')

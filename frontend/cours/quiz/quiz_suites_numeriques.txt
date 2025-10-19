@@ -1,260 +1,295 @@
-===
-Titre: Quiz Suites Numériques — Niveau Simple
-Instructions: Vérifiez les fondamentaux (définitions, termes, sommes de base)
+=== Quiz 1 : Définitions et Types de Suites
+Instructions: Testez vos connaissances sur les définitions de base et les types de suites numériques
 Difficulté: easy
-Images:
 
-Question: On appelle suite numérique toute application
-A: $\displaystyle u : \mathbb{R} \to \mathbb{R}$
-B: $\displaystyle u : \mathbb{N}\ \text{(ou } \{ n \ge n_0 \} ) \to \mathbb{R}$
-C: $\displaystyle u : \mathbb{Z} \to \mathbb{C}$
-D: $\displaystyle u : \mathbb{N} \to \mathbb{N}$
+Question: Qu'est-ce qu'une suite numérique ?
+A: Une fonction définie sur $\mathbb{R}$ à valeurs dans $\mathbb{N}$
+B: Une fonction définie sur $\mathbb{N}$ à valeurs dans $\mathbb{R}$
+C: Une série de nombres quelconques
+D: Une fonction continue sur $\mathbb{R}$
 Correct: B
-Explication: $\displaystyle \text{Par définition, une suite est une fonction définie sur } \mathbb{N} \text{ (éventuellement à partir d’un rang) vers } \mathbb{R}. $
+Explication: Une suite numérique est une fonction définie sur l'ensemble des entiers naturels $\mathbb{N}$
+$\\$
+(ou à partir d'un certain rang) et à valeurs dans $\mathbb{R}$.
+$\\$
+On note $u : \mathbb{N} \to \mathbb{R}$.
 
-Question: Une suite est dite explicite lorsque
-A: $\displaystyle u_{n+1} \ \text{ dépend de } \ u_n$
-B: $\displaystyle u_n = f(n) \ \text{ sans dépendre des termes précédents}$
-C: $\displaystyle u_{n+1} = a\,u_n + b$
-D: $\displaystyle u_{n+1} = q\,u_n$
+Question: Une suite définie par $u_n = 3n + 5$ est une suite :
+A: Récurrente
+B: Explicite
+C: De Fibonacci
+D: Géométrique
 Correct: B
-Explication: $\displaystyle \text{Explicite} \ \Leftrightarrow \ u_n = f(n). $
+Explication: Une suite est dite explicite lorsque chaque terme $u_n$ peut être calculé directement en fonction de $n$,
+$\\$
+sans avoir besoin de connaître les termes précédents.
+$\\$
+Ici $u_n = 3n + 5$ est bien une formule explicite.
 
-Question: Soit $(u_n)$ arithmétique avec $\displaystyle u_0 = 5$ et $\displaystyle r = 3$. Calculer $\displaystyle u_{10}$.
-A: $\displaystyle 23$
-B: $\displaystyle 32$
-C: $\displaystyle 35$
-D: $\displaystyle 38$
+Question: Soit $(u_n)$ définie par $u_0 = 2$ et $u_{n+1} = u_n + 3$. Quelle est la nature de cette suite ?
+A: Suite géométrique
+B: Suite arithmétique
+C: Suite arithmético-géométrique
+D: Suite de Fibonacci
+Correct: B
+Explication: Une suite est arithmétique s'il existe un réel $r$ tel que $u_{n+1} = u_n + r$.
+$\\$
+Ici $r = 3$, donc $(u_n)$ est une suite arithmétique de raison 3.
+
+Question: Pour une suite géométrique, quelle relation existe entre deux termes consécutifs ?
+A: $u_{n+1} = u_n + r$
+B: $u_{n+1} = q \times u_n$ avec $q \neq 0$
+C: $u_{n+1} = u_n^2$
+D: $u_{n+1} = u_n + u_{n-1}$
+Correct: B
+Explication: Une suite géométrique vérifie $u_{n+1} = q \times u_n$ où $q \neq 0$ est la raison de la suite.
+$\\$
+Le quotient entre deux termes consécutifs est constant.
+
+Question: Quelle suite est définie par récurrence ?
+A: $u_n = 2n + 1$
+B: $u_n = n^2$
+C: $u_0 = 1$ et $u_{n+1} = 2u_n + 3$
+D: $u_n = \dfrac{1}{n+1}$
 Correct: C
-Explication: $\displaystyle u_{10} = u_0 + 10 r = 5 + 30 = 35. $
+Explication: Une suite est définie par récurrence lorsque chaque terme est calculé à partir du (ou des) terme(s) précédent(s).
+$\\$
+Seule la définition $u_0 = 1$ et $u_{n+1} = 2u_n + 3$ nécessite de connaître $u_n$ pour calculer $u_{n+1}$.
 
-Question: Soit $(v_n)$ arithmétique avec $\displaystyle v_1 = -2$ et $\displaystyle r = 4$. Calculer $\displaystyle v_{15}$.
-A: $\displaystyle 46$
-B: $\displaystyle 50$
-C: $\displaystyle 54$
-D: $\displaystyle 58$
-Correct: C
-Explication: $\displaystyle v_0 = v_1 - r = -6, \ \ v_{15} = v_0 + 15 r = -6 + 60 = 54. $
-
-Question: $(w_n)$ arithmétique, $\displaystyle w_0 = 12$, $\displaystyle r = -2$. La valeur de $\displaystyle w_8$ est
-A: $\displaystyle -2$
-B: $\displaystyle -4$
-C: $\displaystyle -6$
-D: $\displaystyle 0$
-Correct: B
-Explication: $\displaystyle w_8 = 12 + 8 (-2) = -4. $
-
-Question: Somme arithmétique : $\displaystyle S = 1 + 2 + \cdots + 100$ vaut
-A: $\displaystyle 5000$
-B: $\displaystyle 5050$
-C: $\displaystyle 5100$
-D: $\displaystyle 5150$
-Correct: B
-Explication: $\displaystyle S = \frac{100 (1 + 100)}{2} = 5050. $
-
-Question: $(g_n)$ géométrique, $\displaystyle g_0 = 2$, $\displaystyle q = 3$. Calculer $\displaystyle g_5$.
-A: $\displaystyle 162$
-B: $\displaystyle 216$
-C: $\displaystyle 486$
-D: $\displaystyle 729$
-Correct: C
-Explication: $\displaystyle g_5 = 2 \cdot 3^{5} = 486. $
-
-Question: $(h_n)$ géométrique, $\displaystyle h_0 = 5$, $\displaystyle q = \tfrac{1}{2}$. Calculer $\displaystyle h_6$.
-A: $\displaystyle \frac{5}{32}$
-B: $\displaystyle \frac{5}{48}$
-C: $\displaystyle \frac{5}{64}$
-D: $\displaystyle \frac{5}{96}$
-Correct: C
-Explication: $\displaystyle h_6 = 5 \left( \tfrac{1}{2} \right)^{6} = \tfrac{5}{64}. $
-
-Question: Somme géométrique avec $\displaystyle u_0 = 1$, $\displaystyle q = 2$ : $\displaystyle S_5 = u_0 + \cdots + u_5 =$
-A: $\displaystyle 31$
-B: $\displaystyle 63$
-C: $\displaystyle 64$
-D: $\displaystyle 127$
-Correct: B
-Explication: $\displaystyle S_5 = \frac{1 - 2^{6}}{1 - 2} = 63. $
-
-Question: Sens de variation de $\displaystyle t_n = \frac{1}{n+1}$ (pour $\displaystyle n \ge 0$)
-A: $\displaystyle \text{Croissante}$
-B: $\displaystyle \text{Décroissante}$
-C: $\displaystyle \text{Constante}$
-D: $\displaystyle \text{Non monotone}$
-Correct: B
-Explication: $\displaystyle t_{n+1} - t_n = \frac{1}{n+2} - \frac{1}{n+1} < 0. $
 ===
 
+=== Quiz 2 : Suites Arithmétiques et Géométriques
+Instructions: Testez vos connaissances sur les propriétés et formules des suites arithmétiques et géométriques
+Difficulté: easy
+
+Question: Soit $(u_n)$ une suite arithmétique avec $u_0 = 5$ et $r = 3$. Que vaut $u_{10}$ ?
+A: 30
+B: 35
+C: 50
+D: 38
+Correct: B
+Explication: Pour une suite arithmétique, $u_n = u_0 + n \times r$.
+$\\$
+Donc $u_{10} = 5 + 10 \times 3 = 5 + 30 = 35$.
+
+Question: Soit $(v_n)$ une suite géométrique avec $v_0 = 2$ et $q = 3$. Que vaut $v_5$ ?
+A: 243
+B: 486
+C: 162
+D: 729
+Correct: B
+Explication: Pour une suite géométrique, $v_n = v_0 \times q^n$.
+$\\$
+Donc $v_5 = 2 \times 3^5 = 2 \times 243 = 486$.
+
+Question: Une suite arithmétique a pour premier terme $u_0 = 7$ et raison $r = -2$. Quel est le sens de variation de cette suite ?
+A: Croissante
+B: Décroissante
+C: Constante
+D: Non monotone
+Correct: B
+Explication: Pour une suite arithmétique, si $r < 0$, la suite est décroissante.
+$\\$
+Ici $r = -2 < 0$, donc la suite est décroissante.
+
+Question: Soit $(w_n)$ une suite géométrique avec $w_0 = 5$ et $q = \dfrac{1}{2}$. Quel est le comportement de la suite ?
+A: Croissante
+B: Décroissante vers 0
+C: Constante
+D: Divergente vers $+\infty$
+Correct: B
+Explication: Pour une suite géométrique avec $w_0 > 0$ et $0 < q < 1$, la suite est décroissante et converge vers 0.
+$\\$
+Ici $q = \dfrac{1}{2} \in ]0, 1[$ donc la suite décroît vers 0.
+
+Question: Quelle formule donne le terme général d'une suite arithmétique ?
+A: $u_n = u_0 \times q^n$
+B: $u_n = u_0 + n \times r$
+C: $u_n = au_{n-1} + b$
+D: $u_n = u_{n-1} + u_{n-2}$
+Correct: B
+Explication: Le terme général d'une suite arithmétique de premier terme $u_0$ et de raison $r$
+$\\$
+est donné par la formule $u_n = u_0 + n \times r$.
+
 ===
-Titre: Quiz Suites Numériques — Niveau Moyen
-Instructions: Variations, limites, récurrence simple, arithmético-géométriques
+
+=== Quiz 3 : Sommes et Calculs
+Instructions: Testez vos compétences sur les calculs de sommes de suites arithmétiques et géométriques
 Difficulté: medium
-Images:
 
-Question: Pour étudier la variation par différences, on examine
-A: $\displaystyle u_{n+1} u_n$
-B: $\displaystyle u_{n+1} - u_n$
-C: $\displaystyle \frac{u_{n+1}}{u_n} \ \text{uniquement}$
-D: $\displaystyle u_n - n$
+Question: Quelle est la formule de la somme des $(n+1)$ premiers termes d'une suite arithmétique ?
+A: $S_n = u_0 \times \dfrac{1 - q^{n+1}}{1 - q}$
+B: $S_n = \dfrac{(n+1)(u_0 + u_n)}{2}$
+C: $S_n = (n+1) \times u_0$
+D: $S_n = u_0 + u_n$
 Correct: B
-Explication: $\displaystyle \text{Le signe de } (u_{n+1} - u_n) \text{ donne la monotonie. }$
+Explication: La somme des $(n+1)$ premiers termes d'une suite arithmétique (de $u_0$ à $u_n$) est
+$\\$
+$S_n = \dfrac{(n+1)(u_0 + u_n)}{2}$, c'est-à-dire (nombre de termes) × (premier + dernier) / 2.
 
-Question: Limite de $\displaystyle u_n = \frac{2n + 3}{n + 1}$ quand $\displaystyle n \to +\infty$
-A: $\displaystyle 1$
-B: $\displaystyle 2$
-C: $\displaystyle +\infty$
-D: $\displaystyle 0$
+Question: Calculer la somme $S = 1 + 2 + 3 + \cdots + 100$.
+A: 5000
+B: 5050
+C: 10100
+D: 5500
 Correct: B
-Explication: $\displaystyle \frac{2 + \frac{3}{n}}{1 + \frac{1}{n}} \to 2. $
+Explication: C'est une suite arithmétique avec 100 termes, premier terme 1 et dernier terme 100.
+$\\$
+Donc $S = \dfrac{100 \times (1 + 100)}{2} = \dfrac{100 \times 101}{2} = 5050$.
 
-Question: Limite de $\displaystyle v_n = \frac{3n^2 - 2n + 1}{n^2 + 5}$ quand $\displaystyle n \to +\infty$
-A: $\displaystyle 0$
-B: $\displaystyle 1$
-C: $\displaystyle 2$
-D: $\displaystyle 3$
-Correct: D
-Explication: $\displaystyle \frac{3n^2}{n^2} \to 3. $
-
-Question: $(q_n)$ géométrique avec $\displaystyle q \in (0,1)$. Alors $\displaystyle \lim_{n \to \infty} q^n$
-A: $\displaystyle 1$
-B: $\displaystyle 0$
-C: $\displaystyle +\infty$
-D: $\displaystyle \text{N’existe pas}$
+Question: Pour une suite géométrique avec $q \neq 1$, quelle est la formule de la somme des $(n+1)$ premiers termes ?
+A: $S_n = (n+1) \times u_0$
+B: $S_n = u_0 \times \dfrac{q^{n+1} - 1}{q - 1}$
+C: $S_n = u_0 + u_n$
+D: $S_n = u_0 \times q^n$
 Correct: B
-Explication: $\displaystyle q^n \to 0 \ \text{si} \ 0 < q < 1. $
+Explication: Pour une suite géométrique avec $q \neq 1$, la somme est
+$\\$
+$S_n = u_0 \times \dfrac{1 - q^{n+1}}{1 - q}$ ou de manière équivalente $S_n = u_0 \times \dfrac{q^{n+1} - 1}{q - 1}$.
 
-Question: Suite arithmético-géométrique $\displaystyle u_{n+1} = a\,u_n + b$ (avec $\displaystyle a \ne 1$). Le point fixe $\displaystyle \ell$ vérifie
-A: $\displaystyle \ell = \frac{b}{1-a}$
-B: $\displaystyle \ell = \frac{1-a}{b}$
-C: $\displaystyle \ell = a + b$
-D: $\displaystyle \ell = ab$
+Question: Soit $(u_n)$ géométrique avec $u_0 = 1$ et $q = 2$. Calculer $S_5 = u_0 + u_1 + \cdots + u_5$.
+A: 31
+B: 32
+C: 63
+D: 64
+Correct: C
+Explication: On utilise la formule avec 6 termes (de $u_0$ à $u_5$) :
+$\\$
+$S_5 = 1 \times \dfrac{1 - 2^6}{1 - 2} = \dfrac{1 - 64}{-1} = \dfrac{-63}{-1} = 63$.
+
+Question: Que vaut la somme d'une suite géométrique de 10 termes avec $u_0 = 100$ et $q = 1$ ?
+A: 100
+B: 1000
+C: 1100
+D: 10
+Correct: C
+Explication: Cas particulier : quand $q = 1$, tous les termes sont égaux à $u_0 = 100$,
+$\\$
+donc la somme de 11 termes (de $u_0$ à $u_{10}$) est $S_{10} = 11 \times 100 = 1100$.
+
+===
+
+=== Quiz 4 : Limites et Variations
+Instructions: Testez vos connaissances sur l'étude des limites et du sens de variation des suites
+Difficulté: medium
+
+Question: Quelle est la limite de la suite $u_n = \dfrac{2n + 3}{n + 1}$ quand $n \to +\infty$ ?
+A: 0
+B: 1
+C: 2
+D: $+\infty$
+Correct: C
+Explication: On factorise par $n$ : $u_n = \dfrac{n(2 + \frac{3}{n})}{n(1 + \frac{1}{n})} = \dfrac{2 + \frac{3}{n}}{1 + \frac{1}{n}}$.
+$\\$
+Quand $n \to +\infty$, $\dfrac{3}{n} \to 0$ et $\dfrac{1}{n} \to 0$, donc $\lim u_n = \dfrac{2}{1} = 2$.
+
+Question: Soit $(u_n)$ une suite arithmétique avec $u_0 = 5$ et $r = -2$. Quelle est sa limite ?
+A: 0
+B: 5
+C: $-\infty$
+D: $+\infty$
+Correct: C
+Explication: Pour une suite arithmétique avec $r < 0$, la limite est $-\infty$.
+$\\$
+Ici $r = -2 < 0$, donc $\lim_{n \to +\infty} u_n = -\infty$.
+
+Question: Soit $(v_n)$ une suite géométrique avec $v_0 = 3$ et $q = \dfrac{1}{2}$. Quelle est sa limite ?
+A: 0
+B: 3
+C: $\dfrac{3}{2}$
+D: $+\infty$
 Correct: A
-Explication: $\displaystyle \ell = a \ell + b \Rightarrow (1-a) \ell = b. $
+Explication: Pour une suite géométrique avec $0 < q < 1$, on a $\lim_{n \to +\infty} q^n = 0$,
+$\\$
+donc $\lim_{n \to +\infty} v_n = 3 \times 0 = 0$.
 
-Question: Pour $\displaystyle u_{n+1} = a\,u_n + b$ (avec $\displaystyle a \ne 1$), poser $\displaystyle v_n = u_n - \ell$ donne
-A: $\displaystyle (v_n) \ \text{arithmétique de raison } a$
-B: $\displaystyle (v_n) \ \text{géométrique de raison } a$
-C: $\displaystyle (v_n) \ \text{constante}$
-D: $\displaystyle \text{Sans structure}$
-Correct: B
-Explication: $\displaystyle v_{n+1} = a\,v_n. $
+Question: Pour étudier le sens de variation d'une suite $(u_n)$ avec $u_n > 0$, quelle méthode peut-on utiliser ?
+A: Étudier le signe de $u_{n+1} - u_n$
+B: Étudier le quotient $\dfrac{u_{n+1}}{u_n}$
+C: Étudier la dérivée de la fonction associée
+D: Toutes les réponses ci-dessus
+Correct: D
+Explication: Les trois méthodes sont valables :
+$\\$
+1) Étudier le signe de $u_{n+1} - u_n$,
+$\\$
+2) Si $u_n > 0$, étudier le quotient $\dfrac{u_{n+1}}{u_n}$,
+$\\$
+3) Si $u_n = f(n)$, étudier le signe de $f'(x)$.
 
-Question: $\displaystyle u_0 = 1$, $\displaystyle u_{n+1} = \frac{2u_n + 3}{u_n + 2}$. La limite $\displaystyle \ell$ (si elle existe) vérifie
-A: $\displaystyle \ell = 1$
-B: $\displaystyle \ell^2 = 3$
-C: $\displaystyle \ell^2 = 2$
-D: $\displaystyle \ell = 0$
-Correct: B
-Explication: $\displaystyle \ell = \frac{2\ell + 3}{\ell + 2} \Rightarrow \ell^2 = 3. $
-
-Question: $(w_n)$ définie par $\displaystyle w_0 = 2$, $\displaystyle w_{n+1} = 3 w_n - 1$. Le type de la relation est
-A: $\displaystyle \text{Arithmétique}$
-B: $\displaystyle \text{Géométrique}$
-C: $\displaystyle \text{Arithmético-géométrique}$
-D: $\displaystyle \text{Explicite}$
-Correct: C
-Explication: $\displaystyle a w_n + b \ \text{avec} \ a = 3, \ b = -1. $
-
-Question: $(t_n)$ arithmétique, $\displaystyle t_0 = -7$, $\displaystyle r = 4$. La somme des $\displaystyle 30$ premiers termes vaut
-A: $\displaystyle 1460$
-B: $\displaystyle 1500$
-C: $\displaystyle 1530$
-D: $\displaystyle 1560$
-Correct: C
-Explication: $\displaystyle t_{29} = 109, \ \ S_{29} = \frac{30 (-7 + 109)}{2} = 1530. $
-
-Question: $(s_n)$ géométrique, $\displaystyle s_0 = 4$, $\displaystyle q = \tfrac{1}{2}$. Alors $\displaystyle S_4 = s_0 + \cdots + s_4 =$
-A: $\displaystyle 2$
-B: $\displaystyle \frac{31}{4}$
-C: $\displaystyle 4$
-D: $\displaystyle 8$
-Correct: B
-Explication: $\displaystyle S_4 = 4 \, \frac{1 - (1/2)^{5}}{1 - 1/2} = \frac{31}{4}. $
-===
+Question: Quelle est la limite de $w_n = \dfrac{n - 5}{2n^2 + 3}$ quand $n \to +\infty$ ?
+A: 0
+B: $\dfrac{1}{2}$
+C: $-\infty$
+D: $+\infty$
+Correct: A
+Explication: Le dénominateur est de degré 2, le numérateur de degré 1.
+$\\$
+On factorise par $n^2$ : $w_n = \dfrac{\frac{1}{n} - \frac{5}{n^2}}{2 + \frac{3}{n^2}}$.
+$\\$
+Quand $n \to +\infty$, le numérateur tend vers 0 et le dénominateur vers 2, donc $\lim w_n = 0$.
 
 ===
-Titre: Quiz Suites Numériques — Niveau Difficile
-Instructions: Expressions fermées, convergence, points fixes et pièges
+
+=== Quiz 5 : Suites Avancées et Récurrence
+Instructions: Testez vos connaissances approfondies sur les suites arithmético-géométriques et le raisonnement par récurrence
 Difficulté: hard
-Images:
 
-Question: Soit $\displaystyle u_0 = 1$, $\displaystyle u_{n+1} = 2 u_n + 3$. Une expression correcte de $\displaystyle u_n$ est
-A: $\displaystyle u_n = 2^{n} + 3$
-B: $\displaystyle u_n = 2^{\,n+2} - 3$
-C: $\displaystyle u_n = 3 \cdot 2^{n} - 1$
-D: $\displaystyle u_n = 2^{\,n+1} + 1$
-Correct: B
-Explication: $\displaystyle \ell = -3, \ \ u_n = \ell + (u_0 - \ell) 2^{n} = -3 + 4 \cdot 2^{n} = 2^{\,n+2} - 3. $
-
-Question: Soit $\displaystyle v_0 = 5$, $\displaystyle v_{n+1} = \tfrac{1}{2} \, v_n + 2$. Alors $\displaystyle v_n$
-A: $\displaystyle 2 + \left( \tfrac{1}{2} \right)^{n}$
-B: $\displaystyle 4 + \left( \tfrac{1}{2} \right)^{n}$
-C: $\displaystyle 4 - \left( \tfrac{1}{2} \right)^{n}$
-D: $\displaystyle 2 \cdot \left( \tfrac{1}{2} \right)^{n}$
-Correct: B
-Explication: $\displaystyle \ell = 4, \ \ v_n = 4 + \left( \tfrac{1}{2} \right)^{n}. $
-
-Question: $\displaystyle w_0 = 0$, $\displaystyle w_{n+1} = 3 w_n - 6$. Alors $\displaystyle \lim_{n \to \infty} w_n$
-A: $\displaystyle 0$
-B: $\displaystyle 3$
-C: $\displaystyle +\infty$
-D: $\displaystyle -\infty$
-Correct: D
-Explication: $\displaystyle w_n = 3 - 3^{\,n+1} \to -\infty. $
-
-Question: $\displaystyle t_{n+1} = \frac{t_n + 6}{t_n + 2}$, $\displaystyle t_0 = 2$. Alors $\displaystyle (t_n)$ est
-A: $\displaystyle \text{Strictement croissante vers } 2$
-B: $\displaystyle \text{Constante égale à } 2$
-C: $\displaystyle \text{Strictement décroissante vers } 0$
-D: $\displaystyle \text{Divergente}$
-Correct: B
-Explication: $\displaystyle t_1 = \frac{2 + 6}{2 + 2} = 2, \ \text{donc } t_n \equiv 2. $
-
-Question: Soit $\displaystyle u_0 = 1$, $\displaystyle u_{n+1} = \frac{2 u_n + 3}{u_n + 2}$. Pour $\displaystyle u_n > 0$, le signe de $\displaystyle u_{n+1} - u_n$ est celui de
-A: $\displaystyle u_n - 3$
-B: $\displaystyle 3 - u_n^{2}$
-C: $\displaystyle u_n^{2} - 3$
-D: $\displaystyle 2 - u_n$
-Correct: B
-Explication: $\displaystyle u_{n+1} - u_n = \frac{3 - u_n^{2}}{u_n + 2}. $
-
-Question: On considère $\displaystyle a \in (-1,1) \setminus \{ 0 \}$ et $\displaystyle u_{n+1} = a \, u_n + b$. Alors
-A: $\displaystyle (u_n) \ \text{diverge toujours}$
-B: $\displaystyle (u_n) \ \text{converge vers } 0$
-C: $\displaystyle (u_n) \ \text{converge vers } \frac{b}{1-a}$
-D: $\displaystyle (u_n) \ \text{est périodique}$
+Question: Soit $(u_n)$ définie par $u_0 = 1$ et $u_{n+1} = 2u_n + 3$. Quelle est la nature de cette suite ?
+A: Arithmétique
+B: Géométrique
+C: Arithmético-géométrique
+D: De Fibonacci
 Correct: C
-Explication: $\displaystyle |a| < 1 \Rightarrow u_n \to \ell = \frac{b}{1-a}. $
+Explication: La relation est de la forme $u_{n+1} = au_n + b$ avec $a = 2 \neq 1$ et $b = 3 \neq 0$.
+$\\$
+C'est donc une suite arithmético-géométrique.
 
-Question: $(x_n)$ géométrique avec $\displaystyle x_0 < 0$, $\displaystyle q > 1$. Alors
-A: $\displaystyle \text{Croissante vers } 0$
-B: $\displaystyle \text{Alterne de signe}$
-C: $\displaystyle \text{Reste négative et } |x_n| \to +\infty$
-D: $\displaystyle \text{Tend vers } 0$
-Correct: C
-Explication: $\displaystyle x_n = x_0 \, q^{n} < 0 \ \text{et} \ |x_n| \to +\infty. $
+Question: Pour résoudre une suite arithmético-géométrique $u_{n+1} = au_n + b$, on cherche le point fixe $\ell$ tel que :
+A: $\ell = a + b$
+B: $\ell = \dfrac{b}{1-a}$
+C: $\ell = \dfrac{a}{1-b}$
+D: $\ell = a \times b$
+Correct: B
+Explication: Le point fixe vérifie $\ell = a\ell + b$, d'où $\ell - a\ell = b$,
+$\\$
+soit $\ell(1-a) = b$, donc $\ell = \dfrac{b}{1-a}$ (avec $a \neq 1$).
 
-Question: $(s_n)$ arithmético-géométrique $\displaystyle s_{n+1} = 0{,}8 \, s_n + 4$, $\displaystyle s_0 = 10$. Alors $\displaystyle \lim_{n \to \infty} s_n$
-A: $\displaystyle 0$
-B: $\displaystyle +\infty$
-C: $\displaystyle -\infty$
-D: $\displaystyle 20$
+Question: Le raisonnement par récurrence comporte trois étapes. Lesquelles ?
+A: Initialisation, Calcul, Conclusion
+B: Initialisation, Hérédité, Conclusion
+C: Hypothèse, Vérification, Résultat
+D: Définition, Démonstration, Application
+Correct: B
+Explication: Le raisonnement par récurrence comporte trois étapes :
+$\\$
+1) Initialisation (vérifier pour $n_0$),
+$\\$
+2) Hérédité (montrer que si $P(k)$ est vraie alors $P(k+1)$ est vraie),
+$\\$
+3) Conclusion (par récurrence, $P(n)$ est vraie pour tout $n$).
+
+Question: Soit $(u_n)$ définie par $u_0 = 2$ et $u_{n+1} = \dfrac{1}{3}u_n + 4$. Sachant que $u_n = 6 - 4 \times \left(\dfrac{1}{3}\right)^n$, quelle est la limite de la suite ?
+A: 0
+B: 2
+C: 4
+D: 6
 Correct: D
-Explication: $\displaystyle \ell = \frac{4}{1 - 0{,}8} = 20, \ \ |0{,}8| < 1. $
+Explication: Quand $n \to +\infty$, $\left(\dfrac{1}{3}\right)^n \to 0$ car $0 < \dfrac{1}{3} < 1$.
+$\\$
+Donc $\lim_{n \to +\infty} u_n = 6 - 4 \times 0 = 6$.
+$\\$
+La suite converge vers son point fixe.
 
-Question: Soit $\displaystyle u_n = \frac{n - 5}{2 n^2 + 3}$. Alors $\displaystyle \lim_{n \to \infty} u_n$ et le bon raisonnement sont
-A: $\displaystyle +\infty, \ \text{car numérateur } \sim n$
-B: $\displaystyle 0, \ \text{car le dénominateur d’ordre } n^2 \text{ domine}$
-C: $\displaystyle \frac{1}{2}, \ \text{par comparaison des premiers termes}$
-D: $\displaystyle \text{N’existe pas, car } u_n \text{ change de signe}$
+Question: Pour démontrer par récurrence que $1 + 2 + 3 + \cdots + n = \dfrac{n(n+1)}{2}$, quelle est l'étape d'hérédité ?
+A: Vérifier que la formule est vraie pour $n = 0$
+B: Supposer vraie pour $k$ et démontrer pour $k+1$
+C: Calculer la somme directement
+D: Prouver que la formule est toujours positive
 Correct: B
-Explication: $\displaystyle u_n \sim \frac{n}{2 n^2} = \frac{1}{2 n} \to 0. $
+Explication: L'étape d'hérédité consiste à supposer que la propriété $P(k)$ est vraie (hypothèse de récurrence),
+$\\$
+puis à démontrer que $P(k+1)$ est vraie en utilisant cette hypothèse.
 
-Question: Piège — Somme géométrique : pour $\displaystyle q = 1$, on a
-A: $\displaystyle S_n = u_0 \, \frac{1 - 1^{\,n+1}}{1 - 1}$
-B: $\displaystyle S_n = (n + 1) \, u_0$
-C: $\displaystyle S_n = \frac{u_0 + u_n}{2}$
-D: $\displaystyle S_n = 0$
-Correct: B
-Explication: $\displaystyle \text{La formule fractionnaire ne s’applique pas à } q = 1 ; \ \ S_n = (n + 1) u_0. $
 ===

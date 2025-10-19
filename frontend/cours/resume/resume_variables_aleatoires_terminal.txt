@@ -1,0 +1,394 @@
+===
+Résumé Variables Aléatoires et Lois de Probabilité
+
+Titre: Résumé : Variables Aléatoires et Lois de Probabilité
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">I. Variable aléatoire - Définition</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db;">
+            <strong>Définition :</strong> Une variable aléatoire $X$ est une fonction qui associe à chaque issue d'une expérience aléatoire un nombre réel.<br><br>
+            <div style="text-align:center;">$\displaystyle X : \Omega \to \mathbb{R}$</div>
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 À retenir :</strong> Une variable aléatoire transforme des résultats qualitatifs en nombres, permettant ainsi de faire des calculs probabilistes.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">II. Types de variables aléatoires</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px;">Type</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Définition</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Exemples</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Discrète</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Prend un nombre fini ou dénombrable de valeurs</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Nombre de "pile", nombre de boules rouges</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Continue</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Prend toutes les valeurs d'un intervalle de ℝ</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Durée de vie, taille d'un individu</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">III. Loi de probabilité discrète</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="text-align:center; font-size:1.1em; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db;">
+            <strong>Définition :</strong> La loi de probabilité d'une variable aléatoire discrète $X$ est l'ensemble des valeurs possibles $x_i$ et des probabilités $P(X = x_i)$ associées.
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Propriétés :</strong>
+            <ul style="margin:5px 0; padding-left:20px;">
+                <li>$\displaystyle 0 \leq P(X = x_i) \leq 1$ pour toute valeur $x_i$</li>
+                <li>$\displaystyle \sum_{i} P(X = x_i) = 1$ (probabilité totale)</li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Représentation :</strong> Tableau avec colonnes "Valeurs $x_i$" et "$P(X = x_i)$"
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IV. Espérance mathématique</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db;">
+            <strong>Définition :</strong><br><br>
+            <div style="text-align:center;">$\displaystyle E(X) = \sum_{i} x_i \times P(X = x_i)$</div>
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation :</strong> L'espérance représente la <strong>valeur moyenne</strong> que prend la variable aléatoire sur un grand nombre de répétitions de l'expérience.
+        </div>
+        
+        <div style="background:#f3e8ff; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #8b5cf6;">
+            <strong>Propriétés de l'espérance :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>$\displaystyle E(aX + b) = aE(X) + b$ (linéarité)</li>
+                <li>$\displaystyle E(X + Y) = E(X) + E(Y)$ (additivité)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">V. Variance et écart-type</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db;">
+            <strong>Formule de la variance :</strong><br><br>
+            <div style="text-align:center;">$\displaystyle V(X) = E(X^2) - [E(X)]^2$</div>
+        </div>
+        
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db;">
+            <strong>Formule alternative :</strong><br><br>
+            <div style="text-align:center;">$\displaystyle V(X) = \sum_{i} (x_i - E(X))^2 \times P(X = x_i)$</div>
+        </div>
+        
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db;">
+            <strong>Écart-type :</strong><br><br>
+            <div style="text-align:center;">$\displaystyle \sigma(X) = \sqrt{V(X)}$</div>
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation :</strong> La variance mesure la <strong>dispersion</strong> des valeurs autour de l'espérance. Plus la variance est grande, plus les valeurs sont dispersées.
+        </div>
+        
+        <div style="background:#f3e8ff; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #8b5cf6;">
+            <strong>Propriétés de la variance :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>$\displaystyle V(aX + b) = a^2V(X)$</li>
+                <li>$\displaystyle V(X) \geq 0$ (toujours positive)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VI. Transformation affine</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db;">
+            <strong>Soit $Y = aX + b$ où $a$ et $b$ sont des constantes :</strong><br><br>
+            <div style="text-align:center;">$\displaystyle E(Y) = aE(X) + b$<br><br>
+            $\displaystyle V(Y) = a^2V(X)$</div>
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Points clés :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>L'espérance est <strong>linéaire</strong> : $\displaystyle E(aX + b) = aE(X) + b$</li>
+                <li>La variance est <strong>quadratique</strong> : $\displaystyle V(aX + b) = a^2V(X)$</li>
+                <li>La constante $b$ n'affecte pas la variance</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VII. Somme de variables aléatoires indépendantes</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db;">
+            <strong>Si $X$ et $Y$ sont indépendantes :</strong><br><br>
+            <div style="text-align:center;">$\displaystyle E(X + Y) = E(X) + E(Y)$<br><br>
+            $\displaystyle V(X + Y) = V(X) + V(Y)$</div>
+        </div>
+        
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Attention :</strong> Ces formules ne sont valables que si $X$ et $Y$ sont <strong>indépendantes</strong>. Si elles ne le sont pas, il faut ajouter un terme de covariance.
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Généralisation :</strong> Pour $n$ variables aléatoires indépendantes $X_1, X_2, \ldots, X_n$ :
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>$\displaystyle E(X_1 + X_2 + \ldots + X_n) = E(X_1) + E(X_2) + \ldots + E(X_n)$</li>
+                <li>$\displaystyle V(X_1 + X_2 + \ldots + X_n) = V(X_1) + V(X_2) + \ldots + V(X_n)$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VIII. Formule de l'espérance totale</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="text-align:left; font-size:1em; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db;">
+            <strong>Théorème de l'espérance totale :</strong><br><br>
+            Si $(A_i)_{i \in I}$ forme une partition de l'univers :<br><br>
+            <div style="text-align:center;">$\displaystyle E(X) = \sum_{i \in I} E(X|A_i) \times P(A_i)$</div>
+        </div>
+        
+        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>💡 Interprétation :</strong> L'espérance totale est la moyenne pondérée des espérances conditionnelles, où les poids sont les probabilités des événements conditionnants.
+        </div>
+        
+        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
+            <strong>⚠️ Condition importante :</strong> Les événements $A_i$ doivent former une partition de l'univers :
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>$\displaystyle \bigcup_{i \in I} A_i = \Omega$ (union complète)</li>
+                <li>$\displaystyle A_i \cap A_j = \emptyset$ pour $i \neq j$ (événements disjoints)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IX. Exemple complet de calcul</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Calcul d'espérance et variance d'un dé</h3>
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Énoncé :</strong> On lance un dé équilibré. On définit $X$ = "nombre obtenu". Calculer $E(X)$ et $V(X)$.
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Loi de probabilité :</strong> $P(X = k) = \frac{1}{6}$ pour $k \in \{1, 2, 3, 4, 5, 6\}$
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Calcul de l'espérance :</strong><br>
+            $\displaystyle E(X) = \frac{1+2+3+4+5+6}{6} = \frac{21}{6} = 3,5$
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Calcul de $E(X^2)$ :</strong><br>
+            $\displaystyle E(X^2) = \frac{1+4+9+16+25+36}{6} = \frac{91}{6}$
+        </div>
+        
+        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>Calcul de la variance :</strong><br>
+            $\displaystyle V(X) = E(X^2) - [E(X)]^2 = \frac{91}{6} - (3,5)^2 = \frac{35}{12} \approx 2,92$
+        </div>
+        
+        <div style="background:#e8f5e8; padding:12px; border-radius:4px; margin:10px 0;">
+            <strong>✅ Réponse :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>$\displaystyle E(X) = 3,5$</li>
+                <li>$\displaystyle V(X) = \frac{35}{12} \approx 2,92$</li>
+                <li>$\displaystyle \sigma(X) = \sqrt{\frac{35}{12}} \approx 1,71$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">X. Erreurs fréquentes</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px;">Erreur</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Explication</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">Confondre $E(X^2)$ et $[E(X)]^2$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">❌ Dans $V(X) = E(X^2) - [E(X)]^2$, ce sont deux calculs différents</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">Oublier l'indépendance</td>
+                    <td style="border:1px solid #ddd; padding:10px;">❌ $V(X + Y) = V(X) + V(Y)$ seulement si $X$ et $Y$ sont indépendantes</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">Confondre variance et écart-type</td>
+                    <td style="border:1px solid #ddd; padding:10px;">❌ $\sigma(X) = \sqrt{V(X)}$, pas $V(X) = \sigma(X)$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">Oublier la condition de partition</td>
+                    <td style="border:1px solid #ddd; padding:10px;">❌ La formule de l'espérance totale nécessite une partition complète</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">Erreur dans les transformations</td>
+                    <td style="border:1px solid #ddd; padding:10px;">❌ $V(aX + b) = a^2V(X)$, pas $aV(X)$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">XI. Méthodologie générale</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fef3c7; padding:15px; border-radius:6px; margin:10px 0;">
+            <strong>📐 Démarche pour un problème de variables aléatoires :</strong>
+            <ol style="margin:10px 0; padding-left:20px;">
+                <li style="margin-bottom:8px;"><strong>Identifier</strong> le type de variable (discrète/continue)</li>
+                
+                <li style="margin-bottom:8px;"><strong>Déterminer</strong> la loi de probabilité</li>
+                
+                <li style="margin-bottom:8px;"><strong>Calculer</strong> l'espérance $E(X)$</li>
+                
+                <li style="margin-bottom:8px;"><strong>Calculer</strong> $E(X^2)$ pour la variance</li>
+                
+                <li style="margin-bottom:8px;"><strong>Appliquer</strong> $V(X) = E(X^2) - [E(X)]^2$</li>
+                
+                <li><strong>Vérifier</strong> la cohérence des résultats</li>
+            </ol>
+        </div>
+        
+        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
+            <strong>Pour les transformations :</strong>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li><strong>Espérance :</strong> $E(aX + b) = aE(X) + b$ (linéaire)</li>
+                <li><strong>Variance :</strong> $V(aX + b) = a^2V(X)$ (quadratique)</li>
+                <li><strong>Indépendance :</strong> Vérifier avant d'utiliser $V(X + Y) = V(X) + V(Y)$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; padding:15px; border-radius:6px; margin:15px 0; border:1px solid #e1e8ed;">
+        <h3 style="color:#2c3e50; margin-top:0;">✅ Points clés à retenir</h3>
+
+        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+        <thead>
+        <tr style="background:#3498db; color:white;">
+        <th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
+        <th style="border:1px solid #ddd; padding:12px;">À retenir</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Variable aléatoire</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Fonction $X : \Omega \to \mathbb{R}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Discrète</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Nombre fini ou dénombrable de valeurs</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Continue</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Toutes les valeurs d'un intervalle de ℝ</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Loi de probabilité</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Ensemble des $(x_i, P(X = x_i))$ avec $\sum P(X = x_i) = 1$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Espérance</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = \sum_{i} x_i \times P(X = x_i)$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Variance</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(X) = E(X^2) - [E(X)]^2$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Écart-type</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma(X) = \sqrt{V(X)}$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Transformation linéaire</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">$E(aX + b) = aE(X) + b$ et $V(aX + b) = a^2V(X)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Somme indépendante</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">$E(X + Y) = E(X) + E(Y)$ et $V(X + Y) = V(X) + V(Y)$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Espérance totale</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = \sum_{i} E(X|A_i) \times P(A_i)$ pour une partition $(A_i)$</td>
+        </tr>
+        <tr style="background:#f8f9fa;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Indépendance</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">Condition nécessaire pour $V(X + Y) = V(X) + V(Y)$</td>
+        </tr>
+        <tr style="background:#ffffff;">
+        <td style="border:1px solid #ddd; padding:10px;"><strong>Variance toujours positive</strong></td>
+        <td style="border:1px solid #ddd; padding:10px;">$V(X) \geq 0$ pour toute variable aléatoire</td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">XII. Tableau récapitulatif - Formules essentielles</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px;">Calcul</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Formule</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Condition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">Espérance</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = \sum_{i} x_i \times P(X = x_i)$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Variable discrète</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">Variance</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(X) = E(X^2) - [E(X)]^2$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Toujours</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">Écart-type</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma(X) = \sqrt{V(X)}$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Toujours</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">Transformation</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$E(aX + b) = aE(X) + b$<br>$V(aX + b) = a^2V(X)$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$a, b$ constantes</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">Somme</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$E(X + Y) = E(X) + E(Y)$<br>$V(X + Y) = V(X) + V(Y)$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$X$ et $Y$ indépendantes</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">Espérance totale</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = \sum_{i} E(X|A_i) \times P(A_i)$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$(A_i)$ partition de $\Omega$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+===

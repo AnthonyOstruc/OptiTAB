@@ -190,7 +190,9 @@ const checkAndShowPaysNiveauModal = () => {
 watch(() => userStore.isAuthenticated, async (isAuthenticated) => {
   if (isAuthenticated) {
     checkAndShowPaysNiveauModal()
-    // Notifications chargées dans onMounted, pas ici pour éviter les doublons
+    // Charger les notifications persistées localement puis fusionner celles du serveur
+    try { await notificationStore.loadFromLocal() } catch (_) {}
+    try { await notificationStore.loadFromServer() } catch (_) {}
   }
 }, { immediate: true })
 
@@ -228,6 +230,8 @@ onMounted(async () => {
       initializeSubjectsStoreWhenReady()
     }
 
+    // Charger d'abord les notifications locales persistées, puis fusionner celles du serveur
+    try { await notificationStore.loadFromLocal() } catch (_) {}
     try { await notificationStore.loadFromServer() } catch (_) {}
   }
 })

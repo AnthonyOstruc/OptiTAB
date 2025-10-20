@@ -99,6 +99,10 @@ export const updateUserXP = (payload) => apiClient.post('/api/users/me/update-xp
 
 // Notifications persistantes
 export const fetchNotifications = (params = {}) => apiClient.get('/api/users/notifications/', { params })
+export const createNotification = async (payload) => {
+  // payload: { type, title, message, data }
+  return apiClient.post('/api/users/notifications/', payload)
+}
 export const markNotificationRead = async (id) => {
   try {
     return await apiClient.patch(`/api/users/notifications/${id}/`, { read: true })

@@ -1493,6 +1493,10 @@ async function finishQuiz() {
 
 async function backToList() {
   // NE PAS nettoyer la sauvegarde pour permettre à l'utilisateur de reprendre plus tard
+  // Avant de quitter, sauvegarder l'état courant pour éviter tout retour en arrière d'index
+  try {
+    saveQuizState()
+  } catch (_) {}
   // La sauvegarde sera automatiquement nettoyée soit:
   // - Quand le quiz est terminé (dans finishQuiz)
   // - Quand elle expire (1 heure max)
@@ -1637,9 +1641,9 @@ function restoreQuizState(quizData) {
     
     
     // LOGIQUE DE RESTAURATION
-    // Si l'utilisateur a répondu à la question actuelle, il reprend à la question suivante
-    // Si l'utilisateur n'a pas répondu, il reprend sur la même question (sauf première tentative où l'on saute)
-    const hasAnsweredCurrentQuestion = savedState.userAnswers.some(answer => answer.questionIndex === savedState.currentQuestionIndex)
+    // Règle demandée:
+    // - Tentative 1 → on saute la question courante (reprendre à la suivante)
+    // - Tentatives > 1 → on reprend exactement à la même question
     const totalQuestions = quizData.questions?.length || 0
     const attemptNumber = Number(savedState.currentAttempt) || 1
     const skipCurrentQuestion = attemptNumber <= 1
@@ -1649,7 +1653,8 @@ function restoreQuizState(quizData) {
     const wasOnLastQuestion = savedState.currentQuestionIndex >= totalQuestions - 1
     const hasCompletedAllQuestions = savedState.userAnswers.length >= totalQuestions
     
-    if (wasOnLastQuestion || hasCompletedAllQuestions) {
+    // Considérer le quiz comme terminé UNIQUEMENT si toutes les questions ont été répondues
+    if (hasCompletedAllQuestions) {
       console.log('🎯 Quiz terminé - Affichage des résultats')
       
       // Restaurer les réponses précédentes
@@ -1672,16 +1677,18 @@ function restoreQuizState(quizData) {
     let rawResumeIndex = 0
     if (totalQuestions > 0) {
       if (skipCurrentQuestion) {
+        // Tentative 1: saute la question courante
         rawResumeIndex = Math.min(Math.max(savedState.currentQuestionIndex + 1, 0), lastQuestionIndex)
       } else {
-        const tentativeIndex = hasAnsweredCurrentQuestion
-          ? savedState.currentQuestionIndex + 1
-          : savedState.currentQuestionIndex
-        rawResumeIndex = Math.min(Math.max(tentativeIndex, 0), lastQuestionIndex)
+        // Tentatives > 1: reste sur la même question
+        rawResumeIndex = Math.min(Math.max(savedState.currentQuestionIndex, 0), lastQuestionIndex)
       }
     }
+    // Ne jamais revenir en arrière par rapport aux questions déjà répondues
+    const answeredQuestions = savedState.userAnswers.length
+    const safeResumeIndex = Math.max(rawResumeIndex, Math.min(answeredQuestions, lastQuestionIndex))
     const clampedResumeIndex = totalQuestions > 0
-      ? rawResumeIndex
+      ? Math.min(Math.max(safeResumeIndex, 0), lastQuestionIndex)
       : 0
     const resumeQuestionNumber = totalQuestions === 0
       ? 0
@@ -1766,11 +1773,11 @@ function isValidSavedState(savedState, quizData) {
     return false
   }
   
-  // Accepter un écart raisonnable (l'utilisateur peut être sur la question suivante)
+  // Tolérance: un écart peut survenir (navigation/timeout). On normalisera lors de la reprise
   const indexDiff = Math.abs(savedState.currentQuestionIndex - expectedIndex)
   if (indexDiff > 1 && savedState.currentQuestionIndex < totalQuestions - 1) {
-    console.warn('⚠️ Index de question incohérent - écart trop important')
-    return false
+    console.info('ℹ️ Index de question incohérent - normalisation automatique à la reprise')
+    // Ne pas invalider: la restauration fera un clamp sûr pour éviter de revenir en arrière
   }
   
   console.log('✅ État sauvegardé valide')
@@ -1932,23 +1939,22 @@ function getSavedProgressInfo(quizId) {
     // Calculer la progression
     const totalQuestions = quiz.value.find(q => q.id === quizId)?.questions?.length || 0
     const attemptNumber = Number(savedState.currentAttempt) || 1
+    const skipCurrentQuestion = attemptNumber <= 1
     
-    // Vérifier si la question actuelle a été répondue
+    // Vérifier si la question actuelle a été répondue (utile pour indiquer perte de question en tentative 1)
     const hasAnsweredCurrentQuestion = savedState.userAnswers.some(answer => answer.questionIndex === savedState.currentQuestionIndex)
     const questionLeftNumber = totalQuestions > 0 ? Math.min(savedState.currentQuestionIndex + 1, totalQuestions) : 0
-    const skipCurrentQuestion = attemptNumber <= 1
     
     const lastQuestionIndex = totalQuestions > 0 ? totalQuestions - 1 : 0
     let rawResumeIndex = 0
     
     if (totalQuestions > 0) {
       if (skipCurrentQuestion) {
+        // Tentative 1: saute la question courante
         rawResumeIndex = Math.min(Math.max(savedState.currentQuestionIndex + 1, 0), lastQuestionIndex)
       } else {
-        const tentativeIndex = hasAnsweredCurrentQuestion
-          ? savedState.currentQuestionIndex + 1
-          : savedState.currentQuestionIndex
-        rawResumeIndex = Math.min(Math.max(tentativeIndex, 0), lastQuestionIndex)
+        // Tentatives > 1: reprend exactement à la même question
+        rawResumeIndex = Math.min(Math.max(savedState.currentQuestionIndex, 0), lastQuestionIndex)
       }
     }
     
@@ -1956,9 +1962,9 @@ function getSavedProgressInfo(quizId) {
     const resumeQuestionNumber = totalQuestions === 0
       ? 0
       : Math.min(resumeQuestionIndex + 1, totalQuestions)
-    const questionLost = !hasAnsweredCurrentQuestion && totalQuestions > 0 && savedState.currentQuestionIndex < totalQuestions
-    // Si la première question n'a pas été répondue (currentQuestionIndex = 0, pas de réponse)
-    const isFirstQuestionLost = savedState.currentQuestionIndex === 0 && !hasAnsweredCurrentQuestion
+    // Perte de question uniquement en tentative 1 quand on n'a pas répondu
+    const questionLost = skipCurrentQuestion && !hasAnsweredCurrentQuestion && totalQuestions > 0 && savedState.currentQuestionIndex < totalQuestions
+    const isFirstQuestionLost = skipCurrentQuestion && savedState.currentQuestionIndex === 0 && !hasAnsweredCurrentQuestion
     
     // Si le quiz vient d'être démarré (currentQuestionIndex = 0, pas de réponse, pas de temps écoulé)
     const isJustStarted = savedState.currentQuestionIndex === 0 && savedState.userAnswers.length === 0
@@ -1966,7 +1972,8 @@ function getSavedProgressInfo(quizId) {
     // VÉRIFICATION SPÉCIALE POUR LES QUIZ TERMINÉS
     const wasOnLastQuestion = savedState.currentQuestionIndex >= totalQuestions - 1
     const hasCompletedAllQuestions = savedState.userAnswers.length >= totalQuestions
-    const isQuizCompleted = wasOnLastQuestion || hasCompletedAllQuestions
+    // Terminé seulement si toutes les questions ont été répondues (ne pas confondre avec "sur la dernière question")
+    const isQuizCompleted = hasCompletedAllQuestions
     
     const result = {
       currentQuestion: resumeQuestionNumber,
@@ -2327,6 +2334,7 @@ onUnmounted(() => {
   color: #475569;
   line-height: 1.5;
   margin: 0;
+  text-align: left;
 }
 
 .quiz-actions, .answer-actions {

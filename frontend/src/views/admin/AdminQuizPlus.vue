@@ -3,20 +3,6 @@
     <FormatHelp :format-template="QUIZ_FORMAT_TEMPLATE">
       <template #notes>
         <div class="format-examples">
-          <h4>Format recommandé avec blocs ===</h4>
-          <pre><code>Titre: Quiz Dérivées
-Instructions: Testez vos connaissances sur les dérivées
-Difficulté: medium
-Images: image1.png, image2.jpg
-
-Question: Quelle est la dérivée de $f(x) = x^2$ ?
-A: $2x$
-B: $x$
-C: $2$
-D: $x^2$
-Correct: A
-Explication: La dérivée de $x^2$ est $2x$ d'après la règle...
-===</code></pre>
           
           <h4>Support des images</h4>
           <ul>
@@ -25,6 +11,14 @@ Explication: La dérivée de $x^2$ est $2x$ d'après la règle...
             <li>Types supportés : JPG, PNG, GIF, WebP (max 10MB)</li>
             <li>Les images seront associées aux questions du quiz</li>
             <li>Format alternatif : <code>Titre ;; Instructions ;; Difficulté ;; JSON_Questions</code></li>
+          </ul>
+          
+          <h4>Sauts de ligne dans les explications</h4>
+          <ul>
+            <li><code>\\</code> ou <code>//</code> : Saut de ligne simple</li>
+            <li><code>/n</code> : Saut de ligne alternatif</li>
+            <li><code>\n</code> : Saut de ligne littéral</li>
+            <li><code>$//$</code> : Saut de ligne en mode LaTeX</li>
           </ul>
         </div>
       </template>
@@ -127,30 +121,23 @@ Explication: La dérivée de $x^2$ est $2x$ d'après la règle...
             <span v-if="quiz.image" class="images-count">🖼️ {{ quiz.image.split(',').length }} images</span>
           </div>
 
-          <!-- Aperçu des questions -->
+          <!-- Aperçu des questions avec style quiz réel -->
           <div class="questions-preview">
-            <div v-for="(q, qIdx) in quiz.questions" :key="qIdx" class="question-mini">
-              <div class="question-header">
-                <strong>Q{{ qIdx + 1 }}:</strong> 
-                <div v-html="renderWithImages(q.question, quiz.image)"></div>
-              </div>
+            <div v-for="(q, qIdx) in quiz.questions" :key="qIdx" class="question-preview">
+              <h4 class="question-title-preview">Q{{ qIdx + 1 }}: <span v-html="renderWithImages(q.question, quiz.image)"></span></h4>
               
-              <div class="options-mini">
-                <span v-for="(opt, oIdx) in q.options" :key="oIdx" 
-                      class="option-mini" 
+              <div class="options-container-preview">
+                <div v-for="(opt, oIdx) in q.options" :key="oIdx" 
+                      class="option-card-preview" 
                       :class="{ correct: oIdx === q.correct_answer }">
-                  {{ String.fromCharCode(65 + oIdx) }}: <span v-html="renderWithImages(opt, quiz.image)"></span>
-                </span>
+                  <div class="option-letter-preview">{{ String.fromCharCode(65 + oIdx) }}</div>
+                  <span class="option-text-preview" v-html="renderWithImages(opt, quiz.image)"></span>
+                </div>
               </div>
               
-              <div v-if="showExplanations" class="explanation-section">
-                <div v-if="q.explanation" class="explanation-mini">
-                  <strong>💡 Explication:</strong> 
-                  <div v-html="renderWithImages(q.explanation, quiz.image)"></div>
-                </div>
-                <div v-else class="no-explanation">
-                  <em>⚠️ Aucune explication fournie pour cette question</em>
-                </div>
+              <div v-if="showExplanations && q.explanation" class="explanation-preview">
+                <h5 class="explanation-title-preview">Explication :</h5>
+                <p class="explanation-text-preview" v-html="renderWithImages(q.explanation, quiz.image)"></p>
               </div>
             </div>
           </div>
@@ -182,7 +169,7 @@ const imagesInput = ref(null)
 // CONSTANTES DU FORMAT
 // ============================================================================
 
-const QUIZ_FORMAT_TEMPLATE = `{{ QUIZ_FORMAT_TEMPLATE }}
+const QUIZ_FORMAT_TEMPLATE = `Titre: Quiz Dérivées
 Instructions: Testez vos connaissances sur les dérivées
 Difficulté: medium
 Images: image1.png, image2.jpg
@@ -193,15 +180,9 @@ B: $x$
 C: $2$
 D: $x^2$
 Correct: A
-Explication: La dérivée de $x^2$ est $2x$ d'après la règle...
-
-Question: Quelle est la dérivée de $f(x) = \\sin(x)$ ?
-A: $-\\cos(x)$
-B: $\\cos(x)$
-C: $\\sin(x)$
-D: $-\\sin(x)$
-Correct: B
-Explication: La dérivée de $\\sin(x)$ est $\\cos(x)$...
+Explication: La dérivée de $x^2$ est $2x$ d'après la règle de puissance.\\
+Pour $x^n$, la dérivée est $n \\cdot x^{n-1}$.\\
+Donc pour $x^2$ : $2 \\cdot x^{2-1} = 2x
 ===`
 
 // ============================================================================
@@ -684,9 +665,14 @@ function parseBlockFormat(text) {
           inExplanation = true
         }
       } else if (currentQuestion && inExplanation) {
-        // Conserver exactement les retours à la ligne dans l'explication
-        const additionalText = normalizeLineBreaks(line)
-        currentQuestion.explanation += '\n' + additionalText.trim()
+        // Conserver les retours à la ligne, mais éviter les lignes vides doublées
+        let additionalText = normalizeLineBreaks(line)
+        // Supprimer les retours en début créés par "\\" en fin de ligne précédente
+        additionalText = additionalText.replace(/^\n+/, '')
+        if (additionalText.length > 0) {
+          const needsSeparator = currentQuestion.explanation && !currentQuestion.explanation.endsWith('\n')
+          currentQuestion.explanation += (needsSeparator ? '\n' : '') + additionalText.trimEnd()
+        }
       } else if (currentQuestion && trimmed) {
         // Lignes supplémentaires (ex: [IMAGE_1]) rattachées à l'énoncé
         const extra = normalizeLineBreaks(trimmed)
@@ -887,7 +873,7 @@ function getImagePreview(file) {
  * Remplace les marqueurs [IMAGE_X] par les vraies images dans un texte
  */
 function renderWithImages(text, imageString) {
-  if (!text || !imageString) return text
+  if (!text) return text
   
   let processed = normalizeLineBreaks(text)
   const imageNames = imageManager.parseImageString(imageString)
@@ -923,6 +909,30 @@ function renderWithImages(text, imageString) {
     return `<span class="image-placeholder" style="background: #fee2e2; color: #dc2626; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; border: 1px dashed #dc2626;">🖼️ Image ${imageNumber} manquante</span>`
   })
 
+  // Forcer le style d'affichage LaTeX: ajouter \\displaystyle dans $...$ et $$...$$ si absent
+  function enforceDisplayStyleInMath(t) {
+    if (!t) return t
+    // D'abord traiter $$...$$ (bloc)
+    t = t.replace(/\$\$([\s\S]*?)\$\$/g, (match, inner) => {
+      const trimmed = String(inner).trim()
+      if (trimmed.startsWith('\\displaystyle')) return match
+      return `$$\\displaystyle ${inner}$$`
+    })
+    // Puis traiter $...$ (inline)
+    t = t.replace(/\$([^$\n]+)\$/g, (match, inner) => {
+      const trimmed = String(inner).trim()
+      if (trimmed.startsWith('\\displaystyle')) return match
+      return `$\\displaystyle ${inner}$`
+    })
+    return t
+  }
+
+  processed = enforceDisplayStyleInMath(processed)
+
+  // Marqueurs d'espace vertical réduit: [SM] (~6px) et [XS] (~3px)
+  processed = processed.replace(/\[SM\]/g, '<span class="spacer-sm"></span>')
+  processed = processed.replace(/\[XS\]/g, '<span class="spacer-xs"></span>')
+
   // Convertir les sauts de ligne en <br/> pour l'affichage HTML
   processed = processed.replace(/\n/g, '<br/>')
 
@@ -945,13 +955,19 @@ function renderWithImages(text, imageString) {
 }
 
 .format-examples pre {
-  background: #1f2937;
-  color: #f9fafb;
+  background: #1f2937 !important;
+  color: #f9fafb !important;
   padding: 1rem;
   border-radius: 6px;
   overflow-x: auto;
   font-size: 0.85rem;
   line-height: 1.4;
+}
+
+.format-examples pre code {
+  background: transparent !important;
+  color: #f9fafb !important;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
 }
 
 
@@ -1043,9 +1059,9 @@ function renderWithImages(text, imageString) {
 }
 
 .quiz-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .quiz-preview-card {
@@ -1054,6 +1070,7 @@ function renderWithImages(text, imageString) {
   border-radius: 12px;
   padding: 1.5rem;
   transition: all 0.2s;
+  width: 100%;
 }
 
 .quiz-preview-card:hover {
@@ -1120,70 +1137,95 @@ function renderWithImages(text, imageString) {
   padding-top: 1rem;
 }
 
-.question-mini {
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-  padding: 12px;
+/* Styles pour l'aperçu des questions - copiés du quiz réel */
+.question-preview {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
   background: #f8fafc;
-  border-radius: 6px;
-  border-left: 3px solid #3b82f6;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
 }
 
-.question-header {
-  margin-bottom: 0.5rem;
-  line-height: 1.4;
-}
-
-.options-mini {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.5rem 0;
-}
-
-.option-mini {
-  font-size: 0.75rem;
-  padding: 3px 8px;
-  background: #e5e7eb;
-  border-radius: 4px;
-  border: 1px solid #d1d5db;
-}
-
-.option-mini.correct {
-  background: #dcfce7;
-  color: #166534;
+.question-title-preview {
+  font-size: 1.1rem;
   font-weight: 600;
-  border-color: #10b981;
-}
-
-.explanation-mini {
-  margin-top: 0.75rem;
-  padding: 8px;
-  background: #fffbeb;
-  border-radius: 4px;
-  border-left: 3px solid #f59e0b;
-  font-size: 0.8rem;
+  color: #1e293b;
+  margin: 0 0 1.5rem 0;
   line-height: 1.4;
 }
 
-.explanation-mini strong {
-  color: #92400e;
-  display: block;
-  margin-bottom: 0.25rem;
+.options-container-preview {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
-.explanation-section {
-  margin-top: 0.75rem;
+.option-card-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  background: white;
 }
 
-.no-explanation {
-  margin-top: 0.75rem;
-  padding: 8px;
-  background: #fef2f2;
-  border-radius: 4px;
-  border-left: 3px solid #ef4444;
-  font-size: 0.8rem;
-  color: #991b1b;
+.option-card-preview.correct {
+  border-color: #10b981;
+  background: #d1fae5;
+}
+
+.option-card-preview.correct .option-text-preview {
+  color: #065f46;
+  font-weight: 600;
+}
+
+.option-letter-preview {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #374151;
+  flex-shrink: 0;
+  font-size: 0.875rem;
+}
+
+.option-card-preview.correct .option-letter-preview {
+  background: #10b981;
+  color: white;
+}
+
+.option-text-preview {
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.explanation-preview {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid #3b82f6;
+}
+
+.explanation-title-preview {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.explanation-text-preview {
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+  font-size: 0.9rem;
 }
 
 .quiz-preview-image {
@@ -1207,14 +1249,46 @@ function renderWithImages(text, imageString) {
   margin: 4px 0;
 }
 
-.option-mini .quiz-preview-image {
+.spacer-sm {
+  display: block;
+  height: 6px; /* petit espace vertical */
+}
+
+.spacer-xs {
+  display: block;
+  height: 3px; /* très petit espace vertical (~ moitié de SM) */
+}
+
+.option-text-preview .quiz-preview-image {
   max-width: 150px !important;
   margin: 4px 0 !important;
 }
 
 @media (max-width: 768px) {
   .quiz-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+  
+  .question-preview {
+    padding: 1rem;
+  }
+  
+  .question-title-preview {
+    font-size: 1rem;
+  }
+  
+  .option-card-preview {
+    padding: 0.5rem;
+  }
+  
+  .option-letter-preview {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .option-text-preview {
+    font-size: 0.85rem;
   }
 }
 </style> 

@@ -43,18 +43,29 @@
           @click="startQuiz(q)"
         >
           <div class="quiz-card-header">
-            <h3 class="quiz-card-title">{{ q.titre }}</h3>
-            <span class="quiz-difficulty" :class="q.difficulty">{{ getDifficultyLabel(q.difficulty) }}</span>
+            <div class="quiz-title-container">
+              <span class="quiz-icon">🧩</span>
+              <h3 class="quiz-card-title">{{ q.titre }}</h3>
+            </div>
+            <div
+              class="quiz-difficulty-stars"
+              :title="`Difficulté : ${getDifficultyLabel(q.difficulty)}`"
+            >
+              <span v-for="i in getDifficultyStars(q.difficulty)" :key="`filled-${i}`" class="star">★</span>
+              <span v-for="i in (3 - getDifficultyStars(q.difficulty))" :key="`empty-${i}`" class="star empty">☆</span>
+            </div>
           </div>
           <p class="quiz-card-description">{{ q.instruction }}</p>
           <div class="quiz-card-meta">
             <span class="quiz-questions">{{ q.questions?.length || 0 }} questions</span>
-            <span class="quiz-time">~{{ getEstimatedTime(q.questions?.length || 0) }}</span>
           </div>
           
           
           <!-- Affichage pour les quiz sauvegardés (à continuer) -->
-          <div v-if="savedQuizzes.value && savedQuizzes.value.has(q.id)" class="quiz-status-container">
+          <div
+            v-if="savedQuizzes.value && savedQuizzes.value.has(q.id)"
+            class="quiz-status-container quiz-status-saved"
+          >
             <!-- Progression à gauche -->
             <div class="quiz-progress-info">
               <span class="progress-icon">🔄</span>
@@ -94,10 +105,10 @@
           </div>
           
           <!-- Affichage pour les quiz terminés -->
-          <div v-else-if="hasAttemptedQuiz(q.id)" class="quiz-status-container">
-            <!-- Espace à gauche (vide) -->
-            <div class="quiz-left-spacer"></div>
-            
+          <div
+            v-else-if="hasAttemptedQuiz(q.id)"
+            class="quiz-status-container quiz-status-completed"
+          >
             <!-- Tentative et note à droite -->
             <div class="quiz-right-info">
               <div class="quiz-attempts">
@@ -236,7 +247,7 @@
 
           <div v-if="showAnswer && currentQuestion.explanation" class="explanation">
             <h4 class="explanation-title">Explication :</h4>
-            <p class="explanation-text" v-html="currentQuestion.explanation"></p>
+            <p class="explanation-text" v-html="renderExplanation(currentQuestion.explanation)"></p>
           </div>
 
           <div class="quiz-actions">
@@ -382,6 +393,52 @@ const lastSavedState = ref(null)
 const questionStartTime = ref(null)
 const questionTick = ref(0)
 let questionTimerInterval = null
+
+// =============================
+// Rendu texte explication (sauts de ligne, espaces, LaTeX)
+// =============================
+function normalizeLineBreaks(text) {
+  if (!text) return text
+  let t = String(text)
+  // LaTeX line break: \\ → saut de ligne
+  t = t.replace(/\\(\s|$)/g, '\n')
+  // Séquence littérale \n
+  t = t.replace(/\\n/g, '\n')
+  // Alias admin
+  t = t.replace(/(^|\s)\/{2}(?=\s|$)/g, '$1\n')
+  t = t.replace(/(^|\s)\/n(?=\s|$)/g, '$1\n')
+  t = t.replace(/(^|\s)\$\/{2}\$(?=\s|$)/g, '$1\n')
+  return t
+}
+
+function enforceDisplayStyleInMath(t) {
+  if (!t) return t
+  // $$...$$ block
+  t = t.replace(/\$\$([\s\S]*?)\$\$/g, (match, inner) => {
+    const trimmed = String(inner).trim()
+    if (trimmed.startsWith('\\displaystyle')) return match
+    return `$$\\displaystyle ${inner}$$`
+  })
+  // $...$ inline
+  t = t.replace(/\$([^$\n]+)\$/g, (match, inner) => {
+    const trimmed = String(inner).trim()
+    if (trimmed.startsWith('\\displaystyle')) return match
+    return `$\\displaystyle ${inner}$`
+  })
+  return t
+}
+
+function renderExplanation(text) {
+  if (!text) return text
+  let processed = normalizeLineBreaks(text)
+  processed = enforceDisplayStyleInMath(processed)
+  // Espaces réduits
+  processed = processed.replace(/\[SM\]/g, '<span class="spacer-sm"></span>')
+  processed = processed.replace(/\[XS\]/g, '<span class="spacer-xs"></span>')
+  // Convertir \n en <br/>
+  processed = processed.replace(/\n/g, '<br/>')
+  return processed
+}
 
 // Normalisation difficulté et paramètres temps/question
 const normalizedDifficulty = computed(() => {
@@ -1138,6 +1195,15 @@ function getDifficultyLabel(difficulty) {
   return labels[difficulty] || difficulty
 }
 
+function getDifficultyStars(difficulty) {
+  const stars = {
+    'easy': 1,
+    'medium': 2,
+    'hard': 3
+  }
+  return stars[difficulty] || 1
+}
+
 function formatSavedTime(date) {
   if (!date) return 'Inconnu'
   
@@ -1160,11 +1226,6 @@ function formatSavedTime(date) {
   })
 }
 
-function getEstimatedTime(questionCount) {
-  const timePerQuestion = 1.5 // minutes
-  const totalMinutes = Math.ceil(questionCount * timePerQuestion)
-  return `${totalMinutes} min`
-}
 
 async function startQuiz(quizData) {
   // Vérifier l'authentification
@@ -1577,9 +1638,11 @@ function restoreQuizState(quizData) {
     
     // LOGIQUE DE RESTAURATION
     // Si l'utilisateur a répondu à la question actuelle, il reprend à la question suivante
-    // Si l'utilisateur n'a pas répondu, il reprend à la question suivante
+    // Si l'utilisateur n'a pas répondu, il reprend sur la même question (sauf première tentative où l'on saute)
     const hasAnsweredCurrentQuestion = savedState.userAnswers.some(answer => answer.questionIndex === savedState.currentQuestionIndex)
     const totalQuestions = quizData.questions?.length || 0
+    const attemptNumber = Number(savedState.currentAttempt) || 1
+    const skipCurrentQuestion = attemptNumber <= 1
     
     // VÉRIFICATION SPÉCIALE POUR LA DERNIÈRE QUESTION
     // Si l'utilisateur était sur la dernière question ou l'a dépassée, afficher directement les résultats
@@ -1604,18 +1667,38 @@ function restoreQuizState(quizData) {
       return true
     }
     
-    // Calculer la prochaine question en s'assurant qu'elle ne dépasse pas le total
-    const nextQuestionIndex = Math.min(savedState.currentQuestionIndex + 1, totalQuestions - 1)
+    // Calculer la prochaine question en fonction de l'avancement réel et de la tentative
+    const lastQuestionIndex = totalQuestions > 0 ? totalQuestions - 1 : 0
+    let rawResumeIndex = 0
+    if (totalQuestions > 0) {
+      if (skipCurrentQuestion) {
+        rawResumeIndex = Math.min(Math.max(savedState.currentQuestionIndex + 1, 0), lastQuestionIndex)
+      } else {
+        const tentativeIndex = hasAnsweredCurrentQuestion
+          ? savedState.currentQuestionIndex + 1
+          : savedState.currentQuestionIndex
+        rawResumeIndex = Math.min(Math.max(tentativeIndex, 0), lastQuestionIndex)
+      }
+    }
+    const clampedResumeIndex = totalQuestions > 0
+      ? rawResumeIndex
+      : 0
+    const resumeQuestionNumber = totalQuestions === 0
+      ? 0
+      : Math.min(clampedResumeIndex + 1, totalQuestions)
     
-    // Restaurer l'état en avançant d'une question
+    // Restaurer l'état en reprenant sur la bonne question
     quizSessionId.value = savedState.sessionId
-    currentQuestionIndex.value = nextQuestionIndex
+    currentQuestionIndex.value = clampedResumeIndex
     userAnswers.value = [...savedState.userAnswers]
     quizStartTime.value = savedState.quizStartTime
     currentAttempt.value = savedState.currentAttempt
-    lastSavedState.value = savedState
+    lastSavedState.value = {
+      ...savedState,
+      currentQuestionIndex: clampedResumeIndex
+    }
     
-    console.log(`🔄 État du quiz restauré - Reprise à la question ${currentQuestionIndex.value + 1}`)
+    console.log(`🔄 État du quiz restauré - Reprise à la question ${resumeQuestionNumber}`)
     console.log(`📊 Réponses précédentes: ${userAnswers.value.length}`)
     
     return true
@@ -1624,8 +1707,6 @@ function restoreQuizState(quizData) {
     return false
   }
 }
-
-// Valider l'état sauvegardé pour éviter la triche (optimisé)
 function isValidSavedState(savedState, quizData) {
   // Vérifications rapides en premier
   if (savedState.userId !== userStore.id) {
@@ -1850,10 +1931,32 @@ function getSavedProgressInfo(quizId) {
     
     // Calculer la progression
     const totalQuestions = quiz.value.find(q => q.id === quizId)?.questions?.length || 0
-    const nextQuestionIndex = Math.min(savedState.currentQuestionIndex + 1, totalQuestions)
+    const attemptNumber = Number(savedState.currentAttempt) || 1
     
     // Vérifier si la question actuelle a été répondue
     const hasAnsweredCurrentQuestion = savedState.userAnswers.some(answer => answer.questionIndex === savedState.currentQuestionIndex)
+    const questionLeftNumber = totalQuestions > 0 ? Math.min(savedState.currentQuestionIndex + 1, totalQuestions) : 0
+    const skipCurrentQuestion = attemptNumber <= 1
+    
+    const lastQuestionIndex = totalQuestions > 0 ? totalQuestions - 1 : 0
+    let rawResumeIndex = 0
+    
+    if (totalQuestions > 0) {
+      if (skipCurrentQuestion) {
+        rawResumeIndex = Math.min(Math.max(savedState.currentQuestionIndex + 1, 0), lastQuestionIndex)
+      } else {
+        const tentativeIndex = hasAnsweredCurrentQuestion
+          ? savedState.currentQuestionIndex + 1
+          : savedState.currentQuestionIndex
+        rawResumeIndex = Math.min(Math.max(tentativeIndex, 0), lastQuestionIndex)
+      }
+    }
+    
+    const resumeQuestionIndex = totalQuestions > 0 ? rawResumeIndex : 0
+    const resumeQuestionNumber = totalQuestions === 0
+      ? 0
+      : Math.min(resumeQuestionIndex + 1, totalQuestions)
+    const questionLost = !hasAnsweredCurrentQuestion && totalQuestions > 0 && savedState.currentQuestionIndex < totalQuestions
     // Si la première question n'a pas été répondue (currentQuestionIndex = 0, pas de réponse)
     const isFirstQuestionLost = savedState.currentQuestionIndex === 0 && !hasAnsweredCurrentQuestion
     
@@ -1866,11 +1969,13 @@ function getSavedProgressInfo(quizId) {
     const isQuizCompleted = wasOnLastQuestion || hasCompletedAllQuestions
     
     const result = {
-      currentQuestion: nextQuestionIndex,
+      currentQuestion: resumeQuestionNumber,
       totalQuestions: totalQuestions,
       answersGiven: savedState.userAnswers.length,
       lastSaved: new Date(savedState.timestamp),
-      progress: nextQuestionIndex,
+      progress: resumeQuestionNumber,
+      questionLost: questionLost,
+      lostQuestion: questionLost ? questionLeftNumber : resumeQuestionNumber,
       isFirstQuestionLost: isFirstQuestionLost, // Indicateur spécial pour la première question non répondue
       hasAnsweredCurrentQuestion: hasAnsweredCurrentQuestion, // Si l'utilisateur a répondu à la question actuelle
       isJustStarted: isJustStarted, // Si le quiz vient d'être démarré
@@ -1963,6 +2068,10 @@ onUnmounted(() => {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 170px;
 }
 
 .quiz-card:hover {
@@ -1990,9 +2099,21 @@ onUnmounted(() => {
 .quiz-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
+  align-items: center;
   gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.quiz-title-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.quiz-icon {
+  font-size: 1.25rem;
+  color: #65a30d;
 }
 
 .quiz-card-title {
@@ -2001,40 +2122,30 @@ onUnmounted(() => {
   color: #0f172a;
   margin: 0;
   line-height: 1.4;
+  text-align: left;
   flex: 1;
 }
 
-.quiz-difficulty {
-  padding: 0.375rem 0.875rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  flex-shrink: 0;
+.quiz-difficulty-stars {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #fbbf24;
+  font-size: 1rem;
 }
 
-.quiz-difficulty.easy {
-  background: #f0fdf4;
-  color: #166534;
-  border: 1px solid #bbf7d0;
+.star {
+  font-size: 1rem;
+  color: currentColor;
 }
 
-.quiz-difficulty.medium {
-  background: #fffbeb;
-  color: #92400e;
-  border: 1px solid #fed7aa;
-}
-
-.quiz-difficulty.hard {
-  background: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
+.star.empty {
+  color: #d1d5db;
 }
 
 .quiz-card-description {
   color: #64748b;
-  margin: 0 0 1.25rem 0;
+  margin: 0;
   line-height: 1.6;
   font-size: 0.875rem;
 }
@@ -2046,6 +2157,7 @@ onUnmounted(() => {
   font-size: 0.875rem;
   color: #64748b;
   gap: 1rem;
+  margin-top: 0.25rem;
 }
 
 .quiz-interface {
@@ -2579,7 +2691,7 @@ onUnmounted(() => {
 
 /* Quiz status container */
 .quiz-status-container {
-  margin-top: 0.75rem;
+  margin-top: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -2587,9 +2699,17 @@ onUnmounted(() => {
   width: 100%;
 }
 
-/* Spacer pour les quiz */
-.quiz-left-spacer {
-  flex-shrink: 0;
+.quiz-status-saved {
+  width: 100%;
+  align-self: stretch;
+}
+
+.quiz-status-completed {
+  width: auto;
+  align-self: flex-end;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-left: auto;
 }
 
 /* Container des infos à droite (tentative + note) */

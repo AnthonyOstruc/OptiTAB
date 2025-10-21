@@ -17,7 +17,7 @@ export default {
   max-width: 100px;
   height: auto;
   margin-left: 0px;
-  margin-top: 5px;
+  margin-top: 2px;
   object-fit: contain;
 }
 </style>

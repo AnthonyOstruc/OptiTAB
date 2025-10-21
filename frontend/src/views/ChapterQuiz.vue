@@ -2070,15 +2070,17 @@ onUnmounted(() => {
   background: #ffffff;
   border: 1px solid #f1f5f9;
   border-radius: 16px;
-  padding: 1.75rem;
+  padding: 0.75rem; /* compact and consistent */
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  min-height: 170px;
+  gap: 0.35rem; /* tighter spacing inside */
+  min-height: 88px; /* target compact height */
+  height: 88px; /* enforce strict equal height across states */
+  overflow: hidden; /* prevent growth from nested content */
 }
 
 .quiz-card:hover {
@@ -2106,15 +2108,15 @@ onUnmounted(() => {
 .quiz-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.25rem;
+  align-items: flex-start; /* keep right meta aligned to top */
+  gap: 0.6rem;
+  margin-bottom: 0.05rem;
 }
 
 .quiz-title-container {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   flex: 1;
 }
 
@@ -2124,13 +2126,16 @@ onUnmounted(() => {
 }
 
 .quiz-card-title {
-  font-size: 1.125rem;
+  font-size: 0.92rem; /* slightly smaller */
   font-weight: 700;
   color: #0f172a;
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.25;
   text-align: left;
   flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .quiz-difficulty-stars {
@@ -2153,18 +2158,41 @@ onUnmounted(() => {
 .quiz-card-description {
   color: #64748b;
   margin: 0;
-  line-height: 1.6;
-  font-size: 0.875rem;
+  line-height: 1.25;
+  font-size: 0.75rem; /* 12px */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .quiz-card-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.875rem;
+  flex-wrap: nowrap; /* keep on one line */
+  font-size: 0.75rem; /* slightly smaller */
   color: #64748b;
-  gap: 1rem;
-  margin-top: 0.25rem;
+  gap: 0.35rem;
+  margin-top: 0.05rem;
+  min-height: 22px; /* anchor height for badges line */
+}
+
+/* Compact badges for attempts/score if present */
+.attempt-badge, .score-badge, .quiz-stats-badge, .quiz-continue-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 8px;
+  font-size: 0.7rem;
+  border-radius: 10px;
+}
+
+.quiz-card-meta-right, .quiz-stats, .quiz-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: nowrap;
 }
 
 .quiz-interface {

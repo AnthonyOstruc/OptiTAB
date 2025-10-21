@@ -5,7 +5,7 @@ export const sectionHero = {
   titre: "OptiTAB — Votre Succès, Notre Mission",
   sousTitre: "Votre plateforme de référence pour apprendre, pratiquer et progresser.",
   image: heroImage,
-  bg: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)"
+  bg: "linear-gradient(135deg, #fefefe 0%, #f8fafc 30%, #f1f5f9 60%, #e2e8f0 100%)"
 };
 
 export const introFeatures = {

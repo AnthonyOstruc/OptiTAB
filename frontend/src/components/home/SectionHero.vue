@@ -57,6 +57,31 @@ const props = defineProps({
   overflow: hidden;
   width: 100%;
   margin: 0;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(148, 163, 184, 0.1) 0%, transparent 60%),
+      radial-gradient(circle at 80% 20%, rgba(203, 213, 225, 0.08) 0%, transparent 60%);
+    z-index: 1;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.6) 0%, transparent 30%, rgba(255,255,255,0.2) 70%, transparent 100%);
+    z-index: 1;
+  }
+  
   @media (max-width: 800px) {
     flex-direction: column;
     text-align: center;
@@ -180,6 +205,10 @@ const props = defineProps({
     margin-top: -12px; /* Supprimer complètement l'espace en haut sur mobile */
     padding: 16px;
   }
+  
+  @media (max-width: 600px) {
+    padding: 12px;
+  }
 }
 
 .section-hero__cta-mobile {
@@ -196,15 +225,27 @@ const props = defineProps({
 }
 
 .section-hero__image {
-  max-width: 320px;
+  max-width: 480px;
   width: 100%;
   height: auto;
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+  border-radius: 24px;
   background: #fff;
   object-fit: cover;
-  filter: brightness(1.05) contrast(1.1) saturate(0.9) blur(0.5px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  filter: brightness(1.08) contrast(1.15) saturate(1.05);
   
+  @media (max-width: 800px) {
+    max-width: 360px;
+    border-radius: 20px;
+  }
+  
+  @media (max-width: 600px) {
+    max-width: 280px;
+    border-radius: 16px;
+  }
+  
+  @media (max-width: 400px) {
+    max-width: 240px;
+    border-radius: 12px;
+  }
 }
 </style> 

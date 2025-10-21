@@ -241,6 +241,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* (Reverted) Removed compact spacing overrides */
 .tnv-wrapper {
   width: 100%;
   max-width: none;

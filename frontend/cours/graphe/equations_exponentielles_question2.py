@@ -96,3 +96,4 @@ plt.close()
 
 print("Graphique 'equations_exponentielles_question2.png' créé avec succès!")
 
+

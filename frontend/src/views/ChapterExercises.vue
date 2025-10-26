@@ -1,6 +1,6 @@
 <template>
   <DashboardLayout>
-    <section class="exercices-section">
+    <section class="exercices-section" ref="exPageRef">
       <!-- Bouton de retour -->
       <BackButton 
         text="Retour aux chapitres" 
@@ -100,18 +100,24 @@
           </div>
           </div>
           <div class="exercices-list">
-            <ExerciceQCM
+            <div
               v-for="exercice in paginated"
               :key="exercice.id"
-              :eid="exercice.id"
-              :titre="exercice.titre || exercice.nom"
-              :instruction="exercice.instruction || exercice.contenu || exercice.question"
-              :solution="exercice.solution || exercice.reponse_correcte || ''"
-              :etapes="exercice.etapes || ''"
-              :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
-              :current="statusMap[exercice.id]?.status"
-              @status-changed="handleStatus"
-            />
+              :id="`ex-${exercice.id}`"
+              class="exercice-item-wrapper"
+              @click="setLastExerciceId(exercice.id)"
+            >
+              <ExerciceQCM
+                :eid="exercice.id"
+                :titre="exercice.titre || exercice.nom"
+                :instruction="exercice.instruction || exercice.contenu || exercice.question"
+                :solution="exercice.solution || exercice.reponse_correcte || ''"
+                :etapes="exercice.etapes || ''"
+                :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
+                :current="statusMap[exercice.id]?.status"
+                @status-changed="handleStatus"
+              />
+            </div>
             <Pagination :total="filteredExercices.length" :perPage="perPage" :page="currentPage" @update:page="handlePageChange" />
           </div>
           </template>
@@ -133,9 +139,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onActivated, onBeforeUnmount, nextTick, watch, computed } from 'vue'
+import { ref, onMounted, onActivated, onDeactivated, onBeforeUnmount, nextTick, watch, computed } from 'vue'
 import { defineOptions } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import SkeletonList from '@/components/common/SkeletonList.vue'
 import { getExercices, getStatuses, createStatus, updateStatus, deleteStatus } from '@/api'
@@ -153,6 +159,7 @@ const router = useRouter()
 const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()
 const notionId = ref(route.params.notionId)
+const exPageRef = ref(null)
 
 const exercices = ref([])
 const perPageOptions = [1,3,5]
@@ -201,26 +208,38 @@ const tabs = computed(() => [
 const activeTab = ref('all')
 
 // --- Persistence (sessionStorage) ---
-const storageKey = `optitab_page_exercices_${notionId}`
+const storageKey = computed(() => `optitab_page_exercices_${notionId.value}`)
+const focusKey = computed(() => `optitab_last_exercice_${notionId.value}`)
 
-function saveViewState() {
+// (supprimé: fonction dupliquée)
+
+function saveViewState(extra = {}) {
   try {
+    let scrollY = 0
+    try {
+      const container = getScrollContainer(exPageRef.value)
+      scrollY = (container === document.documentElement || container === document.body)
+        ? (window.pageYOffset || document.documentElement.scrollTop || 0)
+        : container.scrollTop
+    } catch (_) {}
+
     const state = {
       perPage: perPage.value,
       currentPage: currentPage.value,
       selectedDifficulty: selectedDifficulty.value,
       activeTab: activeTab.value,
       searchQuery: searchQuery.value,
-      scrollY: typeof window !== 'undefined' ? (window.scrollY || window.pageYOffset || 0) : 0,
-      t: Date.now()
+      scrollY,
+      t: Date.now(),
+      ...extra
     }
-    sessionStorage.setItem(storageKey, JSON.stringify(state))
+    sessionStorage.setItem(storageKey.value, JSON.stringify(state))
   } catch (_) {}
 }
 
 function restoreViewState() {
   try {
-    const raw = sessionStorage.getItem(storageKey)
+    const raw = sessionStorage.getItem(storageKey.value)
     if (!raw) return null
     const s = JSON.parse(raw)
     if (s && typeof s === 'object') {
@@ -284,6 +303,31 @@ onActivated(() => {
         window.MathJax.typesetPromise()
       }
     }, 100)
+
+    // Restaurer la position de scroll (retour depuis onglets Cours/Synthèse/Quiz)
+    const attemptRestore = () => {
+      try {
+        const raw = sessionStorage.getItem(storageKey.value)
+        if (!raw) return
+        const s = JSON.parse(raw)
+        if (!s || typeof s.scrollY !== 'number') return
+        const container = getScrollContainer(exPageRef.value)
+        if (container === document.documentElement || container === document.body) {
+          window.scrollTo({ top: s.scrollY, behavior: 'auto' })
+        } else {
+          container.scrollTo({ top: s.scrollY, behavior: 'auto' })
+        }
+      } catch (_) {}
+    }
+    // Si un hash #ex-<id> est présent, cibler cet exercice en priorité
+    tryScrollToHashExercice()
+    setTimeout(() => { tryScrollToHashExercice() }, 60)
+    setTimeout(() => { tryScrollToHashExercice() }, 200)
+
+    // Tentatives espacées pour couvrir les réarrangements de layout
+    attemptRestore()
+    setTimeout(attemptRestore, 50)
+    setTimeout(attemptRestore, 200)
   })
 })
 
@@ -327,8 +371,14 @@ async function loadData() {
   } finally {
     loading.value = false
     await nextTick()
+
+    // 1) Si on vient avec un hash #ex-<id>, forcer l'affichage et le scroll vers cet exercice
+    await tryScrollToHashExercice()
     
-    // Forcer le rendu MathJax après le chargement des exercices
+    // 2) Installer l'écouteur de scroll (et le réinitialiser si besoin)
+    setupScrollListener()
+
+    // 3) Forcer le rendu MathJax après le chargement des exercices
     setTimeout(() => {
       if (window.MathJax && window.MathJax.typesetPromise) {
         try {
@@ -342,17 +392,25 @@ async function loadData() {
       }
     }, 100)
     
-    setTimeout(() => {
-      try {
-        const raw = sessionStorage.getItem(storageKey)
-        if (raw) {
+    // 4) Sinon, restaurer la position scroll sauvegardée
+    if (!route.hash || !route.hash.startsWith('#ex-')) {
+      const attemptRestore = () => {
+        try {
+          const raw = sessionStorage.getItem(storageKey.value)
+          if (!raw) return
           const s = JSON.parse(raw)
-          if (s && typeof s.scrollY === 'number') {
+          if (!s || typeof s.scrollY !== 'number') return
+          const container = getScrollContainer(exPageRef.value)
+          if (container === document.documentElement || container === document.body) {
             window.scrollTo({ top: s.scrollY, behavior: 'auto' })
+          } else {
+            container.scrollTo({ top: s.scrollY, behavior: 'auto' })
           }
-        }
-      } catch (_) {}
-    }, 50)
+        } catch (_) {}
+      }
+      setTimeout(attemptRestore, 30)
+      setTimeout(attemptRestore, 120)
+    }
   }
 }
 
@@ -361,6 +419,13 @@ watch(() => route.params.notionId, async (newId, oldId) => {
   if (newId && newId !== oldId) {
     notionId.value = newId
     await loadData()
+  }
+})
+
+// Sur changement de hash, tenter de scroller vers l'exercice ciblé
+watch(() => route.hash, (newHash, oldHash) => {
+  if (newHash && newHash !== oldHash && newHash.startsWith('#ex-')) {
+    tryScrollToHashExercice()
   }
 })
 
@@ -411,8 +476,13 @@ const paginated = computed(() => {
 
 function handlePageChange(page) {
   currentPage.value = page
-  // scroll to top of exercises
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  // scroll to top of exercises (dans le bon conteneur)
+  const container = getScrollContainer(exPageRef.value)
+  if (container === document.documentElement || container === document.body) {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  } else {
+    container.scrollTo({ top: 0, behavior: 'smooth' })
+  }
   // Sauvegarder l'état
   saveViewState()
   // Forcer le rendu MathJax après le changement de page
@@ -473,6 +543,9 @@ async function handleStatus({ exerciceId, status }) {
       // Supprimer du statut local
       delete statusMap.value[exerciceId]
     }
+
+    // Mémoriser le dernier exercice touché (pour retour via onglet)
+    setLastExerciceId(exerciceId)
   } catch (error) {
     console.error('Erreur lors de la sauvegarde du statut:', error)
     // En cas d'erreur, on peut quand même mettre à jour le statut local
@@ -536,6 +609,118 @@ watch(paginated, () => {
 onBeforeUnmount(() => {
   saveViewState()
 })
+
+onDeactivated(() => {
+  // Sauvegarder la position au moment de quitter via onglets
+  saveViewState()
+})
+
+// Sauvegarder aussi juste avant de quitter la route (sécurité)
+onBeforeRouteLeave((_to, _from, next) => {
+  try { saveViewState() } catch (_) {}
+  next()
+})
+
+function setLastExerciceId(id) {
+  try {
+    if (!id) return
+    sessionStorage.setItem(focusKey.value, String(id))
+  } catch (_) {}
+}
+
+// Essayer de scroller jusqu'à l'ancre ex-<id> si présente dans l'URL
+async function tryScrollToHashExercice() {
+  try {
+    const h = route.hash || ''
+    if (!h.startsWith('#ex-')) return false
+    const id = Number(h.replace('#ex-', ''))
+    if (!id) return false
+
+    // S'assurer que l'exercice est visible: retirer filtres qui pourraient le masquer
+    const ex = exercices.value.find(e => Number(e.id) === id)
+    if (!ex) return false
+
+    // Adapter l'onglet selon le statut connu
+    const st = statusMap.value[id]?.status
+    if (st === 'acquired' || st === 'not_acquired') {
+      activeTab.value = st
+    } else if (statusMap.value[id]) {
+      activeTab.value = 'done'
+    } else {
+      activeTab.value = 'all'
+    }
+    selectedDifficulty.value = 'all'
+    searchQuery.value = ''
+
+    await nextTick()
+    // Calculer la page qui contient cet exercice dans la liste filtrée
+    const idx = filteredExercices.value.findIndex(e => Number(e.id) === id)
+    if (idx >= 0) {
+      const page = Math.floor(idx / Math.max(1, perPage.value)) + 1
+      if (page !== currentPage.value) {
+        currentPage.value = page
+        await nextTick()
+      }
+    }
+
+    // Scroller jusqu'à l'élément (avec fallback retardé)
+    const elId = `ex-${id}`
+    const doScroll = () => {
+      const el = document.getElementById(elId)
+      if (el) {
+        el.scrollIntoView({ behavior: 'auto', block: 'start' })
+        return true
+      }
+      return false
+    }
+    if (!doScroll()) {
+      setTimeout(doScroll, 50)
+      setTimeout(doScroll, 150)
+    }
+    return true
+  } catch (_) {
+    return false
+  }
+}
+
+// Trouver le conteneur scrollable le plus proche
+function getScrollContainer(el) {
+  let parent = el ? el.parentElement : null
+  while (parent) {
+    const style = window.getComputedStyle(parent)
+    const overflowY = style.overflowY
+    const canScroll = (overflowY === 'auto' || overflowY === 'scroll') && parent.scrollHeight > parent.clientHeight
+    if (canScroll) return parent
+    parent = parent.parentElement
+  }
+  return document.scrollingElement || document.documentElement
+}
+
+let scrollCleanup = null
+function setupScrollListener() {
+  try {
+    // Nettoyer l'ancien listener si présent
+    if (scrollCleanup) {
+      try { scrollCleanup() } catch (_) {}
+      scrollCleanup = null
+    }
+    const container = getScrollContainer(exPageRef.value)
+    const handleScroll = () => {
+      const scrollTop = (container === document.documentElement || container === document.body)
+        ? (window.pageYOffset || document.documentElement.scrollTop || 0)
+        : container.scrollTop
+      // Persister la position pour une reprise fluide
+      saveViewState({ scrollY: scrollTop })
+    }
+    if (container === document.documentElement || container === document.body) {
+      window.addEventListener('scroll', handleScroll, { passive: true })
+      scrollCleanup = () => window.removeEventListener('scroll', handleScroll)
+    } else {
+      container.addEventListener('scroll', handleScroll, { passive: true })
+      scrollCleanup = () => container.removeEventListener('scroll', handleScroll)
+    }
+  } catch (_) {}
+}
 
 async function generatePDF(includeCorrection = false) {
   try {

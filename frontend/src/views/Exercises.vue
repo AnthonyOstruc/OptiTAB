@@ -97,9 +97,11 @@ onMounted(async () => {
     let activeMatiereId = subjectsStore.activeMatiereId
     const paysId = userStore.pays?.id || null
     const niveauId = userStore.niveau_pays?.id || null
-    // Si aucune matière active mais des matières dispo, activer la première
+    // Si aucune matière active mais des matières dispo, activer par défaut « Mathématiques » si présente
     if (!activeMatiereId && matieres.value.length > 0) {
-      activeMatiereId = matieres.value[0].id
+      const normalize = (s) => (s || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+      const preferred = matieres.value.find(m => normalize(m.nom || m.titre).includes('mathem'))
+      activeMatiereId = (preferred || matieres.value[0]).id
       subjectsStore.setActiveMatiere(activeMatiereId)
     }
 

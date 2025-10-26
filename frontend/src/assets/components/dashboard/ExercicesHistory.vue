@@ -5,8 +5,6 @@
     list-title="📝 Exercices effectués"
     loading-text="Chargement des exercices..."
     api-endpoint="/api/suivis/exercices/stats/"
-    :extra-params="{ limit: 6 }"
-    :custom-filters="masteryFilters"
     :navigation-handler="navigateToExercice"
     :items-per-page="6"
     :filtered-items="filteredExercicesList"
@@ -41,19 +39,7 @@
       </div>
     </template>
 
-    <!-- Statistiques par matière -->
-    <template #matiere-stats="{ stats }">
-      <h4 class="section-subtitle">📊 Moyennes par matière</h4>
-      <div class="matiere-grid">
-        <div v-for="matiere in stats" :key="matiere.id" class="matiere-card">
-          <div class="matiere-name">{{ matiere.titre }}</div>
-          <div class="matiere-info">
-            <span class="matiere-average">{{ matiere.average }}/10</span>
-            <span class="matiere-count">{{ matiere.exercice_count }} exercices</span>
-          </div>
-        </div>
-      </div>
-    </template>
+    
 
     <!-- Tableau récapitulatif matière / notion -->
     <template #matiere-notion-stats="{ stats }">
@@ -86,7 +72,7 @@
             </span>
           </div>
         </div>
-        <template v-for="row in sortedStats" :key="`${row.matiere.id}-${row.notion.id}`">
+        <template v-for="row in pagedSummaryRows" :key="`${row.matiere.id}-${row.notion.id}`">
           <div class="summary-row">
             <div class="cell matiere">{{ row.matiere.titre }}</div>
             <div class="cell notion">
@@ -98,25 +84,23 @@
             <div class="cell average" :class="getAverageClass(row.average)">{{ formatAverage(row.average) }}</div>
           </div>
         </template>
+        <div v-if="summaryTotalPages > 1" class="summary-pagination">
+          <button class="pg-btn" :disabled="summaryPage <= 1" @click="goToSummaryPage(summaryPage-1)">‹ Précédent</button>
+          <button
+            v-for="p in summaryVisiblePages"
+            :key="p + '-p'"
+            class="pg-page"
+            :class="{ active: p === summaryPage, dots: p === '...' }"
+            :disabled="p === '...'"
+            @click="p !== '...' && goToSummaryPage(p)"
+          >
+            {{ p }}
+          </button>
+          <button class="pg-btn" :disabled="summaryPage >= summaryTotalPages" @click="goToSummaryPage(summaryPage+1)">Suivant ›</button>
+        </div>
       </div>
     </template>
 
-    <!-- Filtres personnalisés -->
-    <template #custom-filters="{ filters, selected }">
-      <div class="inline-mastery-filters">
-        <button
-          v-for="filter in filters"
-          :key="filter.value"
-          @click.stop="updateSelectedMastery(filter.value)"
-          :class="['inline-mastery-btn', filter.class, { active: selectedMastery === filter.value }]"
-          :title="filter.label"
-          :aria-label="filter.label"
-        >
-          <span class="inline-mastery-icon">{{ filter.icon }}</span>
-          <span class="inline-mastery-label">{{ filter.label }}</span>
-        </button>
-      </div>
-    </template>
 
     <!-- Liste des exercices -->
     <template #items-list="{ items, toggleDetails, isExpanded, navigateToItem }">
@@ -202,6 +186,9 @@ const currentExercicesList = ref([])
 const sortField = ref('exercice_count')
 const sortDirection = ref('desc')
 const matiereNotionStats = ref([])
+// Pagination pour le tableau récapitulatif
+const SUMMARY_PER_PAGE = 5
+const summaryPage = ref(1)
 
 // Chapitres supprimés: plus de tri dédié
 
@@ -227,7 +214,12 @@ const filteredExercicesList = computed(() => {
     })
   }
 
-  return filtered
+  filtered = [...filtered].sort((a, b) => {
+    const da = new Date(a.date_creation || a.created_at || a.date || 0).getTime()
+    const db = new Date(b.date_creation || b.created_at || b.date || 0).getTime()
+    return db - da
+  })
+  return filtered.slice(0, 6)
 })
 
 // Méthodes
@@ -293,6 +285,33 @@ const sortedStats = computed(() => {
   
   return sorted
 })
+
+const summaryTotalPages = computed(() => Math.ceil(sortedStats.value.length / SUMMARY_PER_PAGE) || 1)
+const pagedSummaryRows = computed(() => {
+  const start = (summaryPage.value - 1) * SUMMARY_PER_PAGE
+  return sortedStats.value.slice(start, start + SUMMARY_PER_PAGE)
+})
+
+const summaryVisiblePages = computed(() => {
+  const total = summaryTotalPages.value
+  const current = summaryPage.value
+  const pages = []
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i)
+  } else if (current <= 4) {
+    pages.push(1,2,3,4,5,'...', total)
+  } else if (current >= total - 3) {
+    pages.push(1,'...', total-4, total-3, total-2, total-1, total)
+  } else {
+    pages.push(1,'...', current-1, current, current+1, '...', total)
+  }
+  return pages
+})
+
+const goToSummaryPage = (p) => {
+  const t = Math.max(1, Math.min(summaryTotalPages.value, Number(p)))
+  summaryPage.value = t
+}
 
 // Méthode pour changer le tri
 const sortBy = (field) => {
@@ -782,6 +801,38 @@ defineExpose({
   color: #dc2626; 
   background: #fee2e2;
 }
+
+/* Pagination du tableau récapitulatif */
+.summary-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 0.5rem 1rem;
+}
+.pg-btn {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.35rem 0.6rem;
+  color: #6b7280;
+  cursor: pointer;
+}
+.pg-btn:disabled { opacity: .5; cursor: not-allowed; }
+.pg-page {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  cursor: pointer;
+}
+.pg-page.active { background: #3b82f6; border-color:#3b82f6; color:#fff; }
+.pg-page.dots { cursor: default; }
 
 /* En-têtes triables - Version simple */
 .sortable-header {

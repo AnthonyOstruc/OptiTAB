@@ -779,10 +779,13 @@ onMounted(async () => {
       subjectsStore.loadActiveMatiereId()
     ])
     
-    // Si aucune matière sélectionnée, en ajouter une par défaut (la première)
+    // Si aucune matière sélectionnée, en ajouter une par défaut (préférer « Mathématiques »)
     if (matieres.value.length > 0 && subjectsStore.selectedMatieresIds.length === 0) {
-      subjectsStore.addMatiereId(matieres.value[0].id)
-      setActiveMatiere(matieres.value[0].id)
+      const normalize = (s) => (s || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+      const preferred = matieres.value.find(m => normalize(m.nom || m.titre).includes('mathem'))
+      const def = preferred || matieres.value[0]
+      subjectsStore.addMatiereId(def.id)
+      setActiveMatiere(def.id)
     }
     
     // Synchroniser l'état local avec le store global
@@ -901,10 +904,13 @@ watch(() => userStore.niveau_pays, async (newNiveau) => {
         availableMatiereIds.includes(id)
       )
       
-      // Si aucune matière n'est sélectionnée après nettoyage, en ajouter une par défaut
+      // Si aucune matière n'est sélectionnée après nettoyage, en ajouter une par défaut (préférer « Mathématiques »)
       if (subjectsStore.selectedMatieresIds.length === 0 && matieres.value.length > 0) {
-        subjectsStore.addMatiereId(matieres.value[0].id)
-        setActiveMatiere(matieres.value[0].id)
+        const normalize = (s) => (s || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+        const preferred = matieres.value.find(m => normalize(m.nom || m.titre).includes('mathem'))
+        const def = preferred || matieres.value[0]
+        subjectsStore.addMatiereId(def.id)
+        setActiveMatiere(def.id)
       }
     } catch (error) {
       handleError(error, 'watch userStore.niveau_pays')

@@ -27,8 +27,8 @@
 
 
 
-    <!-- Historique des quiz → affiché uniquement pour les administrateurs -->
-    <QuizHistory v-if="userStore.isAdmin" />
+    <!-- Historique des quiz → masqué (conservé mais non rendu) -->
+    <QuizHistory v-if="false" />
 
     <!-- Historique des exercices avec filtres → rendu immédiat -->
     <ExercicesHistory />

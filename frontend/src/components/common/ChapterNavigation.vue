@@ -54,6 +54,12 @@ const tabs = computed(() => {
   
   // Cas 2: On est dans une notion spécifique (liste des chapitres)
   if (notionId && currentPath.includes('/exercices-notion/')) {
+    // Construire un hash vers le dernier exercice visité si disponible
+    let exHash = ''
+    try {
+      const lastId = sessionStorage.getItem(`optitab_last_exercice_${notionId}`)
+      if (lastId) exHash = `#ex-${lastId}`
+    } catch (_) {}
     return [
       { 
         key: 'cours', 
@@ -71,7 +77,7 @@ const tabs = computed(() => {
         key: 'exercices', 
         label: 'Exercices', 
         icon: AcademicCapIcon,
-        route: `/exercices-notion/${notionId}`
+        route: `/exercices-notion/${notionId}${exHash}`
       },
       { 
         key: 'quiz', 
@@ -114,6 +120,11 @@ const tabs = computed(() => {
   
   // Cas 4: On est dans une notion de cours (liste des chapitres de cours)
   if (notionId && currentPath.includes('/course-notion/')) {
+    let exHash = ''
+    try {
+      const lastId = sessionStorage.getItem(`optitab_last_exercice_${notionId}`)
+      if (lastId) exHash = `#ex-${lastId}`
+    } catch (_) {}
     return [
       { 
         key: 'cours', 
@@ -131,7 +142,7 @@ const tabs = computed(() => {
         key: 'exercices', 
         label: 'Exercices', 
         icon: AcademicCapIcon,
-        route: `/exercices-notion/${notionId}`
+        route: `/exercices-notion/${notionId}${exHash}`
       },
       { 
         key: 'quiz', 
@@ -144,6 +155,11 @@ const tabs = computed(() => {
   
   // Cas 5: On est dans une notion de quiz
   if (notionId && currentPath.includes('/quiz-notion/')) {
+    let exHash = ''
+    try {
+      const lastId = sessionStorage.getItem(`optitab_last_exercice_${notionId}`)
+      if (lastId) exHash = `#ex-${lastId}`
+    } catch (_) {}
     return [
       { 
         key: 'cours', 
@@ -161,7 +177,7 @@ const tabs = computed(() => {
         key: 'exercices', 
         label: 'Exercices ', 
         icon: AcademicCapIcon,
-        route: `/exercices-notion/${notionId}`
+        route: `/exercices-notion/${notionId}${exHash}`
       },
       { 
         key: 'quiz', 
@@ -174,6 +190,11 @@ const tabs = computed(() => {
 
   // Cas 6: On est dans une notion de synthèse (fiches)
   if (notionId && currentPath.includes('/sheets-notion/')) {
+    let exHash = ''
+    try {
+      const lastId = sessionStorage.getItem(`optitab_last_exercice_${notionId}`)
+      if (lastId) exHash = `#ex-${lastId}`
+    } catch (_) {}
     return [
       { 
         key: 'cours', 
@@ -191,7 +212,7 @@ const tabs = computed(() => {
         key: 'exercices', 
         label: 'Exercices', 
         icon: AcademicCapIcon,
-        route: `/exercices-notion/${notionId}`
+        route: `/exercices-notion/${notionId}${exHash}`
       },
       { 
         key: 'quiz', 
@@ -383,16 +404,32 @@ function handleTabClick(tabKey) {
         route.path.includes('/sheets-notion/') ? 'sheets' : null
       if (pageType && notionId) {
         const key = `optitab_scroll_${pageType}_${notionId}`
-        const state = { scrollY: window.scrollY || window.pageYOffset || 0, t: Date.now() }
+        // Récupérer la vraie position de scroll du conteneur d'app
+        const container = (document.querySelector('.dashboard-main') || document.querySelector('.dashboard-content') || document.documentElement)
+        const scrollY = (container === document.documentElement || container === document.body)
+          ? (window.pageYOffset || document.documentElement.scrollTop || 0)
+          : container.scrollTop
+        const state = { scrollY, t: Date.now() }
         sessionStorage.setItem(key, JSON.stringify(state))
+
+        // Si on quitte la page Exercices, mettre à jour aussi la clé utilisée par la page pour restaurer
+        if (pageType === 'exercices') {
+          try {
+            const exKey = `optitab_page_exercices_${notionId}`
+            const raw = sessionStorage.getItem(exKey)
+            const obj = raw ? (JSON.parse(raw) || {}) : {}
+            obj.scrollY = state.scrollY
+            obj.t = state.t
+            sessionStorage.setItem(exKey, JSON.stringify(obj))
+          } catch (_) {}
+        }
       }
     } catch (_) {}
 
-    // Navigation avec transition fluide
-    router.push({
-      path: tab.route,
-      replace: false // Permet l'utilisation du bouton retour
-    }).catch(err => {
+  // Navigation avec transition fluide
+    const target = tab.route
+    const navPromise = typeof target === 'string' ? router.push(target) : router.push({ ...target, replace: false })
+    Promise.resolve(navPromise).catch(err => {
       // Gestion des erreurs de navigation
       console.warn('Navigation error:', err)
       // Si la navigation échoue, on revient à l'onglet précédent

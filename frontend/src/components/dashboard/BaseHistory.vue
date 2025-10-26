@@ -1,5 +1,5 @@
 <template>
-  <div class="base-history">
+  <div class="base-history clean">
     <div class="history-header">
       <h3 class="history-title">{{ title }}</h3>
       <!-- Zone d'actions dans l'en-tête (ex: lien "Voir l'historique") -->
@@ -41,7 +41,7 @@
     </div>
 
     <!-- Slot pour les statistiques par matière -->
-    <div v-if="!loading && matiereStats.length > 0" class="matiere-stats">
+    <div v-if="!loading && matiereStats.length > 0 && hasMatiereStatsSlot" class="matiere-stats">
       <slot name="matiere-stats" :stats="matiereStats" />
     </div>
 
@@ -124,7 +124,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick, useSlots } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMatieres, getNotions } from '@/api'
 import apiClient, { apiUtils } from '@/api/client'
@@ -177,6 +177,8 @@ const emit = defineEmits(['data-loaded', 'filter-changed'])
 // Store et router
 const userStore = useUserStore()
 const router = useRouter()
+const slots = useSlots()
+const hasMatiereStatsSlot = computed(() => !!slots['matiere-stats'])
 
 // État
 const loading = ref(true)
@@ -604,17 +606,18 @@ defineExpose({
 <style scoped>
 .base-history {
   background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1.5rem;
+  border: 1px solid #e6eaf0;
+  border-radius: 14px;
+  padding: 1.25rem 1.25rem 1rem;
   margin: 1rem 0;
+  box-shadow: 0 4px 14px rgba(2,6,23,0.05);
 }
 
 .history-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .history-actions {
@@ -623,27 +626,11 @@ defineExpose({
   gap: 0.5rem;
 }
 
-.history-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1rem;
-}
+.history-title { font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0; }
 
-.history-filters {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
+.history-filters { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom: .75rem; }
 
-.filter-select {
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background: white;
-  min-width: 160px;
-  font-size: 0.875rem;
-}
+.filter-select { padding:.5rem .6rem; border:1px solid #e6eaf0; border-radius:10px; background:#fff; min-width:160px; font-size:.875rem; }
 
 .filter-select:disabled {
   background: #f9fafb;
@@ -651,26 +638,22 @@ defineExpose({
 }
 
 /* Stats sections */
-.stats-section {
-  margin-bottom: 1.5rem;
-}
+.stats-section { margin: .75rem 0 1rem; }
 
 .matiere-stats {
   margin-bottom: 1.5rem;
 }
 
 /* Liste des items */
-.items-list-section {
-  margin-top: 2rem;
-}
+.items-list-section { margin-top: 1rem; }
 
 .items-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  padding: 0.75rem;
-  margin: -0.75rem -0.75rem 1rem -0.75rem;
+  padding: 0.5rem 0.25rem;
+  margin: 0 0 .5rem 0;
   border-radius: 8px;
   transition: background-color 0.2s;
   gap: 1rem;
@@ -690,15 +673,13 @@ defineExpose({
   align-items: center;
 }
 
-.items-list-header:hover {
-  background-color: #f8fafc;
-}
+.items-list-header:hover { background-color: #f8fafc; }
 
 .section-toggle {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.35rem;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -775,15 +756,15 @@ defineExpose({
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 2rem;
-  padding: 1rem 0;
+  margin-top: 1rem;
+  padding: .5rem 0 .25rem;
 }
 
 .pagination-btn {
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
-  padding: 0.5rem 0.75rem;
+  padding: 0.35rem 0.6rem;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;

@@ -3,7 +3,7 @@
   <div v-else id="app">
     <router-view v-slot="{ Component, route }">
       <keep-alive include="ExercisesByNotion,ExerciceDetail,CourseByNotion,ChapterQuiz,Themes,QuizNotions,CourseNotions,SynthesisNotions,SynthesisByNotion">
-        <component :is="Component" :key="route.fullPath" />
+        <component :is="Component" :key="route.path" />
       </keep-alive>
     </router-view>
     <!-- Login Modal -->

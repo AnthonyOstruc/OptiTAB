@@ -41,9 +41,6 @@
                 <div class="cell notion">
                   <button class="notion-toggle" @click="toggleNotionDetails(row)">
                     <span class="notion-label">{{ row.notion.titre }}</span>
-                    <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :class="{ expanded: isNotionExpanded(row) }">
-                      <polyline points="6,9 12,15 18,9"></polyline>
-                    </svg>
                   </button>
                 </div>
                 <div class="cell count">{{ row.exercice_count }}</div>
@@ -301,8 +298,6 @@ const formatTime = (seconds) => {
 /* Détails sous notion */
 .notion-toggle { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.15rem 0.4rem; border: 1px solid transparent; border-radius: 6px; background: transparent; cursor: pointer; color: #1f2937; }
 .notion-toggle:hover { background: #f3f4f6; }
-.notion-toggle .chevron { transition: transform 0.2s; color: #6b7280; }
-.notion-toggle .chevron.expanded { transform: rotate(180deg); color: #374151; }
 .summary-details-row { display: block; padding: 0 0.5rem 0.75rem 0.5rem; border-bottom: 1px solid #f3f4f6; }
 .summary-details-row .details-cell { grid-column: 1 / -1; }
 .chapter-table { border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; overflow: hidden; }
@@ -345,5 +340,3 @@ const formatTime = (seconds) => {
 .exercice-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: #6b7280; flex-wrap: wrap; }
 .exercice-date, .exercice-time, .exercice-points { display: flex; align-items: center; gap: 0.25rem; }
 </style>
-
-

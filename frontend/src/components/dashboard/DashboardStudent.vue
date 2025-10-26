@@ -32,8 +32,6 @@
 
     <!-- Historique des exercices avec filtres → rendu immédiat -->
     <ExercicesHistory />
-    
-    <div v-if="loadingStats" class="dashboard-spinner"><span class="spinner"></span></div>
 
 
 
@@ -75,7 +73,7 @@ const subjectsStore = useSubjectsStore()
 const router = useRouter()
 
 const stats = ref({ done: 0, acquired: 0, not_acquired: 0 })
-const loadingStats = ref(true)
+// Supprimé: indicateur de chargement bas de page devenu inutile
 const statuses = ref([])
 
 const exercices = ref([])
@@ -155,7 +153,7 @@ onMounted(async () => {
 
 
   } catch {}
-  loadingStats.value = false
+  // Rien à afficher en bas: l'historique gère son propre état de chargement
 })
 </script>
 

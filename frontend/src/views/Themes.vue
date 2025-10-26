@@ -13,7 +13,12 @@
       <!-- Contenu principal -->
       <div class="main-content-base">
         <div class="notions-container">
-          <ThemeNotionsView :matiere-id="currentMatiereId" :notion-route-name="'ExercicesByNotion'" />
+          <ThemeNotionsView
+            :matiere-id="currentMatiereId"
+            :notion-route-name="'ExercicesByNotion'"
+            :show-search="false"
+            :deep-search-in-exercises="true"
+          />
         </div>
       </div>
     </section>

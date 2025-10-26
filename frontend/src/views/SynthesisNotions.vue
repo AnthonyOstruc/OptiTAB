@@ -15,7 +15,12 @@
           <p>Chargement...</p>
         </div>
         <div v-else class="notions-container">
-          <ThemeNotionsView :matiere-id="currentMatiereId" :notion-route-name="'SynthesisByNotion'" />
+          <ThemeNotionsView
+            :matiere-id="currentMatiereId"
+            :notion-route-name="'SynthesisByNotion'"
+            :show-search="false"
+            :deep-search-in-sheets="true"
+          />
         </div>
       </div>
     </div>

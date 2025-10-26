@@ -278,6 +278,11 @@ const error = ref('')
 const chapitres = ref([])
 
 onMounted(async () => {
+  // Synchroniser la recherche locale avec l'URL (barre globale)
+  const q0 = route.query?.q
+  if (typeof q0 !== 'undefined' && q0 !== null) {
+    try { searchQuery.value = String(q0) } catch {}
+  }
   await loadData()
 })
 
@@ -588,6 +593,31 @@ function clearSearch() {
 // Sauvegarder à chaque changement significatif
 watch([perPage, currentPage, selectedDifficulty, activeTab, searchQuery], () => {
   saveViewState()
+})
+
+// Garder l'URL en phase quand on saisit dans le champ local
+let updateUrlTimer = null
+watch(searchQuery, (val) => {
+  if (updateUrlTimer) clearTimeout(updateUrlTimer)
+  updateUrlTimer = setTimeout(() => {
+    const q = (val || '').trim()
+    const currentQ = route.query?.q ? String(route.query.q) : ''
+    if (q !== currentQ) {
+      const newQuery = { ...route.query }
+      if (q) newQuery.q = q
+      else delete newQuery.q
+      router.replace({ query: newQuery }).catch(() => {})
+    }
+  }, 150)
+})
+
+// Suivre la recherche globale (depuis la sidebar) -> mettre à jour le filtre
+watch(() => route.query.q, (val) => {
+  const incoming = val ? String(val) : ''
+  if (incoming !== (searchQuery.value || '')) {
+    searchQuery.value = incoming
+    currentPage.value = 1
+  }
 })
 
 // Forcer le rendu MathJax quand les exercices affichés changent

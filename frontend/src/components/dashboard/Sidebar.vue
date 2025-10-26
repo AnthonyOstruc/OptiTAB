@@ -14,6 +14,24 @@
             </span>
             <span v-if="!collapsed" class="sidebar-label">Tableau de bord</span>
           </li>
+
+          <!-- Barre de recherche globale (sous Tableau de bord) -->
+          <li v-if="!collapsed" class="sidebar-search">
+            <div class="search-box" role="search">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                <line x1="20" y1="20" x2="16" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <input
+                v-model="globalQuery"
+                type="search"
+                class="search-input"
+                placeholder="Mes recherches"
+                @keydown.enter.prevent="onGlobalEnter"
+              />
+              <button v-if="globalQuery" class="clear-btn" @click="clearGlobalQuery" aria-label="Effacer la recherche">×</button>
+            </div>
+          </li>
           
           <!-- Autres éléments du menu -->
           <li 
@@ -57,7 +75,7 @@ import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { logoutUser } from '@/api'
 import { getInitials } from '@/utils'
-import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
 import { apiUtils } from '@/api/client'
 import { useDataPrefetch } from '@/composables/useDataPrefetch'
 
@@ -76,6 +94,47 @@ const { prefetchThemesNotions } = useDataPrefetch()
 
 // Debounce pour éviter trop de prefetch
 let hoverTimeout = null
+
+// Recherche globale (synchronisée avec l'URL: ?q=...)
+const globalQuery = ref('')
+
+onMounted(() => {
+  const q = route.query?.q
+  if (typeof q !== 'undefined' && q !== null) {
+    try { globalQuery.value = String(q) } catch {}
+  }
+})
+
+// Mettre à jour l'URL quand l'utilisateur tape (debounced)
+let globalQueryTimer = null
+watch(globalQuery, (val) => {
+  if (globalQueryTimer) clearTimeout(globalQueryTimer)
+  globalQueryTimer = setTimeout(() => {
+    const q = (val || '').trim()
+    const newQuery = { ...route.query }
+    if (q) newQuery.q = q
+    else delete newQuery.q
+    const currentQ = route.query?.q || ''
+    if ((q || '') !== (currentQ || '')) {
+      router.replace({ query: newQuery }).catch(() => {})
+    }
+  }, 200)
+})
+
+// Rester synchronisé si l'URL change ailleurs (pages/listes)
+watch(() => route.query.q, (val) => {
+  const incoming = val ? String(val) : ''
+  if (incoming !== (globalQuery.value || '')) globalQuery.value = incoming
+})
+
+const onGlobalEnter = () => {
+  // Optionnel: rester sur la page courante. Les listes se mettront à jour si visibles.
+  // Possibilité: rediriger selon la section active, mais gardons simple pour l'instant.
+}
+
+const clearGlobalQuery = () => {
+  globalQuery.value = ''
+}
 
 
 // Tous les éléments du menu dans l'ordre défini
@@ -184,6 +243,11 @@ async function handleSidebarClick(item) {
         router.push({ name: 'Sheets' })
       }
     } else if (item.key === 'quiz') {
+      // Non-admin: rediriger vers la page "Bientôt disponible"
+      if (!userStore.isAdmin) {
+        router.push({ name: 'QuizComingSoon' })
+        return
+      }
       if (activeId) {
         // Prefetch immédiat au clic
         prefetchThemesNotions(activeId).catch(() => {})
@@ -221,6 +285,15 @@ const isSmallScreen = () => {
   return window.innerWidth < 900 // Breakpoint pour plier automatiquement
 }
 
+// Détecter si l'utilisateur a déjà une préférence sauvegardée
+const hasSavedCollapsePreference = () => {
+  try {
+    return localStorage.getItem('sidebar-collapsed') !== null
+  } catch (_) {
+    return false
+  }
+}
+
 // Fonction pour gérer le redimensionnement de la fenêtre avec debouncing
 const handleResize = () => {
   // Annuler le timeout précédent
@@ -230,8 +303,10 @@ const handleResize = () => {
   
   // Attendre 30ms avant d'exécuter l'action (très rapide)
   resizeTimeout = setTimeout(() => {
+    // Respecter la préférence utilisateur si elle existe
+    if (hasSavedCollapsePreference()) return
     if (isSmallScreen() && !props.collapsed) {
-      // Plier automatiquement sur petit écran seulement
+      // Plier automatiquement sur petit écran seulement si aucune préférence n'est enregistrée
       emit('toggle-collapsed')
     }
     // Sur grand écran : ne pas forcer le dépliement, respecter le choix utilisateur
@@ -241,11 +316,14 @@ const handleResize = () => {
 // Initialiser l'état au montage du composant
 onMounted(() => {
   // Vérifier la taille initiale immédiatement
-  if (isSmallScreen() && !props.collapsed) {
-    // Délai minimal pour l'initialisation
-    setTimeout(() => {
-      emit('toggle-collapsed')
-    }, 10)
+  // Ne pas surcharger le choix utilisateur si une préférence existe déjà
+  if (!hasSavedCollapsePreference()) {
+    if (isSmallScreen() && !props.collapsed) {
+      // Délai minimal pour l'initialisation
+      setTimeout(() => {
+        emit('toggle-collapsed')
+      }, 10)
+    }
   }
   
   // Ajouter l'écouteur d'événement pour le redimensionnement
@@ -561,6 +639,55 @@ defineExpose({
   border-radius: 4px;
   flex-shrink: 0;
 }
+
+/* Barre de recherche globale */
+.sidebar-search {
+  padding: 0.25rem 0.5rem 0.5rem 0.5rem;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  padding: 0.4rem 0.6rem;
+}
+.search-icon { color: #9ca3af; }
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  background: transparent;
+  color: #111827;
+}
+.search-input::-webkit-search-cancel-button,
+.search-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+/* Edge/IE legacy: */
+.search-input::-ms-clear,
+.search-input::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.clear-btn {
+  background: #f3f4f6;
+  border: none;
+  color: #6b7280;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.clear-btn:hover { background: #e5e7eb; }
 
 /* Styles responsives pour le sidebar */
 @media (max-width: 900px) {

@@ -15,7 +15,12 @@
       <!-- Main Content -->
       <div class="main-content-base">
         <div class="notions-container">
-          <ThemeNotionsView :matiere-id="currentMatiereId" :notion-route-name="'CourseByNotion'" />
+          <ThemeNotionsView
+            :matiere-id="currentMatiereId"
+            :notion-route-name="'CourseByNotion'"
+            :show-search="false"
+            :deep-search-in-courses="true"
+          />
         </div>
       </div>
     </div>

@@ -27,18 +27,51 @@
 
     <!-- Content -->
     <div v-else class="tnv-content">
+      <!-- Search Bar -->
+      <div v-if="showSearch" class="tnv-search">
+        <div class="tnv-search-inner">
+          <svg class="tnv-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+            <line x1="20" y1="20" x2="16" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input
+            v-model="query"
+            :placeholder="searchPlaceholder"
+            class="tnv-search-input"
+            type="search"
+            @keydown.enter.prevent="openFirstMatch"
+          />
+        </div>
+        <div v-if="showSearch && query && filteredTotalCount === 0" class="tnv-no-results">
+          Aucun résultat pour « {{ query }} »
+        </div>
+        <!-- Résultats inline (liste complète) -->
+        <div v-if="showSearch && query && matchedNotions.length > 0" class="tnv-inline-results">
+          <span class="tnv-inline-label">Trouvé dans:</span>
+          <button
+            v-for="n in matchedNotions"
+            :key="`inline-${n.id}`"
+            class="tnv-inline-chip"
+            type="button"
+            @click="goToNotion(n.id)"
+          >
+            <span v-if="themeNameFor(n)" class="tnv-inline-theme">{{ themeNameFor(n) }}</span>
+            <span class="tnv-inline-title" v-html="highlightQuery(n.nom)"></span>
+          </button>
+        </div>
+      </div>
       <!-- Themes with their notions -->
       <div v-if="themes.length > 0" class="tnv-themes">
-        <div v-for="theme in themes" :key="theme.id" class="tnv-theme-block">
+        <div v-for="theme in filteredThemes" :key="theme.id" class="tnv-theme-block">
           <div class="tnv-theme-header">
             <h2 class="tnv-theme-title">{{ theme.nom }}</h2>
             <div class="tnv-theme-count">
-              {{ (themeToNotions[theme.id] || []).length }} concept{{ (themeToNotions[theme.id] || []).length > 1 ? 's' : '' }}
+              {{ (notionsForTheme(theme.id)).length }} concept{{ (notionsForTheme(theme.id)).length > 1 ? 's' : '' }}
             </div>
           </div>
           <div class="tnv-notions-grid">
             <NotionCard
-              v-for="notion in (themeToNotions[theme.id] || [])"
+              v-for="notion in notionsForTheme(theme.id)"
               :key="notion.id"
               :notion-id="notion.id"
               :title="notion.nom"
@@ -69,7 +102,7 @@
         </div>
         <div class="tnv-notions-grid">
           <NotionCard
-            v-for="notion in directNotions"
+            v-for="notion in filteredDirectNotions"
             :key="notion.id"
             :notion-id="notion.id"
             :title="notion.nom"
@@ -83,21 +116,31 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, onBeforeUnmount, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, watch, onBeforeUnmount, nextTick, computed, onActivated } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { getNotionsPourUtilisateur } from '@/api'
 import { getThemesWithNotionsForUser } from '@/api/themes'
+import { getCours } from '@/api/cours'
+import { getSynthesisSheets, getSynthesisSheet } from '@/api/synthesis'
+import { getExercices } from '@/api/exercices'
 import NotionCard from '@/components/UI/NotionCard.vue'
 import SkeletonCard from '@/components/common/SkeletonCard.vue'
 import { useDataPrefetch } from '@/composables/useDataPrefetch'
 
 const props = defineProps({
   matiereId: { type: [Number, String], required: true },
-  notionRouteName: { type: String, required: true }
+  notionRouteName: { type: String, required: true },
+  showSearch: { type: Boolean, default: false },
+  searchPlaceholder: { type: String, default: 'Rechercher un concept, un mot-clé…' },
+  deepSearchInCourses: { type: Boolean, default: false },
+  deepSearchInSheets: { type: Boolean, default: false },
+  deepSearchInExercises: { type: Boolean, default: false },
+  showInlineResults: { type: Boolean, default: true }
 })
 
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 const { prefetchNotionContent } = useDataPrefetch()
 
@@ -106,8 +149,104 @@ const error = ref('')
 const themes = ref([])
 const themeToNotions = ref({})
 const directNotions = ref([])
+const query = ref('')
+// Deep search index: notionId -> { raw: string, norm: string }
+const deepIndex = ref(new Map())
+let deepAbortToken = 0
+const deepIndexingNotions = new Set()
+
+// Accès pratique à toutes les notions (ordre stable)
+const allNotions = computed(() => {
+  const out = []
+  for (const theme of themes.value) {
+    const arr = themeToNotions.value[theme.id] || []
+    out.push(...arr)
+  }
+  if (themes.value.length === 0 && Array.isArray(directNotions.value)) out.push(...directNotions.value)
+  return out
+})
+
+function rankForNotion(n) {
+  const q = normalize(query.value)
+  if (!q) return Number.POSITIVE_INFINITY
+  // 1) Nom/description
+  const nameIdx = normalize(n.nom || '').indexOf(q)
+  if (nameIdx !== -1) return nameIdx
+  const descIdx = normalize(n.description || '').indexOf(q)
+  if (descIdx !== -1) return 1000 + descIdx
+  // 2) Deep index
+  const text = deepIndex.value.get(n.id)
+  if (typeof text === 'string') {
+    const contentIdx = normalize(text).indexOf(q)
+    if (contentIdx !== -1) return 100000 + contentIdx
+  }
+  return Number.POSITIVE_INFINITY
+}
+
+const matchedNotions = computed(() => {
+  if (!hasQuery()) return []
+  const list = allNotions.value.filter(notionMatches)
+  return list.sort((a, b) => rankForNotion(a) - rankForNotion(b))
+})
+
+const firstMatchNotion = computed(() => matchedNotions.value[0] || null)
+
+const firstMatchThemeName = computed(() => {
+  const n = firstMatchNotion.value
+  if (!n) return ''
+  const tId = n.theme
+  if (!tId) return ''
+  const t = themes.value.find(t => t.id === tId)
+  return t?.nom || ''
+})
+
+function openFirstMatch() {
+  const n = firstMatchNotion.value
+  if (n?.id) {
+    goToNotion(n.id)
+  }
+}
+
+// Helpers de filtrage
+function normalize(str) {
+  return (str || '')
+    .toString()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+}
+
+const qNorm = computed(() => normalize(query.value))
+const hasQuery = () => qNorm.value.length > 0
+
+function notionMatches(notion) {
+  if (!hasQuery()) return true
+  const q = qNorm.value
+  const basic = (
+    normalize(notion.nom).includes(q) ||
+    normalize(notion.description || '').includes(q)
+  )
+  if (basic) return true
+  // Deep search in content (courses, sheets, exercises) if enabled and query has enough length
+  if ((props.deepSearchInCourses || props.deepSearchInSheets || props.deepSearchInExercises) && q.length >= 3) {
+    const idx = deepIndex.value
+    const entry = idx.get(notion.id)
+    if (entry && typeof entry.norm === 'string') {
+      return entry.norm.includes(q)
+    } else {
+      // Pas d'index encore: laisser scheduleDeepIndexing gérer (debounced)
+    }
+  }
+  return false
+}
 
 function goToNotion(notionId) {
+  // Effacer le filtre de recherche de l'URL avant de naviguer
+  try {
+    const newQuery = { ...route.query }
+    delete newQuery.q
+    router.replace({ query: newQuery })
+  } catch (_) {}
   router.push({ name: props.notionRouteName, params: { notionId } })
 }
 
@@ -238,6 +377,230 @@ onBeforeUnmount(() => {
     try { currentAbortController.abort() } catch (_) {}
   }
 })
+// Données filtrées dérivées
+const filteredThemeToNotions = computed(() => {
+  if (!hasQuery()) return themeToNotions.value
+  const out = {}
+  for (const [themeId, arr] of Object.entries(themeToNotions.value || {})) {
+    out[themeId] = (arr || []).filter(notionMatches)
+  }
+  return out
+})
+
+const filteredThemes = computed(() => {
+  if (!hasQuery()) return themes.value
+  return themes.value.filter(t => (filteredThemeToNotions.value[t.id] || []).length > 0)
+})
+
+function notionsForTheme(themeId) {
+  return (hasQuery() ? filteredThemeToNotions.value[themeId] : themeToNotions.value[themeId]) || []
+}
+
+const filteredDirectNotions = computed(() => {
+  return hasQuery() ? (directNotions.value || []).filter(notionMatches) : directNotions.value
+})
+
+const filteredTotalCount = computed(() => {
+  let total = 0
+  if (themes.value.length > 0) {
+    for (const t of filteredThemes.value) total += notionsForTheme(t.id).length
+  } else {
+    total = (filteredDirectNotions.value || []).length
+  }
+  return total
+})
+
+// (plus de limite topN, on affiche tout en inline)
+
+// Sync recherche <-> URL (partage/retour)
+onMounted(() => {
+  // Toujours synchroniser la première valeur depuis l'URL
+  if (typeof route.query?.q !== 'undefined' && route.query?.q !== null) {
+    try { query.value = String(route.query.q) } catch { /* ignore */ }
+  }
+})
+
+// Synchroniser depuis l'URL quand on revient via KeepAlive
+onActivated(() => {
+  const q = route.query?.q ? String(route.query.q) : ''
+  if (q !== (query.value || '')) {
+    query.value = q
+  }
+})
+
+// Synchroniser quand l'URL est modifiée par un parent
+watch(() => route.query.q, (val) => {
+  const incoming = val ? String(val) : ''
+  if (incoming !== (query.value || '')) {
+    query.value = incoming
+  }
+})
+
+let deepScheduleTimer = null
+watch(query, (val) => {
+  if (!props.showSearch) return
+  const q = (val || '').trim()
+  const newQuery = { ...route.query }
+  if (q) newQuery.q = q
+  else delete newQuery.q
+  router.replace({ query: newQuery }).catch(() => {})
+  // Kick off deep indexing when user searches
+  if ((props.deepSearchInCourses || props.deepSearchInSheets || props.deepSearchInExercises) && q.length >= 3) {
+    if (deepScheduleTimer) clearTimeout(deepScheduleTimer)
+    deepScheduleTimer = setTimeout(() => {
+      scheduleDeepIndexing()
+    }, 250)
+  }
+})
+
+// Déclencher l'indexation aussi quand la source est la recherche globale (showSearch=false)
+let deepScheduleTimerFromUrl = null
+watch(qNorm, (val) => {
+  if (!(props.deepSearchInCourses || props.deepSearchInSheets || props.deepSearchInExercises)) return
+  if (val.length < 3) return
+  if (deepScheduleTimerFromUrl) clearTimeout(deepScheduleTimerFromUrl)
+  deepScheduleTimerFromUrl = setTimeout(() => {
+    scheduleDeepIndexing()
+  }, 250)
+})
+
+// Helpers deep indexing
+function allNotionIds() {
+  const ids = new Set()
+  Object.values(themeToNotions.value || {}).forEach(arr => {
+    (arr || []).forEach(n => ids.add(n.id))
+  })
+  ;(directNotions.value || []).forEach(n => ids.add(n.id))
+  return Array.from(ids)
+}
+
+function scheduleIndexForNotion(notionId) {
+  if (deepIndexingNotions.has(notionId)) return
+  deepIndexingNotions.add(notionId)
+  // index single notion in background
+  buildDeepIndexForNotion(notionId).finally(() => {
+    deepIndexingNotions.delete(notionId)
+  })
+}
+
+async function buildDeepIndexForNotion(notionId) {
+  try {
+    const parts = []
+    if (props.deepSearchInCourses) {
+      const { data } = await getCours(props.matiereId, notionId, null)
+      const list = Array.isArray(data) ? data : (data ? [data] : [])
+      for (const c of list) {
+        if (c?.titre) parts.push(String(c.titre))
+        if (c?.description) parts.push(String(c.description))
+        if (c?.contenu) parts.push(String(c.contenu))
+      }
+    }
+    if (props.deepSearchInSheets) {
+      const resp = await getSynthesisSheets({ notion: notionId })
+      const raw = resp?.data
+      const list = Array.isArray(raw) ? raw : (Array.isArray(raw?.results) ? raw.results : [])
+      for (const s of list) {
+        let pushed = false
+        try {
+          if (s?.id) {
+            const detail = await getSynthesisSheet(s.id)
+            const d = detail?.data || detail
+            if (d?.titre) { parts.push(String(d.titre)); pushed = true }
+            if (d?.summary) { parts.push(String(d.summary)); pushed = true }
+          }
+        } catch (_) { /* ignore */ }
+        if (!pushed) {
+          if (s?.titre) parts.push(String(s.titre))
+          if (s?.summary) parts.push(String(s.summary))
+        }
+      }
+    }
+    if (props.deepSearchInExercises) {
+      try {
+        const resp = await getExercices(notionId)
+        const exoList = Array.isArray(resp?.data) ? resp.data : (resp?.data?.results || [])
+        for (const e of exoList) {
+          if (e?.titre) parts.push(String(e.titre))
+          if (e?.question) parts.push(String(e.question))
+          if (e?.instruction) parts.push(String(e.instruction))
+          if (e?.contenu) parts.push(String(e.contenu))
+          if (e?.etapes) parts.push(String(e.etapes))
+          if (e?.solution) parts.push(String(e.solution))
+          if (e?.reponse_correcte) parts.push(String(e.reponse_correcte))
+        }
+      } catch (_) {}
+    }
+    const text = parts.join('\n\n')
+    const entry = { raw: text, norm: normalize(text) }
+    const map = new Map(deepIndex.value)
+    map.set(notionId, entry)
+    deepIndex.value = map
+  } catch (_) {
+    // ignore errors for deep indexing
+  }
+}
+
+async function scheduleDeepIndexing() {
+  const token = ++deepAbortToken
+  const ids = allNotionIds()
+  for (const id of ids) {
+    if (token !== deepAbortToken) return
+    if (!deepIndex.value.has(id) && !deepIndexingNotions.has(id)) {
+      deepIndexingNotions.add(id)
+      await buildDeepIndexForNotion(id)
+      deepIndexingNotions.delete(id)
+    }
+  }
+}
+
+// Utilitaires pour thème/snippet/highlight affichés dans la ribbon
+function themeNameFor(n) {
+  const t = themes.value.find(t => t.id === n.theme)
+  return t?.nom || ''
+}
+
+function snippetForNotion(n) {
+  const q = normalize(query.value)
+  if (!q) return ''
+  let source = n.nom || ''
+  let idx = normalize(source).indexOf(q)
+  if (idx === -1) {
+    source = n.description || ''
+    idx = normalize(source).indexOf(q)
+  }
+  if (idx === -1) {
+    const entry = deepIndex.value.get(n.id)
+    const text = entry?.raw || ''
+    source = text
+    idx = normalize(source).indexOf(q)
+  }
+  if (idx === -1) return ''
+  const start = Math.max(0, idx - 30)
+  const end = Math.min(source.length, idx + q.length + 30)
+  let snippet = source.slice(start, end)
+  if (start > 0) snippet = '…' + snippet
+  if (end < source.length) snippet = snippet + '…'
+  return snippet
+}
+
+function escapeHtml(s) {
+  return (s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+function highlightQuery(text) {
+  const q = normalize(query.value)
+  if (!q) return escapeHtml(text)
+  const source = text || ''
+  const idx = normalize(source).indexOf(q)
+  if (idx === -1) return escapeHtml(source)
+  const before = escapeHtml(source.slice(0, idx))
+  const match = escapeHtml(source.slice(idx, idx + q.length))
+  const after = escapeHtml(source.slice(idx + q.length))
+  return `${before}<mark class="hl">${match}</mark>${after}`
+}
 </script>
 
 <style scoped>
@@ -248,6 +611,74 @@ onBeforeUnmount(() => {
   /* left align content within dashboard main */
   margin: 0;
 }
+
+/* Barre de recherche */
+.tnv-search {
+  margin: 0 0 1rem 0;
+}
+
+.tnv-search-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+
+.tnv-search-icon {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.tnv-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.tnv-no-results {
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.tnv-search-suggestion {
+  margin-top: 0.5rem;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.tnv-match-theme { color: #1f2937; }
+.tnv-match-notion { color: #1d4ed8; }
+
+/* Résultats inline collés à la recherche */
+.tnv-inline-results {
+  margin-top: 0.35rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+}
+.tnv-inline-label { color: #6b7280; font-size: 0.9rem; }
+.tnv-inline-chip {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+.tnv-inline-chip:hover { background: #f9fafb; border-color: #93c5fd; }
+.tnv-inline-theme { color: #1f2937; font-size: 0.8rem; }
+.tnv-inline-title { color: #1d4ed8; font-weight: 600; font-size: 0.9rem; }
+.tnv-inline-more { color: #6b7280; font-size: 0.9rem; }
 
 /* États de chargement et d'erreur */
 /* Loading Skeleton */
@@ -426,6 +857,60 @@ onBeforeUnmount(() => {
   font-size: 0.875rem;
 }
 
+/* Ribbon des résultats (défilement horizontal) */
+.tnv-results-ribbon {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0.5rem;
+  margin: 0.25rem 0 0.5rem 0;
+  scroll-snap-type: x proximity;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.tnv-chip {
+  flex: 0 0 auto;
+  max-width: 320px;
+  scroll-snap-align: start;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 0.4rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.tnv-chip:hover {
+  border-color: #93c5fd;
+  background: #f9fbff;
+}
+
+.tnv-chip-theme {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.tnv-chip-title {
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+}
+
+.tnv-chip-snippet {
+  color: #6b7280;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.hl { background: #fff3b0; padding: 0 .1rem; border-radius: 2px; }
+
 /* Fallback */
 .tnv-fallback {
   background: #ffffff;
@@ -509,5 +994,3 @@ onBeforeUnmount(() => {
 }
 
 </style>
-
-

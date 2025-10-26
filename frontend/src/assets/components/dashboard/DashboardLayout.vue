@@ -31,8 +31,8 @@
       </div>
     </div>
 
-    <!-- Bouton IA flottant -->
-    <AIFloatingButton />
+    <!-- Bouton IA flottant (visible uniquement pour les admins) -->
+    <AIFloatingButton v-if="userStore.isAdmin" />
   </div>
 </template>
 
@@ -42,6 +42,7 @@ import { useRoute } from 'vue-router'
 import Sidebar from './Sidebar.vue'
 import DashboardHeader from './DashboardHeader.vue'
 import AIFloatingButton from '@/components/ai/AIFloatingButton.vue'
+import { useUserStore } from '@/stores/user'
 
 // Props et émissions
 const emit = defineEmits(['sidebar-toggle', 'navigation', 'subject-changed'])
@@ -49,6 +50,7 @@ const emit = defineEmits(['sidebar-toggle', 'navigation', 'subject-changed'])
 // Références
 const sidebarRef = ref(null)
 const route = useRoute()
+const userStore = useUserStore()
 
 // État réactif
 const sidebarOpen = ref(true)

@@ -1,5 +1,5 @@
 <template>
-  <div class="ai-floating-container">
+  <div v-if="isAdmin" class="ai-floating-container">
     <button
       @click="toggleModal"
       class="ai-floating-btn"
@@ -19,6 +19,7 @@
 
 <script>
 import AIModal from './AIModal.vue'
+import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'AIFloatingButton',
@@ -31,6 +32,12 @@ export default {
   data() {
     return {
       showModal: false
+    }
+  },
+  computed: {
+    isAdmin() {
+      const s = useUserStore()
+      return !!s.isAdmin
     }
   },
   methods: {

@@ -28,6 +28,20 @@
             <h1 class="sheet-title">{{ sheet.titre }}</h1>
           </header>
 
+          <!-- Résultats de recherche (pilotés par la barre latérale) -->
+          <div class="page-search">
+            <div v-if="searchQuery && filteredResults.length === 0" class="no-results">Aucun résultat pour « {{ searchQuery }} »</div>
+            <div v-else-if="searchQuery && filteredResults.length > 0" class="results-info">{{ filteredResults.length }} résultat(s)</div>
+            <ul v-if="searchQuery && filteredResults.length > 0" class="results-list">
+              <li v-for="(r, i) in filteredResults" :key="i" class="result-item">
+                <a href="#" @click.prevent="scrollToSection(r.anchor)">
+                  <span class="result-type">{{ r.typeLabel }}</span>
+                  <span class="result-text" v-html="highlightText(r.snippet)"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
           <!-- Sommaire -->
           <nav v-if="tableOfContents.length > 0" class="toc-container">
             <div class="toc-header" @click="isTocExpanded = !isTocExpanded">
@@ -67,7 +81,7 @@
                     :href="`#${item.id}`"
                     @click.prevent="scrollToSection(item.id)"
                   >
-                    {{ item.text }}
+                    <span v-html="highlightText(item.text)"></span>
                   </a>
                 </li>
               </ul>
@@ -121,6 +135,73 @@ const showScrollTopButton = ref(false)
 let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
+
+// Recherche dans la page
+const searchQuery = ref('')
+const searchIndex = ref([])
+
+function normalize(str) {
+  return (str || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+}
+
+function escapeHtml(s) {
+  return (s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+function highlightText(text) {
+  const q = normalize(searchQuery.value)
+  if (!q) return escapeHtml(text)
+  const source = text || ''
+  const idx = normalize(source).indexOf(q)
+  if (idx === -1) return escapeHtml(source)
+  const before = escapeHtml(source.slice(0, idx))
+  const match = escapeHtml(source.slice(idx, idx + q.length))
+  const after = escapeHtml(source.slice(idx + q.length))
+  return `${before}<mark class="hl">${match}</mark>${after}`
+}
+
+function buildSearchIndex() {
+  const list = []
+  const root = sheetContentRef.value
+  if (!root) { searchIndex.value = list; return }
+  let currentAnchor = null
+  const nodes = root.querySelectorAll('h2, h3, p, li')
+  nodes.forEach((el) => {
+    const tag = el.tagName.toLowerCase()
+    const text = (el.textContent || '').trim()
+    if (!text) return
+    if (tag === 'h2' || tag === 'h3') {
+      currentAnchor = el.id || ''
+      list.push({ type: tag, typeLabel: tag.toUpperCase(), text, anchor: currentAnchor, snippet: text })
+    } else {
+      if (!currentAnchor) return
+      list.push({ type: 'p', typeLabel: '§', text, anchor: currentAnchor, snippet: text })
+    }
+  })
+  searchIndex.value = list
+}
+
+function updateHeadingMatches() {
+  const root = sheetContentRef.value
+  if (!root) return
+  const q = normalize(searchQuery.value)
+  const heads = root.querySelectorAll('h2, h3')
+  heads.forEach(h => {
+    const txt = (h.textContent || '')
+    const match = q && normalize(txt).includes(q)
+    if (match) h.classList.add('search-hit')
+    else h.classList.remove('search-hit')
+  })
+}
+
+const filteredResults = computed(() => {
+  const q = normalize(searchQuery.value)
+  if (!q) return []
+  return searchIndex.value.filter(e => normalize(e.text).includes(q)).slice(0, 50)
+})
 
 // Simple cache en mémoire pour accélérer les retours sur la même notion
 const sheetCache = typeof window !== 'undefined' ? (window.__sheetCache ||= new Map()) : new Map()
@@ -178,6 +259,8 @@ async function fetchSheet(nId) {
     // Extraire le sommaire après le rendu
     setTimeout(() => {
       extractTableOfContents()
+      buildSearchIndex()
+      updateHeadingMatches()
       setupTocObserver()
       setupScrollListener()
     }, 150)
@@ -185,6 +268,9 @@ async function fetchSheet(nId) {
 }
 
 onMounted(() => {
+  if (route.query?.q) {
+    try { searchQuery.value = String(route.query.q) } catch {}
+  }
   fetchSheet(notionId.value)
 })
 
@@ -250,6 +336,7 @@ function setupTocObserver() {
     if (tocDebounce) clearTimeout(tocDebounce)
     tocDebounce = setTimeout(() => {
       extractTableOfContents()
+      buildSearchIndex()
     }, 200)
   })
   tocObserver.observe(sheetContentRef.value, {
@@ -351,6 +438,29 @@ onBeforeUnmount(() => {
     try { scrollCleanup() } catch {}
   }
 })
+
+// Garder la requête dans l'URL pour partage/retour
+// Mettre à jour l'URL seulement si nécessaire
+watch(searchQuery, (val) => {
+  const q = (val || '').trim()
+  const currentQ = route.query?.q ? String(route.query.q) : ''
+  if (q !== currentQ) {
+    const newQuery = { ...route.query }
+    if (q) newQuery.q = q
+    else delete newQuery.q
+    router.replace({ query: newQuery }).catch(() => {})
+  }
+  updateHeadingMatches()
+})
+
+// Suivre la recherche globale depuis la sidebar (URL -> searchQuery)
+watch(() => route.query.q, (val) => {
+  const incoming = val ? String(val) : ''
+  if (incoming !== (searchQuery.value || '')) {
+    searchQuery.value = incoming
+    updateHeadingMatches()
+  }
+})
 </script>
 
 <style scoped>
@@ -382,6 +492,26 @@ onBeforeUnmount(() => {
   color: #333;
   padding: 1rem 0;
   background: transparent;
+}
+/* Recherche dans la page */
+.page-search { text-align: left; margin: 1rem 0; }
+.page-search-inner { display:flex; align-items:center; gap:.5rem; border:1px solid #e5e7eb; border-radius:8px; padding:.5rem .75rem; background:#fff; }
+.page-search .search-icon { color:#9ca3af; }
+.page-search-input { flex:1; border:none; outline:none; font-size:.95rem; background:transparent; color:#111827; }
+.no-results { color:#6b7280; margin-top:.5rem; }
+.results-info { color:#6b7280; margin-top:.5rem; font-size:.9rem; }
+.results-list { list-style:none; padding:0; margin:.5rem 0 0 0; display:flex; flex-direction:column; gap:.25rem; }
+.result-item a { display:flex; gap:.5rem; align-items:flex-start; text-decoration:none; color:#1f2937; padding:.35rem .25rem; border-radius:6px; }
+.result-item a:hover { background:#f9fafb; }
+.result-type { font-size:.75rem; color:#6b7280; background:#f3f4f6; border-radius:4px; padding:.1rem .35rem; }
+.result-text { font-size:.9rem; }
+.hl { background: #fff3b0; padding: 0 .1rem; border-radius: 2px; }
+
+/* Mise en évidence des titres correspondants */
+.sheet-content :deep(h2.search-hit),
+.sheet-content :deep(h3.search-hit) {
+  background: #fffbeb;
+  box-shadow: inset 0 -2px 0 #fde68a;
 }
 /* Styles pour les titres dans le contenu */
 .sheet-content :deep(h1),

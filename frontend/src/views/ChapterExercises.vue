@@ -432,20 +432,7 @@ async function handleStatus({ exerciceId, status }) {
         // Mettre à jour le statut local
         statusMap.value[exerciceId] = { status, id: existingStatus.id }
         
-        // Intégration avec les objectifs journaliers (même pour les mises à jour)
-        if (status === 'acquired') {
-          console.log(`[ChapterExercices] Exercice réussi (mise à jour) - intégration objectifs journaliers`)
-          // Importer et utiliser l'intégration des objectifs journaliers
-          const { useDailyObjectivesIntegration } = await import('@/composables/useDailyObjectives')
-          const { onExerciseCompleted } = useDailyObjectivesIntegration()
-          
-          // Notifier le système d'objectifs
-          onExerciseCompleted({
-            exerciceId,
-            isSuccess: true,
-            status: 'acquired'
-          })
-        }
+        // Objectifs journaliers supprimés
       } else {
         // Si aucun statut n'existe, en créer un nouveau
         const response = await createStatus({
@@ -460,20 +447,7 @@ async function handleStatus({ exerciceId, status }) {
         statusMap.value[exerciceId] = { status, id: newId }
       }
       
-      // Intégration avec les objectifs journaliers
-      if (status === 'acquired') {
-        console.log(`[ChapterExercices] Exercice réussi - intégration objectifs journaliers`)
-        // Importer et utiliser l'intégration des objectifs journaliers
-        const { useDailyObjectivesIntegration } = await import('@/composables/useDailyObjectives')
-        const { onExerciseCompleted } = useDailyObjectivesIntegration()
-        
-        // Notifier le système d'objectifs
-        onExerciseCompleted({
-          exerciceId,
-          isSuccess: true,
-          status: 'acquired'
-        })
-      }
+      // Objectifs journaliers supprimés
     } else {
       // Supprimer le statut de la base de données
       const existingStatus = statusMap.value[exerciceId]

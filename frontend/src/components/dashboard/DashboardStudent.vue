@@ -20,7 +20,6 @@
         </div>
         <div class="level-container">
           <XPBadges />
-          <DailyObjectives />
         </div>
       </div>
     </div>
@@ -65,7 +64,6 @@ import XPBadges from '@/components/dashboard/XPBadges.vue'
 import GameResetNotification from '@/components/notifications/GameResetNotification.vue'
 import QuizHistory from '@/components/dashboard/QuizHistoryRefactored.vue'
 import ExercicesHistory from '@/components/dashboard/ExercicesHistory.vue'
-import DailyObjectives from '@/components/dashboard/DailyObjectives.vue'
 
 
 // StreakTestButton supprimé
@@ -299,5 +297,4 @@ onMounted(async () => {
   .quick-grid { grid-template-columns: 1fr; }
 }
 </style>
-
 

@@ -358,7 +358,6 @@ import { useUserStore } from '@/stores/user'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useXP } from '@/composables/useXP'
 import { calculateUserLevel } from '@/composables/useLevel'
-import { useDailyObjectivesIntegration } from '@/composables/useDailyObjectives'
 import BackButton from '@/components/common/BackButton.vue'
 
 const route = useRoute()
@@ -366,7 +365,6 @@ const router = useRouter()
 const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()
 const { handleQuizCompletion, updateUserXPInstantly } = useXP()
-const { onQuizCompleted } = useDailyObjectivesIntegration()
 const quiz = ref([])
 const notionNom = ref('')
 const initialLoading = ref(true)
@@ -1411,23 +1409,7 @@ async function finishQuiz() {
     currentAttempt.value = tentativeActuelle
     quizResultSubmitted.value = true
 
-    // 🎯 INTÉGRATION OBJECTIFS JOURNALIERS
-    // Déclencher les objectifs journaliers avec les données du quiz
-    const percentage = totalPoints > 0 ? (score / totalPoints * 100) : 0
-    const quizResult = {
-      isSuccess: percentage >= 50, // Quiz réussi si au moins 50% de bonnes réponses
-      score: score,
-      percentage: percentage,
-      timeSpent: timeElapsed,
-      difficulty: normalizedDifficulty.value,
-      totalQuestions: totalPoints,
-      correctAnswers: score
-    }
-    
-    console.log('🎯 [DailyObjectives] Déclenchement avec:', quizResult)
-    console.log('🎯 [DailyObjectives] Quiz difficulté brute:', currentQuiz.value?.difficulty || currentQuiz.value?.difficulte)
-    console.log('🎯 [DailyObjectives] Quiz difficulté normalisée:', normalizedDifficulty.value)
-    onQuizCompleted(quizResult)
+    // Objectifs journaliers supprimés
     
     // Utiliser le système de notification XP (gère aussi la mise à jour des XP)
     try {

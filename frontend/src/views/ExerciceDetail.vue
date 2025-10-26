@@ -122,20 +122,7 @@ const handleStatus = async ({ exerciceId, status }) => {
   try {
     await updateExerciseStatus(exerciceId, status)
     
-    // Intégration avec les objectifs journaliers
-    if (status === 'acquired') {
-      console.log(`[ExerciceDetail] Exercice réussi - intégration objectifs journaliers`)
-      // Importer et utiliser l'intégration des objectifs journaliers
-      const { useDailyObjectivesIntegration } = await import('@/composables/useDailyObjectives')
-      const { onExerciseCompleted } = useDailyObjectivesIntegration()
-      
-      // Notifier le système d'objectifs
-      onExerciseCompleted({
-        exerciceId,
-        isSuccess: true,
-        status: 'acquired'
-      })
-    }
+    // Objectifs journaliers supprimés
   } catch (err) {
     console.error('[ExerciceDetail] Erreur handleStatus:', err)
   }

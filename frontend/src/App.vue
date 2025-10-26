@@ -44,11 +44,6 @@
     <!-- Toast Notifications -->
     <Toast />
     
-    <!-- XP Reward Notifications pour les objectifs journaliers -->
-    <XPRewardNotification />
-    
-    <!-- Objective Unlocked Notifications -->
-    <ObjectiveUnlockedNotification />
   </div>
 </template>
 
@@ -61,8 +56,6 @@ import RegisterModal from '@/components/modals/RegisterModal.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
 import PaysNiveauSelector from '@/components/modals/PaysNiveauSelector.vue'
 import Toast from '@/components/common/Toast.vue'
-import XPRewardNotification from '@/components/notifications/XPRewardNotification.vue'
-import ObjectiveUnlockedNotification from '@/components/notifications/ObjectiveUnlockedNotification.vue'
 import { registerUser } from '@/api'
 import { useUserStore } from '@/stores/user'
 import { useSubjectsStore } from '@/stores/subjects/index'

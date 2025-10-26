@@ -23,6 +23,7 @@ import logging
 logger = logging.getLogger(__name__)
 import secrets
 import string
+from django.db import transaction
 
 
 class MeView(APIView):
@@ -142,6 +143,78 @@ class UpdateUserXPView(APIView):
         except Exception as e:
             return ResponseService.error(
                 message=f"Erreur lors de la mise à jour des XP: {str(e)}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class DailyLoginStreakView(APIView):
+    """Award +1 XP once per day on login and maintain a daily streak.
+
+    Returns current streak and XP/level info. Idempotent per day.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        try:
+            today = timezone.localdate()
+            last_date = user.login_streak_last_date
+            already_rewarded = (last_date == today)
+
+            xp_awarded = 0
+            with transaction.atomic():
+                if not already_rewarded:
+                    # Reset or increment streak depending on last_date
+                    if last_date is not None and last_date == (today - timedelta(days=1)):
+                        new_streak = (user.login_streak_count or 0) + 1
+                    else:
+                        new_streak = 1
+
+                    # Cap streak reward at 5 XP/day from day 5+
+                    xp_awarded = min(new_streak, 5)
+
+                    user.login_streak_count = new_streak
+                    user.login_streak_last_date = today
+                    user.xp = (user.xp or 0) + xp_awarded
+
+                    user.save(update_fields=[
+                        'login_streak_count', 'login_streak_last_date', 'xp'
+                    ])
+
+                    # Persist a notification
+                    try:
+                        UserNotification.objects.create(
+                            user=user,
+                            type='xp_gained',
+                            title='🎉 Connexion quotidienne',
+                            message=f'+{xp_awarded} XP',
+                            data={'reason': 'daily_login', 'xp_delta': xp_awarded, 'streak': new_streak}
+                        )
+                    except Exception:
+                        pass
+
+            # Compute level/xp_to_next from new XP
+            from suivis.views import calculate_user_level
+            level, next_level_xp, xp_to_next = calculate_user_level(user.xp or 0)
+
+            return ResponseService.success(
+                message=(
+                    'Déjà récompensé aujourd\'hui' if already_rewarded
+                    else 'Récompense quotidienne attribuée'
+                ),
+                data={
+                    'already_rewarded': already_rewarded,
+                    'xp_awarded': xp_awarded,
+                    'streak_count': user.login_streak_count or 0,
+                    'new_xp': user.xp or 0,
+                    'level': level,
+                    'xp_to_next': xp_to_next,
+                    'date': str(today)
+                }
+            )
+        except Exception as e:
+            return ResponseService.error(
+                message=f"Erreur récompense quotidienne: {e}",
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 

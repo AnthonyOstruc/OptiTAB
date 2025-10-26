@@ -31,6 +31,7 @@
       </div>
       <div v-else-if="error" class="exercices-error">{{ error }}</div>
         <div v-else>
+          <template v-if="exercices.length > 0">
           <div class="exercices-controls">
             <div class="controls-row">
               <!-- Barre de recherche -->
@@ -97,23 +98,36 @@
             </div>
 
           </div>
+          </div>
+          <div class="exercices-list">
+            <ExerciceQCM
+              v-for="exercice in paginated"
+              :key="exercice.id"
+              :eid="exercice.id"
+              :titre="exercice.titre || exercice.nom"
+              :instruction="exercice.instruction || exercice.contenu || exercice.question"
+              :solution="exercice.solution || exercice.reponse_correcte || ''"
+              :etapes="exercice.etapes || ''"
+              :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
+              :current="statusMap[exercice.id]?.status"
+              @status-changed="handleStatus"
+            />
+            <Pagination :total="filteredExercices.length" :perPage="perPage" :page="currentPage" @update:page="handlePageChange" />
+          </div>
+          </template>
+          <div v-else class="empty-coming">
+            <div class="empty-card">
+              <div class="empty-icon">🧮</div>
+              <h2 class="empty-title">Exercices — bientôt disponibles</h2>
+              <p class="empty-text">
+                Les exercices pour cette notion arrivent très prochainement.
+              </p>
+              <div class="empty-actions">
+                <button class="empty-btn" @click="goBackToNotions">Retour aux chapitres</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="exercices-list">
-          <ExerciceQCM
-            v-for="exercice in paginated"
-            :key="exercice.id"
-            :eid="exercice.id"
-            :titre="exercice.titre || exercice.nom"
-            :instruction="exercice.instruction || exercice.contenu || exercice.question"
-            :solution="exercice.solution || exercice.reponse_correcte || ''"
-            :etapes="exercice.etapes || ''"
-            :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
-            :current="statusMap[exercice.id]?.status"
-            @status-changed="handleStatus"
-          />
-          <Pagination :total="filteredExercices.length" :perPage="perPage" :page="currentPage" @update:page="handlePageChange" />
-        </div>
-      </div>
     </section>
   </DashboardLayout>
 </template>
@@ -904,6 +918,16 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   align-items: stretch;
   transition: max-width 0.3s ease;
 }
+
+/* Coming soon card */
+.empty-coming { display:flex; align-items:center; justify-content:center; min-height:50vh; }
+.empty-card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:2rem; text-align:center; box-shadow:0 8px 24px rgba(2,6,23,0.06); max-width:720px; }
+.empty-icon { font-size:2.2rem; margin-bottom:.25rem; }
+.empty-title { margin:0 0 .5rem; color:#0f172a; font-size:1.35rem; }
+.empty-text { color:#475569; margin:0; }
+.empty-actions { margin-top:1rem; }
+.empty-btn { background:linear-gradient(135deg,#3b82f6,#1e40af); color:#fff; border:none; border-radius:10px; padding:.6rem 1rem; font-weight:700; cursor:pointer; }
+.empty-btn:hover { filter:brightness(1.05); }
 
 .exercices-list.full-width {
   max-width: 95vw;

@@ -29,6 +29,7 @@ class UserBaseSerializer(serializers.ModelSerializer):
     )
     level = serializers.SerializerMethodField(read_only=True, help_text="Computed level from XP")
     xp_to_next = serializers.SerializerMethodField(read_only=True, help_text="XP needed to reach next level")
+    login_streak_count = serializers.IntegerField(read_only=True, help_text="Current daily login streak (days)")
     
     class Meta:
         model = CustomUser
@@ -46,7 +47,8 @@ class UserBaseSerializer(serializers.ModelSerializer):
             'is_staff',
             'xp',
             'level',
-            'xp_to_next'
+            'xp_to_next',
+            'login_streak_count'
         ]
         read_only_fields = ['id', 'email', 'is_active', 'is_staff']
         extra_kwargs = {

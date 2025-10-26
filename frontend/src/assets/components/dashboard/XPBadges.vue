@@ -99,9 +99,14 @@ const dashArray = computed(() => {
   margin: 1rem 0;
 }
 
-.circular-chart { 
-  max-width: 140px; 
-  max-height: 140px; 
+.circular-chart {
+  width: 140px;
+  height: 140px;
+  max-width: 140px;
+  max-height: 140px;
+  min-width: 140px;
+  min-height: 140px;
+  display: block;
 }
 
 .circle-bg { 
@@ -338,5 +343,4 @@ const dashArray = computed(() => {
 
 }
 </style>
-
 

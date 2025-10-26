@@ -13,16 +13,17 @@ const routes = [
   { path: '/pricing', name: 'Pricing', component: () => import('@/views/Pricing.vue'), meta: { requiresAuth: true } },
   { path: '/exercises', name: 'Exercises', component: () => import('@/views/Exercises.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
   { path: '/online-courses', name: 'OnlineCourses', component: () => import('@/views/OnlineCourses.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
-  { path: '/quiz', name: 'Quiz', component: () => import('@/views/Quiz.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
+  { path: '/quiz', name: 'Quiz', component: () => import('@/views/Quiz.vue'), meta: { requiresAuth: true, requiresAdmin: true, onAdminDenied: 'QuizComingSoon' }, beforeEnter: matiereMiddleware },
   { 
     path: '/quiz/:matiereId', 
     name: 'QuizNotions', 
     component: () => import('@/views/QuizNotions.vue'), 
-    meta: { requiresAuth: true }, 
+    meta: { requiresAuth: true, requiresAdmin: true, onAdminDenied: 'QuizComingSoon' }, 
     beforeEnter: quizMiddleware 
   },
   // Accès direct au quiz par notion (chapitres supprimés)
-  { path: '/quiz-notion/:notionId', name: 'QuizByNotion', component: () => import('@/views/ChapterQuiz.vue'), meta: { requiresAuth: true }, beforeEnter: quizMiddleware },
+  { path: '/quiz-notion/:notionId', name: 'QuizByNotion', component: () => import('@/views/ChapterQuiz.vue'), meta: { requiresAuth: true, requiresAdmin: true, onAdminDenied: 'QuizComingSoon' }, beforeEnter: quizMiddleware },
+  { path: '/quiz-coming-soon', name: 'QuizComingSoon', component: () => import('@/views/QuizComingSoon.vue'), meta: { requiresAuth: true } },
   { 
     path: '/course-notions/:matiereId', 
     name: 'CourseNotions', 
@@ -176,7 +177,8 @@ router.beforeEach(async (to, from, next) => {
   } 
   // Protection des routes admin
   else if (to.meta.requiresAdmin && (!isAuthenticated || !isAdmin)) {
-    next({ name: 'Home' })
+    const fallback = to.meta.onAdminDenied || 'Home'
+    next({ name: fallback })
   } 
   // Redirection Home -> Dashboard pour utilisateurs connectés
   // MAIS seulement si on ne vient PAS déjà du Dashboard (évite les boucles)

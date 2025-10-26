@@ -20,14 +20,15 @@
         </div>
         <div class="level-container">
           <XPBadges />
+          <LoginStreak />
         </div>
       </div>
     </div>
 
 
 
-    <!-- Historique des quiz avec filtres → rendu immédiat (sans attendre d'autres stats) -->
-    <QuizHistory />
+    <!-- Historique des quiz → affiché uniquement pour les administrateurs -->
+    <QuizHistory v-if="userStore.isAdmin" />
 
     <!-- Historique des exercices avec filtres → rendu immédiat -->
     <ExercicesHistory />
@@ -61,6 +62,7 @@ import LeaderboardWidget from '@/components/dashboard/LeaderboardWidget.vue'
 
 
 import XPBadges from '@/components/dashboard/XPBadges.vue'
+import LoginStreak from '@/components/dashboard/LoginStreak.vue'
 import GameResetNotification from '@/components/notifications/GameResetNotification.vue'
 import QuizHistory from '@/components/dashboard/QuizHistoryRefactored.vue'
 import ExercicesHistory from '@/components/dashboard/ExercicesHistory.vue'
@@ -297,4 +299,3 @@ onMounted(async () => {
   .quick-grid { grid-template-columns: 1fr; }
 }
 </style>
-

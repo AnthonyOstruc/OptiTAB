@@ -70,6 +70,19 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     # Gamification
     xp = models.PositiveIntegerField(default=0, verbose_name="Points d'expérience")
 
+    # Daily login streak
+    login_streak_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Série de connexions (jours consécutifs)",
+        help_text="Nombre de jours consécutifs connectés"
+    )
+    login_streak_last_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name="Dernière date de récompense quotidienne",
+        help_text="Dernière date (locale) où la récompense quotidienne a été attribuée"
+    )
+
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'

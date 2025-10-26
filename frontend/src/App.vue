@@ -57,6 +57,7 @@ import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
 import PaysNiveauSelector from '@/components/modals/PaysNiveauSelector.vue'
 import Toast from '@/components/common/Toast.vue'
 import { registerUser } from '@/api'
+import { triggerDailyLogin } from '@/api/users'
 import { useUserStore } from '@/stores/user'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import FullPageSpinner from '@/components/common/FullPageSpinner.vue'
@@ -152,6 +153,33 @@ const handleTerms = () => {}
 const handlePrivacy = () => {}
 const handleForgotPasswordSubmit = (forgotPasswordData) => {}
 
+// Déclenche la récompense quotidienne de connexion (+1 XP)
+const handleDailyLoginReward = async () => {
+  try {
+    if (!userStore.isAuthenticated || !userStore.id) return
+    const todayKey = `daily_login_rewarded_${userStore.id}_${new Date().toDateString()}`
+    if (localStorage.getItem(todayKey)) {
+      return
+    }
+    const res = await triggerDailyLogin()
+    const payload = res?.data?.data || res?.data || {}
+    if (payload && payload.xp_awarded > 0) {
+      // Mettre à jour le store XP/niveau immédiatement depuis la réponse
+      const newXp = Number(payload.new_xp ?? (userStore.xp + payload.xp_awarded))
+      userStore.xp = newXp
+      userStore.level = Number(payload.level ?? userStore.level)
+      userStore.xp_to_next = Number(payload.xp_to_next ?? userStore.xp_to_next)
+      userStore.loginStreakCount = Number(payload.streak_count ?? (userStore.loginStreakCount || 1))
+    } else if (payload && payload.streak_count !== undefined) {
+      userStore.loginStreakCount = Number(payload.streak_count)
+    }
+    localStorage.setItem(todayKey, 'true')
+  } catch (e) {
+    // Silencieux en cas d'erreur
+    console.warn('⚠️ Daily login reward failed:', e?.response?.status || e?.message)
+  }
+}
+
 // Logique pour afficher le modal pays/niveau pour les nouveaux utilisateurs
 const checkAndShowPaysNiveauModal = () => {
   // Attendre que les données utilisateur soient chargées
@@ -182,10 +210,12 @@ const checkAndShowPaysNiveauModal = () => {
 // Watcher pour vérifier quand l'utilisateur se connecte
 watch(() => userStore.isAuthenticated, async (isAuthenticated) => {
   if (isAuthenticated) {
+    // Récompense de connexion quotidienne (+1 XP) avant de charger les notifications
+    await handleDailyLoginReward()
     checkAndShowPaysNiveauModal()
     // Charger les notifications persistées localement puis fusionner celles du serveur
-    try { await notificationStore.loadFromLocal() } catch (_) {}
     try { await notificationStore.loadFromServer() } catch (_) {}
+    try { await notificationStore.loadFromLocal() } catch (_) {}
   }
 }, { immediate: true })
 
@@ -216,6 +246,7 @@ watch([() => userStore.pays, () => userStore.niveau_pays, () => userStore.isLoad
 // Vérifier au montage de l'application
 onMounted(async () => {
   if (userStore.isAuthenticated) {
+    await handleDailyLoginReward()
     checkAndShowPaysNiveauModal()
     
     // Si l'utilisateur est déjà configuré, initialiser le store des matières
@@ -224,8 +255,8 @@ onMounted(async () => {
     }
 
     // Charger d'abord les notifications locales persistées, puis fusionner celles du serveur
-    try { await notificationStore.loadFromLocal() } catch (_) {}
     try { await notificationStore.loadFromServer() } catch (_) {}
+    try { await notificationStore.loadFromLocal() } catch (_) {}
   }
 })
 </script>

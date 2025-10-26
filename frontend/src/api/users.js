@@ -97,6 +97,12 @@ export const removeChild = (childId) => apiClient.delete(`/api/users/me/children
  */
 export const updateUserXP = (payload) => apiClient.post('/api/users/me/update-xp/', payload)
 
+/**
+ * Déclenche la récompense quotidienne de connexion (+1 XP) et met à jour la streak.
+ * Idempotent côté backend pour la journée courante.
+ */
+export const triggerDailyLogin = () => apiClient.post('/api/users/me/daily-login/')
+
 // Notifications persistantes
 export const fetchNotifications = (params = {}) => apiClient.get('/api/users/notifications/', { params })
 export const createNotification = async (payload) => {

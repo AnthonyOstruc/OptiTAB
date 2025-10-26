@@ -6,7 +6,7 @@ from users.views.authentication_views import (
     EmailVerificationConfirmView,
     UserLogoutView
 )
-from users.views.profile_views import MeView, UpdateProfileView, UpdateNiveauView, UpdatePaysView, UpdatePaysNiveauView, MeGamificationView, UpdateUserXPView, LeaderboardView, MyChildrenView, ChildOverviewView, AddChildView, RemoveChildView, CreateChildAccountView, MyOverviewView, RecommendationsView
+from users.views.profile_views import MeView, UpdateProfileView, UpdateNiveauView, UpdatePaysView, UpdatePaysNiveauView, MeGamificationView, UpdateUserXPView, LeaderboardView, MyChildrenView, ChildOverviewView, AddChildView, RemoveChildView, CreateChildAccountView, MyOverviewView, RecommendationsView, DailyLoginStreakView
 from users.views.social_auth_views import GoogleLoginView, GoogleOAuthCodeExchangeView, GoogleOAuthAccessTokenView
 from rest_framework.routers import DefaultRouter
 from users.views.notifications_views import UserNotificationViewSet
@@ -43,6 +43,7 @@ urlpatterns = [
     path('me/', MeView.as_view(), name='me'),  # pour obtenir les infos de l'utilisateur connecté
     path('me/gamification/', MeGamificationView.as_view(), name='me_gamification'),
     path('me/update-xp/', UpdateUserXPView.as_view(), name='me_update_xp'),
+    path('me/daily-login/', DailyLoginStreakView.as_view(), name='me_daily_login'),
     path('me/overview/', MyOverviewView.as_view(), name='me_overview'),
     path('me/recommendations/', RecommendationsView.as_view(), name='me_recommendations'),
     # Notifications

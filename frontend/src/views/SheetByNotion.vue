@@ -11,8 +11,17 @@
       </div>
 
       <div v-else>
-        <div v-if="!sheet" class="empty">
-          <p>Aucune fiche pour cette notion.</p>
+        <div v-if="!sheet" class="empty-coming">
+          <div class="empty-card">
+            <div class="empty-icon">📘</div>
+            <h2 class="empty-title">Fiche de synthèse — bientôt disponible</h2>
+            <p class="empty-text">
+              Cette fiche n'est pas encore publiée pour cette notion. Elle arrive très prochainement.
+            </p>
+            <div class="empty-actions">
+              <button class="empty-btn" @click="goBack">Retour aux chapitres</button>
+            </div>
+          </div>
         </div>
         <div v-else class="sheet-container">
           <header class="sheet-header">
@@ -620,4 +629,36 @@ onBeforeUnmount(() => {
     height: 20px;
   }
 }
+</style>
+
+<style scoped>
+.empty-coming {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+.empty-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+  max-width: 720px;
+}
+.empty-icon { font-size: 2.2rem; margin-bottom: .25rem; }
+.empty-title { margin: 0 0 .5rem; color: #0f172a; font-size: 1.35rem; }
+.empty-text { color: #475569; margin: 0; }
+.empty-actions { margin-top: 1rem; }
+.empty-btn {
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: .6rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.empty-btn:hover { filter: brightness(1.05); }
 </style>

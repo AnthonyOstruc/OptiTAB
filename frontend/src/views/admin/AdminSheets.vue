@@ -134,9 +134,9 @@
             <span 
               v-for="imgName in sheet.image.split(',').map(name => name.trim()).filter(Boolean)" 
               :key="imgName"
-              :class="['image-status', getImageFile(imgName) ? 'available' : 'missing']"
+              :class="['image-status', imageExists(imgName) ? 'available' : 'missing']"
             >
-              {{ imgName }}: {{ getImageFile(imgName) ? 'Disponible' : 'Manquante' }}
+              {{ imgName }}: {{ imageExists(imgName) ? 'Disponible' : 'Manquante' }}
             </span>
           </div>
         </div>
@@ -241,7 +241,7 @@
 import { ref, computed, onMounted, onActivated, nextTick, watch } from 'vue'
 import { getNotions } from '@/api'
 import { getSynthesisSheets, getSynthesisSheet, createSynthesisSheet, updateSynthesisSheet, createSynthesisImage, deleteSynthesisSheet, duplicateSynthesisSheet, updateSynthesisImage, deleteSynthesisImage } from '@/api/synthesis'
-import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
+import { renderContentWithImages, renderMath, getImageUrl } from '@/utils/scientificRenderer'
 import FormatHelp from '@/components/admin/FormatHelp.vue'
 import { AdminActionsButtons } from '@/components/admin'
 
@@ -358,15 +358,45 @@ function getPreviewImages(imageString) {
     .split(',')
     .map(n => n.trim())
     .filter(Boolean)
-  return names.map((name, index) => {
-    const file = getImageFile(name)
-    return {
-      id: `preview-${index}`,
-      image: file ? URL.createObjectURL(file) : name,
-      image_type: 'illustration',
-      position: index + 1
-    }
-  })
+
+  // Helper pour retrouver une image serveur par son basename
+  const findServerImageByName = (basename) => {
+    try {
+      const bn = String(basename).split('?')[0].split('/').pop()
+      return (serverImages.value || []).find(si => {
+        const siBn = String(si.image || '').split('?')[0].split('/').pop()
+        return siBn && bn && siBn.toLowerCase() === bn.toLowerCase()
+      })
+    } catch (_) { return null }
+  }
+
+  let list = []
+  if (names.length > 0) {
+    list = names.map((name, index) => {
+      const file = getImageFile(name)
+      if (file) {
+        return { id: `preview-${index}`,
+          image: URL.createObjectURL(file), image_type: 'illustration', position: index + 1 }
+      }
+      const srv = findServerImageByName(name)
+      if (srv) {
+        return { id: srv.id || `srv-${index}`, image: srv.image, image_type: srv.image_type || 'illustration', position: srv.position || (index + 1) }
+      }
+      // Fallback: construire lâ€™URL media en dossier synthesis_images
+      return { id: `fallback-${index}`, image: getImageUrl(name, 'synthesis'), image_type: 'illustration', position: index + 1 }
+    })
+  } else if (serverImages.value && serverImages.value.length) {
+    // Mode Ã©dition: pas de noms fournis mais images serveur disponibles
+    list = serverImages.value.map((si, idx) => ({
+      id: si.id || `srv-${idx}`,
+      image: si.image,
+      image_type: si.image_type || 'illustration',
+      position: si.position || (idx + 1)
+    }))
+  }
+
+  // Ordonner par position pour respecter [IMAGE_1], [IMAGE_2], ...
+  return list.sort((a, b) => (a.position || 0) - (b.position || 0))
 }
 
 function renderPreviewContent(sheet) {
@@ -402,7 +432,21 @@ function handleImagesSelect(event) {
   })
 }
 
-function removeSelectedImage(index) {
+// Vérifie si une image est disponible soit localement (sélectionnée) soit côté serveur (déjà enregistrée)
+function imageExists(filename) {
+  if (!filename) return false
+  const file = getImageFile(filename)
+  if (file) return true
+  try {
+    const bn = String(filename).split('?')[0].split('/').pop()
+    return (serverImages.value || []).some(si => {
+      const siBn = String(si.image || '').split('?')[0].split('/').pop()
+      return siBn && bn && siBn.toLowerCase() === bn.toLowerCase()
+    })
+  } catch (_) {
+    return false
+  }
+}function removeSelectedImage(index) {
   const file = selectedImages.value[index]
   imageManager.removeImage(file.name)
   selectedImages.value.splice(index, 1)
@@ -963,3 +1007,4 @@ onActivated(() => {
 .add-image-form { margin-top: 10px; background: #f9fafb; padding: 10px; border: 1px dashed #d1d5db; border-radius: 8px; }
 .add-image-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 </style>
+

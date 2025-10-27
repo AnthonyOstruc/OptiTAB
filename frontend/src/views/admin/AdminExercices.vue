@@ -106,9 +106,11 @@
                 <td>
                   <input type="file" accept="image/*" @change="onSelectReplaceFile(i, $event)" />
                 </td>
-                <td style="white-space:nowrap">
-                  <button type="button" class="btn-secondary small" @click="saveImageRow(img)">Enregistrer</button>
-                  <button type="button" class="btn-danger small" @click="removeImageRow(img)">Supprimer</button>
+                <td style="white-space:nowrap; padding: 0.5rem;">
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button type="button" class="btn-secondary small" @click="saveImageRow(img)">Enregistrer</button>
+                    <button type="button" class="btn-danger small" @click="removeImageRow(img)">Supprimer</button>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -899,12 +901,22 @@ function getNotionContextCode(notionId) {
   border-radius: 0.375rem;
   cursor: pointer;
   font-weight: 500;
-  margin-right: 0.5rem;
+  margin-right: 0;
+  min-width: 120px;
+  white-space: nowrap;
 }
 
 .btn-secondary {
   background: #6b7280;
   color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-weight: 500;
+  margin-right: 0;
+  min-width: 100px;
+  white-space: nowrap;
 }
 
 .btn-preview {
@@ -915,7 +927,9 @@ function getNotionContextCode(notionId) {
   border-radius: 0.375rem;
   cursor: pointer;
   font-weight: 500;
-  margin-right: 0.5rem;
+  margin-right: 0;
+  min-width: 120px;
+  white-space: nowrap;
   transition: all 0.2s ease;
 }
 
@@ -926,11 +940,13 @@ function getNotionContextCode(notionId) {
 
 .form-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
   margin-top: 1.5rem;
   padding-top: 1rem;
   border-top: 1px solid #e5e7eb;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .difficulty-select {
@@ -1034,6 +1050,9 @@ function getNotionContextCode(notionId) {
 .btn-danger.small, .btn-secondary.small {
   padding: 0.4rem 0.75rem;
   font-size: 0.8rem;
+  margin-right: 0;
+  min-width: 80px;
+  white-space: nowrap;
 }
 
 .filters {
@@ -1211,8 +1230,52 @@ function getNotionContextCode(notionId) {
 .images-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
 .images-table th, .images-table td { border-bottom: 1px solid #e5e7eb; padding: 0.5rem; }
 .srv-preview { width: 100px; height: 70px; object-fit: cover; border-radius: 4px; }
-.add-image-form { margin-top: 1rem; }
-.add-grid { display: grid; grid-template-columns: 1.2fr 0.8fr 0.5fr 1fr auto; gap: 0.5rem; align-items: center; }
+.add-image-form { 
+  margin-top: 1rem; 
+  padding: 1rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.add-image-form h6 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+}
+.add-grid { 
+  display: grid; 
+  grid-template-columns: 1.5fr 1fr 0.6fr 1.2fr 120px; 
+  gap: 0.75rem; 
+  align-items: center; 
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  min-width: 0;
+}
+
+.add-grid input[type="file"] {
+  min-width: 0;
+}
+
+.add-grid select {
+  min-width: 0;
+}
+
+.add-grid input[type="number"] {
+  min-width: 0;
+}
+
+.add-grid input[type="text"] {
+  min-width: 0;
+}
+
+.add-grid .btn-primary {
+  min-width: 100px;
+  white-space: nowrap;
+}
 .muted { color: #6b7280; font-style: italic; }
 
 /* Styles pour la modale de duplication */

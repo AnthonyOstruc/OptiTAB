@@ -121,7 +121,7 @@ export function renderContentWithImages(content, images = []) {
             class="content-image"
             style="max-width: 100%; height: auto;"
           />
-          ${image.legende ? `<div class="image-legende" style="text-align: center; margin-top: 8px; font-style: italic; color: #666; font-size: 0.9em;">${image.legende}</div>` : ''}
+          ${image.caption || image.legende ? `<div class="image-legende" style="text-align: center; margin-top: 8px; font-style: italic; color: #666; font-size: 0.9em;">${image.caption || image.legende}</div>` : ``}
         </div>
       `
     }
@@ -132,7 +132,7 @@ export function renderContentWithImages(content, images = []) {
 }
 
 /**
- * Construit l'URL complète d'une image
+ * Construit l'URL compl�te d'une image
  */
 export function getImageUrl(imagePath, type = 'cours') {
   // Si imagePath est déjà une URL (blob: ou data:)
@@ -170,14 +170,17 @@ export function getImageUrl(imagePath, type = 'cours') {
     return `${baseUrl}/${imagePath}`
   }
 
-  // Si imagePath est un chemin relatif, construire l'URL complète
+  // Si imagePath est un chemin relatif, construire l'URL compl�te
   if (imagePath && imagePath.includes('/')) {
     return `${baseUrl}/media/${imagePath}`
   }
 
   // Si imagePath est juste un nom de fichier, construire le chemin complet
   if (imagePath && !imagePath.startsWith('/')) {
-    const folder = type === 'cours' ? 'cours_images' : 'exercice_images'
+    let folder = 'cours_images'
+    if (type === 'exercice' || type === 'exercices') folder = 'exercice_images'
+    else if (type === 'synthesis' || type === 'sheet' || type === 'sheets') folder = 'synthesis_images'
+    else if (type === 'quiz') folder = 'quiz_images'
     return `${baseUrl}/media/${folder}/${imagePath}`
   }
 
@@ -245,3 +248,7 @@ export function useScientificRenderer() {
     renderMath
   }
 } 
+
+
+
+

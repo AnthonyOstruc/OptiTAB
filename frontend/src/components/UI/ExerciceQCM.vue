@@ -1475,9 +1475,27 @@ watch(showSolution, (newVal) => {
 
 /* Styles pour les images inline dans l'énoncé */
 .inline-image {
-  display: inline-block;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
   margin: 1rem 0;
   text-align: center;
+}
+
+/* Centrage des anciennes images insérées directement dans le texte */
+.problem-content :deep(img),
+.steps-content :deep(img),
+.answer-content :deep(img) {
+  display: block;
+  margin: 0.75rem auto; /* centre horizontalement */
+  max-width: 100%;
+  height: auto;
+}
+
+/* Centrer les images dans les conteneurs legacy */
+.exercice-image-container {
+  align-items: center; /* centre les images dans les anciens exercices */
 }
 
 .exercice-image.inline {
@@ -1538,4 +1556,3 @@ watch(showSolution, (newVal) => {
   }
 }
 </style>
-

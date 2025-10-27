@@ -74,6 +74,7 @@ const routes = [
     component: () => import('@/views/admin/AdminLayout.vue'),
     meta: { requiresAdmin: true },
     children: [
+      { path: 'newsletter', name: 'AdminNewsletter', component: () => import('@/views/admin/NewsletterAdmin.vue') },
       { path: 'matieres', name: 'AdminMatieres', component: () => import('@/views/admin/AdminMatieres.vue') },
       { path: 'themes', name: 'AdminThemes', component: () => import('@/views/admin/AdminThemes.vue') },
       { path: 'notions', name: 'AdminNotions', component: () => import('@/views/admin/AdminNotions.vue') },

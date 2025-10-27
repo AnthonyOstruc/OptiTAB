@@ -2,6 +2,8 @@
 Modèles de base ultra-simplifiés avec gestionnaires optimisés
 """
 from django.db import models
+from django.utils import timezone
+import uuid
 from .services import BaseManager
 
 
@@ -71,3 +73,44 @@ class BaseOrganizational(BaseContent):
     
     class Meta:
         abstract = True
+
+
+class NewsletterSubscriber(BaseModel):
+    """Abonnés à la newsletter avec lien de désinscription.
+
+    - Utilise `est_actif` hérité pour l'état d'abonnement (True = abonné)
+    - Conserve un `unsubscribe_token` unique pour les liens dans les emails
+    - Garde des métadonnées utiles (source, IP, timestamps)
+    """
+
+    email = models.EmailField(unique=True, verbose_name="Email")
+    first_name = models.CharField(max_length=120, blank=True, default="", verbose_name="Prénom")
+    last_name = models.CharField(max_length=120, blank=True, default="", verbose_name="Nom")
+    source = models.CharField(max_length=50, default='website', verbose_name="Source")
+    unsubscribe_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, verbose_name="Jeton de désinscription")
+    unsubscribed_at = models.DateTimeField(null=True, blank=True, verbose_name="Désabonné le")
+    last_email_sent_at = models.DateTimeField(null=True, blank=True, verbose_name="Dernier email envoyé")
+    consent_ip = models.GenericIPAddressField(null=True, blank=True, verbose_name="IP de consentement")
+
+    objects = BaseManager()
+
+    class Meta:
+        verbose_name = "Abonné newsletter"
+        verbose_name_plural = "Abonnés newsletter"
+        ordering = ['-date_creation']
+
+    def __str__(self):
+        return self.email
+
+    # Helpers
+    def mark_unsubscribed(self, save=True):
+        self.est_actif = False
+        self.unsubscribed_at = timezone.now()
+        if save:
+            self.save(update_fields=['est_actif', 'unsubscribed_at', 'date_modification'])
+
+    def reactivate(self, save=True):
+        self.est_actif = True
+        self.unsubscribed_at = None
+        if save:
+            self.save(update_fields=['est_actif', 'unsubscribed_at', 'date_modification'])

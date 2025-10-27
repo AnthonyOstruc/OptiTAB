@@ -138,6 +138,7 @@ export * from './auth'
 export * from './calculator'
 export * from './matiere-contextes'
 export * from './contact'
+export * from './newsletter'
 
 // Compat stubs for removed Chapitre layer to avoid import errors in legacy views
 export const getChapitres = undefined
@@ -167,6 +168,10 @@ export const API = {
   // Contact
   contact: {
     send: (payload) => import('./contact').then(m => m.sendContactMessage(payload))
+  },
+  // Newsletter
+  newsletter: {
+    subscribe: (email, firstName = '', lastName = '') => import('./newsletter').then(m => m.subscribeToNewsletter(email, firstName, lastName))
   },
   
   niveaux: {

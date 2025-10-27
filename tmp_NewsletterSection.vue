@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="newsletter">
     <div class="content">
       <h3>{{ titre }}</h3>
@@ -22,47 +22,29 @@
           </svg>
         </span>
       </div>
-      <button type="submit" :disabled="loading">{{ loading ? '...' : bouton }}</button>
+      <button type="submit">{{ bouton }}</button>
     </form>
     <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
-    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
   </section>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { subscribeToNewsletter } from '@/api/newsletter'
-
 const props = defineProps({
-  titre: { type: String, default: 'Restez informé avec OptiTAB' },
-  description: { type: String, default: 'Recevez les dernières actualités, mises à jour et conseils pour progresser en maths.' },
+  titre: { type: String, default: 'Recevez nos nouveautÃ©s' },
+  description: { type: String, default: 'Inscrivez-vous Ã  notre newsletter.' },
   placeholder: { type: String, default: 'Votre email' },
-  bouton: { type: String, default: "S'abonner" }
+  bouton: { type: String, default: 'S\'inscrire' }
 })
 
 const email = ref('')
 const successMessage = ref('')
-const errorMessage = ref('')
-const loading = ref(false)
 
-async function onSubmit() {
-  errorMessage.value = ''
-  successMessage.value = ''
-  if (!email.value) return
-  try {
-    loading.value = true
-    await subscribeToNewsletter(email.value)
-    successMessage.value = 'Merci ! Votre inscription est confirmée.'
-    email.value = ''
-  } catch (e) {
-    errorMessage.value = e?.response?.data?.message || 'Une erreur est survenue.'
-  } finally {
-    loading.value = false
-    setTimeout(() => {
-      successMessage.value = ''
-      errorMessage.value = ''
-    }, 4000)
-  }
+function onSubmit() {
+  // Ici, tu pourrais Ã©mettre un Ã©vÃ©nement ou appeler une API
+  email.value = ''
+  successMessage.value = 'Merci pour votre inscription !'
+  setTimeout(() => (successMessage.value = ''), 3000)
 }
 </script>
 
@@ -142,12 +124,6 @@ button:hover {
   text-align: center;
   margin-top: 8px;
 }
-.error-message {
-  color: #ef4444;
-  font-size: 0.98rem;
-  text-align: center;
-  margin-top: 8px;
-}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -168,4 +144,3 @@ button:hover {
   }
 }
 </style>
-

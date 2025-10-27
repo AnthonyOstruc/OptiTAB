@@ -4,6 +4,8 @@ Core admin functionality providing consistent admin interface patterns.
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
+from django.contrib import admin
+from .models import NewsletterSubscriber
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -220,6 +222,32 @@ class ReadOnlyModelAdmin(BaseModelAdmin):
     
     def has_change_permission(self, request, obj=None):
         return False
-    
+
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(NewsletterSubscriber)
+class NewsletterSubscriberAdmin(BaseModelAdmin):
+    list_display = ('email', 'est_actif', 'date_creation', 'unsubscribed_at')
+    search_fields = ('email', 'first_name', 'last_name')
+    list_filter = ('est_actif', 'source', 'date_creation')
+    readonly_fields = ('unsubscribe_token', 'date_creation', 'date_modification')
+
+    fieldsets = (
+        (_('Abonné'), {
+            'fields': ('email', 'first_name', 'last_name', 'source', 'est_actif')
+        }),
+        (_('Données'), {
+            'classes': ('collapse',),
+            'fields': ('consent_ip', 'last_email_sent_at')
+        }),
+        (_('Désinscription'), {
+            'classes': ('collapse',),
+            'fields': ('unsubscribed_at', 'unsubscribe_token')
+        }),
+        (_('Métadonnées'), {
+            'classes': ('collapse',),
+            'fields': ('date_creation', 'date_modification')
+        }),
+    )

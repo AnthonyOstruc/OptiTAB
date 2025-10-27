@@ -27,14 +27,21 @@ class EmailService:
         1) EMAIL_LOGO_URL
         2) FRONTEND_URL + '/Logo_Fr.png' si FRONTEND_URL est https et non localhost
         """
+        def _append_version(url: str) -> str:
+            version = os.getenv('EMAIL_LOGO_VERSION') or os.getenv('ASSET_VERSION')
+            if not version and getattr(settings, 'DEBUG', False):
+                import time as _t
+                version = str(int(_t.time()))
+            return f"{url}{'&' if '?' in url else '?'}v={version}" if version else url
+
         logo = getattr(settings, 'EMAIL_LOGO_URL', None)
         if logo and isinstance(logo, str) and logo.lower().startswith('http'):
-            return logo
+            return _append_version(logo)
         # Fallback basé sur FRONTEND_URL
         frontend = getattr(settings, 'FRONTEND_URL', '') or getattr(settings, 'FRONTEND_BASE_URL', '')
         if isinstance(frontend, str) and frontend.lower().startswith('https://') and ('localhost' not in frontend and '127.0.0.1' not in frontend):
-            return frontend.rstrip('/') + '/Logo_bg.png'
-        return 'https://www.optitab.net/Logo_bg.png'
+            return _append_version(frontend.rstrip('/') + '/Logo_bg.png')
+        return _append_version('https://www.optitab.net/Logo_bg.png')
     
     @staticmethod
     def send_verification_code(user, code):
@@ -117,6 +124,65 @@ class EmailService:
                 </div>
             """
 
+            # Remise en forme professionnelle de l'email (gabarit carte)
+            message_html = (message or '').strip().replace('\n', '<br/>')
+            html_body = f"""
+              <div style=\"background:#f3f4f6;padding:24px 0;\">
+                <table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%;\">
+                  <tr>
+                    <td align=\"center\">
+                      <table role=\"presentation\" width=\"600\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:600px;max-width:100%;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;\">
+                        <tr>
+                          <td style=\"padding:24px 24px 0 24px;\">{f'<img src=\"{logo_url}\" alt=\"OptiTAB\" style=\"height:64px;width:auto;display:block\"/>' if logo_url else ''}</td>
+                        </tr>
+                        <tr>
+                          <td style=\"padding:16px 24px 0 24px;\">
+                            <h1 style=\"margin:0 0 6px 0;font-size:20px;line-height:1.3;color:#111827;\">Nouveau message de contact</h1>
+                            <p style=\"margin:0;color:#6b7280;font-size:14px;\">Reçu via le formulaire OptiTAB.</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style=\"padding:16px 24px;\">
+                            <table role=\"presentation\" width=\"100%\" style=\"font-size:14px;color:#111827;\">
+                              <tr><td style=\"padding:6px 0;width:120px;color:#6b7280;\">Nom</td><td style=\"padding:6px 0;\">{first_name.strip()} {last_name.strip()}</td></tr>
+                              <tr><td style=\"padding:6px 0;width:120px;color:#6b7280;\">Email</td><td style=\"padding:6px 0;\"><a href=\"mailto:{email.strip()}\" style=\"color:#4f46e5;text-decoration:none\">{email.strip()}</a></td></tr>
+                              <tr><td style=\"padding:6px 0;width:120px;color:#6b7280;\">Sujet</td><td style=\"padding:6px 0;\">{subject.strip()}</td></tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style=\"padding:0 24px 16px 24px;\">
+                            <div style=\"background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:16px;\">
+                              <div style=\"font-weight:600;margin:0 0 8px 0;color:#111827;\">Message</div>
+                              <div style=\"white-space:pre-wrap;line-height:1.6;color:#111827;\">{message_html}</div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style=\"padding:0 24px 24px 24px;\">
+                            <a href=\"mailto:{email.strip()}\" style=\"display:inline-block;background:#4f46e5;color:#ffffff;text-decoration:none;border-radius:8px;padding:10px 16px;font-weight:600;\">Répondre à {first_name.strip()}</a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style=\"border-top:1px solid #e5e7eb;padding:16px 24px;color:#6b7280;font-size:12px;\">
+                            <table role=\"presentation\" width=\"100%\">
+                              <tr>
+                                <td style=\"vertical-align:middle\">{f'<img src=\"{logo_url}\" alt=\"OptiTAB\" style=\"height:48px;width:auto;display:block\"/>' if logo_url else ''}</td>
+                                <td style=\"vertical-align:middle;text-align:right\">
+                                  <span style=\"color:#374151;font-weight:600\">OptiTAB</span> • Plateforme d'apprentissage<br/>
+                                  <a href=\"https://www.optitab.net\" style=\"color:#6b7280;text-decoration:none\">www.optitab.net</a> • contact@optitab.net
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            """
+
             email_msg = EmailMultiAlternatives(
                 subject=final_subject,
                 body=text_body,
@@ -189,6 +255,53 @@ class EmailService:
             from_email = settings.DEFAULT_FROM_EMAIL
             reply_to = [os.getenv("CONTACT_RECIPIENT", "contact@optitab.net")]
 
+            # Remise en forme professionnelle (gabarit carte) pour la confirmation
+            html_body = f"""
+              <div style=\"background:#f3f4f6;padding:24px 0;\">
+                <table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%;\">
+                  <tr>
+                    <td align=\"center\">
+                      <table role=\"presentation\" width=\"600\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:600px;max-width:100%;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;\">
+                        <tr>
+                          <td style=\"padding:24px 24px 0 24px;\">{f'<img src=\"{logo_url}\" alt=\"OptiTAB\" style=\"height:64px;width:auto;display:block\"/>' if logo_url else ''}</td>
+                        </tr>
+                        <tr>
+                          <td style=\"padding:16px 24px 0 24px;\">
+                            <h1 style=\"margin:0 0 6px 0;font-size:20px;line-height:1.3;color:#111827;\">Nous avons bien reçu votre message</h1>
+                            <p style=\"margin:0;color:#6b7280;font-size:14px;\">Sujet: <strong>{subject}</strong></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style=\"padding:16px 24px;\">
+                            <p style=\"margin:0 0 12px 0;color:#111827;\">Bonjour {display_name},</p>
+                            <p style=\"margin:0 0 12px 0;color:#111827;\">Merci pour votre message. Notre équipe vous répondra sous <strong>24 heures</strong> (jours ouvrés).</p>
+                            <p style=\"margin:0 0 16px 0;color:#6b7280;\">Pour urgence, écrivez-nous à <a href=\"mailto:contact@optitab.net\" style=\"color:#4f46e5;text-decoration:none\">contact@optitab.net</a> ou sur WhatsApp: <a href=\"https://wa.me/33764040251\" style=\"color:#4f46e5;text-decoration:none\">07 64 04 02 51</a>.</p>
+                            <div style=\"background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:16px;\">
+                              <div style=\"font-weight:600;margin:0 0 8px 0;color:#111827;\">Copie de votre message</div>
+                              <div style=\"white-space:pre-wrap;line-height:1.6;color:#111827;\">{original_html}</div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style=\"border-top:1px solid #e5e7eb;padding:16px 24px;color:#6b7280;font-size:12px;\">
+                            <table role=\"presentation\" width=\"100%\">
+                              <tr>
+                                <td style=\"vertical-align:middle\">{f'<img src=\"{logo_url}\" alt=\"OptiTAB\" style=\"height:48px;width:auto;display:block\"/>' if logo_url else ''}</td>
+                                <td style=\"vertical-align:middle;text-align:right\">
+                                  <span style=\"color:#374151;font-weight:600\">OptiTAB</span> • Plateforme d'apprentissage<br/>
+                                  <a href=\"https://www.optitab.net\" style=\"color:#6b7280;text-decoration:none\">www.optitab.net</a> • contact@optitab.net
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            """
+
             email_msg = EmailMultiAlternatives(
                 subject=final_subject,
                 body=text_body,
@@ -203,6 +316,118 @@ class EmailService:
         except Exception as e:
             logger.error("Erreur lors de l'envoi de l'email de confirmation: %s", e)
             return False
+
+    @staticmethod
+    def send_newsletter_welcome(subscriber, unsubscribe_url: str) -> bool:
+        """Envoie un email de bienvenue avec lien de désinscription.
+
+        - `subscriber`: instance avec attributs `.email`, `.first_name`
+        - `unsubscribe_url`: URL absolue de désinscription (GET)
+        """
+        try:
+            to_email = getattr(subscriber, 'email', None) or ''
+            if not to_email:
+                return False
+            display_name = (getattr(subscriber, 'first_name', '') or '').strip() or 'cher membre'
+            logo_url = EmailService._resolve_logo_url()
+
+            subject = 'Bienvenue dans la newsletter OptiTAB'
+            text_body = (
+                f"Bonjour {display_name},\n\n"
+                "Merci pour votre inscription à la newsletter OptiTAB. "
+                "Vous recevrez régulièrement des nouveautés, des conseils et des ressources pour progresser en maths.\n\n"
+                f"Pour vous désabonner à tout moment, cliquez ici : {unsubscribe_url}\n\n"
+                "Cordialement,\nL'équipe OptiTAB\nwww.optitab.net"
+            )
+
+            html_body = f"""
+                <div style="background:#f3f4f6;padding:24px">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;margin:auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
+                    <tr>
+                      <td style="padding:20px 24px 0 24px">{f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block"/>' if logo_url else ''}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding:6px 24px 0 24px">
+                        <h1 style="margin:0 0 8px 0;font-size:20px;line-height:1.4;color:#111827">Bienvenue dans la newsletter OptiTAB</h1>
+                        <p style="margin:0;color:#6b7280;font-size:14px">Ressources, nouveautés et conseils pour progresser en maths.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:16px 24px 8px 24px;color:#111827">
+                        <p style="margin:0 0 12px 0">Bonjour {display_name},</p>
+                        <p style="margin:0 0 12px 0">Merci pour votre inscription. Nous vous enverrons régulièrement des emails utiles et sans spam.</p>
+                        <p style="margin:0 0 16px 0;color:#6b7280">Vous pouvez vous désabonner à tout moment en un clic.</p>
+                        <p style="margin:0 0 24px 0">
+                          <a href="{unsubscribe_url}" style="background:#2a38b7;color:#fff;text-decoration:none;padding:12px 18px;border-radius:8px;display:inline-block">Se désabonner</a>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="border-top:1px solid #e5e7eb;padding:16px 24px;color:#6b7280;font-size:12px">
+                        Cet email vous a été envoyé par OptiTAB. 
+                        <a href="{unsubscribe_url}" style="color:#4f46e5;text-decoration:none">Se désabonner</a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+            """
+
+            email_msg = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[to_email],
+            )
+            email_msg.attach_alternative(html_body, "text/html")
+            email_msg.send(fail_silently=False)
+            logger.info("Email newsletter de bienvenue envoyé à %s", to_email)
+            return True
+        except Exception as e:
+            logger.error("Erreur envoi email newsletter: %s", e)
+            return False
+
+    @staticmethod
+    def render_newsletter_template(subject: str, content_html: str, unsubscribe_url: str) -> str:
+        """Construit un HTML d'email avec entête (logo) et pied de page (désabonnement).
+
+        - subject: titre affiché en tête du contenu
+        - content_html: contenu HTML déjà sûr
+        - unsubscribe_url: lien de désabonnement à inclure
+        """
+        logo_url = EmailService._resolve_logo_url()
+        safe_subject = (subject or '').strip() or 'Newsletter OptiTAB'
+        body_html = content_html or ''
+        return f"""
+          <div style=\"background:#f3f4f6;padding:24px 0;\">
+            <table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%;\">
+              <tr>
+                <td align=\"center\">
+                  <table role=\"presentation\" width=\"600\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:600px;max-width:100%;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;\">
+                    <tr>
+                      <td style=\"padding:20px 24px 0 24px;\">{f'<img src=\"{logo_url}\" alt=\"OptiTAB\" style=\"height:56px;width:auto;display:block\"/>' if logo_url else ''}</td>
+                    </tr>
+                    <tr>
+                      <td style=\"padding:6px 24px 8px 24px;\">
+                        <h1 style=\"margin:0 0 10px 0;font-size:20px;line-height:1.4;color:#111827\">{safe_subject}</h1>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style=\"padding:8px 24px 16px 24px;color:#111827;font-size:14px;line-height:1.6\">
+                        {body_html}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style=\"border-top:1px solid #e5e7eb;padding:16px 24px;color:#6b7280;font-size:12px\">
+                        Cet email vous a été envoyé par OptiTAB.
+                        <a href=\"{unsubscribe_url}\" style=\"color:#4f46e5;text-decoration:none\">Se désabonner</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </div>
+        """
 
 
 class ValidationService:

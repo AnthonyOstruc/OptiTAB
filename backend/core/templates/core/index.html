@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OptiTAB API</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2f;
+      --muted: #9fb0d1;
+      --text: #e8edf7;
+      --brand: #5aa9ff;
+      --accent: #7bd389;
+      --card: #0f1629;
+      --border: #233153;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif;
+      background: radial-gradient(1200px 700px at 10% -10%, #142047 0%, transparent 40%),
+                  radial-gradient(1200px 700px at 100% 10%, #0c1a34 0%, transparent 45%),
+                  var(--bg);
+      color: var(--text);
+    }
+    .wrap { max-width: 980px; margin: 56px auto; padding: 0 20px; }
+    header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
+    }
+    .logo {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand), #7cd6ff);
+      box-shadow: 0 10px 25px rgba(90, 169, 255, .25);
+    }
+    h1 { font-weight: 700; margin: 0; letter-spacing: .3px; }
+    .subtitle { color: var(--muted); margin: 6px 0 24px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .card {
+      background: linear-gradient(180deg, var(--panel), var(--card));
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px; min-height: 112px;
+    }
+    .k {
+      font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em;
+    }
+    .v { font-weight: 600; }
+    .endpoints { display: grid; gap: 10px; }
+    .endpoint {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 12px; border: 1px dashed var(--border); border-radius: 10px;
+      background: rgba(255,255,255,.02);
+    }
+    .endpoint code { color: #d6e2ff; }
+    .endpoint a { color: var(--brand); text-decoration: none; font-weight: 600; }
+    .endpoint a:hover { text-decoration: underline; }
+
+    .actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+    .btn {
+      border: 1px solid var(--border); background: #0d1426; color: var(--text);
+      padding: 10px 14px; border-radius: 10px; text-decoration: none; font-weight: 600;
+    }
+    .btn.primary { background: linear-gradient(135deg, var(--brand), #7cd6ff); color: #041021; border: none; }
+    .btn.success { background: linear-gradient(135deg, var(--accent), #a9f0b8); color: #052113; border: none; }
+    footer { color: var(--muted); font-size: 12px; margin-top: 28px; }
+  </style>
+  <meta name="color-scheme" content="dark light" />
+  <link rel="alternate" type="application/json" href="/?format=json" />
+  <meta name="robots" content="noindex" />
+  <meta name="description" content="Point d'entrée de l'API OptiTAB." />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="x-api-version" content="{{ version|default:'1.0.0' }}" />
+  <meta name="x-api-status" content="{{ status|default:'running' }}" />
+  <meta name="x-api-message" content="{{ message|default:'OptiTAB API Server' }}" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>OptiTAB API</h1>
+        <div class="subtitle">{{ message|default:'Serveur API' }} — v{{ version|default:'1.0.0' }}</div>
+      </div>
+    </header>
+
+    <div class="grid" role="region" aria-label="Informations">
+      <div class="card">
+        <div class="k">Statut</div>
+        <div class="v">{{ status|default:'running' }}</div>
+        <div class="actions">
+          <a class="btn" href="/?format=json">Voir en JSON</a>
+          <a class="btn primary" href="/api/docs/">Ouvrir la documentation</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="k">Documentation</div>
+        <div class="v">Disponible sur <a href="/api/docs/">/api/docs/</a></div>
+      </div>
+    </div>
+
+    <h2 style="margin:28px 0 12px">Endpoints</h2>
+    <div class="endpoints" role="navigation" aria-label="Liens d'API">
+      {% for name, url in endpoints.items %}
+        <div class="endpoint">
+          <div><span class="k">{{ name }}</span></div>
+          <div><a href="{{ url }}"><code>{{ url }}</code></a></div>
+        </div>
+      {% empty %}
+        <div class="endpoint">Aucun endpoint déclaré</div>
+      {% endfor %}
+    </div>
+
+    <footer>
+      Astuce: ajoutez <code>?format=json</code> pour le JSON brut.
+    </footer>
+  </div>
+</body>
+<!-- Simple, accessible splash page. Keeps API JSON via DRF content negotiation. -->
+</html>
+

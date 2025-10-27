@@ -137,6 +137,7 @@ export * from './users'
 export * from './auth'
 export * from './calculator'
 export * from './matiere-contextes'
+export * from './contact'
 
 // Compat stubs for removed Chapitre layer to avoid import errors in legacy views
 export const getChapitres = undefined
@@ -161,6 +162,11 @@ export const API = {
     delete: deletePays,
     getNiveaux: getPaysNiveaux,
     getHierarchy: getPaysHierarchy
+  },
+  
+  // Contact
+  contact: {
+    send: (payload) => import('./contact').then(m => m.sendContactMessage(payload))
   },
   
   niveaux: {

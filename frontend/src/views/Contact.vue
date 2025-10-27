@@ -241,6 +241,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { sendContactMessage } from '@/api/contact'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 
@@ -305,29 +306,25 @@ const scrollToSection = (sectionId, event) => {
   }
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
+  if (isSubmitting.value) return
   isSubmitting.value = true
-  
-  // Construire le corps du message
-  const body = `Bonjour,\n\nJe m'appelle ${form.value.firstName} ${form.value.lastName}.\n\n${form.value.message}\n\nCordialement,\n${form.value.firstName} ${form.value.lastName}`
-  
-  // Créer le lien mailto
-  const mailtoUrl = `mailto:contact@optitab.net?subject=${encodeURIComponent(form.value.subject)}&body=${encodeURIComponent(body)}`
-  
-  // Ouvrir le client email
-  window.open(mailtoUrl)
-  
-  // Réinitialiser le formulaire après un délai
-  setTimeout(() => {
-    form.value = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      subject: '',
-      message: ''
-    }
+  try {
+    await sendContactMessage({
+      firstName: form.value.firstName,
+      lastName: form.value.lastName,
+      email: form.value.email,
+      subject: form.value.subject,
+      message: form.value.message,
+    })
+    alert('Votre message a été envoyé. Un email de confirmation vous a été adressé. Réponse sous 24h.')
+    form.value = { firstName: '', lastName: '', email: '', subject: '', message: '' }
+  } catch (e) {
+    console.error('Erreur envoi message de contact:', e)
+    alert("Désolé, l'envoi a échoué. Veuillez réessayer plus tard.")
+  } finally {
     isSubmitting.value = false
-  }, 1000)
+  }
 }
 
 // Lifecycle hooks

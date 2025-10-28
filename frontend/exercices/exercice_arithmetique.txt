@@ -1,0 +1,1051 @@
+=== Arithmétique - Exercices Fondamentaux
+Difficulté: easy
+
+Énoncé: On considère les entiers $\displaystyle a = 84$ et $\displaystyle b = 60$.
+$\\$
+**Question 1 : Vérifier la divisibilité**
+
+**Question 2 : Calculer le PGCD de $\displaystyle a$ et $\displaystyle b$**
+
+**Question 3 : Déterminer une relation de Bézout**
+
+**Question 4 : Calculer le PPCM de $\displaystyle a$ et $\displaystyle b$**
+
+Étapes:
+
+**Question 1 : Vérifier la divisibilité**
+
+    ● **Méthode :** Vérification directe de la divisibilité
+    $\\$
+    
+    ● **Étape 1 :** Vérifier si $\displaystyle a$ divise $\displaystyle b$
+        $\qquad$• On cherche s'il existe un entier $\displaystyle k$ tel que $\displaystyle b = ka$
+        $\\$
+        $\qquad$• $\displaystyle 60 = 84k$ implique $\displaystyle k = \frac{60}{84} = \frac{5}{7} \notin \mathbb{Z}$
+        $\\$
+        $\qquad$• Donc $\displaystyle 84 \nmid 60$
+    $\\$
+    
+    ● **Étape 2 :** Vérifier si $\displaystyle b$ divise $\displaystyle a$
+        $\qquad$• On cherche s'il existe un entier $\displaystyle k$ tel que $\displaystyle a = kb$
+        $\\$
+        $\qquad$• $\displaystyle 84 = 60k$ implique $\displaystyle k = \frac{84}{60} = \frac{7}{5} \notin \mathbb{Z}$
+        $\\$
+        $\qquad$• Donc $\displaystyle 60 \nmid 84$
+    $\\$
+
+**Question 2 : Calculer le PGCD de $\displaystyle a$ et $\displaystyle b$**
+
+    ● **Méthode :** Algorithme d'Euclide
+    $\\$
+    
+    ● **Étape 1 :** Appliquer l'algorithme d'Euclide
+        $\qquad$• $\displaystyle 84 = 60 \times 1 + 24$
+        $\\$
+        $\qquad$• $\displaystyle 60 = 24 \times 2 + 12$
+        $\\$
+        $\qquad$• $\displaystyle 24 = 12 \times 2 + 0$
+    $\\$
+    
+    ● **Étape 2 :** Le dernier reste non nul est 12
+        $\qquad$• Donc $\displaystyle \text{pgcd}(84, 60) = 12$
+    $\\$
+
+**Question 3 : Déterminer une relation de Bézout**
+
+    ● **Méthode :** Remontée de l'algorithme d'Euclide
+    $\\$
+    
+    ● **Étape 1 :** Exprimer chaque reste en fonction des nombres précédents
+        $\qquad$• $\displaystyle 24 = 84 - 60 \times 1$
+        $\\$
+        $\qquad$• $\displaystyle 12 = 60 - 24 \times 2$
+    $\\$
+    
+    ● **Étape 2 :** Substituer et simplifier
+        $\qquad$• $\displaystyle 12 = 60 - (84 - 60 \times 1) \times 2$
+        $\\$
+        $\qquad$• $\displaystyle 12 = 60 - 84 \times 2 + 60 \times 2$
+        $\\$
+        $\qquad$• $\displaystyle 12 = 60 \times 3 - 84 \times 2$
+        $\\$
+        $\qquad$• $\displaystyle 12 = 84 \times (-2) + 60 \times 3$
+    $\\$
+
+**Question 4 : Calculer le PPCM de $\displaystyle a$ et $\displaystyle b$**
+
+    ● **Méthode :** Utilisation de la relation fondamentale
+    $\\$
+    
+    ● **Étape 1 :** Appliquer la formule
+        $\qquad$• $\displaystyle \text{ppcm}(a, b) = \frac{|a \times b|}{\text{pgcd}(a, b)}$
+        $\\$
+        $\qquad$• $\displaystyle \text{ppcm}(84, 60) = \frac{84 \times 60}{12} = \frac{5040}{12} = 420$
+    $\\$
+
+Solution:
+1. $\displaystyle 84 \nmid 60$ et $\displaystyle 60 \nmid 84$ (aucune divisibilité directe)
+$\\$
+2. $\displaystyle \text{pgcd}(84, 60) = 12$
+$\\$
+3. Relation de Bézout : $\displaystyle 84 \times (-2) + 60 \times 3 = 12$
+$\\$
+4. $\displaystyle \text{ppcm}(84, 60) = 420$
+
+===
+
+=== Arithmétique - Nombres Premiers et Factorisation
+Difficulté: medium
+
+Énoncé: On considère l'entier $\displaystyle n = 1260$.
+$\\$
+**Question 1 : Décomposer $\displaystyle n$ en facteurs premiers**
+
+**Question 2 : Déterminer le nombre de diviseurs de $\displaystyle n$**
+
+**Question 3 : Calculer la somme des diviseurs de $\displaystyle n$**
+
+**Question 4 : Vérifier si $\displaystyle n$ est un carré parfait**
+
+Étapes:
+
+**Question 1 : Décomposer $\displaystyle n$ en facteurs premiers**
+
+    ● **Méthode :** Division successive par les nombres premiers
+    $\\$
+    
+    ● **Étape 1 :** Diviser par 2
+        $\qquad$• $\displaystyle 1260 = 2 \times 630$
+        $\\$
+        $\qquad$• $\displaystyle 630 = 2 \times 315$
+        $\\$
+        $\qquad$• Donc $\displaystyle 1260 = 2^2 \times 315$
+    $\\$
+    
+    ● **Étape 2 :** Diviser par 3
+        $\qquad$• $\displaystyle 315 = 3 \times 105$
+        $\\$
+        $\qquad$• $\displaystyle 105 = 3 \times 35$
+        $\\$
+        $\qquad$• Donc $\displaystyle 1260 = 2^2 \times 3^2 \times 35$
+    $\\$
+    
+    ● **Étape 3 :** Diviser par 5 et 7
+        $\qquad$• $\displaystyle 35 = 5 \times 7$
+        $\\$
+        $\qquad$• Donc $\displaystyle 1260 = 2^2 \times 3^2 \times 5 \times 7$
+    $\\$
+
+**Question 2 : Déterminer le nombre de diviseurs de $\displaystyle n$**
+
+    ● **Méthode :** Formule avec les exposants
+    $\\$
+    
+    ● **Étape 1 :** Identifier les exposants
+        $\qquad$• $\displaystyle n = 2^2 \times 3^2 \times 5^1 \times 7^1$
+        $\\$
+        $\qquad$• Exposants : $\displaystyle 2, 2, 1, 1$
+    $\\$
+    
+    ● **Étape 2 :** Appliquer la formule
+        $\qquad$• Nombre de diviseurs = $\displaystyle (2+1)(2+1)(1+1)(1+1) = 3 \times 3 \times 2 \times 2 = 36$
+    $\\$
+
+**Question 3 : Calculer la somme des diviseurs de $\displaystyle n$**
+
+    ● **Méthode :** Formule avec les facteurs premiers
+    $\\$
+    
+    ● **Étape 1 :** Appliquer la formule
+        $\qquad$• $\displaystyle \sigma(n) = \frac{2^{2+1}-1}{2-1} \times \frac{3^{2+1}-1}{3-1} \times \frac{5^{1+1}-1}{5-1} \times \frac{7^{1+1}-1}{7-1}$
+        $\\$
+        $\qquad$• $\displaystyle \sigma(n) = \frac{8-1}{1} \times \frac{27-1}{2} \times \frac{25-1}{4} \times \frac{49-1}{6}$
+        $\\$
+        $\qquad$• $\displaystyle \sigma(n) = 7 \times 13 \times 6 \times 8 = 4368$
+    $\\$
+
+**Question 4 : Vérifier si $\displaystyle n$ est un carré parfait**
+
+    ● **Méthode :** Vérifier que tous les exposants sont pairs
+    $\\$
+    
+    ● **Étape 1 :** Examiner les exposants
+        $\qquad$• $\displaystyle n = 2^2 \times 3^2 \times 5^1 \times 7^1$
+        $\\$
+        $\qquad$• Exposants : $\displaystyle 2, 2, 1, 1$
+    $\\$
+    
+    ● **Étape 2 :** Conclusion
+        $\qquad$• Les exposants de 5 et 7 sont impairs (1)
+        $\\$
+        $\qquad$• Donc $\displaystyle n$ n'est pas un carré parfait
+    $\\$
+
+Solution:
+1. $\displaystyle 1260 = 2^2 \times 3^2 \times 5 \times 7$
+$\\$
+2. $\displaystyle n$ a 36 diviseurs
+$\\$
+3. La somme des diviseurs de $\displaystyle n$ est 4368
+$\\$
+4. $\displaystyle n$ n'est pas un carré parfait (exposants impairs pour 5 et 7)
+
+===
+
+=== Arithmétique - Congruences et Applications
+Difficulté: medium
+
+Énoncé: On considère les congruences suivantes :
+$\\$
+**Question 1 : Calculer $\displaystyle 2^{100} \bmod 7$**
+
+**Question 2 : Résoudre $\displaystyle 5x \equiv 3 \pmod{11}$**
+
+**Question 3 : Résoudre $\displaystyle 6x \equiv 9 \pmod{15}$**
+
+**Question 4 : Montrer que $\displaystyle n^3 - n$ est divisible par 6 pour tout entier $\displaystyle n$**
+
+Étapes:
+
+**Question 1 : Calculer $\displaystyle 2^{100} \bmod 7$**
+
+    ● **Méthode :** Recherche de périodicité
+    $\\$
+    
+    ● **Étape 1 :** Calculer les premières puissances de 2 modulo 7
+        $\qquad$• $\displaystyle 2^1 \equiv 2 \pmod{7}$
+        $\\$
+        $\qquad$• $\displaystyle 2^2 \equiv 4 \pmod{7}$
+        $\\$
+        $\qquad$• $\displaystyle 2^3 \equiv 8 \equiv 1 \pmod{7}$
+    $\\$
+    
+    ● **Étape 2 :** Utiliser la périodicité
+        $\qquad$• $\displaystyle 2^3 \equiv 1 \pmod{7}$, donc $\displaystyle 2^{3k} \equiv 1 \pmod{7}$
+        $\\$
+        $\qquad$• $\displaystyle 100 = 3 \times 33 + 1$
+        $\\$
+        $\qquad$• $\displaystyle 2^{100} = 2^{3 \times 33 + 1} = (2^3)^{33} \times 2^1 \equiv 1^{33} \times 2 \equiv 2 \pmod{7}$
+    $\\$
+
+**Question 2 : Résoudre $\displaystyle 5x \equiv 3 \pmod{11}$**
+
+    ● **Méthode :** Utilisation de l'inverse modulaire
+    $\\$
+    
+    ● **Étape 1 :** Vérifier l'existence de solutions
+        $\qquad$• $\displaystyle \text{pgcd}(5, 11) = 1$ et $\displaystyle 1 \mid 3$ ✓
+        $\\$
+        $\qquad$• Il y a exactement 1 solution modulo 11
+    $\\$
+    
+    ● **Étape 2 :** Trouver l'inverse de 5 modulo 11
+        $\qquad$• On cherche $\displaystyle k$ tel que $\displaystyle 5k \equiv 1 \pmod{11}$
+        $\\$
+        $\qquad$• $\displaystyle 5 \times 9 = 45 = 4 \times 11 + 1 \equiv 1 \pmod{11}$
+        $\\$
+        $\qquad$• Donc $\displaystyle 5^{-1} \equiv 9 \pmod{11}$
+    $\\$
+    
+    ● **Étape 3 :** Résoudre l'équation
+        $\qquad$• $\displaystyle x \equiv 9 \times 3 \equiv 27 \equiv 5 \pmod{11}$
+    $\\$
+
+**Question 3 : Résoudre $\displaystyle 6x \equiv 9 \pmod{15}$**
+
+    ● **Méthode :** Division par le PGCD
+    $\\$
+    
+    ● **Étape 1 :** Calculer le PGCD
+        $\qquad$• $\displaystyle d = \text{pgcd}(6, 15) = 3$
+        $\\$
+        $\qquad$• $\displaystyle 3 \mid 9$ ✓, donc il y a 3 solutions modulo 15
+    $\\$
+    
+    ● **Étape 2 :** Diviser par le PGCD
+        $\qquad$• $\displaystyle 2x \equiv 3 \pmod{5}$
+    $\\$
+    
+    ● **Étape 3 :** Résoudre la nouvelle équation
+        $\qquad$• $\displaystyle \text{pgcd}(2, 5) = 1$, on cherche l'inverse de 2 modulo 5
+        $\\$
+        $\qquad$• $\displaystyle 2 \times 3 = 6 \equiv 1 \pmod{5}$, donc $\displaystyle 2^{-1} \equiv 3 \pmod{5}$
+        $\\$
+        $\qquad$• $\displaystyle x \equiv 3 \times 3 \equiv 9 \equiv 4 \pmod{5}$
+    $\\$
+    
+    ● **Étape 4 :** Donner toutes les solutions
+        $\qquad$• Solutions modulo 15 : $\displaystyle x \equiv 4, 9, 14 \pmod{15}$
+    $\\$
+
+**Question 4 : Montrer que $\displaystyle n^3 - n$ est divisible par 6 pour tout entier $\displaystyle n$**
+
+    ● **Méthode :** Factorisation et propriétés de divisibilité
+    $\\$
+    
+    ● **Étape 1 :** Factoriser l'expression
+        $\qquad$• $\displaystyle n^3 - n = n(n^2 - 1) = n(n-1)(n+1)$
+        $\\$
+        $\qquad$• C'est le produit de trois entiers consécutifs
+    $\\$
+    
+    ● **Étape 2 :** Montrer la divisibilité par 2
+        $\qquad$• Parmi trois entiers consécutifs, au moins un est pair
+        $\\$
+        $\qquad$• Donc $\displaystyle 2 \mid n(n-1)(n+1)$
+    $\\$
+    
+    ● **Étape 3 :** Montrer la divisibilité par 3
+        $\qquad$• Parmi trois entiers consécutifs, exactement un est divisible par 3
+        $\\$
+        $\qquad$• Donc $\displaystyle 3 \mid n(n-1)(n+1)$
+    $\\$
+    
+    ● **Étape 4 :** Conclure
+        $\qquad$• Comme $\displaystyle \text{pgcd}(2, 3) = 1$ et $\displaystyle 2 \mid (n^3-n)$ et $\displaystyle 3 \mid (n^3-n)$
+        $\\$
+        $\qquad$• Alors $\displaystyle 6 \mid (n^3-n)$
+    $\\$
+
+Solution:
+1. $\displaystyle 2^{100} \equiv 2 \pmod{7}$
+$\\$
+2. $\displaystyle x \equiv 5 \pmod{11}$
+$\\$
+3. $\displaystyle x \equiv 4, 9, 14 \pmod{15}$
+$\\$
+4. $\displaystyle n^3 - n$ est divisible par 6 pour tout entier $\displaystyle n$ (produit de trois entiers consécutifs)
+
+===
+
+=== Arithmétique - Applications Avancées
+Difficulté: hard
+
+Énoncé: On considère le système de congruences :
+$$\begin{cases}
+x \equiv 2 \pmod{3} \\
+x \equiv 3 \pmod{5} \\
+x \equiv 2 \pmod{7}
+\end{cases}$$
+$\\$
+**Question 1 : Vérifier que le système a une solution**
+
+**Question 2 : Résoudre le système par la méthode chinoise**
+
+**Question 3 : Donner la solution générale**
+
+**Question 4 : Calculer le plus petit entier positif solution**
+
+Étapes:
+
+**Question 1 : Vérifier que le système a une solution**
+
+    ● **Méthode :** Vérification de la compatibilité
+    $\\$
+    
+    ● **Étape 1 :** Vérifier les conditions de compatibilité
+        $\qquad$• Les modules 3, 5, 7 sont premiers entre eux deux à deux
+        $\\$
+        $\qquad$• $\text{pgcd}(3, 5) = 1$, $\text{pgcd}(3, 7) = 1$, $\text{pgcd}(5, 7) = 1$
+        $\\$
+        $\qquad$• Donc le système a une solution unique modulo $3 \times 5 \times 7 = 105$
+    $\\$
+
+**Question 2 : Résoudre le système par la méthode chinoise**
+
+    ● **Méthode :** Théorème des restes chinois
+    $\\$
+    
+    ● **Étape 1 :** Calculer les coefficients de Bézout
+        $\qquad$• Pour $N_1 = 35$ et $n_1 = 3$ : $35 \times 2 + 3 \times (-23) = 1$
+        $\\$
+        $\qquad$• Pour $N_2 = 21$ et $n_2 = 5$ : $21 \times 1 + 5 \times (-4) = 1$
+        $\\$
+        $\qquad$• Pour $N_3 = 15$ et $n_3 = 7$ : $15 \times 1 + 7 \times (-2) = 1$
+    $\\$
+    
+    ● **Étape 2 :** Calculer la solution
+        $\qquad$• $x = 2 \times 35 \times 2 + 3 \times 21 \times 1 + 2 \times 15 \times 1$
+        $\\$
+        $\qquad$• $x = 140 + 63 + 30 = 233$
+        $\\$
+        $\qquad$• $x \equiv 233 \equiv 23 \pmod{105}$
+    $\\$
+
+**Question 3 : Donner la solution générale**
+
+    ● **Méthode :** Expression de la solution générale
+    $\\$
+    
+    ● **Étape 1 :** La solution générale est
+        $\qquad$• $x \equiv 23 \pmod{105}$
+        $\\$
+        $\qquad$• C'est-à-dire $x = 23 + 105k$ pour tout $k \in \mathbb{Z}$
+    $\\$
+
+**Question 4 : Calculer le plus petit entier positif solution**
+
+    ● **Méthode :** Calcul direct
+    $\\$
+    
+    ● **Étape 1 :** Vérifier que 23 est solution
+        $\qquad$• $23 \equiv 2 \pmod{3}$ ✓ ($23 = 3 \times 7 + 2$)
+        $\\$
+        $\qquad$• $23 \equiv 3 \pmod{5}$ ✓ ($23 = 5 \times 4 + 3$)
+        $\\$
+        $\qquad$• $23 \equiv 2 \pmod{7}$ ✓ ($23 = 7 \times 3 + 2$)
+    $\\$
+    
+    ● **Étape 2 :** Conclusion
+        $\qquad$• 23 est la plus petite solution positive
+    $\\$
+
+Solution:
+1. Le système a une solution unique modulo 105
+$\\$
+2. $\displaystyle x \equiv 23 \pmod{105}$
+$\\$
+3. Solution générale : $\displaystyle x = 23 + 105k$ pour tout $\displaystyle k \in \mathbb{Z}$
+$\\$
+4. La plus petite solution positive est 23
+
+===
+
+=== Arithmétique - Cryptographie RSA
+Difficulté: hard
+
+Énoncé: On considère un système RSA simplifié avec $p = 3$, $q = 11$ et $e = 3$.
+$\\$
+**Question 1 : Calculer $n$ et $\varphi(n)$**
+
+**Question 2 : Vérifier que $e$ est bien choisi**
+
+**Question 3 : Calculer la clé privée $d$**
+
+**Question 4 : Chiffrer le message $m = 4$**
+
+**Question 5 : Déchiffrer le message chiffré**
+
+Étapes:
+
+**Question 1 : Calculer $n$ et $\varphi(n)$**
+
+    ● **Méthode :** Formules de base RSA
+    $\\$
+    
+    ● **Étape 1 :** Calculer $n$
+        $\qquad$• $n = p \times q = 3 \times 11 = 33$
+    $\\$
+    
+    ● **Étape 2 :** Calculer $\varphi(n)$
+        $\qquad$• $\varphi(n) = (p-1)(q-1) = (3-1)(11-1) = 2 \times 10 = 20$
+    $\\$
+
+**Question 2 : Vérifier que $e$ est bien choisi**
+
+    ● **Méthode :** Vérification de la condition d'inversibilité
+    $\\$
+    
+    ● **Étape 1 :** Calculer le PGCD
+        $\qquad$• $\text{pgcd}(e, \varphi(n)) = \text{pgcd}(3, 20) = 1$
+        $\\$
+        $\qquad$• Donc $e$ est inversible modulo $\varphi(n)$ ✓
+    $\\$
+
+**Question 3 : Calculer la clé privée $d$**
+
+    ● **Méthode :** Algorithme d'Euclide étendu
+    $\\$
+    
+    ● **Étape 1 :** Appliquer l'algorithme d'Euclide
+        $\qquad$• $20 = 3 \times 6 + 2$
+        $\\$
+        $\qquad$• $3 = 2 \times 1 + 1$
+        $\\$
+        $\qquad$• $2 = 1 \times 2 + 0$
+        $\\$
+        $\qquad$• Donc $\text{pgcd}(3, 20) = 1$
+    $\\$
+    
+    ● **Étape 2 :** Remontée de Bézout
+        $\qquad$• $1 = 3 - 2 \times 1$
+        $\\$
+        $\qquad$• $1 = 3 - (20 - 3 \times 6) \times 1$
+        $\\$
+        $\qquad$• $1 = 3 \times 7 - 20 \times 1$
+        $\\$
+        $\qquad$• Donc $3 \times 7 \equiv 1 \pmod{20}$
+        $\\$
+        $\qquad$• Donc $d = 7$
+    $\\$
+
+**Question 4 : Chiffrer le message $m = 4$**
+
+    ● **Méthode :** Formule de chiffrement RSA
+    $\\$
+    
+    ● **Étape 1 :** Appliquer la formule
+        $\qquad$• $c \equiv m^e \pmod{n}$
+        $\\$
+        $\qquad$• $c \equiv 4^3 \pmod{33}$
+    $\\$
+    
+    ● **Étape 2 :** Calculer $4^3 \bmod 33$
+        $\qquad$• $4^3 = 64$
+        $\\$
+        $\qquad$• $64 = 33 \times 1 + 31$
+        $\\$
+        $\qquad$• Donc $c \equiv 31 \pmod{33}$
+    $\\$
+
+**Question 5 : Déchiffrer le message chiffré**
+
+    ● **Méthode :** Formule de déchiffrement RSA
+    $\\$
+    
+    ● **Étape 1 :** Appliquer la formule
+        $\qquad$• $m \equiv c^d \pmod{n}$
+        $\\$
+        $\qquad$• $m \equiv 31^7 \pmod{33}$
+    $\\$
+    
+    ● **Étape 2 :** Calculer par carrés successifs
+        $\qquad$• $31^1 \equiv 31 \pmod{33}$
+        $\\$
+        $\qquad$• $31^2 \equiv 961 \equiv 4 \pmod{33}$
+        $\\$
+        $\qquad$• $31^4 \equiv 4^2 \equiv 16 \pmod{33}$
+        $\\$
+        $\qquad$• $31^7 = 31^4 \times 31^2 \times 31^1 \equiv 16 \times 4 \times 31 \equiv 64 \times 31 \equiv 31 \times 31 \equiv 4 \pmod{33}$
+    $\\$
+
+Solution:
+1. $\displaystyle n = 33$ et $\displaystyle \varphi(n) = 20$
+$\\$
+2. $\displaystyle e = 3$ est bien choisi ($\displaystyle \text{pgcd}(3, 20) = 1$)
+$\\$
+3. $\displaystyle d = 7$ (clé privée)
+$\\$
+4. Le message $\displaystyle m = 4$ est chiffré en $\displaystyle c = 31$
+$\\$
+5. Le déchiffrement de $\displaystyle c = 31$ donne bien $\displaystyle m = 4$ ✓
+
+===
+
+=== Arithmétique - Théorème de Fermat et Applications
+Difficulté: medium
+
+Énoncé: On considère les entiers $a = 7$ et $p = 11$ (nombre premier).
+$\\$
+**Question 1 : Vérifier le petit théorème de Fermat**
+
+**Question 2 : Calculer $7^{100} \bmod 11$**
+
+**Question 3 : Trouver l'inverse de 7 modulo 11**
+
+**Question 4 : Résoudre $7x \equiv 5 \pmod{11}$**
+
+Étapes:
+
+**Question 1 : Vérifier le petit théorème de Fermat**
+
+    ● **Méthode :** Application directe du théorème
+    $\\$
+    
+    ● **Étape 1 :** Vérifier les conditions
+        $\qquad$• $p = 11$ est premier ✓
+        $\\$
+        $\qquad$• $\text{pgcd}(7, 11) = 1$ ✓
+    $\\$
+    
+    ● **Étape 2 :** Appliquer le théorème
+        $\qquad$• $7^{11-1} \equiv 1 \pmod{11}$
+        $\\$
+        $\qquad$• $7^{10} \equiv 1 \pmod{11}$
+    $\\$
+    
+    ● **Étape 3 :** Vérification par calcul
+        $\qquad$• $7^2 = 49 \equiv 5 \pmod{11}$
+        $\\$
+        $\qquad$• $7^4 \equiv 5^2 = 25 \equiv 3 \pmod{11}$
+        $\\$
+        $\qquad$• $7^8 \equiv 3^2 = 9 \pmod{11}$
+        $\\$
+        $\qquad$• $7^{10} = 7^8 \times 7^2 \equiv 9 \times 5 = 45 \equiv 1 \pmod{11}$ ✓
+    $\\$
+
+**Question 2 : Calculer $7^{100} \bmod 11$**
+
+    ● **Méthode :** Utilisation de la périodicité
+    $\\$
+    
+    ● **Étape 1 :** Utiliser le résultat précédent
+        $\qquad$• $7^{10} \equiv 1 \pmod{11}$
+        $\\$
+        $\qquad$• $100 = 10 \times 10$
+        $\\$
+        $\qquad$• $7^{100} = (7^{10})^{10} \equiv 1^{10} = 1 \pmod{11}$
+    $\\$
+
+**Question 3 : Trouver l'inverse de 7 modulo 11**
+
+    ● **Méthode :** Utilisation du théorème de Fermat
+    $\\$
+    
+    ● **Étape 1 :** Appliquer la formule
+        $\qquad$• $7^{10} \equiv 1 \pmod{11}$
+        $\\$
+        $\qquad$• $7 \times 7^9 \equiv 1 \pmod{11}$
+        $\\$
+        $\qquad$• Donc $7^{-1} \equiv 7^9 \pmod{11}$
+    $\\$
+    
+    ● **Étape 2 :** Calculer $7^9 \bmod 11$
+        $\qquad$• $7^9 = 7^8 \times 7^1 \equiv 9 \times 7 = 63 \equiv 8 \pmod{11}$
+        $\\$
+        $\qquad$• Vérification : $7 \times 8 = 56 \equiv 1 \pmod{11}$ ✓
+    $\\$
+
+**Question 4 : Résoudre $7x \equiv 5 \pmod{11}$**
+
+    ● **Méthode :** Multiplication par l'inverse
+    $\\$
+    
+    ● **Étape 1 :** Multiplier par l'inverse de 7
+        $\qquad$• $x \equiv 8 \times 5 \equiv 40 \equiv 7 \pmod{11}$
+    $\\$
+    
+    ● **Étape 2 :** Vérification
+        $\qquad$• $7 \times 7 = 49 \equiv 5 \pmod{11}$ ✓
+    $\\$
+
+Solution:
+1. $\displaystyle 7^{10} \equiv 1 \pmod{11}$ (petit théorème de Fermat vérifié)
+$\\$
+2. $\displaystyle 7^{100} \equiv 1 \pmod{11}$
+$\\$
+3. L'inverse de 7 modulo 11 est 8
+$\\$
+4. $\displaystyle x \equiv 7 \pmod{11}$
+
+===
+
+=== Arithmétique - Nombres de Mersenne et Fermat
+Difficulté: hard
+
+Énoncé: On considère les nombres de Mersenne $M_p = 2^p - 1$ et de Fermat $F_n = 2^{2^n} + 1$.
+$\\$
+**Question 1 : Vérifier que $M_3 = 7$ est premier**
+
+**Question 2 : Vérifier que $M_4 = 15$ n'est pas premier**
+
+**Question 3 : Calculer $F_0$, $F_1$, $F_2$ et $F_3$**
+
+**Question 4 : Montrer que si $n > 1$ et $M_n$ est premier, alors $n$ est premier**
+
+Étapes:
+
+**Question 1 : Vérifier que $M_3 = 7$ est premier**
+
+    ● **Méthode :** Test de primalité
+    $\\$
+    
+    ● **Étape 1 :** Calculer $M_3$
+        $\qquad$• $M_3 = 2^3 - 1 = 8 - 1 = 7$
+    $\\$
+    
+    ● **Étape 2 :** Tester la primalité
+        $\qquad$• $\sqrt{7} \approx 2{,}65$, on teste les diviseurs premiers $\leq 2$ : 2
+        $\\$
+        $\qquad$• $7$ est impair, donc non divisible par 2 ✓
+        $\\$
+        $\qquad$• Donc $M_3 = 7$ est premier
+    $\\$
+
+**Question 2 : Vérifier que $M_4 = 15$ n'est pas premier**
+
+    ● **Méthode :** Factorisation
+    $\\$
+    
+    ● **Étape 1 :** Calculer $M_4$
+        $\qquad$• $M_4 = 2^4 - 1 = 16 - 1 = 15$
+    $\\$
+    
+    ● **Étape 2 :** Factoriser
+        $\qquad$• $15 = 3 \times 5$
+        $\\$
+        $\qquad$• Donc $M_4 = 15$ n'est pas premier
+    $\\$
+
+**Question 3 : Calculer $F_0$, $F_1$, $F_2$ et $F_3$**
+
+    ● **Méthode :** Calcul direct
+    $\\$
+    
+    ● **Étape 1 :** Calculer $F_0$
+        $\qquad$• $F_0 = 2^{2^0} + 1 = 2^1 + 1 = 3$
+    $\\$
+    
+    ● **Étape 2 :** Calculer $F_1$
+        $\qquad$• $F_1 = 2^{2^1} + 1 = 2^2 + 1 = 5$
+    $\\$
+    
+    ● **Étape 3 :** Calculer $F_2$
+        $\qquad$• $F_2 = 2^{2^2} + 1 = 2^4 + 1 = 17$
+    $\\$
+    
+    ● **Étape 4 :** Calculer $F_3$
+        $\qquad$• $F_3 = 2^{2^3} + 1 = 2^8 + 1 = 256 + 1 = 257$
+    $\\$
+
+**Question 4 : Montrer que si $n > 1$ et $M_n$ est premier, alors $n$ est premier**
+
+    ● **Méthode :** Preuve par contraposée
+    $\\$
+    
+    ● **Étape 1 :** Supposer que $n$ n'est pas premier
+        $\qquad$• Si $n$ n'est pas premier, alors $n = ab$ avec $1 < a, b < n$
+    $\\$
+    
+    ● **Étape 2 :** Factoriser $M_n$
+        $\qquad$• $M_n = 2^n - 1 = 2^{ab} - 1$
+        $\\$
+        $\qquad$• $2^{ab} - 1 = (2^a)^b - 1 = (2^a - 1)((2^a)^{b-1} + (2^a)^{b-2} + \cdots + 2^a + 1)$
+    $\\$
+    
+    ● **Étape 3 :** Conclure
+        $\qquad$• Comme $1 < a < n$, on a $1 < 2^a - 1 < 2^n - 1$
+        $\\$
+        $\qquad$• Donc $M_n$ n'est pas premier
+        $\\$
+        $\qquad$• Par contraposée : si $M_n$ est premier, alors $n$ est premier
+    $\\$
+
+Solution:
+1. $\displaystyle M_3 = 7$ est premier
+$\\$
+2. $\displaystyle M_4 = 15 = 3 \times 5$ n'est pas premier
+$\\$
+3. $\displaystyle F_0 = 3$, $\displaystyle F_1 = 5$, $\displaystyle F_2 = 17$, $\displaystyle F_3 = 257$
+$\\$
+4. Si $\displaystyle M_n$ est premier avec $\displaystyle n > 1$, alors $\displaystyle n$ est premier
+
+===
+
+=== Arithmétique - Indicateur d'Euler et Applications
+Difficulté: hard
+
+Énoncé: On considère l'entier $n = 60$.
+$\\$
+**Question 1 : Calculer $\varphi(60)$**
+
+**Question 2 : Vérifier le théorème d'Euler pour $a = 7$**
+
+**Question 3 : Trouver tous les entiers $a$ tels que $a^{12} \equiv 1 \pmod{60}$**
+
+**Question 4 : Calculer $7^{100} \bmod 60$**
+
+Étapes:
+
+**Question 1 : Calculer $\varphi(60)$**
+
+    ● **Méthode :** Formule avec la décomposition en facteurs premiers
+    $\\$
+    
+    ● **Étape 1 :** Décomposer 60
+        $\qquad$• $60 = 2^2 \times 3 \times 5$
+    $\\$
+    
+    ● **Étape 2 :** Appliquer la formule
+        $\qquad$• $\varphi(60) = 60 \times \left(1 - \frac{1}{2}\right) \times \left(1 - \frac{1}{3}\right) \times \left(1 - \frac{1}{5}\right)$
+        $\\$
+        $\qquad$• $\varphi(60) = 60 \times \frac{1}{2} \times \frac{2}{3} \times \frac{4}{5}$
+        $\\$
+        $\qquad$• $\varphi(60) = 60 \times \frac{8}{30} = 16$
+    $\\$
+
+**Question 2 : Vérifier le théorème d'Euler pour $a = 7$**
+
+    ● **Méthode :** Application du théorème d'Euler
+    $\\$
+    
+    ● **Étape 1 :** Vérifier les conditions
+        $\qquad$• $\text{pgcd}(7, 60) = 1$ ✓
+    $\\$
+    
+    ● **Étape 2 :** Appliquer le théorème
+        $\qquad$• $7^{\varphi(60)} \equiv 1 \pmod{60}$
+        $\\$
+        $\qquad$• $7^{16} \equiv 1 \pmod{60}$
+    $\\$
+    
+    ● **Étape 3 :** Vérification par calcul
+        $\qquad$• $7^2 = 49 \equiv 49 \pmod{60}$
+        $\\$
+        $\qquad$• $7^4 \equiv 49^2 = 2401 \equiv 1 \pmod{60}$
+        $\\$
+        $\qquad$• $7^{16} = (7^4)^4 \equiv 1^4 = 1 \pmod{60}$ ✓
+    $\\$
+
+**Question 3 : Trouver tous les entiers $a$ tels que $a^{12} \equiv 1 \pmod{60}$**
+
+    ● **Méthode :** Utilisation du théorème d'Euler
+    $\\$
+    
+    ● **Étape 1 :** Analyser la condition
+        $\qquad$• Si $\text{pgcd}(a, 60) = 1$, alors $a^{16} \equiv 1 \pmod{60}$
+        $\\$
+        $\qquad$• Donc $a^{12} \equiv 1 \pmod{60}$ si $a^{4} \equiv 1 \pmod{60}$
+    $\\$
+    
+    ● **Étape 2 :** Résoudre $a^4 \equiv 1 \pmod{60}$
+        $\qquad$• Par le théorème des restes chinois, cela équivaut à :
+        $\\$
+        $\qquad$• $a^4 \equiv 1 \pmod{4}$, $a^4 \equiv 1 \pmod{3}$, $a^4 \equiv 1 \pmod{5}$
+        $\\$
+        $\qquad$• Solutions : $a \equiv \pm 1 \pmod{4, 3, 5}$
+        $\\$
+        $\qquad$• Donc $a \equiv \pm 1 \pmod{60}$
+    $\\$
+
+**Question 4 : Calculer $7^{100} \bmod 60$**
+
+    ● **Méthode :** Utilisation de la périodicité
+    $\\$
+    
+    ● **Étape 1 :** Utiliser le résultat précédent
+        $\qquad$• $7^{16} \equiv 1 \pmod{60}$
+        $\\$
+        $\qquad$• $100 = 16 \times 6 + 4$
+        $\\$
+        $\qquad$• $7^{100} = 7^{16 \times 6 + 4} = (7^{16})^6 \times 7^4 \equiv 1^6 \times 7^4 \equiv 7^4 \pmod{60}$
+    $\\$
+    
+    ● **Étape 2 :** Calculer $7^4 \bmod 60$
+        $\qquad$• $7^4 = 2401 = 60 \times 40 + 1 \equiv 1 \pmod{60}$
+    $\\$
+
+Solution:
+1. $\displaystyle \varphi(60) = 16$
+$\\$
+2. $\displaystyle 7^{16} \equiv 1 \pmod{60}$ (théorème d'Euler vérifié)
+$\\$
+3. Les entiers $\displaystyle a$ tels que $\displaystyle a^{12} \equiv 1 \pmod{60}$ sont $\displaystyle a \equiv \pm 1 \pmod{60}$
+$\\$
+4. $\displaystyle 7^{100} \equiv 1 \pmod{60}$
+
+===
+
+=== Arithmétique - Polynômes et Congruences
+Difficulté: hard
+
+Énoncé: On considère le polynôme $P(x) = x^3 - 2x^2 + 3x - 1$.
+$\\$
+**Question 1 : Résoudre $P(x) \equiv 0 \pmod{5}$**
+
+**Question 2 : Résoudre $P(x) \equiv 0 \pmod{7}$**
+
+**Question 3 : Résoudre $P(x) \equiv 0 \pmod{35}$**
+
+**Question 4 : Montrer que $P(x)$ n'a pas de racines entières**
+
+Étapes:
+
+**Question 1 : Résoudre $P(x) \equiv 0 \pmod{5}$**
+
+    ● **Méthode :** Test systématique modulo 5
+    $\\$
+    
+    ● **Étape 1 :** Tester toutes les valeurs de 0 à 4
+        $\qquad$• $P(0) = -1 \equiv 4 \pmod{5}$
+        $\\$
+        $\qquad$• $P(1) = 1 - 2 + 3 - 1 = 1 \equiv 1 \pmod{5}$
+        $\\$
+        $\qquad$• $P(2) = 8 - 8 + 6 - 1 = 5 \equiv 0 \pmod{5}$ ✓
+        $\\$
+        $\qquad$• $P(3) = 27 - 18 + 9 - 1 = 17 \equiv 2 \pmod{5}$
+        $\\$
+        $\qquad$• $P(4) = 64 - 32 + 12 - 1 = 43 \equiv 3 \pmod{5}$
+    $\\$
+
+**Question 2 : Résoudre $P(x) \equiv 0 \pmod{7}$**
+
+    ● **Méthode :** Test systématique modulo 7
+    $\\$
+    
+    ● **Étape 1 :** Tester toutes les valeurs de 0 à 6
+        $\qquad$• $P(0) = -1 \equiv 6 \pmod{7}$
+        $\\$
+        $\qquad$• $P(1) = 1 \equiv 1 \pmod{7}$
+        $\\$
+        $\qquad$• $P(2) = 5 \equiv 5 \pmod{7}$
+        $\\$
+        $\qquad$• $P(3) = 17 \equiv 3 \pmod{7}$
+        $\\$
+        $\qquad$• $P(4) = 43 \equiv 1 \pmod{7}$
+        $\\$
+        $\qquad$• $P(5) = 89 \equiv 5 \pmod{7}$
+        $\\$
+        $\qquad$• $P(6) = 161 \equiv 0 \pmod{7}$ ✓
+    $\\$
+
+**Question 3 : Résoudre $P(x) \equiv 0 \pmod{35}$**
+
+    ● **Méthode :** Théorème des restes chinois
+    $\\$
+    
+    ● **Étape 1 :** Solutions modulo 5 et 7
+        $\qquad$• Solutions modulo 5 : $x \equiv 2 \pmod{5}$
+        $\\$
+        $\qquad$• Solutions modulo 7 : $x \equiv 6 \pmod{7}$
+    $\\$
+    
+    ● **Étape 2 :** Résoudre le système
+        $\qquad$• $\begin{cases} x \equiv 2 \pmod{5} \\ x \equiv 6 \pmod{7} \end{cases}$
+        $\\$
+        $\qquad$• $x = 2 + 5k$ pour un certain $k$
+        $\\$
+        $\qquad$• $2 + 5k \equiv 6 \pmod{7}$
+        $\\$
+        $\qquad$• $5k \equiv 4 \pmod{7}$
+        $\\$
+        $\qquad$• $k \equiv 4 \times 5^{-1} \equiv 4 \times 3 \equiv 12 \equiv 5 \pmod{7}$
+        $\\$
+        $\qquad$• $k = 5 + 7m$ pour un certain $m$
+        $\\$
+        $\qquad$• $x = 2 + 5(5 + 7m) = 27 + 35m$
+        $\\$
+        $\qquad$• Donc $x \equiv 27 \pmod{35}$
+    $\\$
+
+**Question 4 : Montrer que $P(x)$ n'a pas de racines entières**
+
+    ● **Méthode :** Test des diviseurs du terme constant
+    $\\$
+    
+    ● **Étape 1 :** Identifier les candidats
+        $\qquad$• Les racines entières divisent le terme constant $-1$
+        $\\$
+        $\qquad$• Donc les seuls candidats sont $\pm 1$
+    $\\$
+    
+    ● **Étape 2 :** Tester les candidats
+        $\qquad$• $P(1) = 1 - 2 + 3 - 1 = 1 \neq 0$
+        $\\$
+        $\qquad$• $P(-1) = -1 - 2 - 3 - 1 = -7 \neq 0$
+    $\\$
+    
+    ● **Étape 3 :** Conclusion
+        $\qquad$• Aucun des candidats n'est racine
+        $\\$
+        $\qquad$• Donc $P(x)$ n'a pas de racines entières
+    $\\$
+
+Solution:
+1. $\displaystyle x \equiv 2 \pmod{5}$
+$\\$
+2. $\displaystyle x \equiv 6 \pmod{7}$
+$\\$
+3. $\displaystyle x \equiv 27 \pmod{35}$
+$\\$
+4. $\displaystyle P(x)$ n'a pas de racines entières
+
+===
+
+=== Arithmétique - Cryptographie et Sécurité
+Difficulté: hard
+
+Énoncé: On considère un système de chiffrement basé sur le problème du logarithme discret.
+$\\$
+**Question 1 : Calculer $3^x \equiv 5 \pmod{17}$ pour $x \in \{0, 1, \ldots, 16\}$**
+
+**Question 2 : Vérifier que 3 est une racine primitive modulo 17**
+
+**Question 3 : Calculer l'indice de 5 en base 3 modulo 17**
+
+**Question 4 : Résoudre $3^x \equiv 12 \pmod{17}$**
+
+Étapes:
+
+**Question 1 : Calculer $3^x \equiv 5 \pmod{17}$ pour $x \in \{0, 1, \ldots, 16\}$**
+
+    ● **Méthode :** Calcul systématique des puissances
+    $\\$
+    
+    ● **Étape 1 :** Calculer les puissances de 3 modulo 17
+        $\qquad$• $3^0 \equiv 1 \pmod{17}$
+        $\\$
+        $\qquad$• $3^1 \equiv 3 \pmod{17}$
+        $\\$
+        $\qquad$• $3^2 \equiv 9 \pmod{17}$
+        $\\$
+        $\qquad$• $3^3 \equiv 27 \equiv 10 \pmod{17}$
+        $\\$
+        $\qquad$• $3^4 \equiv 30 \equiv 13 \pmod{17}$
+        $\\$
+        $\qquad$• $3^5 \equiv 39 \equiv 5 \pmod{17}$ ✓
+    $\\$
+
+**Question 2 : Vérifier que 3 est une racine primitive modulo 17**
+
+    ● **Méthode :** Vérifier que l'ordre de 3 est 16
+    $\\$
+    
+    ● **Étape 1 :** Calculer l'ordre de 3
+        $\qquad$• L'ordre de 3 est le plus petit $k$ tel que $3^k \equiv 1 \pmod{17}$
+        $\\$
+        $\qquad$• On a $3^{16} \equiv 1 \pmod{17}$ (théorème de Fermat)
+        $\\$
+        $\qquad$• Vérifions que $3^8 \not\equiv 1 \pmod{17}$ : $3^8 \equiv 16 \pmod{17}$
+        $\\$
+        $\qquad$• Donc l'ordre de 3 est 16
+    $\\$
+    
+    ● **Étape 2 :** Conclusion
+        $\qquad$• Comme l'ordre de 3 est 16 = $\varphi(17)$, 3 est une racine primitive
+    $\\$
+
+**Question 3 : Calculer l'indice de 5 en base 3 modulo 17**
+
+    ● **Méthode :** Utiliser le résultat de la question 1
+    $\\$
+    
+    ● **Étape 1 :** Identifier la puissance
+        $\qquad$• D'après la question 1, $3^5 \equiv 5 \pmod{17}$
+        $\\$
+        $\qquad$• Donc l'indice de 5 en base 3 modulo 17 est 5
+    $\\$
+
+**Question 4 : Résoudre $3^x \equiv 12 \pmod{17}$**
+
+    ● **Méthode :** Calcul systématique
+    $\\$
+    
+    ● **Étape 1 :** Continuer le calcul des puissances
+        $\qquad$• $3^6 \equiv 15 \pmod{17}$
+        $\\$
+        $\qquad$• $3^7 \equiv 45 \equiv 11 \pmod{17}$
+        $\\$
+        $\qquad$• $3^8 \equiv 33 \equiv 16 \pmod{17}$
+        $\\$
+        $\qquad$• $3^9 \equiv 48 \equiv 14 \pmod{17}$
+        $\\$
+        $\qquad$• $3^{10} \equiv 42 \equiv 8 \pmod{17}$
+        $\\$
+        $\qquad$• $3^{11} \equiv 24 \equiv 7 \pmod{17}$
+        $\\$
+        $\qquad$• $3^{12} \equiv 21 \equiv 4 \pmod{17}$
+        $\\$
+        $\qquad$• $3^{13} \equiv 12 \pmod{17}$ ✓
+    $\\$
+
+Solution:
+1. $\displaystyle 3^5 \equiv 5 \pmod{17}$, donc $\displaystyle x = 5$
+$\\$
+2. 3 est une racine primitive modulo 17 (ordre = 16)
+$\\$
+3. L'indice de 5 en base 3 modulo 17 est 5
+$\\$
+4. $\displaystyle 3^{13} \equiv 12 \pmod{17}$, donc $\displaystyle x = 13$
+
+===

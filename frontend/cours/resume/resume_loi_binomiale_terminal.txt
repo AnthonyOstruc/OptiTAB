@@ -1,354 +1,478 @@
-===
-Résumé Loi Binomiale
+===Résumé Loi Binomiale
+
+Images: 
 
 Titre: Résumé : La Loi Binomiale
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">I. Schéma de Bernoulli</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Définition :</strong> Un schéma de Bernoulli est une expérience aléatoire qui ne peut avoir que deux issues :<br><br>
-            • <strong>Succès</strong> (S) avec probabilité $p$<br>• <strong>Échec</strong> (É) avec probabilité $q = 1 - p$
-        </div>
-        
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 À retenir :</strong> Dans un schéma de Bernoulli, $p + q = 1$ (probabilités complémentaires).
-        </div>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li>Lancer une pièce : Pile (succès) ou Face (échec)</li>
-                <li>Interroger un élève : Réponse correcte (succès) ou incorrecte (échec)</li>
-                <li>Test d'un produit : Défectueux (succès) ou conforme (échec)</li>
-            </ul>
-        </div>
-    </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Schéma de Bernoulli</h2>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">II. Loi binomiale - Définition</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Définition :</strong> On répète $n$ fois de manière indépendante un schéma de Bernoulli de paramètre $p$. La variable aléatoire $X$ qui compte le nombre de succès suit une loi binomiale de paramètres $n$ et $p$, notée $\mathcal{B}(n, p)$.<br><br>
-            $\displaystyle X \sim \mathcal{B}(n, p)$
-        </div>
-        
-        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
-            <strong>⚠️ Conditions importantes :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li>Les $n$ répétitions doivent être <strong>indépendantes</strong></li>
-                <li>La probabilité $p$ doit être <strong>identique</strong> à chaque répétition</li>
-                <li>Chaque répétition ne peut avoir que deux issues</li>
-            </ul>
-        </div>
-        
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Valeurs possibles :</strong> $X \in \{0, 1, 2, \ldots, n\}$
-        </div>
-    </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Un schéma de Bernoulli est une expérience aléatoire qui ne peut avoir que deux issues :<br><br>
+• <strong>Succès</strong> (S) avec probabilité $\displaystyle p$<br><br>
+• <strong>Échec</strong> (É) avec probabilité $\displaystyle q = 1 - p$</td>
+</tr>
+</tbody>
+</table>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">III. Formule de la loi binomiale</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Pour $X \sim \mathcal{B}(n, p)$ et $k \in \{0, 1, 2, \ldots, n\}$ :</strong><br><br>
-            $\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$
-        </div>
-        
-        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Notation alternative :</strong><br><br>
-            $\displaystyle P(X = k) = \binom{n}{k} \times p^k \times q^{n-k}$ où $q = 1-p$
-        </div>
-        
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Explication de la formule :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li>$\binom{n}{k}$ : nombre de façons d'obtenir $k$ succès parmi $n$ essais</li>
-                <br>
-                <li>$p^k$ : probabilité d'avoir $k$ succès</li>
-                <br>
-                <li>$(1-p)^{n-k}$ : probabilité d'avoir $(n-k)$ échecs</li>
-            </ul>
-        </div>
-    </div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">À retenir</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Dans un schéma de Bernoulli, $\displaystyle p + q = 1$ (probabilités complémentaires)</td>
+</tr>
+</tbody>
+</table>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IV. Coefficient binomial</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Formule du coefficient binomial :</strong><br><br>
-            $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$
-        </div>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Propriétés utiles :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li>$\displaystyle \binom{n}{0} = 1$ et $\displaystyle \binom{n}{n} = 1$</li>
-                <br>
-                <li>$\displaystyle \binom{n}{k} = \binom{n}{n-k}$ (symétrie)</li>
-                <br>
-                <li>$\displaystyle \binom{n}{1} = n$ et $\displaystyle \binom{n}{n-1} = n$</li>
-            </ul>
-        </div>
-    </div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemples</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Lancer une pièce : Pile (succès) ou Face (échec)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Interroger un élève : Réponse correcte (succès) ou incorrecte (échec)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Test d'un produit : Défectueux (succès) ou conforme (échec)</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">V. Probabilités cumulées</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Probabilité "au plus $k$" :</strong><br><br>
-            $\displaystyle P(X \leq k) = P(X = 0) + P(X = 1) + \ldots + P(X = k)$
-        </div>
-        
-        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Probabilité "au moins $k$" :</strong><br><br>
-            $\displaystyle P(X \geq k) = P(X = k) + P(X = k+1) + \ldots + P(X = n)$
-        </div>
-        
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Relation utile :</strong> $P(X \geq k) = 1 - P(X \leq k-1)$
-        </div>
-    </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Loi binomiale — définition</h2>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VI. Espérance et variance</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:12px;">Paramètre</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Formule</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Interprétation</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Espérance</strong></td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = np$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Nombre moyen de succès</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Variance</strong></td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(X) = np(1-p)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Dispersion des résultats</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Écart-type</strong></td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma(X) = \sqrt{np(1-p)}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Écart-type des résultats</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Interprétation de l'espérance :</strong> Si on répète l'expérience un grand nombre de fois, le nombre moyen de succès sera proche de $np$.
-        </div>
-    </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Concept</th>
+<th style="border:1px solid #ddd; padding:12px;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Définition</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">On répète $\displaystyle n$ fois de manière indépendante un schéma de Bernoulli de paramètre $\displaystyle p$. La variable aléatoire $\displaystyle X$ qui compte le nombre de succès suit une loi binomiale de paramètres $\displaystyle n$ et $\displaystyle p$, notée $\displaystyle \mathcal{B}(n, p)$ ou $\displaystyle X \sim \mathcal{B}(n, p)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Valeurs possibles</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle X \in \{0, 1, 2, \ldots, n\}$</td>
+</tr>
+</tbody>
+</table>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VII. Utilisation de la calculatrice</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:12px;">Calculatrice</th>
-                    <th style="border:1px solid #ddd; padding:12px;">$P(X = k)$</th>
-                    <th style="border:1px solid #ddd; padding:12px;">$P(X \leq k)$</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Casio</strong></td>
-                    <td style="border:1px solid #ddd; padding:10px;">Menu STAT → DIST → BINOMIAL → Bpd</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Menu STAT → DIST → BINOMIAL → Bcd</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>TI</strong></td>
-                    <td style="border:1px solid #ddd; padding:10px;">2nd → DISTR → binompdf(n, p, k)</td>
-                    <td style="border:1px solid #ddd; padding:10px;">2nd → DISTR → binomcdf(n, p, k)</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ffa500;">
+<thead>
+<tr style="background:#ffa500; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">⚠️ Conditions importantes</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+• Les $\displaystyle n$ répétitions doivent être <strong>indépendantes</strong><br><br>
+• La probabilité $\displaystyle p$ doit être <strong>identique</strong> à chaque répétition<br><br>
+• Chaque répétition ne peut avoir que deux issues
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VIII. Erreurs fréquentes</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:12px;">Erreur</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Explication</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">Confondre "exactement k" et "au plus k"</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ $P(X = k) \neq P(X \leq k)$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">Oublier l'indépendance</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ Les répétitions doivent être indépendantes</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">Se tromper dans l'identification de $p$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ Bien identifier ce qui constitue un "succès"</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">Confondre $\binom{n}{k}$ et $\binom{k}{n}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ L'ordre des paramètres compte</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">Oublier de vérifier $0 \leq k \leq n$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ $k$ doit être dans l'intervalle $[0, n]$</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Formule de la loi binomiale</h2>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IX. Méthodologie générale</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#fef3c7; padding:15px; border-radius:6px; margin:10px 0;">
-            <strong>📐 Démarche pour un problème de loi binomiale :</strong>
-            <ol style="margin:10px 0; padding-left:20px;">
-                <li style="margin-bottom:8px;"><strong>Identifier</strong> le schéma de Bernoulli (deux issues)</li>
-                
-                <li style="margin-bottom:8px;"><strong>Déterminer</strong> $n$ (nombre de répétitions) et $p$ (probabilité de succès)</li>
-                
-                <li style="margin-bottom:8px;"><strong>Vérifier</strong> l'indépendance des répétitions</li>
-                
-                <li style="margin-bottom:8px;"><strong>Identifier</strong> la variable $X$ et sa loi $\mathcal{B}(n, p)$</li>
-                
-                <li style="margin-bottom:8px;"><strong>Traduire</strong> la question en probabilité ($P(X = k)$, $P(X \leq k)$, etc.)</li>
-                
-                <li><strong>Calculer</strong> avec la formule ou la calculatrice</li>
-            </ol>
-        </div>
-        
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Pour les probabilités "au moins" :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li><strong>Utiliser :</strong> $P(X \geq k) = 1 - P(X \leq k-1)$</li>
-                <li><strong>Avantage :</strong> Évite de calculer plusieurs probabilités</li>
-            </ul>
-        </div>
-    </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Formule</th>
+<th style="border:1px solid #ddd; padding:12px;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Formule principale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Pour $\displaystyle X \sim \mathcal{B}(n, p)$ et $\displaystyle k \in \{0, 1, 2, \ldots, n\}$ :<br>$\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Notation alternative</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X = k) = \binom{n}{k} \times p^k \times q^{n-k}$ où $\displaystyle q = 1-p$</td>
+</tr>
+</tbody>
+</table>
 
-    <div style="background:#ffffff; padding:15px; border-radius:6px; margin:15px 0; border:1px solid #e1e8ed;">
-        <h3 style="color:#2c3e50; margin-top:0;">✅ Points clés à retenir</h3>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Composante</th>
+<th style="border:1px solid #ddd; padding:12px;">Explication</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n}{k}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Nombre de façons d'obtenir $\displaystyle k$ succès parmi $\displaystyle n$ essais</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle p^k$</td>
+<td style="border:1px solid #ddd; padding:10px;">Probabilité d'avoir $\displaystyle k$ succès</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle (1-p)^{n-k}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Probabilité d'avoir $\displaystyle (n-k)$ échecs</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
-        <thead>
-        <tr style="background:#3498db; color:white;">
-        <th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
-        <th style="border:1px solid #ddd; padding:12px;">À retenir</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Schéma de Bernoulli</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Expérience avec deux issues : succès (p) et échec (q = 1-p)</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Loi binomiale</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$X \sim \mathcal{B}(n, p)$ : nombre de succès sur $n$ répétitions indépendantes</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Valeurs possibles</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$X \in \{0, 1, 2, \ldots, n\}$</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Formule de probabilité</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Coefficient binomial</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Probabilité "au plus"</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \leq k) = \sum_{i=0}^k P(X = i)$</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Probabilité "au moins"</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Espérance</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = np$</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Variance</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(X) = np(1-p)$</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Écart-type</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma(X) = \sqrt{np(1-p)}$</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Conditions</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Répétitions indépendantes, probabilité $p$ constante</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Calculatrice Casio</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Bpd pour $P(X = k)$, Bcd pour $P(X \leq k)$</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Calculatrice TI</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">binompdf(n, p, k) pour $P(X = k)$, binomcdf(n, p, k) pour $P(X \leq k)$</td>
-        </tr>
-        </tbody>
-        </table>
-    </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Coefficient binomial</h2>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">X. Tableau récapitulatif - Formules essentielles</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:12px;">Calcul</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Formule</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Condition</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">Probabilité exacte</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$0 \leq k \leq n$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">Probabilité "au plus"</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \leq k) = \sum_{i=0}^k P(X = i)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$0 \leq k \leq n$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">Probabilité "au moins"</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$1 \leq k \leq n$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">Espérance</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = np$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Toujours</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">Variance</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(X) = np(1-p)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Toujours</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">Écart-type</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma(X) = \sqrt{np(1-p)}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Toujours</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Formule du coefficient binomial</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Propriété</th>
+<th style="border:1px solid #ddd; padding:12px;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Cas dégénérés</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n}{0} = 1$ et $\displaystyle \binom{n}{n} = 1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Symétrie</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n}{k} = \binom{n}{n-k}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Un seul élément</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n}{1} = n$ et $\displaystyle \binom{n}{n-1} = n$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Probabilités cumulées</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Type de probabilité</th>
+<th style="border:1px solid #ddd; padding:12px;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Probabilité "au plus $\displaystyle k$"</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \leq k) = P(X = 0) + P(X = 1) + \ldots + P(X = k)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Probabilité "au moins $\displaystyle k$"</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \geq k) = P(X = k) + P(X = k+1) + \ldots + P(X = n)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Relation utile</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Espérance et variance</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Paramètre</th>
+<th style="border:1px solid #ddd; padding:12px;">Formule</th>
+<th style="border:1px solid #ddd; padding:12px;">Interprétation</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Espérance</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = np$</td>
+<td style="border:1px solid #ddd; padding:10px;">Nombre moyen de succès</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Variance</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(X) = np(1-p)$</td>
+<td style="border:1px solid #ddd; padding:10px;">Dispersion des résultats</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Écart-type</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma(X) = \sqrt{np(1-p)}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Écart-type des résultats</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#e8f5e8; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+<strong>💡 Interprétation de l'espérance :</strong> Si on répète l'expérience un grand nombre de fois, le nombre moyen de succès sera proche de $\displaystyle np$.
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Utilisation de la calculatrice</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Calculatrice</th>
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle P(X = k)$</th>
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle P(X \leq k)$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Casio</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Menu STAT → DIST → BINOMIAL → Bpd</td>
+<td style="border:1px solid #ddd; padding:10px;">Menu STAT → DIST → BINOMIAL → Bcd</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>TI</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">2nd → DISTR → binompdf(n, p, k)</td>
+<td style="border:1px solid #ddd; padding:10px;">2nd → DISTR → binomcdf(n, p, k)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Erreurs fréquentes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Erreur</th>
+<th style="border:1px solid #ddd; padding:12px;">Explication</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Confondre "exactement k" et "au plus k"</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ $\displaystyle P(X = k) \neq P(X \leq k)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Oublier l'indépendance</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ Les répétitions doivent être indépendantes</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Se tromper dans l'identification de $\displaystyle p$</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ Bien identifier ce qui constitue un "succès"</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Confondre $\displaystyle \binom{n}{k}$ et $\displaystyle \binom{k}{n}$</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ L'ordre des paramètres compte</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Oublier de vérifier $\displaystyle 0 \leq k \leq n$</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ $\displaystyle k$ doit être dans l'intervalle $\displaystyle [0, n]$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Méthodologie générale</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:15%;">Étape</th>
+<th style="border:1px solid #ddd; padding:12px;">Démarche pour un problème de loi binomiale</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>1</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Identifier le schéma de Bernoulli (deux issues)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>2</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Déterminer $\displaystyle n$ (nombre de répétitions) et $\displaystyle p$ (probabilité de succès)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>3</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Vérifier l'indépendance des répétitions</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>4</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Identifier la variable $\displaystyle X$ et sa loi $\displaystyle \mathcal{B}(n, p)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>5</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Traduire la question en probabilité ($\displaystyle P(X = k)$, $\displaystyle P(X \leq k)$, etc.)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>6</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Calculer avec la formule ou la calculatrice</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Astuce pour les probabilités "au moins"</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Utiliser :</strong> $\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$<br><br>
+<strong>Avantage :</strong> Évite de calculer plusieurs probabilités
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<h3 style="color:#2c3e50; margin-top:0;">✅ Points clés à retenir</h3>
+
+<table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
+<th style="border:1px solid #ddd; padding:12px;">À retenir</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Schéma de Bernoulli</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Expérience avec deux issues : succès ($\displaystyle p$) et échec ($\displaystyle q = 1-p$)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Loi binomiale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle X \sim \mathcal{B}(n, p)$ : nombre de succès sur $\displaystyle n$ répétitions indépendantes</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Valeurs possibles</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle X \in \{0, 1, 2, \ldots, n\}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Formule de probabilité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Coefficient binomial</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Probabilité "au plus"</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \leq k) = \sum_{i=0}^k P(X = i)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Probabilité "au moins"</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Espérance</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = np$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Variance</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(X) = np(1-p)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Écart-type</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma(X) = \sqrt{np(1-p)}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Conditions</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Répétitions indépendantes, probabilité $\displaystyle p$ constante</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Calculatrice Casio</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Bpd pour $\displaystyle P(X = k)$, Bcd pour $\displaystyle P(X \leq k)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Calculatrice TI</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">binompdf(n, p, k) pour $\displaystyle P(X = k)$, binomcdf(n, p, k) pour $\displaystyle P(X \leq k)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Tableau récapitulatif — formules essentielles</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Calcul</th>
+<th style="border:1px solid #ddd; padding:12px;">Formule</th>
+<th style="border:1px solid #ddd; padding:12px;">Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Probabilité exacte</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0 \leq k \leq n$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Probabilité "au plus"</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \leq k) = \sum_{i=0}^k P(X = i)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0 \leq k \leq n$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Probabilité "au moins"</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 \leq k \leq n$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Espérance</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = np$</td>
+<td style="border:1px solid #ddd; padding:10px;">Toujours</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Variance</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(X) = np(1-p)$</td>
+<td style="border:1px solid #ddd; padding:10px;">Toujours</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Écart-type</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma(X) = \sqrt{np(1-p)}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Toujours</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 </div>
 ===

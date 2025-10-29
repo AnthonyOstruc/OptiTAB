@@ -1,410 +1,544 @@
-===
-Résumé Équations Différentielles
+===Résumé Équations Différentielles
+
+Images: 
 
 Titre: Résumé : Équations Différentielles
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">I. Définition</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Définition :</strong> Une équation différentielle met en relation une fonction $\displaystyle y(x)$ avec sa dérivée $\displaystyle y'(x)$
-        </div>
-        
-        <div style="background:#f3e5f5; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #9c27b0;">
-            <strong>Forme générale au programme :</strong><br><br>
-            $\displaystyle y' = a y + b$<br><br>
-            où $\displaystyle a$ et $\displaystyle b$ sont des constantes réelles
-        </div>
-        
-        <div style="background:#f0f9f0; padding:10px; border-radius:4px; margin:10px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:5px 0; padding-left:20px;">
-                <li>$\displaystyle y' = 2y$ (cas homogène, $\displaystyle b = 0$)</li>
-                <li>$\displaystyle y' = -3y + 5$ (équation complète)</li>
-                <li>$\displaystyle y' = y - 2$ (avec terme constant)</li>
-            </ul>
-        </div>
-    </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition</h2>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">II. Solution générale</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#f3e5f5; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #9c27b0;">
-            <strong>Solution générale de $\displaystyle y' = a y + b$ :</strong><br><br>
-            $\displaystyle y(x) = C e^{a x} - \dfrac{b}{a}$<br><br>
-            (si $\displaystyle a \neq 0$)
-        </div>
-        
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:12px;">Composante</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Formule</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Solution homogène</strong></td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle y_h = C e^{a x}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Solution de $\displaystyle y' = a y$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Solution particulière</strong></td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle y_p = -\dfrac{b}{a}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Solution constante</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Constante C</strong></td>
-                    <td style="border:1px solid #ddd; padding:10px;">Déterminée par $\displaystyle y(x_0) = y_0$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Condition initiale</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Concept</th>
+<th style="border:1px solid #ddd; padding:12px;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Définition</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Une équation différentielle met en relation une fonction $\displaystyle y(x)$ avec sa dérivée $\displaystyle y'(x)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Forme générale au programme</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = a y + b$ où $\displaystyle a$ et $\displaystyle b$ sont des constantes réelles</td>
+</tr>
+</tbody>
+</table>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">III. Méthode de résolution</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#fef3c7; padding:15px; border-radius:6px; margin:10px 0;">
-            <strong>📐 Méthode en 3 étapes :</strong>
-            <ol style="margin:10px 0; padding-left:20px;">
-                <li><strong>Résoudre l'équation homogène</strong> $\displaystyle y' = a y$ → $\displaystyle y_h = C e^{a x}$</li>
-                <li><strong>Trouver une solution particulière</strong> constante $\displaystyle y_p = k$ → $\displaystyle k = -\dfrac{b}{a}$</li>
-                <li><strong>Solution générale</strong> : $\displaystyle y = y_h + y_p = C e^{a x} - \dfrac{b}{a}$</li>
-            </ol>
-        </div>
-        
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Pour déterminer C :</strong> Utiliser la condition initiale $\displaystyle y(x_0) = y_0$
-        </div>
-    </div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemples</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = 2y$ (cas homogène, $\displaystyle b = 0$)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = -3y + 5$ (équation complète)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = y - 2$ (avec terme constant)</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IV. Exemples résolus</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : $\displaystyle y' = 2y + 4$</h3>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Étape 1 :</strong> Équation homogène $\displaystyle y' = 2y$<br>
-            $\displaystyle y_h = C e^{2x}$
-        </div>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Étape 2 :</strong> Solution particulière constante $\displaystyle y_p = k$<br>
-            $\displaystyle 0 = 2k + 4 \Rightarrow k = -2$
-        </div>
-        
-        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
-            <strong>Solution générale :</strong> $\displaystyle y = C e^{2x} - 2$
-        </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Solution générale</h2>
 
-        <h3 style="color:#34495e; margin-top:20px;">Exemple 2 : $\displaystyle y' = -y + 3$</h3>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Étape 1 :</strong> Équation homogène $\displaystyle y' = -y$<br>
-            $\displaystyle y_h = C e^{-x}$
-        </div>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Étape 2 :</strong> Solution particulière constante $\displaystyle y_p = k$<br>
-            $\displaystyle 0 = -k + 3 \Rightarrow k = 3$
-        </div>
-        
-        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
-            <strong>Solution générale :</strong> $\displaystyle y = C e^{-x} + 3$
-        </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #9c27b0;">
+<thead>
+<tr style="background:#9c27b0; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Solution générale de $\displaystyle y' = a y + b$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y(x) = C e^{a x} - \dfrac{b}{a}$ (si $\displaystyle a \neq 0$)</td>
+</tr>
+</tbody>
+</table>
 
-        <h3 style="color:#34495e; margin-top:20px;">Exemple 3 : Avec condition initiale</h3>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Problème :</strong> $\displaystyle y' = 2y + 4$ avec $\displaystyle y(0) = 1$
-        </div>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>Solution générale :</strong> $\displaystyle y = C e^{2x} - 2$<br><br>
-            <strong>Condition initiale :</strong> $\displaystyle y(0) = 1$<br>
-            $\displaystyle 1 = C e^{0} - 2$<br>
-            $\displaystyle 1 = C - 2$<br>
-            $\displaystyle C = 3$
-        </div>
-        
-        <div style="background:#e8f5e8; padding:10px; border-radius:4px; margin:10px 0;">
-            <strong>Solution particulière :</strong> $\displaystyle y = 3 e^{2x} - 2$
-        </div>
-    </div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Composante</th>
+<th style="border:1px solid #ddd; padding:12px;">Formule</th>
+<th style="border:1px solid #ddd; padding:12px;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution homogène</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y_h = C e^{a x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Solution de $\displaystyle y' = a y$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution particulière</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y_p = -\dfrac{b}{a}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Solution constante</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Constante C</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Déterminée par $\displaystyle y(x_0) = y_0$</td>
+<td style="border:1px solid #ddd; padding:10px;">Condition initiale</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">V. Applications classiques</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:12px;">Application</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Équation différentielle</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Solution</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Croissance exponentielle</strong><br>(population, capital)</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P' = k P$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(t) = P_0 e^{k t}$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Décroissance radioactive</strong></td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle N' = -\lambda N$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle N(t) = N_0 e^{-\lambda t}$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Refroidissement</strong><br>(loi de Newton)</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle T' = -k(T - T_a)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle T(t) = T_a + (T_0 - T_a) e^{-k t}$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;"><strong>Circuit électrique</strong><br>(intensité RL)</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle i' + \dfrac{R}{L} i = \dfrac{E}{L}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle i(t) = \dfrac{E}{R}(1 - e^{-\frac{R}{L} t})$</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Demi-vie (décroissance radioactive) :</strong><br>
-            $\displaystyle T_{1/2} = \dfrac{\ln 2}{\lambda}$ (temps pour que $\displaystyle N$ soit divisé par 2)
-        </div>
-    </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Méthode de résolution</h2>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VI. Cas particuliers importants</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">1. Équation homogène ($\displaystyle b = 0$)</h3>
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            $\displaystyle y' = a y$ → Solution : $\displaystyle y = C e^{a x}$
-        </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Étape</th>
+<th style="border:1px solid #ddd; padding:12px;">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>1</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Résoudre l'équation homogène $\displaystyle y' = a y$ → $\displaystyle y_h = C e^{a x}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>2</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Trouver une solution particulière constante $\displaystyle y_p = k$ → $\displaystyle k = -\dfrac{b}{a}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>3</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Solution générale : $\displaystyle y = y_h + y_p = C e^{a x} - \dfrac{b}{a}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>4</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Utiliser la condition initiale $\displaystyle y(x_0) = y_0$ pour déterminer $\displaystyle C$</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-        <h3 style="color:#34495e; margin-top:15px;">2. Cas $\displaystyle a > 0$ (croissance)</h3>
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            $\displaystyle e^{a x} \to +\infty$ quand $\displaystyle x \to +\infty$ → Croissance exponentielle
-        </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Exemples résolus</h2>
 
-        <h3 style="color:#34495e; margin-top:15px;">3. Cas $\displaystyle a < 0$ (décroissance)</h3>
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            $\displaystyle e^{a x} \to 0$ quand $\displaystyle x \to +\infty$ → Décroissance exponentielle<br>
-            $\displaystyle y(x) \to -\dfrac{b}{a}$ (valeur limite asymptotique)
-        </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<h3 style="color:#34495e; margin-top:0;">Exemple 1 : $\displaystyle y' = 2y + 4$</h3>
 
-        <h3 style="color:#34495e; margin-top:15px;">4. Cas $\displaystyle a = 0$</h3>
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            $\displaystyle y' = b$ → Solution : $\displaystyle y = b x + C$ (fonction affine)
-        </div>
-    </div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Étape</th>
+<th style="border:1px solid #ddd; padding:12px;">Calcul</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Équation homogène</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = 2y$ → $\displaystyle y_h = C e^{2x}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution particulière</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y_p = k$ → $\displaystyle 0 = 2k + 4$ → $\displaystyle k = -2$</td>
+</tr>
+<tr style="background:#e8f5e8;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution générale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y = C e^{2x} - 2$</td>
+</tr>
+</tbody>
+</table>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VII. Vérification d'une solution</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#fef3c7; padding:15px; border-radius:6px; margin:10px 0;">
-            <strong>📐 Méthode de vérification :</strong>
-            <ol style="margin:10px 0; padding-left:20px;">
-                <li><strong>Dériver</strong> la solution proposée $\displaystyle y(x)$ pour obtenir $\displaystyle y'(x)$</li>
-                <li><strong>Calculer</strong> $\displaystyle ay + b$ avec la solution proposée</li>
-                <li><strong>Vérifier</strong> que $\displaystyle y' = ay + b$</li>
-            </ol>
-        </div>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
-            <strong>Exemple :</strong> Vérifier que $\displaystyle y = 2e^{2x} - 2$ est solution de $\displaystyle y' = 2y + 4$
-            <div style="margin:10px 0;">
-                <strong>Calculs :</strong><br>
-                • $\displaystyle y' = 4e^{2x}$<br>
-                • $\displaystyle 2y + 4 = 2(2e^{2x} - 2) + 4 = 4e^{2x} - 4 + 4 = 4e^{2x}$<br>
-                • $\displaystyle y' = 2y + 4$ ✅ <strong style="color:#2e7d32;">Vérifié !</strong>
-            </div>
-        </div>
-    </div>
+<h3 style="color:#34495e; margin-top:20px;">Exemple 2 : $\displaystyle y' = -y + 3$</h3>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VIII. Séparation des variables (méthode alternative)</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <p>Pour les équations de la forme $\displaystyle y' = g(x) \cdot h(y)$, on peut séparer les variables :</p>
-        
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            $\displaystyle \dfrac{dy}{h(y)} = g(x) \, dx$<br><br>
-            Puis intégrer les deux membres
-        </div>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
-            <strong>Exemple :</strong> $\displaystyle y' = 2xy$ (pour $\displaystyle y > 0$)
-            <div style="margin:10px 0;">
-                $\displaystyle \dfrac{dy}{y} = 2x \, dx$<br><br>
-                $\displaystyle \int \dfrac{dy}{y} = \int 2x \, dx$<br><br>
-                $\displaystyle \ln|y| = x^2 + C$<br><br>
-                $\displaystyle y = K e^{x^2}$ où $\displaystyle K = e^C$
-            </div>
-        </div>
-    </div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Étape</th>
+<th style="border:1px solid #ddd; padding:12px;">Calcul</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Équation homogène</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = -y$ → $\displaystyle y_h = C e^{-x}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution particulière</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y_p = k$ → $\displaystyle 0 = -k + 3$ → $\displaystyle k = 3$</td>
+</tr>
+<tr style="background:#e8f5e8;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution générale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y = C e^{-x} + 3$</td>
+</tr>
+</tbody>
+</table>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IX. Erreurs fréquentes</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:12px;">Erreur</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Explication</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">Oublier la constante C</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ La solution générale contient toujours une constante d'intégration</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">Erreur de signe dans $\displaystyle y_h$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ Bien repérer le signe de $\displaystyle a$ : $\displaystyle y' = -2y$ donne $\displaystyle y_h = Ce^{-2x}$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">Mauvais calcul de $\displaystyle y_p$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ La solution particulière est $\displaystyle -\dfrac{b}{a}$, pas $\displaystyle \dfrac{b}{a}$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">Oublier la condition initiale</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ Toujours utiliser $\displaystyle y(x_0) = y_0$ pour déterminer C</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">Ne pas vérifier la solution</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ Toujours vérifier en dérivant</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">Confusion avec les unités</td>
-                    <td style="border:1px solid #ddd; padding:10px;">❌ Dans les applications, vérifier la cohérence des unités</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<h3 style="color:#34495e; margin-top:20px;">Exemple 3 : Avec condition initiale</h3>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">X. Méthodologie générale</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#fef3c7; padding:15px; border-radius:6px; margin:10px 0;">
-            <strong>📐 Démarche complète :</strong>
-            <ol style="margin:10px 0; padding-left:20px;">
-                <li style="margin-bottom:8px;"><strong>Identifier</strong> la forme : $\displaystyle y' = ay + b$</li>
-                
-                <li style="margin-bottom:8px;"><strong>Déterminer</strong> les constantes $\displaystyle a$ et $\displaystyle b$</li>
-                
-                <li style="margin-bottom:8px;"><strong>Résoudre</strong> l'équation homogène : $\displaystyle y_h = Ce^{ax}$</li>
-                
-                <li style="margin-bottom:8px;"><strong>Trouver</strong> la solution particulière : $\displaystyle y_p = -\dfrac{b}{a}$</li>
-                
-                <li style="margin-bottom:8px;"><strong>Écrire</strong> la solution générale : $\displaystyle y = Ce^{ax} - \dfrac{b}{a}$</li>
-                
-                <li style="margin-bottom:8px;"><strong>Appliquer</strong> la condition initiale pour trouver C</li>
-                
-                <li><strong>Vérifier</strong> la solution en la dérivant</li>
-            </ol>
-        </div>
-        
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Cas particuliers :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li>Si $\displaystyle b = 0$ : équation homogène $\displaystyle y = Ce^{ax}$</li>
-                <li>Si $\displaystyle a = 0$ : $\displaystyle y = bx + C$ (fonction affine)</li>
-            </ul>
-        </div>
-    </div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Étape</th>
+<th style="border:1px solid #ddd; padding:12px;">Calcul</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Problème</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = 2y + 4$ avec $\displaystyle y(0) = 1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution générale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y = C e^{2x} - 2$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Condition initiale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y(0) = 1$ → $\displaystyle 1 = C e^{0} - 2$ → $\displaystyle 1 = C - 2$ → $\displaystyle C = 3$</td>
+</tr>
+<tr style="background:#e8f5e8;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution particulière</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y = 3 e^{2x} - 2$</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-    <div style="background:#ffffff; padding:15px; border-radius:6px; margin:15px 0; border:1px solid #e1e8ed;">
-        <h3 style="color:#2c3e50; margin-top:0;">✅ Points clés à retenir</h3>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Applications classiques</h2>
 
-        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
-        <thead>
-        <tr style="background:#3498db; color:white;">
-        <th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
-        <th style="border:1px solid #ddd; padding:12px;">À retenir</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Forme générale</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = ay + b$ avec $\displaystyle a, b$ constantes</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Solution générale</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle y = Ce^{ax} - \dfrac{b}{a}$ (si $\displaystyle a \neq 0$)</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Solution homogène</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle y_h = Ce^{ax}$ (solution de $\displaystyle y' = ay$)</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Solution particulière</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle y_p = -\dfrac{b}{a}$ (constante)</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Constante C</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Déterminée par la <strong>condition initiale</strong> $\displaystyle y(x_0) = y_0$</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Équation homogène</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Cas où $\displaystyle b = 0$ : $\displaystyle y = Ce^{ax}$</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Croissance ($\displaystyle a > 0$)</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{ax} \to +\infty$ quand $\displaystyle x \to +\infty$</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Décroissance ($\displaystyle a < 0$)</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{ax} \to 0$ quand $\displaystyle x \to +\infty$</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Vérification</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Dériver $\displaystyle y$ et vérifier que $\displaystyle y' = ay + b$</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Séparation des variables</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Pour $\displaystyle y' = g(x) \cdot h(y)$ : séparer et intégrer</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Méthode en 3 étapes</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">1. Équation homogène 2. Solution particulière 3. Solution générale</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Cas $\displaystyle a = 0$</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = b$ → $\displaystyle y = bx + C$ (fonction affine)</td>
-        </tr>
-        </tbody>
-        </table>
-    </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Application</th>
+<th style="border:1px solid #ddd; padding:12px;">Équation différentielle</th>
+<th style="border:1px solid #ddd; padding:12px;">Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Croissance exponentielle</strong><br>(population, capital)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P' = k P$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(t) = P_0 e^{k t}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Décroissance radioactive</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle N' = -\lambda N$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle N(t) = N_0 e^{-\lambda t}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Refroidissement</strong><br>(loi de Newton)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle T' = -k(T - T_a)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle T(t) = T_a + (T_0 - T_a) e^{-k t}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Circuit électrique</strong><br>(intensité RL)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle i' + \dfrac{R}{L} i = \dfrac{E}{L}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle i(t) = \dfrac{E}{R}(1 - e^{-\frac{R}{L} t})$</td>
+</tr>
+</tbody>
+</table>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">XI. Formules rapides - Mémo</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:10px; width:40%;">Équation</th>
-                    <th style="border:1px solid #ddd; padding:10px;">Solution</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle y' = ay$ (homogène)</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle y = Ce^{ax}$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle y' = ay + b$ (complète)</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle y = Ce^{ax} - \dfrac{b}{a}$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle y' = b$ (cas $\displaystyle a = 0$)</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle y = bx + C$</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div style="background:#f0f9f0; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+<strong>💡 Demi-vie (décroissance radioactive) :</strong> $\displaystyle T_{1/2} = \dfrac{\ln 2}{\lambda}$ (temps pour que $\displaystyle N$ soit divisé par 2)
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Cas particuliers importants</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Cas particulier</th>
+<th style="border:1px solid #ddd; padding:12px;">Description et solution</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Équation homogène</strong><br>($\displaystyle b = 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = a y$ → Solution : $\displaystyle y = C e^{a x}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Cas $\displaystyle a > 0$</strong><br>(croissance)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{a x} \to +\infty$ quand $\displaystyle x \to +\infty$ → Croissance exponentielle</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Cas $\displaystyle a < 0$</strong><br>(décroissance)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{a x} \to 0$ quand $\displaystyle x \to +\infty$ → Décroissance exponentielle<br>$\displaystyle y(x) \to -\dfrac{b}{a}$ (valeur limite asymptotique)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Cas $\displaystyle a = 0$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = b$ → Solution : $\displaystyle y = b x + C$ (fonction affine)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Vérification d'une solution</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Étape</th>
+<th style="border:1px solid #ddd; padding:12px;">Méthode de vérification</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>1</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Dériver la solution proposée $\displaystyle y(x)$ pour obtenir $\displaystyle y'(x)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>2</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Calculer $\displaystyle ay + b$ avec la solution proposée</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>3</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Vérifier que $\displaystyle y' = ay + b$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : Vérifier que $\displaystyle y = 2e^{2x} - 2$ est solution de $\displaystyle y' = 2y + 4$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+• $\displaystyle y' = 4e^{2x}$<br>
+• $\displaystyle 2y + 4 = 2(2e^{2x} - 2) + 4 = 4e^{2x} - 4 + 4 = 4e^{2x}$<br>
+• $\displaystyle y' = 2y + 4$ ✅ <strong style="color:#2e7d32;">Vérifié !</strong>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Séparation des variables (méthode alternative)</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Concept</th>
+<th style="border:1px solid #ddd; padding:12px;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Forme</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Pour les équations de la forme $\displaystyle y' = g(x) \cdot h(y)$, on peut séparer les variables</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Méthode</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{dy}{h(y)} = g(x) \, dx$ puis intégrer les deux membres</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : $\displaystyle y' = 2xy$ (pour $\displaystyle y > 0$)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+$\displaystyle \dfrac{dy}{y} = 2x \, dx$<br><br>
+$\displaystyle \int \dfrac{dy}{y} = \int 2x \, dx$<br><br>
+$\displaystyle \ln|y| = x^2 + C$<br><br>
+$\displaystyle y = K e^{x^2}$ où $\displaystyle K = e^C$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Erreurs fréquentes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Erreur</th>
+<th style="border:1px solid #ddd; padding:12px;">Explication</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Oublier la constante C</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ La solution générale contient toujours une constante d'intégration</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Erreur de signe dans $\displaystyle y_h$</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ Bien repérer le signe de $\displaystyle a$ : $\displaystyle y' = -2y$ donne $\displaystyle y_h = Ce^{-2x}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Mauvais calcul de $\displaystyle y_p$</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ La solution particulière est $\displaystyle -\dfrac{b}{a}$, pas $\displaystyle \dfrac{b}{a}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Oublier la condition initiale</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ Toujours utiliser $\displaystyle y(x_0) = y_0$ pour déterminer C</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Ne pas vérifier la solution</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ Toujours vérifier en dérivant</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Confusion avec les unités</td>
+<td style="border:1px solid #ddd; padding:10px;">❌ Dans les applications, vérifier la cohérence des unités</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Méthodologie générale</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:15%;">Étape</th>
+<th style="border:1px solid #ddd; padding:12px;">Démarche complète</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>1</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Identifier la forme : $\displaystyle y' = ay + b$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>2</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Déterminer les constantes $\displaystyle a$ et $\displaystyle b$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>3</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Résoudre l'équation homogène : $\displaystyle y_h = Ce^{ax}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>4</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Trouver la solution particulière : $\displaystyle y_p = -\dfrac{b}{a}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>5</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Écrire la solution générale : $\displaystyle y = Ce^{ax} - \dfrac{b}{a}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>6</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Appliquer la condition initiale pour trouver $\displaystyle C$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>7</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Vérifier la solution en la dérivant</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+<strong>Cas particuliers :</strong><br>
+• Si $\displaystyle b = 0$ : équation homogène $\displaystyle y = Ce^{ax}$<br>
+• Si $\displaystyle a = 0$ : $\displaystyle y = bx + C$ (fonction affine)
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<h3 style="color:#2c3e50; margin-top:0;">✅ Points clés à retenir</h3>
+
+<table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
+<th style="border:1px solid #ddd; padding:12px;">À retenir</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Forme générale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = ay + b$ avec $\displaystyle a, b$ constantes</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution générale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y = Ce^{ax} - \dfrac{b}{a}$ (si $\displaystyle a \neq 0$)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution homogène</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y_h = Ce^{ax}$ (solution de $\displaystyle y' = ay$)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Solution particulière</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y_p = -\dfrac{b}{a}$ (constante)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Constante C</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Déterminée par la <strong>condition initiale</strong> $\displaystyle y(x_0) = y_0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Équation homogène</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Cas où $\displaystyle b = 0$ : $\displaystyle y = Ce^{ax}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Croissance ($\displaystyle a > 0$)</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{ax} \to +\infty$ quand $\displaystyle x \to +\infty$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Décroissance ($\displaystyle a < 0$)</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{ax} \to 0$ quand $\displaystyle x \to +\infty$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Vérification</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Dériver $\displaystyle y$ et vérifier que $\displaystyle y' = ay + b$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Séparation des variables</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Pour $\displaystyle y' = g(x) \cdot h(y)$ : séparer et intégrer</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Méthode en 3 étapes</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">1. Équation homogène 2. Solution particulière 3. Solution générale</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Cas $\displaystyle a = 0$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y' = b$ → $\displaystyle y = bx + C$ (fonction affine)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Formules rapides — mémo</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:10px; width:40%;">Équation</th>
+<th style="border:1px solid #ddd; padding:10px;">Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle y' = ay$ (homogène)</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle y = Ce^{ax}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle y' = ay + b$ (complète)</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle y = Ce^{ax} - \dfrac{b}{a}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle y' = b$ (cas $\displaystyle a = 0$)</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle y = bx + C$</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 </div>
 ===

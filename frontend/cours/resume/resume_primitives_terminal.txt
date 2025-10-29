@@ -1,5 +1,4 @@
-===
-Résumé Primitives 
+===Résumé Primitives et Intégration
 
 Images: 
 
@@ -7,325 +6,441 @@ Titre: Résumé : Primitives et Intégration
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">I. Définition et notation</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Définition :</strong> Une primitive de $\displaystyle f$ sur $\displaystyle I$ est une fonction $\displaystyle F$ telle que $\displaystyle F'(x) = f(x)$ pour tout $\displaystyle x \in I$
-        </div>
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Notation :</strong> $\displaystyle\int f(x) \, dx = F(x) + C$ où $\displaystyle C$ est la constante d'intégration
-        </div>
-        <div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-            <strong>Propriété :</strong> Si $\displaystyle F$ est une primitive de $\displaystyle f$, alors toutes les primitives sont de la forme $\displaystyle F + C$
-        </div>
-    </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition et notation</h2>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">II. Primitives élémentaires - Tableau de référence</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:12px;">Fonction $f(x)$</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Primitive $F(x)$</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Condition</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">$k$ (constante)</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle kx + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">-</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x^n$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{x^{n+1}}{n+1} + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle n \neq -1$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{x}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln|x| + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \neq 0$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">-</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\cos(x) + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">-</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x) + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">-</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{\sqrt{x}}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 2\sqrt{x} + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 0$</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Concept</th>
+<th style="border:1px solid #ddd; padding:12px;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Définition</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Une primitive de $\displaystyle f$ sur $\displaystyle I$ est une fonction $\displaystyle F$ telle que $\displaystyle F'(x) = f(x)$ pour tout $\displaystyle x \in I$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Notation</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int f(x) \, dx = F(x) + C$ où $\displaystyle C$ est la constante d'intégration</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Propriété</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle F$ est une primitive de $\displaystyle f$, alors toutes les primitives sont de la forme $\displaystyle F + C$</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">III. Propriétés de linéarité</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="margin:15px 0; padding:15px; background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db;">
-            <p style="margin:8px 0;"><strong>Linéarité :</strong> $\displaystyle\int (af(x) + bg(x)) \, dx = a\int f(x) \, dx + b\int g(x) \, dx$</p>
-            <p style="margin:8px 0;"><strong>Constante :</strong> $\displaystyle\int k \cdot f(x) \, dx = k \int f(x) \, dx$</p>
-            <p style="margin:8px 0;"><strong>Somme :</strong> $\displaystyle\int (f(x) + g(x)) \, dx = \int f(x) \, dx + \int g(x) \, dx$</p>
-        </div>
-    </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Primitives élémentaires — tableau de référence</h2>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IV. Primitives composées - Formules essentielles</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:12px;">Fonction composée</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Primitive</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Condition</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (ax + b)^n$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{(ax + b)^{n+1}}{a(n+1)} + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle n \neq -1$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{ax + b}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{a}\ln|ax + b| + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle ax + b \neq 0$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{ax + b}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{a}e^{ax + b} + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle a \neq 0$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(ax + b)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle-\frac{1}{a}\cos(ax + b) + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle a \neq 0$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(ax + b)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{a}\sin(ax + b) + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle a \neq 0$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{\sqrt{ax + b}}$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{2}{a}\sqrt{ax + b} + C$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle ax + b > 0$</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
-            <strong>⚠️ Règle générale :</strong> Pour $\displaystyle\int f(ax + b) \, dx$, on divise par le coefficient $a$ et on compose avec $(ax + b)$.
-        </div>
-    </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Fonction $\displaystyle f(x)$</th>
+<th style="border:1px solid #ddd; padding:12px;">Primitive $\displaystyle F(x)$</th>
+<th style="border:1px solid #ddd; padding:12px;">Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle k$ (constante)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle kx + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">-</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x^n$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{x^{n+1}}{n+1} + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle n \neq -1$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln|x| + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \neq 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">-</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\cos(x) + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">-</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x) + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">-</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{\sqrt{x}}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 2\sqrt{x} + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 0$</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">V. Intégration par parties</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
-            <p style="margin:8px 0;"><strong>Formule :</strong> $\displaystyle\int u(x) v'(x) \, dx = u(x) v(x) - \int u'(x) v(x) \, dx$</p>
-            <p style="margin:8px 0;"><strong>Forme compacte :</strong> $\displaystyle\int u \, dv = uv - \int v \, du$</p>
-        </div>
-        
-        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>📐 Méthode "ILATE" pour choisir $u$ :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li><strong>I</strong>nverse (arctan, arcsin, etc.)</li>
-                <br>
-                <li><strong>L</strong>ogarithme ($\displaystyle \ln$)</li>
-                <br>
-                <li><strong>A</strong>lgébrique (polynômes)</li>
-                <br>
-                <li><strong>T</strong>rigonométrique ($\displaystyle \sin$, $\displaystyle \cos$)</li>
-                <br>
-                <li><strong>E</strong>xponentielle ($\displaystyle e^x$)</li>
-            </ul>
-        </div>
-        
-        <div style="background:#f8f9fa; padding:15px; border-radius:6px; margin:15px 0;">
-            <strong>Exemples classiques :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li>$\displaystyle\int x e^x \, dx = e^x(x-1) + C$</li>
-                <br>
-                <li>$\displaystyle\int \ln(x) \, dx = x\ln(x) - x + C$</li>
-                <br>
-                <li>$\displaystyle\int x \sin(x) \, dx = -x\cos(x) + \sin(x) + C$</li>
-            </ul>
-        </div>
-    </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Propriétés de linéarité</h2>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VI. Changement de variable (substitution)</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#e8f4fd; padding:15px; border-radius:6px; margin:10px 0; border-left:6px solid #3498db;">
-            <p style="margin:8px 0;"><strong>Méthode :</strong> On pose $\displaystyle u = g(x)$ où $\displaystyle g$ est dérivable, alors $\displaystyle du = g'(x) \, dx$</p>
-            <p style="margin:8px 0;"><strong>Formule :</strong> $\displaystyle\int f(g(x)) \cdot g'(x) \, dx = \int f(u) \, du$</p>
-        </div>
-        
-        <div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #10b981;">
-            <strong>💡 Reconnaître la forme :</strong> On cherche une fonction et sa dérivée dans l'intégrande.
-        </div>
-        
-        <div style="background:#f8f9fa; padding:15px; border-radius:6px; margin:15px 0;">
-            <strong>Exemples typiques :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li>$\displaystyle\int 2x(x^2 + 1)^3 \, dx$ → $\displaystyle u = x^2 + 1$</li>
-                <br>
-                <li>$\displaystyle\int \frac{2x}{x^2 + 1} \, dx$ → $\displaystyle u = x^2 + 1$</li>
-                <br>
-                <li>$\displaystyle\int x e^{x^2} \, dx$ → $\displaystyle u = x^2$</li>
-            </ul>
-        </div>
-    </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Propriété</th>
+<th style="border:1px solid #ddd; padding:12px;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Linéarité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int (af(x) + bg(x)) \, dx = a\int f(x) \, dx + b\int g(x) \, dx$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Constante</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int k \cdot f(x) \, dx = k \int f(x) \, dx$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Somme</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int (f(x) + g(x)) \, dx = \int f(x) \, dx + \int g(x) \, dx$</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VII. Techniques spécialisées</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Fractions rationnelles</h3>
-        
-        <div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-            <strong>📐 Méthode :</strong> Décomposition en éléments simples
-        </div>
-        
-        <div style="background:#f8f9fa; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #6c757d;">
-            <strong>Exemple :</strong> $\displaystyle\int \frac{2x + 3}{x^2 - 1} \, dx$
-            <p style="margin:8px 0; font-size:1em;">$\displaystyle\frac{2x + 3}{x^2 - 1} = \frac{5/2}{x-1} - \frac{1/2}{x+1}$</p>
-            <p style="margin:8px 0; font-size:1em;">Résultat : $\displaystyle\frac{5}{2}\ln|x-1| - \frac{1}{2}\ln|x+1| + C$</p>
-        </div>
-    </div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Primitives composées — formules essentielles</h2>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Intégrales trigonométriques</h3>
-        
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:12px;">Forme</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Méthode</th>
-                    <th style="border:1px solid #ddd; padding:12px;">Exemple</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \sin^n(x) \cos^m(x) \, dx$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Changement $\displaystyle u = \sin(x)$ ou $\displaystyle u = \cos(x)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \sin^3(x) \, dx$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \tan^n(x) \, dx$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">Changement $\displaystyle u = \tan(x)$</td>
-                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \tan^2(x) \, dx$</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Fonction composée</th>
+<th style="border:1px solid #ddd; padding:12px;">Primitive</th>
+<th style="border:1px solid #ddd; padding:12px;">Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle (ax + b)^n$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{(ax + b)^{n+1}}{a(n+1)} + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle n \neq -1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{ax + b}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{a}\ln|ax + b| + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle ax + b \neq 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{ax + b}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{a}e^{ax + b} + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle a \neq 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(ax + b)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle-\frac{1}{a}\cos(ax + b) + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle a \neq 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(ax + b)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{a}\sin(ax + b) + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle a \neq 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{1}{\sqrt{ax + b}}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{2}{a}\sqrt{ax + b} + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle ax + b > 0$</td>
+</tr>
+</tbody>
+</table>
 
-    <h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VIII. Formules rapides - Mémo</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#3498db; color:white;">
-                    <th style="border:1px solid #ddd; padding:10px; width:40%;">Fonction</th>
-                    <th style="border:1px solid #ddd; padding:10px;">Primitive</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle x^n$ ($\displaystyle n \neq -1$)</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle\frac{x^{n+1}}{n+1} + C$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle\frac{1}{x}$</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle \ln|x| + C$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle e^x$</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle e^x + C$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle \sin(x)$</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle -\cos(x) + C$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle \cos(x)$</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle \sin(x) + C$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle (ax + b)^n$</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle\frac{(ax + b)^{n+1}}{a(n+1)} + C$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle e^{ax + b}$</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle\frac{1}{a}e^{ax + b} + C$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle \sin(ax + b)$</td>
-                    <td style="border:1px solid #ddd; padding:8px;">$\displaystyle-\frac{1}{a}\cos(ax + b) + C$</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+<strong>⚠️ Règle générale :</strong> Pour $\displaystyle\int f(ax + b) \, dx$, on divise par le coefficient $\displaystyle a$ et on compose avec $\displaystyle (ax + b)$.
+</div>
+</div>
 
-    <div style="background:#ffffff; padding:15px; border-radius:6px; margin:15px 0; border:1px solid #e1e8ed;">
-        <h3 style="color:#2c3e50; margin-top:0;">✅ Points clés à retenir</h3>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Intégration par parties</h2>
 
-        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
-        <thead>
-        <tr style="background:#3498db; color:white;">
-        <th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
-        <th style="border:1px solid #ddd; padding:12px;">À retenir</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Constante d'intégration</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Toujours ajouter <strong>$\displaystyle + C$</strong> à la fin (piège très fréquent !)</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Primitives élémentaires</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Maîtriser parfaitement le <strong>tableau de référence</strong></td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Linéarité</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int (af + bg) = a\int f + b\int g$ pour décomposer les intégrales complexes</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Fonctions composées</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Diviser par le <strong>coefficient $\displaystyle a$</strong> dans $\displaystyle (ax + b)$ : $\displaystyle\int f(ax+b) = \frac{1}{a}F(ax+b) + C$</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Intégration par parties</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Utiliser <strong>"ILATE"</strong> pour choisir $\displaystyle u$ (Inverse, Log, Algébrique, Trigo, Expo)</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Changement de variable</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Reconnaître <strong>$\displaystyle f(g(x)) \cdot g'(x)$</strong> (fonction et sa dérivée)</td>
-        </tr>
-        <tr style="background:#f8f9fa;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Cas $\displaystyle\frac{1}{x}$</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \frac{1}{x} dx = \ln|x| + C$ (attention : $\displaystyle n = -1$ est un cas particulier !)</td>
-        </tr>
-        <tr style="background:#ffffff;">
-        <td style="border:1px solid #ddd; padding:10px;"><strong>Vérification</strong></td>
-        <td style="border:1px solid #ddd; padding:10px;">Toujours <strong>dériver le résultat</strong> pour vérifier la correction</td>
-        </tr>
-        </tbody>
-        </table>
-        </div>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Formule</th>
+<th style="border:1px solid #ddd; padding:12px;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Formule générale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int u(x) v'(x) \, dx = u(x) v(x) - \int u'(x) v(x) \, dx$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Forme compacte</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int u \, dv = uv - \int v \, du$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Priorité</th>
+<th style="border:1px solid #ddd; padding:12px;">Type de fonction (méthode "ILATE")</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>I</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Inverse (arctan, arcsin, etc.)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>L</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Logarithme ($\displaystyle \ln$)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>A</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Algébrique (polynômes)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>T</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Trigonométrique ($\displaystyle \sin$, $\displaystyle \cos$)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>E</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Exponentielle ($\displaystyle e^x$)</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Intégrale</th>
+<th style="border:1px solid #ddd; padding:12px;">Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int x e^x \, dx$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x(x-1) + C$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \ln(x) \, dx$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\ln(x) - x + C$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int x \sin(x) \, dx$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -x\cos(x) + \sin(x) + C$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Changement de variable (substitution)</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Type</th>
+<th style="border:1px solid #ddd; padding:12px;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Méthode</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">On pose $\displaystyle u = g(x)$ où $\displaystyle g$ est dérivable, alors $\displaystyle du = g'(x) \, dx$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Formule</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int f(g(x)) \cdot g'(x) \, dx = \int f(u) \, du$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Reconnaissance</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">On cherche une fonction et sa dérivée dans l'intégrande</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Exemple</th>
+<th style="border:1px solid #ddd; padding:12px;">Substitution</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int 2x(x^2 + 1)^3 \, dx$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle u = x^2 + 1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \frac{2x}{x^2 + 1} \, dx$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle u = x^2 + 1$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int x e^{x^2} \, dx$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle u = x^2$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Techniques spécialisées</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<h3 style="color:#34495e; margin-top:0;">Fractions rationnelles</h3>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Méthode</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Décomposition en éléments simples</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Exemple</th>
+<th style="border:1px solid #ddd; padding:12px;">Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \frac{2x + 3}{x^2 - 1} \, dx$<br><small>$\displaystyle\frac{2x + 3}{x^2 - 1} = \frac{5/2}{x-1} - \frac{1/2}{x+1}$</small></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\frac{5}{2}\ln|x-1| - \frac{1}{2}\ln|x+1| + C$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<h3 style="color:#34495e; margin-top:0;">Intégrales trigonométriques</h3>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Forme</th>
+<th style="border:1px solid #ddd; padding:12px;">Méthode</th>
+<th style="border:1px solid #ddd; padding:12px;">Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \sin^n(x) \cos^m(x) \, dx$</td>
+<td style="border:1px solid #ddd; padding:10px;">Changement $\displaystyle u = \sin(x)$ ou $\displaystyle u = \cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \sin^3(x) \, dx$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \tan^n(x) \, dx$</td>
+<td style="border:1px solid #ddd; padding:10px;">Changement $\displaystyle u = \tan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \tan^2(x) \, dx$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Formules rapides — mémo</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:10px; width:40%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:10px;">Primitive</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle x^n$ ($\displaystyle n \neq -1$)</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle\frac{x^{n+1}}{n+1} + C$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle\frac{1}{x}$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle \ln|x| + C$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle e^x$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle e^x + C$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle \sin(x)$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle -\cos(x) + C$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle \cos(x)$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle \sin(x) + C$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle (ax + b)^n$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle\frac{(ax + b)^{n+1}}{a(n+1)} + C$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle e^{ax + b}$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle\frac{1}{a}e^{ax + b} + C$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle \sin(ax + b)$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle-\frac{1}{a}\cos(ax + b) + C$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<h3 style="color:#2c3e50; margin-top:0;">✅ Points clés à retenir</h3>
+
+<table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
+<th style="border:1px solid #ddd; padding:12px;">À retenir</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Constante d'intégration</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Toujours ajouter <strong>$\displaystyle + C$</strong> à la fin (piège très fréquent !)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Primitives élémentaires</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Maîtriser parfaitement le <strong>tableau de référence</strong></td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Linéarité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int (af + bg) = a\int f + b\int g$ pour décomposer les intégrales complexes</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Fonctions composées</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Diviser par le <strong>coefficient $\displaystyle a$</strong> dans $\displaystyle (ax + b)$ : $\displaystyle\int f(ax+b) = \frac{1}{a}F(ax+b) + C$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Intégration par parties</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Utiliser <strong>"ILATE"</strong> pour choisir $\displaystyle u$ (Inverse, Log, Algébrique, Trigo, Expo)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Changement de variable</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Reconnaître <strong>$\displaystyle f(g(x)) \cdot g'(x)$</strong> (fonction et sa dérivée)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Cas $\displaystyle\frac{1}{x}$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\int \frac{1}{x} dx = \ln|x| + C$ (attention : $\displaystyle n = -1$ est un cas particulier !)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Vérification</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Toujours <strong>dériver le résultat</strong> pour vérifier la correction</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 </div>
 ===

@@ -1,14 +1,32 @@
-===Résumé Arithmétique Terminal
+===Résumé Arithmétique
 
-Titre: Résumé : Arithmétique - Divisibilité, PGCD, Nombres Premiers et Congruences
+Images: 
+
+Titre: Résumé : Arithmétique
+
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
 
-<h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">I. Divisibilité dans ℤ</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Divisibilité dans ℤ</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-<strong>Définition :</strong> $a$ divise $b$ (noté $a \mid b$) s'il existe $k \in \mathbb{Z}$ tel que $\displaystyle b = ka$
-</div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Concept</th>
+<th style="border:1px solid #ddd; padding:12px;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Divisibilité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle a \mid b \Leftrightarrow \exists k \in \mathbb{Z}, b = ka$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Notation</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$a \mid b$ se lit "$a$ divise $b$"</td>
+</tr>
+</tbody>
+</table>
 
 <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
 <thead>
@@ -20,156 +38,432 @@ Titre: Résumé : Arithmétique - Divisibilité, PGCD, Nombres Premiers et Congr
 <tbody>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Transitivité</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle a \mid b$ et $\displaystyle b \mid c$, alors $\displaystyle a \mid c$</td>
+<td style="border:1px solid #ddd; padding:10px;">Si $a \mid b$ et $b \mid c$, alors $a \mid c$</td>
 </tr>
 <tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Linéarité</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle a \mid b$ et $\displaystyle a \mid c$, alors $\displaystyle a \mid (ub + vc)$</td>
+<td style="border:1px solid #ddd; padding:10px;">Si $a \mid b$ et $a \mid c$, alors $a \mid (ub + vc)$ pour tous $u,v \in \mathbb{Z}$</td>
 </tr>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Diviseurs de 1</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle a \mid 1$, alors $\displaystyle a = \pm 1$</td>
+<td style="border:1px solid #ddd; padding:10px;">Si $a \mid 1$, alors $a = \pm 1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Relation d'ordre</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $a \mid b$ et $b > 0$, alors $|a| \leq b$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemples</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+$3 \mid 12$ car $12 = 3 \times 4$<br><br>
+$5 \mid -20$ car $-20 = 5 \times (-4)$<br><br>
+$1 \mid n$ pour tout entier $n$<br><br>
+$n \mid 0$ pour tout entier $n \neq 0$
+</td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">II. Division euclidienne</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Division euclidienne</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-<strong>Théorème :</strong> Pour $a \in \mathbb{Z}$ et $b \in \mathbb{N}^{\ast}$, il existe un unique couple $(q, r)$ tel que :
-$$\displaystyle a = bq + r \quad \text{avec} \quad 0 \leq r < b$$
-</div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Théorème de la division euclidienne</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Pour $a \in \mathbb{Z}$ et $b \in \mathbb{N}^*$, il existe un unique couple $(q,r) \in \mathbb{Z} \times \mathbb{N}$ tel que :<br><br>$\displaystyle a = bq + r$ avec $0 \leq r < b$</td>
+</tr>
+</tbody>
+</table>
 
-<div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
-<strong>⚠️ Important :</strong> Le reste $r$ vérifie toujours $\displaystyle 0 \leq r < b$. Reste nul si et seulement si $\displaystyle b \mid a$.
-</div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Terme</th>
+<th style="border:1px solid #ddd; padding:12px;">Nom</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$q$</td>
+<td style="border:1px solid #ddd; padding:10px;">Quotient</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$r$</td>
+<td style="border:1px solid #ddd; padding:10px;">Reste (toujours $0 \leq r < b$)</td>
+</tr>
+</tbody>
+</table>
 
-<div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #10b981;">
-<strong>💡 Exemples :</strong>
-<ul style="margin:8px 0; padding-left:20px;">
-<li>$\displaystyle 47 = 7 \times 6 + 5$ (quotient = 6, reste = 5)</li>
-<li>$\displaystyle -23 = 5 \times (-5) + 2$ (quotient = -5, reste = 2)</li>
-<li>$\displaystyle 100 = 25 \times 4 + 0$ (divisible par 25)</li>
-</ul>
-</div>
-</div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemples</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+$47 = 7 \times 6 + 5$ (quotient = 6, reste = 5)<br><br>
+$-23 = 5 \times (-5) + 2$ (quotient = -5, reste = 2)<br><br>
+$100 = 25 \times 4 + 0$ (quotient = 4, reste = 0)
+</td>
+</tr>
+</tbody>
+</table>
 
-<h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">III. PGCD et algorithme d'Euclide</h2>
-
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-<strong>Définition :</strong> Le PGCD de $a$ et $b$ (noté $\displaystyle \text{pgcd}(a,b)$ ou $\displaystyle a \wedge b$) est le plus grand entier qui divise $a$ et $b$.
-</div>
-
-<div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #10b981;">
-<strong>💡 Propriétés :</strong>
-<ul style="margin:8px 0; padding-left:20px;">
-<li>$\displaystyle \text{pgcd}(a,b) = \text{pgcd}(b,a)$ (symétrie)</li>
-<li>$\displaystyle \text{pgcd}(a,b) = \text{pgcd}(|a|,|b|)$</li>
-<li>$\displaystyle \text{pgcd}(a,0) = |a|$ pour $a \neq 0$</li>
-<li>$\displaystyle \text{pgcd}(a,1) = 1$</li>
-</ul>
-</div>
-
-<div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-<strong>Algorithme d'Euclide :</strong>
-<ol style="margin:8px 0; padding-left:20px;">
-<li>Effectuer $\displaystyle a = bq_1 + r_1$ avec $\displaystyle 0 \leq r_1 < b$</li>
-<li>Si $\displaystyle r_1 = 0$, alors $\displaystyle \text{pgcd}(a,b) = b$</li>
-<li>Sinon, recommencer avec $b$ et $\displaystyle r_1$</li>
-<li>Le PGCD est le dernier reste non nul</li>
-</ol>
-</div>
-
-<div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #10b981;">
-<strong>💡 Exemple :</strong> $\displaystyle \text{pgcd}(1071, 462)$
-<div style="margin:10px 0;">
-$\displaystyle 1071 = 462 \times 2 + 147$<br>
-$\displaystyle 462 = 147 \times 3 + 21$<br>
-$\displaystyle 147 = 21 \times 7 + 0$
-</div>
-<strong>Résultat :</strong> $\displaystyle \text{pgcd}(1071, 462) = 21$
+<div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+<strong>⚠️ Important :</strong> $r = 0 \Leftrightarrow b \mid a$
 </div>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IV. Entiers premiers entre eux</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. PGCD et algorithme d'Euclide</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-<strong>Définition :</strong> $a$ et $b$ sont premiers entre eux si et seulement si $\displaystyle \text{pgcd}(a,b) = 1$
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Concept</th>
+<th style="border:1px solid #ddd; padding:12px;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>PGCD</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Plus grand entier naturel qui divise à la fois $a$ et $b$. Notation : $\text{pgcd}(a,b)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Premiers entre eux</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\text{pgcd}(a,b) = 1$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #9333ea;">
+<thead>
+<tr style="background:#9333ea; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Propriétés du PGCD</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+$\text{pgcd}(a,b) = \text{pgcd}(b,a)$ (symétrie)<br><br>
+$\text{pgcd}(a,b) = \text{pgcd}(|a|,|b|)$<br><br>
+$\text{pgcd}(a,0) = |a|$ pour $a \neq 0$<br><br>
+$\text{pgcd}(a,1) = 1$
+</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:15%;">Étape</th>
+<th style="border:1px solid #ddd; padding:12px;">Algorithme d'Euclide</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>1</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Effectuer la division euclidienne : $a = bq_1 + r_1$ avec $0 \leq r_1 < b$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>2</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $r_1 = 0$, alors $\text{pgcd}(a,b) = b$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>3</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Sinon, recommencer avec $b$ et $r_1$ : $b = r_1q_2 + r_2$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>4</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Continuer jusqu'à obtenir un reste nul</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>5</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Le PGCD est le dernier reste non nul</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : $\text{pgcd}(1071,462)$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+$1071 = 462 \times 2 + 147$<br><br>
+$462 = 147 \times 3 + 21$<br><br>
+$147 = 21 \times 7 + 0$<br><br>
+Dernier reste non nul : 21 → $\text{pgcd}(1071,462) = 21$
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 
-<div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-<strong>Théorème de Gauss :</strong> Si $\displaystyle a \mid bc$ et $\displaystyle \text{pgcd}(a,b) = 1$, alors $\displaystyle a \mid c$
-</div>
-
-<div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-<strong>PPCM :</strong> $\displaystyle \text{pgcd}(a,b) \times \text{ppcm}(a,b) = |a \times b|$
-</div>
-</div>
-
-<h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">V. Théorème de Bézout</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. PPCM</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-<strong>Théorème :</strong> Il existe des entiers $u$ et $v$ tels que $\displaystyle au + bv = \text{pgcd}(a,b)$
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Concept</th>
+<th style="border:1px solid #ddd; padding:12px;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>PPCM</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Plus petit entier naturel non nul qui est multiple de $a$ et $b$. Notation : $\text{ppcm}(a,b)$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #9333ea;">
+<thead>
+<tr style="background:#9333ea; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Propriété fondamentale</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\text{pgcd}(a,b) \times \text{ppcm}(a,b) = |a \times b|$<br><br>
+Donc : $\displaystyle\text{ppcm}(a,b) = \dfrac{|a \times b|}{\text{pgcd}(a,b)}$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : $\text{ppcm}(12,18)$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+$\text{pgcd}(12,18) = 6$<br><br>
+$\displaystyle\text{ppcm}(12,18) = \dfrac{12 \times 18}{6} = \dfrac{216}{6} = 36$
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 
-<div style="background:#e8f5e8; padding:12px; border-radius:4px; margin:10px 0;">
-<strong>Corollaire :</strong> $a$ et $b$ sont premiers entre eux ssi $\displaystyle au + bv = 1$ pour certains $u, v \in \mathbb{Z}$
-</div>
-
-<div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-<strong>Méthode :</strong> Remontée de l'algorithme d'Euclide pour trouver les coefficients de Bézout
-</div>
-
-<div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #10b981;">
-<strong>💡 Exemple :</strong> Pour $a = 48$ et $b = 18$ :
-<div style="margin:10px 0;">
-$\displaystyle 48 \times (-1) + 18 \times 3 = 6$
-</div>
-</div>
-</div>
-
-<h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VI. Nombres premiers</h2>
-
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-<strong>Définition :</strong> Un entier $\displaystyle p \geq 2$ est premier s'il admet exactement deux diviseurs positifs : 1 et lui-même.
-</div>
-
-<div style="background:#f0f9f0; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #10b981;">
-<strong>💡 Propriétés :</strong>
-<ul style="margin:8px 0; padding-left:20px;">
-<li>Il existe une infinité de nombres premiers</li>
-<li>Pour tester si $n$ est premier, vérifier la divisibilité par les premiers $\displaystyle \leq \sqrt{n}$</li>
-<li>2 est le seul nombre premier pair</li>
-<li>1 n'est pas premier</li>
-</ul>
-</div>
-
-<div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-<strong>Décomposition en facteurs premiers :</strong> Tout entier $\displaystyle n \geq 2$ se décompose de manière unique :
-$$\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$$
-</div>
-
-<div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-<strong>Applications au PGCD et PPCM :</strong>
-<ul style="margin:8px 0; padding-left:20px;">
-<li>$\displaystyle \text{pgcd}(a,b) = p_1^{\min(\alpha_1, \beta_1)} \times \cdots \times p_k^{\min(\alpha_k, \beta_k)}$</li>
-<li>$\displaystyle \text{ppcm}(a,b) = p_1^{\max(\alpha_1, \beta_1)} \times \cdots \times p_k^{\max(\alpha_k, \beta_k)}$</li>
-</ul>
-</div>
-</div>
-
-<h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VII. Congruences</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Théorème de Bézout</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-<strong>Définition :</strong> $a \equiv b \pmod{n}$ ssi $\displaystyle n \mid (a - b)$
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Théorème de Bézout</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Il existe $u,v \in \mathbb{Z}$ tels que $\displaystyle au + bv = \text{pgcd}(a,b)$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #9333ea;">
+<thead>
+<tr style="background:#9333ea; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Corollaire (cas premiers entre eux)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle\text{pgcd}(a,b) = 1 \Leftrightarrow \exists u,v \in \mathbb{Z}, au + bv = 1$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:15%;">Étape</th>
+<th style="border:1px solid #ddd; padding:12px;">Méthode pour trouver les coefficients de Bézout</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>1</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Appliquer l'algorithme d'Euclide</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>2</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Exprimer chaque reste en fonction des deux nombres précédents</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>3</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Remonter les calculs en substituant</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>4</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Obtenir une relation $\displaystyle au + bv = \text{pgcd}(a,b)$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : Relation de Bézout pour 48 et 18</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Algorithme :</strong><br><br>
+$48 = 18 \times 2 + 12$ → $12 = 48 - 18 \times 2$<br><br>
+$18 = 12 \times 1 + 6$ → $6 = 18 - 12 \times 1$<br><br>
+$12 = 6 \times 2 + 0$<br><br>
+<strong>Remontée :</strong><br><br>
+$6 = 18 - 12 \times 1 = 18 - (48 - 18 \times 2) = 18 \times 3 - 48 \times 1$<br><br>
+<strong>Résultat :</strong> $48 \times (-1) + 18 \times 3 = 6$
+</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Théorème de Gauss</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Si $a \mid bc$ et $\text{pgcd}(a,b) = 1$, alors $a \mid c$</td>
+</tr>
+</tbody>
+</table>
 </div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Nombres premiers</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Un entier naturel $p \geq 2$ est premier s'il admet exactement deux diviseurs positifs : 1 et lui-même</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemples de nombres premiers</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47...</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Théorème</th>
+<th style="border:1px solid #ddd; padding:12px;">Énoncé</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Lemme d'Euclide</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $p$ premier divise $ab$, alors $p \mid a$ ou $p \mid b$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Infinité des premiers</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Il existe une infinité de nombres premiers</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Test de primalité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Pour tester si $n$ est premier, vérifier qu'il n'est divisible par aucun premier $p \leq \sqrt{n}$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Décomposition en facteurs premiers</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Tout entier $n \geq 2$ s'écrit de manière unique : $\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ffa500;">
+<thead>
+<tr style="background:#ffa500; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Application au PGCD et PPCM</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+$\displaystyle\text{pgcd}(a,b) = p_1^{\min(\alpha_1,\beta_1)} \times p_2^{\min(\alpha_2,\beta_2)} \times \cdots$<br><br>
+$\displaystyle\text{ppcm}(a,b) = p_1^{\max(\alpha_1,\beta_1)} \times p_2^{\max(\alpha_2,\beta_2)} \times \cdots$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Congruences</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Concept</th>
+<th style="border:1px solid #ddd; padding:12px;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Congruence</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle a \equiv b \pmod{n} \Leftrightarrow n \mid (a-b)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Notation</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$a \equiv b \pmod{n}$ ou $a \equiv b \, [n]$</td>
+</tr>
+</tbody>
+</table>
 
 <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
 <thead>
@@ -180,42 +474,252 @@ $$\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Addition</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle a \equiv b \pmod{n}$ et $\displaystyle c \equiv d \pmod{n}$, alors $\displaystyle a + c \equiv b + d \pmod{n}$</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>Réflexivité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$a \equiv a \pmod{n}$</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Multiplication</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle a \equiv b \pmod{n}$ et $\displaystyle c \equiv d \pmod{n}$, alors $\displaystyle ac \equiv bd \pmod{n}$</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>Symétrie</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $a \equiv b \pmod{n}$, alors $b \equiv a \pmod{n}$</td>
 </tr>
 <tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Transitivité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $a \equiv b \pmod{n}$ et $b \equiv c \pmod{n}$, alors $a \equiv c \pmod{n}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Addition</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $a \equiv b \pmod{n}$ et $c \equiv d \pmod{n}$, alors $a + c \equiv b + d \pmod{n}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Multiplication</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $a \equiv b \pmod{n}$ et $c \equiv d \pmod{n}$, alors $ac \equiv bd \pmod{n}$</td>
+</tr>
+<tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Puissance</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle a \equiv b \pmod{n}$, alors $\displaystyle a^k \equiv b^k \pmod{n}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Si $a \equiv b \pmod{n}$, alors $a^k \equiv b^k \pmod{n}$ pour tout $k \in \mathbb{N}$</td>
 </tr>
 </tbody>
 </table>
 
-<div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
-<strong>⚠️ Attention :</strong> On ne peut pas diviser les deux membres d'une congruence sans précaution !
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemples</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+$17 \equiv 5 \pmod{12}$ car $17 - 5 = 12$<br><br>
+$-3 \equiv 7 \pmod{10}$ car $-3 - 7 = -10$<br><br>
+$25 \equiv 1 \pmod{6}$ car $25 - 1 = 24 = 6 \times 4$
+</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+<strong>⚠️ Attention :</strong> On ne peut pas diviser dans une congruence sans précaution !
 </div>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">VIII. Inverse modulaire</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Inverse modulaire</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<div style="background:#e8f4fd; padding:12px; border-radius:4px; margin:10px 0; border-left:6px solid #3498db;">
-<strong>Définition :</strong> $a$ est inversible modulo $n$ s'il existe $b$ tel que $\displaystyle ab \equiv 1 \pmod{n}$
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Concept</th>
+<th style="border:1px solid #ddd; padding:12px;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Inverse modulaire</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$b = a^{-1} \pmod{n}$ si $ab \equiv 1 \pmod{n}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Condition d'inversibilité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$a$ inversible modulo $n$ $\Leftrightarrow$ $\text{pgcd}(a,n) = 1$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Méthode : Trouver l'inverse par Bézout</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+1. Appliquer l'algorithme d'Euclide pour trouver $u,v$ tels que $au + nv = \text{pgcd}(a,n)$<br><br>
+2. Si $\text{pgcd}(a,n) = 1$, alors $au + nv = 1$, donc $au \equiv 1 \pmod{n}$<br><br>
+3. L'inverse de $a$ modulo $n$ est $u$ (modulo $n$)
+</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : Inverse de 7 modulo 26</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+Par Bézout : $7 \times (-11) + 26 \times 3 = 1$<br><br>
+Donc $7 \times (-11) \equiv 1 \pmod{26}$<br><br>
+Comme $-11 \equiv 15 \pmod{26}$<br><br>
+<strong>Résultat :</strong> $7^{-1} \equiv 15 \pmod{26}$
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 
-<div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-<strong>Condition :</strong> $a$ est inversible modulo $n$ ssi $\displaystyle \text{pgcd}(a,n) = 1$
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Résolution de congruences linéaires</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Équation $ax \equiv b \pmod{n}$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Soit $d = \text{pgcd}(a,n)$<br><br>
+<strong>Pas de solution</strong> si $d \nmid b$<br><br>
+<strong>$d$ solutions modulo $n$</strong> si $d \mid b$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Méthode de résolution (si $d \mid b$)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+1. Diviser l'équation par $d$ pour se ramener au cas où $\text{pgcd} = 1$<br><br>
+2. Trouver l'inverse $a^{-1}$ modulo $n$<br><br>
+3. Multiplier les deux membres par $a^{-1}$
+</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemples</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Ex 1 :</strong> $5x \equiv 3 \pmod{11}$<br><br>
+$\text{pgcd}(5,11) = 1$ → 1 solution<br><br>
+$5^{-1} \equiv 9 \pmod{11}$ → $x \equiv 9 \times 3 \equiv 5 \pmod{11}$<br><br>
+<strong>Ex 2 :</strong> $6x \equiv 9 \pmod{15}$<br><br>
+$\text{pgcd}(6,15) = 3$ et $3 \mid 9$ → 3 solutions<br><br>
+Diviser par 3 : $2x \equiv 3 \pmod{5}$ → $x \equiv 4 \pmod{5}$<br><br>
+Solutions : $x \equiv 4, 9, 14 \pmod{15}$<br><br>
+<strong>Ex 3 :</strong> $4x \equiv 7 \pmod{10}$<br><br>
+$\text{pgcd}(4,10) = 2$ et $2 \nmid 7$ → Pas de solution
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 
-<div style="background:#fef3c7; padding:12px; border-radius:4px; margin:10px 0;">
-<strong>Méthode :</strong> Utiliser l'identité de Bézout pour trouver l'inverse
-</div>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Calculs de puissances modulaires</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #f59e0b;">
+<thead>
+<tr style="background:#f59e0b; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:15%;">Étape</th>
+<th style="border:1px solid #ddd; padding:12px;">Méthode des carrés successifs pour $a^k \bmod n$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>1</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Décomposer l'exposant $k$ en base 2</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>2</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Calculer successivement $a, a^2, a^4, a^8, \ldots$ en réduisant modulo $n$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>3</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Combiner les puissances correspondant aux bits à 1</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : $2^{100} \bmod 7$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+Calculons les premières puissances :<br><br>
+$2^1 \equiv 2 \pmod{7}$, $2^2 \equiv 4 \pmod{7}$, $2^3 \equiv 8 \equiv 1 \pmod{7}$<br><br>
+Comme $2^3 \equiv 1 \pmod{7}$ et $100 = 3 \times 33 + 1$ :<br><br>
+$\displaystyle 2^{100} = (2^3)^{33} \times 2^1 \equiv 1^{33} \times 2 \equiv 2 \pmod{7}$
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">IX. Formules rapides - Mémo</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Erreurs fréquentes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Piège à éviter</th>
+<th style="border:1px solid #ddd; padding:12px;">Correction</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Confondre $a \mid b$ et $b \mid a$</td>
+<td style="border:1px solid #ddd; padding:10px;">$a \mid b$ signifie "$a$ divise $b$"</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Oublier que $0 \leq r < b$</td>
+<td style="border:1px solid #ddd; padding:10px;">Le reste est toujours compris entre 0 et $b-1$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Confondre "premiers entre eux" et "nombres premiers"</td>
+<td style="border:1px solid #ddd; padding:10px;">Premiers entre eux : $\text{pgcd}(a,b) = 1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Diviser dans une congruence sans vérification</td>
+<td style="border:1px solid #ddd; padding:10px;">Vérifier que $\text{pgcd}(a,n) = 1$ avant</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">Penser que 1 est premier</td>
+<td style="border:1px solid #ddd; padding:10px;">1 n'est pas premier (un seul diviseur)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XII. Formules rapides — mémo</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
 <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
@@ -228,78 +732,49 @@ $$\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_
 <tbody>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:8px;"><strong>Divisibilité</strong></td>
-<td style="border:1px solid #ddd; padding:8px;">$\displaystyle a \mid b \Leftrightarrow \exists k, b = ka$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle a \mid b \Leftrightarrow \exists k \in \mathbb{Z}, b = ka$</td>
 </tr>
 <tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:8px;"><strong>Division euclidienne</strong></td>
-<td style="border:1px solid #ddd; padding:8px;">$\displaystyle a = bq + r$ avec $\displaystyle 0 \leq r < b$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle a = bq + r$ avec $0 \leq r < b$</td>
 </tr>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:8px;"><strong>PGCD</strong></td>
-<td style="border:1px solid #ddd; padding:8px;">Plus grand diviseur commun de $a$ et $b$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:8px;"><strong>Premiers entre eux</strong></td>
-<td style="border:1px solid #ddd; padding:8px;">$\displaystyle \text{pgcd}(a,b) = 1$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:8px;"><strong>Relation de Bézout</strong></td>
-<td style="border:1px solid #ddd; padding:8px;">$\displaystyle au + bv = \text{pgcd}(a,b)$</td>
+<td style="border:1px solid #ddd; padding:8px;">Dernier reste non nul de l'algorithme d'Euclide</td>
 </tr>
 <tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:8px;"><strong>PPCM</strong></td>
-<td style="border:1px solid #ddd; padding:8px;">$\displaystyle \text{pgcd}(a,b) \times \text{ppcm}(a,b) = |a \times b|$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle\text{ppcm}(a,b) = \dfrac{|a \times b|}{\text{pgcd}(a,b)}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:8px;"><strong>Bézout</strong></td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle au + bv = \text{pgcd}(a,b)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:8px;"><strong>Gauss</strong></td>
+<td style="border:1px solid #ddd; padding:8px;">Si $a \mid bc$ et $\text{pgcd}(a,b) = 1$, alors $a \mid c$</td>
 </tr>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:8px;"><strong>Congruence</strong></td>
-<td style="border:1px solid #ddd; padding:8px;">$\displaystyle a \equiv b \pmod{n} \Leftrightarrow n \mid (a - b)$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle a \equiv b \pmod{n} \Leftrightarrow n \mid (a-b)$</td>
 </tr>
 <tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:8px;"><strong>Inverse modulaire</strong></td>
-<td style="border:1px solid #ddd; padding:8px;">$\displaystyle ab \equiv 1 \pmod{n}$ ssi $\displaystyle \text{pgcd}(a,n) = 1$</td>
+<td style="border:1px solid #ddd; padding:8px;">$\displaystyle a^{-1} \pmod{n}$ existe $\Leftrightarrow$ $\text{pgcd}(a,n) = 1$</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:8px;"><strong>Test de primalité</strong></td>
-<td style="border:1px solid #ddd; padding:8px;">Vérifier divisibilité par premiers $\displaystyle \leq \sqrt{n}$</td>
+<td style="border:1px solid #ddd; padding:8px;"><strong>Nombre premier</strong></td>
+<td style="border:1px solid #ddd; padding:8px;">Exactement deux diviseurs positifs : 1 et lui-même</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:8px;"><strong>Décomposition</strong></td>
-<td style="border:1px solid #ddd; padding:8px;">$\displaystyle n = p_1^{\alpha_1} \times \cdots \times p_k^{\alpha_k}$</td>
+<td style="border:1px solid #ddd; padding:8px;"><strong>Premiers entre eux</strong></td>
+<td style="border:1px solid #ddd; padding:8px;">$\text{pgcd}(a,b) = 1$</td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:3px solid #3498db; padding-bottom:8px;">X. Méthodes pratiques</h2>
-
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<div style="background:#fef3c7; padding:15px; border-radius:6px; margin:10px 0;">
-<strong>📐 Étapes pour résoudre un problème d'arithmétique :</strong>
-<ol style="margin:10px 0; padding-left:20px;">
-<li><strong>Identifier le type :</strong> PGCD, Bézout, congruence, primalité</li>
-<br>
-<li><strong>Choisir la méthode :</strong> Algorithme d'Euclide, décomposition, congruences</li>
-<br>
-<li><strong>Appliquer l'algorithme :</strong> Suivre les étapes systématiquement</li>
-<br>
-<li><strong>Vérifier :</strong> Contrôler les calculs et les conditions</li>
-<br>
-<li><strong>Interpréter :</strong> Donner la réponse finale</li>
-</ol>
-</div>
-
-<div style="background:#fff8dc; padding:12px; border-radius:4px; margin:10px 0; border-left:4px solid #ffa500;">
-<strong>⚠️ Conseils pratiques :</strong>
-<ul style="margin:8px 0; padding-left:20px;">
-<li>Privilégier l'algorithme d'Euclide pour le PGCD</li>
-<li>Remonter l'algorithme pour les relations de Bézout</li>
-<li>Vérifier les hypothèses des théorèmes avant application</li>
-<li>Simplifier avant de calculer des puissances modulo $n$</li>
-</ul>
-</div>
-</div>
-
-<div style="background:#ffffff; padding:15px; border-radius:6px; margin:15px 0; border:1px solid #e1e8ed;">
 <h3 style="color:#2c3e50; margin-top:0;">✅ Points clés à retenir</h3>
 
 <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
@@ -312,55 +787,43 @@ $$\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_
 <tbody>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Divisibilité</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle a \mid b$ signifie "$a$ divise $b$". Propriétés : transitivité, linéarité</td>
+<td style="border:1px solid #ddd; padding:10px;">Propriétés : transitivité, linéarité. $a \mid b$ signifie "$a$ divise $b$"</td>
 </tr>
 <tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Division euclidienne</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle a = bq + r$ avec $\displaystyle 0 \leq r < b$. Reste nul ssi $\displaystyle b \mid a$</td>
+<td style="border:1px solid #ddd; padding:10px;">$a = bq + r$ avec $0 \leq r < b$. Unique !</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>PGCD</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Plus grand diviseur commun. Calculé par l'algorithme d'Euclide</td>
-</tr>
-<tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Algorithme d'Euclide</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{pgcd}(a,b) = \text{pgcd}(b,r)$ où $\displaystyle a = bq + r$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Premiers entre eux</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{pgcd}(a,b) = 1$. Différent de "nombres premiers"</td>
+<td style="border:1px solid #ddd; padding:10px;">Méthode efficace pour calculer le PGCD. Le dernier reste non nul</td>
 </tr>
 <tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Théorème de Bézout</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle au + bv = \text{pgcd}(a,b)$. Trouvé par remontée d'Euclide</td>
+<td style="border:1px solid #ddd; padding:10px;">$au + bv = \text{pgcd}(a,b)$. Remontée de l'algorithme d'Euclide</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>PPCM</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{pgcd}(a,b) \times \text{ppcm}(a,b) = |a \times b|$</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>Théorème de Gauss</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $a \mid bc$ et $\text{pgcd}(a,b) = 1$, alors $a \mid c$</td>
 </tr>
 <tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Nombres premiers</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Exactement 2 diviseurs positifs. Test : divisibilité par premiers $\displaystyle \leq \sqrt{n}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Exactement deux diviseurs. Test : vérifier divisibilité par premiers $\leq \sqrt{n}$</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Décomposition</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Unique : $\displaystyle n = p_1^{\alpha_1} \times \cdots \times p_k^{\alpha_k}$</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>Premiers entre eux</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\text{pgcd}(a,b) = 1$ (différent de "nombres premiers")</td>
 </tr>
 <tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Congruences</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle a \equiv b \pmod{n} \Leftrightarrow n \mid (a - b)$. Compatibles avec +, ×, ^</td>
+<td style="border:1px solid #ddd; padding:10px;">$a \equiv b \pmod{n} \Leftrightarrow n \mid (a-b)$. Propriétés : addition, multiplication, puissance</td>
 </tr>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Inverse modulaire</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle ab \equiv 1 \pmod{n}$ ssi $\displaystyle \text{pgcd}(a,n) = 1$</td>
+<td style="border:1px solid #ddd; padding:10px;">Existe si et seulement si $\text{pgcd}(a,n) = 1$. Utiliser Bézout</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Théorème de Gauss</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle a \mid bc$ et $\displaystyle \text{pgcd}(a,b) = 1$, alors $\displaystyle a \mid c$</td>
-</tr>
-<tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;"><strong>Erreurs fréquentes</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Confondre diviseur/divisé, oublier conditions des théorèmes, diviser congruences sans précaution</td>
+<td style="border:1px solid #ddd; padding:10px;">Division dans congruences, quadrant, 1 n'est pas premier</td>
 </tr>
 </tbody>
 </table>

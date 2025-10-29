@@ -48,7 +48,7 @@ $\\$
     $\\$
     
     ● **Étape 2 :** Le dernier reste non nul est 12
-        $\qquad$• Donc $\displaystyle \text{pgcd}(84, 60) = 12$
+        $\qquad$• Donc $\displaystyle \text{pgcd }(84, 60) = 12$
     $\\$
 
 **Question 3 : Déterminer une relation de Bézout**
@@ -78,34 +78,36 @@ $\\$
     $\\$
     
     ● **Étape 1 :** Appliquer la formule
-        $\qquad$• $\displaystyle \text{ppcm}(a, b) = \frac{|a \times b|}{\text{pgcd}(a, b)}$
+        $\qquad$• $\displaystyle \text{ppcm }(a, b) = \frac{|a \times b|}{\text{pgcd }(a, b)}$
         $\\$
-        $\qquad$• $\displaystyle \text{ppcm}(84, 60) = \frac{84 \times 60}{12} = \frac{5040}{12} = 420$
+        $\qquad$• $\displaystyle \text{ppcm }(84, 60) = \frac{84 \times 60}{12} = \frac{5040}{12} = 420$
     $\\$
 
 Solution:
 1. $\displaystyle 84 \nmid 60$ et $\displaystyle 60 \nmid 84$ (aucune divisibilité directe)
 $\\$
-2. $\displaystyle \text{pgcd}(84, 60) = 12$
+2. $\displaystyle \text{pgcd }(84, 60) = 12$
 $\\$
 3. Relation de Bézout : $\displaystyle 84 \times (-2) + 60 \times 3 = 12$
 $\\$
-4. $\displaystyle \text{ppcm}(84, 60) = 420$
+4. $\displaystyle \text{ppcm }(84, 60) = 420$
 
 ===
 
-=== Arithmétique - Nombres Premiers et Factorisation
+=== Arithmétique — Synthèse: Factorisation, PGCD, Bézout, PPCM et Congruences
 Difficulté: medium
 
-Énoncé: On considère l'entier $\displaystyle n = 1260$.
+Énoncé: On considère les entiers $\displaystyle n = 1260$, $\displaystyle a = 504$ et $\displaystyle b = 420$.
 $\\$
 **Question 1 : Décomposer $\displaystyle n$ en facteurs premiers**
 
-**Question 2 : Déterminer le nombre de diviseurs de $\displaystyle n$**
+**Question 2 : Calculer $\displaystyle \text{pgcd }(a, b)$ par l'algorithme d'Euclide**
 
-**Question 3 : Calculer la somme des diviseurs de $\displaystyle n$**
+**Question 3 : Déterminer une relation de Bézout pour $\displaystyle (a, b)$**
 
-**Question 4 : Vérifier si $\displaystyle n$ est un carré parfait**
+**Question 4 : Calculer le $\displaystyle \text{ppcm }(a, b)$**
+
+**Question 5 : Résoudre la congruence $\displaystyle 7x \equiv 5 \pmod{12}$**
 
 Étapes:
 
@@ -136,59 +138,82 @@ $\\$
         $\qquad$• Donc $\displaystyle 1260 = 2^2 \times 3^2 \times 5 \times 7$
     $\\$
 
-**Question 2 : Déterminer le nombre de diviseurs de $\displaystyle n$**
+**Question 2 : Calculer $\displaystyle \text{pgcd }(a, b)$ par l'algorithme d'Euclide**
 
-    ● **Méthode :** Formule avec les exposants
+    ● **Méthode :** Divisions euclidiennes successives
     $\\$
     
-    ● **Étape 1 :** Identifier les exposants
-        $\qquad$• $\displaystyle n = 2^2 \times 3^2 \times 5^1 \times 7^1$
+    ● **Étape 1 :** Appliquer l'algorithme d'Euclide
+        $\qquad$• $\displaystyle 504 = 420 \times 1 + 84$
         $\\$
-        $\qquad$• Exposants : $\displaystyle 2, 2, 1, 1$
+        $\qquad$• $\displaystyle 420 = 84 \times 5 + 0$
     $\\$
     
-    ● **Étape 2 :** Appliquer la formule
-        $\qquad$• Nombre de diviseurs = $\displaystyle (2+1)(2+1)(1+1)(1+1) = 3 \times 3 \times 2 \times 2 = 36$
+    ● **Étape 2 :** Conclure
+        $\qquad$• Le dernier reste non nul est $\displaystyle 84$
+        $\\$
+        $\qquad$• Donc $\displaystyle \text{pgcd }(504, 420) = 84$
     $\\$
 
-**Question 3 : Calculer la somme des diviseurs de $\displaystyle n$**
+**Question 3 : Déterminer une relation de Bézout pour $\displaystyle (a, b)$**
 
-    ● **Méthode :** Formule avec les facteurs premiers
+    ● **Méthode :** Remontée de l'algorithme d'Euclide
+    $\\$
+    
+    ● **Étape 1 :** Partir de la dernière égalité non nulle
+        $\qquad$• $\displaystyle 84 = 504 - 420 \times 1$
+    $\\$
+    
+    ● **Étape 2 :** Écrire sous la forme $\displaystyle au + bv = \text{pgcd }(a, b)$
+        $\qquad$• $\displaystyle 84 = 504 \times 1 + 420 \times (-1)$
+    $\\$
+
+**Question 4 : Calculer le $\displaystyle \text{ppcm }(a, b)$**
+
+    ● **Méthode :** Relation fondamentale $\displaystyle \text{pgcd } \times \text{ppcm } = |ab|$
     $\\$
     
     ● **Étape 1 :** Appliquer la formule
-        $\qquad$• $\displaystyle \sigma(n) = \frac{2^{2+1}-1}{2-1} \times \frac{3^{2+1}-1}{3-1} \times \frac{5^{1+1}-1}{5-1} \times \frac{7^{1+1}-1}{7-1}$
-        $\\$
-        $\qquad$• $\displaystyle \sigma(n) = \frac{8-1}{1} \times \frac{27-1}{2} \times \frac{25-1}{4} \times \frac{49-1}{6}$
-        $\\$
-        $\qquad$• $\displaystyle \sigma(n) = 7 \times 13 \times 6 \times 8 = 4368$
+        $\qquad$• $\displaystyle \text{ppcm }(504, 420) = \dfrac{504 \times 420}{84} = \dfrac{211{\,}680}{84} = 2{\,}520$
     $\\$
 
-**Question 4 : Vérifier si $\displaystyle n$ est un carré parfait**
+**Question 5 : Résoudre la congruence $\displaystyle 7x \equiv 5 \pmod{12}$**
 
-    ● **Méthode :** Vérifier que tous les exposants sont pairs
+    ● **Méthode :** Multiplier par l'inverse de 7 modulo 12
     $\\$
     
-    ● **Étape 1 :** Examiner les exposants
-        $\qquad$• $\displaystyle n = 2^2 \times 3^2 \times 5^1 \times 7^1$
-        $\\$
-        $\qquad$• Exposants : $\displaystyle 2, 2, 1, 1$
+    ● **Étape 1 :** Vérifier l'inversibilité
+        $\qquad$• $\displaystyle \text{pgcd }(7, 12) = 1$ ⟹ 7 est inversible modulo 12
     $\\$
     
-    ● **Étape 2 :** Conclusion
-        $\qquad$• Les exposants de 5 et 7 sont impairs (1)
+    ● **Étape 2 :** Trouver l'inverse de 7 modulo 12
+        $\qquad$• On cherche $\displaystyle k$ tel que $\displaystyle 7k \equiv 1 \pmod{12}$
         $\\$
-        $\qquad$• Donc $\displaystyle n$ n'est pas un carré parfait
+        $\qquad$• $\displaystyle 7 \times 7 = 49 \equiv 1 \pmod{12}$ ⟹ $\displaystyle 7^{-1} \equiv 7 \pmod{12}$
+    $\\$
+    
+    ● **Étape 3 :** Résoudre
+        $\qquad$• On multiplie les deux membres par l'inverse de 7 : $\displaystyle x \equiv 7^{-1} \times 5 \pmod{12}$
+        $\\$
+        $\qquad$• $\displaystyle x \equiv 7 \times 5 \pmod{12}$
+        $\\$
+        $\qquad$• $\displaystyle x \equiv 35 \pmod{12}$
+        $\\$
+        $\qquad$• On réduit 35 modulo 12 : $\displaystyle 35 = 12 \times 2 + 11$
+        $\\$
+        $\qquad$• Donc $\displaystyle x \equiv 11 \pmod{12}$
     $\\$
 
 Solution:
 1. $\displaystyle 1260 = 2^2 \times 3^2 \times 5 \times 7$
 $\\$
-2. $\displaystyle n$ a 36 diviseurs
+2. $\displaystyle \text{pgcd }(504, 420) = 84$
 $\\$
-3. La somme des diviseurs de $\displaystyle n$ est 4368
+3. Relation de Bézout possible: $\displaystyle 504 \times 1 + 420 \times (-1) = 84$
 $\\$
-4. $\displaystyle n$ n'est pas un carré parfait (exposants impairs pour 5 et 7)
+4. $\displaystyle \text{ppcm }(504, 420) = 2{\,}520$
+$\\$
+5. $\displaystyle x \equiv 11 \pmod{12}$
 
 ===
 
@@ -234,7 +259,7 @@ $\\$
     $\\$
     
     ● **Étape 1 :** Vérifier l'existence de solutions
-        $\qquad$• $\displaystyle \text{pgcd}(5, 11) = 1$ et $\displaystyle 1 \mid 3$ ✓
+        $\qquad$• $\displaystyle \text{pgcd }(5, 11) = 1$ et $\displaystyle 1 \mid 3$ ✓
         $\\$
         $\qquad$• Il y a exactement 1 solution modulo 11
     $\\$
@@ -248,7 +273,15 @@ $\\$
     $\\$
     
     ● **Étape 3 :** Résoudre l'équation
-        $\qquad$• $\displaystyle x \equiv 9 \times 3 \equiv 27 \equiv 5 \pmod{11}$
+        $\qquad$• On multiplie les deux membres par l'inverse de 5 : $\displaystyle x \equiv 5^{-1} \times 3 \pmod{11}$
+        $\\$
+        $\qquad$• $\displaystyle x \equiv 9 \times 3 \pmod{11}$
+        $\\$
+        $\qquad$• $\displaystyle x \equiv 27 \pmod{11}$
+        $\\$
+        $\qquad$• On réduit 27 modulo 11 : $\displaystyle 27 = 11 \times 2 + 5$
+        $\\$
+        $\qquad$• Donc $\displaystyle x \equiv 5 \pmod{11}$
     $\\$
 
 **Question 3 : Résoudre $\displaystyle 6x \equiv 9 \pmod{15}$**
@@ -257,7 +290,7 @@ $\\$
     $\\$
     
     ● **Étape 1 :** Calculer le PGCD
-        $\qquad$• $\displaystyle d = \text{pgcd}(6, 15) = 3$
+        $\qquad$• $\displaystyle d = \text{pgcd }(6, 15) = 3$
         $\\$
         $\qquad$• $\displaystyle 3 \mid 9$ ✓, donc il y a 3 solutions modulo 15
     $\\$
@@ -267,11 +300,19 @@ $\\$
     $\\$
     
     ● **Étape 3 :** Résoudre la nouvelle équation
-        $\qquad$• $\displaystyle \text{pgcd}(2, 5) = 1$, on cherche l'inverse de 2 modulo 5
+        $\qquad$• $\displaystyle \text{pgcd }(2, 5) = 1$, on cherche l'inverse de 2 modulo 5
         $\\$
         $\qquad$• $\displaystyle 2 \times 3 = 6 \equiv 1 \pmod{5}$, donc $\displaystyle 2^{-1} \equiv 3 \pmod{5}$
         $\\$
-        $\qquad$• $\displaystyle x \equiv 3 \times 3 \equiv 9 \equiv 4 \pmod{5}$
+        $\qquad$• On multiplie par l'inverse : $\displaystyle x \equiv 2^{-1} \times 3 \pmod{5}$
+        $\\$
+        $\qquad$• $\displaystyle x \equiv 3 \times 3 \pmod{5}$
+        $\\$
+        $\qquad$• $\displaystyle x \equiv 9 \pmod{5}$
+        $\\$
+        $\qquad$• On réduit 9 modulo 5 : $\displaystyle 9 = 5 \times 1 + 4$
+        $\\$
+        $\qquad$• Donc $\displaystyle x \equiv 4 \pmod{5}$
     $\\$
     
     ● **Étape 4 :** Donner toutes les solutions
@@ -302,7 +343,7 @@ $\\$
     $\\$
     
     ● **Étape 4 :** Conclure
-        $\qquad$• Comme $\displaystyle \text{pgcd}(2, 3) = 1$ et $\displaystyle 2 \mid (n^3-n)$ et $\displaystyle 3 \mid (n^3-n)$
+        $\qquad$• Comme $\displaystyle \text{pgcd }(2, 3) = 1$ et $\displaystyle 2 \mid (n^3-n)$ et $\displaystyle 3 \mid (n^3-n)$
         $\\$
         $\qquad$• Alors $\displaystyle 6 \mid (n^3-n)$
     $\\$
@@ -318,734 +359,1032 @@ $\\$
 
 ===
 
-=== Arithmétique - Applications Avancées
-Difficulté: hard
+=== Arithmétique - Identité de Bézout
+Difficulté: medium
 
-Énoncé: On considère le système de congruences :
-$$\begin{cases}
-x \equiv 2 \pmod{3} \\
-x \equiv 3 \pmod{5} \\
-x \equiv 2 \pmod{7}
-\end{cases}$$
+Énoncé: Chaque question est indépendante et porte sur l'identité de Bézout, les applications modulaires et des propriétés arithmétiques.
 $\\$
-**Question 1 : Vérifier que le système a une solution**
+**Question 1 : Trouver $\displaystyle (u, v)$ tels que $\displaystyle 84u + 30v = \text{pgcd }(84, 30)$**
 
-**Question 2 : Résoudre le système par la méthode chinoise**
+**Question 2 : Trouver $\displaystyle (u, v)$ tels que $\displaystyle 252u + 105v = \text{pgcd }(252, 105)$**
 
-**Question 3 : Donner la solution générale**
+**Question 3 : Calculer $\displaystyle \text{ppcm }(84, 30)$ à partir de l'identité de Bézout**
 
-**Question 4 : Calculer le plus petit entier positif solution**
+**Question 4 : Déterminer l'inverse de $\displaystyle 15$ modulo $\displaystyle 28$**
+
+**Question 5 : Déterminer l'inverse de $\displaystyle 7$ modulo $\displaystyle 26$ à l'aide de Bézout**
+
+**Question 6 : Théorème de Gauss — prouver que si $\displaystyle \text{pgcd }(a,b)=1$ et $\displaystyle a \mid bc$ alors $\displaystyle a \mid c$**
+
+**Question 7 : Trouver $\displaystyle (u, v)$ tels que $\displaystyle 1071u + 462v = \text{pgcd }(1071, 462)$**
 
 Étapes:
 
-**Question 1 : Vérifier que le système a une solution**
+**Question 1 : Trouver $\displaystyle (u, v)$ tels que $\displaystyle 84u + 30v = \text{pgcd }(84, 30)$**
 
-    ● **Méthode :** Vérification de la compatibilité
-    $\\$
-    
-    ● **Étape 1 :** Vérifier les conditions de compatibilité
-        $\qquad$• Les modules 3, 5, 7 sont premiers entre eux deux à deux
-        $\\$
-        $\qquad$• $\text{pgcd}(3, 5) = 1$, $\text{pgcd}(3, 7) = 1$, $\text{pgcd}(5, 7) = 1$
-        $\\$
-        $\qquad$• Donc le système a une solution unique modulo $3 \times 5 \times 7 = 105$
-    $\\$
-
-**Question 2 : Résoudre le système par la méthode chinoise**
-
-    ● **Méthode :** Théorème des restes chinois
-    $\\$
-    
-    ● **Étape 1 :** Calculer les coefficients de Bézout
-        $\qquad$• Pour $N_1 = 35$ et $n_1 = 3$ : $35 \times 2 + 3 \times (-23) = 1$
-        $\\$
-        $\qquad$• Pour $N_2 = 21$ et $n_2 = 5$ : $21 \times 1 + 5 \times (-4) = 1$
-        $\\$
-        $\qquad$• Pour $N_3 = 15$ et $n_3 = 7$ : $15 \times 1 + 7 \times (-2) = 1$
-    $\\$
-    
-    ● **Étape 2 :** Calculer la solution
-        $\qquad$• $x = 2 \times 35 \times 2 + 3 \times 21 \times 1 + 2 \times 15 \times 1$
-        $\\$
-        $\qquad$• $x = 140 + 63 + 30 = 233$
-        $\\$
-        $\qquad$• $x \equiv 233 \equiv 23 \pmod{105}$
-    $\\$
-
-**Question 3 : Donner la solution générale**
-
-    ● **Méthode :** Expression de la solution générale
-    $\\$
-    
-    ● **Étape 1 :** La solution générale est
-        $\qquad$• $x \equiv 23 \pmod{105}$
-        $\\$
-        $\qquad$• C'est-à-dire $x = 23 + 105k$ pour tout $k \in \mathbb{Z}$
-    $\\$
-
-**Question 4 : Calculer le plus petit entier positif solution**
-
-    ● **Méthode :** Calcul direct
-    $\\$
-    
-    ● **Étape 1 :** Vérifier que 23 est solution
-        $\qquad$• $23 \equiv 2 \pmod{3}$ ✓ ($23 = 3 \times 7 + 2$)
-        $\\$
-        $\qquad$• $23 \equiv 3 \pmod{5}$ ✓ ($23 = 5 \times 4 + 3$)
-        $\\$
-        $\qquad$• $23 \equiv 2 \pmod{7}$ ✓ ($23 = 7 \times 3 + 2$)
-    $\\$
-    
-    ● **Étape 2 :** Conclusion
-        $\qquad$• 23 est la plus petite solution positive
-    $\\$
-
-Solution:
-1. Le système a une solution unique modulo 105
-$\\$
-2. $\displaystyle x \equiv 23 \pmod{105}$
-$\\$
-3. Solution générale : $\displaystyle x = 23 + 105k$ pour tout $\displaystyle k \in \mathbb{Z}$
-$\\$
-4. La plus petite solution positive est 23
-
-===
-
-=== Arithmétique - Cryptographie RSA
-Difficulté: hard
-
-Énoncé: On considère un système RSA simplifié avec $p = 3$, $q = 11$ et $e = 3$.
-$\\$
-**Question 1 : Calculer $n$ et $\varphi(n)$**
-
-**Question 2 : Vérifier que $e$ est bien choisi**
-
-**Question 3 : Calculer la clé privée $d$**
-
-**Question 4 : Chiffrer le message $m = 4$**
-
-**Question 5 : Déchiffrer le message chiffré**
-
-Étapes:
-
-**Question 1 : Calculer $n$ et $\varphi(n)$**
-
-    ● **Méthode :** Formules de base RSA
-    $\\$
-    
-    ● **Étape 1 :** Calculer $n$
-        $\qquad$• $n = p \times q = 3 \times 11 = 33$
-    $\\$
-    
-    ● **Étape 2 :** Calculer $\varphi(n)$
-        $\qquad$• $\varphi(n) = (p-1)(q-1) = (3-1)(11-1) = 2 \times 10 = 20$
-    $\\$
-
-**Question 2 : Vérifier que $e$ est bien choisi**
-
-    ● **Méthode :** Vérification de la condition d'inversibilité
-    $\\$
-    
-    ● **Étape 1 :** Calculer le PGCD
-        $\qquad$• $\text{pgcd}(e, \varphi(n)) = \text{pgcd}(3, 20) = 1$
-        $\\$
-        $\qquad$• Donc $e$ est inversible modulo $\varphi(n)$ ✓
-    $\\$
-
-**Question 3 : Calculer la clé privée $d$**
-
-    ● **Méthode :** Algorithme d'Euclide étendu
+    ● **Méthode :** Algorithme d'Euclide puis remontée de Bézout
     $\\$
     
     ● **Étape 1 :** Appliquer l'algorithme d'Euclide
-        $\qquad$• $20 = 3 \times 6 + 2$
+        $\qquad$• $\displaystyle 84 = 30 \times 2 + 24$ (reste : 24)
         $\\$
-        $\qquad$• $3 = 2 \times 1 + 1$
+        $\qquad$• $\displaystyle 30 = 24 \times 1 + 6$ (reste : 6)
         $\\$
-        $\qquad$• $2 = 1 \times 2 + 0$
+        $\qquad$• $\displaystyle 24 = 6 \times 4 + 0$ (reste : 0)
         $\\$
-        $\qquad$• Donc $\text{pgcd}(3, 20) = 1$
+        $\qquad$• Donc $\displaystyle \text{pgcd }(84, 30) = 6$ (dernier reste non nul)
     $\\$
     
-    ● **Étape 2 :** Remontée de Bézout
-        $\qquad$• $1 = 3 - 2 \times 1$
+    ● **Étape 2 :** Exprimer chaque reste en fonction des nombres précédents
+        $\qquad$• $\displaystyle 24 = 84 - 30 \times 2$
         $\\$
-        $\qquad$• $1 = 3 - (20 - 3 \times 6) \times 1$
+        $\qquad$• $\displaystyle 6 = 30 - 24 \times 1$
+    $\\$
+    
+    ● **Étape 3 :** Remontée de Bézout
+        $\qquad$• Partir de : $\displaystyle 6 = 30 - 24 \times 1$
         $\\$
-        $\qquad$• $1 = 3 \times 7 - 20 \times 1$
+        $\qquad$• Remplacer 24 : $\displaystyle 6 = 30 - (84 - 30 \times 2) \times 1$
         $\\$
-        $\qquad$• Donc $3 \times 7 \equiv 1 \pmod{20}$
+        $\qquad$• Développer : $\displaystyle 6 = 30 - 84 + 30 \times 2$
         $\\$
-        $\qquad$• Donc $d = 7$
+        $\qquad$• Simplifier : $\displaystyle 6 = 30 \times 3 - 84 \times 1$
+        $\\$
+        $\qquad$• Réorganiser : $\displaystyle 6 = 84 \times (-1) + 30 \times 3$
+    $\\$
+    
+    ● **Conclusion :** $\displaystyle u = -1$, $\displaystyle v = 3$
     $\\$
 
-**Question 4 : Chiffrer le message $m = 4$**
+**Question 2 : Trouver $\displaystyle (u, v)$ tels que $\displaystyle 252u + 105v = \text{pgcd }(252, 105)$**
 
-    ● **Méthode :** Formule de chiffrement RSA
+    ● **Méthode :** Algorithme d'Euclide puis remontée de Bézout
     $\\$
     
-    ● **Étape 1 :** Appliquer la formule
-        $\qquad$• $c \equiv m^e \pmod{n}$
+    ● **Étape 1 :** Appliquer l'algorithme d'Euclide
+        $\qquad$• $\displaystyle 252 = 105 \times 2 + 42$ (reste : 42)
         $\\$
-        $\qquad$• $c \equiv 4^3 \pmod{33}$
+        $\qquad$• $\displaystyle 105 = 42 \times 2 + 21$ (reste : 21)
+        $\\$
+        $\qquad$• $\displaystyle 42 = 21 \times 2 + 0$ (reste : 0)
+        $\\$
+        $\qquad$• Donc $\displaystyle \text{pgcd }(252, 105) = 21$ (dernier reste non nul)
     $\\$
     
-    ● **Étape 2 :** Calculer $4^3 \bmod 33$
-        $\qquad$• $4^3 = 64$
+    ● **Étape 2 :** Exprimer chaque reste en fonction des nombres précédents
+        $\qquad$• $\displaystyle 42 = 252 - 105 \times 2$
         $\\$
-        $\qquad$• $64 = 33 \times 1 + 31$
+        $\qquad$• $\displaystyle 21 = 105 - 42 \times 2$
+    $\\$
+    
+    ● **Étape 3 :** Remontée de Bézout
+        $\qquad$• Partir de : $\displaystyle 21 = 105 - 42 \times 2$
         $\\$
-        $\qquad$• Donc $c \equiv 31 \pmod{33}$
+        $\qquad$• Remplacer 42 : $\displaystyle 21 = 105 - (252 - 105 \times 2) \times 2$
+        $\\$
+        $\qquad$• Développer : $\displaystyle 21 = 105 - 252 \times 2 + 105 \times 4$
+        $\\$
+        $\qquad$• Simplifier : $\displaystyle 21 = 105 \times 5 - 252 \times 2$
+        $\\$
+        $\qquad$• Réorganiser : $\displaystyle 21 = 252 \times (-2) + 105 \times 5$
+    $\\$
+    
+    ● **Conclusion :** $\displaystyle u = -2$, $\displaystyle v = 5$
     $\\$
 
-**Question 5 : Déchiffrer le message chiffré**
+**Question 3 : Calculer $\displaystyle \text{ppcm }(84, 30)$ à partir de l'identité de Bézout**
 
-    ● **Méthode :** Formule de déchiffrement RSA
+    ● **Méthode :** Utilisation de la relation fondamentale PGCD × PPCM = a × b
     $\\$
     
-    ● **Étape 1 :** Appliquer la formule
-        $\qquad$• $m \equiv c^d \pmod{n}$
+    ● **Étape 1 :** Rappel des valeurs connues
+        $\qquad$• $\displaystyle \text{pgcd }(84, 30) = 6$ (d'après la question 1)
         $\\$
-        $\qquad$• $m \equiv 31^7 \pmod{33}$
+        $\qquad$• $\displaystyle a = 84$ et $\displaystyle b = 30$
     $\\$
     
-    ● **Étape 2 :** Calculer par carrés successifs
-        $\qquad$• $31^1 \equiv 31 \pmod{33}$
+    ● **Étape 2 :** Application de la formule
+        $\qquad$• Relation fondamentale : $\displaystyle \text{pgcd }(a,b) \times \text{ppcm }(a,b) = a \times b$
         $\\$
-        $\qquad$• $31^2 \equiv 961 \equiv 4 \pmod{33}$
+        $\qquad$• Donc : $\displaystyle 6 \times \text{ppcm }(84,30) = 84 \times 30$
+    $\\$
+    
+    ● **Étape 3 :** Calcul
+        $\qquad$• $\displaystyle 6 \times \text{ppcm }(84,30) = 2520$
         $\\$
-        $\qquad$• $31^4 \equiv 4^2 \equiv 16 \pmod{33}$
+        $\qquad$• $\displaystyle \text{ppcm }(84,30) = \frac{2520}{6} = 420$
+    $\\$
+    
+    ● **Étape 4 :** Vérification
+        $\qquad$• $\displaystyle 420 = 84 \times 5 = 30 \times 14$ ✓
         $\\$
-        $\qquad$• $31^7 = 31^4 \times 31^2 \times 31^1 \equiv 16 \times 4 \times 31 \equiv 64 \times 31 \equiv 31 \times 31 \equiv 4 \pmod{33}$
+        $\qquad$• 420 est bien un multiple commun de 84 et 30
+    $\\$
+
+**Question 4 : Déterminer l'inverse de $\displaystyle 15$ modulo $\displaystyle 28$**
+
+    ● **Méthode :** Utilisation de l'identité de Bézout pour trouver l'inverse modulaire
+    $\\$
+    
+    ● **Étape 1 :** Vérifier l'inversibilité
+        $\qquad$• $\displaystyle \text{pgcd }(15, 28) = 1$ (car 15 et 28 sont premiers entre eux)
+        $\\$
+        $\qquad$• Donc 15 est inversible modulo 28
+    $\\$
+    
+    ● **Étape 2 :** Appliquer l'algorithme d'Euclide étendu
+        $\qquad$• $\displaystyle 28 = 15 \times 1 + 13$ (reste : 13)
+        $\\$
+        $\qquad$• $\displaystyle 15 = 13 \times 1 + 2$ (reste : 2)
+        $\\$
+        $\qquad$• $\displaystyle 13 = 2 \times 6 + 1$ (reste : 1)
+        $\\$
+        $\qquad$• $\displaystyle 2 = 1 \times 2 + 0$ (reste : 0)
+    $\\$
+    
+    ● **Étape 3 :** Remontée de Bézout
+        $\qquad$• $\displaystyle 1 = 13 - 2 \times 6$
+        $\\$
+        $\qquad$• $\displaystyle 1 = 13 - (15 - 13 \times 1) \times 6 = 13 \times 7 - 15 \times 6$
+        $\\$
+        $\qquad$• $\displaystyle 1 = (28 - 15 \times 1) \times 7 - 15 \times 6 = 28 \times 7 - 15 \times 13$
+        $\\$
+        $\qquad$• Donc : $\displaystyle 15 \times (-13) + 28 \times 7 = 1$
+    $\\$
+    
+    ● **Étape 4 :** Déduire l'inverse
+        $\qquad$• De $\displaystyle 15 \times (-13) \equiv 1 \pmod{28}$, on obtient $\displaystyle 15^{-1} \equiv -13 \pmod{28}$
+        $\\$
+        $\qquad$• Réduction : $\displaystyle -13 \equiv 15 \pmod{28}$ (car $\displaystyle -13 + 28 = 15$)
+        $\\$
+        $\qquad$• Donc $\displaystyle 15^{-1} \equiv 15 \pmod{28}$
+    $\\$
+    
+    ● **Étape 5 :** Vérification
+        $\qquad$• $\displaystyle 15 \times 15 = 225 = 28 \times 8 + 1 \equiv 1 \pmod{28}$ ✓
+    $\\$
+
+**Question 5 : Déterminer l'inverse de $\displaystyle 7$ modulo $\displaystyle 26$ à l'aide de Bézout**
+
+    ● **Méthode :** Utilisation de l'identité de Bézout pour trouver l'inverse modulaire
+    $\\$
+    
+    ● **Étape 1 :** Vérifier l'inversibilité
+        $\qquad$• $\displaystyle \text{pgcd }(7, 26) = 1$ (car 7 et 26 sont premiers entre eux)
+        $\\$
+        $\qquad$• Donc 7 est inversible modulo 26
+    $\\$
+    
+    ● **Étape 2 :** Appliquer l'algorithme d'Euclide étendu
+        $\qquad$• $\displaystyle 26 = 7 \times 3 + 5$ (reste : 5)
+        $\\$
+        $\qquad$• $\displaystyle 7 = 5 \times 1 + 2$ (reste : 2)
+        $\\$
+        $\qquad$• $\displaystyle 5 = 2 \times 2 + 1$ (reste : 1)
+        $\\$
+        $\qquad$• $\displaystyle 2 = 1 \times 2 + 0$ (reste : 0)
+    $\\$
+    
+    ● **Étape 3 :** Remontée de Bézout
+        $\qquad$• $\displaystyle 1 = 5 - 2 \times 2$
+        $\\$
+        $\qquad$• $\displaystyle 1 = 5 - (7 - 5 \times 1) \times 2 = 5 \times 3 - 7 \times 2$
+        $\\$
+        $\qquad$• $\displaystyle 1 = (26 - 7 \times 3) \times 3 - 7 \times 2 = 26 \times 3 - 7 \times 11$
+        $\\$
+        $\qquad$• Donc : $\displaystyle 7 \times (-11) + 26 \times 3 = 1$
+    $\\$
+    
+    ● **Étape 4 :** Déduire l'inverse
+        $\qquad$• De $\displaystyle 7 \times (-11) \equiv 1 \pmod{26}$, on obtient $\displaystyle 7^{-1} \equiv -11 \pmod{26}$
+        $\\$
+        $\qquad$• Réduction : $\displaystyle -11 \equiv 15 \pmod{26}$ (car $\displaystyle -11 + 26 = 15$)
+        $\\$
+        $\qquad$• Donc $\displaystyle 7^{-1} \equiv 15 \pmod{26}$
+    $\\$
+    
+    ● **Étape 5 :** Vérification
+        $\qquad$• $\displaystyle 7 \times 15 = 105 = 26 \times 4 + 1 \equiv 1 \pmod{26}$ ✓
+    $\\$
+
+**Question 6 : Application de Bézout (théorème de Gauss)**
+
+    ● **Énoncé :** Si $\displaystyle \text{pgcd }(a,b)=1$ et $\displaystyle a\mid bc$, alors $\displaystyle a\mid c$.
+    $\\$
+    
+    ● **Méthode :** Utiliser l'identité de Bézout puis la stabilité de la divisibilité par somme et produit.
+    $\\$
+    
+    ● **Étape 1 :** Hypothèses
+        $\qquad$• $\displaystyle \text{pgcd }(a,b)=1$ (a et b sont premiers entre eux)
+        $\\$
+        $\qquad$• $\displaystyle a\mid bc$ (a divise le produit $\displaystyle bc$)
+    $\\$
+    
+    ● **Étape 2 :** Identité de Bézout
+        $\qquad$• Il existe $\displaystyle u,v\in\mathbb{Z}$ tels que $\displaystyle au+bv=1$ (par Bézout puisque $\displaystyle \text{pgcd }(a,b)=1$)
+    $\\$
+    
+    ● **Étape 3 :** Multiplication par $\displaystyle c$
+        $\qquad$• $\displaystyle c(au+bv)=c \Rightarrow acu+bcv=c$
+    $\\$
+    
+    ● **Étape 4 :** Divisibilités utiles
+        $\qquad$• $\displaystyle a\mid acu$ (puisque $\displaystyle acu=a\cdot(cu)$)
+        $\\$
+        $\qquad$• De $\displaystyle a\mid bc$ on déduit $\displaystyle a\mid bcv$ (en multipliant par $\displaystyle v$)
+    $\\$
+    
+    ● **Étape 5 :** Conclusion
+        $\qquad$• Si $\displaystyle a\mid X$ et $\displaystyle a\mid Y$, alors $\displaystyle a\mid (X+Y)$; ici $\displaystyle X=acu$, $\displaystyle Y=bcv$
+        $\\$
+        $\qquad$• Donc $\displaystyle a\mid (acu+bcv)=c$; ainsi $\displaystyle a\mid c$ ✓
+    $\\$
+
+**Question 7 : Trouver $\displaystyle (u, v)$ tels que $\displaystyle 1071u + 462v = \text{pgcd }(1071, 462)$**
+
+    ● **Méthode :** Algorithme d'Euclide puis remontée de Bézout
+    $\\$
+    
+    ● **Étape 1 :** Appliquer l'algorithme d'Euclide
+        $\qquad$• $\displaystyle 1071 = 462 \times 2 + 147$ (reste : 147)
+        $\\$
+        $\qquad$• $\displaystyle 462 = 147 \times 3 + 21$ (reste : 21)
+        $\\$
+        $\qquad$• $\displaystyle 147 = 21 \times 7 + 0$ (reste : 0)
+        $\\$
+        $\qquad$• Donc $\displaystyle \text{pgcd }(1071, 462) = 21$ (dernier reste non nul)
+    $\\$
+    
+    ● **Étape 2 :** Exprimer chaque reste en fonction des nombres précédents
+        $\qquad$• $\displaystyle 147 = 1071 - 462 \times 2$
+        $\\$
+        $\qquad$• $\displaystyle 21 = 462 - 147 \times 3$
+    $\\$
+    
+    ● **Étape 3 :** Remontée de Bézout
+        $\qquad$• Partir de : $\displaystyle 21 = 462 - 147 \times 3$
+        $\\$
+        $\qquad$• Remplacer 147 : $\displaystyle 21 = 462 - (1071 - 462 \times 2) \times 3$
+        $\\$
+        $\qquad$• Développer : $\displaystyle 21 = 462 - 1071 \times 3 + 462 \times 6$
+        $\\$
+        $\qquad$• Simplifier : $\displaystyle 21 = 462 \times 7 - 1071 \times 3$
+        $\\$
+        $\qquad$• Réorganiser : $\displaystyle 21 = 1071 \times (-3) + 462 \times 7$
+    $\\$
+    
+    ● **Étape 4 :** Vérification
+        $\qquad$• $\displaystyle 1071 \times (-3) + 462 \times 7 = -3213 + 3234 = 21$ ✓
+    $\\$
+    
+    ● **Conclusion :** $\displaystyle u = -3$, $\displaystyle v = 7$
     $\\$
 
 Solution:
-1. $\displaystyle n = 33$ et $\displaystyle \varphi(n) = 20$
+1. $\displaystyle u = -1$, $\displaystyle v = 3$
 $\\$
-2. $\displaystyle e = 3$ est bien choisi ($\displaystyle \text{pgcd}(3, 20) = 1$)
+2. $\displaystyle u = -2$, $\displaystyle v = 5$
 $\\$
-3. $\displaystyle d = 7$ (clé privée)
+3. $\displaystyle \text{ppcm }(84, 30) = 420$
 $\\$
-4. Le message $\displaystyle m = 4$ est chiffré en $\displaystyle c = 31$
+4. $\displaystyle 15^{-1} \equiv 15 \pmod{28}$
 $\\$
-5. Le déchiffrement de $\displaystyle c = 31$ donne bien $\displaystyle m = 4$ ✓
+5. $\displaystyle 7^{-1} \equiv 15 \pmod{26}$
+$\\$
+6. Démontré ci-dessus (application directe de Bézout)
+$\\$
+7. $\displaystyle u = -3$, $\displaystyle v = 7$
 
 ===
 
-=== Arithmétique - Théorème de Fermat et Applications
+=== Arithmétique - Nombres Premiers
 Difficulté: medium
 
-Énoncé: On considère les entiers $a = 7$ et $p = 11$ (nombre premier).
+Énoncé: On considère les entiers $\displaystyle n = 2023$ et $\displaystyle p = 97$.
 $\\$
-**Question 1 : Vérifier le petit théorème de Fermat**
+**Question 1 : Vérifier que 97 est un nombre premier**
 
-**Question 2 : Calculer $7^{100} \bmod 11$**
+**Question 2 : Décomposer 2023 en facteurs premiers**
 
-**Question 3 : Trouver l'inverse de 7 modulo 11**
+**Question 3 : Déterminer le nombre de diviseurs de 2023**
 
-**Question 4 : Résoudre $7x \equiv 5 \pmod{11}$**
+**Question 4 : Montrer que si $\displaystyle n$ est composé, alors $\displaystyle n$ admet un diviseur premier $\displaystyle \leq \sqrt{n}$**
+
+**Question 5 : Déterminer si 2023 est un carré parfait**
 
 Étapes:
 
-**Question 1 : Vérifier le petit théorème de Fermat**
+**Question 1 : Vérifier que 97 est un nombre premier**
 
-    ● **Méthode :** Application directe du théorème
+    ● **Méthode :** Test de primalité par division successive
     $\\$
     
-    ● **Étape 1 :** Vérifier les conditions
-        $\qquad$• $p = 11$ est premier ✓
+    ● **Étape 1 :** Calculer la racine carrée
+        $\qquad$• $\displaystyle \sqrt{97} \approx 9{,}85$
         $\\$
-        $\qquad$• $\text{pgcd}(7, 11) = 1$ ✓
+        $\qquad$• Il suffit de tester la divisibilité par les nombres premiers $\displaystyle \leq 9$ : 2, 3, 5, 7
     $\\$
     
-    ● **Étape 2 :** Appliquer le théorème
-        $\qquad$• $7^{11-1} \equiv 1 \pmod{11}$
+    ● **Étape 2 :** Tests de divisibilité
+        $\qquad$• 97 est impair → non divisible par 2 ✓
         $\\$
-        $\qquad$• $7^{10} \equiv 1 \pmod{11}$
-    $\\$
-    
-    ● **Étape 3 :** Vérification par calcul
-        $\qquad$• $7^2 = 49 \equiv 5 \pmod{11}$
+        $\qquad$• $\displaystyle 9 + 7 = 16$ non divisible par 3 → non divisible par 3 ✓
         $\\$
-        $\qquad$• $7^4 \equiv 5^2 = 25 \equiv 3 \pmod{11}$
+        $\qquad$• 97 ne se termine pas par 0 ou 5 → non divisible par 5 ✓
         $\\$
-        $\qquad$• $7^8 \equiv 3^2 = 9 \pmod{11}$
-        $\\$
-        $\qquad$• $7^{10} = 7^8 \times 7^2 \equiv 9 \times 5 = 45 \equiv 1 \pmod{11}$ ✓
-    $\\$
-
-**Question 2 : Calculer $7^{100} \bmod 11$**
-
-    ● **Méthode :** Utilisation de la périodicité
-    $\\$
-    
-    ● **Étape 1 :** Utiliser le résultat précédent
-        $\qquad$• $7^{10} \equiv 1 \pmod{11}$
-        $\\$
-        $\qquad$• $100 = 10 \times 10$
-        $\\$
-        $\qquad$• $7^{100} = (7^{10})^{10} \equiv 1^{10} = 1 \pmod{11}$
-    $\\$
-
-**Question 3 : Trouver l'inverse de 7 modulo 11**
-
-    ● **Méthode :** Utilisation du théorème de Fermat
-    $\\$
-    
-    ● **Étape 1 :** Appliquer la formule
-        $\qquad$• $7^{10} \equiv 1 \pmod{11}$
-        $\\$
-        $\qquad$• $7 \times 7^9 \equiv 1 \pmod{11}$
-        $\\$
-        $\qquad$• Donc $7^{-1} \equiv 7^9 \pmod{11}$
-    $\\$
-    
-    ● **Étape 2 :** Calculer $7^9 \bmod 11$
-        $\qquad$• $7^9 = 7^8 \times 7^1 \equiv 9 \times 7 = 63 \equiv 8 \pmod{11}$
-        $\\$
-        $\qquad$• Vérification : $7 \times 8 = 56 \equiv 1 \pmod{11}$ ✓
-    $\\$
-
-**Question 4 : Résoudre $7x \equiv 5 \pmod{11}$**
-
-    ● **Méthode :** Multiplication par l'inverse
-    $\\$
-    
-    ● **Étape 1 :** Multiplier par l'inverse de 7
-        $\qquad$• $x \equiv 8 \times 5 \equiv 40 \equiv 7 \pmod{11}$
-    $\\$
-    
-    ● **Étape 2 :** Vérification
-        $\qquad$• $7 \times 7 = 49 \equiv 5 \pmod{11}$ ✓
-    $\\$
-
-Solution:
-1. $\displaystyle 7^{10} \equiv 1 \pmod{11}$ (petit théorème de Fermat vérifié)
-$\\$
-2. $\displaystyle 7^{100} \equiv 1 \pmod{11}$
-$\\$
-3. L'inverse de 7 modulo 11 est 8
-$\\$
-4. $\displaystyle x \equiv 7 \pmod{11}$
-
-===
-
-=== Arithmétique - Nombres de Mersenne et Fermat
-Difficulté: hard
-
-Énoncé: On considère les nombres de Mersenne $M_p = 2^p - 1$ et de Fermat $F_n = 2^{2^n} + 1$.
-$\\$
-**Question 1 : Vérifier que $M_3 = 7$ est premier**
-
-**Question 2 : Vérifier que $M_4 = 15$ n'est pas premier**
-
-**Question 3 : Calculer $F_0$, $F_1$, $F_2$ et $F_3$**
-
-**Question 4 : Montrer que si $n > 1$ et $M_n$ est premier, alors $n$ est premier**
-
-Étapes:
-
-**Question 1 : Vérifier que $M_3 = 7$ est premier**
-
-    ● **Méthode :** Test de primalité
-    $\\$
-    
-    ● **Étape 1 :** Calculer $M_3$
-        $\qquad$• $M_3 = 2^3 - 1 = 8 - 1 = 7$
-    $\\$
-    
-    ● **Étape 2 :** Tester la primalité
-        $\qquad$• $\sqrt{7} \approx 2{,}65$, on teste les diviseurs premiers $\leq 2$ : 2
-        $\\$
-        $\qquad$• $7$ est impair, donc non divisible par 2 ✓
-        $\\$
-        $\qquad$• Donc $M_3 = 7$ est premier
-    $\\$
-
-**Question 2 : Vérifier que $M_4 = 15$ n'est pas premier**
-
-    ● **Méthode :** Factorisation
-    $\\$
-    
-    ● **Étape 1 :** Calculer $M_4$
-        $\qquad$• $M_4 = 2^4 - 1 = 16 - 1 = 15$
-    $\\$
-    
-    ● **Étape 2 :** Factoriser
-        $\qquad$• $15 = 3 \times 5$
-        $\\$
-        $\qquad$• Donc $M_4 = 15$ n'est pas premier
-    $\\$
-
-**Question 3 : Calculer $F_0$, $F_1$, $F_2$ et $F_3$**
-
-    ● **Méthode :** Calcul direct
-    $\\$
-    
-    ● **Étape 1 :** Calculer $F_0$
-        $\qquad$• $F_0 = 2^{2^0} + 1 = 2^1 + 1 = 3$
-    $\\$
-    
-    ● **Étape 2 :** Calculer $F_1$
-        $\qquad$• $F_1 = 2^{2^1} + 1 = 2^2 + 1 = 5$
-    $\\$
-    
-    ● **Étape 3 :** Calculer $F_2$
-        $\qquad$• $F_2 = 2^{2^2} + 1 = 2^4 + 1 = 17$
-    $\\$
-    
-    ● **Étape 4 :** Calculer $F_3$
-        $\qquad$• $F_3 = 2^{2^3} + 1 = 2^8 + 1 = 256 + 1 = 257$
-    $\\$
-
-**Question 4 : Montrer que si $n > 1$ et $M_n$ est premier, alors $n$ est premier**
-
-    ● **Méthode :** Preuve par contraposée
-    $\\$
-    
-    ● **Étape 1 :** Supposer que $n$ n'est pas premier
-        $\qquad$• Si $n$ n'est pas premier, alors $n = ab$ avec $1 < a, b < n$
-    $\\$
-    
-    ● **Étape 2 :** Factoriser $M_n$
-        $\qquad$• $M_n = 2^n - 1 = 2^{ab} - 1$
-        $\\$
-        $\qquad$• $2^{ab} - 1 = (2^a)^b - 1 = (2^a - 1)((2^a)^{b-1} + (2^a)^{b-2} + \cdots + 2^a + 1)$
-    $\\$
-    
-    ● **Étape 3 :** Conclure
-        $\qquad$• Comme $1 < a < n$, on a $1 < 2^a - 1 < 2^n - 1$
-        $\\$
-        $\qquad$• Donc $M_n$ n'est pas premier
-        $\\$
-        $\qquad$• Par contraposée : si $M_n$ est premier, alors $n$ est premier
-    $\\$
-
-Solution:
-1. $\displaystyle M_3 = 7$ est premier
-$\\$
-2. $\displaystyle M_4 = 15 = 3 \times 5$ n'est pas premier
-$\\$
-3. $\displaystyle F_0 = 3$, $\displaystyle F_1 = 5$, $\displaystyle F_2 = 17$, $\displaystyle F_3 = 257$
-$\\$
-4. Si $\displaystyle M_n$ est premier avec $\displaystyle n > 1$, alors $\displaystyle n$ est premier
-
-===
-
-=== Arithmétique - Indicateur d'Euler et Applications
-Difficulté: hard
-
-Énoncé: On considère l'entier $n = 60$.
-$\\$
-**Question 1 : Calculer $\varphi(60)$**
-
-**Question 2 : Vérifier le théorème d'Euler pour $a = 7$**
-
-**Question 3 : Trouver tous les entiers $a$ tels que $a^{12} \equiv 1 \pmod{60}$**
-
-**Question 4 : Calculer $7^{100} \bmod 60$**
-
-Étapes:
-
-**Question 1 : Calculer $\varphi(60)$**
-
-    ● **Méthode :** Formule avec la décomposition en facteurs premiers
-    $\\$
-    
-    ● **Étape 1 :** Décomposer 60
-        $\qquad$• $60 = 2^2 \times 3 \times 5$
-    $\\$
-    
-    ● **Étape 2 :** Appliquer la formule
-        $\qquad$• $\varphi(60) = 60 \times \left(1 - \frac{1}{2}\right) \times \left(1 - \frac{1}{3}\right) \times \left(1 - \frac{1}{5}\right)$
-        $\\$
-        $\qquad$• $\varphi(60) = 60 \times \frac{1}{2} \times \frac{2}{3} \times \frac{4}{5}$
-        $\\$
-        $\qquad$• $\varphi(60) = 60 \times \frac{8}{30} = 16$
-    $\\$
-
-**Question 2 : Vérifier le théorème d'Euler pour $a = 7$**
-
-    ● **Méthode :** Application du théorème d'Euler
-    $\\$
-    
-    ● **Étape 1 :** Vérifier les conditions
-        $\qquad$• $\text{pgcd}(7, 60) = 1$ ✓
-    $\\$
-    
-    ● **Étape 2 :** Appliquer le théorème
-        $\qquad$• $7^{\varphi(60)} \equiv 1 \pmod{60}$
-        $\\$
-        $\qquad$• $7^{16} \equiv 1 \pmod{60}$
-    $\\$
-    
-    ● **Étape 3 :** Vérification par calcul
-        $\qquad$• $7^2 = 49 \equiv 49 \pmod{60}$
-        $\\$
-        $\qquad$• $7^4 \equiv 49^2 = 2401 \equiv 1 \pmod{60}$
-        $\\$
-        $\qquad$• $7^{16} = (7^4)^4 \equiv 1^4 = 1 \pmod{60}$ ✓
-    $\\$
-
-**Question 3 : Trouver tous les entiers $a$ tels que $a^{12} \equiv 1 \pmod{60}$**
-
-    ● **Méthode :** Utilisation du théorème d'Euler
-    $\\$
-    
-    ● **Étape 1 :** Analyser la condition
-        $\qquad$• Si $\text{pgcd}(a, 60) = 1$, alors $a^{16} \equiv 1 \pmod{60}$
-        $\\$
-        $\qquad$• Donc $a^{12} \equiv 1 \pmod{60}$ si $a^{4} \equiv 1 \pmod{60}$
-    $\\$
-    
-    ● **Étape 2 :** Résoudre $a^4 \equiv 1 \pmod{60}$
-        $\qquad$• Par le théorème des restes chinois, cela équivaut à :
-        $\\$
-        $\qquad$• $a^4 \equiv 1 \pmod{4}$, $a^4 \equiv 1 \pmod{3}$, $a^4 \equiv 1 \pmod{5}$
-        $\\$
-        $\qquad$• Solutions : $a \equiv \pm 1 \pmod{4, 3, 5}$
-        $\\$
-        $\qquad$• Donc $a \equiv \pm 1 \pmod{60}$
-    $\\$
-
-**Question 4 : Calculer $7^{100} \bmod 60$**
-
-    ● **Méthode :** Utilisation de la périodicité
-    $\\$
-    
-    ● **Étape 1 :** Utiliser le résultat précédent
-        $\qquad$• $7^{16} \equiv 1 \pmod{60}$
-        $\\$
-        $\qquad$• $100 = 16 \times 6 + 4$
-        $\\$
-        $\qquad$• $7^{100} = 7^{16 \times 6 + 4} = (7^{16})^6 \times 7^4 \equiv 1^6 \times 7^4 \equiv 7^4 \pmod{60}$
-    $\\$
-    
-    ● **Étape 2 :** Calculer $7^4 \bmod 60$
-        $\qquad$• $7^4 = 2401 = 60 \times 40 + 1 \equiv 1 \pmod{60}$
-    $\\$
-
-Solution:
-1. $\displaystyle \varphi(60) = 16$
-$\\$
-2. $\displaystyle 7^{16} \equiv 1 \pmod{60}$ (théorème d'Euler vérifié)
-$\\$
-3. Les entiers $\displaystyle a$ tels que $\displaystyle a^{12} \equiv 1 \pmod{60}$ sont $\displaystyle a \equiv \pm 1 \pmod{60}$
-$\\$
-4. $\displaystyle 7^{100} \equiv 1 \pmod{60}$
-
-===
-
-=== Arithmétique - Polynômes et Congruences
-Difficulté: hard
-
-Énoncé: On considère le polynôme $P(x) = x^3 - 2x^2 + 3x - 1$.
-$\\$
-**Question 1 : Résoudre $P(x) \equiv 0 \pmod{5}$**
-
-**Question 2 : Résoudre $P(x) \equiv 0 \pmod{7}$**
-
-**Question 3 : Résoudre $P(x) \equiv 0 \pmod{35}$**
-
-**Question 4 : Montrer que $P(x)$ n'a pas de racines entières**
-
-Étapes:
-
-**Question 1 : Résoudre $P(x) \equiv 0 \pmod{5}$**
-
-    ● **Méthode :** Test systématique modulo 5
-    $\\$
-    
-    ● **Étape 1 :** Tester toutes les valeurs de 0 à 4
-        $\qquad$• $P(0) = -1 \equiv 4 \pmod{5}$
-        $\\$
-        $\qquad$• $P(1) = 1 - 2 + 3 - 1 = 1 \equiv 1 \pmod{5}$
-        $\\$
-        $\qquad$• $P(2) = 8 - 8 + 6 - 1 = 5 \equiv 0 \pmod{5}$ ✓
-        $\\$
-        $\qquad$• $P(3) = 27 - 18 + 9 - 1 = 17 \equiv 2 \pmod{5}$
-        $\\$
-        $\qquad$• $P(4) = 64 - 32 + 12 - 1 = 43 \equiv 3 \pmod{5}$
-    $\\$
-
-**Question 2 : Résoudre $P(x) \equiv 0 \pmod{7}$**
-
-    ● **Méthode :** Test systématique modulo 7
-    $\\$
-    
-    ● **Étape 1 :** Tester toutes les valeurs de 0 à 6
-        $\qquad$• $P(0) = -1 \equiv 6 \pmod{7}$
-        $\\$
-        $\qquad$• $P(1) = 1 \equiv 1 \pmod{7}$
-        $\\$
-        $\qquad$• $P(2) = 5 \equiv 5 \pmod{7}$
-        $\\$
-        $\qquad$• $P(3) = 17 \equiv 3 \pmod{7}$
-        $\\$
-        $\qquad$• $P(4) = 43 \equiv 1 \pmod{7}$
-        $\\$
-        $\qquad$• $P(5) = 89 \equiv 5 \pmod{7}$
-        $\\$
-        $\qquad$• $P(6) = 161 \equiv 0 \pmod{7}$ ✓
-    $\\$
-
-**Question 3 : Résoudre $P(x) \equiv 0 \pmod{35}$**
-
-    ● **Méthode :** Théorème des restes chinois
-    $\\$
-    
-    ● **Étape 1 :** Solutions modulo 5 et 7
-        $\qquad$• Solutions modulo 5 : $x \equiv 2 \pmod{5}$
-        $\\$
-        $\qquad$• Solutions modulo 7 : $x \equiv 6 \pmod{7}$
-    $\\$
-    
-    ● **Étape 2 :** Résoudre le système
-        $\qquad$• $\begin{cases} x \equiv 2 \pmod{5} \\ x \equiv 6 \pmod{7} \end{cases}$
-        $\\$
-        $\qquad$• $x = 2 + 5k$ pour un certain $k$
-        $\\$
-        $\qquad$• $2 + 5k \equiv 6 \pmod{7}$
-        $\\$
-        $\qquad$• $5k \equiv 4 \pmod{7}$
-        $\\$
-        $\qquad$• $k \equiv 4 \times 5^{-1} \equiv 4 \times 3 \equiv 12 \equiv 5 \pmod{7}$
-        $\\$
-        $\qquad$• $k = 5 + 7m$ pour un certain $m$
-        $\\$
-        $\qquad$• $x = 2 + 5(5 + 7m) = 27 + 35m$
-        $\\$
-        $\qquad$• Donc $x \equiv 27 \pmod{35}$
-    $\\$
-
-**Question 4 : Montrer que $P(x)$ n'a pas de racines entières**
-
-    ● **Méthode :** Test des diviseurs du terme constant
-    $\\$
-    
-    ● **Étape 1 :** Identifier les candidats
-        $\qquad$• Les racines entières divisent le terme constant $-1$
-        $\\$
-        $\qquad$• Donc les seuls candidats sont $\pm 1$
-    $\\$
-    
-    ● **Étape 2 :** Tester les candidats
-        $\qquad$• $P(1) = 1 - 2 + 3 - 1 = 1 \neq 0$
-        $\\$
-        $\qquad$• $P(-1) = -1 - 2 - 3 - 1 = -7 \neq 0$
+        $\qquad$• $\displaystyle 97 = 7 \times 13 + 6$ → non divisible par 7 ✓
     $\\$
     
     ● **Étape 3 :** Conclusion
-        $\qquad$• Aucun des candidats n'est racine
+        $\qquad$• 97 n'est divisible par aucun nombre premier $\displaystyle \leq \sqrt{97}$
         $\\$
-        $\qquad$• Donc $P(x)$ n'a pas de racines entières
+        $\qquad$• Donc 97 est premier ✓
+    $\\$
+
+**Question 2 : Décomposer 2023 en facteurs premiers**
+
+    ● **Méthode :** Division successive par les nombres premiers
+    $\\$
+    
+    ● **Étape 1 :** Tests de divisibilité par les petits premiers
+        $\qquad$• 2023 est impair → non divisible par 2
+        $\\$
+        $\qquad$• $\displaystyle 2 + 0 + 2 + 3 = 7$ non divisible par 3 → non divisible par 3
+        $\\$
+        $\qquad$• 2023 ne se termine pas par 0 ou 5 → non divisible par 5
+    $\\$
+    
+    ● **Étape 2 :** Test de divisibilité par 7
+        $\qquad$• $\displaystyle 2023 = 7 \times 289$ ✓
+        $\\$
+        $\qquad$• Donc $\displaystyle 2023 = 7 \times 289$
+    $\\$
+    
+    ● **Étape 3 :** Factorisation de 289
+        $\qquad$• $\displaystyle 289 = 17 \times 17 = 17^2$ ✓
+        $\\$
+        $\qquad$• Vérification : $\displaystyle 17^2 = 289$ ✓
+    $\\$
+    
+    ● **Étape 4 :** Conclusion
+        $\qquad$• $\displaystyle 2023 = 7 \times 17^2$
+    $\\$
+
+**Question 3 : Déterminer le nombre de diviseurs de 2023**
+
+    ● **Méthode :** Utilisation de la décomposition en facteurs premiers
+    $\\$
+    
+    ● **Étape 1 :** Rappel de la décomposition
+        $\qquad$• $\displaystyle 2023 = 7^1 \times 17^2$
+    $\\$
+    
+    ● **Étape 2 :** Application de la formule
+        $\qquad$• Si $\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$
+        $\\$
+        $\qquad$• Alors le nombre de diviseurs est $\displaystyle (\alpha_1 + 1)(\alpha_2 + 1) \cdots (\alpha_k + 1)$
+    $\\$
+    
+    ● **Étape 3 :** Calcul
+        $\qquad$• Pour $\displaystyle 2023 = 7^1 \times 17^2$ :
+        $\\$
+        $\qquad$• Nombre de diviseurs = $\displaystyle (1 + 1)(2 + 1) = 2 \times 3 = 6$
+    $\\$
+    
+    ● **Étape 4 :** Vérification (liste des diviseurs)
+        $\qquad$• Diviseurs : 1, 7, 17, 17² = 289, 7×17 = 119, 7×17² = 2023
+        $\\$
+        $\qquad$• On compte bien 6 diviseurs ✓
+    $\\$
+
+**Question 4 : Montrer que si $\displaystyle n$ est composé, alors $\displaystyle n$ admet un diviseur premier $\displaystyle \leq \sqrt{n}$**
+
+    ● **Méthode :** Preuve par l'absurde
+    $\\$
+    
+    ● **Étape 1 :** Hypothèses
+        $\qquad$• $\displaystyle n$ est composé (donc $\displaystyle n = ab$ avec $\displaystyle 1 < a, b < n$)
+        $\\$
+        $\qquad$• Supposons que tous les diviseurs premiers de $\displaystyle n$ sont $\displaystyle > \sqrt{n}$
+    $\\$
+    
+    ● **Étape 2 :** Considérer la factorisation
+        $\qquad$• $\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$
+        $\\$
+        $\qquad$• Avec $\displaystyle p_i > \sqrt{n}$ pour tout $\displaystyle i$
+    $\\$
+    
+    ● **Étape 3 :** Contradiction
+        $\qquad$• $\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$
+        $\\$
+        $\qquad$• $\displaystyle n > (\sqrt{n})^{\alpha_1 + \alpha_2 + \cdots + \alpha_k}$
+        $\\$
+        $\qquad$• Comme $\displaystyle \alpha_1 + \alpha_2 + \cdots + \alpha_k \geq 2$ (car $\displaystyle n$ composé)
+        $\\$
+        $\qquad$• On a $\displaystyle n > (\sqrt{n})^2 = n$, ce qui est impossible
+    $\\$
+    
+    ● **Étape 4 :** Conclusion
+        $\qquad$• Notre supposition est fausse
+        $\\$
+        $\qquad$• Donc $\displaystyle n$ admet au moins un diviseur premier $\displaystyle \leq \sqrt{n}$ ✓
+    $\\$
+
+**Question 5 : Déterminer si 2023 est un carré parfait**
+
+    ● **Méthode :** Utilisation de la décomposition en facteurs premiers
+    $\\$
+    
+    ● **Étape 1 :** Rappel de la décomposition
+        $\qquad$• D'après la question 2 : $\displaystyle 2023 = 7 \times 17^2$
+    $\\$
+    
+    ● **Étape 2 :** Condition pour qu'un nombre soit un carré parfait
+        $\qquad$• Un nombre est un carré parfait ssi tous les exposants dans sa décomposition sont pairs
+        $\\$
+        $\qquad$• Ici : $\displaystyle 2023 = 7^1 \times 17^2$
+    $\\$
+    
+    ● **Étape 3 :** Analyse des exposants
+        $\qquad$• Exposant de 7 : $\displaystyle 1$ (impair)
+        $\\$
+        $\qquad$• Exposant de 17 : $\displaystyle 2$ (pair)
+        $\\$
+        $\qquad$• Il y a au moins un exposant impair
+    $\\$
+    
+    ● **Étape 4 :** Conclusion
+        $\qquad$• 2023 n'est **pas** un carré parfait
+        $\\$
+        $\qquad$• Car l'exposant de 7 est impair (1)
+    $\\$
+    
+    ● **Étape 5 :** Vérification par calcul
+        $\qquad$• $\displaystyle \sqrt{2023} \approx 44{,}98$ (non entier) ✓
+        $\\$
+        $\qquad$• $\displaystyle 44^2 = 1936 < 2023 < 2025 = 45^2$ ✓
     $\\$
 
 Solution:
-1. $\displaystyle x \equiv 2 \pmod{5}$
+1. 97 est premier (non divisible par 2, 3, 5, 7)
 $\\$
-2. $\displaystyle x \equiv 6 \pmod{7}$
+2. $\displaystyle 2023 = 7 \times 17^2$
 $\\$
-3. $\displaystyle x \equiv 27 \pmod{35}$
+3. 2023 a exactement 6 diviseurs
 $\\$
-4. $\displaystyle P(x)$ n'a pas de racines entières
+4. Démontré ci-dessus (preuve par l'absurde)
+$\\$
+5. 2023 n'est pas un carré parfait (exposant de 7 impair)
 
 ===
 
-=== Arithmétique - Cryptographie et Sécurité
-Difficulté: hard
+=== Arithmétique - Divisibilité (Écriture Astucieuse)
+Difficulté: medium
 
-Énoncé: On considère un système de chiffrement basé sur le problème du logarithme discret.
+Énoncé: On considère les entiers naturels $\displaystyle n$ et les expressions $\displaystyle n^2+5$, $\displaystyle n^2-7$, $\displaystyle n^2+2$ et $\displaystyle n^2+3n-10$.
 $\\$
-**Question 1 : Calculer $3^x \equiv 5 \pmod{17}$ pour $x \in \{0, 1, \ldots, 16\}$**
+**Question 1 : Déterminer les entiers naturels $\displaystyle n$ tels que $\displaystyle n-4$ divise $\displaystyle n^2+5$**
 
-**Question 2 : Vérifier que 3 est une racine primitive modulo 17**
+**Question 2 : Déterminer tous les entiers naturels $\displaystyle n$ tels que $\displaystyle n-4$ divise $\displaystyle n^2-7$**
 
-**Question 3 : Calculer l'indice de 5 en base 3 modulo 17**
+**Question 3 : Déterminer les entiers naturels $\displaystyle n$ tels que $\displaystyle n+3$ divise $\displaystyle n^2+2$**
 
-**Question 4 : Résoudre $3^x \equiv 12 \pmod{17}$**
+**Question 4 : Déterminer tous les entiers naturels $\displaystyle n$ tels que $\displaystyle n-5$ divise $\displaystyle n^2+3n-10$**
 
 Étapes:
 
-**Question 1 : Calculer $3^x \equiv 5 \pmod{17}$ pour $x \in \{0, 1, \ldots, 16\}$**
+**Question 1 : Déterminer les entiers naturels $\displaystyle n$ tels que $\displaystyle n-4$ divise $\displaystyle n^2+5$**
 
-    ● **Méthode :** Calcul systématique des puissances
+    ● **Méthode :** Utilisation de l'identité remarquable et propriété de divisibilité
     $\\$
     
-    ● **Étape 1 :** Calculer les puissances de 3 modulo 17
-        $\qquad$• $3^0 \equiv 1 \pmod{17}$
+    ● **Étape 1 :** Utiliser l'identité $\displaystyle (n-4)(n+4) = n^2-16$
+        $\qquad$• On écrit : $\displaystyle n^2+5 = (n-4)(n+4) + 21$
         $\\$
-        $\qquad$• $3^1 \equiv 3 \pmod{17}$
-        $\\$
-        $\qquad$• $3^2 \equiv 9 \pmod{17}$
-        $\\$
-        $\qquad$• $3^3 \equiv 27 \equiv 10 \pmod{17}$
-        $\\$
-        $\qquad$• $3^4 \equiv 30 \equiv 13 \pmod{17}$
-        $\\$
-        $\qquad$• $3^5 \equiv 39 \equiv 5 \pmod{17}$ ✓
-    $\\$
-
-**Question 2 : Vérifier que 3 est une racine primitive modulo 17**
-
-    ● **Méthode :** Vérifier que l'ordre de 3 est 16
+        $\qquad$• Car $\displaystyle n^2+5 = n^2-16+21 = (n-4)(n+4) + 21$
     $\\$
     
-    ● **Étape 1 :** Calculer l'ordre de 3
-        $\qquad$• L'ordre de 3 est le plus petit $k$ tel que $3^k \equiv 1 \pmod{17}$
+    ● **Étape 2 :** Appliquer la propriété de divisibilité
+        $\qquad$• $\displaystyle n-4 \mid n^2+5$ ⟺ $\displaystyle n-4 \mid 21$
         $\\$
-        $\qquad$• On a $3^{16} \equiv 1 \pmod{17}$ (théorème de Fermat)
-        $\\$
-        $\qquad$• Vérifions que $3^8 \not\equiv 1 \pmod{17}$ : $3^8 \equiv 16 \pmod{17}$
-        $\\$
-        $\qquad$• Donc l'ordre de 3 est 16
+        $\qquad$• Car si $\displaystyle n-4 \mid (n-4)(n+4)$ et $\displaystyle n-4 \mid 21$, alors $\displaystyle n-4 \mid n^2+5$
     $\\$
     
-    ● **Étape 2 :** Conclusion
-        $\qquad$• Comme l'ordre de 3 est 16 = $\varphi(17)$, 3 est une racine primitive
-    $\\$
-
-**Question 3 : Calculer l'indice de 5 en base 3 modulo 17**
-
-    ● **Méthode :** Utiliser le résultat de la question 1
+    ● **Étape 3 :** Déterminer les diviseurs de 21
+        $\qquad$• Les diviseurs positifs de 21 sont : 1, 3, 7, 21
+        $\\$
+        $\qquad$• Comme $\displaystyle n \in \mathbb{N}$ et $\displaystyle n \neq 4$, on a $\displaystyle n-4 \geq 1$
     $\\$
     
-    ● **Étape 1 :** Identifier la puissance
-        $\qquad$• D'après la question 1, $3^5 \equiv 5 \pmod{17}$
+    ● **Étape 4 :** Résoudre $\displaystyle n-4 \in \{1, 3, 7, 21\}$
+        $\qquad$• $\displaystyle n-4 = 1$ ⟹ $\displaystyle n = 5$
         $\\$
-        $\qquad$• Donc l'indice de 5 en base 3 modulo 17 est 5
-    $\\$
-
-**Question 4 : Résoudre $3^x \equiv 12 \pmod{17}$**
-
-    ● **Méthode :** Calcul systématique
+        $\qquad$• $\displaystyle n-4 = 3$ ⟹ $\displaystyle n = 7$
+        $\\$
+        $\qquad$• $\displaystyle n-4 = 7$ ⟹ $\displaystyle n = 11$
+        $\\$
+        $\qquad$• $\displaystyle n-4 = 21$ ⟹ $\displaystyle n = 25$
     $\\$
     
-    ● **Étape 1 :** Continuer le calcul des puissances
-        $\qquad$• $3^6 \equiv 15 \pmod{17}$
+    ● **Étape 5 :** Vérification
+        $\qquad$• Pour $\displaystyle n = 5$ : $\displaystyle 5-4 = 1$ et $\displaystyle 1 \mid 25+5 = 30$ ✓
         $\\$
-        $\qquad$• $3^7 \equiv 45 \equiv 11 \pmod{17}$
+        $\qquad$• Pour $\displaystyle n = 7$ : $\displaystyle 7-4 = 3$ et $\displaystyle 3 \mid 49+5 = 54$ ✓
+    $\\$
+
+**Question 2 : Déterminer tous les entiers naturels $\displaystyle n$ tels que $\displaystyle n-4$ divise $\displaystyle n^2-7$**
+
+    ● **Méthode :** Même approche avec l'identité remarquable
+    $\\$
+    
+    ● **Étape 1 :** Utiliser l'identité $\displaystyle (n-4)(n+4) = n^2-16$
+        $\qquad$• On écrit : $\displaystyle n^2-7 = (n-4)(n+4) + 9$
         $\\$
-        $\qquad$• $3^8 \equiv 33 \equiv 16 \pmod{17}$
+        $\qquad$• Car $\displaystyle n^2-7 = n^2-16+9 = (n-4)(n+4) + 9$
+    $\\$
+    
+    ● **Étape 2 :** Appliquer la propriété de divisibilité
+        $\qquad$• $\displaystyle n-4 \mid n^2-7$ ⟺ $\displaystyle n-4 \mid 9$
+    $\\$
+    
+    ● **Étape 3 :** Déterminer les diviseurs de 9
+        $\qquad$• Les diviseurs positifs de 9 sont : 1, 3, 9
+    $\\$
+    
+    ● **Étape 4 :** Résoudre $\displaystyle n-4 \in \{1, 3, 9\}$
+        $\qquad$• $\displaystyle n-4 = 1$ ⟹ $\displaystyle n = 5$
         $\\$
-        $\qquad$• $3^9 \equiv 48 \equiv 14 \pmod{17}$
+        $\qquad$• $\displaystyle n-4 = 3$ ⟹ $\displaystyle n = 7$
         $\\$
-        $\qquad$• $3^{10} \equiv 42 \equiv 8 \pmod{17}$
+        $\qquad$• $\displaystyle n-4 = 9$ ⟹ $\displaystyle n = 13$
+    $\\$
+    
+    ● **Étape 5 :** Vérification
+        $\qquad$• Pour $\displaystyle n = 5$ : $\displaystyle 5-4 = 1$ et $\displaystyle 1 \mid 25-7 = 18$ ✓
         $\\$
-        $\qquad$• $3^{11} \equiv 24 \equiv 7 \pmod{17}$
+        $\qquad$• Pour $\displaystyle n = 7$ : $\displaystyle 7-4 = 3$ et $\displaystyle 3 \mid 49-7 = 42$ ✓
         $\\$
-        $\qquad$• $3^{12} \equiv 21 \equiv 4 \pmod{17}$
+        $\qquad$• Pour $\displaystyle n = 13$ : $\displaystyle 13-4 = 9$ et $\displaystyle 9 \mid 169-7 = 162$ ✓
+    $\\$
+
+**Question 3 : Déterminer les entiers naturels $\displaystyle n$ tels que $\displaystyle n+3$ divise $\displaystyle n^2+2$**
+
+    ● **Méthode :** Utilisation de l'identité remarquable et propriété de divisibilité
+    $\\$
+    
+    ● **Étape 1 :** Utiliser l'identité $\displaystyle (n+3)(n-3) = n^2-9$
+        $\qquad$• On écrit : $\displaystyle n^2+2 = (n+3)(n-3) + 11$
         $\\$
-        $\qquad$• $3^{13} \equiv 12 \pmod{17}$ ✓
+        $\qquad$• Car $\displaystyle n^2+2 = n^2-9+11 = (n+3)(n-3) + 11$
+    $\\$
+    
+    ● **Étape 2 :** Appliquer la propriété de divisibilité
+        $\qquad$• $\displaystyle n+3 \mid n^2+2$ ⟺ $\displaystyle n+3 \mid 11$
+        $\\$
+        $\qquad$• Car si $\displaystyle n+3 \mid (n+3)(n-3)$ et $\displaystyle n+3 \mid 11$, alors $\displaystyle n+3 \mid n^2+2$
+    $\\$
+    
+    ● **Étape 3 :** Déterminer les diviseurs de 11
+        $\qquad$• Les diviseurs positifs de 11 sont : 1, 11
+        $\\$
+        $\qquad$• Comme $\displaystyle n \in \mathbb{N}$, on a $\displaystyle n+3 \geq 3$
+    $\\$
+    
+    ● **Étape 4 :** Résoudre $\displaystyle n+3 \in \{11\}$
+        $\qquad$• $\displaystyle n+3 = 11$ ⟹ $\displaystyle n = 8$
+        $\\$
+        $\qquad$• (On exclut $\displaystyle n+3 = 1$ car $\displaystyle n+3 \geq 3$)
+    $\\$
+    
+    ● **Étape 5 :** Vérification
+        $\qquad$• Pour $\displaystyle n = 8$ : $\displaystyle 8+3 = 11$ et $\displaystyle 11 \mid 64+2 = 66$ ✓
+    $\\$
+
+**Question 4 : Déterminer tous les entiers naturels $\displaystyle n$ tels que $\displaystyle n-5$ divise $\displaystyle n^2+3n-10$**
+
+    ● **Méthode :** Factorisation et propriété de divisibilité
+    $\\$
+    
+    ● **Étape 1 :** Factoriser l'expression $\displaystyle n^2+3n-10$
+        $\qquad$• On cherche $\displaystyle n^2+3n-10 = (n-5)(n+a) + b$
+        $\\$
+        $\qquad$• Développons : $\displaystyle (n-5)(n+a) = n^2 + (a-5)n - 5a$
+        $\\$
+        $\qquad$• On veut : $\displaystyle n^2+3n-10 = n^2 + (a-5)n - 5a + b$
+    $\\$
+    
+    ● **Étape 2 :** Identifier les coefficients
+        $\qquad$• Par identification : $\displaystyle a-5 = 3$ ⟹ $\displaystyle a = 8$
+        $\\$
+        $\qquad$• Et $\displaystyle -5a + b = -10$ ⟹ $\displaystyle -40 + b = -10$ ⟹ $\displaystyle b = 30$
+        $\\$
+        $\qquad$• Donc : $\displaystyle n^2+3n-10 = (n-5)(n+8) + 30$
+    $\\$
+    
+    ● **Étape 3 :** Appliquer la propriété de divisibilité
+        $\qquad$• $\displaystyle n-5 \mid n^2+3n-10$ ⟺ $\displaystyle n-5 \mid 30$
+    $\\$
+    
+    ● **Étape 4 :** Déterminer les diviseurs de 30
+        $\qquad$• Les diviseurs positifs de 30 sont : 1, 2, 3, 5, 6, 10, 15, 30
+        $\\$
+        $\qquad$• Comme $\displaystyle n \in \mathbb{N}$ et $\displaystyle n \neq 5$, on a $\displaystyle n-5 \geq 1$
+    $\\$
+    
+    ● **Étape 5 :** Résoudre $\displaystyle n-5 \in \{1, 2, 3, 5, 6, 10, 15, 30\}$
+        $\qquad$• $\displaystyle n-5 = 1$ ⟹ $\displaystyle n = 6$
+        $\\$
+        $\qquad$• $\displaystyle n-5 = 2$ ⟹ $\displaystyle n = 7$
+        $\\$
+        $\qquad$• $\displaystyle n-5 = 3$ ⟹ $\displaystyle n = 8$
+        $\\$
+        $\qquad$• $\displaystyle n-5 = 5$ ⟹ $\displaystyle n = 10$
+        $\\$
+        $\qquad$• $\displaystyle n-5 = 6$ ⟹ $\displaystyle n = 11$
+        $\\$
+        $\qquad$• $\displaystyle n-5 = 10$ ⟹ $\displaystyle n = 15$
+        $\\$
+        $\qquad$• $\displaystyle n-5 = 15$ ⟹ $\displaystyle n = 20$
+        $\\$
+        $\qquad$• $\displaystyle n-5 = 30$ ⟹ $\displaystyle n = 35$
+    $\\$
+    
+    ● **Étape 6 :** Vérification (quelques exemples)
+        $\qquad$• Pour $\displaystyle n = 6$ : $\displaystyle 6-5 = 1$ et $\displaystyle 1 \mid 36+18-10 = 44$ ✓
+        $\\$
+        $\qquad$• Pour $\displaystyle n = 10$ : $\displaystyle 10-5 = 5$ et $\displaystyle 5 \mid 100+30-10 = 120$ ✓
     $\\$
 
 Solution:
-1. $\displaystyle 3^5 \equiv 5 \pmod{17}$, donc $\displaystyle x = 5$
+1. $\displaystyle n \in \{5, 7, 11, 25\}$
 $\\$
-2. 3 est une racine primitive modulo 17 (ordre = 16)
+2. $\displaystyle n \in \{5, 7, 13\}$
 $\\$
-3. L'indice de 5 en base 3 modulo 17 est 5
+3. $\displaystyle n = 8$
 $\\$
-4. $\displaystyle 3^{13} \equiv 12 \pmod{17}$, donc $\displaystyle x = 13$
+4. $\displaystyle n \in \{6, 7, 8, 10, 11, 15, 20, 35\}$
+
+===
+
+=== Arithmétique - Récurrence et Divisibilité
+Difficulté: medium
+
+Énoncé: On considère la propriété $\displaystyle P(n)$ : "$\displaystyle 3^{2n} + 4 \cdot 3^n - 5$ est divisible par 8" pour tout $\displaystyle n \in \mathbb{N}^*$.
+$\\$
+**Question 1 : Montrer par récurrence que $\displaystyle P(n)$ est vraie pour tout $\displaystyle n \geq 1$**
+
+**Question 2 : Vérifier $\displaystyle P(4)$ et $\displaystyle P(5)$ par calcul direct**
+
+Étapes:
+
+**Question 1 : Montrer par récurrence que $\displaystyle P(n)$ est vraie pour tout $\displaystyle n \geq 1$**
+
+    ● **Méthode :** Preuve par récurrence classique
+    $\\$
+    
+    ● **Étape 1 :** Initialisation ($\displaystyle n = 1$)
+        $\qquad$• $\displaystyle 3^{2 \times 1} + 4 \cdot 3^1 - 5 = 3^2 + 4 \cdot 3 - 5 = 9 + 12 - 5 = 16$
+        $\\$
+        $\qquad$• $\displaystyle 16 = 8 \times 2$, donc $\displaystyle 8 \mid 16$ ✓
+        $\\$
+        $\qquad$• Donc $\displaystyle P(1)$ est vraie
+    $\\$
+    
+    ● **Étape 2 :** Hérédité (supposons $\displaystyle P(n)$ vraie)
+        $\qquad$• Supposons qu'il existe $\displaystyle k \in \mathbb{Z}$ tel que $\displaystyle 3^{2n} + 4 \cdot 3^n - 5 = 8k$
+    $\\$
+    
+    ● **Étape 3 :** Calculer $\displaystyle 3^{2(n+1)} + 4 \cdot 3^{n+1} - 5$
+        $\qquad$• $\displaystyle 3^{2(n+1)} + 4 \cdot 3^{n+1} - 5 = 3^{2n+2} + 4 \cdot 3^{n+1} - 5$
+        $\\$
+        $\qquad$• $\displaystyle = 9 \cdot 3^{2n} + 12 \cdot 3^n - 5$
+        $\\$
+        $\qquad$• Utilisons les égalités : $\displaystyle 9 = 8 + 1$ et $\displaystyle 12 = 8 + 4$
+        $\\$
+        $\qquad$• $\displaystyle = (8 + 1) \cdot 3^{2n} + (8 + 4) \cdot 3^n - 5$
+        $\\$
+        $\qquad$• $\displaystyle = 8 \cdot 3^{2n} + 1 \cdot 3^{2n} + 8 \cdot 3^n + 4 \cdot 3^n - 5$
+        $\\$
+        $\qquad$• $\displaystyle = 8(3^{2n} + 3^n) + (3^{2n} + 4 \cdot 3^n - 5)$
+    $\\$
+    
+    ● **Étape 4 :** Utiliser l'hypothèse de récurrence
+        $\qquad$• Le premier terme $\displaystyle 8(3^{2n} + 3^n)$ est clairement un multiple de 8
+        $\\$
+        $\qquad$• Le deuxième terme $\displaystyle (3^{2n} + 4 \cdot 3^n - 5)$ est exactement $\displaystyle E_n$, supposé multiple de 8
+        $\\$
+        $\qquad$• Donc $\displaystyle E_{n+1}$ est la somme de deux multiples de 8 ⟹ multiple de 8 ✓
+    $\\$
+    
+    ● **Étape 5 :** Conclusion
+        $\qquad$• $\displaystyle P(n+1)$ est vraie
+        $\\$
+        $\qquad$• Par récurrence, $\displaystyle P(n)$ est vraie pour tout $\displaystyle n \geq 1$
+    $\\$
+
+**Question 2 : Vérifier $\displaystyle P(4)$ et $\displaystyle P(5)$ par calcul direct**
+
+    ● **Méthode :** Calculs numériques directs
+    $\\$
+    
+    ● **Étape 1 :** Vérification de $\displaystyle P(4)$
+        $\qquad$• $\displaystyle 3^{8} + 4 \cdot 3^4 - 5 = 6561 + 4 \cdot 81 - 5 = 6561 + 324 - 5 = 6880$
+        $\\$
+        $\qquad$• $\displaystyle 6880 = 8 \times 860$ ✓
+    $\\$
+    
+    ● **Étape 2 :** Vérification de $\displaystyle P(5)$
+        $\qquad$• $\displaystyle 3^{10} + 4 \cdot 3^5 - 5 = 59049 + 4 \cdot 243 - 5 = 59049 + 972 - 5 = 60016$
+        $\\$
+        $\qquad$• $\displaystyle 60016 = 8 \times 7502$ ✓
+    $\\$
+
+Solution:
+1. Démontré par récurrence (initialisation + hérédité)
+$\\$
+2. $\displaystyle P(4)$ : 6880 = 8×860 ✓ ; $\displaystyle P(5)$ : 60016 = 8×7502 ✓
+
+===
+
+=== Arithmétique - Nombres Premiers Entre Eux (PGCD)
+Difficulté: medium
+
+Énoncé: On considère les expressions $\displaystyle 4n+1$, $\displaystyle 6n+1$, $\displaystyle 7n+3$ et $\displaystyle 5n+2$ pour $\displaystyle n \in \mathbb{N}$.
+$\\$
+**Question 1 : Démontrer que $\displaystyle \text{pgcd }(4n+1, 6n+1) = 1$ pour tout $\displaystyle n \in \mathbb{N}$**
+
+**Question 2 : Démontrer que $\displaystyle \text{pgcd }(7n+3, 5n+2) = 1$ pour tout $\displaystyle n \in \mathbb{N}$**
+
+**Question 3 : Vérifier ces résultats pour $\displaystyle n = 0, 1, 2$**
+
+Étapes:
+
+**Question 1 : Démontrer que $\displaystyle \text{pgcd }(4n+1, 6n+1) = 1$ pour tout $\displaystyle n \in \mathbb{N}$**
+
+    ● **Méthode :** Utilisation de l'identité de Bézout
+    $\\$
+    
+    ● **Étape 1 :** Poser l'identité de Bézout
+        $\qquad$• On cherche des entiers $\displaystyle a, b \in \mathbb{Z}$ tels que $\displaystyle a(4n+1) + b(6n+1) = 1$.
+    $\\$
+    
+    ● **Étape 2 :** Développer l'expression
+        $\qquad$• $\displaystyle a(4n+1) + b(6n+1) = 4an + a + 6bn + b = (4a+6b)n + (a+b)$.
+        $\\$
+        $\qquad$• On veut que cette expression soit égale à 1.
+    $\\$
+    
+    ● **Étape 3 :** Établir un système d'équations
+        $\qquad$• Pour que l'expression soit une constante égale à 1, le coefficient de $\displaystyle n$ doit être nul et le terme constant doit être 1.
+        $\\$
+        $\qquad$• On obtient le système suivant :
+        $\\$
+        $\qquad$• $\displaystyle \begin{cases} 4a + 6b = 0 & \text{(pour annuler le terme en } n) \\ a + b = 1 & \text{(pour que le terme constant soit } 1) \end{cases}$
+    $\\$
+    
+    ● **Étape 4 :** Résoudre le système
+        $\qquad$• De la première équation $\displaystyle 4a + 6b = 0$, on simplifie par 2 : $\displaystyle 2a + 3b = 0$.
+        $\\$
+        $\qquad$• On peut exprimer $\displaystyle a$ en fonction de $\displaystyle b$ : $\displaystyle 2a = -3b \Rightarrow a = -\frac{3}{2}b$.
+        $\\$
+        $\qquad$• Pour que $\displaystyle a$ soit un entier, $\displaystyle b$ doit être un multiple de 2. Posons $\displaystyle b = 2k$ pour un entier $\displaystyle k$.
+        $\\$
+        $\qquad$• Alors $\displaystyle a = -\frac{3}{2}(2k) = -3k$.
+        $\\$
+        $\qquad$• Substituons $\displaystyle a$ et $\displaystyle b$ dans la deuxième équation $\displaystyle a + b = 1$ :
+        $\\$
+        $\qquad$• $\displaystyle (-3k) + (2k) = 1$
+        $\\$
+        $\qquad$• $\displaystyle -k = 1 \Rightarrow k = -1$.
+        $\\$
+        $\qquad$• En remplaçant $\displaystyle k = -1$ dans les expressions de $\displaystyle a$ et $\displaystyle b$ :
+        $\\$
+        $\qquad$• $\displaystyle a = -3(-1) = 3$
+        $\\$
+        $\qquad$• $\displaystyle b = 2(-1) = -2$.
+    $\\$
+    
+    ● **Étape 5 :** Vérifier la solution
+        $\qquad$• Substituons $\displaystyle a=3$ et $\displaystyle b=-2$ dans l'identité de Bézout :
+        $\\$
+        $\qquad$• $\displaystyle 3(4n+1) + (-2)(6n+1) = (12n+3) + (-12n-2)$
+        $\\$
+        $\qquad$• $\displaystyle = 12n + 3 - 12n - 2$
+        $\\$
+        $\qquad$• $\displaystyle = (12n - 12n) + (3 - 2)$
+        $\\$
+        $\qquad$• $\displaystyle = 0n + 1 = 1$.
+        $\\$
+        $\qquad$• Puisque nous avons trouvé des entiers $\displaystyle a=3$ et $\displaystyle b=-2$ tels que $\displaystyle a(4n+1) + b(6n+1) = 1$, d'après le théorème de Bézout, $\displaystyle \text{pgcd }(4n+1, 6n+1) = 1$.
+    $\\$
+
+**Question 2 : Démontrer que $\displaystyle \text{pgcd }(7n+3, 5n+2) = 1$ pour tout $\displaystyle n \in \mathbb{N}$**
+
+    ● **Méthode :** Utilisation de l'identité de Bézout
+    $\\$
+    
+    ● **Étape 1 :** Poser l'identité de Bézout
+        $\qquad$• On cherche des entiers $\displaystyle c, d \in \mathbb{Z}$ tels que $\displaystyle c(7n+3) + d(5n+2) = 1$.
+    $\\$
+    
+    ● **Étape 2 :** Développer l'expression
+        $\qquad$• $\displaystyle c(7n+3) + d(5n+2) = 7cn + 3c + 5dn + 2d = (7c+5d)n + (3c+2d)$.
+        $\\$
+        $\qquad$• On veut que cette expression soit égale à 1.
+    $\\$
+    
+    ● **Étape 3 :** Établir un système d'équations
+        $\qquad$• Pour que l'expression soit une constante égale à 1, le coefficient de $\displaystyle n$ doit être nul et le terme constant doit être 1.
+        $\\$
+        $\qquad$• On obtient le système suivant :
+        $\\$
+        $\qquad$• $\displaystyle \begin{cases} 7c + 5d = 0 & \text{(pour annuler le terme en } n) \\ 3c + 2d = 1 & \text{(pour que le terme constant soit } 1) \end{cases}$
+    $\\$
+    
+    ● **Étape 4 :** Résoudre le système
+        $\qquad$• De la première équation $\displaystyle 7c + 5d = 0$, on exprime $\displaystyle c$ en fonction de $\displaystyle d$ : $\displaystyle c = -\frac{5}{7}d$.
+        $\\$
+        $\qquad$• Pour que $\displaystyle c$ soit un entier, $\displaystyle d$ doit être un multiple de 7. Posons $\displaystyle d = 7k$ pour un entier $\displaystyle k$.
+        $\\$
+        $\qquad$• Alors $\displaystyle c = -\frac{5}{7}(7k) = -5k$.
+        $\\$
+        $\qquad$• Substituons $\displaystyle c$ et $\displaystyle d$ dans la deuxième équation $\displaystyle 3c + 2d = 1$ :
+        $\\$
+        $\qquad$• $\displaystyle 3(-5k) + 2(7k) = 1$
+        $\\$
+        $\qquad$• $\displaystyle -15k + 14k = 1$
+        $\\$
+        $\qquad$• $\displaystyle -k = 1 \Rightarrow k = -1$.
+        $\\$
+        $\qquad$• En remplaçant $\displaystyle k = -1$ dans les expressions de $\displaystyle c$ et $\displaystyle d$ :
+        $\\$
+        $\qquad$• $\displaystyle c = -5(-1) = 5$
+        $\\$
+        $\qquad$• $\displaystyle d = 7(-1) = -7$.
+    $\\$
+    
+    ● **Étape 5 :** Vérifier la solution
+        $\qquad$• Substituons $\displaystyle c=5$ et $\displaystyle d=-7$ dans l'identité de Bézout :
+        $\\$
+        $\qquad$• $\displaystyle 5(7n+3) + (-7)(5n+2) = (35n+15) + (-35n-14)$
+        $\\$
+        $\qquad$• $\displaystyle = 35n + 15 - 35n - 14$
+        $\\$
+        $\qquad$• $\displaystyle = (35n - 35n) + (15 - 14)$
+        $\\$
+        $\qquad$• $\displaystyle = 0n + 1 = 1$.
+        $\\$
+        $\qquad$• Puisque nous avons trouvé des entiers $\displaystyle c=5$ et $\displaystyle d=-7$ tels que $\displaystyle c(7n+3) + d(5n+2) = 1$, d'après le théorème de Bézout, $\displaystyle \text{pgcd }(7n+3, 5n+2) = 1$.
+    $\\$
+
+**Question 3 : Vérifier ces résultats pour $\displaystyle n = 0, 1, 2$**
+
+    ● **Méthode :** Calculs numériques directs
+    $\\$
+    
+    ● **Étape 1 :** Pour $\displaystyle n = 0$
+        $\qquad$• $\displaystyle \text{pgcd }(4(0)+1, 6(0)+1) = \text{pgcd }(1, 1) = 1$ ✓
+        $\\$
+        $\qquad$• $\displaystyle \text{pgcd }(7(0)+3, 5(0)+2) = \text{pgcd }(3, 2) = 1$ ✓
+    $\\$
+    
+    ● **Étape 2 :** Pour $\displaystyle n = 1$
+        $\qquad$• $\displaystyle \text{pgcd }(4(1)+1, 6(1)+1) = \text{pgcd }(5, 7) = 1$ ✓
+        $\\$
+        $\qquad$• $\displaystyle \text{pgcd }(7(1)+3, 5(1)+2) = \text{pgcd }(10, 7) = 1$ ✓
+    $\\$
+    
+    ● **Étape 3 :** Pour $\displaystyle n = 2$
+        $\qquad$• $\displaystyle \text{pgcd }(4(2)+1, 6(2)+1) = \text{pgcd }(9, 13) = 1$ ✓
+        $\\$
+        $\qquad$• $\displaystyle \text{pgcd }(7(2)+3, 5(2)+2) = \text{pgcd }(17, 12) = 1$ ✓
+    $\\$
+
+Solution:
+1. $\displaystyle \text{pgcd }(4n+1, 6n+1) = 1$ (démontré par Bézout avec $\displaystyle a=3, b=-2$)
+$\\$
+2. $\displaystyle \text{pgcd }(7n+3, 5n+2) = 1$ (démontré par Bézout avec $\displaystyle c=5, d=-7$)
+$\\$
+3. Vérifications numériques confirmées pour $\displaystyle n = 0, 1, 2$
+
+===
+
+=== Arithmétique - Récurrence et Divisibilité 2
+Difficulté: medium
+
+Énoncé: On considère la propriété $\displaystyle Q(n)$ : "$\displaystyle 5^{2n} + 6 \cdot 5^n - 7$ est divisible par 24" pour tout $\displaystyle n \in \mathbb{N}^*$.
+$\\$
+**Question 1 : Montrer par récurrence que $\displaystyle Q(n)$ est vraie pour tout $\displaystyle n \geq 1$**
+
+**Question 2 : Vérifier $\displaystyle Q(1)$ et $\displaystyle Q(2)$ par calcul direct**
+
+**Question 3 : Expliquer la méthode utilisée**
+
+Étapes:
+
+**Question 1 : Montrer par récurrence que $\displaystyle Q(n)$ est vraie pour tout $\displaystyle n \geq 1$**
+
+    ● **Méthode :** Preuve par récurrence avec astuce de factorisation
+    $\\$
+    
+    ● **Étape 1 :** Initialisation ($\displaystyle n = 1$)
+        $\qquad$• $\displaystyle 5^{2 \times 1} + 6 \cdot 5^1 - 7 = 5^2 + 6 \cdot 5 - 7 = 25 + 30 - 7 = 48$
+        $\\$
+        $\qquad$• $\displaystyle 48 = 24 \times 2$, donc $\displaystyle 24 \mid 48$ ✓
+        $\\$
+        $\qquad$• Donc $\displaystyle Q(1)$ est vraie
+    $\\$
+    
+    ● **Étape 2 :** Hérédité (supposons $\displaystyle Q(k)$ vraie)
+        $\qquad$• Supposons qu'il existe $\displaystyle m \in \mathbb{Z}$ tel que $\displaystyle 5^{2k} + 6 \cdot 5^k - 7 = 24m$
+    $\\$
+    
+    ● **Étape 3 :** Calculer $\displaystyle 5^{2(k+1)} + 6 \cdot 5^{k+1} - 7$
+        $\qquad$• $\displaystyle 5^{2(k+1)} + 6 \cdot 5^{k+1} - 7 = 5^{2k+2} + 6 \cdot 5^{k+1} - 7$
+        $\\$
+        $\qquad$• $\displaystyle = 25 \cdot 5^{2k} + 30 \cdot 5^k - 7$
+    $\\$
+    
+    ● **Étape 3bis :** Comment trouver les égalités clés
+        $\qquad$• On veut factoriser par 24 pour utiliser l'hypothèse de récurrence
+        $\\$
+        $\qquad$• On cherche à écrire 25 et 30 sous la forme : nombre = 24 + reste
+        $\\$
+        $\qquad$• **Pour 25 :** $\displaystyle 25 = 24 + 1$ (car 25 - 24 = 1)
+        $\\$
+        $\qquad$• **Pour 30 :** $\displaystyle 30 = 24 + 6$ (car 30 - 24 = 6)
+        $\\$
+        $\qquad$• Ces égalités permettent de séparer les termes en multiple de 24 + expression connue
+    $\\$
+    
+    ● **Étape 3ter :** Appliquer les égalités trouvées
+        $\qquad$• $\displaystyle = (24 + 1) \cdot 5^{2k} + (24 + 6) \cdot 5^k - 7$
+        $\\$
+        $\qquad$• $\displaystyle = 24 \cdot 5^{2k} + 1 \cdot 5^{2k} + 24 \cdot 5^k + 6 \cdot 5^k - 7$
+        $\\$
+        $\qquad$• $\displaystyle = 24(5^{2k} + 5^k) + (5^{2k} + 6 \cdot 5^k - 7)$
+    $\\$
+    
+    ● **Étape 4 :** Utiliser l'hypothèse de récurrence
+        $\qquad$• Le premier terme $\displaystyle 24(5^{2k} + 5^k)$ est clairement un multiple de 24
+        $\\$
+        $\qquad$• Le deuxième terme $\displaystyle (5^{2k} + 6 \cdot 5^k - 7)$ est exactement $\displaystyle Q(k)$, supposé multiple de 24
+        $\\$
+        $\qquad$• Donc $\displaystyle Q(k+1)$ est la somme de deux multiples de 24 ⟹ multiple de 24 ✓
+    $\\$
+    
+    ● **Étape 5 :** Conclusion
+        $\qquad$• $\displaystyle Q(k+1)$ est vraie
+        $\\$
+        $\qquad$• Par récurrence, $\displaystyle Q(n)$ est vraie pour tout $\displaystyle n \geq 1$
+    $\\$
+
+**Question 2 : Vérifier $\displaystyle Q(1)$ et $\displaystyle Q(2)$ par calcul direct**
+
+    ● **Méthode :** Calculs numériques directs
+    $\\$
+    
+    ● **Étape 1 :** Vérification de $\displaystyle Q(1)$
+        $\qquad$• $\displaystyle 5^{2} + 6 \cdot 5 - 7 = 25 + 30 - 7 = 48 = 24 \times 2$ ✓
+    $\\$
+    
+    ● **Étape 2 :** Vérification de $\displaystyle Q(2)$
+        $\qquad$• $\displaystyle 5^{4} + 6 \cdot 5^2 - 7 = 625 + 6 \cdot 25 - 7 = 625 + 150 - 7 = 768$
+        $\\$
+        $\qquad$• $\displaystyle 768 = 24 \times 32$ ✓
+    $\\$
+
+**Question 3 : Expliquer la méthode utilisée**
+
+    ● **Méthode :** Analyse de la technique de factorisation
+    $\\$
+    
+    ● **Étape 1 :** Principe de la méthode
+        $\qquad$• On utilise les égalités $\displaystyle 25 = 24 + 1$ et $\displaystyle 30 = 24 + 6$
+        $\\$
+        $\qquad$• Cela permet de séparer les termes en un multiple de 24 et l'expression $\displaystyle Q(k)$
+    $\\$
+    
+    ● **Étape 2 :** Avantages de cette approche
+        $\qquad$• Évite les calculs compliqués de factorisation
+        $\\$
+        $\qquad$• Utilise des égalités simples et naturelles
+        $\\$
+        $\qquad$• La logique est claire : somme de multiples de 24
+    $\\$
+    
+    ● **Étape 3 :** Généralisation
+        $\qquad$• Cette méthode fonctionne pour toute expression de la forme $\displaystyle a^{2n} + b \cdot a^n + c$
+        $\\$
+        $\qquad$• Il suffit de trouver les bonnes égalités pour les coefficients
+    $\\$
+
+Solution:
+1. Démontré par récurrence (initialisation + hérédité)
+$\\$
+2. $\displaystyle Q(1)$ : 48 = 24×2 ✓ ; $\displaystyle Q(2)$ : 768 = 24×32 ✓
+$\\$
+3. Méthode des égalités 25 = 24 + 1 et 30 = 24 + 6 pour séparer les termes
 
 ===

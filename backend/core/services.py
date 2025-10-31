@@ -101,6 +101,8 @@ class EmailService:
 
             # Variante HTML simple (avec logo si défini)
             logo_url = EmailService._resolve_logo_url()
+            # Prépare le message en HTML (évite les backslashes dans les expressions d'f-strings)
+            message_html = (message or '').strip().replace('\n', '<br/>')
             html_body = f"""
                 <div>
                   {f'<p><img src="{logo_url}" alt="OptiTAB" style="height:64px;width:auto;display:block;-ms-interpolation-mode:bicubic"/></p>' if logo_url else ''}
@@ -108,7 +110,7 @@ class EmailService:
                   {f'<p style="margin:6px 0 12px 0"><strong>Ticket:</strong> {ticket_id}</p>' if ticket_id else ''}
                   <p><strong>Nom:</strong> {first_name.strip()} {last_name.strip()}<br/>
                      <strong>Email:</strong> {email.strip()}</p>
-                  <p><strong>Message:</strong><br/>{message.strip().replace('\n', '<br/>')}</p>
+                  <p><strong>Message:</strong><br/>{message_html}</p>
                   <hr style="border:none;border-top:1px solid #eee;margin:16px 0"/>
                   <table role="presentation" style="width:100%;max-width:520px;margin-top:16px">
                     <tr>
@@ -116,7 +118,7 @@ class EmailService:
                         {f'<img src="{EmailService._resolve_logo_url()}" alt="OptiTAB" style="height:56px;width:auto;display:block"/>' if EmailService._resolve_logo_url() else ''}
                       </td>
                       <td style="vertical-align:middle;color:#6b7280;font-size:12px;line-height:1.5">
-                        OptiTAB • Plateforme d\'apprentissage<br/>
+                        OptiTAB • Plateforme d'apprentissage<br/>
                         <a href="https://www.optitab.net" style="color:#6b7280;text-decoration:none">www.optitab.net</a> • contact@optitab.net
                       </td>
                     </tr>
@@ -125,7 +127,6 @@ class EmailService:
             """
 
             # Remise en forme professionnelle de l'email (gabarit carte)
-            message_html = (message or '').strip().replace('\n', '<br/>')
             html_body = f"""
               <div style=\"background:#f3f4f6;padding:24px 0;\">
                 <table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%;\">
@@ -133,7 +134,7 @@ class EmailService:
                     <td align=\"center\">
                       <table role=\"presentation\" width=\"600\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:600px;max-width:100%;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;\">
                         <tr>
-                          <td style=\"padding:24px 24px 0 24px;\">{f'<img src=\"{logo_url}\" alt=\"OptiTAB\" style=\"height:64px;width:auto;display:block\"/>' if logo_url else ''}</td>
+                          <td style=\"padding:24px 24px 0 24px;\">{f'<img src="{logo_url}" alt="OptiTAB" style="height:64px;width:auto;display:block"/>' if logo_url else ''}</td>
                         </tr>
                         <tr>
                           <td style=\"padding:16px 24px 0 24px;\">
@@ -167,7 +168,7 @@ class EmailService:
                           <td style=\"border-top:1px solid #e5e7eb;padding:16px 24px;color:#6b7280;font-size:12px;\">
                             <table role=\"presentation\" width=\"100%\">
                               <tr>
-                                <td style=\"vertical-align:middle\">{f'<img src=\"{logo_url}\" alt=\"OptiTAB\" style=\"height:48px;width:auto;display:block\"/>' if logo_url else ''}</td>
+                                <td style=\"vertical-align:middle\">{f'<img src="{logo_url}" alt="OptiTAB" style="height:48px;width:auto;display:block"/>' if logo_url else ''}</td>
                                 <td style=\"vertical-align:middle;text-align:right\">
                                   <span style=\"color:#374151;font-weight:600\">OptiTAB</span> • Plateforme d'apprentissage<br/>
                                   <a href=\"https://www.optitab.net\" style=\"color:#6b7280;text-decoration:none\">www.optitab.net</a> • contact@optitab.net
@@ -244,7 +245,7 @@ class EmailService:
                         {f'<img src="{EmailService._resolve_logo_url()}" alt="OptiTAB" style="height:56px;width:auto;display:block"/>' if EmailService._resolve_logo_url() else ''}
                       </td>
                       <td style="vertical-align:middle;color:#6b7280;font-size:12px;line-height:1.5">
-                        OptiTAB • Plateforme d\'apprentissage<br/>
+                        OptiTAB • Plateforme d'apprentissage<br/>
                         <a href="https://www.optitab.net" style="color:#6b7280;text-decoration:none">www.optitab.net</a> • contact@optitab.net
                       </td>
                     </tr>
@@ -263,7 +264,7 @@ class EmailService:
                     <td align=\"center\">
                       <table role=\"presentation\" width=\"600\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:600px;max-width:100%;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;\">
                         <tr>
-                          <td style=\"padding:24px 24px 0 24px;\">{f'<img src=\"{logo_url}\" alt=\"OptiTAB\" style=\"height:64px;width:auto;display:block\"/>' if logo_url else ''}</td>
+                          <td style=\"padding:24px 24px 0 24px;\">{f'<img src="{logo_url}" alt="OptiTAB" style="height:64px;width:auto;display:block"/>' if logo_url else ''}</td>
                         </tr>
                         <tr>
                           <td style=\"padding:16px 24px 0 24px;\">
@@ -286,7 +287,7 @@ class EmailService:
                           <td style=\"border-top:1px solid #e5e7eb;padding:16px 24px;color:#6b7280;font-size:12px;\">
                             <table role=\"presentation\" width=\"100%\">
                               <tr>
-                                <td style=\"vertical-align:middle\">{f'<img src=\"{logo_url}\" alt=\"OptiTAB\" style=\"height:48px;width:auto;display:block\"/>' if logo_url else ''}</td>
+                                <td style=\"vertical-align:middle\">{f'<img src="{logo_url}" alt="OptiTAB" style="height:48px;width:auto;display:block"/>' if logo_url else ''}</td>
                                 <td style=\"vertical-align:middle;text-align:right\">
                                   <span style=\"color:#374151;font-weight:600\">OptiTAB</span> • Plateforme d'apprentissage<br/>
                                   <a href=\"https://www.optitab.net\" style=\"color:#6b7280;text-decoration:none\">www.optitab.net</a> • contact@optitab.net
@@ -404,7 +405,7 @@ class EmailService:
                 <td align=\"center\">
                   <table role=\"presentation\" width=\"600\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:600px;max-width:100%;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;\">
                     <tr>
-                      <td style=\"padding:20px 24px 0 24px;\">{f'<img src=\"{logo_url}\" alt=\"OptiTAB\" style=\"height:56px;width:auto;display:block\"/>' if logo_url else ''}</td>
+                      <td style=\"padding:20px 24px 0 24px;\">{f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block"/>' if logo_url else ''}</td>
                     </tr>
                     <tr>
                       <td style=\"padding:6px 24px 8px 24px;\">

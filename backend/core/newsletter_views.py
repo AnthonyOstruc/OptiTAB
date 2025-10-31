@@ -163,7 +163,9 @@ def newsletter_broadcast(request):
         unsub_url = request.build_absolute_uri(reverse('core:newsletter_unsubscribe', args=[sub.unsubscribe_token]))
         # Construire corps
         text_body = text + ("\n\nSe désabonner: " + unsub_url)
-        html_body = html or f"<div style='font-family:Arial,sans-serif;font-size:14px;color:#111827'>{text.replace('\n','<br/>')}<br/><br/><a href='{unsub_url}'>Se désabonner</a></div>"
+        # Eviter les backslashes dans les expressions d'f-strings: pré-calculer le HTML du texte
+        text_html = (text or '').replace('\n', '<br/>')
+        html_body = html or f"<div style='font-family:Arial,sans-serif;font-size:14px;color:#111827'>{text_html}<br/><br/><a href='{unsub_url}'>Se désabonner</a></div>"
         try:
             # Gabarit HTML par défaut si demandé
             if use_template:

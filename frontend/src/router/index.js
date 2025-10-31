@@ -11,6 +11,9 @@ const routes = [
 
   { path: '/account', name: 'Account', component: () => import('@/views/Account.vue'), meta: { requiresAuth: true } },
   { path: '/pricing', name: 'Pricing', component: () => import('@/views/Pricing.vue'), meta: { requiresAuth: true } },
+  { path: '/billing', name: 'Billing', component: () => import('@/views/Billing.vue'), meta: { requiresAuth: true } },
+  { path: '/billing/success', name: 'BillingSuccess', component: () => import('@/views/BillingSuccess.vue'), meta: { requiresAuth: true } },
+  { path: '/billing/cancel', name: 'BillingCancel', component: () => import('@/views/BillingCancel.vue'), meta: { requiresAuth: true } },
   { path: '/exercises', name: 'Exercises', component: () => import('@/views/Exercises.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
   { path: '/online-courses', name: 'OnlineCourses', component: () => import('@/views/OnlineCourses.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
   { path: '/quiz', name: 'Quiz', component: () => import('@/views/Quiz.vue'), meta: { requiresAuth: true, requiresAdmin: true, onAdminDenied: 'QuizComingSoon' }, beforeEnter: matiereMiddleware },

@@ -3,10 +3,9 @@ import json
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.views import View
-from django.contrib.auth.models import User
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 import logging
 from datetime import timedelta
@@ -17,14 +16,16 @@ from stripe_config import STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUCCESS_URL,
 stripe.api_key = STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
 
-class CreateCheckoutSessionView(View):
+User = get_user_model()
+
+class CreateCheckoutSessionView(APIView):
     """Créer une session de paiement Stripe"""
-    
-    @method_decorator(login_required)
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         try:
-            data = json.loads(request.body)
-            price_id = data.get('price_id')
+            # Utiliser DRF pour parser le payload JSON
+            price_id = request.data.get('price_id')
             
             # Récupérer le plan
             try:
@@ -73,10 +74,10 @@ class CreateCheckoutSessionView(View):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
-class SubscriptionStatusView(View):
+class SubscriptionStatusView(APIView):
     """Récupérer le statut d'abonnement de l'utilisateur"""
-    
-    @method_decorator(login_required)
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             subscription = request.user.subscription
@@ -96,10 +97,10 @@ class SubscriptionStatusView(View):
                 'status': 'none'
             })
 
-class CancelSubscriptionView(View):
+class CancelSubscriptionView(APIView):
     """Annuler l'abonnement"""
-    
-    @method_decorator(login_required)
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         try:
             subscription = request.user.subscription
@@ -110,9 +111,10 @@ class CancelSubscriptionView(View):
         except UserSubscription.DoesNotExist:
             return JsonResponse({'error': 'Aucun abonnement trouvé'}, status=404)
 
-class PlansListView(View):
+class PlansListView(APIView):
     """Liste des plans disponibles"""
-    
+    permission_classes = [AllowAny]
+
     def get(self, request):
         plans = SubscriptionPlan.objects.filter(is_active=True).order_by('price')
         plans_data = []

@@ -15,6 +15,7 @@ urlpatterns = [
     path('api/calc/', include('calc.urls')),
     path('api/quiz/', include('quiz.urls')),
     path('api/ai/', include('ai.urls')),
+    path('api/subscriptions/', include('subscriptions.urls')),
     path('api/contact/send/', contact_send, name='contact_send'),
     # path('api/', include('niveaux.urls')),  # Removed - using NiveauPays in pays
     path('api/', include('pays.urls')),  # API pour les pays et niveaux par pays

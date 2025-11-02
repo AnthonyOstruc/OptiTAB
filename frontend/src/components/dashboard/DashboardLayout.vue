@@ -160,6 +160,7 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
 /* Layout principal du dashboard */
 .dashboard-layout {
   height: 100vh;
+  height: 100dvh; /* Utiliser dvh sur navigateurs modernes pour mobile */
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   display: flex;
   flex-direction: column;
@@ -167,6 +168,7 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
   overflow: hidden;
   /* Assurer que le layout reste stable */
   min-height: 100vh;
+  min-height: 100dvh; /* Utiliser dvh sur navigateurs modernes pour mobile */
 }
 
 /* Container principal */
@@ -230,11 +232,6 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
     /* Assurer que le contenu reste stable */
     border-radius: 8px 0 0 0;
   }
-  
-  .dashboard-layout {
-    /* Assurer que le layout reste stable sur tablette */
-    min-height: 100vh;
-  }
 }
 
 @media (max-width: 768px) {
@@ -251,8 +248,6 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
   
   .dashboard-layout {
     background: #fff;
-    /* Assurer que le layout reste stable sur mobile */
-    min-height: 100vh;
   }
   
   .dashboard-main-container {
@@ -266,11 +261,6 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
     padding: 0.5rem 0.75rem;
   }
   
-  .dashboard-layout {
-    /* Assurer que le layout reste stable même sur très petit écran */
-    min-height: 100vh;
-  }
-  
   .dashboard-content {
     /* Assurer que le contenu reste stable */
     flex-shrink: 1;
@@ -282,20 +272,10 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
   .dashboard-main {
     padding: 0.4rem 0.6rem;
   }
-  
-  .dashboard-layout {
-    /* Assurer que le layout reste stable */
-    min-height: 100vh;
-  }
 }
 
 /* Assurer que le layout reste stable en mode paysage sur mobile */
 @media (max-height: 500px) and (orientation: landscape) {
-  .dashboard-layout {
-    /* Assurer que le layout reste stable en mode paysage */
-    min-height: 100vh;
-  }
-  
   .dashboard-main {
     padding: 0.5rem 1rem;
   }

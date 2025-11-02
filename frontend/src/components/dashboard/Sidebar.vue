@@ -428,7 +428,9 @@ defineExpose({
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh; /* Utiliser dvh sur navigateurs modernes pour mobile */
   max-height: 100vh;
+  max-height: 100dvh; /* Utiliser dvh sur navigateurs modernes pour mobile */
   justify-content: flex-start;
   position: relative;
   transition: width 0.1s ease-out;
@@ -727,8 +729,6 @@ defineExpose({
     z-index: 1000;
     /* Transition plus rapide sur petit écran */
     transition: width 0.08s ease-out;
-    height: 100vh;
-    max-height: 100vh;
   }
   
   .sidebar.collapsed {
@@ -749,8 +749,6 @@ defineExpose({
     width: 240px;
     /* Transition ultra-rapide sur mobile */
     transition: width 0.06s ease-out;
-    height: 100vh;
-    max-height: 100vh;
   }
   
   .sidebar.collapsed {
@@ -776,8 +774,6 @@ defineExpose({
     width: 220px;
     /* Transition instantanée sur très petit écran */
     transition: width 0.05s ease-out;
-    height: 100vh;
-    max-height: 100vh;
   }
   
   .sidebar.collapsed {

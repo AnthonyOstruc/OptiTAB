@@ -149,37 +149,33 @@ const goBack = () => {
   }
 }
 
-/* Version très petit écran - encore plus visible */
+/* Version très petit écran - garder le même style que 768px */
 @media (max-width: 480px) {
   .back-button {
-    /* Monter encore plus sur très petit écran */
-    margin-top: -1rem;
-    /* Déplacer encore plus vers la gauche sur très petit écran */
-    margin-left: -1rem;
-    /* Améliorer encore plus la visibilité sur très petit écran */
-    padding: 0.6rem 0.8rem;
-    font-size: 1rem;
+    /* Garder les mêmes valeurs que 768px pour éviter le changement visuel */
+    margin-top: -0.75rem;
+    margin-left: -0.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
     background: #ffffff;
-    border: 3px solid #3b82f6;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    border: 2px solid #3b82f6;
+    box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
     color: #3b82f6;
-    font-weight: 700;
+    font-weight: 600;
   }
   
   .back-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
   
   .back-button--top-left {
-    top: 0.125rem;
-    left: 0.125rem;
-    /* Améliorer encore plus la visibilité en position fixe */
+    top: 0.25rem;
+    left: 0.25rem;
     background: #ffffff;
-    border: 3px solid #3b82f6;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    border: 2px solid #3b82f6;
+    box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
     color: #3b82f6;
-    padding: 0.6rem 0.8rem;
   }
 }
 

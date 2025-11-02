@@ -730,32 +730,10 @@ watch(showSolution, (newVal) => {
   line-height: 1.7;
   color: #1f2937;
   text-align: left;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  /* Empêcher le contenu de dépasser */
+  overflow-wrap: break-word;
+  word-break: break-word;
+  overflow: visible;
   max-width: 100%;
-  /* Scrollbar personnalisée pour PC */
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
-}
-
-.problem-content::-webkit-scrollbar {
-  height: 8px;
-}
-
-.problem-content::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 4px;
-}
-
-.problem-content::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-
-.problem-content::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
 }
 
 /* Solution Toggle */
@@ -884,35 +862,10 @@ watch(showSolution, (newVal) => {
   text-align: left;
   padding-left: 0;
   margin-left: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible;
   max-width: 100%;
-  /* Scrollbar personnalisée pour PC */
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
-}
-
-.steps-content::-webkit-scrollbar,
-.answer-content::-webkit-scrollbar {
-  height: 8px;
-}
-
-.steps-content::-webkit-scrollbar-track,
-.answer-content::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 4px;
-}
-
-.steps-content::-webkit-scrollbar-thumb,
-.answer-content::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-
-.steps-content::-webkit-scrollbar-thumb:hover,
-.answer-content::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* Amélioration des étapes de résolution - Version simple et propre */
@@ -1217,71 +1170,30 @@ watch(showSolution, (newVal) => {
   }
 }
 
-/* MathJax Styles - avec scroll horizontal pour tous les écrans (PC et mobile) */
-/* Forcer les formules à garder leur taille normale et déborder */
+/* MathJax Styles - ajustés pour s'adapter sans scroll horizontal */
 .exercice-card :deep(.mathjax-block) {
   max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible;
   margin: 1rem 0;
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
 }
 
-.exercice-card :deep(.mathjax-block)::-webkit-scrollbar {
-  height: 8px;
-}
-
-.exercice-card :deep(.mathjax-block)::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 4px;
-}
-
-.exercice-card :deep(.mathjax-block)::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-
-.exercice-card :deep(.mathjax-block)::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-/* Empêcher MathJax de réduire la taille des formules */
-.exercice-card :deep(.MathJax) {
-  max-width: none !important; /* Permettre le débordement */
-}
-
-.exercice-card :deep(.MathJax_Display) {
-  max-width: none !important; /* Permettre le débordement */
-  margin: 1.5rem 0;
-}
-
-.exercice-card :deep(.MathJax_SVG_Display) {
-  max-width: none !important; /* Permettre le débordement */
-}
-
-/* Forcer les SVG à garder leur taille naturelle */
-.exercice-card :deep(.MathJax_SVG) {
-  max-width: none !important;
-  min-width: min-content;
-}
-
-.exercice-card :deep(.MathJax_SVG_Display svg) {
-  max-width: none !important;
-}
-
-.exercice-card :deep(.MathJax svg) {
-  max-width: none !important;
-}
-
-/* S'assurer que les conteneurs MathJax modernes gardent leur taille */
-.exercice-card :deep(mjx-container) {
-  max-width: none !important;
-}
-
+.exercice-card :deep(.MathJax),
+.exercice-card :deep(.MathJax svg),
+.exercice-card :deep(.MathJax_SVG),
+.exercice-card :deep(.MathJax_SVG_Display svg),
+.exercice-card :deep(mjx-container),
 .exercice-card :deep(mjx-container[display="true"]) {
-  max-width: none !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+}
+
+.exercice-card :deep(.MathJax_Display),
+.exercice-card :deep(.MathJax_SVG_Display) {
+  max-width: 100% !important;
+  white-space: normal !important;
+  margin: 1.25rem 0;
+  text-align: center !important;
 }
 
 /* Responsive Design */

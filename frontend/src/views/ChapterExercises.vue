@@ -31,7 +31,7 @@
       </div>
       <div v-else-if="error" class="exercices-error">{{ error }}</div>
         <div v-else>
-          <template v-if="exercices.length > 0">
+          <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle">
           <div class="exercices-controls">
             <div class="controls-row">
               <!-- Barre de recherche -->
@@ -120,7 +120,7 @@
             </div>
             <Pagination :total="filteredExercices.length" :perPage="perPage" :page="currentPage" @update:page="handlePageChange" />
           </div>
-          </template>
+          </div>
           <div v-else class="empty-coming">
             <div class="empty-card">
               <div class="empty-icon">🧮</div>
@@ -160,6 +160,7 @@ const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()
 const notionId = ref(route.params.notionId)
 const exPageRef = ref(null)
+const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
 
 const exercices = ref([])
 const perPageOptions = [1,3,5]
@@ -278,6 +279,10 @@ const error = ref('')
 const chapitres = ref([])
 
 onMounted(async () => {
+  updateViewportWidth()
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', updateViewportWidth, { passive: true })
+  }
   // Synchroniser la recherche locale avec l'URL (barre globale)
   const q0 = route.query?.q
   if (typeof q0 !== 'undefined' && q0 !== null) {
@@ -288,6 +293,7 @@ onMounted(async () => {
 
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
 onActivated(() => {
+  updateViewportWidth()
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
   // Les composants ExerciceQCM enfants gèrent leur propre rendu, mais on force quand même ici
   nextTick(() => {
@@ -479,6 +485,36 @@ const paginated = computed(() => {
   return filteredExercices.value.slice(start, start + perPage.value)
 })
 
+function computeAutoZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.78
+  if (width >= 520) return 0.76
+  if (width >= 420) return 0.74
+  return 0.72
+}
+
+const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
+
+const zoomStyle = computed(() => {
+  const z = zoomLevel.value || 1
+  const widthPercent = (100 / z).toFixed(3)
+  return {
+    '--exercices-zoom': z,
+    transform: `scale(${z})`,
+    transformOrigin: 'top left',
+    width: `${widthPercent}%`
+  }
+})
+
+function updateViewportWidth() {
+  if (typeof window === 'undefined') return
+  viewportWidth.value = window.innerWidth
+}
+
 function handlePageChange(page) {
   currentPage.value = page
   // scroll to top of exercises (dans le bon conteneur)
@@ -620,6 +656,21 @@ watch(() => route.query.q, (val) => {
   }
 })
 
+watch(zoomLevel, () => {
+  nextTick(() => {
+    if (typeof window !== 'undefined' && window.MathJax && window.MathJax.typesetPromise) {
+      try {
+        if (window.MathJax.typesetClear) {
+          window.MathJax.typesetClear()
+        }
+        window.MathJax.typesetPromise()
+      } catch (error) {
+        console.warn('[MathJax] Erreur:', error)
+      }
+    }
+  })
+}, { immediate: true })
+
 // Forcer le rendu MathJax quand les exercices affichés changent
 watch(paginated, () => {
   nextTick(() => {
@@ -638,6 +689,9 @@ watch(paginated, () => {
 
 onBeforeUnmount(() => {
   saveViewState()
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateViewportWidth)
+  }
 })
 
 onDeactivated(() => {
@@ -1083,6 +1137,13 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   background: #fff;
   padding: 0 5vw 40px 5vw;
   text-align: center;
+}
+
+.exercices-content-outer {
+  width: 100%;
+  transform-origin: top left;
+  transition: transform 0.2s ease;
+  overflow-x: hidden;
 }
 
 /* Responsive design pour mobile */

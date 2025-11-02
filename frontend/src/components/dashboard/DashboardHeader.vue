@@ -181,63 +181,6 @@ const handleLogout = () => {
   color: #1e40af;
 }
 
-/* Section centrale */
-.header-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  max-width: 600px;
-  margin: 0 2rem;
-  min-width: 0;
-  overflow: hidden;
-}
-
-/* Container de recherche */
-.search-container {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-}
-
-/* Barre de recherche */
-.header-search {
-  width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  font-size: 1rem;
-  background: #f8fafc;
-  transition: all 0.2s ease;
-  color: #374151;
-}
-
-.header-search::placeholder {
-  color: #9ca3af;
-}
-
-.header-search:focus {
-  outline: none;
-  border-color: #2563eb;
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.header-search:hover {
-  border-color: #d1d5db;
-  background: #fff;
-}
-
-/* Icône de recherche */
-.search-icon {
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1rem;
-  color: #9ca3af;
-  pointer-events: none;
-}
-
 /* Section droite */
 .header-right {
   display: flex;
@@ -338,43 +281,28 @@ const handleLogout = () => {
 /* Responsive design professionnel */
 @media (max-width: 1200px) {
   .dashboard-header {
-    padding: 0.7rem 1.5rem 0.7rem 3.5rem;
-  }
-  
-  .header-center {
-    margin: 0 1.5rem;
-    justify-content: center;
-  }
-  
-  .search-container {
-    max-width: 350px;
+    /* Garder le même padding pour éviter le décalage */
+    padding: 0.7rem 2rem 0.7rem 4rem;
   }
 }
 
 @media (max-width: 1024px) {
   .dashboard-header {
-    padding: 0.7rem 1rem 0.7rem 3rem;
+    /* Garder le même padding pour éviter le décalage */
+    padding: 0.7rem 2rem 0.7rem 4rem;
     min-height: 60px;
   }
-  .burger-btn-fixed { left: 0.7rem; }
-  
-  .header-center {
-    margin: 0 1rem;
-    min-width: 200px;
-    justify-content: center;
-  }
-  
-  .search-container {
-    max-width: 300px;
-  }
+  /* Garder la position du burger identique */
 }
 
 @media (max-width: 768px) {
   .dashboard-header {
-    padding: 0.6rem 0.7rem 0.6rem 2.8rem;
+    padding: 0.6rem 0.7rem;
     min-height: 56px;
   }
-  .burger-btn-fixed { left: 0.6rem; }
+  .burger-btn-fixed { 
+    display: none;
+  }
   
   .header-center {
     margin: 0 0.5rem;
@@ -400,66 +328,29 @@ const handleLogout = () => {
 
 @media (max-width: 480px) {
   .dashboard-header {
-    padding: 0.5rem 0.5rem 0.5rem 2.5rem;
-    min-height: 52px;
-  }
-  .burger-btn-fixed { left: 0.5rem; }
-  
-  .header-center {
-    margin: 0 0.3rem;
-    min-width: 120px;
-    justify-content: center;
-  }
-  
-  .header-right {
-    gap: 0.25rem;
-  }
-  
-  .header-icon {
-    font-size: 1.1rem;
-    padding: 0.3rem;
-  }
-  
-  .header-bell-icon {
-    width: 1.4rem;
-    height: 1.4rem;
+    /* Garder la même hauteur pour éviter le changement */
+    padding: 0.6rem 0.7rem;
+    min-height: 56px;
   }
 }
 
 @media (max-width: 360px) {
   .dashboard-header {
-    padding: 0.4rem 0.4rem 0.4rem 2.2rem;
-    min-height: 48px;
+    /* Garder la même hauteur pour éviter le changement */
+    padding: 0.6rem 0.7rem;
+    min-height: 56px;
   }
-  .burger-btn-fixed { left: 0.45rem; }
-  
-  .header-center {
-    margin: 0 0.2rem;
-    min-width: 100px;
-    justify-content: center;
-  }
-  
-  .header-icon {
-    font-size: 1rem;
-    padding: 0.25rem;
-  }
-  
-  .header-bell-icon {
-    width: 1.3rem;
-    height: 1.3rem;
-  }
-
 }
 
 @media (max-height: 500px) and (orientation: landscape) {
   .dashboard-header {
-    min-height: 44px;
-    padding: 0.4rem 0.7rem 0.4rem 2.5rem;
+    /* Garder la même hauteur pour éviter le changement */
+    min-height: 56px;
+    padding: 0.6rem 0.7rem;
   }
   
-  .header-bell-icon {
-    width: 1.5rem;
-    height: 1.5rem;
+  .burger-btn-fixed {
+    display: none;
   }
 }
 </style> 

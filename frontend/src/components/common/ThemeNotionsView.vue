@@ -983,18 +983,60 @@ function highlightQuery(text) {
   }
 }
 
-@media (max-width: 705px) {
+@media (max-width: 768px) {
+  .tnv-wrapper {
+    margin-top: -0.5rem;
+  }
+  
+  .tnv-notions-grid {
+    grid-template-columns: repeat(2, 280px);
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .tnv-skeleton-grid {
+    grid-template-columns: repeat(2, 280px);
+    justify-content: center;
+  }
+
+  .tnv-theme-block {
+    padding: 0 1rem 1.25rem 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .tnv-theme-block:first-child {
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  .tnv-theme-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    margin-top: 0;
+  }
+  
+  /* Cacher le badge de concepts en mode mobile (aligné avec le breakpoint de la sidebar) */
+  .tnv-theme-count {
+    display: none;
+  }
+}
+
+@media (max-width: 650px) {
   .tnv-notions-grid {
     grid-template-columns: 280px;
     gap: 1rem;
+    justify-content: center;
   }
   
   .tnv-skeleton-grid {
     grid-template-columns: 280px;
+    justify-content: center;
   }
 
   .tnv-theme-block {
-    padding: 1.25rem;
+    padding: 1rem;
     margin-bottom: 1.5rem;
   }
 
@@ -1002,10 +1044,6 @@ function highlightQuery(text) {
     flex-direction: row;
     align-items: center;
     gap: 0.75rem;
-  }
-
-  .tnv-theme-title {
-    font-size: 1.25rem;
   }
 }
 

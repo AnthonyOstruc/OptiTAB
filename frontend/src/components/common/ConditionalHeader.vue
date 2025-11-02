@@ -102,76 +102,21 @@ const handleSubjectChange = (subjectId) => {
 
 <style scoped>
 .header-center {
-  /* Centré exactement au milieu du header */
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  /* Prendre tout l'espace disponible */
+  flex: 1;
   display: flex;
-  justify-content: center;
-  /* Réserve de place pour les éléments gauche/droite pour éviter le chevauchement */
-  max-width: min(600px, calc(100vw - 420px));
-  width: fit-content;
+  justify-content: flex-start;
+  align-items: center;
   min-width: 0;
   overflow: visible;
   z-index: 200; /* s'assurer que les tabs restent cliquables au-dessus */
+  padding: 0;
 }
 
-/* Responsive - Optimisé pour que les onglets restent toujours visibles */
-@media (max-width: 1200px) {
-  .header-center {
-    max-width: 500px;
-  }
-}
-
-/* Fallback UX: en dessous d'une certaine largeur, on centre dans le flux 
-   pour éviter tout chevauchement avec la zone droite (avatar/xp). */
-@media (max-width: 1100px) {
-  .header-center {
-    position: static;
-    left: auto;
-    top: auto;
-    transform: none;
-    margin: 0 auto;
-  }
-}
-
-
-@media (max-width: 1024px) {
-  .header-center {
-    max-width: 400px;
-    /* Assurer que les onglets restent visibles */
-    min-width: 200px;
-  }
-}
-
+/* Responsive - Maintenir le layout fixe sur tous les écrans */
 @media (max-width: 768px) {
   .header-center {
-    max-width: none;
-    /* Assurer que les onglets restent toujours visibles sur mobile */
-    min-width: 150px;
-  }
-}
-
-@media (max-width: 480px) {
-  .header-center {
-    /* Assurer que les onglets restent toujours visibles même sur très petit écran */
-    min-width: 120px;
-  }
-}
-
-@media (max-width: 360px) {
-  .header-center {
-    /* Assurer que les onglets restent toujours visibles */
-    min-width: 100px;
-  }
-}
-
-/* Assurer que les onglets restent visibles en mode paysage sur mobile */
-@media (max-height: 500px) and (orientation: landscape) {
-  .header-center {
-    /* Assurer que les onglets restent visibles en mode paysage */
-    min-width: 120px;
+    padding: 0;
   }
 }
 </style> 

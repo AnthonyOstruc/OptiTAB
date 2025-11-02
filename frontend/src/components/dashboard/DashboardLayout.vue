@@ -11,7 +11,7 @@
     <div class="dashboard-main-container">
                 <!-- Sidebar principale -->
       <Sidebar 
-        v-show="sidebarOpen" 
+        v-if="!isMobile && sidebarOpen" 
         :collapsed="sidebarCollapsed"
         @navigation="handleNavigation"
         @toggle-collapsed="toggleSidebarCollapsed"
@@ -25,7 +25,7 @@
       
       <!-- Contenu du dashboard -->
       <div class="dashboard-content">
-        <main class="dashboard-main">
+        <main class="dashboard-main" :class="dashboardMainClasses">
           <slot />
         </main>
       </div>
@@ -33,15 +33,17 @@
 
     <!-- Bouton IA flottant (visible uniquement pour les admins) -->
     <AIFloatingButton v-if="userStore.isAdmin" />
+    <MobileBottomNav v-if="isMobile" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import Sidebar from './Sidebar.vue'
 import DashboardHeader from './DashboardHeader.vue'
 import AIFloatingButton from '@/components/ai/AIFloatingButton.vue'
+import MobileBottomNav from './MobileBottomNav.vue'
 import { useUserStore } from '@/stores/user'
 
 // Props et émissions
@@ -55,6 +57,16 @@ const userStore = useUserStore()
 // État réactif
 const sidebarOpen = ref(true)
 const sidebarCollapsed = ref(false)
+const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
+const isMobile = computed(() => viewportWidth.value <= 768)
+const dashboardMainClasses = computed(() => ({
+  'with-mobile-nav': isMobile.value
+}))
+
+const handleResize = () => {
+  if (typeof window === 'undefined') return
+  viewportWidth.value = window.innerWidth
+}
 
 // Méthodes
 const toggleSidebar = () => {
@@ -85,6 +97,8 @@ const handleSubjectChange = (subjectId) => {
 // Lifecycle
 onMounted(async () => {
   console.log('[DashboardLayout] onMounted - État initial:', { sidebarOpen: sidebarOpen.value, sidebarCollapsed: sidebarCollapsed.value })
+  window.addEventListener('resize', handleResize, { passive: true })
+  handleResize()
   
   // Restaurer la préférence de la sidebar
   const savedSidebarState = localStorage.getItem('sidebar-open')
@@ -109,6 +123,18 @@ onMounted(async () => {
   if (sidebarRef.value) {
     // La sidebar se charge automatiquement via onMounted
   }
+})
+
+watch(isMobile, (val) => {
+  if (val) {
+    sidebarOpen.value = false
+  } else if (localStorage.getItem('sidebar-open') !== 'false') {
+    sidebarOpen.value = true
+  }
+}, { immediate: true })
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
 })
 
 // Watcher pour s'assurer que la sidebar reste pliée lors de la navigation
@@ -172,7 +198,7 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
 /* Zone principale */
 .dashboard-main {
   flex: 1;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 2rem 1.5rem;
   overflow-y: auto;
   background: #fff;
   position: relative;
@@ -180,18 +206,23 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
   flex-direction: column;
   /* Assurer que le contenu principal reste stable */
   min-height: 0;
+  transition: padding-bottom 0.2s ease;
+}
+
+.dashboard-main.with-mobile-nav {
+  padding-bottom: 5.5rem;
 }
 
 /* Responsive design - Optimisé pour que le header et les onglets restent visibles */
 @media (max-width: 1200px) {
   .dashboard-main {
-    padding: 1.25rem 1.5rem;
+    padding: 1.25rem 1.5rem 1.25rem;
   }
 }
 
 @media (max-width: 1024px) {
   .dashboard-main {
-    padding: 1rem 1.25rem;
+    padding: 1.25rem 1.5rem 1.25rem;
   }
   
   .dashboard-content {
@@ -208,7 +239,7 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
 
 @media (max-width: 768px) {
   .dashboard-main {
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 1rem 0.75rem;
   }
   
   .dashboard-content {

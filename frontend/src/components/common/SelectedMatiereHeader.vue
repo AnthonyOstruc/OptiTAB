@@ -22,6 +22,20 @@
     <div v-else class="matieres-tabs">
       <!-- Conteneur principal des tabs -->
       <div class="tabs-container">
+        <!-- Bouton liste déroulante des onglets ouverts (visible uniquement < 500px) -->
+        <button 
+          v-if="selectedMatieres.length > 0"
+          class="open-tabs-btn"
+          @click="toggleOpenTabsDropdown($event)"
+          :disabled="loading"
+          title="Voir les onglets ouverts"
+          ref="openTabsButton"
+          aria-label="Liste des onglets ouverts"
+        >
+          <span class="dropdown-arrow">▼</span>
+          <span class="active-name">{{ activeMatiere?.nom || 'Sélectionner' }}</span>
+        </button>
+        
         <!-- Tab "New Matière" par défaut (visible uniquement si aucune matière sélectionnée) -->
         <button 
           v-if="selectedMatieres.length === 0"
@@ -36,11 +50,11 @@
           <span class="tab-name">New Matière</span>
         </button>
         
-        <!-- Tabs des matières sélectionnées -->
+        <!-- Tabs des matières sélectionnées (masqués < 500px) -->
         <div 
           v-for="matiere in selectedMatieres" 
           :key="`tab-${matiere.id}`"
-          :class="['matiere-tab', { 
+          :class="['matiere-tab', 'desktop-tab', { 
             active: activeMatiereId === matiere.id,
             loading: loadingMatiere === matiere.id 
           }]"
@@ -141,9 +155,117 @@
       </div>
       </teleport>
       
+      <!-- Dropdown des onglets ouverts (téléporté au body, visible uniquement < 500px) -->
+      <teleport to="body">
+      <div 
+        v-if="showOpenTabsDropdown" 
+        class="open-tabs-dropdown"
+        :style="openTabsDropdownStyle"
+        role="listbox"
+        aria-label="Liste des onglets ouverts"
+      >
+        <div class="dropdown-header">
+          <span class="dropdown-title">Onglets ouverts</span>
+          <button 
+            class="dropdown-close" 
+            @click="closeOpenTabsDropdown"
+            aria-label="Fermer la liste"
+          >
+            ×
+          </button>
+        </div>
+        
+        <div
+          v-for="matiere in selectedMatieres" 
+          :key="`open-tab-${matiere.id}`"
+          :class="['dropdown-item', {
+            'active': activeMatiereId === matiere.id,
+            'loading': loadingMatiere === matiere.id 
+          }]"
+          @click="setActiveMatiereFromDropdown(matiere.id)"
+          role="option"
+          :aria-selected="activeMatiereId === matiere.id"
+          :title="`Voir ${matiere.nom}`"
+        >
+          <div class="dropdown-content-left">
+            <span class="dropdown-icon" v-html="matiere.svg_icon || '📚'" aria-hidden="true"></span>
+            <span class="dropdown-name">{{ matiere.nom }}</span>
+          </div>
+          <button 
+            class="dropdown-close-tab"
+            @click.stop="removeMatiere(matiere.id)"
+            :title="`Fermer ${matiere.nom}`"
+            :aria-label="`Fermer l'onglet ${matiere.nom}`"
+            :disabled="loading"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+      </teleport>
+      
+      <!-- Dropdown des favoris (téléporté au body, visible uniquement < 500px) -->
+      <teleport to="body">
+      <div 
+        v-if="showFavoritesDropdown" 
+        class="favorites-dropdown"
+        :style="favoritesDropdownStyle"
+        role="listbox"
+        aria-label="Liste des favoris"
+      >
+        <div class="dropdown-header">
+          <span class="dropdown-title">Favoris ⭐</span>
+          <button 
+            class="dropdown-close" 
+            @click="closeFavoritesDropdown"
+            aria-label="Fermer la liste"
+          >
+            ×
+          </button>
+        </div>
+        
+        <div
+          v-for="matiere in favoriteMatieres" 
+          :key="`favorite-dropdown-${matiere.id}`"
+          :class="['dropdown-item', {
+            'active': activeMatiereId === matiere.id,
+            'loading': loadingMatiere === matiere.id 
+          }]"
+          @click="selectMatiereFromFavoritesDropdown(matiere)"
+          role="option"
+          :aria-selected="activeMatiereId === matiere.id"
+          :title="`Ouvrir ${matiere.nom}`"
+        >
+          <div class="dropdown-content-left">
+            <span class="dropdown-icon" v-html="matiere.svg_icon || '📚'" aria-hidden="true"></span>
+            <span class="dropdown-name">{{ matiere.nom }}</span>
+          </div>
+        </div>
+        
+        <div v-if="favoriteMatieres.length === 0" class="dropdown-empty">
+          <span class="empty-icon">⭐</span>
+          <span class="empty-text">Aucun favori</span>
+        </div>
+      </div>
+      </teleport>
+      
       <!-- Barre des favoris (style Chrome) -->
       <div v-if="favoriteMatieres.length > 0" class="favorites-bar">
         <div class="favorites-container">
+          <!-- Bouton dropdown favoris (visible uniquement < 500px) -->
+          <button 
+            class="favorites-dropdown-btn"
+            @click="toggleFavoritesDropdown($event)"
+            :disabled="loading"
+            title="Voir les favoris"
+            ref="favoritesButton"
+            aria-label="Liste des favoris"
+          >
+            <span class="dropdown-arrow">▼</span>
+            <span class="favorites-icon" aria-hidden="true">⭐</span>
+            <span class="favorites-dropdown-text">Favoris</span>
+          </button>
+          
           <div class="favorites-label">
             <span class="favorites-icon" aria-hidden="true">⭐</span>
             <span class="favorites-text">Favoris:</span>
@@ -153,7 +275,7 @@
             <button 
               v-for="matiere in favoriteMatieres" 
               :key="`favorite-${matiere.id}`"
-              class="favorite-item"
+              class="favorite-item desktop-favorite"
               @click="selectMatiere(matiere)"
               @contextmenu.prevent="showContextMenu($event, matiere)"
               :class="{ 
@@ -251,6 +373,12 @@ const showMatiereDropdown = ref(false)
 const showAllFavorites = ref(false)
 const newMatiereButton = ref(null)
 const dropdownStyle = ref({})
+const showOpenTabsDropdown = ref(false)
+const openTabsButton = ref(null)
+const openTabsDropdownStyle = ref({})
+const showFavoritesDropdown = ref(false)
+const favoritesButton = ref(null)
+const favoritesDropdownStyle = ref({})
 
 /**
  * Propriétés calculées (Computed Properties)
@@ -578,6 +706,84 @@ const closeMatiereDropdown = () => {
 }
 
 /**
+ * Affiche/masque le dropdown des onglets ouverts
+ */
+const toggleOpenTabsDropdown = async (event) => {
+  if (loading.value) return
+  
+  try {
+    showOpenTabsDropdown.value = !showOpenTabsDropdown.value
+    
+    if (showOpenTabsDropdown.value) {
+      await nextTick()
+      const anchorEl = (event && event.currentTarget) || openTabsButton.value || null
+      openTabsDropdownStyle.value = calculateDropdownPosition(anchorEl)
+    } else {
+      openTabsDropdownStyle.value = {}
+    }
+  } catch (error) {
+    handleError(error, 'toggleOpenTabsDropdown')
+  }
+}
+
+/**
+ * Ferme le dropdown des onglets ouverts
+ */
+const closeOpenTabsDropdown = () => {
+  showOpenTabsDropdown.value = false
+  openTabsDropdownStyle.value = {}
+}
+
+/**
+ * Définit la matière active depuis le dropdown des onglets ouverts
+ */
+const setActiveMatiereFromDropdown = (matiereId) => {
+  if (!isValidMatiereId(matiereId) || loading.value) return
+  
+  setActiveMatiere(matiereId)
+  closeOpenTabsDropdown()
+}
+
+/**
+ * Affiche/masque le dropdown des favoris
+ */
+const toggleFavoritesDropdown = async (event) => {
+  if (loading.value) return
+  
+  try {
+    showFavoritesDropdown.value = !showFavoritesDropdown.value
+    
+    if (showFavoritesDropdown.value) {
+      await nextTick()
+      const anchorEl = (event && event.currentTarget) || favoritesButton.value || null
+      favoritesDropdownStyle.value = calculateDropdownPosition(anchorEl)
+    } else {
+      favoritesDropdownStyle.value = {}
+    }
+  } catch (error) {
+    handleError(error, 'toggleFavoritesDropdown')
+  }
+}
+
+/**
+ * Ferme le dropdown des favoris
+ */
+const closeFavoritesDropdown = () => {
+  showFavoritesDropdown.value = false
+  favoritesDropdownStyle.value = {}
+}
+
+/**
+ * Sélectionne une matière depuis le dropdown des favoris
+ */
+const selectMatiereFromFavoritesDropdown = (matiere) => {
+  if (!matiere?.id || loading.value) return
+  
+  selectMatiere(matiere)
+  closeFavoritesDropdown()
+}
+
+/**
  * Sélectionne une matière depuis le dropdown ou les favoris
  * @param {Object} matiere - La matière à sélectionner
  */
@@ -690,16 +896,39 @@ const toggleFavoritesVisibility = () => {
  * @param {Event} event - L'événement de clic
  */
 const handleClickOutside = (event) => {
-  if (!showMatiereDropdown.value) return
-  
   try {
-    const dropdown = document.querySelector('.matiere-dropdown')
-    const button = newMatiereButton.value
-    const clickedInsideDropdown = dropdown && dropdown.contains(event.target)
-    const clickedOnButton = button && button.contains(event.target)
-    const clickedOnTabClose = event.target.classList && event.target.classList.contains('tab-close')
-    if (!clickedInsideDropdown && !clickedOnButton || clickedOnTabClose) {
-      closeMatiereDropdown()
+    // Gérer le dropdown des matières disponibles
+    if (showMatiereDropdown.value) {
+      const dropdown = document.querySelector('.matiere-dropdown')
+      const button = newMatiereButton.value
+      const clickedInsideDropdown = dropdown && dropdown.contains(event.target)
+      const clickedOnButton = button && button.contains(event.target)
+      const clickedOnTabClose = event.target.classList && event.target.classList.contains('tab-close')
+      if (!clickedInsideDropdown && !clickedOnButton || clickedOnTabClose) {
+        closeMatiereDropdown()
+      }
+    }
+    
+    // Gérer le dropdown des onglets ouverts
+    if (showOpenTabsDropdown.value) {
+      const openTabsDropdown = document.querySelector('.open-tabs-dropdown')
+      const openTabsBtn = openTabsButton.value
+      const clickedInsideOpenTabs = openTabsDropdown && openTabsDropdown.contains(event.target)
+      const clickedOnOpenTabsBtn = openTabsBtn && openTabsBtn.contains(event.target)
+      if (!clickedInsideOpenTabs && !clickedOnOpenTabsBtn) {
+        closeOpenTabsDropdown()
+      }
+    }
+    
+    // Gérer le dropdown des favoris
+    if (showFavoritesDropdown.value) {
+      const favoritesDropdown = document.querySelector('.favorites-dropdown')
+      const favoritesBtn = favoritesButton.value
+      const clickedInsideFavorites = favoritesDropdown && favoritesDropdown.contains(event.target)
+      const clickedOnFavoritesBtn = favoritesBtn && favoritesBtn.contains(event.target)
+      if (!clickedInsideFavorites && !clickedOnFavoritesBtn) {
+        closeFavoritesDropdown()
+      }
     }
   } catch (error) {
     handleError(error, 'handleClickOutside')
@@ -712,9 +941,17 @@ const handleClickOutside = (event) => {
  */
 const handleKeydown = (event) => {
   try {
-    if (event.key === 'Escape' && showMatiereDropdown.value) {
+    if (event.key === 'Escape') {
       event.preventDefault()
-      closeMatiereDropdown()
+      if (showMatiereDropdown.value) {
+        closeMatiereDropdown()
+      }
+      if (showOpenTabsDropdown.value) {
+        closeOpenTabsDropdown()
+      }
+      if (showFavoritesDropdown.value) {
+        closeFavoritesDropdown()
+      }
     }
   } catch (error) {
     handleError(error, 'handleKeydown')
@@ -947,16 +1184,11 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 .selected-matiere-header {
   display: flex;
   flex-direction: column;
-  width: fit-content;
-  max-width: calc(100% - 4rem);
+  width: 100%;
   padding: 0;
   position: relative;
   gap: 0.5rem;
   background: #ffffff;
-  /* Décalage vers la droite */
-  margin-left: 2rem;
-  /* Centrer horizontalement */
-  margin-right: 2rem;
   /* Assurer l'alignement des favoris avec les onglets */
   align-items: flex-start;
 }
@@ -1048,7 +1280,6 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   font-size: 0.75rem;
   color: #64748b;
   cursor: pointer;
-  transition: all 0.15s ease;
   white-space: nowrap;
   min-width: 100px;
   max-width: 160px;
@@ -1061,17 +1292,12 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 }
 
 .matiere-tab:hover {
-  background: #ffffff;
-  color: #64748b;
-  border-color: #e2e8f0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* Pas de changement visuel au hover pour garder fixe */
 }
 
 .matiere-tab:focus {
   outline: none;
-  background: #ffffff;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+  /* Pas de changement visuel au focus pour garder fixe */
 }
 
 .matiere-tab:disabled {
@@ -1129,9 +1355,7 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 }
 
 .matiere-tab.new-tab:hover {
-  background: #e2e8f0;
-  color: #374151;
-  border-color: #94a3b8;
+  /* Pas de changement visuel au hover pour garder fixe */
 }
 
 .matiere-tab.new-tab:disabled {
@@ -1153,10 +1377,7 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 }
 
 .matiere-tab.new-tab-small:hover {
-  background: #e2e8f0;
-  color: #374151;
-  border-color: #94a3b8;
-  transform: translateY(-1px);
+  /* Pas de changement visuel au hover pour garder fixe */
 }
 
 .matiere-tab.new-tab-small:disabled {
@@ -1222,7 +1443,6 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   cursor: pointer;
   padding: 1px;
   border-radius: 3px;
-  transition: all 0.15s ease;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1485,7 +1705,7 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   border: none;
   border-radius: 0;
   padding: 0;
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
   box-shadow: none;
   position: relative;
   height: 28px;
@@ -1551,7 +1771,6 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   font-size: 0.75rem;
   color: #64748b;
   cursor: pointer;
-  transition: all 0.15s ease;
   white-space: nowrap;
   height: 24px;
   flex-shrink: 0;
@@ -1559,19 +1778,12 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 }
 
 .favorite-item:hover {
-  background: #ffffff;
-  border-color: #e2e8f0;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  color: #64748b;
+  /* Pas de changement visuel au hover pour garder fixe */
 }
 
 .favorite-item:focus {
   outline: none;
-  background: #ffffff;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
-  color: #64748b;
+  /* Pas de changement visuel au focus pour garder fixe */
 }
 
 .favorite-item.active {
@@ -1620,7 +1832,6 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1631,19 +1842,12 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 }
 
 .favorites-toggle:hover {
-  background: #ffffff;
-  color: #92979f;
-  border-color: #e2e8f0;
-  transform: scale(1.05);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* Pas de changement visuel au hover pour garder fixe */
 }
 
 .favorites-toggle:focus {
   outline: none;
-  background: #ffffff;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
-  color: #64748b;
+  /* Pas de changement visuel au focus pour garder fixe */
 }
 
 /* Scrollbar pour le dropdown */
@@ -1709,336 +1913,222 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   background: #94a3b8;
 }
 
-/* Animations et transitions globales */
+/* Désactiver les animations pour les onglets */
 .matiere-tab,
-.favorite-item,
-.dropdown-item {
-  will-change: transform;
+.favorite-item {
+  will-change: auto;
 }
 
-/* Responsive Design - Optimisé pour que les onglets restent toujours visibles */
+/* Bouton liste déroulante des onglets ouverts (masqué par défaut, visible < 500px) */
+.open-tabs-btn {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 3px;
+  padding: 0.22rem 0.6rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  cursor: pointer;
+  white-space: nowrap;
+  flex: 1;
+  max-width: 280px;
+  min-width: 180px;
+  height: 28px;
+  line-height: 26px;
+  box-sizing: border-box;
+}
+
+.open-tabs-btn:hover {
+  /* Pas de changement visuel au hover pour garder fixe */
+}
+
+.open-tabs-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dropdown-arrow {
+  font-size: 0.65rem;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.active-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  color: #64748b;
+}
+
+/* Dropdown des onglets ouverts */
+.open-tabs-dropdown {
+  position: fixed;
+  z-index: 12005;
+  min-width: 220px;
+  max-width: 320px;
+  width: max-content;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.open-tabs-dropdown .dropdown-item.active {
+  background: #eff6ff;
+  border-left: 3px solid #3b82f6;
+}
+
+.dropdown-close-tab {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dropdown-close-tab:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.dropdown-close-tab:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Bouton dropdown favoris (masqué par défaut, visible < 500px) - largeur automatique complète */
+.favorites-dropdown-btn {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 3px;
+  padding: 0.22rem 0.6rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 100%;
+  height: 28px;
+  line-height: 26px;
+  box-sizing: border-box;
+}
+
+.favorites-dropdown-btn:hover {
+  /* Pas de changement visuel au hover pour garder fixe */
+}
+
+.favorites-dropdown-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.favorites-dropdown-btn .favorites-icon {
+  font-size: 0.8rem;
+  color: #fbbf24;
+  flex-shrink: 0;
+}
+
+.favorites-dropdown-btn .dropdown-arrow {
+  font-size: 0.65rem;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.favorites-dropdown-text {
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* Dropdown des favoris */
+.favorites-dropdown {
+  position: fixed;
+  z-index: 12005;
+  min-width: 220px;
+  max-width: 320px;
+  width: max-content;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.favorites-dropdown .dropdown-item.active {
+  background: #fef3c7;
+  border-left: 3px solid #fbbf24;
+}
+
+/* Responsive Design - Garder les dimensions fixes jusqu'à 768px */
 @media (max-width: 1100px) {
-  .favorites-bar {
-    margin-top: 0.3rem;
-  }
+  /* Pas de changement de dimensions - garder fixe */
 }
 
 @media (max-width: 1024px) {
-  .selected-matiere-header {
-    gap: 0.4rem;
-  }
-  
-  .matiere-tab {
-    min-width: 108px;
-    max-width: 192px;
-    font-size: 0.8rem;
-    padding: 0.22rem 0.62rem;
-    padding-right: 1.9rem;
-    height: 28px;
-  }
-  
-  .matiere-tab.new-tab-small {
-    min-width: 36px;
-    max-width: 36px;
-    padding: 0.15rem 0.3rem;
-  }
-  
-  .tab-close {
-    width: 16px;
-    height: 16px;
-    font-size: 0.9rem;
-  }
+  /* Pas de changement de dimensions - garder fixe */
 }
 
 @media (max-width: 768px) {
-  .selected-matiere-header {
-    gap: 0.3rem;
-    /* Assurer que les onglets restent visibles sur mobile */
-    min-height: 50px;
-    /* Décalage réduit sur tablette */
-    margin-left: 1rem;
-    margin-right: 1rem;
-    /* Maintenir l'alignement des favoris */
-    align-items: flex-start;
-  }
-  
-  .favorites-bar {
-    padding: 0.3rem 0.5rem;
-    margin-top: 0.3rem;
-    /* Aligner avec les onglets */
-    margin-left: 0;
-    padding-left: 0;
-  }
-  
-  .tabs-container {
-    /* Assurer que les onglets restent toujours visibles */
-    padding: 2px;
-    /* Scroll horizontal obligatoire */
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-  
-  .matiere-tab {
-    min-width: 96px;
-    max-width: 146px;
-    font-size: 0.76rem;
-    padding: 0.2rem 0.48rem;
-    padding-right: 1.6rem;
-    height: 27px;
-    /* Assurer que les onglets ne se cassent pas */
-    flex-shrink: 0;
-  }
-  
-  .matiere-tab.new-tab-small {
-    min-width: 28px;
-    max-width: 28px;
-    padding: 0.1rem 0.15rem;
-  }
-  
-  .tab-close {
-    width: 12px;
-    height: 12px;
-    font-size: 0.7rem;
-  }
-  
-  .matiere-dropdown {
-    min-width: 240px;
-    max-width: calc(100vw - 20px);
-    margin-left: -10px;
-  }
-  
-  .dropdown-item {
-    padding: 0.6rem 0.8rem;
-    gap: 0.6rem;
-  }
-  
-  .dropdown-icon {
-    width: 24px;
-    height: 24px;
-    font-size: 1.1rem;
-  }
-  
-  .dropdown-star {
-    width: 24px;
-    height: 24px;
-    font-size: 1rem;
-  }
-  
-  .favorites-bar {
-    padding: 0.3rem 0.5rem;
-    margin-top: 0.3rem;
-    /* Aligner avec les onglets */
-    margin-left: 0;
-    padding-left: 0;
-  }
-  
-  .favorites-container {
-    gap: 0.4rem;
-  }
-  
-  .favorites-label {
-    padding: 0.2rem 0.4rem;
-    font-size: 0.65rem;
-  }
-  
-  .favorite-item {
-    padding: 0.15rem 0.3rem;
-    font-size: 0.65rem;
-    height: 22px;
-    gap: 0.25rem;
-  }
-  
-  .favorite-icon {
-    width: 12px;
-    height: 12px;
-    font-size: 0.7rem;
-  }
-  
-  .favorites-toggle {
-    width: 24px;
-    height: 22px;
-    font-size: 0.7rem;
-  }
+  /* Pas de changement - garder les onglets identiques jusqu'à 500px */
 }
 
-/* Compactage de la barre des favoris pour les petites largeurs */
+/* Garder les onglets fixes jusqu'à 500px */
 @media (max-width: 550px) {
-  /* Dans le libellé, ne garder que l'icône ⭐ */
-  .favorites-text {
-    display: none;
-  }
-
-  /* Dans la liste, n'afficher que le logo de la matière */
-  .favorite-name {
-    display: none;
-  }
-
-  /* Afficher les initiales en mode compact pour les favoris */
-  .favorite-initials {
-    display: inline-flex;
-    font-weight: 700;
-    font-size: 0.7rem;
-    color: #64748b;
-    margin-left: 0.15rem;
-  }
-
-  /* Onglets compacts: masquer le nom complet, ne garder que l'icône + initiales */
-  .tab-name {
-    display: none;
-  }
-  .tab-initials {
-    display: inline-flex;
-    font-size: 0.7rem;
-    margin-left: 0.15rem;
-    font-weight: 800;
-  }
-
-  /* Onglets compacts: carré comme favoris */
-  .matiere-tab {
-    min-width: auto;
-    max-width: none;
-    padding: 0.22rem 0.52rem;
-    padding-right: 1.2rem; /* espace pour le bouton fermer */
-    height: 28px;
-    line-height: 26px;
-    gap: 0.3rem;
-    border-radius: 3px;
-  }
-
-  .tab-close {
-    right: 4px;
-    width: 14px;
-    height: 14px;
-  }
-
-  /* Icônes compactes alignées sur les favoris */
-  .tab-icon,
-  .favorite-icon {
-    width: 12px;
-    height: 12px;
-    font-size: 0.7rem;
-  }
-  .tab-icon svg,
-  .favorite-icon svg {
-    width: 12px;
-    height: 12px;
-  }
+  /* Pas de changement - garder les onglets identiques */
 }
 
-@media (max-width: 480px) {
-  .selected-matiere-header {
-    gap: 0.25rem;
-    /* Assurer que les onglets restent visibles même sur très petit écran */
-    min-height: 45px;
-    /* Décalage minimal sur mobile */
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    /* Maintenir l'alignement des favoris */
-    align-items: flex-start;
+/* Liste déroulante à partir de 500px */
+@media (max-width: 500px) {
+  /* Afficher le bouton liste déroulante des onglets */
+  .open-tabs-btn {
+    display: flex !important;
   }
   
-  .tabs-container {
-    /* Scroll horizontal obligatoire sur très petit écran */
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 1px;
+  /* Masquer les onglets individuels */
+  .matiere-tab.desktop-tab {
+    display: none !important;
   }
   
-  .matiere-tab {
-    min-width: 52px;
-    max-width: 88px;
-    font-size: 0.64rem;
-    height: 24px;
-    padding: 0.06rem 0.18rem;
-    padding-right: 0.6rem;
-    /* Assurer que les onglets ne se cassent pas */
-    flex-shrink: 0;
+  /* Afficher le bouton liste déroulante des favoris */
+  .favorites-dropdown-btn {
+    display: flex !important;
   }
   
-  .matiere-tab.new-tab-small {
-    min-width: 28px;
-    max-width: 28px;
-    padding: 0.1rem 0.15rem;
-  }
-  
-  .tab-close {
-    width: 10px;
-    height: 10px;
-    font-size: 0.6rem;
-  }
-  
-  .dropdown-item {
-    padding: 0.5rem 0.6rem;
-  }
-  
-  .favorites-bar {
-    padding: 0.25rem 0.4rem;
-    /* Aligner avec les onglets */
-    margin-left: 0;
-    padding-left: 0;
-  }
-  
+  /* Masquer le label "Favoris:" */
   .favorites-label {
-    font-size: 0.6rem;
-    padding: 0.15rem 0.3rem;
+    display: none !important;
   }
   
-  .favorite-item {
-    font-size: 0.6rem;
-    height: 20px;
-    padding: 0.1rem 0.25rem;
+  /* Masquer les favoris individuels */
+  .favorite-item.desktop-favorite {
+    display: none !important;
   }
   
-  .favorite-icon {
-    width: 10px;
-    height: 10px;
-    font-size: 0.65rem;
-  }
-
-  /* Réduire aussi l'icône des onglets pour compacter la largeur */
-  .tab-icon {
-    width: 10px;
-    height: 10px;
-    font-size: 0.65rem;
+  /* Masquer le bouton toggle des favoris */
+  .favorites-toggle {
+    display: none !important;
   }
 }
 
-/* Assurer que les onglets restent visibles même sur très petit écran */
-@media (max-width: 360px) {
-  .selected-matiere-header {
-    min-height: 40px;
-    /* Maintenir l'alignement des favoris */
-    align-items: flex-start;
-  }
-  
-  .matiere-tab {
-    min-width: 70px;
-    max-width: 100px;
-    font-size: 0.65rem;
-    height: 20px;
-    padding: 0.05rem 0.2rem;
-  }
-  
-  .matiere-tab.new-tab-small {
-    min-width: 24px;
-    max-width: 24px;
-    padding: 0.05rem 0.1rem;
-  }
-  
-  .tab-close {
-    width: 10px;
-    height: 10px;
-    font-size: 0.6rem;
-  }
-}
+/* Les changements sont maintenant gérés dans le breakpoint 500px ci-dessus */
 
 /* Assurer que les onglets restent visibles en mode paysage sur mobile */
 @media (max-height: 500px) and (orientation: landscape) {
   .selected-matiere-header {
     min-height: 35px;
-    /* Décalage minimal en mode paysage */
-    margin-left: 0.25rem;
-    margin-right: 0.25rem;
     /* Maintenir l'alignement des favoris */
     align-items: flex-start;
   }
@@ -2087,8 +2177,7 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   .dropdown-item:hover,
   .favorite-item:hover,
   .favorites-toggle:hover {
-    background: #ffffff;
-    color: #3b82f6;
+    /* Pas de changement visuel au hover pour garder fixe */
   }
   
   .matiere-tab.active {

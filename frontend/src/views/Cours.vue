@@ -83,7 +83,9 @@
           </transition>
         </nav>
 
-        <div class="cours-content" ref="coursContentRef" v-html="renderedContent"></div>
+        <div class="cours-content-outer" :style="zoomStyle">
+          <div class="cours-content" ref="coursContentRef" v-html="renderedContent"></div>
+        </div>
         <div v-if="selectedCours.video_url" class="cours-video">
           <h3>Vidéo explicative</h3>
           <div class="video-container">
@@ -162,6 +164,7 @@ const showScrollTopButton = ref(false)
 let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
+const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
 
 // Recherche dans la page
 const searchQuery = ref('')
@@ -314,6 +317,10 @@ function formatDate(dateString) {
 }
 
 onMounted(async () => {
+  updateViewportWidth()
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', updateViewportWidth, { passive: true })
+  }
   // Restaurer la requête depuis l'URL
   if (route.query?.q) {
     try { searchQuery.value = String(route.query.q) } catch {}
@@ -325,9 +332,11 @@ onMounted(async () => {
 onActivated(() => {
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
   nextTick(() => {
+    scheduleFormulaWrapRetry()
     renderMath()
     // S'assurer que le rendu est bien appliqué avec un second appel après un délai
     setTimeout(() => {
+      scheduleFormulaWrapRetry()
       renderMath()
     }, 100)
   })
@@ -367,8 +376,10 @@ async function loadCoursData() {
 
     // Rendre le contenu MathJax après le chargement
     nextTick(() => {
+      scheduleFormulaWrapRetry()
       renderMath()
       setTimeout(() => {
+        scheduleFormulaWrapRetry()
         extractTableOfContents()
         buildSearchIndex()
         updateHeadingMatches()
@@ -406,6 +417,120 @@ const renderedContent = computed(() => {
   // le Markdown n'insère des balises <p> au milieu des balises <img>.
   return renderContentWithImages(content, images)
 })
+
+function computeAutoZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.78
+  if (width >= 520) return 0.76
+  if (width >= 420) return 0.74
+  return 0.72
+}
+
+const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
+
+const zoomStyle = computed(() => {
+  const z = zoomLevel.value || 1
+  const widthPercent = (100 / z).toFixed(3)
+  return {
+    '--course-zoom': z,
+    transform: `scale(${z})`,
+    transformOrigin: 'top left',
+    width: `${widthPercent}%`
+  }
+})
+
+function updateViewportWidth() {
+  if (typeof window === 'undefined') return
+  viewportWidth.value = window.innerWidth
+}
+
+function scheduleFormulaWrapRetry(attempt = 0) {
+  const MAX_ATTEMPTS = 8
+  if (!coursContentRef.value) return
+  const hasScrollableContent = coursContentRef.value.querySelector('mjx-container, .MathJax_Display, .MathJax_SVG_Display, table')
+  if (hasScrollableContent) {
+    prepareScrollableContent()
+    return
+  }
+  if (attempt < MAX_ATTEMPTS) {
+    setTimeout(() => scheduleFormulaWrapRetry(attempt + 1), 120)
+  }
+}
+
+function prepareScrollableContent() {
+  const root = coursContentRef.value
+  if (!root) return
+
+  const wrapForScroll = (nodes, { wrapperTag = 'div', wrapperAttr, targetAttr, scrollType }) => {
+    Array.from(nodes).forEach((node) => {
+      node.setAttribute(targetAttr, 'true')
+
+      const specificWrapper = node.closest(`[${wrapperAttr}]`)
+      if (specificWrapper) {
+        if (scrollType) {
+          specificWrapper.setAttribute('data-scroll-type', scrollType)
+        }
+        return
+      }
+
+      const genericWrapper = node.closest('[data-horizontal-scroll-wrapper]')
+      if (genericWrapper) {
+        return
+      }
+
+      const wrapper = document.createElement(wrapperTag)
+      wrapper.setAttribute('data-horizontal-scroll-wrapper', 'true')
+      wrapper.setAttribute(wrapperAttr, 'true')
+      if (scrollType) {
+        wrapper.setAttribute('data-scroll-type', scrollType)
+      }
+      if (node.parentNode) {
+        node.parentNode.insertBefore(wrapper, node)
+        wrapper.appendChild(node)
+      }
+    })
+  }
+
+  const getOutermostNodes = (nodeList) => {
+    const list = Array.from(nodeList)
+    return list.filter((node) => !list.some((other) => other !== node && other.contains(node)))
+  }
+
+  wrapForScroll(root.querySelectorAll('table'), {
+    wrapperAttr: 'data-table-scroll-wrapper',
+    targetAttr: 'data-table-scroll-target',
+    scrollType: 'table',
+    wrapperTag: 'div'
+  })
+
+  const formulaNodes = getOutermostNodes(root.querySelectorAll('mjx-container[display="true"], .MathJax_Display, .MathJax_SVG_Display'))
+  wrapForScroll(formulaNodes, {
+    wrapperAttr: 'data-formula-scroll-wrapper',
+    targetAttr: 'data-formula-scroll-target',
+    scrollType: 'formula',
+    wrapperTag: 'div'
+  })
+
+  const inlineFormulaNodes = getOutermostNodes(root.querySelectorAll('mjx-container:not([display="true"])'))
+  wrapForScroll(inlineFormulaNodes, {
+    wrapperAttr: 'data-formula-inline-scroll-wrapper',
+    targetAttr: 'data-formula-inline-scroll-target',
+    scrollType: 'formula-inline',
+    wrapperTag: 'span'
+  })
+
+  const formulaTargets = root.querySelectorAll('[data-formula-inline-scroll-target], [data-formula-scroll-target]')
+  formulaTargets.forEach((target) => {
+    const blockParent = target.closest('p, li, div, section, article, blockquote, pre')
+    if (blockParent) {
+      blockParent.setAttribute('data-formula-line-block', 'true')
+    }
+  })
+}
 
 // Extraire la table des matières depuis le contenu HTML
 function extractTableOfContents() {
@@ -534,9 +659,11 @@ function scrollToTop() {
 watch(selectedCours, () => {
   if (selectedCours.value) {
     nextTick(() => {
+      scheduleFormulaWrapRetry()
       renderMath()
       // Attendre que le DOM soit vraiment mis à jour
       setTimeout(() => {
+        scheduleFormulaWrapRetry()
         extractTableOfContents()
         buildSearchIndex()
         updateHeadingMatches()
@@ -549,6 +676,21 @@ watch(selectedCours, () => {
   }
 }, { deep: true })
 
+watch(renderedContent, () => {
+  nextTick(() => {
+    scheduleFormulaWrapRetry()
+  })
+})
+
+watch(zoomLevel, () => {
+  nextTick(() => {
+    scheduleFormulaWrapRetry()
+    if (typeof window !== 'undefined' && window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise().catch(() => {})
+    }
+  })
+}, { immediate: true })
+
 onBeforeUnmount(() => {
   if (tocObserver) {
     try { tocObserver.disconnect() } catch (e) {}
@@ -558,6 +700,9 @@ onBeforeUnmount(() => {
   }
   if (scrollCleanup) {
     try { scrollCleanup() } catch (e) {}
+  }
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateViewportWidth)
   }
   // Sauvegarder l'état courant (cours sélectionné + scroll)
   saveCoursViewState()
@@ -768,6 +913,7 @@ watch(() => route.query.q, (val) => {
 .cours-content {
   text-align: left;
   max-width: 100%;
+  overflow-x: visible;
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
@@ -776,6 +922,12 @@ watch(() => route.query.q, (val) => {
   /* Réduire le padding global pour limiter les grands espaces verticaux */
   padding: 1rem 0;
   background: transparent;
+}
+
+.cours-content-outer {
+  width: 100%;
+  transform-origin: top left;
+  transition: transform 0.2s ease;
 }
 
 /* Recherche dans la page */
@@ -1048,6 +1200,57 @@ watch(() => route.query.q, (val) => {
   height: 24px;
 }
 
+.empty-coming {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.empty-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+  max-width: 720px;
+}
+
+.empty-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.empty-title {
+  margin: 0 0 0.5rem;
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
+.empty-text {
+  color: #475569;
+  margin: 0;
+}
+
+.empty-actions {
+  margin-top: 1rem;
+}
+
+.empty-btn {
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.empty-btn:hover {
+  filter: brightness(1.05);
+}
+
 /* Animation de transition pour le bouton */
 .scroll-top-fade-enter-active,
 .scroll-top-fade-leave-active {
@@ -1082,36 +1285,4 @@ watch(() => route.query.q, (val) => {
     height: 20px;
   }
 }
-</style>
-
-<style scoped>
-.empty-coming {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-}
-.empty-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 2rem;
-  text-align: center;
-  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
-  max-width: 720px;
-}
-.empty-icon { font-size: 2.2rem; margin-bottom: .25rem; }
-.empty-title { margin: 0 0 .5rem; color: #0f172a; font-size: 1.35rem; }
-.empty-text { color: #475569; margin: 0; }
-.empty-actions { margin-top: 1rem; }
-.empty-btn {
-  background: linear-gradient(135deg, #3b82f6, #1e40af);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: .6rem 1rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-.empty-btn:hover { filter: brightness(1.05); }
 </style>

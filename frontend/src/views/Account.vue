@@ -371,6 +371,7 @@ const handleEmailVerifiedQuery = async () => {
     } catch (e) {
       console.error('Erreur lors de la mise à jour du profil après vérification email:', e)
     }
+    router.push('/dashboard').catch(() => {})
   } else if (status === '0') {
     verificationError.value = 'Lien de vérification invalide ou expiré. Veuillez renvoyer un lien.'
   }

@@ -224,7 +224,7 @@ class EmailVerificationLinkView(APIView):
 
     def get(self, request, token):
         redirect_base = getattr(settings, 'FRONTEND_URL', '') or getattr(settings, 'FRONTEND_BASE_URL', '') or ''
-        if not redirect_base:
+        if not redirect_base or redirect_base.startswith('http://localhost'):
             redirect_base = 'https://www.optitab.net'
         redirect_base = redirect_base.rstrip('/') or 'https://www.optitab.net'
 

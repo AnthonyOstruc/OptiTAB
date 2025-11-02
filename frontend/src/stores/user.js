@@ -3,6 +3,14 @@ import { fetchUserProfile } from '@/api'
 import { calculateUserLevel } from '@/composables/useLevel'
 import { apiUtils } from '@/api/client'
 
+const normalizeToken = (token) => {
+  if (typeof token !== 'string') {
+    return ''
+  }
+  const trimmed = token.trim()
+  return trimmed && trimmed !== 'null' && trimmed !== 'undefined' ? trimmed : ''
+}
+
 // Nettoyage automatique de l'ancienne clé 'user' du localStorage (sécurité)
 localStorage.removeItem('user')
 
@@ -22,7 +30,9 @@ export const useUserStore = defineStore('user', {
     xp_to_next: 0,
     loginStreakCount: 0,
     emailVerified: false,
-    isActive: true,
+    pendingEmail: '',
+    pendingEmailRequestedAt: null,
+    isActive: false,
     isAdmin: false,
     isAuthenticated: false,
     isLoading: false
@@ -46,7 +56,9 @@ export const useUserStore = defineStore('user', {
       this.xp_to_next = Number(computed.xp_to_next)
       this.loginStreakCount = Number(user.login_streak_count ?? user.loginStreakCount ?? 0)
       this.emailVerified = Boolean(user.email_verified ?? user.emailVerified ?? false)
-      this.isActive = Boolean(user.is_active ?? user.isActive ?? true)
+      this.pendingEmail = user.pending_email || user.pendingEmail || ''
+      this.pendingEmailRequestedAt = user.pending_email_sent_at || user.pendingEmailSentAt || null
+      this.isActive = Boolean(user.is_active ?? user.isActive ?? false)
       
       // Forcer l'état admin pour les utilisateurs avec certains emails
       const adminEmails = ['anthonytabet.c@gmail.com', 'admin@optitab.com']
@@ -77,7 +89,9 @@ export const useUserStore = defineStore('user', {
       this.loginStreakCount = 0
       this.isAdmin = false
       this.emailVerified = false
-      this.isActive = true
+      this.pendingEmail = ''
+      this.pendingEmailRequestedAt = null
+      this.isActive = false
       this.isAuthenticated = false
       this.isLoading = false
 
@@ -100,15 +114,22 @@ export const useUserStore = defineStore('user', {
     },
     // Récupère l'utilisateur via l'API si le token est présent
     async fetchUser() {
+      const accessToken = normalizeToken(localStorage.getItem('access_token'))
+      const refreshToken = normalizeToken(localStorage.getItem('refresh_token'))
+      const hasAccessToken = Boolean(accessToken)
+      const hasRefreshToken = Boolean(refreshToken)
+
+      if (!hasAccessToken && !hasRefreshToken) {
+        this.clearUser()
+        return
+      }
+
       this.isLoading = true
       try {
-        // Debug: Vérifier les tokens
-        const accessToken = localStorage.getItem('access_token')
-        const refreshToken = localStorage.getItem('refresh_token')
         console.log('🔍 Tokens disponibles:', { 
-          hasAccess: !!accessToken, 
-          hasRefresh: !!refreshToken,
-          accessPreview: accessToken ? accessToken.substring(0, 20) + '...' : 'null'
+          hasAccess: hasAccessToken, 
+          hasRefresh: hasRefreshToken,
+          accessPreview: hasAccessToken ? accessToken.substring(0, 20) + '...' : 'null'
         })
         
         const response = await fetchUserProfile()

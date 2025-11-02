@@ -27,6 +27,19 @@ from django.db import transaction
 from django.contrib.auth import update_session_auth_hash
 
 
+def prune_expired_pending_email(user):
+    """Nettoie le pending_email si le lien est expiré (>1h)."""
+    try:
+        if user.pending_email and user.pending_email_sent_at:
+            if timezone.now() - user.pending_email_sent_at > timedelta(hours=1):
+                user.pending_email = None
+                user.pending_email_token = None
+                user.pending_email_sent_at = None
+                user.save(update_fields=['pending_email', 'pending_email_token', 'pending_email_sent_at'])
+    except Exception:
+        logger.exception("Impossible de nettoyer le pending_email expiré pour %s", getattr(user, 'email', 'unknown'))
+
+
 class MeView(APIView):
     """Récupère les informations de l'utilisateur connecté"""
     permission_classes = [IsAuthenticated]
@@ -35,6 +48,7 @@ class MeView(APIView):
         try:
             # Utilise le service de requête optimisée
             user = QuerySetService.get_user_queryset().get(id=request.user.id)
+            prune_expired_pending_email(user)
             serializer = UserDetailSerializer(user)
             return ResponseService.success(
                 message="Profil récupéré avec succès",
@@ -1260,6 +1274,7 @@ class UpdateProfileView(APIView):
                 serializer.save()
                 # Retourne les données mises à jour
                 updated_user = QuerySetService.get_user_queryset().get(id=user.id)
+                prune_expired_pending_email(updated_user)
                 response_data = UserDetailSerializer(updated_user).data
                 
                 return ResponseService.success(

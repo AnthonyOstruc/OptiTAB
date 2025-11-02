@@ -126,6 +126,70 @@ class EmailService:
             return False
     
     @staticmethod
+    def send_email_change_link(user, new_email, verification_link):
+        """Envoie un lien de confirmation pour changer d'adresse email."""
+        display_name = (user.first_name or '').strip() or 'OptiTABien'
+        plain_message = (
+            f"Bonjour {display_name},\n\n"
+            f"Vous avez demandé à remplacer votre adresse email OptiTAB par {new_email}.\n"
+            "Cliquez sur le lien ci-dessous pour confirmer ce changement :\n"
+            f"{verification_link}\n\n"
+            "Ce lien expire dans 24 heures. Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.\n\n"
+            "À très vite,\nL'équipe OptiTAB"
+        )
+        logo_url = EmailService._resolve_logo_url()
+        html_message = f"""
+            <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                <tr>
+                  <td style="padding:24px 24px 0 24px;">
+                    {f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block;margin-bottom:16px;"/>' if logo_url else ''}
+                    <h1 style="margin:0 0 12px 0;font-size:22px;color:#111827;">Confirmez votre nouvelle adresse email</h1>
+                    <p style="margin:0;color:#4b5563;font-size:15px;line-height:1.6;">
+                      Bonjour {display_name},<br/>
+                      Cliquez sur le bouton ci-dessous pour confirmer votre nouvelle adresse email.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:24px;">
+                    <a href="{verification_link}" style="display:inline-block;background:#6366f1;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 24px;border-radius:10px;">
+                      Confirmer mon nouvel email
+                    </a>
+                    <p style="margin:16px 0 0 0;color:#6b7280;font-size:13px;line-height:1.6;">
+                      Nouveau mail : <strong style="color:#111827;">{new_email}</strong><br/>
+                      Si le bouton ne fonctionne pas, copiez-collez ce lien dans votre navigateur :
+                    </p>
+                    <p style="margin:12px 0 0 0;color:#2563eb;font-size:13px;word-break:break-all;">
+                      <a href="{verification_link}" style="color:#2563eb;text-decoration:none;">{verification_link}</a>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:16px 24px;background:#f3f4f6;color:#6b7280;font-size:12px;">
+                    Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.
+                  </td>
+                </tr>
+              </table>
+            </div>
+        """.strip()
+
+        try:
+            email_message = EmailMultiAlternatives(
+                subject='Confirmation de changement d\'email OptiTAB',
+                body=plain_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[new_email],
+            )
+            email_message.attach_alternative(html_message, "text/html")
+            email_message.send(fail_silently=False)
+            logger.info("Lien de changement d'email envoyé à %s", new_email)
+            return True
+        except Exception as e:
+            logger.error("Erreur envoi lien de changement d'email à %s: %s", new_email, e)
+            return False
+    
+    @staticmethod
     def send_password_reset(user, reset_link):
         """Envoi du lien de réinitialisation de mot de passe"""
         try:

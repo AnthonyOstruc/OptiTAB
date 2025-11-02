@@ -132,6 +132,7 @@ const leaderboard = ref([])
 const me = ref(null)
 const isExpanded = ref(false)
 const allLeaderboard = ref([]) // Stocke tous les utilisateurs
+const isAuthenticated = computed(() => userStore.isAuthenticated)
 
 const canScopePays = computed(() => !!userStore?.pays?.id)
 const canScopeNiveau = computed(() => !!userStore?.niveau_pays?.id)
@@ -139,6 +140,12 @@ const canScopeNiveau = computed(() => !!userStore?.niveau_pays?.id)
 function setScope(s) {
   if ((s === 'pays' && !canScopePays.value) || (s === 'niveau' && !canScopeNiveau.value)) return
   scope.value = s
+}
+
+const resetLeaderboard = () => {
+  allLeaderboard.value = []
+  me.value = null
+  isExpanded.value = false
 }
 
 function initials(name) {
@@ -159,6 +166,11 @@ function parseName(name) {
 }
 
 async function load() {
+  if (!isAuthenticated.value) {
+    resetLeaderboard()
+    loading.value = false
+    return
+  }
   loading.value = true
   try {
     // Chargement initial léger (20)
@@ -171,14 +183,16 @@ async function load() {
     me.value = data.me || null
     isExpanded.value = false // Reset à l'état normal
   } catch (e) {
-    allLeaderboard.value = []
-    me.value = null
+    resetLeaderboard()
   } finally {
     loading.value = false
   }
 }
 
 async function loadMore() {
+  if (!isAuthenticated.value) {
+    return
+  }
   try {
     // Si on n'a que 20 entrées, récupérer jusqu'à 50 de façon paresseuse
     if (allLeaderboard.value.length < 50) {
@@ -197,8 +211,31 @@ function loadLess() {
   isExpanded.value = false
 }
 
-watch(scope, () => load())
-onMounted(() => load())
+watch(scope, () => {
+  if (isAuthenticated.value) {
+    load()
+  } else {
+    resetLeaderboard()
+  }
+})
+
+watch(isAuthenticated, (authed) => {
+  if (authed) {
+    load()
+  } else {
+    loading.value = false
+    resetLeaderboard()
+  }
+})
+
+onMounted(() => {
+  if (isAuthenticated.value) {
+    load()
+  } else {
+    loading.value = false
+    resetLeaderboard()
+  }
+})
 </script>
 
 <style scoped>
@@ -477,5 +514,4 @@ onMounted(() => load())
   .leaderboard-item .info .name .last-name { display: none; }
 }
 </style>
-
 

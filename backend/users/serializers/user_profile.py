@@ -52,7 +52,9 @@ class UserBaseSerializer(serializers.ModelSerializer):
             'level',
             'xp_to_next',
             'login_streak_count',
-            'email_verified'
+            'email_verified',
+            'pending_email',
+            'pending_email_sent_at'
         ]
         read_only_fields = ['id', 'email', 'is_active', 'is_staff']
         extra_kwargs = {

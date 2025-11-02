@@ -179,6 +179,7 @@ const userStore = useUserStore()
 const router = useRouter()
 const slots = useSlots()
 const hasMatiereStatsSlot = computed(() => !!slots['matiere-stats'])
+const isAuthenticated = computed(() => userStore.isAuthenticated)
 
 // État
 const loading = ref(true)
@@ -186,6 +187,24 @@ const globalStats = ref({})
 const itemsList = ref([])
 const matiereStats = ref([])
 const matiereNotionStats = ref([])
+
+const resetHistoryState = () => {
+  loading.value = false
+  globalStats.value = {}
+  itemsList.value = []
+  matiereStats.value = []
+  matiereNotionStats.value = []
+  matieres.value = []
+  notions.value = []
+  themesById.value = {}
+  isReferenceLoaded.value = false
+  selectedMatiere.value = ''
+  selectedNotion.value = ''
+  selectedCustomFilter.value = 'all'
+  currentPage.value = 1
+  expandedItems.value = new Set()
+  isItemsListExpanded.value = true
+}
 
 // Données de référence
 const matieres = ref([])
@@ -329,6 +348,9 @@ const matieresComputed = computed(() => {
 
 // Méthodes
 const loadReferenceData = async () => {
+  if (!isAuthenticated.value) {
+    return
+  }
   try {
     // Endpoints spécialisés uniquement, avec cache long
     const [mResponse, tnResponse] = await Promise.all([
@@ -400,6 +422,11 @@ const loadReferenceData = async () => {
 }
 
 const loadData = async (showLoading = true) => {
+  if (!isAuthenticated.value) {
+    if (showLoading) loading.value = false
+    resetHistoryState()
+    return
+  }
   if (showLoading) loading.value = true
   try {
     const params = { ...(props.extraParams || {}) }
@@ -446,6 +473,9 @@ const buildLocalCacheKey = (paramsObj) => {
 }
 
 const tryHydrateFromLocalCache = async () => {
+  if (!isAuthenticated.value) {
+    return false
+  }
   try {
     const params = { ...(props.extraParams || {}) }
     const key = buildLocalCacheKey(params)
@@ -584,11 +614,24 @@ onMounted(async () => {
       attempts++
     }
   }
+
+  if (!isAuthenticated.value) {
+    resetHistoryState()
+    return
+  }
   
   // Affichage instantané si cache local
   const hydrated = await tryHydrateFromLocalCache()
   // Charger immédiatement les données (sans bloquer l'UI si déjà hydraté)
   await loadData(!hydrated)
+})
+
+watch(isAuthenticated, (authed) => {
+  if (authed) {
+    loadData()
+  } else {
+    resetHistoryState()
+  }
 })
 
 // Expose des méthodes utilitaires pour les slots

@@ -64,81 +64,74 @@ defineEmits(['edit'])
 
 <style scoped>
 .config-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  width: 100%;
 }
 
 .config-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .config-info h3 {
-  margin: 0 0 4px 0;
-  font-size: 18px;
-  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  font-size: 1.125rem;
+  font-weight: 700;
   color: #111827;
 }
 
 .config-info p {
   margin: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #6b7280;
 }
 
 .btn-configure {
-  background: #f9fafb;
+  background: #f3f4f6;
   color: #374151;
-  border: 1px solid #d1d5db;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .btn-configure:hover {
-  background: #f3f4f6;
-  border-color: #9ca3af;
+  background: #e5e7eb;
+  border-color: #d1d5db;
 }
 
 .icon {
-  width: 16px;
-  height: 16px;
+  width: 1rem;
+  height: 1rem;
 }
 
 .current-config {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 2px auto 2px auto;
   align-items: center;
-  gap: 24px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 20px;
+  gap: 1.25rem;
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 1.25rem;
 }
 
 .config-item {
-  flex: 1;
-  background: #f8fafc;
-  border-radius: 6px;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .config-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
-  color: #64748b;
-  margin-bottom: 6px;
+  color: #6b7280;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -146,61 +139,70 @@ defineEmits(['edit'])
 .config-value {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   font-weight: 600;
-  color: #1e293b;
-  font-size: 15px;
+  color: #111827;
+  font-size: 0.9375rem;
 }
 
 .flag {
-  font-size: 22px;
+  font-size: 1.375rem;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
 
 .niveau-badge {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: white;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 13px;
+  padding: 0.375rem 0.875rem;
+  border-radius: 1.25rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 1px 3px rgba(99, 102, 241, 0.3);
 }
 
 .role-badge {
-  background: #eef2ff;
-  color: #1e293b;
-  padding: 6px 12px;
-  border-radius: 14px;
-  font-size: 13px;
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
 }
+
 .role-badge.parent {
-  background: #fff7ed;
+  background: #fed7aa;
   color: #9a3412;
 }
 
 .config-divider {
-  width: 2px;
-  height: 40px;
-  background: linear-gradient(to bottom, #e2e8f0, #cbd5e1, #e2e8f0);
+  width: 1px;
+  height: 2.5rem;
+  background: #d1d5db;
   border-radius: 1px;
 }
 
 @media (max-width: 768px) {
   .current-config {
-    flex-direction: column;
-    gap: 16px;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
   .config-divider {
+    display: none;
+  }
+
+  .config-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .btn-configure {
     width: 100%;
-    height: 1px;
+    justify-content: center;
   }
 }
 </style>

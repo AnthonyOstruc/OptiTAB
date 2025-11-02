@@ -116,6 +116,7 @@ const invitationError = ref(false)
 const processingAction = ref('')
 
 const activeInvitation = computed(() => invitations.value[activeInvitationIndex.value] || null)
+const isAuthenticated = computed(() => userStore.isAuthenticated)
 
 const lastActivity = computed(() => {
   if (!statuses.value.length) return null
@@ -216,8 +217,12 @@ onBeforeRouteLeave((to, from, next) => {
   }
 })
 
+const normalizeList = (val) => Array.isArray(val) ? val : (val?.results || [])
 
-onMounted(async () => {
+const runDashboardLoad = async () => {
+  if (!isAuthenticated.value) {
+    return
+  }
   try {
     const [ex, stResponse, mResponse, gam, ov, invitationsResponse] = await Promise.all([
       getExercices({}),
@@ -227,8 +232,6 @@ onMounted(async () => {
       fetchMyOverview().catch(() => null),
       fetchParentInvitations().catch(() => null)
     ])
-
-    const normalizeList = (val) => Array.isArray(val) ? val : (val?.results || [])
 
     exercices.value = normalizeList(ex)
     chapitres.value = []
@@ -257,10 +260,32 @@ onMounted(async () => {
       showInvitationModal.value = true
       activeInvitationIndex.value = 0
     }
-
-
   } catch {}
-  // Rien à afficher en bas: l'historique gère son propre état de chargement
+}
+
+onMounted(() => {
+  if (isAuthenticated.value) {
+    runDashboardLoad()
+  }
+})
+
+watch(isAuthenticated, (authed) => {
+  if (authed) {
+    runDashboardLoad()
+  } else {
+    // Nettoyer les données affichées lorsque l'utilisateur se déconnecte
+    stats.value = { done: 0, acquired: 0, not_acquired: 0 }
+    statuses.value = []
+    exercices.value = []
+    chapitres.value = []
+    exercicesIndex.value = {}
+    chapitresIndex.value = {}
+    matieres.value = []
+    overview.value = null
+    invitations.value = []
+    showInvitationModal.value = false
+    activeInvitationIndex.value = 0
+  }
 })
 </script>
 

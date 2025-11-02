@@ -1,91 +1,215 @@
 <template>
   <DashboardLayout>
     <div class="account-page">
-      <h2 class="account-title">
-        <span class="account-title-icon"> <component :is="icon" class="account-icon dark-blue-icon" /> </span>
-        Mes Coordonnées
-      </h2>
-
-      <!-- Configuration Pays/Niveau -->
-      <div class="config-section">
-        <UserPaysNiveauConfig />
+      <!-- Header -->
+      <div class="page-header">
+        <div class="header-content">
+          <div class="header-icon">
+            <component :is="UserCircleIcon" />
+          </div>
+          <div class="header-text">
+            <h1 class="page-title">Mon Compte</h1>
+            <p class="page-subtitle">Gérez vos informations personnelles et paramètres de sécurité</p>
+          </div>
+        </div>
       </div>
 
-      <form class="account-form" @submit.prevent="handleSubmit">
-        <div class="account-fields-row">
-          <FormSelect
-            label="Civilité"
-            v-model="form.civilite"
-            :options="[
-              { value: '', label: '--' },
-              { value: 'M', label: 'Monsieur' },
-              { value: 'Mme', label: 'Madame' }
-            ]"
-            autocomplete="honorific-prefix"
-            class="account-input"
-          />
-          <FormInput label="Prénom" v-model="form.firstName" id="firstName" required autocomplete="given-name" class="account-input" placeholder="Prénom" />
-          <FormInput label="Nom" v-model="form.lastName" id="lastName" required autocomplete="family-name" class="account-input" placeholder="Nom" />
+      <!-- Configuration Pays/Niveau Card -->
+      <section class="info-card">
+        <div class="card-header">
+          <div class="card-header-icon">
+            <component :is="GlobeAltIcon" />
+          </div>
+          <div>
+            <h2 class="card-title">Configuration</h2>
+            <p class="card-description">Pays et niveau d'études</p>
+          </div>
         </div>
-        <div class="account-fields-row">
-          <div class="account-field field-wide">
-            <label class="account-label" for="email">Email</label>
-            <div class="email-row">
-              <input class="account-input" id="email" type="email" :value="form.email" disabled autocomplete="email" placeholder="Email" />
+        <div class="card-content">
+          <UserPaysNiveauConfig />
+        </div>
+      </section>
+
+      <!-- Informations personnelles Card -->
+      <section class="info-card">
+        <div class="card-header">
+          <div class="card-header-icon">
+            <component :is="UserIcon" />
+          </div>
+          <div>
+            <h2 class="card-title">Informations personnelles</h2>
+            <p class="card-description">Vos coordonnées et informations de profil</p>
+          </div>
+        </div>
+        
+        <form class="card-content" @submit.prevent="handleSubmit">
+          <!-- Civilité, Prénom, Nom -->
+          <div class="form-grid">
+            <FormSelect
+              label="Civilité"
+              v-model="form.civilite"
+              :options="[
+                { value: '', label: '--' },
+                { value: 'M', label: 'Monsieur' },
+                { value: 'Mme', label: 'Madame' }
+              ]"
+              autocomplete="honorific-prefix"
+              class="form-field"
+            />
+            <FormInput 
+              label="Prénom" 
+              v-model="form.firstName" 
+              id="firstName" 
+              required 
+              autocomplete="given-name" 
+              placeholder="Votre prénom"
+              class="form-field"
+            />
+            <FormInput 
+              label="Nom" 
+              v-model="form.lastName" 
+              id="lastName" 
+              required 
+              autocomplete="family-name" 
+              placeholder="Votre nom"
+              class="form-field"
+            />
+          </div>
+
+          <!-- Email Section -->
+          <div class="form-section">
+            <label class="form-label" for="email">
+              <component :is="EnvelopeIcon" class="label-icon" />
+              Adresse email
+            </label>
+            <div class="email-container">
+              <input 
+                class="form-input email-input" 
+                id="email" 
+                type="email" 
+                :value="form.email" 
+                disabled 
+                autocomplete="email" 
+              />
+              <button type="button" class="btn-secondary" @click="openEmailChangeModal">
+                <component :is="PencilSquareIcon" class="btn-icon" />
+                Modifier
+              </button>
               <button
                 v-if="!userStoreIsActive"
                 type="button"
-                class="verify-btn"
+                class="btn-primary"
                 :disabled="isSendingVerification || resendCooldown>0"
                 @click="sendVerificationLink"
               >
-                {{ resendCooldown>0 ? `Lien envoyé (${resendCooldown}s)` : (isSendingVerification ? 'Envoi...' : 'Envoyer le lien') }}
+                <component :is="ShieldCheckIcon" class="btn-icon" />
+                {{ resendCooldown>0 ? `Lien envoyé (${resendCooldown}s)` : (isSendingVerification ? 'Envoi...' : 'Vérifier') }}
               </button>
-              <span v-else class="verified-badge">✔️ Vérifié</span>
+              <span v-else class="status-badge verified">
+                <component :is="CheckBadgeIcon" class="badge-icon" />
+                Vérifié
+              </span>
             </div>
-            <p v-if="!userStoreIsActive" class="verify-hint">
-              Cliquez sur « Envoyer le lien » pour recevoir un email de vérification.
-            </p>
-            <p v-if="verificationSuccess" class="verify-success">{{ verificationSuccess }}</p>
-            <p v-if="verificationError" class="verify-error">{{ verificationError }}</p>
-          </div>
-          <FormInput label="Numéro de téléphone" v-model="form.telephone" id="telephone" type="tel" autocomplete="tel" class="account-input field-narrow" placeholder="Numéro de téléphone" />
-        </div>
-        <div class="account-fields-row">
-          <div class="account-field">
-            <label for="date_naissance" class="account-label">Date de naissance</label>
-            <VueDatePicker
-              v-model="form.date_naissance"
-              model-type="yyyy-MM-dd"
-              format="dd/MM/yyyy"
-              :enable-time-picker="false"
-              :week-start="1"
-              locale="fr"
-              :max-date="new Date()"
-              input-class-name="account-input"
-              :clearable="false"
-              :hide-input-icon="true"
-              :teleport="true"
-              autocomplete="bday"
-              placeholder="jj/mm/aaaa"
-            />
-          </div>
-        </div>
-        <div class="account-actions">
-          <button class="account-save-btn" type="submit" :disabled="isSaving">
-            {{ isSaving ? 'Sauvegarde...' : 'Sauvegarder' }}
-          </button>
-          <span v-if="successMsg" class="account-success">{{ successMsg }}</span>
-          <span v-if="errorMsg" class="account-error">{{ errorMsg }}</span>
-        </div>
-      </form>
 
-      <section class="password-card">
-        <h3 class="password-title">Sécurité</h3>
-        <p class="password-subtitle">Mettez à jour votre mot de passe pour protéger votre compte.</p>
-        <form class="password-form" @submit.prevent="handlePasswordSubmit">
-          <div class="password-fields">
-            <div class="password-field">
+            <!-- Email Status Messages -->
+            <div v-if="!userStoreIsActive || pendingEmailActive || verificationSuccess || verificationError || emailChangeSuccess || emailChangeError" class="email-messages">
+              <div v-if="!userStoreIsActive && !verificationSuccess && !verificationError" class="info-message">
+                <component :is="InformationCircleIcon" class="message-icon" />
+                <span>Cliquez sur « Vérifier » pour recevoir un email de vérification.</span>
+              </div>
+              <div v-if="pendingEmailActive" class="warning-message">
+                <component :is="ExclamationTriangleIcon" class="message-icon" />
+                <span>
+                  Nouvelle adresse en attente : <strong>{{ userStore.pendingEmail }}</strong><br />
+                  Le lien expire dans <strong>{{ pendingEmailCountdownLabel }}</strong>.
+                </span>
+              </div>
+              <div v-if="verificationSuccess" class="success-message">
+                <component :is="CheckCircleIcon" class="message-icon" />
+                <span>{{ verificationSuccess }}</span>
+              </div>
+              <div v-if="verificationError" class="error-message">
+                <component :is="XCircleIcon" class="message-icon" />
+                <span>{{ verificationError }}</span>
+              </div>
+              <div v-if="emailChangeSuccess" class="success-message">
+                <component :is="CheckCircleIcon" class="message-icon" />
+                <span>{{ emailChangeSuccess }}</span>
+              </div>
+              <div v-if="emailChangeError" class="error-message">
+                <component :is="XCircleIcon" class="message-icon" />
+                <span>{{ emailChangeError }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Téléphone et Date de naissance -->
+          <div class="form-grid-2">
+            <div class="form-section">
+              <label class="form-label" for="telephone">
+                <component :is="PhoneIcon" class="label-icon" />
+                Numéro de téléphone
+              </label>
+              <FormInput 
+                v-model="form.telephone" 
+                id="telephone" 
+                type="tel" 
+                autocomplete="tel" 
+                placeholder="Votre numéro de téléphone"
+              />
+            </div>
+            <div class="form-section">
+              <label for="date_naissance" class="form-label">
+                <component :is="CalendarIcon" class="label-icon" />
+                Date de naissance
+              </label>
+              <VueDatePicker
+                v-model="form.date_naissance"
+                model-type="yyyy-MM-dd"
+                format="dd/MM/yyyy"
+                :enable-time-picker="false"
+                :week-start="1"
+                locale="fr"
+                :max-date="new Date()"
+                input-class-name="form-input"
+                :clearable="false"
+                :hide-input-icon="true"
+                :teleport="true"
+                autocomplete="bday"
+                placeholder="jj/mm/aaaa"
+              />
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button class="btn-primary btn-large" type="submit" :disabled="isSaving">
+              <component :is="isSaving ? null : CheckIcon" class="btn-icon" />
+              {{ isSaving ? 'Sauvegarde en cours...' : 'Enregistrer les modifications' }}
+            </button>
+            <div v-if="successMsg || errorMsg" class="action-message">
+              <span v-if="successMsg" class="success-text">{{ successMsg }}</span>
+              <span v-if="errorMsg" class="error-text">{{ errorMsg }}</span>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Sécurité Card -->
+      <section class="info-card">
+        <div class="card-header">
+          <div class="card-header-icon">
+            <component :is="LockClosedIcon" />
+          </div>
+          <div>
+            <h2 class="card-title">Sécurité</h2>
+            <p class="card-description">Mettez à jour votre mot de passe pour protéger votre compte</p>
+          </div>
+        </div>
+        
+        <form class="card-content" @submit.prevent="handlePasswordSubmit">
+          <div class="form-grid-2">
+            <div class="form-section">
               <FormInput
                 label="Nouveau mot de passe"
                 type="password"
@@ -93,11 +217,11 @@
                 autocomplete="new-password"
                 required
                 :error="passwordErrors.newPassword"
-                placeholder="Nouveau mot de passe"
+                placeholder="••••••••"
               />
-              <PasswordStrength class="password-strength-hints" :password="passwordForm.newPassword" />
+              <PasswordStrength class="password-strength" :password="passwordForm.newPassword" />
             </div>
-            <div class="password-field">
+            <div class="form-section">
               <FormInput
                 label="Confirmer le nouveau mot de passe"
                 type="password"
@@ -105,39 +229,96 @@
                 autocomplete="new-password"
                 required
                 :error="passwordErrors.confirmPassword"
-                placeholder="Confirmez le nouveau mot de passe"
+                placeholder="••••••••"
               />
             </div>
           </div>
-          <div class="password-actions">
-            <button class="account-save-btn password-save-btn" type="submit" :disabled="isChangingPassword">
-              {{ isChangingPassword ? 'Mise à jour...' : 'Mettre à jour le mot de passe' }}
+
+          <div class="form-actions">
+            <button class="btn-primary btn-large" type="submit" :disabled="isChangingPassword">
+              <component :is="isChangingPassword ? null : KeyIcon" class="btn-icon" />
+              {{ isChangingPassword ? 'Mise à jour en cours...' : 'Mettre à jour le mot de passe' }}
             </button>
-            <span v-if="passwordSuccess" class="account-success">{{ passwordSuccess }}</span>
-            <span v-if="passwordError" class="account-error">{{ passwordError }}</span>
+            <div v-if="passwordSuccess || passwordError" class="action-message">
+              <span v-if="passwordSuccess" class="success-text">{{ passwordSuccess }}</span>
+              <span v-if="passwordError" class="error-text">{{ passwordError }}</span>
+            </div>
           </div>
         </form>
       </section>
     </div>
   </DashboardLayout>
 
+
+  <!-- Modal pour modifier l'email -->
+  <div v-if="showEmailChangeModal" class="modal-overlay" @click="closeEmailChangeModal">
+    <div class="modal-card" @click.stop>
+      <div class="modal-header">
+        <h3>Modifier mon email</h3>
+        <button class="modal-close" @click="closeEmailChangeModal">×</button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label" for="newEmail">
+          <component :is="EnvelopeIcon" class="label-icon" />
+          Nouvelle adresse email
+        </label>
+        <input
+          id="newEmail"
+          v-model="emailChangeForm.email"
+          type="email"
+          class="form-input"
+          placeholder="nouveau@mail.com"
+          autocomplete="email"
+        />
+        <div v-if="emailChangeError" class="error-message" style="margin-top: 0.5rem;">
+          <component :is="XCircleIcon" class="message-icon" />
+          <span>{{ emailChangeError }}</span>
+        </div>
+        <div v-if="emailChangeSuccess" class="success-message" style="margin-top: 0.5rem;">
+          <component :is="CheckCircleIcon" class="message-icon" />
+          <span>{{ emailChangeSuccess }}</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="resend-btn" type="button" @click="closeEmailChangeModal">Annuler</button>
+        <button class="confirm-btn" type="button" :disabled="isSubmittingEmailChange" @click="submitEmailChange">
+          {{ isSubmittingEmailChange ? 'Envoi...' : 'Envoyer le lien' }}
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
+import { ref, onMounted, computed, onBeforeUnmount, watch } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { updateUserProfile, fetchUserProfile, sendEmailVerificationLink, changeUserPassword } from '@/api'
+import { updateUserProfile, fetchUserProfile, sendEmailVerificationLink, changeUserPassword, requestEmailChange } from '@/api'
 import FormInput from '@/components/forms/FormInput.vue'
 import FormSelect from '@/components/forms/FormSelect.vue'
-import { UserCircleIcon } from '@heroicons/vue/24/outline'
+import { 
+  UserCircleIcon, 
+  UserIcon,
+  LockClosedIcon, 
+  GlobeAltIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+  CalendarIcon,
+  CheckIcon,
+  KeyIcon,
+  PencilSquareIcon,
+  ShieldCheckIcon,
+  CheckBadgeIcon,
+  InformationCircleIcon,
+  ExclamationTriangleIcon,
+  CheckCircleIcon,
+  XCircleIcon
+} from '@heroicons/vue/24/outline'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import UserPaysNiveauConfig from '@/components/dashboard/UserPaysNiveauConfig.vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import PasswordStrength from '@/components/forms/PasswordStrength.vue'
 import { useRoute, useRouter } from 'vue-router'
-
-const icon = UserCircleIcon
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
@@ -177,6 +358,22 @@ const verificationSuccess = ref('')
 const verificationError = ref('')
 const resendCooldown = ref(0)
 const userStoreIsActive = computed(() => Boolean(userStore?.emailVerified))
+const pendingEmailActive = computed(() => Boolean(userStore.pendingEmail) && pendingEmailSecondsLeft.value > 0)
+const pendingEmailCountdownLabel = computed(() => {
+  const total = pendingEmailSecondsLeft.value
+  const minutes = Math.floor(total / 60)
+  const seconds = total % 60
+  if (minutes > 0) {
+    return `${minutes} min ${seconds.toString().padStart(2, '0')} s`
+  }
+  return `${seconds} s`
+})
+const showEmailChangeModal = ref(false)
+const isSubmittingEmailChange = ref(false)
+const emailChangeForm = ref({ email: '' })
+const emailChangeError = ref('')
+const emailChangeSuccess = ref('')
+const pendingEmailSecondsLeft = ref(0)
 
 const fillForm = (user) => {
   // Backend expects 'M' or 'Mme'. If older human-readable value slipped in, map it.
@@ -200,7 +397,16 @@ onMounted(async () => {
     fillForm((data && data.data) ? data.data : data)
   } catch {}
   await handleEmailVerifiedQuery()
+  await handleEmailChangeQuery()
+  refreshPendingEmailTimer()
 })
+
+watch(
+  () => [userStore.pendingEmail, userStore.pendingEmailRequestedAt],
+  () => {
+    refreshPendingEmailTimer()
+  }
+)
 
 const handleSubmit = async () => {
   isSaving.value = true
@@ -327,22 +533,107 @@ const handlePasswordSubmit = async () => {
 }
 
 let resendInterval = null
+let pendingEmailInterval = null
 
 const sendVerificationLink = async () => {
   if (resendCooldown.value > 0 || isSendingVerification.value) return
 
+  if (userStore.emailVerified) {
+    userStore.emailVerified = false
+  }
   verificationError.value = ''
   verificationSuccess.value = ''
 
   try {
     isSendingVerification.value = true
     const response = await sendEmailVerificationLink()
-    verificationSuccess.value = response?.data?.message || 'Lien de vérification envoyé. Vérifiez votre boîte mail.'
+    const serverMessage = response?.data?.message
+    const emailSent = response?.data?.data?.email_sent !== false
     startResendCooldown()
+
+    if (emailSent) {
+      verificationSuccess.value = serverMessage || 'Lien de vérification envoyé. Vérifiez votre boîte mail.'
+    } else {
+      verificationError.value = serverMessage || 'Impossible d\'envoyer le lien. Réessayez plus tard.'
+    }
   } catch (e) {
-    verificationError.value = e?.response?.data?.message || 'Impossible d\'envoyer le lien. Réessayez plus tard.'
+    const status = e?.response?.status
+    const serverMessage = e?.response?.data?.message
+    if (status === 429) {
+      verificationError.value = serverMessage || 'Veuillez patienter une minute avant de renvoyer un lien.'
+      startResendCooldown()
+    } else {
+      verificationError.value = serverMessage || 'Impossible d\'envoyer le lien. Réessayez plus tard.'
+    }
   } finally {
     isSendingVerification.value = false
+  }
+}
+
+const openEmailChangeModal = () => {
+  emailChangeForm.value.email = userStore.pendingEmail || ''
+  emailChangeSuccess.value = ''
+  emailChangeError.value = ''
+  showEmailChangeModal.value = true
+}
+
+const closeEmailChangeModal = () => {
+  showEmailChangeModal.value = false
+}
+
+const validateEmailFormat = (email) => {
+  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return pattern.test(email)
+}
+
+const submitEmailChange = async () => {
+  emailChangeSuccess.value = ''
+  emailChangeError.value = ''
+  const newEmail = (emailChangeForm.value.email || '').trim().toLowerCase()
+
+  if (!newEmail) {
+    emailChangeError.value = 'Veuillez saisir une nouvelle adresse email.'
+    return
+  }
+
+  if (!validateEmailFormat(newEmail)) {
+    emailChangeError.value = 'Adresse email invalide.'
+    return
+  }
+
+  if (newEmail === (userStore.email || '').toLowerCase()) {
+    emailChangeError.value = 'Veuillez saisir une adresse différente de l\'actuelle.'
+    return
+  }
+
+  try {
+    isSubmittingEmailChange.value = true
+    const response = await requestEmailChange(newEmail)
+    const emailSent = response?.data?.data?.email_sent !== false
+    if (emailSent) {
+      emailChangeSuccess.value = 'Un lien de confirmation a été envoyé à votre nouvelle adresse. Vérifiez votre boîte mail.'
+    } else {
+      emailChangeError.value = response?.data?.message || 'Impossible d\'envoyer le lien. Réessayez plus tard.'
+    }
+    userStore.emailVerified = false
+    userStore.pendingEmail = newEmail
+    userStore.pendingEmailRequestedAt = new Date().toISOString()
+    showEmailChangeModal.value = false
+    verificationError.value = ''
+    verificationSuccess.value = ''
+    refreshPendingEmailTimer()
+  } catch (e) {
+    const errors = e?.response?.data?.errors
+    const message = e?.response?.data?.message
+    if (errors && typeof errors === 'object') {
+      const firstKey = Object.keys(errors)[0]
+      const val = Array.isArray(errors[firstKey]) ? errors[firstKey][0] : errors[firstKey]
+      emailChangeError.value = val || 'Impossible de traiter votre demande.'
+    } else {
+      emailChangeError.value = message || 'Impossible de traiter votre demande.'
+    }
+  } finally {
+    isSubmittingEmailChange.value = false
   }
 }
 
@@ -355,6 +646,46 @@ const startResendCooldown = () => {
       resendCooldown.value = 0
       clearInterval(resendInterval)
       resendInterval = null
+    }
+  }, 1000)
+}
+
+const stopPendingEmailTimer = () => {
+  if (pendingEmailInterval) {
+    clearInterval(pendingEmailInterval)
+    pendingEmailInterval = null
+  }
+}
+
+const refreshPendingEmailTimer = () => {
+  stopPendingEmailTimer()
+  const pendingEmail = userStore.pendingEmail
+  const sentAtRaw = userStore.pendingEmailRequestedAt
+  if (!pendingEmail || !sentAtRaw) {
+    pendingEmailSecondsLeft.value = 0
+    return
+  }
+
+  const sentAt = new Date(sentAtRaw).getTime()
+  if (Number.isNaN(sentAt)) {
+    pendingEmailSecondsLeft.value = 0
+    return
+  }
+
+  const expiresAt = sentAt + 60 * 60 * 1000
+  const diff = Math.floor((expiresAt - Date.now()) / 1000)
+
+  if (diff <= 0) {
+    pendingEmailSecondsLeft.value = 0
+    return
+  }
+
+  pendingEmailSecondsLeft.value = diff
+  pendingEmailInterval = setInterval(() => {
+    pendingEmailSecondsLeft.value -= 1
+    if (pendingEmailSecondsLeft.value <= 0) {
+      pendingEmailSecondsLeft.value = 0
+      stopPendingEmailTimer()
     }
   }, 1000)
 }
@@ -381,66 +712,207 @@ const handleEmailVerifiedQuery = async () => {
   router.replace({ query: newQuery }).catch(() => {})
 }
 
+const handleEmailChangeQuery = async () => {
+  const rawStatus = route.query?.email_change
+  const status = Array.isArray(rawStatus) ? rawStatus[0] : rawStatus
+  if (status === undefined) return
+
+  if (status === '1') {
+    emailChangeSuccess.value = 'Votre adresse email a été mise à jour.'
+    try {
+      await userStore.fetchUser()
+      refreshPendingEmailTimer()
+    } catch (e) {
+      console.error('Erreur lors du rafraîchissement du profil après changement email:', e)
+    }
+  } else {
+    emailChangeError.value = 'Impossible de confirmer le changement d\'email.'
+  }
+
+  const newQuery = { ...route.query }
+  delete newQuery.email_change
+  router.replace({ query: newQuery }).catch(() => {})
+}
+
 onBeforeUnmount(() => {
   if (resendInterval) {
     clearInterval(resendInterval)
     resendInterval = null
   }
+  stopPendingEmailTimer()
 })
 </script>
 
 <style scoped>
+/* ============================================
+   LAYOUT & STRUCTURE
+   ============================================ */
+
 .account-page {
   width: 100%;
-  max-width: none;
-  margin: 2.5rem 0 0 0;
-  background: #fff;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+
+.page-header {
+  margin-bottom: 1rem;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
   border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(30,41,59,0.06);
-  padding: 2.2rem 2.5rem 2.5rem 2.5rem;
-}
-.account-title {
   display: flex;
   align-items: center;
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #193e8e;
-  margin-bottom: 2.2rem;
-  gap: 0.7rem;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.2);
 }
-.account-title-icon .account-icon {
-  width: 2.1rem;
-  height: 2.1rem;
-  color: #fbbf24;
+
+.header-icon svg {
+  width: 2rem;
+  height: 2rem;
 }
-.config-section {
-  margin-bottom: 2rem;
-}
-.account-form {
-  display: flex;
-  flex-direction: column;
-  gap: 2.2rem;
-}
-.account-fields-row {
-  display: flex;
-  gap: 1.2rem;
-  margin-bottom: 0.5rem;
-}
-.account-field {
+
+.header-text {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
 }
-.account-label {
-  font-weight: 900;
-  color: #333;
-  font-size: 14px;
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ============================================
+   CARD STRUCTURE
+   ============================================ */
+
+.info-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.info-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 1rem;
+  padding: 1.5rem 1.75rem;
+  background: linear-gradient(to bottom, #f9fafb 0%, #ffffff 100%);
+  border-bottom: 1px solid #e5e7eb;
 }
-.account-input {
+
+.card-header-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.card-header-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.3;
+}
+
+.card-description {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.card-content {
+  padding: 1.75rem;
+}
+
+/* ============================================
+   FORM STRUCTURE
+   ============================================ */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.label-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  color: #667eea;
+}
+
+.form-input {
   width: 100%;
   padding: 12px 16px;
   border: 2px solid #e5e7eb;
@@ -449,159 +921,547 @@ onBeforeUnmount(() => {
   background: #fff;
   color: #222;
   transition: border 0.2s;
+  font-family: inherit;
   margin-bottom: 0;
-}
-.account-input:focus {
-  border-color: #2563eb;
-  outline: none;
-}
-/* widths for email/phone */
-.field-wide {
-  flex: 2;
-}
-.field-narrow {
-  flex: 1;
-}
-/* Agrandir le select de civilité */
-#civilite.account-input {
-  min-width: 160px;
-  max-width: 220px;
-  height: 48px;
-  font-size: 16px;
-  padding: 12px 20px;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  background: #fff;
-  color: #222;
+  height: auto;
+  min-height: 48px;
+  line-height: 1.5;
   box-sizing: border-box;
-  transition: border 0.2s;
-  margin-bottom: 0;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  display: flex;
-  align-items: center;
-}
-#civilite.account-input:focus {
-  border-color: #2563eb;
-  outline: none;
-}
-.account-actions {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  margin-top: 1.2rem;
 }
 
-/* Email verify UI */
-.email-row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
+.form-input:hover:not(:disabled) {
+  border-color: #e5e7eb;
 }
-.verify-btn {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-weight: 700;
-  cursor: pointer;
+
+.form-input:focus {
+  border-color: #667eea;
+  outline: none;
+  box-shadow: none;
 }
-.verified-badge {
-  color: #16a34a;
-  font-weight: 800;
-}
-.verify-hint { color: #6b7280; font-size: 0.85rem; margin-top: 0.3rem; }
-.verify-error { color: #dc2626; font-weight: 600; margin-top: 0.5rem; }
-.verify-success { color: #16a34a; font-weight: 600; margin-top: 0.5rem; }
-.account-save-btn {
-  background: #6366f1;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 32px;
-  font-size: 1.08rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.account-save-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-.account-save-btn:hover:not(:disabled) {
-  background: #4f46e5;
-}
-.account-success {
-  color: #22c55e;
-  font-weight: 600;
-}
-.account-error {
-  color: #ef4444;
-  font-weight: 600;
-}
-.password-card {
-  margin-top: 2.5rem;
-  padding: 2rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
+
+.form-input:disabled {
   background: #f9fafb;
-}
-.password-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 0.4rem;
-}
-.password-subtitle {
   color: #6b7280;
-  margin-bottom: 1.5rem;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
 }
-.password-fields {
+
+/* ============================================
+   EMAIL SECTION
+   ============================================ */
+
+.email-container {
   display: flex;
+  gap: 0.75rem;
+  align-items: stretch;
   flex-wrap: wrap;
-  gap: 1.2rem;
 }
-.password-field {
-  flex: 1 1 240px;
-  min-width: 220px;
+
+.email-input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.email-messages {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
 }
-.password-actions {
+
+.info-message,
+.warning-message,
+.success-message,
+.error-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.875rem 1rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.info-message {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+.warning-message {
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+.success-message {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.error-message {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.message-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  border: none;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
+  color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(102, 126, 234, 0.2);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a67d8 0%, #4c5bc4 100%);
+  box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: #374151;
+  border: 1.5px solid #d1d5db;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.btn-large {
+  padding: 0.875rem 2rem;
+  font-size: 0.9375rem;
+}
+
+.btn-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* ============================================
+   STATUS BADGE
+   ============================================ */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.status-badge.verified {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1.5px solid #a7f3d0;
+}
+
+.badge-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* ============================================
+   FORM ACTIONS
+   ============================================ */
+
+.form-actions {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  margin-top: 1.5rem;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f3f4f6;
+  margin-top: 0.5rem;
 }
-.password-save-btn {
-  min-width: 220px;
+
+.action-message {
+  flex: 1;
 }
-@media (max-width: 900px) {
+
+.success-text {
+  color: #059669;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* ============================================
+   PASSWORD STRENGTH
+   ============================================ */
+
+.password-strength {
+  margin-top: 0.5rem;
+}
+
+/* ============================================
+   DATE PICKER CUSTOM STYLES
+   ============================================ */
+
+/* Wrapper du DatePicker */
+:deep(.dp__main) {
+  width: 100% !important;
+}
+
+:deep(.dp__input_wrap) {
+  width: 100% !important;
+}
+
+/* Input du DatePicker - identique à .form-input */
+:deep(.dp__input),
+:deep(.dp__input:enabled),
+:deep(.dp__input:not(:disabled)),
+:deep(input.dp__input) {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  border: 2px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  font-size: 16px !important;
+  background: #fff !important;
+  color: #222 !important;
+  transition: border 0.2s !important;
+  font-family: inherit !important;
+  margin: 0 !important;
+  margin-bottom: 0 !important;
+  height: 48px !important;
+  max-height: 48px !important;
+  min-height: 48px !important;
+  line-height: 1.5 !important;
+  box-sizing: border-box !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  vertical-align: middle !important;
+}
+
+:deep(.dp__input:hover:not(:disabled)) {
+  border-color: #e5e7eb !important;
+}
+
+:deep(.dp__input:focus) {
+  border-color: #667eea !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+:deep(.dp__input:disabled) {
+  background: #f9fafb !important;
+  color: #6b7280 !important;
+  cursor: not-allowed !important;
+  border-color: #e5e7eb !important;
+}
+
+/* Cacher les icônes */
+:deep(.dp__input_icon),
+:deep(.dp__input_icon_pad) {
+  display: none !important;
+}
+
+:deep(.dp__clear_icon) {
+  display: none !important;
+}
+
+/* ============================================
+   MODAL
+   ============================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.75rem 1.75rem 1.25rem 1.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: #f3f4f6;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.modal-body {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-body .form-label {
+  margin-bottom: 0.5rem;
+}
+
+.modal-body .form-input {
+  width: 100%;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.25rem 1.75rem 1.75rem 1.75rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.resend-btn {
+  background: #ffffff;
+  color: #374151;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.resend-btn:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px 0 rgba(102, 126, 234, 0.2);
+}
+
+.confirm-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a67d8 0%, #4c5bc4 100%);
+  box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.3);
+}
+
+.confirm-btn:disabled,
+.resend-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
   .account-page {
-    padding: 1.2rem 0.7rem 1.5rem 0.7rem;
+    padding: 1.5rem 1rem 3rem;
+    gap: 1.25rem;
   }
-  .account-fields-row {
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .header-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .header-icon svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .card-header {
+    padding: 1.25rem 1.25rem;
+  }
+
+  .card-content {
+    padding: 1.25rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .email-container {
     flex-direction: column;
-    gap: 0.7rem;
   }
-  .password-card {
-    padding: 1.4rem;
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
   }
-  .password-actions {
+
+  .email-input {
+    min-width: auto;
+  }
+
+  .form-actions {
     flex-direction: column;
     align-items: stretch;
   }
-  .password-save-btn {
+
+  .action-message {
+    text-align: center;
+  }
+
+  .modal-card {
+    border-radius: 16px;
+  }
+
+  .modal-header {
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+  }
+
+  .resend-btn,
+  .confirm-btn {
     width: 100%;
   }
 }
-.password-strength-hints {
-  margin-top: 0;
-}
-.dark-blue-icon {
-  color: #193e8e !important;
+
+@media (max-width: 480px) {
+  .account-page {
+    padding: 1rem 0.75rem 2rem;
+  }
+
+  .page-title {
+    font-size: 1.375rem;
+  }
+
+  .card-header {
+    padding: 1rem;
+  }
+
+  .card-content {
+    padding: 1rem;
+  }
 }
 </style> 

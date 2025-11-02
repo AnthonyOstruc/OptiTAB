@@ -5,6 +5,8 @@ from users.views.authentication_views import (
     EmailVerificationSendView,
     EmailVerificationConfirmView,
     EmailVerificationLinkView,
+    EmailChangeRequestView,
+    EmailChangeConfirmView,
     UserLogoutView
 )
 from users.views.profile_views import (
@@ -61,6 +63,8 @@ urlpatterns = [
     path('email/send-code/', EmailVerificationSendView.as_view(), name='email_send_code'),
     path('email/verify-code/', EmailVerificationConfirmView.as_view(), name='email_verify_code'),
     path('email/verify-link/<str:token>/', EmailVerificationLinkView.as_view(), name='email_verify_link'),
+    path('email/change/', EmailChangeRequestView.as_view(), name='email_change'),
+    path('email/change-confirm/<str:token>/', EmailChangeConfirmView.as_view(), name='email_change_confirm'),
     path('logout/', UserLogoutView.as_view(), name='logout'),
     path('me/', MeView.as_view(), name='me'),  # pour obtenir les infos de l'utilisateur connecté
     path('me/gamification/', MeGamificationView.as_view(), name='me_gamification'),

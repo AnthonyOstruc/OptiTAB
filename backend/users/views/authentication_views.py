@@ -153,13 +153,11 @@ class EmailVerificationSendView(APIView):
 
             sent = EmailService.send_verification_link(user, verification_link)
             if not sent:
-                return ResponseService.error(
-                    message="Impossible d'envoyer le lien de vérification pour le moment.",
-                    status_code=500
-                )
+                logger.error("Échec d'envoi du lien de vérification pour %s", user.email)
 
             return ResponseService.success(
-                message="Lien de vérification envoyé",
+                message="Lien de vérification envoyé" if sent else "Lien généré, mais l'envoi email a échoué. Réessayez plus tard.",
+                data={'email_sent': sent}
             )
         except Exception as e:
             return ResponseService.error(
@@ -223,8 +221,8 @@ class EmailVerificationLinkView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, token):
-        redirect_base = getattr(settings, 'FRONTEND_URL', '') or getattr(settings, 'FRONTEND_BASE_URL', '') or ''
-        if not redirect_base or redirect_base.startswith('http://localhost'):
+        redirect_base = getattr(settings, 'FRONTEND_URL', '') or getattr(settings, 'FRONTEND_BASE_URL', '')
+        if not redirect_base:
             redirect_base = 'https://www.optitab.net'
         redirect_base = redirect_base.rstrip('/') or 'https://www.optitab.net'
 
@@ -277,10 +275,84 @@ class UserLogoutView(APIView):
             logger.warning(
                 f"Logout attempt without refresh token from {request.META.get('REMOTE_ADDR')} (idempotent success)"
             )
-            return ResponseService.success(
-                message="Déconnexion réussie",
-                status_code=status.HTTP_205_RESET_CONTENT
-            )
+        return ResponseService.success(
+            message="Déconnexion réussie",
+            status_code=status.HTTP_205_RESET_CONTENT
+        )
+
+
+class EmailChangeRequestView(APIView):
+    """Permet à l'utilisateur de demander un changement d'email."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        new_email = (request.data.get('email') or '').strip().lower()
+
+        if not new_email:
+            return ResponseService.validation_error({'email': 'Un email est requis.'})
+
+        if new_email == user.email:
+            return ResponseService.validation_error({'email': 'Veuillez saisir une adresse différente de l\'actuelle.'})
+
+        if CustomUser.objects.filter(email__iexact=new_email).exclude(id=user.id).exists():
+            return ResponseService.validation_error({'email': 'Cette adresse est déjà utilisée.'})
+
+        token = secrets.token_urlsafe(32)
+        user.pending_email = new_email
+        user.pending_email_token = token
+        user.pending_email_sent_at = timezone.now()
+        user.save(update_fields=['pending_email', 'pending_email_token', 'pending_email_sent_at'])
+
+        verify_path = reverse('email_change_confirm', kwargs={'token': token})
+        verification_link = request.build_absolute_uri(verify_path)
+        sent = EmailService.send_email_change_link(user, new_email, verification_link)
+
+        return ResponseService.success(
+            message="Lien de confirmation envoyé" if sent else "Lien généré, mais l'envoi email a échoué. Réessayez plus tard.",
+            data={'email_sent': sent}
+        )
+
+
+class EmailChangeConfirmView(APIView):
+    """Confirme le changement d'email via lien reçu."""
+    permission_classes = [AllowAny]
+
+    def get(self, request, token):
+        redirect_base = getattr(settings, 'FRONTEND_URL', '') or getattr(settings, 'FRONTEND_BASE_URL', '')
+        if not redirect_base:
+            redirect_base = 'https://www.optitab.net'
+        redirect_base = redirect_base.rstrip('/') or 'https://www.optitab.net'
+
+        success_query = '?email_change=1'
+        failure_query = '?email_change=0'
+
+        try:
+            if not token:
+                return redirect(f"{redirect_base}/account{failure_query}")
+
+            user = CustomUser.objects.filter(pending_email_token=token).first()
+            if not user or not user.pending_email:
+                return redirect(f"{redirect_base}/account{failure_query}")
+
+            if user.pending_email_sent_at and (timezone.now() - user.pending_email_sent_at) > timedelta(hours=1):
+                return redirect(f"{redirect_base}/account{failure_query}")
+
+            # Vérifier que l'email n'est pas utilisé
+            if CustomUser.objects.filter(email__iexact=user.pending_email).exclude(id=user.id).exists():
+                return redirect(f"{redirect_base}/account{failure_query}")
+
+            user.email = user.pending_email
+            user.pending_email = None
+            user.pending_email_token = None
+            user.pending_email_sent_at = None
+            user.verification_code = None
+            user.verification_code_sent_at = None
+            user.save(update_fields=['email', 'pending_email', 'pending_email_token', 'pending_email_sent_at', 'verification_code', 'verification_code_sent_at'])
+
+            return redirect(f"{redirect_base}/account{success_query}")
+        except Exception:
+            return redirect(f"{redirect_base}/account{failure_query}")
         
         try:
             token = RefreshToken(refresh_token)

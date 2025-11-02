@@ -159,3 +159,4 @@ export const deleteAllNotifications = async () => {
 // Email verification
 export const sendEmailVerificationLink = () => apiClient.post('/api/users/email/send-code/')
 export const verifyEmailCode = (code) => apiClient.post('/api/users/email/verify-code/', { code })
+export const requestEmailChange = (email) => apiClient.post('/api/users/email/change/', { email })

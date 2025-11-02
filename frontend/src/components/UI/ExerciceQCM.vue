@@ -730,6 +730,32 @@ watch(showSolution, (newVal) => {
   line-height: 1.7;
   color: #1f2937;
   text-align: left;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  /* Empêcher le contenu de dépasser */
+  max-width: 100%;
+  /* Scrollbar personnalisée pour PC */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.problem-content::-webkit-scrollbar {
+  height: 8px;
+}
+
+.problem-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.problem-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.problem-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* Solution Toggle */
@@ -858,6 +884,35 @@ watch(showSolution, (newVal) => {
   text-align: left;
   padding-left: 0;
   margin-left: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  /* Scrollbar personnalisée pour PC */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.steps-content::-webkit-scrollbar,
+.answer-content::-webkit-scrollbar {
+  height: 8px;
+}
+
+.steps-content::-webkit-scrollbar-track,
+.answer-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.steps-content::-webkit-scrollbar-thumb,
+.answer-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.steps-content::-webkit-scrollbar-thumb:hover,
+.answer-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* Amélioration des étapes de résolution - Version simple et propre */
@@ -1162,26 +1217,71 @@ watch(showSolution, (newVal) => {
   }
 }
 
-/* MathJax Styles */
-.exercice-card :deep(.MathJax) {
+/* MathJax Styles - avec scroll horizontal pour tous les écrans (PC et mobile) */
+/* Forcer les formules à garder leur taille normale et déborder */
+.exercice-card :deep(.mathjax-block) {
   max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  margin: 1rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.exercice-card :deep(.mathjax-block)::-webkit-scrollbar {
+  height: 8px;
+}
+
+.exercice-card :deep(.mathjax-block)::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.exercice-card :deep(.mathjax-block)::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.exercice-card :deep(.mathjax-block)::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Empêcher MathJax de réduire la taille des formules */
+.exercice-card :deep(.MathJax) {
+  max-width: none !important; /* Permettre le débordement */
 }
 
 .exercice-card :deep(.MathJax_Display) {
-  max-width: 100%;
-  overflow-x: auto;
+  max-width: none !important; /* Permettre le débordement */
   margin: 1.5rem 0;
 }
 
 .exercice-card :deep(.MathJax_SVG_Display) {
-  max-width: 100%;
-  overflow-x: auto;
+  max-width: none !important; /* Permettre le débordement */
 }
 
+/* Forcer les SVG à garder leur taille naturelle */
 .exercice-card :deep(.MathJax_SVG) {
-  max-width: 100%;
+  max-width: none !important;
+  min-width: min-content;
+}
+
+.exercice-card :deep(.MathJax_SVG_Display svg) {
+  max-width: none !important;
+}
+
+.exercice-card :deep(.MathJax svg) {
+  max-width: none !important;
+}
+
+/* S'assurer que les conteneurs MathJax modernes gardent leur taille */
+.exercice-card :deep(mjx-container) {
+  max-width: none !important;
+}
+
+.exercice-card :deep(mjx-container[display="true"]) {
+  max-width: none !important;
 }
 
 /* Responsive Design */
@@ -1239,18 +1339,22 @@ watch(showSolution, (newVal) => {
     max-width: 280px;
   }
   
-  /* MathJax responsive */
+  /* MathJax responsive - garder la taille normale */
   .exercice-card :deep(.MathJax_Display) {
-    font-size: 0.9em;
     margin: 1rem 0;
+    max-width: none !important;
   }
   
-  .exercice-card :deep(.MathJax_SVG_Display) {
-    font-size: 0.9em;
+  .exercice-card :deep(.MathJax) {
+    max-width: none !important;
   }
   
   .exercice-card :deep(.MathJax_SVG) {
-    font-size: 0.9em;
+    max-width: none !important;
+  }
+  
+  .exercice-card :deep(mjx-container) {
+    max-width: none !important;
   }
 }
 
@@ -1293,18 +1397,22 @@ watch(showSolution, (newVal) => {
     padding: 20px;
   }
   
-  /* MathJax responsive */
+  /* MathJax responsive - garder la taille normale */
   .exercice-card :deep(.MathJax_Display) {
-    font-size: 0.8em;
     margin: 0.75rem 0;
+    max-width: none !important;
   }
   
-  .exercice-card :deep(.MathJax_SVG_Display) {
-    font-size: 0.8em;
+  .exercice-card :deep(.MathJax) {
+    max-width: none !important;
   }
   
   .exercice-card :deep(.MathJax_SVG) {
-    font-size: 0.8em;
+    max-width: none !important;
+  }
+  
+  .exercice-card :deep(mjx-container) {
+    max-width: none !important;
   }
 }
 

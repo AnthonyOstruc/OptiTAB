@@ -215,6 +215,28 @@ const rendered = computed(() => {
   return renderContentWithImages(html, images)
 })
 
+function prepareTablesForScroll() {
+  const root = sheetContentRef.value
+  if (!root) return
+
+  const tables = root.querySelectorAll('table')
+  tables.forEach((table) => {
+    // Ajouter l'attribut pour cibler le style via :deep sans data-v
+    table.setAttribute('data-table-scroll-target', 'true')
+
+    if (table.parentElement && table.parentElement.hasAttribute('data-table-scroll-wrapper')) {
+      return
+    }
+
+    const wrapper = document.createElement('div')
+    wrapper.setAttribute('data-table-scroll-wrapper', 'true')
+    if (table.parentNode) {
+      table.parentNode.insertBefore(wrapper, table)
+      wrapper.appendChild(table)
+    }
+  })
+}
+
 function goBack() {
   // Rediriger vers sheets?matiereId=id (liste des notions de synthèse)
   const matiereId = route.params.matiereId || subjectsStore.activeMatiereId
@@ -258,6 +280,7 @@ async function fetchSheet(nId) {
     }
     // Extraire le sommaire après le rendu
     setTimeout(() => {
+      prepareTablesForScroll()
       extractTableOfContents()
       buildSearchIndex()
       updateHeadingMatches()
@@ -278,6 +301,7 @@ onMounted(() => {
 onActivated(() => {
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
   nextTick(() => {
+    prepareTablesForScroll()
     if (window.MathJax && window.MathJax.typesetPromise) {
       try {
         // Vider le cache de MathJax pour forcer un nouveau rendu
@@ -291,6 +315,7 @@ onActivated(() => {
     }
     // S'assurer que le rendu est bien appliqué avec un second appel après un délai
     setTimeout(() => {
+      prepareTablesForScroll()
       if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise()
       }
@@ -426,6 +451,12 @@ watch(() => route.params.notionId, (newId, oldId) => {
   }
 })
 
+watch(rendered, () => {
+  nextTick(() => {
+    prepareTablesForScroll()
+  })
+})
+
 // Nettoyer l'observer au démontage
 onBeforeUnmount(() => {
   if (tocObserver) {
@@ -485,6 +516,9 @@ watch(() => route.query.q, (val) => {
 .sheet-content { 
   text-align: left;
   max-width: 100%;
+  overflow-x: visible; /* Les tableaux gèrent leur propre scroll */
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch; /* Smooth scroll sur iOS */
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
@@ -492,7 +526,59 @@ watch(() => route.query.q, (val) => {
   color: #333;
   padding: 1rem 0;
   background: transparent;
+  /* Scrollbar personnalisée */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
 }
+
+.sheet-content::-webkit-scrollbar {
+  height: 8px;
+}
+
+.sheet-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.sheet-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.sheet-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Wrappers spécifiques pour le scroll horizontal des tableaux */
+.sheet-content :deep([data-table-scroll-wrapper]) {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.25rem 0;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.sheet-content :deep([data-table-scroll-wrapper]::-webkit-scrollbar) {
+  height: 8px;
+}
+
+.sheet-content :deep([data-table-scroll-wrapper]::-webkit-scrollbar-track) {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.sheet-content :deep([data-table-scroll-wrapper]::-webkit-scrollbar-thumb) {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.sheet-content :deep([data-table-scroll-wrapper]::-webkit-scrollbar-thumb:hover) {
+  background: #94a3b8;
+}
+
 /* Recherche dans la page */
 .page-search { text-align: left; margin: 1rem 0; }
 .page-search-inner { display:flex; align-items:center; gap:.5rem; border:1px solid #e5e7eb; border-radius:8px; padding:.5rem .75rem; background:#fff; }
@@ -526,6 +612,108 @@ watch(() => route.query.q, (val) => {
 }
 
 .sheet-content :deep(p) { margin-top: 0; margin-bottom: 0.5rem; }
+
+/* FORCER la préservation de l'esthétique des tableaux - Scroll horizontal si < 800px */
+.sheet-content :deep([data-table-scroll-target]) {
+  width: 100% !important; /* Prendre toute la largeur disponible */
+  min-width: 800px !important; /* Largeur minimale 800px - scroll si écran plus petit */
+  table-layout: auto !important;
+  white-space: nowrap !important; /* Empêcher le retour à la ligne dans les cellules */
+  display: table !important;
+  margin: 0;
+}
+
+.sheet-content :deep([data-table-scroll-target] td),
+.sheet-content :deep([data-table-scroll-target] th) {
+  white-space: nowrap !important; /* Empêcher le retour à la ligne dans les cellules */
+  padding: 8px 12px;
+}
+
+/* FORCER les formules MathJax à garder leur taille - JAMAIS de retour à la ligne */
+.sheet-content :deep(.MathJax) {
+  max-width: none !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+}
+
+.sheet-content :deep(.MathJax_Display) {
+  max-width: none !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  margin: 1.5rem 0;
+}
+
+.sheet-content :deep(.MathJax_SVG_Display) {
+  max-width: none !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+
+.sheet-content :deep(.MathJax_SVG) {
+  max-width: none !important;
+  min-width: min-content !important;
+  white-space: nowrap !important;
+}
+
+.sheet-content :deep(mjx-container) {
+  max-width: none !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  overflow: visible !important;
+}
+
+.sheet-content :deep(mjx-container[display="true"]) {
+  max-width: none !important;
+  white-space: nowrap !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+/* Forcer tous les enfants MathJax à ne pas wrap */
+.sheet-content :deep(.MathJax *),
+.sheet-content :deep(mjx-container *) {
+  white-space: nowrap !important;
+}
+
+/* Scroll horizontal sur tous les écrans < 800px */
+@media (max-width: 799px) {
+  .sheet-content :deep([data-table-scroll-target]) {
+    /* Le tableau reste à 800px minimum, scroll horizontal obligatoire */
+    min-width: 800px !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Permettre le zoom sur mobile pour mieux voir tableaux et formules */
+@media (max-width: 768px) {
+  .sheet-content :deep([data-table-scroll-target]) {
+    /* Le tableau garde 800px minimum, scroll horizontal */
+    min-width: 800px !important;
+    white-space: nowrap !important;
+  }
+  
+  .sheet-content :deep(.MathJax_Display),
+  .sheet-content :deep(mjx-container[display="true"]) {
+    max-width: none !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .sheet-content :deep([data-table-scroll-target]) {
+    /* Sur très petit écran, toujours 800px avec scroll */
+    min-width: 800px !important;
+    white-space: nowrap !important;
+  }
+  
+  .sheet-content :deep(.MathJax_Display),
+  .sheet-content :deep(mjx-container[display="true"]) {
+    max-width: none !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+  }
+}
 
 /* Styles du sommaire */
 .toc-container {

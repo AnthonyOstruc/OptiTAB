@@ -3,7 +3,9 @@ Configuration Admin pour l'utilisateur personnalisé - Version simplifiée
 """
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.utils import timezone
 from .models import CustomUser, UserFavoriteMatiere, UserSelectedMatiere, ParentChild
+from subscriptions.models import UserSubscription, AccessPass
 
 
 @admin.register(CustomUser)
@@ -20,10 +22,24 @@ class CustomUserAdmin(UserAdmin):
     )
 
     # Colonnes affichées dans la liste
-    list_display = ('email', 'full_name', 'role', 'civilite', 'telephone', 'pays', 'niveau_pays', 'is_active', 'is_staff', 'date_joined')
+    list_display = (
+        'email',
+        'full_name',
+        'role',
+        'civilite',
+        'telephone',
+        'pays',
+        'niveau_pays',
+        'subscription_plan_display',
+        'subscription_status_display',
+        'has_complimentary_access',
+        'is_active',
+        'is_staff',
+        'date_joined',
+    )
 
     # Filtres disponibles
-    list_filter = ('is_staff', 'is_active', 'civilite', 'pays', 'niveau_pays', 'date_joined')
+    list_filter = ('is_staff', 'is_active', 'civilite', 'pays', 'niveau_pays', 'has_complimentary_access', 'date_joined')
 
     # Champs de recherche
     search_fields = ('email', 'first_name', 'last_name', 'telephone')
@@ -47,6 +63,20 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('xp',),
             'classes': ('collapse',)
         }),
+        ('Accès premium', {
+            'fields': (
+                'has_complimentary_access',
+            ),
+        }),
+        ('Abonnement / Pass', {
+            'fields': (
+                'subscription_plan_display',
+                'subscription_status_display',
+                'subscription_ends_display',
+                'subscription_has_active_pass',
+            ),
+            'classes': ('collapse',),
+        }),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
             'classes': ('collapse',)
@@ -60,6 +90,72 @@ class CustomUserAdmin(UserAdmin):
             'classes': ('collapse',)
         }),
     )
+
+    readonly_fields = UserAdmin.readonly_fields + (
+        'subscription_plan_display',
+        'subscription_status_display',
+        'subscription_ends_display',
+        'subscription_has_active_pass',
+    )
+
+    def _get_subscription(self, obj):
+        try:
+            return obj.subscription
+        except UserSubscription.DoesNotExist:
+            return None
+
+    def subscription_plan_display(self, obj):
+        subscription = self._get_subscription(obj)
+        if subscription and subscription.plan:
+            billing = subscription.plan.get_billing_period_display() if hasattr(subscription.plan, 'get_billing_period_display') else subscription.plan.billing_period
+            return f"{subscription.plan.name} ({billing})"
+        if obj.has_complimentary_access:
+            return 'Accès manuel'
+        return '—'
+
+    subscription_plan_display.short_description = 'Plan'
+
+    def subscription_status_display(self, obj):
+        subscription = self._get_subscription(obj)
+        if subscription:
+            try:
+                return subscription.get_status_display()
+            except AttributeError:
+                return subscription.status
+        if obj.has_complimentary_access:
+            return 'Accès manuel'
+        return 'Aucun'
+
+    subscription_status_display.short_description = 'Statut'
+
+    @staticmethod
+    def _format_dt(dt):
+        if not dt:
+            return None
+        try:
+            aware = timezone.localtime(dt) if timezone.is_aware(dt) else dt
+            return aware.strftime('%d/%m/%Y %H:%M')
+        except Exception:
+            return str(dt)
+
+    def subscription_ends_display(self, obj):
+        subscription = self._get_subscription(obj)
+        if subscription and subscription.current_period_end:
+            return self._format_dt(subscription.current_period_end)
+        pass_obj = AccessPass.objects.filter(user=obj).order_by('-ends_at').first()
+        if pass_obj:
+            formatted = self._format_dt(pass_obj.ends_at)
+            return f"Pass jusqu'au {formatted}" if formatted else 'Pass actif'
+        return '—'
+
+    subscription_ends_display.short_description = 'Expire le'
+
+    def subscription_has_active_pass(self, obj):
+        now = timezone.now()
+        return AccessPass.objects.filter(user=obj, ends_at__gt=now).exists()
+
+    subscription_has_active_pass.short_description = 'Pass actif'
+    subscription_has_active_pass.boolean = True
 
 
 @admin.register(ParentChild)

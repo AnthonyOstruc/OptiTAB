@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useSubscriptionStore } from '@/stores/subscription'
 import { apiUtils } from '@/api/client'
 import { matiereMiddleware, exercicesMiddleware, quizMiddleware } from './middlewares/matiereMiddleware'
 import { requireNiveau, routeRequiresNiveau } from './middlewares/niveauMiddleware'
@@ -25,7 +26,7 @@ const routes = [
     beforeEnter: quizMiddleware 
   },
   // Accès direct au quiz par notion (chapitres supprimés)
-  { path: '/quiz-notion/:notionId', name: 'QuizByNotion', component: () => import('@/views/ChapterQuiz.vue'), meta: { requiresAuth: true, requiresAdmin: true, onAdminDenied: 'QuizComingSoon' }, beforeEnter: quizMiddleware },
+{ path: '/quiz-notion/:notionId', name: 'QuizByNotion', component: () => import('@/views/ChapterQuiz.vue'), meta: { requiresAuth: true, requiresSubscription: true, requiresAdmin: true, onAdminDenied: 'QuizComingSoon' }, beforeEnter: quizMiddleware },
   { path: '/quiz-coming-soon', name: 'QuizComingSoon', component: () => import('@/views/QuizComingSoon.vue'), meta: { requiresAuth: true } },
   { 
     path: '/course-notions/:matiereId', 
@@ -34,9 +35,9 @@ const routes = [
     meta: { requiresAuth: true } 
   },
   // Cours par notion (chapitres supprimés)
-  { path: '/course-notion/:notionId', name: 'CourseByNotion', component: () => import('@/views/Cours.vue'), meta: { requiresAuth: true } },
-  { path: '/cours/:matiereId/:notionId/:chapitreId', name: 'Cours', component: () => import('@/views/Cours.vue'), meta: { requiresAuth: true } },
-  { path: '/cours/:matiereId/:notionId/:chapitreId/:coursId', name: 'CoursDetail', component: () => import('@/views/CoursDetail.vue'), meta: { requiresAuth: true } },
+{ path: '/course-notion/:notionId', name: 'CourseByNotion', component: () => import('@/views/Cours.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
+{ path: '/cours/:matiereId/:notionId/:chapitreId', name: 'Cours', component: () => import('@/views/Cours.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
+{ path: '/cours/:matiereId/:notionId/:chapitreId/:coursId', name: 'CoursDetail', component: () => import('@/views/CoursDetail.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
   { 
     path: '/sheets', 
     name: 'Sheets', 
@@ -44,7 +45,7 @@ const routes = [
     meta: { requiresAuth: true }, 
     beforeEnter: matiereMiddleware 
   },
-  { path: '/sheets-notion/:notionId', name: 'SynthesisByNotion', component: () => import('@/views/SheetByNotion.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
+{ path: '/sheets-notion/:notionId', name: 'SynthesisByNotion', component: () => import('@/views/SheetByNotion.vue'), meta: { requiresAuth: true, requiresSubscription: true }, beforeEnter: matiereMiddleware },
   { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
   { path: '/contact', name: 'Contact', component: () => import('@/views/Contact.vue') },
   { path: '/cours-particuliers', name: 'CoursParticuliers', component: () => import('@/views/CoursParticuliers.vue') },
@@ -55,7 +56,7 @@ const routes = [
   { path: '/legal', name: 'Legal', component: () => import('@/views/Legal.vue') },
   { path: '/cookies', name: 'Cookies', component: () => import('@/views/Cookies.vue') },
   { path: '/conditions', name: 'Conditions', component: () => import('@/views/Conditions.vue') },
-  { path: '/notions/:matiereId', name: 'Notions', component: () => import('@/views/Notions.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
+{ path: '/notions/:matiereId', name: 'Notions', component: () => import('@/views/Notions.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
   { 
     path: '/exercicies/:matiereId', 
     name: 'Themes', 
@@ -63,10 +64,10 @@ const routes = [
     meta: { requiresAuth: true }, 
     beforeEnter: exercicesMiddleware 
   },
-  { path: '/theme-notions/:themeId', name: 'ThemeNotions', component: () => import('@/views/ThemeNotions.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
+{ path: '/theme-notions/:themeId', name: 'ThemeNotions', component: () => import('@/views/ThemeNotions.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
   // Exercices par notion directement
-  { path: '/exercices-notion/:notionId', name: 'ExercicesByNotion', component: () => import('@/views/ChapterExercises.vue'), meta: { requiresAuth: true }, beforeEnter: exercicesMiddleware },
-  { path: '/exercice/:exerciceId', name: 'ExerciceDetail', component: () => import('@/views/ExerciceDetail.vue'), meta: { requiresAuth: true } },
+{ path: '/exercices-notion/:notionId', name: 'ExercicesByNotion', component: () => import('@/views/ChapterExercises.vue'), meta: { requiresAuth: true, requiresSubscription: true }, beforeEnter: exercicesMiddleware },
+{ path: '/exercice/:exerciceId', name: 'ExerciceDetail', component: () => import('@/views/ExerciceDetail.vue'), meta: { requiresAuth: true, requiresSubscription: true } },
   { path: '/progress', name: 'Progress', component: () => import('@/views/Progress.vue'), meta: { requiresAuth: true } },
   { path: '/historique-exercices', name: 'ExercisesHistory', component: () => import('@/views/ExercisesHistory.vue'), meta: { requiresAuth: true } },
   { path: '/historique-quiz', name: 'QuizzesHistory', component: () => import('@/views/QuizzesHistory.vue'), meta: { requiresAuth: true } },
@@ -78,6 +79,8 @@ const routes = [
     meta: { requiresAdmin: true },
     children: [
       { path: 'newsletter', name: 'AdminNewsletter', component: () => import('@/views/admin/NewsletterAdmin.vue') },
+      { path: 'subscriptions', name: 'AdminSubscriptions', component: () => import('@/views/admin/AdminSubscriptions.vue') },
+      { path: 'subscribers', name: 'AdminSubscribers', component: () => import('@/views/admin/AdminSubscribers.vue') },
       { path: 'matieres', name: 'AdminMatieres', component: () => import('@/views/admin/AdminMatieres.vue') },
       { path: 'themes', name: 'AdminThemes', component: () => import('@/views/admin/AdminThemes.vue') },
       { path: 'notions', name: 'AdminNotions', component: () => import('@/views/admin/AdminNotions.vue') },
@@ -200,6 +203,7 @@ router.beforeEach(async (to, from, next) => {
   let token = localStorage.getItem('access_token')
   const refreshToken = localStorage.getItem('refresh_token')
   const userStore = useUserStore()
+  const subscriptionStore = useSubscriptionStore()
   let isAuthenticated = userStore.isAuthenticated
   let isAdmin = userStore.isAdmin
 
@@ -237,11 +241,13 @@ router.beforeEach(async (to, from, next) => {
       } catch (e) {
         console.warn('Échec du rafraîchissement dans le navigation guard:', e?.message || e)
         userStore.clearUser()
+        subscriptionStore.clear()
         isAuthenticated = false
         isAdmin = false
       }
     } else {
       userStore.clearUser()
+      subscriptionStore.clear()
       isAuthenticated = false
       isAdmin = false
     }
@@ -260,6 +266,7 @@ router.beforeEach(async (to, from, next) => {
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
       userStore.clearUser()
+      subscriptionStore.clear()
       isAuthenticated = false
       isAdmin = false
     }
@@ -281,6 +288,12 @@ router.beforeEach(async (to, from, next) => {
   } 
   // Autres routes
   else {
+    if (isAuthenticated && to.meta.requiresSubscription && !isAdmin) {
+      await subscriptionStore.fetchStatus()
+      if (!subscriptionStore.hasAccess) {
+        return next({ name: 'Billing', query: { redirect: to.fullPath, reason: 'subscription_required' } })
+      }
+    }
     // Vérifier si la route nécessite un niveau
     if (isAuthenticated && routeRequiresNiveau(to.name)) {
       requireNiveau(to, from, next)

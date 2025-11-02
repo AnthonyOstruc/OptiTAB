@@ -59,6 +59,71 @@ class EmailService:
         except Exception as e:
             logger.error(f"Erreur envoi email à {user.email}: {e}")
             return False
+
+    @staticmethod
+    def send_verification_link(user, verification_link):
+        """Envoie un lien de vérification d'email."""
+        first_name = (user.first_name or '').strip() or 'OptiTABien'
+        plain_message = (
+            f"Bonjour {first_name},\n\n"
+            "Merci de confirmer votre adresse email OptiTAB.\n"
+            "Cliquez sur le lien ci-dessous pour valider votre email :\n"
+            f"{verification_link}\n\n"
+            "Ce lien expire dans 24 heures.\n\n"
+            "À très vite,\nL'équipe OptiTAB"
+        )
+
+        logo_url = EmailService._resolve_logo_url()
+        html_message = f"""
+            <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                <tr>
+                  <td style="padding:24px 24px 0 24px;">
+                    {f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block;margin-bottom:16px;"/>' if logo_url else ''}
+                    <h1 style="margin:0 0 12px 0;font-size:22px;color:#111827;">Confirmez votre email</h1>
+                    <p style="margin:0;color:#4b5563;font-size:15px;line-height:1.6;">
+                      Bonjour {first_name},<br/>
+                      Merci de confirmer votre adresse email pour sécuriser votre compte.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:24px;">
+                    <a href="{verification_link}" style="display:inline-block;background:#4f46e5;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 24px;border-radius:10px;">
+                      Confirmer mon email
+                    </a>
+                    <p style="margin:16px 0 0 0;color:#6b7280;font-size:13px;line-height:1.6;">
+                      Ce lien est valable pendant 24 heures. Si le bouton ne fonctionne pas, copiez-collez ce lien dans votre navigateur :
+                    </p>
+                    <p style="margin:12px 0 0 0;color:#2563eb;font-size:13px;word-break:break-all;">
+                      <a href="{verification_link}" style="color:#2563eb;text-decoration:none;">{verification_link}</a>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:16px 24px;background:#f3f4f6;color:#6b7280;font-size:12px;">
+                    L'équipe OptiTAB<br/>
+                    <a href="mailto:contact@optitab.net" style="color:#4f46e5;text-decoration:none;">contact@optitab.net</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+        """.strip()
+
+        try:
+            email_message = EmailMultiAlternatives(
+                subject='Confirmez votre email OptiTAB',
+                body=plain_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[user.email],
+            )
+            email_message.attach_alternative(html_message, "text/html")
+            email_message.send(fail_silently=False)
+            logger.info(f"Lien de vérification envoyé à {user.email}")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur envoi lien de vérification à {user.email}: {e}")
+            return False
     
     @staticmethod
     def send_password_reset(user, reset_link):

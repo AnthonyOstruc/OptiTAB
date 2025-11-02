@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 from core.services import ResponseService, QuerySetService
-from ..serializers.user_profile import UserDetailSerializer, UserUpdateSerializer
+from ..serializers.user_profile import UserDetailSerializer, UserUpdateSerializer, ChangePasswordSerializer
 from rest_framework.decorators import api_view
 from ..serializers.geographic_data import UserPaysNiveauUpdateSerializer
 from pays.models import Pays, Niveau
@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 import secrets
 import string
 from django.db import transaction
+from django.contrib.auth import update_session_auth_hash
 
 
 class MeView(APIView):
@@ -352,13 +353,20 @@ class MyChildrenView(APIView):
                     data={ 'children': [] }
                 )
 
-            children_qs = CustomUser.objects.select_related('pays', 'niveau_pays').filter(
-                parent_links__parent=request.user
+            links_qs = (
+                ParentChild.objects
+                .select_related('child', 'child__pays', 'child__niveau_pays')
+                .filter(parent=request.user)
             )
+
+            accepted_links = links_qs.filter(status=ParentChild.STATUS_ACCEPTED)
+            pending_links = links_qs.filter(status=ParentChild.STATUS_PENDING)
+            declined_links = links_qs.filter(status=ParentChild.STATUS_DECLINED)
 
             weekly_goal = 20
 
-            def child_payload(u: CustomUser):
+            def child_payload(link: ParentChild):
+                u: CustomUser = link.child
                 # Statistiques basiques
                 q = SuiviExercice.objects.filter(user=u)
                 try:
@@ -400,6 +408,7 @@ class MyChildrenView(APIView):
 
                 return {
                     'id': u.id,
+                    'link_id': link.id,
                     'first_name': u.first_name,
                     'last_name': u.last_name,
                     'display_name': f"{(u.first_name or '').strip()} {(u.last_name or '')[:1].upper()}.".strip() or 'Élève',
@@ -416,10 +425,28 @@ class MyChildrenView(APIView):
                         'weekly_progress': weekly_progress,
                     },
                     'last_activity': last_payload,
+                    'status': link.status,
+                    'invited_at': link.created_at.isoformat() if link.created_at else None,
+                    'responded_at': link.responded_at.isoformat() if link.responded_at else None,
+                }
+
+            def invitation_payload(link: ParentChild):
+                child = link.child
+                return {
+                    'link_id': link.id,
+                    'child_id': child.id,
+                    'first_name': child.first_name,
+                    'last_name': child.last_name,
+                    'email': child.email,
+                    'status': link.status,
+                    'invited_at': link.created_at.isoformat() if link.created_at else None,
+                    'responded_at': link.responded_at.isoformat() if link.responded_at else None,
                 }
 
             data = {
-                'children': [child_payload(u) for u in children_qs]
+                'children': [child_payload(link) for link in accepted_links],
+                'pending_invitations': [invitation_payload(link) for link in pending_links],
+                'declined_invitations': [invitation_payload(link) for link in declined_links],
             }
 
             return ResponseService.success(
@@ -447,7 +474,11 @@ class ChildOverviewView(APIView):
                 )
 
             try:
-                link_exists = ParentChild.objects.filter(parent=request.user, child_id=child_id).exists()
+                link_exists = ParentChild.objects.filter(
+                    parent=request.user,
+                    child_id=child_id,
+                    status=ParentChild.STATUS_ACCEPTED,
+                ).exists()
                 if not link_exists:
                     return ResponseService.error(
                         message="Enfant non lié à ce compte parent",
@@ -899,19 +930,68 @@ class AddChildView(APIView):
                     status_code=status.HTTP_400_BAD_REQUEST
                 )
 
-            # Création idempotente
-            ParentChild.objects.get_or_create(parent=request.user, child=child)
+            link_message = "Invitation envoyée"
+            notify_child = False
+            with transaction.atomic():
+                link, created = ParentChild.objects.get_or_create(
+                    parent=request.user,
+                    child=child,
+                )
+                if created:
+                    notify_child = True
+                    link_message = "Invitation envoyée à l'élève"
+                else:
+                    if link.status == ParentChild.STATUS_ACCEPTED:
+                        link_message = "Lien déjà actif avec cet élève"
+                    elif link.status == ParentChild.STATUS_PENDING:
+                        link_message = "Une invitation est déjà en attente"
+                    elif link.status == ParentChild.STATUS_DECLINED:
+                        link.status = ParentChild.STATUS_PENDING
+                        link.responded_at = None
+                        link.save(update_fields=['status', 'responded_at'])
+                        notify_child = True
+                        link_message = "Invitation renvoyée à l'élève"
 
-            # Payload simple
-            data = {
+                if created and link.status != ParentChild.STATUS_PENDING:
+                    # Sécurité : s'assurer que toute nouvelle relation démarre en attente
+                    link.status = ParentChild.STATUS_PENDING
+                    link.responded_at = None
+                    link.save(update_fields=['status', 'responded_at'])
+
+            if notify_child:
+                # Clore les anciennes notifications pour ce lien
+                UserNotification.objects.filter(
+                    user=child,
+                    type='parent_invite',
+                    data__link_id=link.id,
+                    read=False,
+                ).update(read=True)
+                parent_display = request.user.full_name or request.user.email
+                UserNotification.objects.create(
+                    user=child,
+                    type='parent_invite',
+                    title="Nouveau lien parent",
+                    message=f"{parent_display} souhaite suivre votre progression sur OptiTAB.",
+                    data={
+                        'link_id': link.id,
+                        'parent_id': request.user.id,
+                        'parent_first_name': request.user.first_name,
+                        'parent_last_name': request.user.last_name,
+                        'parent_email': request.user.email,
+                    },
+                )
+
+            response_payload = {
                 'id': child.id,
                 'email': child.email,
                 'first_name': child.first_name,
                 'last_name': child.last_name,
+                'status': link.status,
+                'link_id': link.id,
             }
             return ResponseService.success(
-                message="Lien parent‑enfant ajouté",
-                data=data
+                message=link_message,
+                data=response_payload
             )
         except Exception:
             return ResponseService.error(
@@ -948,6 +1028,112 @@ class RemoveChildView(APIView):
                 message="Erreur lors de la suppression du lien",
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class ParentInvitationsListView(APIView):
+    """Liste les invitations parentales en attente côté élève."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        invitations_qs = (
+            ParentChild.objects
+            .select_related('parent')
+            .filter(child=request.user, status=ParentChild.STATUS_PENDING)
+        )
+
+        def serialize_invitation(link: ParentChild):
+            parent = link.parent
+            return {
+                'link_id': link.id,
+                'parent_id': parent.id,
+                'parent_first_name': parent.first_name,
+                'parent_last_name': parent.last_name,
+                'parent_email': parent.email,
+                'parent_display_name': (parent.full_name or parent.email),
+                'invited_at': link.created_at.isoformat() if link.created_at else None,
+            }
+
+        data = {'invitations': [serialize_invitation(link) for link in invitations_qs]}
+        return ResponseService.success(
+            message="Invitations récupérées",
+            data=data
+        )
+
+
+class ParentInvitationRespondView(APIView):
+    """Permet à un élève d'accepter ou refuser une invitation parentale."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, invitation_id: int):
+        action = (request.data.get('action') or '').strip().lower()
+        if action not in {'accept', 'decline'}:
+            return ResponseService.error(
+                message="Action invalide",
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            link = ParentChild.objects.select_related('parent').get(
+                id=invitation_id,
+                child=request.user,
+            )
+        except ParentChild.DoesNotExist:
+            return ResponseService.error(
+                message="Invitation introuvable",
+                status_code=status.HTTP_404_NOT_FOUND
+            )
+
+        if link.status != ParentChild.STATUS_PENDING:
+            return ResponseService.error(
+                message="Invitation déjà traitée",
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
+
+        now = timezone.now()
+        link.responded_at = now
+
+        if action == 'accept':
+            link.status = ParentChild.STATUS_ACCEPTED
+            response_message = "Invitation acceptée"
+            parent_title = "Invitation acceptée"
+            parent_message = f"{request.user.full_name or request.user.email} a accepté votre invitation."
+            parent_status = 'accepted'
+        else:
+            link.status = ParentChild.STATUS_DECLINED
+            response_message = "Invitation refusée"
+            parent_title = "Invitation refusée"
+            parent_message = f"{request.user.full_name or request.user.email} a refusé votre invitation."
+            parent_status = 'declined'
+
+        link.save(update_fields=['status', 'responded_at'])
+
+        # Clore la notification élève pour cette invitation
+        UserNotification.objects.filter(
+            user=request.user,
+            type='parent_invite',
+            data__link_id=link.id,
+            read=False,
+        ).update(read=True)
+
+        # Prévenir le parent
+        UserNotification.objects.create(
+            user=link.parent,
+            type='parent_invite_response',
+            title=parent_title,
+            message=parent_message,
+            data={
+                'link_id': link.id,
+                'child_id': request.user.id,
+                'child_first_name': request.user.first_name,
+                'child_last_name': request.user.last_name,
+                'status': parent_status,
+            },
+        )
+
+        return ResponseService.success(
+            message=response_message,
+            data={'status': link.status}
+        )
 
 
 class CreateChildAccountView(APIView):
@@ -1018,8 +1204,12 @@ class CreateChildAccountView(APIView):
                 # En cas d'erreur de pays/niveau, laisser l'utilisateur créé, sans bloquer
                 pass
 
-            # Lier au parent (idempotent)
-            ParentChild.objects.get_or_create(parent=request.user, child=child)
+            # Lier au parent (idempotent) en acceptant automatiquement
+            link, _ = ParentChild.objects.get_or_create(parent=request.user, child=child)
+            if link.status != ParentChild.STATUS_ACCEPTED:
+                link.status = ParentChild.STATUS_ACCEPTED
+                link.responded_at = timezone.now()
+                link.save(update_fields=['status', 'responded_at'])
 
             data = {
                 'child': {
@@ -1083,6 +1273,27 @@ class UpdateProfileView(APIView):
                 )
         
         return ResponseService.validation_error(serializer.errors)
+
+
+class ChangePasswordView(APIView):
+    """Permet à l'utilisateur connecté de modifier son mot de passe."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = ChangePasswordSerializer(
+            data=request.data,
+            context={'request': request}
+        )
+
+        if not serializer.is_valid():
+            return ResponseService.validation_error(serializer.errors)
+
+        user = serializer.save()
+        update_session_auth_hash(request, user)
+
+        return ResponseService.success(
+            message="Mot de passe mis à jour avec succès."
+        )
 
 
 class UpdatePaysView(APIView):

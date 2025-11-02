@@ -4,7 +4,11 @@ from .views import (
     SubscriptionStatusView,
     CancelSubscriptionView,
     PlansListView,
-    stripe_webhook
+    stripe_webhook,
+    AdminPlansView,
+    AdminPlanDetailView,
+    AdminSubscribersView,
+    AdminStripeSyncView,
 )
 
 urlpatterns = [
@@ -13,4 +17,9 @@ urlpatterns = [
     path('status/', SubscriptionStatusView.as_view(), name='subscription-status'),
     path('cancel/', CancelSubscriptionView.as_view(), name='cancel-subscription'),
     path('webhook/', stripe_webhook, name='stripe-webhook'),
+    # Admin management endpoints
+    path('admin/plans/', AdminPlansView.as_view(), name='admin-plans'),
+    path('admin/plans/<int:pk>/', AdminPlanDetailView.as_view(), name='admin-plan-detail'),
+    path('admin/subscribers/', AdminSubscribersView.as_view(), name='admin-subscribers'),
+    path('admin/sync-from-stripe/', AdminStripeSyncView.as_view(), name='admin-sync-from-stripe'),
 ]

@@ -55,20 +55,15 @@
 
               <!-- Notions Grid -->
               <div class="notions-grid">
-                <div 
-                  v-for="(notion, index) in themeSection.notions"
-                  :key="notion.id"
-                  class="notion-card"
-                  @click="onNotionClick(notion.id)"
-                >
-                  <div class="card-content">
-                    <div class="card-title">{{ notion.nom }}</div>
-                    <div class="card-subtitle">NOTION</div>
-                    <div class="progress-bar">
-                      <div class="progress-fill"></div>
-                    </div>
-                  </div>
-                </div>
+              <NotionCard
+                v-for="(notion, index) in themeSection.notions"
+                :key="notion.id"
+                :notion-id="notion.id"
+                :title="notion.nom"
+                :description="notion.description"
+                :locked="notionLocked"
+                @click="onNotionClick(notion.id)"
+              />
               </div>
             </div>
           </div>
@@ -76,20 +71,15 @@
           <!-- Simple Layout (no themes) -->
           <div v-else class="simple-layout">
             <div class="notions-grid">
-              <div 
+              <NotionCard
                 v-for="(notion, index) in notions"
                 :key="notion.id"
-                class="notion-card"
+                :notion-id="notion.id"
+                :title="notion.nom"
+                :description="notion.description"
+                :locked="notionLocked"
                 @click="onNotionClick(notion.id)"
-              >
-                <div class="card-content">
-                  <div class="card-title">{{ notion.nom }}</div>
-                  <div class="card-subtitle">NOTION</div>
-                  <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                  </div>
-                </div>
-              </div>
+              />
             </div>
           </div>
         </div>
@@ -110,11 +100,15 @@ import MathJax from 'vue-mathjax-next'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import BackButton from '@/components/common/BackButton.vue'
 import { useUserStore } from '@/stores/user'
+import { useRequireSubscription } from '@/composables/useRequireSubscription'
+import { useSubscriptionStore } from '@/stores/subscription'
 
 const route = useRoute()
 const router = useRouter()
 const subjectsStore = useSubjectsStore()
 const userStore = useUserStore()
+const { ensureAccess } = useRequireSubscription()
+const subscriptionStore = useSubscriptionStore()
 
 // Fonction pour revenir aux matières
 function goBackToMatieres() {
@@ -220,8 +214,11 @@ const loadNotions = async (matiereId) => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   loadNotions(currentMatiereId.value)
+  if (!subscriptionStore.status) {
+    await subscriptionStore.fetchStatus()
+  }
 })
 
 // Surveiller les changements de matière active
@@ -255,10 +252,15 @@ watch(() => userStore.niveau_pays, async (newNiveau) => {
   }
 }, { immediate: false })
 
-function onNotionClick(notionId) {
-  // Par défaut aller aux exercices par notion
-  router.push({ name: 'ExercicesByNotion', params: { notionId } })
+async function onNotionClick(notionId) {
+  const target = { name: 'ExercicesByNotion', params: { notionId } }
+  const allowed = await ensureAccess(target)
+  if (allowed) {
+    router.push(target)
+  }
 }
+
+const notionLocked = computed(() => !subscriptionStore.hasAccess && !userStore.isAdmin)
 </script>
 
 <style scoped>

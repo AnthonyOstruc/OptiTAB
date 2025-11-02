@@ -91,6 +91,7 @@ class GoogleLoginView(APIView):
                 'last_name': user.last_name,
                 'role': getattr(user, 'role', 'student'),
                 'is_active': user.is_active,
+                'email_verified': not bool(getattr(user, 'verification_code', None)),
             }
 
             logger.info(f"Connexion Google réussie: {user.email} (created={created})")
@@ -225,6 +226,7 @@ class GoogleOAuthCodeExchangeView(APIView):
                 'last_name': user.last_name,
                 'role': getattr(user, 'role', 'student'),
                 'is_active': user.is_active,
+                'email_verified': not bool(getattr(user, 'verification_code', None)),
             }
 
             return ResponseService.success(
@@ -321,6 +323,7 @@ class GoogleOAuthAccessTokenView(APIView):
                 'last_name': user.last_name,
                 'role': getattr(user, 'role', 'student'),
                 'is_active': user.is_active,
+                'email_verified': not bool(getattr(user, 'verification_code', None)),
             }
 
             return ResponseService.success(

@@ -2,7 +2,9 @@
 VUES ULTRA SIMPLES pour quiz
 """
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
+
+from subscriptions.permissions import HasActiveSubscriptionOrPass
 from .models import Quiz, QuizImage
 from .serializers import QuizSerializer, QuizImageSerializer
 
@@ -10,7 +12,12 @@ from .serializers import QuizSerializer, QuizImageSerializer
 class QuizViewSet(viewsets.ModelViewSet):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Lecture publique, écriture authentifiée
+    permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return [IsAuthenticated()]
+        return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -34,7 +41,7 @@ class QuizImageViewSet(viewsets.ModelViewSet):
     """
     queryset = QuizImage.objects.all()
     serializer_class = QuizImageSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_queryset(self):
         queryset = super().get_queryset()

@@ -76,6 +76,7 @@
               :notion-id="notion.id"
               :title="notion.nom"
               :description="notion.description || ''"
+              :locked="notionsLocked"
               @click="goToNotion(notion.id)"
             />
             <div v-if="!(themeToNotions[theme.id] && themeToNotions[theme.id].length)" class="tnv-no-notions">
@@ -107,6 +108,7 @@
             :notion-id="notion.id"
             :title="notion.nom"
             :description="notion.description || ''"
+            :locked="notionsLocked"
             @click="goToNotion(notion.id)"
           />
         </div>
@@ -119,6 +121,7 @@
 import { ref, onMounted, watch, onBeforeUnmount, nextTick, computed, onActivated } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useSubscriptionStore } from '@/stores/subscription'
 import { getNotionsPourUtilisateur } from '@/api'
 import { getThemesWithNotionsForUser } from '@/api/themes'
 import { getCours } from '@/api/cours'
@@ -127,6 +130,7 @@ import { getExercices } from '@/api/exercices'
 import NotionCard from '@/components/UI/NotionCard.vue'
 import SkeletonCard from '@/components/common/SkeletonCard.vue'
 import { useDataPrefetch } from '@/composables/useDataPrefetch'
+import { useRequireSubscription } from '@/composables/useRequireSubscription'
 
 const props = defineProps({
   matiereId: { type: [Number, String], required: true },
@@ -142,7 +146,9 @@ const props = defineProps({
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
+const subscriptionStore = useSubscriptionStore()
 const { prefetchNotionContent } = useDataPrefetch()
+const { ensureAccess } = useRequireSubscription()
 
 const loading = ref(false)
 const error = ref('')
@@ -240,14 +246,17 @@ function notionMatches(notion) {
   return false
 }
 
-function goToNotion(notionId) {
+async function goToNotion(notionId) {
   // Effacer le filtre de recherche de l'URL avant de naviguer
   try {
     const newQuery = { ...route.query }
     delete newQuery.q
     router.replace({ query: newQuery })
   } catch (_) {}
-  router.push({ name: props.notionRouteName, params: { notionId } })
+  const target = { name: props.notionRouteName, params: { notionId } }
+  if (await ensureAccess(target)) {
+    router.push(target)
+  }
 }
 
 // Cache hybride mémoire + localStorage pour accélérer l'affichage (5 minutes)
@@ -369,7 +378,12 @@ function prefetchTopNotions() {
   })
 }
 
-onMounted(() => load(props.matiereId))
+onMounted(() => {
+  load(props.matiereId)
+  if (!subscriptionStore.status) {
+    subscriptionStore.fetchStatus().catch(() => {})
+  }
+})
 watch(() => props.matiereId, (id) => load(id))
 
 onBeforeUnmount(() => {
@@ -409,6 +423,8 @@ const filteredTotalCount = computed(() => {
   }
   return total
 })
+
+const notionsLocked = computed(() => !subscriptionStore.hasAccess && !userStore.isAdmin)
 
 // (plus de limite topN, on affiche tout en inline)
 

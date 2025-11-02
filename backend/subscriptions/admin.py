@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import SubscriptionPlan, UserSubscription, PaymentHistory
+from .models import SubscriptionPlan, UserSubscription, PaymentHistory, AccessPass
 
 
 @admin.register(SubscriptionPlan)
 class SubscriptionPlanAdmin(admin.ModelAdmin):
-    list_display = ("name", "plan_type", "billing_period", "price", "is_active")
-    list_filter = ("plan_type", "billing_period", "is_active")
+    list_display = ("name", "plan_type", "plan_mode", "billing_period", "price", "access_days", "is_active")
+    list_filter = ("plan_type", "plan_mode", "billing_period", "is_active")
     search_fields = ("name", "stripe_price_id")
 
 
@@ -23,3 +23,9 @@ class PaymentHistoryAdmin(admin.ModelAdmin):
     search_fields = ("user__email", "stripe_payment_intent_id")
     readonly_fields = ("created_at",)
 
+
+@admin.register(AccessPass)
+class AccessPassAdmin(admin.ModelAdmin):
+    list_display = ("user", "plan", "starts_at", "ends_at", "is_active")
+    list_filter = ("plan__name",)
+    search_fields = ("user__email", "stripe_payment_intent_id")

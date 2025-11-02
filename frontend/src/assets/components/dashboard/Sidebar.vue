@@ -96,6 +96,7 @@ const isActiveRoute = (menuKey) => {
     'quiz': ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
     'progress': '/progress',
     'calculator': '/calculator',
+    'abonnement': ['/billing'],
     'admin': '/admin' // Spécialement pour les routes admin
   }
 
@@ -113,8 +114,9 @@ const isActiveRoute = (menuKey) => {
 }
 
 // Fonction pour déterminer si l'onglet Admin doit être actif
-const isAdminActive = computed(() => {
-  return route.path.startsWith('/admin')
+const isAdminActive = computed(() => { 
+  const p = route.path || ''; 
+  return p.startsWith('/admin') && !p.startsWith('/admin/newsletter') && !p.startsWith('/admin/subscriptions') && !p.startsWith('/admin/subscribers')
 })
 
 // Prefetch au survol (hover) - déclenché 150ms après le survol
@@ -164,6 +166,8 @@ async function handleSidebarClick(item) {
     router.push('/calculator')
   } else if (item.key === 'dashboard') {
     router.push('/dashboard')
+  } else if (item.key === 'abonnement') {
+    router.push('/billing')
   } 
   // Routes intelligentes avec matière
   else if (['exercices', 'fiches', 'quiz', 'cours'].includes(item.key)) {

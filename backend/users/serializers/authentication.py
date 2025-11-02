@@ -11,13 +11,15 @@ Classes:
 """
 
 from rest_framework import serializers
-from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-import random
 import logging
+import secrets
 from django.utils import timezone
+from django.urls import reverse
+
+from core.services import EmailService
 
 from ..models import CustomUser
 
@@ -91,10 +93,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        """Create user and activate immediately (no email verification)."""
+        """Create user and mark as inactive until email verification."""
         # Remove confirmation field
         validated_data.pop('password_confirmation')
         
+        verification_token = secrets.token_urlsafe(32)
+
         user = CustomUser.objects.create_user(
             email=validated_data['email'],
             first_name=validated_data['first_name'],
@@ -104,57 +108,34 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             telephone=validated_data.get('telephone'),
             password=validated_data['password'],
             is_active=True,
-            verification_code=None,
+            verification_code=verification_token,
             verification_code_sent_at=None
         )
         
         logger.info(f"New user registration: {user.email}")
-        return user
-    
-    def _generate_verification_code(self) -> str:
-        """Generate secure 6-digit verification code."""
-        return str(random.randint(100000, 999999))
-    
-    def _send_verification_email(self, user: CustomUser, code: str) -> bool:
-        """
-        Send verification email with error handling.
-        
-        Args:
-            user: User instance
-            code: Verification code
-            
-        Returns:
-            bool: True if email sent successfully
-        """
+        # Envoyer le lien de vérification de manière asynchrone (best effort)
         try:
-            send_mail(
-                subject='Code de vérification OptiTAB',
-                message=self._get_email_template(user, code),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
-            logger.info(f"Verification email sent to {user.email}")
-            return True
-        except Exception as e:
-            logger.error(f"Failed to send verification email to {user.email}: {e}")
-            # Don't fail registration if email fails
-            return False
-    
-    def _get_email_template(self, user: CustomUser, code: str) -> str:
-        """Get formatted email template."""
-        return f"""
-Bonjour {user.first_name},
+            request = self.context.get('request') if hasattr(self, 'context') else None
+            if request:
+                verify_path = reverse('email_verify_link', kwargs={'token': verification_token})
+                verification_link = request.build_absolute_uri(verify_path)
+            else:
+                backend_base = getattr(settings, 'BACKEND_BASE_URL', '')
+                if not backend_base:
+                    backend_base = getattr(settings, 'API_BASE_URL', '')
+                if not backend_base:
+                    backend_base = getattr(settings, 'FRONTEND_URL', getattr(settings, 'FRONTEND_BASE_URL', 'https://www.optitab.net'))
+                backend_base = backend_base.rstrip('/')
+                verification_link = f"{backend_base}/api/users/email/verify-link/{verification_token}/"
 
-Bienvenue sur OptiTAB !
-
-Votre code de vérification est : {code}
-
-Ce code expire dans 24 heures.
-
-Cordialement,
-L'équipe OptiTAB
-        """.strip()
+            user.verification_code_sent_at = timezone.now()
+            user.save(update_fields=['verification_code_sent_at'])
+            if not EmailService.send_verification_link(user, verification_link):
+                logger.error("Échec de l'envoi du mail de vérification pour %s", user.email)
+        except Exception as exc:
+            logger.error("Erreur lors de la préparation du mail de vérification (%s): %s", user.email, exc)
+        
+        return user
 
 
 RegisterSerializer = UserRegistrationSerializer

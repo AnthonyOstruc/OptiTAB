@@ -18,14 +18,15 @@ from rest_framework import status, generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-from core.services import ResponseService
-from django.core.mail import send_mail
+from core.services import ResponseService, EmailService
 from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
-import random
+import secrets
 from users.models import CustomUser
 import logging
+from django.urls import reverse
+from django.shortcuts import redirect
 
 from ..serializers.authentication import (
     UserRegistrationSerializer,
@@ -74,6 +75,7 @@ class UserRegistrationView(generics.CreateAPIView):
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'is_staff': user.is_staff,
+                'email_verified': not bool(user.verification_code),
             }
             return ResponseService.success(
                 message="Compte créé et connecté",
@@ -127,7 +129,7 @@ class EmailVerificationSendView(APIView):
         user: CustomUser = request.user
         try:
             # Si déjà vérifié, répondre gentiment (idempotent)
-            if user.is_active:
+            if not user.verification_code:
                 return ResponseService.success(
                     message="Email déjà vérifié",
                 )
@@ -135,37 +137,33 @@ class EmailVerificationSendView(APIView):
             # Limite simple: ne pas renvoyer plus d'une fois par minute
             if user.verification_code_sent_at and (timezone.now() - user.verification_code_sent_at) < timedelta(minutes=1):
                 return ResponseService.error(
-                    message="Veuillez patienter une minute avant de renvoyer un code",
+                    message="Veuillez patienter une minute avant de renvoyer un lien",
                     status_code=429
                 )
 
-            # Générer un code 6 chiffres
-            code = str(random.randint(100000, 999999))
-            user.verification_code = code
+            # Générer un token sécurisé pour vérification par lien
+            token = secrets.token_urlsafe(32)
+            user.verification_code = token
             user.verification_code_sent_at = timezone.now()
             user.save(update_fields=["verification_code", "verification_code_sent_at"]) 
 
-            # Envoyer l'email
-            subject = 'Code de vérification OptiTAB'
-            message = (
-                f"Bonjour {user.first_name or ''},\n\n"
-                f"Votre code de vérification est: {code}\n\n"
-                "Ce code expirera dans 24 heures.\n\n"
-                "Cordialement,\nL'équipe OptiTAB"
-            )
-            from_email = settings.DEFAULT_FROM_EMAIL
-            try:
-                send_mail(subject, message, from_email, [user.email])
-            except Exception:
-                # Continuer même si l'email échoue (afficher message côté client)
-                pass
+            # Construire un lien absolu vers l'endpoint de vérification
+            verify_path = reverse('email_verify_link', kwargs={'token': token})
+            verification_link = request.build_absolute_uri(verify_path)
+
+            sent = EmailService.send_verification_link(user, verification_link)
+            if not sent:
+                return ResponseService.error(
+                    message="Impossible d'envoyer le lien de vérification pour le moment.",
+                    status_code=500
+                )
 
             return ResponseService.success(
-                message="Code de vérification envoyé",
+                message="Lien de vérification envoyé",
             )
         except Exception as e:
             return ResponseService.error(
-                message=f"Erreur lors de l'envoi du code: {e}",
+                message=f"Erreur lors de l'envoi du lien: {e}",
                 status_code=500
             )
 
@@ -178,7 +176,7 @@ class EmailVerificationConfirmView(APIView):
         user: CustomUser = request.user
         try:
             code = str(request.data.get('code') or '').strip()
-            if not code or len(code) != 6:
+            if not code:
                 return ResponseService.error(
                     message="Code invalide",
                     status_code=400
@@ -204,9 +202,9 @@ class EmailVerificationConfirmView(APIView):
                 )
 
             # Activer le compte et nettoyer
-            user.is_active = True
             user.verification_code = None
             user.verification_code_sent_at = None
+            user.is_active = True
             user.save(update_fields=["is_active", "verification_code", "verification_code_sent_at"]) 
 
             return ResponseService.success(
@@ -219,6 +217,40 @@ class EmailVerificationConfirmView(APIView):
                 status_code=500
             )
 
+
+class EmailVerificationLinkView(APIView):
+    """Vérifie l'email via un lien sécurisé."""
+    permission_classes = [AllowAny]
+
+    def get(self, request, token):
+        redirect_base = getattr(settings, 'FRONTEND_URL', '') or getattr(settings, 'FRONTEND_BASE_URL', '') or ''
+        if not redirect_base:
+            redirect_base = 'https://www.optitab.net'
+        redirect_base = redirect_base.rstrip('/') or 'https://www.optitab.net'
+
+        success_query = '?email_verified=1'
+        failure_query = '?email_verified=0'
+
+        try:
+            if not token:
+                return redirect(f"{redirect_base}/account{failure_query}")
+
+            user = CustomUser.objects.filter(verification_code=token).first()
+            if not user:
+                return redirect(f"{redirect_base}/account{failure_query}")
+
+            # Vérifier l'expiration (24h)
+            if not user.verification_code_sent_at or (timezone.now() - user.verification_code_sent_at) > timedelta(hours=24):
+                return redirect(f"{redirect_base}/account{failure_query}")
+
+            user.is_active = True
+            user.verification_code = None
+            user.verification_code_sent_at = None
+            user.save(update_fields=["is_active", "verification_code", "verification_code_sent_at"])
+
+            return redirect(f"{redirect_base}/account{success_query}")
+        except Exception:
+            return redirect(f"{redirect_base}/account{failure_query}")
 
 class UserLogoutView(APIView):
     """

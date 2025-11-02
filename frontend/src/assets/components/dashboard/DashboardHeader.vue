@@ -88,7 +88,10 @@ const route = useRoute()
 
 // Computed properties
 const isCalculatorPage = computed(() => route.name === 'Calculator')
-const isAdminPage = computed(() => route.path.startsWith('/admin'))
+const isAdminPage = computed(() => {
+  const path = route.path || '';
+  return path.startsWith('/admin') && !path.startsWith('/admin/newsletter') && !path.startsWith('/admin/subscriptions')
+})
 
 // Fonction pour déterminer si un onglet admin est actif
 function isActive(routeName) {

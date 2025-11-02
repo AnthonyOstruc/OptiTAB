@@ -12,6 +12,12 @@ export const fetchUserProfile = () => apiClient.get('/api/users/me/')
 export const updateUserProfile = (payload) => apiClient.patch('/api/users/me/update/', payload)
 
 /**
+ * Met à jour le mot de passe de l'utilisateur connecté.
+ * Expects: { current_password, new_password, confirm_password }
+ */
+export const changeUserPassword = (payload) => apiClient.post('/api/users/me/change-password/', payload)
+
+/**
  * Met à jour le niveau de l'utilisateur connecté.
  * Expects: niveau_id (number)
  */
@@ -92,6 +98,13 @@ export const addChild = (payload) => apiClient.post('/api/users/me/children/add/
 export const removeChild = (childId) => apiClient.delete(`/api/users/me/children/${childId}/remove/`)
 
 /**
+ * Invitations parentales côté élève
+ */
+export const fetchParentInvitations = () => apiClient.get('/api/users/me/parent-invitations/')
+export const respondParentInvitation = (invitationId, action) =>
+  apiClient.post(`/api/users/me/parent-invitations/${invitationId}/respond/`, { action })
+
+/**
  * Met à jour les XP de l'utilisateur connecté.
  * Expects: { xp_delta: number, reason: string }
  */
@@ -144,5 +157,5 @@ export const deleteAllNotifications = async () => {
 }
 
 // Email verification
-export const sendEmailVerificationCode = () => apiClient.post('/api/users/email/send-code/')
+export const sendEmailVerificationLink = () => apiClient.post('/api/users/email/send-code/')
 export const verifyEmailCode = (code) => apiClient.post('/api/users/email/verify-code/', { code })

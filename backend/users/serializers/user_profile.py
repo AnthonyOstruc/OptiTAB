@@ -12,6 +12,8 @@ Classes:
 """
 
 from rest_framework import serializers
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 from ..models import CustomUser, UserNotification
 from pays.serializers import NiveauSerializer, PaysSerializer
 
@@ -30,6 +32,7 @@ class UserBaseSerializer(serializers.ModelSerializer):
     level = serializers.SerializerMethodField(read_only=True, help_text="Computed level from XP")
     xp_to_next = serializers.SerializerMethodField(read_only=True, help_text="XP needed to reach next level")
     login_streak_count = serializers.IntegerField(read_only=True, help_text="Current daily login streak (days)")
+    email_verified = serializers.SerializerMethodField(read_only=True, help_text="Whether the user's email is verified")
     
     class Meta:
         model = CustomUser
@@ -48,7 +51,8 @@ class UserBaseSerializer(serializers.ModelSerializer):
             'xp',
             'level',
             'xp_to_next',
-            'login_streak_count'
+            'login_streak_count',
+            'email_verified'
         ]
         read_only_fields = ['id', 'email', 'is_active', 'is_staff']
         extra_kwargs = {
@@ -75,6 +79,9 @@ class UserBaseSerializer(serializers.ModelSerializer):
     def get_xp_to_next(self, obj):
         _, xp_to_next = self._compute_level_and_next(getattr(obj, 'xp', 0))
         return xp_to_next
+
+    def get_email_verified(self, obj):
+        return not bool(getattr(obj, 'verification_code', None))
 
 
 class UserDetailSerializer(UserBaseSerializer):
@@ -235,6 +242,44 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         
         instance.save()
         return instance
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer pour le changement de mot de passe utilisateur.
+    Demande uniquement le nouveau mot de passe + confirmation.
+    """
+
+    new_password = serializers.CharField(write_only=True, trim_whitespace=False)
+    confirm_password = serializers.CharField(write_only=True, trim_whitespace=False)
+
+    def validate(self, attrs):
+        new_password = attrs.get('new_password')
+        confirm_password = attrs.get('confirm_password')
+
+        if not new_password:
+            raise serializers.ValidationError({'new_password': "Le nouveau mot de passe est requis."})
+
+        if new_password != confirm_password:
+            raise serializers.ValidationError({'confirm_password': "La confirmation ne correspond pas au nouveau mot de passe."})
+
+        user = self.context['request'].user
+        if user.check_password(new_password):
+            raise serializers.ValidationError({'new_password': "Le nouveau mot de passe doit être différent de l'ancien."})
+
+        try:
+            validate_password(new_password, user)
+        except DjangoValidationError as exc:
+            raise serializers.ValidationError({'new_password': list(exc.messages)})
+
+        return attrs
+
+    def save(self, **kwargs):
+        user = self.context['request'].user
+        new_password = self.validated_data['new_password']
+        user.set_password(new_password)
+        user.save(update_fields=['password'])
+        return user
 
 
 class UserSummarySerializer(serializers.ModelSerializer):

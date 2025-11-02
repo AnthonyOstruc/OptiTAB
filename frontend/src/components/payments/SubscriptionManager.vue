@@ -63,7 +63,7 @@
           
           <router-link 
             v-if="!subscription.is_active || subscription.status === 'canceled'"
-            to="/pricing" 
+            to="/billing" 
             class="upgrade-btn"
           >
             <ArrowUpIcon class="btn-icon" />
@@ -73,13 +73,24 @@
       </div>
 
       <!-- Pas d'abonnement -->
+      <div v-else-if="subscription.has_manual_access" class="manual-access">
+        <div class="manual-icon">
+          <CheckIcon />
+        </div>
+        <h4>Accès premium accordé</h4>
+        <p>Un administrateur vous a offert l'accès complet aux contenus premium sans abonnement actif.</p>
+        <router-link to="/billing" class="get-started-btn">
+          Gérer mon accès
+        </router-link>
+      </div>
+
       <div v-else class="no-subscription">
         <div class="no-sub-icon">
           <CreditCardIcon />
         </div>
         <h4>Aucun abonnement actif</h4>
         <p>Choisissez un plan pour accéder à toutes les fonctionnalités premium.</p>
-        <router-link to="/pricing" class="get-started-btn">
+        <router-link to="/billing" class="get-started-btn">
           Commencer l'essai gratuit
         </router-link>
       </div>
@@ -121,7 +132,7 @@ import {
   GiftIcon,
   ExclamationTriangleIcon 
 } from '@heroicons/vue/24/outline'
-import { apiClient } from '@/api'
+import { getSubscriptionStatus, cancelSubscription as cancelSubscriptionApi } from '@/api/subscriptions'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -129,7 +140,8 @@ const router = useRouter()
 // Reactive data
 const subscription = ref({
   has_subscription: false,
-  status: 'none'
+  status: 'none',
+  has_manual_access: false
 })
 const loading = ref(true)
 const showCancelModal = ref(false)
@@ -142,6 +154,7 @@ const statusClass = computed(() => {
     case 'trialing': return 'status-trial'
     case 'past_due': return 'status-warning'
     case 'canceled': return 'status-canceled'
+    case 'manual': return 'status-manual'
     default: return 'status-inactive'
   }
 })
@@ -152,6 +165,7 @@ const statusText = computed(() => {
     case 'trialing': return 'Essai gratuit'
     case 'past_due': return 'Paiement en retard'
     case 'canceled': return 'Annulé'
+    case 'manual': return 'Accès manuel'
     default: return 'Inactif'
   }
 })
@@ -160,7 +174,7 @@ const statusText = computed(() => {
 const loadSubscription = async () => {
   try {
     loading.value = true
-    const response = await apiClient.get('/subscriptions/status/')
+    const response = await getSubscriptionStatus()
     subscription.value = response.data
   } catch (error) {
     console.error('Erreur lors du chargement de l\'abonnement:', error)
@@ -172,7 +186,7 @@ const loadSubscription = async () => {
 const cancelSubscription = async () => {
   try {
     cancelling.value = true
-    await apiClient.post('/subscriptions/cancel/')
+    await cancelSubscriptionApi()
     
     showCancelModal.value = false
     await loadSubscription() // Recharger les données
@@ -189,6 +203,7 @@ const cancelSubscription = async () => {
 }
 
 const formatDate = (dateString) => {
+  if (!dateString) return '—'
   const date = new Date(dateString)
   return date.toLocaleDateString('fr-FR', {
     year: 'numeric',
@@ -264,6 +279,11 @@ onMounted(() => {
   color: #6b7280;
 }
 
+.status-manual {
+  background: #ecfdf5;
+  color: #047857;
+}
+
 .subscription-details {
   padding: 2rem;
 }
@@ -298,7 +318,7 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: #3b82f6;
+  background: #007bff;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
@@ -385,7 +405,7 @@ onMounted(() => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: #3b82f6;
+  background: #007bff;
   color: white;
   border-radius: 0.5rem;
   font-weight: 500;
@@ -396,7 +416,7 @@ onMounted(() => {
 }
 
 .upgrade-btn:hover {
-  background: #2563eb;
+  background: #0056b3;
 }
 
 .btn-icon {
@@ -404,9 +424,27 @@ onMounted(() => {
   height: 1.25rem;
 }
 
+.manual-access,
 .no-subscription {
   padding: 3rem 2rem;
   text-align: center;
+}
+
+.manual-icon {
+  width: 4rem;
+  height: 4rem;
+  background: #ecfdf5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: #047857;
+}
+
+.manual-icon svg {
+  width: 2rem;
+  height: 2rem;
 }
 
 .no-sub-icon {
@@ -441,7 +479,7 @@ onMounted(() => {
 .get-started-btn {
   display: inline-block;
   padding: 1rem 2rem;
-  background: #3b82f6;
+  background: #007bff;
   color: white;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -450,7 +488,7 @@ onMounted(() => {
 }
 
 .get-started-btn:hover {
-  background: #2563eb;
+  background: #0056b3;
   transform: translateY(-1px);
 }
 

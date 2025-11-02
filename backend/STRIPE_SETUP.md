@@ -17,10 +17,17 @@ Stripe subscription setup (OptiTAB)
 - python backend/manage.py makemigrations subscriptions
 - python backend/manage.py migrate
 
-4) Create Stripe products/prices and mirror them locally
-- In Stripe Dashboard, create Products with recurring Prices (monthly/yearly).
-- Copy the Price IDs (price_...)
-- In Django admin → Subscription plans, create entries with the matching `stripe_price_id`.
+4) Create the four offers in Stripe (Test mode first)
+- Subscriptions (recurring):
+  - Monthly: 4.99 EUR, interval monthly → get `price_...`
+  - Yearly: 50.00 EUR, interval yearly → get `price_...`
+- One‑time passes (non‑recurring):
+  - 1 month pass: 6.99 EUR, one‑time
+  - 1 day pass: 0.99 EUR, one‑time
+
+Mirror in Django admin → Subscription plans:
+- For subscriptions: set `mode = subscription`, `billing_period = monthly/yearly`, `stripe_price_id`, `price`.
+- For passes: set `mode = one_time`, `billing_period` can be monthly (cosmetic), `access_days` = 30 for 1‑month pass, 1 for 1‑day pass, `stripe_price_id`, `price`.
 
 5) Expose a webhook endpoint in Stripe
 - Endpoint: https://<your-backend-domain>/api/subscriptions/webhook/
@@ -28,6 +35,14 @@ Stripe subscription setup (OptiTAB)
 - Use the displayed Signing secret as STRIPE_WEBHOOK_SECRET.
 
 6) Frontend flow
+
+7) Optional: Seed the 4 plans from CLI
+- Run after migrations:
+  - python backend/manage.py seed_subscription_plans \
+      --monthly price_XXXX \
+      --yearly price_YYYY \
+      --pass-month price_ZZZZ \
+      --pass-day price_WWWW
+- This creates/updates the four plans with your Stripe Price IDs.
 - Use the new Billing page at /billing to list plans and redirect to Stripe Checkout.
 - On success/cancel, Stripe redirects to /billing/success or /billing/cancel.
-

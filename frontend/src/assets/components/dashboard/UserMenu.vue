@@ -157,7 +157,7 @@ const handleAccount = () => {
 
 const handleSubscription = () => {
   closeMenu()
-  router.push('/pricing')
+  router.push('/billing')
 }
 
 const handleProfile = () => {

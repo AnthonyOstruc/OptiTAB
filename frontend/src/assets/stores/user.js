@@ -20,6 +20,9 @@ export const useUserStore = defineStore('user', {
     xp: 0,
     level: 0,
     xp_to_next: 0,
+    loginStreakCount: 0,
+    emailVerified: false,
+    isActive: true,
     isAdmin: false,
     isAuthenticated: false,
     isLoading: false
@@ -41,6 +44,9 @@ export const useUserStore = defineStore('user', {
       this.xp = xpVal
       this.level = Number(computed.level)
       this.xp_to_next = Number(computed.xp_to_next)
+      this.loginStreakCount = Number(user.login_streak_count ?? user.loginStreakCount ?? 0)
+      this.emailVerified = Boolean(user.email_verified ?? user.emailVerified ?? false)
+      this.isActive = Boolean(user.is_active ?? user.isActive ?? true)
       
       // Forcer l'état admin pour les utilisateurs avec certains emails
       const adminEmails = ['anthonytabet.c@gmail.com', 'admin@optitab.com']
@@ -69,6 +75,9 @@ export const useUserStore = defineStore('user', {
       this.level = 0
       this.xp_to_next = 0
       this.isAdmin = false
+      this.loginStreakCount = 0
+      this.emailVerified = false
+      this.isActive = true
       this.isAuthenticated = false
       this.isLoading = false
 

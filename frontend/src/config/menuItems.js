@@ -11,7 +11,8 @@ import {
   Squares2X2Icon, // <- icône dashboard
   QuestionMarkCircleIcon, // <- icône quiz
   InformationCircleIcon, // <- icône about
-  UserGroupIcon // <- icône cours particuliers
+  UserGroupIcon, // <- icône cours particuliers
+  CreditCardIcon // <- icône abonnement
 } from '@heroicons/vue/24/outline'
 const DashboardIcon = Squares2X2Icon;
 // Centralized menu configuration for OptiTAB
@@ -72,6 +73,13 @@ export const menuItems = [
     icon: QuestionMarkCircleIcon,
     href: '/quiz',
     description: 'Quiz à choix multiples'
+  },
+  {
+    key: 'abonnement',
+    text: 'Abonnement',
+    icon: CreditCardIcon,
+    href: '/billing',
+    description: 'Gérer votre abonnement'
   },
   {
     key: 'contact',

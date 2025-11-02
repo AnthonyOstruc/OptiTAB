@@ -1,6 +1,12 @@
 <template>
-  <div class="notion-card" @click="$emit('click')" @mouseenter="handleMouseEnter">
+  <div class="notion-card" :class="{ locked }" @click="$emit('click')" @mouseenter="handleMouseEnter">
     <div class="notion-card-inner">
+      <div v-if="locked" class="lock-badge">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 11H7C5.89543 11 5 11.8954 5 13V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V13C19 11.8954 18.1046 11 17 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
       <!-- Icône de la notion -->
       <div class="notion-icon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +39,8 @@ import { useDataPrefetch } from '@/composables/useDataPrefetch'
 const props = defineProps({
   title: { type: String, required: true },
   description: { type: String, default: '' },
-  notionId: { type: [Number, String], default: null }
+  notionId: { type: [Number, String], default: null },
+  locked: { type: Boolean, default: false }
 })
 
 const { prefetchNotionContent } = useDataPrefetch()
@@ -86,9 +93,19 @@ function handleMouseEnter() {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
+.notion-card.locked .notion-card-inner {
+  cursor: default;
+  opacity: 0.7;
+}
+
 .notion-card-inner:hover {
   border-color: #3b82f6;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notion-card.locked .notion-card-inner:hover {
+  border-color: #e5e7eb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* Icône */
@@ -144,6 +161,31 @@ function handleMouseEnter() {
   border-radius: 3px;
   color: #6b7280;
   flex-shrink: 0; /* Empêche la flèche de se rétrécir */
+}
+
+.notion-card.locked .notion-arrow {
+  background: #f9fafb;
+  color: #cbd5f5;
+}
+
+.lock-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.lock-badge svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* Responsive - Désactivé pour conserver le style normal */

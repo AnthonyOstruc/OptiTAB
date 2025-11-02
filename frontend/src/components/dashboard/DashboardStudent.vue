@@ -1,7 +1,27 @@
 <template>
   <div class="dashboard-content">
-    <!-- Notification de reset gamification -->
-    <GameResetNotification />
+    <div v-if="showInvitationModal && activeInvitation" class="parent-invite-overlay">
+      <div class="parent-invite-modal">
+        <h2>Invitation parent</h2>
+        <p class="invite-lead">
+          <strong>{{ activeInvitation.parent_display_name }}</strong> souhaite accéder à votre progression.
+        </p>
+        <p class="invitation-email">Email parent : <span>{{ activeInvitation.parent_email }}</span></p>
+        <p v-if="activeInvitation.invited_at" class="invitation-date">
+          Invitation envoyée le {{ formatInvitationDate(activeInvitation.invited_at) }}
+        </p>
+        <p class="invitation-question">Autorisez-vous cet accès ?</p>
+        <div class="invitation-actions">
+          <button class="btn accept" :disabled="!!processingAction" @click="respondToInvitation('accept')">Accepter</button>
+          <button class="btn decline" :disabled="!!processingAction" @click="respondToInvitation('decline')">Refuser</button>
+        </div>
+        <div v-if="invitationFeedback" :class="['invitation-feedback', { error: invitationError }]">
+          {{ invitationFeedback }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification de reset gamification désactivée -->
     
     <div class="dashboard-center-top">
       <div v-if="userStore.isLoading" class="dashboard-spinner">
@@ -47,11 +67,16 @@
 
 <script setup>
 import { useUserStore } from '@/stores/user'
-import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed, watch, onBeforeUnmount } from 'vue'
+import { useRouter, onBeforeRouteLeave } from 'vue-router'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { getStatuses, getExercices, getMatieres } from '@/api'
-import { fetchUserGamification, fetchMyOverview } from '@/api/users'
+import {
+  fetchUserGamification,
+  fetchMyOverview,
+  fetchParentInvitations,
+  respondParentInvitation
+} from '@/api/users'
 // Verification disabled: no imports
 import LeaderboardWidget from '@/components/dashboard/LeaderboardWidget.vue'
 
@@ -61,7 +86,6 @@ import LeaderboardWidget from '@/components/dashboard/LeaderboardWidget.vue'
 
 import XPBadges from '@/components/dashboard/XPBadges.vue'
 import LoginStreak from '@/components/dashboard/LoginStreak.vue'
-import GameResetNotification from '@/components/notifications/GameResetNotification.vue'
 import QuizHistory from '@/components/dashboard/QuizHistoryRefactored.vue'
 import ExercicesHistory from '@/components/dashboard/ExercicesHistory.vue'
 
@@ -83,6 +107,15 @@ const chapitresIndex = ref({})
 const matieres = ref([])
 const overview = ref(null)
 // Verification disabled: no code-handling functions
+
+const invitations = ref([])
+const activeInvitationIndex = ref(0)
+const showInvitationModal = ref(false)
+const invitationFeedback = ref('')
+const invitationError = ref(false)
+const processingAction = ref('')
+
+const activeInvitation = computed(() => invitations.value[activeInvitationIndex.value] || null)
 
 const lastActivity = computed(() => {
   if (!statuses.value.length) return null
@@ -116,16 +149,83 @@ function goToLastChapter() {
   router.push({ name: 'Exercices', params: { chapitreId: String(lastActivity.value.chapitreId) } })
 }
 
+function formatInvitationDate(iso) {
+  if (!iso) return ''
+  try {
+    return new Date(iso).toLocaleString('fr-FR', {
+      day: '2-digit',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  } catch {
+    return ''
+  }
+}
+
+async function respondToInvitation(action) {
+  if (!activeInvitation.value || processingAction.value) return
+  processingAction.value = action
+  invitationError.value = false
+  invitationFeedback.value = ''
+  try {
+    const res = await respondParentInvitation(activeInvitation.value.link_id, action)
+    invitationFeedback.value = res?.data?.message || (action === 'accept' ? 'Invitation acceptée' : 'Invitation refusée')
+    const targetIndex = activeInvitationIndex.value
+    setTimeout(() => {
+      invitations.value.splice(targetIndex, 1)
+      if (!invitations.value.length) {
+        showInvitationModal.value = false
+      } else if (activeInvitationIndex.value >= invitations.value.length) {
+        activeInvitationIndex.value = 0
+      }
+      invitationFeedback.value = ''
+      processingAction.value = ''
+    }, 1200)
+  } catch (error) {
+    invitationError.value = true
+    invitationFeedback.value = error?.response?.data?.message || "Action impossible pour le moment"
+    processingAction.value = ''
+  }
+}
+
+function lockScroll(lock) {
+  if (typeof document === 'undefined') return
+  document.body.style.overflow = lock ? 'hidden' : ''
+}
+
+watch(showInvitationModal, (visible) => {
+  lockScroll(visible)
+  if (!visible) {
+    invitationFeedback.value = ''
+    invitationError.value = false
+  }
+})
+
+onBeforeUnmount(() => {
+  lockScroll(false)
+})
+
+onBeforeRouteLeave((to, from, next) => {
+  if (showInvitationModal.value) {
+    invitationError.value = true
+    invitationFeedback.value = 'Répondez à la demande d’accès avant de continuer.'
+    next(false)
+  } else {
+    next()
+  }
+})
 
 
 onMounted(async () => {
   try {
-    const [ex, stResponse, mResponse, gam, ov] = await Promise.all([
+    const [ex, stResponse, mResponse, gam, ov, invitationsResponse] = await Promise.all([
       getExercices({}),
       getStatuses(),
       getMatieres(),
       fetchUserGamification().catch(() => null),
-      fetchMyOverview().catch(() => null)
+      fetchMyOverview().catch(() => null),
+      fetchParentInvitations().catch(() => null)
     ])
 
     const normalizeList = (val) => Array.isArray(val) ? val : (val?.results || [])
@@ -150,6 +250,13 @@ onMounted(async () => {
     stats.value.done = statuses.value.length
     stats.value.acquired = statuses.value.filter(s => s.est_correct === true).length
     stats.value.not_acquired = statuses.value.filter(s => s.est_correct === false).length
+
+    const inviteList = invitationsResponse?.data?.data?.invitations || []
+    if (inviteList.length) {
+      invitations.value = inviteList
+      showInvitationModal.value = true
+      activeInvitationIndex.value = 0
+    }
 
 
   } catch {}
@@ -188,6 +295,114 @@ onMounted(async () => {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+.parent-invite-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  backdrop-filter: blur(2px);
+}
+
+.parent-invite-modal {
+  width: min(480px, 92vw);
+  background: #fff;
+  border-radius: 18px;
+  padding: 2rem 1.75rem;
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.25);
+}
+
+.parent-invite-modal h2 {
+  margin: 0 0 .8rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.invite-lead {
+  margin: .5rem 0 .75rem;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.invitation-email {
+  margin: .25rem 0;
+  color: #475569;
+}
+
+.invitation-email span {
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.invitation-date {
+  margin: .25rem 0 .85rem;
+  color: #64748b;
+  font-size: .9rem;
+}
+
+.invitation-question {
+  margin: 1rem 0 .4rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.invitation-actions {
+  display: flex;
+  gap: .75rem;
+  margin-top: 1.25rem;
+}
+
+.invitation-actions .btn {
+  flex: 1;
+  padding: .7rem 1rem;
+  border-radius: 10px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: transform .15s ease, background .2s ease;
+}
+
+.invitation-actions .btn.accept {
+  background: #10b981;
+  color: #fff;
+}
+
+.invitation-actions .btn.accept:hover {
+  background: #0f9d74;
+}
+
+.invitation-actions .btn.decline {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5f5;
+}
+
+.invitation-actions .btn.decline:hover {
+  background: #e2e8f0;
+}
+
+.invitation-actions .btn:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.invitation-feedback {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: .95rem;
+  font-weight: 600;
+  color: #047857;
+}
+
+.invitation-feedback.error {
+  color: #b91c1c;
 }
 
 

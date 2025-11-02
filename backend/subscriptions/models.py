@@ -16,24 +16,54 @@ class SubscriptionPlan(models.Model):
     ]
     
     BILLING_PERIODS = [
+        ('daily', 'Journalier'),
+        ('weekly', 'Hebdomadaire'),
         ('monthly', 'Mensuel'),
         ('yearly', 'Annuel'),
+    ]
+    MODE_CHOICES = [
+        ('subscription', 'Abonnement récurrent'),
+        ('one_time', 'Pass unique'),
     ]
     
     name = models.CharField(max_length=100)
     plan_type = models.CharField(max_length=20, choices=PLAN_TYPES)
+    plan_mode = models.CharField(max_length=20, choices=MODE_CHOICES, default='subscription', db_index=True)
     billing_period = models.CharField(max_length=20, choices=BILLING_PERIODS)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stripe_price_id = models.CharField(max_length=100, unique=True)
     features = models.JSONField(default=list)  # Liste des fonctionnalités
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    access_days = models.PositiveIntegerField(null=True, blank=True, help_text="Pour les passes one-time: nombre de jours d'accès")
     
     class Meta:
-        unique_together = ['plan_type', 'billing_period']
+        unique_together = ['plan_type', 'billing_period', 'plan_mode']
     
     def __str__(self):
         return f"{self.name} - {self.get_billing_period_display()}"
+
+
+class AccessPass(models.Model):
+    """Accès temporaire via paiement one-time (ex: 1 jour, 1 mois)"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='access_passes')
+    plan = models.ForeignKey(SubscriptionPlan, on_delete=models.PROTECT, limit_choices_to={'plan_mode': 'one_time'})
+    starts_at = models.DateTimeField(default=timezone.now)
+    ends_at = models.DateTimeField()
+    stripe_payment_intent_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['user', 'ends_at']),
+        ]
+
+    def __str__(self):
+        return f"Pass {self.plan.name} → {self.user} jusqu'au {self.ends_at.isoformat()}"
+
+    @property
+    def is_active(self):
+        return timezone.now() < self.ends_at
 
 class UserSubscription(models.Model):
     """Abonnement d'un utilisateur"""

@@ -71,6 +71,24 @@
               <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 7l10 6 10-6"/></svg></span>
               <span v-if="!collapsed" class="sidebar-label">Newsletter</span>
             </li>
+            <li
+              class="sidebar-item"
+              :class="{ active: route.path.startsWith('/admin/subscriptions') }"
+              @click="router.push('/admin/subscriptions')"
+              :title="collapsed ? 'Abonnements' : ''"
+            >
+              <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+              <span v-if="!collapsed" class="sidebar-label">Abonnements</span>
+            </li>
+            <li
+              class="sidebar-item"
+              :class="{ active: route.path.startsWith('/admin/subscribers') }"
+              @click="router.push('/admin/subscribers')"
+              :title="collapsed ? 'Abonnés' : ''"
+            >
+              <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11c1.657 0 3-1.79 3-4s-1.343-4-3-4-3 1.79-3 4 1.343 4 3 4z"/><path d="M8 13c-3.866 0-7 2.239-7 5v3h14v-3c0-2.761-3.134-5-7-5z"/></svg></span>
+              <span v-if="!collapsed" class="sidebar-label">Abonnés</span>
+            </li>
           </template>
         </ul>
       </div>
@@ -164,6 +182,7 @@ const isActiveRoute = (menuKey) => {
     'quiz': ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
     'progress': '/progress',
     'calculator': '/calculator',
+    'abonnement': ['/billing'],
     'admin': '/admin' // Spécialement pour les routes admin
   }
 
@@ -181,7 +200,10 @@ const isActiveRoute = (menuKey) => {
 }
 
 // Fonction pour déterminer si l'onglet Admin doit être actif
-const isAdminActive = computed(() => { const p = route.path || ''; return p.startsWith('/admin') && !p.startsWith('/admin/newsletter') })
+const isAdminActive = computed(() => { 
+  const p = route.path || ''; 
+  return p.startsWith('/admin') && !p.startsWith('/admin/newsletter') && !p.startsWith('/admin/subscriptions') && !p.startsWith('/admin/subscribers')
+})
 
 // Prefetch au survol (hover) - déclenché 150ms après le survol
 function handleSidebarHover(item) {
@@ -230,6 +252,8 @@ async function handleSidebarClick(item) {
     router.push('/calculator')
   } else if (item.key === 'dashboard') {
     router.push('/dashboard')
+  } else if (item.key === 'abonnement') {
+    router.push('/billing')
   } 
   // Routes intelligentes avec matière
   else if (['exercices', 'fiches', 'quiz', 'cours'].includes(item.key)) {
@@ -794,5 +818,3 @@ defineExpose({
 
 
 </style> 
-
-

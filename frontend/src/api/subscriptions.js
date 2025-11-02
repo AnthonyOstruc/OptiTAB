@@ -11,3 +11,8 @@ export const getSubscriptionStatus = () =>
 export const cancelSubscription = () =>
   apiClient.post('/api/subscriptions/cancel/')
 
+// Admin endpoints
+export const adminListPlans = () => apiClient.get('/api/subscriptions/admin/plans/')
+export const adminCreatePlan = (payload) => apiClient.post('/api/subscriptions/admin/plans/', payload)
+export const adminUpdatePlan = (id, payload) => apiClient.patch(`/api/subscriptions/admin/plans/${id}/`, payload)
+export const adminDeletePlan = (id) => apiClient.delete(`/api/subscriptions/admin/plans/${id}/`)

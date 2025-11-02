@@ -28,6 +28,8 @@ from .serializers import (
     ExerciceImageSerializer
 )
 
+from subscriptions.permissions import HasActiveSubscriptionOrPass
+
 
 logger = logging.getLogger(__name__)
 
@@ -588,7 +590,12 @@ class ExerciceViewSet(viewsets.ModelViewSet):
     """ViewSet pour les exercices (ressource finale)"""
     queryset = Exercice.objects.all()
     serializer_class = ExerciceSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Lecture publique, écriture authentifiée
+    permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return [IsAuthenticated()]
+        return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -646,14 +653,13 @@ class ExerciceImageViewSet(viewsets.ModelViewSet):
     """
     queryset = ExerciceImage.objects.all()
     serializer_class = ExerciceImageSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
-        """Permettre la lecture publique mais authentification requise pour modification"""
+        """Lecture protégée par abonnement, modifications réservées aux utilisateurs authentifiés (admin)."""
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            # Seul les utilisateurs authentifiés peuvent modifier les images
             return [IsAuthenticated()]
-        return [IsAuthenticatedOrReadOnly()]
+        return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
 
     def get_queryset(self):
         queryset = super().get_queryset()

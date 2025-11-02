@@ -3,6 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
+from subscriptions.permissions import HasActiveSubscriptionOrPass
 from .models import SynthesisSheet, SynthesisImage
 from .serializers import (
     SynthesisSheetSerializer,
@@ -23,7 +25,7 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         # Autoriser tous les utilisateurs authentifiés à lire
         if self.action in ["list", "retrieve"]:
-            return [IsAuthenticated()]
+            return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
         # Toutes les autres actions (écriture) sont réservées aux admins
         if self.action in [
             "create",
@@ -152,12 +154,12 @@ class SynthesisImageViewSet(viewsets.ModelViewSet):
     """
     queryset = SynthesisImage.objects.all()
     serializer_class = SynthesisImageSerializer
-    permission_classes = [IsAuthenticated]  # lecture via list/retrieve protégée par is_authenticated (aligné aux sheets)
+    permission_classes = [IsAuthenticated]
 
     def get_permissions(self):
         # Lecture: utilisateurs authentifiés
         if self.action in ["list", "retrieve"]:
-            return [IsAuthenticated()]
+            return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
         # Écriture réservée aux admins
         return [IsAdminUser()]
 

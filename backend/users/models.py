@@ -60,7 +60,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     
     # Vérification email
-    verification_code = models.CharField(max_length=6, blank=True, null=True)
+    verification_code = models.CharField(max_length=128, blank=True, null=True)
     verification_code_sent_at = models.DateTimeField(null=True, blank=True)
     
     # Timestamps automatiques
@@ -81,6 +81,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         blank=True,
         verbose_name="Dernière date de récompense quotidienne",
         help_text="Dernière date (locale) où la récompense quotidienne a été attribuée"
+    )
+    has_complimentary_access = models.BooleanField(
+        default=False,
+        verbose_name="Accès premium offert",
+        help_text="Autorise l'accès aux contenus premium sans abonnement actif ou pass."
     )
 
     objects = CustomUserManager()
@@ -174,6 +179,15 @@ class UserSelectedMatiere(models.Model):
 
 class ParentChild(models.Model):
     """Lien parent-enfant: un parent peut suivre plusieurs élèves."""
+    STATUS_PENDING = 'pending'
+    STATUS_ACCEPTED = 'accepted'
+    STATUS_DECLINED = 'declined'
+    STATUS_CHOICES = [
+        (STATUS_PENDING, 'Pending'),
+        (STATUS_ACCEPTED, 'Accepted'),
+        (STATUS_DECLINED, 'Declined'),
+    ]
+
     parent = models.ForeignKey(
         'CustomUser', on_delete=models.CASCADE, related_name='children_links'
     )
@@ -181,17 +195,36 @@ class ParentChild(models.Model):
         'CustomUser', on_delete=models.CASCADE, related_name='parent_links'
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default=STATUS_PENDING,
+        db_index=True,
+    )
+    responded_at = models.DateTimeField(null=True, blank=True)
     
     class Meta:
         unique_together = ('parent', 'child')
         indexes = [
             models.Index(fields=['parent', 'child']),
+            models.Index(fields=['parent', 'status']),
+            models.Index(fields=['child', 'status']),
         ]
         verbose_name = 'Lien parent-enfant'
         verbose_name_plural = 'Liens parents-enfants'
     
     def __str__(self):
-        return f"{self.parent.email} → {self.child.email}"
+        return f"{self.parent.email} → {self.child.email} ({self.status})"
+
+    def mark_accepted(self):
+        self.status = self.STATUS_ACCEPTED
+        self.responded_at = timezone.now()
+        self.save(update_fields=['status', 'responded_at', 'updated_at'] if hasattr(self, 'updated_at') else ['status', 'responded_at'])
+
+    def mark_declined(self):
+        self.status = self.STATUS_DECLINED
+        self.responded_at = timezone.now()
+        self.save(update_fields=['status', 'responded_at', 'updated_at'] if hasattr(self, 'updated_at') else ['status', 'responded_at'])
 
 
 class UserNotification(models.Model):
@@ -202,6 +235,8 @@ class UserNotification(models.Model):
         ('exercise_unlocked', 'Exercise Unlocked'),
         ('chapter_completed', 'Chapter Completed'),
         ('achievement', 'Achievement'),
+        ('parent_invite', 'Parent Invite'),
+        ('parent_invite_response', 'Parent Invite Response'),
     ]
 
     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='notifications')

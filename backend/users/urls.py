@@ -4,9 +4,30 @@ from users.views.authentication_views import (
     CustomLoginView,
     EmailVerificationSendView,
     EmailVerificationConfirmView,
+    EmailVerificationLinkView,
     UserLogoutView
 )
-from users.views.profile_views import MeView, UpdateProfileView, UpdateNiveauView, UpdatePaysView, UpdatePaysNiveauView, MeGamificationView, UpdateUserXPView, LeaderboardView, MyChildrenView, ChildOverviewView, AddChildView, RemoveChildView, CreateChildAccountView, MyOverviewView, RecommendationsView, DailyLoginStreakView
+from users.views.profile_views import (
+    MeView,
+    UpdateProfileView,
+    UpdateNiveauView,
+    UpdatePaysView,
+    UpdatePaysNiveauView,
+    MeGamificationView,
+    UpdateUserXPView,
+    LeaderboardView,
+    MyChildrenView,
+    ChildOverviewView,
+    AddChildView,
+    RemoveChildView,
+    CreateChildAccountView,
+    ParentInvitationsListView,
+    ParentInvitationRespondView,
+    MyOverviewView,
+    RecommendationsView,
+    DailyLoginStreakView,
+    ChangePasswordView,
+)
 from users.views.social_auth_views import GoogleLoginView, GoogleOAuthCodeExchangeView, GoogleOAuthAccessTokenView
 from rest_framework.routers import DefaultRouter
 from users.views.notifications_views import UserNotificationViewSet
@@ -39,6 +60,7 @@ urlpatterns = [
     path('password/reset/confirm/', reset_password_confirm, name='password_reset_confirm'),
     path('email/send-code/', EmailVerificationSendView.as_view(), name='email_send_code'),
     path('email/verify-code/', EmailVerificationConfirmView.as_view(), name='email_verify_code'),
+    path('email/verify-link/<str:token>/', EmailVerificationLinkView.as_view(), name='email_verify_link'),
     path('logout/', UserLogoutView.as_view(), name='logout'),
     path('me/', MeView.as_view(), name='me'),  # pour obtenir les infos de l'utilisateur connecté
     path('me/gamification/', MeGamificationView.as_view(), name='me_gamification'),
@@ -51,10 +73,13 @@ urlpatterns = [
     path('leaderboard/', LeaderboardView.as_view(), name='leaderboard'),
     path('me/children/', MyChildrenView.as_view(), name='me_children'),
     path('me/children/add/', AddChildView.as_view(), name='add_child'),
+    path('me/parent-invitations/', ParentInvitationsListView.as_view(), name='parent_invitations'),
+    path('me/parent-invitations/<int:invitation_id>/respond/', ParentInvitationRespondView.as_view(), name='parent_invitation_respond'),
     path('me/children/create/', CreateChildAccountView.as_view(), name='create_child_account'),
     path('me/children/<int:child_id>/remove/', RemoveChildView.as_view(), name='remove_child'),
     path('children/<int:child_id>/overview/', ChildOverviewView.as_view(), name='child_overview'),
     path('me/update/', UpdateProfileView.as_view(), name='me_update'),  # pour modifier les coordonnées utilisateur
+    path('me/change-password/', ChangePasswordView.as_view(), name='me_change_password'),
     path('me/niveau/', UpdateNiveauView.as_view(), name='me_niveau'),  # pour modifier le niveau utilisateur
     path('me/pays/', UpdatePaysView.as_view(), name='me_pays'),  # pour modifier le pays utilisateur
     path('me/pays-niveau/', UpdatePaysNiveauView.as_view(), name='me_pays_niveau'),  # pour modifier pays et niveau ensemble

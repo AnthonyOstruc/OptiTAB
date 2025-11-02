@@ -32,8 +32,35 @@
     </div>
 
     <div v-else>
+      <div v-if="pendingInvitations.length" class="pending-section">
+        <h2>Invitations en attente</h2>
+        <div class="pending-list">
+          <div class="pending-card" v-for="invite in pendingInvitations" :key="invite.link_id">
+            <div class="pending-info">
+              <div class="name">{{ invite.first_name }} {{ invite.last_name }}</div>
+              <div class="email">{{ invite.email }}</div>
+              <div class="meta">Envoyée le {{ formatDateTime(invite.invited_at) }}</div>
+            </div>
+            <button class="btn tertiary" :disabled="removingId === invite.child_id" @click="handleRemoveChild(invite.child_id)">
+              Annuler
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="declinedInvitations.length" class="declined-section">
+        <h2>Invitations refusées</h2>
+        <p class="declined-hint">Ces élèves ont refusé l'accès. Vous pouvez renvoyer une invitation en saisissant à nouveau leur email.</p>
+        <ul class="declined-list">
+          <li v-for="invite in declinedInvitations" :key="invite.link_id">
+            {{ invite.first_name }} {{ invite.last_name }} — refusé le {{ formatDateTime(invite.responded_at) || '—' }}
+          </li>
+        </ul>
+      </div>
+
       <div v-if="children.length === 0" class="empty">
-        <p>Aucun enfant rattaché pour le moment.</p>
+        <p v-if="pendingInvitations.length">Aucun accès validé pour le moment. Dès que l'élève accepte, il apparaîtra ici.</p>
+        <p v-else>Aucun enfant rattaché pour le moment.</p>
       </div>
 
       <div class="children-grid" v-else>
@@ -48,6 +75,7 @@
               <div class="meta">
                 <span v-if="c.niveau">{{ c.niveau }}</span>
               </div>
+              <div class="status-chip">{{ statusLabel(c) }}</div>
             </div>
             <div class="xp">
               <div class="xp-value">{{ c.xp }} XP</div>
@@ -103,6 +131,8 @@ import apiClient from '@/api/client'
 
 const loading = ref(true)
 const children = ref([])
+const pendingInvitations = ref([])
+const declinedInvitations = ref([])
 const router = useRouter()
 const newChildEmail = ref('')
 const adding = ref(false)
@@ -112,6 +142,12 @@ const creating = ref(false)
 const createMessage = ref('')
 const tempPassword = ref('')
 const create = ref({ first_name: '', last_name: '', email: '' })
+
+function applyChildrenPayload(payload = {}) {
+  children.value = payload.children || []
+  pendingInvitations.value = payload.pending_invitations || []
+  declinedInvitations.value = payload.declined_invitations || []
+}
 
 function initials(name) {
   if (!name) return 'E'
@@ -139,9 +175,9 @@ onMounted(async () => {
   try {
     const res = await fetchMyChildren()
     const data = res?.data?.data || {}
-    children.value = data.children || []
+    applyChildrenPayload(data)
   } catch (e) {
-    children.value = []
+    applyChildrenPayload()
   } finally {
     loading.value = false
   }
@@ -151,9 +187,9 @@ async function refreshChildren() {
   try {
     const res = await fetchMyChildren()
     const data = res?.data?.data || {}
-    children.value = data.children || []
+    applyChildrenPayload(data)
   } catch {
-    children.value = []
+    applyChildrenPayload()
   }
 }
 
@@ -166,12 +202,13 @@ async function handleAddChild() {
   }
   adding.value = true
   try {
-    await addChild({ email })
+    const res = await addChild({ email })
+    const responseData = res?.data || {}
+    addMessage.value = responseData.message || 'Invitation envoyée ✅'
     newChildEmail.value = ''
-    addMessage.value = 'Élève ajouté ✅'
     await refreshChildren()
   } catch (e) {
-    addMessage.value = "Impossible d'ajouter cet élève"
+    addMessage.value = e.response?.data?.message || "Impossible d'ajouter cet élève"
   } finally {
     adding.value = false
     setTimeout(() => { addMessage.value = '' }, 2500)
@@ -185,6 +222,28 @@ async function handleRemoveChild(childId) {
     await refreshChildren()
   } catch {}
   removingId.value = null
+}
+
+function formatDateTime(isoString) {
+  if (!isoString) return ''
+  try {
+    return new Date(isoString).toLocaleString('fr-FR', {
+      day: '2-digit',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  } catch {
+    return ''
+  }
+}
+
+function statusLabel(child) {
+  if (child.status === 'accepted') {
+    const acceptedAt = formatDateTime(child.responded_at)
+    return acceptedAt ? `Accès accordé le ${acceptedAt}` : 'Accès accordé'
+  }
+  return 'Lien actif'
 }
 
 async function handleCreateChild() {
@@ -228,6 +287,21 @@ async function handleCreateChild() {
 .form-row { display:flex; gap:.5rem; margin-top:.35rem; }
 .temp-pass { margin-top:.5rem; background:#f8fafc; border:1px solid #e2e8f0; padding:.5rem .6rem; border-radius:8px; }
 
+.pending-section { margin-top:1.2rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:1rem; }
+.pending-section h2 { margin:0 0 .6rem; font-size:1rem; font-weight:700; color:#1f2937; }
+.pending-list { display:flex; flex-direction:column; gap:.6rem; }
+.pending-card { display:flex; align-items:center; justify-content:space-between; gap:.75rem; background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:.7rem .9rem; }
+.pending-info .name { font-weight:700; color:#1f2937; }
+.pending-info .email { color:#475569; font-size:.85rem; }
+.pending-info .meta { color:#94a3b8; font-size:.78rem; margin-top:.15rem; }
+.btn.tertiary { background:#e0e7ff; color:#4338ca; border:1px solid #c7d2fe; }
+.btn.tertiary:hover { background:#c7d2fe; }
+
+.declined-section { margin-top:1.2rem; background:#fff7ed; border:1px dashed #fdba74; border-radius:12px; padding:1rem; }
+.declined-section h2 { margin:0; font-size:1rem; font-weight:700; color:#9a3412; }
+.declined-hint { margin:.35rem 0 .6rem; color:#9a3412; font-size:.85rem; }
+.declined-list { margin:0; padding-left:1.1rem; color:#f97316; font-size:.85rem; }
+
 .loading { display: flex; justify-content: center; align-items: center; height: 80px; }
 .spinner { width: 36px; height: 36px; border: 4px solid #e5e7eb; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -262,7 +336,9 @@ async function handleCreateChild() {
 .activity-title { font-weight:700; color:#111827; }
 .activity-meta { color:#64748b; font-size:.9rem; }
 
-.actions { display:flex; justify-content:flex-end; }
+.status-chip { display:inline-block; margin-top:.3rem; padding:.2rem .55rem; border-radius:999px; background:#dcfce7; color:#166534; font-size:.75rem; font-weight:600; }
+
+.actions { display:flex; justify-content:flex-end; gap:.5rem; }
 .btn { background:#2563eb; color:white; border:none; border-radius:8px; padding:.5rem .9rem; font-weight:700; cursor:pointer; }
 .btn:hover { background:#1e40af; }
 .btn.secondary { background:#f1f5f9; color:#0f172a; border:1px solid #e2e8f0; }
@@ -274,5 +350,3 @@ async function handleCreateChild() {
   .metrics-grid { grid-template-columns: 1fr 1fr; }
 }
 </style>
-
-

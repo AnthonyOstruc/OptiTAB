@@ -32,12 +32,22 @@
             <label class="account-label" for="email">Email</label>
             <div class="email-row">
               <input class="account-input" id="email" type="email" :value="form.email" disabled autocomplete="email" placeholder="Email" />
-              <button v-if="!userStoreIsActive" type="button" class="verify-btn" @click="openVerificationModal">
-                Vérifier
+              <button
+                v-if="!userStoreIsActive"
+                type="button"
+                class="verify-btn"
+                :disabled="isSendingVerification || resendCooldown>0"
+                @click="sendVerificationLink"
+              >
+                {{ resendCooldown>0 ? `Lien envoyé (${resendCooldown}s)` : (isSendingVerification ? 'Envoi...' : 'Envoyer le lien') }}
               </button>
               <span v-else class="verified-badge">✔️ Vérifié</span>
             </div>
-            <p v-if="!userStoreIsActive" class="verify-hint">Votre email n'est pas encore vérifié.</p>
+            <p v-if="!userStoreIsActive" class="verify-hint">
+              Cliquez sur « Envoyer le lien » pour recevoir un email de vérification.
+            </p>
+            <p v-if="verificationSuccess" class="verify-success">{{ verificationSuccess }}</p>
+            <p v-if="verificationError" class="verify-error">{{ verificationError }}</p>
           </div>
           <FormInput label="Numéro de téléphone" v-model="form.telephone" id="telephone" type="tel" autocomplete="tel" class="account-input field-narrow" placeholder="Numéro de téléphone" />
         </div>
@@ -69,40 +79,54 @@
           <span v-if="errorMsg" class="account-error">{{ errorMsg }}</span>
         </div>
       </form>
+
+      <section class="password-card">
+        <h3 class="password-title">Sécurité</h3>
+        <p class="password-subtitle">Mettez à jour votre mot de passe pour protéger votre compte.</p>
+        <form class="password-form" @submit.prevent="handlePasswordSubmit">
+          <div class="password-fields">
+            <div class="password-field">
+              <FormInput
+                label="Nouveau mot de passe"
+                type="password"
+                v-model="passwordForm.newPassword"
+                autocomplete="new-password"
+                required
+                :error="passwordErrors.newPassword"
+                placeholder="Nouveau mot de passe"
+              />
+              <PasswordStrength class="password-strength-hints" :password="passwordForm.newPassword" />
+            </div>
+            <div class="password-field">
+              <FormInput
+                label="Confirmer le nouveau mot de passe"
+                type="password"
+                v-model="passwordForm.confirmPassword"
+                autocomplete="new-password"
+                required
+                :error="passwordErrors.confirmPassword"
+                placeholder="Confirmez le nouveau mot de passe"
+              />
+            </div>
+          </div>
+          <div class="password-actions">
+            <button class="account-save-btn password-save-btn" type="submit" :disabled="isChangingPassword">
+              {{ isChangingPassword ? 'Mise à jour...' : 'Mettre à jour le mot de passe' }}
+            </button>
+            <span v-if="passwordSuccess" class="account-success">{{ passwordSuccess }}</span>
+            <span v-if="passwordError" class="account-error">{{ passwordError }}</span>
+          </div>
+        </form>
+      </section>
     </div>
   </DashboardLayout>
 
-  <!-- Modal de vérification email -->
-  <div v-if="showVerifyModal" class="modal-overlay" @click="closeVerificationModal">
-    <div class="modal-card" @click.stop>
-      <div class="modal-header">
-        <h3>Vérification de l'email</h3>
-        <button class="modal-close" @click="closeVerificationModal">×</button>
-      </div>
-      <div class="modal-body">
-        <p>Un code a été envoyé à <strong>{{ form.email }}</strong> depuis <strong>contact@optitab.net</strong>. Veuillez le saisir ci-dessous.</p>
-        <div class="code-inputs">
-          <input v-for="(d, idx) in 6" :key="idx" maxlength="1" inputmode="numeric" pattern="[0-9]*" class="code-input" v-model="codeDigits[idx]" @input="focusNext(idx, $event)" />
-        </div>
-        <p v-if="verifyError" class="verify-error">{{ verifyError }}</p>
-        <p v-if="verifySuccess" class="verify-success">Email vérifié avec succès.</p>
-      </div>
-      <div class="modal-actions">
-        <button class="resend-btn" :disabled="isSending || resendCooldown>0" @click="sendCode">
-          {{ resendCooldown>0 ? `Renvoyer (${resendCooldown}s)` : (isSending ? 'Envoi...' : 'Renvoyer le code') }}
-        </button>
-        <button class="confirm-btn" :disabled="isVerifying" @click="confirmCode">
-          {{ isVerifying ? 'Vérification...' : 'Confirmer' }}
-        </button>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { updateUserProfile, fetchUserProfile, sendEmailVerificationCode, verifyEmailCode } from '@/api'
+import { updateUserProfile, fetchUserProfile, sendEmailVerificationLink, changeUserPassword } from '@/api'
 import FormInput from '@/components/forms/FormInput.vue'
 import FormSelect from '@/components/forms/FormSelect.vue'
 import { UserCircleIcon } from '@heroicons/vue/24/outline'
@@ -110,9 +134,13 @@ import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import UserPaysNiveauConfig from '@/components/dashboard/UserPaysNiveauConfig.vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+import PasswordStrength from '@/components/forms/PasswordStrength.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const icon = UserCircleIcon
 const userStore = useUserStore()
+const route = useRoute()
+const router = useRouter()
 
 const form = ref({
   civilite: '',
@@ -123,19 +151,32 @@ const form = ref({
   date_naissance: ''
 })
 
+const defaultPasswordState = () => ({
+  newPassword: '',
+  confirmPassword: ''
+})
+
+const defaultPasswordErrorsState = () => ({
+  newPassword: '',
+  confirmPassword: ''
+})
+
+const passwordForm = ref(defaultPasswordState())
+const passwordErrors = ref(defaultPasswordErrorsState())
+const isChangingPassword = ref(false)
+const passwordSuccess = ref('')
+const passwordError = ref('')
+
 const isSaving = ref(false)
 const successMsg = ref('')
 const errorMsg = ref('')
 
 // Email verification state
-const showVerifyModal = ref(false)
-const isSending = ref(false)
-const isVerifying = ref(false)
-const verifyError = ref('')
-const verifySuccess = ref('')
+const isSendingVerification = ref(false)
+const verificationSuccess = ref('')
+const verificationError = ref('')
 const resendCooldown = ref(0)
-const codeDigits = ref(['', '', '', '', '', ''])
-const userStoreIsActive = computed(() => !!userStore && userStore.id && (userStore.isActive || userStore.is_active || false) || (userStore?.isAuthenticated && userStore?.id && userStore?.level >= 0 && userStore?.email))
+const userStoreIsActive = computed(() => Boolean(userStore?.emailVerified))
 
 const fillForm = (user) => {
   // Backend expects 'M' or 'Mme'. If older human-readable value slipped in, map it.
@@ -158,6 +199,7 @@ onMounted(async () => {
     // API returns { success, message, data: { ...user } }
     fillForm((data && data.data) ? data.data : data)
   } catch {}
+  await handleEmailVerifiedQuery()
 })
 
 const handleSubmit = async () => {
@@ -207,72 +249,150 @@ const handleSubmit = async () => {
   }
 }
 
-function openVerificationModal() {
-  verifyError.value = ''
-  verifySuccess.value = ''
-  codeDigits.value = ['','','','','','']
-  showVerifyModal.value = true
-  // Envoyer le code immédiatement
-  sendCode()
+const resetPasswordForm = () => {
+  passwordForm.value = defaultPasswordState()
 }
 
-function closeVerificationModal() {
-  showVerifyModal.value = false
+const clearPasswordErrors = () => {
+  passwordErrors.value = defaultPasswordErrorsState()
 }
 
-async function sendCode() {
+const formatErrorMessages = (value) => {
+  if (Array.isArray(value)) return value.join(', ')
+  if (typeof value === 'string') return value
+  return ''
+}
+
+const handlePasswordSubmit = async () => {
+  passwordSuccess.value = ''
+  passwordError.value = ''
+  clearPasswordErrors()
+
+  const localErrors = {}
+  if (!passwordForm.value.newPassword) {
+    localErrors.newPassword = 'Veuillez choisir un nouveau mot de passe.'
+  }
+  if (!passwordForm.value.confirmPassword) {
+    localErrors.confirmPassword = 'Veuillez confirmer votre nouveau mot de passe.'
+  }
+  if (
+    passwordForm.value.newPassword &&
+    passwordForm.value.confirmPassword &&
+    passwordForm.value.newPassword !== passwordForm.value.confirmPassword
+  ) {
+    localErrors.confirmPassword = 'La confirmation ne correspond pas au nouveau mot de passe.'
+  }
+
+  if (Object.keys(localErrors).length > 0) {
+    passwordErrors.value = { ...defaultPasswordErrorsState(), ...localErrors }
+    passwordError.value = 'Veuillez corriger les erreurs ci-dessus.'
+    return
+  }
+
   try {
-    if (resendCooldown.value > 0) return
-    isSending.value = true
-    await sendEmailVerificationCode()
-    verifyError.value = ''
-    verifySuccess.value = 'Code envoyé. Vérifiez votre boîte mail.'
-    // Cooldown 60s
-    resendCooldown.value = 60
-    const timer = setInterval(() => {
-      resendCooldown.value--
-      if (resendCooldown.value <= 0) clearInterval(timer)
-    }, 1000)
+    isChangingPassword.value = true
+    await changeUserPassword({
+      new_password: passwordForm.value.newPassword,
+      confirm_password: passwordForm.value.confirmPassword
+    })
+    passwordSuccess.value = 'Mot de passe mis à jour avec succès.'
+    resetPasswordForm()
   } catch (e) {
-    verifyError.value = e?.response?.data?.message || 'Impossible d\'envoyer le code. Réessayez plus tard.'
-    verifySuccess.value = ''
+    console.error('Erreur changement mot de passe:', e)
+    const responseData = e?.response?.data
+    const responseErrors = responseData?.errors
+
+    if (responseErrors && typeof responseErrors === 'object') {
+      const fieldErrors = defaultPasswordErrorsState()
+      if (responseErrors.new_password) {
+        fieldErrors.newPassword = formatErrorMessages(responseErrors.new_password)
+      }
+      if (responseErrors.confirm_password) {
+        fieldErrors.confirmPassword = formatErrorMessages(responseErrors.confirm_password)
+      }
+      passwordErrors.value = fieldErrors
+
+      const nonFieldErrors = responseErrors.non_field_errors || responseErrors.detail
+      if (nonFieldErrors) {
+        passwordError.value = formatErrorMessages(nonFieldErrors)
+      }
+    }
+
+    if (!passwordError.value) {
+      passwordError.value = responseData?.message || "Erreur lors de la mise à jour du mot de passe. Veuillez réessayer."
+    }
   } finally {
-    isSending.value = false
+    isChangingPassword.value = false
   }
 }
 
-function focusNext(idx, evt) {
-  const val = evt.target.value.replace(/[^0-9]/g, '')
-  codeDigits.value[idx] = val
-  if (val && idx < 5) {
-    const inputs = evt.target.parentElement.querySelectorAll('.code-input')
-    inputs[idx + 1]?.focus()
-  }
-}
+let resendInterval = null
 
-async function confirmCode() {
+const sendVerificationLink = async () => {
+  if (resendCooldown.value > 0 || isSendingVerification.value) return
+
+  verificationError.value = ''
+  verificationSuccess.value = ''
+
   try {
-    isVerifying.value = true
-    verifyError.value = ''
-    verifySuccess.value = ''
-    const code = codeDigits.value.join('')
-    const res = await verifyEmailCode(code)
-    verifySuccess.value = 'Email vérifié avec succès.'
-    // Rafraîchir le profil pour mettre à jour is_active
-    await userStore.fetchUser()
-    showVerifyModal.value = false
+    isSendingVerification.value = true
+    const response = await sendEmailVerificationLink()
+    verificationSuccess.value = response?.data?.message || 'Lien de vérification envoyé. Vérifiez votre boîte mail.'
+    startResendCooldown()
   } catch (e) {
-    verifyError.value = e?.response?.data?.message || 'Code invalide. Réessayez.'
+    verificationError.value = e?.response?.data?.message || 'Impossible d\'envoyer le lien. Réessayez plus tard.'
   } finally {
-    isVerifying.value = false
+    isSendingVerification.value = false
   }
 }
+
+const startResendCooldown = () => {
+  resendCooldown.value = 60
+  if (resendInterval) clearInterval(resendInterval)
+  resendInterval = setInterval(() => {
+    resendCooldown.value -= 1
+    if (resendCooldown.value <= 0) {
+      resendCooldown.value = 0
+      clearInterval(resendInterval)
+      resendInterval = null
+    }
+  }, 1000)
+}
+
+const handleEmailVerifiedQuery = async () => {
+  const rawStatus = route.query?.email_verified
+  const status = Array.isArray(rawStatus) ? rawStatus[0] : rawStatus
+  if (status === undefined) return
+
+  if (status === '1') {
+    verificationSuccess.value = 'Votre adresse email a été vérifiée avec succès.'
+    try {
+      await userStore.fetchUser()
+    } catch (e) {
+      console.error('Erreur lors de la mise à jour du profil après vérification email:', e)
+    }
+  } else if (status === '0') {
+    verificationError.value = 'Lien de vérification invalide ou expiré. Veuillez renvoyer un lien.'
+  }
+
+  const newQuery = { ...route.query }
+  delete newQuery.email_verified
+  router.replace({ query: newQuery }).catch(() => {})
+}
+
+onBeforeUnmount(() => {
+  if (resendInterval) {
+    clearInterval(resendInterval)
+    resendInterval = null
+  }
+})
 </script>
 
 <style scoped>
 .account-page {
-  max-width: 950px;
-  margin: 2.5rem auto 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 2.5rem 0 0 0;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 16px rgba(30,41,59,0.06);
@@ -394,22 +514,6 @@ async function confirmCode() {
 .verify-hint { color: #6b7280; font-size: 0.85rem; margin-top: 0.3rem; }
 .verify-error { color: #dc2626; font-weight: 600; margin-top: 0.5rem; }
 .verify-success { color: #16a34a; font-weight: 600; margin-top: 0.5rem; }
-
-/* Modal */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-  display: flex; align-items: center; justify-content: center; z-index: 9999;
-}
-.modal-card { background: #fff; border-radius: 12px; width: 90%; max-width: 460px; padding: 1rem; }
-.modal-header { display:flex; align-items:center; justify-content: space-between; margin-bottom: .5rem; }
-.modal-header h3 { margin: 0; color: #193e8e; }
-.modal-close { background:none; border:none; font-size:1.5rem; cursor:pointer; }
-.modal-body { padding: .5rem 0 1rem 0; }
-.code-inputs { display:flex; gap:.5rem; justify-content:center; margin-top:.5rem; }
-.code-input { width: 46px; height: 50px; text-align:center; font-size: 1.25rem; border:2px solid #e5e7eb; border-radius:8px; }
-.modal-actions { display:flex; justify-content: space-between; gap:.75rem; }
-.confirm-btn { background:#16a34a; color:#fff; border:none; border-radius:8px; padding:.6rem 1.1rem; font-weight:700; cursor:pointer; }
-.resend-btn { background:#f3f4f6; color:#111827; border:none; border-radius:8px; padding:.6rem 1.1rem; font-weight:700; cursor:pointer; }
 .account-save-btn {
   background: #6366f1;
   color: #fff;
@@ -436,6 +540,44 @@ async function confirmCode() {
   color: #ef4444;
   font-weight: 600;
 }
+.password-card {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #f9fafb;
+}
+.password-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.4rem;
+}
+.password-subtitle {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+.password-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+.password-field {
+  flex: 1 1 240px;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.password-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+.password-save-btn {
+  min-width: 220px;
+}
 @media (max-width: 900px) {
   .account-page {
     padding: 1.2rem 0.7rem 1.5rem 0.7rem;
@@ -444,6 +586,19 @@ async function confirmCode() {
     flex-direction: column;
     gap: 0.7rem;
   }
+  .password-card {
+    padding: 1.4rem;
+  }
+  .password-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .password-save-btn {
+    width: 100%;
+  }
+}
+.password-strength-hints {
+  margin-top: 0;
 }
 .dark-blue-icon {
   color: #193e8e !important;

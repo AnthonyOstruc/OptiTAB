@@ -86,10 +86,12 @@ import { getThemeDetail, getNotions } from '@/api'
 import NotionCard from '@/components/UI/NotionCard.vue'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import BackButton from '@/components/common/BackButton.vue'
+import { useRequireSubscription } from '@/composables/useRequireSubscription'
 
 const route = useRoute()
 const router = useRouter()
 const subjectsStore = useSubjectsStore()
+const { ensureAccess } = useRequireSubscription()
 
 const currentThemeId = computed(() => route.params.themeId)
 
@@ -146,8 +148,11 @@ const loadThemeNotions = async (themeId) => {
 }
 
 // Fonction appelée quand on clique sur une notion
-function onNotionClick(notionId) {
-  router.push({ name: 'ExercicesByNotion', params: { notionId } })
+async function onNotionClick(notionId) {
+  const target = { name: 'ExercicesByNotion', params: { notionId } }
+  if (await ensureAccess(target)) {
+    router.push(target)
+  }
 }
 
 // Lifecycle

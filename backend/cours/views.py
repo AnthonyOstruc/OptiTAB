@@ -2,7 +2,9 @@
 VUES ULTRA SIMPLES pour cours
 """
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
+
+from subscriptions.permissions import HasActiveSubscriptionOrPass
 from .models import Cours, CoursImage
 from .serializers import CoursSerializer, CoursImageSerializer
 
@@ -10,7 +12,12 @@ from .serializers import CoursSerializer, CoursImageSerializer
 class CoursViewSet(viewsets.ModelViewSet):
     queryset = Cours.objects.all()
     serializer_class = CoursSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Lecture publique, écriture authentifiée
+    permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return [IsAuthenticated()]
+        return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
 
     def get_serializer_context(self):
         # Injecter la requête pour construire des URLs absolues dans le serializer
@@ -41,7 +48,7 @@ class CoursImageViewSet(viewsets.ModelViewSet):
     """
     queryset = CoursImage.objects.all()
     serializer_class = CoursImageSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_serializer_context(self):
         ctx = super().get_serializer_context()

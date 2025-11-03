@@ -151,4 +151,8 @@ export default {
     display: flex;
   }
 }
+  /* iOS safe area at top */
+  @supports (padding: env(safe-area-inset-top)) {
+    .header { padding-top: env(safe-area-inset-top); }
+  }
 </style> 

@@ -140,6 +140,14 @@ const handleClick = async (item) => {
   border-top: 1px solid rgba(226, 232, 240, 0.9);
   box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.08);
   z-index: 1050;
+  /* Allow vertical panning from the footer on iOS */
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Improve compositing stability on iOS fixed elements */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .mobile-nav-item {
@@ -153,6 +161,8 @@ const handleClick = async (item) => {
   justify-content: center;
   transition: color 0.2s ease, transform 0.2s ease, background 0.2s ease;
   cursor: pointer;
+  /* Avoid double-tap zoom and let vertical scroll pass through */
+  touch-action: manipulation;
 }
 
 .mobile-nav-item:hover {

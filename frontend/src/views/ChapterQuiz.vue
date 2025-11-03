@@ -346,7 +346,6 @@
 </template>
 
 <script setup>
-import { defineOptions } from 'vue'
 // Nom explicite pour KeepAlive
 defineOptions({ name: 'ChapterQuiz' })
 import { ref, computed, onMounted, onActivated, onUnmounted, nextTick, watch } from 'vue'

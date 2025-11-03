@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed, defineOptions } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import { getMatieres } from '@/api/matieres'

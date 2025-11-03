@@ -138,7 +138,6 @@
 </template>
 
 <script setup>
-import { defineOptions } from 'vue'
 // Nom explicite pour KeepAlive
 defineOptions({ name: 'CourseByNotion' })
 import { ref, onMounted, onActivated, onBeforeUnmount, computed, nextTick, watch } from 'vue'

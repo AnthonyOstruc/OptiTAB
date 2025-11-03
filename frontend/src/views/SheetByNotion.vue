@@ -113,7 +113,6 @@
 
 <script setup>
 import { ref, computed, onMounted, onActivated, onBeforeUnmount, nextTick, watch } from 'vue'
-import { defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'

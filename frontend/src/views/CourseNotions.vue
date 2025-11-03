@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { computed, defineOptions } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'

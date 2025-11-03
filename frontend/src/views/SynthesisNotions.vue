@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, defineOptions } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import ThemeNotionsView from '@/components/common/ThemeNotionsView.vue'

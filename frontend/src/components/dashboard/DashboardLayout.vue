@@ -7,6 +7,8 @@
       @subject-changed="handleSubjectChange"
     />
     
+    <div class="dashboard-header-spacer" aria-hidden="true"></div>
+
     <!-- Contenu principal -->
     <div class="dashboard-main-container">
                 <!-- Sidebar principale -->
@@ -159,6 +161,9 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
 <style scoped>
 /* Layout principal du dashboard */
 .dashboard-layout {
+  --dashboard-header-height: 64px;
+  --dashboard-header-height: calc(64px + env(safe-area-inset-top));
+  --dashboard-mobile-nav-height: 5.5rem;
   height: 100vh;
   height: 100dvh; /* Utiliser dvh sur navigateurs modernes pour mobile */
   /* Fond plein blanc pour retirer le gris en arrière-plan */
@@ -170,6 +175,11 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
   /* Assurer que le layout reste stable */
   min-height: 100vh;
   min-height: 100dvh; /* Utiliser dvh sur navigateurs modernes pour mobile */
+}
+
+.dashboard-header-spacer {
+  height: var(--dashboard-header-height);
+  flex-shrink: 0;
 }
 
 /* Container principal */
@@ -219,7 +229,8 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
 }
 
 .dashboard-main.with-mobile-nav {
-  padding-bottom: 5.5rem;
+  padding-bottom: var(--dashboard-mobile-nav-height);
+  padding-bottom: calc(var(--dashboard-mobile-nav-height) + env(safe-area-inset-bottom));
 }
 
 /* Responsive design - Optimisé pour que le header et les onglets restent visibles */
@@ -242,6 +253,11 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
 }
 
 @media (max-width: 768px) {
+  .dashboard-layout {
+    --dashboard-header-height: 56px;
+    --dashboard-header-height: calc(56px + env(safe-area-inset-top));
+  }
+  
   .dashboard-main {
     padding: 0.5rem 1rem 0.75rem;
   }

@@ -124,22 +124,20 @@ const handleLogout = () => {
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
   padding: 0.7rem 2rem 0.7rem 4rem; /* Padding gauche augmenté pour le burger */
+  padding-top: calc(0.7rem + env(safe-area-inset-top));
   min-height: 64px;
-  position: sticky;
+  min-height: calc(64px + env(safe-area-inset-top));
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 12001; /* Toujours au-dessus du contenu du dashboard */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
-  /* Laisser passer les gestes de scroll sans d�placer le header */
-  pointer-events: none;
-  touch-action: pan-y;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-
 }
-
-.dashboard-header > * { pointer-events: auto; }
-
 
 /* Bouton burger fixe - Solution professionnelle */
 .burger-btn-fixed {
@@ -199,9 +197,6 @@ const handleLogout = () => {
   margin-left: auto; /* Garantit l'alignement à droite même si le centre est en position absolue */
   max-width: 42vw;
   overflow: visible;
-  /* Important: ne pas bloquer les clics sur la zone centrale quand il y a de l'espace vide */
-  pointer-events: none;
-  touch-action: pan-y;
 }
 
 /* Réactiver les interactions pour le contenu réel du bloc droit */
@@ -293,6 +288,7 @@ const handleLogout = () => {
   .dashboard-header {
     /* Garder le même padding pour éviter le décalage */
     padding: 0.7rem 2rem 0.7rem 4rem;
+    padding-top: calc(0.7rem + env(safe-area-inset-top));
   }
 }
 
@@ -301,6 +297,8 @@ const handleLogout = () => {
     /* Garder le même padding pour éviter le décalage */
     padding: 0.7rem 2rem 0.7rem 4rem;
     min-height: 60px;
+    padding-top: calc(0.7rem + env(safe-area-inset-top));
+    min-height: calc(60px + env(safe-area-inset-top));
   }
   /* Garder la position du burger identique */
 }
@@ -309,6 +307,8 @@ const handleLogout = () => {
   .dashboard-header {
     padding: 0.6rem 0.7rem;
     min-height: 56px;
+    padding-top: calc(0.6rem + env(safe-area-inset-top));
+    min-height: calc(56px + env(safe-area-inset-top));
   }
   .burger-btn-fixed { 
     display: none;
@@ -341,6 +341,8 @@ const handleLogout = () => {
     /* Garder la même hauteur pour éviter le changement */
     padding: 0.6rem 0.7rem;
     min-height: 56px;
+    padding-top: calc(0.6rem + env(safe-area-inset-top));
+    min-height: calc(56px + env(safe-area-inset-top));
   }
 }
 
@@ -349,6 +351,8 @@ const handleLogout = () => {
     /* Garder la même hauteur pour éviter le changement */
     padding: 0.6rem 0.7rem;
     min-height: 56px;
+    padding-top: calc(0.6rem + env(safe-area-inset-top));
+    min-height: calc(56px + env(safe-area-inset-top));
   }
 }
 
@@ -357,12 +361,12 @@ const handleLogout = () => {
     /* Garder la même hauteur pour éviter le changement */
     min-height: 56px;
     padding: 0.6rem 0.7rem;
+    padding-top: calc(0.6rem + env(safe-area-inset-top));
+    min-height: calc(56px + env(safe-area-inset-top));
   }
   
   .burger-btn-fixed {
     display: none;
   }
 }
-  .dashboard-header > * { pointer-events: auto; }
 </style>
-

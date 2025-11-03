@@ -140,7 +140,6 @@
 
 <script setup>
 import { ref, onMounted, onActivated, onDeactivated, onBeforeUnmount, nextTick, watch, computed } from 'vue'
-import { defineOptions } from 'vue'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import SkeletonList from '@/components/common/SkeletonList.vue'

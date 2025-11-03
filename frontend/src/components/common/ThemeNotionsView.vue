@@ -823,6 +823,8 @@ function highlightQuery(text) {
   font-weight: 600;
   color: #1f2937;
   margin: 0;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .tnv-theme-count {
@@ -989,14 +991,16 @@ function highlightQuery(text) {
   }
   
   .tnv-notions-grid {
-    grid-template-columns: repeat(2, 280px);
-    gap: 1rem;
-    justify-content: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    justify-content: stretch;
+    justify-items: stretch;
+    align-items: stretch;
   }
   
   .tnv-skeleton-grid {
-    grid-template-columns: repeat(2, 280px);
-    justify-content: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
   }
 
   .tnv-theme-block {
@@ -1010,11 +1014,17 @@ function highlightQuery(text) {
   }
 
   .tnv-theme-header {
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.75rem;
-    margin-top: 0;
+    justify-content: center;
+    text-align: center;
+    gap: 0.5rem;
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .tnv-theme-title {
+    text-align: center;
+    width: 100%;
   }
   
   /* Cacher le badge de concepts en mode mobile (aligné avec le breakpoint de la sidebar) */
@@ -1025,14 +1035,15 @@ function highlightQuery(text) {
 
 @media (max-width: 650px) {
   .tnv-notions-grid {
-    grid-template-columns: 280px;
-    gap: 1rem;
-    justify-content: center;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    justify-content: stretch;
+    justify-items: stretch;
   }
   
   .tnv-skeleton-grid {
-    grid-template-columns: 280px;
-    justify-content: center;
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
   }
 
   .tnv-theme-block {
@@ -1041,9 +1052,9 @@ function highlightQuery(text) {
   }
 
   .tnv-theme-header {
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    text-align: center;
   }
 }
 

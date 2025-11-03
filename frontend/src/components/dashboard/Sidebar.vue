@@ -427,10 +427,10 @@ defineExpose({
   border-right: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  height: 100dvh; /* Utiliser dvh sur navigateurs modernes pour mobile */
-  max-height: 100vh;
-  max-height: 100dvh; /* Utiliser dvh sur navigateurs modernes pour mobile */
+  height: calc(100vh - var(--dashboard-header-height, 0px));
+  height: calc(100dvh - var(--dashboard-header-height, 0px)); /* Utiliser dvh sur navigateurs modernes pour mobile */
+  max-height: calc(100vh - var(--dashboard-header-height, 0px));
+  max-height: calc(100dvh - var(--dashboard-header-height, 0px)); /* Utiliser dvh sur navigateurs modernes pour mobile */
   justify-content: flex-start;
   position: relative;
   transition: width 0.1s ease-out;

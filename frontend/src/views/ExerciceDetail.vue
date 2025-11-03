@@ -66,7 +66,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { defineOptions } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getExerciceDetail } from '@/api'
 import { useUserStore } from '@/stores/user'

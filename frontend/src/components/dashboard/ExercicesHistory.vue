@@ -43,7 +43,8 @@
 
     <!-- Tableau récapitulatif matière / notion -->
     <template #matiere-notion-stats="{ stats }">
-      <div class="summary-table">
+      <!-- Version Desktop : Tableau -->
+      <div class="summary-table desktop-only">
         <div class="summary-header">
           <div>Matière</div>
           <div>Notion</div>
@@ -84,20 +85,64 @@
             <div class="cell average" :class="getAverageClass(row.average)">{{ formatAverage(row.average) }}</div>
           </div>
         </template>
-        <div v-if="summaryTotalPages > 1" class="summary-pagination">
-          <button class="pg-btn" :disabled="summaryPage <= 1" @click="goToSummaryPage(summaryPage-1)">‹ Précédent</button>
-          <button
-            v-for="p in summaryVisiblePages"
-            :key="p + '-p'"
-            class="pg-page"
-            :class="{ active: p === summaryPage, dots: p === '...' }"
-            :disabled="p === '...'"
-            @click="p !== '...' && goToSummaryPage(p)"
-          >
-            {{ p }}
+      </div>
+
+      <!-- Version Mobile : Cartes -->
+      <div class="summary-cards mobile-only">
+        <div class="sort-controls">
+          <span class="sort-label">Trier par :</span>
+          <select v-model="sortField" @change="sortDirection = 'desc'" class="sort-select">
+            <option value="exercice_count">Faits</option>
+            <option value="correct_count">Réussis</option>
+            <option value="incorrect_count">Ratés</option>
+            <option value="average">Moyenne</option>
+          </select>
+          <button class="sort-direction-btn" @click="sortDirection = sortDirection === 'asc' ? 'desc' : 'asc'" :title="sortDirection === 'asc' ? 'Croissant' : 'Décroissant'">
+            {{ sortDirection === 'asc' ? '↑' : '↓' }}
           </button>
-          <button class="pg-btn" :disabled="summaryPage >= summaryTotalPages" @click="goToSummaryPage(summaryPage+1)">Suivant ›</button>
         </div>
+        <template v-for="row in pagedSummaryRows" :key="`${row.matiere.id}-${row.notion.id}`">
+          <div class="summary-card">
+            <div class="card-header">
+              <div class="card-title">{{ row.notion.titre }}</div>
+              <div class="card-subtitle">{{ row.matiere.titre }}</div>
+            </div>
+            <div class="card-stats">
+              <div class="stat-item">
+                <span class="stat-label">Faits</span>
+                <span class="stat-value">{{ row.exercice_count }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Réussis</span>
+                <span class="stat-value success">{{ row.correct_count }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Ratés</span>
+                <span class="stat-value error">{{ row.incorrect_count }}</span>
+              </div>
+              <div class="stat-item highlight" :class="getAverageClass(row.average)">
+                <span class="stat-label">Moyenne</span>
+                <span class="stat-value">{{ formatAverage(row.average) }}</span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- Pagination (partagée) -->
+      <div v-if="summaryTotalPages > 1" class="summary-pagination">
+        <button class="pg-btn" :disabled="summaryPage <= 1" @click="goToSummaryPage(summaryPage-1)">‹ Précédent</button>
+        <button
+          v-for="p in summaryVisiblePages"
+          :key="p + '-p'"
+          class="pg-page"
+          :class="{ active: p === summaryPage, dots: p === '...' }"
+          :disabled="p === '...'"
+          @click="p !== '...' && goToSummaryPage(p)"
+        >
+          {{ p }}
+        </button>
+        <button class="pg-btn" :disabled="summaryPage >= summaryTotalPages" @click="goToSummaryPage(summaryPage+1)">Suivant ›</button>
       </div>
     </template>
 
@@ -747,6 +792,26 @@ defineExpose({
   margin-bottom: 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
+
+/* Utilitaires responsive */
+.desktop-only {
+  display: block;
+}
+
+.mobile-only {
+  display: none;
+}
+
+/* Desktop : afficher uniquement le tableau */
+@media (min-width: 769px) {
+  .desktop-only {
+    display: block !important;
+  }
+
+  .mobile-only {
+    display: none !important;
+  }
+}
 .summary-header,
 .summary-row {
   display: grid;
@@ -861,12 +926,6 @@ defineExpose({
   font-weight: 700;
 }
 
-@media (max-width: 768px) {
-  .summary-header, .summary-row {
-    grid-template-columns: 1fr 1fr 0.7fr 0.7fr 0.7fr 0.7fr;
-    padding: 0.5rem 0.75rem;
-  }
-}
 
 /* Notion toggle */
 .notion-toggle {
@@ -982,15 +1041,295 @@ defineExpose({
   }
 }
 
+/* Version Mobile : Cartes - Design professionnel et épuré */
+.summary-cards {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: linear-gradient(to right, #f8fafc, #f1f5f9);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.sort-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #475569;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.sort-select {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.sort-direction-btn {
+  padding: 0.625rem 0.875rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #3b82f6;
+  cursor: pointer;
+  min-width: 48px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.sort-direction-btn:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  transform: scale(1.02);
+}
+
+.sort-direction-btn:active {
+  transform: scale(0.98);
+}
+
+.summary-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.summary-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+}
+
+.summary-card:hover::before {
+  opacity: 1;
+}
+
+.card-header {
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f5f9;
+  position: relative;
+}
+
+.card-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.375rem;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+}
+
+.card-subtitle {
+  font-size: 0.8125rem;
+  color: #64748b;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.card-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.625rem 0.375rem;
+  background: #fafbfc;
+  border-radius: 8px;
+  border: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+  align-items: center;
+  text-align: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.stat-item:hover {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+.stat-item.highlight {
+  grid-column: auto;
+  padding: 0.75rem 0.5rem;
+  background: linear-gradient(135deg, #fafbfc 0%, #f8fafc 100%);
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+}
+
+.stat-item.highlight.excellent {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #86efac;
+}
+
+.stat-item.highlight.good {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border-color: #fcd34d;
+}
+
+.stat-item.highlight.poor {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-color: #fca5a5;
+}
+
+.stat-label {
+  font-size: 0.5625rem;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.1875rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.stat-value {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.stat-value.success {
+  color: #059669;
+}
+
+.stat-value.error {
+  color: #dc2626;
+}
+
+.stat-item.highlight .stat-value {
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 0.1875rem 0.25rem;
+  border-radius: 6px;
+  display: inline-block;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.stat-item.highlight.excellent .stat-value {
+  color: #047857;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.stat-item.highlight.good .stat-value {
+  color: #d97706;
+  background: rgba(251, 191, 36, 0.15);
+}
+
+.stat-item.highlight.poor .stat-value {
+  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.1);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
+  /* Masquer tableau desktop, afficher cartes mobile */
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+
+  /* Stats grid : 2 colonnes sur mobile */
   .stats-grid {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
   }
   
   .stat-card {
-    min-width: 200px;
+    min-width: 0;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+  }
+
+  .stat-value {
+    font-size: 1.15rem;
+  }
+
+  .summary-pagination {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.5rem 0.25rem 0.75rem;
+  }
+
+  .pg-btn,
+  .pg-page {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.75rem;
+    min-width: 30px;
+    height: 30px;
   }
   
   .matiere-grid {
@@ -1025,8 +1364,137 @@ defineExpose({
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+}
 
+/* Très petits écrans */
+@media (max-width: 480px) {
+  /* Garder 2 colonnes pour .stats-grid jusqu'à 350px */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .stat-card {
+    padding: 0.65rem 0.5rem;
+  }
+
+  /* Entre 351px et 480px : 4 colonnes en ligne */
+  .card-stats {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.375rem !important;
+  }
+
+  .stat-item.highlight {
+    grid-column: auto !important;
+  }
+
+  .sort-controls {
+    flex-wrap: wrap;
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .sort-label {
+    width: 100%;
+    font-size: 0.75rem;
+  }
+
+  .sort-select {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.8125rem;
+    padding: 0.5625rem 0.875rem;
+  }
+
+  .sort-direction-btn {
+    min-width: 44px;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  .summary-card {
+    padding: 1rem;
+    border-radius: 14px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.75rem;
+    padding: 0.1875rem 0.5rem;
+  }
+
+  /* Les règles pour 4 colonnes sont déjà définies plus haut dans cette media query */
+
+  .stat-item {
+    padding: 0.625rem 0.375rem;
+    border-radius: 8px;
+  }
+
+  .stat-item.highlight {
+    grid-column: auto !important;
+    padding: 0.625rem 0.375rem;
+    border-radius: 8px;
+  }
+
+  .stat-label {
+    font-size: 0.5625rem;
+  }
+
+  .stat-value {
+    font-size: 1.0625rem;
+  }
+
+  .stat-item.highlight .stat-value {
+    font-size: 0.9375rem;
+    padding: 0.1875rem 0.25rem;
+  }
+}
+
+/* Petits écrans (jusqu'à 350px inclus) - grille 2x2 */
+@media screen and (max-width: 350px) {
+  /* Forcer 2 colonnes pour .stats-grid jusqu'à 350px */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+
+  .card-stats {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-rows: repeat(2, auto) !important;
+    gap: 0.5rem !important;
+    min-width: 0 !important;
+  }
+
+  .stat-item {
+    padding: 0.625rem 0.375rem !important;
+    border-radius: 8px !important;
+    min-width: 0 !important;
+  }
+
+  .stat-item.highlight {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    padding: 0.625rem 0.375rem !important;
+  }
+
+  .stat-label {
+    font-size: 0.5625rem !important;
+    letter-spacing: 0.03em !important;
+  }
+
+  .stat-value {
+    font-size: 1rem !important;
+  }
+
+  .stat-item.highlight .stat-value {
+    font-size: 0.9375rem !important;
+    padding: 0.1875rem 0.25rem !important;
+  }
 }
 
 /* Skeleton loader pour chapitres */

@@ -132,8 +132,9 @@
       </div>
 
       <!-- CTA Section -->
-      <div class="cta-section">
-        <div class="cta-card">
+      <div class="container">
+        <div class="cta-section">
+          <div class="cta-card">
           <div class="cta-content">
             <h3 class="cta-title">Consultation pédagogique</h3>
             <p class="cta-text">
@@ -149,6 +150,7 @@
               </a>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -180,7 +182,8 @@ import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
   max-width: 800px;
   margin: 0 auto;
   padding: 4rem 2rem;
-  margin-top: 20px;
+  padding-top: calc(4rem + 60px); /* 60px pour compenser le header fixe */
+  margin-top: 0;
 }
 
 .hero-content {
@@ -540,6 +543,7 @@ import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 @media (max-width: 1024px) {
   .hero-section {
     padding: 3rem 1.5rem;
+    padding-top: calc(3rem + 60px); /* 60px pour compenser le header fixe */
   }
 
   .hero-title {
@@ -550,75 +554,393 @@ import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
     gap: 2rem;
   }
 
+  .avantages-section {
+    padding: 3rem 0;
+    margin: 1.5rem 0;
+  }
+
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .section-intro {
+    margin-bottom: 2.5rem;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
+  }
+
   .avantages-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
     max-width: 600px;
+  }
+
+  .tarifs-section {
+    padding: 3rem 0;
+  }
+
+  .tarifs-grid {
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .cta-section {
+    padding: 2.5rem 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
+  .hero-section {
+    padding: 2rem 1.25rem;
+    padding-top: calc(2rem + 60px); /* 60px pour compenser le header fixe */
+  }
+
   .hero-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    line-height: 1.3;
+    margin-bottom: 1rem;
   }
 
   .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
   }
 
   .hero-stats {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 1.5rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  .stat-item {
+    flex: 0 1 calc(33.333% - 1rem);
+    min-width: 80px;
+  }
+
+  .stat-number {
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+
+  .avantages-section {
+    padding: 2.5rem 0;
+    margin: 1.5rem 0;
+  }
+
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .section-intro {
+    margin-bottom: 2rem;
   }
 
   .section-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.05rem;
+    padding: 0 0.5rem;
   }
 
   .avantages-grid {
     grid-template-columns: 1fr;
-    max-width: 400px;
+    gap: 1.25rem;
+    max-width: 100%;
   }
 
-  .cta-title {
-    font-size: 2rem;
+  .avantage-card {
+    padding: 1.5rem;
+    border-radius: 12px;
   }
 
-  .cta-buttons {
-    flex-direction: column;
-    align-items: center;
+  .avantage-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 1rem;
   }
 
-  .cta-button {
-    width: 100%;
-    max-width: 300px;
-    justify-content: center;
+  .avantage-icon .icon {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .avantage-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .avantage-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .tarifs-section {
+    padding: 2.5rem 0;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
   }
 
   .tarifs-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .tarif-card {
+    padding: 1.5rem;
+    border-radius: 16px;
   }
 
   .tarif-card.featured {
     transform: none;
+    border-width: 2px;
+  }
+
+  .tarif-header h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .price {
+    font-size: 2rem;
+  }
+
+  .period {
+    font-size: 0.9rem;
+  }
+
+  .popular-badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.625rem;
+  }
+
+  .tarif-features {
+    margin-bottom: 1.5rem;
+  }
+
+  .feature {
+    font-size: 0.9rem;
+    margin-bottom: 0.625rem;
+  }
+
+  .tarif-button {
+    padding: 0.875rem;
+    font-size: 0.95rem;
+  }
+
+  .cta-section {
+    padding: 2.5rem 1.25rem;
+    border-radius: 10px;
+    margin: 2rem auto 0;
+    max-width: 800px;
+  }
+
+  .cta-title {
+    font-size: 1.75rem;
+    line-height: 1.3;
+    margin-bottom: 0.875rem;
+  }
+
+  .cta-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.875rem;
+    margin-bottom: 0;
+  }
+
+  .cta-button {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
-  .hero-title {
-    font-size: 1.8rem;
+  .hero-section {
+    padding: 1.5rem 1rem;
+    padding-top: calc(1.5rem + 60px); /* 60px pour compenser le header fixe */
   }
 
-  .avantage-card,
-  .tarif-card {
-    padding: 1.5rem;
+  .hero-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    padding: 0;
+  }
+
+  .hero-stats {
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .stat-item {
+    flex: 1;
+    min-width: 70px;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+  }
+
+  .avantages-section {
+    padding: 2rem 0;
+    margin: 1rem 0;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .section-intro {
+    margin-bottom: 1.5rem;
   }
 
   .section-title {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+    padding: 0;
+  }
+
+  .avantages-grid {
+    gap: 1rem;
+  }
+
+  .avantage-card {
+    padding: 1.25rem;
+    border-radius: 10px;
+  }
+
+  .avantage-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.875rem;
+  }
+
+  .avantage-icon .icon {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .avantage-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.625rem;
+  }
+
+  .avantage-card p {
+    font-size: 0.9rem;
+  }
+
+  .tarifs-section {
+    padding: 2rem 0;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .tarifs-grid {
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .tarif-card {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+
+  .tarif-header h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .price {
+    font-size: 1.75rem;
+  }
+
+  .period {
+    font-size: 0.85rem;
+  }
+
+  .popular-badge {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+  }
+
+  .tarif-features {
+    margin-bottom: 1.25rem;
+  }
+
+  .feature {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tarif-button {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .cta-section {
+    padding: 2rem 1rem;
+    border-radius: 8px;
   }
 
   .cta-title {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .cta-text {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    padding: 0;
+  }
+
+  .cta-button {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
   }
 }
 </style>

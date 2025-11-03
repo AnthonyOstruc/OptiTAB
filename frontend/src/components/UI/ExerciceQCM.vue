@@ -5,88 +5,77 @@
     'not-acquired': current === 'not_acquired'
   }">
 
-    <!-- Header with title and difficulty -->
+    <!-- Header with title, difficulty, and tabs -->
     <div class="exercice-header">
-      <div class="exercice-title-section">
-        <div class="title-row">
-          <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
-          <div class="header-controls">
-            <div class="difficulty-indicator">
-              <span v-if="difficulty" class="difficulty-stars">{{ diffStars[difficulty] || '★★' }}</span>
-            </div>
-            <button v-if="current" class="reset-status-btn" @click="resetStatus" title="Réinitialiser le statut">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-                <path d="M21 3v5h-5"/>
-                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-                <path d="M3 21v-5h5"/>
-              </svg>
-            </button>
+      <div class="header-top">
+        <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
+        <div class="header-controls">
+          <div class="difficulty-indicator">
+            <span v-if="difficulty" class="difficulty-stars">{{ diffStars[difficulty] || '★★' }}</span>
           </div>
+          <button v-if="current" class="reset-status-btn" @click="resetStatus" title="Réinitialiser le statut">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+              <path d="M3 21v-5h5"/>
+            </svg>
+          </button>
         </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="tabs-container">
+        <button 
+          class="tab-btn" 
+          :class="{ 'active': activeTab === 'problem' }"
+          @click="activeTab = 'problem'"
+        >
+          <span class="tab-icon">📝</span>
+          <span class="tab-label">Énoncé</span>
+        </button>
+        <button 
+          class="tab-btn" 
+          :class="{ 'active': activeTab === 'method' }"
+          @click="activeTab = 'method'"
+          v-if="etapes"
+        >
+          <span class="tab-icon">🔢</span>
+          <span class="tab-label">Méthode</span>
+        </button>
+        <button 
+          class="tab-btn" 
+          :class="{ 'active': activeTab === 'solution' }"
+          @click="activeTab = 'solution'"
+          v-if="solution"
+        >
+          <span class="tab-icon">✅</span>
+          <span class="tab-label">Solution</span>
+        </button>
       </div>
     </div>
 
-    <!-- Problem Statement -->
-    <div class="problem-section">
-      <div class="section-header">
-        <div class="section-icon-wrapper">
-          <div class="section-icon">📝</div>
-        </div>
-        <div class="section-info">
-          <h4 class="section-title">Énoncé du problème</h4>
-          <p class="section-description">Lisez attentivement l'énoncé avant de commencer</p>
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- Problem Tab -->
+      <div v-show="activeTab === 'problem'" class="content-section problem-section">
+        <div class="content-wrapper">
+          <div class="problem-content" v-html="renderInstructionWithImages(instruction)" @click="handleImageClick"></div>
         </div>
       </div>
-      <div class="problem-content" v-html="renderInstructionWithImages(instruction)" @click="handleImageClick"></div>
-    </div>
 
-
-    <!-- Solution Toggle -->
-    <div class="solution-toggle">
-      <button class="toggle-btn" @click="toggleSolution" :class="{ 'expanded': showSolution }">
-        <div class="toggle-content">
-          <svg class="toggle-icon" :class="{ 'rotated': showSolution }" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="m6 9 6 6 6-6"/>
-          </svg>
-          <div class="toggle-text-group">
-            <span class="toggle-text">Voir la solution</span>
-            <span class="toggle-subtext">Découvrez la méthode de résolution</span>
-          </div>
-        </div>
-      </button>
-    </div>
-
-    <!-- Solution Content -->
-    <div v-if="showSolution" class="solution-content">
-      <!-- Steps Section -->
-      <div v-if="etapes" class="solution-section steps-section">
-        <div class="section-header">
-          <div class="section-icon-wrapper">
-            <div class="section-icon">🔢</div>
-          </div>
-          <div class="section-info">
-            <h4 class="section-title">Méthode de résolution</h4>
-            <p class="section-description">Suivez ces étapes pour comprendre la démarche</p>
-          </div>
-        </div>
-        <div class="steps-container">
+      <!-- Method Tab -->
+      <div v-show="activeTab === 'method'" class="content-section steps-section" v-if="etapes">
+        <div class="content-wrapper">
           <div class="steps-content" v-html="renderInstructionWithImages(etapes)" @click="handleImageClick"></div>
         </div>
       </div>
 
-      <!-- Answer Section -->
-      <div v-if="solution" class="solution-section answer-section">
-        <div class="section-header">
-          <div class="section-icon-wrapper">
-            <div class="section-icon">✅</div>
-          </div>
-          <div class="section-info">
-            <h4 class="section-title">Réponse</h4>
-            <p class="section-description">La solution complète à l'exercice</p>
-          </div>
+      <!-- Solution Tab -->
+      <div v-show="activeTab === 'solution'" class="content-section answer-section" v-if="solution">
+        <div class="content-wrapper">
+          <div class="answer-content" v-html="renderInstructionWithImages(solution)" @click="handleImageClick"></div>
         </div>
-        <div class="answer-content" v-html="renderInstructionWithImages(solution)" @click="handleImageClick"></div>
       </div>
     </div>
 
@@ -185,6 +174,7 @@ const showSolution = ref(false)
 const exerciceImages = ref([])
 const showImageModal = ref(false)
 const selectedImage = ref(null)
+const activeTab = ref('problem')
 
 // Computed
 const diffStars = computed(() => ({
@@ -194,19 +184,6 @@ const diffStars = computed(() => ({
 }))
 
 // Methods
-function toggleSolution() {
-  showSolution.value = !showSolution.value
-  if (showSolution.value) {
-    // Forcer le rendu MathJax quand on affiche la solution
-    nextTick(() => {
-      renderMath()
-      // Double appel pour s'assurer du rendu
-      setTimeout(() => {
-        renderMath()
-      }, 100)
-    })
-  }
-}
 
 function setStatus(status) {
   emit('status-changed', { exerciceId: props.eid, status })
@@ -548,22 +525,20 @@ onMounted(() => {
   renderMath()
 })
 
-// Watcher sur showSolution pour forcer le rendu quand on affiche/cache la solution
-watch(showSolution, (newVal) => {
-  if (newVal) {
-    nextTick(() => {
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        try {
-          if (window.MathJax.typesetClear) {
-            window.MathJax.typesetClear()
-          }
-          window.MathJax.typesetPromise()
-        } catch (error) {
-          // Ignorer les erreurs silencieusement
+// Watcher sur activeTab pour forcer le rendu quand on change d'onglet
+watch(activeTab, () => {
+  nextTick(() => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      try {
+        if (window.MathJax.typesetClear) {
+          window.MathJax.typesetClear()
         }
+        window.MathJax.typesetPromise()
+      } catch (error) {
+        // Ignorer les erreurs silencieusement
       }
-    })
-  }
+    }
+  })
 })
 </script>
 
@@ -602,27 +577,23 @@ watch(showSolution, (newVal) => {
 
 /* Header Section */
 .exercice-header {
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  border-bottom: 2px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.header-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  padding: 28px 28px 20px 28px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.exercice-title-section {
-  flex: 1;
-}
-
-.title-row {
-  display: flex;
   align-items: center;
+  padding: 20px 28px;
   gap: 16px;
-  margin-bottom: 12px;
 }
 
 .exercice-title {
-  font-size: 1.375rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #1e293b;
   margin: 0;
@@ -641,7 +612,9 @@ watch(showSolution, (newVal) => {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-shrink: 0;
+  padding: 6px 12px;
+  background: rgba(251, 146, 60, 0.1);
+  border-radius: 8px;
 }
 
 .difficulty-stars {
@@ -650,8 +623,6 @@ watch(showSolution, (newVal) => {
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(245, 158, 11, 0.3);
 }
-
-
 
 .reset-status-btn {
   background: #ffffff;
@@ -677,195 +648,107 @@ watch(showSolution, (newVal) => {
   box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
 }
 
-
-/* Problem Section */
-.problem-section {
-  padding: 24px 28px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.section-header {
+/* Tabs Container */
+.tabs-container {
   display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 0;
+  padding: 0;
+  background: #f8fafc;
+  border-top: 1px solid #e5e7eb;
+  width: 100%;
 }
 
-.section-icon-wrapper {
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  border-radius: 12px;
+.tab-btn {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #e0e7ff;
-}
-
-.section-icon {
-  font-size: 1.5rem;
-}
-
-.section-info {
-  flex: 1;
-}
-
-.section-title {
-  font-size: 1.125rem;
+  gap: 8px;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #1e293b;
-  margin: 0 0 4px 0;
-}
-
-.section-description {
-  font-size: 0.875rem;
   color: #64748b;
-  margin: 0;
-  line-height: 1.4;
+  position: relative;
 }
 
-.problem-content {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #1f2937;
-  text-align: left;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  overflow: visible;
+.tab-btn:hover {
+  background: rgba(59, 130, 246, 0.05);
+  color: #3b82f6;
+}
+
+.tab-btn.active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+  background: #ffffff;
+}
+
+.tab-icon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.tab-btn.active .tab-icon {
+  transform: scale(1.1);
+}
+
+.tab-label {
+  font-weight: 600;
+}
+
+/* Tab Content */
+.tab-content {
+  min-height: 400px;
+}
+
+.content-section {
+  padding: 32px 28px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-wrapper {
   max-width: 100%;
 }
 
-/* Solution Toggle */
-.solution-toggle {
-  padding: 0;
-  background: transparent;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.toggle-btn {
-  width: 100%;
-  background: #eef5ff; /* bleu très clair */
-  border: none;
-  border-radius: 0;
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-  font-weight: 700;
-  color: #1e3a8a; /* bleu texte */
-}
-
-.toggle-btn:hover {
-  background: #d1e7ff;
-}
-
-.toggle-btn.expanded {
-  background: #3b82f6;
-  color: #ffffff;
-}
-
-.toggle-btn.expanded .toggle-icon {
-  color: #ffffff;
-}
-
-.toggle-btn.expanded .toggle-text {
-  color: #ffffff;
-}
-
-.toggle-btn.expanded .toggle-subtext {
-  color: #ffffff;
-  opacity: 0.9;
-}
-
-.toggle-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.toggle-icon {
-  color: #1e3a8a;
-  transition: transform 0.2s ease;
-}
-
-.toggle-icon.rotated {
-  transform: rotate(180deg);
-}
-
-.toggle-text-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.toggle-text {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #1e3a8a;
-}
-
-.toggle-subtext {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #1e3a8a;
-  opacity: 0.9;
-}
-
-/* Solution Content */
-.solution-content {
-  background: #fafbfc;
-}
-
-.solution-section {
-  padding: 24px 28px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.solution-section:last-child {
-  border-bottom: none;
+.problem-section {
+  background: #ffffff;
 }
 
 .steps-section {
   background: #f0f9ff;
-  border-bottom: 1px solid #bae6fd;
-}
-
-.steps-section .section-icon-wrapper {
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  border-color: #93c5fd;
 }
 
 .answer-section {
   background: #f0fdf4;
-  border-bottom: 1px solid #dcfce7;
 }
 
-.answer-section .section-icon-wrapper {
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-  border-color: #bbf7d0;
-}
-
-.steps-container {
-  max-width: none;
-  margin: 0;
-  padding: 0;
-}
-
+.problem-content,
 .steps-content,
 .answer-content {
   font-size: 1rem;
   line-height: 1.7;
   color: #1f2937;
   text-align: left;
-  padding-left: 0;
-  margin-left: 0;
-  overflow: visible;
-  max-width: 100%;
   overflow-wrap: break-word;
   word-break: break-word;
+  overflow: visible;
+  max-width: 100%;
 }
 
 /* Amélioration des étapes de résolution - Version simple et propre */
@@ -1203,38 +1086,32 @@ watch(showSolution, (newVal) => {
     border-radius: 16px;
   }
 
-  .steps-container {
-    padding: 0;
-  }
-
-  .steps-content :deep(li) {
-    padding: 0.75rem 0;
-    margin: 0.375rem 0;
-    text-align: left;
-  }
-  
-  .exercice-header {
-    padding: 24px 24px 16px 24px;
-  }
-  
-  .title-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+  .header-top {
+    padding: 16px 20px;
+    flex-wrap: wrap;
   }
   
   .exercice-title {
     font-size: 1.25rem;
   }
-  
-  
-  .problem-section,
-  .solution-section {
-    padding: 20px 24px;
-  }
-  
-  .solution-toggle {
+
+  .tabs-container {
     padding: 0;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    padding: 14px 16px;
+    font-size: 0.875rem;
+    min-width: 100px;
+  }
+
+  .tab-icon {
+    font-size: 1.1rem;
+  }
+
+  .content-section {
+    padding: 24px 20px;
   }
   
   .assessment-section {
@@ -1276,33 +1153,48 @@ watch(showSolution, (newVal) => {
     border-radius: 12px;
   }
 
-  .steps-container {
-    padding: 0;
-  }
-
-  .steps-content :deep(li) {
-    padding: 0.625rem 0;
-    margin: 0.25rem 0;
-    font-size: 0.9rem;
-    text-align: left;
-  }
-  
-  .exercice-header {
-    padding: 20px 20px 12px 20px;
+  .header-top {
+    padding: 14px 16px;
   }
   
   .exercice-title {
     font-size: 1.125rem;
   }
-  
-  
-  .problem-section,
-  .solution-section {
-    padding: 16px 20px;
+
+  .header-controls {
+    gap: 8px;
   }
-  
-  .solution-toggle {
+
+  .difficulty-indicator {
+    padding: 4px 8px;
+  }
+
+  .reset-status-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .tabs-container {
     padding: 0;
+  }
+
+  .tab-btn {
+    padding: 12px 12px;
+    font-size: 0.8rem;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .tab-icon {
+    font-size: 1rem;
+  }
+
+  .tab-label {
+    font-size: 0.75rem;
+  }
+
+  .content-section {
+    padding: 20px 16px;
   }
   
   .assessment-section {

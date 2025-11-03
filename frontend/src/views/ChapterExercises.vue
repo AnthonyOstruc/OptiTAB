@@ -1446,19 +1446,27 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   }
 
   .filter-row {
-    flex-direction: column;
-    gap: 0.75rem;
-    align-items: center;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .filter-item {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.4rem;
+    flex: 0 1 auto;
+  }
+
+  .filter-label {
+    font-size: 0.7rem;
   }
 
   .filter-divider {
-    display: none;
+    display: block;
+    height: auto;
+    align-self: stretch;
   }
 
   .filter-buttons {

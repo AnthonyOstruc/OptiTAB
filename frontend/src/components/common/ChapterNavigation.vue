@@ -1,8 +1,19 @@
 <template>
   <nav class="chapter-navigation" aria-label="Navigation des chapitres">
+    <!-- Flèche gauche (mobile seulement) -->
+    <button 
+      class="nav-arrow nav-arrow-left"
+      @click="navigatePrevious"
+      aria-label="Onglet précédent"
+    >
+      <ChevronLeftIcon class="arrow-icon" />
+    </button>
+
+    <!-- Boutons de navigation -->
     <button 
       v-for="tab in tabs" 
       :key="tab.key"
+      v-show="tab.key !== 'quiz'"
       :class="['chapter-nav-btn', { active: tab.key === activeTab }]"
       :aria-pressed="tab.key === activeTab"
       :aria-label="tab.label"
@@ -11,6 +22,15 @@
     >
       <component :is="tab.icon" class="chapter-nav-icon" />
       <span class="chapter-nav-label">{{ tab.label }}</span>
+    </button>
+
+    <!-- Flèche droite (mobile seulement) -->
+    <button 
+      class="nav-arrow nav-arrow-right"
+      @click="navigateNext"
+      aria-label="Onglet suivant"
+    >
+      <ChevronRightIcon class="arrow-icon" />
     </button>
   </nav>
 </template>
@@ -22,7 +42,9 @@ import {
   BookOpenIcon, 
   AcademicCapIcon, 
   QuestionMarkCircleIcon,
-  DocumentTextIcon
+  DocumentTextIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon
 } from '@heroicons/vue/24/outline'
 // Prefetch APIs to warm cache on hover
 import { getCours } from '@/api/cours'
@@ -437,97 +459,116 @@ function handleTabClick(tabKey) {
     })
   }
 }
+
+// Navigation avec flèches (pour mobile)
+function navigatePrevious() {
+  const currentIndex = tabs.value.findIndex(t => t.key === activeTab.value)
+  const previousIndex = currentIndex > 0 ? currentIndex - 1 : tabs.value.length - 1
+  handleTabClick(tabs.value[previousIndex].key)
+}
+
+function navigateNext() {
+  const currentIndex = tabs.value.findIndex(t => t.key === activeTab.value)
+  const nextIndex = currentIndex < tabs.value.length - 1 ? currentIndex + 1 : 0
+  handleTabClick(tabs.value[nextIndex].key)
+}
 </script>
 
 <style scoped>
 .chapter-navigation {
   display: flex;
-  gap: 0.25rem;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 0.375rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  backdrop-filter: blur(8px);
-  max-width: fit-content;
-  margin: 0 auto;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  max-width: 460px;
+  margin: 0.75rem auto 0.5rem auto;
+  padding: 0; /* remove surrounding box spacing */
+  border-radius: 0; /* no visible container shape */
+  border: none; /* remove white box border */
+  background: transparent; /* remove background */
+  box-shadow: none; /* remove outer shadow */
+  height: 40px; /* hauteur fixe pour le conteneur */
 }
 
 .chapter-nav-btn {
+  flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: 0 1rem;
   border: none;
+  border-radius: 0;
   background: transparent;
-  border-radius: 8px;
-  color: #64748b;
-  font-weight: 500;
-  font-size: 0.875rem;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.86rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   white-space: nowrap;
+  height: 100%; /* prend toute la hauteur du conteneur */
+  min-height: 100%;
   position: relative;
 }
 
-.chapter-nav-btn:hover {
-  background: rgba(248, 250, 252, 0.8);
-  color: #334155;
+/* Barre verticale de séparation entre les boutons */
+.chapter-nav-btn:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -0.125rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 1px;
+  background: rgba(203, 213, 225, 0.5);
+  transition: opacity 0.2s ease;
 }
 
-/* Info-bulle pédagogique au survol */
-.chapter-nav-btn:hover::after {
-  content: attr(aria-label);
-  position: absolute;
-  bottom: -32px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1f2937;
-  color: #fff;
-  font-size: 11px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0,0,0,.15);
-  pointer-events: none;
-  z-index: 10;
+/* Masquer la barre quand le bouton ou son voisin est actif ou survolé */
+.chapter-nav-btn.active::after,
+.chapter-nav-btn:hover::after,
+.chapter-nav-btn.active + .chapter-nav-btn::before {
+  opacity: 0;
+}
+
+.chapter-nav-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #2563eb;
 }
 
 .chapter-nav-btn.active {
   background: #3b82f6;
-  color: white;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .chapter-nav-btn:focus-visible {
-  outline: 3px solid rgba(37, 99, 235, 0.4);
+  outline: 2px solid rgba(59, 130, 246, 0.45);
   outline-offset: 2px;
 }
 
 .chapter-nav-icon {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.15rem;
+  height: 1.15rem;
   flex-shrink: 0;
-  transition: all 0.2s ease;
 }
 
 .chapter-nav-label {
-  font-weight: 500;
-  letter-spacing: 0.025em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
   .chapter-navigation {
-    gap: 0.125rem;
-    padding: 0.25rem;
+    max-width: 90%;
+    padding: 0.3rem;
   }
   
   .chapter-nav-btn {
-    padding: 0.625rem 0.875rem;
-    gap: 0.375rem;
-    font-size: 0.8rem;
+    padding: 0 0.85rem;
+    gap: 0.4rem;
+    font-size: 0.82rem;
   }
   
   .chapter-nav-label {
@@ -535,15 +576,16 @@ function handleTabClick(tabKey) {
   }
   
   .chapter-nav-icon {
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 1.05rem;
+    height: 1.05rem;
   }
 }
 
 @media (max-width: 480px) {
   .chapter-nav-btn {
-    padding: 0.5rem 0.75rem;
-    gap: 0.25rem;
+    padding: 0 0.7rem;
+    gap: 0.3rem;
+    font-size: 0.75rem;
   }
   
   .chapter-nav-label {
@@ -556,20 +598,107 @@ function handleTabClick(tabKey) {
   }
 }
 
-@media (max-width: 450px) {
+/* Flèches de navigation mobile */
+.nav-arrow {
+  display: none; /* Masquées par défaut */
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.nav-arrow:hover {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 8px;
+}
+
+.arrow-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Mode mobile en dessous de 570px */
+@media (max-width: 570px) {
+  .chapter-navigation {
+    max-width: 100%;
+    justify-content: space-between;
+    padding: 0 0.75rem;
+    height: 36px;
+  }
+
+  /* Afficher les flèches */
+  .nav-arrow {
+    display: flex;
+    padding: 0.25rem;
+  }
+
+  .arrow-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* Masquer tous les boutons sauf l'actif */
+  .chapter-nav-btn {
+    display: none;
+  }
+
+  .chapter-nav-btn.active {
+    display: flex;
+    flex: 1;
+    max-width: 160px;
+    font-size: 0.8rem;
+    padding: 0 0.75rem;
+  }
+
+  /* Garder l'icône et le label pour l'onglet actif */
+  .chapter-nav-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
   .chapter-nav-label {
+    display: block;
+  }
+}
+
+/* Très petits écrans - Masquer l'icône, montrer seulement le nom */
+@media (max-width: 340px) {
+  .chapter-navigation {
+    padding: 0 0.5rem;
+    height: 32px;
+  }
+
+  .nav-arrow {
+    padding: 0.2rem;
+  }
+
+  .arrow-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  /* Masquer l'icône sur l'onglet actif pour gagner de la place */
+  .chapter-nav-btn.active .chapter-nav-icon {
     display: none;
   }
   
-  .chapter-nav-btn {
-    padding: 0.5rem;
-    min-width: 2.5rem;
+  .chapter-nav-btn.active {
+    max-width: 140px;
+    font-size: 0.75rem;
+    padding: 0 0.5rem;
     justify-content: center;
   }
-  
-  .chapter-nav-icon {
-    width: 1.125rem;
-    height: 1.125rem;
+
+  /* Afficher le label en priorité */
+  .chapter-nav-label {
+    display: block;
+    font-size: 0.75rem;
   }
 }
 </style> 

@@ -193,7 +193,8 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
   border-radius: 12px 0 0 0;
   box-shadow: -2px 0 12px rgba(0, 0, 0, 0.05);
   margin: 0;
-  overflow-y: auto;
+  /* Eviter les scroll imbriqués: on confie le scroll à .dashboard-main */
+  overflow: hidden;
   /* Assurer que le contenu reste stable */
   flex-shrink: 1;
 }
@@ -202,7 +203,12 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
 .dashboard-main {
   flex: 1;
   padding: 1.5rem 2rem 1.5rem;
+  /* Zone de scroll principale (iOS friendly) */
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Réduit l'effet de rebond proche du header/footer sur navigateurs compatibles */
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
   background: #fff;
   position: relative;
   display: flex;

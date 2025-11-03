@@ -553,6 +553,26 @@ watch(() => route.query.q, (val) => {
   position: relative;
 }
 
+/* Mobile: utiliser toute la largeur (edge-to-edge) */
+@media (max-width: 768px) {
+  .sheet-by-notion-page {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: -1rem;   /* compense le padding du layout */
+    margin-right: -1rem;
+    width: calc(100% + 2rem);
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .sheet-by-notion-page {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    width: calc(100% + 1.5rem);
+  }
+}
+
 .loading { text-align:center; padding:2rem; }
 .spinner { width:36px; height:36px; border:3px solid #e5e7eb; border-top:3px solid #2563eb; border-radius:50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -587,7 +607,8 @@ watch(() => route.query.q, (val) => {
 }
 
 /* Recherche dans la page */
-.page-search { text-align: left; margin: 1rem 0; }
+.page-search { text-align: left; margin: 0.5rem 0; }
+.page-search:empty { margin: 0; }
 .page-search-inner { display:flex; align-items:center; gap:.5rem; border:1px solid #e5e7eb; border-radius:8px; padding:.5rem .75rem; background:#fff; }
 .page-search .search-icon { color:#9ca3af; }
 .page-search-input { flex:1; border:none; outline:none; font-size:.95rem; background:transparent; color:#111827; }
@@ -668,16 +689,23 @@ watch(() => route.query.q, (val) => {
   }
 }
 
+/* Harmoniser la taille du h1 avec la page Cours en mobile */
+@media (max-width: 640px) {
+  .sheet-title { font-size: 1.5rem; }
+}
+
 /* Styles du sommaire */
 .toc-container {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 1rem 1.5rem;
-  margin: 2rem 0;
+  padding: 0.6rem 1rem; /* compact height */
+  margin: 1rem 0;      /* moins d'espace vertical */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   text-align: left;
 }
+/* Aligner la position du sommaire avec la page Cours */
+.sheet-by-notion-page .toc-container { margin: 0.5rem 0; }
 
 .toc-header {
   display: flex;
@@ -801,8 +829,8 @@ watch(() => route.query.q, (val) => {
 
 @media (max-width: 640px) {
   .toc-container {
-    padding: 1rem;
-    margin: 1.5rem 0;
+    padding: 0.5rem 0.75rem; /* encore plus compact sur mobile */
+    margin: 0.75rem 0;
   }
 
   .toc-header {
@@ -847,7 +875,8 @@ watch(() => route.query.q, (val) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  /* Au-dessus de la bottom-nav mobile */
+  z-index: 12010;
   transition: all 0.3s ease;
 }
 
@@ -880,8 +909,9 @@ watch(() => route.query.q, (val) => {
 
 @media (max-width: 768px) {
   .scroll-top-btn {
-    bottom: 1.5rem;
-    left: 1.5rem;
+    /* Placer le bouton au-dessus de la barre de navigation mobile */
+    bottom: calc(env(safe-area-inset-bottom) + 4.75rem);
+    left: 1.25rem;
     width: 45px;
     height: 45px;
   }
@@ -889,10 +919,11 @@ watch(() => route.query.q, (val) => {
 
 @media (max-width: 480px) {
   .scroll-top-btn {
-    bottom: 1rem;
+    /* Encore un peu plus haut sur très petits écrans */
+    bottom: calc(env(safe-area-inset-bottom) + 4.25rem);
     left: 1rem;
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
   }
 
   .scroll-top-btn svg {

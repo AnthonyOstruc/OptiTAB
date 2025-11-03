@@ -338,4 +338,116 @@ select {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* Neutraliser uniquement les grands wrappers (1er niveau) dans cours/synthèse */
+.sheet-content > [style*="background:#ffffff"],
+.sheet-content > [style*="background: #ffffff"],
+.sheet-content > [style*="background:#fff"],
+.sheet-content > [style*="background: #fff"],
+.sheet-content > [style*="background:#f9f9f9"],
+.sheet-content > [style*="background: #f9f9f9"],
+.cours-content > [style*="background:#ffffff"],
+.cours-content > [style*="background: #ffffff"],
+.cours-content > [style*="background:#fff"],
+.cours-content > [style*="background: #fff"],
+.cours-content > [style*="background:#f9f9f9"],
+.cours-content > [style*="background: #f9f9f9"] {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Supprimer la box blanche juste après un titre (h1/h2/h3) */
+.sheet-content h1 + [style*="background:#fff"],
+.sheet-content h1 + [style*="background: #fff"],
+.sheet-content h1 + [style*="background:#ffffff"],
+.sheet-content h1 + [style*="background: #ffffff"],
+.sheet-content h2 + [style*="background:#fff"],
+.sheet-content h2 + [style*="background: #fff"],
+.sheet-content h2 + [style*="background:#ffffff"],
+.sheet-content h2 + [style*="background: #ffffff"],
+.sheet-content h3 + [style*="background:#fff"],
+.sheet-content h3 + [style*="background: #fff"],
+.sheet-content h3 + [style*="background:#ffffff"],
+.sheet-content h3 + [style*="background: #ffffff"],
+.cours-content h1 + [style*="background:#fff"],
+.cours-content h1 + [style*="background: #fff"],
+.cours-content h1 + [style*="background:#ffffff"],
+.cours-content h1 + [style*="background: #ffffff"],
+.cours-content h2 + [style*="background:#fff"],
+.cours-content h2 + [style*="background: #fff"],
+.cours-content h2 + [style*="background:#ffffff"],
+.cours-content h2 + [style*="background: #ffffff"],
+.cours-content h3 + [style*="background:#fff"],
+.cours-content h3 + [style*="background: #fff"],
+.cours-content h3 + [style*="background:#ffffff"],
+.cours-content h3 + [style*="background: #ffffff"] {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Supprimer aussi les boîtes blanches qui CONTIENNENT un sous-titre (h2–h6) */
+.cours-content [style*="background:#fff"]:has( h2),
+.cours-content [style*="background: #fff"]:has( h2),
+.cours-content [style*="background:#ffffff"]:has( h2),
+.cours-content [style*="background: #ffffff"]:has( h2),
+.cours-content [style*="background:#fff"]:has( h3),
+.cours-content [style*="background: #fff"]:has( h3),
+.cours-content [style*="background:#ffffff"]:has( h3),
+.cours-content [style*="background: #ffffff"]:has( h3),
+.cours-content [style*="background:#fff"]:has( h4),
+.cours-content [style*="background: #fff"]:has( h4),
+.cours-content [style*="background:#ffffff"]:has( h4),
+.cours-content [style*="background: #ffffff"]:has( h4),
+.cours-content [style*="background:#fff"]:has( h5),
+.cours-content [style*="background: #fff"]:has( h5),
+.cours-content [style*="background:#ffffff"]:has( h5),
+.cours-content [style*="background: #ffffff"]:has( h5),
+.cours-content [style*="background:#fff"]:has( h6),
+.cours-content [style*="background: #fff"]:has( h6),
+.cours-content [style*="background:#ffffff"]:has( h6),
+.cours-content [style*="background: #ffffff"]:has( h6),
+.sheet-content  [style*="background:#fff"]:has( h2),
+.sheet-content  [style*="background: #fff"]:has( h2),
+.sheet-content  [style*="background:#ffffff"]:has( h2),
+.sheet-content  [style*="background: #ffffff"]:has( h2),
+.sheet-content  [style*="background:#fff"]:has( h3),
+.sheet-content  [style*="background: #fff"]:has( h3),
+.sheet-content  [style*="background:#ffffff"]:has( h3),
+.sheet-content  [style*="background: #ffffff"]:has( h3),
+.sheet-content  [style*="background:#fff"]:has( h4),
+.sheet-content  [style*="background: #fff"]:has( h4),
+.sheet-content  [style*="background:#ffffff"]:has( h4),
+.sheet-content  [style*="background: #ffffff"]:has( h4),
+.sheet-content  [style*="background:#fff"]:has( h5),
+.sheet-content  [style*="background: #fff"]:has( h5),
+.sheet-content  [style*="background:#ffffff"]:has( h5),
+.sheet-content  [style*="background: #ffffff"]:has( h5),
+.sheet-content  [style*="background:#fff"]:has( h6),
+.sheet-content  [style*="background: #fff"]:has( h6),
+.sheet-content  [style*="background:#ffffff"]:has( h6),
+.sheet-content  [style*="background: #ffffff"]:has( h6) {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Cas imbriqué courant: sous-titre -> conteneur gris -> boîte blanche */
+.cours-content :is(h2,h3,h4,h5,h6) + [style*="background:#f8f9fa"] > [style*="background:#fff"],
+.cours-content :is(h2,h3,h4,h5,h6) + [style*="background:#f8f9fa"] > [style*="background: #fff"],
+.cours-content :is(h2,h3,h4,h5,h6) + [style*="background:#f8f9fa"] > [style*="background:#ffffff"],
+.cours-content :is(h2,h3,h4,h5,h6) + [style*="background:#f8f9fa"] > [style*="background: #ffffff"],
+.sheet-content  :is(h2,h3,h4,h5,h6) + [style*="background:#f8f9fa"] > [style*="background:#fff"],
+.sheet-content  :is(h2,h3,h4,h5,h6) + [style*="background:#f8f9fa"] > [style*="background: #fff"],
+.sheet-content  :is(h2,h3,h4,h5,h6) + [style*="background:#f8f9fa"] > [style*="background:#ffffff"],
+.sheet-content  :is(h2,h3,h4,h5,h6) + [style*="background:#f8f9fa"] > [style*="background: #ffffff"] {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
 </style>

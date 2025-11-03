@@ -67,7 +67,7 @@ function goBackToDashboard() {
 </script>
 
 <style scoped>
-.course-notions-page {
+.notions-page-base {
   background: #ffffff;
   min-height: 100vh;
   /* reset local paddings to rely solely on DashboardLayout spacing */
@@ -75,7 +75,7 @@ function goBackToDashboard() {
 }
 
 /* Navigation Header */
-.nav-header {
+.nav-header-base {
   /* no extra padding; use layout's own padding */
   padding: 0 0 1rem 0;
   background: white;
@@ -97,7 +97,7 @@ function goBackToDashboard() {
 }
 
 /* Main Content */
-.main-content {
+.main-content-base {
   width: 100%;
   max-width: none;
   margin: 0;
@@ -339,7 +339,19 @@ function goBackToDashboard() {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .nav-header {
+  /* Coller aux bords en mobile pour utiliser toute la largeur */
+  .notions-page-base { padding: 0; }
+  .main-content-base { padding: 0; }
+  /* Déborder le padding horizontal imposé par le layout */
+  .notions-page-base,
+  .main-content-base,
+  .notions-container {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    width: calc(100% + 2rem);
+    max-width: none;
+  }
+  .nav-header-base {
     padding: 1rem;
   }
   
@@ -351,10 +363,8 @@ function goBackToDashboard() {
     font-size: 1.5rem;
   }
   
-  .main-content {
-    padding: 1rem;
-  }
-  
+  .main-content-base { padding: 0; }
+
   .theme-header {
     padding: 1rem;
   }
@@ -365,9 +375,9 @@ function goBackToDashboard() {
   
   .notions-grid {
     grid-template-columns: 1fr;
-    padding: 1rem;
+    padding: 0.5rem 0; /* réduire le padding latéral pour pleine largeur */
   }
-  
+
   .card-content {
     padding: 1rem;
   }
@@ -376,6 +386,14 @@ function goBackToDashboard() {
 @media (max-width: 480px) {
   .page-title h1 {
     font-size: 1.25rem;
+  }
+  /* Ajuster au padding du layout à 0.75rem */
+  .notions-page-base,
+  .main-content-base,
+  .notions-container {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    width: calc(100% + 1.5rem);
   }
   
   .theme-title {

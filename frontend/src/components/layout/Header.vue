@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" @touchstart="handleTouchStart" @touchmove="handleTouchMove">
     <div class="header-desktop">
       <Logo />
       <Navigation @open-login="handleLogin" />
@@ -16,6 +16,7 @@ import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import Logo from '@/components/common/Logo.vue'
 import Navigation from '@/components/layout/Navigation.vue'
 import MobileMenu from '@/components/layout/MobileMenu.vue'
+import { onMounted, onUnmounted } from 'vue'
 
 export default {
   name: 'Header',
@@ -31,8 +32,53 @@ export default {
       openModal(MODAL_IDS.LOGIN)
     }
 
+    // Empêcher le zoom et les gestes indésirables sur le header
+    const handleTouchStart = (e) => {
+      // Si c'est un multi-touch (pinch zoom), empêcher
+      if (e.touches.length > 1) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+
+    const handleTouchMove = (e) => {
+      // Empêcher le pinch zoom sur le header
+      if (e.touches.length > 1) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+
+    // Empêcher le zoom lors du double-tap sur le header
+    let lastTap = 0
+    const handleDoubleTap = (e) => {
+      const currentTime = Date.now()
+      const tapLength = currentTime - lastTap
+      if (tapLength < 300 && tapLength > 0) {
+        e.preventDefault()
+        return false
+      }
+      lastTap = currentTime
+    }
+
+    onMounted(() => {
+      const header = document.querySelector('.header')
+      if (header) {
+        header.addEventListener('touchend', handleDoubleTap, { passive: false })
+      }
+    })
+
+    onUnmounted(() => {
+      const header = document.querySelector('.header')
+      if (header) {
+        header.removeEventListener('touchend', handleDoubleTap)
+      }
+    })
+
     return {
-      handleLogin
+      handleLogin,
+      handleTouchStart,
+      handleTouchMove
     }
   }
 }
@@ -56,6 +102,15 @@ export default {
   display: flex;
   align-items: center;
   min-height: $header-height;
+  /* Empêcher le zoom et les gestes indésirables sur le header */
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+  /* Empêcher le zoom automatique sur iOS */
+  -webkit-user-select: none;
+  user-select: none;
+  /* S'assurer que le header reste visible */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .header-mobile {

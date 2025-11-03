@@ -312,6 +312,8 @@ select {
     /* S'assurer que la largeur est correcte */
     width: 100%;
     overflow-x: hidden;
+    /* Empêcher le zoom lors du scroll depuis le haut */
+    touch-action: pan-y;
   }
   
   body {
@@ -320,6 +322,18 @@ select {
     width: 100%;
     min-width: 100%;
     max-width: 100vw;
+    /* Empêcher le zoom lors du scroll */
+    touch-action: pan-y;
+    /* Empêcher le zoom lors du scroll depuis le header */
+    overscroll-behavior-y: contain;
+  }
+  
+  /* Empêcher le zoom lors du scroll en haut de page sur mobile */
+  body:not(.no-scroll) {
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* Empêcher le bounce scroll qui peut causer des problèmes de zoom */
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style>

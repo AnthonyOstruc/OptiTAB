@@ -106,6 +106,12 @@ const router = createRouter({
   // Restaurer intelligemment la position de scroll
   scrollBehavior(to, from, savedPosition) {
     try {
+      // Routes qui doivent toujours s'ouvrir en haut de la page
+      const alwaysScrollToTopRoutes = ['CGV', 'CGU', 'Confidentialite', 'Legal', 'Cookies', 'About']
+      if (alwaysScrollToTopRoutes.includes(to.name)) {
+        return { top: 0, behavior: 'instant' }
+      }
+
       // 1) Gestion des ancres (hash)
       // Sauf pour la liste d'exercices où l'on gère finement l'ancre côté composant
       if (to.hash && to.name !== 'ExercicesByNotion') {
@@ -191,6 +197,15 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to) => {
+  // Routes qui doivent toujours s'ouvrir en haut (pas de restauration de scroll)
+  const alwaysScrollToTopRoutes = ['CGV', 'CGU', 'Confidentialite', 'Legal', 'Cookies', 'About']
+  if (alwaysScrollToTopRoutes.includes(to.name)) {
+    // Forcer le scroll en haut après le chargement
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'instant' })
+    }, 50)
+    return
+  }
   // Ne rien faire si ancre spécifique
   if (to.hash && to.hash.startsWith('#')) return
   // Restaurer si on a déjà visité la route

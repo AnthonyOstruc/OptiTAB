@@ -3,8 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=0.5, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no" />
     <title>OptiTAB - Excellence en Tutorat</title>
+    <script>
+      // Empêcher le zoom automatique sur mobile après orientation change
+      (function() {
+        var viewport = document.querySelector('meta[name="viewport"]');
+        function fixViewport() {
+          if (viewport) {
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=0.5, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no');
+          }
+        }
+        // Fixer après chargement
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', fixViewport);
+        } else {
+          fixViewport();
+        }
+        // Fixer après changement d'orientation
+        window.addEventListener('orientationchange', function() {
+          setTimeout(fixViewport, 100);
+        });
+        // Assurer que le zoom est à 100% au chargement
+        window.addEventListener('load', function() {
+          if (window.visualViewport) {
+            // Utiliser visualViewport si disponible pour un meilleur contrôle
+            var initialScale = window.visualViewport.scale;
+            if (initialScale !== 1.0) {
+              // Forcer le reset si le zoom est différent de 1.0
+              fixViewport();
+            }
+          }
+        });
+      })();
+    </script>
     <meta name="description" content="OptiTAB - Votre plateforme de tutorat professionnelle en France" />
     <script>
       window.MathJax = {

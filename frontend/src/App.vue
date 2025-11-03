@@ -269,13 +269,57 @@ onMounted(async () => {
   box-sizing: border-box;
 }
 
+html {
+  /* Empêcher le zoom automatique sur iOS */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Empêcher le sélection de texte qui peut causer du zoom */
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: #333;
+  /* Empêcher le zoom lors de double-tap */
+  touch-action: manipulation;
+  /* Assurer que le body utilise toute la largeur */
+  width: 100%;
+  overflow-x: hidden;
+  /* Empêcher le zoom sur certains éléments */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 #app {
   min-height: 100vh;
+  /* S'assurer que l'app prend toute la largeur */
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Empêcher le zoom automatique sur les inputs en iOS */
+input,
+textarea,
+select {
+  font-size: 16px !important;
+  /* iOS ne zoom pas si la taille de police est >= 16px */
+}
+
+/* Pour les petits écrans */
+@media screen and (max-width: 768px) {
+  html {
+    /* S'assurer que la largeur est correcte */
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  body {
+    /* Empêcher le zoom indésirable */
+    position: relative;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100vw;
+  }
 }
 </style>

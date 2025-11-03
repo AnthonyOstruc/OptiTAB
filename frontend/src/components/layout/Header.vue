@@ -151,8 +151,12 @@ export default {
     display: flex;
   }
 }
-  /* iOS safe area at top */
-  @supports (padding: env(safe-area-inset-top)) {
-    .header { padding-top: env(safe-area-inset-top); }
-  }
+      /* iOS safe area at top */
+      @supports (padding: env(safe-area-inset-top)) {
+        .header { padding-top: env(safe-area-inset-top); }
+      }
+
+      /* Ensure header never scrolls, and allow page scroll to start from it */
+      .header { pointer-events: none; }
+      .header-mobile, .header-desktop { pointer-events: auto; touch-action: pan-y; }
 </style> 

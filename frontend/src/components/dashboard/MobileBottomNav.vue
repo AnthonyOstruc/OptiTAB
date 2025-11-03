@@ -140,8 +140,9 @@ const handleClick = async (item) => {
   border-top: 1px solid rgba(226, 232, 240, 0.9);
   box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.08);
   z-index: 1050;
-  /* Allow vertical panning from the footer on iOS */
-  touch-action: pan-y;
+  /* Let scroll gestures pass through; keep buttons clickable */
+  pointer-events: none;
+  /* Visual stability of fixed element on iOS */
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
@@ -161,7 +162,9 @@ const handleClick = async (item) => {
   justify-content: center;
   transition: color 0.2s ease, transform 0.2s ease, background 0.2s ease;
   cursor: pointer;
-  /* Avoid double-tap zoom and let vertical scroll pass through */
+  /* Re-enable events for interactive buttons */
+  pointer-events: auto;
+  /* Avoid double-tap zoom on supported iOS versions */
   touch-action: manipulation;
 }
 

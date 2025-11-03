@@ -275,7 +275,8 @@ html {
   text-size-adjust: 100%;
   /* Empêcher le sélection de texte qui peut causer du zoom */
   -webkit-tap-highlight-color: transparent;
-}
+    overscroll-behavior: none;
+  }
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -314,6 +315,7 @@ select {
     overflow-x: hidden;
     /* Empêcher le zoom lors du scroll depuis le haut */
     touch-action: pan-y;
+    overscroll-behavior: none;
   }
   
   body {
@@ -325,7 +327,7 @@ select {
     /* Empêcher le zoom lors du scroll */
     touch-action: pan-y;
     /* Empêcher le zoom lors du scroll depuis le header */
-    overscroll-behavior-y: contain;
+    overscroll-behavior: none;
   }
   
   /* Empêcher le zoom lors du scroll en haut de page sur mobile */

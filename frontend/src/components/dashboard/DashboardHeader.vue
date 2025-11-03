@@ -130,8 +130,16 @@ const handleLogout = () => {
   z-index: 12001; /* Toujours au-dessus du contenu du dashboard */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
+  /* Laisser passer les gestes de scroll sans d�placer le header */
+  pointer-events: none;
+  touch-action: pan-y;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 
 }
+
+.dashboard-header > * { pointer-events: auto; }
+
 
 /* Bouton burger fixe - Solution professionnelle */
 .burger-btn-fixed {
@@ -139,6 +147,7 @@ const handleLogout = () => {
   left: 0.75rem; /* Légèrement plus à gauche pour centrer avec la barre latérale */
   top: 50%;
   transform: translateY(-50%);
+  pointer-events: auto;
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -192,6 +201,7 @@ const handleLogout = () => {
   overflow: visible;
   /* Important: ne pas bloquer les clics sur la zone centrale quand il y a de l'espace vide */
   pointer-events: none;
+  touch-action: pan-y;
 }
 
 /* Réactiver les interactions pour le contenu réel du bloc droit */
@@ -353,4 +363,8 @@ const handleLogout = () => {
     display: none;
   }
 }
-</style> 
+  .dashboard-header > * { pointer-events: auto; }
+ 
+
+
+

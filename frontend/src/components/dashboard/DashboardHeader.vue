@@ -130,7 +130,7 @@ const handleLogout = () => {
   z-index: 12001; /* Toujours au-dessus du contenu du dashboard */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
-  /* Laisser passer les gestes de scroll sans déplacer le header */
+  /* Laisser passer les gestes de scroll sans dï¿½placer le header */
   pointer-events: none;
   touch-action: pan-y;
   -webkit-transform: translateZ(0);
@@ -364,7 +364,5 @@ const handleLogout = () => {
   }
 }
   .dashboard-header > * { pointer-events: auto; }
- 
-
-
+</style>
 

@@ -139,6 +139,13 @@ onMounted(loadExercice)
   min-height: 100vh;
 }
 
+@media (max-width: 768px) {
+  .exercice-detail-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 .state-container {
   display: flex;
   flex-direction: column;

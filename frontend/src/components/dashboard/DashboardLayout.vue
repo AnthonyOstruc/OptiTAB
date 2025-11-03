@@ -161,7 +161,8 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
 .dashboard-layout {
   height: 100vh;
   height: 100dvh; /* Utiliser dvh sur navigateurs modernes pour mobile */
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  /* Fond plein blanc pour retirer le gris en arrière-plan */
+  background: #ffffff;
   display: flex;
   flex-direction: column;
   position: relative;

@@ -156,6 +156,13 @@ function onSubjectClick(matiere) {
   text-align: left;
 }
 
+@media (max-width: 768px) {
+  .exercises-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 .exercises-title {
   font-size: 1.75rem;
   color: #193e8e;
@@ -186,7 +193,8 @@ function onSubjectClick(matiere) {
   max-width: 1100px;
   margin: 0 auto;
   gap: 30px;
-  justify-items: center;
+  /* Stretch cards to fill their grid cell */
+  justify-items: stretch;
 }
 
 .favorite {

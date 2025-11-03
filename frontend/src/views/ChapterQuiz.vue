@@ -2038,6 +2038,13 @@ onUnmounted(() => {
   text-align: center;
 }
 
+@media (max-width: 768px) {
+  .chapter-quiz-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 
 .quiz-list {
   display: flex;

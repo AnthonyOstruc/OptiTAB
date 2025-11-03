@@ -106,10 +106,14 @@ function onSubjectClick(matiereNom) {
   .online-courses-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
+    /* Full width on mobile */
+    max-width: 100%;
+    width: 100%;
   }
   
   .online-courses-section {
-    padding: 0 4vw 30px 4vw;
+    /* Coller au bord sur mobile */
+    padding: 0 0 30px 0;
   }
 }
 </style> 

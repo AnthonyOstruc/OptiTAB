@@ -66,6 +66,13 @@ function onSubjectClick(matiereNom) {
   padding: 0 5vw 40px 5vw;
   text-align: center;
 }
+
+@media (max-width: 768px) {
+  .quiz-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
 .quiz-title {
   font-size: 2rem;
   color: #193e8e;

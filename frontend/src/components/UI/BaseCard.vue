@@ -22,6 +22,7 @@ defineProps({
   background: #f3f4f6;
   border-radius: 16px;
   padding: 32px 28px;
+  /* Desktop/card grid default size */
   max-width: 320px;
   min-height: 220px;
   box-shadow: 0 2px 8px rgba(30,41,59,0.04);
@@ -65,5 +66,13 @@ defineProps({
   color: #475569;
   font-size: 1rem;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .base-card {
+    /* On mobile, cards should span full available width */
+    width: 100%;
+    max-width: none;
+  }
 }
 </style> 

@@ -164,6 +164,13 @@ onMounted(async () => {
   min-height: 100vh;
 }
 
+@media (max-width: 768px) {
+  .cours-detail-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 .loading-container {
   display: flex;
   justify-content: center;

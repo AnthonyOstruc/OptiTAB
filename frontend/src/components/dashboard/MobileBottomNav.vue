@@ -5,7 +5,8 @@
       :key="item.key"
       type="button"
       :class="['mobile-nav-item', { active: isActive(item) }]"
-      @click="handleClick(item)"
+      @click.stop="handleClick(item)"
+      @touchend.stop.prevent="handleTouch(item, $event)"
       :aria-label="item.text"
     >
       <component :is="item.icon" class="mobile-nav-icon" />
@@ -123,6 +124,16 @@ const handleClick = async (item) => {
   // Fallback
   if (item.href) router.push(item.href).catch(() => {})
 }
+
+// Handle touch events to prevent click-through on mobile
+const handleTouch = async (item, event) => {
+  // Prevent the touch event from triggering elements below
+  if (event) {
+    event.stopPropagation()
+    event.preventDefault()
+  }
+  await handleClick(item)
+}
 </script>
 
 <style scoped>
@@ -140,8 +151,8 @@ const handleClick = async (item) => {
   border-top: 1px solid rgba(226, 232, 240, 0.9);
   box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.08);
   z-index: 1050;
-  /* Let scroll gestures pass through; keep buttons clickable */
-  pointer-events: none;
+  /* Block all click events on the footer area to prevent click-through */
+  pointer-events: auto;
   /* Visual stability of fixed element on iOS */
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;

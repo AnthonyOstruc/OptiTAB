@@ -41,7 +41,7 @@
           v-if="etapes"
         >
           <span class="tab-icon">🔢</span>
-          <span class="tab-label">Méthode</span>
+          <span class="tab-label">Étapes</span>
         </button>
         <button 
           class="tab-btn" 
@@ -1119,13 +1119,26 @@ watch(activeTab, () => {
   }
   
   .assessment-buttons {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    gap: 0.75rem;
+    justify-content: center;
   }
   
   .assessment-btn {
-    width: 100%;
-    max-width: 280px;
+    flex: 1;
+    min-width: auto;
+    max-width: none;
+    padding: 0.85rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 10px;
+  }
+  
+  .btn-text {
+    font-size: 0.85rem;
+  }
+  
+  .btn-icon {
+    font-size: 1.1rem;
   }
   
   /* MathJax responsive - garder la taille normale */
@@ -1176,6 +1189,24 @@ watch(activeTab, () => {
 
   .tabs-container {
     padding: 0;
+  }
+  
+  .assessment-buttons {
+    gap: 0.5rem;
+  }
+  
+  .assessment-btn {
+    padding: 0.75rem 0.65rem;
+    font-size: 0.8rem;
+    gap: 0.5rem;
+  }
+  
+  .btn-text {
+    font-size: 0.8rem;
+  }
+  
+  .btn-icon {
+    font-size: 1rem;
   }
 
   .tab-btn {

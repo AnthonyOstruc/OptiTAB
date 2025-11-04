@@ -460,17 +460,21 @@ function handleTabClick(tabKey) {
   }
 }
 
-// Navigation avec flèches (pour mobile)
+// Navigation avec flèches (pour mobile) - Exclure le quiz
 function navigatePrevious() {
-  const currentIndex = tabs.value.findIndex(t => t.key === activeTab.value)
-  const previousIndex = currentIndex > 0 ? currentIndex - 1 : tabs.value.length - 1
-  handleTabClick(tabs.value[previousIndex].key)
+  // Filtrer les tabs pour exclure le quiz
+  const visibleTabs = tabs.value.filter(t => t.key !== 'quiz')
+  const currentIndex = visibleTabs.findIndex(t => t.key === activeTab.value)
+  const previousIndex = currentIndex > 0 ? currentIndex - 1 : visibleTabs.length - 1
+  handleTabClick(visibleTabs[previousIndex].key)
 }
 
 function navigateNext() {
-  const currentIndex = tabs.value.findIndex(t => t.key === activeTab.value)
-  const nextIndex = currentIndex < tabs.value.length - 1 ? currentIndex + 1 : 0
-  handleTabClick(tabs.value[nextIndex].key)
+  // Filtrer les tabs pour exclure le quiz
+  const visibleTabs = tabs.value.filter(t => t.key !== 'quiz')
+  const currentIndex = visibleTabs.findIndex(t => t.key === activeTab.value)
+  const nextIndex = currentIndex < visibleTabs.length - 1 ? currentIndex + 1 : 0
+  handleTabClick(visibleTabs[nextIndex].key)
 }
 </script>
 

@@ -75,7 +75,24 @@ function onNotionClick(notionId) {
 </script>
 
 <style scoped>
-/* Notions Container */
+.notions-page-base {
+  background: #ffffff;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.nav-header-base {
+  padding: 0 0 1rem 0;
+  background: white;
+}
+
+.main-content-base {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
 .notions-container {
   width: 100%;
   padding-bottom: 40px;

@@ -56,7 +56,49 @@ onMounted(() => { loading.value = false })
 </script>
 
 <style scoped>
-.loading-state { text-align: center; padding: 4rem 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);} 
-.loading-spinner { width: 40px; height: 40px; border: 3px solid #e5e7eb; border-top: 3px solid #60a5fa; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
-@keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+.notions-page-base {
+  background: #ffffff;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.nav-header-base {
+  padding: 0 0 1rem 0;
+  background: white;
+}
+
+.main-content-base {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notions-container {
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+.loading-state { 
+  text-align: center; 
+  padding: 4rem 2rem; 
+  background: white; 
+  border-radius: 12px; 
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+} 
+
+.loading-spinner { 
+  width: 40px; 
+  height: 40px; 
+  border: 3px solid #e5e7eb; 
+  border-top: 3px solid #60a5fa; 
+  border-radius: 50%; 
+  animation: spin 1s linear infinite; 
+  margin: 0 auto 1rem; 
+}
+
+@keyframes spin { 
+  0% { transform: rotate(0deg);} 
+  100% { transform: rotate(360deg);} 
+}
 </style>

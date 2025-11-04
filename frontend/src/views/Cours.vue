@@ -164,6 +164,7 @@ let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
 const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
+const contentHeight = ref(0)
 
 // Recherche dans la page
 const searchQuery = ref('')
@@ -337,6 +338,7 @@ onActivated(() => {
     setTimeout(() => {
       scheduleFormulaWrapRetry()
       renderMath()
+      measureContentHeight()
     }, 100)
   })
 })
@@ -384,6 +386,7 @@ async function loadCoursData() {
         updateHeadingMatches()
         setupTocObserver()
         setupScrollListener()
+        measureContentHeight()
         // Restaurer la position de scroll si disponible
         const s = restoreCoursViewState()
         if (s && typeof s.scrollY === 'number') {
@@ -436,6 +439,7 @@ const zoomStyle = computed(() => {
   const widthPercent = (100 / z).toFixed(3)
   return {
     '--course-zoom': z,
+    '--course-content-height': `${contentHeight.value}px`,
     transform: `scale(${z})`,
     transformOrigin: 'top left',
     width: `${widthPercent}%`
@@ -445,6 +449,16 @@ const zoomStyle = computed(() => {
 function updateViewportWidth() {
   if (typeof window === 'undefined') return
   viewportWidth.value = window.innerWidth
+  nextTick(() => measureContentHeight())
+}
+
+function measureContentHeight() {
+  // Mesurer la hauteur réelle (non transformée) du contenu
+  if (!coursContentRef.value) {
+    contentHeight.value = 0
+    return
+  }
+  contentHeight.value = coursContentRef.value.scrollHeight || coursContentRef.value.offsetHeight || 0
 }
 
 function scheduleFormulaWrapRetry(attempt = 0) {
@@ -453,6 +467,7 @@ function scheduleFormulaWrapRetry(attempt = 0) {
   const hasScrollableContent = coursContentRef.value.querySelector('mjx-container, .MathJax_Display, .MathJax_SVG_Display, table')
   if (hasScrollableContent) {
     prepareScrollableContent()
+    measureContentHeight()
     return
   }
   if (attempt < MAX_ATTEMPTS) {
@@ -529,6 +544,8 @@ function prepareScrollableContent() {
       blockParent.setAttribute('data-formula-line-block', 'true')
     }
   })
+  // Mise à jour de la hauteur mesurée après ajustements
+  measureContentHeight()
 }
 
 // Extraire la table des matières depuis le contenu HTML
@@ -571,6 +588,7 @@ function setupTocObserver() {
       extractTableOfContents()
       buildSearchIndex()
       updateHeadingMatches()
+      measureContentHeight()
     }, 200)
   })
   tocObserver.observe(coursContentRef.value, {
@@ -670,6 +688,7 @@ watch(selectedCours, () => {
         // Réinitialiser l'écouteur de scroll pour le nouveau cours
         if (scrollCleanup) scrollCleanup()
         setupScrollListener()
+        measureContentHeight()
       }, 100)
     })
   }
@@ -678,6 +697,7 @@ watch(selectedCours, () => {
 watch(renderedContent, () => {
   nextTick(() => {
     scheduleFormulaWrapRetry()
+    measureContentHeight()
   })
 })
 
@@ -687,6 +707,7 @@ watch(zoomLevel, () => {
     if (typeof window !== 'undefined' && window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise().catch(() => {})
     }
+    measureContentHeight()
   })
 }, { immediate: true })
 
@@ -947,6 +968,19 @@ watch(() => route.query.q, (val) => {
   width: 100%;
   transform-origin: top left;
   transition: transform 0.2s ease;
+  overflow-x: hidden;
+  /* Fallback: ajuster la hauteur réelle à l'échelle visible quand zoom n'est pas supporté */
+  height: calc(var(--course-content-height, 0px) * var(--course-zoom, 1));
+}
+
+/* Préférer zoom (Chrome/Edge/Safari) pour éviter l'espace blanc en bas lié au transform */
+@supports (zoom: 1) {
+  .cours-content-outer {
+    zoom: var(--course-zoom, 1);
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+  }
 }
 
 /* Recherche dans la page */

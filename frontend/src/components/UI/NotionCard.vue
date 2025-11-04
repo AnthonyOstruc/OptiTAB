@@ -188,5 +188,62 @@ function handleMouseEnter() {
   height: 16px;
 }
 
-/* Responsive - Désactivé pour conserver le style normal */
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .notion-description-container {
+    display: none;
+  }
+  
+  .notion-card-inner {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    padding: 0.9rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    background: #ffffff;
+    gap: 0.75rem;
+  }
+  
+  .notion-content {
+    margin-bottom: 0;
+    flex: 1;
+  }
+  
+  .notion-title {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    font-weight: 600;
+    color: #111827;
+    text-align: left;
+  }
+  
+  .notion-icon {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 0;
+    background: #3b82f6;
+    border-radius: 7px;
+    flex-shrink: 0;
+  }
+  
+  .notion-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .notion-card-inner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.12);
+    border-color: #93c5fd;
+  }
+  
+  .notion-card.locked .notion-card-inner:hover {
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+    border-color: #e5e7eb;
+  }
+}
 </style>

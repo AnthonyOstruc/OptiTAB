@@ -810,7 +810,7 @@ function highlightQuery(text) {
 
 .tnv-theme-header {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1rem;
@@ -823,7 +823,7 @@ function highlightQuery(text) {
   font-weight: 600;
   color: #1f2937;
   margin: 0;
-  text-align: center;
+  text-align: left;
 }
 
 .tnv-theme-count {
@@ -986,23 +986,26 @@ function highlightQuery(text) {
 
 @media (max-width: 768px) {
   .tnv-wrapper {
-    margin-top: -0.5rem;
+    margin-top: 0;
+    padding: 0.85rem;
   }
   
   .tnv-notions-grid {
-    grid-template-columns: repeat(2, 280px);
-    gap: 1rem;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
     justify-content: center;
+    padding: 0;
   }
   
   .tnv-skeleton-grid {
-    grid-template-columns: repeat(2, 280px);
+    grid-template-columns: 1fr;
     justify-content: center;
   }
 
   .tnv-theme-block {
-    padding: 0 0 1.25rem 0;
-    margin-bottom: 1rem;
+    padding: 0;
+    margin-bottom: 2rem;
+    background: transparent;
   }
   
   .tnv-theme-block:first-child {
@@ -1013,52 +1016,66 @@ function highlightQuery(text) {
   .tnv-theme-header {
     flex-direction: row;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.75rem;
-    margin-top: 0;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0;
+    border-bottom: 2.5px solid #3b82f6;
+    padding-bottom: 0.6rem;
+  }
+  
+  .tnv-theme-title {
+    font-size: 1.15rem;
+    color: #111827;
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
   
   .tnv-notions-grid {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 0;
   }
   
-  /* Cacher le badge de concepts en mode mobile (aligné avec le breakpoint de la sidebar) */
+  /* Cacher le badge de concepts en mode mobile */
   .tnv-theme-count {
     display: none;
   }
 }
 
 @media (max-width: 650px) {
+  .tnv-wrapper {
+    padding: 0.75rem;
+  }
+  
   .tnv-notions-grid {
-    grid-template-columns: 280px;
-    gap: 1rem;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
     justify-content: center;
+    padding: 0;
   }
   
   .tnv-skeleton-grid {
-    grid-template-columns: 280px;
+    grid-template-columns: 1fr;
     justify-content: center;
   }
 
   .tnv-theme-block {
-    padding: 0 0 1.5rem 0;
-    margin-bottom: 1.5rem;
+    padding: 0;
+    margin-bottom: 1.85rem;
   }
 
   .tnv-theme-header {
     flex-direction: row;
     align-items: center;
-    gap: 0.75rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    padding: 0;
+    padding-bottom: 0.55rem;
+    margin-bottom: 0.9rem;
   }
   
-  .tnv-notions-grid {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  .tnv-theme-title {
+    font-size: 1.05rem;
   }
 }
 

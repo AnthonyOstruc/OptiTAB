@@ -20,28 +20,6 @@
       </div>
 
       <div v-else-if="exercice" class="exercice-content">
-        <!-- Boutons de téléchargement PDF -->
-        <div class="exercice-actions">
-          <PDFDownloadButton
-            type="single"
-            :data="exercice"
-            :title="`Exercice_${exercice.id}_Enonce`"
-            text="📄 Exercice (PDF serveur)"
-            :useMathJax="true"
-            :includeSolution="false"
-            class="pdf-btn exercice-btn"
-          />
-          <PDFDownloadButton
-            type="single"
-            :data="exercice"
-            :title="`Exercice_${exercice.id}_Corrige`"
-            text="📝 Exercice + Corrigé (PDF serveur)"
-            :useMathJax="true"
-            :includeSolution="true"
-            class="pdf-btn corrige-btn"
-          />
-        </div>
-        
         <ExerciceQCM
           :eid="exercice.id"
           :titre="exercice.titre || exercice.nom"
@@ -75,7 +53,6 @@ import ExercisePageLayout from '@/components/common/ExercisePageLayout.vue'
 defineOptions({ name: 'ExerciceDetail' })
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import BackButton from '@/components/common/BackButton.vue'
-import PDFDownloadButton from '@/components/common/PDFDownloadButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -201,43 +178,6 @@ onMounted(loadExercice)
 .exercice-content {
   max-width: 800px;
   margin: 0 auto;
-}
-
-.exercice-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: #f8fafc;
-  border-radius: 0.5rem;
-  border: 1px solid #e2e8f0;
-}
-
-.pdf-btn {
-  margin-left: auto;
-}
-
-.exercice-btn {
-  background: #3b82f6 !important;
-  border-color: #3b82f6 !important;
-}
-
-.exercice-btn:hover {
-  background: #2563eb !important;
-  border-color: #2563eb !important;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.corrige-btn {
-  background: #10b981 !important;
-  border-color: #10b981 !important;
-}
-
-.corrige-btn:hover {
-  background: #059669 !important;
-  border-color: #059669 !important;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 @keyframes spin {

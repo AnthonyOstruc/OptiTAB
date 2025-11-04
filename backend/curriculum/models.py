@@ -8,6 +8,7 @@ from core.models import BaseSimple, BaseContent, BaseEducational, BaseOrganizati
 
 class Matiere(BaseOrganizational):
     """Une matière scolaire (Maths, Français, etc.)"""
+    show_on_home = models.BooleanField(default=True, verbose_name="Afficher sur la page d'accueil")
     
     class Meta:
         ordering = ['ordre', 'titre']

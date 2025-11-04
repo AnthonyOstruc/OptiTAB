@@ -10,6 +10,7 @@ const normalizeMatierePayload = (payload = {}) => {
   // Associations supprimées: niveaux/pays ne se gèrent plus ici
   if (payload.ordre != null) normalized.ordre = payload.ordre
   if (payload.est_actif != null) normalized.est_actif = payload.est_actif
+  if (payload.show_on_home != null) normalized.show_on_home = payload.show_on_home
   return normalized
 }
 

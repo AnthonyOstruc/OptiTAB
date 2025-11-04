@@ -31,8 +31,6 @@
       </div>
     </div>
 
-    <!-- Bouton IA flottant (visible uniquement pour les admins) -->
-    <AIFloatingButton v-if="userStore.isAdmin" />
     <MobileBottomNav v-if="isMobile" />
   </div>
 </template>
@@ -42,7 +40,6 @@ import { ref, onMounted, onUnmounted, nextTick, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import Sidebar from './Sidebar.vue'
 import DashboardHeader from './DashboardHeader.vue'
-import AIFloatingButton from '@/components/ai/AIFloatingButton.vue'
 import MobileBottomNav from './MobileBottomNav.vue'
 import { useUserStore } from '@/stores/user'
 

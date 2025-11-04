@@ -87,6 +87,7 @@ class MatiereViewSet(viewsets.ModelViewSet):
                 'svg_icon': matiere.svg_icon or '',
                 'ordre': matiere.ordre,
                 'est_actif': matiere.est_actif,
+                'show_on_home': getattr(matiere, 'show_on_home', True),
                 'contextes': [
                     {
                         'id': c.id,

@@ -79,6 +79,11 @@ const props = defineProps({
   max-width: 1200px;
   margin: 48px auto 0 auto;
   padding: 0 2vw;
+  
+  @media (max-width: 700px) {
+    gap: 18px;
+    padding: 0 4vw;
+  }
 }
 .intro-feature-card {
   background: #fff;
@@ -112,6 +117,18 @@ const props = defineProps({
   background: none !important;
   border-radius: 50%;
   box-shadow: none;
+  
+  @media (max-width: 700px) {
+    width: 64px;
+    height: 64px;
+    font-size: 2.8rem;
+  }
+  
+  @media (max-width: 350px) {
+    width: 48px;
+    height: 48px;
+    font-size: 2rem;
+  }
 }
 .intro-feature-content {
   flex: 1 1 0%;
@@ -137,9 +154,6 @@ const props = defineProps({
   .intro-features-title {
     font-size: 2rem;
   }
-  .intro-features-grid {
-    gap: 18px;
-  }
   .intro-feature-card {
     padding: 22px 12px 18px 12px;
     flex-direction: column;
@@ -154,6 +168,32 @@ const props = defineProps({
   }
   .intro-feature-title, .intro-feature-desc {
     text-align: center;
+  }
+}
+
+@media (max-width: 350px) {
+  .intro-features-title {
+    font-size: 1.75rem;
+  }
+  .intro-features-desc {
+    font-size: 1rem;
+  }
+  .intro-feature-card {
+    padding: 16px 10px 14px 10px;
+    border-radius: 18px;
+    min-height: 140px;
+  }
+  .intro-feature-icon.left {
+    min-width: 48px;
+    margin-bottom: 8px;
+  }
+  .intro-feature-title {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .intro-feature-desc {
+    font-size: 0.875rem;
+    line-height: 1.4;
   }
 }
 </style> 

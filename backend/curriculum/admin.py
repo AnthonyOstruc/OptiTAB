@@ -15,8 +15,8 @@ from .services import duplicate_theme_deep
 @admin.register(Matiere)
 class MatiereAdmin(admin.ModelAdmin):
     """Administration des matières"""
-    list_display = ['titre', 'ordre', 'est_actif']
-    list_filter = ['est_actif']
+    list_display = ['titre', 'ordre', 'est_actif', 'show_on_home']
+    list_filter = ['est_actif', 'show_on_home']
     search_fields = ['titre', 'description']
     list_editable = ['ordre']
     ordering = ['ordre', 'titre']
@@ -27,7 +27,7 @@ class MatiereAdmin(admin.ModelAdmin):
         }),
         # Associations supprimées: gérées via MatiereContexte
         (_('Configuration'), {
-            'fields': ('ordre', 'svg_icon', 'est_actif'),
+            'fields': ('ordre', 'svg_icon', 'est_actif', 'show_on_home'),
             'classes': ['collapse']
         }),
     )

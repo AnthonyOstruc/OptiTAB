@@ -12,7 +12,7 @@ import NewsletterSection from '@/components/home/NewsletterSection.vue'
 import PricingSection from '@/components/home/PricingSection.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed, nextTick, watch } from 'vue'
 import { getMatieres } from '@/api'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 
@@ -33,6 +33,49 @@ import {
 
 const matieres = ref([])
 const { openModal } = useModalManager()
+
+// Système de zoom automatique pour mobile (comme Cours.vue)
+const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
+const contentHeight = ref(0)
+const homeContentRef = ref(null)
+
+function computeAutoZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.78
+  if (width >= 520) return 0.76
+  if (width >= 420) return 0.74
+  return 0.72
+}
+
+const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
+
+const zoomStyle = computed(() => {
+  const z = zoomLevel.value || 1
+  const widthPercent = (100 / z).toFixed(3)
+  return {
+    '--home-zoom': z,
+    '--home-content-height': `${contentHeight.value}px`,
+    transform: `scale(${z})`,
+    transformOrigin: 'top left',
+    width: `${widthPercent}%`
+  }
+})
+
+function updateViewportWidth() {
+  if (typeof window === 'undefined') return
+  viewportWidth.value = window.innerWidth
+  nextTick(() => measureContentHeight())
+}
+
+function measureContentHeight() {
+  if (homeContentRef.value) {
+    contentHeight.value = homeContentRef.value.scrollHeight
+  }
+}
 
 // Handler pour la sélection d'une matière
 const handleSubjectSelected = (subject) => {
@@ -72,10 +115,35 @@ const handleStepsCtaSecondary = () => {
 onMounted(async () => {
   try {
     const { data } = await getMatieres()
-    matieres.value = data
+    // Afficher uniquement les matières autorisées pour la vitrine
+    // Par défaut (champ absent), on considère visible
+    matieres.value = (data || []).filter(m => m && m.show_on_home !== false)
   } catch (e) {
     matieres.value = []
   }
+  
+  // Initialiser le système de zoom
+  updateViewportWidth()
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', updateViewportWidth, { passive: true })
+    // Mesurer la hauteur après le chargement complet
+    setTimeout(() => {
+      measureContentHeight()
+    }, 100)
+  }
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateViewportWidth)
+  }
+})
+
+// Watcher pour mesurer la hauteur quand le zoom change
+watch(zoomLevel, () => {
+  nextTick(() => {
+    measureContentHeight()
+  })
 })
 
 // --- FIN LOGIQUE JS ---
@@ -83,75 +151,77 @@ onMounted(async () => {
 
 <template>
   <MainLayout>
-    <!-- Section Hero (accroche principale) -->
-    <SectionHero
-      :titre="sectionHero.titre"
-      :sous-titre="sectionHero.sousTitre"
-      :image="sectionHero.image"
-      :highlight="sectionHero.highlight"
-      :message-parents="sectionHero.messageParents"
-      :cta-text="sectionHero.ctaText"
-      :cta-secondary="sectionHero.ctaSecondary"
-      :bg="sectionHero.bg"
-      @cta-main="handleCtaMain"
-      @cta-secondary="handleCtaSecondary"
-    />
+    <div class="home-content-outer" :style="zoomStyle" ref="homeContentRef">
+      <!-- Section Hero (accroche principale) -->
+      <SectionHero
+        :titre="sectionHero.titre"
+        :sous-titre="sectionHero.sousTitre"
+        :image="sectionHero.image"
+        :highlight="sectionHero.highlight"
+        :message-parents="sectionHero.messageParents"
+        :cta-text="sectionHero.ctaText"
+        :cta-secondary="sectionHero.ctaSecondary"
+        :bg="sectionHero.bg"
+        @cta-main="handleCtaMain"
+        @cta-secondary="handleCtaSecondary"
+      />
 
 
-    <!-- Section Intro Features (accroche + grille) -->
-    <IntroFeaturesSection
-      :titre="introFeatures.titre"
-      :highlight="introFeatures.highlight"
-      :description="introFeatures.description"
-      :features="introFeatures.features"
-    />
+      <!-- Section Intro Features (accroche + grille) -->
+      <IntroFeaturesSection
+        :titre="introFeatures.titre"
+        :highlight="introFeatures.highlight"
+        :description="introFeatures.description"
+        :features="introFeatures.features"
+      />
 
-    <!-- Section Steps How It Works -->
-    <StepsHowItWorks
-      :titre="etapesParcours.titre"
-      :highlight="etapesParcours.highlight"
-      :titre-fin="etapesParcours.titreFin"
-      :description="etapesParcours.description"
-      :etapes="etapesParcours.etapes"
-      :cta-text="etapesParcours.ctaText"
-      :cta-secondary="etapesParcours.ctaSecondary"
-      :cta-top="etapesParcours.ctaTop"
-      :titre-bas="etapesParcours.titreBas"
-      @cta-main="handleStepsCtaMain"
-      @cta-secondary="handleStepsCtaSecondary"
-    />
+      <!-- Section Steps How It Works -->
+      <StepsHowItWorks
+        :titre="etapesParcours.titre"
+        :highlight="etapesParcours.highlight"
+        :titre-fin="etapesParcours.titreFin"
+        :description="etapesParcours.description"
+        :etapes="etapesParcours.etapes"
+        :cta-text="etapesParcours.ctaText"
+        :cta-secondary="etapesParcours.ctaSecondary"
+        :cta-top="etapesParcours.ctaTop"
+        :titre-bas="etapesParcours.titreBas"
+        @cta-main="handleStepsCtaMain"
+        @cta-secondary="handleStepsCtaSecondary"
+      />
 
 
-    <!-- Section Matières/Sujets -->
-    <SubjectsSection
-      :titre="titreSujets"
-      :sujets="matieres"
-      @subject-selected="handleSubjectSelected"
-    />
+      <!-- Section Matières/Sujets -->
+      <SubjectsSection
+        :titre="titreSujets"
+        :sujets="matieres"
+        @subject-selected="handleSubjectSelected"
+      />
 
-    <!-- Section Tarifs / Pricing - TEMPORAIREMENT CACHÉE -->
-    <!-- <PricingSection
-      :titre="pricingPlans.titre"
-      :description="pricingPlans.description"
-      :plans="pricingPlans.plans"
-      :garantie="pricingPlans.garantie"
-      :legal="pricingPlans.legal"
-    /> -->
-    <!-- Section FAQ -->
-    <FaqSection :faq="faq" />
+      <!-- Section Tarifs / Pricing - TEMPORAIREMENT CACHÉE -->
+      <!-- <PricingSection
+        :titre="pricingPlans.titre"
+        :description="pricingPlans.description"
+        :plans="pricingPlans.plans"
+        :garantie="pricingPlans.garantie"
+        :legal="pricingPlans.legal"
+      /> -->
+      <!-- Section FAQ -->
+      <FaqSection :faq="faq" />
 
-    <!-- Section Newsletter -->
-    <NewsletterSection
-      :titre="newsletterSection.titre"
-      :description="newsletterSection.description"
-      :placeholder="newsletterSection.placeholder"
-      :bouton="newsletterSection.bouton"
-    />
-    <WhatsappChatButton
-      phone="33764040251"
-      message="Bonjour, j'ai une question sur Optitab !"
-      tooltip="Une question ? Discutons sur WhatsApp !"
-    />
+      <!-- Section Newsletter -->
+      <NewsletterSection
+        :titre="newsletterSection.titre"
+        :description="newsletterSection.description"
+        :placeholder="newsletterSection.placeholder"
+        :bouton="newsletterSection.bouton"
+      />
+      <WhatsappChatButton
+        phone="33764040251"
+        message="Bonjour, j'ai une question sur Optitab !"
+        tooltip="Une question ? Discutons sur WhatsApp !"
+      />
+    </div>
   </MainLayout>
 </template>
 
@@ -162,5 +232,23 @@ onMounted(async () => {
   flex-direction: column;
   height: auto;
   overflow-y: auto;
+}
+
+/* Container pour le zoom automatique sur mobile */
+.home-content-outer {
+  transition: transform 0.2s ease;
+  overflow-x: hidden;
+  /* Fallback: ajuster la hauteur réelle à l'échelle visible quand zoom n'est pas supporté */
+  height: calc(var(--home-content-height, 0px) * var(--home-zoom, 1));
+}
+
+/* Préférer zoom (Chrome/Edge/Safari) pour éviter l'espace blanc en bas lié au transform */
+@supports (zoom: 1) {
+  .home-content-outer {
+    zoom: var(--home-zoom, 1);
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+  }
 }
 </style> 

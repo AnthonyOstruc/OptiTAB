@@ -31,7 +31,7 @@
       </div>
       <div v-else-if="error" class="exercices-error">{{ error }}</div>
         <div v-else>
-          <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle">
+          <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
           <div class="exercices-controls">
             <div class="controls-row">
               <!-- Barre de recherche -->
@@ -159,7 +159,9 @@ const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()
 const notionId = ref(route.params.notionId)
 const exPageRef = ref(null)
+const exOuterRef = ref(null)
 const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
+const contentHeight = ref(0)
 
 const exercices = ref([])
 const perPageOptions = [1,3,5]
@@ -387,6 +389,7 @@ async function loadData() {
     
     // 2) Installer l'écouteur de scroll (et le réinitialiser si besoin)
     setupScrollListener()
+    measureContentHeight()
 
     // 3) Forcer le rendu MathJax après le chargement des exercices
     setTimeout(() => {
@@ -400,6 +403,7 @@ async function loadData() {
           console.warn('[MathJax] Erreur:', error)
         }
       }
+      measureContentHeight()
     }, 100)
     
     // 4) Sinon, restaurer la position scroll sauvegardée
@@ -503,6 +507,7 @@ const zoomStyle = computed(() => {
   const widthPercent = (100 / z).toFixed(3)
   return {
     '--exercices-zoom': z,
+    '--exercices-content-height': `${contentHeight.value}px`,
     transform: `scale(${z})`,
     transformOrigin: 'top left',
     width: `${widthPercent}%`
@@ -512,6 +517,16 @@ const zoomStyle = computed(() => {
 function updateViewportWidth() {
   if (typeof window === 'undefined') return
   viewportWidth.value = window.innerWidth
+  nextTick(() => measureContentHeight())
+}
+
+function measureContentHeight() {
+  // Mesurer la hauteur réelle du bloc zoomé (contrôles)
+  if (!exOuterRef.value) {
+    contentHeight.value = 0
+    return
+  }
+  contentHeight.value = exOuterRef.value.scrollHeight || exOuterRef.value.offsetHeight || 0
 }
 
 function handlePageChange(page) {
@@ -667,6 +682,7 @@ watch(zoomLevel, () => {
         console.warn('[MathJax] Erreur:', error)
       }
     }
+    measureContentHeight()
   })
 }, { immediate: true })
 
@@ -683,6 +699,7 @@ watch(paginated, () => {
         console.warn('[MathJax] Erreur:', error)
       }
     }
+    measureContentHeight()
   })
 }, { deep: true })
 
@@ -1143,6 +1160,18 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   transform-origin: top left;
   transition: transform 0.2s ease;
   overflow-x: hidden;
+  /* Fallback: ajuster la hauteur réelle à l'échelle visible quand zoom n'est pas supporté */
+  height: calc(var(--exercices-content-height, 0px) * var(--exercices-zoom, 1));
+}
+
+/* Préférer le zoom natif sur Chrome/Edge/Safari pour éviter l'espace blanc */
+@supports (zoom: 1) {
+  .exercices-content-outer {
+    zoom: var(--exercices-zoom, 1);
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+  }
 }
 
 /* Responsive design pour mobile */

@@ -186,6 +186,37 @@ function goBackToDashboard() {
   padding-bottom: 40px;
 }
 
+/* Mobile: edge-to-edge like SheetByNotion */
+@media (max-width: 768px) {
+  .notions-page-base {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .main-content-base,
+  .notions-container {
+    /* neutralize DashboardLayout horizontal padding to use full width */
+    margin-left: -1rem;  /* matches .dashboard-main mobile padding */
+    margin-right: -1rem;
+    width: calc(100% + 2rem);
+    max-width: none;
+  }
+
+  /* keep ThemeNotionsView blocks aligned nicely on small screens */
+  :deep(.tnv-wrapper) { margin-top: 0; }
+  :deep(.tnv-theme-block) { padding-left: 0.75rem; padding-right: 0.75rem; }
+  :deep(.tnv-notions-grid) { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .main-content-base,
+  .notions-container {
+    margin-left: -0.75rem; /* matches .dashboard-main @480px */
+    margin-right: -0.75rem;
+    width: calc(100% + 1.5rem);
+  }
+}
+
 /* Overrides internes pour ThemeNotionsView afin d'aligner tout à gauche */
 :deep(.tnv-wrapper) {
   max-width: none;

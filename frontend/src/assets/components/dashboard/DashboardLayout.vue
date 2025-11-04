@@ -31,8 +31,6 @@
       </div>
     </div>
 
-    <!-- Bouton IA flottant (visible uniquement pour les admins) -->
-    <AIFloatingButton v-if="userStore.isAdmin" />
   </div>
 </template>
 
@@ -41,7 +39,6 @@ import { ref, onMounted, nextTick, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Sidebar from './Sidebar.vue'
 import DashboardHeader from './DashboardHeader.vue'
-import AIFloatingButton from '@/components/ai/AIFloatingButton.vue'
 import { useUserStore } from '@/stores/user'
 
 // Props et émissions

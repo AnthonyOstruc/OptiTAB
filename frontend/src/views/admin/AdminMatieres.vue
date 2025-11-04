@@ -72,6 +72,13 @@
             </div>
           </td>
           <td>
+            <button class="btn-toggle-home" :class="{ active: !!m.show_on_home }" @click="toggleHome(m)" :disabled="togglingId===m.id" :title="m.show_on_home ? 'Cacher de l\'accueil' : 'Afficher sur l\'accueil'">
+              <span v-if="togglingId===m.id" class="btn-toggle-loading">⋯</span>
+              <template v-else>
+                <span class="btn-toggle-icon">{{ m.show_on_home ? '🏠' : '🏡' }}</span>
+                <span class="btn-toggle-text">{{ m.show_on_home ? 'Oui' : 'Non' }}</span>
+              </template>
+            </button>
             <AdminActionsButtons
               :item="m"
               :actions="['edit', 'delete']"
@@ -100,6 +107,7 @@ const contextesByMatiere = ref({})
 const contextForm = ref({ niveau: '' })
 const addLoading = ref(false)
 const removeLoadingId = ref(null)
+const togglingId = ref(null)
 
 const niveauxByPays = computed(() => {
   const map = new Map()
@@ -133,6 +141,20 @@ async function load() {
   } catch (error) {
     console.error('Erreur lors du chargement des matières:', error)
     matieres.value = []
+  }
+}
+
+async function toggleHome(m) {
+  try {
+    togglingId.value = m.id
+    const next = !m.show_on_home
+    await updateMatiere(m.id, { show_on_home: next })
+    const idxLocal = matieres.value.findIndex(x => x.id === m.id)
+    if (idxLocal !== -1) matieres.value[idxLocal] = { ...matieres.value[idxLocal], show_on_home: next }
+  } catch (e) {
+    console.error('Erreur lors du basculement accueil:', e)
+  } finally {
+    togglingId.value = null
   }
 }
 
@@ -308,6 +330,13 @@ async function removeContexte(contexteId) {
   text-align: left;
 }
 
+.admin-table td:last-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .pays-badges {
   display: flex;
   flex-wrap: wrap;
@@ -363,3 +392,65 @@ async function removeContexte(contexteId) {
   cursor: pointer;
 }
 </style> 
+
+
+
+
+<style scoped>
+.btn-toggle-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.btn-toggle-home:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+}
+.btn-toggle-home:active:not(:disabled) {
+  transform: translateY(0);
+}
+.btn-toggle-home:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn-toggle-home.active {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+.btn-toggle-home.active:hover:not(:disabled) {
+  background: #dbeafe;
+  border-color: #2563eb;
+}
+.btn-toggle-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+.btn-toggle-text {
+  font-size: 13px;
+  font-weight: 600;
+}
+.btn-toggle-loading {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+</style>
+
+

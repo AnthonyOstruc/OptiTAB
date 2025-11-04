@@ -147,7 +147,16 @@ Description: Cours sur les sommes et produits d'une famille finie de nombres ré
 
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
             <strong>Exemple - Regroupement :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sum_{k=1}^{2n} (-1)^k k = \sum_{k=1}^{n} (2k-1) - \sum_{k=1}^{n} 2k = \sum_{k=1}^{n} (2k-1 - 2k) = \sum_{k=1}^{n} (-1) = -n$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Calculons $\displaystyle \sum_{k=1}^{2n} (-1)^k k$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On sépare explicitement les termes pairs et impairs :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sum_{k=1}^{2n} (-1)^k k = \underbrace{-1 + 2 - 3 + 4 - \cdots + (-1)^{2n-1}(2n-1) + (-1)^{2n}(2n)}_{\text{2n termes}}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \underbrace{(-1 + 2) + (-3 + 4) + \cdots + (-(2n-1) + 2n)}_{\text{n paires}} = \underbrace{1 + 1 + \cdots + 1}_{\text{n fois}} = n$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Méthode formelle : on regroupe par parité avec changement d'indice :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sum_{k=1}^{2n} (-1)^k k = \underbrace{\sum_{\text{k impair}} (-1)^k k}_{\text{termes impairs}} + \underbrace{\sum_{\text{k pair}} (-1)^k k}_{\text{termes pairs}}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle k$ impair : $\displaystyle k = 2j-1$ avec $\displaystyle j$ de $\displaystyle 1$ à $\displaystyle n$, donc $\displaystyle (-1)^k = (-1)^{2j-1} = -1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle k$ pair : $\displaystyle k = 2j$ avec $\displaystyle j$ de $\displaystyle 1$ à $\displaystyle n$, donc $\displaystyle (-1)^k = (-1)^{2j} = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">D'où : $\displaystyle \sum_{k=1}^{2n} (-1)^k k = \underbrace{\sum_{j=1}^{n} (-(2j-1))}_{\text{termes impairs}} + \underbrace{\sum_{j=1}^{n} (2j)}_{\text{termes pairs}} = -\sum_{j=1}^{n} (2j-1) + \sum_{j=1}^{n} 2j$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En combinant : $\displaystyle = \sum_{j=1}^{n} \left(-(2j-1) + 2j\right) = \sum_{j=1}^{n} 1 = n$</p>
         </div>
     </div>
 

@@ -1,0 +1,852 @@
+=== Raisonnement et Vocabulaire Ensembliste - Programme MPSI
+Difficulté: medium
+Ordre: 1
+Images: 
+
+Titre: Raisonnement et Vocabulaire Ensembliste : Outils pour la Démonstration Mathématique
+Description: Cours sur les rudiments de logique, la théorie des ensembles et les applications nécessaires à la conception et la rédaction efficace d'une démonstration mathématique en MPSI.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Rudiments de logique</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Connecteurs logiques et tables de vérité</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Connecteurs logiques</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les principaux connecteurs logiques sont :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>non</strong> ($\displaystyle \neg$) : négation</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>et</strong> ($\displaystyle \land$) : conjonction</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>ou</strong> ($\displaystyle \lor$) : disjonction</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>implique</strong> ($\displaystyle \Rightarrow$) : implication</li>
+                <li style="margin:0; text-align:left;"><strong>équivaut</strong> ($\displaystyle \Leftrightarrow$) : équivalence</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Équivalences utiles</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \neg(P \land Q) \Leftrightarrow (\neg P \lor \neg Q)$ (loi de De Morgan)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \neg(P \lor Q) \Leftrightarrow (\neg P \land \neg Q)$ (loi de De Morgan)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (P \Rightarrow Q) \Leftrightarrow (\neg P \lor Q)$</p>
+        </div>
+
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; font-size:1em;">$\displaystyle P$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; font-size:1em;">$\displaystyle Q$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; font-size:1em;">$\displaystyle P \land Q$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; font-size:1em;">$\displaystyle P \lor Q$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; font-size:1em;">$\displaystyle P \Rightarrow Q$</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">F</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">F</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">F</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">F</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">F</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">F</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">F</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">F</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">F</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">V</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Quantificateurs</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;">Il existe trois quantificateurs essentiels en mathématiques :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>$\displaystyle \forall$</strong> (pour tout), <strong>$\displaystyle \exists$</strong> (il existe) et <strong>$\displaystyle \exists!$</strong> (il existe un unique)</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Principe :</strong> L'emploi de quantificateurs en guise d'abréviation est exclu. Les quantificateurs doivent être utilisés avec précision et clarté.
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \forall x \in \mathbb{R}, \quad x^2 \geq 0$ : "Pour tout réel $\displaystyle x$, le carré de $\displaystyle x$ est positif ou nul"</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \exists n \in \mathbb{N}, \quad n^2 = 4$ : "Il existe un entier naturel $\displaystyle n$ tel que $\displaystyle n^2 = 4$"</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \exists! x \in \mathbb{R}, \quad x^2 = 0$ : "Il existe un unique réel $\displaystyle x$ tel que $\displaystyle x^2 = 0$" (c'est $\displaystyle x = 0$)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \forall \varepsilon > 0, \quad \exists \delta > 0, \quad |x-a| < \delta \Rightarrow |f(x)-L| < \varepsilon$ : Définition de la limite</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> L'ordre des quantificateurs est crucial. "$\displaystyle \forall x, \exists y$" n'est pas équivalent à "$\displaystyle \exists y, \forall x$".
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>Portée des quantificateurs :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">"$\displaystyle \forall x \in \mathbb{R}, \quad \exists y \in \mathbb{R}, \quad x < y$" est vraie (prendre $\displaystyle y = x + 1$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">"$\displaystyle \exists y \in \mathbb{R}, \quad \forall x \in \mathbb{R}, \quad x < y$" est fausse (il n'existe pas de réel plus grand que tous).</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Implication, contraposition, équivalence</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;">Soient $\displaystyle P$ et $\displaystyle Q$ deux propositions.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Implication :</strong> $\displaystyle P \Rightarrow Q$ signifie "Si $\displaystyle P$ alors $\displaystyle Q$"</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Équivalence :</strong> $\displaystyle P \Leftrightarrow Q$ signifie "$\displaystyle P$ si et seulement si $\displaystyle Q$"</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Contraposition :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La proposition $\displaystyle P \Rightarrow Q$ est équivalente à sa contraposée : $\displaystyle \neg Q \Rightarrow \neg P$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (P \Rightarrow Q) \Leftrightarrow (\neg Q \Rightarrow \neg P)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Contraposition :</strong>
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                <p style="margin:8px 0; text-align:left;">Proposition : "Si $\displaystyle n^2$ est pair, alors $\displaystyle n$ est pair"</p>
+                <p style="margin:8px 0; text-align:left;">Contraposée : "Si $\displaystyle n$ est impair, alors $\displaystyle n^2$ est impair"</p>
+                <p style="margin:8px 0; text-align:left;">Ces deux propositions sont équivalentes et il est parfois plus simple de démontrer la contraposée.</p>
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Réflexivité :</strong> $\displaystyle P \Leftrightarrow P$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Symétrie :</strong> Si $\displaystyle P \Leftrightarrow Q$, alors $\displaystyle Q \Leftrightarrow P$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Transitivité :</strong> Si $\displaystyle P \Leftrightarrow Q$ et $\displaystyle Q \Leftrightarrow R$, alors $\displaystyle P \Leftrightarrow R$</li>
+                <li style="margin:0; text-align:left;"><strong>Transitivité de l'implication :</strong> Si $\displaystyle P \Rightarrow Q$ et $\displaystyle Q \Rightarrow R$, alors $\displaystyle P \Rightarrow R$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Négation d'une proposition</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Règles de négation :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Négation de $\displaystyle \forall$ :</strong> $\displaystyle \neg(\forall x, P(x)) \Leftrightarrow \exists x, \neg P(x)$</li>
+                <li style="margin:0; text-align:left;"><strong>Négation de $\displaystyle \exists$ :</strong> $\displaystyle \neg(\exists x, P(x)) \Leftrightarrow \forall x, \neg P(x)$</li>
+                <li style="margin:0; text-align:left;"><strong>Négation de $\displaystyle \exists!$ :</strong> $\displaystyle \neg(\exists! x, P(x)) \Leftrightarrow (\forall x, \neg P(x)) \text{ ou } (\exists x, y, \quad x \neq y \text{ et } P(x) \text{ et } P(y))$</li>
+                <li style="margin:0; text-align:left;"><strong>Négation de $\displaystyle \Rightarrow$ :</strong> $\displaystyle \neg(P \Rightarrow Q) \Leftrightarrow P \text{ et } \neg Q$</li>
+                <li style="margin:0; text-align:left;"><strong>Négation de $\displaystyle \Leftrightarrow$ :</strong> $\displaystyle \neg(P \Leftrightarrow Q) \Leftrightarrow (P \text{ et } \neg Q) \text{ ou } (\neg P \text{ et } Q)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples de négation :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Proposition : "$\displaystyle \forall x \in \mathbb{R}, \quad x^2 > 0$"</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Négation : "$\displaystyle \exists x \in \mathbb{R}, \quad x^2 \leq 0$"</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Proposition : "$\displaystyle \forall \varepsilon > 0, \quad \exists \delta > 0, \quad |f(x)-L| < \varepsilon$"</li>
+                <li style="margin:0; text-align:left;">Négation : "$\displaystyle \exists \varepsilon > 0, \quad \forall \delta > 0, \quad |f(x)-L| \geq \varepsilon$"</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Modes de raisonnement</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 1. Raisonnement par disjonction des cas</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On démontre une propriété en considérant tous les cas possibles qui recouvrent la situation.</p>
+            <div style="background:#f8f9fa; border-radius:4px; padding:10px; margin:10px 0;">
+                <strong>Exemple :</strong> Montrer que $\displaystyle \forall n \in \mathbb{Z}, \quad n(n+1)$ est pair.
+                <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                    <li style="margin:0 0 12px 0; text-align:left;">Cas 1 : $\displaystyle n$ pair $\displaystyle \Rightarrow n = 2k \Rightarrow n(n+1) = 2k(2k+1)$ pair</li>
+                    <li style="margin:0; text-align:left;">Cas 2 : $\displaystyle n$ impair $\displaystyle \Rightarrow n = 2k+1 \Rightarrow n+1 = 2(k+1) \Rightarrow n(n+1)$ pair</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 2. Raisonnement par contraposition</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour démontrer $\displaystyle P \Rightarrow Q$, on démontre $\displaystyle \neg Q \Rightarrow \neg P$.</p>
+            <div style="background:#f8f9fa; border-radius:4px; padding:10px; margin:10px 0;">
+                <strong>Exemple :</strong> Montrer que si $\displaystyle n^2$ est pair, alors $\displaystyle n$ est pair.
+                <p style="margin:8px 0; text-align:left; font-size:1em;">On démontre la contraposée : si $\displaystyle n$ est impair, alors $\displaystyle n^2$ est impair.</p>
+                <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle n = 2k+1$, alors $\displaystyle n^2 = 4k^2 + 4k + 1 = 2(2k^2+2k) + 1$ est impair.</p>
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 3. Raisonnement par l'absurde</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour démontrer $\displaystyle P$, on suppose $\displaystyle \neg P$ et on aboutit à une contradiction.</p>
+            <div style="background:#f8f9fa; border-radius:4px; padding:10px; margin:10px 0;">
+                <strong>Exemple :</strong> Montrer que $\displaystyle \sqrt{2}$ est irrationnel.
+                <p style="margin:8px 0; text-align:left; font-size:1em;">Supposons $\displaystyle \sqrt{2} = \dfrac{p}{q}$ avec $\displaystyle p, q \in \mathbb{N}^{\ast}$ premiers entre eux.</p>
+                <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle 2q^2 = p^2$, donc $\displaystyle p^2$ est pair, donc $\displaystyle p$ est pair.</p>
+                <p style="margin:8px 0; text-align:left; font-size:1em;">Posons $\displaystyle p = 2k$, alors $\displaystyle 2q^2 = 4k^2 \Rightarrow q^2 = 2k^2$, donc $\displaystyle q$ est pair.</p>
+                <p style="margin:8px 0; text-align:left; font-size:1em;">Contradiction avec $\displaystyle p$ et $\displaystyle q$ premiers entre eux. Donc $\displaystyle \sqrt{2}$ est irrationnel.</p>
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 4. Raisonnement par analyse-synthèse</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette méthode permet de résoudre un problème en deux étapes :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Analyse :</strong> On suppose que la solution existe et on détermine les conditions nécessaires qu'elle doit satisfaire</li>
+                <li style="margin:0; text-align:left;"><strong>Synthèse :</strong> On vérifie que les solutions trouvées lors de l'analyse sont bien solutions du problème</li>
+            </ol>
+            <div style="background:#f8f9fa; border-radius:4px; padding:10px; margin:10px 0;">
+                <strong>Exemple :</strong> Résoudre dans $\displaystyle \mathbb{R}$ l'équation $\displaystyle x^2 = 4$.
+                <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Analyse :</strong> Si $\displaystyle x^2 = 4$, alors $\displaystyle x = 2$ ou $\displaystyle x = -2$ (condition nécessaire).</p>
+                <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Synthèse :</strong> $\displaystyle 2^2 = 4$ et $\displaystyle (-2)^2 = 4$, donc les solutions sont $\displaystyle x = 2$ et $\displaystyle x = -2$.</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Condition nécessaire et condition suffisante</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans $\displaystyle P \Rightarrow Q$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P$ est une <strong>condition suffisante</strong> pour $\displaystyle Q$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle Q$ est une <strong>condition nécessaire</strong> pour $\displaystyle P$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle P$ : "être un rectangle" et $\displaystyle Q$ : "être un quadrilatère".</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle P \Rightarrow Q$ : "Si une figure est un rectangle, alors c'est un quadrilatère".</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Être rectangle suffit</strong> pour être quadrilatère (condition suffisante).</li>
+                <li style="margin:0; text-align:left;"><strong>Être quadrilatère est nécessaire</strong> pour être rectangle (condition nécessaire).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Raisonnement par récurrence</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Récurrence simple</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour démontrer $\displaystyle \forall n \in \mathbb{N}, \quad P(n)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">1. <strong>Initialisation :</strong> Démontrer $\displaystyle P(0)$ (ou $\displaystyle P(n_0)$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">2. <strong>Hérédité :</strong> Démontrer $\displaystyle \forall n \in \mathbb{N}, \quad P(n) \Rightarrow P(n+1)$</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode en 3 étapes :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Initialisation :</strong> Vérifier que la propriété est vraie au rang initial</li>
+                <li style="margin:0; text-align:left;"><strong>Hypothèse de récurrence :</strong> Supposer que la propriété est vraie au rang $\displaystyle n$</li>
+                <li style="margin:0; text-align:left;"><strong>Conclusion :</strong> Démontrer que la propriété est vraie au rang $\displaystyle n+1$</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong> Montrer que $\displaystyle \forall n \in \mathbb{N}, \quad \sum_{k=0}^{n} k = \dfrac{n(n+1)}{2}$
+            <div style="margin:10px 0; text-align:left; font-size:1em;">
+                <p style="margin:8px 0; text-align:left;"><strong>Initialisation :</strong> Pour $\displaystyle n = 0$ : $\displaystyle \sum_{k=0}^{0} k = 0 = \dfrac{0 \times 1}{2}$ ✓</p>
+                <p style="margin:8px 0; text-align:left;"><strong>Hérédité :</strong> Supposons $\displaystyle \sum_{k=0}^{n} k = \dfrac{n(n+1)}{2}$</p>
+                <p style="margin:8px 0; text-align:left;">Alors $\displaystyle \sum_{k=0}^{n+1} k = \sum_{k=0}^{n} k + (n+1) = \dfrac{n(n+1)}{2} + (n+1) = \dfrac{(n+1)(n+2)}{2}$ ✓</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Récurrence double</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour démontrer $\displaystyle \forall n \in \mathbb{N}, \quad P(n)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">1. <strong>Initialisation :</strong> Démontrer $\displaystyle P(0)$ et $\displaystyle P(1)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">2. <strong>Hérédité :</strong> Démontrer $\displaystyle \forall n \in \mathbb{N}, \quad (P(n) \text{ et } P(n+1)) \Rightarrow P(n+2)$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Récurrence forte</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour démontrer $\displaystyle \forall n \in \mathbb{N}, \quad P(n)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">1. <strong>Initialisation :</strong> Démontrer $\displaystyle P(0)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">2. <strong>Hérédité :</strong> Démontrer $\displaystyle \forall n \in \mathbb{N}, \quad (\forall k \leq n, P(k)) \Rightarrow P(n+1)$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong> Le raisonnement par récurrence peut être relié au fait que toute partie non vide de $\displaystyle \mathbb{N}$ possède un plus petit élément (principe de bon ordre).
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Ensembles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Notions de base</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Ensemble et appartenance</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un ensemble est une collection d'objets appelés éléments.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notation : $\displaystyle x \in E$ signifie "$x$ appartient à $E$"</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x \notin E$ signifie "$x$ n'appartient pas à $E$"</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Ensemble vide</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble vide, noté $\displaystyle \emptyset$ ou $\displaystyle \{ \}$, ne contient aucun élément.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \mathbb{N} = \{0, 1, 2, 3, \ldots\}$ : ensemble des entiers naturels</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \mathbb{Z} = \{\ldots, -2, -1, 0, 1, 2, \ldots\}$ : ensemble des entiers relatifs</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \mathbb{R}$ : ensemble des nombres réels</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \{1, 2, 3\}$ : ensemble contenant les éléments 1, 2 et 3</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Inclusion et parties</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Inclusion</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle A$ est inclus dans $\displaystyle B$ (noté $\displaystyle A \subset B$ ou $\displaystyle A \subseteq B$) si :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \forall x \in A, \quad x \in B$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Partie (ou sous-ensemble)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle A \subset E$, on dit que $\displaystyle A$ est une partie (ou sous-ensemble) de $\displaystyle E$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Réflexivité :</strong> $\displaystyle A \subset A$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Transitivité :</strong> Si $\displaystyle A \subset B$ et $\displaystyle B \subset C$, alors $\displaystyle A \subset C$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Antisymétrie :</strong> Si $\displaystyle A \subset B$ et $\displaystyle B \subset A$, alors $\displaystyle A = B$</li>
+                <li style="margin:0; text-align:left;"><strong>Ensemble vide :</strong> $\displaystyle \emptyset \subset A$ pour tout ensemble $\displaystyle A$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérations sur les parties d'un ensemble</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;">Soient $\displaystyle A$ et $\displaystyle B$ deux parties d'un ensemble $\displaystyle E$.</p>
+        </div>
+
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; font-size:1em;">Opération</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; font-size:1em;">Notation</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; font-size:1em;">Définition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">Réunion</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">$\displaystyle A \cup B$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left; font-size:1em;">$\displaystyle \{x \in E \mid x \in A \text{ ou } x \in B\}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">Intersection</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">$\displaystyle A \cap B$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left; font-size:1em;">$\displaystyle \{x \in E \mid x \in A \text{ et } x \in B\}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">Différence</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">$\displaystyle A \setminus B$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left; font-size:1em;">$\displaystyle \{x \in E \mid x \in A \text{ et } x \notin B\}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">Complémentaire</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-size:1em;">$\displaystyle \overline{A}$, $\displaystyle A^c$ ou $\displaystyle E \setminus A$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left; font-size:1em;">$\displaystyle \{x \in E \mid x \notin A\}$</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Notation en compréhension</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \{x \in E \mid P(x)\}$ : ensemble des éléments $\displaystyle x$ de $\displaystyle E$ qui satisfont la propriété $\displaystyle P(x)$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Différence symétrique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La différence symétrique de $\displaystyle A$ et $\displaystyle B$, notée $\displaystyle A \triangle B$, est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A \triangle B = (A \setminus B) \cup (B \setminus A)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle A = \{1, 2, 3, 4\}$ et $\displaystyle B = \{3, 4, 5\}$.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle A \setminus B = \{1, 2\}$ (éléments de $\displaystyle A$ qui ne sont pas dans $\displaystyle B$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle B \setminus A = \{5\}$ (éléments de $\displaystyle B$ qui ne sont pas dans $\displaystyle A$)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle A \triangle B = (A \setminus B) \cup (B \setminus A) = \{1, 2\} \cup \{5\} = \{1, 2, 5\}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés des opérations :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Commutativité :</strong> $\displaystyle A \cup B = B \cup A$ et $\displaystyle A \cap B = B \cap A$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Associativité :</strong> $\displaystyle (A \cup B) \cup C = A \cup (B \cup C)$ et $\displaystyle (A \cap B) \cap C = A \cap (B \cap C)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Distributivité :</strong> $\displaystyle A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Lois de De Morgan :</strong> $\displaystyle \overline{A \cup B} = \overline{A} \cap \overline{B}$ et $\displaystyle \overline{A \cap B} = \overline{A} \cup \overline{B}$</li>
+                <li style="margin:0; text-align:left;"><strong>Double complémentaire :</strong> $\displaystyle \overline{\overline{A}} = A$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Produit cartésien</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Produit cartésien de deux ensembles</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le produit cartésien de $\displaystyle E$ et $\displaystyle F$, noté $\displaystyle E \times F$, est l'ensemble :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle E \times F = \{(x, y) \mid x \in E \text{ et } y \in F\}$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Produit cartésien de $\displaystyle n$ ensembles</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle E_1 \times E_2 \times \cdots \times E_n = \{(x_1, x_2, \ldots, x_n) \mid \forall i \in \{1, \ldots, n\}, x_i \in E_i\}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \mathbb{R} \times \mathbb{R} = \mathbb{R}^2$ : plan cartésien</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \{1, 2\} \times \{a, b\} = \{(1,a), (1,b), (2,a), (2,b)\}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \mathbb{R}^n = \underbrace{\mathbb{R} \times \mathbb{R} \times \cdots \times \mathbb{R}}_{n \text{ fois}}$ : espace vectoriel de dimension $\displaystyle n$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Ensemble des parties</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Ensemble des parties</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des parties de $\displaystyle E$, noté $\displaystyle \mathcal{P}(E)$ ou $\displaystyle 2^E$, est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \mathcal{P}(E) = \{A \mid A \subset E\}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle E = \{1, 2\}$, alors $\displaystyle \mathcal{P}(E) = \{\emptyset, \{1\}, \{2\}, \{1, 2\}\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle |E| = n$ (cardinal de $\displaystyle E$), alors $\displaystyle |\mathcal{P}(E)| = 2^n$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \mathcal{P}(\emptyset) = \{\emptyset\}$ (contient un élément : l'ensemble vide)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Recouvrement et partition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Recouvrement</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une famille $\displaystyle (A_i)_{i \in I}$ de parties de $\displaystyle E$ forme un recouvrement de $\displaystyle E$ si :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \bigcup_{i \in I} A_i = E$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Recouvrement disjoint</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un recouvrement est dit disjoint si les parties sont deux à deux disjointes :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \forall i, j \in I, \quad i \neq j \Rightarrow A_i \cap A_j = \emptyset$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Partition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une partition de $\displaystyle E$ est un recouvrement disjoint de $\displaystyle E$ où aucune partie n'est vide.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples de partitions :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Ensemble fini :</strong> Pour $\displaystyle E = \{1, 2, 3, 4, 5\}$, la partition $\displaystyle \{1, 2\}, \{3\}, \{4, 5\}$ (non vides, disjoints, union = $\displaystyle E$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Pairs / impairs :</strong> Pour $\displaystyle E = \{1, 2, 3, 4, 5, 6\}$, la partition $\displaystyle \{1, 3, 5\}$ et $\displaystyle \{2, 4, 6\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Sur $\displaystyle \mathbb{R}$ (par le signe) :</strong> Partition de $\displaystyle \mathbb{R}$ : $\displaystyle (-\infty, 0)$, $\displaystyle \{0\}$, $\displaystyle (0, +\infty)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Intervalle découpé :</strong> Pour $\displaystyle E = [0, 6)$, la partition $\displaystyle [0, 2)$, $\displaystyle [2, 4)$, $\displaystyle [4, 6)$</li>
+                <li style="margin:0; text-align:left;"><strong>Classes d'équivalence :</strong> Les classes d'équivalence d'une relation d'équivalence forment une partition. Pour la congruence modulo 3 sur $\displaystyle \mathbb{Z}$ : $\displaystyle \overline{0}$, $\displaystyle \overline{1}$, $\displaystyle \overline{2}$ forment une partition de $\displaystyle \mathbb{Z}$.</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>Contre-exemples (pas des partitions) :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Chevauchement (pas disjoint) :</strong> Pour $\displaystyle E = \{1, 2, 3\}$, les parties $\displaystyle \{1, 2\}$ et $\displaystyle \{2, 3\}$ ne forment pas une partition car l'intersection n'est pas vide ($\displaystyle 2 \in \{1,2\} \cap \{2,3\}$).</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Ne couvre pas tout $\displaystyle E$ :</strong> Pour $\displaystyle E = \{1, 2, 3, 4\}$, les parties $\displaystyle \{1, 2\}$ et $\displaystyle \{3\}$ ne forment pas une partition car l'union vaut $\displaystyle \{1, 2, 3\} \neq E$ (il manque $\displaystyle 4$).</li>
+                <li style="margin:0; text-align:left;"><strong>Partie vide :</strong> Pour $\displaystyle E = \{1, 2, 3\}$, les parties $\displaystyle \{1\}$, $\displaystyle \emptyset$, $\displaystyle \{2, 3\}$ ne forment pas une partition car une partie est vide.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Applications et relations</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition d'une application</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Application</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une application $\displaystyle f$ de $\displaystyle E$ dans $\displaystyle F$ associe à tout élément de $\displaystyle E$ un unique élément de $\displaystyle F$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notation : $\displaystyle f : E \to F$ ou $\displaystyle f : x \mapsto f(x)$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong> Le programme ne distingue pas les notions de fonction et d'application. Le point de vue est intuitif : une application de $\displaystyle E$ dans $\displaystyle F$ associe à tout élément de $\displaystyle E$ un unique élément de $\displaystyle F$.
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Notations</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \mathcal{F}(E, F)$ ou $\displaystyle F^E$ : ensemble des applications de $\displaystyle E$ dans $\displaystyle F$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Graphe d'une application</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le graphe de $\displaystyle f : E \to F$ est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Gamma_f = \{(x, f(x)) \in E \times F \mid x \in E\}$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Famille d'éléments et fonction indicatrice</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Famille d'éléments</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une famille $\displaystyle (x_i)_{i \in I}$ d'éléments d'un ensemble $\displaystyle E$ est une application :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle I \to E, \quad i \mapsto x_i$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction indicatrice</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction indicatrice d'une partie $\displaystyle A$ de $\displaystyle E$, notée $\displaystyle \mathbf{1}_A$, est définie par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \mathbf{1}_A(x) = \begin{cases} 1 & \text{si } x \in A \\ 0 & \text{si } x \notin A \end{cases}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle E = \{1, 2, 3, 4\}$ et $\displaystyle A = \{1, 3\}$, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \mathbf{1}_A(1) = 1$, $\displaystyle \mathbf{1}_A(2) = 0$, $\displaystyle \mathbf{1}_A(3) = 1$, $\displaystyle \mathbf{1}_A(4) = 0$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \mathbf{1}_A$ caractérise l'appartenance à $\displaystyle A$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Restriction et prolongement</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Restriction</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : E \to F$ et $\displaystyle A \subset E$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La restriction de $\displaystyle f$ à $\displaystyle A$, notée $\displaystyle f|_A$, est l'application :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f|_A : A \to F, \quad x \mapsto f(x)$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Prolongement</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f : A \to F$ et $\displaystyle E \supset A$, alors $\displaystyle g : E \to F$ est un prolongement de $\displaystyle f$ si $\displaystyle g|_A = f$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Image directe et image réciproque</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Image directe</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : E \to F$ et $\displaystyle A \subset E$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'image directe de $\displaystyle A$ par $\displaystyle f$, notée $\displaystyle f(A)$, est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(A) = \{f(x) \in F \mid x \in A\}$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Image réciproque</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : E \to F$ et $\displaystyle B \subset F$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'image réciproque de $\displaystyle B$ par $\displaystyle f$, notée $\displaystyle f^{-1}(B)$, est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f^{-1}(B) = \{x \in E \mid f(x) \in B\}$</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> La notation $\displaystyle f^{-1}(B)$ pour l'image réciproque peut prêter à confusion avec la notation de la fonction réciproque. On peut provisoirement utiliser une autre notation si nécessaire.
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : \mathbb{R} \to \mathbb{R}, \quad x \mapsto x^2$.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f([0, 2]) = [0, 4]$ : image directe</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f^{-1}([1, 4]) = [-2, -1] \cup [1, 2]$ : image réciproque</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f^{-1}(\{4\}) = \{-2, 2\}$ : image réciproque d'un singleton</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Image directe :</strong> $\displaystyle f(A \cup B) = f(A) \cup f(B)$ et $\displaystyle f(A \cap B) \subset f(A) \cap f(B)$ (égalité si $\displaystyle f$ est injective)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Image réciproque :</strong> $\displaystyle f^{-1}(B \cup C) = f^{-1}(B) \cup f^{-1}(C)$ et $\displaystyle f^{-1}(B \cap C) = f^{-1}(B) \cap f^{-1}(C)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Monotonie :</strong> Si $\displaystyle A \subset B$, alors $\displaystyle f(A) \subset f(B)$</li>
+                <li style="margin:0; text-align:left;"><strong>Monotonie (image réciproque) :</strong> Si $\displaystyle B \subset C$, alors $\displaystyle f^{-1}(B) \subset f^{-1}(C)$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Composition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Composition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle f : E \to F$ et $\displaystyle g : F \to G$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La composée de $\displaystyle f$ et $\displaystyle g$, notée $\displaystyle g \circ f$, est l'application :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle g \circ f : E \to G, \quad x \mapsto g(f(x))$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Associativité :</strong> $\displaystyle (h \circ g) \circ f = h \circ (g \circ f)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Composée de deux injections :</strong> Si $\displaystyle f$ et $\displaystyle g$ sont injectives, alors $\displaystyle g \circ f$ est injective</li>
+                <li style="margin:0; text-align:left;"><strong>Composée de deux surjections :</strong> Si $\displaystyle f$ et $\displaystyle g$ sont surjectives, alors $\displaystyle g \circ f$ est surjective</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Injection, surjection, bijection</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Injection</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une application $\displaystyle f : E \to F$ est injective si :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \forall x, y \in E, \quad f(x) = f(y) \Rightarrow x = y$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">ou de manière équivalente :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \forall x, y \in E, \quad x \neq y \Rightarrow f(x) \neq f(y)$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Surjection</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une application $\displaystyle f : E \to F$ est surjective si :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \forall y \in F, \quad \exists x \in E, \quad f(x) = y$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">ou de manière équivalente :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(E) = F$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Bijection</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une application $\displaystyle f : E \to F$ est bijective si elle est à la fois injective et surjective.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle y \in F$, il existe un unique $\displaystyle x \in E$ tel que $\displaystyle f(x) = y$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle f : \mathbb{R} \to \mathbb{R}, \quad x \mapsto x^3$</strong> est <strong>bijective</strong> : 
+                    <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                        <li style="margin:0 0 8px 0;">Injective : si $\displaystyle x^3 = y^3$, alors $\displaystyle x = y$ (la fonction cube est strictement croissante)</li>
+                        <li style="margin:0;">Surjective : pour tout $\displaystyle y \in \mathbb{R}$, il existe $\displaystyle x = \sqrt[3]{y}$ tel que $\displaystyle x^3 = y$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle g : \mathbb{R} \to \mathbb{R}, \quad x \mapsto x^2$</strong> n'est <strong>ni injective ni surjective</strong> :
+                    <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                        <li style="margin:0 0 8px 0;">Pas injective : $\displaystyle g(-1) = 1 = g(1)$, donc deux antécédents différents ont la même image</li>
+                        <li style="margin:0;">Pas surjective : $\displaystyle -1 \in \mathbb{R}$ n'a pas d'antécédent (aucun $\displaystyle x$ tel que $\displaystyle x^2 = -1$)</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle h : \mathbb{R}_+ \to \mathbb{R}_+, \quad x \mapsto x^2$</strong> est <strong>bijective</strong> :
+                    <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                        <li style="margin:0 0 8px 0;">Injective : sur $\displaystyle \mathbb{R}_+$, la fonction carré est strictement croissante, donc $\displaystyle x \neq y \Rightarrow x^2 \neq y^2$</li>
+                        <li style="margin:0;">Surjective : pour tout $\displaystyle y \in \mathbb{R}_+$, il existe $\displaystyle x = \sqrt{y}$ tel que $\displaystyle x^2 = y$</li>
+                    </ul>
+                </li>
+                <li style="margin:0; text-align:left;"><strong>$\displaystyle \exp : \mathbb{R} \to \mathbb{R}_+^{\ast}, \quad x \mapsto e^x$</strong> est <strong>bijective</strong> :
+                    <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                        <li style="margin:0 0 8px 0;">Injective : la fonction exponentielle est strictement croissante sur $\displaystyle \mathbb{R}$</li>
+                        <li style="margin:0;">Surjective : l'image de $\displaystyle \exp$ est exactement $\displaystyle \mathbb{R}_+^{\ast}$ (tous les réels strictement positifs sont atteints)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction réciproque</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f : E \to F$ est bijective, alors il existe une unique application $\displaystyle f^{-1} : F \to E$ telle que :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f^{-1} \circ f = \text{Id}_E$ et $\displaystyle f \circ f^{-1} = \text{Id}_F$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle \text{Id}_E$ est l'application identité sur $\displaystyle E$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Composée de deux bijections :</strong> Si $\displaystyle f$ et $\displaystyle g$ sont bijectives, alors $\displaystyle (g \circ f)^{-1} = f^{-1} \circ g^{-1}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Réciproque de la réciproque :</strong> $\displaystyle (f^{-1})^{-1} = f$</li>
+                <li style="margin:0; text-align:left;"><strong>Compatibilité des notations :</strong> Si $\displaystyle f$ est bijective, alors $\displaystyle f^{-1}(\{y\}) = \{f^{-1}(y)\}$ pour tout $\displaystyle y \in F$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Relations binaires</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Relation binaire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une relation binaire $\displaystyle \mathcal{R}$ sur un ensemble $\displaystyle E$ est une partie de $\displaystyle E \times E$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note $\displaystyle x \mathcal{R} y$ pour signifier que $\displaystyle (x, y) \in \mathcal{R}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Relation d'égalité : $\displaystyle x = y$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Relation d'ordre : $\displaystyle x \leq y$ sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;">Relation de divisibilité : $\displaystyle a \mid b$ sur $\displaystyle \mathbb{Z}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Relation d'équivalence</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Relation d'équivalence</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une relation binaire $\displaystyle \mathcal{R}$ sur $\displaystyle E$ est une relation d'équivalence si elle est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Réflexive :</strong> $\displaystyle \forall x \in E, \quad x \mathcal{R} x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Symétrique :</strong> $\displaystyle \forall x, y \in E, \quad x \mathcal{R} y \Rightarrow y \mathcal{R} x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Transitive :</strong> $\displaystyle \forall x, y, z \in E, \quad (x \mathcal{R} y \text{ et } y \mathcal{R} z) \Rightarrow x \mathcal{R} z$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Classe d'équivalence</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle x \in E$, la classe d'équivalence de $\displaystyle x$ est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overline{x} = \{y \in E \mid x \mathcal{R} y\}$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété fondamentale :</strong> Les classes d'équivalence forment une partition de l'ensemble sous-jacent. Deux classes d'équivalence sont soit disjointes, soit égales.
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Congruence modulo $\displaystyle n$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle \mathbb{Z}$, la relation de congruence modulo $\displaystyle n$ (où $\displaystyle n \in \mathbb{N}^{\ast}$) est définie par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle a \equiv b \pmod{n} \quad \Leftrightarrow \quad n \mid (a-b)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est une relation d'équivalence. Les classes d'équivalence sont :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \overline{0} = \{nk \mid k \in \mathbb{Z}\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \overline{1} = \{nk+1 \mid k \in \mathbb{Z}\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \ldots$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \overline{n-1} = \{nk+(n-1) \mid k \in \mathbb{Z}\}$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces $\displaystyle n$ classes forment une partition de $\displaystyle \mathbb{Z}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Congruences dans $\displaystyle \mathbb{R}$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle \mathbb{R}$, on peut définir la relation :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x \equiv y \pmod{2\pi} \quad \Leftrightarrow \quad \exists k \in \mathbb{Z}, \quad x = y + 2k\pi$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette relation d'équivalence est fondamentale pour les fonctions trigonométriques.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Relation d'ordre</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Relation d'ordre</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une relation binaire $\displaystyle \preceq$ sur $\displaystyle E$ est une relation d'ordre si elle est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Réflexive :</strong> $\displaystyle \forall x \in E, \quad x \preceq x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Antisymétrique :</strong> $\displaystyle \forall x, y \in E, \quad (x \preceq y \text{ et } y \preceq x) \Rightarrow x = y$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Transitive :</strong> $\displaystyle \forall x, y, z \in E, \quad (x \preceq y \text{ et } y \preceq z) \Rightarrow x \preceq z$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Ordre partiel et ordre total</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une relation d'ordre est dite <strong>totale</strong> si :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \forall x, y \in E, \quad x \preceq y \text{ ou } y \preceq x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sinon, elle est dite <strong>partielle</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle (\mathbb{R}, \leq)$ : ordre total</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle (\mathcal{P}(E), \subset)$ : ordre partiel (l'inclusion est un ordre partiel)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle (\mathbb{N}, \mid)$ : ordre partiel (divisibilité)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle (\mathbb{Z}^{\ast}, \mid)$ : ordre partiel (la divisibilité n'est pas totale sur $\displaystyle \mathbb{Z}^{\ast}$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Élément maximal :</strong> $\displaystyle x$ est maximal si $\displaystyle \forall y \in E, \quad x \leq y \Rightarrow x = y$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Élément minimal :</strong> $\displaystyle x$ est minimal si $\displaystyle \forall y \in E, \quad y \leq x \Rightarrow x = y$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Plus grand élément :</strong> $\displaystyle x$ est le plus grand élément si $\displaystyle \forall y \in E, \quad y \leq x$</li>
+                <li style="margin:0; text-align:left;"><strong>Plus petit élément :</strong> $\displaystyle x$ est le plus petit élément si $\displaystyle \forall y \in E, \quad x \leq y$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>Bornes et extrémums (définitions) :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Majorant :</strong> Un élément $\displaystyle M \in E$ est un majorant de $\displaystyle A \subset E$ si $\displaystyle \forall x \in A, \quad x \leq M$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Minorant :</strong> Un élément $\displaystyle m \in E$ est un minorant de $\displaystyle A \subset E$ si $\displaystyle \forall x \in A, \quad m \leq x$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Maximum :</strong> $\displaystyle x_0 \in A$ est le maximum de $\displaystyle A$ si $\displaystyle \forall x \in A, \quad x \leq x_0$ (c'est un majorant qui appartient à $\displaystyle A$)</li>
+                <li style="margin:0; text-align:left;"><strong>Minimum :</strong> $\displaystyle x_0 \in A$ est le minimum de $\displaystyle A$ si $\displaystyle \forall x \in A, \quad x_0 \leq x$ (c'est un minorant qui appartient à $\displaystyle A$)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Rédaction d'une démonstration</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>Méthodo « prouver $\displaystyle P \Rightarrow Q$ » :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Poser clairement $\displaystyle P$</strong> (hypothèses) et $\displaystyle Q$ (but).</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Choisir la voie :</strong> directe / contraposée / absurde / récurrence.</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Justifier chaque ligne</strong> (définition, propriété, théorème).</li>
+                <li style="margin:0; text-align:left;"><strong>Conclure explicitement :</strong> « donc $\displaystyle Q$ ».</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pour une démonstration efficace :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Clarté :</strong> Utiliser des notations précises et cohérentes</li>
+                <li style="margin:0; text-align:left;"><strong>Structure :</strong> Organiser la démonstration en étapes logiques claires</li>
+                <li style="margin:0; text-align:left;"><strong>Justification :</strong> Chaque étape doit être justifiée par une propriété connue</li>
+                <li style="margin:0; text-align:left;"><strong>Quantificateurs :</strong> Utiliser les quantificateurs avec précision, pas comme abréviation</li>
+                <li style="margin:0; text-align:left;"><strong>Négation :</strong> Savoir formuler correctement la négation d'une proposition</li>
+                <li style="margin:0; text-align:left;"><strong>Méthode :</strong> Choisir la méthode de raisonnement appropriée (direct, contraposition, absurde, récurrence)</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;">Confondre $\displaystyle \in$ (appartenance) et $\displaystyle \subset$ (inclusion)</li>
+                <li style="margin:0; text-align:left;">Utiliser $\displaystyle f^{-1}$ sans vérifier que $\displaystyle f$ est bijective</li>
+                <li style="margin:0; text-align:left;">Confondre image directe et image réciproque</li>
+                <li style="margin:0; text-align:left;">Oublier de vérifier les conditions d'une relation d'équivalence ou d'ordre</li>
+                <li style="margin:0; text-align:left;">Négliger l'initialisation dans un raisonnement par récurrence</li>
+                <li style="margin:0; text-align:left;">Confondre condition nécessaire et condition suffisante</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===
+

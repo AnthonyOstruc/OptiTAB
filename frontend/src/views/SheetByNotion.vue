@@ -137,6 +137,7 @@ let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
 const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
+const contentHeight = ref(0)
 
 // Recherche dans la page
 const searchQuery = ref('')
@@ -236,6 +237,7 @@ const zoomStyle = computed(() => {
   const widthPercent = (100 / z).toFixed(3)
   return {
     '--sheet-zoom': z,
+    '--sheet-content-height': `${contentHeight.value}px`,
     transform: `scale(${z})`,
     transformOrigin: 'top left',
     width: `${widthPercent}%`
@@ -245,6 +247,18 @@ const zoomStyle = computed(() => {
 function updateViewportWidth() {
   if (typeof window === 'undefined') return
   viewportWidth.value = window.innerWidth
+  // Mesurer après redimensionnement pour ajuster la hauteur visible
+  nextTick(() => measureContentHeight())
+}
+
+function measureContentHeight() {
+  // Mesure la hauteur non transformée du contenu
+  if (!sheetContentRef.value) {
+    contentHeight.value = 0
+    return
+  }
+  // Utiliser scrollHeight pour tenir compte du contenu débordant
+  contentHeight.value = sheetContentRef.value.scrollHeight || sheetContentRef.value.offsetHeight || 0
 }
 
 function prepareTablesForScroll() {
@@ -268,6 +282,9 @@ function prepareTablesForScroll() {
     table.style.removeProperty('minWidth')
     table.style.removeProperty('whiteSpace')
   })
+
+  // Mise à jour des mesures après normalisation des tableaux
+  measureContentHeight()
 }
 
 function goBack() {
@@ -319,6 +336,7 @@ async function fetchSheet(nId) {
       updateHeadingMatches()
       setupTocObserver()
       setupScrollListener()
+      measureContentHeight()
     }, 150)
   }
 }
@@ -357,6 +375,7 @@ onActivated(() => {
       if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise()
       }
+      measureContentHeight()
     }, 100)
   })
 })
@@ -400,6 +419,7 @@ function setupTocObserver() {
     tocDebounce = setTimeout(() => {
       extractTableOfContents()
       buildSearchIndex()
+      measureContentHeight()
     }, 200)
   })
   tocObserver.observe(sheetContentRef.value, {
@@ -492,6 +512,7 @@ watch(() => route.params.notionId, (newId, oldId) => {
 watch(rendered, () => {
   nextTick(() => {
     prepareTablesForScroll()
+    measureContentHeight()
   })
 })
 
@@ -501,6 +522,7 @@ watch(zoomLevel, () => {
     if (typeof window !== 'undefined' && window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise().catch(() => {})
     }
+    measureContentHeight()
   })
 }, { immediate: true })
 
@@ -603,6 +625,19 @@ watch(() => route.query.q, (val) => {
   transform-origin: top left;
   transition: transform 0.2s ease;
   overflow-x: hidden;
+  /* Fallback (sans support de zoom): ajuste la hauteur réelle à l'échelle visible */
+  height: calc(var(--sheet-content-height, 0px) * var(--sheet-zoom, 1));
+}
+
+/* Sur navigateurs qui supportent zoom (Chrome/Edge/Safari),
+   on préfère zoom pour éviter l'espace blanc en bas lié au transform */
+@supports (zoom: 1) {
+  .sheet-content-outer {
+    zoom: var(--sheet-zoom, 1);
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+  }
 }
 
 /* Recherche dans la page */

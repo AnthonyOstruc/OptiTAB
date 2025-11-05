@@ -72,7 +72,7 @@
       </div>
 
       <!-- Tarifs Section -->
-      <div class="tarifs-section">
+      <div id="tarifs" class="tarifs-section">
         <div class="container">
           <h2 class="section-title">Nos formules de cours particuliers</h2>
           <div class="tarifs-grid">

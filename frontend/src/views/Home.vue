@@ -13,6 +13,7 @@ import PricingSection from '@/components/home/PricingSection.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import { ref, onMounted, onUnmounted, computed, nextTick, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { getMatieres } from '@/api'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 
@@ -32,6 +33,7 @@ import {
 } from '@/config/homeContent.js'
 
 const matieres = ref([])
+const router = useRouter()
 const { openModal } = useModalManager()
 
 // Système de zoom automatique pour mobile (comme Cours.vue)
@@ -80,7 +82,8 @@ function measureContentHeight() {
 // Handler pour la sélection d'une matière
 const handleSubjectSelected = (subject) => {
   console.log('Matière sélectionnée:', subject)
-  alert(`Matière "${subject.nom}" sélectionnée !`)
+  // Rediriger vers la page des cours particuliers avec un scroll vers la section tarifs
+  router.push({ name: 'CoursParticuliers', hash: '#tarifs' })
 }
 
 // Handler pour le bouton CTA principal (Découvrir OptiTAB)

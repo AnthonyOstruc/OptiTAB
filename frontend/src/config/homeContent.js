@@ -46,7 +46,7 @@ export const introFeatures = {
   ]
 };
 
-export const titreSujets = "Cours et accompagnement, du collège aux grandes écoles.";
+export const titreSujets = "Cours particuliers et accompagnement, du collège aux grandes écoles.";
 
 // export const sujets = subjects; // supprimé, tout est dynamique
 
@@ -129,32 +129,52 @@ export const liensPiedDePage = [
 
 export const faq = [
   {
-    question: "Quels sujets de mathématiques Optitab couvre-t-il ?",
-    answer: "Optitab couvre une gamme complète de mathématiques de l'arithmétique de base au calcul avancé. Cela inclut l'algèbre, la géométrie, la trigonométrie, les statistiques, le pré-calcul, le calcul, et plus encore. Notre contenu convient du collège au niveau universitaire."
+    question: "Qu'est-ce que j'obtiens avec OptiTAB ?",
+    answer: "Cours, fiches de synthèse, exercices guidés pas à pas, outils de calcul, correction d'exercice, tableau de bord."
   },
   {
-    question: "Puis-je utiliser Optitab sur mon appareil mobile ?",
-    answer: "Oui, Optitab est accessible sur tous les appareils : ordinateurs, tablettes et smartphones. Vous pouvez apprendre où que vous soyez, à tout moment."
+    question: "Comment choisir mon plan ?",
+    answer: "Pass 24h (coup de boost, paiement unique) • Hebdo (avant un contrôle) • Mensuel (le plus rentable si tu révises >2 semaines)."
   },
   {
-    question: "Comment fonctionnent les outils de calcul intégrés ?",
-    answer: "Nos outils de calcul (calculatrices, solveurs, graphiques) sont intégrés à la plateforme et utilisables directement dans les cours et exercices, sans installation supplémentaire."
+    question: "Puis-je annuler à tout moment ?",
+    answer: "Oui. Depuis Mon compte → Abonnement. Tu gardes l'accès jusqu'à la fin de la période payée."
   },
   {
-    question: "Les enseignants sont-ils vraiment qualifiés ?",
-    answer: "Tous nos contenus sont conçus et validés par des professeurs certifiés et des experts pédagogiques, pour garantir la qualité et la fiabilité de chaque ressource."
+    question: "Puis-je changer de formule (hebdo ⇄ mensuel) ?",
+    answer: "Oui, le changement s'applique à la prochaine échéance."
   },
   {
-    question: "Que faire si je ne suis pas satisfait de mon abonnement ?",
-    answer: "Vous pouvez résilier votre abonnement à tout moment. Si vous n'êtes pas satisfait, contactez notre support pour trouver une solution adaptée ou obtenir un remboursement selon nos conditions."
+    question: "Le paiement est-il sécurisé ?",
+    answer: "Oui, via Stripe. Aucune donnée de carte n'est stockée chez nous."
   },
   {
-    question: "Comment fonctionne le suivi de progression ?",
-    answer: "Votre progression est suivie automatiquement : vous visualisez vos résultats, vos badges, et vos objectifs atteints sur votre tableau de bord personnel."
+    question: "Factures disponibles ?",
+    answer: "Oui, envoyées par email après chaque règlement."
   },
   {
-    question: "Puis-je accéder aux contenus hors ligne ?",
-    answer: "Certaines ressources sont téléchargeables pour un accès hors ligne. Nous travaillons à élargir cette fonctionnalité pour plus de flexibilité."
+    question: "OptiTAB fonctionne sur mobile ?",
+    answer: "Oui, site responsive (ordi, tablette, smartphone). Pas d'appli à installer."
+  },
+  {
+    question: "Comment est créé le contenu ?",
+    answer: "Par des enseignants expérimentés, mis à jour chaque semaine."
+  },
+  {
+    question: "Mes données sont-elles protégées ?",
+    answer: "Oui : hébergement UE, respect du RGPD. Tu peux demander la suppression de ton compte."
+  },
+  {
+    question: "Puis-je partager mon compte ?",
+    answer: "Non. 1 compte = 1 utilisateur (le partage entraîne des déconnexions automatiques)."
+  },
+  {
+    question: "Besoin d'aide ?",
+    answer: "WhatsApp & email, 7 j/7 – réponse sous 24 h."
+  },
+  {
+    question: "OptiTAB propose-t-il des cours particuliers ?",
+    answer: "Oui. Cours particuliers en sciences (maths, physique, chimie, Informatique) pour tous niveaux, de la 6e aux Grandes Écoles. Séances en ligne, méthode pas à pas, planning flexible."
   }
 ];
 

@@ -31,6 +31,9 @@
           {{ ctaSecondary }}
         </button>
       </div>
+      <div class="section-hero__reviews">
+        <GoogleReviewsCompact />
+      </div>
     </div>
     <div class="section-hero__image-wrapper" v-if="image">
       <div class="image-glow"></div>
@@ -51,12 +54,16 @@
       <button v-if="ctaSecondary" class="section-hero__cta secondary" @click="$emit('cta-secondary')">
         {{ ctaSecondary }}
       </button>
+      <div class="section-hero__reviews-mobile">
+        <GoogleReviewsCompact />
+      </div>
     </div>
   </section>
 </template>
 
 <script setup>
 import heroDefaultImage from '@/assets/Images/HeroSection2.png'
+import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
 const props = defineProps({
   titre: { type: String, default: '' },
   sousTitre: { type: String, default: '' },
@@ -510,6 +517,18 @@ const props = defineProps({
     align-items: center;
   }
 }
+
+.section-hero__reviews {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeInUp 0.8s ease-out 0.7s both;
+  
+  @media (max-width: 800px) {
+    display: none; /* Masqué sur mobile, visible dans le CTA mobile */
+  }
+}
 .section-hero__cta {
   font-weight: 700;
   font-size: 1.1rem;
@@ -711,6 +730,14 @@ const props = defineProps({
     margin-top: 20px;
     gap: 0.625rem;
     padding: 0 4vw;
+  }
+}
+
+.section-hero__reviews-mobile {
+  margin-top: 1rem;
+  
+  @media (min-width: 801px) {
+    display: none;
   }
 }
 

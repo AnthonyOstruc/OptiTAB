@@ -24,12 +24,15 @@
         <a v-else :href="link.href" class="footer-legal-link" target="_blank" rel="noopener">{{ link.label }}</a>
         <span v-if="idx < footerLinks.length - 1" class="footer-legal-sep">|</span>
       </template>
+      <span class="footer-legal-sep">|</span>
+      <GoogleReviewsCompact class="footer-size" />
     </div>
   </footer>
 </template>
 
 <script setup>
 import { footerLinks } from '@/config/footerContent.js';
+import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue';
 // Footer compact et personnalisé, plus de props dynamiques nécessaires
 </script>
 
@@ -136,6 +139,55 @@ import { footerLinks } from '@/config/footerContent.js';
   color: #fff;
   text-decoration: underline;
 }
+
+.footer-size {
+  color: #fff !important;
+  
+  .google-logo-svg {
+    filter: brightness(1.3) saturate(1.4);
+  }
+  
+  .rating-text {
+    .star-icon {
+      filter: brightness(1.4) saturate(1.3);
+    }
+    
+    .rating-badge {
+      background: #fbbf24 !important;
+      color: #1f2937 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+  }
+  
+  .link-text {
+    color: #fff !important;
+  }
+  
+  &:hover {
+    color: #fff !important;
+    
+    .google-logo-svg {
+      filter: brightness(1.5) saturate(1.5);
+    }
+    
+    .rating-text {
+      .star-icon {
+        filter: brightness(1.5) saturate(1.4);
+      }
+      
+      .rating-badge {
+        background: #f59e0b !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      }
+    }
+    
+    .link-text {
+      color: #fff !important;
+      text-decoration: underline;
+    }
+  }
+}
+
 .footer-legal-copyright {
   width: 100%;
   display: flex;

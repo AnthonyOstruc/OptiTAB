@@ -11,10 +11,10 @@
     @data-loaded="onDataLoaded"
     @filter-changed="onFilterChanged"
   >
-    <!-- Actions en-tête: bouton Voir l'historique complet -->
+    <!-- Actions en-tête: bouton Archive -->
     <template #header-actions>
-      <button class="view-history-btn" @click="goToFullHistory" title="Voir tout l'historique" aria-label="Voir tout l'historique">
-        Voir l'historique
+      <button class="view-history-btn" @click="goToFullHistory" title="Archive" aria-label="Archive">
+        Archive
       </button>
     </template>
     <!-- Statistiques globales -->

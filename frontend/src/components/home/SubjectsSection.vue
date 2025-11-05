@@ -1,6 +1,6 @@
 <template>
   <section class="subjects-section">
-    <h2>{{ titre }}</h2>
+    <h2 @click="navigateToCoursParticuliers" class="clickable-title">{{ titre }}</h2>
     <div class="subjects-grid">
       <BaseCard
         v-for="sujet in sujets"
@@ -16,7 +16,10 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
 import BaseCard from '@/components/UI/BaseCard.vue'
+
+const router = useRouter()
 
 const props = defineProps({
   titre: { type: String, required: true },
@@ -28,6 +31,10 @@ const emit = defineEmits(['subject-selected'])
 function onSubjectClick(subject) {
   console.log(`Subject clicked: ${subject.nom}`)
   emit('subject-selected', subject)
+}
+
+function navigateToCoursParticuliers() {
+  router.push('/cours-particuliers')
 }
 </script>
 
@@ -46,6 +53,15 @@ function onSubjectClick(subject) {
   /* Descendre le titre H2 */
   margin-top: 1.5rem;
   padding-top: 0.75rem;
+}
+
+.clickable-title {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.clickable-title:hover {
+  color: #3b82f6;
 }
 
 .subjects-grid {

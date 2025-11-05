@@ -169,6 +169,9 @@
             <div class="cta-guarantee">
               <span class="guarantee-text">Essai gratuit de 7 jours • Résultats garantis • Support 24/7</span>
             </div>
+            <div class="cta-reviews">
+              <GoogleReviewsCompact />
+            </div>
           </div>
         </div>
       </div>
@@ -186,6 +189,7 @@
 <script setup>
 import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
+import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
 import about from '@/config/aboutContent.js'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 
@@ -757,6 +761,14 @@ const getSectionIcon = (emoji) => {
   gap: 0.5rem;
   color: #6b7280;
   font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.cta-reviews {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .guarantee-icon {

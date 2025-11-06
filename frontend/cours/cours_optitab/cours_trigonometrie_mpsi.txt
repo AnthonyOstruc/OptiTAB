@@ -1,0 +1,646 @@
+=== Trigonométrie - Programme MPSI
+Difficulté: medium
+Ordre: 3
+Images: 
+
+Titre: Trigonométrie : Cercle Trigonométrique, Formules et Fonctions Circulaires
+Description: Cours complet sur la trigonométrie en MPSI : cercle trigonométrique, congruences modulo 2π, formules d'addition et de duplication, fonctions circulaires, tangente et équations trigonométriques.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Cercle trigonométrique et paramétrisation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Le cercle trigonométrique</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cercle trigonométrique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le cercle trigonométrique est le cercle de centre $\displaystyle O$ et de rayon $\displaystyle 1$, muni d'un sens de parcours direct (sens inverse des aiguilles d'une montre).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">À tout réel $\displaystyle x \in \mathbb{R}$, on associe un unique point $\displaystyle M$ du cercle trigonométrique tel que l'arc orienté $\displaystyle \widehat{OM}$ soit de mesure $\displaystyle x$ radians.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Paramétrisation par cosinus et sinus</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle M$ est le point du cercle trigonométrique associé à l'angle $\displaystyle x$, alors les coordonnées de $\displaystyle M$ dans le repère orthonormé direct $\displaystyle (O; \vec{i}, \vec{j})$ sont :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle M(\cos(x), \sin(x))$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'abscisse est le <strong>cosinus</strong> de $\displaystyle x$ et l'ordonnée est le <strong>sinus</strong> de $\displaystyle x$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriété fondamentale :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos^2(x) + \sin^2(x) = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette relation découle du fait que $\displaystyle M$ est sur le cercle de rayon $\displaystyle 1$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle x = 0$ : $\displaystyle M(1, 0)$, donc $\displaystyle \cos(0) = 1$ et $\displaystyle \sin(0) = 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle x = \frac{\pi}{2}$ : $\displaystyle M(0, 1)$, donc $\displaystyle \cos\left(\frac{\pi}{2}\right) = 0$ et $\displaystyle \sin\left(\frac{\pi}{2}\right) = 1$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle x = \pi$ : $\displaystyle M(-1, 0)$, donc $\displaystyle \cos(\pi) = -1$ et $\displaystyle \sin(\pi) = 0$</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle x = \frac{3\pi}{2}$ : $\displaystyle M(0, -1)$, donc $\displaystyle \cos\left(\frac{3\pi}{2}\right) = 0$ et $\displaystyle \sin\left(\frac{3\pi}{2}\right) = -1$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Congruence modulo 2π et périodicité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Relation de congruence</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Congruence modulo $\displaystyle 2\pi$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux réels $\displaystyle a$ et $\displaystyle b$ sont congrus modulo $\displaystyle 2\pi$ si leur différence est un multiple de $\displaystyle 2\pi$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle a \equiv b \;[2\pi] \quad \Longleftrightarrow \quad \exists k \in \mathbb{Z}, \; a = b + 2k\pi$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriété - Périodicité des fonctions trigonométriques :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in \mathbb{R}$ et tout $\displaystyle k \in \mathbb{Z}$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos(x + 2k\pi) = \cos(x)$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin(x + 2k\pi) = \sin(x)$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les fonctions cosinus et sinus sont <strong>périodiques de période $\displaystyle 2\pi$</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos\left(\frac{9\pi}{4}\right) = \cos\left(\frac{\pi}{4} + 2\pi\right) = \cos\left(\frac{\pi}{4}\right) = \frac{\sqrt{2}}{2}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \sin(-\pi) = \sin(-\pi + 2\pi) = \sin(\pi) = 0$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \frac{7\pi}{3} \equiv \frac{\pi}{3} \;[2\pi]$ car $\displaystyle \frac{7\pi}{3} = \frac{\pi}{3} + 2\pi$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Parité des fonctions trigonométriques</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés de parité :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Cosinus (paire) :</strong> $\displaystyle \cos(-x) = \cos(x)$ pour tout $\displaystyle x \in \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;"><strong>Sinus (impaire) :</strong> $\displaystyle \sin(-x) = -\sin(x)$ pour tout $\displaystyle x \in \mathbb{R}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos\left(-\frac{\pi}{3}\right) = \cos\left(\frac{\pi}{3}\right) = \frac{1}{2}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin\left(-\frac{\pi}{6}\right) = -\sin\left(\frac{\pi}{6}\right) = -\frac{1}{2}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Formules de transformation d'angles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules avec π</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Formules $\displaystyle \pi + x$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos(\pi + x) = -\cos(x)$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin(\pi + x) = -\sin(x)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Formules $\displaystyle \pi - x$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos(\pi - x) = -\cos(x)$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin(\pi - x) = \sin(x)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos\left(\frac{5\pi}{6}\right) = \cos\left(\pi - \frac{\pi}{6}\right) = -\cos\left(\frac{\pi}{6}\right) = -\frac{\sqrt{3}}{2}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin\left(\frac{5\pi}{6}\right) = \sin\left(\pi - \frac{\pi}{6}\right) = \sin\left(\frac{\pi}{6}\right) = \frac{1}{2}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules avec π/2</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Formules $\displaystyle \frac{\pi}{2} + x$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos\left(\frac{\pi}{2} + x\right) = -\sin(x)$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin\left(\frac{\pi}{2} + x\right) = \cos(x)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Formules $\displaystyle \frac{\pi}{2} - x$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos\left(\frac{\pi}{2} - x\right) = \sin(x)$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin\left(\frac{\pi}{2} - x\right) = \cos(x)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong> Les angles $\displaystyle x$ et $\displaystyle \frac{\pi}{2} - x$ sont complémentaires (leur somme vaut $\displaystyle \frac{\pi}{2}$). Le cosinus de l'un est le sinus de l'autre.
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos\left(\frac{2\pi}{3}\right) = \cos\left(\frac{\pi}{2} + \frac{\pi}{6}\right) = -\sin\left(\frac{\pi}{6}\right) = -\frac{1}{2}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin\left(\frac{\pi}{3}\right) = \sin\left(\frac{\pi}{2} - \frac{\pi}{6}\right) = \cos\left(\frac{\pi}{6}\right) = \frac{\sqrt{3}}{2}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Angles usuels</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Tableau des valeurs remarquables</h3>
+
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px;">Angle $\displaystyle x$</th>
+                    <th style="border:1px solid #ddd; padding:12px;">$\displaystyle 0$</th>
+                    <th style="border:1px solid #ddd; padding:12px;">$\displaystyle \frac{\pi}{6}$</th>
+                    <th style="border:1px solid #ddd; padding:12px;">$\displaystyle \frac{\pi}{4}$</th>
+                    <th style="border:1px solid #ddd; padding:12px;">$\displaystyle \frac{\pi}{3}$</th>
+                    <th style="border:1px solid #ddd; padding:12px;">$\displaystyle \frac{\pi}{2}$</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; font-weight:600;">$\displaystyle \cos(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \frac{\sqrt{3}}{2}$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \frac{\sqrt{2}}{2}$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \frac{1}{2}$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; font-weight:600;">$\displaystyle \sin(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \frac{1}{2}$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \frac{\sqrt{2}}{2}$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \frac{\sqrt{3}}{2}$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1$</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Astuce mnémotechnique :</strong> Pour retenir les valeurs du cosinus de $\displaystyle 0$ à $\displaystyle \frac{\pi}{2}$ :
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(k\frac{\pi}{6}) = \frac{\sqrt{4-k}}{2}$ pour $\displaystyle k = 0, 1, 2, 3$ (angles $\displaystyle 0, \frac{\pi}{6}, \frac{\pi}{3}, \frac{\pi}{2}$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ou en séquence : $\displaystyle \frac{\sqrt{0}}{2}, \frac{\sqrt{1}}{2}, \frac{\sqrt{2}}{2}, \frac{\sqrt{3}}{2}, \frac{\sqrt{4}}{2}$ pour $\displaystyle \sin$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Et l'inverse pour $\displaystyle \cos$ : $\displaystyle \frac{\sqrt{4}}{2}, \frac{\sqrt{3}}{2}, \frac{\sqrt{2}}{2}, \frac{\sqrt{1}}{2}, \frac{\sqrt{0}}{2}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Formules d'addition et de duplication</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules d'addition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formules d'addition pour cosinus et sinus</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle a, b \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(a + b) = \cos(a)\cos(b) - \sin(a)\sin(b)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(a - b) = \cos(a)\cos(b) + \sin(a)\sin(b)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sin(a + b) = \sin(a)\cos(b) + \cos(a)\sin(b)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sin(a - b) = \sin(a)\cos(b) - \cos(a)\sin(b)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos\left(\frac{\pi}{12}\right) = \cos\left(\frac{\pi}{3} - \frac{\pi}{4}\right) = \cos\left(\frac{\pi}{3}\right)\cos\left(\frac{\pi}{4}\right) + \sin\left(\frac{\pi}{3}\right)\sin\left(\frac{\pi}{4}\right) = \frac{1}{2} \times \frac{\sqrt{2}}{2} + \frac{\sqrt{3}}{2} \times \frac{\sqrt{2}}{2} = \frac{\sqrt{2} + \sqrt{6}}{4}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin\left(\frac{5\pi}{12}\right) = \sin\left(\frac{\pi}{6} + \frac{\pi}{4}\right) = \sin\left(\frac{\pi}{6}\right)\cos\left(\frac{\pi}{4}\right) + \cos\left(\frac{\pi}{6}\right)\sin\left(\frac{\pi}{4}\right) = \frac{1}{2} \times \frac{\sqrt{2}}{2} + \frac{\sqrt{3}}{2} \times \frac{\sqrt{2}}{2} = \frac{\sqrt{2} + \sqrt{6}}{4}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules de duplication</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formules de duplication</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle a \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(2a) = \cos^2(a) - \sin^2(a) = 2\cos^2(a) - 1 = 1 - 2\sin^2(a)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sin(2a) = 2\sin(a)\cos(a)$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong> Les formules de duplication s'obtiennent en prenant $\displaystyle b = a$ dans les formules d'addition.
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos\left(\frac{\pi}{3}\right) = \cos\left(2 \times \frac{\pi}{6}\right) = 2\cos^2\left(\frac{\pi}{6}\right) - 1 = 2 \times \frac{3}{4} - 1 = \frac{1}{2}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \sin\left(\frac{\pi}{3}\right) = \sin\left(2 \times \frac{\pi}{6}\right) = 2\sin\left(\frac{\pi}{6}\right)\cos\left(\frac{\pi}{6}\right) = 2 \times \frac{1}{2} \times \frac{\sqrt{3}}{2} = \frac{\sqrt{3}}{2}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \cos(2\pi) = 2\cos^2(\pi) - 1 = 2 \times 1 - 1 = 1$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules de linéarisation</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formules de linéarisation (déduites de la duplication)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos^2(a) = \frac{1 + \cos(2a)}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sin^2(a) = \frac{1 - \cos(2a)}{2}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos^2\left(\frac{\pi}{8}\right) = \frac{1 + \cos\left(\frac{\pi}{4}\right)}{2} = \frac{1 + \frac{\sqrt{2}}{2}}{2} = \frac{2 + \sqrt{2}}{4}$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules de transformation de produits en sommes</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Produits en sommes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle a, b \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(a)\cos(b) = \frac{\cos(a-b) + \cos(a+b)}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sin(a)\sin(b) = \frac{\cos(a-b) - \cos(a+b)}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sin(a)\cos(b) = \frac{\sin(a+b) + \sin(a-b)}{2}$</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode pour retrouver ces formules :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On additionne ou soustrait les formules d'addition :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(a+b) + \cos(a-b) = 2\cos(a)\cos(b)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(a-b) - \cos(a+b) = 2\sin(a)\sin(b)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sin(a+b) + \sin(a-b) = 2\sin(a)\cos(b)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos\left(\frac{\pi}{3}\right)\cos\left(\frac{\pi}{6}\right) = \frac{\cos\left(\frac{\pi}{6}\right) + \cos\left(\frac{\pi}{2}\right)}{2} = \frac{\frac{\sqrt{3}}{2} + 0}{2} = \frac{\sqrt{3}}{4}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Équations et inéquations trigonométriques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Équations de base</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Équation $\displaystyle \cos(x) = \cos(a)$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x = a + 2k\pi \quad \text{ou} \quad x = -a + 2k\pi \quad (k \in \mathbb{Z})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notation compacte : $\displaystyle x \equiv \pm a \;[2\pi]$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Équation $\displaystyle \sin(x) = \sin(a)$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x = a + 2k\pi \quad \text{ou} \quad x = \pi - a + 2k\pi \quad (k \in \mathbb{Z})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notation compacte : $\displaystyle x \equiv a \;[2\pi]$ ou $\displaystyle x \equiv \pi - a \;[2\pi]$</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode de résolution :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Ramener l'équation à la forme $\displaystyle \cos(x) = a$ ou $\displaystyle \sin(x) = a$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Vérifier que $\displaystyle |a| \leq 1$ (sinon pas de solution)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Trouver un angle de référence $\displaystyle \alpha$ tel que $\displaystyle \cos(\alpha) = a$ ou $\displaystyle \sin(\alpha) = a$</li>
+                <li style="margin:0; text-align:left;">Appliquer les formules générales avec le cercle trigonométrique</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Résoudre $\displaystyle \cos(x) = \frac{1}{2}$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On sait que $\displaystyle \cos\left(\frac{\pi}{3}\right) = \frac{1}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle x = \frac{\pi}{3} + 2k\pi$ ou $\displaystyle x = -\frac{\pi}{3} + 2k\pi$ avec $\displaystyle k \in \mathbb{Z}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle [0, 2\pi]$ : $\displaystyle x = \frac{\pi}{3}$ ou $\displaystyle x = \frac{5\pi}{3}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Résoudre $\displaystyle \sin(x) = \frac{\sqrt{2}}{2}$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On sait que $\displaystyle \sin\left(\frac{\pi}{4}\right) = \frac{\sqrt{2}}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle x = \frac{\pi}{4} + 2k\pi$ ou $\displaystyle x = \pi - \frac{\pi}{4} + 2k\pi = \frac{3\pi}{4} + 2k\pi$ avec $\displaystyle k \in \mathbb{Z}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle [0, 2\pi]$ : $\displaystyle x = \frac{\pi}{4}$ ou $\displaystyle x = \frac{3\pi}{4}$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Inéquations trigonométriques</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode avec le cercle trigonométrique :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Placer les valeurs critiques sur le cercle trigonométrique</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Repérer les zones du cercle satisfaisant l'inéquation</li>
+                <li style="margin:0; text-align:left;">Traduire en intervalles d'angles</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Résoudre $\displaystyle \cos(x) \geq \frac{1}{2}$ sur $\displaystyle [0, 2\pi]$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On sait que $\displaystyle \cos\left(\frac{\pi}{3}\right) = \frac{1}{2}$ et $\displaystyle \cos\left(\frac{5\pi}{3}\right) = \frac{1}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur le cercle trigonométrique, $\displaystyle \cos(x) \geq \frac{1}{2}$ correspond aux points dont l'abscisse est $\displaystyle \geq \frac{1}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solution : $\displaystyle x \in \left[0, \frac{\pi}{3}\right] \cup \left[\frac{5\pi}{3}, 2\pi\right]$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Fonctions circulaires cosinus et sinus</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définitions et propriétés</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonctions cosinus et sinus</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les applications $\displaystyle \cos : \mathbb{R} \to [-1, 1]$ et $\displaystyle \sin : \mathbb{R} \to [-1, 1]$ sont appelées <strong>fonctions circulaires</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Elles sont continues, dérivables sur $\displaystyle \mathbb{R}$, et périodiques de période $\displaystyle 2\pi$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés des fonctions cosinus et sinus :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Périodicité :</strong> $\displaystyle \cos(x + 2\pi) = \cos(x)$ et $\displaystyle \sin(x + 2\pi) = \sin(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Parité :</strong> $\displaystyle \cos$ est paire, $\displaystyle \sin$ est impaire</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Bornes :</strong> $\displaystyle -1 \leq \cos(x) \leq 1$ et $\displaystyle -1 \leq \sin(x) \leq 1$ pour tout $\displaystyle x \in \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;"><strong>Relation fondamentale :</strong> $\displaystyle \cos^2(x) + \sin^2(x) = 1$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivées des fonctions circulaires</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivées</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (\cos(x))' = -\sin(x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (\sin(x))' = \cos(x)$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration - Dérivée de sinus :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (\sin(x))' = \lim_{h \to 0} \frac{\sin(x+h) - \sin(x)}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En utilisant la formule d'addition : $\displaystyle \sin(x+h) = \sin(x)\cos(h) + \cos(x)\sin(h)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (\sin(x))' = \lim_{h \to 0} \frac{\sin(x)(\cos(h) - 1) + \cos(x)\sin(h)}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \sin(x) \lim_{h \to 0} \frac{\cos(h) - 1}{h} + \cos(x) \lim_{h \to 0} \frac{\sin(h)}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Or $\displaystyle \lim_{h \to 0} \frac{\sin(h)}{h} = 1$ et $\displaystyle \lim_{h \to 0} \frac{\cos(h) - 1}{h} = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle (\sin(x))' = \cos(x)$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés - Variations :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos$ est décroissante sur $\displaystyle [0, \pi]$ et croissante sur $\displaystyle [\pi, 2\pi]$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin$ est croissante sur $\displaystyle \left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ et décroissante sur $\displaystyle \left[\frac{\pi}{2}, \frac{3\pi}{2}\right]$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Inégalité fondamentale</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Inégalité de comparaison</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle |\sin(x)| \leq |x|$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Avec égalité si et seulement si $\displaystyle x = 0$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong> Cette inégalité est très utile pour comparer des expressions et établir des majorations.
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \left|\sin\left(\frac{\pi}{6}\right)\right| = \frac{1}{2} \leq \frac{\pi}{6} \approx 0.524$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle x = 0.1$ : $\displaystyle |\sin(0.1)| \approx 0.0998 < 0.1$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Fonction tangente</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et domaine</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction tangente</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction tangente, notée $\displaystyle \tan$, est définie pour tout $\displaystyle x \in \mathbb{R}$ tel que $\displaystyle \cos(x) \neq 0$ par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \tan(x) = \frac{\sin(x)}{\cos(x)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Domaine de définition : $\displaystyle D = \mathbb{R} \setminus \left\{\frac{\pi}{2} + k\pi, \; k \in \mathbb{Z}\right\}$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés de la fonction tangente :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Périodicité :</strong> $\displaystyle \tan(x + \pi) = \tan(x)$ (période $\displaystyle \pi$, et non $\displaystyle 2\pi$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Parité :</strong> $\displaystyle \tan(-x) = -\tan(x)$ (fonction impaire)</li>
+                <li style="margin:0; text-align:left;"><strong>Image :</strong> $\displaystyle \tan : D \to \mathbb{R}$ (la tangente prend toutes les valeurs réelles)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples - Valeurs usuelles :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \tan(0) = 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \tan\left(\frac{\pi}{6}\right) = \frac{\sin(\frac{\pi}{6})}{\cos(\frac{\pi}{6})} = \frac{\frac{1}{2}}{\frac{\sqrt{3}}{2}} = \frac{1}{\sqrt{3}} = \frac{\sqrt{3}}{3}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \tan\left(\frac{\pi}{4}\right) = \frac{\frac{\sqrt{2}}{2}}{\frac{\sqrt{2}}{2}} = 1$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \tan\left(\frac{\pi}{3}\right) = \frac{\frac{\sqrt{3}}{2}}{\frac{1}{2}} = \sqrt{3}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \tan\left(\frac{\pi}{2}\right)$ n'existe pas</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivée et variations</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée de la tangente</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in D$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (\tan(x))' = \frac{1}{\cos^2(x)} = 1 + \tan^2(x)$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (\tan(x))' = \left(\frac{\sin(x)}{\cos(x)}\right)' = \frac{(\sin(x))'\cos(x) - \sin(x)(\cos(x))'}{\cos^2(x)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \frac{\cos(x)\cos(x) - \sin(x)(-\sin(x))}{\cos^2(x)} = \frac{\cos^2(x) + \sin^2(x)}{\cos^2(x)} = \frac{1}{\cos^2(x)}$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Variations de la tangente :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle \tan$ est strictement croissante sur chaque intervalle $\displaystyle \left]-\frac{\pi}{2} + k\pi, \frac{\pi}{2} + k\pi\right[$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En effet, $\displaystyle (\tan(x))' = \frac{1}{\cos^2(x)} > 0$ sur le domaine de définition.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules de transformation pour la tangente</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Formules avec $\displaystyle \pi$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \tan(\pi + x) = \tan(x)$ (périodicité)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \tan(\pi - x) = -\tan(x)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formule d'addition pour la tangente</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle a, b$ tels que les tangentes soient définies :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \tan(a + b) = \frac{\tan(a) + \tan(b)}{1 - \tan(a)\tan(b)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \tan(a - b) = \frac{\tan(a) - \tan(b)}{1 + \tan(a)\tan(b)}$</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode pour retrouver ces formules :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \tan(a+b) = \frac{\sin(a+b)}{\cos(a+b)} = \frac{\sin(a)\cos(b) + \cos(a)\sin(b)}{\cos(a)\cos(b) - \sin(a)\sin(b)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On divise numérateur et dénominateur par $\displaystyle \cos(a)\cos(b)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \frac{\frac{\sin(a)}{\cos(a)} + \frac{\sin(b)}{\cos(b)}}{1 - \frac{\sin(a)}{\cos(a)} \times \frac{\sin(b)}{\cos(b)}} = \frac{\tan(a) + \tan(b)}{1 - \tan(a)\tan(b)}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \tan\left(\frac{\pi}{12}\right) = \tan\left(\frac{\pi}{3} - \frac{\pi}{4}\right) = \frac{\tan\left(\frac{\pi}{3}\right) - \tan\left(\frac{\pi}{4}\right)}{1 + \tan\left(\frac{\pi}{3}\right)\tan\left(\frac{\pi}{4}\right)} = \frac{\sqrt{3} - 1}{1 + \sqrt{3} \times 1} = \frac{\sqrt{3} - 1}{1 + \sqrt{3}}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En multipliant par le conjugué : $\displaystyle = \frac{(\sqrt{3} - 1)(1 - \sqrt{3})}{(1 + \sqrt{3})(1 - \sqrt{3})} = \frac{-(\sqrt{3} - 1)^2}{1 - 3} = \frac{4 - 2\sqrt{3}}{2} = 2 - \sqrt{3}$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Interprétation géométrique sur le cercle</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation géométrique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur le cercle trigonométrique, si on trace la tangente au cercle au point $\displaystyle (1, 0)$, alors $\displaystyle \tan(x)$ représente l'ordonnée du point d'intersection entre cette tangente et la demi-droite issue de $\displaystyle O$ faisant l'angle $\displaystyle x$ avec l'axe des abscisses.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Formules de l'angle moitié</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Expression en fonction de tan(t/2)</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formules de l'angle moitié</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle t \in \mathbb{R}$ tel que $\displaystyle \tan\left(\frac{t}{2}\right)$ existe, en posant $\displaystyle u = \tan\left(\frac{t}{2}\right)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(t) = \frac{1 - u^2}{1 + u^2} = \frac{1 - \tan^2\left(\frac{t}{2}\right)}{1 + \tan^2\left(\frac{t}{2}\right)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sin(t) = \frac{2u}{1 + u^2} = \frac{2\tan\left(\frac{t}{2}\right)}{1 + \tan^2\left(\frac{t}{2}\right)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \tan(t) = \frac{2u}{1 - u^2} = \frac{2\tan\left(\frac{t}{2}\right)}{1 - \tan^2\left(\frac{t}{2}\right)}$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration - Formule pour cos(t) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise la formule de duplication : $\displaystyle \cos(t) = \cos\left(2 \times \frac{t}{2}\right) = \cos^2\left(\frac{t}{2}\right) - \sin^2\left(\frac{t}{2}\right)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On divise numérateur et dénominateur par $\displaystyle \cos^2\left(\frac{t}{2}\right)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(t) = \frac{\cos^2\left(\frac{t}{2}\right) - \sin^2\left(\frac{t}{2}\right)}{\cos^2\left(\frac{t}{2}\right) + \sin^2\left(\frac{t}{2}\right)} = \frac{1 - \tan^2\left(\frac{t}{2}\right)}{1 + \tan^2\left(\frac{t}{2}\right)}$</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Application - Calcul intégral :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces formules sont très utiles pour le calcul d'intégrales de fractions rationnelles en $\displaystyle \cos(t)$ et $\displaystyle \sin(t)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le changement de variable $\displaystyle u = \tan\left(\frac{t}{2}\right)$ permet de transformer l'intégrale en une fraction rationnelle en $\displaystyle u$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Calcul avec $\displaystyle t = \frac{\pi}{3}$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Posons $\displaystyle u = \tan\left(\frac{\pi}{6}\right) = \frac{1}{\sqrt{3}}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos\left(\frac{\pi}{3}\right) = \frac{1 - u^2}{1 + u^2} = \frac{1 - \frac{1}{3}}{1 + \frac{1}{3}} = \frac{\frac{2}{3}}{\frac{4}{3}} = \frac{2}{4} = \frac{1}{2}$ ✓</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sin\left(\frac{\pi}{3}\right) = \frac{2u}{1 + u^2} = \frac{2 \times \frac{1}{\sqrt{3}}}{1 + \frac{1}{3}} = \frac{\frac{2}{\sqrt{3}}}{\frac{4}{3}} = \frac{6}{4\sqrt{3}} = \frac{3}{2\sqrt{3}} = \frac{\sqrt{3}}{2}$ ✓</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Récapitulatif des formules essentielles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Tableau récapitulatif</h3>
+
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:35%;">Type de formule</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Formules</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Relation fondamentale</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos^2(x) + \sin^2(x) = 1$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Addition cosinus</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(a \pm b) = \cos(a)\cos(b) \mp \sin(a)\sin(b)$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Addition sinus</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(a \pm b) = \sin(a)\cos(b) \pm \cos(a)\sin(b)$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Duplication</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(2a) = \cos^2(a) - \sin^2(a)$, $\displaystyle \sin(2a) = 2\sin(a)\cos(a)$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Linéarisation</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos^2(a) = \frac{1 + \cos(2a)}{2}$, $\displaystyle \sin^2(a) = \frac{1 - \cos(2a)}{2}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Tangente</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tan(x) = \frac{\sin(x)}{\cos(x)}$, $\displaystyle (\tan(x))' = 1 + \tan^2(x) = \frac{1}{\cos^2(x)}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Angle moitié</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(t) = \frac{1 - \tan^2(\frac{t}{2})}{1 + \tan^2(\frac{t}{2})}$, $\displaystyle \sin(t) = \frac{2\tan(\frac{t}{2})}{1 + \tan^2(\frac{t}{2})}$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes de résolution</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Pour résoudre une équation trigonométrique :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Simplifier</strong> l'équation en utilisant les formules</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Ramener</strong> à une équation de base : $\displaystyle \cos(x) = a$ ou $\displaystyle \sin(x) = a$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Utiliser le cercle trigonométrique</strong> pour visualiser les solutions</li>
+                <li style="margin:0; text-align:left;"><strong>Exprimer</strong> les solutions générales avec la périodicité</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Angles usuels :</strong> Mémoriser le tableau des valeurs de $\displaystyle 0, \frac{\pi}{6}, \frac{\pi}{4}, \frac{\pi}{3}, \frac{\pi}{2}$</li>
+                <li style="margin:0; text-align:left;"><strong>Cercle trigonométrique :</strong> Toujours s'aider du cercle pour résoudre équations et inéquations</li>
+                <li style="margin:0; text-align:left;"><strong>Formules :</strong> Savoir retrouver rapidement les formules d'addition et de duplication</li>
+                <li style="margin:0; text-align:left;"><strong>Périodicité :</strong> Cosinus et sinus ont période $\displaystyle 2\pi$, tangente a période $\displaystyle \pi$</li>
+                <li style="margin:0; text-align:left;"><strong>Parité :</strong> Utiliser $\displaystyle \cos(-x) = \cos(x)$ et $\displaystyle \sin(-x) = -\sin(x)$</li>
+                <li style="margin:0; text-align:left;"><strong>Simplification :</strong> Utiliser $\displaystyle 1 + \tan^2(x) = \frac{1}{\cos^2(x)}$ pour simplifier</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;">Confondre les formules $\displaystyle \cos(a+b)$ et $\displaystyle \cos(a-b)$ (attention aux signes)</li>
+                <li style="margin:0; text-align:left;">Oublier la périodicité : ne donner qu'une solution au lieu de toutes</li>
+                <li style="margin:0; text-align:left;">Confondre période $\displaystyle \pi$ (tangente) et $\displaystyle 2\pi$ (cosinus/sinus)</li>
+                <li style="margin:0; text-align:left;">Diviser par $\displaystyle \cos(x)$ sans vérifier qu'il est non nul</li>
+                <li style="margin:0; text-align:left;">Ne pas vérifier $\displaystyle |a| \leq 1$ pour $\displaystyle \cos(x) = a$ ou $\displaystyle \sin(x) = a$</li>
+                <li style="margin:0; text-align:left;">Oublier de ramener les angles dans $\displaystyle [0, 2\pi]$ ou $\displaystyle ]-\pi, \pi]$ quand demandé</li>
+                <li style="margin:0; text-align:left;">Mal utiliser les formules avec $\displaystyle \pi \pm x$ ou $\displaystyle \frac{\pi}{2} \pm x$</li>
+                <li style="margin:0; text-align:left;">Confondre $\displaystyle \tan(\pi + x) = \tan(x)$ et $\displaystyle \tan(\pi - x) = -\tan(x)$</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===
+
+

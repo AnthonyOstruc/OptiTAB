@@ -1,0 +1,301 @@
+===Résumé Sommes et Produits
+
+Images: 
+
+Titre: Résumé : Sommes et Produits
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Notations et conventions</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:30%;">Notation</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Signification</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Exemple</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{i=1}^{n} a_i$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle a_1 + a_2 + \cdots + a_n$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{i=1}^{5} i = 15$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \prod_{i=1}^{n} a_i$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle a_1 \times a_2 \times \cdots \times a_n$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \prod_{i=1}^{4} i = 24$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{i \in \emptyset} a_i$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">0 (élément neutre de l'addition)</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Convention</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \prod_{i \in \emptyset} a_i$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">1 (élément neutre de la multiplication)</td>
+                    <td style="border:1px solid #ddd; padding:10px;">Convention</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Propriétés des sommes</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #9c27b0;">
+            <thead>
+                <tr style="background:#9c27b0; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:35%;">Propriété</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Formule</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Linéarité</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{i} (\lambda a_i + \mu b_i) = \lambda \sum_{i} a_i + \mu \sum_{i} b_i$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Décomposition</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle I = J \cup K$ et $\displaystyle J \cap K = \emptyset$ : $\displaystyle \sum_{i \in I} a_i = \sum_{i \in J} a_i + \sum_{i \in K} a_i$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Changement d'indice</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{i=p}^{q} a_i = \sum_{j=p+k}^{q+k} a_{j-k}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Produit de deux sommes</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \left(\sum_{i=1}^{n} a_i\right) \times \left(\sum_{j=1}^{m} b_j\right) = \sum_{i=1}^{n} \sum_{j=1}^{m} a_i b_j$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Sommes télescopiques</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:25%;">Type</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Formule</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme télescopique</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{k=1}^{n} (u_{k+1} - u_k) = u_{n+1} - u_1$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Produit télescopique</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \prod_{k=1}^{n} \frac{u_{k+1}}{u_k} = \frac{u_{n+1}}{u_1}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Passage au logarithme</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln\left(\prod_{k} a_k\right) = \sum_{k} \ln(a_k)$ (si $\displaystyle a_k > 0$)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Formules classiques</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:40%;">Somme</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Formule</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme des entiers</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{k=1}^{n} k = \frac{n(n+1)}{2}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme des carrés</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{k=1}^{n} k^2 = \frac{n(n+1)(2n+1)}{6}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme des cubes</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{k=1}^{n} k^3 = \left(\frac{n(n+1)}{2}\right)^2$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme géométrique</strong> ($\displaystyle x \neq 1$)</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{k=0}^{n} x^k = \frac{1 - x^{n+1}}{1 - x}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Suite arithmétique</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{k=m}^{n} a_k = (n - m + 1) \times \frac{a_m + a_n}{2}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Factorisation</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle a^n - b^n = (a - b) \sum_{k=0}^{n-1} a^{n-1-k} b^k$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Factorielle et coefficients binomiaux</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:35%;">Notion</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Définition / Formule</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Factorielle</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle n! = \prod_{k=1}^{n} k = 1 \times 2 \times \cdots \times n$ avec $\displaystyle 0! = 1$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Récurrence</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (n+1)! = (n+1) \times n!$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Coefficient binomial</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$ si $\displaystyle 0 \leq k \leq n$, sinon $\displaystyle 0$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Symétrie</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n}{k} = \binom{n}{n-k}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Relation de Pascal</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n+1}{k} = \binom{n}{k} + \binom{n}{k-1}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme des coefficients</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Formule du binôme</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:40%;">Formule</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Expression</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Binôme de Newton</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (a + b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Cas $\displaystyle a = b = 1$</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 2^n = \sum_{k=0}^{n} \binom{n}{k}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Cas $\displaystyle a = 1$, $\displaystyle b = -1$</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0 = \sum_{k=0}^{n} (-1)^k \binom{n}{k}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Formule du bâton de hockey</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{i=r}^{n} \binom{i}{r} = \binom{n+1}{r+1}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme pondérée</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{k=0}^{n} k \binom{n}{k} = n2^{n-1}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Identité de Vandermonde</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{k=0}^{n} \binom{n}{k}^2 = \binom{2n}{n}$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Sommes doubles et triangulaires</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #9c27b0;">
+            <thead>
+                <tr style="background:#9c27b0; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:30%;">Type</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Propriété</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme double</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{i=1}^{n} \sum_{j=1}^{m} a_{i,j} = \sum_{j=1}^{m} \sum_{i=1}^{n} a_{i,j}$ (interversion possible)</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme triangulaire</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{i=1}^{n} \sum_{j=1}^{i} a_{i,j} = \sum_{j=1}^{n} \sum_{i=j}^{n} a_{i,j}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Exemple simple</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{i=1}^{n} \sum_{j=1}^{i} 1 = \sum_{i=1}^{n} i = \frac{n(n+1)}{2}$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Points clés à retenir</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:collapse; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
+                    <th style="border:1px solid #ddd; padding:12px;">À retenir</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Convention vide</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{\emptyset} = 0$ et $\displaystyle \prod_{\emptyset} = 1$ (éléments neutres)</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme géométrique</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Ne PAS utiliser $\displaystyle \frac{1 - x^{n+1}}{1 - x}$ pour $\displaystyle x = 1$. Utiliser $\displaystyle \sum_{k=0}^{n} 1 = n+1$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Coefficients binomiaux</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \binom{n}{k} = 0$ si $\displaystyle k < 0$ ou $\displaystyle k > n$ (convention)</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Somme vs Produit de sommes</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sum_{k} a_k b_k \neq \left(\sum_{k} a_k\right) \times \left(\sum_{k} b_k\right)$ en général</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Changement d'indice</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Toujours vérifier les nouvelles bornes après un changement d'indice</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Triangle de Pascal</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Chaque coefficient = somme des deux au-dessus : $\displaystyle \binom{n+1}{k} = \binom{n}{k} + \binom{n}{k-1}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Télescopique</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Chercher une décomposition en différence pour simplifier : $\displaystyle \frac{1}{k(k+1)} = \frac{1}{k} - \frac{1}{k+1}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Sommes doubles</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Intervertir l'ordre des sommations peut simplifier le calcul</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>Erreurs fréquentes</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">Confondre $\displaystyle \sum_{k=0}^{n}$ et $\displaystyle \sum_{k=1}^{n}$, oublier les bornes, appliquer formule géométrique à $\displaystyle x=1$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+===
+
+

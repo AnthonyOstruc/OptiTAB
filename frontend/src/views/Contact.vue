@@ -122,6 +122,7 @@
                       required
                     >
                       <option value="">Je vous contacte à propos de...</option>
+                      <option value="Réserver un cours">Réserver un cours</option>
                       <option value="Demande d'information">Demande d'information</option>
                       <option value="Support technique">Support technique</option>
                       <option value="Partenariat">Partenariat</option>

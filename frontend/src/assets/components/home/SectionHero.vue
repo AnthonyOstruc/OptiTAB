@@ -35,7 +35,7 @@ const props = defineProps({
   sousTitre: { type: String, default: '' },
   image: { type: [String, Object], default: () => heroDefaultImage },
   highlight: { type: String, default: '' },
-  messageParents: { type: String, default: "Un accompagnement sur-mesure pour la réussite de votre enfant. Rejoignez la communauté de parents qui font confiance à OptiTAB !" },
+  messageParents: { type: String, default: "Rejoignez la communauté de parents qui font confiance à OptiTAB !" },
   ctaText: { type: String, default: "Découvrir OptiTAB" },
   ctaSecondary: { type: String, default: "" },
   bg: { type: String, default: '#ffffff' }

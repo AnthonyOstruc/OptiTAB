@@ -84,8 +84,11 @@ function measureContentHeight() {
 // Handler pour la sélection d'une matière
 const handleSubjectSelected = (subject) => {
   console.log('Matière sélectionnée:', subject)
-  // Rediriger vers la page des cours particuliers avec un scroll vers la section tarifs
-  router.push({ name: 'CoursParticuliers', hash: '#tarifs' })
+  // Rediriger vers la page des cours particuliers en haut de la page
+  router.push({ name: 'CoursParticuliers' }).then(() => {
+    // S'assurer que la page est en haut après la navigation
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  })
 }
 
 // Handler pour le bouton CTA principal (Découvrir OptiTAB)

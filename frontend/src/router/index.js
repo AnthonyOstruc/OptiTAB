@@ -107,7 +107,7 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     try {
       // Routes qui doivent toujours s'ouvrir en haut de la page
-      const alwaysScrollToTopRoutes = ['CGV', 'CGU', 'Confidentialite', 'Legal', 'Cookies', 'About']
+      const alwaysScrollToTopRoutes = ['CGV', 'CGU', 'Confidentialite', 'Legal', 'Cookies', 'About', 'CoursParticuliers']
       if (alwaysScrollToTopRoutes.includes(to.name)) {
         return { top: 0, behavior: 'instant' }
       }
@@ -198,7 +198,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to) => {
   // Routes qui doivent toujours s'ouvrir en haut (pas de restauration de scroll)
-  const alwaysScrollToTopRoutes = ['CGV', 'CGU', 'Confidentialite', 'Legal', 'Cookies', 'About']
+  const alwaysScrollToTopRoutes = ['CGV', 'CGU', 'Confidentialite', 'Legal', 'Cookies', 'About', 'CoursParticuliers']
   if (alwaysScrollToTopRoutes.includes(to.name)) {
     // Forcer le scroll en haut après le chargement
     setTimeout(() => {

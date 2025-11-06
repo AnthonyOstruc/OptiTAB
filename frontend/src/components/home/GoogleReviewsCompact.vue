@@ -77,7 +77,7 @@ const props = defineProps({
     
     .rating-badge {
       font-size: 0.875rem;
-      background: #fbbf24;
+      background: #fcd34d;
       color: #1f2937;
       padding: 0.125rem 0.375rem;
       border-radius: 0.25rem;
@@ -114,7 +114,7 @@ const props = defineProps({
     
     .rating-badge {
       font-size: 0.75rem;
-      background: #fbbf24;
+      background: #fcd34d;
       color: #1f2937;
       padding: 0.1rem 0.3rem;
       border-radius: 0.25rem;

@@ -69,7 +69,7 @@ const props = defineProps({
   sousTitre: { type: String, default: '' },
   image: { type: [String, Object], default: () => heroDefaultImage },
   highlight: { type: String, default: '' },
-  messageParents: { type: String, default: "Un accompagnement sur-mesure pour la réussite de votre enfant. Rejoignez la communauté de parents qui font confiance à OptiTAB !" },
+  messageParents: { type: String, default: "Rejoignez la communauté de parents qui font confiance à OptiTAB !" },
   ctaText: { type: String, default: "Découvrir OptiTAB" },
   ctaSecondary: { type: String, default: "" },
   bg: { type: String, default: '#ffffff' }
@@ -359,14 +359,14 @@ const props = defineProps({
 }
 .section-hero__parents {
   font-size: 1.05rem;
-  color: #047857;
+  color: #1e40af;
   margin: 24px 0 28px 0;
   font-weight: 600;
-  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
   padding: 16px 20px;
   border-radius: 16px;
-  border: 2px solid #10b981;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+  border: 2px solid #3b82f6;
+  box-shadow: 0 4px 12px rgba(42, 56, 183, 0.15);
   position: relative;
   overflow: hidden;
   animation: fadeInUp 0.8s ease-out 0.5s both;
@@ -385,7 +385,9 @@ const props = defineProps({
   
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 6px 20px rgba(42, 56, 183, 0.25);
+    background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+    border-color: #2a38b7;
     
     &::before {
       left: 100%;
@@ -443,6 +445,9 @@ const props = defineProps({
   display: flex;
   gap: 1.1rem;
   margin-top: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+  
   @media (max-width: 800px) {
     display: none; /* Masquer sur mobile */
   }
@@ -454,7 +459,7 @@ const props = defineProps({
 }
 
 .section-hero__reviews {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -465,62 +470,58 @@ const props = defineProps({
   }
 }
 .section-hero__cta {
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 1.05rem;
   border: none;
-  border-radius: 12px;
-  padding: 18px 40px;
+  border-radius: 10px;
+  padding: 12px 20px;
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 8px;
+  transition: all 0.2s ease;
   animation: fadeInUp 0.8s ease-out 0.6s both;
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-  }
-  
-  &:hover::before {
-    width: 300px;
-    height: 300px;
-  }
-  
   .cta-text {
-    position: relative;
-    z-index: 1;
+    font-weight: 600;
   }
   
   .cta-arrow {
-    position: relative;
-    z-index: 1;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
+    font-size: 1.1rem;
   }
   
   &:hover .cta-arrow {
-    transform: translateX(4px);
+    transform: translateX(3px);
   }
   
   &.main {
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    background: #2563eb;
     color: #fff;
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
     
     &:hover {
-      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+      background: #1e40af;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+    }
+  }
+  
+  &.secondary {
+    background: transparent;
+    color: #475569;
+    border: 2px solid #cbd5e1;
+    
+    &:hover {
+      background: #f8fafc;
+      color: #2563eb;
+      border-color: #93c5fd;
+      transform: translateY(-1px);
     }
     
     &:active {
@@ -528,37 +529,23 @@ const props = defineProps({
     }
   }
   
-  &.secondary {
-    background: rgba(224, 242, 254, 0.8);
-    color: $bleu-principal;
-    border: 2px solid rgba(99, 102, 241, 0.2);
-    backdrop-filter: blur(10px);
-    
-    &:hover {
-      background: rgba(186, 230, 253, 0.9);
-      color: #1e40af;
-      border-color: rgba(99, 102, 241, 0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-    }
-  }
-  
   @media (max-width: 800px) {
-    width: 100%;
-    max-width: 320px;
-    padding: 16px 32px;
+    width: auto;
+    max-width: 280px;
+    padding: 12px 20px;
     font-size: 1rem;
   }
   
   @media (max-width: 480px) {
-    max-width: 100%;
-    padding: 14px 28px;
+    max-width: 260px;
+    padding: 11px 18px;
     font-size: 0.95rem;
     border-radius: 10px;
   }
   
   @media (max-width: 360px) {
-    padding: 12px 24px;
+    max-width: 240px;
+    padding: 10px 16px;
     font-size: 0.9rem;
   }
 }
@@ -686,12 +673,7 @@ const props = defineProps({
   filter: brightness(1.08) contrast(1.15) saturate(1.05);
   position: relative;
   z-index: 1;
-  transition: transform 0.3s ease;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  
-  &:hover {
-    transform: translateY(-8px) scale(1.02);
-  }
   
   @media (max-width: 800px) {
     max-width: 100%;

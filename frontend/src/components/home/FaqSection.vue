@@ -4,7 +4,7 @@
       <h2 class="faq-title">
         <span>Questions</span> <span class="faq-highlight">Fréquentes</span>
       </h2>
-      <p class="faq-desc">Trouvez des réponses aux questions courantes sur Optitab et notre plateforme d'apprentissage.</p>
+      <p class="faq-desc">Trouvez des réponses aux questions courantes sur OptiTAB et notre plateforme d'apprentissage.</p>
     </div>
     <div class="faq-list">
       <div v-for="(item, idx) in faq" :key="idx" class="faq-item">
@@ -52,7 +52,11 @@ function toggle(idx) {
   margin-bottom: 10px;
 }
 .faq-highlight {
-  color: #a78bfa;
+  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
 }
 .faq-desc {
   color: #52525b;
@@ -64,12 +68,17 @@ function toggle(idx) {
   gap: 18px;
 }
 .faq-item {
-  background: #fafaff;
+  background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(30,41,59,0.04);
-  border: 1.5px solid #f3f4f6;
+  box-shadow: 0 2px 12px rgba(42, 56, 183, 0.08);
+  border: 1.5px solid rgba(42, 56, 183, 0.1);
   overflow: hidden;
-  transition: box-shadow 0.2s;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 4px 20px rgba(42, 56, 183, 0.12);
+    border-color: rgba(42, 56, 183, 0.2);
+  }
 }
 .faq-question {
   width: 100%;
@@ -88,14 +97,18 @@ function toggle(idx) {
   transition: background 0.15s;
 }
 .faq-question:hover {
-  background: #f3f4f6;
+  background: rgba(42, 56, 183, 0.05);
+  color: #1e2a9a;
 }
 .faq-arrow {
   margin-left: 18px;
-  transition: transform 0.25s;
-}
-.faq-arrow.open {
-  transform: rotate(180deg);
+  transition: transform 0.25s, color 0.25s;
+  color: #2a38b7;
+  
+  &.open {
+    transform: rotate(180deg);
+    color: #667eea;
+  }
 }
 .faq-answer {
   padding: 0 22px 22px 22px;

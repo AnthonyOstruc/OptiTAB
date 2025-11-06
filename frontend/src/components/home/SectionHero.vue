@@ -99,32 +99,8 @@ const props = defineProps({
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
-      radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
-      radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.06) 0%, transparent 60%),
-      radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.04) 0%, transparent 70%);
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f5f9 100%);
     z-index: 1;
-    animation: gradientShift 15s ease infinite;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, transparent 30%, rgba(255,255,255,0.3) 70%, transparent 100%);
-    z-index: 1;
-  }
-  
-  @keyframes gradientShift {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.8;
-    }
   }
   
   @media (max-width: 800px) {
@@ -157,87 +133,46 @@ const props = defineProps({
 .decoration-circle {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(59, 130, 246, 0.08));
-  filter: blur(40px);
-  animation: float 20s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(42, 56, 183, 0.04) 0%, transparent 70%);
+  animation: floatCircle 20s ease-in-out infinite;
   
   &.circle-1 {
-    width: 300px;
-    height: 300px;
-    top: -100px;
+    width: 400px;
+    height: 400px;
+    top: -150px;
     left: -100px;
     animation-delay: 0s;
   }
   
   &.circle-2 {
-    width: 250px;
-    height: 250px;
-    bottom: -50px;
-    right: -50px;
-    animation-delay: 5s;
+    width: 350px;
+    height: 350px;
+    bottom: -100px;
+    right: -80px;
+    animation-delay: 7s;
   }
   
   &.circle-3 {
-    width: 200px;
-    height: 200px;
-    top: 50%;
-    right: 10%;
-    animation-delay: 10s;
+    width: 300px;
+    height: 300px;
+    top: 40%;
+    right: 5%;
+    animation-delay: 14s;
   }
 }
 
 .decoration-blob {
-  position: absolute;
-  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  background: linear-gradient(135deg, rgba(236, 72, 153, 0.06), rgba(99, 102, 241, 0.04));
-  filter: blur(60px);
-  animation: blob 25s ease-in-out infinite;
-  
-  &.blob-1 {
-    width: 400px;
-    height: 400px;
-    top: 20%;
-    right: -100px;
-    animation-delay: 0s;
-  }
-  
-  &.blob-2 {
-    width: 350px;
-    height: 350px;
-    bottom: 10%;
-    left: -150px;
-    animation-delay: 12s;
-  }
+  display: none;
 }
 
-@keyframes float {
+@keyframes floatCircle {
   0%, 100% {
     transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(30px, -30px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-}
-
-@keyframes blob {
-  0%, 100% {
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-    transform: translate(0, 0) scale(1);
-  }
-  25% {
-    border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
-    transform: translate(20px, -30px) scale(1.1);
+    opacity: 0.5;
   }
   50% {
-    border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  75% {
-    border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%;
-    transform: translate(30px, 10px) scale(1.05);
+    transform: translate(30px, -30px) scale(1.1);
+    opacity: 0.7;
   }
 }
 .section-hero__content {

@@ -9,14 +9,14 @@ export const sectionHero = {
 };
 
 export const introFeatures = {
-  titre: "Tout ce qu’il vous faut pour",
-  highlight: "Réussir dans toutes les matières",
-  description: "OptiTAB est une plateforme complète de soutien scolaire en ligne qui réunit des cours clairs, des exercices guidés, et des outils intelligents pour progresser efficacement, du collège au lycée.",
+  titre: "Tout ce qu'il vous faut pour",
+  highlight: "Réussir dans toutes les matières scientifiques",
+  description: "OptiTAB est une plateforme complète de soutien scolaire en ligne qui réunit des cours clairs, des exercices guidés, et des outils intelligents pour progresser efficacement, du collège au lycée et pour les grandes écoles.",
   features: [
     {
       icon: 'fichesSynthese',
       titre: "Cours Structurés et Accessibles",
-      description: "Des leçons rédigées par des enseignants certifiés, conçues pour être claires, progressives et adaptées à chaque niveau."
+      description: "Des leçons rédigées par des enseignants expérimentés, conçues pour être claires, progressives et adaptées à chaque niveau."
     },
     {
       icon: 'outilsIntelligents',
@@ -85,7 +85,7 @@ export const etapesParcours = {
       numero: '02',
       icon: '📘',
       titre: "Choisissez Votre Niveau",
-      description: "Sélectionnez parmi les cours débutant à avancé adaptés à vos besoins."
+      description: "Sélectionnez le niveau adapté à vos besoins."
     },
     {
       numero: '03',
@@ -95,7 +95,7 @@ export const etapesParcours = {
     }
   ],
   ctaText: "Commencez Votre Essai Gratuit",
-  ctaSecondary: "Découvrir les Fonctionnalités",
+  ctaSecondary: "Voir les tarifs",
   ctaTop: "Prêt à commencer ?",
   titreBas: "Donnez à votre enfant les clés de la réussite avec un apprentissage adapté à ses besoins !"
 };

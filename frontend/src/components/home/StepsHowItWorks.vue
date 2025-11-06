@@ -62,17 +62,19 @@
       </div>
     </div>
     
-    <div class="steps-how-cta-top" v-if="ctaTop">{{ ctaTop }}</div>
-    <div class="steps-how-bottom">
-      <h4 class="steps-how-title-bas">{{ titreBas }}</h4>
-      <div class="steps-how-cta-group">
-        <button class="steps-how-cta-main" @click="$emit('cta-main')">
-          <span class="cta-text">{{ ctaText }}</span>
-          <span class="cta-icon">→</span>
-        </button>
-        <button class="steps-how-cta-secondary" @click="$emit('cta-secondary')">
-          {{ ctaSecondary }}
-        </button>
+    <div class="steps-how-cta-section" v-if="ctaTop || titreBas">
+      <div class="steps-how-cta-container">
+        <div class="steps-how-cta-top" v-if="ctaTop">{{ ctaTop }}</div>
+        <h4 class="steps-how-title-bas">{{ titreBas }}</h4>
+        <div class="steps-how-cta-group">
+          <button class="steps-how-cta-main" @click="$emit('cta-main')">
+            <span class="cta-text">{{ ctaText }}</span>
+            <span class="cta-icon">→</span>
+          </button>
+          <button class="steps-how-cta-secondary" @click="$emit('cta-secondary')">
+            {{ ctaSecondary }}
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -252,7 +254,7 @@ onMounted(() => {
 }
 
 .steps-how-highlight {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -268,6 +270,7 @@ onMounted(() => {
   margin-left: auto;
   margin-right: auto;
 }
+
 // Ligne de connexion pour desktop
 .steps-connection-line {
   position: relative;
@@ -550,21 +553,50 @@ onMounted(() => {
     transform: translateX(8px);
   }
 }
+.steps-how-cta-section {
+  margin-top: 80px;
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f0f9ff 100%);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(42, 56, 183, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+}
+
+.steps-how-cta-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2vw;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
 .steps-how-cta-top {
-  margin: 38px 0 0 0;
+  margin: 0 0 16px 0;
   color: #2a38b7;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
 }
-.steps-how-bottom {
-  margin: 48px auto 0 auto;
-  max-width: 700px;
-}
+
 .steps-how-title-bas {
-  font-size: 1.25rem;
+  font-size: 2rem;
   font-weight: 800;
-  color: $bleu-principal;
-  margin-bottom: 22px;
+  color: #0f172a;
+  margin-bottom: 32px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 .steps-how-cta-group {
   display: flex;
@@ -573,21 +605,21 @@ onMounted(() => {
   flex-wrap: wrap;
 }
 .steps-how-cta-main {
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
   color: #fff;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   border: none;
-  border-radius: 12px;
-  padding: 18px 40px;
+  border-radius: 14px;
+  padding: 20px 48px;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 6px 24px rgba(42, 56, 183, 0.25);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   
   &::before {
     content: '';
@@ -597,15 +629,15 @@ onMounted(() => {
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     transform: translate(-50%, -50%);
     transition: width 0.6s ease, height 0.6s ease;
   }
   
   &:hover {
-    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+    background: linear-gradient(135deg, #1e2a9a 0%, #5a67d8 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 32px rgba(42, 56, 183, 0.35);
     
     &::before {
       width: 300px;
@@ -613,7 +645,7 @@ onMounted(() => {
     }
     
     .cta-icon {
-      transform: translateX(4px);
+      transform: translateX(5px);
     }
   }
   
@@ -626,30 +658,36 @@ onMounted(() => {
     position: relative;
     z-index: 1;
     transition: transform 0.3s ease;
+    font-size: 1.2rem;
   }
   
   &:active {
-    transform: translateY(0);
+    transform: translateY(-1px);
   }
 }
 
 .steps-how-cta-secondary {
-  background: rgba(255, 255, 255, 0.9);
-  color: #6366f1;
-  font-weight: 700;
+  background: #ffffff;
+  color: #2a38b7;
+  font-weight: 600;
   font-size: 1.1rem;
-  border: 2px solid rgba(99, 102, 241, 0.2);
-  border-radius: 12px;
-  padding: 18px 40px;
+  border: 2px solid rgba(42, 56, 183, 0.2);
+  border-radius: 14px;
+  padding: 20px 40px;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   
   &:hover {
-    background: rgba(255, 255, 255, 1);
-    border-color: rgba(99, 102, 241, 0.3);
+    background: #f8fafc;
+    border-color: rgba(42, 56, 183, 0.4);
+    color: #1e2a9a;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 4px 16px rgba(42, 56, 183, 0.15);
+  }
+  
+  &:active {
+    transform: translateY(0);
   }
 }
 @media (max-width: 900px) {
@@ -666,6 +704,14 @@ onMounted(() => {
   .steps-how-arrow {
     display: none;
   }
+  
+  .steps-how-cta-section {
+    padding: 60px 0;
+  }
+  
+  .steps-how-title-bas {
+    font-size: 1.75rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -674,6 +720,24 @@ onMounted(() => {
   }
   
   .steps-how-desc {
+    font-size: 1.05rem;
+  }
+  
+  .steps-how-cta-section {
+    margin-top: 60px;
+    padding: 60px 0;
+  }
+  
+  .steps-how-title-bas {
+    font-size: 1.5rem;
+    margin-bottom: 28px;
+  }
+  
+  .steps-how-cta-main,
+  .steps-how-cta-secondary {
+    width: 100%;
+    max-width: 320px;
+    padding: 18px 36px;
     font-size: 1.05rem;
   }
   
@@ -726,6 +790,27 @@ onMounted(() => {
     padding: 6px 16px;
     font-size: 0.8rem;
     margin-bottom: 20px;
+  }
+  
+  .steps-how-cta-section {
+    margin-top: 48px;
+    padding: 48px 0;
+  }
+  
+  .steps-how-title-bas {
+    font-size: 1.35rem;
+    margin-bottom: 24px;
+  }
+  
+  .steps-how-cta-top {
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+  
+  .steps-how-cta-main,
+  .steps-how-cta-secondary {
+    padding: 16px 32px;
+    font-size: 1rem;
   }
   
   .steps-how-step {

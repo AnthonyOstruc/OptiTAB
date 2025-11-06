@@ -74,14 +74,15 @@ const props = defineProps({
 }
 .intro-features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 36px;
   max-width: 1200px;
   margin: 48px auto 0 auto;
   padding: 0 2vw;
   
   @media (max-width: 700px) {
-    gap: 18px;
+    grid-template-columns: 1fr;
+    gap: 24px;
     padding: 0 4vw;
   }
 }
@@ -89,12 +90,12 @@ const props = defineProps({
   background: #fff;
   border-radius: 32px;
   box-shadow: 0 4px 32px rgba($bleu-principal, 0.13);
-  padding: 38px 32px 32px 32px;
+  padding: 42px 36px 36px 36px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   border: none;
-  min-height: 160px;
+  min-height: 180px;
   transition: box-shadow 0.2s, transform 0.2s;
   &:hover {
     box-shadow: 0 8px 40px rgba($bleu-principal, 0.18);
@@ -105,7 +106,7 @@ const props = defineProps({
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  margin-right: 28px;
+  margin-right: 32px;
   min-width: 72px;
 }
 .feature-svg {
@@ -137,37 +138,45 @@ const props = defineProps({
   justify-content: center;
 }
 .intro-feature-title {
-  font-size: 1.22rem;
+  font-size: 1.25rem;
   font-weight: 900;
   color: #0f172a;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
   text-align: left;
   letter-spacing: -0.5px;
+  line-height: 1.3;
 }
 .intro-feature-desc {
   color: #475569;
-  font-size: 1.04rem;
+  font-size: 1.05rem;
   margin-bottom: 0;
   text-align: left;
+  line-height: 1.7;
 }
 @media (max-width: 700px) {
   .intro-features-title {
     font-size: 2rem;
   }
   .intro-feature-card {
-    padding: 22px 12px 18px 12px;
+    padding: 28px 20px 24px 20px;
     flex-direction: column;
     align-items: center;
     border-radius: 22px;
+    min-height: 200px;
   }
   .intro-feature-icon.left {
     margin-right: 0;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     align-items: center;
     justify-content: center;
   }
-  .intro-feature-title, .intro-feature-desc {
+  .intro-feature-title {
+    margin-bottom: 12px;
     text-align: center;
+  }
+  .intro-feature-desc {
+    text-align: center;
+    line-height: 1.6;
   }
 }
 
@@ -179,21 +188,22 @@ const props = defineProps({
     font-size: 1rem;
   }
   .intro-feature-card {
-    padding: 16px 10px 14px 10px;
+    padding: 24px 16px 20px 16px;
     border-radius: 18px;
-    min-height: 140px;
+    min-height: 160px;
   }
   .intro-feature-icon.left {
     min-width: 48px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
   .intro-feature-title {
-    font-size: 1rem;
-    margin-bottom: 6px;
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+    line-height: 1.3;
   }
   .intro-feature-desc {
-    font-size: 0.875rem;
-    line-height: 1.4;
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
 }
 </style> 

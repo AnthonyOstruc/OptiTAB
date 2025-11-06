@@ -7,6 +7,8 @@ import CallToAction from '@/components/home/CallToAction.vue'
 import SubjectsSection from '@/components/home/SubjectsSection.vue'
 import IntroFeaturesSection from '@/components/home/IntroFeaturesSection.vue'
 import StepsHowItWorks from '@/components/home/StepsHowItWorks.vue'
+import DemoSection from '@/components/home/DemoSection.vue'
+import PricingPlans from '@/components/home/PricingPlans.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
 import NewsletterSection from '@/components/home/NewsletterSection.vue'
 import PricingSection from '@/components/home/PricingSection.vue'
@@ -92,10 +94,13 @@ const handleCtaMain = () => {
   window.location.href = '/about'
 }
 
-// Handler pour le bouton CTA secondaire (Découvrir les Fonctionnalités)
+// Handler pour le bouton CTA secondaire (Voir les tarifs)
 const handleCtaSecondary = () => {
-  // Ouvrir le modal d'inscription
-  openModal(MODAL_IDS.REGISTER)
+  // Scroller vers la section tarifs dans la même page
+  const tarifsSection = document.getElementById('tarifs')
+  if (tarifsSection) {
+    tarifsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 }
 
 // Handler pour le bouton CTA principal des étapes (Commencez Votre Essai Gratuit)
@@ -104,15 +109,36 @@ const handleStepsCtaMain = () => {
   openModal(MODAL_IDS.REGISTER)
 }
 
-// Handler pour le bouton CTA secondaire des étapes (Découvrir les Fonctionnalités)
+// Handler pour le bouton CTA secondaire des étapes (Voir les tarifs)
 const handleStepsCtaSecondary = () => {
-  // Faire défiler vers la section des fonctionnalités
-  setTimeout(() => {
-    const featuresSection = document.querySelector('.intro-features-section')
-    if (featuresSection) {
-      featuresSection.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, 100) // Petit délai pour s'assurer que la page est chargée
+  // Scroller vers la section tarifs dans la même page
+  const tarifsSection = document.getElementById('tarifs')
+  if (tarifsSection) {
+    tarifsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  } else {
+    // Fallback vers la section des fonctionnalités si tarifs n'existe pas
+    setTimeout(() => {
+      const featuresSection = document.querySelector('.intro-features-section')
+      if (featuresSection) {
+        featuresSection.scrollIntoView({ behavior: 'smooth' })
+      }
+    }, 100) // Petit délai pour s'assurer que la page est chargée
+  }
+}
+
+// Handler pour le bouton principal de la section démo (S'abonner)
+const handleDemoSubscribe = () => {
+  // Ouvrir le modal d'inscription
+  openModal(MODAL_IDS.REGISTER)
+}
+
+// Handler pour le bouton secondaire de la section démo (Voir les tarifs)
+const handleDemoPricing = () => {
+  // Scroller vers la section tarifs dans la même page
+  const tarifsSection = document.getElementById('tarifs')
+  if (tarifsSection) {
+    tarifsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 }
 
 onMounted(async () => {
@@ -169,6 +195,11 @@ watch(zoomLevel, () => {
         @cta-secondary="handleCtaSecondary"
       />
 
+      <!-- Section Démo avec GIFs et CTA d'abonnement -->
+      <DemoSection
+        @cta-subscribe="handleDemoSubscribe"
+        @cta-pricing="handleDemoPricing"
+      />
 
       <!-- Section Intro Features (accroche + grille) -->
       <IntroFeaturesSection
@@ -193,7 +224,6 @@ watch(zoomLevel, () => {
         @cta-secondary="handleStepsCtaSecondary"
       />
 
-
       <!-- Section Matières/Sujets -->
       <SubjectsSection
         :titre="titreSujets"
@@ -201,14 +231,9 @@ watch(zoomLevel, () => {
         @subject-selected="handleSubjectSelected"
       />
 
-      <!-- Section Tarifs / Pricing - TEMPORAIREMENT CACHÉE -->
-      <!-- <PricingSection
-        :titre="pricingPlans.titre"
-        :description="pricingPlans.description"
-        :plans="pricingPlans.plans"
-        :garantie="pricingPlans.garantie"
-        :legal="pricingPlans.legal"
-      /> -->
+      <!-- Section Tarifs / Abonnements -->
+      <PricingPlans />
+
       <!-- Section FAQ -->
       <FaqSection :faq="faq" />
 

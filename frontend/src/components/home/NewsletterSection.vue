@@ -68,32 +68,40 @@ async function onSubmit() {
 
 <style scoped>
 .newsletter {
-  max-width: 680px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 20px;
+  padding: 60px 2vw;
   background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 12px rgba(30,41,59,0.06);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
+  align-items: center;
 }
+.content {
+  text-align: center;
+  max-width: 700px;
+}
+
 .content h3 {
-  color: #4f46e5;
-  font-size: 1.25rem;
+  color: #2a38b7;
+  font-size: 1.5rem;
   font-weight: 800;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
 }
 .content p {
   color: #52525b;
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin: 0;
+  line-height: 1.6;
 }
 .form {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
+  max-width: 600px;
+  width: 100%;
+  justify-content: center;
 }
 .input-group {
   position: relative;
@@ -158,11 +166,38 @@ button:hover {
   clip: rect(0,0,0,0);
   border: 0;
 }
+@media (max-width: 768px) {
+  .newsletter {
+    padding: 48px 4vw;
+  }
+  
+  .content h3 {
+    font-size: 1.35rem;
+  }
+  
+  .content p {
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 600px) {
+  .newsletter {
+    padding: 40px 4vw;
+  }
+  
+  .content h3 {
+    font-size: 1.25rem;
+  }
+  
   .form {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
+  
+  .input-group {
+    min-width: 100%;
+  }
+  
   button {
     width: 100%;
   }

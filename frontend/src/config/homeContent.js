@@ -94,7 +94,7 @@ export const etapesParcours = {
       description: "Regardez les leçons, pratiquez les exercices et suivez vos progrès en maîtrisant de nouveaux concepts."
     }
   ],
-  ctaText: "Commencez Votre Essai Gratuit",
+  ctaText: "Commencer gratuitement",
   ctaSecondary: "Voir les tarifs",
   ctaTop: "Prêt à commencer ?",
   titreBas: "Donnez à votre enfant les clés de la réussite avec un apprentissage adapté à ses besoins !"

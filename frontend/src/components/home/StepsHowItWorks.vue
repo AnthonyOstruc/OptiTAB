@@ -64,12 +64,15 @@
     
     <div class="steps-how-cta-section" v-if="ctaTop || titreBas">
       <div class="steps-how-cta-container">
-        <div class="steps-how-cta-top" v-if="ctaTop">{{ ctaTop }}</div>
-        <h4 class="steps-how-title-bas">{{ titreBas }}</h4>
+        <h4 class="steps-how-title-bas">
+          Commencez votre parcours sur <span class="title-highlight">OptiTAB</span>
+        </h4>
+        <p class="steps-how-subtitle">
+          Votre progrès vous attend — connectez-vous pour continuer
+        </p>
         <div class="steps-how-cta-group">
           <button class="steps-how-cta-main" @click="$emit('cta-main')">
-            <span class="cta-text">{{ ctaText }}</span>
-            <span class="cta-icon">→</span>
+            {{ ctaText }}
           </button>
           <button class="steps-how-cta-secondary" @click="$emit('cta-secondary')">
             {{ ctaSecondary }}
@@ -554,49 +557,43 @@ onMounted(() => {
   }
 }
 .steps-how-cta-section {
-  margin-top: 80px;
-  padding: 80px 0;
+  margin-top: 100px;
+  padding: 0;
   position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f0f9ff 100%);
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 30% 50%, rgba(42, 56, 183, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 70% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 50%);
-    pointer-events: none;
-  }
+  background: transparent;
 }
 
 .steps-how-cta-container {
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 2vw;
+  padding: 60px 40px;
   text-align: center;
-  position: relative;
-  z-index: 1;
-}
-
-.steps-how-cta-top {
-  margin: 0 0 16px 0;
-  color: #2a38b7;
-  font-weight: 600;
-  font-size: 1.15rem;
-  letter-spacing: 0.02em;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(42, 56, 183, 0.08);
 }
 
 .steps-how-title-bas {
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 2.2rem;
+  font-weight: 700;
   color: #0f172a;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
   line-height: 1.3;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+}
+
+.title-highlight {
+  color: #2a38b7;
+  font-weight: 800;
+}
+
+.steps-how-subtitle {
+  font-size: 1.15rem;
+  color: #64748b;
+  margin-bottom: 36px;
+  line-height: 1.6;
+  font-weight: 400;
 }
 .steps-how-cta-group {
   display: flex;
@@ -605,89 +602,46 @@ onMounted(() => {
   flex-wrap: wrap;
 }
 .steps-how-cta-main {
-  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.15rem;
-  border: none;
-  border-radius: 14px;
-  padding: 20px 48px;
-  cursor: pointer;
-  box-shadow: 0 6px 24px rgba(42, 56, 183, 0.25);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-  }
-  
-  &:hover {
-    background: linear-gradient(135deg, #1e2a9a 0%, #5a67d8 100%);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 32px rgba(42, 56, 183, 0.35);
-    
-    &::before {
-      width: 300px;
-      height: 300px;
-    }
-    
-    .cta-icon {
-      transform: translateX(5px);
-    }
-  }
-  
-  .cta-text {
-    position: relative;
-    z-index: 1;
-  }
-  
-  .cta-icon {
-    position: relative;
-    z-index: 1;
-    transition: transform 0.3s ease;
-    font-size: 1.2rem;
-  }
-  
-  &:active {
-    transform: translateY(-1px);
-  }
-}
-
-.steps-how-cta-secondary {
-  background: #ffffff;
-  color: #2a38b7;
+  background: #2a38b7;
+  color: #ffffff;
   font-weight: 600;
-  font-size: 1.1rem;
-  border: 2px solid rgba(42, 56, 183, 0.2);
-  border-radius: 14px;
-  padding: 20px 40px;
+  font-size: 1.05rem;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 40px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
   
   &:hover {
-    background: #f8fafc;
-    border-color: rgba(42, 56, 183, 0.4);
-    color: #1e2a9a;
+    background: #1e2a9a;
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(42, 56, 183, 0.15);
+    box-shadow: 0 4px 16px rgba(42, 56, 183, 0.2);
   }
   
   &:active {
     transform: translateY(0);
+  }
+}
+
+.steps-how-cta-secondary {
+  background: transparent;
+  color: #475569;
+  font-weight: 600;
+  font-size: 1.05rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #2a38b7;
+  }
+  
+  &:active {
+    transform: scale(0.98);
   }
 }
 @media (max-width: 900px) {
@@ -769,11 +723,24 @@ onMounted(() => {
     font-size: 1rem;
   }
   
+  .steps-how-cta-container {
+    padding: 40px 24px;
+  }
+  
+  .steps-how-title-bas {
+    font-size: 1.75rem;
+  }
+  
+  .steps-how-subtitle {
+    font-size: 1.05rem;
+    margin-bottom: 28px;
+  }
+  
   .steps-how-cta-main,
   .steps-how-cta-secondary {
     width: 100%;
     max-width: 320px;
-    padding: 16px 32px;
+    padding: 14px 32px;
   }
 }
 
@@ -793,24 +760,28 @@ onMounted(() => {
   }
   
   .steps-how-cta-section {
-    margin-top: 48px;
-    padding: 48px 0;
+    margin-top: 60px;
+  }
+  
+  .steps-how-cta-container {
+    padding: 32px 20px;
+    border-radius: 16px;
   }
   
   .steps-how-title-bas {
-    font-size: 1.35rem;
-    margin-bottom: 24px;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
   }
   
-  .steps-how-cta-top {
-    font-size: 1rem;
-    margin-bottom: 12px;
+  .steps-how-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 24px;
   }
   
   .steps-how-cta-main,
   .steps-how-cta-secondary {
-    padding: 16px 32px;
-    font-size: 1rem;
+    padding: 14px 28px;
+    font-size: 0.95rem;
   }
   
   .steps-how-step {

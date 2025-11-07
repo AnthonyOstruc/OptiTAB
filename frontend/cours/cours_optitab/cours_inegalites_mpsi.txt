@@ -1,0 +1,749 @@
+=== Inégalités - Programme MPSI
+Difficulté: medium
+Ordre: 2
+
+
+Titre: Inégalités : Relation d'Ordre, Valeur Absolue et Parties Bornées
+Description: Cours complet sur les inégalités en MPSI : relation d'ordre sur R, compatibilité avec les opérations, intervalles, majoration et minoration, tableaux de signes, résolution d'inéquations, valeur absolue, inégalité triangulaire, parties bornées et partie entière.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Relation d'ordre sur R</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et propriétés fondamentales</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Relation d'ordre</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle \mathbb{R}$, on définit la relation $\displaystyle \leq$ (inférieur ou égal) qui vérifie les propriétés suivantes :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Réflexivité :</strong> Pour tout $\displaystyle x \in \mathbb{R}$, $\displaystyle x \leq x$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Antisymétrie :</strong> Si $\displaystyle x \leq y$ et $\displaystyle y \leq x$, alors $\displaystyle x = y$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Transitivité :</strong> Si $\displaystyle x \leq y$ et $\displaystyle y \leq z$, alors $\displaystyle x \leq z$</li>
+                <li style="margin:0; text-align:left;"><strong>Totalité :</strong> Pour tous $\displaystyle x, y \in \mathbb{R}$, on a $\displaystyle x \leq y$ ou $\displaystyle y \leq x$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Notations</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• $\displaystyle x < y$ signifie $\displaystyle x \leq y$ et $\displaystyle x \neq y$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• $\displaystyle x \geq y$ signifie $\displaystyle y \leq x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• $\displaystyle x > y$ signifie $\displaystyle y < x$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 3 \leq 5$ et $\displaystyle 3 < 5$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle -2 \leq -1$ et $\displaystyle -2 < -1$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \pi \leq 4$ et $\displaystyle \pi < 4$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Compatibilité avec les opérations</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Propriétés de compatibilité</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Compatibilité avec l'addition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous $\displaystyle a, b, c \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a \leq b$, alors $\displaystyle a + c \leq b + c$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Conséquence :</strong> On peut additionner membre à membre des inégalités de même sens.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a \leq b$ et $\displaystyle c \leq d$, alors $\displaystyle a + c \leq b + d$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Compatibilité avec la multiplication</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous $\displaystyle a, b \in \mathbb{R}$ et $\displaystyle c \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle a \leq b$ et $\displaystyle c > 0$, alors $\displaystyle ac \leq bc$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle a \leq b$ et $\displaystyle c < 0$, alors $\displaystyle ac \geq bc$ (le sens s'inverse)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle a \leq b$ et $\displaystyle c = 0$, alors $\displaystyle ac = bc = 0$</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Lorsqu'on multiplie une inégalité par un nombre négatif, le sens de l'inégalité s'inverse.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Exemple : $\displaystyle 3 \leq 5$ mais $\displaystyle -3 \geq -5$ (car on multiplie par $\displaystyle -1 < 0$)</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Compatibilité avec l'inverse</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle \mathbb{R} \setminus \{0\}$, la fonction $\displaystyle x \mapsto \frac{1}{x}$ est décroissante sur $\displaystyle (0, +\infty)$ et sur $\displaystyle (-\infty, 0)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous $\displaystyle a, b \in \mathbb{R}^{\ast}$ de même signe :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle 0 < a \leq b$, alors $\displaystyle \frac{1}{a} \geq \frac{1}{b} > 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle a \leq b < 0$, alors $\displaystyle \frac{1}{a} \geq \frac{1}{b} < 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>En résumé :</strong> Prendre l'inverse inverse le sens de l'inégalité si les nombres sont de même signe.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Prendre le carré</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous $\displaystyle a, b \geq 0$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a \leq b$, alors $\displaystyle a^2 \leq b^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>⚠️ Attention :</strong> Cette propriété n'est vraie que si les deux nombres sont positifs. En général, pour résoudre une inéquation, on isole les radicaux avant de mettre au carré, ou on passe par un tableau de signes.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle 2 \leq 5$, alors $\displaystyle 2 + 3 \leq 5 + 3$, soit $\displaystyle 5 \leq 8$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle 2 \leq 5$ et $\displaystyle 3 > 0$, alors $\displaystyle 2 \cdot 3 \leq 5 \cdot 3$, soit $\displaystyle 6 \leq 15$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle 2 \leq 5$ et $\displaystyle -3 < 0$, alors $\displaystyle 2 \cdot (-3) \geq 5 \cdot (-3)$, soit $\displaystyle -6 \geq -15$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle 0 < 2 \leq 5$, alors $\displaystyle \frac{1}{2} \geq \frac{1}{5} > 0$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II bis. Équivalences vs implications</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Quand a-t-on équivalence ? Quand seulement implication ?</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Règles de transformation</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Ajouter ou soustraire :</strong> $\displaystyle a \leq b \Leftrightarrow a + c \leq b + c$ (équivalence)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Multiplier par un nombre positif :</strong> Si $\displaystyle c > 0$, alors $\displaystyle a \leq b \Leftrightarrow ac \leq bc$ (équivalence)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Multiplier par un nombre négatif :</strong> Si $\displaystyle c < 0$, alors $\displaystyle a \leq b \Leftrightarrow ac \geq bc$ (équivalence mais le sens s'inverse)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Multiplier par une expression de signe inconnu :</strong> En général, pas d'équivalence. Préférer tout passer à gauche et faire un tableau de signes.</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Élever au carré :</strong> Nécessite que les deux membres soient positifs. Sinon, pas d'équivalence directe.</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Prendre une racine :</strong> Nécessite des conditions de positivité (voir section sur les opérations monotones).</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Inverser :</strong> Nécessite que les deux membres soient de même signe et non nuls.</li>
+                <li style="margin:0; text-align:left;"><strong>Prendre $\displaystyle \ln$ ou $\displaystyle \exp$ :</strong> Nécessite des conditions de positivité pour $\displaystyle \ln$ (voir section sur les opérations monotones).</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode recommandée :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour éviter les erreurs, préférer toujours transposer tous les termes dans un membre et étudier le signe à l'aide d'un tableau de signes plutôt que de multiplier par une expression dont on ne connaît pas le signe.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Intervalles de R</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et types d'intervalles</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition d'un intervalle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un intervalle de $\displaystyle \mathbb{R}$ est une partie $\displaystyle I$ de $\displaystyle \mathbb{R}$ telle que :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous $\displaystyle a, b \in I$ avec $\displaystyle a \leq b$, on a $\displaystyle [a, b] \subset I$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, un intervalle est une partie "connexe" de $\displaystyle \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Types d'intervalles</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a, b \in \mathbb{R}$ avec $\displaystyle a < b$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Intervalle fermé :</strong> $\displaystyle [a, b] = \{x \in \mathbb{R} \mid a \leq x \leq b\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Intervalle ouvert :</strong> $\displaystyle ]a, b[ = \{x \in \mathbb{R} \mid a < x < b\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Intervalle semi-ouvert à gauche :</strong> $\displaystyle ]a, b] = \{x \in \mathbb{R} \mid a < x \leq b\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Intervalle semi-ouvert à droite :</strong> $\displaystyle [a, b[ = \{x \in \mathbb{R} \mid a \leq x < b\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Demi-droite fermée :</strong> $\displaystyle [a, +\infty[ = \{x \in \mathbb{R} \mid x \geq a\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Demi-droite ouverte :</strong> $\displaystyle ]a, +\infty[ = \{x \in \mathbb{R} \mid x > a\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Demi-droite fermée négative :</strong> $\displaystyle ]-\infty, a] = \{x \in \mathbb{R} \mid x \leq a\}$</li>
+                <li style="margin:0; text-align:left;"><strong>Demi-droite ouverte négative :</strong> $\displaystyle ]-\infty, a[ = \{x \in \mathbb{R} \mid x < a\}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas particuliers</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• $\displaystyle \mathbb{R} = ]-\infty, +\infty[$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• $\displaystyle \mathbb{R}^+ = [0, +\infty[$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• $\displaystyle \mathbb{R}^{\ast} = ]-\infty, 0[ \cup ]0, +\infty[$ (n'est pas un intervalle)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Un singleton $\displaystyle \{a\}$ est un intervalle : $\displaystyle \{a\} = [a, a]$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle [2, 5] = \{x \in \mathbb{R} \mid 2 \leq x \leq 5\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle ]-1, 3[ = \{x \in \mathbb{R} \mid -1 < x < 3\}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle [0, +\infty[ = \{x \in \mathbb{R} \mid x \geq 0\}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle ]-\infty, -2] = \{x \in \mathbb{R} \mid x \leq -2\}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Majoration et minoration</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définitions</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Partie majorée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une partie $\displaystyle A$ de $\displaystyle \mathbb{R}$ est dite <strong>majorée</strong> s'il existe $\displaystyle M \in \mathbb{R}$ tel que :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in A$, on a $\displaystyle x \leq M$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un tel réel $\displaystyle M$ est appelé un <strong>majorant</strong> de $\displaystyle A$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Partie minorée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une partie $\displaystyle A$ de $\displaystyle \mathbb{R}$ est dite <strong>minorée</strong> s'il existe $\displaystyle m \in \mathbb{R}$ tel que :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in A$, on a $\displaystyle m \leq x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un tel réel $\displaystyle m$ est appelé un <strong>minorant</strong> de $\displaystyle A$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Partie bornée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une partie $\displaystyle A$ de $\displaystyle \mathbb{R}$ est dite <strong>bornée</strong> si elle est à la fois majorée et minorée.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, il existe $\displaystyle m, M \in \mathbb{R}$ tels que :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in A$, on a $\displaystyle m \leq x \leq M$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Maximum et minimum</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Un <strong>maximum</strong> de $\displaystyle A$ est un majorant qui appartient à $\displaystyle A$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Un <strong>minimum</strong> de $\displaystyle A$ est un minorant qui appartient à $\displaystyle A$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Notation :</strong> Si le maximum existe, il est unique et noté $\displaystyle \max(A)$. De même pour le minimum : $\displaystyle \min(A)$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle A = [2, 5]$ est bornée. $\displaystyle \max(A) = 5$ et $\displaystyle \min(A) = 2$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle B = ]2, 5[$ est majorée et minorée, mais n'a ni maximum ni minimum</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle C = [0, +\infty[$ est minorée (par $\displaystyle 0$) mais pas majorée</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle D = \{1, 3, 5\}$ est bornée. $\displaystyle \max(D) = 5$ et $\displaystyle \min(D) = 1$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle E = \mathbb{R}$ n'est ni majorée ni minorée</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Borne supérieure et inférieure</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle A \subset \mathbb{R}$ est majorée, sa <strong>borne supérieure</strong> $\displaystyle \sup(A)$ est le plus petit des majorants de $\displaystyle A$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle A$ est minorée, sa <strong>borne inférieure</strong> $\displaystyle \inf(A)$ est le plus grand des minorants de $\displaystyle A$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Propriété (complétude de $\displaystyle \mathbb{R}$) :</strong> Si $\displaystyle A \neq \emptyset$ et $\displaystyle A$ est majorée (resp. minorée), alors $\displaystyle \sup(A)$ (resp. $\displaystyle \inf(A)$) existe et est unique.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Caractérisation de la borne supérieure</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle A \subset \mathbb{R}$ non vide et majorée. On a :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle M = \sup(A) \Leftrightarrow$ (i) $\displaystyle \forall x \in A, x \leq M$ et (ii) $\displaystyle \forall \varepsilon > 0, \exists x \in A$ tel que $\displaystyle M - \varepsilon < x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, $\displaystyle M$ est un majorant de $\displaystyle A$ et il n'existe pas de majorant plus petit que $\displaystyle M$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle A = ]2, 5[$, on a $\displaystyle \sup(A) = 5$ et $\displaystyle \inf(A) = 2$, mais $\displaystyle A$ n'a ni maximum ni minimum</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle B = \{1, 3, 5\}$, on a $\displaystyle \sup(B) = \max(B) = 5$ et $\displaystyle \inf(B) = \min(B) = 1$</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle C = [0, +\infty[$, on a $\displaystyle \inf(C) = 0$ mais $\displaystyle C$ n'est pas majorée, donc pas de borne supérieure</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une partie majorée (resp. minorée) admet une infinité de majorants (resp. minorants).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par exemple, si $\displaystyle M$ est un majorant de $\displaystyle A$, alors tout réel $\displaystyle M' > M$ est aussi un majorant de $\displaystyle A$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La borne supérieure (resp. inférieure) est le meilleur majorant (resp. minorant) possible.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Majoration et minoration de sommes, produits et quotients</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Techniques de majoration et minoration</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Majoration d'une somme</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a \leq A$ et $\displaystyle b \leq B$, alors $\displaystyle a + b \leq A + B$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Si $\displaystyle x \in [2, 5]$ et $\displaystyle y \in [1, 3]$, alors $\displaystyle x + y \in [3, 8]$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Majoration d'un produit</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a, b \geq 0$ avec $\displaystyle a \leq A$ et $\displaystyle b \leq B$, alors $\displaystyle ab \leq AB$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>⚠️ Attention :</strong> Si les nombres sont négatifs, il faut être plus prudent.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Si $\displaystyle x \in [2, 5]$ et $\displaystyle y \in [1, 3]$ (tous positifs), alors $\displaystyle xy \in [2, 15]$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Quotient (dénominateur positif)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle x \in [x_{\min}, x_{\max}]$ et $\displaystyle y \in [y_{\min}, y_{\max}]$ avec $\displaystyle 0 < y_{\min} \leq y_{\max}$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \frac{x}{y} \in \left[\frac{x_{\min}}{y_{\max}}, \frac{x_{\max}}{y_{\min}}\right]$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Règle :</strong> Pour majorer un quotient, on majore le numérateur et on minore le dénominateur (positif).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour minorer un quotient, on minore le numérateur et on majore le dénominateur (positif).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Si $\displaystyle x \in [2, 5]$ et $\displaystyle y \in [1, 3]$ avec $\displaystyle y > 0$, alors $\displaystyle \frac{x}{y} \in \left[\frac{2}{3}, 5\right]$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple complet - Majorer $\displaystyle \frac{x^2 + 1}{x + 2}$ pour $\displaystyle x \in [1, 3]$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle x \in [1, 3]$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• $\displaystyle x^2 \in [1, 9]$, donc $\displaystyle x^2 + 1 \in [2, 10]$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• $\displaystyle x + 2 \in [3, 5]$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Pour majorer : $\displaystyle \frac{x^2 + 1}{x + 2} \leq \frac{10}{3}$ (numérateur max, dénominateur min)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Pour minorer : $\displaystyle \frac{x^2 + 1}{x + 2} \geq \frac{2}{5}$ (numérateur min, dénominateur max)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \frac{x^2 + 1}{x + 2} \in \left[\frac{2}{5}, \frac{10}{3}\right]$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Tableaux de signes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode des tableaux de signes</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Principe</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour étudier le signe d'une expression, on :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Factorise l'expression (si possible)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Identifie les valeurs qui annulent chaque facteur</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Construit un tableau avec une ligne par facteur</li>
+                <li style="margin:0; text-align:left;">Détermine le signe de chaque facteur sur chaque intervalle</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Étudier le signe de $\displaystyle (x - 2)(x + 3)(x - 5)$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les valeurs qui annulent sont : $\displaystyle x = -3$, $\displaystyle x = 2$ et $\displaystyle x = 5$</p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:15%;">$\displaystyle x$</th>
+                        <th style="border:1px solid #ddd; padding:12px;">$\displaystyle -\infty$</th>
+                        <th style="border:1px solid #ddd; padding:12px;">$\displaystyle -3$</th>
+                        <th style="border:1px solid #ddd; padding:12px;">$\displaystyle 2$</th>
+                        <th style="border:1px solid #ddd; padding:12px;">$\displaystyle 5$</th>
+                        <th style="border:1px solid #ddd; padding:12px;">$\displaystyle +\infty$</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x + 3$</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#c62828; font-weight:bold;">$\displaystyle -$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#2e7d32; font-weight:bold;">$\displaystyle +$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#2e7d32; font-weight:bold;">$\displaystyle +$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#2e7d32; font-weight:bold;">$\displaystyle +$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x - 2$</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#c62828; font-weight:bold;">$\displaystyle -$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#c62828; font-weight:bold;">$\displaystyle -$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#2e7d32; font-weight:bold;">$\displaystyle +$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#2e7d32; font-weight:bold;">$\displaystyle +$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x - 5$</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#c62828; font-weight:bold;">$\displaystyle -$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#c62828; font-weight:bold;">$\displaystyle -$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#c62828; font-weight:bold;">$\displaystyle -$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#2e7d32; font-weight:bold;">$\displaystyle +$</td>
+                    </tr>
+                    <tr style="background:#e8f4fd;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Produit</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#c62828; font-weight:bold;">$\displaystyle -$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#2e7d32; font-weight:bold;">$\displaystyle +$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; color:#c62828; font-weight:bold;">$\displaystyle -$</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Conclusion : $\displaystyle (x - 2)(x + 3)(x - 5) \geq 0$ sur $\displaystyle [-3, 2] \cup [5, +\infty[$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Racines multiples</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour une expression factorisée $\displaystyle f(x) = k \prod_{i} (x - a_i)^{m_i}$ avec $\displaystyle k \in \mathbb{R}^{\ast}$ et $\displaystyle a_1 < a_2 < \cdots < a_n$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En traversant la racine $\displaystyle a_i$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle m_i$ est <strong>impair</strong> → le signe alterne</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle m_i$ est <strong>pair</strong> → le signe reste le même</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Pour $\displaystyle (x - 1)^2(x + 2)^3(x - 3)$, en $\displaystyle x = 1$ (multiplicité 2, pair) le signe ne change pas, en $\displaystyle x = -2$ (multiplicité 3, impair) le signe change.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour un produit de facteurs linéaires $\displaystyle (x - a_1)(x - a_2)\cdots(x - a_n)$ avec $\displaystyle a_1 < a_2 < \cdots < a_n$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Le signe alterne entre les racines</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Le signe à droite de la plus grande racine est le signe du coefficient dominant</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI bis. Opérations monotones</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Règles pour les fonctions monotones</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Carré</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a \leq b$ et $\displaystyle a, b \geq 0$, alors $\displaystyle a^2 \leq b^2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>⚠️ Règle importante :</strong> En général, on isole les radicaux avant de mettre au carré.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Racine carrée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle a \geq 0$ et $\displaystyle x \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle a \leq \sqrt{x} \Leftrightarrow (a \geq 0 \text{ et } a^2 \leq x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle x \mapsto \sqrt{x}$ est croissante sur $\displaystyle [0, +\infty[$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Inverse</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a \leq b$ et $\displaystyle a, b > 0$, alors $\displaystyle \frac{1}{a} \geq \frac{1}{b}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle x \mapsto \frac{1}{x}$ est décroissante sur $\displaystyle (0, +\infty)$ et sur $\displaystyle (-\infty, 0)$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Exponentielle et logarithme</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• La fonction $\displaystyle \exp$ est croissante sur $\displaystyle \mathbb{R}$ : si $\displaystyle a \leq b$, alors $\displaystyle e^a \leq e^b$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• La fonction $\displaystyle \ln$ est croissante sur $\displaystyle (0, +\infty)$ : si $\displaystyle 0 < a \leq b$, alors $\displaystyle \ln(a) \leq \ln(b)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>⚠️ Attention :</strong> On peut appliquer $\displaystyle \exp$ ou $\displaystyle \ln$ si les membres sont dans le domaine (positifs pour $\displaystyle \ln$) et on conserve le sens.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>⚙️ Règles rapides :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Isoler les radicaux avant de mettre au carré</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Ne jamais prendre $\displaystyle \ln$ d'un nombre $\displaystyle \leq 0$</li>
+                <li style="margin:0; text-align:left;">Inverse : si les deux membres sont strictement positifs (ou strictement négatifs), l'ordre s'inverse</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Résolution d'inéquations</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes de résolution</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>📋 Mémo - Domaine de définition</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Avant de résoudre une inéquation, toujours vérifier le domaine de définition :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Dénominateur :</strong> $\displaystyle \neq 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Radicande :</strong> $\displaystyle \geq 0$ (pour $\displaystyle \sqrt{\cdot}$)</li>
+                <li style="margin:0; text-align:left;"><strong>Argument de $\displaystyle \ln$ :</strong> $\displaystyle > 0$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Méthode générale</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre une inéquation :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Transposer tous les termes dans un membre (mettre sous la forme $\displaystyle f(x) \geq 0$ ou $\displaystyle f(x) \leq 0$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Factoriser et simplifier l'expression</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Étudier le signe à l'aide d'un tableau de signes</li>
+                <li style="margin:0; text-align:left;">Conclure en donnant l'ensemble des solutions</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Résoudre $\displaystyle \frac{x - 1}{x + 2} \geq 2$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 1 :</strong> Transposer : $\displaystyle \frac{x - 1}{x + 2} - 2 \geq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 2 :</strong> Mettre au même dénominateur : $\displaystyle \frac{x - 1 - 2(x + 2)}{x + 2} \geq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Simplifier : $\displaystyle \frac{x - 1 - 2x - 4}{x + 2} = \frac{-x - 5}{x + 2} \geq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Factoriser : $\displaystyle \frac{-(x + 5)}{x + 2} \geq 0$, soit $\displaystyle \frac{x + 5}{x + 2} \leq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 3 :</strong> Tableau de signes (racines : $\displaystyle x = -5$ et $\displaystyle x = -2$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le quotient est négatif sur $\displaystyle ]-5, -2[$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 4 :</strong> Solution : $\displaystyle S = ]-5, -2[$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>⚠️ Attention :</strong> $\displaystyle x = -2$ n'est pas dans le domaine de définition</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Schémas types pour inéquations avec racines</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle \sqrt{u(x)} \leq v(x)$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle u(x) \geq 0$ (condition d'existence)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle v(x) \geq 0$ (nécessaire pour élever au carré)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle u(x) \leq v(x)^2$ (après élévation au carré)</li>
+            </ol>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des solutions est l'intersection des trois conditions.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Schémas types pour inéquations avec quotients</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle \frac{u(x)}{v(x)} \geq 0$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle v(x) \neq 0$ (condition d'existence)</li>
+                <li style="margin:0; text-align:left;">Tableau de signes de $\displaystyle u(x)$ et $\displaystyle v(x)$ pour déterminer le signe du quotient</li>
+            </ol>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le quotient est positif (resp. négatif) lorsque $\displaystyle u(x)$ et $\displaystyle v(x)$ sont de même signe (resp. de signes opposés).</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Points d'attention :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Toujours vérifier le domaine de définition avant de résoudre</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Ne pas multiplier par une expression dont on ne connaît pas le signe</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour les quotients, vérifier que le dénominateur ne s'annule pas</li>
+                <li style="margin:0; text-align:left;">Pour les racines carrées, vérifier que le radicande est positif</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Valeur absolue</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et propriétés</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in \mathbb{R}$, la valeur absolue de $\displaystyle x$, notée $\displaystyle |x|$, est définie par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle |x| = \begin{cases} x & \text{si } x \geq 0 \\ -x & \text{si } x < 0 \end{cases}$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriétés fondamentales</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Positivité :</strong> Pour tout $\displaystyle x \in \mathbb{R}$, $\displaystyle |x| \geq 0$ et $\displaystyle |x| = 0 \Leftrightarrow x = 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Symétrie :</strong> Pour tout $\displaystyle x \in \mathbb{R}$, $\displaystyle |-x| = |x|$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Produit :</strong> Pour tous $\displaystyle x, y \in \mathbb{R}$, $\displaystyle |xy| = |x||y|$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Quotient :</strong> Pour tous $\displaystyle x, y \in \mathbb{R}$ avec $\displaystyle y \neq 0$, $\displaystyle \left|\frac{x}{y}\right| = \frac{|x|}{|y|}$</li>
+                <li style="margin:0; text-align:left;"><strong>Carré :</strong> Pour tout $\displaystyle x \in \mathbb{R}$, $\displaystyle |x|^2 = x^2$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Inégalité triangulaire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous $\displaystyle x, y \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle |x + y| \leq |x| + |y|$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Inégalité triangulaire inverse :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle ||x| - |y|| \leq |x - y|$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration de l'inégalité triangulaire :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle |x + y|^2 = (x + y)^2 = x^2 + 2xy + y^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Or $\displaystyle 2xy \leq 2|x||y|$ (car $\displaystyle xy \leq |xy| = |x||y|$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle |x + y|^2 \leq x^2 + 2|x||y| + y^2 = (|x| + |y|)^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme les deux membres sont positifs, on en déduit $\displaystyle |x + y| \leq |x| + |y|$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |3| = 3$, $\displaystyle |-5| = 5$, $\displaystyle |0| = 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |3 + (-5)| = |-2| = 2 \leq |3| + |-5| = 8$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |3 \cdot (-5)| = |-15| = 15 = |3| \cdot |-5| = 3 \cdot 5$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \left|\frac{-6}{2}\right| = |-3| = 3 = \frac{|-6|}{|2|} = \frac{6}{2}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Interprétation géométrique de |x - a| ≤ b</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Distance sur la droite réelle</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Distance entre deux réels</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La distance entre deux réels $\displaystyle x$ et $\displaystyle a$ est définie par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle d(x, a) = |x - a|$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette distance représente la longueur du segment entre les points d'abscisses $\displaystyle x$ et $\displaystyle a$ sur la droite réelle.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Inégalité $\displaystyle |x - a| \leq b$ avec $\displaystyle b \geq 0$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'inégalité $\displaystyle |x - a| \leq b$ (avec $\displaystyle b \geq 0$) signifie que la distance entre $\displaystyle x$ et $\displaystyle a$ est inférieure ou égale à $\displaystyle b$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela équivaut à : $\displaystyle -b \leq x - a \leq b$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit : $\displaystyle a - b \leq x \leq a + b$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des solutions est l'intervalle fermé : $\displaystyle [a - b, a + b]$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>⚠️ Condition importante :</strong> Cette équivalence n'est valable que si $\displaystyle b \geq 0$. Si $\displaystyle b < 0$, l'inéquation $\displaystyle |x - a| \leq b$ n'a pas de solution.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas particuliers</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |x| \leq b$ équivaut à $\displaystyle x \in [-b, b]$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |x - a| < b$ équivaut à $\displaystyle x \in ]a - b, a + b[$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |x - a| \geq b$ équivaut à $\displaystyle x \in ]-\infty, a - b] \cup [a + b, +\infty[$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle |x - a| = b$ équivaut à $\displaystyle x = a - b$ ou $\displaystyle x = a + b$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |x - 3| \leq 2$ équivaut à $\displaystyle x \in [1, 5]$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |x + 1| \leq 4$ équivaut à $\displaystyle |x - (-1)| \leq 4$, soit $\displaystyle x \in [-5, 3]$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |x| < 5$ équivaut à $\displaystyle x \in ]-5, 5[$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle |x - 2| \geq 3$ équivaut à $\displaystyle x \in ]-\infty, -1] \cup [5, +\infty[$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Résolution d'inéquations avec valeur absolue</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes de résolution</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Méthode 1 : Utiliser la définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle |f(x)| \leq g(x)$ ou $\displaystyle |f(x)| \geq g(x)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle |f(x)| \leq b$ avec $\displaystyle b > 0$, alors $\displaystyle -b \leq f(x) \leq b$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle |f(x)| \geq b$ avec $\displaystyle b > 0$, alors $\displaystyle f(x) \leq -b$ ou $\displaystyle f(x) \geq b$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Méthode 2 : Élever au carré</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si les deux membres sont positifs, on peut élever au carré :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle |f(x)| \leq |g(x)| \Leftrightarrow f(x)^2 \leq g(x)^2 \Leftrightarrow (f(x) - g(x))(f(x) + g(x)) \leq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>⚠️ Attention :</strong> Cette méthode nécessite que les deux membres soient positifs.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Résoudre $\displaystyle |2x - 1| \leq 3$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle |2x - 1| \leq 3$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela équivaut à : $\displaystyle -3 \leq 2x - 1 \leq 3$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En ajoutant $\displaystyle 1$ : $\displaystyle -2 \leq 2x \leq 4$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En divisant par $\displaystyle 2 > 0$ : $\displaystyle -1 \leq x \leq 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solution : $\displaystyle S = [-1, 2]$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Résoudre $\displaystyle |x - 2| \geq |x + 1|$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On élève au carré (les deux membres sont positifs) :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle |x - 2|^2 \geq |x + 1|^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (x - 2)^2 \geq (x + 1)^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^2 - 4x + 4 \geq x^2 + 2x + 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle -4x + 4 \geq 2x + 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle -6x \geq -3$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x \leq \frac{1}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solution : $\displaystyle S = ]-\infty, \frac{1}{2}]$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Partie entière</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et propriétés</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout réel $\displaystyle x$, la partie entière de $\displaystyle x$, notée $\displaystyle \lfloor x \rfloor$ (ou $\displaystyle E(x)$), est le plus grand entier relatif inférieur ou égal à $\displaystyle x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Formellement : $\displaystyle \lfloor x \rfloor = \max\{n \in \mathbb{Z} \mid n \leq x\}$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriétés fondamentales</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour tout $\displaystyle x \in \mathbb{R}$, on a $\displaystyle \lfloor x \rfloor \leq x < \lfloor x \rfloor + 1$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour tout $\displaystyle x \in \mathbb{R}$ et $\displaystyle n \in \mathbb{Z}$, on a $\displaystyle \lfloor x + n \rfloor = \lfloor x \rfloor + n$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour tout $\displaystyle x \in \mathbb{R}$, on a $\displaystyle x - 1 < \lfloor x \rfloor \leq x$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle x \in \mathbb{Z}$, alors $\displaystyle \lfloor x \rfloor = x$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \lfloor 3.7 \rfloor = 3$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \lfloor -2.3 \rfloor = -3$ (car $\displaystyle -3 < -2.3 < -2$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \lfloor \pi \rfloor = 3$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \lfloor 5 \rfloor = 5$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \lfloor -1 \rfloor = -1$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Représentation graphique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction partie entière est une fonction en escalier :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Sur $\displaystyle [n, n+1[$ avec $\displaystyle n \in \mathbb{Z}$, on a $\displaystyle \lfloor x \rfloor = n$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• La fonction est constante sur chaque intervalle $\displaystyle [n, n+1[$ et fait un "saut" de $\displaystyle 1$ en chaque entier</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour un nombre négatif, la partie entière n'est pas la troncature décimale.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Exemple : $\displaystyle \lfloor -2.7 \rfloor = -3$ et non $\displaystyle -2$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XII. Inégalités classiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Inégalités remarquables</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Inégalité arithmético-géométrique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas simple (2 variables) :</strong> Pour tous $\displaystyle a, b \geq 0$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sqrt{ab} \leq \frac{a + b}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Version générale ($\displaystyle n$ variables) :</strong> Pour $\displaystyle a_1, a_2, \ldots, a_n \geq 0$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sqrt[n]{\prod_{i=1}^{n} a_i} \leq \frac{1}{n} \sum_{i=1}^{n} a_i$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'égalité a lieu si et seulement si tous les $\displaystyle a_i$ sont égaux.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Inégalité de Bernoulli</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \geq -1$ et tout $\displaystyle n \in \mathbb{N}^{\ast}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (1 + x)^n \geq 1 + nx$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'égalité a lieu si et seulement si $\displaystyle x = 0$ ou $\displaystyle n = 1$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Inégalité de Cauchy-Schwarz</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas réel simple (2 vecteurs) :</strong> Pour tous $\displaystyle a, b, c, d \in \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (ac + bd)^2 \leq (a^2 + b^2)(c^2 + d^2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Version générale dans $\displaystyle \mathbb{R}^n$ :</strong> Pour $\displaystyle (a_i), (b_i) \in \mathbb{R}^n$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \left(\sum_{i=1}^{n} a_i b_i\right)^2 \leq \left(\sum_{i=1}^{n} a_i^2\right)\left(\sum_{i=1}^{n} b_i^2\right)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'égalité a lieu si et seulement si les vecteurs $\displaystyle (a_i)$ et $\displaystyle (b_i)$ sont colinéaires.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Applications avec exponentielle et logarithme</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Pour tout $\displaystyle x \in \mathbb{R}$ : $\displaystyle e^x \geq 1 + x$ (égalité si et seulement si $\displaystyle x = 0$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Pour tout $\displaystyle x > -1$ : $\displaystyle \ln(1 + x) \leq x$ (égalité si et seulement si $\displaystyle x = 0$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces inégalités découlent de la convexité de $\displaystyle \exp$ et de la concavité de $\displaystyle \ln$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'application :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle a = 4$ et $\displaystyle b = 9$ : $\displaystyle \sqrt{36} = 6 \leq \frac{13}{2} = 6.5$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle x = 0.1$ et $\displaystyle n = 3$ : $\displaystyle (1.1)^3 = 1.331 \geq 1 + 0.3 = 1.3$</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle a = 1, b = 2, c = 3, d = 4$ : $\displaystyle (3 + 8)^2 = 121 \leq (1 + 4)(9 + 16) = 125$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XIII. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes de résolution</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthodes pour résoudre des inéquations :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Transposer tous les termes</strong> dans un membre pour se ramener à $\displaystyle f(x) \geq 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Factoriser</strong> l'expression autant que possible</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Construire un tableau de signes</strong> pour déterminer le signe de chaque facteur</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Vérifier le domaine de définition</strong> avant de conclure</li>
+                <li style="margin:0; text-align:left;"><strong>Donner l'ensemble solution</strong> sous forme d'intervalle ou d'union d'intervalles</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Vérifier le domaine :</strong> Toujours commencer par déterminer le domaine de définition</li>
+                <li style="margin:0; text-align:left;"><strong>Ne pas multiplier par une expression de signe inconnu :</strong> Utiliser la transposition plutôt que la multiplication</li>
+                <li style="margin:0; text-align:left;"><strong>Tableaux de signes :</strong> Organiser les racines par ordre croissant et étudier le signe sur chaque intervalle</li>
+                <li style="margin:0; text-align:left;"><strong>Valeur absolue :</strong> Utiliser la définition $\displaystyle |x - a| \leq b \Leftrightarrow a - b \leq x \leq a + b$ avec $\displaystyle b \geq 0$</li>
+                <li style="margin:0; text-align:left;"><strong>Majoration :</strong> Pour majorer un quotient, majorer le numérateur et minorer le dénominateur (positif)</li>
+                <li style="margin:0; text-align:left;"><strong>Partie entière :</strong> Se rappeler que $\displaystyle \lfloor x \rfloor \leq x < \lfloor x \rfloor + 1$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Multiplier par une expression négative :</strong> Oublier d'inverser le sens de l'inégalité</li>
+                <li style="margin:0; text-align:left;"><strong>Domaine de définition :</strong> Oublier d'exclure les valeurs qui annulent un dénominateur ou un radicande</li>
+                <li style="margin:0; text-align:left;"><strong>Valeur absolue :</strong> Confondre $\displaystyle |x| \leq a$ et $\displaystyle x \leq a$</li>
+                <li style="margin:0; text-align:left;"><strong>Partie entière négative :</strong> Confondre $\displaystyle \lfloor -2.7 \rfloor = -3$ avec la troncature $\displaystyle -2$</li>
+                <li style="margin:0; text-align:left;"><strong>Majoration de produit :</strong> Appliquer la règle de majoration sans vérifier que les nombres sont positifs</li>
+                <li style="margin:0; text-align:left;"><strong>Inégalité triangulaire :</strong> Confondre $\displaystyle |x + y|$ et $\displaystyle |x| + |y|$</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===
+

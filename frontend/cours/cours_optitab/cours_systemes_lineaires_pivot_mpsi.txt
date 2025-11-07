@@ -1,0 +1,527 @@
+=== Systèmes linéaires - Méthode du pivot - Programme MPSI
+Difficulté: medium
+Ordre: 4
+
+Titre: Résolution de petits systèmes linéaires par la méthode du pivot
+Description: Cours complet sur la résolution de systèmes linéaires en MPSI : systèmes de 2 ou 3 équations à 2 ou 3 inconnues, opérations élémentaires sur les lignes, algorithme du pivot de Gauss, interprétation géométrique (intersection de droites dans ℝ², de plans dans ℝ³), cas particuliers et exemples détaillés.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Systèmes linéaires : définitions et notations</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition d'un système linéaire</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Système linéaire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un système linéaire à coefficients réels est un ensemble de $\displaystyle m$ équations linéaires à $\displaystyle n$ inconnues, de la forme :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} a_{11}x_1 + a_{12}x_2 + \ldots + a_{1n}x_n = b_1 \\ a_{21}x_1 + a_{22}x_2 + \ldots + a_{2n}x_n = b_2 \\ \vdots \\ a_{m1}x_1 + a_{m2}x_2 + \ldots + a_{mn}x_n = b_m \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où les $\displaystyle a_{ij}$ et les $\displaystyle b_i$ sont des réels donnés, et les $\displaystyle x_j$ sont les inconnues.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas particuliers étudiés en MPSI</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans ce cours, nous nous concentrons sur les systèmes de <strong>deux ou trois équations à deux ou trois inconnues</strong> :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Système 2×2 :</strong> $\displaystyle \begin{cases} ax + by = c \\ dx + ey = f \end{cases}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Système 2×3 :</strong> $\displaystyle \begin{cases} ax + by + cz = d \\ ex + fy + gz = h \end{cases}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Système 3×2 :</strong> $\displaystyle \begin{cases} ax + by = c \\ dx + ey = f \\ gx + hy = i \end{cases}$</li>
+                <li style="margin:0; text-align:left;"><strong>Système 3×3 :</strong> $\displaystyle \begin{cases} a_{11}x + a_{12}y + a_{13}z = b_1 \\ a_{21}x + a_{22}y + a_{23}z = b_2 \\ a_{31}x + a_{32}y + a_{33}z = b_3 \end{cases}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \begin{cases} 2x + 3y = 7 \\ x - y = 1 \end{cases}$ (système 2×2)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \begin{cases} x + 2y - z = 3 \\ 2x - y + z = 1 \end{cases}$ (système 2×3)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \begin{cases} x + y + z = 6 \\ 2x - y + z = 3 \\ x + 2y - z = 1 \end{cases}$ (système 3×3)</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Solution d'un système</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une solution du système est un $\displaystyle n$-uplet $\displaystyle (x_1, x_2, \ldots, x_n)$ qui vérifie simultanément toutes les équations du système.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Résoudre un système</strong> consiste à déterminer toutes ses solutions.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Opérations élémentaires sur les lignes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Les trois types d'opérations élémentaires</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Opération 1 : Échange de deux lignes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Notation :</strong> $\displaystyle L_i \leftrightarrow L_j$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On échange les lignes $\displaystyle i$ et $\displaystyle j$ du système.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Dans le système $\displaystyle \begin{cases} L_1 : 2x + 3y = 7 \\ L_2 : x - y = 1 \end{cases}$, l'opération $\displaystyle L_1 \leftrightarrow L_2$ donne $\displaystyle \begin{cases} L_1 : x - y = 1 \\ L_2 : 2x + 3y = 7 \end{cases}$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Opération 2 : Multiplication d'une ligne par un scalaire non nul</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Notation :</strong> $\displaystyle L_i \leftarrow \lambda L_i$ où $\displaystyle \lambda \neq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On multiplie tous les coefficients de la ligne $\displaystyle i$ par le réel non nul $\displaystyle \lambda$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Dans $\displaystyle L_1 : 2x + 3y = 7$, l'opération $\displaystyle L_1 \leftarrow \frac{1}{2}L_1$ donne $\displaystyle L_1 : x + \frac{3}{2}y = \frac{7}{2}$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Opération 3 : Ajout à une ligne d'un multiple d'une autre ligne</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Notation :</strong> $\displaystyle L_i \leftarrow L_i + \lambda L_j$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On remplace la ligne $\displaystyle i$ par la somme de la ligne $\displaystyle i$ et de $\displaystyle \lambda$ fois la ligne $\displaystyle j$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Dans $\displaystyle \begin{cases} L_1 : 2x + 3y = 7 \\ L_2 : x - y = 1 \end{cases}$, l'opération $\displaystyle L_1 \leftarrow L_1 - 2L_2$ donne $\displaystyle \begin{cases} L_1 : 5y = 5 \\ L_2 : x - y = 1 \end{cases}$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriété fondamentale :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les opérations élémentaires sur les lignes <strong>conservent l'ensemble des solutions</strong> du système. Autrement dit, si un système $\displaystyle S$ est transformé en un système $\displaystyle S'$ par une suite d'opérations élémentaires, alors $\displaystyle S$ et $\displaystyle S'$ ont exactement les mêmes solutions.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Dans l'opération $\displaystyle L_i \leftarrow \lambda L_i$, il faut absolument que $\displaystyle \lambda \neq 0$. Sinon, on perdrait une équation.</li>
+                <li style="margin:0 0 18px 0; text-align:left;">L'opération $\displaystyle L_i \leftarrow L_i + \lambda L_j$ ne modifie pas la ligne $\displaystyle L_j$.</li>
+                <li style="margin:0; text-align:left;">On peut combiner plusieurs opérations élémentaires pour simplifier le système.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Système échelonné et algorithme du pivot de Gauss</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition : système échelonné</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Système échelonné</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un système linéaire est dit <strong>échelonné</strong> (ou en forme triangulaire supérieure) si :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Les premières lignes non nulles ont un premier coefficient non nul (appelé <strong>pivot</strong>)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Le pivot de chaque ligne non nulle est situé <strong>strictement à droite</strong> du pivot de la ligne précédente</li>
+                <li style="margin:0; text-align:left;">Toutes les lignes nulles (si elles existent) sont placées en bas du système</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Le système $\displaystyle \begin{cases} x + 2y - z = 3 \\ y + z = 1 \\ z = 2 \end{cases}$ est échelonné.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Fiche réflexe : Résoudre par remontée</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fois le système échelonné obtenu, on résout par <strong>remontée</strong> :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Commencer par la <strong>dernière équation non nulle</strong></li>
+                <li style="margin:0 0 18px 0; text-align:left;">Exprimer l'inconnue correspondant au pivot de cette ligne</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Remonter</strong> vers les équations précédentes en substituant les valeurs déjà trouvées</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Répéter jusqu'à avoir déterminé toutes les inconnues</li>
+                <li style="margin:0; text-align:left;">Si des variables restent libres (colonnes sans pivot), les paramétrer</li>
+            </ol>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Principe de la méthode du pivot</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Objectif</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Transformer le système initial en un système <strong>échelonné</strong> équivalent par une suite d'opérations élémentaires sur les lignes.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fois cette forme obtenue, on résout le système par <strong>remontée</strong>.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition : Pivot</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>pivot</strong> est un coefficient non nul choisi dans une colonne pour éliminer les autres coefficients de cette colonne situés en dessous (et éventuellement au-dessus dans la méthode de Gauss-Jordan).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le pivot est généralement placé sur la diagonale principale lors de l'échelonnement.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Procédure d'échelonnement (pas-à-pas explicite) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Algorithme colonne par colonne :</strong></p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Pour chaque colonne $\displaystyle j$ (de gauche à droite) :</strong>
+                    <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                        <li style="margin:8px 0;"><strong>Étape 1 :</strong> Choisir un pivot non nul dans la colonne $\displaystyle j$, en dessous ou sur la ligne $\displaystyle j$</li>
+                        <li style="margin:8px 0;"><strong>Étape 2 :</strong> Si le pivot n'est pas sur la ligne $\displaystyle j$, échanger des lignes pour l'y placer : $\displaystyle L_j \leftrightarrow L_k$ (où $\displaystyle k$ est la ligne du pivot choisi)</li>
+                        <li style="margin:8px 0;"><strong>Étape 3 :</strong> Normaliser la ligne du pivot : $\displaystyle L_j \leftarrow \frac{1}{a_{jj}}L_j$ (pour obtenir un coefficient 1)</li>
+                        <li style="margin:8px 0;"><strong>Étape 4 :</strong> Annuler tous les coefficients <strong>sous</strong> le pivot : pour chaque $\displaystyle i > j$, effectuer $\displaystyle L_i \leftarrow L_i - a_{ij}L_j$</li>
+                        <li style="margin:8px 0;"><strong>Étape 5 :</strong> Si tous les coefficients de la colonne $\displaystyle j$ sont nuls (en dessous de la ligne $\displaystyle j$), passer à la colonne suivante</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Résolution par remontée :</strong>
+                    <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                        <li style="margin:8px 0;">Le système est maintenant échelonné</li>
+                        <li style="margin:8px 0;">Résoudre en commençant par la dernière équation non nulle</li>
+                        <li style="margin:8px 0;">Remonter en substituant les valeurs trouvées</li>
+                        <li style="margin:8px 0;">Si des colonnes n'ont pas de pivot, les variables correspondantes sont libres (à paramétrer)</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Choix du pivot et stabilité numérique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Pivot partiel (stratégie recommandée) :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour améliorer la stabilité numérique et éviter les erreurs d'arrondi, on utilise la stratégie du <strong>pivot partiel</strong> :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Dans chaque colonne $\displaystyle j$, choisir comme pivot le coefficient de <strong>plus grande valeur absolue</strong> parmi ceux situés sur ou en dessous de la ligne $\displaystyle j$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Échanger les lignes pour placer ce pivot sur la ligne $\displaystyle j$ : $\displaystyle L_j \leftrightarrow L_k$ où $\displaystyle |a_{kj}| = \max_{i \geq j} |a_{ij}|$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Cette stratégie améliore le <strong>conditionnement numérique</strong> du système, même en calcul exact</li>
+                <li style="margin:0; text-align:left;">Si tous les coefficients d'une colonne sont nuls, passer à la colonne suivante</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque : Gauss vs Gauss-Jordan</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• <strong>Méthode de Gauss :</strong> On élimine uniquement <strong>sous</strong> les pivots → système échelonné (triangulaire supérieur)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• <strong>Méthode de Gauss-Jordan :</strong> On élimine <strong>au-dessus et en dessous</strong> des pivots → système échelonné réduit (forme canonique)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La forme échelonnée réduite est utile pour : le paramétrage propre des solutions, l'inversion de matrices via $\displaystyle [A \mid I]$, et la détermination du rang.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Exemples détaillés</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Système 2×2</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Résoudre le système :</strong>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} 2x + 3y = 7 \\ x - y = 1 \end{cases}$$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Étape 1 : Mise en forme</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Système initial :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} L_1 : 2x + 3y = 7 \\ L_2 : x - y = 1 \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On échange les lignes pour avoir un coefficient 1 en haut à gauche :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle L_1 \leftrightarrow L_2$</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} L_1 : x - y = 1 \\ L_2 : 2x + 3y = 7 \end{cases}$$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Étape 2 : Élimination sous le pivot</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le pivot est $\displaystyle 1$ (coefficient de $\displaystyle x$ dans $\displaystyle L_1$). On élimine le coefficient de $\displaystyle x$ dans $\displaystyle L_2$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle L_2 \leftarrow L_2 - 2L_1$</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} L_1 : x - y = 1 \\ L_2 : 5y = 5 \end{cases}$$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Étape 3 : Normalisation et remontée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On normalise $\displaystyle L_2$ : $\displaystyle L_2 \leftarrow \frac{1}{5}L_2$</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} L_1 : x - y = 1 \\ L_2 : y = 1 \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le système est maintenant échelonné. On résout par remontée :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• De $\displaystyle L_2$ : $\displaystyle y = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• En substituant dans $\displaystyle L_1$ : $\displaystyle x - 1 = 1$, donc $\displaystyle x = 2$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Solution :</strong>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} x = 2 \\ y = 1 \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Vérification : $\displaystyle 2 \times 2 + 3 \times 1 = 7$ ✓ et $\displaystyle 2 - 1 = 1$ ✓</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Système 3×3</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Résoudre le système :</strong>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} x + y + z = 6 \\ 2x - y + z = 3 \\ x + 2y - z = 1 \end{cases}$$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Phase de descente</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Pivot 1 :</strong> Coefficient de $\displaystyle x$ dans $\displaystyle L_1$ (vaut 1)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle L_2 \leftarrow L_2 - 2L_1$ et $\displaystyle L_3 \leftarrow L_3 - L_1$</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} L_1 : x + y + z = 6 \\ L_2 : -3y - z = -9 \\ L_3 : y - 2z = -5 \end{cases}$$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Pivot 2 :</strong> On échange $\displaystyle L_2$ et $\displaystyle L_3$ pour avoir un coefficient non nul</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle L_2 \leftrightarrow L_3$</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} L_1 : x + y + z = 6 \\ L_2 : y - 2z = -5 \\ L_3 : -3y - z = -9 \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On élimine sous le pivot : $\displaystyle L_3 \leftarrow L_3 + 3L_2$</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} L_1 : x + y + z = 6 \\ L_2 : y - 2z = -5 \\ L_3 : -7z = -24 \end{cases}$$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Phase de remontée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le système est échelonné. Résolution par remontée :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• De $\displaystyle L_3$ : $\displaystyle z = \frac{24}{7}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• De $\displaystyle L_2$ : $\displaystyle y = -5 + 2z = -5 + \frac{48}{7} = \frac{13}{7}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• De $\displaystyle L_1$ : $\displaystyle x = 6 - y - z = 6 - \frac{13}{7} - \frac{24}{7} = \frac{5}{7}$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Solution :</strong>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} x = \frac{5}{7} \\ y = \frac{13}{7} \\ z = \frac{24}{7} \end{cases}$$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Interprétation géométrique</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Systèmes 2×2 : intersection de droites dans ℝ²</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Interprétation géométrique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un système de deux équations à deux inconnues :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} ax + by = c \\ dx + ey = f \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">représente l'intersection de deux droites dans le plan $\displaystyle \mathbb{R}^2$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Trois cas possibles :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Solution unique :</strong> Les deux droites sont sécantes (non parallèles). Le système admet une unique solution correspondant au point d'intersection.</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Infinité de solutions :</strong> Les deux droites sont confondues. Le système admet une infinité de solutions (tous les points de la droite).</li>
+                <li style="margin:0; text-align:left;"><strong>Aucune solution :</strong> Les deux droites sont parallèles et distinctes. Le système n'admet aucune solution.</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples géométriques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \begin{cases} x + y = 3 \\ x - y = 1 \end{cases}$ : deux droites sécantes → solution unique $\displaystyle (2, 1)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \begin{cases} x + y = 3 \\ 2x + 2y = 6 \end{cases}$ : deux droites confondues → infinité de solutions</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \begin{cases} x + y = 3 \\ x + y = 5 \end{cases}$ : deux droites parallèles distinctes → aucune solution</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Systèmes 3×3 : intersection de plans dans ℝ³</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Interprétation géométrique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un système de trois équations à trois inconnues :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} a_1x + b_1y + c_1z = d_1 \\ a_2x + b_2y + c_2z = d_2 \\ a_3x + b_3y + c_3z = d_3 \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">représente l'intersection de trois plans dans l'espace $\displaystyle \mathbb{R}^3$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas possibles :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Solution unique :</strong> Les trois plans se coupent en un point unique. Le système admet une unique solution.</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Infinité de solutions (droite) :</strong> Les trois plans se coupent selon une droite. Le système admet une infinité de solutions paramétrées par une variable.</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Infinité de solutions (plan) :</strong> Deux plans sont confondus et le troisième les coupe. Le système admet une infinité de solutions.</li>
+                <li style="margin:0; text-align:left;"><strong>Aucune solution :</strong> Les plans sont parallèles ou deux plans sont parallèles et distincts. Le système n'admet aucune solution.</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'interprétation géométrique aide à comprendre les différents cas de résolution et à vérifier la cohérence des résultats obtenus par la méthode du pivot.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Lignes incompatibles et lignes nulles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Terminologie officielle</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Ligne d'incompatibilité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si lors de l'échelonnement, on obtient une ligne de la forme :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle 0x + 0y + 0z = a \quad \text{avec } a \neq 0$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">alors cette ligne est appelée <strong>ligne d'incompatibilité</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Conséquence :</strong> Le système est <strong>impossible</strong> (incompatible, aucune solution).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> $\displaystyle \begin{cases} x + y = 3 \\ x + y = 5 \end{cases}$ → après élimination, on obtient la ligne d'incompatibilité : $\displaystyle 0 = 2$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Ligne nulle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si lors de l'échelonnement, on obtient une ligne de la forme :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle 0x + 0y + 0z = 0$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">alors cette ligne est appelée <strong>ligne nulle</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Conséquence :</strong> Cette ligne n'apporte aucune contrainte. On peut la <strong>supprimer</strong> à l'étape suivante.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si le nombre de lignes non nulles est strictement inférieur au nombre d'inconnues, le système est <strong>indéterminé</strong> (infinité de solutions).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> $\displaystyle \begin{cases} x + y = 3 \\ 2x + 2y = 6 \end{cases}$ → après élimination : $\displaystyle \begin{cases} x + y = 3 \\ 0 = 0 \end{cases}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La ligne $\displaystyle 0 = 0$ est une ligne nulle qu'on supprime. On paramètre : $\displaystyle y = t \in \mathbb{R}$, alors $\displaystyle x = 3 - t$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solutions : $\displaystyle (x, y) = (3, 0) + t(-1, 1)$ avec $\displaystyle t \in \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il faut bien distinguer :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Ligne d'incompatibilité :</strong> $\displaystyle 0 = a$ avec $\displaystyle a \neq 0$ → système impossible</li>
+                <li style="margin:0; text-align:left;"><strong>Ligne nulle :</strong> $\displaystyle 0 = 0$ → on la supprime, indétermination possible</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Cas 2×2 : déterminant et formules de Cramer</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème pour les systèmes 2×2</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème (formules de Cramer)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Considérons le système 2×2 :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} ax + by = c \\ a'x + b'y = c' \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note $\displaystyle \Delta = \begin{vmatrix} a & b \\ a' & b' \end{vmatrix} = ab' - a'b$ le déterminant du système.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Si $\displaystyle \Delta \neq 0$</strong>, alors le système admet une <strong>unique solution</strong> donnée par les formules de Cramer :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle x = \frac{\begin{vmatrix} c & b \\ c' & b' \end{vmatrix}}{\Delta} = \frac{cb' - c'b}{ab' - a'b}, \quad y = \frac{\begin{vmatrix} a & c \\ a' & c' \end{vmatrix}}{\Delta} = \frac{ac' - a'c}{ab' - a'b}$$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple numérique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Résoudre $\displaystyle \begin{cases} 2x + 3y = 7 \\ x - y = 1 \end{cases}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Delta = \begin{vmatrix} 2 & 3 \\ 1 & -1 \end{vmatrix} = 2 \times (-1) - 3 \times 1 = -2 - 3 = -5 \neq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x = \frac{\begin{vmatrix} 7 & 3 \\ 1 & -1 \end{vmatrix}}{-5} = \frac{7 \times (-1) - 3 \times 1}{-5} = \frac{-10}{-5} = 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle y = \frac{\begin{vmatrix} 2 & 7 \\ 1 & 1 \end{vmatrix}}{-5} = \frac{2 \times 1 - 7 \times 1}{-5} = \frac{-5}{-5} = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solution : $\displaystyle (x, y) = (2, 1)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple paramétré :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Discuter selon $\displaystyle m \in \mathbb{R}$ le système : $\displaystyle \begin{cases} mx + y = 1 \\ x + my = 1 \end{cases}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Delta = \begin{vmatrix} m & 1 \\ 1 & m \end{vmatrix} = m^2 - 1 = (m-1)(m+1)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas 1 :</strong> $\displaystyle \Delta \neq 0$ soit $\displaystyle m \neq 1$ et $\displaystyle m \neq -1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solution unique : $\displaystyle x = \frac{m-1}{m^2-1} = \frac{1}{m+1}$, $\displaystyle y = \frac{m-1}{m^2-1} = \frac{1}{m+1}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas 2 :</strong> $\displaystyle m = 1$ → $\displaystyle \begin{cases} x + y = 1 \\ x + y = 1 \end{cases}$ → infinité de solutions : $\displaystyle y = t$, $\displaystyle x = 1-t$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas 3 :</strong> $\displaystyle m = -1$ → $\displaystyle \begin{cases} -x + y = 1 \\ x - y = 1 \end{cases}$ → ligne d'incompatibilité : $\displaystyle 0 = 2$ → aucune solution</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Systèmes avec paramètre</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode de discussion</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Stratégie de résolution</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour discuter un système dépendant d'un paramètre $\displaystyle m$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Échelonner d'abord sans distinguer les cas</strong> : appliquer la méthode du pivot en traitant $\displaystyle m$ comme une constante</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Séparer selon les valeurs qui annulent les pivots</strong> : identifier les valeurs de $\displaystyle m$ pour lesquelles un pivot s'annule</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Traiter chaque cas séparément</strong> : pour chaque valeur critique de $\displaystyle m$, reprendre l'échelonnement ou analyser directement</li>
+                <li style="margin:0; text-align:left;"><strong>Conclure</strong> : solution unique / aucune solution / infinité de solutions selon les valeurs de $\displaystyle m$</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple type :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Discuter selon $\displaystyle m \in \mathbb{R}$ le système $\displaystyle (S_m)$ :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} mx + y + z = 1 \\ x + my + z = 1 \\ x + y + mz = 1 \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Échelonnement :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On échange $\displaystyle L_1$ et $\displaystyle L_2$ pour avoir un pivot 1 : $\displaystyle L_1 \leftrightarrow L_2$</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} x + my + z = 1 \\ mx + y + z = 1 \\ x + y + mz = 1 \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle L_2 \leftarrow L_2 - mL_1$ et $\displaystyle L_3 \leftarrow L_3 - L_1$ :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{cases} x + my + z = 1 \\ (1-m^2)y + (1-m)z = 1-m \\ (1-m)y + (m-1)z = 0 \end{cases}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les pivots potentiels s'annulent pour $\displaystyle m = 1$ et $\displaystyle m = -1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas 1 :</strong> $\displaystyle m \neq 1$ et $\displaystyle m \neq -1$ → solution unique</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas 2 :</strong> $\displaystyle m = 1$ → $\displaystyle \begin{cases} x + y + z = 1 \\ 0 = 0 \\ 0 = 0 \end{cases}$ → infinité de solutions (2 variables libres)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas 3 :</strong> $\displaystyle m = -1$ → ligne d'incompatibilité → aucune solution</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Structure des solutions</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Systèmes homogènes vs non homogènes</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Système homogène</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un système $\displaystyle Ax = 0$ (tous les seconds membres sont nuls) est dit <strong>homogène</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Propriété :</strong> L'ensemble des solutions d'un système homogène est un <strong>sous-espace vectoriel</strong> de $\displaystyle \mathbb{R}^n$ (appelé <strong>noyau</strong> de $\displaystyle A$, noté $\displaystyle \ker A$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un système homogène admet toujours au moins la solution nulle $\displaystyle (0, 0, \ldots, 0)$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Système non homogène</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un système $\displaystyle Ax = b$ avec $\displaystyle b \neq 0$ est dit <strong>non homogène</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Théorème :</strong> Si le système non homogène $\displaystyle Ax = b$ est compatible (admet au moins une solution $\displaystyle x_p$), alors l'ensemble de ses solutions est :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \{x_p\} + \ker A = \{x_p + h \mid h \in \ker A\}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est un <strong>sous-espace affine</strong> de direction $\displaystyle \ker A$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Variables libres et paramétrage</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Après échelonnement, les colonnes <strong>sans pivot</strong> correspondent à des <strong>variables libres</strong> qu'on paramètre.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle r$ est le nombre de pivots et $\displaystyle n$ le nombre d'inconnues, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Il y a $\displaystyle n - r$ variables libres</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Les solutions s'écrivent sous la forme : $\displaystyle (x_1, \ldots, x_n) = (x_1^0, \ldots, x_n^0) + t_1v_1 + \ldots + t_{n-r}v_{n-r}$ où $\displaystyle t_i \in \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle (x_1^0, \ldots, x_n^0)$ est une solution particulière, et les $\displaystyle v_i$ forment une base de $\displaystyle \ker A$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Résoudre $\displaystyle \begin{cases} x + 2y - z = 3 \\ 2x + 4y - 2z = 6 \end{cases}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Après échelonnement : $\displaystyle \begin{cases} x + 2y - z = 3 \\ 0 = 0 \end{cases}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Variables libres : $\displaystyle y = t$, $\displaystyle z = s$ avec $\displaystyle t, s \in \mathbb{R}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solution particulière : $\displaystyle (x_0, y_0, z_0) = (3, 0, 0)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solutions : $\displaystyle (x, y, z) = (3, 0, 0) + t(-2, 1, 0) + s(1, 0, 1)$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Méthode pratique : tableau augmenté</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Représentation matricielle</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Tableau augmenté (matrice augmentée)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut représenter le système sous forme de tableau augmenté, en séparant les coefficients des seconds membres par une barre verticale :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{pmatrix} a_{11} & a_{12} & \cdots & a_{1n} & | & b_1 \\ a_{21} & a_{22} & \cdots & a_{2n} & | & b_2 \\ \vdots & \vdots & \ddots & \vdots & | & \vdots \\ a_{m1} & a_{m2} & \cdots & a_{mn} & | & b_m \end{pmatrix}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les opérations élémentaires s'appliquent directement sur les lignes de ce tableau.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le système $\displaystyle \begin{cases} 2x + 3y = 7 \\ x - y = 1 \end{cases}$ s'écrit :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{pmatrix} 2 & 3 & | & 7 \\ 1 & -1 & | & 1 \end{pmatrix}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Après $\displaystyle L_1 \leftrightarrow L_2$ :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{pmatrix} 1 & -1 & | & 1 \\ 2 & 3 & | & 7 \end{pmatrix}$$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Après $\displaystyle L_2 \leftarrow L_2 - 2L_1$ :</p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$$\displaystyle \begin{pmatrix} 1 & -1 & | & 1 \\ 0 & 5 & | & 5 \end{pmatrix}$$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Avantage :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette représentation permet de visualiser clairement les transformations et de réduire les risques d'erreurs de calcul.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Résumé et conseils pratiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Points clés à retenir</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📋 Checklist pour résoudre un système :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Écrire le système sous forme claire ou utiliser le tableau augmenté</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Choisir un pivot non nul dans la première colonne</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Normaliser la ligne du pivot (coefficient 1 si possible)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Éliminer les coefficients sous le pivot</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Répéter pour les colonnes suivantes jusqu'à obtenir une forme triangulaire</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Résoudre par remontée en commençant par la dernière équation</li>
+                <li style="margin:0; text-align:left;">Vérifier la solution en substituant dans le système initial</li>
+            </ol>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Oublier de multiplier le second membre lors d'une opération élémentaire</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Diviser par zéro (vérifier que le pivot est non nul)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Confondre $\displaystyle L_i \leftarrow L_i + \lambda L_j$ et $\displaystyle L_j \leftarrow L_j + \lambda L_i$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Ne pas vérifier la solution trouvée</li>
+                <li style="margin:0; text-align:left;">Oublier de traiter les cas particuliers (système impossible ou indéterminé)</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Conseils pour réussir :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Toujours noter les opérations effectuées pour pouvoir vérifier ou corriger</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Utiliser le tableau augmenté pour les systèmes 3×3 ou plus</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Choisir des pivots simples (1 ou -1) quand c'est possible pour éviter les fractions</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Vérifier systématiquement la solution en la substituant dans toutes les équations</li>
+                <li style="margin:0; text-align:left;">Penser à l'interprétation géométrique pour vérifier la cohérence du résultat</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+

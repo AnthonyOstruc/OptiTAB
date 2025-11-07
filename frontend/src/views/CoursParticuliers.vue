@@ -288,6 +288,168 @@
         </div>
       </section>
 
+      <!-- Tarifs Section -->
+      <section class="tarifs-section">
+        <div class="section-container">
+          <!-- Intro Section -->
+          <div class="section-header">
+            <h2 class="section-title">Tarifs clairs, adaptés à votre niveau</h2>
+            <p class="section-subtitle">
+              Tarifs adaptés à votre niveau. Formule à l'heure ou packs d'heures à prix réduit. Sans engagement.
+            </p>
+          </div>
+
+          <!-- Tabs -->
+          <div class="tarifs-tabs">
+            <button 
+              v-for="tab in tarifTabs" 
+              :key="tab.id"
+              @click="activeTab = tab.id"
+              :class="['tarif-tab', { 'active': activeTab === tab.id }]"
+            >
+              {{ tab.label }}
+            </button>
+          </div>
+
+          <!-- Pricing Grid -->
+          <div class="tarifs-grid">
+            <!-- À l'heure -->
+            <article class="tarif-card">
+              <div class="card-header">
+                <h3 class="plan-title">À l'heure</h3>
+                <p class="plan-subtitle">Flexibilité totale</p>
+              </div>
+              
+              <div class="price-section">
+                <div class="price">
+                  <span class="amount">{{ getCurrentPrice('hourly') }}€</span>
+                  <span class="period">/ heure</span>
+                </div>
+                <p class="current-level-info">{{ getCurrentLevelLabel() }}</p>
+              </div>
+              
+              <ul class="features">
+                <li>
+                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Cours ponctuel quand vous en avez besoin</span>
+                </li>
+                <li>
+                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Idéal pour rattraper une notion</span>
+                </li>
+                <li>
+                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Sans engagement</span>
+                </li>
+                <li>
+                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Paiement à la séance</span>
+                </li>
+              </ul>
+              
+              <button @click="openContactModal('Réserver un cours')" class="cta-btn">
+                Réserver un cours
+              </button>
+              
+              <p class="security-note">🔒 Pas de carte bancaire</p>
+            </article>
+
+            <!-- Packs -->
+            <article class="tarif-card tarif-card-recommended">
+              <div class="badge">⭐ Le plus populaire</div>
+              
+              <div class="card-header">
+                <h3 class="plan-title">Packs</h3>
+                <p class="plan-subtitle">Meilleur prix et visibilité</p>
+              </div>
+              
+              <div class="price-section">
+                <div class="price">
+                  <span class="price-from">À partir de</span>
+                  <span class="amount">{{ getPackPricePerHour(20) }}€</span>
+                  <span class="period">/ heure</span>
+                </div>
+                <p class="pack-info">{{ getCurrentLevelLabel() }}</p>
+                <div class="packs-list">
+                  <div class="pack-item">
+                    <div class="pack-info-left">
+                      <span class="pack-hours">Pack 5h</span>
+                      <span class="pack-per-hour">{{ getPackPricePerHour(5) }}€ / heure</span>
+                    </div>
+                    <span class="pack-price">{{ getPackPrice(5) }}€</span>
+                  </div>
+                  <div class="pack-item">
+                    <div class="pack-info-left">
+                      <span class="pack-hours">Pack 10h</span>
+                      <span class="pack-per-hour">{{ getPackPricePerHour(10) }}€ / heure</span>
+                    </div>
+                    <span class="pack-price">{{ getPackPrice(10) }}€</span>
+                  </div>
+                  <div class="pack-item">
+                    <div class="pack-info-left">
+                      <span class="pack-hours">Pack 20h</span>
+                      <span class="pack-per-hour">{{ getPackPricePerHour(20) }}€ / heure</span>
+                    </div>
+                    <span class="pack-price">{{ getPackPrice(20) }}€</span>
+                  </div>
+                </div>
+                <p class="pack-note">(heures à utiliser dans les 6 mois qui viennent)</p>
+              </div>
+              
+              <ul class="features">
+                <li>
+                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Choisissez 5, 10 ou 20 heures</span>
+                </li>
+                <li>
+                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Tarif dégressif</span>
+                </li>
+                <li>
+                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Plan personnalisé et ressources</span>
+                </li>
+                <li>
+                  <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>Heures à utiliser dans les 6 mois qui viennent</span>
+                </li>
+              </ul>
+              
+              <button @click="openContactModal('Choisir un pack')" class="cta-btn">
+                Choisir un pack
+              </button>
+              
+              <p class="security-note">🔒 Pas de carte bancaire</p>
+            </article>
+          </div>
+
+          <!-- Micro-copy rassurante -->
+          <div class="tarifs-reassurance">
+            <p>
+              Aucun frais caché • Sans engagement • Facture fournie • 
+              Variables selon matière et niveau • Remise fratrie/pack possible
+            </p>
+          </div>
+
+        </div>
+      </section>
+
       <!-- Process Section -->
       <section class="process-section">
         <div class="section-container">
@@ -333,12 +495,12 @@
             Contactez-nous dès maintenant pour discuter de vos besoins et découvrir notre méthode personnalisée.
           </p>
           <div class="cta-final-buttons">
-            <router-link to="/contact" class="btn-cta-primary">
-              Réserver un cours
-            </router-link>
-            <a href="https://wa.me/33764040251?text=Bonjour, j'aimerais poser une question sur les cours particuliers OptiTAB !" target="_blank" class="btn-cta-secondary">
+            <button @click="openContactModal('Réserver un cours / pack')" class="btn-cta-primary">
+              Premier contact
+            </button>
+            <button @click="openContactModal('Demande d\'information')" class="btn-cta-secondary">
               Poser une question
-            </a>
+            </button>
           </div>
           <p class="cta-final-note">
             🔒 Aucune carte bancaire requise • Sans engagement
@@ -353,13 +515,142 @@
       message="Bonjour, j'aimerais en savoir plus sur les cours particuliers OptiTAB !"
       tooltip="Questions ? Contactez-nous sur WhatsApp !"
     />
+    
+    <!-- Modal de contact -->
+    <ContactModal 
+      :isOpen="isContactModalOpen" 
+      :initialSubject="contactModalSubject"
+      @close="closeContactModal"
+      @success="handleContactSuccess"
+    />
   </MainLayout>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
+import ContactModal from '@/components/common/ContactModal.vue'
+
+// Gestion du modal de contact
+const isContactModalOpen = ref(false)
+const contactModalSubject = ref('')
+
+const openContactModal = (subject = '') => {
+  contactModalSubject.value = subject
+  isContactModalOpen.value = true
+}
+
+const closeContactModal = () => {
+  isContactModalOpen.value = false
+  contactModalSubject.value = ''
+}
+
+const handleContactSuccess = (message) => {
+  alert(message)
+}
+
+// Gestion des onglets de tarifs
+const activeTab = ref('lycee')
+const tarifTabs = [
+  { id: 'college', label: 'Collège' },
+  { id: 'lycee', label: 'Lycée' },
+  { id: 'prepa', label: 'Prépa / Grandes Écoles' }
+]
+
+// Prix selon le niveau et le type de formule
+const prices = {
+  college: {
+    hourly: 35,
+    pack: 30,
+    subscription: 120
+  },
+  lycee: {
+    hourly: 40,
+    pack: 32,
+    subscription: 140
+  },
+  prepa: {
+    hourly: 45,
+    pack: 40,
+    subscription: 180
+  }
+}
+
+function getCurrentPrice(type) {
+  return prices[activeTab.value]?.[type] || 0
+}
+
+function getCurrentLevelLabel() {
+  const labels = {
+    college: 'Collège',
+    lycee: 'Lycée',
+    prepa: 'Prépa / Grandes Écoles'
+  }
+  return labels[activeTab.value] || ''
+}
+
+function getPackPrice(hours, level = null) {
+  const selectedLevel = level || activeTab.value
+  const pricePerHour = getPackPricePerHour(hours, selectedLevel)
+  return Math.round(hours * pricePerHour)
+}
+
+function getPackPricePerHour(hours, level = null) {
+  const selectedLevel = level || activeTab.value
+  
+  // Tarif dégressif : le pack 20h est au prix de base, les autres sont plus chers
+  // Prix fixes par niveau et par nombre d'heures
+  const packPrices = {
+    college: {
+      5: 34,   // Pack 5h = 34€/h
+      10: 32,  // Pack 10h = 32€/h
+      20: 30   // Pack 20h = 30€/h
+    },
+    lycee: {
+      5: 39,   // Pack 5h = 39€/h
+      10: 37,  // Pack 10h = 37€/h
+      20: 35   // Pack 20h = 35€/h
+    },
+    prepa: {
+      5: 44,   // Pack 5h = 44€/h
+      10: 42,  // Pack 10h = 42€/h
+      20: 40   // Pack 20h = 40€/h (base)
+    }
+  }
+  
+  return packPrices[selectedLevel]?.[hours] || prices[selectedLevel]?.pack || 0
+}
+
+function getSubscriptionPrice(coursesPerMonth, level = null) {
+  const selectedLevel = level || activeTab.value
+  const basePrice = prices[selectedLevel]?.subscription || 0
+  // Prix de base pour 4 cours, ajusté selon le nombre de cours
+  if (coursesPerMonth === 4) {
+    return basePrice // 120€ Collège, 140€ Lycée, 180€ Prépa
+  } else if (coursesPerMonth === 8) {
+    // Calcul pour obtenir ~230€ pour Lycée (140 * 1.64 ≈ 230)
+    return Math.round(basePrice * 1.64)
+  } else if (coursesPerMonth === 12) {
+    // Calcul pour obtenir ~330€ pour Lycée (140 * 2.36 ≈ 330)
+    return Math.round(basePrice * 2.36)
+  }
+  return basePrice
+}
+
+function getSubscriptionPricePerHour(coursesPerMonth, level = null) {
+  const totalPrice = getSubscriptionPrice(coursesPerMonth, level)
+  return Math.round(totalPrice / coursesPerMonth)
+}
+
+function getSubscriptionPriceWeekly(coursesPerWeek, level = null) {
+  // Convertir cours par semaine en cours par mois (4 semaines)
+  const coursesPerMonth = coursesPerWeek * 4
+  const monthlyPrice = getSubscriptionPrice(coursesPerMonth, level)
+  // Prix hebdomadaire = prix mensuel / 4
+  return Math.round(monthlyPrice / 4)
+}
 
 function scrollToProfesseur(e) {
   e.preventDefault()
@@ -533,6 +824,8 @@ function scrollToProfesseur(e) {
   border: 2px solid #cbd5e1;
   transition: all 0.2s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .btn-secondary:hover,
@@ -1143,6 +1436,434 @@ function scrollToProfesseur(e) {
   line-height: 1.7;
 }
 
+/* Tarifs Section */
+.tarifs-section {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 50%, #f0f4ff 100%);
+  position: relative;
+  padding: 3rem 0;
+}
+
+.tarifs-tabs {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 0.3rem;
+  margin: 2rem auto;
+  gap: 0.2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.tarif-tab {
+  padding: 0.6rem 1.4rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.tarif-tab:hover {
+  color: #2a38b7;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.tarif-tab.active {
+  background: white;
+  color: #2a38b7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Tarifs Grid */
+.tarifs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin: 2rem 0 3rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Tarif Card */
+.tarif-card {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.15rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.tarif-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.tarif-card-recommended {
+  border-color: #2a38b7;
+  border-width: 3px;
+  box-shadow: 0 4px 16px rgba(42, 56, 183, 0.15);
+}
+
+.badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #78350f;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 0.75rem;
+  padding-top: 0.2rem;
+}
+
+.plan-title {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.plan-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.price-section {
+  text-align: center;
+  padding: 0.75rem 0;
+  margin-bottom: 0.75rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.price-from {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.amount {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1;
+}
+
+.period {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.price-levels {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.price-level-item {
+  font-weight: 600;
+  color: #475569;
+}
+
+.price-level-separator {
+  color: #cbd5e1;
+}
+
+.current-level-info {
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  color: #2a38b7;
+  font-weight: 600;
+}
+
+.pack-info {
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.packs-list {
+  margin-top: 0.55rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pack-item {
+  padding: 0.55rem;
+  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.pack-item:hover {
+  background: linear-gradient(135deg, #e0e7ff 0%, #e8f0ff 100%);
+  transform: translateX(2px);
+}
+
+.pack-info-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pack-hours {
+  font-weight: 700;
+  color: #2a38b7;
+  font-size: 0.7rem;
+}
+
+.pack-per-hour {
+  font-size: 0.55rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.pack-price {
+  color: #1e293b;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.pack-note {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-style: italic;
+  text-align: center;
+}
+
+.subscription-tiers {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subscription-info {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: #2a38b7;
+  font-weight: 600;
+}
+
+.subscription-tier {
+  padding: 0.5rem 0.75rem;
+  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tier-info-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.tier-courses {
+  font-weight: 700;
+  color: #2a38b7;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.tier-per-hour {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+  text-align: left;
+}
+
+.tier-price {
+  color: #1e293b;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.tarifs-note {
+  text-align: center;
+  margin: 2rem 0 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.tarifs-note p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.15rem 0;
+  flex: 1;
+}
+
+.features li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0;
+  color: #475569;
+  font-size: 0.75rem;
+}
+
+.check-icon {
+  width: 18px;
+  height: 18px;
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+.cta-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #2a38b7, #667eea);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(42, 56, 183, 0.3);
+  text-decoration: none;
+  text-align: center;
+  display: block;
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(42, 56, 183, 0.4);
+}
+
+.security-note {
+  text-align: center;
+  margin: 0.55rem 0 0 0;
+  padding-top: 0.55rem;
+  border-top: 1px solid #f1f5f9;
+  font-size: 0.65rem;
+  color: #94a3b8;
+}
+
+.tarifs-reassurance {
+  margin-top: 3rem;
+  text-align: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(42, 56, 183, 0.1);
+}
+
+.tarifs-reassurance p {
+  font-size: 0.9rem;
+  color: var(--gray-dark);
+  line-height: 1.8;
+  margin: 0;
+  font-weight: 500;
+}
+
+.tarifs-cta {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn-tarif-primary {
+  padding: 0.875rem 2rem;
+  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
+  color: white;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(42, 56, 183, 0.3);
+  display: inline-block;
+}
+
+.btn-tarif-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(42, 56, 183, 0.4);
+}
+
+.btn-tarif-secondary {
+  padding: 0.875rem 2rem;
+  background: var(--white);
+  color: #2a38b7;
+  border: 2px solid #2a38b7;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-tarif-secondary:hover {
+  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(42, 56, 183, 0.2);
+}
+
 /* Process Section */
 .process-section {
   background: #ffffff;
@@ -1413,6 +2134,172 @@ function scrollToProfesseur(e) {
     gap: 0.75rem;
   }
 
+  .tarifs-tabs {
+    padding: 0.25rem;
+    gap: 0.2rem;
+  }
+
+  .tarif-tab {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .tarifs-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .tarif-card {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+
+  .card-header {
+    margin-bottom: 1rem;
+    padding-top: 0.25rem;
+  }
+
+  .plan-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .plan-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .price-section {
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+  }
+
+  .price-from {
+    font-size: 0.75rem;
+  }
+
+  .amount {
+    font-size: 2.25rem;
+  }
+
+  .period {
+    font-size: 0.9rem;
+  }
+
+  .current-level-info,
+  .pack-info {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .price-levels {
+    font-size: 0.75rem;
+    gap: 0.4rem;
+  }
+
+  .pack-item {
+    padding: 0.6rem;
+  }
+
+  .pack-hours {
+    font-size: 0.85rem;
+  }
+
+  .pack-per-hour {
+    font-size: 0.7rem;
+  }
+
+  .pack-price {
+    font-size: 1rem;
+  }
+
+  .pack-note {
+    font-size: 0.7rem;
+    margin-top: 0.5rem;
+  }
+
+  .features {
+    margin-bottom: 1.25rem;
+  }
+
+  .features li {
+    font-size: 0.85rem;
+    padding: 0.5rem 0;
+    gap: 0.6rem;
+  }
+
+  .check-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .packs-list {
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+  }
+
+  .pack-item {
+    padding: 0.55rem;
+  }
+
+  .cta-btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+
+  .security-note {
+    font-size: 0.75rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+  }
+
+  .subscription-tier {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .tier-courses {
+    font-size: 0.8rem;
+  }
+
+  .tier-per-hour {
+    font-size: 0.7rem;
+  }
+
+  .tier-price {
+    font-size: 0.85rem;
+  }
+
+  .tarifs-note {
+    padding: 0.85rem;
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  .tarifs-note p {
+    font-size: 0.85rem;
+  }
+
+  .tarifs-reassurance {
+    padding: 1rem;
+  }
+
+  .tarifs-reassurance p {
+    font-size: 0.8rem;
+  }
+
+  .tarifs-cta {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-tarif-primary,
+  .btn-tarif-secondary {
+    width: 100%;
+    max-width: 300px;
+    font-size: 0.9rem;
+    padding: 0.75rem 1.5rem;
+  }
+
   .professeur-card {
     padding: 1.25rem;
   }
@@ -1639,6 +2526,169 @@ function scrollToProfesseur(e) {
     font-size: 0.9rem;
     margin-bottom: 1.25rem;
     line-height: 1.6;
+  }
+
+  .tarifs-tabs {
+    padding: 0.2rem;
+    gap: 0.15rem;
+  }
+
+  .tarif-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .tarifs-grid {
+    gap: 0.85rem;
+  }
+
+  .tarif-card {
+    padding: 1rem;
+    border-radius: 10px;
+  }
+
+  .card-header {
+    margin-bottom: 0.85rem;
+    padding-top: 0.2rem;
+  }
+
+  .plan-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .plan-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .price-section {
+    padding: 0.85rem 0;
+    margin-bottom: 0.85rem;
+  }
+
+  .price-from {
+    font-size: 0.7rem;
+  }
+
+  .amount {
+    font-size: 1.9rem;
+  }
+
+  .period {
+    font-size: 0.85rem;
+  }
+
+  .current-level-info,
+  .pack-info {
+    font-size: 0.75rem;
+    margin-top: 0.4rem;
+  }
+
+  .features {
+    margin-bottom: 1rem;
+  }
+
+  .features li {
+    font-size: 0.8rem;
+    padding: 0.4rem 0;
+    gap: 0.5rem;
+  }
+
+  .check-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .packs-list {
+    gap: 0.35rem;
+    margin-top: 0.65rem;
+  }
+
+  .pack-item {
+    padding: 0.45rem;
+  }
+
+  .cta-btn {
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
+
+  .security-note {
+    font-size: 0.7rem;
+    margin-top: 0.65rem;
+    padding-top: 0.65rem;
+  }
+
+  .price-levels {
+    font-size: 0.7rem;
+    gap: 0.3rem;
+  }
+
+  .price-level-item {
+    font-size: 0.7rem;
+  }
+
+  .pack-item {
+    padding: 0.5rem;
+  }
+
+  .pack-hours {
+    font-size: 0.8rem;
+  }
+
+  .pack-per-hour {
+    font-size: 0.65rem;
+  }
+
+  .pack-price {
+    font-size: 0.9rem;
+  }
+
+  .pack-note {
+    font-size: 0.7rem;
+  }
+
+  .subscription-tier {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.5rem;
+  }
+
+  .tier-courses {
+    font-size: 0.75rem;
+  }
+
+  .tier-per-hour {
+    font-size: 0.65rem;
+  }
+
+  .tier-price {
+    font-size: 0.8rem;
+  }
+
+  .tarifs-note {
+    padding: 0.75rem;
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  .tarifs-note p {
+    font-size: 0.8rem;
+  }
+
+  .tarifs-reassurance {
+    padding: 0.85rem;
+    margin-top: 2rem;
+  }
+
+  .tarifs-reassurance p {
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .btn-tarif-primary,
+  .btn-tarif-secondary {
+    font-size: 0.85rem;
+    padding: 0.65rem 1.25rem;
   }
 
   .professeur-card {

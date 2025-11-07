@@ -9,7 +9,7 @@
             <span class="gradient-text">meilleur accompagnement</span>
           </h1>
           <p class="hero-subtitle">
-            OptiTAB révolutionne l'apprentissage des sciences avec une approche 
+            OptiTAB révolutionne l'apprentissage des mathématiques avec une approche 
             pédagogique éprouvée, des outils interactifs et un suivi personnalisé 
             pour garantir la réussite de votre enfant.
           </p>
@@ -19,11 +19,11 @@
               <span class="stat-label">Amélioration des notes</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">10k+</span>
-              <span class="stat-label">Élèves accompagnés</span>
+              <span class="stat-number">+1000</span>
+              <span class="stat-label">Cours, exercices et synthèses</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">24/7</span>
+              <span class="stat-number">7/7</span>
               <span class="stat-label">Support disponible</span>
             </div>
           </div>
@@ -36,7 +36,7 @@
           <div class="section-intro">
             <h2 class="section-title">Pourquoi les parents choisissent OptiTAB ?</h2>
             <p class="section-subtitle">
-              Une approche pédagogique éprouvée qui transforme l'apprentissage des sciences
+              Une approche pédagogique éprouvée qui transforme l'apprentissage des mathématiques
             </p>
           </div>
           <div class="benefits-grid">
@@ -45,14 +45,14 @@
                 <img src="/icons/ResultatsGarantis.svg?v=2" alt="Résultats" class="icon" />
               </div>
               <h3>Résultats Garantis</h3>
-              <p>95% de nos élèves améliorent leurs notes de 2 points minimum en 3 mois</p>
+              <p>Votre enfant pratique avec des exercices progressifs et reçoit des corrections détaillées pour progresser efficacement</p>
             </div>
             <div class="benefit-card">
               <div class="benefit-icon">
                 <img src="/icons/AuteursExperts.svg" alt="Experts" class="icon" />
               </div>
               <h3>Experts Pédagogues</h3>
-              <p>Contenu créé par des enseignants expérimentés et des experts en sciences</p>
+              <p>Contenu créé par des enseignants expérimentés et des experts en mathématiques</p>
             </div>
             <div class="benefit-card">
               <div class="benefit-icon">
@@ -162,12 +162,12 @@
                <button @click="openSignupModal" class="cta-button primary">
                  Commencer l'essai gratuit
                </button>
-              <button @click="goToContact" class="cta-button secondary">
+              <button @click="openContactModal('Parler à un expert')" class="cta-button secondary">
                 Parler à un expert
               </button>
             </div>
             <div class="cta-guarantee">
-              <span class="guarantee-text">Essai gratuit de 7 jours • Résultats garantis • Support 24/7</span>
+              <span class="guarantee-text">Essai gratuit • Résultats garantis • Support 7/7</span>
             </div>
             <div class="cta-reviews">
               <GoogleReviewsCompact />
@@ -183,26 +183,48 @@
       message="Bonjour, j'ai une question sur OptiTAB !"
       tooltip="Une question ? Discutons sur WhatsApp !"
     />
+    <!-- Modal de contact -->
+    <ContactModal 
+      :isOpen="isContactModalOpen" 
+      :initialSubject="contactModalSubject"
+      @close="closeContactModal"
+      @success="handleContactSuccess"
+    />
   </MainLayout>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
+import ContactModal from '@/components/common/ContactModal.vue'
 import about from '@/config/aboutContent.js'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 
 const { openModal } = useModalManager()
 
+// Gestion du modal de contact
+const isContactModalOpen = ref(false)
+const contactModalSubject = ref('')
+
+const openContactModal = (subject = '') => {
+  contactModalSubject.value = subject
+  isContactModalOpen.value = true
+}
+
+const closeContactModal = () => {
+  isContactModalOpen.value = false
+  contactModalSubject.value = ''
+}
+
+const handleContactSuccess = (message) => {
+  alert(message)
+}
+
 // Fonction pour ouvrir le modal de création de compte
 const openSignupModal = () => {
   openModal(MODAL_IDS.REGISTER)
-}
-
-// Fonction pour rediriger vers la page de contact
-const goToContact = () => {
-  window.location.href = '/contact'
 }
 
 // Fonction pour mapper les emojis vers les icônes SVG
@@ -228,10 +250,21 @@ const getSectionIcon = (emoji) => {
 </script>
 
 <style scoped>
+:root {
+  --primary: #2a38b7;
+  --primary-light: #667eea;
+  --dark: #0f172a;
+  --gray-dark: #475569;
+  --gray: #64748b;
+  --gray-light: #cbd5e1;
+  --gray-lighter: #f1f5f9;
+  --white: #ffffff;
+}
+
 /* Page Container */
 .about-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f5f9 100%);
 }
 
 /* Hero Section Pédagogique */
@@ -258,7 +291,7 @@ const getSectionIcon = (emoji) => {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -272,6 +305,7 @@ const getSectionIcon = (emoji) => {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  text-align: justify;
 }
 
 /* Hero Stats */
@@ -290,7 +324,7 @@ const getSectionIcon = (emoji) => {
   display: block;
   font-size: 2.2rem;
   font-weight: 700;
-  color: #6366f1;
+  color: #2a38b7;
   line-height: 1;
   margin-bottom: 0.5rem;
 }
@@ -304,9 +338,9 @@ const getSectionIcon = (emoji) => {
 
 /* Why Section */
 .why-section {
-  background: transparent;
-  padding: 4rem 0;
-  margin: 2rem 0;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 50%, #f0f4ff 100%);
+  padding: 3rem 0;
+  margin: 1.5rem 0;
 }
 
 .container {
@@ -317,13 +351,13 @@ const getSectionIcon = (emoji) => {
 
 .section-intro {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .section-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #2a38b7;
   margin-bottom: 1rem;
 }
 
@@ -332,59 +366,62 @@ const getSectionIcon = (emoji) => {
   color: #6b7280;
   max-width: 600px;
   margin: 0 auto;
+  text-align: justify;
 }
 
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  max-width: 800px;
+  gap: 1.25rem;
+  max-width: 700px;
   margin: 0 auto;
 }
 
 .benefit-card {
-  background: #f8fafc;
-  padding: 2rem;
-  border-radius: 16px;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
   text-align: center;
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .benefit-card:hover {
-  transform: none;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  background: #f8fafc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #d1d5db;
 }
 
 .benefit-icon {
-  width: 120px;
-  height: 120px;
+  width: 80px;
+  height: 80px;
   background: transparent;
-  border-radius: 20px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1rem;
 }
 
 .benefit-icon .icon {
-  width: 6rem;
-  height: 6rem;
+  width: 4rem;
+  height: 4rem;
   filter: none;
-  color: #6366f1;
+  color: #2563eb;
 }
 
 .benefit-card h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: #1f2937;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .benefit-card p {
   color: #6b7280;
-  line-height: 1.6;
+  line-height: 1.5;
+  text-align: left;
+  font-size: 0.9rem;
 }
 
 /* Content Container */
@@ -396,12 +433,12 @@ const getSectionIcon = (emoji) => {
 
 /* Section Styles */
 .about-section {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 2px solid #e2e8f0;
+  border: 2px solid rgba(42, 56, 183, 0.1);
 }
 
 
@@ -438,7 +475,7 @@ const getSectionIcon = (emoji) => {
 .section-title {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1e40af;
+  color: #2a38b7;
   margin: 0;
 }
 
@@ -452,25 +489,26 @@ const getSectionIcon = (emoji) => {
   color: #374151;
   line-height: 1.7;
   margin-bottom: 1rem;
+  text-align: justify;
 }
 
 .highlight-text {
   background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  border-left: 4px solid #6366f1;
+  border-left: 4px solid #2a38b7;
   font-weight: 500;
 }
 
 .contact-link {
-  color: #6366f1;
+  color: #2a38b7;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
 }
 
 .contact-link:hover {
-  color: #4f46e5;
+  color: #667eea;
   text-decoration: underline;
 }
 
@@ -496,7 +534,7 @@ const getSectionIcon = (emoji) => {
 .feature-bullet {
   width: 8px;
   height: 8px;
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
   border-radius: 50%;
   margin-top: 0.5rem;
   flex-shrink: 0;
@@ -507,6 +545,7 @@ const getSectionIcon = (emoji) => {
   font-weight: 500;
   color: #374151;
   line-height: 1.5;
+  text-align: justify;
 }
 
 /* Social Media Section */
@@ -677,29 +716,42 @@ const getSectionIcon = (emoji) => {
 
 /* CTA Section */
 .cta-section {
-  background: transparent;
-  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+  padding: 5rem 2rem;
   margin-top: 0;
+  position: relative;
 }
 
 .cta-card {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   text-align: center;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 3.5rem 3rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(37, 99, 235, 0.08);
 }
 
 .cta-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1rem;
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .cta-text {
-  font-size: 1.2rem;
-  color: #6b7280;
-  line-height: 1.6;
-  margin-bottom: 2.5rem;
+  font-size: 1.15rem;
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 2.75rem;
+  text-align: center;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 400;
 }
 
 .cta-buttons {
@@ -707,45 +759,59 @@ const getSectionIcon = (emoji) => {
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .cta-button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  padding: 1.1rem 2.5rem;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid transparent;
   cursor: pointer;
+  min-width: 200px;
+  letter-spacing: 0.01em;
 }
 
 .cta-button.primary {
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35), 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
 .cta-button.primary:hover {
-  transform: none;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45), 0 4px 8px rgba(37, 99, 235, 0.25);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+}
+
+.cta-button.primary:active {
+  transform: translateY(0);
 }
 
 .cta-button.secondary {
-  background: transparent;
-  color: #6366f1;
-  border-color: #6366f1;
+  background: #ffffff;
+  color: #2563eb;
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .cta-button.secondary:hover {
-  background: #6366f1;
-  color: #fff;
-  transform: none;
-  cursor: pointer;
+  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
+  border-color: #2563eb;
+  color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.cta-button.secondary:active {
+  transform: translateY(0);
 }
 
 .button-icon {
@@ -759,16 +825,40 @@ const getSectionIcon = (emoji) => {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  color: #6b7280;
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.guarantee-text {
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.guarantee-text::before {
+  content: '✓';
+  color: #10b981;
+  font-weight: 700;
+  font-size: 1rem;
+  position: absolute;
+  left: 0;
 }
 
 .cta-reviews {
-  margin-top: 1rem;
+  margin-top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 1.5rem;
 }
 
 .guarantee-icon {
@@ -864,35 +954,35 @@ const getSectionIcon = (emoji) => {
   }
   
   .benefits-grid {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
     max-width: 100%;
   }
   
   .benefit-card {
-    padding: 1.5rem;
-    border-radius: 12px;
+    padding: 0.75rem;
+    border-radius: 8px;
   }
   
   .benefit-icon {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1rem;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.5rem;
   }
   
   .benefit-icon .icon {
-    width: 4rem;
-    height: 4rem;
+    width: 2.5rem;
+    height: 2.5rem;
   }
   
   .benefit-card h3 {
-    font-size: 1.15rem;
-    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
   }
   
   .benefit-card p {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 0.75rem;
+    line-height: 1.4;
   }
   
   .content-container {
@@ -965,42 +1055,56 @@ const getSectionIcon = (emoji) => {
   }
   
   .cta-section {
-    padding: 2.5rem 1.25rem;
+    padding: 3rem 1.25rem;
+  }
+  
+  .cta-card {
+    padding: 2.5rem 1.75rem;
+    border-radius: 20px;
   }
   
   .cta-title {
-    font-size: 1.75rem;
-    line-height: 1.3;
-    margin-bottom: 0.875rem;
+    font-size: 2rem;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
   }
   
   .cta-text {
     font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-    padding: 0 0.5rem;
+    line-height: 1.65;
+    margin-bottom: 2.25rem;
+    padding: 0;
   }
   
   .cta-buttons {
     flex-direction: column;
     align-items: stretch;
     gap: 0.875rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
   
   .cta-button {
     width: 100%;
     max-width: 100%;
-    padding: 0.875rem 1.5rem;
+    padding: 1rem 1.75rem;
     font-size: 1rem;
     justify-content: center;
+    min-width: auto;
   }
   
   .cta-guarantee {
-    font-size: 0.875rem;
-    flex-wrap: wrap;
-    text-align: center;
-    padding: 0 0.5rem;
+    padding-top: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+  
+  .guarantee-text {
+    font-size: 0.85rem;
+    gap: 0.5rem;
+  }
+  
+  .cta-reviews {
+    padding-top: 1.25rem;
   }
 }
 
@@ -1066,32 +1170,34 @@ const getSectionIcon = (emoji) => {
   }
   
   .benefits-grid {
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
   }
   
   .benefit-card {
-    padding: 1.25rem;
-    border-radius: 10px;
+    padding: 0.65rem;
+    border-radius: 8px;
   }
   
   .benefit-icon {
-    width: 70px;
-    height: 70px;
-    margin-bottom: 0.875rem;
+    width: 45px;
+    height: 45px;
+    margin-bottom: 0.4rem;
   }
   
   .benefit-icon .icon {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
   }
   
   .benefit-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.625rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.35rem;
   }
   
   .benefit-card p {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
+    line-height: 1.35;
   }
   
   .content-container {
@@ -1144,28 +1250,48 @@ const getSectionIcon = (emoji) => {
   }
   
   .cta-section {
-    padding: 2rem 1rem;
+    padding: 2.5rem 1rem;
+  }
+  
+  .cta-card {
+    padding: 2rem 1.5rem;
+    border-radius: 18px;
   }
   
   .cta-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.75rem;
+    line-height: 1.25;
+    margin-bottom: 0.875rem;
+    letter-spacing: -0.01em;
   }
   
   .cta-text {
     font-size: 0.95rem;
-    margin-bottom: 1.5rem;
+    line-height: 1.65;
+    margin-bottom: 2rem;
     padding: 0;
   }
   
+  .cta-buttons {
+    margin-bottom: 1.75rem;
+  }
+  
   .cta-button {
-    padding: 0.875rem 1.25rem;
+    padding: 0.95rem 1.5rem;
     font-size: 0.95rem;
   }
   
   .cta-guarantee {
+    padding-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .guarantee-text {
     font-size: 0.8rem;
-    padding: 0;
+  }
+  
+  .cta-reviews {
+    padding-top: 1rem;
   }
 }
 </style> 

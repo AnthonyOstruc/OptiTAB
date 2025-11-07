@@ -169,42 +169,41 @@ const handleLogout = async () => {
   closeMenu()
   if (isLoggingOut.value) return
   isLoggingOut.value = true
-  // Afficher un spinner pleine page
   userStore.isLoading = true
+
+  let localCleanupDone = false
+  const runLocalCleanup = () => {
+    if (localCleanupDone) return
+    localCleanupDone = true
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    userStore.clearUser({ preserveLoadingState: true })
+    emit('logout')
+  }
+
+  const redirectHome = async () => {
+    try {
+      await router.replace({ name: 'Home' })
+    } catch (navError) {
+      console.warn('Redirection post-déconnexion impossible:', navError)
+    }
+  }
   
   try {
-    // Récupération du refresh token
     const refresh = localStorage.getItem('refresh_token')
     
-    // Tentative de blacklist du token côté backend
     if (refresh && refresh !== 'null' && refresh !== 'undefined' && refresh.trim() !== '') {
       try {
         await logoutUser({ refresh })
       } catch (error) {
-        // Ignore les erreurs de déconnexion (le backend gère déjà les erreurs)
         console.log('Erreur lors de la déconnexion backend:', error.message)
       }
     }
-    
-    // Nettoyage local
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
-    userStore.clearUser()
-    
-    // Émission de l'événement de déconnexion
-    emit('logout')
-    
-    // Redirection vers la page d'accueil
-    await router.push('/')
-    
   } catch (error) {
     console.error('Erreur lors de la déconnexion:', error)
-    // En cas d'erreur, on force quand même la déconnexion locale
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
-    userStore.clearUser()
-    await router.push('/')
   } finally {
+    runLocalCleanup()
+    await redirectHome()
     isLoggingOut.value = false
     userStore.isLoading = false
   }

@@ -68,7 +68,8 @@ export const useUserStore = defineStore('user', {
       this.isLoading = false
     },
     // Réinitialise l'utilisateur (déconnexion ou erreur)
-    clearUser() {
+    clearUser(options = {}) {
+      const { preserveLoadingState = false } = options
       // Arrêter la surveillance des tokens avant de nettoyer
       apiUtils.stopTokenMonitoring()
 
@@ -93,7 +94,9 @@ export const useUserStore = defineStore('user', {
       this.pendingEmailRequestedAt = null
       this.isActive = false
       this.isAuthenticated = false
-      this.isLoading = false
+      if (!preserveLoadingState) {
+        this.isLoading = false
+      }
 
       // Nettoyer le localStorage des données liées à cet utilisateur
       if (userId) {
@@ -162,6 +165,17 @@ export const useUserStore = defineStore('user', {
           keysToClean.forEach(key => localStorage.removeItem(key))
         }
         
+        // Si l'utilisateur a initié une déconnexion pendant l'appel API,
+        // on abandonne la mise à jour pour éviter un retour furtif au dashboard.
+        const hasTokensAfterResponse = Boolean(
+          normalizeToken(localStorage.getItem('access_token')) ||
+          normalizeToken(localStorage.getItem('refresh_token'))
+        )
+        if (!hasTokensAfterResponse) {
+          console.warn('🔒 Tokens absents après la récupération du profil - mise à jour annulée (probable déconnexion)')
+          return
+        }
+
         // Mettre à jour le store avec les nouvelles données
         this.setUser(userData)
         

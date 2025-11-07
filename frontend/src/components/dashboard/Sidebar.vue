@@ -118,6 +118,7 @@ const router = useRouter()
 const route = useRoute()
 const subjectsStore = useSubjectsStore()
 const { prefetchThemesNotions } = useDataPrefetch()
+let logoutInProgress = false
 
 // Debounce pour éviter trop de prefetch
 let hoverTimeout = null
@@ -383,32 +384,43 @@ onUnmounted(() => {
 })
 
 const handleLogout = async () => {
-  // Afficher le spinner global
+  if (logoutInProgress) return
+  logoutInProgress = true
   userStore.isLoading = true
+
+  let localCleanupDone = false
+  const runLocalCleanup = () => {
+    if (localCleanupDone) return
+    localCleanupDone = true
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    userStore.clearUser({ preserveLoadingState: true })
+  }
+
+  const redirectHome = async () => {
+    try {
+      await router.replace({ name: 'Home' })
+    } catch (error) {
+      console.warn('Redirection post-déconnexion (sidebar) impossible:', error)
+    }
+  }
+
   try {
-    // Récupère le refresh token
     const refresh = localStorage.getItem('refresh_token')
-    // Si le token existe et semble valide, on tente de le blacklister côté backend
     if (refresh && refresh !== 'null' && refresh !== 'undefined' && refresh.trim() !== '') {
       try {
         await logoutUser({ refresh })
       } catch (e) {
-        // On ignore toute erreur de déconnexion (le backend renvoie toujours un succès désormais)
+        console.log('Erreur lors de la déconnexion backend (sidebar):', e.message)
       }
     }
-    // Nettoyage local côté frontend
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
-    userStore.clearUser()
-    await router.push('/')
   } catch (e) {
-    // En cas d'erreur, forcer la déconnexion locale
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
-    userStore.clearUser()
-    await router.push('/')
+    console.error('Erreur lors de la déconnexion via la sidebar:', e)
   } finally {
+    runLocalCleanup()
+    await redirectHome()
     userStore.isLoading = false
+    logoutInProgress = false
   }
 }
 

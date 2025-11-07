@@ -1348,10 +1348,12 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
 
 /* Style spécial pour le tab "New Matière" */
 .matiere-tab.new-tab {
-  background: #f1f5f9;
-  color: #64748b;
-  border: 1px dashed #cbd5e1;
+  background: #eff6ff; /* bleu très léger pour attirer l'œil */
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
   position: relative;
+  box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+  animation: matierePulse 1.6s ease-in-out infinite;
 }
 
 .matiere-tab.new-tab:hover {
@@ -1362,6 +1364,30 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
   background: #f8fafc;
   color: #cbd5e1;
   border-color: #e2e8f0;
+}
+
+/* Halo pulsant autour du bouton "New Matière" pour guider l'utilisateur */
+.matiere-tab.new-tab::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 6px;
+  border: 2px solid rgba(59, 130, 246, 0.45);
+  opacity: 0;
+  animation: haloPulse 1.6s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes matierePulse {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.35); }
+  50% { box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.08); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.0); }
+}
+
+@keyframes haloPulse {
+  0% { opacity: 0; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.02); }
 }
 
 /* Style pour le petit bouton "+" à droite (comme Google Chrome) */

@@ -216,6 +216,10 @@ watch(() => userStore.isAuthenticated, async (isAuthenticated) => {
     // Charger les notifications persistées localement puis fusionner celles du serveur
     try { await notificationStore.loadFromServer() } catch (_) {}
     try { await notificationStore.loadFromLocal() } catch (_) {}
+    // Initialiser le store des matières si l'utilisateur est déjà configuré
+    if (userStore.pays && userStore.niveau_pays) {
+      initializeSubjectsStoreWhenReady()
+    }
   }
 }, { immediate: true })
 

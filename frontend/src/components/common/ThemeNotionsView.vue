@@ -27,6 +27,23 @@
 
     <!-- Content -->
     <div v-else class="tnv-content">
+      <!-- No active subject -->
+      <div v-if="!matiereId" class="tnv-state">
+        <div class="tnv-error-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 7v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="16.5" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+        <p>Aucune matière active</p>
+        <p style="color:#6b7280;margin-top:4px">Sélectionnez une matière dans la barre latérale pour afficher les concepts.</p>
+        <div class="tnv-left-hint">
+          <span class="arrow">←</span>
+          <span>Dans la colonne de gauche, cliquez sur <strong>+ New Matière</strong> pour en choisir une.</span>
+        </div>
+      </div>
+      <template v-else>
       <!-- Search Bar -->
       <div v-if="showSearch" class="tnv-search">
         <div class="tnv-search-inner">
@@ -95,24 +112,37 @@
         </div>
       </div>
 
-      <!-- Fallback: show notions directly -->
+      <!-- Fallback: show notions directly or CTA if empty -->
       <div v-else class="tnv-fallback">
-        <div class="tnv-fallback-header">
-          <h3>Concepts disponibles</h3>
-          <p>Explorez les concepts fondamentaux de cette matière</p>
-        </div>
-        <div class="tnv-notions-grid">
-          <NotionCard
-            v-for="notion in filteredDirectNotions"
-            :key="notion.id"
-            :notion-id="notion.id"
-            :title="notion.nom"
-            :description="notion.description || ''"
-            :locked="notionsLocked"
-            @click="goToNotion(notion.id)"
-          />
-        </div>
+        <template v-if="(filteredDirectNotions || []).length === 0">
+          <div class="tnv-fallback-header">
+            <h3>Aucune matière active</h3>
+            <p>Sélectionnez une matière dans la barre latérale pour afficher les concepts.</p>
+          </div>
+          <div class="tnv-left-hint">
+            <span class="arrow">←</span>
+            <span>Regardez à gauche et cliquez sur <strong>+ New Matière</strong> pour sélectionner une matière.</span>
+          </div>
+        </template>
+        <template v-else>
+          <div class="tnv-fallback-header">
+            <h3>Concepts disponibles</h3>
+            <p>Explorez les concepts fondamentaux de cette matière</p>
+          </div>
+          <div class="tnv-notions-grid">
+            <NotionCard
+              v-for="notion in filteredDirectNotions"
+              :key="notion.id"
+              :notion-id="notion.id"
+              :title="notion.nom"
+              :description="notion.description || ''"
+              :locked="notionsLocked"
+              @click="goToNotion(notion.id)"
+            />
+          </div>
+        </template>
       </div>
+      </template>
     </div>
   </div>
 </template>
@@ -953,6 +983,26 @@ function highlightQuery(text) {
   color: #6b7280;
   margin: 0;
   font-size: 0.875rem;
+}
+
+/* Hint to the left sidebar */
+.tnv-left-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #374151;
+  margin-top: 8px;
+}
+.tnv-left-hint .arrow {
+  font-size: 1.4rem;
+  color: #3b82f6;
+  animation: nudge-left 1.2s ease-in-out infinite;
+}
+@keyframes nudge-left {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
 }
 
 /* Responsive - ADAPTATION POUR 4 CARTES PAR LIGNE */

@@ -1,5 +1,5 @@
 <template>
-  <header class="header" @touchstart="handleTouchStart" @touchmove="handleTouchMove">
+  <header class="header" ref="headerRef">
     <div class="header-desktop">
       <Logo />
       <Navigation @open-login="handleLogin" />
@@ -16,7 +16,7 @@ import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import Logo from '@/components/common/Logo.vue'
 import Navigation from '@/components/layout/Navigation.vue'
 import MobileMenu from '@/components/layout/MobileMenu.vue'
-import { onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 export default {
   name: 'Header',
@@ -27,6 +27,7 @@ export default {
   },
   setup() {
     const { openModal } = useModalManager()
+    const headerRef = ref(null)
 
     const handleLogin = () => {
       openModal(MODAL_IDS.LOGIN)
@@ -62,23 +63,27 @@ export default {
     }
 
     onMounted(() => {
-      const header = document.querySelector('.header')
+      const header = headerRef.value
       if (header) {
+        // Ajouter les listeners avec passive: false pour permettre preventDefault()
+        header.addEventListener('touchstart', handleTouchStart, { passive: false })
+        header.addEventListener('touchmove', handleTouchMove, { passive: false })
         header.addEventListener('touchend', handleDoubleTap, { passive: false })
       }
     })
 
     onUnmounted(() => {
-      const header = document.querySelector('.header')
+      const header = headerRef.value
       if (header) {
+        header.removeEventListener('touchstart', handleTouchStart)
+        header.removeEventListener('touchmove', handleTouchMove)
         header.removeEventListener('touchend', handleDoubleTap)
       }
     })
 
     return {
       handleLogin,
-      handleTouchStart,
-      handleTouchMove
+      headerRef
     }
   }
 }

@@ -16,6 +16,7 @@ import {
   logOperation,
   handleError
 } from './utils'
+import { getMatieresUtilisateur } from '@/api/matieres'
 
 /**
  * Store principal pour la gestion des matières
@@ -243,6 +244,9 @@ export const useSubjectsStore = defineStore('subjects', () => {
         await loadPreferencesFromServer()
       }
       
+      // Fallback: s'assurer qu'une matière est active (et au moins une sélectionnée)
+      await ensureDefaultMatiereIfMissing()
+      
       logOperation('initialize', { 
         status: 'success',
         favoritesCount: favoriteMatieresCount.value,
@@ -351,6 +355,44 @@ export const useSubjectsStore = defineStore('subjects', () => {
       
       // Timestamp
       timestamp: new Date().toISOString()
+    }
+  }
+
+  // ========================================
+  // FALLBACKS / AUTO-SET DEFAULTS
+  // ========================================
+  const ensureDefaultMatiereIfMissing = async () => {
+    try {
+      // Si on a déjà une matière active, rien à faire
+      if (hasActiveMatiere.value) return
+      
+      // Si on a des matières sélectionnées, essayer d'activer la première
+      if (selectedMatieresIds.value.length > 0) {
+        await activeStore.setActiveMatiere(selectedMatieresIds.value[0])
+        return
+      }
+      
+      // Sinon, tenter de récupérer les matières disponibles pour l'utilisateur
+      const resp = await getMatieresUtilisateur().catch(() => null)
+      const matieres = resp?.data?.matieres_disponibles || []
+      if (Array.isArray(matieres) && matieres.length > 0) {
+        const firstId = Number(matieres[0].id ?? matieres[0].matiere?.id)
+        if (firstId && Number.isFinite(firstId)) {
+          // Définir sélection et actif localement
+          selectedStore.setSelectedMatieresIds([firstId])
+          activeStore.setActiveMatiereId(firstId)
+          
+          // Si connecté, synchroniser vers backend en arrière-plan
+          if (isUserAuthenticated()) {
+            try { await syncWithBackend() } catch (_) {}
+          }
+          logOperation('ensureDefaultMatiereIfMissing', { status: 'set_default', firstId })
+        }
+      } else {
+        logOperation('ensureDefaultMatiereIfMissing', { status: 'no_matieres_available' }, 'warn')
+      }
+    } catch (error) {
+      handleError(error, 'ensureDefaultMatiereIfMissing')
     }
   }
 

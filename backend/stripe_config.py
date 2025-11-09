@@ -10,6 +10,5 @@ FRONTEND_BASE_URL = os.getenv('FRONTEND_BASE_URL', 'http://localhost:3000')
 SUCCESS_URL = os.getenv('STRIPE_SUCCESS_URL', f"{FRONTEND_BASE_URL}/billing/success")
 CANCEL_URL = os.getenv('STRIPE_CANCEL_URL', f"{FRONTEND_BASE_URL}/billing/cancel")
 
-# Trial configuration
-FREE_TRIAL_DAYS = int(os.getenv('STRIPE_FREE_TRIAL_DAYS', '7'))
-
+# Trial configuration (0 = no trial)
+FREE_TRIAL_DAYS = max(0, int(os.getenv('STRIPE_FREE_TRIAL_DAYS', '0')))

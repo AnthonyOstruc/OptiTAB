@@ -60,7 +60,7 @@
           </div>
           
           <!-- Bouton d'action -->
-          <button class="cta-btn" :disabled="submitting || !c.priceId" @click="handleSubscribe(c.priceId)">
+          <button class="cta-btn" :disabled="submitting || !c.priceId" @click="handleSubscribe(c)">
             {{ submitting ? 'Redirection…' : c.cta }}
           </button>
           
@@ -68,22 +68,145 @@
         </article>
       </div>
     </div>
+
+    <!-- Modal de sélection du niveau -->
+    <div
+      v-if="showLevelModal"
+      class="level-modal-overlay"
+      @click="closeLevelModal"
+    >
+      <div class="level-modal" @click.stop>
+        <button
+          class="modal-close"
+          type="button"
+          :disabled="submitting"
+          @click="closeLevelModal"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-header">
+          <p class="modal-eyebrow">Activation de l'accès</p>
+          <h3>Choisis ton niveau</h3>
+          <p class="modal-subtitle">
+            L'abonnement <strong>{{ pendingPlanName || 'OptiTAB' }}</strong> débloquera un seul niveau.
+            Sélectionne celui que tu veux activer maintenant.
+          </p>
+        </div>
+        <div class="modal-body">
+          <div v-if="niveauxLoading" class="modal-loading">
+            <div class="spinner small"></div>
+            <p>Chargement des niveaux…</p>
+          </div>
+          <div v-else-if="niveauxError" class="modal-error">
+            <p>{{ niveauxError }}</p>
+            <button type="button" class="modal-refresh" @click="loadLevels(true)">
+              Réessayer
+            </button>
+          </div>
+          <div v-else class="modal-select-group">
+            <label for="home-level-select">Niveau à débloquer</label>
+            <div class="modal-select-wrapper">
+              <select
+                id="home-level-select"
+                v-model.number="selectedNiveauId"
+              >
+                <option
+                  v-for="niveau in niveaux"
+                  :key="niveau.id"
+                  :value="niveau.id"
+                >
+                  {{ niveau.nom }}
+                  <span v-if="niveau.pays?.nom"> — {{ niveau.pays.nom }}</span>
+                </option>
+              </select>
+            </div>
+            <p class="modal-hint">
+              Tu pourras débloquer un autre niveau plus tard avec un nouvel abonnement.
+            </p>
+            <p v-if="selectedNiveauLabel" class="modal-selection">
+              Accès prévu : {{ selectedNiveauLabel }}
+            </p>
+          </div>
+          <p
+            v-if="!userStore.isAuthenticated"
+            class="modal-signup-hint"
+          >
+            Pas encore de compte ? Choisis ton niveau puis crée ton compte gratuitement pour finaliser le paiement.
+          </p>
+        </div>
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="modal-btn secondary"
+            :disabled="submitting"
+            @click="closeLevelModal"
+          >
+            Annuler
+          </button>
+          <button
+            type="button"
+            class="modal-btn primary"
+            :disabled="submitting || !selectedNiveauId"
+            @click="confirmSubscription"
+          >
+            {{ submitting ? 'Redirection…' : 'Continuer vers le paiement' }}
+          </button>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { getPlans, createCheckoutSession } from '@/api/subscriptions'
 import { DEFAULT_PLANS } from '@/config/subscriptions'
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
+import { useUserStore } from '@/stores/user'
+import { getNiveauxByPays } from '@/api/niveaux'
+import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
+import { useCheckoutIntentStore } from '@/stores/checkoutIntent'
+import { useToast } from '@/composables/useToast'
 
 const plans = ref([])
 const loading = ref(true)
 const submitting = ref(false)
+const userStore = useUserStore()
+const checkoutIntentStore = useCheckoutIntentStore()
+const { openModal } = useModalManager()
+const { info: showInfoToast, error: showErrorToast } = useToast()
+const niveaux = ref([])
+const niveauxLoading = ref(false)
+const niveauxError = ref('')
+const selectedNiveauId = ref(
+  userStore.niveau_pays?.id ? Number(userStore.niveau_pays.id) : null
+)
+const showLevelModal = ref(false)
+const pendingPriceId = ref('')
+const pendingPlanName = ref('')
 
 const planMode = (p) => (p?.mode || p?.plan_mode || '').toLowerCase()
 const isOneTime = (p) => planMode(p) === 'one_time' || (p?.access_days && Number(p.access_days) > 0)
 const isSubscription = (p) => planMode(p) === 'subscription' && !(p?.access_days && Number(p.access_days) > 0)
+
+watch(
+  () => userStore.niveau_pays?.id,
+  (newId) => {
+    if (newId) {
+      selectedNiveauId.value = Number(newId)
+    }
+  }
+)
+
+const selectedNiveau = computed(() =>
+  niveaux.value.find(n => Number(n.id) === Number(selectedNiveauId.value)) || null
+)
+
+const selectedNiveauLabel = computed(() => {
+  if (!selectedNiveau.value) return ''
+  const pays = selectedNiveau.value.pays?.nom
+  return pays ? `${selectedNiveau.value.nom} · ${pays}` : selectedNiveau.value.nom
+})
 
 const cards = computed(() => {
   const subs = plans.value.filter(isSubscription)
@@ -181,24 +304,102 @@ onMounted(async () => {
   }
 })
 
-async function handleSubscribe(priceId) {
+async function loadLevels(force = false) {
+  if (niveauxLoading.value) return
+  if (!force && niveaux.value.length) return
+  try {
+    niveauxLoading.value = true
+    niveauxError.value = ''
+    const data = await getNiveauxByPays()
+    const rawList = Array.isArray(data?.results)
+      ? data.results
+      : Array.isArray(data)
+        ? data
+        : (Array.isArray(data?.data) ? data.data : [])
+    const activeList = rawList.filter(n => n && (n.est_actif === undefined || n.est_actif))
+    niveaux.value = activeList
+    if (!selectedNiveauId.value && activeList.length) {
+      const preferredId = userStore.niveau_pays?.id
+      const match = preferredId ? activeList.find(n => Number(n.id) === Number(preferredId)) : null
+      selectedNiveauId.value = match ? match.id : activeList[0].id
+    }
+  } catch (error) {
+    console.error('Erreur lors du chargement des niveaux:', error)
+    niveauxError.value = 'Impossible de récupérer les niveaux pour le moment.'
+  } finally {
+    niveauxLoading.value = false
+  }
+}
+
+async function handleSubscribe(card) {
+  const priceId = card?.priceId
+  if (!priceId) {
+    showErrorToast('Ce plan doit encore être configuré (Price ID manquant).')
+    return
+  }
+  pendingPriceId.value = priceId
+  pendingPlanName.value = card?.title || 'OptiTAB'
+  await loadLevels()
+  if (!niveaux.value.length) {
+    showErrorToast('Impossible de proposer les niveaux pour le moment, réessaie plus tard.')
+    pendingPriceId.value = ''
+    pendingPlanName.value = ''
+    return
+  }
+  if (!selectedNiveauId.value) {
+    selectedNiveauId.value = niveaux.value[0].id
+  }
+  showLevelModal.value = true
+}
+
+const closeLevelModal = () => {
+  if (submitting.value) return
+  showLevelModal.value = false
+  pendingPriceId.value = ''
+  pendingPlanName.value = ''
+}
+
+async function confirmSubscription() {
+  if (!pendingPriceId.value) {
+    closeLevelModal()
+    return
+  }
+  if (!selectedNiveauId.value) {
+    showErrorToast('Choisis un niveau pour continuer.')
+    return
+  }
+  if (!userStore.isAuthenticated) {
+    checkoutIntentStore.setIntent({
+      priceId: pendingPriceId.value,
+      niveauId: selectedNiveauId.value,
+      planName: pendingPlanName.value,
+      niveauLabel: selectedNiveauLabel.value,
+      source: 'home-pricing'
+    })
+    showInfoToast('Crée ton compte gratuit pour finaliser le paiement.', 6000)
+    closeLevelModal()
+    openModal(MODAL_IDS.REGISTER)
+    return
+  }
   try {
     submitting.value = true
-    if (!priceId) {
-      alert('Ce plan doit encore être configuré (Price ID manquant).')
-      return
-    }
-    const { data } = await createCheckoutSession(priceId)
-    if (data?.url) {
-      window.location.href = data.url
+    const { data } = await createCheckoutSession(pendingPriceId.value, {
+      niveau_pays_id: selectedNiveauId.value
+    })
+    const redirectUrl = data?.checkout_url || data?.url
+    if (redirectUrl) {
+      window.location.href = redirectUrl
     } else {
-      alert('Une erreur est survenue.')
+      showErrorToast('Impossible d’ouvrir la page de paiement. Réessaie plus tard.')
     }
   } catch (err) {
     console.error(err)
-    alert('Une erreur est survenue.')
+    showErrorToast('Une erreur est survenue lors de la création du paiement.')
   } finally {
     submitting.value = false
+    showLevelModal.value = false
+    pendingPriceId.value = ''
+    pendingPlanName.value = ''
   }
 }
 </script>
@@ -444,6 +645,156 @@ async function handleSubscribe(priceId) {
   line-height: 1.4;
 }
 
+/* Modal styles */
+.level-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 60;
+}
+
+.level-modal {
+  width: min(520px, 100%);
+  background: #fff;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.25);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  border: none;
+  background: transparent;
+  font-size: 1.6rem;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.modal-header {
+  margin-bottom: 1.5rem;
+}
+
+.modal-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6366f1;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.modal-subtitle {
+  color: #475569;
+  line-height: 1.5;
+}
+
+.modal-body {
+  min-height: 120px;
+}
+
+.modal-loading {
+  text-align: center;
+  color: #475569;
+}
+
+.modal-error {
+  text-align: center;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.modal-refresh {
+  margin-top: 1rem;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modal-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-select-wrapper select {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid #d4ddff;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.modal-hint {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.modal-selection {
+  font-size: 0.95rem;
+  color: #1e3a8a;
+  font-weight: 600;
+}
+
+.modal-signup-hint {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #0f172a;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  border: 1px dashed #c7d2fe;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.modal-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 0.85rem 1.6rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.modal-btn.secondary {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.modal-btn.primary {
+  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
+  color: #fff;
+  min-width: 220px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.spinner.small {
+  width: 28px;
+  height: 28px;
+  border-width: 3px;
+  margin: 0 auto 0.8rem;
+}
+
 @media (max-width: 768px) {
   .pricing-plans-section {
     padding: 60px 0;
@@ -481,4 +832,3 @@ async function handleSubscribe(priceId) {
   }
 }
 </style>
-

@@ -8,7 +8,7 @@ Stripe subscription setup (OptiTAB)
 # Optional overrides
 - STRIPE_SUCCESS_URL=https://optitab.net/billing/success
 - STRIPE_CANCEL_URL=https://optitab.net/billing/cancel
-- STRIPE_FREE_TRIAL_DAYS=7
+- STRIPE_FREE_TRIAL_DAYS=0  # Set to a positive number only if you offer a free trial
 
 2) Install backend dependency
 - pip install -r backend/requirements.txt
@@ -46,3 +46,7 @@ Mirror in Django admin → Subscription plans:
 - This creates/updates the four plans with your Stripe Price IDs.
 - Use the new Billing page at /billing to list plans and redirect to Stripe Checkout.
 - On success/cancel, Stripe redirects to /billing/success or /billing/cancel.
+
+8) Local dev fallback (si le webhook n'est pas joignable)
+- L'URL `/api/subscriptions/checkout-session/status/?session_id=...` permet au frontend de forcer la finalisation d'une session Stripe après la redirection `success_url`.
+- Cela garantit que les abonnements/passes sont créés même sans tunnel Stripe CLI.

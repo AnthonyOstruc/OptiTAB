@@ -18,7 +18,7 @@ export function useRequireSubscription() {
     }
 
     try {
-      await subscriptionStore.fetchStatus()
+      await subscriptionStore.fetchStatus({ force: !subscriptionStore.hasAccess })
     } catch (e) {
       // ignore: we'll redirect below if access still absent
     }

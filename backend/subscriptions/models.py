@@ -2,11 +2,31 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 import logging
+from datetime import datetime
 import stripe
+try:
+    from stripe import error as stripe_error
+except ImportError:
+    from stripe import _error as stripe_error  # type: ignore[attr-defined]
 from stripe_config import STRIPE_SECRET_KEY
+from pays.models import Niveau
 
 stripe.api_key = STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
+
+
+def _user_identifier(user):
+    """Return a display-safe identifier for the custom user model."""
+    if not user:
+        return 'Utilisateur'
+    if hasattr(user, 'get_username'):
+        username = user.get_username()
+        if username:
+            return username
+    email = getattr(user, 'email', None)
+    if email:
+        return email
+    return getattr(user, 'id', 'Utilisateur')
 
 class SubscriptionPlan(models.Model):
     """Plans d'abonnement disponibles"""
@@ -75,26 +95,43 @@ class UserSubscription(models.Model):
         ('unpaid', 'Non payé'),
     ]
     
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscription')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='subscriptions'
+    )
     plan = models.ForeignKey(SubscriptionPlan, on_delete=models.CASCADE)
     stripe_subscription_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
     stripe_customer_id = models.CharField(max_length=100, null=True, blank=True)
+    niveau_pays = models.ForeignKey(
+        Niveau,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='subscriptions'
+    )
     
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='trialing')
     current_period_start = models.DateTimeField(null=True, blank=True)
     current_period_end = models.DateTimeField(null=True, blank=True)
     trial_end = models.DateTimeField(null=True, blank=True)
+    cancel_at_period_end = models.BooleanField(default=False)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"{self.user.username} - {self.plan.name} ({self.status})"
+        return f"{_user_identifier(self.user)} - {self.plan.name} ({self.status})"
     
     @property
     def is_active(self):
-        """Vérifie si l'abonnement est actif"""
-        return self.status in ['active', 'trialing']
+        """Vérifie si l'abonnement donne toujours accès."""
+        if self.status in ['active', 'trialing']:
+            return True
+        if self.cancel_at_period_end and self.current_period_end:
+            if self.current_period_end > timezone.now():
+                return True
+        return False
     
     @property
     def is_trial(self):
@@ -108,28 +145,85 @@ class UserSubscription(models.Model):
             return (self.trial_end - timezone.now()).days
         return 0
     
+    @staticmethod
+    def _from_timestamp(value):
+        if not value:
+            return None
+        try:
+            if isinstance(value, datetime):
+                return value if value.tzinfo else timezone.make_aware(value)
+            if isinstance(value, (int, float)):
+                return datetime.fromtimestamp(value, tz=timezone.utc)
+        except Exception:
+            return None
+        return None
+
     def cancel_subscription(self):
-        """Annule l'abonnement Stripe"""
-        if self.stripe_subscription_id:
-            try:
-                stripe.Subscription.delete(self.stripe_subscription_id)
-                self.status = 'canceled'
-                self.save()
-                return True
-            except stripe.error.StripeError as e:
-                logger.error(f"Erreur lors de l'annulation: {e}")
-                return False
-        return False
+        """Planifie l'annulation à la fin de la période de facturation."""
+        if self.cancel_at_period_end and self.current_period_end and self.current_period_end > timezone.now():
+            return True
+        if not self.stripe_subscription_id:
+            self.status = 'canceled'
+            self.cancel_at_period_end = False
+            self.save(update_fields=['status', 'cancel_at_period_end'])
+            return True
+
+        try:
+            stripe.Subscription.modify(
+                self.stripe_subscription_id,
+                cancel_at_period_end=True
+            )
+            updated = stripe.Subscription.retrieve(self.stripe_subscription_id)
+            if hasattr(updated, 'to_dict'):
+                updated = updated.to_dict()
+            self.status = updated.get('status', self.status)
+            self.current_period_start = self._from_timestamp(updated.get('current_period_start')) or self.current_period_start
+            self.current_period_end = self._from_timestamp(updated.get('current_period_end')) or self.current_period_end
+            self.trial_end = self._from_timestamp(updated.get('trial_end')) or self.trial_end
+            self.cancel_at_period_end = bool(updated.get('cancel_at_period_end', True))
+            self.save(update_fields=['status', 'current_period_start', 'current_period_end', 'trial_end', 'cancel_at_period_end', 'updated_at'])
+            return True
+        except stripe_error.InvalidRequestError as exc:
+            logger.warning(f"Stripe indique que l'abonnement {self.stripe_subscription_id} est déjà annulé ou introuvable: {exc}")
+            self.status = 'canceled'
+            self.cancel_at_period_end = False
+            self.save(update_fields=['status', 'cancel_at_period_end', 'updated_at'])
+            return True
+        except stripe_error.StripeError as e:
+            logger.error(f"Erreur lors de l'annulation: {e}")
+            return False
 
 class PaymentHistory(models.Model):
     """Historique des paiements"""
+    PLAN_MODE_CHOICES = [
+        ('subscription', 'Abonnement récurrent'),
+        ('one_time', 'Pass ponctuel'),
+        ('payment', 'Paiement simple'),
+    ]
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payments')
     stripe_payment_intent_id = models.CharField(max_length=100, unique=True)
+    stripe_invoice_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    hosted_invoice_url = models.URLField(blank=True, default='')
+    invoice_pdf_url = models.URLField(blank=True, default='')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=3, default='EUR')
     status = models.CharField(max_length=20)
     description = models.TextField(blank=True)
+    plan_name = models.CharField(max_length=255, blank=True, default='')
+    plan_mode = models.CharField(max_length=20, choices=PLAN_MODE_CHOICES, default='payment')
+    period_start = models.DateTimeField(null=True, blank=True)
+    period_end = models.DateTimeField(null=True, blank=True)
+    niveau_pays = models.ForeignKey(
+        Niveau,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='payment_history_entries'
+    )
+    niveau_label = models.CharField(max_length=255, blank=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.user.username} - {self.amount}€ ({self.status})"
+        level_info = f" · {self.niveau_label}" if self.niveau_label else ''
+        return f"{_user_identifier(self.user)} - {self.amount}€ ({self.status}){level_info}"

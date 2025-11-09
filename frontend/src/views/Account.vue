@@ -1447,21 +1447,312 @@ onBeforeUnmount(() => {
   }
 }
 
+@media (max-width: 768px) {
+  .info-card {
+    border-radius: 14px;
+  }
+
+  .card-title {
+    font-size: 1.0625rem;
+  }
+
+  .card-description {
+    font-size: 0.8rem;
+  }
+
+  .card-header-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .card-header-icon svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .form-label {
+    font-size: 0.8125rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.6875rem 1.125rem;
+    font-size: 0.875rem;
+  }
+
+  .info-message,
+  .warning-message,
+  .success-message,
+  .error-message {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .account-page {
+    padding: 1.25rem 0.875rem 2.5rem;
+    gap: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.8125rem;
+  }
+
+  .header-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 14px;
+  }
+
+  .header-icon svg {
+    width: 1.625rem;
+    height: 1.625rem;
+  }
+
+  .info-card {
+    border-radius: 12px;
+  }
+
+  .card-header {
+    padding: 1.125rem 1.25rem;
+    gap: 0.75rem;
+  }
+
+  .card-header-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 10px;
+  }
+
+  .card-header-icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-description {
+    font-size: 0.75rem;
+  }
+
+  .card-content {
+    padding: 1.25rem;
+  }
+
+  .form-label {
+    font-size: 0.8rem;
+  }
+
+  .label-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .form-input,
+  :deep(.dp__input) {
+    padding: 11px 14px !important;
+    font-size: 15px !important;
+    min-height: 46px !important;
+    height: 46px !important;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.65rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .btn-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .status-badge {
+    padding: 0.4rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+}
+
 @media (max-width: 480px) {
   .account-page {
     padding: 1rem 0.75rem 2rem;
+    gap: 0.875rem;
   }
 
   .page-title {
     font-size: 1.375rem;
   }
 
+  .page-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .header-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 12px;
+  }
+
+  .header-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .info-card {
+    border-radius: 11px;
+  }
+
   .card-header {
-    padding: 1rem;
+    padding: 1rem 1.125rem;
+    gap: 0.625rem;
+  }
+
+  .card-header-icon {
+    width: 1.875rem;
+    height: 1.875rem;
+    border-radius: 9px;
+  }
+
+  .card-header-icon svg {
+    width: 0.9375rem;
+    height: 0.9375rem;
+  }
+
+  .card-title {
+    font-size: 0.9375rem;
+  }
+
+  .card-description {
+    font-size: 0.7rem;
+  }
+
+  .card-content {
+    padding: 1.125rem;
+  }
+
+  .form-label {
+    font-size: 0.75rem;
+  }
+
+  .label-icon {
+    width: 0.9375rem;
+    height: 0.9375rem;
+  }
+
+  .form-input,
+  :deep(.dp__input) {
+    padding: 10px 13px !important;
+    font-size: 14px !important;
+    min-height: 44px !important;
+    height: 44px !important;
+    border-radius: 7px !important;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.6rem 0.9375rem;
+    font-size: 0.8rem;
+    border-radius: 8px;
+  }
+
+  .btn-icon {
+    width: 0.9375rem;
+    height: 0.9375rem;
+  }
+
+  .status-badge {
+    padding: 0.375rem 0.8125rem;
+    font-size: 0.8rem;
+  }
+
+  .info-message,
+  .warning-message,
+  .success-message,
+  .error-message {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .message-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .modal-card {
+    width: 95%;
+  }
+
+  .modal-header h3 {
+    font-size: 1.0625rem;
+  }
+
+  .modal-body p {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .account-page {
+    padding: 0.875rem 0.625rem 1.75rem;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.6875rem;
+  }
+
+  .header-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .header-icon svg {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+
+  .card-header {
+    padding: 0.9375rem 1rem;
+  }
+
+  .card-title {
+    font-size: 0.875rem;
+  }
+
+  .card-description {
+    font-size: 0.6875rem;
   }
 
   .card-content {
     padding: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.7rem;
+  }
+
+  .form-input,
+  :deep(.dp__input) {
+    padding: 9px 12px !important;
+    font-size: 13.5px !important;
+    min-height: 42px !important;
+    height: 42px !important;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.5625rem 0.875rem;
+    font-size: 0.75rem;
   }
 }
 </style> 

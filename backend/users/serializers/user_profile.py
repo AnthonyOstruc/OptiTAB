@@ -16,6 +16,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 from ..models import CustomUser, UserNotification
 from pays.serializers import NiveauSerializer, PaysSerializer
+from ..utils import validate_subscription_level_change
 
 
 class UserBaseSerializer(serializers.ModelSerializer):
@@ -231,6 +232,18 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         """
         pays = validated_data.get('pays')
         niveau_pays = validated_data.get('niveau_pays')
+
+        violation = validate_subscription_level_change(
+            instance,
+            niveau_id=niveau_pays.id if niveau_pays else None,
+            pays_id=pays.id if pays else None,
+            niveau_field_present=('niveau_pays' in validated_data),
+            pays_field_present=('pays' in validated_data)
+        )
+        if violation:
+            raise serializers.ValidationError({
+                'niveau_pays': violation
+            })
         
         # If changing country, validate education level compatibility
         if pays and pays != instance.pays:

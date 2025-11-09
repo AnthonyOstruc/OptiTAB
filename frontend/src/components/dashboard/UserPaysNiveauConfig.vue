@@ -22,6 +22,8 @@
       :current-step="currentStep"
       :can-save="canSave"
       :saving="saving"
+      :selection-restricted="isSelectionRestricted"
+      :restricted-levels="restrictedLevels"
       @select-pays="selectPays"
       @select-niveau="selectNiveau"
       @select-role="selectRole"
@@ -49,6 +51,8 @@ const {
   showConfigModal,
   currentStep,
   loadingNiveaux,
+  restrictedLevels,
+  isSelectionRestricted,
   
   // Computed
   userPays,

@@ -183,7 +183,7 @@ const isActiveRoute = (menuKey) => {
     'quiz': ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
     'progress': '/progress',
     'calculator': '/calculator',
-    'abonnement': ['/billing'],
+    'abonnement': ['/billing', '/subscription'],
     'admin': '/admin' // Spécialement pour les routes admin
   }
 

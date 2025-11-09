@@ -1,5 +1,6 @@
 import { ref, computed, watch } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { useSubscriptionStore } from '@/stores/subscription'
 import { useToast } from '@/composables/useToast'
 import { getPays } from '@/api/pays.js'
 import { getNiveauxParPays } from '@/api/niveaux.js'
@@ -7,6 +8,7 @@ import { updateUserPaysNiveau, updateUserProfile } from '@/api/users.js'
 
 export function usePaysNiveauConfig() {
   const userStore = useUserStore()
+  const subscriptionStore = useSubscriptionStore()
   const { showToast } = useToast()
 
   // État réactif
@@ -28,6 +30,17 @@ export function usePaysNiveauConfig() {
   const userPays = computed(() => userStore.pays)
   const userNiveau = computed(() => userStore.niveau_pays)
   const userRole = computed(() => userStore.role || 'student')
+  const restrictedLevels = computed(() => {
+    const levels = subscriptionStore.unlockedLevels || []
+    return levels
+      .filter(level => level?.id != null)
+      .map(level => ({
+        niveauId: Number(level.id),
+        paysId: level.pays?.id ? Number(level.pays.id) : (level.pays_id ? Number(level.pays_id) : null),
+        label: level.pays?.nom ? `${level.nom} (${level.pays.nom})` : level.nom
+      }))
+  })
+  const isSelectionRestricted = computed(() => restrictedLevels.value.length > 0)
 
   const filteredNiveaux = computed(() => {
     if (!selectedPaysId.value) return []
@@ -48,14 +61,17 @@ export function usePaysNiveauConfig() {
       const paysData = await getPays()
       paysList.value = paysData
       
-      // Initialiser les sélections avec les valeurs actuelles
       if (userPays.value) {
         selectedPaysId.value = userPays.value.id
         await loadNiveauxForPays(userPays.value.id)
+      } else if (paysList.value.length) {
+        selectedPaysId.value = paysList.value[0].id
+        await loadNiveauxForPays(paysList.value[0].id)
       }
       if (userNiveau.value) {
         selectedNiveauId.value = userNiveau.value.id
       }
+
       // S'assurer que les utilisateurs normaux ont toujours le rôle "student"
       selectedRole.value = userStore.isAdmin ? userRole.value : 'student'
     } catch (error) {
@@ -232,6 +248,8 @@ export function usePaysNiveauConfig() {
     userRole,
     filteredNiveaux,
     canSave,
+    restrictedLevels,
+    isSelectionRestricted,
     
     // Méthodes
     loadData,

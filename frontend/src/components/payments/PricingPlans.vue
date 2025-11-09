@@ -2,7 +2,7 @@
   <div class="pricing-container">
     <div class="pricing-header">
       <h2 class="pricing-title">Choisissez votre plan</h2>
-      <p class="pricing-subtitle">Commencez avec 7 jours d'essai gratuit</p>
+      <p class="pricing-subtitle">Activez l'accès complet à OptiTAB en quelques secondes</p>
     </div>
 
     <div class="billing-toggle">
@@ -65,7 +65,7 @@
             Plan actuel
           </span>
           <span v-else>
-            Commencer l'essai gratuit
+            Choisir ce plan
           </span>
         </button>
       </div>
@@ -75,7 +75,7 @@
     <div v-if="showConfirmModal" class="modal-overlay" @click="showConfirmModal = false">
       <div class="modal-content" @click.stop>
         <h3>Confirmer votre choix</h3>
-        <p>Vous allez commencer un essai gratuit de 7 jours pour le plan {{ selectedPlan?.name }}.</p>
+        <p>Vous allez être redirigé vers la page de paiement pour le plan {{ selectedPlan?.name }}.</p>
         <div class="modal-actions">
           <button @click="showConfirmModal = false" class="btn-cancel">
             Annuler
@@ -155,9 +155,17 @@ const proceedToCheckout = async () => {
   loadingPlan.value = selectedPlan.value.id
   showConfirmModal.value = false
   
+  const niveauId = userStore.niveau_pays?.id
+  if (!niveauId) {
+    alert('Sélectionnez votre niveau dans votre profil avant de vous abonner.')
+    loadingPlan.value = null
+    return
+  }
+  
   try {
     const response = await apiClient.post('/subscriptions/create-checkout-session/', {
-      price_id: selectedPlan.value.stripe_price_id
+      price_id: selectedPlan.value.stripe_price_id,
+      niveau_pays_id: niveauId
     })
     
     // Rediriger vers Stripe Checkout

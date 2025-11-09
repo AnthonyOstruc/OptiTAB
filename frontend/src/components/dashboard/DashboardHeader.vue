@@ -55,11 +55,19 @@
 
     <!-- Section centrale : Contenu conditionnel (masqué si admin) -->
     <ConditionalHeader 
-      v-if="!isCalculatorPage && !isAdminPage"
+      v-if="showConditionalHeader"
       :matiere-props="{ matiereId: null }"
       @subject-changed="handleSubjectChange"
       @search="handleSearch"
     />
+    <BillingTabs v-else-if="isBillingPage" class="header-billing-tabs" />
+    <router-link 
+      v-else-if="isSubscriptionPage" 
+      to="/billing" 
+      class="header-back-button"
+    >
+      <span>← Abonnements</span>
+    </router-link>
 
     <!-- Section droite : Notifications, messages et menu utilisateur -->
     <div class="header-right">
@@ -78,6 +86,7 @@ import { useRouter, useRoute } from 'vue-router'
 import UserMenu from './UserMenu.vue'
 import ConditionalHeader from '@/components/common/ConditionalHeader.vue'
 import NotificationCenter from '@/components/notifications/NotificationCenter.vue'
+import BillingTabs from '@/components/payments/BillingTabs.vue'
 
 // Émissions d'événements
 const emit = defineEmits(['toggle-sidebar', 'subject-changed', 'search'])
@@ -92,6 +101,10 @@ const isAdminPage = computed(() => {
   const path = route.path || '';
   return path.startsWith('/admin') && !path.startsWith('/admin/newsletter') && !path.startsWith('/admin/subscriptions')
 })
+const isBillingPage = computed(() => route.name === 'Billing')
+const isSubscriptionPage = computed(() => route.name === 'Subscription')
+const isBillingSection = computed(() => ['Billing', 'Subscription'].includes(route.name))
+const showConditionalHeader = computed(() => !isCalculatorPage.value && !isAdminPage.value && !isBillingSection.value)
 
 // Fonction pour déterminer si un onglet admin est actif
 function isActive(routeName) {
@@ -209,6 +222,44 @@ const handleLogout = () => {
   pointer-events: auto;
 }
 
+.header-billing-tabs {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: auto; /* réactive les clics malgré pointer-events:none du header */
+}
+
+.header-back-button {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1.2rem; /* reduced height, same width */
+  border-radius: 999px;
+  background: #2563eb;
+  border: 1px solid #1e40af; /* same as billing tab */
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem; /* same as billing tab */
+  transition: all 0.18s ease; /* visual parity */
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.22);
+}
+
+@media (hover: hover) {
+  .header-back-button:hover {
+    background: #1e40af;
+    border-color: #1e40af;
+    /* keep position fixed: no transform */
+    box-shadow: 0 10px 20px rgba(30, 64, 175, 0.25);
+  }
+}
+
 /* Boutons d'icônes */
 .header-icon {
   background: none;
@@ -320,6 +371,25 @@ const handleLogout = () => {
     max-width: none;
     justify-content: center;
   }
+  /* Mobile: placer le CTA dans le flux, centré, sans chevauchement */
+  .header-billing-tabs,
+  .header-back-button {
+    position: static;
+    transform: none;
+    margin: 0 auto;
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    max-width: calc(100% - 140px); /* leave space for right icons */
+  }
+
+  .header-back-button {
+    font-size: 0.9rem; /* same as billing tab mobile */
+    padding: 0.4rem 0.9rem; /* reduced height, same width */
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18); /* same as billing tab mobile */
+    border-color: #1e40af;
+  }
   
   .header-right {
     gap: 0.5rem;
@@ -342,6 +412,14 @@ const handleLogout = () => {
     padding: 0.6rem 0.7rem;
     min-height: 56px;
   }
+
+  .header-back-button {
+    font-size: 0.9rem; /* keep consistent with 640px rule */
+    padding: 0.4rem 0.9rem; /* reduced height, same width */
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18);
+    border-color: #1e40af;
+  }
+
 }
 
 @media (max-width: 360px) {
@@ -365,4 +443,3 @@ const handleLogout = () => {
 }
   .dashboard-header > * { pointer-events: auto; }
 </style>
-

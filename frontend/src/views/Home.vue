@@ -106,7 +106,7 @@ const handleCtaSecondary = () => {
   }
 }
 
-// Handler pour le bouton CTA principal des étapes (Commencez Votre Essai Gratuit)
+// Handler pour le bouton CTA principal des étapes (Je m'abonne maintenant)
 const handleStepsCtaMain = () => {
   // Ouvrir le modal d'inscription
   openModal(MODAL_IDS.REGISTER)

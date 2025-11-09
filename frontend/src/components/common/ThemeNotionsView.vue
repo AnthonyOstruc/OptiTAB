@@ -44,6 +44,24 @@
         </div>
       </div>
       <template v-else>
+        <div v-if="notionsLocked" class="tnv-lock-banner">
+          <div class="tnv-lock-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="11" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="tnv-lock-texts">
+            <p class="tnv-lock-title">Niveau verrouillé</p>
+            <p class="tnv-lock-text">
+              {{ currentLevelLabel || 'Ce niveau' }} est verrouillé. Abonnez-vous pour débloquer tous les chapitres.
+            </p>
+          </div>
+          <router-link to="/billing" class="tnv-lock-cta">
+            Voir les offres
+          </router-link>
+        </div>
       <!-- Search Bar -->
       <div v-if="showSearch" class="tnv-search">
         <div class="tnv-search-inner">
@@ -70,6 +88,7 @@
             :key="`inline-${n.id}`"
             class="tnv-inline-chip"
             type="button"
+            :disabled="notionsLocked"
             @click="goToNotion(n.id)"
           >
             <span v-if="themeNameFor(n)" class="tnv-inline-theme">{{ themeNameFor(n) }}</span>
@@ -161,6 +180,7 @@ import NotionCard from '@/components/UI/NotionCard.vue'
 import SkeletonCard from '@/components/common/SkeletonCard.vue'
 import { useDataPrefetch } from '@/composables/useDataPrefetch'
 import { useRequireSubscription } from '@/composables/useRequireSubscription'
+import { useToast } from '@/composables/useToast'
 
 const props = defineProps({
   matiereId: { type: [Number, String], required: true },
@@ -179,6 +199,7 @@ const userStore = useUserStore()
 const subscriptionStore = useSubscriptionStore()
 const { prefetchNotionContent } = useDataPrefetch()
 const { ensureAccess } = useRequireSubscription()
+const { showToast } = useToast()
 
 const loading = ref(false)
 const error = ref('')
@@ -277,6 +298,10 @@ function notionMatches(notion) {
 }
 
 async function goToNotion(notionId) {
+  if (notionsLocked.value) {
+    showToast('Ce niveau est verrouillé. Abonnez-vous pour accéder aux chapitres.', 'warning')
+    return
+  }
   // Effacer le filtre de recherche de l'URL avant de naviguer
   try {
     const newQuery = { ...route.query }
@@ -410,9 +435,7 @@ function prefetchTopNotions() {
 
 onMounted(() => {
   load(props.matiereId)
-  if (!subscriptionStore.status) {
-    subscriptionStore.fetchStatus().catch(() => {})
-  }
+  subscriptionStore.fetchStatus({ force: !subscriptionStore.hasAccess }).catch(() => {})
 })
 watch(() => props.matiereId, (id) => load(id))
 
@@ -454,7 +477,28 @@ const filteredTotalCount = computed(() => {
   return total
 })
 
-const notionsLocked = computed(() => !subscriptionStore.hasAccess && !userStore.isAdmin)
+const unlockedLevels = computed(() => subscriptionStore.unlockedLevels || [])
+const selectedNiveauId = computed(() => {
+  const rawId = userStore.niveau_pays?.id
+  if (rawId == null) return null
+  const parsed = Number(rawId)
+  return Number.isNaN(parsed) ? null : parsed
+})
+const hasManualAccess = computed(() => Boolean(subscriptionStore.status?.has_manual_access))
+const hasSelectedLevelAccess = computed(() => {
+  if (userStore.isAdmin) return true
+  if (hasManualAccess.value) return true
+  if (!subscriptionStore.hasAccess) return false
+  if (!selectedNiveauId.value) return false
+  return unlockedLevels.value.some(level => Number(level.id) === selectedNiveauId.value)
+})
+const notionsLocked = computed(() => !hasSelectedLevelAccess.value)
+const currentLevelLabel = computed(() => {
+  const level = userStore.niveau_pays
+  if (!level) return ''
+  const paysName = level.pays?.nom || userStore.pays?.nom
+  return paysName ? `${level.nom} · ${paysName}` : level.nom
+})
 
 // (plus de limite topN, on affiche tout en inline)
 
@@ -653,9 +697,169 @@ function highlightQuery(text) {
 /* (Reverted) Removed compact spacing overrides */
 .tnv-wrapper {
   width: 100%;
-  max-width: none;
+  max-width: 100%;
   /* left align content within dashboard main */
   margin: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.tnv-lock-banner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #fef3c7;
+  border-radius: 0.85rem;
+  background: #fffbeb;
+  margin-bottom: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.tnv-lock-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fef3c7;
+  color: #d97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tnv-lock-texts {
+  flex: 1;
+}
+
+.tnv-lock-title {
+  margin: 0;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.tnv-lock-text {
+  margin: 0.15rem 0 0;
+  color: #b45309;
+  font-size: 0.9rem;
+}
+
+.tnv-lock-cta {
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid #fbbf24;
+  color: #92400e;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.tnv-lock-cta:hover {
+  background: rgba(251, 191, 36, 0.15);
+}
+
+/* Responsive - Mobile pour la bannière de verrouillage */
+@media (max-width: 768px) {
+  .tnv-lock-banner {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.65rem;
+    border-radius: 0.65rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .tnv-lock-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+
+  .tnv-lock-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .tnv-lock-texts {
+    flex: 1;
+    min-width: 0; /* Permet au texte de se rétrécir si nécessaire */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .tnv-lock-title {
+    font-size: 0.8rem;
+    line-height: 1.25;
+    margin-bottom: 0.1rem;
+    font-weight: 600;
+  }
+
+  .tnv-lock-text {
+    font-size: 0.7rem;
+    line-height: 1.35;
+    margin: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .tnv-lock-cta {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .tnv-lock-banner {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.55rem;
+    border-radius: 0.55rem;
+  }
+
+  .tnv-lock-icon {
+    width: 28px;
+    height: 28px;
+    margin-top: 0.1rem; /* Alignement avec le texte */
+  }
+
+  .tnv-lock-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .tnv-lock-texts {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .tnv-lock-title {
+    font-size: 0.75rem;
+    line-height: 1.25;
+    margin-bottom: 0.15rem;
+    font-weight: 600;
+  }
+
+  .tnv-lock-text {
+    font-size: 0.65rem;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .tnv-lock-cta {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.65rem;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 0.1rem;
+  }
 }
 
 /* Barre de recherche */
@@ -722,6 +926,12 @@ function highlightQuery(text) {
   cursor: pointer;
 }
 .tnv-inline-chip:hover { background: #f9fafb; border-color: #93c5fd; }
+.tnv-inline-chip:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+  background: #f8fafc;
+}
 .tnv-inline-theme { color: #1f2937; font-size: 0.8rem; }
 .tnv-inline-title { color: #1d4ed8; font-weight: 600; font-size: 0.9rem; }
 .tnv-inline-more { color: #6b7280; font-size: 0.9rem; }

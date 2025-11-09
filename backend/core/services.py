@@ -11,7 +11,7 @@ import logging
 import random
 from email.mime.image import MIMEImage
 from pathlib import Path
-import os
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -205,6 +205,54 @@ class EmailService:
         except Exception as e:
             logger.error(f"Erreur envoi lien réinitialisation à {user.email}: {e}")
             return False
+
+    @staticmethod
+    def send_invoice_receipt(user, payment_history, invoice_link):
+        """Envoie un email contenant la facture Stripe."""
+        first_name = (user.first_name or '').strip() or 'OptiTABien'
+        date_str = timezone.localtime(payment_history.created_at).strftime('%d %B %Y')
+        amount_str = f"{payment_history.amount:.2f} {payment_history.currency.upper()}"
+        subject = 'Votre facture OptiTAB'
+
+        text_body = (
+            f"Bonjour {first_name},\n\n"
+            f"Voici la facture correspondant à votre paiement du {date_str} "
+            f"d'un montant de {amount_str}.\n\n"
+            f"Téléchargez-la en suivant ce lien sécurisé :\n{invoice_link}\n\n"
+            "Merci pour votre confiance.\nL'équipe OptiTAB"
+        )
+
+        html_body = f"""
+            <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                <tr>
+                  <td style="padding:24px;">
+                    <h1 style="margin:0 0 12px 0;font-size:20px;color:#111827;">Votre facture est disponible</h1>
+                    <p style="margin:0 0 16px 0;color:#4b5563;font-size:15px;line-height:1.6;">
+                      Bonjour {first_name},<br/>
+                      Voici la facture correspondant à votre paiement du {date_str} (montant {amount_str}).
+                    </p>
+                    <a href="{invoice_link}" style="display:inline-block;background:#22c55e;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 24px;border-radius:10px;">
+                      Télécharger ma facture
+                    </a>
+                    <p style="margin:16px 0 0 0;color:#6b7280;font-size:13px;line-height:1.6;">
+                      Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br/>
+                      <a href="{invoice_link}" style="color:#2563eb;text-decoration:none;">{invoice_link}</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+        """
+
+        email = EmailMultiAlternatives(
+            subject=subject,
+            body=text_body,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[user.email],
+        )
+        email.attach_alternative(html_body, "text/html")
+        email.send(fail_silently=False)
 
     @staticmethod
     def send_contact_message(first_name: str, last_name: str, email: str, subject: str, message: str, ticket_id: str | None = None) -> bool:

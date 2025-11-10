@@ -24,6 +24,11 @@ export function useGoogleAuth() {
   const didFallbackToNoFedCM = ref(false)
   const didFallbackToOAuth = ref(false)
 
+  const closeAuthModals = () => {
+    closeModal(MODAL_IDS.LOGIN)
+    closeModal(MODAL_IDS.REGISTER)
+  }
+
   const isFedCMPreferred = () => {
     try {
       const disabledFlag = localStorage.getItem('gsi_disable_fedcm') === '1'
@@ -101,8 +106,8 @@ export function useGoogleAuth() {
       userStore.setUser(user)
       await userStore.fetchUser()
 
-      // Fermer et rediriger
-      closeModal(MODAL_IDS.LOGIN)
+      // Fermer toutes les modales d'authentification et rediriger
+      closeAuthModals()
       router.push('/dashboard')
 
       showToast('Connexion réussie !', 'success')
@@ -138,7 +143,7 @@ export function useGoogleAuth() {
                   localStorage.setItem('refresh_token', refresh)
                   userStore.setUser(user)
                   await userStore.fetchUser()
-                  closeModal(MODAL_IDS.LOGIN)
+                  closeAuthModals()
                   router.push('/dashboard')
                   showToast('Connexion réussie !', 'success')
                   didFallbackToOAuth.value = true
@@ -161,7 +166,7 @@ export function useGoogleAuth() {
                           localStorage.setItem('refresh_token', refresh)
                           userStore.setUser(user)
                           await userStore.fetchUser()
-                          closeModal(MODAL_IDS.LOGIN)
+                          closeAuthModals()
                           router.push('/dashboard')
                           showToast('Connexion réussie !', 'success')
                           didFallbackToOAuth.value = true
@@ -203,7 +208,7 @@ export function useGoogleAuth() {
                   localStorage.setItem('refresh_token', refresh)
                   userStore.setUser(user)
                   await userStore.fetchUser()
-                  closeModal(MODAL_IDS.LOGIN)
+                  closeAuthModals()
                   router.push('/dashboard')
                   showToast('Connexion réussie !', 'success')
                   didFallbackToOAuth.value = true

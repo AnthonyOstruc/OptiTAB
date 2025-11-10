@@ -185,24 +185,203 @@ defineEmits(['edit'])
 }
 
 @media (max-width: 768px) {
+  .config-header {
+    margin-bottom: 1rem;
+  }
+
+  .config-info h3 {
+    font-size: 1.0625rem;
+  }
+
+  .config-info p {
+    font-size: 0.8125rem;
+  }
+
+  .btn-configure {
+    padding: 0.5625rem 0.9375rem;
+    font-size: 0.8125rem;
+  }
+
   .current-config {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.875rem;
+    padding: 1.125rem;
   }
   
   .config-divider {
     display: none;
   }
 
+  .config-label {
+    font-size: 0.65rem;
+  }
+
+  .config-value {
+    font-size: 0.875rem;
+  }
+
+  .flag {
+    font-size: 1.25rem;
+  }
+
+  .niveau-badge,
+  .role-badge {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.8125rem;
+  }
+}
+
+@media (max-width: 640px) {
   .config-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.875rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .config-info h3 {
+    font-size: 1rem;
+  }
+
+  .config-info p {
+    font-size: 0.8rem;
   }
 
   .btn-configure {
     width: 100%;
     justify-content: center;
+    padding: 0.625rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .current-config {
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 9px;
+  }
+
+  .config-item {
+    gap: 0.4rem;
+  }
+
+  .config-label {
+    font-size: 0.625rem;
+  }
+
+  .config-value {
+    font-size: 0.8125rem;
+  }
+
+  .flag {
+    font-size: 1.125rem;
+  }
+
+  .niveau-badge {
+    font-size: 0.75rem;
+    padding: 0.3125rem 0.75rem;
+  }
+
+  .role-badge {
+    font-size: 0.75rem;
+    padding: 0.3125rem 0.6875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .config-header {
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .config-info h3 {
+    font-size: 0.9375rem;
+  }
+
+  .config-info p {
+    font-size: 0.75rem;
+  }
+
+  .btn-configure {
+    padding: 0.5625rem 0.9375rem;
+    font-size: 0.8rem;
+    gap: 0.4rem;
+  }
+
+  .icon {
+    width: 0.9375rem;
+    height: 0.9375rem;
+  }
+
+  .current-config {
+    gap: 0.625rem;
+    padding: 0.9375rem;
+    border-radius: 8px;
+  }
+
+  .config-label {
+    font-size: 0.6rem;
+  }
+
+  .config-value {
+    font-size: 0.8rem;
+    gap: 0.4rem;
+  }
+
+  .flag {
+    font-size: 1.0625rem;
+  }
+
+  .niveau-badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6875rem;
+    border-radius: 1rem;
+  }
+
+  .role-badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.625rem;
+    border-radius: 0.75rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .config-header {
+    gap: 0.625rem;
+  }
+
+  .config-info h3 {
+    font-size: 0.875rem;
+  }
+
+  .config-info p {
+    font-size: 0.7rem;
+  }
+
+  .btn-configure {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+  }
+
+  .current-config {
+    padding: 0.875rem;
+  }
+
+  .config-label {
+    font-size: 0.5625rem;
+  }
+
+  .config-value {
+    font-size: 0.75rem;
+  }
+
+  .flag {
+    font-size: 1rem;
+  }
+
+  .niveau-badge,
+  .role-badge {
+    font-size: 0.6875rem;
+    padding: 0.25rem 0.625rem;
   }
 }
 </style>

@@ -222,7 +222,7 @@ export const pricingPlans = {
         'Accès au contenu hors ligne',
         'Support prioritaire'
       ],
-      bouton: 'Essai 7 jours gratuit',
+      bouton: "S'abonner maintenant",
       boutonType: 'primary',
       badge: 'Le Plus Populaire',
       populaire: true
@@ -242,9 +242,9 @@ export const pricingPlans = {
         'Programmes de certification',
         'Partage familial (4 comptes)'
       ],
-      bouton: 'Essai 7 jours gratuit',
+      bouton: "S'abonner maintenant",
       boutonType: 'premium',
       populaire: false
     }
   ]
-}; 
+};

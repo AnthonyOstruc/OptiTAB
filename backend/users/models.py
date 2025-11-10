@@ -112,6 +112,28 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         """Compatibilité avec l'ancien code"""
         return self.niveau_pays
 
+    @property
+    def subscription(self):
+        """
+        Retourne l'abonnement principal (actif) de l'utilisateur.
+        Compatible avec l'ancien champ OneToOne.
+        """
+        try:
+            subscriptions_manager = getattr(self, 'subscriptions', None)
+            if subscriptions_manager is None:
+                from subscriptions.models import UserSubscription
+                queryset = UserSubscription.objects.filter(user=self)
+            else:
+                queryset = subscriptions_manager.all()
+            return (
+                queryset.filter(status__in=['active', 'trialing'])
+                .order_by('-created_at')
+                .first()
+                or queryset.order_by('-created_at').first()
+            )
+        except Exception:
+            return None
+
 
 # Modèle pour sauvegarder les matières favorites de l'utilisateur
 class UserFavoriteMatiere(models.Model):

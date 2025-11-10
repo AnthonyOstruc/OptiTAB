@@ -62,17 +62,57 @@ import { useUserStore } from '@/stores/user'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import FullPageSpinner from '@/components/common/FullPageSpinner.vue'
 import { useNotificationStore } from '@/stores/notifications'
+import { useCheckoutIntentStore } from '@/stores/checkoutIntent'
+import { useToast } from '@/composables/useToast'
 
 const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()
 const router = useRouter()
 const { isModalOpen, closeModal, openModal } = useModalManager()
 const notificationStore = useNotificationStore()
+const checkoutIntentStore = useCheckoutIntentStore()
+const { info: toastInfo, error: toastError } = useToast()
+
+if (typeof window !== 'undefined') {
+  checkoutIntentStore.initFromStorage()
+}
 
 // Verification flow removed
 
 // State for pays/niveau modal
 const isPaysNiveauModalOpen = ref(false)
+
+const canProcessCheckout = computed(() => userStore.isAuthenticated && !userStore.isLoading)
+
+const attemptPendingCheckout = async () => {
+  if (!checkoutIntentStore.hasIntent) return
+  const planLabel = checkoutIntentStore.planName || 'OptiTAB'
+  toastInfo(`Redirection vers le paiement ${planLabel}…`, 4000)
+  try {
+    const result = await checkoutIntentStore.processIntent()
+    if (!result?.redirected) {
+      toastError('Impossible d’ouvrir la page de paiement. Réessaie depuis la section Tarifs.')
+    }
+  } catch (error) {
+    console.error('Erreur redirection paiement:', error)
+    toastError('Impossible d’ouvrir la page de paiement. Réessaie depuis la section Tarifs.')
+  }
+}
+
+watch(canProcessCheckout, (ready) => {
+  if (ready) {
+    attemptPendingCheckout()
+  }
+}, { immediate: true })
+
+watch(
+  () => checkoutIntentStore.hasIntent,
+  (hasIntent) => {
+    if (hasIntent && canProcessCheckout.value) {
+      attemptPendingCheckout()
+    }
+  }
+)
 
 // Computed
 const isLoginModalOpen = computed(() => isModalOpen(MODAL_IDS.LOGIN))

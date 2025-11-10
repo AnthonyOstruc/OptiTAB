@@ -180,7 +180,6 @@ export const usePaysNiveauStore = defineStore('paysNiveau', {
      */
     async setPays(pays) {
       if (typeof pays === 'string' || typeof pays === 'number') {
-        // Si on reçoit un ID, charger le pays complet
         const paysObj = this.paysDisponibles.find(p => p.id == pays)
         if (!paysObj) {
           await this.loadPaysDisponibles()
@@ -192,10 +191,8 @@ export const usePaysNiveauStore = defineStore('paysNiveau', {
         this.paysActuel = pays
       }
 
-      // Réinitialiser le niveau quand le pays change
       this.niveauPaysActuel = null
 
-      // Charger les niveaux pour ce pays
       if (this.paysActuel) {
         await this.loadNiveauxPourPays(this.paysActuel.id)
       }
@@ -208,7 +205,6 @@ export const usePaysNiveauStore = defineStore('paysNiveau', {
      */
     setNiveauPays(niveauPays) {
       if (typeof niveauPays === 'string' || typeof niveauPays === 'number') {
-        // Si on reçoit un ID, chercher l'objet complet
         this.niveauPaysActuel = this.niveauxPaysDisponibles.find(np => np.id == niveauPays) || null
       } else {
         this.niveauPaysActuel = niveauPays
@@ -228,7 +224,7 @@ export const usePaysNiveauStore = defineStore('paysNiveau', {
     /**
      * Réinitialise la sélection
      */
-    clearSelection() {
+    async clearSelection() {
       this.paysActuel = null
       this.niveauPaysActuel = null
       this.error = null
@@ -328,7 +324,7 @@ export const usePaysNiveauStore = defineStore('paysNiveau', {
     /**
      * Restaure la sélection depuis le localStorage
      */
-    loadSelectionFromStorage() {
+    async loadSelectionFromStorage() {
       try {
         const saved = localStorage.getItem('pays_niveau_selection')
         if (saved) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="notion-card" :class="{ locked }" @click="$emit('click')" @mouseenter="handleMouseEnter">
+  <div class="notion-card" :class="{ locked }" @click="handleClick" @mouseenter="handleMouseEnter">
     <div class="notion-card-inner">
       <div v-if="locked" class="lock-badge">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,12 +43,20 @@ const props = defineProps({
   locked: { type: Boolean, default: false }
 })
 
+const emit = defineEmits(['click'])
+
 const { prefetchNotionContent } = useDataPrefetch()
 
 // Debounce pour éviter trop de prefetch
 let hoverTimeout = null
 
+function handleClick() {
+  if (props.locked) return
+  emit('click')
+}
+
 function handleMouseEnter() {
+  if (props.locked) return
   // Annuler le timeout précédent si l'utilisateur survole rapidement plusieurs cartes
   if (hoverTimeout) {
     clearTimeout(hoverTimeout)

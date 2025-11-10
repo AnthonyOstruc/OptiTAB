@@ -25,6 +25,7 @@ import secrets
 import string
 from django.db import transaction
 from django.contrib.auth import update_session_auth_hash
+from ..utils import validate_subscription_level_change
 
 
 def prune_expired_pending_email(user):
@@ -1360,7 +1361,18 @@ class UpdatePaysView(APIView):
                 status_code=status.HTTP_404_NOT_FOUND
             )
         
-        # Vérifier compatibilité niveau/pays
+        # Vérifier compatibilité niveau/pays et verrou éventuel
+        violation = validate_subscription_level_change(
+            user,
+            pays_id=pays.id,
+            pays_field_present=True
+        )
+        if violation:
+            return ResponseService.error(
+                violation,
+                status_code=status.HTTP_403_FORBIDDEN
+            )
+
         niveau_reinitialise = False
         if user.niveau_pays and user.niveau_pays.pays != pays:
             user.niveau_pays = None
@@ -1438,6 +1450,17 @@ class UpdateNiveauView(APIView):
                 "Niveau non trouvé", 
                 status_code=status.HTTP_404_NOT_FOUND
             )
+
+        violation = validate_subscription_level_change(
+            user,
+            niveau_id=niveau_pays.id,
+            niveau_field_present=True
+        )
+        if violation:
+            return ResponseService.error(
+                violation,
+                status_code=status.HTTP_403_FORBIDDEN
+            )
         
         user.niveau_pays = niveau_pays
         user.save()
@@ -1506,6 +1529,21 @@ class UpdatePaysNiveauView(APIView):
         
         if serializer.is_valid():
             try:
+                pays_present = 'pays_id' in request.data
+                niveau_present = 'niveau_pays_id' in request.data
+                violation = validate_subscription_level_change(
+                    request.user,
+                    niveau_id=serializer.validated_data.get('niveau_pays_id'),
+                    pays_id=serializer.validated_data.get('pays_id'),
+                    niveau_field_present=niveau_present,
+                    pays_field_present=pays_present
+                )
+                if violation:
+                    return ResponseService.error(
+                        violation,
+                        status_code=status.HTTP_403_FORBIDDEN
+                    )
+
                 user = serializer.save(request.user)
                 
                 response_data = {

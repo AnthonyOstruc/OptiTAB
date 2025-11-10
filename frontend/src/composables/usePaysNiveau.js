@@ -9,6 +9,7 @@ import { usePaysNiveauStore } from '@/stores/paysNiveau'
  */
 export function usePaysNiveau() {
   const store = usePaysNiveauStore()
+  store.initializeSubscriptionLockWatcher?.()
   
   return {
     // État du store
@@ -370,7 +371,7 @@ export function useAutoInit() {
       await loadPaysDisponibles()
       
       // Tenter de restaurer une sélection sauvegardée
-      loadSelection()
+      await loadSelection()
     } catch (error) {
       console.error('Erreur initialisation pays-niveau:', error)
     }

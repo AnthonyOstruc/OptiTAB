@@ -216,4 +216,105 @@ const handleMouseEnter = () => {
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
   border-color: #eef2f7;
 }
+
+@media (max-width: 768px) {
+  .option-card {
+    padding: 14px 16px;
+    gap: 10px;
+    border-radius: 10px;
+  }
+
+  .flag {
+    font-size: 22px;
+  }
+
+  .option-info h5 {
+    font-size: 15px;
+  }
+
+  .option-info p {
+    font-size: 13px;
+  }
+
+  .current-badge {
+    font-size: 11px;
+    padding: 2px 7px;
+  }
+}
+
+@media (max-width: 480px) {
+  .option-card {
+    padding: 12px 14px;
+    gap: 10px;
+    border-radius: 9px;
+  }
+
+  .flag {
+    font-size: 20px;
+  }
+
+  .niveau-indicator {
+    width: 14px;
+    height: 14px;
+  }
+
+  .option-info h5 {
+    font-size: 14px;
+  }
+
+  .option-info p {
+    font-size: 12px;
+  }
+
+  .current-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    top: 6px;
+    right: 6px;
+  }
+
+  .selected-indicator {
+    top: 6px;
+    right: 6px;
+  }
+
+  .selected-indicator svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 380px) {
+  .option-card {
+    padding: 11px 12px;
+    gap: 9px;
+  }
+
+  .flag {
+    font-size: 19px;
+  }
+
+  .niveau-indicator {
+    width: 13px;
+    height: 13px;
+  }
+
+  .option-info h5 {
+    font-size: 13.5px;
+  }
+
+  .option-info p {
+    font-size: 11.5px;
+  }
+
+  .current-badge {
+    font-size: 9.5px;
+    padding: 1px 5px;
+  }
+
+  .selected-indicator svg {
+    width: 16px;
+    height: 16px;
+  }
+}
 </style>

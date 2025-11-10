@@ -28,6 +28,18 @@
       </div>
       
       <div class="config-modal-body">
+        <div v-if="selectionRestricted" class="lock-banner">
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="10" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <div class="lock-texts">
+            <p class="lock-title">Niveau verrouillé</p>
+            <p class="lock-text">
+              Niveaux disponibles avec votre abonnement : {{ restrictedLabels }}. Contactez l'équipe OptiTAB pour en ajouter d'autres.
+            </p>
+          </div>
+        </div>
         <!-- Étape 1: Sélection du pays -->
         <div class="config-step" :class="{ active: currentStep === 'pays' }">
           <h4>
@@ -48,7 +60,6 @@
               type="pays"
               :is-selected="selectedPaysId === pays.id"
               :is-current="userPays?.id === pays.id"
-              :is-disabled="pays.nombre_niveaux === 0"
               @select="selectPays"
               @hover="prefetchNiveaux"
             />
@@ -173,6 +184,14 @@ const props = defineProps({
   selectedRole: {
     type: String,
     default: 'student'
+  },
+  selectionRestricted: {
+    type: Boolean,
+    default: false
+  },
+  restrictedLevels: {
+    type: Array,
+    default: () => []
   }
 })
 
@@ -198,6 +217,13 @@ const saveConfiguration = () => {
   emit('save')
 }
 
+const restrictedLevels = computed(() => props.restrictedLevels || [])
+const selectionRestricted = computed(() => props.selectionRestricted && restrictedLevels.value.length > 0)
+const restrictedLabels = computed(() => {
+  if (!restrictedLevels.value.length) return 'actuel'
+  return restrictedLevels.value.map(level => level.label).join(', ')
+})
+
 const prefetchNiveaux = (pays) => {
   emit('prefetch-niveaux', pays?.id || pays)
 }
@@ -209,10 +235,20 @@ const selectRole = (role) => emit('select-role', role)
 watch(() => props.modelValue, (isOpen) => {
   if (isOpen) {
     document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.width = '100%'
+    document.body.style.top = `-${window.scrollY}px`
   } else {
+    const scrollY = document.body.style.top
     document.body.style.overflow = ''
+    document.body.style.position = ''
+    document.body.style.width = ''
+    document.body.style.top = ''
+    if (scrollY) {
+      window.scrollTo(0, parseInt(scrollY || '0') * -1)
+    }
   }
-})
+}, { immediate: false })
 
 // Gestion de la touche Échap
 const handleEscape = (event) => {
@@ -228,6 +264,9 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('keydown', handleEscape)
   document.body.style.overflow = ''
+  document.body.style.position = ''
+  document.body.style.width = ''
+  document.body.style.top = ''
 })
 </script>
 
@@ -247,6 +286,7 @@ onUnmounted(() => {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   animation: fadeIn 0.3s ease-out;
+  overflow-y: auto;
 }
 
 @keyframes fadeIn {
@@ -289,6 +329,12 @@ onUnmounted(() => {
   justify-content: space-between;
   padding: 24px 24px 0;
   margin-bottom: 12px;
+  gap: 1rem;
+}
+
+.title-wrap {
+  flex: 1;
+  min-width: 0;
 }
 
 .config-modal-header h3 {
@@ -296,12 +342,17 @@ onUnmounted(() => {
   font-size: 20px;
   font-weight: 600;
   color: #111827;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .title-wrap .subtitle {
   margin: 6px 0 0 0;
   color: #6b7280;
   font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .close-btn {
@@ -327,6 +378,41 @@ onUnmounted(() => {
 
 .config-modal-body {
   padding: 0 24px;
+}
+
+.lock-banner {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #c7d2fe;
+  border-radius: 12px;
+  background: #eef2ff;
+  color: #1e1b4b;
+}
+
+.lock-icon {
+  width: 32px;
+  height: 32px;
+  color: #4c1d95;
+  flex-shrink: 0;
+}
+
+.lock-texts {
+  flex: 1;
+}
+
+.lock-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #312e81;
+}
+
+.lock-text {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+  color: #4338ca;
 }
 
 .config-step {
@@ -502,29 +588,419 @@ onUnmounted(() => {
 
   @media (max-width: 768px) {
     .config-modal-overlay {
-      padding: 10px;
+      padding: 0.625rem;
+      padding-bottom: 100px;
+      align-items: flex-start;
     }
     
     .config-modal-content {
-      margin: 0;
-      max-height: 95vh;
+      margin: 0.5rem auto;
+      max-height: calc(100vh - 120px);
+      border-radius: 12px;
     }
     
-    .config-modal-header,
-    .config-modal-body,
+    .config-modal-header {
+      padding: 1.125rem 1.125rem 0;
+      margin-bottom: 0.75rem;
+    }
+
+    .config-modal-header h3 {
+      font-size: 1.125rem;
+      line-height: 1.3;
+    }
+
+    .title-wrap .subtitle {
+      font-size: 0.8125rem;
+      margin-top: 0.375rem;
+    }
+
+    .close-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 1.125rem;
+    }
+
+    .progress {
+      padding: 0 1.125rem 0.875rem;
+      gap: 0.5rem;
+    }
+
+    .progress-step .label {
+      font-size: 0.75rem;
+    }
+
+    .progress-step .circle {
+      width: 24px;
+      height: 24px;
+      font-size: 0.8125rem;
+    }
+
+    .line {
+      width: 40px;
+    }
+    
+    .config-modal-body {
+      padding: 0 1.125rem;
+    }
+
+    .config-step {
+      margin-bottom: 1.5rem;
+    }
+
+    .config-step h4 {
+      font-size: 1rem;
+      gap: 0.625rem;
+    }
+
+    .step-number {
+      width: 24px;
+      height: 24px;
+      font-size: 0.8125rem;
+    }
+
+    .config-step p {
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+    
     .config-modal-footer {
-      padding-left: 20px;
-      padding-right: 20px;
+      padding: 1.125rem;
+      gap: 0.625rem;
+    }
+
+    .btn-secondary,
+    .btn-primary {
+      padding: 0.625rem 1.125rem;
+      font-size: 0.875rem;
     }
     
     .options-grid {
       grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .role-options {
+      gap: 0.625rem;
+    }
+
+    .role-btn {
+      font-size: 0.875rem;
+      padding: 0.625rem 1rem;
+    }
+
+    /* Optimisation de la bannière de verrouillage pour mobile */
+    .lock-banner {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.625rem;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 0.625rem;
+    }
+
+    .lock-icon {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      margin-top: 0.125rem;
+    }
+
+    .lock-texts {
+      flex: 1;
+      min-width: 0;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    .lock-title {
+      font-size: 0.875rem;
+      line-height: 1.3;
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+    }
+
+    .lock-text {
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      margin: 0;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .config-modal-overlay {
+      padding: 0.5rem;
+      padding-bottom: 105px;
+    }
+
+    .config-modal-content {
+      max-height: calc(100vh - 130px);
+      margin: 0.4rem auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .config-modal-overlay {
+      padding: 0.5rem;
+      padding-bottom: 110px;
+    }
+
+    .config-modal-content {
+      border-radius: 10px;
+      max-height: calc(100vh - 140px);
+      margin: 0.375rem auto;
+    }
+
+    .config-modal-header {
+      padding: 1rem 1rem 0;
+      margin-bottom: 0.625rem;
+    }
+
+    .config-modal-header h3 {
+      font-size: 1.0625rem;
+    }
+
+    .title-wrap .subtitle {
+      font-size: 0.75rem;
+      margin-top: 0.3rem;
+      line-height: 1.4;
+    }
+
+    .close-btn {
+      width: 26px;
+      height: 26px;
+      font-size: 1rem;
+    }
+
+    .progress {
+      padding: 0 1rem 0.75rem;
+      gap: 0.375rem;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+
+    .progress-step {
+      gap: 0.375rem;
+      white-space: nowrap;
+    }
+
+    .progress-step .label {
+      font-size: 0.6875rem;
+    }
+
+    .progress-step .circle {
+      width: 22px;
+      height: 22px;
+      font-size: 0.75rem;
+    }
+
+    .line {
+      width: 30px;
+      min-width: 30px;
+    }
+
+    .config-modal-body {
+      padding: 0 1rem;
+    }
+
+    .config-step {
+      margin-bottom: 1.25rem;
+    }
+
+    .config-step h4 {
+      font-size: 0.9375rem;
+      gap: 0.5rem;
+    }
+
+    .step-number {
+      width: 22px;
+      height: 22px;
+      font-size: 0.75rem;
+    }
+
+    .config-step p {
+      font-size: 0.8125rem;
+      margin-bottom: 0.875rem;
+      line-height: 1.4;
+    }
+
+    .config-modal-footer {
+      padding: 1rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary,
+    .btn-primary {
+      padding: 0.5625rem 1rem;
+      font-size: 0.8125rem;
+      flex: 1;
+      min-width: calc(50% - 0.25rem);
+    }
+
+    .options-grid {
+      gap: 0.625rem;
+    }
+
+    .role-options {
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .role-btn {
+      font-size: 0.8125rem;
+      padding: 0.5625rem 0.875rem;
+      flex: 1;
+    }
+
+    /* Optimisation supplémentaire pour très petits écrans */
+    .lock-banner {
+      gap: 0.5rem;
+      padding: 0.625rem;
+      border-radius: 0.5rem;
+    }
+
+    .lock-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .lock-title {
+      font-size: 0.8125rem;
+      margin-bottom: 0.1875rem;
+      font-weight: 600;
+    }
+
+    .lock-text {
+      font-size: 0.75rem;
+      line-height: 1.35;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    .empty-state {
+      padding: 1.25rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .config-modal-overlay {
+      padding: 0.375rem;
+      padding-bottom: 115px;
+    }
+
+    .config-modal-content {
+      max-height: calc(100vh - 150px);
+      margin: 0.25rem auto;
+    }
+
+    .config-modal-header {
+      padding: 0.875rem 0.875rem 0;
+      gap: 0.625rem;
+    }
+
+    .config-modal-header h3 {
+      font-size: 1rem;
+    }
+
+    .title-wrap .subtitle {
+      font-size: 0.6875rem;
+      margin-top: 0.25rem;
+    }
+
+    .close-btn {
+      width: 24px;
+      height: 24px;
+      font-size: 0.9375rem;
+      flex-shrink: 0;
+    }
+
+    .progress {
+      padding: 0 0.875rem 0.625rem;
+      gap: 0.3rem;
+    }
+
+    .progress-step .label {
+      font-size: 0.625rem;
+    }
+
+    .progress-step .circle {
+      width: 20px;
+      height: 20px;
+      font-size: 0.6875rem;
+    }
+
+    .line {
+      width: 24px;
+      min-width: 24px;
+    }
+
+    .config-modal-body {
+      padding: 0 0.875rem;
+    }
+
+    .config-step h4 {
+      font-size: 0.875rem;
+      gap: 0.4rem;
+    }
+
+    .step-number {
+      width: 20px;
+      height: 20px;
+      font-size: 0.6875rem;
+    }
+
+    .config-step p {
+      font-size: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .config-modal-footer {
+      padding: 0.875rem;
+    }
+
+    .btn-secondary,
+    .btn-primary {
+      padding: 0.5rem 0.875rem;
+      font-size: 0.75rem;
+    }
+
+    .role-btn {
+      font-size: 0.75rem;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .lock-banner {
+      padding: 0.5rem;
+    }
+
+    .lock-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .lock-title {
+      font-size: 0.75rem;
+    }
+
+    .lock-text {
+      font-size: 0.6875rem;
+    }
+
+    .empty-state {
+      padding: 1rem;
+      font-size: 0.8125rem;
     }
   }
 
   /* S'assurer que le modal est en premier plan */
   .config-modal-overlay {
     pointer-events: auto;
+    touch-action: none;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .config-modal-overlay * {
@@ -536,6 +1012,12 @@ onUnmounted(() => {
     outline: none;
   }
 
+  .config-modal-content {
+    pointer-events: auto;
+    touch-action: auto;
+    overscroll-behavior: contain;
+  }
+
   .config-modal-content:focus {
     outline: none;
   }
@@ -543,5 +1025,13 @@ onUnmounted(() => {
   /* Empêcher les interactions avec l'arrière-plan */
   .config-modal-overlay {
     isolation: isolate;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Empêcher le zoom sur mobile */
+  .config-modal-content input,
+  .config-modal-content select,
+  .config-modal-content textarea {
+    touch-action: manipulation;
   }
 </style>

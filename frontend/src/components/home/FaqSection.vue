@@ -129,15 +129,74 @@ function toggle(idx) {
 }
 @media (max-width: 700px) {
   .faq-section {
-    padding: 36px 0 18px 0;
+    /* plein largeur relative au conteneur, sans breakout */
+    max-width: none;
+    width: 100%;
+    margin: 0 auto 14px auto;
+    padding: 12px 0.25rem; /* réduit les paddings latéraux pour élargir */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .faq-header { 
+    margin-bottom: 16px;
+    width: 100%;
+    text-align: center;
   }
   .faq-title {
-    font-size: 1.5rem;
+    font-size: 1.22rem; /* plus compact */
+    line-height: 1.2;
+    margin-bottom: 4px;
+    text-align: center;
   }
-  .faq-answer, .faq-question {
-    font-size: 1rem;
-    padding-left: 12px;
-    padding-right: 12px;
+  .faq-desc {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    padding: 0;
+    word-break: normal;
+    overflow-wrap: anywhere;
+    hyphens: none;
+    text-align: center;
   }
+  .faq-list { 
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .faq-item { 
+    border-radius: 10px; 
+    box-shadow: 0 1px 4px rgba(42,56,183,0.06);
+    width: 100%;
+    max-width: 100%;
+  }
+  .faq-question {
+    font-size: 0.92rem;
+    padding: 10px 8px; /* réduit les paddings latéraux pour élargir */
+    text-align: left;
+    justify-content: space-between;
+  }
+  .faq-question span {
+    text-align: left;
+  }
+  .faq-arrow { width: 15px; height: 15px; margin-left: 8px; }
+  .faq-answer {
+    font-size: 0.88rem;
+    padding: 0 8px 10px 8px; /* réduit les paddings latéraux pour élargir */
+    line-height: 1.5;
+    text-align: left;
+  }
+}
+
+@media (max-width: 380px) {
+  .faq-section {
+    padding: 12px 0.125rem; /* encore plus réduit pour très petit mobile */
+  }
+  .faq-title { font-size: 1.12rem; }
+  .faq-desc { font-size: 0.86rem; }
+  .faq-question { font-size: 0.9rem; padding: 9px 6px; }
+  .faq-answer { font-size: 0.86rem; padding: 0 6px 9px 6px; }
 }
 </style> 

@@ -77,6 +77,7 @@
 
 <script>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { menuItems } from '@/config/menuItems'
 import { UserIcon } from '@heroicons/vue/24/outline'
 import Logo from '@/components/common/Logo.vue'
@@ -98,6 +99,7 @@ export default {
     const isOpen = ref(false)
     const userStore = useUserStore()
     const isLoggingOut = ref(false)
+    const router = useRouter()
 
     // Computed
     const navigationItems = menuItems.filter(item =>
@@ -136,31 +138,40 @@ export default {
       if (isLoggingOut.value) return
       isLoggingOut.value = true
       userStore.isLoading = true
+
+      let localCleanupDone = false
+      const runLocalCleanup = () => {
+        if (localCleanupDone) return
+        localCleanupDone = true
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
+        userStore.clearUser({ preserveLoadingState: true })
+      }
+
+      const redirectHome = async () => {
+        try {
+          await router.replace({ name: 'Home' })
+        } catch (error) {
+          console.warn('Redirection post-déconnexion (mobile) impossible:', error)
+        }
+      }
+
       try {
-        // Récupération du refresh token si présent
         const refresh = localStorage.getItem('refresh_token')
         if (refresh && refresh !== 'null' && refresh !== 'undefined' && refresh.trim() !== '') {
           try {
             const { logoutUser } = await import('@/api')
             await logoutUser({ refresh })
-          } catch (_) {}
+          } catch (apiError) {
+            console.log('Erreur lors de la déconnexion backend (mobile):', apiError.message)
+          }
         }
-
-        // Nettoyage local forcé
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
-        userStore.clearUser()
-        closeMenu()
-        // Rediriger vers l'accueil
-        const { useRouter } = await import('vue-router')
-        const router = useRouter()
-        await router.push('/')
       } catch (error) {
-        console.error('Erreur lors de la déconnexion:', error)
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
-        userStore.clearUser()
+        console.error('Erreur lors de la déconnexion mobile:', error)
       } finally {
+        runLocalCleanup()
+        closeMenu()
+        await redirectHome()
         userStore.isLoading = false
         isLoggingOut.value = false
       }

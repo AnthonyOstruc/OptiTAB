@@ -160,14 +160,14 @@
             </p>
              <div class="cta-buttons">
                <button @click="openSignupModal" class="cta-button primary">
-                 Commencer l'essai gratuit
+                 Commencer maintenant
                </button>
               <button @click="openContactModal('Parler à un expert')" class="cta-button secondary">
                 Parler à un expert
               </button>
             </div>
             <div class="cta-guarantee">
-              <span class="guarantee-text">Essai gratuit • Résultats garantis • Support 7/7</span>
+              <span class="guarantee-text">Sans engagement • Résultats garantis • Support 7/7</span>
             </div>
             <div class="cta-reviews">
               <GoogleReviewsCompact />

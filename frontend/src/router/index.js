@@ -15,6 +15,7 @@ const routes = [
   { path: '/billing', name: 'Billing', component: () => import('@/views/Billing.vue'), meta: { requiresAuth: true } },
   { path: '/billing/success', name: 'BillingSuccess', component: () => import('@/views/BillingSuccess.vue'), meta: { requiresAuth: true } },
   { path: '/billing/cancel', name: 'BillingCancel', component: () => import('@/views/BillingCancel.vue'), meta: { requiresAuth: true } },
+  { path: '/subscription', name: 'Subscription', component: () => import('@/views/Subscription.vue'), meta: { requiresAuth: true } },
   { path: '/exercises', name: 'Exercises', component: () => import('@/views/Exercises.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
   { path: '/online-courses', name: 'OnlineCourses', component: () => import('@/views/OnlineCourses.vue'), meta: { requiresAuth: true }, beforeEnter: matiereMiddleware },
   { path: '/quiz', name: 'Quiz', component: () => import('@/views/Quiz.vue'), meta: { requiresAuth: true, requiresAdmin: true, onAdminDenied: 'QuizComingSoon' }, beforeEnter: matiereMiddleware },
@@ -304,9 +305,12 @@ router.beforeEach(async (to, from, next) => {
   // Autres routes
   else {
     if (isAuthenticated && to.meta.requiresSubscription && !isAdmin) {
-      await subscriptionStore.fetchStatus()
+      await subscriptionStore.fetchStatus({ force: !subscriptionStore.hasAccess })
       if (!subscriptionStore.hasAccess) {
-        return next({ name: 'Billing', query: { redirect: to.fullPath, reason: 'subscription_required' } })
+        const unlocked = await subscriptionStore.refreshUntilAccess({ attempts: 5, interval: 2000 })
+        if (!unlocked) {
+          return next({ name: 'Billing', query: { redirect: to.fullPath, reason: 'subscription_required' } })
+        }
       }
     }
     // Vérifier si la route nécessite un niveau

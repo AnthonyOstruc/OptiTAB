@@ -39,14 +39,21 @@ import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue';
 <style scoped lang="scss">
 .footer {
   background: #4e63c2;
-  padding: 24px 0 0 0;
+  padding: 24px 0 1.5rem 0;
   margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding-bottom: 6.5rem;
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+  }
 }
 .footer-support {
   max-width: 700px;
   margin: 0 auto 1.5rem auto;
   color: #fff;
-  text-align: left;
+  text-align: center;
   padding: 0 1rem;
 }
 .footer-support h2 {
@@ -217,15 +224,79 @@ import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue';
   font-weight: 700;
 }
 @media (max-width: 700px) {
+  .footer-support {
+    text-align: center;
+    padding: 0 1rem;
+  }
+
+  .footer-support h2 {
+    text-align: center;
+  }
+
+  .footer-support p {
+    text-align: center;
+  }
+
+  .footer-contacts {
+    justify-content: center;
+  }
+
   .footer-legal-copyright {
     gap: 0.2rem;
     font-size: 0.8rem;
+    justify-content: center;
+    text-align: center;
+    padding: 0 1rem;
   }
+
   .footer-legal-link, .footer-legal-copyright-text {
     font-size: 0.8rem;
   }
+
   .footer-legal-sep {
     margin: 0 0.15em;
+  }
+
+  .footer-legal-separator {
+    margin: 1.2rem auto 0.7rem auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-support {
+    padding: 0 0.75rem;
+  }
+
+  .footer-legal-copyright {
+    padding: 0 0.75rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    row-gap: 0.3rem;
+  }
+
+  .footer-legal-sep {
+    display: inline;
+    margin: 0 0.15em;
+  }
+
+  .footer-legal-copyright-text {
+    display: inline;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .footer-legal-link {
+    display: inline;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .footer-size {
+    display: inline-flex;
+    justify-content: center;
   }
 }
 </style> 

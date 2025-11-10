@@ -522,23 +522,27 @@ class AuthManager {
     tokenManager.clearTokens()
     
     // Nettoyer le store utilisateur
-          try {
-            const userStore = useUserStore()
-            // Afficher un spinner global pendant la déconnexion déclenchée par l'API
-            userStore.isLoading = true
-            userStore.clearUser()
+    try {
+      const userStore = useUserStore()
+      // Afficher un spinner global pendant la déconnexion déclenchée par l'API
+      userStore.isLoading = true
+      userStore.clearUser({ preserveLoadingState: true })
     } catch (error) {
       ApiLogger.secureLog('warn', 'Erreur lors du nettoyage du store utilisateur', { error: error.message })
     }
     
     // Rediriger vers la page d'accueil
-          // Utiliser une navigation awaitable pour une meilleure UX
-          Promise.resolve().then(() => router.push('/')).finally(() => {
-            try {
-              const userStore = useUserStore()
-              userStore.isLoading = false
-            } catch (_) {}
-          })
+    Promise.resolve()
+      .then(() => router.replace({ name: 'Home' }))
+      .catch((navError) => {
+        ApiLogger.secureLog('warn', 'Redirection post-déconnexion impossible', { error: navError?.message })
+      })
+      .finally(() => {
+        try {
+          const userStore = useUserStore()
+          userStore.isLoading = false
+        } catch (_) {}
+      })
   }
 }
 

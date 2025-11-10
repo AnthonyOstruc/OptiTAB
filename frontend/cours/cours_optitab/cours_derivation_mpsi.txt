@@ -1,0 +1,532 @@
+=== Dérivation - Programme MPSI
+Difficulté: medium
+Ordre: 4
+Images: 
+
+Titre: Dérivation : Nombre Dérivé, Fonction Dérivée et Applications
+Description: Cours complet sur la dérivation en MPSI : nombre dérivé, fonction dérivée, formules de dérivation, caractérisation de la monotonie, tableau de variations, étude de fonctions, dérivée d'une fonction réciproque, fonctions de classe C¹ et dérivées d'ordre supérieur.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Nombre dérivé et fonction dérivée</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Nombre dérivé</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Nombre dérivé en un point</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction définie sur un intervalle $\displaystyle I$ et $\displaystyle a \in I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle f$ est <strong>dérivable en $\displaystyle a$</strong> si la limite suivante existe et est finie :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h} = \lim_{x \to a} \frac{f(x) - f(a)}{x - a}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette limite, notée $\displaystyle f'(a)$ ou $\displaystyle \frac{\mathrm{d}f}{\mathrm{d}x}(a)$, est appelée le <strong>nombre dérivé</strong> de $\displaystyle f$ en $\displaystyle a$.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Interprétation géométrique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre dérivé $\displaystyle f'(a)$ est le <strong>coefficient directeur</strong> de la tangente à la courbe $\displaystyle \mathcal{C}_f$ au point d'abscisse $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'équation de la tangente à $\displaystyle \mathcal{C}_f$ au point $\displaystyle (a, f(a))$ est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle y = f'(a)(x - a) + f(a)$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction dérivée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est dérivable en tout point d'un intervalle $\displaystyle I$, on définit la <strong>fonction dérivée</strong> $\displaystyle f'$ sur $\displaystyle I$ par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f' : x \mapsto f'(x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle f$ est <strong>dérivable sur $\displaystyle I$</strong>.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Notations</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise les notations suivantes pour la dérivée :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f'(x)$ (notation de Lagrange)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \frac{\mathrm{d}f}{\mathrm{d}x}(x)$ ou $\displaystyle \frac{\mathrm{d}}{\mathrm{d}x}(f(x))$ (notation de Leibniz)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \dot{f}(x)$ (notation de Newton, moins courante)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle f(x) = x^2$, on a $\displaystyle f'(x) = 2x$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle g(x) = \sqrt{x}$ sur $\displaystyle ]0, +\infty[$, on a $\displaystyle g'(x) = \frac{1}{2\sqrt{x}}$</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle h(x) = |x|$, la fonction n'est pas dérivable en $\displaystyle 0$ (limites à gauche et à droite différentes)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Formules de dérivation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivées des fonctions usuelles</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivées élémentaires</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces résultats sont rappelés (déjà vus en Terminale) :</p>
+        </div>
+
+        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+            <thead>
+                <tr style="background:#3498db; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+                    <th style="border:1px solid #ddd; padding:12px;">Dérivée</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x \mapsto k$</strong> (constante)</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 0$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x \mapsto x^n$</strong> ($\displaystyle n \in \mathbb{Z}$)</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle nx^{n-1}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x \mapsto \sqrt{x}$</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \frac{1}{2\sqrt{x}}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x \mapsto \sin(x)$</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x \mapsto \cos(x)$</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\sin(x)$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x \mapsto \tan(x)$</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \tan^2(x) = \frac{1}{\cos^2(x)}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x \mapsto e^x$</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle x \mapsto \ln(x)$</strong></td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \frac{1}{x}$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérations sur les dérivées</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée d'une combinaison linéaire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ et $\displaystyle g$ sont dérivables sur $\displaystyle I$ et $\displaystyle \lambda, \mu \in \mathbb{R}$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (\lambda f + \mu g)' = \lambda f' + \mu g'$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée d'un produit</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ et $\displaystyle g$ sont dérivables sur $\displaystyle I$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (fg)' = f'g + fg'$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule est appelée <strong>formule de Leibniz</strong>.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> En général, $\displaystyle (fg)' \neq f'g'$. Par exemple, pour $\displaystyle f(x) = g(x) = x$, on a $\displaystyle (fg)'(x) = (x^2)' = 2x$, mais $\displaystyle f'(x)g'(x) = 1 \times 1 = 1$.
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée d'un quotient</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ et $\displaystyle g$ sont dérivables sur $\displaystyle I$ et $\displaystyle g(x) \neq 0$ pour tout $\displaystyle x \in I$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée d'une composée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est dérivable sur $\displaystyle I$ et $\displaystyle g$ est dérivable sur $\displaystyle J$ avec $\displaystyle f(I) \subset J$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (g \circ f)' = (g' \circ f) \times f'$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En notation de Leibniz : $\displaystyle \frac{\mathrm{d}}{\mathrm{d}x}(g(f(x))) = g'(f(x)) \times f'(x)$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces résultats sont rappelés avec la définition de la dérivée et l'équation de la tangente. Ils ne sont pas démontrés à ce stade (les démonstrations seront vues ultérieurement).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Produit :</strong> Pour $\displaystyle f(x) = x^2 \sin(x)$, on a $\displaystyle f'(x) = 2x \sin(x) + x^2 \cos(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Quotient :</strong> Pour $\displaystyle g(x) = \frac{x}{x^2+1}$, on a $\displaystyle g'(x) = \frac{(x^2+1) - x(2x)}{(x^2+1)^2} = \frac{1-x^2}{(x^2+1)^2}$</li>
+                <li style="margin:0; text-align:left;"><strong>Composée :</strong> Pour $\displaystyle h(x) = \sin(x^2)$, on a $\displaystyle h'(x) = \cos(x^2) \times 2x = 2x\cos(x^2)$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Caractérisation de la monotonie</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorèmes fondamentaux</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Caractérisation des fonctions constantes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction dérivable sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f$ est constante sur $\displaystyle I$ si et seulement si $\displaystyle f'(x) = 0$ pour tout $\displaystyle x \in I$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Caractérisation des fonctions croissantes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction dérivable sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f$ est croissante sur $\displaystyle I$ si et seulement si $\displaystyle f'(x) \geq 0$ pour tout $\displaystyle x \in I$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Caractérisation des fonctions strictement croissantes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction dérivable sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f'(x) > 0$ pour tout $\displaystyle x \in I$, alors $\displaystyle f$ est strictement croissante sur $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Réciproquement, si $\displaystyle f$ est strictement croissante sur $\displaystyle I$, alors $\displaystyle f'(x) \geq 0$ pour tout $\displaystyle x \in I$ (mais $\displaystyle f'$ peut s'annuler en des points isolés).</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Caractérisation des fonctions décroissantes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction dérivable sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f$ est décroissante sur $\displaystyle I$ si et seulement si $\displaystyle f'(x) \leq 0$ pour tout $\displaystyle x \in I$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Caractérisation des fonctions strictement décroissantes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction dérivable sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f'(x) < 0$ pour tout $\displaystyle x \in I$, alors $\displaystyle f$ est strictement décroissante sur $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Réciproquement, si $\displaystyle f$ est strictement décroissante sur $\displaystyle I$, alors $\displaystyle f'(x) \leq 0$ pour tout $\displaystyle x \in I$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces résultats sont admis à ce stade. Ils permettent de relier le signe de la dérivée aux variations de la fonction.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour une fonction strictement croissante, la dérivée peut s'annuler en des points isolés (par exemple, $\displaystyle f(x) = x^3$ est strictement croissante sur $\displaystyle \mathbb{R}$ mais $\displaystyle f'(0) = 0$).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle f(x) = x^3$, on a $\displaystyle f'(x) = 3x^2 \geq 0$ pour tout $\displaystyle x \in \mathbb{R}$, donc $\displaystyle f$ est croissante sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle g(x) = e^x$, on a $\displaystyle g'(x) = e^x > 0$ pour tout $\displaystyle x \in \mathbb{R}$, donc $\displaystyle g$ est strictement croissante sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle h(x) = -x^2$, on a $\displaystyle h'(x) = -2x$, donc $\displaystyle h$ est croissante sur $\displaystyle ]-\infty, 0]$ et décroissante sur $\displaystyle [0, +\infty[$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Tableau de variations et étude de fonction</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode d'étude d'une fonction</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Étude complète d'une fonction</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour étudier une fonction $\displaystyle f$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Déterminer l'ensemble de définition</strong> $\displaystyle \mathcal{D}_f$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Calculer la dérivée</strong> $\displaystyle f'(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Étudier le signe de $\displaystyle f'(x)$</strong> (résoudre $\displaystyle f'(x) = 0$ et $\displaystyle f'(x) > 0$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Construire le tableau de variations</strong> avec les valeurs aux points critiques</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Déterminer les limites</strong> aux bornes de $\displaystyle \mathcal{D}_f$</li>
+                <li style="margin:0; text-align:left;"><strong>Tracer la courbe</strong> en utilisant les informations obtenues</li>
+            </ol>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Tableau de variations</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le tableau de variations d'une fonction $\displaystyle f$ dérivable sur un intervalle $\displaystyle I$ contient :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Les valeurs de $\displaystyle x$ (bornes de l'intervalle et points où $\displaystyle f'$ s'annule ou change de signe)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Le signe de $\displaystyle f'(x)$ sur chaque sous-intervalle</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Les variations de $\displaystyle f$ (flèches montantes/descendantes)</li>
+                <li style="margin:0; text-align:left;">Les valeurs de $\displaystyle f(x)$ aux points remarquables (extremums locaux, limites)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = x^3 - 3x + 1$ sur $\displaystyle \mathbb{R}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle f'(x) = 3x^2 - 3 = 3(x^2 - 1) = 3(x-1)(x+1)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le signe de $\displaystyle f'$ : $\displaystyle f'(x) > 0$ sur $\displaystyle ]-\infty, -1[ \cup ]1, +\infty[$ et $\displaystyle f'(x) < 0$ sur $\displaystyle ]-1, 1[$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Tableau de variations :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f$ est strictement croissante sur $\displaystyle ]-\infty, -1]$, strictement décroissante sur $\displaystyle [-1, 1]$ et strictement croissante sur $\displaystyle [1, +\infty[$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Maximum local en $\displaystyle x = -1$ : $\displaystyle f(-1) = 3$, minimum local en $\displaystyle x = 1$ : $\displaystyle f(1) = -1$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Extremums</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Point critique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un point $\displaystyle a \in I$ est appelé <strong>point critique</strong> de $\displaystyle f$ si $\displaystyle f'(a) = 0$ ou si $\displaystyle f$ n'est pas dérivable en $\displaystyle a$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Condition nécessaire pour un extremum local</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ admet un extremum local en $\displaystyle a \in I$ et si $\displaystyle f$ est dérivable en $\displaystyle a$, alors $\displaystyle f'(a) = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Attention : la réciproque est fausse (par exemple, $\displaystyle f(x) = x^3$ vérifie $\displaystyle f'(0) = 0$ mais n'admet pas d'extremum en $\displaystyle 0$).</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Recherche d'extremums</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour déterminer les extremums locaux d'une fonction dérivable :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer $\displaystyle f'(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Résoudre $\displaystyle f'(x) = 0$ pour trouver les points critiques</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Étudier le signe de $\displaystyle f'$ autour de chaque point critique</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle f'$ change de signe, il y a un extremum local (maximum si passage de $\displaystyle +$ à $\displaystyle -$, minimum si passage de $\displaystyle -$ à $\displaystyle +$)</li>
+            </ol>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Application : Démonstration d'inégalités</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour démontrer une inégalité $\displaystyle f(x) \geq 0$ sur un intervalle $\displaystyle I$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Étudier les variations de $\displaystyle f$ sur $\displaystyle I$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Déterminer le minimum de $\displaystyle f$ sur $\displaystyle I$</li>
+                <li style="margin:0; text-align:left;">Vérifier que ce minimum est positif ou nul</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Démontrer que $\displaystyle e^x \geq x + 1$ pour tout $\displaystyle x \in \mathbb{R}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On pose $\displaystyle f(x) = e^x - x - 1$. On a $\displaystyle f'(x) = e^x - 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = 0 \Leftrightarrow x = 0$. Pour $\displaystyle x < 0$, $\displaystyle f'(x) < 0$ et pour $\displaystyle x > 0$, $\displaystyle f'(x) > 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle f$ admet un minimum en $\displaystyle x = 0$ : $\displaystyle f(0) = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ainsi, $\displaystyle f(x) \geq 0$ pour tout $\displaystyle x \in \mathbb{R}$, ce qui donne $\displaystyle e^x \geq x + 1$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Tracé du graphe</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Éléments pour le tracé</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Informations nécessaires</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tracer le graphe d'une fonction $\displaystyle f$, on utilise :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Le tableau de variations</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Les limites aux bornes de l'ensemble de définition</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Les points remarquables (zéros, extremums, points d'inflexion)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Les équations des tangentes remarquables</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Les asymptotes (horizontales, verticales, obliques)</li>
+                <li style="margin:0; text-align:left;">Les propriétés de symétrie (parité, imparité, périodicité)</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Interprétation géométrique de la dérivée :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La dérivée $\displaystyle f'(a)$ donne la pente de la tangente à la courbe au point d'abscisse $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f'(a) > 0$, la courbe "monte" en $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f'(a) < 0$, la courbe "descend" en $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f'(a) = 0$, la tangente est horizontale (point critique).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = x^2$, la tangente au point $\displaystyle (1, 1)$ a pour équation $\displaystyle y = 2(x-1) + 1 = 2x - 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Au point $\displaystyle (0, 0)$, la tangente est horizontale : $\displaystyle y = 0$ (minimum de la fonction).</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Dérivée d'une fonction réciproque</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème de la dérivée d'une fonction réciproque</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée de la fonction réciproque</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : I \to J$ une fonction bijective, dérivable sur $\displaystyle I$ avec $\displaystyle f'(x) \neq 0$ pour tout $\displaystyle x \in I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle f^{-1}$ est dérivable sur $\displaystyle J$ et pour tout $\displaystyle y \in J$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (f^{-1})'(y) = \frac{1}{f'(f^{-1}(y))}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En particulier, si $\displaystyle y = f(x)$, alors $\displaystyle (f^{-1})'(f(x)) = \frac{1}{f'(x)}$.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Interprétation géométrique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les courbes $\displaystyle \mathcal{C}_f$ et $\displaystyle \mathcal{C}_{f^{-1}}$ sont symétriques par rapport à la droite $\displaystyle y = x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle M(a, f(a))$ appartient à $\displaystyle \mathcal{C}_f$, alors $\displaystyle M'(f(a), a)$ appartient à $\displaystyle \mathcal{C}_{f^{-1}}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La formule donnant la dérivée est admise, mais on en donne l'interprétation géométrique : les pentes des tangentes sont inverses l'une de l'autre (au point symétrique).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle f(x) = e^x$ sur $\displaystyle \mathbb{R}$, on a $\displaystyle f^{-1}(y) = \ln(y)$ sur $\displaystyle ]0, +\infty[$.</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Comme $\displaystyle f'(x) = e^x$, on obtient $\displaystyle (\ln)'(y) = \frac{1}{e^{\ln(y)}} = \frac{1}{y}$ pour $\displaystyle y > 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle f(x) = x^2$ sur $\displaystyle [0, +\infty[$, on a $\displaystyle f^{-1}(y) = \sqrt{y}$ sur $\displaystyle [0, +\infty[$.</li>
+                <li style="margin:0; text-align:left;">Comme $\displaystyle f'(x) = 2x$, on obtient $\displaystyle (\sqrt{y})' = \frac{1}{2\sqrt{y}}$ pour $\displaystyle y > 0$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Fonction de classe C¹</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Continuité de la dérivée</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction de classe C¹</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction $\displaystyle f$ définie sur un intervalle $\displaystyle I$ est dite <strong>de classe C¹</strong> sur $\displaystyle I$ si :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f$ est dérivable sur $\displaystyle I$</li>
+                <li style="margin:0; text-align:left;">La fonction dérivée $\displaystyle f'$ est continue sur $\displaystyle I$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notation : $\displaystyle f \in C^1(I)$ ou $\displaystyle f \in \mathcal{C}^1(I)$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Toute fonction dérivable n'est pas nécessairement de classe C¹. Il existe des fonctions dérivables dont la dérivée n'est pas continue.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cependant, en pratique, les fonctions usuelles (polynômes, fonctions trigonométriques, exponentielles, logarithmes) sont de classe C¹ sur leur domaine de définition.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Les polynômes sont de classe C¹ sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Les fonctions $\displaystyle \sin$, $\displaystyle \cos$, $\displaystyle \exp$ sont de classe C¹ sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">La fonction $\displaystyle \ln$ est de classe C¹ sur $\displaystyle ]0, +\infty[$</li>
+                <li style="margin:0; text-align:left;">La fonction $\displaystyle x \mapsto x^2\sin\left(\frac{1}{x}\right)$ pour $\displaystyle x \neq 0$ et $\displaystyle 0$ en $\displaystyle 0$ est dérivable mais pas de classe C¹</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Dérivées d'ordre supérieur</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivées successives</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée seconde</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f'$ est dérivable sur $\displaystyle I$, on définit la <strong>dérivée seconde</strong> de $\displaystyle f$, notée $\displaystyle f''$ ou $\displaystyle f^{(2)}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'' = (f')'$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En notation de Leibniz : $\displaystyle \frac{\mathrm{d}^2f}{\mathrm{d}x^2}$ ou $\displaystyle \frac{\mathrm{d}^2}{\mathrm{d}x^2}(f(x))$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée d'ordre n</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par récurrence, si $\displaystyle f^{(n-1)}$ est dérivable sur $\displaystyle I$, on définit la <strong>dérivée d'ordre $\displaystyle n$</strong> :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f^{(n)} = (f^{(n-1)})'$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Convention : $\displaystyle f^{(0)} = f$ et $\displaystyle f^{(1)} = f'$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En notation de Leibniz : $\displaystyle \frac{\mathrm{d}^nf}{\mathrm{d}x^n}$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction de classe Cⁿ</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction $\displaystyle f$ est dite <strong>de classe Cⁿ</strong> sur $\displaystyle I$ si toutes ses dérivées jusqu'à l'ordre $\displaystyle n$ existent et sont continues sur $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notation : $\displaystyle f \in C^n(I)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction <strong>de classe C∞</strong> (ou <strong>indéfiniment dérivable</strong>) admet des dérivées de tous ordres continues.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Formule de Leibniz pour les dérivées d'ordre supérieur d'un produit :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ et $\displaystyle g$ sont $\displaystyle n$ fois dérivables sur $\displaystyle I$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (fg)^{(n)} = \sum_{k=0}^{n} \binom{n}{k} f^{(k)} g^{(n-k)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule généralise la formule du produit pour les dérivées d'ordre supérieur.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle f(x) = x^3$, on a $\displaystyle f'(x) = 3x^2$, $\displaystyle f''(x) = 6x$, $\displaystyle f'''(x) = 6$, $\displaystyle f^{(4)}(x) = 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle g(x) = e^x$, on a $\displaystyle g^{(n)}(x) = e^x$ pour tout $\displaystyle n \in \mathbb{N}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle h(x) = \sin(x)$, on a $\displaystyle h''(x) = -\sin(x)$, $\displaystyle h^{(4)}(x) = \sin(x)$ (périodicité d'ordre 4)</li>
+                <li style="margin:0; text-align:left;">Les polynômes de degré $\displaystyle n$ ont une dérivée d'ordre $\displaystyle n+1$ nulle</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Dérivées partielles (exemples simples)</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Introduction aux dérivées partielles</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée partielle par rapport à une variable</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : (x, y) \mapsto f(x, y)$ une fonction de deux variables réelles.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>dérivée partielle</strong> de $\displaystyle f$ par rapport à $\displaystyle x$ au point $\displaystyle (a, b)$ est la dérivée de la fonction $\displaystyle x \mapsto f(x, b)$ en $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notation : $\displaystyle \frac{\partial f}{\partial x}(a, b)$ ou $\displaystyle f_x(a, b)$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Calcul pratique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer $\displaystyle \frac{\partial f}{\partial x}$, on dérive $\displaystyle f$ par rapport à $\displaystyle x$ en considérant $\displaystyle y$ comme une constante.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De même, pour $\displaystyle \frac{\partial f}{\partial y}$, on dérive par rapport à $\displaystyle y$ en considérant $\displaystyle x$ comme une constante.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples simples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle f(x, y) = x^2 + xy + y^2$, on a :</li>
+                <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                    <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \frac{\partial f}{\partial x}(x, y) = 2x + y$</li>
+                    <li style="margin:0; text-align:left;">$\displaystyle \frac{\partial f}{\partial y}(x, y) = x + 2y$</li>
+                </ul>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle g(x, y) = x e^{xy}$, on a :</li>
+                <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                    <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \frac{\partial g}{\partial x}(x, y) = e^{xy} + x y e^{xy} = e^{xy}(1 + xy)$</li>
+                    <li style="margin:0; text-align:left;">$\displaystyle \frac{\partial g}{\partial y}(x, y) = x^2 e^{xy}$</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes pratiques</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Calculer une dérivée</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer la dérivée d'une fonction :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Identifier la structure de la fonction (somme, produit, quotient, composée)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Appliquer la formule de dérivation appropriée</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour une composée, ne pas oublier de multiplier par la dérivée de la fonction "intérieure"</li>
+                <li style="margin:0; text-align:left;">Simplifier le résultat si possible</li>
+            </ol>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Construire un tableau de variations</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer $\displaystyle f'(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Déterminer les zéros de $\displaystyle f'$ (résoudre $\displaystyle f'(x) = 0$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Étudier le signe de $\displaystyle f'$ sur chaque intervalle</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer les valeurs de $\displaystyle f$ aux points critiques et aux bornes</li>
+                <li style="margin:0; text-align:left;">Construire le tableau avec les flèches de variation</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Composée :</strong> Ne jamais oublier de multiplier par la dérivée de la fonction intérieure : $\displaystyle (g(f(x)))' = g'(f(x)) \times f'(x)$</li>
+                <li style="margin:0; text-align:left;"><strong>Produit :</strong> Utiliser la formule de Leibniz : $\displaystyle (uv)' = u'v + uv'$ (pas $\displaystyle u'v'$ !)</li>
+                <li style="margin:0; text-align:left;"><strong>Quotient :</strong> Attention à l'ordre dans la formule : $\displaystyle \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$</li>
+                <li style="margin:0; text-align:left;"><strong>Tableau de variations :</strong> Toujours vérifier les valeurs aux bornes et aux points critiques</li>
+                <li style="margin:0; text-align:left;"><strong>Extremums :</strong> Un point où $\displaystyle f'(a) = 0$ n'est pas nécessairement un extremum (vérifier le changement de signe)</li>
+                <li style="margin:0; text-align:left;"><strong>Fonction réciproque :</strong> La formule $\displaystyle (f^{-1})'(y) = \frac{1}{f'(f^{-1}(y))}$ nécessite $\displaystyle f'(x) \neq 0$</li>
+                <li style="margin:0; text-align:left;"><strong>Dérivées partielles :</strong> Traiter les autres variables comme des constantes lors du calcul</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Composée :</strong> Oublier de multiplier par la dérivée de la fonction intérieure</li>
+                <li style="margin:0; text-align:left;"><strong>Produit :</strong> Confondre $\displaystyle (uv)'$ avec $\displaystyle u'v'$</li>
+                <li style="margin:0; text-align:left;"><strong>Quotient :</strong> Inverser l'ordre dans le numérateur : c'est $\displaystyle u'v - uv'$ et non $\displaystyle uv' - u'v$</li>
+                <li style="margin:0; text-align:left;"><strong>Signe de la dérivée :</strong> Confondre "$\displaystyle f'(x) > 0$" avec "$\displaystyle f$ croissante" (la réciproque nécessite que $\displaystyle f'$ soit strictement positive partout)</li>
+                <li style="margin:0; text-align:left;"><strong>Extremum :</strong> Penser que $\displaystyle f'(a) = 0$ implique toujours un extremum</li>
+                <li style="margin:0; text-align:left;"><strong>Fonction réciproque :</strong> Oublier la condition $\displaystyle f'(x) \neq 0$</li>
+                <li style="margin:0; text-align:left;"><strong>Dérivées partielles :</strong> Ne pas traiter les autres variables comme constantes</li>
+                <li style="margin:0; text-align:left;"><strong>Notation :</strong> Confondre $\displaystyle f^{(n)}$ (dérivée d'ordre n) avec $\displaystyle (f')^n$ (puissance de la dérivée)</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===
+

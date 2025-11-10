@@ -1,0 +1,777 @@
+=== Nombres complexes - Programme MPSI
+Difficulté: medium
+Ordre: 5
+
+Titre: Nombres complexes : Algèbre, Géométrie et Applications Trigonométriques
+Description: Cours complet sur les nombres complexes en MPSI : définition, opérations, conjugaison, module, forme trigonométrique, exponentielle complexe, formules d'Euler et de Moivre, racines n-ièmes, équations algébriques et interprétation géométrique.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Nombres complexes : définitions et opérations</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et notation</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Nombres complexes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un nombre complexe est un nombre de la forme $\displaystyle z = a + ib$ où :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle a$ et $\displaystyle b$ sont des nombres réels</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle i$ est l'unité imaginaire vérifiant $\displaystyle i^2 = -1$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des nombres complexes est noté $\displaystyle \mathbb{C}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Remarque :</strong> La construction de $\displaystyle \mathbb{C}$ est hors programme. On admet l'existence de $\displaystyle \mathbb{C}$ comme extension de $\displaystyle \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Partie réelle et partie imaginaire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle z = a + ib$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">La <strong>partie réelle</strong> de $\displaystyle z$ est $\displaystyle a$, notée $\displaystyle \text{Re}(z)$ ou $\displaystyle \Re(z)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">La <strong>partie imaginaire</strong> de $\displaystyle z$ est $\displaystyle b$, notée $\displaystyle \text{Im}(z)$ ou $\displaystyle \Im(z)$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a donc : $\displaystyle z = \text{Re}(z) + i \text{Im}(z)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle z = 3 + 4i$ : $\displaystyle \text{Re}(z) = 3$, $\displaystyle \text{Im}(z) = 4$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle z = -2i$ : $\displaystyle \text{Re}(z) = 0$, $\displaystyle \text{Im}(z) = -2$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle z = 5$ : $\displaystyle \text{Re}(z) = 5$, $\displaystyle \text{Im}(z) = 0$ (nombre réel pur)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle z = i$ : $\displaystyle \text{Re}(z) = 0$, $\displaystyle \text{Im}(z) = 1$ (unité imaginaire)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Opérations sur les nombres complexes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle z = a + ib$ et $\displaystyle z' = a' + ib'$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Addition :</strong> $\displaystyle z + z' = (a + a') + i(b + b')$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Multiplication :</strong> $\displaystyle z \times z' = (aa' - bb') + i(ab' + a'b)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Opposé :</strong> $\displaystyle -z = -a - ib$</li>
+                <li style="margin:0; text-align:left;"><strong>Inverse :</strong> Si $\displaystyle z \neq 0$, $\displaystyle \frac{1}{z} = \frac{a}{a^2 + b^2} - i\frac{b}{a^2 + b^2}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Justification de la multiplication :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \begin{aligned} z \times z' &= (a + ib)(a' + ib') = aa' + iab' + ia'b + i^2bb' \\ &= aa' + i(ab' + a'b) - bb' \end{aligned}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En utilisant $\displaystyle i^2 = -1$, on obtient : $\displaystyle z \times z' = (aa' - bb') + i(ab' + a'b)$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Extension de calculs classiques</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les formules suivantes restent valables dans $\displaystyle \mathbb{C}$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Somme géométrique :</strong> Pour $\displaystyle z \neq 1$, $\displaystyle \sum_{k=0}^{n} z^k = \frac{1 - z^{n+1}}{1 - z}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Factorisation :</strong> $\displaystyle a^n - b^n = (a - b)\sum_{k=0}^{n-1} a^{n-1-k}b^k$</li>
+                <li style="margin:0; text-align:left;"><strong>Formule du binôme :</strong> $\displaystyle (a + b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k}b^k$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Représentation géométrique : plan complexe</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On identifie $\displaystyle \mathbb{C}$ avec le plan muni d'un repère orthonormé direct $\displaystyle (O, \vec{i}, \vec{j})$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">À tout nombre complexe $\displaystyle z = a + ib$, on associe le point $\displaystyle M(a, b)$ du plan.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Le point $\displaystyle M$ est appelé <strong>image</strong> de $\displaystyle z$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Le nombre complexe $\displaystyle z$ est appelé <strong>affixe</strong> du point $\displaystyle M$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \vec{u}$ est un vecteur de coordonnées $\displaystyle (a, b)$, alors $\displaystyle z = a + ib$ est l'<strong>affixe</strong> du vecteur $\displaystyle \vec{u}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Conjugaison et module</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Conjugué d'un nombre complexe</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition du conjugué</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle z = a + ib$, le <strong>conjugué</strong> de $\displaystyle z$ est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overline{z} = a - ib$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés de la conjugaison :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Involution :</strong> $\displaystyle \overline{\overline{z}} = z$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Compatibilité avec l'addition :</strong> $\displaystyle \overline{z + z'} = \overline{z} + \overline{z'}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Compatibilité avec la multiplication :</strong> $\displaystyle \overline{z \times z'} = \overline{z} \times \overline{z'}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Compatibilité avec l'inverse :</strong> Si $\displaystyle z \neq 0$, $\displaystyle \overline{\left(\frac{1}{z}\right)} = \frac{1}{\overline{z}}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Parties réelle et imaginaire :</strong> $\displaystyle \text{Re}(z) = \frac{z + \overline{z}}{2}$ et $\displaystyle \text{Im}(z) = \frac{z - \overline{z}}{2i}$</li>
+                <li style="margin:0; text-align:left;"><strong>Nombre réel :</strong> $\displaystyle z \in \mathbb{R} \Leftrightarrow z = \overline{z}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Interprétation géométrique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans le plan complexe, si $\displaystyle M$ est l'image de $\displaystyle z$, alors $\displaystyle \overline{M}$ (symétrique de $\displaystyle M$ par rapport à l'axe des abscisses) est l'image de $\displaystyle \overline{z}$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Module d'un nombre complexe</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle z = a + ib$, le <strong>module</strong> de $\displaystyle z$ est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle |z| = \sqrt{a^2 + b^2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le module est toujours positif ou nul. On a $\displaystyle |z| = 0$ si et seulement si $\displaystyle z = 0$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés du module :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Relation fondamentale :</strong> $\displaystyle |z|^2 = z \overline{z}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Module d'un produit :</strong> $\displaystyle |z \times z'| = |z| \times |z'|$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Module d'un quotient :</strong> Si $\displaystyle z' \neq 0$, $\displaystyle \left|\frac{z}{z'}\right| = \frac{|z|}{|z'|}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Module du conjugué :</strong> $\displaystyle |\overline{z}| = |z|$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Inégalité triangulaire :</strong> $\displaystyle |z + z'| \leq |z| + |z'|$</li>
+                <li style="margin:0; text-align:left;"><strong>Cas d'égalité :</strong> $\displaystyle |z + z'| = |z| + |z'|$ si et seulement si $\displaystyle z$ et $\displaystyle z'$ sont alignés avec l'origine et de même sens</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration de $\displaystyle |z|^2 = z \overline{z}$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle z = a + ib$, on a :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle z \overline{z} = (a + ib)(a - ib) = a^2 - (ib)^2 = a^2 - i^2b^2 = a^2 + b^2 = |z|^2$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Interprétation géométrique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle M$ est l'image de $\displaystyle z$ dans le plan complexe, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |z|$ est la distance $\displaystyle OM$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |z - z'|$ est la distance entre les points d'affixes $\displaystyle z$ et $\displaystyle z'$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">L'ensemble $\displaystyle \{z \in \mathbb{C} : |z - z_0| = r\}$ avec $\displaystyle r > 0$ est le cercle de centre $\displaystyle z_0$ et de rayon $\displaystyle r$</li>
+                <li style="margin:0; text-align:left;">L'ensemble $\displaystyle \{z \in \mathbb{C} : |z - z_0| \leq r\}$ est le disque fermé de centre $\displaystyle z_0$ et de rayon $\displaystyle r$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |3 + 4i| = \sqrt{9 + 16} = 5$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |1 - i| = \sqrt{1 + 1} = \sqrt{2}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |i| = 1$</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle z = 2 + 3i$, on a $\displaystyle z \overline{z} = (2 + 3i)(2 - 3i) = 4 + 9 = 13 = |z|^2$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Inégalités et identités de base</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Inégalité triangulaire inversée :</strong> Pour tous $\displaystyle z, z' \in \mathbb{C}$ : $\displaystyle ||z| - |z'|| \leq |z - z'|$. Cette inégalité est souvent utilisée dans les preuves.</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Identité du parallélogramme :</strong> Pour tous $\displaystyle z, z' \in \mathbb{C}$ : $\displaystyle |z + z'|^2 + |z - z'|^2 = 2(|z|^2 + |z'|^2)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Identités utiles pour la géométrie :</strong>
+                    <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                        <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |z + z'|^2 = |z|^2 + |z'|^2 + 2\text{Re}(z\overline{z'})$</li>
+                        <li style="margin:0; text-align:left;">$\displaystyle |z - z'|^2 = |z|^2 + |z'|^2 - 2\text{Re}(z\overline{z'})$</li>
+                    </ul>
+                    Ces identités sont utiles pour la géométrie, les médiatrices, etc.
+                </li>
+                <li style="margin:0; text-align:left;"><strong>Cas d'égalité de l'inégalité triangulaire :</strong> $\displaystyle |z + z'| = |z| + |z'|$ si et seulement si $\displaystyle \arg(z) = \arg(z') [2\pi]$ (même direction et même sens).</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Produit scalaire via affixes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ deux vecteurs d'affixes respectives $\displaystyle z$ et $\displaystyle z'$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le produit scalaire s'exprime par : $\displaystyle \vec{u} \cdot \vec{v} = \text{Re}(z\overline{z'})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Condition d'orthogonalité :</strong> $\displaystyle \vec{u} \perp \vec{v} \Leftrightarrow \text{Re}(z\overline{z'}) = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Application :</strong> Pour vérifier que deux vecteurs $\displaystyle \overrightarrow{AB}$ et $\displaystyle \overrightarrow{AC}$ sont orthogonaux (où $\displaystyle a$, $\displaystyle b$, $\displaystyle c$ sont les affixes de $\displaystyle A$, $\displaystyle B$, $\displaystyle C$), on peut utiliser :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \text{Re}((b-a)\overline{(c-a)}) = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette écriture est souvent plus directe que de vérifier $\displaystyle \frac{c-a}{b-a} \in i\mathbb{R}$ (qui signifie que le rapport est imaginaire pur).</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Rationalisation systématique</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer $\displaystyle \frac{z_1}{z_2}$ avec $\displaystyle z_2 \neq 0$, on multiplie numérateur et dénominateur par $\displaystyle \overline{z_2}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \frac{z_1}{z_2} = \frac{z_1 \overline{z_2}}{z_2 \overline{z_2}} = \frac{z_1 \overline{z_2}}{|z_2|^2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette méthode permet d'obtenir directement la forme algébrique.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Nombres complexes de module 1 et trigonométrie</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Identification du cercle unité</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cercle unité et nombres complexes de module 1</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des nombres complexes de module 1 est noté $\displaystyle \mathbb{U}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \mathbb{U} = \{z \in \mathbb{C} : |z| = 1\}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans le plan complexe, $\displaystyle \mathbb{U}$ correspond au cercle trigonométrique (cercle de centre $\displaystyle O$ et de rayon $\displaystyle 1$).</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Exponentielle complexe $\displaystyle e^{it}$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout réel $\displaystyle t$, on définit :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle e^{it} = \cos(t) + i\sin(t)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a alors : $\displaystyle |e^{it}| = \sqrt{\cos^2(t) + \sin^2(t)} = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle e^{it} \in \mathbb{U}$ pour tout $\displaystyle t \in \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Exponentielle d'une somme</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous réels $\displaystyle t$ et $\displaystyle t'$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle e^{i(t + t')} = e^{it} \times e^{it'}$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \begin{aligned} e^{it} \times e^{it'} &= (\cos(t) + i\sin(t))(\cos(t') + i\sin(t')) \\ &= \cos(t)\cos(t') - \sin(t)\sin(t') + i(\sin(t)\cos(t') + \cos(t)\sin(t')) \end{aligned}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En utilisant les formules d'addition trigonométriques :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \begin{aligned} &= \cos(t + t') + i\sin(t + t') \\ &= e^{i(t + t')} \end{aligned}$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formules d'Euler</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout réel $\displaystyle t$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(t) = \frac{e^{it} + e^{-it}}{2}$ et $\displaystyle \sin(t) = \frac{e^{it} - e^{-it}}{2i}$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle e^{it} = \cos(t) + i\sin(t)$ et $\displaystyle e^{-it} = \cos(t) - i\sin(t)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En additionnant : $\displaystyle e^{it} + e^{-it} = 2\cos(t)$, donc $\displaystyle \cos(t) = \frac{e^{it} + e^{-it}}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En soustrayant : $\displaystyle e^{it} - e^{-it} = 2i\sin(t)$, donc $\displaystyle \sin(t) = \frac{e^{it} - e^{-it}}{2i}$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Technique de l'angle moitié</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Factorisations utiles :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 1 + e^{it} = e^{it/2}(e^{-it/2} + e^{it/2}) = 2e^{it/2}\cos\left(\frac{t}{2}\right)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle e^{ip} + e^{iq} = e^{i(p+q)/2}(e^{i(p-q)/2} + e^{-i(p-q)/2}) = 2e^{i(p+q)/2}\cos\left(\frac{p-q}{2}\right)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formule de Moivre</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout réel $\displaystyle t$ et tout entier $\displaystyle n$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (e^{it})^n = e^{int}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En utilisant la définition de $\displaystyle e^{it}$, on obtient :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (\cos(t) + i\sin(t))^n = \cos(nt) + i\sin(nt)$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Applications de la formule de Moivre :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Linéarisation :</strong> Exprimer $\displaystyle \cos^n(t)$ et $\displaystyle \sin^n(t)$ en fonction de $\displaystyle \cos(kt)$ et $\displaystyle \sin(kt)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Calcul de sommes :</strong> Calculer $\displaystyle \sum_{k=0}^{n} \cos(kt)$ et $\displaystyle \sum_{k=0}^{n} \sin(kt)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Formules de trigonométrie :</strong> Retrouver les expressions de $\displaystyle \cos(nt)$ et $\displaystyle \sin(nt)$ en fonction de $\displaystyle \cos(t)$ et $\displaystyle \sin(t)$</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Sommes géométriques complexes → parties réelle et imaginaire</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer $\displaystyle \sum_{k=0}^{n} \cos(kt)$ et $\displaystyle \sum_{k=0}^{n} \sin(kt)$, on utilise :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sum_{k=0}^{n} \cos(kt) = \text{Re}\left(\sum_{k=0}^{n} e^{ikt}\right)$ et $\displaystyle \sum_{k=0}^{n} \sin(kt) = \text{Im}\left(\sum_{k=0}^{n} e^{ikt}\right)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On calcule d'abord $\displaystyle S = \sum_{k=0}^{n} e^{ikt} = \sum_{k=0}^{n} (e^{it})^k$ (somme géométrique finie), puis on prend la partie réelle ou imaginaire selon le besoin.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Série géométrique infinie :</strong> Si $\displaystyle |q| < 1$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sum_{k=0}^{+\infty} q^k = \frac{1}{1 - q}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule s'applique aussi aux nombres complexes de module strictement inférieur à $\displaystyle 1$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Calcul de $\displaystyle \sum_{k=0}^{n} \cos(kt)$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On considère $\displaystyle S = \sum_{k=0}^{n} e^{ikt} = \sum_{k=0}^{n} (e^{it})^k$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle e^{it} \neq 1$ (i.e. $\displaystyle t \not\equiv 0 [2\pi]$), alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle S = \frac{1 - e^{i(n+1)t}}{1 - e^{it}} = \frac{e^{i(n+1)t/2}(e^{-i(n+1)t/2} - e^{i(n+1)t/2})}{e^{it/2}(e^{-it/2} - e^{it/2})} = \frac{e^{int/2}\sin((n+1)t/2)}{\sin(t/2)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En prenant la partie réelle : $\displaystyle \sum_{k=0}^{n} \cos(kt) = \frac{\sin((n+1)t/2)\cos(nt/2)}{\sin(t/2)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Formule finale pour $\displaystyle \sin$ :</strong> $\displaystyle \sum_{k=0}^{n} \sin(kt) = \frac{\sin((n+1)t/2)\sin(nt/2)}{\sin(t/2)}$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formules de factorisation $\displaystyle \cos(p) \pm \cos(q)$ et $\displaystyle \sin(p) \pm \sin(q)$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">À savoir retrouver rapidement :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos(p) + \cos(q) = 2\cos\left(\frac{p+q}{2}\right)\cos\left(\frac{p-q}{2}\right)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos(p) - \cos(q) = -2\sin\left(\frac{p+q}{2}\right)\sin\left(\frac{p-q}{2}\right)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \sin(p) + \sin(q) = 2\sin\left(\frac{p+q}{2}\right)\cos\left(\frac{p-q}{2}\right)$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sin(p) - \sin(q) = 2\cos\left(\frac{p+q}{2}\right)\sin\left(\frac{p-q}{2}\right)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Mini-méthode : Trigonométrie → Complexes</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour transformer $\displaystyle a\cos(t) + b\sin(t)$ en $\displaystyle A\cos(t - \varphi)$, on utilise la représentation complexe :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle a + ib = A e^{i\varphi}$ où $\displaystyle A = \sqrt{a^2 + b^2}$ et $\displaystyle \cos(\varphi) = \frac{a}{A}$, $\displaystyle \sin(\varphi) = \frac{b}{A}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle a\cos(t) + b\sin(t) = \text{Re}((a + ib)e^{it}) = \text{Re}(A e^{i(t+\varphi)}) = A\cos(t - \varphi)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle \cos(t) = \alpha$, on peut passer par $\displaystyle \text{Re}(e^{it}) = \alpha$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Forme trigonométrique</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Écriture trigonométrique d'un nombre complexe</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Forme trigonométrique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Tout nombre complexe non nul $\displaystyle z$ peut s'écrire sous la forme :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle z = r e^{i\theta}$ où $\displaystyle r > 0$ et $\displaystyle \theta \in \mathbb{R}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette écriture est appelée <strong>forme trigonométrique</strong> (ou forme exponentielle) de $\displaystyle z$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle r = |z|$ (module de $\displaystyle z$)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \theta$ est un <strong>argument</strong> de $\displaystyle z$, noté $\displaystyle \arg(z)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'argument d'un nombre complexe n'est pas unique. Si $\displaystyle \theta$ est un argument de $\displaystyle z$, alors $\displaystyle \theta + 2k\pi$ (avec $\displaystyle k \in \mathbb{Z}$) est aussi un argument de $\displaystyle z$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On appelle <strong>argument principal</strong> l'unique argument appartenant à $\displaystyle ]-\pi, \pi]$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Argument et argument principal</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour un nombre complexe non nul $\displaystyle z$, on note $\displaystyle \text{Arg}(z)$ l'<strong>argument principal</strong> de $\displaystyle z$, choisi dans $\displaystyle ]-\pi, \pi]$ (convention usuelle).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>⚠️ Important :</strong> Il faut être cohérent partout avec cette convention $\displaystyle \text{Arg}(z) \in ]-\pi, \pi]$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Propriétés utiles :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \arg(\overline{z}) = -\arg(z) [2\pi]$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \arg\left(\frac{1}{z}\right) = -\arg(z) [2\pi]$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \arg(z \times z') = \arg(z) + \arg(z') [2\pi]$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle |z + z'| = |z| + |z'| \Leftrightarrow \arg(z) = \arg(z') [2\pi]$ (cas d'égalité de l'inégalité triangulaire : alignement avec l'origine et même sens)</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Passage de la forme algébrique à la forme trigonométrique</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle z = a + ib \neq 0$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle r = |z| = \sqrt{a^2 + b^2}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos(\theta) = \frac{a}{r}$ et $\displaystyle \sin(\theta) = \frac{b}{r}$</li>
+                <li style="margin:0; text-align:left;">On détermine $\displaystyle \theta$ en utilisant les signes de $\displaystyle a$ et $\displaystyle b$ pour choisir le bon quadrant</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Arguments d'un produit et d'un quotient</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle z = r e^{i\theta}$ et $\displaystyle z' = r' e^{i\theta'}$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Produit :</strong> $\displaystyle z \times z' = rr' e^{i(\theta + \theta')}$, donc $\displaystyle \arg(z \times z') = \arg(z) + \arg(z') [2\pi]$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Quotient :</strong> Si $\displaystyle z' \neq 0$, $\displaystyle \frac{z}{z'} = \frac{r}{r'} e^{i(\theta - \theta')}$, donc $\displaystyle \arg\left(\frac{z}{z'}\right) = \arg(z) - \arg(z') [2\pi]$</li>
+                <li style="margin:0; text-align:left;"><strong>Puissance :</strong> $\displaystyle z^n = r^n e^{in\theta}$, donc $\displaystyle \arg(z^n) = n\arg(z) [2\pi]$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Micro-rappel :</strong> Pour les modules : $\displaystyle |z \times z'| = |z||z'|$ et $\displaystyle \left|\frac{z}{z'}\right| = \frac{|z|}{|z'|}$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Transformation de $\displaystyle a\cos(t) + b\sin(t)$ en $\displaystyle A\cos(t - \varphi)$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle (a, b) \neq (0, 0)$, on peut écrire :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle a\cos(t) + b\sin(t) = A\cos(t - \varphi)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle A = \sqrt{a^2 + b^2}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos(\varphi) = \frac{a}{A}$ et $\displaystyle \sin(\varphi) = \frac{b}{A}$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette transformation utilise la forme trigonométrique du complexe $\displaystyle a + ib = A e^{i\varphi}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle z = 1 + i$ : $\displaystyle |z| = \sqrt{2}$, $\displaystyle \arg(z) = \frac{\pi}{4}$, donc $\displaystyle z = \sqrt{2} e^{i\pi/4}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle z = -1 + i\sqrt{3}$ : $\displaystyle |z| = 2$, $\displaystyle \arg(z) = \frac{2\pi}{3}$, donc $\displaystyle z = 2 e^{i2\pi/3}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos(t) + \sin(t) = \sqrt{2}\cos\left(t - \frac{\pi}{4}\right)$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle 3\cos(t) + 4\sin(t) = 5\cos(t - \varphi)$ où $\displaystyle \cos(\varphi) = \frac{3}{5}$ et $\displaystyle \sin(\varphi) = \frac{4}{5}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Équations algébriques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Factorisation et équations polynomiales</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Factorisation par $\displaystyle z - a$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle P$ une fonction polynomiale à coefficients complexes.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a$ est une racine de $\displaystyle P$ (i.e. $\displaystyle P(a) = 0$), alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(z) = (z - a)Q(z)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle Q$ est un polynôme de degré $\displaystyle \deg(P) - 1$.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Résolution d'équations du second degré dans $\displaystyle \mathbb{C}$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour l'équation $\displaystyle az^2 + bz + c = 0$ avec $\displaystyle a \neq 0$ et $\displaystyle a, b, c \in \mathbb{C}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le discriminant est $\displaystyle \Delta = b^2 - 4ac$.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \Delta \neq 0$, les solutions sont : $\displaystyle z = \frac{-b \pm \sqrt{\Delta}}{2a}$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle \Delta = 0$, il y a une solution double : $\displaystyle z = -\frac{b}{2a}$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Remarque :</strong> Dans $\displaystyle \mathbb{C}$, toute équation du second degré admet toujours deux solutions (éventuellement confondues).</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Calcul des racines carrées d'un nombre complexe :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Méthode algébrique :</strong> Pour calculer $\displaystyle \sqrt{\Delta}$ où $\displaystyle \Delta$ est un nombre complexe donné en forme algébrique, on cherche $\displaystyle z = x + iy$ tel que $\displaystyle z^2 = \Delta$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En identifiant parties réelle et imaginaire, on obtient un système de deux équations à deux inconnues.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Méthode polaire (plus rapide) :</strong> Si $\displaystyle z = r e^{i\theta} \neq 0$ avec $\displaystyle r > 0$, alors les deux racines carrées sont :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sqrt{r} e^{i\theta/2}$ et $\displaystyle \sqrt{r} e^{i(\theta/2 + \pi)} = -\sqrt{r} e^{i\theta/2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les deux valeurs correspondent aux arguments $\displaystyle \theta/2$ et $\displaystyle \theta/2 + \pi$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Somme et produit des racines</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour l'équation $\displaystyle az^2 + bz + c = 0$ avec $\displaystyle a \neq 0$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle z_1$ et $\displaystyle z_2$ sont les racines (éventuellement confondues), alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Somme :</strong> $\displaystyle z_1 + z_2 = -\frac{b}{a}$</li>
+                <li style="margin:0; text-align:left;"><strong>Produit :</strong> $\displaystyle z_1 \times z_2 = \frac{c}{a}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Résoudre $\displaystyle z^2 - 2z + 2 = 0$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le discriminant est $\displaystyle \Delta = 4 - 8 = -4 = (2i)^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les solutions sont : $\displaystyle z = \frac{2 \pm 2i}{2} = 1 \pm i$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Vérification : $\displaystyle (1+i) + (1-i) = 2 = -\frac{(-2)}{1}$ et $\displaystyle (1+i)(1-i) = 2 = \frac{2}{1}$ ✓</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Calculer les racines carrées de $\displaystyle 3 + 4i$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On cherche $\displaystyle z = x + iy$ tel que $\displaystyle z^2 = 3 + 4i$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle (x + iy)^2 = x^2 - y^2 + 2ixy = 3 + 4i$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En identifiant : $\displaystyle x^2 - y^2 = 3$ et $\displaystyle 2xy = 4$, donc $\displaystyle xy = 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On trouve $\displaystyle z = 2 + i$ ou $\displaystyle z = -2 - i$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Racines n-ièmes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Racines n-ièmes de l'unité</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Racines n-ièmes de l'unité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle n \in \mathbb{N}^{\ast}$, on pose $\displaystyle \omega = e^{2i\pi/n}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les racines n-ièmes de l'unité sont les solutions de $\displaystyle z^n = 1$, données par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \mathbb{U}_n = \{1, \omega, \omega^2, \ldots, \omega^{n-1}\}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Propriété fondamentale :</strong> $\displaystyle \sum_{k=0}^{n-1} \omega^k = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Démonstration : $\displaystyle \sum_{k=0}^{n-1} \omega^k = \sum_{k=0}^{n-1} (e^{2i\pi/n})^k = \frac{1 - (e^{2i\pi/n})^n}{1 - e^{2i\pi/n}} = \frac{1 - e^{2i\pi}}{1 - e^{2i\pi/n}} = \frac{1 - 1}{1 - e^{2i\pi/n}} = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Mini-propriété :</strong> Pour $\displaystyle m \in \mathbb{Z}$, on a :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sum_{k=0}^{n-1} \omega^{km} = \begin{cases} 0 & \text{si } n \nmid m \\ n & \text{si } n \mid m \end{cases}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Application directe en sommes trigonométriques périodiques.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 À retenir :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La somme des racines n-ièmes de l'unité est toujours nulle : $\displaystyle \sum_{k=0}^{n-1} \omega^k = 0$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés de $\displaystyle \mathbb{U}_n$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \mathbb{U}_n$ contient exactement $\displaystyle n$ éléments</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Le produit de deux racines n-ièmes de l'unité est encore une racine n-ième de l'unité</li>
+                <li style="margin:0 0 18px 0; text-align:left;">L'inverse d'une racine n-ième de l'unité est encore une racine n-ième de l'unité</li>
+                <li style="margin:0; text-align:left;">La somme des racines n-ièmes de l'unité est nulle : $\displaystyle \sum_{k=0}^{n-1} \omega^k = 0$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Représentation géométrique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les racines n-ièmes de l'unité sont les sommets d'un polygone régulier à $\displaystyle n$ côtés inscrit dans le cercle unité, avec un sommet en $\displaystyle 1$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Racines n-ièmes d'un nombre complexe non nul</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle z_0 \neq 0$ écrit sous forme trigonométrique $\displaystyle z_0 = r e^{i\theta}$ avec $\displaystyle r > 0$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les racines n-ièmes de $\displaystyle z_0$ (solutions de $\displaystyle z^n = z_0$) sont :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle z_k = r^{1/n} e^{i(\theta + 2k\pi)/n}$ pour $\displaystyle k = 0, 1, \ldots, n-1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle r^{1/n}$ désigne la racine n-ième réelle positive de $\displaystyle r$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Racines cubiques de $\displaystyle -8$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle -8 = 8 e^{i\pi}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les racines cubiques sont :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle z_0 = 2 e^{i\pi/3} = 1 + i\sqrt{3}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle z_1 = 2 e^{i\pi} = -2$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle z_2 = 2 e^{i5\pi/3} = 1 - i\sqrt{3}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Racines quatrièmes de l'unité :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \mathbb{U}_4 = \{1, i, -1, -i\}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En effet : $\displaystyle 1 = e^{0}$, $\displaystyle i = e^{i\pi/2}$, $\displaystyle -1 = e^{i\pi}$, $\displaystyle -i = e^{i3\pi/2}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Exponentielle complexe</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et propriétés</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Exponentielle complexe</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout nombre complexe $\displaystyle z = x + iy$ (avec $\displaystyle x, y \in \mathbb{R}$), on définit :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle e^z = e^x e^{iy} = e^x(\cos(y) + i\sin(y))$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise les notations $\displaystyle \exp(z)$ ou $\displaystyle e^z$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriétés de l'exponentielle complexe :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Exponentielle d'une somme :</strong> $\displaystyle e^{z + z'} = e^z \times e^{z'}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Module :</strong> $\displaystyle |e^z| = e^{\text{Re}(z)} = e^x$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Argument :</strong> $\displaystyle \arg(e^z) = \text{Im}(z) = y [2\pi]$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Inverse :</strong> $\displaystyle \frac{1}{e^z} = e^{-z}$</li>
+                <li style="margin:0; text-align:left;"><strong>Puissance :</strong> $\displaystyle (e^z)^n = e^{nz}$ pour tout entier $\displaystyle n$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Condition d'égalité de deux exponentielles</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous $\displaystyle z, z' \in \mathbb{C}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle e^z = e^{z'} \Leftrightarrow z - z' \in 2i\pi\mathbb{Z}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, $\displaystyle e^z = e^{z'}$ si et seulement s'il existe $\displaystyle k \in \mathbb{Z}$ tel que $\displaystyle z - z' = 2ik\pi$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas particulier important :</strong> $\displaystyle e^z = 1 \Leftrightarrow z \in 2i\pi\mathbb{Z}$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle e^z = e^{z'} \Leftrightarrow e^{z - z'} = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En posant $\displaystyle z - z' = x + iy$, on obtient $\displaystyle e^{x + iy} = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle e^x = 1$ (donc $\displaystyle x = 0$) et $\displaystyle e^{iy} = 1$ (donc $\displaystyle y \in 2\pi\mathbb{Z}$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ainsi $\displaystyle z - z' = 2ik\pi$ avec $\displaystyle k \in \mathbb{Z}$.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Résolution de l'équation $\displaystyle e^z = a$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle a \in \mathbb{C}^{\ast}$ écrit sous forme trigonométrique $\displaystyle a = r e^{i\theta}$ avec $\displaystyle r > 0$ et $\displaystyle \theta = \text{Arg}(a) \in ]-\pi, \pi]$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'équation $\displaystyle e^z = a$ admet pour solutions :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle z = \ln|a| + i(\text{Arg}(a) + 2k\pi)$ avec $\displaystyle k \in \mathbb{Z}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle \ln|a|$ désigne le logarithme népérien réel de $\displaystyle |a|$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Remarque :</strong> On utilise ici le logarithme uniquement pour résoudre $\displaystyle e^z = a$, sans théorie des branches ni argument multi-valué approfondi.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle e^{1 + i\pi} = e \times e^{i\pi} = -e$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |e^{2 + 3i}| = e^2$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \arg(e^{1 + i\pi/4}) = \frac{\pi}{4} [2\pi]$</li>
+                <li style="margin:0; text-align:left;"><strong>Résoudre $\displaystyle e^z = 2i$ :</strong> On a $\displaystyle 2i = 2 \times e^{i\pi/2}$, donc $\displaystyle |a| = 2$ et $\displaystyle \text{Arg}(a) = \frac{\pi}{2}$. Les solutions sont : $\displaystyle z = \ln(2) + i\left(\frac{\pi}{2} + 2k\pi\right)$ avec $\displaystyle k \in \mathbb{Z}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Interprétation géométrique des nombres complexes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Applications géométriques</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Interprétation géométrique de $\displaystyle \frac{c-a}{b-a}$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle A$, $\displaystyle B$ et $\displaystyle C$ trois points du plan d'affixes respectives $\displaystyle a$, $\displaystyle b$ et $\displaystyle c$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre complexe $\displaystyle \frac{c-a}{b-a}$ a pour :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Module :</strong> $\displaystyle \left|\frac{c-a}{b-a}\right| = \frac{AC}{AB}$ (rapport des distances)</li>
+                <li style="margin:0; text-align:left;"><strong>Argument :</strong> $\displaystyle \arg\left(\frac{c-a}{b-a}\right) = (\overrightarrow{AB}, \overrightarrow{AC})$ (mesure de l'angle orienté)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle A(1)$, $\displaystyle B(3)$ et $\displaystyle C(1+2i)$ d'affixes respectives $\displaystyle 1$, $\displaystyle 3$ et $\displaystyle 1+2i$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle \frac{c-a}{b-a} = \frac{1+2i-1}{3-1} = \frac{2i}{2} = i = e^{i\pi/2}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \frac{AC}{AB} = |i| = 1$ (distances égales) et $\displaystyle (\overrightarrow{AB}, \overrightarrow{AC}) = \frac{\pi}{2}$ (angle droit en $\displaystyle A$).</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Applications $\displaystyle z \mapsto az + b$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle (a, b) \in \mathbb{C}^{\ast} \times \mathbb{C}$, l'application $\displaystyle f : z \mapsto az + b$ est une <strong>similitude directe</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En écrivant $\displaystyle a = |a| e^{i\theta}$ avec $\displaystyle \theta = \arg(a)$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |a|$ est le <strong>rapport</strong> de la similitude</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \theta$ est l'<strong>angle</strong> de la similitude</li>
+                <li style="margin:0; text-align:left;">$\displaystyle b$ est l'<strong>affixe du centre</strong> (point fixe si $\displaystyle |a| \neq 1$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f : z \mapsto (1+i)z + 2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle 1+i = \sqrt{2} e^{i\pi/4}$, donc $\displaystyle |a| = \sqrt{2}$ (rapport), $\displaystyle \theta = \frac{\pi}{4}$ (rotation de $\displaystyle \frac{\pi}{4}$) et $\displaystyle b = 2$ (translation).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette similitude combine une homothétie de rapport $\displaystyle \sqrt{2}$, une rotation de $\displaystyle \frac{\pi}{4}$ et une translation de $\displaystyle 2$ unités vers la droite.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Cas particuliers</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Translation :</strong> $\displaystyle z \mapsto z + b$ (correspond à $\displaystyle a = 1$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Homothétie :</strong> $\displaystyle z \mapsto kz$ avec $\displaystyle k \in \mathbb{R}^{\ast}$ (correspond à $\displaystyle a \in \mathbb{R}^{\ast}$ et $\displaystyle b = 0$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Rotation :</strong> $\displaystyle z \mapsto e^{i\theta}z$ (correspond à $\displaystyle |a| = 1$ et $\displaystyle b = 0$)</li>
+                <li style="margin:0; text-align:left;"><strong>Similitude générale :</strong> $\displaystyle z \mapsto az + b$ avec $\displaystyle a \in \mathbb{C}^{\ast}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Translation :</strong> $\displaystyle z \mapsto z + 2+i$ translate tous les points de $\displaystyle 2$ unités vers la droite et $\displaystyle 1$ unité vers le haut</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Homothétie :</strong> $\displaystyle z \mapsto 3z$ multiplie toutes les distances par $\displaystyle 3$ depuis l'origine</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Rotation :</strong> $\displaystyle z \mapsto e^{i\pi/2}z = iz$ est une rotation de $\displaystyle \frac{\pi}{2}$ autour de l'origine (sens direct)</li>
+                <li style="margin:0; text-align:left;"><strong>Similitude :</strong> $\displaystyle z \mapsto 2e^{i\pi/4}z + 1+i$ combine une homothétie de rapport $\displaystyle 2$, une rotation de $\displaystyle \frac{\pi}{4}$ et une translation</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Interprétation géométrique de la conjugaison</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'application $\displaystyle z \mapsto \overline{z}$ est la <strong>symétrie axiale</strong> par rapport à l'axe des abscisses.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Propriétés géométriques :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle |z| = |\overline{z}|$ : conservation des distances</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \arg(\overline{z}) = -\arg(z) [2\pi]$ : changement de signe de l'angle</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle z = 3 + 4i$, on a $\displaystyle \overline{z} = 3 - 4i$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le point d'affixe $\displaystyle z$ est à $\displaystyle 5$ unités de l'origine avec un angle de $\displaystyle \arctan(4/3)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le point d'affixe $\displaystyle \overline{z}$ est son symétrique par rapport à l'axe des abscisses, à la même distance mais avec un angle opposé.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Traduction d'alignement et d'orthogonalité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle A$, $\displaystyle B$ et $\displaystyle C$ trois points d'affixes $\displaystyle a$, $\displaystyle b$ et $\displaystyle c$.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Alignement :</strong> $\displaystyle A$, $\displaystyle B$, $\displaystyle C$ sont alignés si et seulement si $\displaystyle \frac{c-a}{b-a} \in \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;"><strong>Orthogonalité :</strong> $\displaystyle (AB) \perp (AC)$ si et seulement si $\displaystyle \frac{c-a}{b-a} \in i\mathbb{R}$ (imaginaire pur)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle A(0)$, $\displaystyle B(2)$ et $\displaystyle C(1+i)$ d'affixes respectives $\displaystyle 0$, $\displaystyle 2$ et $\displaystyle 1+i$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle \frac{c-a}{b-a} = \frac{1+i}{2} = \frac{1}{2} + \frac{i}{2} \notin \mathbb{R}$ et $\displaystyle \notin i\mathbb{R}$, donc les points ne sont ni alignés, ni en angle droit.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle C'(4)$ d'affixe $\displaystyle 4$, on a $\displaystyle \frac{4-0}{2-0} = 2 \in \mathbb{R}$, donc $\displaystyle A$, $\displaystyle B$, $\displaystyle C'$ sont alignés.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle C''(2i)$ d'affixe $\displaystyle 2i$, on a $\displaystyle \frac{2i-0}{2-0} = i \in i\mathbb{R}$, donc $\displaystyle (AB) \perp (AC'')$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Lieux géométriques express</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Lieux géométriques fréquents en DS/colles :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Droite dirigée par un angle :</strong> $\displaystyle \{z \in \mathbb{C} : \arg(z - a) = \theta\}$ (demi-droite issue de $\displaystyle a$ faisant un angle $\displaystyle \theta$ avec l'axe des abscisses)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Demi-droite :</strong> $\displaystyle \{z \in \mathbb{C} : \arg((z - a)/(b - a)) = 0\}$ (demi-droite $\displaystyle [AB)$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Cercle/disque :</strong> $\displaystyle \{z \in \mathbb{C} : |z - a| = r\}$ (cercle) et $\displaystyle \{z \in \mathbb{C} : |z - a| \leq r\}$ (disque fermé)</li>
+                <li style="margin:0; text-align:left;"><strong>Médiatrice :</strong> $\displaystyle \{z \in \mathbb{C} : |z - a| = |z - b|\}$ (médiatrice du segment $\displaystyle [AB]$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \{z \in \mathbb{C} : |z - 1| = 2\}$ est le cercle de centre $\displaystyle 1$ (point d'affixe $\displaystyle 1$) et de rayon $\displaystyle 2$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \{z \in \mathbb{C} : |z - i| = |z + i|\}$ est la médiatrice de $\displaystyle [A(i), B(-i)]$, c'est-à-dire l'axe des abscisses</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \{z \in \mathbb{C} : \arg(z - 1) = \frac{\pi}{4}\}$ est la demi-droite issue de $\displaystyle 1$ faisant un angle de $\displaystyle \frac{\pi}{4}$ avec l'axe des abscisses</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \{z \in \mathbb{C} : |z| \leq 1\}$ est le disque fermé de centre $\displaystyle O$ et de rayon $\displaystyle 1$ (disque unité)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Lieux géométriques classiques+</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cercles d'Apollonius :</strong> Pour $\displaystyle \lambda > 0$ et $\displaystyle \lambda \neq 1$, l'ensemble $\displaystyle \{z \in \mathbb{C} : |z - a| = \lambda|z - b|\}$ est un cercle.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \lambda = 1$, c'est la médiatrice de $\displaystyle [AB]$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle \lambda \neq 1$, le cercle a pour centre $\displaystyle \frac{a - \lambda^2 b}{1 - \lambda^2}$ et pour rayon $\displaystyle \frac{\lambda|a - b|}{|1 - \lambda^2|}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Droite d'orientation donnée :</strong> Pour $\displaystyle u \neq 0$ et un point $\displaystyle a$, la droite passant par $\displaystyle a$ et dirigée par $\displaystyle u$ est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \{z \in \mathbb{C} : \text{Im}(\overline{u}(z - a)) = 0\}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le demi-plan correspondant est : $\displaystyle \{z \in \mathbb{C} : \text{Im}(\overline{u}(z - a)) \geq 0\}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette forme est très utile en colles/DS.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cercle d'Apollonius :</strong> Pour $\displaystyle a = 0$, $\displaystyle b = 4$ et $\displaystyle \lambda = 2$, l'ensemble $\displaystyle \{z \in \mathbb{C} : |z| = 2|z - 4|\}$ est un cercle.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le centre est $\displaystyle \frac{0 - 4 \times 4}{1 - 4} = \frac{-16}{-3} = \frac{16}{3}$ et le rayon est $\displaystyle \frac{2 \times 4}{|1 - 4|} = \frac{8}{3}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Droite d'orientation :</strong> La droite passant par $\displaystyle 1+i$ et dirigée par $\displaystyle 1$ (affixe $\displaystyle 1$) est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \{z \in \mathbb{C} : \text{Im}(\overline{1}(z - (1+i))) = 0\} = \{z \in \mathbb{C} : \text{Im}(z - 1 - i) = 0\}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est la droite horizontale passant par $\displaystyle 1+i$, d'équation $\displaystyle \text{Im}(z) = 1$.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Équations mixtes (applications géométriques)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces équations sont très courantes en devoirs :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Type $\displaystyle a\overline{z} + bz + c = 0$ :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Méthode 1 : Poser $\displaystyle z = x + iy$ et identifier parties réelle et imaginaire</li>
+                <li style="margin:0; text-align:left;">Méthode 2 : Multiplier par $\displaystyle \overline{a}$ pour isoler $\displaystyle \overline{z}/z$, puis séparer $\displaystyle \text{Re}$ et $\displaystyle \text{Im}$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Type $\displaystyle |az + b| = r$ :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a \neq 0$, alors $\displaystyle |z + \frac{b}{a}| = \frac{r}{|a|}$, ce qui définit un cercle de centre $\displaystyle -\frac{b}{a}$ et de rayon $\displaystyle \frac{r}{|a|}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Type 1 :</strong> Résoudre $\displaystyle \overline{z} + z = 2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En posant $\displaystyle z = x + iy$, on obtient $\displaystyle (x - iy) + (x + iy) = 2x = 2$, donc $\displaystyle x = 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble solution est la droite verticale $\displaystyle \{z \in \mathbb{C} : \text{Re}(z) = 1\}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Type 2 :</strong> L'équation $\displaystyle |2z + 1| = 3$ équivaut à $\displaystyle |z + \frac{1}{2}| = \frac{3}{2}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est le cercle de centre $\displaystyle -\frac{1}{2}$ et de rayon $\displaystyle \frac{3}{2}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Triangle équilatéral :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle A$, $\displaystyle B$, $\displaystyle C$ trois points d'affixes $\displaystyle a$, $\displaystyle b$, $\displaystyle c$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le triangle $\displaystyle ABC$ est équilatéral direct si et seulement si :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \frac{c-a}{b-a} = e^{i\pi/3}$ ou $\displaystyle c - a = e^{i\pi/3}(b - a)$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'étude générale des similitudes est hors programme. On se limite aux cas particuliers mentionnés : translations, homothéties, rotations et similitudes directes de la forme $\displaystyle z \mapsto az + b$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes et erreurs fréquentes</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthodes de résolution :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Forme trigonométrique :</strong> Utiliser la forme $\displaystyle re^{i\theta}$ pour les multiplications, divisions et puissances</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Forme algébrique :</strong> Utiliser $\displaystyle a + ib$ pour les additions et soustractions</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Racines carrées :</strong> Pour calculer $\displaystyle \sqrt{\Delta}$, chercher $\displaystyle z = x + iy$ tel que $\displaystyle z^2 = \Delta$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Racines n-ièmes :</strong> Mettre le nombre sous forme trigonométrique puis utiliser la formule générale</li>
+                <li style="margin:0; text-align:left;"><strong>Géométrie :</strong> Utiliser les affixes pour traduire les problèmes géométriques en problèmes algébriques</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Points clés à retenir :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Formules d'Euler :</strong> Savoir retrouver rapidement $\displaystyle \cos(t)$ et $\displaystyle \sin(t)$ en fonction de $\displaystyle e^{it}$</li>
+                <li style="margin:0; text-align:left;"><strong>Formule de Moivre :</strong> $\displaystyle (e^{it})^n = e^{int}$ pour linéariser et calculer des sommes</li>
+                <li style="margin:0; text-align:left;"><strong>Module et argument :</strong> $\displaystyle |z \times z'| = |z||z'|$ et $\displaystyle \arg(z \times z') = \arg(z) + \arg(z') [2\pi]$</li>
+                <li style="margin:0; text-align:left;"><strong>Conjugaison :</strong> $\displaystyle z \overline{z} = |z|^2$ pour calculer l'inverse d'un nombre complexe</li>
+                <li style="margin:0; text-align:left;"><strong>Racines n-ièmes :</strong> Toujours $\displaystyle n$ racines distinctes pour un nombre non nul</li>
+                <li style="margin:0; text-align:left;"><strong>Exponentielle :</strong> $\displaystyle e^z = e^{z'} \Leftrightarrow z - z' \in 2i\pi\mathbb{Z}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Argument non unique :</strong> Ne pas oublier le modulo $\displaystyle 2\pi$ dans les arguments</li>
+                <li style="margin:0; text-align:left;"><strong>Racines carrées :</strong> Dans $\displaystyle \mathbb{C}$, il y a toujours deux racines carrées (sauf pour 0)</li>
+                <li style="margin:0; text-align:left;"><strong>Module d'une somme :</strong> Attention, $\displaystyle |z + z'| \neq |z| + |z'|$ en général (inégalité triangulaire)</li>
+                <li style="margin:0; text-align:left;"><strong>Exponentielle :</strong> $\displaystyle e^{z + z'} = e^z e^{z'}$ mais $\displaystyle e^{zz'} \neq e^z e^{z'}$</li>
+                <li style="margin:0; text-align:left;"><strong>Forme trigonométrique :</strong> Toujours vérifier que le module est positif</li>
+                <li style="margin:0; text-align:left;"><strong>Racines n-ièmes :</strong> Ne pas oublier toutes les racines (il y en a $\displaystyle n$)</li>
+                <li style="margin:0; text-align:left;"><strong>Géométrie :</strong> Attention à l'orientation (direct/indirect) dans les problèmes géométriques</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===
+

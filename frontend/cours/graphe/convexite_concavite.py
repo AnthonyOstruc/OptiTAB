@@ -47,6 +47,8 @@ ax1.set_ylabel('f(x)', fontsize=14, fontweight='bold')
 ax1.set_title('FONCTION CONVEXE\n' + r"$f''(x) > 0$ : courbe au-dessus des tangentes", 
               fontsize=14, fontweight='bold', pad=15, color='#3498db')
 ax1.legend(fontsize=10, loc='center')
+# Désactiver la grille
+ax1.grid(False)
 
 # ============= GRAPHE 2 : FONCTION CONCAVE =============
 def f_concave(x):
@@ -86,6 +88,8 @@ ax2.set_ylabel('f(x)', fontsize=14, fontweight='bold')
 ax2.set_title('FONCTION CONCAVE\n' + r"$f''(x) < 0$ : courbe en-dessous des tangentes", 
               fontsize=14, fontweight='bold', pad=15, color='#e67e22')
 ax2.legend(fontsize=10, loc='center')
+# Désactiver la grille
+ax2.grid(False)
 
 # Titre général
 fig.suptitle('COMPARAISON : CONVEXITÉ vs CONCAVITÉ', 
@@ -98,4 +102,3 @@ plt.tight_layout(rect=[0, 0, 1, 0.96])
 plt.savefig('convexite_concavite.png', dpi=300, bbox_inches='tight')
 print("✓ Graphe généré : convexite_concavite.png")
 plt.show()
-

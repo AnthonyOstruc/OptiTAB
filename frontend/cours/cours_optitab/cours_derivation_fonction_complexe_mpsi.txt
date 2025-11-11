@@ -1,0 +1,524 @@
+=== Dérivation d'une Fonction Complexe d'une Variable Réelle - Programme MPSI
+Difficulté: medium
+Ordre: 4
+Images: 
+
+Titre: Dérivation d'une Fonction Complexe d'une Variable Réelle : Définition, Propriétés et Applications
+Description: Cours sur la dérivation des fonctions complexes d'une variable réelle en MPSI : définition via les parties réelle et imaginaire, règles de dérivation (combinaison linéaire, produit, quotient), dérivée de l'exponentielle complexe, extension des résultats classiques et applications pratiques.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition de la dérivée d'une fonction à valeurs complexes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Fonction complexe d'une variable réelle</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction <strong>complexe d'une variable réelle</strong> est une fonction $\displaystyle f : I \to \mathbb{C}$ où $\displaystyle I$ est un intervalle de $\displaystyle \mathbb{R}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in I$, on peut écrire $\displaystyle f(x)$ sous la forme :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f(x) = u(x) + i v(x)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle u : I \to \mathbb{R}$ et $\displaystyle v : I \to \mathbb{R}$ sont les <strong>parties réelle et imaginaire</strong> de $\displaystyle f$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notation : $\displaystyle u = \text{Re}(f)$ et $\displaystyle v = \text{Im}(f)$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f(x) = e^{ix} = \cos(x) + i\sin(x)$ : partie réelle $\displaystyle u(x) = \cos(x)$, partie imaginaire $\displaystyle v(x) = \sin(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle g(x) = x^2 + i x$ : partie réelle $\displaystyle u(x) = x^2$, partie imaginaire $\displaystyle v(x) = x$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle h(x) = (1+i)x^3$ : partie réelle $\displaystyle u(x) = x^3$, partie imaginaire $\displaystyle v(x) = x^3$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivée d'une fonction complexe</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition de la dérivée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : I \to \mathbb{C}$ une fonction complexe d'une variable réelle, avec $\displaystyle f(x) = u(x) + i v(x)$ où $\displaystyle u$ et $\displaystyle v$ sont des fonctions réelles.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle f$ est <strong>dérivable en $\displaystyle a \in I$</strong> si la limite suivante existe dans $\displaystyle \mathbb{C}$ :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette limite, notée $\displaystyle f'(a)$, est appelée <strong>dérivée de $\displaystyle f$ en $\displaystyle a$</strong>.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Caractérisation par les parties réelle et imaginaire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La dérivée est définie par les parties réelle et imaginaire :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f$ est dérivable en $\displaystyle a$ si et seulement si $\displaystyle u$ et $\displaystyle v$ sont dérivables en $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans ce cas, on a :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:450px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f'(a) = u'(a) + i v'(a)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : $\displaystyle \text{Re}(f') = (\text{Re}(f))'$ et $\displaystyle \text{Im}(f') = (\text{Im}(f))'$.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a :</p>
+            <div style="margin:8px 0; text-align:left; font-size:1em;">
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle \frac{f(a+h) - f(a)}{h} = \frac{u(a+h) - u(a)}{h} + i \frac{v(a+h) - v(a)}{h}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette expression tend vers $\displaystyle u'(a) + i v'(a)$ lorsque $\displaystyle h \to 0$ si et seulement si $\displaystyle u$ et $\displaystyle v$ sont dérivables en $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Réciproquement, si $\displaystyle f$ est dérivable en $\displaystyle a$, alors en prenant les parties réelle et imaginaire de la limite, on obtient que $\displaystyle u$ et $\displaystyle v$ sont dérivables.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = e^{ix} = \cos(x) + i\sin(x)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les parties réelle et imaginaire sont $\displaystyle u(x) = \cos(x)$ et $\displaystyle v(x) = \sin(x)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle u'(x) = -\sin(x)$ et $\displaystyle v'(x) = \cos(x)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle f'(x) = -\sin(x) + i\cos(x) = i(\cos(x) + i\sin(x)) = i e^{ix}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On retrouve ainsi la formule classique : $\displaystyle (e^{ix})' = i e^{ix}$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction dérivable sur un intervalle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle f$ est <strong>dérivable sur $\displaystyle I$</strong> si $\displaystyle f$ est dérivable en tout point de $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle f' : x \mapsto f'(x)$ est appelée <strong>fonction dérivée</strong> de $\displaystyle f$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a alors : $\displaystyle f'(x) = u'(x) + i v'(x)$ pour tout $\displaystyle x \in I$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Règles de dérivation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivée d'une combinaison linéaire</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Linéarité de la dérivation</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle f$ et $\displaystyle g$ deux fonctions complexes dérivables sur $\displaystyle I$, et $\displaystyle \lambda, \mu \in \mathbb{C}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle \lambda f + \mu g$ est dérivable sur $\displaystyle I$ et :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (\lambda f + \mu g)' = \lambda f' + \mu g'$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Écrivons $\displaystyle f = u + iv$ et $\displaystyle g = w + iz$ où $\displaystyle u, v, w, z$ sont des fonctions réelles.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle \lambda f + \mu g = (\lambda u + \mu w) + i(\lambda v + \mu z)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par linéarité de la dérivation pour les fonctions réelles :</p>
+            <div style="margin:8px 0; text-align:left; font-size:1em;">
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle (\lambda f + \mu g)' = (\lambda u + \mu w)' + i(\lambda v + \mu z)' = \lambda u' + \mu w' + i(\lambda v' + \mu z')$</p>
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle \phantom{(\lambda f + \mu g)'} = \lambda(u' + iv') + \mu(w' + iz') = \lambda f' + \mu g'$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f(x) = (1+i)x^2 + (2-i)x$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = (1+i)(x^2)' + (2-i)(x)' = (1+i) \times 2x + (2-i) \times 1 = 2(1+i)x + (2-i)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut aussi développer : $\displaystyle f'(x) = 2x + 2ix + 2 - i = (2x + 2) + i(2x - 1)$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivée d'un produit</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Règle du produit</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle f$ et $\displaystyle g$ deux fonctions complexes dérivables sur $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle fg$ est dérivable sur $\displaystyle I$ et :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (fg)' = f'g + fg'$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Écrivons $\displaystyle f = u + iv$ et $\displaystyle g = w + iz$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle fg = (u + iv)(w + iz) = (uw - vz) + i(uz + vw)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En dérivant les parties réelle et imaginaire :</p>
+            <div style="margin:8px 0; text-align:left; font-size:1em;">
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle (fg)' = (uw - vz)' + i(uz + vw)'$</p>
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle \phantom{(fg)'} = (u'w + uw' - v'z - vz') + i(u'z + uz' + v'w + vw')$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En réorganisant et en utilisant $\displaystyle f' = u' + iv'$ et $\displaystyle g' = w' + iz'$ :</p>
+            <div style="margin:8px 0; text-align:left; font-size:1em;">
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle (fg)' = (u' + iv')(w + iz) + (u + iv)(w' + iz') = f'g + fg'$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = e^{ix}$ et $\displaystyle g(x) = x^2$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (f(x)g(x))' = (e^{ix} x^2)' = (e^{ix})' x^2 + e^{ix} (x^2)' = i e^{ix} x^2 + e^{ix} \times 2x = e^{ix}(ix^2 + 2x)$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivée d'un quotient</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Règle du quotient</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle f$ et $\displaystyle g$ deux fonctions complexes dérivables sur $\displaystyle I$ avec $\displaystyle g(x) \neq 0$ pour tout $\displaystyle x \in I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle \frac{f}{g}$ est dérivable sur $\displaystyle I$ et :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut démontrer cette formule en utilisant la règle du produit et la dérivée de l'inverse.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle \frac{f}{g} = f \times \frac{1}{g}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En dérivant $\displaystyle \frac{1}{g}$ (en utilisant la même méthode que pour les fonctions réelles), on obtient $\displaystyle \left(\frac{1}{g}\right)' = -\frac{g'}{g^2}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \left(\frac{f}{g}\right)' = f' \times \frac{1}{g} + f \times \left(-\frac{g'}{g^2}\right) = \frac{f'g - fg'}{g^2}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = \frac{e^{ix}}{x}$ (avec $\displaystyle x \neq 0$) :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = \frac{(e^{ix})' \times x - e^{ix} \times x'}{x^2} = \frac{i e^{ix} \times x - e^{ix} \times 1}{x^2} = \frac{e^{ix}(ix - 1)}{x^2}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Rappels trigonométriques via $\displaystyle e^{ix}$</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules d'Euler et dérivées trigonométriques</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formules d'Euler</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">À partir de la formule d'Euler $\displaystyle e^{ix} = \cos(x) + i\sin(x)$, on peut exprimer les fonctions trigonométriques en fonction de l'exponentielle complexe :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \cos(x) = \frac{e^{ix} + e^{-ix}}{2}$</p>
+                <p style="margin:8px 0 0 0; font-size:1.1em; font-weight:bold;">$\displaystyle \sin(x) = \frac{e^{ix} - e^{-ix}}{2i}$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivées des fonctions trigonométriques</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les dérivées des fonctions trigonométriques sont :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:left; max-width:400px;">
+                <p style="margin:0; padding-left:80px; font-size:1.1em; font-weight:bold;">$\displaystyle (\cos x)' = -\sin x$</p>
+                <p style="margin:8px 0 0 0; padding-left:80px; font-size:1.1em; font-weight:bold;">$\displaystyle (\sin x)' = \cos x$</p>
+                <p style="margin:8px 0 0 0; padding-left:80px; font-size:1.1em; font-weight:bold;">$\displaystyle (\tan x)' = \frac{1}{\cos^2 x}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Vérification via l'exponentielle :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut vérifier ces formules en utilisant $\displaystyle e^{ix} = \cos(x) + i\sin(x)$ et $\displaystyle (e^{ix})' = i e^{ix}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (e^{ix})' = i e^{ix} = i(\cos(x) + i\sin(x)) = i\cos(x) - \sin(x) = -\sin(x) + i\cos(x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En identifiant les parties réelle et imaginaire : $\displaystyle (\cos(x))' = -\sin(x)$ et $\displaystyle (\sin(x))' = \cos(x)$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Dérivée de l'exponentielle complexe</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivée de $\displaystyle \exp(\varphi)$ où $\displaystyle \varphi$ est complexe</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème fondamental</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle \varphi : I \to \mathbb{C}$ une fonction complexe dérivable sur $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors la fonction $\displaystyle x \mapsto e^{\varphi(x)}$ est dérivable sur $\displaystyle I$ et :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (e^{\varphi(x)})' = \varphi'(x) \cdot e^{\varphi(x)}$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration (cas particulier $\displaystyle \varphi(x) = u(x) + iv(x)$) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle e^{\varphi(x)} = e^{u(x) + iv(x)} = e^{u(x)} e^{iv(x)} = e^{u(x)}(\cos(v(x)) + i\sin(v(x)))$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En dérivant les parties réelle et imaginaire :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Partie réelle : $\displaystyle (e^{u(x)}\cos(v(x)))' = e^{u(x)}u'(x)\cos(v(x)) - e^{u(x)}\sin(v(x))v'(x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Partie imaginaire : $\displaystyle (e^{u(x)}\sin(v(x)))' = e^{u(x)}u'(x)\sin(v(x)) + e^{u(x)}\cos(v(x))v'(x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En factorisant $\displaystyle e^{u(x)}$ et en utilisant $\displaystyle \varphi'(x) = u'(x) + iv'(x)$ :</p>
+            <div style="margin:8px 0; text-align:left; font-size:1em;">
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle (e^{\varphi(x)})' = e^{u(x)}[(u'(x) + iv'(x))(\cos(v(x)) + i\sin(v(x)))] = \varphi'(x) e^{\varphi(x)}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Exponentielle imaginaire pure :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = e^{ix}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle \varphi(x) = ix$, donc $\displaystyle \varphi'(x) = i$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle (e^{ix})' = i \cdot e^{ix}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce qui confirme le résultat obtenu précédemment.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Exponentielle avec partie réelle et imaginaire :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = e^{(1+i)x} = e^{x + ix} = e^x e^{ix}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle \varphi(x) = (1+i)x$, donc $\displaystyle \varphi'(x) = 1+i$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle (e^{(1+i)x})' = (1+i) e^{(1+i)x}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut aussi vérifier en utilisant le produit : $\displaystyle (e^x e^{ix})' = e^x e^{ix} + e^x (i e^{ix}) = (1+i)e^x e^{ix}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 3 - Fonction plus générale :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = e^{x^2 + ix^3}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle \varphi(x) = x^2 + ix^3$, donc $\displaystyle \varphi'(x) = 2x + 3ix^2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle f'(x) = (2x + 3ix^2) e^{x^2 + ix^3}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Conjuguée, partie réelle et partie imaginaire</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivée de la conjuguée et des parties réelle et imaginaire</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriétés de dérivation</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f = u + iv$ une fonction complexe dérivable sur $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors on a les propriétés suivantes :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:left; max-width:500px;">
+                <p style="margin:0; padding-left:120px; font-size:1.1em; font-weight:bold;">$\displaystyle (\overline{f})' = \overline{f'}$</p>
+                <p style="margin:8px 0 0 0; padding-left:120px; font-size:1.1em; font-weight:bold;">$\displaystyle (\text{Re}(f))' = \text{Re}(f')$</p>
+                <p style="margin:8px 0 0 0; padding-left:120px; font-size:1.1em; font-weight:bold;">$\displaystyle (\text{Im}(f))' = \text{Im}(f')$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f = u + iv$, alors $\displaystyle \overline{f} = u - iv$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En dérivant : $\displaystyle (\overline{f})' = u' - iv' = \overline{u' + iv'} = \overline{f'}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De même, $\displaystyle \text{Re}(f) = u$ donc $\displaystyle (\text{Re}(f))' = u' = \text{Re}(f')$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Et $\displaystyle \text{Im}(f) = v$ donc $\displaystyle (\text{Im}(f))' = v' = \text{Im}(f')$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = e^{ix} = \cos(x) + i\sin(x)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overline{f}(x) = e^{-ix} = \cos(x) - i\sin(x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (\overline{f})'(x) = -i e^{-ix} = \overline{i e^{ix}} = \overline{f'(x)}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Module et argument (très utile en exercices)</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivée du module au carré</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée de $\displaystyle |f|^2$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction complexe dérivable sur $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors on a toujours :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (|f|^2)' = 2\text{Re}(\overline{f} f')$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle |f|^2 = f \overline{f}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En dérivant avec la règle du produit :</p>
+            <div style="margin:8px 0; text-align:left; font-size:1em;">
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle (|f|^2)' = (f \overline{f})' = f' \overline{f} + f \overline{f'}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Or $\displaystyle f \overline{f'} = \overline{\overline{f} f'}$, donc :</p>
+            <div style="margin:8px 0; text-align:left; font-size:1em;">
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle (|f|^2)' = f' \overline{f} + \overline{\overline{f} f'} = 2\text{Re}(\overline{f} f')$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = e^{ix}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle f'(x) = i e^{ix}$ et $\displaystyle \overline{f}(x) = e^{-ix}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \overline{f}(x) f'(x) = e^{-ix} \cdot i e^{ix} = i$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par la formule : $\displaystyle (|e^{ix}|^2)' = 2\text{Re}(i) = 2 \times 0 = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce qui est cohérent car $\displaystyle |e^{ix}|^2 = 1$ (constante), donc sa dérivée est bien nulle.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivée de l'argument et du logarithme du module</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Conditions et formules</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction complexe de classe $\displaystyle C^1$ sur $\displaystyle I$ telle que $\displaystyle f(x) \neq 0$ pour tout $\displaystyle x \in I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors on a :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (\arg f)' = \text{Im}\left(\frac{f'}{f}\right)$</p>
+                <p style="margin:8px 0 0 0; font-size:1.1em; font-weight:bold;">$\displaystyle (\ln |f|)' = \text{Re}\left(\frac{f'}{f}\right)$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Justification :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f(x) = |f(x)| e^{i\arg(f(x))}$, alors en dérivant et en utilisant la formule de l'exponentielle :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = (|f|)' e^{i\arg(f)} + |f| \cdot i(\arg(f))' e^{i\arg(f)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En divisant par $\displaystyle f(x)$ :</p>
+            <div style="margin:8px 0; text-align:left; font-size:1em;">
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle \frac{f'}{f} = \frac{(|f|)'}{|f|} + i(\arg(f))'$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">D'où : $\displaystyle (\arg f)' = \text{Im}\left(\frac{f'}{f}\right)$ et $\displaystyle (\ln |f|)' = \text{Re}\left(\frac{f'}{f}\right)$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = e^{ix}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \frac{f'}{f} = \frac{i e^{ix}}{e^{ix}} = i$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle (\arg(e^{ix}))' = \text{Im}(i) = 1$ et $\displaystyle (\ln |e^{ix}|)' = \text{Re}(i) = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce qui est cohérent car $\displaystyle |e^{ix}| = 1$ (donc $\displaystyle \ln |e^{ix}| = 0$) et $\displaystyle \arg(e^{ix}) = x$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Dérivées d'ordre supérieur et formule de Leibniz</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formule de Leibniz pour les dérivées d'ordre supérieur</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formule de Leibniz</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle f$ et $\displaystyle g$ deux fonctions complexes $\displaystyle n$ fois dérivables sur $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors le produit $\displaystyle fg$ est $\displaystyle n$ fois dérivable et :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (fg)^{(n)} = \sum_{k=0}^{n} \binom{n}{k} f^{(k)} g^{(n-k)}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule est valable composante par composante (pour les parties réelle et imaginaire).</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La démonstration se fait par récurrence sur $\displaystyle n$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle n = 1$, on retrouve la règle du produit : $\displaystyle (fg)' = f'g + fg'$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En supposant la formule vraie au rang $\displaystyle n$, on montre qu'elle est vraie au rang $\displaystyle n+1$ en dérivant une fois de plus et en utilisant la relation de Pascal sur les coefficients binomiaux.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme la dérivation se fait composante par composante, la formule s'applique également aux fonctions complexes.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = x$ et $\displaystyle g(x) = e^{ix}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle f'(x) = 1$, $\displaystyle f''(x) = 0$, et $\displaystyle g^{(k)}(x) = i^k e^{ix}$ pour tout $\displaystyle k \in \mathbb{N}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle n = 2$ :</p>
+            <div style="margin:8px 0; text-align:left; font-size:1em;">
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle (x e^{ix})'' = \binom{2}{0} x \cdot (i^2 e^{ix}) + \binom{2}{1} 1 \cdot (i e^{ix}) + \binom{2}{2} 0 \cdot e^{ix}$</p>
+                <p style="margin:4px 0; padding-left:0;">$\displaystyle \phantom{(x e^{ix})''} = -x e^{ix} + 2i e^{ix} = e^{ix}(-x + 2i)$</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Extension des résultats classiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Brève extension des résultats sur les fonctions à valeurs réelles</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Principe général</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La plupart des règles de dérivation valables pour les fonctions réelles s'étendent naturellement aux fonctions complexes d'une variable réelle.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela s'explique par le fait que la dérivation se fait "composante par composante" (partie réelle et partie imaginaire).</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée d'une composée (rappel clair)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle u : \mathbb{R} \to \mathbb{R}$ une fonction réelle dérivable et $\displaystyle g : \mathbb{R} \to \mathbb{C}$ une fonction complexe dérivable.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle g \circ u$ est dérivable sur $\displaystyle I$ et :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (g \circ u)' = (g' \circ u) \cdot u'$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule reste valable car elle découle directement de la règle de la chaîne appliquée aux parties réelle et imaginaire.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas particulier : exponentielle d'une fonction complexe</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle \varphi : \mathbb{R} \to \mathbb{C}$ une fonction complexe dérivable.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (e^{\varphi})' = \varphi' e^{\varphi}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule est un cas particulier de la règle de la chaîne pour l'exponentielle.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée d'une puissance</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : I \to \mathbb{C}$ une fonction complexe dérivable et $\displaystyle n \in \mathbb{N}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle f^n$ est dérivable et :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (f^n)' = n f^{n-1} f'$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule se démontre par récurrence en utilisant la règle du produit.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = (e^{ix})^3 = e^{3ix}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En utilisant la formule de la puissance : $\displaystyle f'(x) = 3(e^{ix})^2 \times (e^{ix})' = 3(e^{ix})^2 \times i e^{ix} = 3i e^{3ix}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En utilisant directement l'exponentielle : $\displaystyle f'(x) = (e^{3ix})' = 3i e^{3ix}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les deux méthodes donnent le même résultat.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée d'une fonction constante</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f(x) = c$ où $\displaystyle c \in \mathbb{C}$ est une constante complexe, alors $\displaystyle f'(x) = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En effet, $\displaystyle f(x) = \text{Re}(c) + i \text{Im}(c)$ où les parties réelle et imaginaire sont constantes.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Dérivée d'un polynôme complexe</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle P(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$ où les $\displaystyle a_k \in \mathbb{C}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle P'(x) = n a_n x^{n-1} + (n-1) a_{n-1} x^{n-2} + \cdots + a_1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La formule de dérivation d'un polynôme reste identique, même avec des coefficients complexes.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes de calcul</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Calculer la dérivée d'une fonction complexe</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Identifier la structure</strong> : combinaison linéaire, produit, quotient, composée, exponentielle</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Appliquer la règle appropriée</strong> : linéarité, produit, quotient, chaîne, exponentielle</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Vérifier via les parties réelle et imaginaire</strong> si nécessaire</li>
+                <li style="margin:0; text-align:left;"><strong>Simplifier</strong> l'expression obtenue</li>
+            </ol>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Vérifier un calcul via les parties réelle et imaginaire</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour vérifier un calcul de dérivée complexe :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Écrire $\displaystyle f(x) = u(x) + iv(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer $\displaystyle u'(x)$ et $\displaystyle v'(x)$ séparément</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Vérifier que $\displaystyle f'(x) = u'(x) + iv'(x)$</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Dérivée par parties réelle et imaginaire :</strong> Toujours vérifier que $\displaystyle f'(x) = u'(x) + iv'(x)$</li>
+                <li style="margin:0; text-align:left;"><strong>Exponentielle complexe :</strong> Utiliser la formule $\displaystyle (e^{\varphi})' = \varphi' e^{\varphi}$</li>
+                <li style="margin:0; text-align:left;"><strong>Produit et quotient :</strong> Les formules sont identiques aux fonctions réelles</li>
+                <li style="margin:0; text-align:left;"><strong>Linéarité :</strong> La dérivation est linéaire même avec des coefficients complexes</li>
+                <li style="margin:0; text-align:left;"><strong>Composée :</strong> La règle de la chaîne s'applique également</li>
+                <li style="margin:0; text-align:left;"><strong>Vérification :</strong> Toujours vérifier les calculs en développant les parties réelle et imaginaire</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;">Oublier que la dérivée se fait composante par composante</li>
+                <li style="margin:0; text-align:left;">Confondre $\displaystyle (e^{ix})'$ avec $\displaystyle e^{ix'}$ (la dérivée de $\displaystyle e^{ix}$ est $\displaystyle i e^{ix}$, pas $\displaystyle e^{i}$)</li>
+                <li style="margin:0; text-align:left;">Oublier de multiplier par $\displaystyle \varphi'(x)$ dans la formule $\displaystyle (e^{\varphi})' = \varphi' e^{\varphi}$</li>
+                <li style="margin:0; text-align:left;">Ne pas simplifier les expressions complexes après dérivation</li>
+                <li style="margin:0; text-align:left;">Oublier que les règles de dérivation (produit, quotient) restent valables</li>
+                <li style="margin:0; text-align:left;">Confondre la dérivée d'une fonction complexe avec la dérivée d'une fonction de variable complexe (analyse complexe)</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La dérivation d'une fonction complexe d'une variable réelle est différente de la dérivation d'une fonction de variable complexe (fonction holomorphe).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ici, on dérive par rapport à une variable réelle $\displaystyle x$, et la fonction prend des valeurs complexes.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En analyse complexe, on dérive par rapport à une variable complexe $\displaystyle z$, ce qui nécessite des conditions supplémentaires (équations de Cauchy-Riemann).</p>
+        </div>
+    </div>
+
+</div>
+
+===
+

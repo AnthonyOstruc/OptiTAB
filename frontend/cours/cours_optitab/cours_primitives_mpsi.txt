@@ -1,0 +1,799 @@
+=== Calcul de Primitives - Programme MPSI
+Difficulté: medium
+Ordre: 5
+Images: 
+
+Titre: Calcul de Primitives : Définitions, Méthodes et Applications au Calcul d'Intégrales
+Description: Cours complet sur le calcul de primitives en MPSI : définition d'une primitive, lien entre intégrales et primitives, primitives des fonctions usuelles (exponentielle, logarithme, puissances, trigonométriques, hyperboliques), méthodes d'intégration par parties et changement de variable, et applications pratiques.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition et existence d'une primitive</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition d'une primitive</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Primitive d'une fonction</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : I \to \mathbb{C}$ une fonction définie sur un intervalle $\displaystyle I$ (où $\displaystyle I$ est une partie de $\displaystyle \mathbb{R}$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On appelle <strong>primitive</strong> de $\displaystyle f$ sur $\displaystyle I$ toute fonction $\displaystyle F : I \to \mathbb{C}$ dérivable sur $\displaystyle I$ telle que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle F'(x) = f(x)$ pour tout $\displaystyle x \in I$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit aussi que $\displaystyle F$ est une primitive de $\displaystyle f$ ou que $\displaystyle F$ est une fonction dont la dérivée est $\displaystyle f$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Notation générique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note souvent $\displaystyle \int f(x) \, dx$ (ou $\displaystyle \int f(t) \, dt$) pour désigner une primitive générique de $\displaystyle f$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette notation est pratique mais il faut garder à l'esprit qu'une primitive n'est définie qu'à une constante additive près.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Une primitive de $\displaystyle f(x) = 2x$ est $\displaystyle F(x) = x^2$ car $\displaystyle F'(x) = 2x = f(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Une primitive de $\displaystyle g(x) = \cos(x)$ est $\displaystyle G(x) = \sin(x)$ car $\displaystyle G'(x) = \cos(x) = g(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Une primitive de $\displaystyle h(x) = e^x$ est $\displaystyle H(x) = e^x$ car $\displaystyle H'(x) = e^x = h(x)$</li>
+                <li style="margin:0; text-align:left;">Une primitive de $\displaystyle k(x) = \frac{1}{x}$ sur $\displaystyle ]0, +\infty[$ est $\displaystyle K(x) = \ln(x)$ car $\displaystyle K'(x) = \frac{1}{x} = k(x)$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Ensemble des primitives</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème : Description de l'ensemble des primitives</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : I \to \mathbb{C}$ une fonction définie sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle F$ est une primitive de $\displaystyle f$ sur $\displaystyle I$, alors l'ensemble de toutes les primitives de $\displaystyle f$ sur $\displaystyle I$ est :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \{F + C : C \in \mathbb{C}\}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle C$ est une constante complexe arbitraire.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En particulier, si $\displaystyle f$ est à valeurs réelles et si $\displaystyle F$ est une primitive réelle, alors toutes les primitives réelles sont de la forme $\displaystyle F + C$ où $\displaystyle C \in \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle F$ et $\displaystyle G$ sont deux primitives de $\displaystyle f$ sur $\displaystyle I$, alors $\displaystyle (F - G)' = F' - G' = f - f = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur un intervalle, une fonction de dérivée nulle est constante. Donc $\displaystyle F - G = C$ pour une certaine constante $\displaystyle C$, ce qui donne $\displaystyle G = F + C$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Les primitives de $\displaystyle f(x) = 2x$ sont $\displaystyle F(x) = x^2 + C$ où $\displaystyle C \in \mathbb{R}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Les primitives de $\displaystyle g(x) = \cos(x)$ sont $\displaystyle G(x) = \sin(x) + C$ où $\displaystyle C \in \mathbb{R}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Les primitives de $\displaystyle h(x) = \frac{1}{x}$ sur $\displaystyle ]0, +\infty[$ sont $\displaystyle H(x) = \ln(x) + C$ où $\displaystyle C \in \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;">Les primitives de $\displaystyle k(x) = e^x$ sont $\displaystyle K(x) = e^x + C$ où $\displaystyle C \in \mathbb{R}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Primitive avec condition initiale</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si on impose une condition initiale, par exemple $\displaystyle F(x_0) = y_0$ pour un point $\displaystyle x_0 \in I$ et une valeur $\displaystyle y_0 \in \mathbb{C}$, alors il existe une unique primitive $\displaystyle F$ de $\displaystyle f$ vérifiant cette condition.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette primitive est donnée par : $\displaystyle F(x) = F_0(x) + (y_0 - F_0(x_0))$ où $\displaystyle F_0$ est une primitive quelconque de $\displaystyle f$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Lien entre intégrales et primitives</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème fondamental du calcul intégral</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : I \to \mathbb{C}$ une fonction continue sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x_0 \in I$, la fonction $\displaystyle F$ définie sur $\displaystyle I$ par :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle F(x) = \int_{x_0}^{x} f(t) \, dt$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">est une primitive de $\displaystyle f$ sur $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En particulier, $\displaystyle F'(x) = f(x)$ pour tout $\displaystyle x \in I$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce résultat est admis sans démonstration en MPSI. Il établit le lien fondamental entre intégration et dérivation.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il permet de calculer des intégrales en trouvant une primitive : si $\displaystyle F$ est une primitive de $\displaystyle f$ sur $\displaystyle [a, b]$, alors :</p>
+            <div style="background:#ecfdf5; border:3px solid #10b981; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int_{a}^{b} f(t) \, dt = F(b) - F(a)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notation : on note aussi $\displaystyle [F(t)]_a^b$ ou $\displaystyle F(t) \Big|_a^b$ pour $\displaystyle F(b) - F(a)$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour calculer $\displaystyle \int_{0}^{1} 2x \, dx$, on utilise la primitive $\displaystyle F(x) = x^2$ : $\displaystyle \int_{0}^{1} 2x \, dx = F(1) - F(0) = 1^2 - 0^2 = 1$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour calculer $\displaystyle \int_{0}^{\pi} \cos(x) \, dx$, on utilise la primitive $\displaystyle G(x) = \sin(x)$ : $\displaystyle \int_{0}^{\pi} \cos(x) \, dx = \sin(\pi) - \sin(0) = 0 - 0 = 0$</li>
+                <li style="margin:0; text-align:left;">Pour calculer $\displaystyle \int_{1}^{e} \frac{1}{x} \, dx$, on utilise la primitive $\displaystyle H(x) = \ln(x)$ : $\displaystyle \int_{1}^{e} \frac{1}{x} \, dx = \ln(e) - \ln(1) = 1 - 0 = 1$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Primitives des fonctions usuelles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Tableau des primitives usuelles</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Tableau de référence</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans ce tableau, $\displaystyle C$ désigne une constante arbitraire (réelle ou complexe selon le contexte).</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonctions puissances</strong></p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; font-size:1em;">
+                <thead>
+                    <tr style="background:#3498db; color:#ffffff;">
+                        <th style="width:40%; padding:12px; text-align:left; border:1px solid #2980b9;">Fonction</th>
+                        <th style="width:60%; padding:12px; text-align:left; border:1px solid #2980b9;">Primitive</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle x^n$ ($\displaystyle n \in \mathbb{Z} \setminus \{-1\}$)</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{x^{n+1}}{n+1} + C$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle x^{\alpha}$ ($\displaystyle \alpha \in \mathbb{R} \setminus \{-1\}$)</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{x^{\alpha+1}}{\alpha+1} + C$<br><small style="color:#6c757d;">Si $\displaystyle \alpha \notin \mathbb{Z}$, sur intervalle où $\displaystyle x > 0$</small></td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{x}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \ln(|x|) + C$<br><small style="color:#6c757d;">sur $\displaystyle ]-\infty, 0[$ ou $\displaystyle ]0, +\infty[$</small></td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{x^n}$ ($\displaystyle n \geq 2$)</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle -\frac{1}{(n-1)x^{n-1}} + C$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction exponentielle</strong></p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; font-size:1em;">
+                <thead>
+                    <tr style="background:#3498db; color:#ffffff;">
+                        <th style="width:40%; padding:12px; text-align:left; border:1px solid #2980b9;">Fonction</th>
+                        <th style="width:60%; padding:12px; text-align:left; border:1px solid #2980b9;">Primitive</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle e^x$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle e^x + C$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle e^{\lambda x}$ ($\displaystyle \lambda \in \mathbb{C}^{\ast}$)</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{e^{\lambda x}}{\lambda} + C$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle a^x$ ($\displaystyle a > 0$, $\displaystyle a \neq 1$)</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{a^x}{\ln(a)} + C$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction logarithme</strong></p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; font-size:1em;">
+                <thead>
+                    <tr style="background:#3498db; color:#ffffff;">
+                        <th style="width:40%; padding:12px; text-align:left; border:1px solid #2980b9;">Fonction</th>
+                        <th style="width:60%; padding:12px; text-align:left; border:1px solid #2980b9;">Primitive</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \ln(x)$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle x\ln(x) - x + C$<br><small style="color:#6c757d;">sur $\displaystyle ]0, +\infty[$</small></td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \log_a(x)$ ($\displaystyle a > 0$, $\displaystyle a \neq 1$)</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{x\ln(x) - x}{\ln(a)} + C$<br><small style="color:#6c757d;">sur $\displaystyle ]0, +\infty[$</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonctions trigonométriques</strong></p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; font-size:1em;">
+                <thead>
+                    <tr style="background:#3498db; color:#ffffff;">
+                        <th style="width:40%; padding:12px; text-align:left; border:1px solid #2980b9;">Fonction</th>
+                        <th style="width:60%; padding:12px; text-align:left; border:1px solid #2980b9;">Primitive</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \sin(x)$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle -\cos(x) + C$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \cos(x)$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \sin(x) + C$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \tan(x)$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle -\ln(|\cos(x)|) + C$<br><small style="color:#6c757d;">si $\displaystyle \cos(x) \neq 0$</small></td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{\cos^2(x)}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \tan(x) + C$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{\sin^2(x)}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle -\cot(x) + C$<br><small style="color:#6c757d;">si $\displaystyle \sin(x) \neq 0$</small></td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{\sin(x)}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \ln\left|\tan\left(\frac{x}{2}\right)\right| + C$<br><small style="color:#6c757d;">si $\displaystyle \sin(x) \neq 0$</small></td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{\cos(x)}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \ln\left|\tan\left(\frac{x}{2} + \frac{\pi}{4}\right)\right| + C$<br><small style="color:#6c757d;">si $\displaystyle \cos(x) \neq 0$</small></td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \sec(x) = \frac{1}{\cos(x)}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \ln|\sec(x) + \tan(x)| + C$<br><small style="color:#6c757d;">forme standard souvent attendue</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonctions trigonométriques réciproques</strong></p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; font-size:1em;">
+                <thead>
+                    <tr style="background:#3498db; color:#ffffff;">
+                        <th style="width:40%; padding:12px; text-align:left; border:1px solid #2980b9;">Fonction</th>
+                        <th style="width:60%; padding:12px; text-align:left; border:1px solid #2980b9;">Primitive</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{1+x^2}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \arctan(x) + C$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{\sqrt{1-x^2}}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \arcsin(x) + C$<br><small style="color:#6c757d;">sur $\displaystyle ]-1, 1[$</small></td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{-1}{\sqrt{1-x^2}}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \arccos(x) + C$<br><small style="color:#6c757d;">sur $\displaystyle ]-1, 1[$</small></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#6c757d;"><strong>Remarque :</strong> Pour les fonctions $\displaystyle \arcsin$ et $\displaystyle \arccos$, le domaine de définition est $\displaystyle ]-1, 1[$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonctions hyperboliques</strong></p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; font-size:1em;">
+                <thead>
+                    <tr style="background:#3498db; color:#ffffff;">
+                        <th style="width:40%; padding:12px; text-align:left; border:1px solid #2980b9;">Fonction</th>
+                        <th style="width:60%; padding:12px; text-align:left; border:1px solid #2980b9;">Primitive</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \sinh(x)$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \cosh(x) + C$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \cosh(x)$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \sinh(x) + C$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \tanh(x)$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \ln(\cosh(x)) + C$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{\cosh^2(x)}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \tanh(x) + C$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{\sinh^2(x)}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle -\coth(x) + C$<br><small style="color:#6c757d;">si $\displaystyle \sinh(x) \neq 0$</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonctions hyperboliques réciproques</strong></p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; font-size:1em;">
+                <thead>
+                    <tr style="background:#3498db; color:#ffffff;">
+                        <th style="width:40%; padding:12px; text-align:left; border:1px solid #2980b9;">Fonction</th>
+                        <th style="width:60%; padding:12px; text-align:left; border:1px solid #2980b9;">Primitive</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{\sqrt{x^2+1}}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \text{argsinh}(x) + C = \ln(x + \sqrt{x^2+1}) + C$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{\sqrt{x^2-1}}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \text{argcosh}(x) + C = \ln(x + \sqrt{x^2-1}) + C$<br><small style="color:#6c757d;">pour $\displaystyle x > 1$</small></td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \frac{1}{1-x^2}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \text{argtanh}(x) + C = \frac{1}{2}\ln\left|\frac{1+x}{1-x}\right| + C$<br><small style="color:#6c757d;">sur $\displaystyle ]-1, 1[$</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Primitives avec paramètres complexes</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Primitive de $\displaystyle x \mapsto e^{\lambda x}$ pour $\displaystyle \lambda \in \mathbb{C}$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle \lambda \in \mathbb{C}^{\ast}$, une primitive de $\displaystyle x \mapsto e^{\lambda x}$ est :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int e^{\lambda x} \, dx = \frac{e^{\lambda x}}{\lambda} + C$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule est valable même si $\displaystyle \lambda$ est complexe.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Application : Primitives de $\displaystyle x \mapsto e^{ax}\cos(bx)$ et $\displaystyle x \mapsto e^{ax}\sin(bx)$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle a, b \in \mathbb{R}$ avec $\displaystyle b \neq 0$, on peut utiliser la formule d'Euler :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle e^{(a+ib)x} = e^{ax}(\cos(bx) + i\sin(bx))$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une primitive de $\displaystyle x \mapsto e^{(a+ib)x}$ est $\displaystyle \frac{e^{(a+ib)x}}{a+ib}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En prenant les parties réelle et imaginaire, on obtient :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \int e^{ax}\cos(bx) \, dx = \frac{e^{ax}}{a^2+b^2}(a\cos(bx) + b\sin(bx)) + C$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \int e^{ax}\sin(bx) \, dx = \frac{e^{ax}}{a^2+b^2}(a\sin(bx) - b\cos(bx)) + C$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>$\displaystyle \int e^{2x}\cos(3x) \, dx$ :</strong> $\displaystyle a = 2$, $\displaystyle b = 3$ $\displaystyle \Rightarrow \int e^{2x}\cos(3x) \, dx = \frac{e^{2x}}{13}(2\cos(3x) + 3\sin(3x)) + C$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Méthode rapide "réduction" pour $\displaystyle e^{ax}\cos(bx)$ et $\displaystyle e^{ax}\sin(bx)$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une méthode alternative utilisant l'intégration par parties (utile en DS) consiste à définir :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle I = \int e^{ax}\cos(bx) \, dx$ et $\displaystyle J = \int e^{ax}\sin(bx) \, dx$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En appliquant deux fois l'intégration par parties, on obtient un système qui permet de retrouver les formules :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle I = \frac{e^{ax}}{a^2+b^2}(a\cos(bx) + b\sin(bx)) + C$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle J = \frac{e^{ax}}{a^2+b^2}(a\sin(bx) - b\cos(bx)) + C$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette méthode est une alternative à la décomposition via $\displaystyle e^{(a+ib)x}$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Linéarité et opérations sur les primitives</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Linéarité</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Primitive d'une combinaison linéaire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle f$ et $\displaystyle g$ deux fonctions définies sur un intervalle $\displaystyle I$, et $\displaystyle \lambda, \mu \in \mathbb{C}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle F$ est une primitive de $\displaystyle f$ et $\displaystyle G$ est une primitive de $\displaystyle g$, alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int (\lambda f + \mu g)(x) \, dx = \lambda F(x) + \mu G(x) + C$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En particulier :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \int (f + g)(x) \, dx = F(x) + G(x) + C$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \int (\lambda f)(x) \, dx = \lambda F(x) + C$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int (3x^2 + 2x + 1) \, dx$ :</strong> $\displaystyle x^3 + x^2 + x + C$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int (2\sin(x) - 3\cos(x)) \, dx$ :</strong> $\displaystyle -2\cos(x) - 3\sin(x) + C$</li>
+                <li style="margin:0; text-align:left;"><strong>$\displaystyle \int (e^x + \frac{1}{x}) \, dx$ :</strong> $\displaystyle e^x + \ln(|x|) + C$ sur $\displaystyle ]0, +\infty[$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Primitive d'une fonction composée</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas particulier : $\displaystyle \int f'(x) \cdot g(f(x)) \, dx$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle G$ est une primitive de $\displaystyle g$, alors une primitive de $\displaystyle x \mapsto f'(x) \cdot g(f(x))$ est $\displaystyle G \circ f$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En effet : $\displaystyle (G \circ f)'(x) = G'(f(x)) \cdot f'(x) = g(f(x)) \cdot f'(x)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int 2x \cdot e^{x^2} \, dx$ :</strong> $\displaystyle f(x) = x^2$ $\displaystyle \Rightarrow \int 2x \cdot e^{x^2} \, dx = e^{x^2} + C$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int \frac{2x}{1+x^2} \, dx$ :</strong> $\displaystyle f(x) = 1+x^2$ $\displaystyle \Rightarrow \int \frac{2x}{1+x^2} \, dx = \ln(1+x^2) + C$</li>
+                <li style="margin:0; text-align:left;"><strong>$\displaystyle \int \cos(x) \cdot \sin^2(x) \, dx$ :</strong> $\displaystyle f(x) = \sin(x)$ $\displaystyle \Rightarrow \int \cos(x) \cdot \sin^2(x) \, dx = \frac{\sin^3(x)}{3} + C$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Intégration par parties</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formule d'intégration par parties</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème : Intégration par parties</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle u$ et $\displaystyle v$ deux fonctions dérivables sur un intervalle $\displaystyle I$ telles que $\displaystyle u'$ et $\displaystyle v'$ sont continues.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int u(x) v'(x) \, dx = u(x) v(x) - \int u'(x) v(x) \, dx + C$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule découle directement de la dérivée du produit : $\displaystyle (uv)' = u'v + uv'$.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Comment choisir $\displaystyle u$ et $\displaystyle v'$ ?</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour intégrer $\displaystyle \int f(x) g(x) \, dx$ par parties :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Identifier $\displaystyle u$ et $\displaystyle v'$ tels que $\displaystyle f = u$ et $\displaystyle g = v'$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer $\displaystyle u'$ et une primitive $\displaystyle v$ de $\displaystyle v'$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Appliquer la formule : $\displaystyle \int u v' = uv - \int u' v$</li>
+                <li style="margin:0; text-align:left;">Vérifier que la nouvelle intégrale $\displaystyle \int u' v$ est plus simple que l'originale</li>
+            </ol>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Règle mnémotechnique :</strong> On choisit souvent $\displaystyle u$ comme la fonction qui se simplifie par dérivation (polynôme, logarithme) et $\displaystyle v'$ comme la fonction facile à intégrer (exponentielle, trigonométrique).</p>
+            <div style="background:#fff7ed; border-radius:6px; border-left:6px solid #fdba74; padding:15px; margin:12px 0;">
+                <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>⚠️ Choix de $\displaystyle u$ : "ILATE"</strong> - Inverse, Logarithme, Algébrique, Trigonométrique, Exponentielle</p>
+                <p style="margin:8px 0; text-align:left; font-size:1em;">L'ordre de priorité pour choisir $\displaystyle u$ est (du plus prioritaire au moins prioritaire) :</p>
+                <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                    <li style="margin:0 0 18px 0; text-align:left;"><strong>I</strong>nverse (ex: $\displaystyle \arcsin(x)$, $\displaystyle \arctan(x)$)</li>
+                    <li style="margin:0 0 18px 0; text-align:left;"><strong>L</strong>ogarithme (ex: $\displaystyle \ln(x)$)</li>
+                    <li style="margin:0 0 18px 0; text-align:left;"><strong>A</strong>lgébrique (ex: polynômes, $\displaystyle x^n$)</li>
+                    <li style="margin:0 0 18px 0; text-align:left;"><strong>T</strong>rigonométrique (ex: $\displaystyle \sin(x)$, $\displaystyle \cos(x)$)</li>
+                    <li style="margin:0; text-align:left;"><strong>E</strong>xponentielle (ex: $\displaystyle e^x$, $\displaystyle a^x$)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int x e^x \, dx$ :</strong> $\displaystyle u(x) = x$, $\displaystyle v'(x) = e^x$ $\displaystyle \Rightarrow \int x e^x \, dx = e^x(x-1) + C$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int x \sin(x) \, dx$ :</strong> $\displaystyle u(x) = x$, $\displaystyle v'(x) = \sin(x)$ $\displaystyle \Rightarrow \int x \sin(x) \, dx = -x\cos(x) + \sin(x) + C$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int \ln(x) \, dx$ :</strong> $\displaystyle u(x) = \ln(x)$, $\displaystyle v'(x) = 1$ $\displaystyle \Rightarrow \int \ln(x) \, dx = x\ln(x) - x + C$</li>
+                <li style="margin:0; text-align:left;"><strong>$\displaystyle \int x^2 e^x \, dx$ :</strong> Appliquer deux fois l'intégration par parties</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Intégration par parties itérées</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas où il faut intégrer plusieurs fois par parties</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Parfois, il faut appliquer l'intégration par parties plusieurs fois de suite pour obtenir une primitive.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est souvent le cas avec des produits de polynômes et d'exponentielles ou de fonctions trigonométriques.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>$\displaystyle \int x^2 e^x \, dx$ :</strong> $\displaystyle \int x^2 e^x \, dx = e^x(x^2 - 2x + 2) + C$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Changement de variable</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formule du changement de variable</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème : Changement de variable</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle \varphi : I \to J$ une fonction dérivable et bijective de $\displaystyle I$ sur $\displaystyle J$, avec $\displaystyle \varphi'$ continue et ne s'annulant pas.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : J \to \mathbb{C}$ une fonction continue.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle F$ est une primitive de $\displaystyle f$ sur $\displaystyle J$, alors une primitive de $\displaystyle x \mapsto f(\varphi(x)) \varphi'(x)$ sur $\displaystyle I$ est $\displaystyle F \circ \varphi$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En notation d'intégrale :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int f(\varphi(x)) \varphi'(x) \, dx = F(\varphi(x)) + C$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En posant $\displaystyle u = \varphi(x)$, on a $\displaystyle du = \varphi'(x) dx$ et :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int f(\varphi(x)) \varphi'(x) \, dx = \int f(u) \, du$</p>
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Comment effectuer un changement de variable ?</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer $\displaystyle \int g(x) \, dx$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Identifier une fonction $\displaystyle \varphi$ telle que $\displaystyle g(x) = f(\varphi(x)) \varphi'(x)$ pour une fonction $\displaystyle f$ dont on connaît une primitive</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Poser $\displaystyle u = \varphi(x)$, donc $\displaystyle du = \varphi'(x) dx$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Remplacer dans l'intégrale : $\displaystyle \int g(x) \, dx = \int f(u) \, du$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer $\displaystyle \int f(u) \, du = F(u) + C$</li>
+                <li style="margin:0; text-align:left;">Revenir à la variable $\displaystyle x$ : $\displaystyle F(u) + C = F(\varphi(x)) + C$</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int 2x e^{x^2} \, dx$ :</strong> $\displaystyle u = x^2$ $\displaystyle \Rightarrow \int 2x e^{x^2} \, dx = e^{x^2} + C$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int \frac{2x}{1+x^2} \, dx$ :</strong> $\displaystyle u = 1+x^2$ $\displaystyle \Rightarrow \int \frac{2x}{1+x^2} \, dx = \ln(1+x^2) + C$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int \sin(x) \cos^2(x) \, dx$ :</strong> $\displaystyle u = \cos(x)$ $\displaystyle \Rightarrow \int \sin(x) \cos^2(x) \, dx = -\frac{\cos^3(x)}{3} + C$</li>
+                <li style="margin:0; text-align:left;"><strong>$\displaystyle \int \frac{1}{\sqrt{1-x^2}} \, dx$ :</strong> $\displaystyle x = \sin(u)$ $\displaystyle \Rightarrow \int \frac{1}{\sqrt{1-x^2}} \, dx = \arcsin(x) + C$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Changements de variable classiques</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Changements de variable usuels</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Pour $\displaystyle \int f(ax+b) \, dx$ :</strong> Poser $\displaystyle u = ax+b$, donc $\displaystyle du = a \, dx$ et $\displaystyle dx = \frac{du}{a}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Pour $\displaystyle \int f(x^n) x^{n-1} \, dx$ :</strong> Poser $\displaystyle u = x^n$, donc $\displaystyle du = nx^{n-1} \, dx$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Pour $\displaystyle \int \frac{f'(x)}{f(x)} \, dx$ :</strong> Poser $\displaystyle u = f(x)$, donc $\displaystyle du = f'(x) \, dx$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Pour $\displaystyle \int f(\sqrt{x}) \frac{1}{\sqrt{x}} \, dx$ :</strong> Poser $\displaystyle u = \sqrt{x}$, donc $\displaystyle du = \frac{1}{2\sqrt{x}} \, dx$</li>
+                <li style="margin:0; text-align:left;"><strong>Pour $\displaystyle \int f(\sin(x)) \cos(x) \, dx$ ou $\displaystyle \int f(\cos(x)) \sin(x) \, dx$ :</strong> Poser $\displaystyle u = \sin(x)$ ou $\displaystyle u = \cos(x)$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Primitives de fonctions rationnelles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Fonctions du type $\displaystyle \frac{1}{ax^2+bx+c}$ selon le discriminant</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas $\displaystyle \int \frac{1}{ax^2+bx+c} \, dx$ — selon le discriminant</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer $\displaystyle \int \frac{1}{ax^2+bx+c} \, dx$ avec $\displaystyle a \neq 0$, on considère le discriminant $\displaystyle \Delta = b^2 - 4ac$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas 1 : $\displaystyle \Delta < 0$ (pas de racines réelles)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une primitive est donnée par :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int \frac{1}{ax^2+bx+c} \, dx = \frac{2}{\sqrt{4ac-b^2}} \arctan\left(\frac{2ax+b}{\sqrt{4ac-b^2}}\right) + C$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas 2 : $\displaystyle \Delta > 0$ avec racines réelles distinctes $\displaystyle \alpha \neq \beta$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le dénominateur se factorise : $\displaystyle ax^2+bx+c = a(x-\alpha)(x-\beta)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une primitive est donnée par :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int \frac{1}{a(x-\alpha)(x-\beta)} \, dx = \frac{1}{a(\alpha-\beta)} \ln\left|\frac{x-\alpha}{x-\beta}\right| + C$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas 3 : $\displaystyle \Delta = 0$ (racine double $\displaystyle \alpha$)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le dénominateur se factorise : $\displaystyle ax^2+bx+c = a(x-\alpha)^2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une primitive est donnée par :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int \frac{1}{a(x-\alpha)^2} \, dx = -\frac{1}{a(x-\alpha)} + C$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int \frac{1}{1+x^2} \, dx$ :</strong> $\displaystyle \Delta = -4 < 0$ $\displaystyle \Rightarrow \int \frac{1}{1+x^2} \, dx = \arctan(x) + C$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int \frac{1}{x^2+2x+2} \, dx$ :</strong> $\displaystyle \Delta = -4 < 0$ $\displaystyle \Rightarrow \int \frac{1}{x^2+2x+2} \, dx = \arctan(x+1) + C$</li>
+                <li style="margin:0; text-align:left;"><strong>$\displaystyle \int \frac{1}{x^2-1} \, dx$ :</strong> $\displaystyle \Delta > 0$, $\displaystyle \alpha = 1$, $\displaystyle \beta = -1$ $\displaystyle \Rightarrow \int \frac{1}{x^2-1} \, dx = \frac{1}{2}\ln\left|\frac{x-1}{x+1}\right| + C$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Reconnaissance de dérivées de fonctions composées</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Méthode : Reconnaître une dérivée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les étudiants doivent savoir reconnaître les dérivées de fonctions composées pour calculer rapidement certaines primitives.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Exemples de dérivées à reconnaître :</p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; font-size:1em;">
+                <thead>
+                    <tr style="background:#3498db; color:#ffffff;">
+                        <th style="width:40%; padding:12px; text-align:left; border:1px solid #2980b9;">Dérivée</th>
+                        <th style="width:60%; padding:12px; text-align:left; border:1px solid #2980b9;">Primitive correspondante</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle (\ln(f(x)))' = \frac{f'(x)}{f(x)}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \int \frac{f'(x)}{f(x)} \, dx = \ln(|f(x)|) + C$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle (f(x)^n)' = n f'(x) f(x)^{n-1}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \int f'(x) f(x)^{n-1} \, dx = \frac{f(x)^n}{n} + C$<br><small style="color:#6c757d;">pour $\displaystyle n \neq 0$</small></td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle (e^{f(x)})' = f'(x) e^{f(x)}$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \int f'(x) e^{f(x)} \, dx = e^{f(x)} + C$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="width:40%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle (\sin(f(x)))' = f'(x) \cos(f(x))$</td>
+                        <td style="width:60%; padding:10px; border:1px solid #e1e8ed;">$\displaystyle \int f'(x) \cos(f(x)) \, dx = \sin(f(x)) + C$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int \frac{2x+1}{x^2+x+1} \, dx$ :</strong> $\displaystyle (x^2+x+1)' = 2x+1$ $\displaystyle \Rightarrow \int \frac{2x+1}{x^2+x+1} \, dx = \ln(|x^2+x+1|) + C$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int \frac{3x^2}{x^3+1} \, dx$ :</strong> $\displaystyle (x^3+1)' = 3x^2$ $\displaystyle \Rightarrow \int \frac{3x^2}{x^3+1} \, dx = \ln(|x^3+1|) + C$</li>
+                <li style="margin:0; text-align:left;"><strong>$\displaystyle \int \cos(x) e^{\sin(x)} \, dx$ :</strong> $\displaystyle (\sin(x))' = \cos(x)$ $\displaystyle \Rightarrow \int \cos(x) e^{\sin(x)} \, dx = e^{\sin(x)} + C$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Application au calcul d'intégrales</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formule fondamentale</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Calcul d'une intégrale définie</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est continue sur $\displaystyle [a, b]$ et si $\displaystyle F$ est une primitive de $\displaystyle f$ sur $\displaystyle [a, b]$, alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int_{a}^{b} f(x) \, dx = F(b) - F(a)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notation : $\displaystyle [F(x)]_a^b$ ou $\displaystyle F(x) \Big|_a^b$ pour $\displaystyle F(b) - F(a)$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int_{0}^{1} x^2 \, dx$ :</strong> $\displaystyle \left[\frac{x^3}{3}\right]_0^1 = \frac{1}{3}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int_{0}^{\pi} \sin(x) \, dx$ :</strong> $\displaystyle [-\cos(x)]_0^{\pi} = 2$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int_{1}^{e} \frac{1}{x} \, dx$ :</strong> $\displaystyle [\ln(x)]_1^e = 1$</li>
+                <li style="margin:0; text-align:left;"><strong>$\displaystyle \int_{0}^{1} e^x \, dx$ :</strong> $\displaystyle [e^x]_0^1 = e - 1$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Intégration par parties pour les intégrales définies</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formule pour les intégrales définies</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u$ et $\displaystyle v$ sont dérivables avec $\displaystyle u'$ et $\displaystyle v'$ continues sur $\displaystyle [a, b]$, alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int_{a}^{b} u(x) v'(x) \, dx = [u(x) v(x)]_a^b - \int_{a}^{b} u'(x) v(x) \, dx$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>$\displaystyle \int_{0}^{1} x e^x \, dx$ :</strong> $\displaystyle u(x) = x$, $\displaystyle v'(x) = e^x$ $\displaystyle \Rightarrow \int_{0}^{1} x e^x \, dx = 1$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Changement de variable pour les intégrales définies</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formule pour les intégrales définies</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \varphi : [\alpha, \beta] \to [a, b]$ est dérivable avec $\displaystyle \varphi'$ continue, et si $\displaystyle f$ est continue sur $\displaystyle [a, b]$, alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int_{a}^{b} f(x) \, dx = \int_{\alpha}^{\beta} f(\varphi(t)) \varphi'(t) \, dt$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle a = \varphi(\alpha)$ et $\displaystyle b = \varphi(\beta)$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>$\displaystyle \int_{0}^{1} \frac{2x}{1+x^2} \, dx$ :</strong> $\displaystyle u = 1+x^2$, bornes : $\displaystyle u(0)=1$, $\displaystyle u(1)=2$ $\displaystyle \Rightarrow \int_{0}^{1} \frac{2x}{1+x^2} \, dx = \ln(2)$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Astuce : Intégrales de fonctions paires et impaires</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriétés utiles pour les intégrales définies</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces propriétés sont très utiles en évaluations pour simplifier le calcul d'intégrales.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction impaire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est impaire sur $\displaystyle [-a, a]$, alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int_{-a}^{a} f(x) \, dx = 0$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Fonction paire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est paire sur $\displaystyle [-a, a]$, alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \int_{-a}^{a} f(x) \, dx = 2 \int_{0}^{a} f(x) \, dx$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int_{-\pi}^{\pi} \sin(x) \, dx$ :</strong> $\displaystyle \sin$ impaire $\displaystyle \Rightarrow \int_{-\pi}^{\pi} \sin(x) \, dx = 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle \int_{-\pi}^{\pi} \cos(x) \, dx$ :</strong> $\displaystyle \cos$ paire $\displaystyle \Rightarrow \int_{-\pi}^{\pi} \cos(x) \, dx = 2\int_{0}^{\pi} \cos(x) \, dx = 0$</li>
+                <li style="margin:0; text-align:left;"><strong>$\displaystyle \int_{-2}^{2} x^3 \, dx$ :</strong> $\displaystyle x \mapsto x^3$ impaire $\displaystyle \Rightarrow \int_{-2}^{2} x^3 \, dx = 0$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes pratiques</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Calculer une primitive</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer $\displaystyle \int f(x) \, dx$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Vérifier le tableau des primitives usuelles</strong> : La fonction $\displaystyle f$ est-elle directement dans le tableau ?</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Linéarité</strong> : Peut-on écrire $\displaystyle f$ comme combinaison linéaire de fonctions dont on connaît les primitives ?</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Reconnaître une dérivée</strong> : La fonction $\displaystyle f$ est-elle de la forme $\displaystyle f'(x) \cdot g(f(x))$ ?</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Changement de variable</strong> : Peut-on simplifier en posant $\displaystyle u = \varphi(x)$ ?</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Intégration par parties</strong> : La fonction $\displaystyle f$ est-elle un produit $\displaystyle u \cdot v'$ où l'intégration par parties simplifie ?</li>
+                <li style="margin:0; text-align:left;"><strong>Combinaison de méthodes</strong> : Parfois il faut combiner plusieurs méthodes</li>
+            </ol>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Vérifier une primitive</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour vérifier qu'une fonction $\displaystyle F$ est une primitive de $\displaystyle f$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Vérifier que $\displaystyle F$ est dérivable sur l'intervalle considéré</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer $\displaystyle F'(x)$</li>
+                <li style="margin:0; text-align:left;">Vérifier que $\displaystyle F'(x) = f(x)$ pour tout $\displaystyle x$ dans l'intervalle</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Constante d'intégration :</strong> N'oubliez jamais la constante $\displaystyle C$ dans les primitives indéfinies</li>
+                <li style="margin:0; text-align:left;"><strong>Domaine de définition :</strong> Vérifiez toujours que la primitive est définie sur le même intervalle que la fonction</li>
+                <li style="margin:0; text-align:left;"><strong>Tableau des primitives :</strong> Apprenez par cœur le tableau des primitives usuelles</li>
+                <li style="margin:0; text-align:left;"><strong>Reconnaissance de dérivées :</strong> Entraînez-vous à reconnaître rapidement les dérivées de fonctions composées</li>
+                <li style="margin:0; text-align:left;"><strong>Intégration par parties :</strong> Le choix de $\displaystyle u$ et $\displaystyle v'$ est crucial. En général, choisir $\displaystyle u$ qui se simplifie par dérivation</li>
+                <li style="margin:0; text-align:left;"><strong>Changement de variable :</strong> Pour les intégrales définies, n'oubliez pas de changer les bornes d'intégration</li>
+                <li style="margin:0; text-align:left;"><strong>Vérification :</strong> Quand c'est possible, vérifiez votre résultat en dérivant la primitive trouvée</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Rappels pratiques MPSI</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Hypothèses de régularité :</strong> En exercices, on n'exige pas de redonner les hypothèses de régularité ; on les admet (continuité suffisante)</li>
+                <li style="margin:0; text-align:left;"><strong>Bornes après substitution :</strong> Penser aux bornes après substitution sur intégrales définies</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Constante d'intégration :</strong> Oublier la constante $\displaystyle C$ dans les primitives indéfinies</li>
+                <li style="margin:0; text-align:left;"><strong>Domaine de définition :</strong> Utiliser une primitive sur un intervalle où elle n'est pas définie (ex: $\displaystyle \ln(x)$ pour $\displaystyle x \leq 0$)</li>
+                <li style="margin:0; text-align:left;"><strong>Intégration par parties :</strong> Confondre $\displaystyle u$ et $\displaystyle v'$ ou faire une erreur de signe</li>
+                <li style="margin:0; text-align:left;"><strong>Changement de variable :</strong> Oublier de multiplier par $\displaystyle \varphi'(x)$ ou oublier de changer les bornes pour les intégrales définies</li>
+                <li style="margin:0; text-align:left;"><strong>Valeur absolue :</strong> Oublier la valeur absolue dans $\displaystyle \int \frac{1}{x} \, dx = \ln(|x|) + C$</li>
+                <li style="margin:0; text-align:left;"><strong>Primitives usuelles :</strong> Confondre les primitives de $\displaystyle \sin$ et $\displaystyle \cos$ (attention aux signes)</li>
+                <li style="margin:0; text-align:left;"><strong>Fonctions composées :</strong> Oublier le facteur $\displaystyle f'(x)$ dans les primitives de fonctions composées</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===
+

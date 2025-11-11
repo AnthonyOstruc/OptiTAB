@@ -23,46 +23,56 @@ ax.annotate("", xy=(0, 20), xytext=(0, -20),
 # Texte "0"
 ax.text(-0.8, -1.2, '0', fontsize=12)
 
-# Fonction exponentielle
-x = np.linspace(-20, 20, 1000)
-y = np.exp(x)
+# Fonction puissance x^α
+def f(x, alpha):
+    return x**alpha
 
-# Tracer la fonction exponentielle
-ax.plot(x, y, 'b-', linewidth=2, label=r'$e^x$')
+# Intervalle pour x > 0
+x = np.linspace(0.01, 20, 1000)
 
-# Asymptote horizontale en y = 0
-ax.axhline(y=0, color='green', linestyle='--', linewidth=1.5, alpha=0.7, label=r'Asymptote $y = 0$')
+# Différents cas d'exposants
+alpha1 = 2
+y1 = f(x, alpha1)
+alpha2 = 0.5
+y2 = f(x, alpha2)
+alpha3 = -1
+y3 = f(x, alpha3)
+
+# Tracer les courbes
+ax.plot(x, y1, 'b-', linewidth=2, label=r'$x^2$ ($\alpha > 1$)')
+ax.plot(x, y2, 'g-', linewidth=2, label=r'$x^{1/2}$ ($0 < \alpha < 1$)')
+ax.plot(x, y3, 'r-', linewidth=2, label=r'$x^{-1}$ ($\alpha < 0$)')
 
 # Points clés
-points_x = [0]
+points_x = [1]
 points_y = [1]
 
 for i, (px, py) in enumerate(zip(points_x, points_y)):
-    ax.plot(px, py, 'go', markersize=6, label=r'$(0, 1)$')
+    ax.plot(px, py, 'mo', markersize=6, label=r'$(1, 1)$')
 
 # Graduation manuelle
 xticks_major = [5, 10, 15, 19]
 yticks_major = [5, 10, 15, 19]
 
 # Axe X grandes graduations
-for x in xticks_major:
-    ax.plot([x, x], [-0.3, 0.3], color="black", linewidth=0.8)
-    ax.text(x, -1.0, str(x), ha='center', va='top', fontsize=12)
+for x_val in xticks_major:
+    ax.plot([x_val, x_val], [-0.3, 0.3], color="black", linewidth=0.8)
+    ax.text(x_val, -1.0, str(x_val), ha='center', va='top', fontsize=12)
 
 # Axe Y grandes graduations
-for y in yticks_major:
-    if y < 19:
-        ax.plot([-0.2, 0.2], [y, y], color="black", linewidth=0.8)
-        ax.text(-1.0, y, str(y), ha='right', va='center', fontsize=12)
+for y_val in yticks_major:
+    if y_val < 19:
+        ax.plot([-0.2, 0.2], [y_val, y_val], color="black", linewidth=0.8)
+        ax.text(-1.0, y_val, str(y_val), ha='right', va='center', fontsize=12)
 
 # Petites graduations intermédiaires
-for x in range(1, 20):
-    if x not in xticks_major:
-        ax.plot([x, x], [-0.15, 0.15], color="black", linewidth=0.5)
+for x_val in range(1, 20):
+    if x_val not in xticks_major:
+        ax.plot([x_val, x_val], [-0.15, 0.15], color="black", linewidth=0.5)
 
-for y in range(1, 20):
-    if y not in yticks_major and y < 19:
-        ax.plot([-0.1, 0.1], [y, y], color="black", linewidth=0.5)
+for y_val in range(1, 20):
+    if y_val not in yticks_major and y_val < 19:
+        ax.plot([-0.1, 0.1], [y_val, y_val], color="black", linewidth=0.5)
 
 # Labels
 ax.set_xlabel(r'$x$', fontsize=14, labelpad=15)
@@ -80,5 +90,5 @@ plt.suptitle('', fontsize=0)
 plt.tight_layout()
 
 # Sauvegarder
-plt.savefig('graphe_exponentielle.png', dpi=300, bbox_inches='tight')
+plt.savefig('graphe_puissances.png', dpi=300, bbox_inches='tight')
 plt.show()

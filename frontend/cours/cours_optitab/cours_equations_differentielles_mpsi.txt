@@ -1,0 +1,512 @@
+=== Équations Différentielles - Programme MPSI
+Difficulté: medium
+Ordre: 6
+Images: 
+
+Titre: Équations Différentielles Linéaires : Premier et Second Ordre
+Description: Cours complet sur les équations différentielles linéaires en MPSI : équations du premier ordre y' + a(x)y = b(x) avec méthode de variation de la constante, équations du second ordre à coefficients constants y'' + ay' + by = f(x), résolution de l'équation homogène, recherche de solutions particulières, et problèmes de Cauchy.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Introduction et vocabulaire</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définitions générales</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Équation différentielle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>équation différentielle</strong> est une équation dont l'inconnue est une fonction et qui fait intervenir cette fonction ainsi que ses dérivées.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>ordre</strong> d'une équation différentielle est l'ordre de la dérivée la plus élevée qui apparaît dans l'équation.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Solution d'une équation différentielle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction $\displaystyle y : I \to \mathbb{R}$ (ou $\displaystyle \mathbb{C}$) définie sur un intervalle $\displaystyle I$ est une <strong>solution</strong> de l'équation différentielle si elle est suffisamment dérivable et vérifie l'équation en tout point de $\displaystyle I$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Problème de Cauchy</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>problème de Cauchy</strong> (ou problème à conditions initiales) consiste à trouver une solution $\displaystyle y$ d'une équation différentielle vérifiant des conditions initiales de la forme :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle y(x_0) = y_0, \quad y'(x_0) = y_1, \quad \ldots$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle x_0$ est un point de l'intervalle $\displaystyle I$ et $\displaystyle y_0, y_1, \ldots$ sont des valeurs données.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">L'équation $\displaystyle y' = 2x$ est une équation différentielle du premier ordre. Ses solutions sont $\displaystyle y(x) = x^2 + C$ où $\displaystyle C \in \mathbb{R}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">L'équation $\displaystyle y'' + y = 0$ est une équation différentielle du second ordre. Ses solutions sont $\displaystyle y(x) = A\cos(x) + B\sin(x)$ où $\displaystyle A, B \in \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;">Le problème de Cauchy $\displaystyle y' = y, \quad y(0) = 1$ admet pour unique solution $\displaystyle y(x) = e^x$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Équations différentielles linéaires du premier ordre</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Forme générale et équation homogène</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Équation différentielle linéaire du premier ordre</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une équation différentielle linéaire du premier ordre est de la forme :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y' + a(x)y = b(x)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle a$ et $\displaystyle b$ sont des fonctions définies et continues sur un intervalle $\displaystyle I$ de $\displaystyle \mathbb{R}$, à valeurs dans $\displaystyle \mathbb{R}$ ou $\displaystyle \mathbb{C}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle b$ est appelée le <strong>second membre</strong> de l'équation.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Équation homogène associée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>équation homogène</strong> (ou équation sans second membre) associée à $\displaystyle y' + a(x)y = b(x)$ est :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y' + a(x)y = 0$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note souvent cette équation $\displaystyle (E_0)$.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Interprétation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'équation homogène correspond au cas où le second membre est nul. Elle joue un rôle fondamental dans la résolution de l'équation complète.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Résolution de l'équation homogène</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème : Solutions de l'équation homogène</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle a : I \to \mathbb{R}$ (ou $\displaystyle \mathbb{C}$) une fonction continue sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des solutions de l'équation homogène $\displaystyle y' + a(x)y = 0$ sur $\displaystyle I$ est :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \left\{x \mapsto Ce^{-A(x)} : C \in \mathbb{R} \text{ (ou } \mathbb{C}\text{)}\right\}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle A$ est une primitive de $\displaystyle a$ sur $\displaystyle I$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'équation $\displaystyle y' + a(x)y = 0$ peut s'écrire $\displaystyle y' = -a(x)y$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En multipliant par $\displaystyle e^{A(x)}$ où $\displaystyle A$ est une primitive de $\displaystyle a$, on obtient :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle e^{A(x)}y'(x) + a(x)e^{A(x)}y(x) = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">ce qui s'écrit $\displaystyle \left(e^{A(x)}y(x)\right)' = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle e^{A(x)}y(x) = C$ (constante), d'où $\displaystyle y(x) = Ce^{-A(x)}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle y' + 2y = 0$, on a $\displaystyle a(x) = 2$. Une primitive est $\displaystyle A(x) = 2x$. Les solutions sont $\displaystyle y(x) = Ce^{-2x}$ où $\displaystyle C \in \mathbb{R}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle y' + \frac{1}{x}y = 0$ sur $\displaystyle ]0, +\infty[$, on a $\displaystyle a(x) = \frac{1}{x}$. Une primitive est $\displaystyle A(x) = \ln(x)$. Les solutions sont $\displaystyle y(x) = Ce^{-\ln(x)} = \frac{C}{x}$ où $\displaystyle C \in \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle y' - xy = 0$, on a $\displaystyle a(x) = -x$. Une primitive est $\displaystyle A(x) = -\frac{x^2}{2}$. Les solutions sont $\displaystyle y(x) = Ce^{\frac{x^2}{2}}$ où $\displaystyle C \in \mathbb{R}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Principe de superposition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Principe de superposition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle (E)$ l'équation $\displaystyle y' + a(x)y = b(x)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle y_1$ et $\displaystyle y_2$ sont deux solutions de $\displaystyle (E)$, alors $\displaystyle y_1 - y_2$ est une solution de l'équation homogène associée $\displaystyle (E_0)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Réciproquement, si $\displaystyle y_p$ est une solution particulière de $\displaystyle (E)$ et si $\displaystyle y_h$ est une solution de $\displaystyle (E_0)$, alors $\displaystyle y_p + y_h$ est une solution de $\displaystyle (E)$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Conséquence fondamentale :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des solutions de $\displaystyle y' + a(x)y = b(x)$ est de la forme :</p>
+            <div style="background:#ecfdf5; border:3px solid #10b981; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \{y_p + y_h : y_h \text{ solution de } (E_0)\}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle y_p$ est une solution particulière de $\displaystyle (E)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : <strong>Solution générale = Solution particulière + Solution générale de l'homogène</strong></p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour l'équation $\displaystyle y' + 2y = 4$, on vérifie que $\displaystyle y_p(x) = 2$ est une solution particulière.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les solutions de l'équation homogène sont $\displaystyle y_h(x) = Ce^{-2x}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc la solution générale est $\displaystyle y(x) = 2 + Ce^{-2x}$ où $\displaystyle C \in \mathbb{R}$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode de la variation de la constante</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Méthode de la variation de la constante</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle y' + a(x)y = b(x)$, on utilise la méthode suivante :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Résoudre l'équation homogène $\displaystyle y' + a(x)y = 0$ pour obtenir les solutions $\displaystyle y_h(x) = Ce^{-A(x)}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Chercher une solution particulière sous la forme $\displaystyle y_p(x) = C(x)e^{-A(x)}$ où $\displaystyle C$ est maintenant une fonction à déterminer</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Injecter cette forme dans l'équation complète pour déterminer $\displaystyle C(x)$</li>
+            </ol>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode détaillée :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On pose $\displaystyle y_p(x) = C(x)e^{-A(x)}$ où $\displaystyle A$ est une primitive de $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En dérivant : $\displaystyle y_p'(x) = C'(x)e^{-A(x)} - C(x)a(x)e^{-A(x)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En injectant dans $\displaystyle y' + a(x)y = b(x)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle C'(x)e^{-A(x)} - C(x)a(x)e^{-A(x)} + a(x)C(x)e^{-A(x)} = b(x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">ce qui simplifie en : $\displaystyle C'(x)e^{-A(x)} = b(x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle C'(x) = b(x)e^{A(x)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une primitive de $\displaystyle b(x)e^{A(x)}$ donne $\displaystyle C(x)$, puis $\displaystyle y_p(x) = C(x)e^{-A(x)}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Résoudre $\displaystyle y' + 2y = e^x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 1 :</strong> Solutions de l'homogène : $\displaystyle y_h(x) = Ce^{-2x}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 2 :</strong> On cherche $\displaystyle y_p(x) = C(x)e^{-2x}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle y_p'(x) = C'(x)e^{-2x} - 2C(x)e^{-2x}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En injectant : $\displaystyle C'(x)e^{-2x} - 2C(x)e^{-2x} + 2C(x)e^{-2x} = e^x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle C'(x) = e^{3x}$, d'où $\displaystyle C(x) = \frac{1}{3}e^{3x}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ainsi $\displaystyle y_p(x) = \frac{1}{3}e^{3x} \cdot e^{-2x} = \frac{1}{3}e^x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution générale :</strong> $\displaystyle y(x) = \frac{1}{3}e^x + Ce^{-2x}$ où $\displaystyle C \in \mathbb{R}$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Cas particulier : coefficient constant</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Équation avec coefficient constant</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a(x) = a$ est une constante, l'équation devient :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y' + ay = b(x)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les solutions de l'équation homogène sont alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y_h(x) = Ce^{-ax}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle C \in \mathbb{R}$ (ou $\displaystyle \mathbb{C}$).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle y' + 3y = 0$, les solutions sont $\displaystyle y(x) = Ce^{-3x}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle y' - y = 2$, on trouve $\displaystyle y_h(x) = Ce^x$ et on vérifie que $\displaystyle y_p(x) = -2$ est une solution particulière. Donc $\displaystyle y(x) = -2 + Ce^x$</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle y' + y = x$, les solutions de l'homogène sont $\displaystyle y_h(x) = Ce^{-x}$. Par variation de la constante, on trouve $\displaystyle y_p(x) = x - 1$, donc $\displaystyle y(x) = x - 1 + Ce^{-x}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Existence et unicité pour un problème de Cauchy</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème de Cauchy-Lipschitz (cas linéaire)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle a$ et $\displaystyle b$ deux fonctions continues sur un intervalle $\displaystyle I$, et soit $\displaystyle x_0 \in I$, $\displaystyle y_0 \in \mathbb{R}$ (ou $\displaystyle \mathbb{C}$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le problème de Cauchy :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \begin{cases} y' + a(x)y = b(x) \\ y(x_0) = y_0 \end{cases}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">admet une unique solution définie sur $\displaystyle I$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce résultat est admis en MPSI. Il garantit que pour chaque condition initiale, il existe exactement une solution.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La solution s'exprime explicitement en utilisant la méthode de variation de la constante.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Résoudre le problème de Cauchy : $\displaystyle y' + 2y = 4, \quad y(0) = 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La solution générale est $\displaystyle y(x) = 2 + Ce^{-2x}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La condition $\displaystyle y(0) = 1$ donne $\displaystyle 2 + C = 1$, donc $\displaystyle C = -1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'unique solution est $\displaystyle y(x) = 2 - e^{-2x}$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Équations différentielles linéaires du second ordre à coefficients constants</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Forme générale et équation homogène</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Équation différentielle linéaire du second ordre à coefficients constants</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une équation différentielle linéaire du second ordre à coefficients constants est de la forme :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y'' + ay' + by = f(x)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle a$ et $\displaystyle b$ sont des scalaires (réels ou complexes) et $\displaystyle f$ est une fonction définie et continue sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle f$ est appelée le <strong>second membre</strong> de l'équation.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Équation homogène associée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>équation homogène</strong> associée à $\displaystyle y'' + ay' + by = f(x)$ est :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y'' + ay' + by = 0$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note souvent cette équation $\displaystyle (E_0)$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Résolution de l'équation homogène</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Équation caractéristique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre l'équation homogène $\displaystyle y'' + ay' + by = 0$, on introduit l'<strong>équation caractéristique</strong> :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle r^2 + ar + b = 0$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette équation du second degré admet un discriminant $\displaystyle \Delta = a^2 - 4b$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème : Solutions de l'équation homogène</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les solutions de $\displaystyle y'' + ay' + by = 0$ dépendent du discriminant $\displaystyle \Delta = a^2 - 4b$ :</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 1 : $\displaystyle \Delta > 0$ (deux racines réelles distinctes)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle r_1$ et $\displaystyle r_2$ sont les deux racines réelles distinctes de $\displaystyle r^2 + ar + b = 0$, alors les solutions sont :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y(x) = C_1e^{r_1x} + C_2e^{r_2x}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle C_1, C_2 \in \mathbb{R}$ (ou $\displaystyle \mathbb{C}$).</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 2 : $\displaystyle \Delta = 0$ (racine double)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle r_0$ est la racine double de $\displaystyle r^2 + ar + b = 0$, alors les solutions sont :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y(x) = (C_1 + C_2x)e^{r_0x}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle C_1, C_2 \in \mathbb{R}$ (ou $\displaystyle \mathbb{C}$).</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 3 : $\displaystyle \Delta < 0$ (deux racines complexes conjuguées)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle r = \alpha \pm i\beta$ (avec $\displaystyle \beta > 0$) sont les deux racines complexes conjuguées, alors les solutions complexes sont :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:450px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y(x) = e^{\alpha x}(C_1e^{i\beta x} + C_2e^{-i\beta x})$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle C_1, C_2 \in \mathbb{C}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a$ et $\displaystyle b$ sont réels, les solutions réelles sont :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:450px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y(x) = e^{\alpha x}(A\cos(\beta x) + B\sin(\beta x))$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle A, B \in \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle y'' - 3y' + 2y = 0$, l'équation caractéristique est $\displaystyle r^2 - 3r + 2 = 0$ avec $\displaystyle \Delta = 1 > 0$. Les racines sont $\displaystyle r_1 = 1$ et $\displaystyle r_2 = 2$. Solutions : $\displaystyle y(x) = C_1e^x + C_2e^{2x}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle y'' - 4y' + 4y = 0$, l'équation caractéristique est $\displaystyle r^2 - 4r + 4 = 0$ avec $\displaystyle \Delta = 0$. La racine double est $\displaystyle r_0 = 2$. Solutions : $\displaystyle y(x) = (C_1 + C_2x)e^{2x}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle y'' + y = 0$, l'équation caractéristique est $\displaystyle r^2 + 1 = 0$ avec $\displaystyle \Delta = -4 < 0$. Les racines sont $\displaystyle r = \pm i$. Solutions réelles : $\displaystyle y(x) = A\cos(x) + B\sin(x)$</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle y'' - 2y' + 5y = 0$, l'équation caractéristique est $\displaystyle r^2 - 2r + 5 = 0$ avec $\displaystyle \Delta = -16 < 0$. Les racines sont $\displaystyle r = 1 \pm 2i$. Solutions réelles : $\displaystyle y(x) = e^x(A\cos(2x) + B\sin(2x))$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Principe de superposition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Principe de superposition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle (E)$ l'équation $\displaystyle y'' + ay' + by = f(x)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle y_1$ et $\displaystyle y_2$ sont deux solutions de $\displaystyle (E)$, alors $\displaystyle y_1 - y_2$ est une solution de l'équation homogène associée $\displaystyle (E_0)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Réciproquement, si $\displaystyle y_p$ est une solution particulière de $\displaystyle (E)$ et si $\displaystyle y_h$ est une solution de $\displaystyle (E_0)$, alors $\displaystyle y_p + y_h$ est une solution de $\displaystyle (E)$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Conséquence fondamentale :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des solutions de $\displaystyle y'' + ay' + by = f(x)$ est de la forme :</p>
+            <div style="background:#ecfdf5; border:3px solid #10b981; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \{y_p + y_h : y_h \text{ solution de } (E_0)\}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle y_p$ est une solution particulière de $\displaystyle (E)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : <strong>Solution générale = Solution particulière + Solution générale de l'homogène</strong></p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Recherche de solutions particulières</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Méthode générale</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle y'' + ay' + by = f(x)$, on cherche une solution particulière $\displaystyle y_p$ en fonction de la forme du second membre $\displaystyle f(x)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les cas principaux au programme MPSI sont :</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 1 : Second membre polynomial</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f(x) = P(x)$ où $\displaystyle P$ est un polynôme de degré $\displaystyle n$, on cherche une solution particulière sous la forme d'un polynôme.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle b \neq 0$, on cherche $\displaystyle y_p$ de même degré que $\displaystyle P$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle b = 0$ et $\displaystyle a \neq 0$, on cherche $\displaystyle y_p$ de degré $\displaystyle n+1$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle a = b = 0$, on cherche $\displaystyle y_p$ de degré $\displaystyle n+2$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 2 : Second membre exponentiel $\displaystyle f(x) = Ae^{\lambda x}$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f(x) = Ae^{\lambda x}$ où $\displaystyle (A, \lambda) \in \mathbb{C}^2$, on cherche une solution particulière sous la forme :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \lambda$ n'est pas racine de l'équation caractéristique : $\displaystyle y_p(x) = Ke^{\lambda x}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \lambda$ est racine simple : $\displaystyle y_p(x) = Kxe^{\lambda x}$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle \lambda$ est racine double : $\displaystyle y_p(x) = Kx^2e^{\lambda x}$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On détermine $\displaystyle K$ en injectant dans l'équation.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 3 : Second membre trigonométrique $\displaystyle f(x) = B\cos(\omega x)$ ou $\displaystyle f(x) = B\sin(\omega x)$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f(x) = B\cos(\omega x)$ ou $\displaystyle f(x) = B\sin(\omega x)$ où $\displaystyle (B, \omega) \in \mathbb{R}^2$, on utilise la méthode suivante :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">On peut traiter $\displaystyle f(x) = B\cos(\omega x)$ en cherchant une solution sous la forme $\displaystyle y_p(x) = C\cos(\omega x) + D\sin(\omega x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">On peut aussi utiliser la forme exponentielle complexe : $\displaystyle B\cos(\omega x) = \text{Re}(Be^{i\omega x})$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle i\omega$ est racine de l'équation caractéristique, on multiplie par $\displaystyle x$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Polynôme :</strong> Pour $\displaystyle y'' - 3y' + 2y = x^2$, on cherche $\displaystyle y_p(x) = ax^2 + bx + c$. En injectant, on trouve $\displaystyle a = \frac{1}{2}, b = \frac{3}{2}, c = \frac{7}{4}$. Donc $\displaystyle y_p(x) = \frac{1}{2}x^2 + \frac{3}{2}x + \frac{7}{4}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Exponentielle :</strong> Pour $\displaystyle y'' - 3y' + 2y = e^x$, comme $\displaystyle 1$ est racine simple de $\displaystyle r^2 - 3r + 2 = 0$, on cherche $\displaystyle y_p(x) = Kxe^x$. On trouve $\displaystyle K = -1$, donc $\displaystyle y_p(x) = -xe^x$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Trigonométrique :</strong> Pour $\displaystyle y'' + y = \cos(x)$, on cherche $\displaystyle y_p(x) = C\cos(x) + D\sin(x)$. Comme $\displaystyle i$ est racine de $\displaystyle r^2 + 1 = 0$, on cherche plutôt $\displaystyle y_p(x) = x(C\cos(x) + D\sin(x))$. On trouve $\displaystyle C = 0, D = \frac{1}{2}$, donc $\displaystyle y_p(x) = \frac{x}{2}\sin(x)$</li>
+                <li style="margin:0; text-align:left;"><strong>Combinaison :</strong> Pour $\displaystyle y'' - y = e^x + x$, on résout séparément $\displaystyle y'' - y = e^x$ (solution $\displaystyle y_{p1}(x) = \frac{x}{2}e^x$) et $\displaystyle y'' - y = x$ (solution $\displaystyle y_{p2}(x) = -x$), puis on additionne : $\displaystyle y_p(x) = \frac{x}{2}e^x - x$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Solutions réelles lorsque les coefficients sont réels</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Description des solutions réelles</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a$ et $\displaystyle b$ sont réels, alors les solutions réelles de $\displaystyle y'' + ay' + by = 0$ sont décrites selon le discriminant $\displaystyle \Delta = a^2 - 4b$ :</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 1 : $\displaystyle \Delta > 0$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solutions réelles : $\displaystyle y(x) = C_1e^{r_1x} + C_2e^{r_2x}$ où $\displaystyle C_1, C_2 \in \mathbb{R}$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 2 : $\displaystyle \Delta = 0$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solutions réelles : $\displaystyle y(x) = (C_1 + C_2x)e^{r_0x}$ où $\displaystyle C_1, C_2 \in \mathbb{R}$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 3 : $\displaystyle \Delta < 0$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle r = \alpha \pm i\beta$ avec $\displaystyle \beta > 0$, les solutions réelles sont :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:450px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y(x) = e^{\alpha x}(A\cos(\beta x) + B\sin(\beta x))$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle A, B \in \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Même si l'équation caractéristique admet des racines complexes, les solutions réelles s'expriment toujours en termes de fonctions réelles (exponentielles, cosinus, sinus).</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Existence et unicité pour un problème de Cauchy</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème de Cauchy-Lipschitz (cas linéaire du second ordre)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle a, b \in \mathbb{R}$ (ou $\displaystyle \mathbb{C}$) et $\displaystyle f$ une fonction continue sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle x_0 \in I$, $\displaystyle y_0, y_1 \in \mathbb{R}$ (ou $\displaystyle \mathbb{C}$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le problème de Cauchy :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \begin{cases} y'' + ay' + by = f(x) \\ y(x_0) = y_0 \\ y'(x_0) = y_1 \end{cases}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">admet une unique solution définie sur $\displaystyle I$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce résultat est admis en MPSI. Il garantit que pour chaque couple de conditions initiales $\displaystyle (y(x_0), y'(x_0))$, il existe exactement une solution.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La solution s'obtient en déterminant les constantes $\displaystyle C_1$ et $\displaystyle C_2$ dans la solution générale à partir des conditions initiales.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Résoudre le problème de Cauchy : $\displaystyle y'' + y = 0, \quad y(0) = 1, \quad y'(0) = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La solution générale est $\displaystyle y(x) = A\cos(x) + B\sin(x)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La condition $\displaystyle y(0) = 1$ donne $\displaystyle A = 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La condition $\displaystyle y'(0) = 0$ donne $\displaystyle -A\sin(0) + B\cos(0) = B = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'unique solution est $\displaystyle y(x) = \cos(x)$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes pratiques</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Résoudre une équation du premier ordre</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Identifier l'équation sous la forme $\displaystyle y' + a(x)y = b(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Résoudre l'équation homogène $\displaystyle y' + a(x)y = 0$ pour obtenir $\displaystyle y_h(x) = Ce^{-A(x)}$ où $\displaystyle A$ est une primitive de $\displaystyle a$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Chercher une solution particulière par variation de la constante : $\displaystyle y_p(x) = C(x)e^{-A(x)}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Déterminer $\displaystyle C(x)$ en résolvant $\displaystyle C'(x) = b(x)e^{A(x)}$</li>
+                <li style="margin:0; text-align:left;">Écrire la solution générale : $\displaystyle y(x) = y_p(x) + y_h(x)$</li>
+            </ol>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Résoudre une équation du second ordre</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Identifier l'équation sous la forme $\displaystyle y'' + ay' + by = f(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Résoudre l'équation homogène en utilisant l'équation caractéristique $\displaystyle r^2 + ar + b = 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Déterminer les solutions de l'homogène selon le discriminant $\displaystyle \Delta$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Chercher une solution particulière selon la forme du second membre $\displaystyle f(x)$</li>
+                <li style="margin:0; text-align:left;">Écrire la solution générale : $\displaystyle y(x) = y_p(x) + y_h(x)$</li>
+            </ol>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Résoudre un problème de Cauchy</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Trouver la solution générale de l'équation différentielle</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Appliquer les conditions initiales pour déterminer les constantes</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour le premier ordre : une condition $\displaystyle y(x_0) = y_0$ détermine une constante</li>
+                <li style="margin:0; text-align:left;">Pour le second ordre : deux conditions $\displaystyle y(x_0) = y_0$ et $\displaystyle y'(x_0) = y_1$ déterminent deux constantes</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Premier ordre :</strong> Toujours commencer par résoudre l'équation homogène avant de chercher une solution particulière</li>
+                <li style="margin:0; text-align:left;"><strong>Variation de la constante :</strong> Ne pas oublier de multiplier par $\displaystyle e^{-A(x)}$ à la fin</li>
+                <li style="margin:0; text-align:left;"><strong>Second ordre :</strong> Bien identifier le discriminant de l'équation caractéristique pour choisir la bonne forme de solution</li>
+                <li style="margin:0; text-align:left;"><strong>Solutions particulières :</strong> Adapter la forme selon que le second membre est polynôme, exponentielle ou trigonométrique</li>
+                <li style="margin:0; text-align:left;"><strong>Racines multiples :</strong> Si une racine de l'équation caractéristique apparaît dans le second membre, multiplier par $\displaystyle x$ (ou $\displaystyle x^2$ si double racine)</li>
+                <li style="margin:0; text-align:left;"><strong>Solutions réelles :</strong> Si les coefficients sont réels, utiliser la forme avec cosinus et sinus pour le cas $\displaystyle \Delta < 0$</li>
+                <li style="margin:0; text-align:left;"><strong>Vérification :</strong> Toujours vérifier que la solution trouvée satisfait bien l'équation différentielle</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Premier ordre :</strong> Oublier le signe moins dans $\displaystyle y_h(x) = Ce^{-A(x)}$</li>
+                <li style="margin:0; text-align:left;"><strong>Variation de la constante :</strong> Confondre $\displaystyle C'(x)$ et $\displaystyle C(x)$</li>
+                <li style="margin:0; text-align:left;"><strong>Second ordre :</strong> Confondre les trois cas selon le discriminant</li>
+                <li style="margin:0; text-align:left;"><strong>Racine double :</strong> Oublier le facteur $\displaystyle x$ dans le cas $\displaystyle \Delta = 0$</li>
+                <li style="margin:0; text-align:left;"><strong>Solutions particulières :</strong> Ne pas adapter la forme quand une racine apparaît dans le second membre</li>
+                <li style="margin:0; text-align:left;"><strong>Problème de Cauchy :</strong> Oublier d'appliquer toutes les conditions initiales</li>
+                <li style="margin:0; text-align:left;"><strong>Solutions réelles :</strong> Utiliser la forme complexe au lieu de la forme avec cosinus et sinus quand $\displaystyle \Delta < 0$</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===
+

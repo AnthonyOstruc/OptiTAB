@@ -23,32 +23,39 @@ ax.annotate("", xy=(0, 20), xytext=(0, -20),
 # Texte "0"
 ax.text(-0.8, -1.2, '0', fontsize=12)
 
-# Fonction logarithme népérien
-# Tracer depuis une valeur très proche de 0 pour voir la courbe suivre l'asymptote
-x1 = np.linspace(0.0001, 0.01, 1000)
-y1 = np.log(x1)
-# Partie intermédiaire
-x2 = np.linspace(0.01, 0.1, 500)
-y2 = np.log(x2)
-# Partie principale
-x3 = np.linspace(0.1, 20, 1000)
-y3 = np.log(x3)
-# Combiner toutes les parties
-x = np.concatenate([x1, x2, x3])
-y = np.concatenate([y1, y2, y3])
+# Fonctions à comparer
+# Pour les fonctions définies sur x > 0
+x_pos = np.linspace(0.0001, 20, 2000)
+# Pour les fonctions définies sur tout ℝ
+x_all = np.linspace(-20, 20, 2000)
 
-# Tracer la fonction logarithme
-ax.plot(x, y, 'b-', linewidth=2, label=r'$\ln(x)$')
+# I. Exponentielle népérienne
+y_exp = np.exp(x_all)
 
-# Asymptote verticale en x = 0
-ax.axvline(x=0, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label=r'Asymptote $x = 0$')
+# II. Logarithme népérien
+y_log = np.log(x_pos)
 
-# Points clés
-points_x = [1]
-points_y = [0]
+# III. Exponentielles en base a
+y_exp2 = 2**x_all  # a > 1
+y_exp_half = 0.5**x_all  # 0 < a < 1
 
-for i, (px, py) in enumerate(zip(points_x, points_y)):
-    ax.plot(px, py, 'go', markersize=6, label=r'$(1, 0)$')
+# IV. Fonctions puissances
+y_pow2 = x_pos**2  # α > 1
+y_pow_half = x_pos**0.5  # 0 < α < 1
+y_pow_neg = x_pos**(-1)  # α < 0
+
+# Tracer les courbes croissantes uniquement
+# Exponentielle népérienne
+ax.plot(x_all, y_exp, 'r-', linewidth=2, label=r'$e^x$')
+
+# Logarithme népérien
+ax.plot(x_pos, y_log, 'purple', linewidth=2, label=r'$\ln(x)$')
+
+# Exponentielles en base a (a > 1)
+ax.plot(x_all, y_exp2, 'b-', linewidth=2, label=r'$2^x$ ($a > 1$)')
+
+# Fonctions puissances (α > 1)
+ax.plot(x_pos, y_pow2, 'g-', linewidth=2, label=r'$x^2$ ($\alpha > 1$)')
 
 # Graduation manuelle
 xticks_major = [5, 10, 15, 19]
@@ -81,14 +88,17 @@ ax.xaxis.set_label_coords(1.02, 0.48)
 ax.yaxis.set_label_coords(0.48, 1.02)
 
 # Légende
-ax.legend(loc='upper right')
+ax.legend(loc='upper right', fontsize=10)
 
-# Supprimer le titre principal noir
+# Supprimer le titre principal
 plt.suptitle('', fontsize=0)
 
 # Ajuster la mise en page
 plt.tight_layout()
 
 # Sauvegarder
-plt.savefig('graphe_logarithme.png', dpi=300, bbox_inches='tight')
+plt.savefig('graphe_croissances_comparees.png', dpi=300, bbox_inches='tight')
 plt.show()
+
+print("Graphique 'graphe_croissances_comparees.png' créé avec succès!")
+

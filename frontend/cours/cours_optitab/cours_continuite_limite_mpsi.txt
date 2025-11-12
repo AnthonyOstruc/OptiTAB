@@ -1,0 +1,439 @@
+=== Continuité et Limite - Programme MPSI
+Difficulté: medium
+Ordre: 4
+Images: limite_fonction.png, continuite_point.png, continuite_intervalle.png, theoreme_rolle.png, theoreme_accroissements_finis.png
+
+Titre: Continuité et Limite : Définitions, Propriétés et Théorèmes Fondamentaux
+Description: Cours complet sur la continuité et les limites en MPSI : définition rigoureuse de la limite d'une fonction en un point, limites infinies et limites en l'infini, continuité en un point et sur un intervalle, théorèmes des valeurs intermédiaires et des bornes atteintes, fonctions uniformément continues, et applications aux fonctions monotones.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Limite d'une fonction en un point</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition de la limite finie</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction définie sur un voisinage de $\displaystyle a$ (éventuellement excepté au point $\displaystyle a$). On dit que $\displaystyle f$ admet une limite finie $\displaystyle \ell$ en $\displaystyle a$, noté $\displaystyle \lim_{x \to a} f(x) = \ell$, si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \forall \varepsilon > 0, \exists \delta > 0 \text{ tel que } 0 < |x - a| < \delta \Rightarrow |f(x) - \ell| < \varepsilon$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Unicité de la limite :</strong> Si une limite existe, elle est unique.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Limites à gauche et à droite</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On distingue :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Limite à gauche :</strong> $\displaystyle \lim_{x \to a^-} f(x)$ ou $\displaystyle \lim_{\substack{x \to a \\ x < a}} f(x)$ : limite lorsque $\displaystyle x$ approche $\displaystyle a$ par des valeurs inférieures</li>
+                <li style="margin:0; text-align:left;"><strong>Limite à droite :</strong> $\displaystyle \lim_{x \to a^+} f(x)$ ou $\displaystyle \lim_{\substack{x \to a \\ x > a}} f(x)$ : limite lorsque $\displaystyle x$ approche $\displaystyle a$ par des valeurs supérieures</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Proposition :</strong> $\displaystyle \lim_{x \to a} f(x) = \ell$ si et seulement si $\displaystyle \lim_{x \to a^-} f(x) = \lim_{x \to a^+} f(x) = \ell$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📈 Limites infinies</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \lim_{x \to a} f(x) = +\infty$ : pour tout $\displaystyle M > 0$, il existe $\displaystyle \delta > 0$ tel que $\displaystyle 0 < |x - a| < \delta \Rightarrow f(x) > M$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \lim_{x \to a} f(x) = -\infty$ : pour tout $\displaystyle M < 0$, il existe $\displaystyle \delta > 0$ tel que $\displaystyle 0 < |x - a| < \delta \Rightarrow f(x) < M$</li>
+                <li style="margin:0; text-align:left;"><strong>Asymptote verticale :</strong> Si $\displaystyle \lim_{x \to a^+} f(x) = \pm\infty$ ou $\displaystyle \lim_{x \to a^-} f(x) = \pm\infty$, la droite $\displaystyle x = a$ est une asymptote verticale au graphe de $\displaystyle f$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🔢 Limites en l'infini</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \lim_{x \to +\infty} f(x) = \ell$ : pour tout $\displaystyle \varepsilon > 0$, il existe $\displaystyle A > 0$ tel que $\displaystyle x > A \Rightarrow |f(x) - \ell| < \varepsilon$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \lim_{x \to +\infty} f(x) = +\infty$ : pour tout $\displaystyle M > 0$, il existe $\displaystyle A > 0$ tel que $\displaystyle x > A \Rightarrow f(x) > M$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Asymptote horizontale :</strong> Si $\displaystyle \lim_{x \to +\infty} f(x) = \ell$ (fini), la droite $\displaystyle y = \ell$ est une asymptote horizontale</li>
+                <li style="margin:0; text-align:left;"><strong>Asymptote oblique :</strong> Si $\displaystyle \lim_{x \to +\infty} [f(x) - (ax+b)] = 0$, la droite $\displaystyle y = ax + b$ est une asymptote oblique</li>
+            </ul>
+        </div>
+
+        <div style="background:#e3f2fd; border-radius:6px; border-left:6px solid #2196f3; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📊 Propriétés des limites</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Combinaison linéaire :</strong> Si $\displaystyle \lim_{x \to a} f(x) = \ell$ et $\displaystyle \lim_{x \to a} g(x) = m$, et $\displaystyle \lambda, \mu \in \mathbb{R}$, alors $\displaystyle \lim_{x \to a} [\lambda f(x) + \mu g(x)] = \lambda \ell + \mu m$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Produit :</strong> $\displaystyle \lim_{x \to a} [f(x) \cdot g(x)] = \ell \cdot m$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Quotient :</strong> $\displaystyle \lim_{x \to a} \frac{f(x)}{g(x)} = \frac{\ell}{m}$ (si $\displaystyle m \neq 0$)</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Composition :</strong> Si $\displaystyle \lim_{x \to a} f(x) = b$ et $\displaystyle \lim_{y \to b} g(y) = \ell$, alors $\displaystyle \lim_{x \to a} g \circ f(x) = \ell$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Théorème de compression (encadrement) :</strong> Si $\displaystyle g(x) \leq f(x) \leq h(x)$ au voisinage de $\displaystyle a$ et $\displaystyle \lim_{x \to a} g(x) = \lim_{x \to a} h(x) = \ell$, alors $\displaystyle \lim_{x \to a} f(x) = \ell$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Limite par minoration :</strong> Si $\displaystyle f(x) \geq g(x)$ au voisinage de $\displaystyle a$ et $\displaystyle \lim_{x \to a} g(x) = +\infty$, alors $\displaystyle \lim_{x \to a} f(x) = +\infty$</li>
+                <li style="margin:0; text-align:left;"><strong>Limite par majoration :</strong> Si $\displaystyle f(x) \leq g(x)$ au voisinage de $\displaystyle a$ et $\displaystyle \lim_{x \to a} g(x) = -\infty$, alors $\displaystyle \lim_{x \to a} f(x) = -\infty$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff7ed; border-radius:6px; border-left:6px solid #fdba74; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🔍 Caractérisation séquentielle de la limite</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ définie au voisinage de $\displaystyle a$. Les propositions suivantes sont équivalentes :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \lim_{x \to a} f(x) = \ell$ (limite par définition $\displaystyle \varepsilon$-$\displaystyle \delta$)</li>
+                <li style="margin:0; text-align:left;">Pour toute suite $(x_n)$ convergeant vers $\displaystyle a$ avec $\displaystyle x_n \neq a$, la suite $(f(x_n))$ converge vers $\displaystyle \ell$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Caractérisation séquentielle de la limite infinie :</strong> $\displaystyle \lim_{x \to a} f(x) = +\infty$ si et seulement si pour toute suite $(x_n)$ convergeant vers $\displaystyle a$, on a $\displaystyle \lim_{n \to +\infty} f(x_n) = +\infty$.</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>⚠️ Si $\displaystyle f$ est définie en $\displaystyle a$ et possède une limite</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est définie au point $\displaystyle a$ et possède une limite finie en $\displaystyle a$, alors :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \lim_{x \to a} f(x) = f(a)$</p>
+            </div>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📈 Si $\displaystyle f$ possède une limite finie en $\displaystyle a$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ possède une limite finie $\displaystyle \ell$ en $\displaystyle a$, alors $\displaystyle f$ est bornée au voisinage de $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Preuve :</strong> Il existe $\displaystyle \delta > 0$ et $\displaystyle M > 0$ tels que pour $\displaystyle |x - a| < \delta$, on ait $\displaystyle |f(x)| \leq M$.</p>
+        </div>
+
+        <div style="background:#dbeafe; border-radius:6px; border-left:6px solid #0284c7; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📊 Passage à la limite dans les inégalités larges</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f(x) \leq g(x)$ (ou $\displaystyle f(x) \geq g(x)$) au voisinage de $\displaystyle a$, et si $\displaystyle \lim_{x \to a} f(x) = \ell$ et $\displaystyle \lim_{x \to a} g(x) = m$ (finies), alors :</p>
+            <div style="background:#dbeafe; border:3px solid #0284c7; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \ell \leq m$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Remarque :</strong> Les inégalités STRICTES ne se conservent pas à la limite.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Théorème de la limite monotone</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction définie sur un intervalle $\displaystyle ]a, b[$ (ou l'un des cas $\displaystyle [a, +\infty[$ ou $\displaystyle ]-\infty, b]$).</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Cas croissant :</strong> Si $\displaystyle f$ est croissante et majorée sur $\displaystyle ]a, b[$, alors $\displaystyle f$ possède une limite finie en $\displaystyle b^-$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Cas décroissant :</strong> Si $\displaystyle f$ est décroissante et minorée sur $\displaystyle ]a, b[$, alors $\displaystyle f$ possède une limite finie en $\displaystyle b^-$</li>
+                <li style="margin:0; text-align:left;"><strong>Cas non borné :</strong> Si $\displaystyle f$ est croissante et non majorée sur $\displaystyle ]a, b[$, alors $\displaystyle \lim_{x \to b^-} f(x) = +\infty$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Continuité en un point</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition de la continuité</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction définie sur un voisinage de $\displaystyle a$. On dit que $\displaystyle f$ est <strong>continue en $\displaystyle a$</strong> si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \lim_{x \to a} f(x) = f(a)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De manière équivalente, pour tout $\displaystyle \varepsilon > 0$, il existe $\displaystyle \delta > 0$ tel que $\displaystyle |x - a| < \delta \Rightarrow |f(x) - f(a)| < \varepsilon$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Continuité latérale</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Continuité à gauche :</strong> $\displaystyle f$ est continue à gauche en $\displaystyle a$ si $\displaystyle \lim_{x \to a^-} f(x) = f(a)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Continuité à droite :</strong> $\displaystyle f$ est continue à droite en $\displaystyle a$ si $\displaystyle \lim_{x \to a^+} f(x) = f(a)$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f$ est continue en $\displaystyle a$ si et seulement si elle est continue à gauche ET à droite en $\displaystyle a$</li>
+            </ul>
+        </div>
+
+        <div style="background:#dbeafe; border-radius:6px; border-left:6px solid #0284c7; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>� Caractérisation séquentielle de la continuité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f$ est continue en $\displaystyle a$ si et seulement si :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour toute suite $(x_n)$ convergeant vers $\displaystyle a$, la suite $(f(x_n))$ converge vers $\displaystyle f(a)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Formellement : $\displaystyle x_n \to a \Rightarrow f(x_n) \to f(a)$</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🔄 Prolongement par continuité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction définie sur un ensemble $\displaystyle D$ ne contenant pas le point $\displaystyle a$ (mais ayant $\displaystyle a$ comme point d'accumulation).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \lim_{x \to a} f(x) = \ell$ (limite finie), on peut définir une fonction $\displaystyle \tilde{f}$ sur $\displaystyle D \cup \{a\}$ par :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1em; font-weight:bold;">$\displaystyle \tilde{f}(x) = \begin{cases} f(x) & \text{si } x \in D \\ \ell & \text{si } x = a \end{cases}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle \tilde{f}$ est <strong>continue en $\displaystyle a$</strong> et s'appelle <strong>prolongement par continuité de $\displaystyle f$ en $\displaystyle a$</strong>.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📈 Opérations sur les fonctions continues</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ et $\displaystyle g$ sont continues en $\displaystyle a$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Combinaison linéaire :</strong> Pour tout $\displaystyle \lambda, \mu \in \mathbb{R}$, $\displaystyle \lambda f + \mu g$ est continue en $\displaystyle a$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Produit :</strong> $\displaystyle f \cdot g$ est continue en $\displaystyle a$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Quotient :</strong> $\displaystyle \frac{f}{g}$ est continue en $\displaystyle a$ si $\displaystyle g(a) \neq 0$</li>
+                <li style="margin:0; text-align:left;"><strong>Composition :</strong> $\displaystyle g \circ f$ est continue en $\displaystyle a$ si $\displaystyle f$ est continue en $\displaystyle a$ et $\displaystyle g$ est continue en $\displaystyle f(a)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🔢 Fonctions usuelles continues</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Les polynômes sont continus sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Les fonctions rationnelles sont continues sur leur domaine de définition</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle e^x$ est continue sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \ln(x)$ est continue sur $\displaystyle ]0, +\infty[$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \sin(x)$ et $\displaystyle \cos(x)$ sont continues sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sqrt{x}$ est continue sur $\displaystyle [0, +\infty[$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Continuité sur un intervalle</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et propriétés fondamentales</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Continuité sur un intervalle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction $\displaystyle f$ est continue sur un intervalle $\displaystyle I$ si elle est continue en chaque point de $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour les intervalles fermés aux extrémités, on exige la continuité latérale aux bornes.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Théorème des valeurs intermédiaires (TVI)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ continue sur $\displaystyle [a, b]$. Pour toute valeur $\displaystyle k$ comprise entre $\displaystyle f(a)$ et $\displaystyle f(b)$, il existe (au moins) un $\displaystyle c \in [a, b]$ tel que $\displaystyle f(c) = k$.</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1em; font-weight:bold;">Si $\displaystyle f(a) \leq k \leq f(b)$ (ou $\displaystyle f(b) \leq k \leq f(a)$), alors $\displaystyle \exists c \in [a,b] : f(c) = k$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Corollaire :</strong> Si $\displaystyle f$ est continue sur $\displaystyle [a, b]$ et $\displaystyle f(a) \cdot f(b) < 0$, alors il existe $\displaystyle c \in ]a, b[$ tel que $\displaystyle f(c) = 0$ (existence d'une racine).</p>
+        </div>
+
+        <div style="background:#dbeafe; border-radius:6px; border-left:6px solid #0284c7; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🔄 Principe de démonstration par dichotomie</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour démontrer le TVI et calculer numériquement une racine, on peut utiliser la méthode de dichotomie :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Commencer avec $\displaystyle [a_0, b_0] = [a, b]$ tel que $\displaystyle f(a_0) \cdot f(b_0) < 0$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Calculer le milieu $\displaystyle m_0 = \frac{a_0 + b_0}{2}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f(m_0) = 0$, on a trouvé la racine</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f(m_0) \cdot f(a_0) < 0$, poser $\displaystyle [a_1, b_1] = [a_0, m_0]$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f(m_0) \cdot f(b_0) < 0$, poser $\displaystyle [a_1, b_1] = [m_0, b_0]$</li>
+                <li style="margin:0; text-align:left;">Itérer le processus. La suite $(m_n)$ converge vers la racine</li>
+            </ol>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Avantage :</strong> Cette méthode garantit une convergence et permet de localiser précisément le zéro.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📈 Théorème des bornes atteintes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Toute fonction continue sur un segment est bornée et atteint ses bornes.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est continue sur un segment $\displaystyle [a, b]$, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f$ est bornée sur $\displaystyle [a, b]$ (possède un maximum et un minimum)</li>
+                <li style="margin:0; text-align:left;">Il existe $\displaystyle x_1, x_2 \in [a, b]$ tels que $\displaystyle f(x_1) = \min_{x \in [a,b]} f(x)$ et $\displaystyle f(x_2) = \max_{x \in [a,b]} f(x)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🔢 Image d'un intervalle et d'un segment par une fonction continue</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Image d'un segment :</strong> L'image d'un intervalle fermé et borné $\displaystyle [a, b]$ par une fonction continue est un segment (intervalle fermé et borné)</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Image d'un intervalle :</strong> L'image d'un intervalle quelconque par une fonction continue est un intervalle (propriété de connexité)</li>
+                <li style="margin:0; text-align:left;"><strong>Remarque :</strong> L'image d'un intervalle ouvert n'est pas nécessairement ouverte</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III.bis Fonction continue, injective et strictement monotone</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Fonctions continues injectives et monotonie</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Théorème</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction continue sur un intervalle $\displaystyle I$, à valeurs réelles et injective, est strictement monotone.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Conséquence :</strong> Elle est soit strictement croissante, soit strictement décroissante sur $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Remarque :</strong> La démonstration de ce théorème n'est pas exigible au programme MPSI.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Corollaire : cas d'une fonction continue strictement monotone</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est continue et strictement monotone sur un intervalle $\displaystyle I$, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f$ réalise une bijection de $\displaystyle I$ sur $\displaystyle f(I)$ (l'image de $\displaystyle I$)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle I = [a, b]$, alors $\displaystyle f(I) = [f(a), f(b)]$ ou $\displaystyle f(I) = [f(b), f(a)]$ selon que $\displaystyle f$ est croissante ou décroissante</li>
+                <li style="margin:0; text-align:left;">Toute fonction réelle strictement monotone, définie et continue sur un intervalle, admet une fonction réciproque de même monotonie, définie et continue sur un intervalle</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Fonction réciproque et continuité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Continuité de la fonction réciproque</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Théorème</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f : I \to J$ une bijection continue, où $\displaystyle I$ et $\displaystyle J$ sont des intervalles.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est continue et strictement monotone sur $\displaystyle I$, alors sa fonction réciproque $\displaystyle f^{-1}$ est continue et strictement monotone sur $\displaystyle J$, avec la même monotonie que $\displaystyle f$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Propriétés des fonctions réciproques continues</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f$ est continue et strictement croissante sur $\displaystyle [a, b]$, alors $\displaystyle f^{-1}$ est continue et strictement croissante sur $\displaystyle [f(a), f(b)]$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Les graphes de $\displaystyle f$ et $\displaystyle f^{-1}$ sont symétriques par rapport à la droite $\displaystyle y = x$</li>
+                <li style="margin:0; text-align:left;">Exemples : $\displaystyle \arcsin$, $\displaystyle \arccos$, $\displaystyle \arctan$, $\displaystyle \ln$ sont continues</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Continuité uniforme</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et propriétés</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction $\displaystyle f$ est <strong>uniformément continue</strong> sur $\displaystyle I$ si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:600px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \forall \varepsilon > 0, \exists \delta > 0 : \forall x, y \in I, |x - y| < \delta \Rightarrow |f(x) - f(y)| < \varepsilon$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Différence avec la continuité :</strong> Dans la continuité uniforme, le même $\displaystyle \delta$ fonctionne pour tous les points de $\displaystyle I$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Théorème (Heine)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Toute fonction continue sur un segment est uniformément continue sur ce segment.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Plus précisément : si $\displaystyle f$ est continue sur $\displaystyle [a, b]$, alors $\displaystyle f$ est uniformément continue sur $\displaystyle [a, b]$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📈 Exemples et contre-exemples</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Uniformément continue :</strong> $\displaystyle f(x) = x^2$ sur $\displaystyle [-1, 1]$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Continue mais non uniformément continue :</strong> $\displaystyle f(x) = \frac{1}{x}$ sur $\displaystyle ]0, 1]$</li>
+                <li style="margin:0; text-align:left;"><strong>Continue et uniformément continue :</strong> $\displaystyle f(x) = \sin(x)$ sur $\displaystyle \mathbb{R}$ (fonction lipschitzienne)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Fonctions monotones et continuité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Propriétés des fonctions monotones</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Théorème</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction monotone sur un intervalle $\displaystyle I$ ne peut avoir qu'un nombre dénombrable de points de discontinuité (des sauts).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas particulier :</strong> Si $\displaystyle f$ est monotone et continue sur $\displaystyle I$, elle peut servir à créer une bijection vers un intervalle.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Fonction strictement monotone et continue</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f$ est strictement croissante et continue sur $\displaystyle [a, b]$, elle réalise une bijection de $\displaystyle [a, b]$ sur $\displaystyle [f(a), f(b)]$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f$ est strictement décroissante et continue sur $\displaystyle [a, b]$, elle réalise une bijection de $\displaystyle [a, b]$ sur $\displaystyle [f(b), f(a)]$</li>
+                <li style="margin:0; text-align:left;">Sa réciproque est aussi strictement monotone (même sens) et continue</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📈 Application : existence et unicité de solutions</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle f(x) = k$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Existence :</strong> Par le TVI si $\displaystyle f$ est continue et $\displaystyle k$ est entre deux valeurs de $\displaystyle f$</li>
+                <li style="margin:0; text-align:left;"><strong>Unicité :</strong> Si $\displaystyle f$ est strictement monotone, il existe au plus une solution</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Tableaux récapitulatifs et exemples</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Résumé des définitions</h3>
+
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:left; font-weight:700; color:#2c3e50;">Concept</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:left; font-weight:700; color:#2c3e50;">Définition</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:left; font-weight:700; color:#2c3e50;">Notation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Limite finie</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle \forall \varepsilon > 0, \exists \delta > 0 : 0 < |x-a| < \delta \Rightarrow |f(x)-\ell| < \varepsilon$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle \lim_{x \to a} f(x) = \ell$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Limite infinie</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle \forall M > 0, \exists \delta > 0 : 0 < |x-a| < \delta \Rightarrow f(x) > M$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle \lim_{x \to a} f(x) = +\infty$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Continuité</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle \lim_{x \to a} f(x) = f(a)$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle f \in C^0(I)$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Uniformément continue</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle \forall \varepsilon > 0, \exists \delta > 0 : \forall x,y, |x-y| < \delta \Rightarrow |f(x)-f(y)| < \varepsilon$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle f \text{ unif. cont.}$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemples et contre-exemples</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Exemple 1 : Fonction continue avec limite finie</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f(x) = \frac{\sin(x)}{x}$ pour $\displaystyle x \neq 0$.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x} = 1$ (limite fondamentale)</li>
+                <li style="margin:0; text-align:left;">Si on pose $\displaystyle f(0) = 1$, alors $\displaystyle f$ devient continue en $\displaystyle 0$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Exemple 2 : Fonction discontinue</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f(x) = \begin{cases} x & \text{si } x \in \mathbb{Q} \\ 0 & \text{si } x \notin \mathbb{Q} \end{cases}$</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f$ est discontinue en tout point sauf en $\displaystyle 0$</li>
+                <li style="margin:0; text-align:left;">En $\displaystyle 0$, on a $\displaystyle \lim_{x \to 0} f(x) = 0 = f(0)$, donc $\displaystyle f$ est continue en $\displaystyle 0$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Exemple 3 : Discontinuité par saut</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Fonction partie entière : $\displaystyle f(x) = \lfloor x \rfloor$</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">En tout entier $\displaystyle n$, les limites à gauche et à droite existent mais sont différentes</li>
+                <li style="margin:0; text-align:left;">Discontinuité par saut (saut de 1 unité)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes de calcul et d'analyse</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Étudier la limite d'une fonction :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Substitution directe :</strong> Si possible, remplacer $\displaystyle x$ par la valeur</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Factorisation/simplification :</strong> Éliminer les formes indéterminées</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Règles de priorité :</strong> Pour les limites en l'infini, utiliser les croissances comparées</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Théorème de compression :</strong> Si possible, encadrer la fonction</li>
+                <li style="margin:0; text-align:left;"><strong>Limites connues :</strong> Utiliser $\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x} = 1$, $\displaystyle \lim_{x \to 0} \frac{e^x-1}{x} = 1$, etc.</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Étudier la continuité :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Reconnaître les fonctions usuelles :</strong> Polynômes, exponentielles, logarithmes, etc. sont continues sur leur domaine</li>
+                <li style="margin:0; text-align:left;"><strong>Utiliser les opérations :</strong> Somme, produit, quotient, composition de fonctions continues sont continues</li>
+                <li style="margin:0; text-align:left;"><strong>Vérifier aux points critiques :</strong> Calculer la limite et comparer avec la valeur de la fonction</li>
+                <li style="margin:0; text-align:left;"><strong>Utiliser le TVI :</strong> Pour prouver l'existence d'une solution à $\displaystyle f(x) = k$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Confusion limite et continuité :</strong> L'existence d'une limite en $\displaystyle a$ n'implique pas la continuité si la fonction n'est pas définie en $\displaystyle a$</li>
+                <li style="margin:0; text-align:left;"><strong>Oublier les cas limites :</strong> Vérifier les limites latérales, surtout pour les fonctions définies par morceaux</li>
+                <li style="margin:0; text-align:left;"><strong>Mauvaise application du TVI :</strong> La fonction DOIT être continue et définie sur un intervalle fermé</li>
+                <li style="margin:0; text-align:left;"><strong>Asymptotes verticales :</strong> Une fonction n'a pas de limite (finie) en un point où elle a une asymptote verticale</li>
+            </ul>
+        </div>
+    </div>
+
+</div>

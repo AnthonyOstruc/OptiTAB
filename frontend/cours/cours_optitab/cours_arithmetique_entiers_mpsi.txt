@@ -1,0 +1,381 @@
+=== Arithmétique - Programme MPSI
+Difficulté: medium
+Ordre: 3
+Images:
+
+Titre: Arithmétique dans ℤ : Divisibilité, PGCD, Nombres premiers et Congruences
+Description: Cours complet et progressif sur l'arithmétique dans les entiers relatifs : division euclidienne, algorithme d'Euclide, relations de Bézout et de Gauss, nombres premiers, valuations p-adiques, congruences et petit théorème de Fermat. Adapté au programme MPSI avec méthodes, exemples et erreurs courantes.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Divisibilité et division euclidienne</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Notions fondamentales</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définitions</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Pour des entiers relatifs $\displaystyle a$  et $\displaystyle b \neq 0$ , on dit que $\displaystyle b$  <strong>divise</strong> $\displaystyle a$  (notation $\displaystyle b \mid a$ ) s'il existe $\displaystyle k \in \mathbb{Z}$  tel que $\displaystyle a = bk$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Les <strong>diviseurs</strong> de $\displaystyle a$  sont les entiers relatifs qui divisent $\displaystyle a$ . Les <strong>multiples</strong> de $\displaystyle a$  sont les entiers de la forme $\displaystyle ak$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Deux entiers $\displaystyle a$  et $\displaystyle b$  sont dits <strong>associés</strong> s'ils se divisent mutuellement, c'est-à-dire $\displaystyle a \mid b$  et $\displaystyle b \mid a$  ; dans ℤ cela signifie $\displaystyle b = \pm a$ .</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle a \in \mathbb{Z}$ , l'écriture $\displaystyle a = 0 \times b + a$  montre que $\displaystyle b \mid a$  si et seulement si le reste de la division euclidienne de $\displaystyle a$  par $\displaystyle b$  est nul.</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f7fa; border-radius:6px; border-left:6px solid #00acc1; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📊 Division euclidienne dans ℕ</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout couple $\displaystyle ( a, b) \in \mathbb{Z} \times \mathbb{N}^{\ast}$ , il existe un unique couple $\displaystyle ( q, r) \in \mathbb{Z} \times \mathbb{N}$  tel que :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:480px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle a = bq + r$  avec $\displaystyle 0 \leq r < b$ .</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#6b7280;">L'écriture $\displaystyle ( q, r)$  est unique ; $\displaystyle q$  est le quotient, $\displaystyle r$  est le reste. On se ramène au cas $\displaystyle a \geq 0$  via $\displaystyle |a|$  pour invoquer l'énoncé officiel.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🤖 Propriétés simples</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle b \mid a$  et $\displaystyle c \mid b$ , alors $\displaystyle c \mid a$  (transitivité de la divisibilité).</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle b \mid a$  et $\displaystyle b \mid c$ , alors $\displaystyle b \mid (ax + cy)$  pour tous $\displaystyle x,y \in \mathbb{Z}$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle b \mid ac$  et $\displaystyle \gcd(a,b) = 1$ , alors $\displaystyle b \mid c$  (utile pour le lemme de Gauss).</li>
+                <li style="margin:0; text-align:left;">Les divisibilités sont invariantes par passage aux associés : $\displaystyle b \mid a$  ⇒ $\displaystyle (-b) \mid a$ , $\displaystyle b \mid (-a)$ , etc.</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:0 0 12px 0; text-align:left; font-size:1em;"><strong>💡 Exemples :</strong></p>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">Division de $\displaystyle 137$  par $\displaystyle 12$  : $\displaystyle 137 = 11 \ast 12 + 5$  ; le reste est $\displaystyle 5$ , donc $\displaystyle 12 ∤ 137$ .</p>
+            </div>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">Si $\displaystyle a = 2^3 3^2$  et $\displaystyle b = 2^2 3$ , alors $\displaystyle b \mid a$  et tout diviseur commun est de la forme $\displaystyle 2^\alpha 3^\beta$  avec $\displaystyle 0 \leq \alpha \leq 2$ , $\displaystyle 0 \leq \beta \leq 1$ .</p>
+            </div>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">Pour résoudre $\displaystyle 58x + 87y = 29$ , on commence par calculer $\displaystyle \gcd(58,87) = 29$  pour simplifier l'équation.</p>
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>⚙️ Méthode : utiliser la division euclidienne</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Approcher le quotient par $\displaystyle a/b$  pour limiter les essais dans la division.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Contrôler le reste : s'il est nul, la divisibilité est prouvée ; sinon, réutiliser le reste pour une division suivante.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Ne pas oublier qu'un quotient peut être négatif si $\displaystyle a$  et $\displaystyle b$  ont des signes opposés.</li>
+                <li style="margin:0; text-align:left;">Dans les preuves, citer l'existence du quotient et du reste plutôt que d'exécuter la division en détail.</li>
+            </ol>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. PGCD, algorithme d'Euclide et relation de Bézout</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">PGCD et propriétés</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définition du PGCD</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle a,b \in \mathbb{N}$  non tous deux nuls, le <strong>plus grand diviseur commun</strong> (PGCD) $\displaystyle a ∧ b$  est le plus grand élément de $\displaystyle \{d \in \mathbb{N} : d \mid a \text{ et } d \mid b\}$ .</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Dans ℤ on choisit $\displaystyle a ∧ b \geq 0$  (défini à un signe près).</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Le PGCD divise toute combinaison linéaire $\displaystyle ax + by$ .</li>
+                <li style="margin:0; text-align:left;">On a $\displaystyle a ∧ b = b ∧ a$ , $\displaystyle a ∧ 0 = |a|$ , et si $\displaystyle c \mid a$  et $\displaystyle c \mid b$  alors $\displaystyle c \mid (a ∧ b)$ .</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🏁 Algorithme d'Euclide</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On enchaîne les divisions euclidiennes :</p>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:6px; padding:12px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">$\displaystyle a = bq_0 + r_1$ , $\displaystyle b = r_1 q_1 + r_2$ , $\displaystyle r_1 = r_2 q_2 + r_3$ , ..., jusqu'à $\displaystyle r_{k-1} = r_k q_k + 0$ .</p>
+                <p style="margin:8px 0 0 0; text-align:left; font-size:0.95em;">Le dernier reste non nul $\displaystyle r_k$  est $\displaystyle a ∧ b$ .</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#6b7280;">Le nombre d'étapes est logarithmique (cas extrême contrôlé par la suite de Fibonacci).</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>♻️ Algorithme d'Euclide étendu</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En remontant les divisions, on obtient une combinaison linéaire :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle a ∧ b = ax_0 + by_0$ </p>
+                <p style="margin:4px 0 0 0; font-size:0.95em; color:#4f46e5;">(relation de Bézout, $\displaystyle x_0,y_0 \in \mathbb{Z}$ )</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle (x_0,y_0)$  est une solution, toutes les autres s'écrivent $\displaystyle x = x_0 + k \frac{b}{a ∧ b}$ , $\displaystyle y = y_0 - k \frac{a}{a ∧ b}$ .</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>🧪 Propriétés complémentaires</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Pour $\displaystyle k \in \mathbb{N}^{\ast}$ , $\displaystyle (ka) ∧ (kb) = k (a ∧ b)$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Le PGCD de $\displaystyle a$  et $\displaystyle b$  divise toute combinaison linéaire et reste maximal parmi les diviseurs communs.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Dans ℤ (signes quelconques), on utilise $\displaystyle |a|$  et $\displaystyle |b|$  pour lancer l'algorithme.</li>
+                <li style="margin:0; text-align:left;">Le <strong>plus petit commun multiple</strong> (PPCM) est $\displaystyle a ∨ b = \frac{|ab|}{a ∧ b}$  pour $\displaystyle a,b \neq 0$ .</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:0 0 12px 0; text-align:left; font-size:1em;"><strong>💡 Exemples :</strong></p>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">PGCD de $\displaystyle 252$  et $\displaystyle 198$  : suite de divisions $\displaystyle 252 = 198 + 54$ , $\displaystyle 198 = 3×54 + 36$ , $\displaystyle 54 = 36 + 18$ , $\displaystyle 36 = 2×18 + 0$  ⇒ $\displaystyle 252 ∧ 198 = 18$ .</p>
+            </div>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">Relation de Bézout : en remontant, $\displaystyle 18 = 5×198 − 4×252$ .</p>
+            </div>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">PPCM : $\displaystyle 252 ∨ 198 = \frac{252×198}{18} = 2772$ .</p>
+            </div>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Écueils classiques</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Oublier de simplifier une équation diophantienne par le PGCD avant de chercher des solutions.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Croire qu'un couple de Bézout est unique (il y a une infinité de solutions).</li>
+                <li style="margin:0; text-align:left;">Confondre PGCD (diviseur commun maximal) et PPCM (multiple commun minimal).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Entiers premiers entre eux et lemme de Gauss</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Première approche</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définitions</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Deux entiers $\displaystyle a$  et $\displaystyle b$  sont <strong>premiers entre eux</strong> si $\displaystyle a ∧ b = 1$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Une famille $\displaystyle (a_1,\dots,a_n)$  est <strong>première dans son ensemble</strong> si $\displaystyle a_1 ∧ \dots ∧ a_n = 1$ .</li>
+                <li style="margin:0; text-align:left;">Ils sont <strong>premiers deux à deux</strong> si $\displaystyle a_i ∧ a_j = 1$  pour tout $\displaystyle i ≠ j$  (condition plus forte).</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🛡️ Théorème de Bézout (PGCD = 1)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle a$  et $\displaystyle b$  sont premiers entre eux ⇔ il existe $\displaystyle x,y \in \mathbb{Z}$  tels que $\displaystyle ax + by = 1$ .</p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#6b7280;">Si le PGCD vaut $\displaystyle 1$ , la relation de Bézout fournit directement une combinaison donnant $\displaystyle 1$ .</p>
+        </div>
+
+        <div style="background:#e0f7fa; border-radius:6px; border-left:6px solid #00acc1; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>⚔️ Lemme de Gauss</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a ∧ b = 1$  et $\displaystyle a \mid bc$ , alors $\displaystyle a \mid c$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a ∧ n = 1$  et $\displaystyle b ∧ n = 1$ , alors $\displaystyle (ab) ∧ n = 1$ .</li>
+                <li style="margin:0; text-align:left;">Lemme d'Euclide (corollaire) : si $\displaystyle p$  est premier et $\displaystyle p \mid ab$ , alors $\displaystyle p \mid a$  ou $\displaystyle p \mid b$ .</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:0 0 12px 0; text-align:left; font-size:1em;"><strong>💡 Applications :</strong></p>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">Forme irréductible d'un rationnel : pour $\displaystyle \frac{p}{q}$ , diviser par $\displaystyle p ∧ q$  fournit un numérateur et un dénominateur premiers entre eux.</p>
+            </div>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">Simplification d'une congruence : si $\displaystyle ax ≡ ay \;[n]$  et $\displaystyle a ∧ n = 1$ , alors $\displaystyle x ≡ y \;[n]$ .</p>
+            </div>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">Pour $\displaystyle 14x + 21y = 1$ , on divise d'abord par $\displaystyle 7$  pour obtenir $\displaystyle 2x + 3y = 1$  (solutions $\displaystyle x = 2$ , $\displaystyle y = -1$ ).</p>
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>⚙️ Méthode : prouver qu'un couple est premier entre eux</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Calculer le PGCD par Euclide ; si le résultat vaut 1, la preuve est faite.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Exhiber une relation de Bézout $\displaystyle ax + by = 1$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Raisonner par l'absurde : supposer un diviseur commun $\displaystyle d > 1$  et trouver une contradiction avec la factorisation en nombres premiers.</li>
+                <li style="margin:0; text-align:left;">Comparer les valuations $\displaystyle v_p$  : si pour tout $\displaystyle p$  on a $\displaystyle v_p(a) = 0$  ou $\displaystyle v_p(b) = 0$ , alors aucun facteur premier n'est partagé.</li>
+            </ol>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Nombres premiers et valuations p-adiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Panorama des nombres premiers</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🧾 Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un entier $\displaystyle p \geq 2$  est <strong>premier</strong> si ses seuls diviseurs positifs sont $\displaystyle 1$  et $\displaystyle p$ . Les entiers $\displaystyle \geq 2$  non premiers sont dits composés.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🧠 Propriétés fondamentales</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Il existe une infinité de nombres premiers (preuve d'Euclide : considérer $\displaystyle p_1 p_2 \dots p_n + 1$ ).</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Tout entier $\displaystyle n \geq 2$  se factorise de manière unique (à l'ordre près) en produit de nombres premiers.</li>
+                <li style="margin:0; text-align:left;">On écrit $\displaystyle a = \prod p^{v_p(a)}$  : les valuations p-adiques gouvernent PGCD et PPCM.</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f7fa; border-radius:6px; border-left:6px solid #00acc1; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🧮 Crible d'Ératosthène</strong></p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Lister les entiers de $\displaystyle 2$  à $\displaystyle N$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Entourer le premier nombre non barré $\displaystyle p$  : il est premier.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Barrer tous les multiples de $\displaystyle p$  supérieurs à $\displaystyle p$ .</li>
+                <li style="margin:0; text-align:left;">Recommencer jusqu'à ce que $\displaystyle p^2 > N$  ; les nombres restants sont premiers.</li>
+            </ol>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#6b7280;">Complexité $\displaystyle O(N \log \log N)$  : base de nombreux algorithmes de recherche de nombres premiers.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:0 0 12px 0; text-align:left; font-size:1em;"><strong>💡 Valuations p-adiques :</strong></p>
+            <p style="margin:0 0 8px 0; text-align:left; font-size:1em;">Pour $\displaystyle n \neq 0$  et $\displaystyle p$  premier, $\displaystyle v_p(n)$  est l'exposant de $\displaystyle p$  dans la décomposition en facteurs premiers de $\displaystyle n$ .</p>
+            <ul style="margin:0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle v_p(nm) = v_p(n) + v_p(m)$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle m \mid n$ , alors $\displaystyle v_p\left(\frac{n}{m}\right) = v_p(n) - v_p(m)$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle v_p(a ∧ b) = \min(v_p(a), v_p(b))$  ; $\displaystyle v_p(a ∨ b) = \max(v_p(a), v_p(b))$ .</li>
+                <li style="margin:0; text-align:left;">$\displaystyle p^k \mid n$  ⇔ $\displaystyle v_p(n) \geq k$  ; $\displaystyle n \mid m$  ⇔ $\displaystyle v_p(n) \leq v_p(m)$  pour tout $\displaystyle p$ .</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>🔍 Exemple complet</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle a = 7560 = 2^3 3^3 5^1 7^1$  et $\displaystyle b = 1680 = 2^4 3^1 5^1 7^1$  :</p>
+            <ul style="margin:0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a ∧ b = 2^3 3^1 5^1 7^1 = 1260$  (minima des valuations).</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a ∨ b = 2^4 3^3 5^1 7^1 = 10080$  (maxima des valuations).</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Vérification : $\displaystyle \frac{ab}{a ∧ b} = 10080$ .</li>
+                <li style="margin:0; text-align:left;">Lecture rapide : $\displaystyle v_3(7560) = 3$  et $\displaystyle v_3(1680) = 1$  ⇒ le facteur $\displaystyle 3$  est commun à l'exposant $\displaystyle 1$ .</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>⚙️ Méthode : PGCD/PPCM via valuations</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Factoriser $\displaystyle a$  et $\displaystyle b$  en produits de nombres premiers.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Comparer, pour chaque $\displaystyle p$ , les exposants dans $\displaystyle a$  et $\displaystyle b$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Assembler le PGCD avec les minima, le PPCM avec les maxima.</li>
+                <li style="margin:0; text-align:left;">Comparer avec la relation $\displaystyle ab = (a ∧ b)(a ∨ b)$  pour valider.</li>
+            </ol>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Congruences et calculs modulo $\displaystyle n$ </h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Relation de congruence</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle n \in \mathbb{N}^{\ast}$ , on note $\displaystyle a ≡ b \;[n]$  lorsque $\displaystyle n \mid (a - b)$ , c'est-à-dire lorsque $\displaystyle a$  et $\displaystyle b$  ont le même reste dans la division par $\displaystyle n$ .</p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#6b7280;">Être congru modulo $\displaystyle n$  est une relation d'équivalence sur ℤ.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>🧠 Opérations compatibles</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a ≡ b \;[n]$  et $\displaystyle c ≡ d \;[n]$ , alors $\displaystyle a + c ≡ b + d \;[n]$  et $\displaystyle ac ≡ bd \;[n]$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a ≡ b \;[n]$ , alors $\displaystyle ka ≡ kb \;[n]$  pour tout $\displaystyle k \in \mathbb{Z}$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a ≡ b \;[n]$ , alors $\displaystyle a^m ≡ b^m \;[n]$  pour tout $\displaystyle m \in \mathbb{N}$ .</li>
+                <li style="margin:0; text-align:left;">Attention : on ne peut simplifier par un facteur commun que s'il est inversible modulo $\displaystyle n$ .</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>🔎 Inverses modulo $\displaystyle n$ </strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un entier $\displaystyle a$  est <strong>inversible modulo $\displaystyle n$ </strong> s'il existe $\displaystyle a^{-1}$  tel que $\displaystyle a a^{-1} ≡ 1 \;[n]$ .</p>
+            <ul style="margin:0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Condition nécessaire et suffisante : $\displaystyle a ∧ n = 1$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">L'algorithme d'Euclide étendu fournit $\displaystyle a^{-1}$  en trouvant $\displaystyle ax + ny = 1$  puis $\displaystyle x ≡ a^{-1} \;[n]$ .</li>
+                <li style="margin:0; text-align:left;">Les classes inversibles forment $\displaystyle (ℤ/nℤ)^*$ , groupe multiplicatif (structure hors programme mais utile).</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:0 0 12px 0; text-align:left; font-size:1em;"><strong>💡 Résolution de $\displaystyle ax ≡ b \;[n]$  :</strong></p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Calculer $\displaystyle d = a ∧ n$ . Si $\displaystyle d ∤ b$ , il n'y a pas de solution.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Sinon, diviser par $\displaystyle d$  : $\displaystyle \frac{a}{d} x ≡ \frac{b}{d} \;\left[\frac{n}{d}\right]$  et $\displaystyle \frac{a}{d} ∧ \frac{n}{d} = 1$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Trouver l'inverse de $\displaystyle \frac{a}{d}$  modulo $\displaystyle \frac{n}{d}$ , puis en déduire les solutions.</li>
+                <li style="margin:0; text-align:left;">On obtient exactement $\displaystyle d$  classes de solutions distinctes modulo $\displaystyle n$ .</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>🔍 Exemple : inverse de 17 modulo 43</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Euclide : $\displaystyle 43 = 2×17 + 9$ , $\displaystyle 17 = 1×9 + 8$ , $\displaystyle 9 = 1×8 + 1$ , $\displaystyle 8 = 8×1 + 0$  ⇒ $\displaystyle 17 ∧ 43 = 1$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Remontée : $\displaystyle 1 = 9 - 8 = 9 - (17 - 9) = 2×9 - 17$  puis $\displaystyle 9 = 43 - 2×17$  ⇒ $\displaystyle 1 = 2×43 - 5×17$ .</li>
+                <li style="margin:0; text-align:left;">Conclusion : $\displaystyle 17(-5) + 43(2) = 1$  ⇒ $\displaystyle 17^{-1} ≡ -5 ≡ 38 \;[43]$ .</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Petit théorème de Fermat</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle p$  est premier et $\displaystyle a \not≡ 0 \;[p]$ , alors :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:440px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle a^{p-1} ≡ 1 \;[p]$ .</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Forme générale : $\displaystyle a^p ≡ a \;[p]$  pour tout $\displaystyle a \in \mathbb{Z}$ .</p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#6b7280;">Conséquence (Euler) : si $\displaystyle a ∧ n = 1$ , alors $\displaystyle a^{\varphi(n)} ≡ 1 \;[n]$  (hors preuve officielle en MPSI mais utile).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:0 0 12px 0; text-align:left; font-size:1em;"><strong>💡 Exemples :</strong></p>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">$\displaystyle 3^{2025} \;[7]$  : $\displaystyle 3^6 ≡ 1 \;[7]$ , $\displaystyle 2025 = 6×337 + 3$  ⇒ $\displaystyle 3^{2025} ≡ (3^6)^{337} 3^3 ≡ 27 ≡ 6 \;[7]$ .</p>
+            </div>
+            <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:4px; padding:10px; margin:8px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;">$\displaystyle 2^{340} \;[341]$  : $\displaystyle 341 = 11×31$  est pseudo-premier en base $\displaystyle 2$  car $\displaystyle 2^{340} ≡ 1 \;[341]$  malgré la non-primalité du module.</p>
+            </div>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs à éviter</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Simplifier $\displaystyle ax ≡ ay \;[n]$  en $\displaystyle x ≡ y \;[n]$  sans vérifier que $\displaystyle a$  est inversible modulo $\displaystyle n$ .</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Appliquer le petit théorème de Fermat lorsque $\displaystyle p$  n'est pas premier.</li>
+                <li style="margin:0; text-align:left;">Oublier qu'il existe exactement $\displaystyle d$  solutions modulo $\displaystyle n$  lorsque $\displaystyle d = a ∧ n$  divise $\displaystyle b$ .</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Boîte à outils, stratégies et auto-contrôle</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Synthèse méthodologique</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📒 Check-list avant d'attaquer un exercice</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Identifier les données : divisibilités, PGCD, congruences, valuations, nombres premiers.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Calculer les PGCD/PPCM nécessaires, idéalement par l'algorithme d'Euclide.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Vérifier les conditions d'inversibilité modulo $\displaystyle n$  avant toute simplification.</li>
+                <li style="margin:0; text-align:left;">Décomposer un module en facteurs premiers pour travailler séparément si besoin.</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Bonnes pratiques</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Citer explicitement l'outil utilisé (“par Bézout”, “par le lemme de Gauss”…).</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Tracer un tableau des valuations pour visualiser les facteurs communs.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Propager une propriété de divisibilité par récurrence lorsque c'est pertinent.</li>
+                <li style="margin:0; text-align:left;">Tester des exemples simples pour valider une intuition avant la preuve générale.</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Pièges à contourner</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Confondre “premiers deux à deux” et “premiers dans leur ensemble” (exemple : 6, 10, 15).</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Négliger les signes : la divisibilité se raisonne sur les valeurs absolues mais les associées comptent.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Oublier le cas $\displaystyle 0$  ($\displaystyle 0 ∧ a = |a|$ , valuations non définies).</li>
+                <li style="margin:0; text-align:left;">Utiliser des fractions dans une congruence sans s'assurer de l'inversibilité du dénominateur.</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>⚖️ Auto-diagnostic final</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Puis-je calculer rapidement un PGCD et un couple de Bézout pour deux entiers ?</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Suis-je à l'aise avec la factorisation d'un entier et l'usage des valuations p-adiques ?</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Sais-je résoudre une congruence linéaire et mobiliser le petit théorème de Fermat ?</li>
+                <li style="margin:0; text-align:left;">Ai-je une stratégie claire pour démontrer que des entiers sont premiers entre eux ?</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===

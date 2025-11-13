@@ -1,514 +1,683 @@
-=== Nombres Réels - Programme MPSI
+=== Nombres réels - Programme MPSI
 Difficulté: medium
 Ordre: 1
-Images: 
 
-Titre: Nombres Réels : Ensembles de Nombres Usuels et Propriété de la Borne Supérieure
-Description: Cours complet sur les nombres réels en MPSI : ensembles de nombres usuels (N, Z, D, Q, R, R\Q), approximations décimales, densité des rationnels et irrationnels, droite achevée, borne supérieure et inférieure, propriété fondamentale de R, caractérisation des intervalles.
+Titre: Nombres réels : Ensembles, Ordre, Bornes et Propriétés de Complétude
+Description: Cours structuré pour le chapitre "Nombres réels" en MPSI : ensembles numériques usuels, ordre et opérations, intervalles et voisinages, valeur absolue et distance, bornes, sup et inf, densité des rationnels et irrationnels, complétude de la droite réelle et méthodes d'approximation.
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Ensembles de nombres usuels</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Ensembles numériques usuels</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Hiérarchie des ensembles de nombres</h3>
+        <h3 style="color:#34495e; margin-top:0;">Panorama des ensembles classiques</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Les ensembles de nombres usuels</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On définit successivement les ensembles suivants :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>ℕ</strong> : ensemble des <strong>entiers naturels</strong> $\displaystyle \{0, 1, 2, 3, \ldots\}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>ℤ</strong> : ensemble des <strong>entiers relatifs</strong> $\displaystyle \{\ldots, -2, -1, 0, 1, 2, \ldots\}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>𝔻</strong> : ensemble des <strong>nombres décimaux</strong> (nombres pouvant s'écrire sous la forme $\displaystyle \frac{a}{10^n}$ avec $\displaystyle a \in \mathbb{Z}$ et $\displaystyle n \in \mathbb{N}$)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>ℚ</strong> : ensemble des <strong>nombres rationnels</strong> (nombres pouvant s'écrire sous la forme $\displaystyle \frac{p}{q}$ avec $\displaystyle p \in \mathbb{Z}$ et $\displaystyle q \in \mathbb{N}^{\ast}$)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>ℝ</strong> : ensemble des <strong>nombres réels</strong></li>
-                <li style="margin:0; text-align:left;"><strong>ℝ \ ℚ</strong> : ensemble des <strong>nombres irrationnels</strong> (nombres réels qui ne sont pas rationnels)</li>
+            <p style="text-align:left; font-size:1em;"><strong>Définitions fondamentales</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \mathbb{N} = \{0, 1, 2, 3, \ldots\}$ : ensemble des entiers naturels
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \mathbb{Z} = \{\ldots, -2, -1, 0, 1, 2, \ldots\}$ : entiers relatifs
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \mathbb{D} = \left\{\frac{a}{10^n} \mid a \in \mathbb{Z}, n \in \mathbb{N}\right\}$ : décimaux finis
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \mathbb{Q} = \left\{\frac{p}{q} \mid p \in \mathbb{Z}, q \in \mathbb{Z} \setminus \{0\}\right\}$ : rationnels
+                </li>
+                <li style="margin:0; text-align:left;">$
+                    \displaystyle \mathbb{R}$ : nombres réels, contenant rationnels et irrationnels (ex : $
+                    \displaystyle \sqrt{2}, \pi$
+                )
+                </li>
             </ul>
         </div>
 
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Relations d'inclusion :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On a les inclusions strictes suivantes :</p>
-            <div style="background:#e0f2f1; border:3px solid #00897b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \mathbb{N} \subsetneq \mathbb{Z} \subsetneq \mathbb{D} \subsetneq \mathbb{Q} \subsetneq \mathbb{R}$</p>
-            </div>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Chaque ensemble contient strictement le précédent.</p>
+        <div style="background:#e0f7fa; border-radius:6px; border-left:6px solid #00acc1; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Notations utiles</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \mathbb{Q}^c = \mathbb{R} \setminus \mathbb{Q}$ : irrationnels
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \mathbb{R}_+ = [0, +\infty[$, $
+                    \displaystyle \mathbb{R}^\ast = \mathbb{R} \setminus \{0\}$, $
+                    \displaystyle \mathbb{R}_- = ]-\infty, 0]$
+                </li>
+                <li style="margin:0; text-align:left;">Inclusions : $
+                    \displaystyle \mathbb{N} \subset \mathbb{Z} \subset \mathbb{D} \subset \mathbb{Q} \subset \mathbb{R}
+                $ et $
+                    \displaystyle \mathbb{R} \subset \mathbb{C}
+                $
+                </li>
+            </ul>
         </div>
 
-        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
-            <strong>⚠️ Remarque importante :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les constructions rigoureuses de ces ensembles (et en particulier celle de ℝ) sont <strong>hors programme</strong> en MPSI.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On admet l'existence de ℝ et ses propriétés fondamentales.</p>
+        <div style="background:#e0f7fa; border-radius:6px; border-left:6px solid #00acc1; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Double notation des intervalles</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle ]a, b[ = (a, b)$ et $
+                    \displaystyle [a, b[ = [a, b)$ : la notation française avec crochets et la notation internationale coexistent
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle ]-\infty, b[ = (-\infty, b)$, $
+                    \displaystyle ]a, +\infty[ = (a, +\infty)$ : $
+                    \displaystyle -\infty$ et $
+                    \displaystyle +\infty$ ne sont pas des réels mais des symboles utiles pour écrire les bornes
+                </li>
+                <li style="margin:0; text-align:left;">Toujours vérifier quelles bornes sont incluses (crochet) ou exclues (parenthèse) pour éviter les confusions en exercices</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriétés structurantes</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle (\mathbb{Z}, +)$ est un groupe abélien, $
+                    \displaystyle (\mathbb{Q}, +, \times)$ un corps, $
+                    \displaystyle (\mathbb{R}, +, \times)$ un corps ordonné complet
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">Chaque $
+                    \displaystyle x \in \mathbb{R}$ possède une écriture décimale (éventuellement infinie non périodique pour les irrationnels)
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">Un nombre est <strong>rationnel</strong> si et seulement si son écriture décimale est finie ou infinie périodique (un motif se répète indéfiniment)</li>
+                <li style="margin:0; text-align:left;">Les ensembles $
+                    \displaystyle \mathbb{Q}$ et $
+                    \displaystyle \mathbb{R} \setminus \mathbb{Q}$ sont denses dans $
+                    \displaystyle \mathbb{R}
+                $ (voir Section VII) ; tout réel est limite d'une suite de rationnels
+                </li>
+            </ul>
         </div>
 
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
             <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 5 \in \mathbb{N}$, $\displaystyle -3 \in \mathbb{Z}$, $\displaystyle 0,75 = \frac{3}{4} \in \mathbb{D}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \frac{2}{3} \in \mathbb{Q}$, $\displaystyle \sqrt{2} \in \mathbb{R} \setminus \mathbb{Q}$ (irrationnel)</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \pi \in \mathbb{R} \setminus \mathbb{Q}$, $\displaystyle e \in \mathbb{R} \setminus \mathbb{Q}$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle \frac{1}{3} = 0,333\ldots$ est rationnel mais n'est pas décimal</li>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle 0{,}125 = \frac{125}{1000} = \frac{1}{8} \in \mathbb{D} \subset \mathbb{Q}
+                $ : écriture décimale finie (rationnel)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \frac{1}{3} = 0{,}333\ldots = 0{,}\overline{3} \in \mathbb{Q}$ : écriture décimale infinie périodique (le chiffre 3 se répète)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \frac{2}{7} = 0{,}285714285714\ldots = 0{,}\overline{285714} \in \mathbb{Q}$ : période de 6 chiffres (rationnel)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \frac{5}{6} = 0{,}8333\ldots = 0{,}8\overline{3} \in \mathbb{Q}$ : partie non périodique puis période</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \sqrt{2} = 1{,}41421356\ldots \notin \mathbb{Q}$ : écriture décimale infinie <strong>non périodique</strong> (irrationnel)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \pi = 3{,}14159265\ldots$ et $
+                    \displaystyle e = 2{,}71828\ldots$ : transcendants, donc irrationnels (pas de période)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle -7 \in \mathbb{Z}$, $
+                    \displaystyle \frac{22}{7} = 3{,}\overline{142857} \in \mathbb{Q}$ (approximation rationnelle de $
+                    \displaystyle \pi$)</li>
+                <li style="margin:0; text-align:left;">$
+                    \displaystyle 0{,}5 = \frac{1}{2} \in \mathbb{D}$, mais $
+                    \displaystyle \frac{1}{3} \notin \mathbb{D}$ car non décimal fini</li>
             </ul>
         </div>
     </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Propriétés des nombres décimaux et rationnels</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Caractérisation des nombres décimaux</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Un nombre réel est <strong>décimal</strong> si et seulement si son développement décimal est fini (ou se termine par une infinité de zéros).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Tout nombre décimal est rationnel, mais la réciproque est fausse.</p>
-        </div>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Caractérisation des nombres rationnels</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Un nombre réel est <strong>rationnel</strong> si et seulement si son développement décimal est périodique (à partir d'un certain rang).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Exemple : $\displaystyle \frac{1}{7} = 0,\overline{142857}$ (période 142857)</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Décimaux :</strong> $\displaystyle 0,5 = \frac{1}{2}$, $\displaystyle 3,14 = \frac{314}{100}$, $\displaystyle -0,25 = -\frac{1}{4}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Rationnels non décimaux :</strong> $\displaystyle \frac{1}{3} = 0,\overline{3}$, $\displaystyle \frac{1}{6} = 0,1\overline{6}$</li>
-                <li style="margin:0; text-align:left;"><strong>Irrationnels :</strong> $\displaystyle \sqrt{2}$, $\displaystyle \pi$, $\displaystyle e$, $\displaystyle \ln(2)$</li>
-            </ul>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Approximations décimales d'un réel</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Ordre et opérations sur \(\mathbb{R}\)</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Valeurs décimales approchées</h3>
+        <h3 style="color:#34495e; margin-top:0;">Compatibilité de l'ordre avec les opérations</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Approximation décimale par défaut</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle x \in \mathbb{R}$ et $\displaystyle n \in \mathbb{N}$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>approximation décimale par défaut</strong> de $\displaystyle x$ à la précision $\displaystyle 10^{-n}$ est le plus grand nombre décimal de la forme $\displaystyle \frac{k}{10^n}$ (avec $\displaystyle k \in \mathbb{Z}$) qui est inférieur ou égal à $\displaystyle x$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On la note $\displaystyle x_n^-$ et on a :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle x_n^- \leq x < x_n^- + 10^{-n}$</p>
-            </div>
+            <p style="text-align:left; font-size:1em;"><strong>Définition de l'ordre</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $
+                \displaystyle x, y \in \mathbb{R}$, on dit que $
+                \displaystyle x \leq y$ si $
+                \displaystyle y - x \in \mathbb{R}_+
+            $.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La relation $
+                \displaystyle \leq$ est réflexive, antisymétrique, transitive et totale sur $
+                \displaystyle \mathbb{R}
+            $.</p>
         </div>
 
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Approximation décimale par excès</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle x \in \mathbb{R}$ et $\displaystyle n \in \mathbb{N}$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>approximation décimale par excès</strong> de $\displaystyle x$ à la précision $\displaystyle 10^{-n}$ est le plus petit nombre décimal de la forme $\displaystyle \frac{k}{10^n}$ (avec $\displaystyle k \in \mathbb{Z}$) qui est supérieur ou égal à $\displaystyle x$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On la note $\displaystyle x_n^+$ et on a :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle x_n^+ - 10^{-n} < x \leq x_n^+$</p>
-            </div>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Propriété fondamentale :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x \in \mathbb{R}$ et tout $\displaystyle n \in \mathbb{N}$ :</p>
-            <div style="background:#e0f2f1; border:3px solid #00897b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle x_n^- \leq x \leq x_n^+$ et $\displaystyle x_n^+ - x_n^- = 10^{-n}$</p>
-            </div>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">De plus, $\displaystyle x_n^-$ et $\displaystyle x_n^+$ convergent vers $\displaystyle x$ quand $\displaystyle n \to +\infty$.</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle x = \pi \approx 3,14159265\ldots$ :</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \pi_2^- = 3,14$ et $\displaystyle \pi_2^+ = 3,15$ (précision $\displaystyle 10^{-2}$)</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \pi_4^- = 3,1415$ et $\displaystyle \pi_4^+ = 3,1416$ (précision $\displaystyle 10^{-4}$)</li>
-                <li style="margin:0; text-align:left;">Pour $\displaystyle x = \sqrt{2} \approx 1,41421356\ldots$ : $\displaystyle (\sqrt{2})_3^- = 1,414$ et $\displaystyle (\sqrt{2})_3^+ = 1,415$</li>
-            </ul>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Densité des rationnels et irrationnels dans ℝ</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Théorème de densité</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Densité de ℚ dans ℝ</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Tout intervalle ouvert non vide de ℝ contient au moins un nombre rationnel.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : <strong>ℚ est dense dans ℝ</strong>.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">En notation : pour tout intervalle ouvert $\displaystyle ]a,b[$ avec $\displaystyle a < b$, on a $\displaystyle ]a,b[ \cap \mathbb{Q} \neq \emptyset$.</p>
-        </div>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Densité de ℝ \ ℚ dans ℝ</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Tout intervalle ouvert non vide de ℝ contient au moins un nombre irrationnel.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : <strong>ℝ \ ℚ est dense dans ℝ</strong>.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">En notation : pour tout intervalle ouvert $\displaystyle ]a,b[$ avec $\displaystyle a < b$, on a $\displaystyle ]a,b[ \cap (\mathbb{R} \setminus \mathbb{Q}) \neq \emptyset$.</p>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Conséquence importante :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Entre deux nombres réels distincts, il existe toujours :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Une infinité de nombres rationnels</li>
-                <li style="margin:0; text-align:left;">Une infinité de nombres irrationnels</li>
-            </ul>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">En particulier, il n'existe pas de "nombre réel suivant" : entre deux réels, il y a toujours une infinité d'autres réels.</p>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Démonstration (idée) :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour la densité de ℚ : étant donné $\displaystyle ]a,b[$ avec $\displaystyle a < b$, on peut trouver $\displaystyle n \in \mathbb{N}^{\ast}$ tel que $\displaystyle \frac{1}{n} < b - a$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors il existe $\displaystyle k \in \mathbb{Z}$ tel que $\displaystyle \frac{k}{n} \in ]a,b[$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour la densité de ℝ \ ℚ : si $\displaystyle r \in ]a,b[ \cap \mathbb{Q}$, alors $\displaystyle r + \frac{\sqrt{2}}{n} \in ]a,b[ \cap (\mathbb{R} \setminus \mathbb{Q})$ pour $\displaystyle n$ assez grand.</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Dans $\displaystyle ]0,1[$, on trouve des rationnels comme $\displaystyle \frac{1}{2}$, $\displaystyle \frac{1}{3}$, $\displaystyle \frac{1}{100}$, etc.</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Dans $\displaystyle ]0,1[$, on trouve des irrationnels comme $\displaystyle \frac{\sqrt{2}}{2}$, $\displaystyle \frac{\pi}{4}$, etc.</li>
-                <li style="margin:0; text-align:left;">Entre $\displaystyle 3,14$ et $\displaystyle 3,15$, il y a $\displaystyle \pi$ (irrationnel) et une infinité de rationnels.</li>
-            </ul>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Droite achevée ℝ̄</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Définition et propriétés</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Droite achevée</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On appelle <strong>droite achevée</strong> l'ensemble noté $\displaystyle \overline{\mathbb{R}}$ défini par :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \overline{\mathbb{R}} = \mathbb{R} \cup \{-\infty, +\infty\}$</p>
-            </div>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle -\infty$ et $\displaystyle +\infty$ sont deux symboles (non réels) appelés respectivement <strong>moins l'infini</strong> et <strong>plus l'infini</strong>.</p>
-        </div>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Relation d'ordre sur ℝ̄</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On étend la relation d'ordre de ℝ à ℝ̄ en posant :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle -\infty < x < +\infty$ pour tout $\displaystyle x \in \mathbb{R}$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle -\infty < +\infty$</li>
-            </ul>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Intervalles de ℝ̄ :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut définir des intervalles de ℝ̄, par exemple :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle ]-\infty, a] = \{x \in \overline{\mathbb{R}} \mid x \leq a\}$ pour $\displaystyle a \in \mathbb{R}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle [a, +\infty[ = \{x \in \overline{\mathbb{R}} \mid x \geq a\}$ pour $\displaystyle a \in \mathbb{R}$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle ]-\infty, +\infty[ = \mathbb{R}$</li>
-            </ul>
-        </div>
-
-        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
-            <strong>⚠️ Attention :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les symboles $\displaystyle -\infty$ et $\displaystyle +\infty$ ne sont <strong>pas</strong> des nombres réels.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On ne peut pas faire d'opérations arithmétiques avec eux (sauf dans certains contextes spécifiques comme les limites).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">ℝ̄ est principalement utilisé pour simplifier l'énoncé de certains théorèmes et pour parler de limites.</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples d'utilisation :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Une suite peut converger vers $\displaystyle +\infty$ ou $\displaystyle -\infty$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Une fonction peut avoir une limite en $\displaystyle +\infty$ ou $\displaystyle -\infty$</li>
-                <li style="margin:0; text-align:left;">On peut dire qu'une partie de ℝ est majorée par $\displaystyle +\infty$ (toujours vrai) ou minorée par $\displaystyle -\infty$ (toujours vrai)</li>
-            </ul>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Majorants, minorants, bornes supérieure et inférieure</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Définitions fondamentales</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Majorant et partie majorée</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle X$ une partie de ℝ.</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Un réel $\displaystyle M$ est un <strong>majorant</strong> de $\displaystyle X$ si pour tout $\displaystyle x \in X$, on a $\displaystyle x \leq M$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">On dit que $\displaystyle X$ est <strong>majorée</strong> si elle admet au moins un majorant</li>
-                <li style="margin:0; text-align:left;">On dit que $\displaystyle X$ est <strong>non majorée</strong> (ou <strong>non bornée supérieurement</strong>) si elle n'admet pas de majorant</li>
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriétés essentielles</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle x \leq y \Rightarrow x + z \leq y + z$ pour tout $
+                    \displaystyle z \in \mathbb{R}
+                $</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $
+                    \displaystyle x \leq y$ et $
+                    \displaystyle 0 \leq z$, alors $
+                    \displaystyle xz \leq yz$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $
+                    \displaystyle x \leq y$ et $
+                    \displaystyle z \leq t$, alors $
+                    \displaystyle x + z \leq y + t$
+                </li>
+                <li style="margin:0; text-align:left;">$
+                    \displaystyle x \leq y \Rightarrow -y \leq -x$, d'où $
+                    \displaystyle x \leq y \Leftrightarrow -y \leq -x$
+                </li>
             </ul>
         </div>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Minorant et partie minorée</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle X$ une partie de ℝ.</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Un réel $\displaystyle m$ est un <strong>minorant</strong> de $\displaystyle X$ si pour tout $\displaystyle x \in X$, on a $\displaystyle m \leq x$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">On dit que $\displaystyle X$ est <strong>minorée</strong> si elle admet au moins un minorant</li>
-                <li style="margin:0; text-align:left;">On dit que $\displaystyle X$ est <strong>non minorée</strong> (ou <strong>non bornée inférieurement</strong>) si elle n'admet pas de minorant</li>
-            </ul>
+            <p style="text-align:left; font-size:1em;"><strong>Axiome d'Archimède</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout réel $
+                \displaystyle \varepsilon > 0$, il existe un entier naturel $
+                \displaystyle n$ tel que $
+                \displaystyle \frac{1}{n} < \varepsilon$. Équivalent : pour tout réel $
+                \displaystyle x$, il existe $
+                \displaystyle n \in \mathbb{N}$ avec $
+                \displaystyle n > x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cet axiome relie intimement les entiers aux réels et permet les encadrements par défaut/excès ou l'existence des suites $(\frac{1}{n})$ décroissantes vers 0.</p>
         </div>
 
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Partie bornée</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Une partie $\displaystyle X$ de ℝ est dite <strong>bornée</strong> si elle est à la fois majorée et minorée.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, il existe $\displaystyle m, M \in \mathbb{R}$ tels que pour tout $\displaystyle x \in X$, on a $\displaystyle m \leq x \leq M$.</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = [0,1]$</strong> : majorée (par exemple par $\displaystyle 1$, $\displaystyle 2$, $\displaystyle 100$), minorée (par exemple par $\displaystyle 0$, $\displaystyle -1$), bornée</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = ]-\infty, 5]$</strong> : majorée (par $\displaystyle 5$), non minorée, non bornée</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = \{1, 2, 3\}$</strong> : majorée (par $\displaystyle 3$), minorée (par $\displaystyle 1$), bornée</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = \mathbb{N}$</strong> : minorée (par $\displaystyle 0$), non majorée, non bornée</li>
-                <li style="margin:0; text-align:left;"><strong>$\displaystyle X = \mathbb{R}$</strong> : non majorée, non minorée, non bornée</li>
-            </ul>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Borne supérieure</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition de la borne supérieure</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle X$ une partie de ℝ.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On appelle <strong>borne supérieure</strong> de $\displaystyle X$, notée $\displaystyle \sup X$, le plus petit des majorants de $\displaystyle X$ (s'il existe).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, $\displaystyle \sup X$ est l'unique réel (s'il existe) tel que :</p>
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : comparer deux réels</strong>
             <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \sup X$ est un majorant de $\displaystyle X$ : pour tout $\displaystyle x \in X$, $\displaystyle x \leq \sup X$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle \sup X$ est le plus petit majorant : pour tout majorant $\displaystyle M$ de $\displaystyle X$, on a $\displaystyle \sup X \leq M$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Exprimer la différence $
+                    \displaystyle y - x$ sous une forme factorisée ou simplifiée</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser des encadrements connus (ex : $
+                    \displaystyle -1 \leq \sin x \leq 1$)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Exploiter la monotonie de fonctions usuelles (croissance de $
+                    \displaystyle e^x$, $
+                    \displaystyle \ln x$, etc.)</li>
+                <li style="margin:0; text-align:left;">Conclure sur le signe de la différence pour déterminer l'ordre</li>
             </ol>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Caractérisation équivalente :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Un réel $\displaystyle s$ est la borne supérieure de $\displaystyle X$ si et seulement si :</p>
-            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Pour tout $\displaystyle x \in X$, $\displaystyle x \leq s$</li>
-                <li style="margin:0; text-align:left;">Pour tout $\displaystyle \varepsilon > 0$, il existe $\displaystyle x \in X$ tel que $\displaystyle s - \varepsilon < x \leq s$</li>
-            </ol>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette deuxième condition signifie que $\displaystyle s$ est "approché d'aussi près qu'on veut" par des éléments de $\displaystyle X$.</p>
-        </div>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Maximum d'une partie</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \sup X \in X$, on dit que $\displaystyle \sup X$ est le <strong>maximum</strong> de $\displaystyle X$ et on note $\displaystyle \sup X = \max X$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans ce cas, $\displaystyle X$ admet un plus grand élément.</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = [0,1]$</strong> : $\displaystyle \sup X = 1 = \max X$ (car $\displaystyle 1 \in X$)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = [0,1[$</strong> : $\displaystyle \sup X = 1$ mais $\displaystyle \max X$ n'existe pas (car $\displaystyle 1 \notin X$)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = \{1 - \frac{1}{n} \mid n \in \mathbb{N}^{\ast}\}$</strong> : $\displaystyle \sup X = 1$ mais $\displaystyle \max X$ n'existe pas</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = ]-\infty, 5]$</strong> : $\displaystyle \sup X = 5 = \max X$</li>
-                <li style="margin:0; text-align:left;"><strong>$\displaystyle X = \mathbb{N}$</strong> : $\displaystyle \sup X$ n'existe pas (car $\displaystyle X$ n'est pas majorée)</li>
-            </ul>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Borne inférieure</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition de la borne inférieure</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle X$ une partie de ℝ.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On appelle <strong>borne inférieure</strong> de $\displaystyle X$, notée $\displaystyle \inf X$, le plus grand des minorants de $\displaystyle X$ (s'il existe).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, $\displaystyle \inf X$ est l'unique réel (s'il existe) tel que :</p>
-            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \inf X$ est un minorant de $\displaystyle X$ : pour tout $\displaystyle x \in X$, $\displaystyle \inf X \leq x$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle \inf X$ est le plus grand minorant : pour tout minorant $\displaystyle m$ de $\displaystyle X$, on a $\displaystyle m \leq \inf X$</li>
-            </ol>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Caractérisation équivalente :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Un réel $\displaystyle i$ est la borne inférieure de $\displaystyle X$ si et seulement si :</p>
-            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Pour tout $\displaystyle x \in X$, $\displaystyle i \leq x$</li>
-                <li style="margin:0; text-align:left;">Pour tout $\displaystyle \varepsilon > 0$, il existe $\displaystyle x \in X$ tel que $\displaystyle i \leq x < i + \varepsilon$</li>
-            </ol>
-        </div>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Minimum d'une partie</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \inf X \in X$, on dit que $\displaystyle \inf X$ est le <strong>minimum</strong> de $\displaystyle X$ et on note $\displaystyle \inf X = \min X$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans ce cas, $\displaystyle X$ admet un plus petit élément.</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = [0,1]$</strong> : $\displaystyle \inf X = 0 = \min X$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = ]0,1]$</strong> : $\displaystyle \inf X = 0$ mais $\displaystyle \min X$ n'existe pas</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = \{1 + \frac{1}{n} \mid n \in \mathbb{N}^{\ast}\}$</strong> : $\displaystyle \inf X = 1$ mais $\displaystyle \min X$ n'existe pas</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>$\displaystyle X = [5, +\infty[$</strong> : $\displaystyle \inf X = 5 = \min X$</li>
-                <li style="margin:0; text-align:left;"><strong>$\displaystyle X = \mathbb{Z}$</strong> : $\displaystyle \inf X$ n'existe pas (car $\displaystyle X$ n'est pas minorée)</li>
-            </ul>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Propriété fondamentale de ℝ : existence de la borne supérieure</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Théorème fondamental</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété de la borne supérieure</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Toute partie non vide et majorée de ℝ admet une borne supérieure.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : si $\displaystyle X \subset \mathbb{R}$, $\displaystyle X \neq \emptyset$ et $\displaystyle X$ est majorée, alors $\displaystyle \sup X$ existe et est unique.</p>
-        </div>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété de la borne inférieure</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Toute partie non vide et minorée de ℝ admet une borne inférieure.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : si $\displaystyle X \subset \mathbb{R}$, $\displaystyle X \neq \emptyset$ et $\displaystyle X$ est minorée, alors $\displaystyle \inf X$ existe et est unique.</p>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Importance fondamentale :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette propriété caractérise ℝ et le distingue de ℚ.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">En effet, dans ℚ, il existe des parties non vides et majorées qui n'admettent pas de borne supérieure dans ℚ.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Exemple : $\displaystyle X = \{x \in \mathbb{Q} \mid x^2 < 2\}$ est majorée dans ℚ mais n'a pas de borne supérieure dans ℚ (celle-ci serait $\displaystyle \sqrt{2} \notin \mathbb{Q}$).</p>
-        </div>
-
-        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
-            <strong>⚠️ Remarque :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette propriété est souvent admise en MPSI comme <strong>axiome</strong> ou <strong>propriété fondamentale</strong> de ℝ.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Elle est équivalente à d'autres propriétés fondamentales de ℝ (comme la complétude ou l'existence des coupures de Dedekind).</p>
         </div>
 
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
             <strong>Exemples d'application :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle X = \{x \in \mathbb{R} \mid x^2 < 2\}$, on a $\displaystyle \sup X = \sqrt{2}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle X = \{1 - \frac{1}{n} \mid n \in \mathbb{N}^{\ast}\}$, on a $\displaystyle \sup X = 1$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle X = ]0,1[$, on a $\displaystyle \sup X = 1$ et $\displaystyle \inf X = 0$</li>
-                <li style="margin:0; text-align:left;">Pour $\displaystyle X = \{x \in \mathbb{R} \mid e^x < 10\}$, on a $\displaystyle \sup X = \ln(10)$</li>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Comparer $
+                    \displaystyle 3$ et $
+                    \displaystyle 2{,}9$ : $
+                    \displaystyle 3 - 2{,}9 = 0{,}1 > 0$, donc $
+                    \displaystyle 3 > 2{,}9$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $
+                    \displaystyle x \leq 5$ et $
+                    \displaystyle y \leq 3$, alors $
+                    \displaystyle x + y \leq 8$ (addition membre à membre)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $
+                    \displaystyle 2 \leq x \leq 4$, alors $
+                    \displaystyle 6 \leq 3x \leq 12$ (multiplication par $
+                    \displaystyle 3 > 0$)</li>
+                <li style="margin:0; text-align:left;">Pour montrer $
+                    \displaystyle \frac{1}{n+1} < \frac{1}{n}$ : calculer $
+                    \displaystyle \frac{1}{n} - \frac{1}{n+1} = \frac{1}{n(n+1)} > 0$</li>
             </ul>
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Caractérisation des intervalles</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Intervalles, voisinages et parties de \(\mathbb{R}\)</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Définition et caractérisation</h3>
+        <h3 style="color:#34495e; margin-top:0;">Typologie et représentations</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
             <p style="text-align:left; font-size:1em;"><strong>Définition d'un intervalle</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Une partie $\displaystyle X$ de ℝ est un <strong>intervalle</strong> si et seulement si pour tous $\displaystyle a, b \in X$ tels que $\displaystyle a \leq b$, on a $\displaystyle [a,b] \subset X$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : un intervalle contient tous les réels compris entre deux quelconques de ses éléments.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un sous-ensemble $
+                \displaystyle I \subset \mathbb{R}$ est un intervalle si, pour tous $
+                \displaystyle a, b \in I$ et tout $
+                \displaystyle x \in \mathbb{R}$, $
+                \displaystyle a \leq x \leq b$ implique $
+                \displaystyle x \in I$
+            .</p>
         </div>
 
         <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Interprétation :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette définition signifie qu'un intervalle est une partie <strong>convexe</strong> de ℝ : si on prend deux points dans l'intervalle, tout le segment qui les joint est aussi dans l'intervalle.</p>
+            <p style="text-align:left; font-size:1em;"><strong>Proposition caractéristique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une partie $
+                \displaystyle X \subset \mathbb{R}$ est un intervalle si et seulement si, pour tous $
+                \displaystyle a, b \in X$ tels que $
+                \displaystyle a \leq b$, on a $
+                \displaystyle [a, b] \subset X$.</p>
         </div>
 
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Formes usuelles d'intervalles</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les intervalles de ℝ sont exactement les ensembles de la forme :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle ]a,b[$ (intervalle ouvert), $\displaystyle [a,b]$ (intervalle fermé)</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle ]a,b]$, $\displaystyle [a,b[$ (intervalles semi-ouverts)</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle ]-\infty, a[$, $\displaystyle ]-\infty, a]$, $\displaystyle ]a, +\infty[$, $\displaystyle [a, +\infty[$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle ]-\infty, +\infty[ = \mathbb{R}$, $\displaystyle \emptyset$ (par convention)</li>
+        <div style="background:#e0f7fa; border-radius:6px; border-left:6px solid #00acc1; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Notations usuelles</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Intervalle ouvert : $
+                    \displaystyle ]a, b[ = \{x \in \mathbb{R} \mid a < x < b\}$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">Intervalle fermé : $
+                    \displaystyle [a, b] = \{x \in \mathbb{R} \mid a \leq x \leq b\}$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">Intervalles semi-ouverts : $
+                    \displaystyle [a, b[$ et $
+                    \displaystyle ]a, b]$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">Intervalles infinis : $
+                    \displaystyle ]-\infty, b[$, $
+                    \displaystyle ]a, +\infty[$, $
+                    \displaystyle \mathbb{R}$
+                </li>
+                <li style="margin:0; text-align:left;">Voisinage de $
+                    \displaystyle a$ : tout intervalle ouvert contenant $
+                    \displaystyle a$ (petit voisinage standard $
+                    \displaystyle ]a-\varepsilon, a+\varepsilon[$)</li>
             </ul>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle a, b \in \mathbb{R}$ avec $\displaystyle a \leq b$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriétés</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">L'intersection de deux intervalles est un intervalle (éventuellement vide)</li>
+                <li style="margin:0; text-align:left;">Tout segment $
+                    \displaystyle [a, b]$ est fermé et borné (les arguments de compacité seront vus plus tard)</li>
+            </ul>
         </div>
 
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
             <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Intervalles :</strong> $\displaystyle [0,1]$, $\displaystyle ]0,1[$, $\displaystyle ]0, +\infty[$, $\displaystyle \mathbb{R}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Non-intervalles :</strong> $\displaystyle \{0, 1, 2\}$ (trois points isolés), $\displaystyle \mathbb{Z}$ (pas de continuité)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Cas particulier :</strong> $\displaystyle \{0\}$ est un intervalle (c'est $\displaystyle [0,0]$)</li>
-                <li style="margin:0; text-align:left;"><strong>Union d'intervalles :</strong> $\displaystyle ]0,1[ \cup ]2,3[$ n'est pas un intervalle (car $\displaystyle 1,5 \notin ]0,1[ \cup ]2,3[$ alors que $\displaystyle 1, 2 \in ]0,1[ \cup ]2,3[$)</li>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle ]-2, 3]$ sur la droite réelle : point ouvert en $
+                    \displaystyle -2$, point plein en $
+                    \displaystyle 3$, portion colorée entre les deux</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle [0, 1] \cap [0{,}5, 2] = [0{,}5, 1]$ : intersection de deux intervalles</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \mathbb{R}_+ = [0, +\infty[$ est un intervalle fermé à gauche, ouvert à droite</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Un voisinage de $
+                    \displaystyle 2$ est par exemple $
+                    \displaystyle ]1{,}9, 2{,}1[$ ou $
+                    \displaystyle ]1, 3[$</li>
+                <li style="margin:0; text-align:left;">$
+                    \displaystyle \{1, 2, 3\}$ n'est pas un intervalle (ne contient pas tous les réels entre 1 et 3)</li>
             </ul>
         </div>
 
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>💡 Propriété utile :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">L'intersection de deux intervalles est un intervalle (éventuellement vide).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La réunion de deux intervalles n'est pas nécessairement un intervalle.</p>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Notation de la droite achevée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On adjoint souvent deux symboles $
+                \displaystyle -\infty$ et $
+                \displaystyle +\infty$ (non réels) pour écrire des intervalles illimités ou parler de limites : on note alors $
+                \displaystyle \overline{\mathbb{R}} = \mathbb{R} \cup \{-\infty, +\infty\}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Aucune opération algébrique n'est définie ici ; ces symboles servent uniquement dans les raisonnements d'analyse.</p>
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Méthodes pratiques pour déterminer sup et inf</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Valeur absolue et distance</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Stratégies de calcul</h3>
+        <h3 style="color:#34495e; margin-top:0;">Outil central pour mesurer des écarts</h3>
 
-        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>📐 Méthode pour déterminer $\displaystyle \sup X$ :</strong>
-            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Vérifier que $\displaystyle X$ est non vide et majorée</strong> (sinon $\displaystyle \sup X$ n'existe pas)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Identifier un candidat</strong> $\displaystyle s$ (souvent une valeur "limite" ou une borne d'intervalle)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Montrer que $\displaystyle s$ est un majorant</strong> : pour tout $\displaystyle x \in X$, $\displaystyle x \leq s$</li>
-                <li style="margin:0; text-align:left;"><strong>Montrer que $\displaystyle s$ est le plus petit majorant</strong> : pour tout $\displaystyle \varepsilon > 0$, il existe $\displaystyle x \in X$ tel que $\displaystyle s - \varepsilon < x$</li>
-            </ol>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:center; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:center; font-size:1em;">$
+                \displaystyle |x| = \begin{cases} x & \text{si } x \geq 0 \\ -x & \text{si } x < 0 \end{cases}$, distance de $
+                \displaystyle x$ à l'origine.
+            </p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$
+                    \displaystyle |x - y|$ mesure la distance entre $
+                    \displaystyle x$ et $
+                    \displaystyle y$
+                </p>
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriétés clés</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle |x| \geq 0$ et $
+                    \displaystyle |x| = 0 \Leftrightarrow x = 0$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle |xy| = |x| \cdot |y|$, $
+                    \displaystyle \left|\frac{x}{y}\right| = \frac{|x|}{|y|}$ si $
+                    \displaystyle y \neq 0$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Inégalité triangulaire :</strong> $
+                    \displaystyle |x + y| \leq |x| + |y|$
+                </li>
+                <li style="margin:0; text-align:left;">$
+                    \displaystyle |x - y| \geq \big| |x| - |y| \big|$ (inégalité triangulaire inversée)</li>
+            </ul>
         </div>
 
         <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>📐 Méthode pour déterminer $\displaystyle \inf X$ :</strong>
+            <strong>📐 Méthode : manipuler une valeur absolue</strong>
             <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Vérifier que $\displaystyle X$ est non vide et minorée</strong> (sinon $\displaystyle \inf X$ n'existe pas)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Identifier un candidat</strong> $\displaystyle i$ (souvent une valeur "limite" ou une borne d'intervalle)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Montrer que $\displaystyle i$ est un minorant</strong> : pour tout $\displaystyle x \in X$, $\displaystyle i \leq x$</li>
-                <li style="margin:0; text-align:left;"><strong>Montrer que $\displaystyle i$ est le plus grand minorant</strong> : pour tout $\displaystyle \varepsilon > 0$, il existe $\displaystyle x \in X$ tel que $\displaystyle x < i + \varepsilon$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Identifier les cas selon le signe (résolution par analyse de signe)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser l'inégalité triangulaire pour encadrer ou montrer la convergence d'une suite</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Reformuler $
+                    \displaystyle |x - a| < r$ comme $
+                    \displaystyle x \in ]a - r, a + r[$ pour interprétation géométrique</li>
+                <li style="margin:0; text-align:left;">Pour des démonstrations, passer par les carrés si les signes posent problème</li>
             </ol>
         </div>
 
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple détaillé :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Déterminons $\displaystyle \sup X$ où $\displaystyle X = \{1 - \frac{1}{n} \mid n \in \mathbb{N}^{\ast}\}$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>1. Vérification :</strong> $\displaystyle X$ est non vide (par exemple $\displaystyle 0 \in X$ pour $\displaystyle n = 1$) et majorée (par exemple par $\displaystyle 1$).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>2. Candidat :</strong> On conjecture $\displaystyle \sup X = 1$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>3. Majorant :</strong> Pour tout $\displaystyle n \in \mathbb{N}^{\ast}$, on a $\displaystyle 1 - \frac{1}{n} < 1$, donc $\displaystyle 1$ est un majorant.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>4. Plus petit majorant :</strong> Soit $\displaystyle \varepsilon > 0$. Il faut trouver $\displaystyle n \in \mathbb{N}^{\ast}$ tel que $\displaystyle 1 - \varepsilon < 1 - \frac{1}{n}$, c'est-à-dire $\displaystyle \frac{1}{n} < \varepsilon$, soit $\displaystyle n > \frac{1}{\varepsilon}$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Par l'axiome d'Archimède, un tel $\displaystyle n$ existe. Donc $\displaystyle \sup X = 1$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Note : $\displaystyle \max X$ n'existe pas car $\displaystyle 1 \notin X$.</p>
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Résoudre $
+                    \displaystyle |2x - 3| \leq 5$ : on obtient $
+                    \displaystyle -5 \leq 2x - 3 \leq 5$, soit $
+                    \displaystyle -1 \leq x \leq 4$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle |\pi - 3| \approx 0{,}14$ mesure la distance entre $
+                    \displaystyle \pi$ et $
+                    \displaystyle 3$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle |(-3) \times 4| = |-12| = 12 = 3 \times 4 = |-3| \times |4|$ (multiplicativité)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle |3 + 4| = 7 = 3 + 4 = |3| + |4|$ (égalité dans l'inégalité triangulaire si même signe)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle |3 - 5| = |-2| = 2$ mais $
+                    \displaystyle |3| + |-5| = 8$ : inégalité stricte $
+                    \displaystyle 2 < 8$</li>
+                <li style="margin:0; text-align:left;">$
+                    \displaystyle |x - 2| < 0{,}1$ équivaut à $
+                    \displaystyle x \in ]1{,}9, 2{,}1[$ (voisinage de 2 de rayon 0,1)</li>
+            </ul>
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Conseils méthodologiques</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Parties majorées, minorées, borne supérieure et inférieure</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Points importants à retenir</h3>
+        <h3 style="color:#34495e; margin-top:0;">Bornes d'une partie de \(\mathbb{R}\)</h3>
 
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>✅ Points clés :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
-                <li style="margin:0; text-align:left;"><strong>Inclusions strictes :</strong> $\displaystyle \mathbb{N} \subsetneq \mathbb{Z} \subsetneq \mathbb{D} \subsetneq \mathbb{Q} \subsetneq \mathbb{R}$</li>
-                <li style="margin:0; text-align:left;"><strong>Densité :</strong> ℚ et ℝ \ ℚ sont denses dans ℝ</li>
-                <li style="margin:0; text-align:left;"><strong>Borne supérieure :</strong> Toute partie non vide majorée de ℝ admet une borne supérieure (propriété fondamentale)</li>
-                <li style="margin:0; text-align:left;"><strong>Borne inférieure :</strong> Toute partie non vide minorée de ℝ admet une borne inférieure</li>
-                <li style="margin:0; text-align:left;"><strong>Maximum/Minimum :</strong> $\displaystyle \max X$ existe si et seulement si $\displaystyle \sup X \in X$</li>
-                <li style="margin:0; text-align:left;"><strong>Intervalles :</strong> Caractérisés par la propriété de convexité</li>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définitions</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$X \subset \mathbb{R}$ est <strong>majorée</strong> s'il existe $
+                    \displaystyle M \in \mathbb{R}$ tel que $
+                    \displaystyle \forall x \in X, x \leq M$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">$X$ est <strong>minorée</strong> s'il existe $
+                    \displaystyle m$ tel que $
+                    \displaystyle \forall x \in X, m \leq x$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \sup X$ : plus petite borne supérieure de $X$ (si $X$ est non vide et majoré)</li>
+                <li style="margin:0; text-align:left;">$
+                    \displaystyle \inf X$ : plus grande borne inférieure de $X$ (si $X$ est non vide et minoré)</li>
             </ul>
         </div>
 
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
-                <li style="margin:0; text-align:left;">Confondre majorant et borne supérieure (un majorant n'est pas nécessairement la borne supérieure)</li>
-                <li style="margin:0; text-align:left;">Oublier de vérifier que la partie est non vide avant d'appliquer la propriété de la borne supérieure</li>
-                <li style="margin:0; text-align:left;">Confondre $\displaystyle \sup X$ et $\displaystyle \max X$ (le maximum n'existe que si la borne supérieure appartient à $\displaystyle X$)</li>
-                <li style="margin:0; text-align:left;">Penser que $\displaystyle -\infty$ et $\displaystyle +\infty$ sont des nombres réels (ce sont des symboles)</li>
-                <li style="margin:0; text-align:left;">Oublier que la densité de ℚ et ℝ \ ℚ s'applique aux intervalles <strong>ouverts</strong> non vides</li>
-                <li style="margin:0; text-align:left;">Confondre intervalle et union d'intervalles disjoints</li>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Notations :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note $
+                \displaystyle \sup X$ la borne supérieure d'une partie $
+                \displaystyle X \subset \mathbb{R}$, et $
+                \displaystyle \inf X$ sa borne inférieure (lorsqu'elles existent).</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Caractérisations</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \beta = \sup X \Leftrightarrow \begin{cases} \forall x \in X, x \leq \beta \\ \forall \varepsilon > 0, \exists x \in X : \beta - \varepsilon < x \end{cases}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \alpha = \inf X \Leftrightarrow \begin{cases} \forall x \in X, \alpha \leq x \\ \forall \varepsilon > 0, \exists x \in X : x < \alpha + \varepsilon \end{cases}$</li>
+                <li style="margin:0; text-align:left;">Si $X$ est un intervalle fermé borné $
+                    \displaystyle [a, b]$, alors $
+                    \displaystyle \inf X = a$ et $
+                    \displaystyle \sup X = b$
+                </li>
             </ul>
         </div>
 
         <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>💡 Astuces pratiques :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
-                <li style="margin:0; text-align:left;">Pour montrer que $\displaystyle s = \sup X$, utiliser la caractérisation avec $\displaystyle \varepsilon$</li>
-                <li style="margin:0; text-align:left;">Pour un intervalle $\displaystyle ]a,b[$, on a toujours $\displaystyle \sup ]a,b[ = b$ et $\displaystyle \inf ]a,b[ = a$</li>
-                <li style="margin:0; text-align:left;">Pour une suite croissante majorée $\displaystyle (u_n)$, on a souvent $\displaystyle \sup \{u_n \mid n \in \mathbb{N}\} = \lim_{n \to +\infty} u_n$</li>
-                <li style="margin:0; text-align:left;">La propriété de la borne supérieure est ce qui distingue ℝ de ℚ</li>
+            <strong>Esquisse de démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'unicité de $
+                \displaystyle \sup X$ découle de l'ordre total : deux bornes supérieures $
+                \displaystyle \beta_1, \beta_2$ vérifient $
+                \displaystyle \beta_1 \leq \beta_2$ et $
+                \displaystyle \beta_2 \leq \beta_1$, d'où $
+                \displaystyle \beta_1 = \beta_2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'existence dans $
+                \displaystyle \mathbb{R}$ est garantie par la propriété de complétude (voir Section VI).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Pour $
+                    \displaystyle X = \{x \in \mathbb{R} \mid x^2 \leq 2\}$, on a $
+                    \displaystyle X = [-\sqrt{2}, \sqrt{2}]$, donc $
+                    \displaystyle \sup X = \sqrt{2}$ et $
+                    \displaystyle \inf X = -\sqrt{2}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Pour $
+                    \displaystyle A = ]0, 1[$, on a $
+                    \displaystyle \sup A = 1$ et $
+                    \displaystyle \inf A = 0$ (bornes non atteintes)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle B = \left\{\frac{1}{n} \mid n \in \mathbb{N}^\ast\right\} = \{1, \frac{1}{2}, \frac{1}{3}, \ldots\}$ : $
+                    \displaystyle \sup B = 1$ (atteint), $
+                    \displaystyle \inf B = 0$ (non atteint)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle C = \{(-1)^n + \frac{1}{n} \mid n \geq 1\}$ : $
+                    \displaystyle \sup C \approx 1$ et $
+                    \displaystyle \inf C = -1$</li>
+                <li style="margin:0; text-align:left;">$
+                    \displaystyle \mathbb{N}$ est minoré par 0 ($
+                    \displaystyle \inf \mathbb{N} = 0$) mais non majoré ($
+                    \displaystyle \sup \mathbb{N} = +\infty$)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Complétude de \(\mathbb{R}\) et propriétés dérivées</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Droite réelle achevée</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:center; font-size:1em;"><strong>Principe de complétude (propriété de la borne supérieure)</strong></p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">Toute partie non vide et majorée de $
+                    \displaystyle \mathbb{R}$ admet une borne supérieure dans $
+                    \displaystyle \mathbb{R}$.
+                </p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette propriété caractérise la droite réelle achevée $
+                \displaystyle \mathbb{R}$ par rapport aux rationnels.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Conséquences importantes</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Théorème des segments emboîtés : si $(I_n)$ est une suite décroissante de segments non vides, alors $
+                    \displaystyle \bigcap_{n \geq 0} I_n \neq \varnothing$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">Toute suite croissante et majorée converge dans $
+                    \displaystyle \mathbb{R}$ (vers sa borne supérieure) — admis ici, démontré et exploité dans le chapitre <em>Suites</em></li>
+                <li style="margin:0; text-align:left;">Toute suite décroissante et minorée converge dans $
+                    \displaystyle \mathbb{R}$ (vers son infimum) — admis ici, démontré dans le chapitre <em>Suites</em></li>
             </ul>
         </div>
 
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration (idée) du théorème des segments emboîtés :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Poser $
+                \displaystyle a_n = \inf I_n$ et $
+                \displaystyle b_n = \sup I_n$. Les suites $(a_n)$ et $(b_n)$ sont respectivement croissante et décroissante, bornées, donc convergentes.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La limite commune $
+                \displaystyle \ell$ appartient à chaque $
+                \displaystyle I_n$, ce qui prouve l'intersection non vide.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'application :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Segments emboîtés $
+                    \displaystyle I_n = [0, \frac{1}{n}]$ : $
+                    \displaystyle I_1 \supset I_2 \supset I_3 \supset \ldots$, leur intersection est $
+                    \displaystyle \{0\}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">La suite $
+                    \displaystyle u_n = 1 + \frac{1}{2} + \frac{1}{4} + \ldots + \frac{1}{2^n}$ est croissante et majorée par 2, donc converge vers $
+                    \displaystyle \sup\{u_n\} = 2$</li>
+                <li style="margin:0; text-align:left;">Dans $
+                    \displaystyle \mathbb{Q}$, l'ensemble $
+                    \displaystyle \{x \in \mathbb{Q} \mid x^2 < 2\}$ est majoré mais n'admet pas de borne supérieure dans $
+                    \displaystyle \mathbb{Q}$ (car $
+                    \displaystyle \sqrt{2} \notin \mathbb{Q}$) : illustration que $
+                    \displaystyle \mathbb{Q}$ n'est pas complet</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Densité des rationnels et des irrationnels, approximations</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Remplir la droite réelle</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définitions</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un ensemble $E \subset \mathbb{R}$ est <strong>dense</strong> dans $
+                \displaystyle \mathbb{R}$ si tout intervalle ouvert contient un élément de $E$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriétés de densité</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \mathbb{Q}$ est dense dans $
+                    \displaystyle \mathbb{R}$ : entre deux réels distincts, on trouve un rationnel</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \mathbb{R} \setminus \mathbb{Q}$ est dense : entre deux réels distincts, on trouve un irrationnel</li>
+                <li style="margin:0 0 12px 0; text-align:left;">En particulier, tout intervalle ouvert non vide de $
+                    \displaystyle \mathbb{R}$ contient au moins un rationnel et au moins un irrationnel</li>
+                <li style="margin:0; text-align:left;">Conséquence : tout intervalle ouvert contient une infinité de rationnels et d'irrationnels</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration (idée) de la densité de \(\mathbb{Q}\) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $
+                \displaystyle a < b$, choisir $
+                \displaystyle n$ tel que $
+                \displaystyle n(b - a) > 1$. Il existe $
+                \displaystyle k \in \mathbb{Z}$ avec $
+                \displaystyle na < k < nb$, d'où $
+                \displaystyle \frac{k}{n} \in \mathbb{Q}$ et $
+                \displaystyle a < \frac{k}{n} < b$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Approximations décimales par défaut et par excès</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour un réel $
+                \displaystyle x$ et un entier $
+                \displaystyle n \geq 1$, on définit :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$
+                    \displaystyle x_n^- = \frac{\lfloor 10^n x \rfloor}{10^n} \quad , \quad x_n^+ = \frac{\lceil 10^n x \rceil}{10^n} \quad , \quad x_n^+ - x_n^- = 10^{-n}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$
+                \displaystyle x_n^-$ (approximation par défaut) et $
+                \displaystyle x_n^+$ (par excès) encadrent $
+                \displaystyle x$ avec une précision $
+                \displaystyle 10^{-n}$ : on a $
+                \displaystyle x_n^- \leq x \leq x_n^+$ et $
+                \displaystyle x \in [x_n^-, x_n^+]$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces suites de décimaux rationnels montrent en particulier que tout réel est limite d'une suite de rationnels.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Partie entière et plafond</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \lfloor x \rfloor$ (partie entière) est l'unique entier tel que $
+                    \displaystyle \lfloor x \rfloor \leq x < \lfloor x \rfloor + 1$
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;">$
+                    \displaystyle \lceil x \rceil$ (plafond) est l'unique entier tel que $
+                    \displaystyle \lceil x \rceil - 1 < x \leq \lceil x \rceil$
+                </li>
+                <li style="margin:0; text-align:left;">On a $
+                    \displaystyle \lfloor x \rfloor \leq x \leq \lceil x \rceil$, ce qui fournit des encadrements efficaces, notamment pour appliquer l'axiome d'Archimède.</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : approximation décimale d'un réel</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Encadrer le nombre dans un segment de longueur $
+                    \displaystyle 1$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Diviser par 10 et répéter (méthode des dichotomies décimales)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Associer au rang $
+                    \displaystyle n$ une approximation à $
+                    \displaystyle 10^{-n}$ près par défaut et par excès</li>
+                <li style="margin:0; text-align:left;">Vérifier la précision en contrôlant la longueur de l'intervalle restant</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples détaillés :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Approximer $
+                    \displaystyle \sqrt{2}$ à $
+                    \displaystyle 10^{-3}$ près : $
+                    \displaystyle 1{,}414^2 = 1{,}999396$, $
+                    \displaystyle 1{,}415^2 = 2{,}002225$, donc $
+                    \displaystyle \sqrt{2} \in [1{,}414, 1{,}415]$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Entre 0 et 1, trouver un rationnel : $
+                    \displaystyle \frac{1}{2} \in \mathbb{Q}$ et $
+                    \displaystyle 0 < \frac{1}{2} < 1$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Entre $
+                    \displaystyle \pi$ et $
+                    \displaystyle \pi + 1$, il existe $
+                    \displaystyle \frac{22}{7} \approx 3{,}142857$ (rationnel) et aussi $
+                    \displaystyle \pi + \frac{\sqrt{2}}{10}$ (irrationnel)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Partie entière : $
+                    \displaystyle \lfloor 3{,}7 \rfloor = 3$, $
+                    \displaystyle \lfloor -2{,}3 \rfloor = -3$, $
+                    \displaystyle \lceil 3{,}7 \rceil = 4$, $
+                    \displaystyle \lceil -2{,}3 \rceil = -2$</li>
+                <li style="margin:0; text-align:left;">Pour $
+                    \displaystyle x = \pi \approx 3{,}14159$, on a $
+                    \displaystyle x_1^- = 3{,}1$, $
+                    \displaystyle x_1^+ = 3{,}2$ et $
+                    \displaystyle x_2^- = 3{,}14$, $
+                    \displaystyle x_2^+ = 3{,}15$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Conseils méthodologiques et erreurs à éviter</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Boîte à outils pour les exercices</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : prouver l'existence d'une borne</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Identifier une majoration simple (inégalités usuelles, majoration terme à terme)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Montrer que la majoration est optimale en construisant une suite qui l'atteint asymptotiquement</li>
+                <li style="margin:0; text-align:left;">Conclure que la valeur atteinte est la borne supérieure</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Bonnes pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.0; font-size:1em;">
+                <li style="margin:0; text-align:left;">Toujours vérifier si l'ensemble étudié est non vide avant de parler de bornes</li>
+                <li style="margin:0; text-align:left;">Privilégier les reformulations géométriques (segments, distances) pour clarifier les inégalités</li>
+                <li style="margin:0; text-align:left;">Utiliser la densité des rationnels pour construire des suites d'approximations</li>
+                <li style="margin:0; text-align:left;">Exploiter la complétude pour justifier des limites de suites monotones</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.0; font-size:1em;">
+                <li style="margin:0; text-align:left;">Confondre majoration et maximum : une borne supérieure n'est pas forcément atteinte</li>
+                <li style="margin:0; text-align:left;">Oublier que les rationnels ne satisfont pas la propriété de complétude (ex : $\displaystyle \sqrt{2} \notin \mathbb{Q}$)</li>
+                <li style="margin:0; text-align:left;">Utiliser une approximation décimale sans préciser la précision demandée</li>
+                <li style="margin:0; text-align:left;">Négliger les cas d'égalité dans les inégalités triangulaires</li>
+            </ul>
+        </div>
     </div>
 
 </div>
 
 ===
-

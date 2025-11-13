@@ -1,0 +1,599 @@
+=== Arithmétique dans l'ensemble des entiers relatifs - Programme MPSI
+Difficulté: medium
+Ordre: 4
+Images: 
+
+Titre: Arithmétique dans l'ensemble des entiers relatifs : Divisibilité, PGCD, Nombres Premiers et Congruences
+Description: Cours complet sur l'arithmétique en MPSI : divisibilité et division euclidienne, PGCD et algorithme d'Euclide, entiers premiers entre eux et théorème de Bézout, nombres premiers et décomposition en facteurs premiers, valuation p-adique, congruences et petit théorème de Fermat.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Divisibilité et division euclidienne</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Divisibilité dans $\displaystyle \mathbb{Z}$</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définition de la divisibilité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$ et $\displaystyle b$ deux entiers relatifs.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle a$ <strong>divise</strong> $\displaystyle b$ (ou que $\displaystyle b$ est un <strong>multiple</strong> de $\displaystyle a$) s'il existe un entier $\displaystyle k$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle b = k \times a$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note alors : $\displaystyle a \mid b$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a$ ne divise pas $\displaystyle b$, on note : $\displaystyle a \nmid b$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Propriétés de la divisibilité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous entiers relatifs $\displaystyle a$, $\displaystyle b$, $\displaystyle c$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a \mid a$ (réflexivité)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a \mid b$ et $\displaystyle b \mid c$, alors $\displaystyle a \mid c$ (transitivité)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a \mid b$ et $\displaystyle a \mid c$, alors $\displaystyle a \mid (b + c)$ et $\displaystyle a \mid (b - c)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a \mid b$, alors $\displaystyle a \mid (k \times b)$ pour tout entier $\displaystyle k$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a \mid b$ et $\displaystyle b \mid a$, alors $\displaystyle |a| = |b|$ (on dit que $\displaystyle a$ et $\displaystyle b$ sont <strong>associés</strong>)</li>
+                <li style="margin:0; text-align:left;"><strong>Combinaisons linéaires :</strong> Si $\displaystyle d \mid a$ et $\displaystyle d \mid b$, alors $\displaystyle d \mid (ua + vb)$ pour tous $\displaystyle u, v \in \mathbb{Z}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Cas particuliers importants :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 1$ et $\displaystyle -1$ divisent tous les entiers relatifs</li>
+                <li style="margin:0; text-align:left;">$\displaystyle 0$ est multiple de tout entier, mais $\displaystyle 0$ ne divise aucun entier non nul</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Caractérisation des couples d'entiers associés</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux entiers relatifs $\displaystyle a$ et $\displaystyle b$ sont <strong>associés</strong> si et seulement si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:200px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle b = \pm a$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Théorème de la division euclidienne</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a \in \mathbb{Z}$ et $\displaystyle b \in \mathbb{Z}^{\ast}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il existe un <strong>unique</strong> couple d'entiers $\displaystyle (q, r)$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a = bq + r$ avec $\displaystyle 0 \leq r < |b|$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'entier $\displaystyle q$ est appelé le <strong>quotient</strong> et $\displaystyle r$ le <strong>reste</strong> de la division euclidienne de $\displaystyle a$ par $\displaystyle b$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Division de $\displaystyle 23$ par $\displaystyle 5$ : $\displaystyle 23 = 5 \times 4 + 3$ (quotient : $\displaystyle 4$, reste : $\displaystyle 3$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Division de $\displaystyle -17$ par $\displaystyle 4$ : $\displaystyle -17 = 4 \times (-5) + 3$ (quotient : $\displaystyle -5$, reste : $\displaystyle 3$)</li>
+                <li style="margin:0; text-align:left;">Division de $\displaystyle 42$ par $\displaystyle -7$ : $\displaystyle 42 = (-7) \times (-6) + 0$ (quotient : $\displaystyle -6$, reste : $\displaystyle 0$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le reste $\displaystyle r$ est toujours <strong>positif ou nul</strong> et <strong>strictement inférieur</strong> à la valeur absolue du diviseur $\displaystyle |b|$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette condition garantit l'<strong>unicité</strong> du couple $\displaystyle (q, r)$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. PGCD et algorithme d'Euclide</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Plus grand commun diviseur (PGCD)</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définition du PGCD</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$ et $\displaystyle b$ deux entiers naturels, dont l'un au moins est non nul.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>plus grand commun diviseur</strong> (PGCD) de $\displaystyle a$ et $\displaystyle b$, noté $\displaystyle a \wedge b$ ou $\displaystyle \text{pgcd}(a, b)$, est le <strong>plus grand élément</strong> (pour l'ordre naturel dans $\displaystyle \mathbb{N}$) de l'ensemble des diviseurs communs à $\displaystyle a$ et $\displaystyle b$.</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a \wedge b = \max\{d \in \mathbb{N}^{\ast} : d \mid a \text{ et } d \mid b\}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Propriétés du PGCD</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">L'ensemble des diviseurs communs à $\displaystyle a$ et $\displaystyle b$ est égal à l'ensemble des diviseurs de $\displaystyle a \wedge b$.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a \wedge b$ est le plus grand élément (au sens de la divisibilité) de l'ensemble des diviseurs communs à $\displaystyle a$ et $\displaystyle b$.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Pour $\displaystyle k \in \mathbb{N}^{\ast}$ : $\displaystyle (ka) \wedge (kb) = k(a \wedge b)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a \mid b$, alors $\displaystyle a \wedge b = |a|$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle a \wedge b = |a| \wedge |b|$ (le PGCD ne dépend que des valeurs absolues)</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Extension au cas de deux entiers relatifs</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour deux entiers relatifs $\displaystyle a$ et $\displaystyle b$ (dont l'un au moins est non nul), on définit :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a \wedge b = |a| \wedge |b|$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📊 Algorithme d'Euclide</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'algorithme d'Euclide permet de calculer efficacement le PGCD de deux entiers naturels non nuls.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Principe :</strong> Si $\displaystyle a = bq + r$ est la division euclidienne de $\displaystyle a$ par $\displaystyle b$, alors :</p>
+            <div style="background:#e0f2f1; border:3px solid #00897b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a \wedge b = b \wedge r$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On répète cette opération jusqu'à obtenir un reste nul. Le dernier reste non nul est le PGCD.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple : Calcul de $\displaystyle 252 \wedge 198$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 252 = 198 \times 1 + 54$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 198 = 54 \times 3 + 36$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 54 = 36 \times 1 + 18$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 36 = 18 \times 2 + 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle 252 \wedge 198 = 18$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Relation de Bézout</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$ et $\displaystyle b$ deux entiers relatifs non tous deux nuls.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il existe des entiers relatifs $\displaystyle u$ et $\displaystyle v$ tels que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle au + bv = a \wedge b$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un tel couple $\displaystyle (u, v)$ est appelé un <strong>couple de Bézout</strong>.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📊 Algorithme d'Euclide étendu</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'algorithme d'Euclide étendu permet de déterminer un couple de Bézout $\displaystyle (u, v)$ tel que $\displaystyle au + bv = a \wedge b$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On remonte les divisions euclidiennes effectuées dans l'algorithme d'Euclide pour exprimer chaque reste en fonction de $\displaystyle a$ et $\displaystyle b$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Plus petit commun multiple (PPCM)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$ et $\displaystyle b$ deux entiers relatifs non nuls.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>plus petit commun multiple</strong> (PPCM) de $\displaystyle a$ et $\displaystyle b$, noté $\displaystyle a \vee b$ ou $\displaystyle \text{ppcm}(a, b)$, est le plus petit entier naturel non nul qui soit multiple à la fois de $\displaystyle a$ et de $\displaystyle b$.</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:550px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a \vee b = \min\{m \in \mathbb{N}^{\ast} : a \mid m \text{ et } b \mid m\}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Relation entre PGCD et PPCM</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour deux entiers relatifs non nuls $\displaystyle a$ et $\displaystyle b$ :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (a \wedge b) \times (a \vee b) = |ab|$</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Entiers premiers entre eux</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et propriétés</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Couple d'entiers premiers entre eux</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux entiers relatifs $\displaystyle a$ et $\displaystyle b$ sont dits <strong>premiers entre eux</strong> si leur PGCD est égal à $\displaystyle 1$.</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:200px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a \wedge b = 1$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note aussi : $\displaystyle a \perp b$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Théorème de Bézout</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux entiers relatifs $\displaystyle a$ et $\displaystyle b$ sont premiers entre eux <strong>si et seulement si</strong> il existe des entiers relatifs $\displaystyle u$ et $\displaystyle v$ tels que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle au + bv = 1$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Lemme de Gauss</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$, $\displaystyle b$ et $\displaystyle c$ trois entiers relatifs.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a \mid bc$ et $\displaystyle a \wedge b = 1$, alors $\displaystyle a \mid c$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Propriétés des entiers premiers entre eux</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a$ et $\displaystyle b$ sont premiers entre eux et divisent $\displaystyle n$, alors $\displaystyle ab \mid n$.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a$ et $\displaystyle b$ sont premiers à $\displaystyle n$, alors $\displaystyle ab$ est premier à $\displaystyle n$.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle a \wedge b = 1$ et $\displaystyle a \mid c$ et $\displaystyle b \mid c$, alors $\displaystyle ab \mid c$.</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle a \wedge b = 1$, alors $\displaystyle a \wedge b^n = 1$ pour tout $\displaystyle n \in \mathbb{N}^{\ast}$.</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Forme irréductible d'un rationnel</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Tout nombre rationnel $\displaystyle r$ peut s'écrire sous la forme $\displaystyle r = \frac{p}{q}$ avec $\displaystyle p \in \mathbb{Z}$, $\displaystyle q \in \mathbb{N}^{\ast}$ et $\displaystyle p \wedge q = 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette écriture est unique à un signe près et est appelée la <strong>forme irréductible</strong> de $\displaystyle r$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 PGCD d'un nombre fini d'entiers</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a_1, a_2, \ldots, a_n$ des entiers relatifs (dont l'un au moins est non nul).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le PGCD de $\displaystyle a_1, a_2, \ldots, a_n$, noté $\displaystyle a_1 \wedge a_2 \wedge \cdots \wedge a_n$, est défini par récurrence :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a_1 \wedge a_2 \wedge \cdots \wedge a_n = (a_1 \wedge \cdots \wedge a_{n-1}) \wedge a_n$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il existe des entiers $\displaystyle u_1, u_2, \ldots, u_n$ tels que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle u_1 a_1 + \cdots + u_n a_n = a_1 \wedge \cdots \wedge a_n$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Entiers premiers entre eux dans leur ensemble</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Des entiers $\displaystyle a_1, a_2, \ldots, a_n$ sont dits <strong>premiers entre eux dans leur ensemble</strong> si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:200px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a_1 \wedge a_2 \wedge \cdots \wedge a_n = 1$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ils sont dits <strong>premiers entre eux deux à deux</strong> si $\displaystyle a_i \wedge a_j = 1$ pour tous $\displaystyle i \neq j$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Attention :</strong> Premiers entre eux deux à deux $\displaystyle \Rightarrow$ Premiers entre eux dans leur ensemble, mais la réciproque est fausse.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Nombres premiers</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et propriétés fondamentales</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Nombre premier</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un entier naturel $\displaystyle p \geq 2$ est dit <strong>premier</strong> s'il n'admet que deux diviseurs positifs distincts : $\displaystyle 1$ et $\displaystyle p$ lui-même.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, $\displaystyle p$ est premier si et seulement si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \{d \in \mathbb{N}^{\ast} : d \mid p\} = \{1, p\}$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📊 Crible d'Ératosthène</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le crible d'Ératosthène est une méthode pour déterminer tous les nombres premiers inférieurs à un entier donné $\displaystyle n$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Principe :</strong></p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Écrire tous les entiers de $\displaystyle 2$ à $\displaystyle n$.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Barrer tous les multiples de $\displaystyle 2$ (sauf $\displaystyle 2$).</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Prendre le plus petit nombre non barré, c'est un nombre premier.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Barrer tous ses multiples (sauf lui-même).</li>
+                <li style="margin:0; text-align:left;">Répéter jusqu'à ce que tous les nombres soient soit premiers, soit barrés.</li>
+            </ol>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 L'ensemble des nombres premiers est infini</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il existe une infinité de nombres premiers.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette propriété a été démontrée par Euclide : si on suppose qu'il n'y a qu'un nombre fini de nombres premiers, on peut construire un nombre qui n'est divisible par aucun d'entre eux, ce qui est absurde.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Théorème fondamental de l'arithmétique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Tout entier naturel $\displaystyle n \geq 2$ admet une <strong>décomposition unique</strong> (à l'ordre près des facteurs) en produit de nombres premiers :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle n = p_1^{\alpha_1} p_2^{\alpha_2} \cdots p_k^{\alpha_k}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle p_1 < p_2 < \cdots < p_k$ sont des nombres premiers et $\displaystyle \alpha_1, \alpha_2, \ldots, \alpha_k \in \mathbb{N}^{\ast}$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Valuation p-adique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle p$ un nombre premier et $\displaystyle n \in \mathbb{N}^{\ast}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>valuation p-adique</strong> de $\displaystyle n$, notée $\displaystyle v_p(n)$, est l'exposant de $\displaystyle p$ dans la décomposition en facteurs premiers de $\displaystyle n$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, $\displaystyle v_p(n)$ est le plus grand entier $\displaystyle k$ tel que $\displaystyle p^k \mid n$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Convention (approfondissement) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par convention, on pose $\displaystyle v_p(0) = +\infty$ pour tout nombre premier $\displaystyle p$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette convention permet d'étendre certaines propriétés de la valuation p-adique au cas $\displaystyle n = 0$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Propriétés de la valuation p-adique</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle v_p(ab) = v_p(a) + v_p(b)$ pour tous $\displaystyle a, b \in \mathbb{N}^{\ast}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle v_p(a^n) = n \cdot v_p(a)$ pour tout $\displaystyle n \in \mathbb{N}^{\ast}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a \mid b$ si et seulement si $\displaystyle v_p(a) \leq v_p(b)$ pour tout nombre premier $\displaystyle p$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:4px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>🔬 Approfondissement :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous $\displaystyle a, b \in \mathbb{N}^{\ast}$ :</p>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle v_p(a + b) \geq \min(v_p(a), v_p(b))$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">avec <strong>égalité</strong> si $\displaystyle v_p(a) \neq v_p(b)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette propriété est utile pour l'étude des sommes et des équations diophantiennes.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Expressions du PGCD et du PPCM à l'aide des valuations p-adiques</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$ et $\displaystyle b$ deux entiers naturels non nuls.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a = \prod_{p \text{ premier}} p^{v_p(a)}$ et $\displaystyle b = \prod_{p \text{ premier}} p^{v_p(b)}$, alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a \wedge b = \prod_{p \text{ premier}} p^{\min(v_p(a), v_p(b))}$</p>
+            </div>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a \vee b = \prod_{p \text{ premier}} p^{\max(v_p(a), v_p(b))}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 360 = 2^3 \times 3^2 \times 5$ et $\displaystyle 84 = 2^2 \times 3 \times 7$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 360 \wedge 84 = 2^{\min(3,2)} \times 3^{\min(2,1)} \times 5^{\min(1,0)} \times 7^{\min(0,1)} = 2^2 \times 3 = 12$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 360 \vee 84 = 2^{\max(3,2)} \times 3^{\max(2,1)} \times 5^{\max(1,0)} \times 7^{\max(0,1)} = 2^3 \times 3^2 \times 5 \times 7 = 2520$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Congruences</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Relation de congruence modulo un entier</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définition de la congruence</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$, $\displaystyle b$ et $\displaystyle n$ des entiers relatifs, avec $\displaystyle n \neq 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle a$ est <strong>congru à $\displaystyle b$ modulo $\displaystyle n$</strong> si $\displaystyle n$ divise $\displaystyle a - b$.</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a \equiv b \pmod{n} \Leftrightarrow n \mid (a - b)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note aussi : $\displaystyle a = b \ [n]$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Propriétés de la relation de congruence</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Réflexivité :</strong> $\displaystyle a \equiv a \pmod{n}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Symétrie :</strong> Si $\displaystyle a \equiv b \pmod{n}$, alors $\displaystyle b \equiv a \pmod{n}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Transitivité :</strong> Si $\displaystyle a \equiv b \pmod{n}$ et $\displaystyle b \equiv c \pmod{n}$, alors $\displaystyle a \equiv c \pmod{n}$</li>
+                <li style="margin:0; text-align:left;">La congruence modulo $\displaystyle n$ est donc une <strong>relation d'équivalence</strong> sur $\displaystyle \mathbb{Z}$.</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Opérations sur les congruences</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$, $\displaystyle b$, $\displaystyle c$, $\displaystyle d$ et $\displaystyle n$ des entiers relatifs, avec $\displaystyle n \neq 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a \equiv b \pmod{n}$ et $\displaystyle c \equiv d \pmod{n}$, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a + c \equiv b + d \pmod{n}$ (somme)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a - c \equiv b - d \pmod{n}$ (différence)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle ac \equiv bd \pmod{n}$ (produit)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a^k \equiv b^k \pmod{n}$ pour tout $\displaystyle k \in \mathbb{N}$ (puissance)</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:4px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On <strong>ne peut pas</strong> simplifier une congruence par un diviseur commun sans précaution.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle c \wedge n = 1$, alors $\displaystyle ac \equiv bc \pmod{n}$ implique $\displaystyle a \equiv b \pmod{n}$.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:4px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>🔬 Approfondissement : Règle générale de simplification</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle ac \equiv bc \pmod{n}$, alors :</p>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a \equiv b \pmod{\frac{n}{n \wedge c}}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette règle générale permet de simplifier une congruence même lorsque $\displaystyle c$ et $\displaystyle n$ ne sont pas premiers entre eux.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Inverse modulo n</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$ et $\displaystyle n$ des entiers relatifs, avec $\displaystyle n \geq 2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle a$ admet un <strong>inverse modulo $\displaystyle n$</strong> s'il existe un entier $\displaystyle b$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle ab \equiv 1 \pmod{n}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un tel $\displaystyle b$ est noté $\displaystyle a^{-1} \pmod{n}$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Caractérisation de l'existence d'un inverse modulo n</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un entier $\displaystyle a$ admet un inverse modulo $\displaystyle n$ <strong>si et seulement si</strong> $\displaystyle a \wedge n = 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans ce cas, l'inverse peut être déterminé à l'aide de l'algorithme d'Euclide étendu.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📊 Utilisation d'un inverse modulo n pour résoudre une congruence</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre une équation de la forme $\displaystyle ax \equiv b \pmod{n}$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Vérifier que $\displaystyle a \wedge n = 1$ (sinon, il faut d'abord simplifier).</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Calculer l'inverse $\displaystyle a^{-1} \pmod{n}$ à l'aide de l'algorithme d'Euclide étendu.</li>
+                <li style="margin:0; text-align:left;">Multiplier les deux membres par $\displaystyle a^{-1}$ : $\displaystyle x \equiv a^{-1} b \pmod{n}$.</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple : Résoudre $\displaystyle 7x \equiv 3 \pmod{11}$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle 7 \wedge 11 = 1$, donc $\displaystyle 7$ admet un inverse modulo $\displaystyle 11$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par l'algorithme d'Euclide étendu : $\displaystyle 11 = 7 \times 1 + 4$, $\displaystyle 7 = 4 \times 1 + 3$, $\displaystyle 4 = 3 \times 1 + 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En remontant : $\displaystyle 1 = 4 - 3 = 4 - (7 - 4) = 2 \times 4 - 7 = 2(11 - 7) - 7 = 2 \times 11 - 3 \times 7$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle -3 \times 7 \equiv 1 \pmod{11}$, soit $\displaystyle 7^{-1} \equiv -3 \equiv 8 \pmod{11}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ainsi : $\displaystyle x \equiv 8 \times 3 \equiv 24 \equiv 2 \pmod{11}$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Petit théorème de Fermat</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle p$ un nombre premier et $\displaystyle a$ un entier non divisible par $\displaystyle p$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a^{p-1} \equiv 1 \pmod{p}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De manière équivalente, pour tout entier $\displaystyle a$ :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a^p \equiv a \pmod{p}$</p>
+            </div>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Application du petit théorème de Fermat :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le petit théorème de Fermat permet de calculer rapidement des puissances modulo un nombre premier.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par exemple, pour calculer $\displaystyle 3^{100} \pmod{7}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle 7$ est premier et $\displaystyle 3 \wedge 7 = 1$, on a $\displaystyle 3^6 \equiv 1 \pmod{7}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle 3^{100} = 3^{6 \times 16 + 4} = (3^6)^{16} \times 3^4 \equiv 1^{16} \times 3^4 \equiv 81 \equiv 4 \pmod{7}$.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:4px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les anneaux $\displaystyle \mathbb{Z}/n\mathbb{Z}$ sont <strong>hors programme</strong> en MPSI.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On travaille uniquement avec la relation de congruence modulo $\displaystyle n$ sur $\displaystyle \mathbb{Z}$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Méthodes et applications pratiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Résolution de problèmes arithmétiques</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode pour calculer un PGCD :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser l'algorithme d'Euclide en effectuant des divisions euclidiennes successives.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Le dernier reste non nul est le PGCD.</li>
+                <li style="margin:0; text-align:left;">Pour obtenir un couple de Bézout, remonter les divisions avec l'algorithme d'Euclide étendu.</li>
+            </ol>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:4px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>🔬 Approfondissement : Résolution complète d'une équation diophantienne linéaire</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle ax + by = c$ dans $\displaystyle \mathbb{Z}$ (avec $\displaystyle a$ et $\displaystyle b$ non tous deux nuls) :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Condition d'existence :</strong> Vérifier que $\displaystyle a \wedge b \mid c$ (condition nécessaire et suffisante).</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Solution particulière :</strong> Trouver une solution particulière $\displaystyle (x_0, y_0)$ à l'aide de l'algorithme d'Euclide étendu appliqué à $\displaystyle a$ et $\displaystyle b$.</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Forme générale des solutions :</strong> Si $\displaystyle d = a \wedge b$, les solutions sont de la forme :</li>
+            </ol>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle x = x_0 + k \frac{b}{d}$, $\quad y = y_0 - k \frac{a}{d}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle k \in \mathbb{Z}$ parcourt tous les entiers relatifs.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette méthode est une application directe de la relation de Bézout et est très utilisée en MPSI.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode pour déterminer la décomposition en facteurs premiers :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Tester la divisibilité par les nombres premiers successifs : $\displaystyle 2, 3, 5, 7, 11, \ldots$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Pour chaque facteur premier trouvé, déterminer sa valuation p-adique.</li>
+                <li style="margin:0; text-align:left;">Continuer jusqu'à obtenir $\displaystyle 1$ comme quotient.</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Divisibilité :</strong> Toujours vérifier les conditions d'existence avant d'appliquer les propriétés</li>
+                <li style="margin:0; text-align:left;"><strong>PGCD :</strong> Utiliser l'algorithme d'Euclide plutôt que la décomposition en facteurs premiers pour de grands nombres</li>
+                <li style="margin:0; text-align:left;"><strong>Congruences :</strong> Attention à ne pas simplifier sans vérifier que le diviseur est premier au module</li>
+                <li style="margin:0; text-align:left;"><strong>Nombres premiers :</strong> Pour tester si un nombre est premier, il suffit de vérifier la divisibilité par les nombres premiers inférieurs ou égaux à $\displaystyle \sqrt{n}$</li>
+                <li style="margin:0; text-align:left;"><strong>Valuation p-adique :</strong> Très utile pour calculer le PGCD et le PPCM de plusieurs nombres</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;">Confondre "premiers entre eux" et "premiers entre eux deux à deux"</li>
+                <li style="margin:0; text-align:left;">Oublier que le reste de la division euclidienne doit être positif ou nul et strictement inférieur à $\displaystyle |b|$</li>
+                <li style="margin:0; text-align:left;">Simplifier une congruence sans vérifier que le diviseur est premier au module</li>
+                <li style="margin:0; text-align:left;">Confondre $\displaystyle a \wedge b$ (PGCD) et $\displaystyle a \vee b$ (PPCM)</li>
+                <li style="margin:0; text-align:left;">Oublier que le petit théorème de Fermat nécessite que $\displaystyle p$ soit premier et que $\displaystyle a \wedge p = 1$</li>
+                <li style="margin:0; text-align:left;">Ne pas vérifier les conditions d'existence avant d'appliquer le théorème de Bézout</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Tableaux récapitulatifs</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Notations et symboles</h3>
+
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Notation</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Signification</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a \mid b$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a$ divise $\displaystyle b$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a \nmid b$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a$ ne divise pas $\displaystyle b$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a \wedge b$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">PGCD de $\displaystyle a$ et $\displaystyle b$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a \vee b$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">PPCM de $\displaystyle a$ et $\displaystyle b$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a \perp b$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a$ et $\displaystyle b$ sont premiers entre eux</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a \equiv b \pmod{n}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a$ est congru à $\displaystyle b$ modulo $\displaystyle n$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle v_p(n)$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Valuation p-adique de $\displaystyle n$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Propriétés principales</h3>
+
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:40%;">Propriété</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:60%;">Formule</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Relation PGCD-PPCM</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle (a \wedge b) \times (a \vee b) = |ab|$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Relation de Bézout</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle au + bv = a \wedge b$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Théorème de Bézout</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a \wedge b = 1 \Leftrightarrow \exists u, v \in \mathbb{Z}, au + bv = 1$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Lemme de Gauss</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Si $\displaystyle a \mid bc$ et $\displaystyle a \wedge b = 1$, alors $\displaystyle a \mid c$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">PGCD avec valuation p-adique</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a \wedge b = \prod_p p^{\min(v_p(a), v_p(b))}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">PPCM avec valuation p-adique</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle a \vee b = \prod_p p^{\max(v_p(a), v_p(b))}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Petit théorème de Fermat</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Si $\displaystyle p$ premier et $\displaystyle a \wedge p = 1$, alors $\displaystyle a^{p-1} \equiv 1 \pmod{p}$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+===
+

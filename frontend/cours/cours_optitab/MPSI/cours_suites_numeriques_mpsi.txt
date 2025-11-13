@@ -1,0 +1,787 @@
+=== Suites Numériques - Programme MPSI
+Difficulté: medium
+Ordre: 5
+Images: 
+
+Titre: Suites Numériques : Généralités, Limites, Convergence et Suites Particulières
+Description: Cours complet sur les suites numériques en MPSI : généralités sur les suites réelles, limite d'une suite réelle, suites monotones, suites extraites, traduction séquentielle de certaines propriétés, suites complexes et suites particulières (arithmétiques, géométriques, arithmético-géométriques, récurrentes linéaires).
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Généralités sur les suites réelles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définitions et vocabulaire</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définition d'une suite réelle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>suite réelle</strong> est une application de $\displaystyle \mathbb{N}$ dans $\displaystyle \mathbb{R}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note une suite $\displaystyle (u_n)_{n \in \mathbb{N}}$ ou simplement $\displaystyle (u_n)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle n \in \mathbb{N}$, $\displaystyle u_n$ est appelé le <strong>terme général</strong> ou le <strong>terme de rang $\displaystyle n$</strong> de la suite.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Modes de définition d'une suite réelle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une suite peut être définie de plusieurs façons :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Définition explicite :</strong> $\displaystyle u_n = f(n)$ où $\displaystyle f$ est une fonction définie sur $\displaystyle \mathbb{N}$ (exemple : $\displaystyle u_n = n^2 + 1$)</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Définition implicite :</strong> $\displaystyle u_n$ est défini comme solution d'une équation dépendant de $\displaystyle n$</li>
+                <li style="margin:0; text-align:left;"><strong>Définition par récurrence :</strong> $\displaystyle u_{n+1} = f(u_n)$ ou $\displaystyle u_{n+1} = f(n, u_n)$ avec une condition initiale $\displaystyle u_0$ (ou $\displaystyle u_1$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Propriétés des suites</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle (u_n)_{n \in \mathbb{N}}$ une suite réelle :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Suite majorée :</strong> Il existe $\displaystyle M \in \mathbb{R}$ tel que $\displaystyle u_n \leq M$ pour tout $\displaystyle n \in \mathbb{N}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Suite minorée :</strong> Il existe $\displaystyle m \in \mathbb{R}$ tel que $\displaystyle u_n \geq m$ pour tout $\displaystyle n \in \mathbb{N}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Suite bornée :</strong> La suite est à la fois majorée et minorée</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Suite stationnaire :</strong> Il existe $\displaystyle N \in \mathbb{N}$ tel que $\displaystyle u_n = u_N$ pour tout $\displaystyle n \geq N$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Suite monotone :</strong> La suite est soit croissante, soit décroissante</li>
+                <li style="margin:0; text-align:left;"><strong>Suite strictement monotone :</strong> La suite est soit strictement croissante, soit strictement décroissante</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une suite $\displaystyle (u_n)_{n \in \mathbb{N}}$ est <strong>bornée</strong> si et seulement si la suite $\displaystyle (|u_n|)_{n \in \mathbb{N}}$ est <strong>majorée</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : $\displaystyle (u_n)$ est bornée $\displaystyle \Leftrightarrow \exists M > 0, \forall n \in \mathbb{N}, |u_n| \leq M$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples détaillés :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 1 :</strong> $\displaystyle u_n = (-1)^n$ 
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Premiers termes : $\displaystyle u_0 = 1$, $\displaystyle u_1 = -1$, $\displaystyle u_2 = 1$, $\displaystyle u_3 = -1$, ...</li>
+                        <li>Suite <strong>bornée</strong> : $\displaystyle |u_n| = 1$ pour tout $\displaystyle n$, donc $\displaystyle -1 \leq u_n \leq 1$</li>
+                        <li>Suite <strong>non monotone</strong> : $\displaystyle u_0 > u_1$ mais $\displaystyle u_1 < u_2$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 2 :</strong> $\displaystyle u_n = n$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Premiers termes : $\displaystyle u_0 = 0$, $\displaystyle u_1 = 1$, $\displaystyle u_2 = 2$, $\displaystyle u_3 = 3$, ...</li>
+                        <li>Suite <strong>strictement croissante</strong> : $\displaystyle u_{n+1} - u_n = 1 > 0$</li>
+                        <li>Suite <strong>minorée</strong> par $\displaystyle 0$ mais <strong>non majorée</strong></li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 3 :</strong> $\displaystyle u_n = \frac{1}{n+1}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Premiers termes : $\displaystyle u_0 = 1$, $\displaystyle u_1 = \frac{1}{2}$, $\displaystyle u_2 = \frac{1}{3}$, $\displaystyle u_3 = \frac{1}{4}$, ...</li>
+                        <li>Suite <strong>strictement décroissante</strong> : $\displaystyle u_{n+1} - u_n = \frac{1}{n+2} - \frac{1}{n+1} < 0$</li>
+                        <li>Suite <strong>bornée</strong> : $\displaystyle 0 < u_n \leq 1$ pour tout $\displaystyle n$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 4 :</strong> $\displaystyle u_n = 5$ pour tout $\displaystyle n$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Suite <strong>stationnaire</strong> (constante) : tous les termes valent $\displaystyle 5$</li>
+                        <li>Suite <strong>bornée</strong>, <strong>croissante</strong> et <strong>décroissante</strong> (monotone au sens large)</li>
+                    </ul>
+                </li>
+                <li style="margin:0; text-align:left;"><strong>Exemple 5 :</strong> $\displaystyle u_n = n^2 - 3n + 2$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Définition <strong>explicite</strong> : $\displaystyle u_n = f(n)$ avec $\displaystyle f(x) = x^2 - 3x + 2$</li>
+                        <li>Premiers termes : $\displaystyle u_0 = 2$, $\displaystyle u_1 = 0$, $\displaystyle u_2 = 0$, $\displaystyle u_3 = 2$, $\displaystyle u_4 = 6$, ...</li>
+                        <li>Suite <strong>non monotone</strong> (décroît puis croît), <strong>minorée</strong> par $\displaystyle -\frac{1}{4}$</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Limite d'une suite réelle</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définitions et propriétés fondamentales</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Limite finie d'une suite</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle (u_n)_{n \in \mathbb{N}}$ une suite réelle et $\displaystyle \ell \in \mathbb{R}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle (u_n)$ <strong>converge vers $\displaystyle \ell$</strong> (ou admet $\displaystyle \ell$ pour limite) si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \forall \varepsilon > 0, \exists N \in \mathbb{N}, \forall n \geq N, |u_n - \ell| \leq \varepsilon$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note alors : $\displaystyle \lim_{n \to +\infty} u_n = \ell$ ou $\displaystyle u_n \longrightarrow \ell$ ou simplement $\displaystyle \lim u_n = \ell$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Limite infinie d'une suite</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle (u_n)$ <strong>diverge vers $\displaystyle +\infty$</strong> si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \forall A > 0, \exists N \in \mathbb{N}, \forall n \geq N, u_n \geq A$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle (u_n)$ <strong>diverge vers $\displaystyle -\infty$</strong> si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \forall A < 0, \exists N \in \mathbb{N}, \forall n \geq N, u_n \leq A$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Suite convergente et suite divergente</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une suite qui admet une limite finie est dite <strong>convergente</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une suite qui n'est pas convergente est dite <strong>divergente</strong> (elle peut diverger vers $\displaystyle +\infty$, vers $\displaystyle -\infty$, ou n'avoir aucune limite).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples de limites :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Convergence vers une limite finie :</strong>
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>$\displaystyle u_n = \frac{1}{n+1}$ : $\displaystyle \lim u_n = 0$</li>
+                        <li>$\displaystyle u_n = \frac{n+1}{n+2}$ : $\displaystyle \lim u_n = 1$</li>
+                        <li>$\displaystyle u_n = \frac{(-1)^n}{n}$ : $\displaystyle \lim u_n = 0$ (converge malgré les oscillations)</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Divergence vers $\displaystyle +\infty$ :</strong>
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>$\displaystyle u_n = n$ : $\displaystyle \lim u_n = +\infty$</li>
+                        <li>$\displaystyle u_n = n^2$ : $\displaystyle \lim u_n = +\infty$</li>
+                        <li>$\displaystyle u_n = \sqrt{n}$ : $\displaystyle \lim u_n = +\infty$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Divergence vers $\displaystyle -\infty$ :</strong>
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>$\displaystyle u_n = -n$ : $\displaystyle \lim u_n = -\infty$</li>
+                        <li>$\displaystyle u_n = -n^3$ : $\displaystyle \lim u_n = -\infty$</li>
+                    </ul>
+                </li>
+                <li style="margin:0; text-align:left;"><strong>Divergence sans limite :</strong>
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>$\displaystyle u_n = (-1)^n$ : n'a pas de limite (oscille entre $\displaystyle -1$ et $\displaystyle 1$)</li>
+                        <li>$\displaystyle u_n = n(-1)^n$ : n'a pas de limite (oscille et diverge)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Unicité de la limite</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si une suite $\displaystyle (u_n)$ admet une limite, alors cette limite est <strong>unique</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, si $\displaystyle \lim u_n = \ell$ et $\displaystyle \lim u_n = \ell'$, alors $\displaystyle \ell = \ell'$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Toute suite convergente est bornée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle (u_n)$ converge vers $\displaystyle \ell$, alors $\displaystyle (u_n)$ est bornée.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Attention :</strong> La réciproque est fausse ! Une suite bornée n'est pas nécessairement convergente (exemple : $\displaystyle u_n = (-1)^n$).</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Opérations sur les limites</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle (u_n)$ et $\displaystyle (v_n)$ deux suites convergentes vers $\displaystyle \ell$ et $\displaystyle \ell'$ respectivement :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Combinaison linéaire :</strong> $\displaystyle \lim (au_n + bv_n) = a\ell + b\ell'$ pour tous $\displaystyle a, b \in \mathbb{R}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Produit :</strong> $\displaystyle \lim (u_n \times v_n) = \ell \times \ell'$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Quotient :</strong> Si $\displaystyle \ell' \neq 0$, alors $\displaystyle \lim \frac{u_n}{v_n} = \frac{\ell}{\ell'}$</li>
+                <li style="margin:0; text-align:left;"><strong>Puissance :</strong> Si $\displaystyle u_n > 0$ et $\displaystyle \ell > 0$, alors $\displaystyle \lim u_n^\alpha = \ell^\alpha$ pour tout $\displaystyle \alpha \in \mathbb{R}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'application des opérations sur les limites :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 1 :</strong> $\displaystyle u_n = \frac{2n+1}{n+3}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>On écrit : $\displaystyle u_n = \frac{2 + \frac{1}{n}}{1 + \frac{3}{n}}$</li>
+                        <li>Comme $\displaystyle \lim \frac{1}{n} = 0$ et $\displaystyle \lim \frac{3}{n} = 0$, on obtient : $\displaystyle \lim u_n = \frac{2+0}{1+0} = 2$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 2 :</strong> $\displaystyle u_n = \frac{n^2 + 3n - 1}{2n^2 - n + 5}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>On factorise par le terme dominant : $\displaystyle u_n = \frac{n^2(1 + \frac{3}{n} - \frac{1}{n^2})}{n^2(2 - \frac{1}{n} + \frac{5}{n^2})}$</li>
+                        <li>Donc : $\displaystyle \lim u_n = \frac{1}{2}$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 3 :</strong> $\displaystyle u_n = \frac{\sin(n)}{n}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>On a $\displaystyle |\sin(n)| \leq 1$ (suite bornée) et $\displaystyle \lim \frac{1}{n} = 0$</li>
+                        <li>Par produit d'une suite bornée et d'une suite de limite nulle : $\displaystyle \lim u_n = 0$</li>
+                    </ul>
+                </li>
+                <li style="margin:0; text-align:left;"><strong>Exemple 4 :</strong> $\displaystyle u_n = \left(1 + \frac{1}{n}\right)^n$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Cette suite converge vers $\displaystyle e \approx 2,718$ (limite classique)</li>
+                        <li>On peut l'encadrer : $\displaystyle 2 < u_n < 3$ pour $\displaystyle n \geq 1$</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Passage à la limite d'une inégalité large</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u_n \leq v_n$ pour tout $\displaystyle n$ (à partir d'un certain rang) et si $\displaystyle (u_n)$ et $\displaystyle (v_n)$ convergent vers $\displaystyle \ell$ et $\displaystyle \ell'$ respectivement, alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:200px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \ell \leq \ell'$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Attention :</strong> On ne peut pas passer à la limite une inégalité stricte !</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Propriété sur les limites positives</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle (u_n)_{n \in \mathbb{N}}$ converge vers $\displaystyle \ell > 0$, alors $\displaystyle u_n > 0$ à partir d'un certain rang.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Plus généralement, si $\displaystyle \ell > 0$, il existe $\displaystyle N \in \mathbb{N}$ tel que pour tout $\displaystyle n \geq N$, on a $\displaystyle u_n > \frac{\ell}{2} > 0$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Existence d'une limite par encadrement</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Théorème d'encadrement (limite finie) :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a_n \leq u_n \leq b_n$ pour tout $\displaystyle n$ (à partir d'un certain rang) et si $\displaystyle \lim a_n = \lim b_n = \ell$, alors $\displaystyle \lim u_n = \ell$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Théorème de minoration (limite $\displaystyle +\infty$) :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u_n \geq v_n$ pour tout $\displaystyle n$ (à partir d'un certain rang) et si $\displaystyle \lim v_n = +\infty$, alors $\displaystyle \lim u_n = +\infty$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Théorème de majoration (limite $\displaystyle -\infty$) :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u_n \leq v_n$ pour tout $\displaystyle n$ (à partir d'un certain rang) et si $\displaystyle \lim v_n = -\infty$, alors $\displaystyle \lim u_n = -\infty$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les définitions sont énoncées avec des <strong>inégalités larges</strong> ($\displaystyle \leq$ et non $\displaystyle <$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise souvent les notations $\displaystyle u_n \longrightarrow \ell$ et $\displaystyle \lim u_n$ pour désigner la limite.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Produit d'une suite bornée et d'une suite de limite nulle</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle (u_n)$ est bornée et si $\displaystyle \lim v_n = 0$, alors $\displaystyle \lim (u_n \times v_n) = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette propriété est très utile pour calculer des limites de produits.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📊 Utilisation d'une majoration pour prouver la convergence</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour prouver que $\displaystyle \lim u_n = \ell$, on peut utiliser une majoration de la forme :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle |u_n - \ell| \leq v_n$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle (v_n)$ converge vers $\displaystyle 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En effet, si $\displaystyle \lim v_n = 0$, alors par le théorème d'encadrement, on obtient $\displaystyle \lim |u_n - \ell| = 0$, donc $\displaystyle \lim u_n = \ell$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple d'application du théorème d'encadrement :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Montrer que $\displaystyle \lim \frac{n^2 + (-1)^n}{n^2 + 1} = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle \frac{n^2 - 1}{n^2 + 1} \leq \frac{n^2 + (-1)^n}{n^2 + 1} \leq \frac{n^2 + 1}{n^2 + 1}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Or :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \lim \frac{n^2 - 1}{n^2 + 1} = \lim \frac{1 - \frac{1}{n^2}}{1 + \frac{1}{n^2}} = 1$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \lim \frac{n^2 + 1}{n^2 + 1} = 1$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par le théorème d'encadrement, on conclut : $\displaystyle \lim \frac{n^2 + (-1)^n}{n^2 + 1} = 1$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Suites monotones</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorèmes fondamentaux</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Théorème de la limite monotone</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle (u_n)$ une suite réelle :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle (u_n)$ est <strong>croissante et majorée</strong>, alors $\displaystyle (u_n)$ converge vers $\displaystyle \sup\{u_n : n \in \mathbb{N}\}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle (u_n)$ est <strong>croissante et non majorée</strong>, alors $\displaystyle \lim u_n = +\infty$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle (u_n)$ est <strong>décroissante et minorée</strong>, alors $\displaystyle (u_n)$ converge vers $\displaystyle \inf\{u_n : n \in \mathbb{N}\}$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle (u_n)$ est <strong>décroissante et non minorée</strong>, alors $\displaystyle \lim u_n = -\infty$</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Théorème des suites adjacentes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux suites $\displaystyle (u_n)$ et $\displaystyle (v_n)$ sont dites <strong>adjacentes</strong> si :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle (u_n)$ est croissante et $\displaystyle (v_n)$ est décroissante</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle u_n \leq v_n$ pour tout $\displaystyle n \in \mathbb{N}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \lim (v_n - u_n) = 0$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle (u_n)$ et $\displaystyle (v_n)$ sont adjacentes, alors elles convergent vers la même limite $\displaystyle \ell$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De plus, pour tout $\displaystyle n \in \mathbb{N}$, on a : $\displaystyle u_n \leq \ell \leq v_n$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'application du théorème de la limite monotone :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 1 :</strong> $\displaystyle u_n = 1 - \frac{1}{n+1}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Suite <strong>croissante</strong> : $\displaystyle u_{n+1} - u_n = \frac{1}{(n+1)(n+2)} > 0$</li>
+                        <li>Suite <strong>majorée</strong> par $\displaystyle 1$ : $\displaystyle u_n < 1$ pour tout $\displaystyle n$</li>
+                        <li>Donc $\displaystyle (u_n)$ converge vers $\displaystyle \sup\{u_n\} = 1$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 2 :</strong> $\displaystyle u_n = \sum_{k=1}^{n} \frac{1}{k^2}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Suite <strong>croissante</strong> (somme de termes positifs)</li>
+                        <li>Suite <strong>majorée</strong> : $\displaystyle u_n < 2$ pour tout $\displaystyle n$ (on peut le montrer par comparaison avec une intégrale)</li>
+                        <li>Donc $\displaystyle (u_n)$ converge vers $\displaystyle \frac{\pi^2}{6}$ (série de Riemann)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple d'application du théorème des suites adjacentes :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Les suites $\displaystyle u_n = \sum_{k=0}^{n} \frac{1}{k!}$ et $\displaystyle v_n = u_n + \frac{1}{n!}$</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle (u_n)$ est <strong>croissante</strong> : $\displaystyle u_{n+1} - u_n = \frac{1}{(n+1)!} > 0$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle (v_n)$ est <strong>décroissante</strong> : $\displaystyle v_{n+1} - v_n = \frac{1}{(n+1)!} - \frac{1}{n!} = -\frac{n}{(n+1)!} < 0$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle u_n \leq v_n$ pour tout $\displaystyle n$ (évident)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \lim (v_n - u_n) = \lim \frac{1}{n!} = 0$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les suites sont donc <strong>adjacentes</strong> et convergent vers la même limite : $\displaystyle e = \lim u_n = \lim v_n$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Suites extraites</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et propriétés</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Suite extraite</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle (u_n)$ une suite réelle et $\displaystyle \varphi : \mathbb{N} \to \mathbb{N}$ une application strictement croissante.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La suite $\displaystyle (u_{\varphi(n)})$ est appelée une <strong>suite extraite</strong> (ou <strong>sous-suite</strong>) de $\displaystyle (u_n)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note souvent $\displaystyle (u_{n_k})$ où $\displaystyle (n_k)$ est une suite strictement croissante d'entiers naturels.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Propriété fondamentale</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si une suite $\displaystyle (u_n)$ possède une limite $\displaystyle \ell$ (finie ou infinie), alors <strong>toutes ses suites extraites</strong> possèdent la même limite $\displaystyle \ell$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En particulier, si deux suites extraites de $\displaystyle (u_n)$ ont des limites différentes, alors $\displaystyle (u_n)$ n'a pas de limite.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Théorème de Bolzano-Weierstrass</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De toute suite <strong>bornée</strong> de nombres réels, on peut extraire une suite <strong>convergente</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, si $\displaystyle (u_n)$ est bornée, il existe une suite extraite $\displaystyle (u_{n_k})$ qui converge.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Utilisation pour montrer la divergence d'une suite</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour montrer qu'une suite diverge, on peut exhiber deux suites extraites qui convergent vers des limites différentes.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples détaillés de suites extraites :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 1 :</strong> $\displaystyle u_n = (-1)^n$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Suite extraite des termes pairs : $\displaystyle u_{2n} = (-1)^{2n} = 1$ pour tout $\displaystyle n$, donc $\displaystyle \lim u_{2n} = 1$</li>
+                        <li>Suite extraite des termes impairs : $\displaystyle u_{2n+1} = (-1)^{2n+1} = -1$ pour tout $\displaystyle n$, donc $\displaystyle \lim u_{2n+1} = -1$</li>
+                        <li>Comme $\displaystyle \lim u_{2n} \neq \lim u_{2n+1}$, la suite $\displaystyle (u_n)$ <strong>n'a pas de limite</strong> (elle diverge)</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 2 :</strong> $\displaystyle u_n = \sin\left(\frac{n\pi}{2}\right)$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Premiers termes : $\displaystyle u_0 = 0$, $\displaystyle u_1 = 1$, $\displaystyle u_2 = 0$, $\displaystyle u_3 = -1$, $\displaystyle u_4 = 0$, ...</li>
+                        <li>$\displaystyle u_{4n} = 0$, $\displaystyle u_{4n+1} = 1$, $\displaystyle u_{4n+2} = 0$, $\displaystyle u_{4n+3} = -1$</li>
+                        <li>Les suites extraites ont des limites différentes, donc $\displaystyle (u_n)$ diverge</li>
+                    </ul>
+                </li>
+                <li style="margin:0; text-align:left;"><strong>Exemple 3 :</strong> $\displaystyle u_n = \frac{n + (-1)^n}{n}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>$\displaystyle u_{2n} = \frac{2n + 1}{2n} = 1 + \frac{1}{2n} \to 1$</li>
+                        <li>$\displaystyle u_{2n+1} = \frac{2n+1 - 1}{2n+1} = \frac{2n}{2n+1} \to 1$</li>
+                        <li>Comme $\displaystyle \lim u_{2n} = \lim u_{2n+1} = 1$, on a $\displaystyle \lim u_n = 1$</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Cas particulier important</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle (u_{2n})$ et $\displaystyle (u_{2n+1})$ tendent vers $\displaystyle \ell$, alors $\displaystyle (u_n)$ tend vers $\displaystyle \ell$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette propriété est très utile pour l'étude de suites définies par récurrence.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📊 Principe de démonstration par dichotomie</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le théorème de Bolzano-Weierstrass peut être démontré en utilisant une méthode de <strong>dichotomie</strong> : on construit une suite d'intervalles emboîtés dont la longueur tend vers $\displaystyle 0$, et on extrait une suite convergente.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Traduction séquentielle de certaines propriétés</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Caractérisations séquentielles</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Partie dense de $\displaystyle \mathbb{R}$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une partie $\displaystyle D$ de $\displaystyle \mathbb{R}$ est dite <strong>dense dans $\displaystyle \mathbb{R}$</strong> si elle rencontre tout intervalle ouvert non vide.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : pour tout intervalle ouvert $\displaystyle ]a, b[$ avec $\displaystyle a < b$, on a $\displaystyle D \cap ]a, b[ \neq \emptyset$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Caractérisation séquentielle de la densité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une partie $\displaystyle D$ de $\displaystyle \mathbb{R}$ est dense dans $\displaystyle \mathbb{R}$ si et seulement si pour tout $\displaystyle x \in \mathbb{R}$, il existe une suite $\displaystyle (d_n)$ d'éléments de $\displaystyle D$ qui converge vers $\displaystyle x$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Exemples de parties denses</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les ensembles suivants sont denses dans $\displaystyle \mathbb{R}$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">L'ensemble des <strong>décimaux</strong></li>
+                <li style="margin:0 0 12px 0; text-align:left;">L'ensemble des <strong>rationnels</strong> $\displaystyle \mathbb{Q}$</li>
+                <li style="margin:0; text-align:left;">L'ensemble des <strong>irrationnels</strong> $\displaystyle \mathbb{R} \setminus \mathbb{Q}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'application de la traduction séquentielle :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 1 :</strong> Densité de $\displaystyle \mathbb{Q}$ dans $\displaystyle \mathbb{R}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Pour tout $\displaystyle x \in \mathbb{R}$, il existe une suite $\displaystyle (q_n)$ de rationnels qui converge vers $\displaystyle x$</li>
+                        <li>Par exemple, si $\displaystyle x = \pi$, on peut prendre $\displaystyle q_n = \frac{\lfloor 10^n \pi \rfloor}{10^n}$ (approximation décimale)</li>
+                        <li>On a bien $\displaystyle \lim q_n = \pi$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 2 :</strong> Caractérisation de $\displaystyle \sup X$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Si $\displaystyle X = ]0, 1[$ (intervalle ouvert), alors $\displaystyle \sup X = 1$</li>
+                        <li>Il existe une suite $\displaystyle (x_n)$ d'éléments de $\displaystyle X$ qui converge vers $\displaystyle 1$</li>
+                        <li>Par exemple : $\displaystyle x_n = 1 - \frac{1}{n+1}$ (pour $\displaystyle n \geq 1$)</li>
+                        <li>On vérifie : $\displaystyle x_n \in ]0, 1[$ et $\displaystyle \lim x_n = 1$</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Caractérisation séquentielle de la borne supérieure</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle X$ est une partie non vide <strong>majorée</strong> de $\displaystyle \mathbb{R}$, il existe une suite $\displaystyle (x_n)$ d'éléments de $\displaystyle X$ de limite $\displaystyle \sup X$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle X$ est une partie non vide <strong>non majorée</strong> de $\displaystyle \mathbb{R}$, il existe une suite $\displaystyle (x_n)$ d'éléments de $\displaystyle X$ de limite $\displaystyle +\infty$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Résultats analogues pour les minorants</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle X$ est une partie non vide <strong>minorée</strong> de $\displaystyle \mathbb{R}$, il existe une suite $\displaystyle (x_n)$ d'éléments de $\displaystyle X$ de limite $\displaystyle \inf X$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle X$ est une partie non vide <strong>non minorée</strong> de $\displaystyle \mathbb{R}$, il existe une suite $\displaystyle (x_n)$ d'éléments de $\displaystyle X$ de limite $\displaystyle -\infty$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Suites complexes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Extension aux nombres complexes</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Définition d'une suite complexe</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>suite complexe</strong> est une application de $\displaystyle \mathbb{N}$ dans $\displaystyle \mathbb{C}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note une suite complexe $\displaystyle (z_n)_{n \in \mathbb{N}}$ où $\displaystyle z_n \in \mathbb{C}$ pour tout $\displaystyle n$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Brève extension des définitions et résultats précédents</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les définitions de convergence, divergence, suite bornée, etc., s'étendent naturellement aux suites complexes.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une suite complexe $\displaystyle (z_n)$ converge vers $\displaystyle \ell \in \mathbb{C}$ si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \forall \varepsilon > 0, \exists N \in \mathbb{N}, \forall n \geq N, |z_n - \ell| \leq \varepsilon$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Théorème de Bolzano-Weierstrass pour les suites complexes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De toute suite <strong>bornée</strong> de nombres complexes, on peut extraire une suite <strong>convergente</strong>.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Caractérisation de la limite en termes de parties réelle et imaginaire</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle (z_n)$ une suite complexe avec $\displaystyle z_n = x_n + iy_n$ où $\displaystyle x_n, y_n \in \mathbb{R}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La suite $\displaystyle (z_n)$ converge vers $\displaystyle \ell = a + ib$ (avec $\displaystyle a, b \in \mathbb{R}$) si et seulement si :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle (x_n)$ converge vers $\displaystyle a$ (partie réelle)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle (y_n)$ converge vers $\displaystyle b$ (partie imaginaire)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples de suites complexes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 1 :</strong> $\displaystyle z_n = \frac{1}{n+1} + i\frac{n}{n+1}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Partie réelle : $\displaystyle x_n = \frac{1}{n+1} \to 0$</li>
+                        <li>Partie imaginaire : $\displaystyle y_n = \frac{n}{n+1} = 1 - \frac{1}{n+1} \to 1$</li>
+                        <li>Donc $\displaystyle \lim z_n = 0 + i \cdot 1 = i$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 2 :</strong> $\displaystyle z_n = \left(\frac{1+i}{2}\right)^n$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>On a $\displaystyle |z_n| = \left|\frac{1+i}{2}\right|^n = \left(\frac{\sqrt{2}}{2}\right)^n$</li>
+                        <li>Comme $\displaystyle \frac{\sqrt{2}}{2} < 1$, on a $\displaystyle \lim |z_n| = 0$</li>
+                        <li>Donc $\displaystyle \lim z_n = 0$</li>
+                    </ul>
+                </li>
+                <li style="margin:0; text-align:left;"><strong>Exemple 3 :</strong> $\displaystyle z_n = e^{i\frac{\pi n}{2}}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>$\displaystyle z_0 = 1$, $\displaystyle z_1 = i$, $\displaystyle z_2 = -1$, $\displaystyle z_3 = -i$, $\displaystyle z_4 = 1$, ...</li>
+                        <li>La suite est <strong>périodique</strong> de période $\displaystyle 4$</li>
+                        <li>Comme $\displaystyle |z_n| = 1$ pour tout $\displaystyle n$, la suite est bornée mais <strong>ne converge pas</strong></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Suites particulières</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Familles classiques</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Suites arithmétiques</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une suite $\displaystyle (u_n)$ est dite <strong>arithmétique</strong> s'il existe $\displaystyle r \in \mathbb{R}$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle u_{n+1} = u_n + r$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre $\displaystyle r$ est appelé la <strong>raison</strong> de la suite.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u_0$ est le premier terme, alors pour tout $\displaystyle n \in \mathbb{N}$ :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle u_n = u_0 + nr$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Suites géométriques</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une suite $\displaystyle (u_n)$ est dite <strong>géométrique</strong> s'il existe $\displaystyle q \in \mathbb{R}$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle u_{n+1} = q u_n$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre $\displaystyle q$ est appelé la <strong>raison</strong> de la suite.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u_0$ est le premier terme, alors pour tout $\displaystyle n \in \mathbb{N}$ :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle u_n = u_0 q^n$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Suites arithmético-géométriques</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une suite $\displaystyle (u_n)$ est dite <strong>arithmético-géométrique</strong> s'il existe $\displaystyle a, b \in \mathbb{R}$ tels que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle u_{n+1} = a u_n + b$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour une relation de récurrence $\displaystyle u_{n+1} = a u_n + b$ où $\displaystyle a \in \mathbb{C} \setminus \{1\}$ et $\displaystyle b \in \mathbb{C}$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">On recherche d'abord une <strong>solution constante</strong> $\displaystyle \ell$ telle que $\displaystyle \ell = a\ell + b$, soit $\displaystyle \ell = \frac{b}{1-a}$ si $\displaystyle a \neq 1$</li>
+                <li style="margin:0; text-align:left;">On détermine ensuite toutes les solutions en utilisant cette solution particulière</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Suites récurrentes linéaires homogènes d'ordre 2 à coefficients constants</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une suite $\displaystyle (u_n)$ vérifie une <strong>récurrence linéaire homogène d'ordre 2</strong> s'il existe $\displaystyle a, b \in \mathbb{R}$ tels que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle u_{n+2} = a u_{n+1} + b u_n$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'équation caractéristique associée est : $\displaystyle r^2 = ar + b$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La forme générale de la solution dépend des racines de cette équation caractéristique.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📌 Suites définies par une relation de récurrence $\displaystyle u_{n+1} = f(u_n)$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On étudie les suites définies par $\displaystyle u_{n+1} = f(u_n)$ où $\displaystyle f$ est une fonction réelle.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette étude est l'occasion d'introduire la notion d'<strong>intervalle stable par une fonction</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour l'étude de la monotonie de $\displaystyle (u_n)$, on souligne l'intérêt :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">D'une part, de l'étude du signe de $\displaystyle f(x) - x$</li>
+                <li style="margin:0; text-align:left;">D'autre part, de l'utilisation de la croissance éventuelle de $\displaystyle f$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📐 Propriété importante sur la convergence</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle (u_n)$ converge vers un élément $\displaystyle \ell$ en lequel $\displaystyle f$ est continue, alors $\displaystyle f(\ell) = \ell$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, si la limite existe et si $\displaystyle f$ est continue en cette limite, alors la limite est un <strong>point fixe</strong> de $\displaystyle f$.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>📊 Représentation géométrique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour une suite définie par $\displaystyle u_{n+1} = f(u_n)$, on peut représenter graphiquement l'évolution de la suite en utilisant la courbe de $\displaystyle f$ et la droite d'équation $\displaystyle y = x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette représentation permet de visualiser la convergence ou la divergence de la suite.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples détaillés de suites particulières :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 1 - Suite arithmétique :</strong> $\displaystyle u_0 = 3$, $\displaystyle r = 2$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Terme général : $\displaystyle u_n = 3 + 2n$</li>
+                        <li>Premiers termes : $\displaystyle u_0 = 3$, $\displaystyle u_1 = 5$, $\displaystyle u_2 = 7$, $\displaystyle u_3 = 9$, $\displaystyle u_4 = 11$, ...</li>
+                        <li>Exemple : $\displaystyle u_5 = 3 + 2 \times 5 = 13$</li>
+                        <li>Suite <strong>strictement croissante</strong>, <strong>non majorée</strong>, donc $\displaystyle \lim u_n = +\infty$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 2 - Suite géométrique :</strong> $\displaystyle u_0 = 5$, $\displaystyle q = \frac{1}{2}$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Terme général : $\displaystyle u_n = 5 \cdot \left(\frac{1}{2}\right)^n = \frac{5}{2^n}$</li>
+                        <li>Premiers termes : $\displaystyle u_0 = 5$, $\displaystyle u_1 = \frac{5}{2}$, $\displaystyle u_2 = \frac{5}{4}$, $\displaystyle u_3 = \frac{5}{8}$, ...</li>
+                        <li>Suite <strong>strictement décroissante</strong>, <strong>bornée</strong> (minorée par $\displaystyle 0$), donc $\displaystyle \lim u_n = 0$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 3 - Suite arithmético-géométrique :</strong> $\displaystyle u_{n+1} = \frac{1}{2}u_n + 3$ avec $\displaystyle u_0 = 0$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Point fixe : $\displaystyle \ell = \frac{3}{1 - \frac{1}{2}} = 6$</li>
+                        <li>On pose $\displaystyle v_n = u_n - 6$, alors $\displaystyle v_{n+1} = \frac{1}{2}v_n$</li>
+                        <li>Donc $\displaystyle v_n = v_0 \left(\frac{1}{2}\right)^n = -6 \left(\frac{1}{2}\right)^n$</li>
+                        <li>Terme général : $\displaystyle u_n = 6 - 6\left(\frac{1}{2}\right)^n = 6(1 - (1/2)^n)$</li>
+                        <li>Premiers termes : $\displaystyle u_0 = 0$, $\displaystyle u_1 = 3$, $\displaystyle u_2 = \frac{9}{2}$, $\displaystyle u_3 = \frac{21}{4}$, ...</li>
+                        <li>Suite <strong>croissante</strong>, <strong>majorée</strong> par $\displaystyle 6$, donc $\displaystyle \lim u_n = 6$</li>
+                    </ul>
+                </li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Exemple 4 - Récurrence linéaire d'ordre 2 :</strong> $\displaystyle u_{n+2} = u_{n+1} + u_n$ avec $\displaystyle u_0 = 0$, $\displaystyle u_1 = 1$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>C'est la <strong>suite de Fibonacci</strong></li>
+                        <li>Premiers termes : $\displaystyle u_0 = 0$, $\displaystyle u_1 = 1$, $\displaystyle u_2 = 1$, $\displaystyle u_3 = 2$, $\displaystyle u_4 = 3$, $\displaystyle u_5 = 5$, $\displaystyle u_6 = 8$, ...</li>
+                        <li>Équation caractéristique : $\displaystyle r^2 = r + 1$, soit $\displaystyle r^2 - r - 1 = 0$</li>
+                        <li>Racines : $\displaystyle r_1 = \frac{1+\sqrt{5}}{2}$ (nombre d'or), $\displaystyle r_2 = \frac{1-\sqrt{5}}{2}$</li>
+                        <li>Terme général : $\displaystyle u_n = \frac{1}{\sqrt{5}}\left[\left(\frac{1+\sqrt{5}}{2}\right)^n - \left(\frac{1-\sqrt{5}}{2}\right)^n\right]$</li>
+                    </ul>
+                </li>
+                <li style="margin:0; text-align:left;"><strong>Exemple 5 - Suite définie par $\displaystyle u_{n+1} = f(u_n)$ :</strong> $\displaystyle u_{n+1} = \sqrt{u_n + 2}$ avec $\displaystyle u_0 = 0$
+                    <ul style="margin:4px 0 0 20px; padding-left:20px; line-height:1.6;">
+                        <li>Fonction : $\displaystyle f(x) = \sqrt{x + 2}$ définie sur $\displaystyle [-2, +\infty[$</li>
+                        <li>Premiers termes : $\displaystyle u_0 = 0$, $\displaystyle u_1 = \sqrt{2} \approx 1,414$, $\displaystyle u_2 \approx 1,848$, $\displaystyle u_3 \approx 1,962$, ...</li>
+                        <li>Point fixe : $\displaystyle \ell = \sqrt{\ell + 2}$, donc $\displaystyle \ell^2 = \ell + 2$, soit $\displaystyle \ell = 2$ (car $\displaystyle \ell \geq 0$)</li>
+                        <li>Suite <strong>croissante</strong>, <strong>majorée</strong> par $\displaystyle 2$, donc $\displaystyle \lim u_n = 2$</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Méthodes et applications pratiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Stratégies d'étude des suites</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode pour étudier une suite définie par récurrence :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Calculer les premiers termes pour avoir une intuition</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Étudier la monotonie (croissante ou décroissante ?)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Étudier les bornes (majorée ? minorée ? bornée ?)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si la suite est monotone et bornée, appliquer le théorème de la limite monotone</li>
+                <li style="margin:0; text-align:left;">Si la limite existe, déterminer sa valeur en utilisant la continuité de la fonction de récurrence</li>
+            </ol>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode pour montrer qu'une suite converge :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser le théorème de la limite monotone si la suite est monotone et bornée</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser le théorème d'encadrement si on peut encadrer la suite</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser une majoration de la forme $\displaystyle |u_n - \ell| \leq v_n$ où $\displaystyle (v_n)$ converge vers $\displaystyle 0$</li>
+                <li style="margin:0; text-align:left;">Utiliser le théorème des suites adjacentes si on peut construire deux suites adjacentes</li>
+            </ol>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode pour montrer qu'une suite diverge :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Exhiber deux suites extraites qui convergent vers des limites différentes</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Montrer que la suite n'est pas bornée (si elle diverge vers $\displaystyle \pm\infty$)</li>
+                <li style="margin:0; text-align:left;">Utiliser le théorème de minoration ou majoration pour montrer une divergence vers $\displaystyle \pm\infty$</li>
+            </ol>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Suites arithmétiques/géométriques :</strong> Toujours identifier la raison et le premier terme</li>
+                <li style="margin:0; text-align:left;"><strong>Récurrences linéaires :</strong> Chercher d'abord une solution particulière constante</li>
+                <li style="margin:0; text-align:left;"><strong>Monotonie :</strong> Étudier le signe de $\displaystyle u_{n+1} - u_n$ ou de $\displaystyle \frac{u_{n+1}}{u_n}$ selon le cas</li>
+                <li style="margin:0; text-align:left;"><strong>Limites :</strong> Utiliser les opérations sur les limites avec précaution (attention aux formes indéterminées)</li>
+                <li style="margin:0; text-align:left;"><strong>Suites extraites :</strong> Très utiles pour montrer la divergence ou utiliser Bolzano-Weierstrass</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;">Confondre "suite bornée" et "suite convergente" (une suite bornée n'est pas nécessairement convergente)</li>
+                <li style="margin:0; text-align:left;">Passer à la limite une inégalité stricte (on ne peut passer à la limite que les inégalités larges)</li>
+                <li style="margin:0; text-align:left;">Oublier de vérifier les conditions d'existence avant d'appliquer les opérations sur les limites</li>
+                <li style="margin:0; text-align:left;">Confondre "suite monotone" et "suite convergente" (une suite monotone peut diverger)</li>
+                <li style="margin:0; text-align:left;">Ne pas vérifier la continuité de $\displaystyle f$ avant d'appliquer $\displaystyle f(\lim u_n) = \lim f(u_n)$</li>
+                <li style="margin:0; text-align:left;">Oublier que le théorème de la limite monotone nécessite que la suite soit bornée</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Tableaux récapitulatifs</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Propriétés principales</h3>
+
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:40%;">Propriété</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:60%;">Formulation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Suite bornée</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle (u_n)$ est bornée $\displaystyle \Leftrightarrow (|u_n|)$ est majorée</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Suite convergente est bornée</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Si $\displaystyle (u_n)$ converge, alors $\displaystyle (u_n)$ est bornée</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Unicité de la limite</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Si $\displaystyle \lim u_n = \ell$ et $\displaystyle \lim u_n = \ell'$, alors $\displaystyle \ell = \ell'$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Théorème de la limite monotone</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Si $\displaystyle (u_n)$ est croissante et majorée, alors $\displaystyle (u_n)$ converge vers $\displaystyle \sup\{u_n\}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Théorème des suites adjacentes</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Si $\displaystyle (u_n)$ et $\displaystyle (v_n)$ sont adjacentes, alors elles convergent vers la même limite</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Théorème de Bolzano-Weierstrass</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">De toute suite bornée, on peut extraire une suite convergente</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Limite d'une suite extraite</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Si $\displaystyle (u_n)$ converge vers $\displaystyle \ell$, alors toute suite extraite converge vers $\displaystyle \ell$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules des suites particulières</h3>
+
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:30%;">Type de suite</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:35%;">Relation de récurrence</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:35%;">Terme général</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Arithmétique</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle u_{n+1} = u_n + r$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle u_n = u_0 + nr$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Géométrique</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle u_{n+1} = q u_n$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle u_n = u_0 q^n$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">Arithmético-géométrique</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle u_{n+1} = a u_n + b$ ($\displaystyle a \neq 1$)</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:left;">$\displaystyle u_n = a^n u_0 + b \frac{1 - a^n}{1 - a}$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+===
+

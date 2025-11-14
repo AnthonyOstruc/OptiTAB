@@ -528,7 +528,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 0 24px 16px 24px;
+  padding: 12px 24px 18px;
 }
 
 .progress-step {
@@ -539,8 +539,8 @@ onUnmounted(() => {
 }
 
 .progress-step .circle {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: #e5e7eb;
   display: flex;
@@ -548,7 +548,7 @@ onUnmounted(() => {
   justify-content: center;
   color: #6b7280;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.95rem;
 }
 
 .progress-step.active .circle {
@@ -628,7 +628,7 @@ onUnmounted(() => {
     }
 
     .progress {
-      padding: 0 1.125rem 0.875rem;
+      padding: 0.75rem 1.125rem 1rem;
       gap: 0.5rem;
     }
 
@@ -637,9 +637,9 @@ onUnmounted(() => {
     }
 
     .progress-step .circle {
-      width: 24px;
-      height: 24px;
-      font-size: 0.8125rem;
+      width: 28px;
+      height: 28px;
+      font-size: 0.9rem;
     }
 
     .line {
@@ -779,7 +779,7 @@ onUnmounted(() => {
     }
 
     .progress {
-      padding: 0 1rem 0.75rem;
+      padding: 0.75rem 1rem 0.9rem;
       gap: 0.375rem;
       flex-wrap: nowrap;
       overflow-x: auto;
@@ -795,9 +795,9 @@ onUnmounted(() => {
     }
 
     .progress-step .circle {
-      width: 22px;
-      height: 22px;
-      font-size: 0.75rem;
+      width: 26px;
+      height: 26px;
+      font-size: 0.85rem;
     }
 
     .line {

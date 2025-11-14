@@ -20,7 +20,8 @@ export const AUTH_FORM_CONFIGS = {
         required: true,
         name: 'current-password',
         autocomplete: 'current-password',
-        validation: [validationRules.required, validationRules.minLength(6)]
+        // Pour le login, on valide surtout la présence côté frontend
+        validation: [validationRules.required]
       },
       rememberMe: {
         type: 'checkbox',
@@ -145,8 +146,18 @@ export function useAuthForm(formType) {  // formType = 'REGISTER' exemple
     getFieldError,
     setFieldTouched,
     handleSubmit,
-    resetForm
+    resetForm,
+    setErrors
   } = useFormValidation(initialData, validationSchema)//useFormValidation = (initialData, validationSchema)
+
+  const setFieldError = (fieldName, errorMessage) => {
+    if (errorMessage) {
+      setErrors({ [fieldName]: errorMessage })
+      return
+    }
+
+    delete errors[fieldName]
+  }
 
   // Form submission handler
   const submitForm = async (onSuccess, onError) => {
@@ -202,6 +213,7 @@ export function useAuthForm(formType) {  // formType = 'REGISTER' exemple
     getFieldConfig,
     getFieldNames,
     isFieldRequired,
-    getFieldType
+    getFieldType,
+    setFieldError
   }
 } 

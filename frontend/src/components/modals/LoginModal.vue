@@ -3,7 +3,7 @@
   <Teleport to="body">
     <FullPageSpinner v-if="isLoggingIn" />
   </Teleport>
-  
+
   <Modal
     :is-open="isOpen"
     title="Connexion"
@@ -13,7 +13,7 @@
     <!-- Sign Up Link moved here -->
     <div class="signup-link signup-link-top">
       <p>
-        Pas encore de compte ? 
+        Pas encore de compte ?
         <button
           type="button"
           class="signup-btn"
@@ -23,6 +23,7 @@
         </button>
       </p>
     </div>
+
     <!-- Login Form -->
     <DynamicForm
       :field-names="fieldNames"
@@ -34,10 +35,18 @@
       :set-field-touched="setFieldTouched"
       :submit-text="config.submitText"
       @submit="handleFormSubmit"
-      @input="handleInput"
+      @field-input="handleInput"
     >
       <!-- Custom Form Content -->
       <template #form-content>
+        <div
+          v-if="loginErrorMessage"
+          class="login-error"
+          role="alert"
+          aria-live="assertive"
+        >
+          {{ loginErrorMessage }}
+        </div>
         <div class="form-options">
           <button
             type="button"
@@ -49,7 +58,7 @@
         </div>
       </template>
     </DynamicForm>
-    <div v-if="loginError" class="login-error">{{ loginError }}</div>
+
     <!-- Divider -->
     <div class="divider">
       <span class="divider-line"></span>
@@ -87,6 +96,7 @@ import { useRouter } from 'vue-router'
 import { ref, onMounted, nextTick, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useGoogleAuth } from '@/composables/useGoogleAuth'
+import { useToast } from '@/composables/useToast'
 
 export default {
   name: 'LoginModal',
@@ -105,6 +115,7 @@ export default {
   setup(props, { emit }) {
     const router = useRouter()
     const userStore = useUserStore()
+    const { error: showErrorToast } = useToast()
     const { closeModal } = useModalManager()
     const { setupGoogleSignIn, signInWithGoogle, isGoogleLoading } = useGoogleAuth()
 
@@ -117,14 +128,52 @@ export default {
       setFieldTouched,
       submitForm,
       getFieldConfig,
-      getFieldNames
+      getFieldNames,
+      setFieldError
     } = useAuthForm('LOGIN')
 
     // Get field names for the form
     const fieldNames = getFieldNames()
 
     const loginError = ref('')
+    const loginErrorMessage = computed(() => (loginError.value || '').trim())
     const isLoggingIn = ref(false) // Contrôle du spinner global pendant toute l'opération
+
+    const invalidCredentialsKeywords = [
+      'mot de passe incorrect',
+      'mot de passe incorect',
+      'mot de passe invalide',
+      'identifiant incorrect',
+      'identifiants incorrects',
+      'identifiants invalides',
+      'email ou mot de passe',
+      'wrong password',
+      'invalid credentials',
+      'unauthorized',
+      'non autorise',
+      'authentification invalide'
+    ]
+
+    const verificationKeywords = [
+      'verification',
+      'verifie',
+      'unverified',
+      'non verifie',
+      'activate',
+      'activation',
+      'inactive',
+      'non active',
+      'desactive'
+    ]
+
+    const userNotFoundKeywords = [
+      'utilisateur introuvable',
+      'compte introuvable',
+      'aucun compte',
+      'no active account',
+      'not found',
+      'email introuvable'
+    ]
 
     // Initialiser Google Sign-In et pré-remplir si "Se souvenir" est actif
     onMounted(async () => {
@@ -151,58 +200,193 @@ export default {
     // Methods
     const handleClose = () => {
       loginError.value = ''
+      setFieldError('password', '')
+      setFieldError('email', '')
       emit('close')
     }
 
-    const handleInput = () => {
+    const handleInput = ({ fieldName } = {}) => {
       loginError.value = ''
+      if (fieldName === 'password') {
+        setFieldError('password', '')
+      } else if (fieldName === 'email') {
+        setFieldError('email', '')
+      }
+    }
+
+    const ensureCredentialsPresence = () => {
+      const missing = []
+      const emailEmpty = !formData.email || !formData.email.trim()
+      const passwordEmpty = !formData.password || !formData.password.toString().trim()
+
+      if (emailEmpty) {
+        setFieldTouched('email')
+        setFieldError('email', 'Veuillez renseigner votre email.')
+        missing.push('email')
+      }
+
+      if (passwordEmpty) {
+        setFieldTouched('password')
+        setFieldError('password', 'Veuillez renseigner votre mot de passe.')
+        missing.push('mot de passe')
+      }
+
+      if (missing.length) {
+        loginError.value = missing.length === 2
+          ? 'Veuillez renseigner votre email et votre mot de passe.'
+          : `Veuillez renseigner votre ${missing[0]}.`
+        return false
+      }
+
+      return true
+    }
+
+    const extractMessageFromData = (data) => {
+      if (!data) return ''
+
+      if (typeof data === 'string') {
+        return data
+      }
+
+      if (Array.isArray(data)) {
+        for (const item of data) {
+          const nested = extractMessageFromData(item)
+          if (nested) return nested
+        }
+        return ''
+      }
+
+      if (typeof data === 'object') {
+        if (data.detail) return extractMessageFromData(data.detail)
+        if (data.message) return extractMessageFromData(data.message)
+        if (data.error) return extractMessageFromData(data.error)
+        if (data.error_message) return extractMessageFromData(data.error_message)
+        if (Array.isArray(data.non_field_errors)) {
+          const msg = extractMessageFromData(data.non_field_errors[0])
+          if (msg) return msg
+        }
+        if (Array.isArray(data.errors)) {
+          const msg = extractMessageFromData(data.errors[0])
+          if (msg) return msg
+        }
+        for (const value of Object.values(data)) {
+          const nested = extractMessageFromData(value)
+          if (nested) return nested
+        }
+      }
+
+      return ''
+    }
+
+    const normalizeText = (text) => {
+      if (!text) return ''
+      try {
+        return text
+          .toString()
+          .trim()
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+      } catch (_) {
+        return text.toString().trim().toLowerCase()
+      }
+    }
+
+    const containsAny = (value, keywords) =>
+      !!value && keywords.some(keyword => value.includes(keyword))
+
+    const mapLoginErrorMessage = (error) => {
+      const status = error?.response?.status
+      const messageFromPayload = extractMessageFromData(error?.response?.data)
+      const primaryMessage = (typeof messageFromPayload === 'string' ? messageFromPayload.trim() : '') || ''
+      const fallbackMessage = primaryMessage || error?.response?.statusText || error?.message || ''
+      const normalized = normalizeText(fallbackMessage)
+
+      if (status === 0 || error?.code === 'ERR_NETWORK') {
+        return 'Connexion impossible. Vérifiez votre connexion internet et réessayez.'
+      }
+
+      if (primaryMessage) {
+        return primaryMessage
+      }
+
+      if (status === 400 || status === 401) {
+        if (containsAny(normalized, invalidCredentialsKeywords) || status === 401) {
+          return 'Email ou mot de passe incorrect. Veuillez réessayer.'
+        }
+
+        if (containsAny(normalized, verificationKeywords)) {
+          return 'Votre compte nécessite une vérification. Consultez vos emails ou contactez le support.'
+        }
+
+        if (normalized.includes('already') || normalized.includes('exists') || normalized.includes('registered')) {
+          return 'Cet utilisateur existe déjà. Si vous ne connaissez pas votre mot de passe, utilisez "Mot de passe oublié ?".'
+        }
+
+        if (containsAny(normalized, userNotFoundKeywords)) {
+          return 'Aucun compte ne correspond à cet email. Vérifiez l\'adresse ou créez un compte.'
+        }
+      }
+
+      if (status === 404 || containsAny(normalized, userNotFoundKeywords)) {
+        return 'Aucun compte ne correspond à cet email. Vérifiez l\'adresse ou créez un compte.'
+      }
+
+      if (containsAny(normalized, verificationKeywords)) {
+        return 'Votre compte nécessite une vérification. Consultez vos emails ou contactez le support.'
+      }
+
+      if (containsAny(normalized, invalidCredentialsKeywords) && !primaryMessage) {
+        return 'Email ou mot de passe incorrect. Veuillez réessayer.'
+      }
+
+      return primaryMessage || 'Impossible de vous connecter pour le moment. Veuillez réessayer dans quelques instants.'
     }
 
     const handleFormSubmit = async () => {
-      // Activer les spinners (local + global App.vue)
-      isLoggingIn.value = true
-      userStore.isLoading = true
+      loginError.value = ''
 
-      try {
-        const success = await submitForm(processLogin)
-        if (!success) {
-          // Validation échouée ou erreur déjà gérée
-          isLoggingIn.value = false
-          userStore.isLoading = false
-          return
-        }
-        // isLoggingIn et userStore.isLoading seront désactivés dans processLogin après redirection
-      } catch (error) {
-        isLoggingIn.value = false
-        userStore.isLoading = false
+      // Vérifier d'abord que les identifiants sont renseignés avant d'appeler l'API
+      if (!ensureCredentialsPresence()) {
+        return
       }
+
+      await submitForm(processLogin)
     }
 
     const processLogin = async (data) => {
       const payload = mapLoginFormToPayload(data)
+
       try {
         const response = await loginUser(payload)
         
-        console.log('🔑 Réponse login complète:', response.data) // Debug
-        
+        // Debug en dev uniquement
+        if (import.meta.env.DEV) {
+          console.debug('🔑 Réponse login complète:', response.data)
+        }
+
         // Vérifier la structure de la réponse - les tokens sont dans response.data.data
         const responseData = response.data.data || response.data
         const accessToken = responseData.access
         const refreshToken = responseData.refresh
-        
+
         if (!accessToken || !refreshToken) {
-          console.error('❌ Tokens manquants dans la réponse:', response.data)
+          if (import.meta.env.DEV) {
+            console.debug('❌ Tokens manquants dans la réponse:', response.data)
+          }
           throw new Error('Tokens d\'authentification manquants')
         }
-        
+
         // Stocker le token JWT dans localStorage
         localStorage.setItem('access_token', accessToken)
         localStorage.setItem('refresh_token', refreshToken)
 
-        console.log('💾 Tokens sauvegardés:', {
-          access: accessToken.substring(0, 20) + '...',
-          refresh: refreshToken.substring(0, 20) + '...'
-        }) // Debug
+        if (import.meta.env.DEV) {
+          console.debug('💾 Tokens sauvegardés:', {
+            access: accessToken.substring(0, 20) + '...',
+            refresh: refreshToken.substring(0, 20) + '...'
+          })
+        }
 
         // Enregistrer les identifiants si "Se souvenir de moi" est coché (30 jours)
         try {
@@ -220,24 +404,31 @@ export default {
 
         // IMPORTANT: Charger le profil pour mettre à jour isAuthenticated
         await userStore.fetchUser()
-        
-        console.log('✅ Utilisateur chargé, état authentifié:', userStore.isAuthenticated)
+
+        if (import.meta.env.DEV) {
+          console.debug('✅ Utilisateur chargé, état authentifié:', userStore.isAuthenticated)
+        }
 
         // Fermer le modal AVANT la redirection
         emit('login', { email: data.email })
         handleClose()
         closeModal(MODAL_IDS.LOGIN)
-        
-        // Attendre que tout soit synchronisé
+
         await nextTick()
-        
+
         // Double vérification de l'état d'authentification
         const finalAuthState = userStore.isAuthenticated
-        console.log('🔍 État final avant redirection:', { isAuthenticated: finalAuthState })
-        
-        if (finalAuthState) {
-          console.log('🚀 Redirection vers le dashboard...')
+        if (import.meta.env.DEV) {
+          console.debug('🔍 État final avant redirection:', { isAuthenticated: finalAuthState })
+        }
 
+        if (finalAuthState) {
+          if (import.meta.env.DEV) {
+            console.debug('🚀 Redirection vers le dashboard...')
+          }
+
+          // Activer les spinners (local + global App.vue) uniquement au moment de la redirection
+          isLoggingIn.value = true
           // Assurer le spinner global pendant la transition
           userStore.isLoading = true
 
@@ -255,17 +446,44 @@ export default {
           isLoggingIn.value = false
           userStore.isLoading = false
         } else {
-          console.error('❌ Erreur: isAuthenticated est false après fetchUser')
+          if (import.meta.env.DEV) {
+            console.debug('❌ Erreur: isAuthenticated est false après fetchUser')
+          }
           // Fallback: recharger la page
           window.location.href = '/dashboard'
         }
       } catch (error) {
-        console.error('Erreur lors de la connexion:', error)
+        // Ne pas bruiter la console pour les erreurs d'auth attendues
+        if (import.meta.env.DEV) {
+          console.debug('Erreur lors de la connexion:', error)
+        }
         // Gestion de l'erreur backend : DRF renvoie généralement 'detail'
-        const backendMessage = error.response?.data?.detail || error.response?.data?.error
-        loginError.value = backendMessage || "Erreur lors de la connexion"
-        isLoggingIn.value = false
-        userStore.isLoading = false
+        const friendlyMessage = mapLoginErrorMessage(error)
+        const normalizedFriendly = normalizeText(friendlyMessage)
+        const isInvalidCredentials =
+          containsAny(normalizedFriendly, invalidCredentialsKeywords) || error?.response?.status === 401
+        const isUserNotFound =
+          containsAny(normalizedFriendly, userNotFoundKeywords) || error?.response?.status === 404
+
+        if (isInvalidCredentials) {
+          setFieldTouched('password')
+          setFieldError('password', friendlyMessage)
+          // Nettoyer une éventuelle erreur e-mail si posée précédemment
+          setFieldError('email', '')
+        } else if (isUserNotFound) {
+          setFieldTouched('email')
+          setFieldError('email', friendlyMessage)
+          // Nettoyer une éventuelle erreur password si posée précédemment
+          setFieldError('password', '')
+        }
+
+        loginError.value = friendlyMessage
+
+        if (!isInvalidCredentials && !isUserNotFound) {
+          showErrorToast(friendlyMessage)
+        }
+
+        return false
       }
     }
 
@@ -308,6 +526,7 @@ export default {
       handleSignUp,
       handleForgotPassword,
       loginError,
+      loginErrorMessage,
       handleInput
     }
   }
@@ -330,6 +549,17 @@ export default {
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
+}
+
+.login-error {
+  margin: 16px 0 8px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.92rem;
+  line-height: 1.4;
 }
 
 .checkbox-label {
@@ -488,13 +718,6 @@ export default {
   &:hover {
     text-decoration: underline;
   }
-}
-
-.login-error {
-  color: #ef4444;
-  margin-top: 10px;
-  text-align: center;
-  font-weight: 600;
 }
 
 // Responsive

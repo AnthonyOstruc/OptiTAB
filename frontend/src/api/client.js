@@ -623,12 +623,25 @@ apiClient.interceptors.response.use(
       return Promise.reject(error)
     }
     
+    // Détection des erreurs d'auth prévues (login: 400/401/404)
+    const isLoginRoute = !!config?.url?.includes('/api/users/login/')
+    const isExpectedAuthFailure = isLoginRoute && [400, 401, 404].includes(response?.status)
+
     // Vérifier si c'est une erreur 404 sur les notifications
     const isNotificationError = config?.url?.includes('/api/users/notifications/') && response?.status === 404
     
     // Log de l'erreur (mais pas pour les 404 de notifications)
     if (!isNotificationError) {
-      ApiLogger.error('Erreur de requête', error)
+      // Ne pas bruiter la console pour les échecs de login attendus
+      if (isExpectedAuthFailure) {
+        ApiLogger.debug('Échec de connexion attendu (credentials)', {
+          url: config?.url,
+          status: response?.status,
+          method: config?.method
+        })
+      } else {
+        ApiLogger.error('Erreur de requête', error)
+      }
     } else {
       ApiLogger.debug('Notification introuvable (404)', {
         url: config.url,
@@ -640,6 +653,10 @@ apiClient.interceptors.response.use(
     // Gestion du token expiré (401) et des erreurs d'autorisation (403)
     // Vérifier si c'est bien une erreur de token expiré et pas une erreur d'authentification générale
     if ((response?.status === 401 || response?.status === 403) && !config.__isRetryRequest) {
+      // Ne pas tenter de refresh ni logger pour l'endpoint de login
+      if (isLoginRoute) {
+        return Promise.reject(error)
+      }
       // Vérifier si on a un token d'accès dans le localStorage
       const hasAccessToken = !!tokenManager.getAccessToken()
       const hasRefreshToken = !!tokenManager.getRefreshToken()
@@ -674,12 +691,15 @@ apiClient.interceptors.response.use(
         }
       } else {
         // Pas de tokens disponibles ou erreur d'authentification générale
-        ApiLogger.secureLog('warn', `Erreur ${response?.status} sans tokens valides ou erreur d'authentification`, {
-          url: config.url,
-          status: response?.status,
-          hasAccessToken,
-          hasRefreshToken
-        })
+        // Éviter de logguer bruyamment les 401 de login
+        if (!isExpectedAuthFailure) {
+          ApiLogger.secureLog('warn', `Erreur ${response?.status} sans tokens valides ou erreur d'authentification`, {
+            url: config.url,
+            status: response?.status,
+            hasAccessToken,
+            hasRefreshToken
+          })
+        }
       }
     }
     

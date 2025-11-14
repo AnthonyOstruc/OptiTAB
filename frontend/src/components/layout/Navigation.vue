@@ -192,6 +192,33 @@ const invalidateMatieresCache = () => {
   try { window.dispatchEvent(new Event('matieres-cache:invalidate')) } catch {}
 }
 
+const syncSelectedAndActiveWithAvailability = async () => {
+  const availableIds = matieres.value.map(m => m.id)
+  const currentSelected = Array.isArray(subjectsStore.selectedMatieresIds)
+    ? [...subjectsStore.selectedMatieresIds]
+    : []
+
+  const filteredSelected = currentSelected.filter(id => availableIds.includes(id))
+
+  if (
+    subjectsStore.stores?.selected &&
+    filteredSelected.length !== currentSelected.length
+  ) {
+    subjectsStore.stores.selected.setSelectedMatieresIds(filteredSelected)
+  }
+
+  if (filteredSelected.length === 0) {
+    if (subjectsStore.hasActiveMatiere) {
+      await subjectsStore.clearActiveMatiere()
+    }
+    return
+  }
+
+  if (!filteredSelected.includes(subjectsStore.activeMatiereId)) {
+    await subjectsStore.setActiveMatiere(filteredSelected[0])
+  }
+}
+
 const loadMatieres = async ({ useCache = true } = {}) => {
   if (!userStore.niveau_pays?.id) {
     matieres.value = []
@@ -216,6 +243,7 @@ const loadMatieres = async ({ useCache = true } = {}) => {
     matieres.value = items
     writeMatieresCache(items)
     console.log(`[Navigation] Matières chargées pour utilisateur:`, items.length)
+    await syncSelectedAndActiveWithAvailability()
   } catch (error) {
     console.error('[Navigation] Erreur lors du chargement des matières:', error)
     matieres.value = []
@@ -268,11 +296,6 @@ watch(() => userStore.niveau_pays, async (newNiveau) => {
   if (newNiveau) {
     console.log('[Navigation] Niveau changé, rechargement des matières:', newNiveau.nom)
     await loadMatieres()
-    // Nettoyer les matières sélectionnées qui ne sont plus disponibles pour ce niveau
-    const availableMatiereIds = matieres.value.map(m => m.id)
-    subjectsStore.selectedMatieresIds = subjectsStore.selectedMatieresIds.filter(id => 
-      availableMatiereIds.includes(id)
-    )
   }
 }, { immediate: false })
 

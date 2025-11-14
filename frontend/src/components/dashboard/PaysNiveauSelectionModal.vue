@@ -1,6 +1,7 @@
 <template>
-  <div v-if="modelValue" class="config-modal-overlay" @click="closeModal">
-    <div class="config-modal-content" @click.stop>
+  <Teleport to="body">
+    <div v-if="modelValue" class="config-modal-overlay" @click="closeModal">
+      <div class="config-modal-content" @click.stop>
       <div class="config-modal-header">
         <div class="title-wrap">
           <h3>Modifier votre configuration</h3>
@@ -127,8 +128,9 @@
           <span v-else>Sauvegarder</span>
         </button>
       </div>
+      </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script setup>
@@ -273,20 +275,22 @@ onUnmounted(() => {
 <style scoped>
 .config-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 99999;
-  padding: 20px;
+  padding: clamp(0.75rem, 2vh, 2.5rem) clamp(0.75rem, 4vw, 2rem) calc(env(safe-area-inset-bottom) + 1.5rem);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   animation: fadeIn 0.3s ease-out;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 @keyframes fadeIn {
@@ -301,15 +305,17 @@ onUnmounted(() => {
 .config-modal-content {
   background: white;
   border-radius: 16px;
-  max-width: 680px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
+  width: min(680px, 100%);
+  max-height: min(90vh, calc(100dvh - 3rem));
+  overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   animation: slideIn 0.3s ease-out;
   transform-origin: center;
   position: relative;
   z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes slideIn {
@@ -377,7 +383,10 @@ onUnmounted(() => {
 }
 
 .config-modal-body {
-  padding: 0 24px;
+  padding: 0 24px 24px;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .lock-banner {
@@ -588,14 +597,12 @@ onUnmounted(() => {
 
   @media (max-width: 768px) {
     .config-modal-overlay {
-      padding: 0.625rem;
-      padding-bottom: 100px;
-      align-items: flex-start;
+      padding: 0.75rem clamp(0.75rem, 6vw, 1.25rem) calc(env(safe-area-inset-bottom) + 1.25rem);
     }
     
     .config-modal-content {
       margin: 0.5rem auto;
-      max-height: calc(100vh - 120px);
+      max-height: calc(100dvh - 2.75rem);
       border-radius: 12px;
     }
     
@@ -730,25 +737,23 @@ onUnmounted(() => {
 
   @media (max-width: 640px) {
     .config-modal-overlay {
-      padding: 0.5rem;
-      padding-bottom: 105px;
+      padding: 0.5rem clamp(0.75rem, 8vw, 1.25rem) calc(env(safe-area-inset-bottom) + 1rem);
     }
 
     .config-modal-content {
-      max-height: calc(100vh - 130px);
+      max-height: calc(100dvh - 2.5rem);
       margin: 0.4rem auto;
     }
   }
 
   @media (max-width: 480px) {
     .config-modal-overlay {
-      padding: 0.5rem;
-      padding-bottom: 110px;
+      padding: 0.5rem clamp(0.5rem, 8vw, 1rem) calc(env(safe-area-inset-bottom) + 0.875rem);
     }
 
     .config-modal-content {
       border-radius: 10px;
-      max-height: calc(100vh - 140px);
+      max-height: calc(100dvh - 2.25rem);
       margin: 0.375rem auto;
     }
 

@@ -1220,11 +1220,13 @@ onBeforeUnmount(() => {
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 9999;
   backdrop-filter: blur(4px);
   animation: fadeIn 0.2s ease;
+  overflow-y: auto;
+  padding: 2rem 1rem;
 }
 
 @keyframes fadeIn {
@@ -1239,10 +1241,13 @@ onBeforeUnmount(() => {
 .modal-card {
   background: #ffffff;
   border-radius: 20px;
-  width: 90%;
+  width: min(90%, 480px);
   max-width: 480px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   animation: slideUp 0.3s ease;
+  max-height: calc(100vh - 4rem);
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes slideUp {
@@ -1298,6 +1303,8 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  flex: 1 1 auto;
+  overflow-y: auto;
 }
 
 .modal-body .form-label {

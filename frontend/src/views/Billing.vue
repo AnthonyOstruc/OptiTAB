@@ -1418,23 +1418,27 @@ async function subscribe(priceId) {
 
 
   .faq-section {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
+    text-align: center;
+    width: calc(100% + 1.75rem);
+    margin-left: -0.875rem;
+    margin-right: -0.875rem;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .billing-page :deep(.faq-section) {
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
     width: 100%;
     max-width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .billing-page :deep(.faq-list),
+  .billing-page :deep(.faq-item) {
+    width: 100%;
   }
 
   .page-header {

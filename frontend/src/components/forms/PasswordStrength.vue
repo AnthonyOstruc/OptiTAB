@@ -92,4 +92,21 @@ export default {
 .strength-box.passed .icon svg {
   stroke: #10b981;
 }
+
+@media (max-width: 640px) {
+  .password-strength {
+    gap: 6px;
+  }
+
+  .strength-box {
+    font-size: 11px;
+    padding: 3px 8px 3px 5px;
+    min-width: 70px;
+  }
+
+  .strength-box .icon svg {
+    width: 14px;
+    height: 14px;
+  }
+}
 </style> 

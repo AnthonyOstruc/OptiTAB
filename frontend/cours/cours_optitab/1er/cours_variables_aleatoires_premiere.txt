@@ -1,0 +1,589 @@
+=== Variables Aléatoires Réelles - Programme Première
+Difficulté: medium
+Ordre: 9
+Images: 
+
+Titre: Variables Aléatoires Réelles : Loi, Espérance, Variance
+Description: Cours complet sur les variables aléatoires réelles en première : définition, loi de probabilité, espérance, variance, écart type, simulation et estimation par échantillonnage.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à IV ainsi que les algorithmes de base sont <strong>exigibles</strong> au programme de Première. Ces connaissances sont nécessaires pour les évaluations.</p>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">La section VI (formule de König-Huygens, étude de $\displaystyle x \mapsto E((X - x)^2)$) et certaines expérimentations sont marquées comme <strong>bonus</strong> ou <strong>approfondissement</strong>. Elles enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour les évaluations.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Variable aléatoire réelle</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition intuitive</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition intuitive - Variable aléatoire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>variable aléatoire réelle</strong> est une grandeur numérique dont la valeur dépend du résultat d'une expérience aléatoire.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut la voir comme un "nombre dépendant du hasard" : à chaque issue de l'expérience, on associe un nombre réel.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Lancer de dés :</strong> Le résultat obtenu (1, 2, 3, 4, 5 ou 6) est une variable aléatoire</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Somme de deux dés :</strong> La somme des deux résultats est une variable aléatoire (valeurs de 2 à 12)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Nombre de "pile" :</strong> En lançant une pièce plusieurs fois, le nombre de "pile" obtenu est une variable aléatoire</li>
+                <li style="margin:0; text-align:left;"><strong>Gain dans un jeu :</strong> Le gain (ou la perte) associé à un jeu est une variable aléatoire</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition formelle</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Variable aléatoire réelle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle \Omega$ un univers fini muni d'une probabilité $\displaystyle P$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>variable aléatoire réelle</strong> est une fonction $\displaystyle X$ définie sur $\displaystyle \Omega$ et à valeurs dans $\displaystyle \mathbb{R}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour chaque issue $\displaystyle \omega \in \Omega$, $\displaystyle X(\omega)$ est un nombre réel appelé <strong>valeur</strong> de $\displaystyle X$ pour l'issue $\displaystyle \omega$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Notations :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \{X = a\}$ : événement "la variable aléatoire $\displaystyle X$ prend la valeur $\displaystyle a$"</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \{X \leq a\}$ : événement "la variable aléatoire $\displaystyle X$ prend une valeur inférieure ou égale à $\displaystyle a$"</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle P(X = a)$ : probabilité que $\displaystyle X$ prenne la valeur $\displaystyle a$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle P(X \leq a)$ : probabilité que $\displaystyle X$ prenne une valeur inférieure ou égale à $\displaystyle a$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance deux dés équilibrés et on note $\displaystyle X$ la somme des résultats.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'univers est $\displaystyle \Omega = \{(i, j) : 1 \leq i, j \leq 6\}$ avec $\displaystyle 36$ issues équiprobables.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par exemple :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \omega = (1, 1)$, alors $\displaystyle X(\omega) = 1 + 1 = 2$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \omega = (3, 4)$, alors $\displaystyle X(\omega) = 3 + 4 = 7$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle \omega = (6, 6)$, alors $\displaystyle X(\omega) = 6 + 6 = 12$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \{X = 7\}$ = "obtenir une somme de 7" = $\displaystyle \{(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)\}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle P(X = 7) = \frac{6}{36} = \frac{1}{6}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Loi d'une variable aléatoire</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Loi de probabilité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>loi de probabilité</strong> (ou <strong>loi</strong>) d'une variable aléatoire $\displaystyle X$ est la donnée de toutes les valeurs possibles de $\displaystyle X$ et de leurs probabilités associées.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle X$ prend les valeurs $\displaystyle x_1, x_2, ..., x_n$ avec les probabilités respectives $\displaystyle p_1, p_2, ..., p_n$, alors la loi de $\displaystyle X$ est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(X = x_i) = p_i$ pour $\displaystyle i = 1, 2, ..., n$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle p_1 + p_2 + ... + p_n = 1$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Représentation de la loi :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut représenter la loi de $\displaystyle X$ sous forme de :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Tableau :</strong> Première ligne = valeurs de $\displaystyle X$, deuxième ligne = probabilités</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Diagramme en bâtons :</strong> Abscisses = valeurs de $\displaystyle X$, ordonnées = probabilités</li>
+                <li style="margin:0; text-align:left;"><strong>Formule :</strong> Expression algébrique de $\displaystyle P(X = k)$ en fonction de $\displaystyle k$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance deux dés et on note $\displaystyle X$ la somme des résultats.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Tableau de la loi de $\displaystyle X$ :</p>
+            <table style="width:auto; border-collapse:collapse; margin:10px 0; border:2px solid #3498db; font-family:Arial, sans-serif;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle k$ (somme)</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">2</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">3</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">4</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">5</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">6</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">7</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">8</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">9</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">10</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">11</th>
+                        <th style="border:1px solid #ddd; padding:8px; text-align:center;">12</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; font-weight:bold;">$\displaystyle P(X = k)$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{1}{36}$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{2}{36}$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{3}{36}$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{4}{36}$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{5}{36}$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{6}{36}$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{5}{36}$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{4}{36}$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{3}{36}$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{2}{36}$</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center;">$\displaystyle \frac{1}{36}$</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>On vérifie : $\displaystyle \frac{1+2+3+4+5+6+5+4+3+2+1}{36} = \frac{36}{36} = 1$ ✓</em></p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Espérance, variance et écart type</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Espérance</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Espérance</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle X$ une variable aléatoire prenant les valeurs $\displaystyle x_1, x_2, ..., x_n$ avec les probabilités respectives $\displaystyle p_1, p_2, ..., p_n$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>espérance</strong> de $\displaystyle X$, notée $\displaystyle E(X)$ ou $\displaystyle \mu$, est définie par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle E(X) = x_1 p_1 + x_2 p_2 + ... + x_n p_n = \sum_{i=1}^{n} x_i p_i$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'espérance représente la <strong>valeur moyenne</strong> de la variable aléatoire sur un grand nombre de réalisations.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est une "moyenne pondérée" où chaque valeur est pondérée par sa probabilité.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour la variable $\displaystyle X$ (somme de deux dés) :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle E(X) = 2 \times \frac{1}{36} + 3 \times \frac{2}{36} + 4 \times \frac{3}{36} + 5 \times \frac{4}{36} + 6 \times \frac{5}{36} + 7 \times \frac{6}{36} + 8 \times \frac{5}{36} + 9 \times \frac{4}{36} + 10 \times \frac{3}{36} + 11 \times \frac{2}{36} + 12 \times \frac{1}{36}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \frac{2 + 6 + 12 + 20 + 30 + 42 + 40 + 36 + 30 + 22 + 12}{36} = \frac{252}{36} = 7$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'espérance de la somme de deux dés est $\displaystyle 7$.</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Propriétés de l'espérance</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour toute variable aléatoire $\displaystyle X$ et tout réel $\displaystyle a$ et $\displaystyle b$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle E(aX + b) = aE(X) + b$ (linéarité)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle E(X + Y) = E(X) + E(Y)$ (additivité)</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle X$ et $\displaystyle Y$ sont indépendantes : $\displaystyle E(XY) = E(X) \times E(Y)$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Variance et écart type</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Variance</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>variance</strong> de $\displaystyle X$, notée $\displaystyle V(X)$ ou $\displaystyle \sigma^2$, est définie par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle V(X) = E((X - E(X))^2) = \sum_{i=1}^{n} (x_i - E(X))^2 \times p_i$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Elle mesure la <strong>dispersion</strong> des valeurs autour de l'espérance.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Écart type</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>écart type</strong> de $\displaystyle X$, noté $\displaystyle \sigma(X)$ ou simplement $\displaystyle \sigma$, est défini par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sigma(X) = \sqrt{V(X)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'écart type est exprimé dans la même unité que la variable aléatoire.</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Formule alternative pour la variance</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La variance peut aussi s'exprimer par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle V(X) = E(X^2) - (E(X))^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle E(X^2) = \sum_{i=1}^{n} x_i^2 p_i$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour la variable $\displaystyle X$ (somme de deux dés), calculons la variance avec la formule alternative :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a déjà : $\displaystyle E(X) = 7$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Calculons $\displaystyle E(X^2)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle E(X^2) = 2^2 \times \frac{1}{36} + 3^2 \times \frac{2}{36} + ... + 12^2 \times \frac{1}{36}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \frac{4 + 18 + 48 + 100 + 180 + 294 + 320 + 324 + 300 + 242 + 144}{36} = \frac{1974}{36} = \frac{329}{6}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle V(X) = E(X^2) - (E(X))^2 = \frac{329}{6} - 49 = \frac{329 - 294}{6} = \frac{35}{6} \approx 5,83$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Et : $\displaystyle \sigma(X) = \sqrt{\frac{35}{6}} \approx 2,42$</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Propriétés de la variance</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour toute variable aléatoire $\displaystyle X$ et tout réel $\displaystyle a$ et $\displaystyle b$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle V(aX + b) = a^2 V(X)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \sigma(aX + b) = |a| \sigma(X)$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle X$ et $\displaystyle Y$ sont indépendantes : $\displaystyle V(X + Y) = V(X) + V(Y)$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Utilisation de l'espérance : jeux équitables</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Jeu équitable</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Jeu équitable</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un jeu est dit <strong>équitable</strong> si l'espérance du gain (ou de la mise) du joueur est nulle.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle X$ représente le gain algébrique (gain - mise), alors le jeu est équitable si $\displaystyle E(X) = 0$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un jeu consiste à lancer un dé. Si on obtient 6, on gagne 10 euros. Sinon, on perd 2 euros.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle X$ le gain algébrique (gain - perte).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(X = 10) = \frac{1}{6}$ et $\displaystyle P(X = -2) = \frac{5}{6}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle E(X) = 10 \times \frac{1}{6} + (-2) \times \frac{5}{6} = \frac{10 - 10}{6} = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le jeu est équitable !</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple avec mise à déterminer :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance deux dés. Si la somme est 7, on gagne 20 euros. Sinon, on perd la mise $\displaystyle m$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour que le jeu soit équitable : $\displaystyle E(X) = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle E(X) = 20 \times \frac{6}{36} + (-m) \times \frac{30}{36} = \frac{120 - 30m}{36}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \frac{120 - 30m}{36} = 0 \Leftrightarrow m = 4$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La mise doit être de 4 euros pour que le jeu soit équitable.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Algorithmes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Calcul de l'espérance, variance et écart type</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Algorithme - Espérance, variance, écart type</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> esperance_variance(valeurs, probabilites):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">import</span> math<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Calcul de l'espérance</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;esperance = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#50fa7b;">len</span>(valeurs)):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esperance = esperance + valeurs[i] * probabilites[i]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Calcul de E(X²)</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;esperance_carres = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#50fa7b;">len</span>(valeurs)):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esperance_carres = esperance_carres + valeurs[i]**<span style="color:#bd93f9;">2</span> * probabilites[i]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Calcul de la variance</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;variance = esperance_carres - esperance**<span style="color:#bd93f9;">2</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Calcul de l'écart type</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;ecart_type = math.sqrt(variance)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> esperance, variance, ecart_type<br>
+                <br>
+                <span style="color:#6272a4;"># Exemple : somme de deux dés</span><br>
+                valeurs = [<span style="color:#bd93f9;">2</span>, <span style="color:#bd93f9;">3</span>, <span style="color:#bd93f9;">4</span>, <span style="color:#bd93f9;">5</span>, <span style="color:#bd93f9;">6</span>, <span style="color:#bd93f9;">7</span>, <span style="color:#bd93f9;">8</span>, <span style="color:#bd93f9;">9</span>, <span style="color:#bd93f9;">10</span>, <span style="color:#bd93f9;">11</span>, <span style="color:#bd93f9;">12</span>]<br>
+                probabilites = [<span style="color:#bd93f9;">1</span>/<span style="color:#bd93f9;">36</span>, <span style="color:#bd93f9;">2</span>/<span style="color:#bd93f9;">36</span>, <span style="color:#bd93f9;">3</span>/<span style="color:#bd93f9;">36</span>, <span style="color:#bd93f9;">4</span>/<span style="color:#bd93f9;">36</span>, <span style="color:#bd93f9;">5</span>/<span style="color:#bd93f9;">36</span>, <span style="color:#bd93f9;">6</span>/<span style="color:#bd93f9;">36</span>, <span style="color:#bd93f9;">5</span>/<span style="color:#bd93f9;">36</span>, <span style="color:#bd93f9;">4</span>/<span style="color:#bd93f9;">36</span>, <span style="color:#bd93f9;">3</span>/<span style="color:#bd93f9;">36</span>, <span style="color:#bd93f9;">2</span>/<span style="color:#bd93f9;">36</span>, <span style="color:#bd93f9;">1</span>/<span style="color:#bd93f9;">36</span>]<br>
+                E, V, sigma = esperance_variance(valeurs, probabilites)<br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"E(X) = {E:.2f}, V(X) = {V:.2f}, σ(X) = {sigma:.2f}"</span>)
+            </div>
+
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Dans un tableur Excel :</strong></p>
+            <table style="width:auto; border-collapse:collapse; margin:10px 0; border:2px solid #3498db; font-family:Arial, sans-serif;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:8px; width:50px; text-align:center; font-weight:bold;"></th>
+                        <th style="border:1px solid #ddd; padding:8px; width:100px; text-align:center; font-weight:bold;">A (valeurs)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:120px; text-align:center; font-weight:bold;">B (probabilités)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:120px; text-align:center; font-weight:bold;">C (x × p)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:120px; text-align:center; font-weight:bold;">D (x² × p)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">2</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">1/36</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=A1*B1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=A1*A1*B1</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">2</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">3</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">2/36</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=A2*B2</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=A2*A2*B2</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">...</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">...</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">...</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">...</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">...</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">12</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; font-weight:bold; color:#3498db;">E(X) =</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;" colspan="2">=SOMME(C1:C11)</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#3498db;">E(X²) = SOMME(D1:D11)</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">13</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; font-weight:bold; color:#3498db;">V(X) =</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;" colspan="3">=SOMME(D1:D11) - SOMME(C1:C11)^2</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">14</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; font-weight:bold; color:#3498db;">σ(X) =</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;" colspan="3">=RACINE(SOMME(D1:D11) - SOMME(C1:C11)^2)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Les formules en rouge sont à recopier. On calcule l'espérance comme somme des colonnes C, puis la variance et l'écart type.</em></p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Fréquence d'apparition des lettres</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Algorithme - Fréquence d'apparition des lettres</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> frequence_lettres(texte):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Compter les lettres (en minuscules)</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;compteur = {}<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;total = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> caractere <span style="color:#ff79c6;">in</span> texte.lower():<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> caractere.isalpha():<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compteur[caractere] = compteur.get(caractere, <span style="color:#bd93f9;">0</span>) + <span style="color:#bd93f9;">1</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total = total + <span style="color:#bd93f9;">1</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Calculer les fréquences</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;frequences = {}<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> lettre <span style="color:#ff79c6;">in</span> compteur:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frequences[lettre] = compteur[lettre] / total<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> frequences<br>
+                <br>
+                <span style="color:#6272a4;"># Exemple</span><br>
+                texte = <span style="color:#f1fa8c;">"Bonjour le monde"</span><br>
+                freq = frequence_lettres(texte)<br>
+                <span style="color:#ff79c6;">for</span> lettre <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">sorted</span>(freq.keys()):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{lettre}: {freq[lettre]:.4f}"</span>)
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Expérimentations et simulation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Simulation d'une variable aléatoire</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Algorithme - Simulation d'une variable aléatoire</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> random<br>
+                <br>
+                <span style="color:#6272a4;"># Simulation de la somme de deux dés</span><br>
+                <span style="color:#ff79c6;">def</span> simuler_somme_des():<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;de1 = random.randint(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;de2 = random.randint(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> de1 + de2<br>
+                <br>
+                <span style="color:#6272a4;"># Générer un échantillon de taille n</span><br>
+                n = <span style="color:#bd93f9;">1000</span><br>
+                echantillon = [simuler_somme_des() <span style="color:#ff79c6;">for</span> _ <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n)]<br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Échantillon de {n} valeurs: {echantillon[:10]}..."</span>)
+            </div>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Moyenne d'un échantillon</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Fonction Python - Moyenne d'un échantillon</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> moyenne_echantillon(echantillon):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> <span style="color:#50fa7b;">len</span>(echantillon) == <span style="color:#bd93f9;">0</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#50fa7b;">sum</span>(echantillon) / <span style="color:#50fa7b;">len</span>(echantillon)<br>
+                <br>
+                <span style="color:#6272a4;"># Exemple</span><br>
+                echantillon = [simuler_somme_des() <span style="color:#ff79c6;">for</span> _ <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">100</span>)]<br>
+                moyenne = moyenne_echantillon(echantillon)<br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Moyenne de l'échantillon: {moyenne:.2f}"</span>)<br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Espérance théorique: 7.00"</span>)
+            </div>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Distance entre moyenne d'échantillon et espérance</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Étude expérimentale</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> random<br>
+                <br>
+                <span style="color:#ff79c6;">def</span> simuler_somme_des():<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> random.randint(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>) + random.randint(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>)<br>
+                <br>
+                esperance_theorique = <span style="color:#bd93f9;">7</span><br>
+                tailles_echantillons = [<span style="color:#bd93f9;">10</span>, <span style="color:#bd93f9;">50</span>, <span style="color:#bd93f9;">100</span>, <span style="color:#bd93f9;">500</span>, <span style="color:#bd93f9;">1000</span>]<br>
+                <br>
+                <span style="color:#ff79c6;">for</span> n <span style="color:#ff79c6;">in</span> tailles_echantillons:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;echantillon = [simuler_somme_des() <span style="color:#ff79c6;">for</span> _ <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n)]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;moyenne = <span style="color:#50fa7b;">sum</span>(echantillon) / n<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;distance = <span style="color:#50fa7b;">abs</span>(moyenne - esperance_theorique)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"n={n}: moyenne={moyenne:.2f}, distance={distance:.2f}"</span>)
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On observe que plus $\displaystyle n$ augmente, plus la moyenne de l'échantillon se rapproche de l'espérance théorique $\displaystyle \mu = 7$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Simulation de N échantillons</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Simulation de N échantillons</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> random<br>
+                <span style="color:#ff79c6;">import</span> math<br>
+                <br>
+                <span style="color:#ff79c6;">def</span> simuler_somme_des():<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> random.randint(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>) + random.randint(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>)<br>
+                <br>
+                <span style="color:#6272a4;"># Paramètres</span><br>
+                mu = <span style="color:#bd93f9;">7</span><br>
+                sigma = math.sqrt(<span style="color:#bd93f9;">35</span>/<span style="color:#bd93f9;">6</span>)<br>
+                n = <span style="color:#bd93f9;">100</span><br>
+                N = <span style="color:#bd93f9;">1000</span><br>
+                <br>
+                compteur = <span style="color:#bd93f9;">0</span><br>
+                <span style="color:#ff79c6;">for</span> _ <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(N):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;echantillon = [simuler_somme_des() <span style="color:#ff79c6;">for</span> _ <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n)]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;m = <span style="color:#50fa7b;">sum</span>(echantillon) / n<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;seuil = <span style="color:#bd93f9;">2</span> * sigma / math.sqrt(n)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> <span style="color:#50fa7b;">abs</span>(m - mu) <= seuil:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compteur = compteur + <span style="color:#bd93f9;">1</span><br>
+                <br>
+                proportion = compteur / N<br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Proportion où |m - μ| ≤ 2σ/√n : {proportion:.3f}"</span>)
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette expérimentation permet d'étudier empiriquement le principe de l'estimation de l'espérance par la moyenne d'un échantillon.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Approfondissements possibles</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:12px; margin:12px 0;">
+        <p style="margin:0; text-align:left; font-size:0.95em;"><strong>🌟 Approfondissement (bonus) :</strong> Les résultats suivants enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour les évaluations.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formule de König-Huygens</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Théorème - Formule de König-Huygens (bonus) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour toute variable aléatoire $\displaystyle X$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle V(X) = E(X^2) - (E(X))^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule est équivalente à la définition $\displaystyle V(X) = E((X - E(X))^2)$ et est souvent plus pratique pour les calculs.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Démonstration :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle V(X) = E((X - E(X))^2) = E(X^2 - 2XE(X) + (E(X))^2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par linéarité : $\displaystyle = E(X^2) - 2E(X)E(X) + (E(X))^2 = E(X^2) - (E(X))^2$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Étude de $\displaystyle x \mapsto E((X - x)^2)$</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Théorème (bonus) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle X$ une variable aléatoire. On considère la fonction $\displaystyle f(x) = E((X - x)^2)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette fonction est un polynôme du second degré en $\displaystyle x$ qui admet un minimum en $\displaystyle x = E(X)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Démonstration :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = E((X - x)^2) = E(X^2 - 2Xx + x^2) = E(X^2) - 2E(X)x + x^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est une fonction du second degré : $\displaystyle f(x) = x^2 - 2E(X)x + E(X^2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le minimum est atteint pour $\displaystyle x = \frac{2E(X)}{2} = E(X)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Et : $\displaystyle f(E(X)) = E(X^2) - (E(X))^2 = V(X)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ainsi, l'espérance $\displaystyle E(X)$ minimise l'espérance de l'écart quadratique.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Déterminer la loi :</strong> Lister toutes les valeurs possibles et calculer leurs probabilités</li>
+                <li style="margin:0; text-align:left;"><strong>Vérifier la loi :</strong> La somme des probabilités doit toujours valoir 1</li>
+                <li style="margin:0; text-align:left;"><strong>Espérance :</strong> $\displaystyle E(X) = \sum x_i p_i$ (somme des valeurs × probabilités)</li>
+                <li style="margin:0; text-align:left;"><strong>Variance :</strong> Utiliser $\displaystyle V(X) = E(X^2) - (E(X))^2$ (plus simple que la définition)</li>
+                <li style="margin:0; text-align:left;"><strong>Écart type :</strong> $\displaystyle \sigma(X) = \sqrt{V(X)}$ (toujours positif)</li>
+                <li style="margin:0; text-align:left;"><strong>Jeu équitable :</strong> L'espérance du gain algébrique doit être nulle</li>
+                <li style="margin:0; text-align:left;"><strong>Simulation :</strong> Utiliser la fonction $\displaystyle random$ pour générer des échantillons</li>
+                <li style="margin:0; text-align:left;"><strong>Estimation :</strong> La moyenne d'un échantillon estime l'espérance théorique</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Oublier de vérifier la somme des probabilités :</strong> Elle doit toujours valoir 1</li>
+                <li style="margin:0; text-align:left;"><strong>Confondre espérance et moyenne :</strong> L'espérance est théorique, la moyenne est expérimentale</li>
+                <li style="margin:0; text-align:left;"><strong>Oublier le carré dans la variance :</strong> $\displaystyle V(X) = E(X^2) - (E(X))^2$ (pas $\displaystyle E(X) - E(X)$)</li>
+                <li style="margin:0; text-align:left;"><strong>Écart type négatif :</strong> L'écart type est toujours positif (c'est une racine carrée)</li>
+                <li style="margin:0; text-align:left;"><strong>Confondre $\displaystyle \{X = a\}$ et $\displaystyle P(X = a)$ :</strong> Le premier est un événement, le second une probabilité</li>
+                <li style="margin:0; text-align:left;"><strong>Oublier que $\displaystyle X$ est une fonction :</strong> $\displaystyle X(\omega)$ est un nombre réel</li>
+                <li style="margin:0; text-align:left;"><strong>Jeu équitable :</strong> Ne pas oublier de soustraire la mise dans le calcul du gain algébrique</li>
+                <li style="margin:0; text-align:left;"><strong>Simulation :</strong> Utiliser un grand nombre de simulations pour obtenir des résultats fiables</li>
+            </ul>
+        </div>
+
+        <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Formules à retenir</strong>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:30%;">Grandeur</th>
+                        <th style="border:1px solid #ddd; padding:12px;">Formule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Espérance</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = \sum_{i=1}^{n} x_i p_i$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Variance (définition)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(X) = E((X - E(X))^2) = \sum_{i=1}^{n} (x_i - E(X))^2 p_i$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Variance (formule alternative)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(X) = E(X^2) - (E(X))^2$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Écart type</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma(X) = \sqrt{V(X)}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Propriétés de l'espérance</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(aX + b) = aE(X) + b$<br>$\displaystyle E(X + Y) = E(X) + E(Y)$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Propriétés de la variance</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V(aX + b) = a^2 V(X)$<br>$\displaystyle \sigma(aX + b) = |a| \sigma(X)$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Jeu équitable</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E(X) = 0$ où $\displaystyle X$ = gain algébrique</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+===
+

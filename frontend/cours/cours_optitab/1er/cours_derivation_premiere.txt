@@ -1,0 +1,648 @@
+=== Dérivation - Programme Première
+Difficulté: medium
+Ordre: 3
+Images: 
+
+Titre: Dérivation : Point de Vue Local et Global
+Description: Cours complet sur la dérivation en première : taux de variation, nombre dérivé, tangente, fonction dérivée, dérivées usuelles, opérations sur les dérivées, variations et optimisation.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à V ainsi que les démonstrations sont <strong>exigibles</strong> au programme de Première. Ces connaissances sont nécessaires pour les évaluations.</p>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Certaines sections (comme la méthode de Newton) sont marquées comme <strong>bonus</strong> ou <strong>approfondissement</strong>. Elles enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour les évaluations.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Point de vue local : taux de variation et nombre dérivé</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Taux de variation</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Taux de variation</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction définie sur un intervalle $\displaystyle I$ et $\displaystyle a$ un point de $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle h \neq 0$ tel que $\displaystyle a + h \in I$, le <strong>taux de variation</strong> de $\displaystyle f$ entre $\displaystyle a$ et $\displaystyle a + h$ est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \tau(a, h) = \frac{f(a+h) - f(a)}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce taux représente la pente de la <strong>sécante</strong> à la courbe représentative de $\displaystyle f$ passant par les points $\displaystyle A(a, f(a))$ et $\displaystyle M(a+h, f(a+h))$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f(x) = x^2$ et $\displaystyle a = 2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle h = 0.5$ : $\displaystyle \tau(2, 0.5) = \frac{f(2.5) - f(2)}{0.5} = \frac{6.25 - 4}{0.5} = \frac{2.25}{0.5} = 4.5$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle h = 0.1$ : $\displaystyle \tau(2, 0.1) = \frac{f(2.1) - f(2)}{0.1} = \frac{4.41 - 4}{0.1} = \frac{0.41}{0.1} = 4.1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle h = 0.01$ : $\displaystyle \tau(2, 0.01) = \frac{f(2.01) - f(2)}{0.01} = \frac{4.0401 - 4}{0.01} = 4.01$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On observe que lorsque $\displaystyle h$ se rapproche de $\displaystyle 0$, le taux de variation se rapproche de $\displaystyle 4$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation géométrique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le taux de variation $\displaystyle \tau(a, h)$ est le <strong>coefficient directeur</strong> (ou <strong>pente</strong>) de la droite sécante passant par les points $\displaystyle (a, f(a))$ et $\displaystyle (a+h, f(a+h))$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Lorsque $\displaystyle h$ tend vers $\displaystyle 0$, cette sécante se rapproche de la tangente à la courbe au point d'abscisse $\displaystyle a$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Nombre dérivé</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Nombre dérivé</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction définie sur un intervalle $\displaystyle I$ et $\displaystyle a$ un point de $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle f$ est <strong>dérivable en $\displaystyle a$</strong> si le taux de variation $\displaystyle \frac{f(a+h) - f(a)}{h}$ admet une limite finie lorsque $\displaystyle h$ tend vers $\displaystyle 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette limite est appelée le <strong>nombre dérivé</strong> de $\displaystyle f$ en $\displaystyle a$ et est notée :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples de calcul du nombre dérivé :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Calculer $\displaystyle f'(2)$ pour $\displaystyle f(x) = x^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(2) = \lim_{h \to 0} \frac{f(2+h) - f(2)}{h} = \lim_{h \to 0} \frac{(2+h)^2 - 4}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \lim_{h \to 0} \frac{4 + 4h + h^2 - 4}{h} = \lim_{h \to 0} \frac{4h + h^2}{h} = \lim_{h \to 0} (4 + h) = 4$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Calculer $\displaystyle f'(1)$ pour $\displaystyle f(x) = \frac{1}{x}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(1) = \lim_{h \to 0} \frac{f(1+h) - f(1)}{h} = \lim_{h \to 0} \frac{\frac{1}{1+h} - 1}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \lim_{h \to 0} \frac{\frac{1 - (1+h)}{1+h}}{h} = \lim_{h \to 0} \frac{-h}{h(1+h)} = \lim_{h \to 0} \frac{-1}{1+h} = -1$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Interprétations du nombre dérivé :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Géométrique :</strong> $\displaystyle f'(a)$ est la <strong>pente de la tangente</strong> à la courbe représentative de $\displaystyle f$ au point d'abscisse $\displaystyle a$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Physique :</strong> Si $\displaystyle f(t)$ représente la position d'un mobile à l'instant $\displaystyle t$, alors $\displaystyle f'(a)$ est la <strong>vitesse instantanée</strong> à l'instant $\displaystyle a$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Économique :</strong> Si $\displaystyle f(x)$ représente le coût de production de $\displaystyle x$ unités, alors $\displaystyle f'(a)$ est le <strong>coût marginal</strong> pour la $\displaystyle a$-ième unité</li>
+                <li style="margin:0; text-align:left;"><strong>Variation :</strong> Le signe de $\displaystyle f'(a)$ indique si la fonction est croissante ($\displaystyle f'(a) > 0$) ou décroissante ($\displaystyle f'(a) < 0$) au voisinage de $\displaystyle a$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Tangente à une courbe</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Équation de la tangente</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction dérivable en $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>tangente</strong> à la courbe représentative de $\displaystyle f$ au point d'abscisse $\displaystyle a$ est la droite qui passe par le point $\displaystyle A(a, f(a))$ et qui a pour coefficient directeur $\displaystyle f'(a)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Son équation est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle y = f(a) + f'(a)(x - a)$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La tangente est la limite des sécantes lorsque $\displaystyle h$ tend vers $\displaystyle 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une sécante passant par $\displaystyle A(a, f(a))$ et $\displaystyle M(a+h, f(a+h))$ a pour équation :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle y - f(a) = \frac{f(a+h) - f(a)}{h}(x - a)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Lorsque $\displaystyle h \to 0$, le coefficient directeur $\displaystyle \frac{f(a+h) - f(a)}{h}$ tend vers $\displaystyle f'(a)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc la tangente a pour équation : $\displaystyle y = f(a) + f'(a)(x - a)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Déterminer l'équation de la tangente à la courbe de $\displaystyle f(x) = x^2$ au point d'abscisse $\displaystyle 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle f(2) = 4$ et $\displaystyle f'(2) = 4$ (calculé précédemment)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'équation de la tangente est : $\displaystyle y = 4 + 4(x - 2) = 4x - 4$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Déterminer l'équation de la tangente à la courbe de $\displaystyle f(x) = \frac{1}{x}$ au point d'abscisse $\displaystyle 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle f(1) = 1$ et $\displaystyle f'(1) = -1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'équation de la tangente est : $\displaystyle y = 1 + (-1)(x - 1) = 1 - x + 1 = 2 - x$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode graphique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour déterminer graphiquement un nombre dérivé :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Tracer la tangente à la courbe au point d'abscisse $\displaystyle a$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Choisir deux points distincts sur cette tangente</li>
+                <li style="margin:0; text-align:left;">Calculer le coefficient directeur : $\displaystyle f'(a) = \frac{y_2 - y_1}{x_2 - x_1}$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour construire la tangente connaissant $\displaystyle f'(a)$ : tracer la droite passant par $\displaystyle (a, f(a))$ avec la pente $\displaystyle f'(a)$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Point de vue global : fonction dérivée</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Fonction dérivable et fonction dérivée</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction $\displaystyle f$ est dite <strong>dérivable sur un intervalle $\displaystyle I$</strong> si elle est dérivable en tout point de $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>fonction dérivée</strong> de $\displaystyle f$, notée $\displaystyle f'$, est la fonction qui à tout $\displaystyle x$ de $\displaystyle I$ associe le nombre dérivé $\displaystyle f'(x)$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Notations de la dérivée :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Notation de Lagrange :</strong> $\displaystyle f'(x)$ (la plus courante)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Notation de Leibniz :</strong> $\displaystyle \frac{df}{dx}$ ou $\displaystyle \frac{d}{dx}[f(x)]$</li>
+                <li style="margin:0; text-align:left;"><strong>Notation opérateur :</strong> $\displaystyle Df$ ou $\displaystyle D[f]$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivées des fonctions usuelles</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Dérivées à connaître :</strong>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #9c27b0;">
+                <thead>
+                    <tr style="background:#9c27b0; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+                        <th style="border:1px solid #ddd; padding:12px;">Fonction dérivée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = k$ (constante)</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f'(x) = 0$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = x$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f'(x) = 1$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = x^2$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f'(x) = 2x$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = x^3$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f'(x) = 3x^2$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = \frac{1}{x}$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f'(x) = -\frac{1}{x^2}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = \sqrt{x}$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f'(x) = \frac{1}{2\sqrt{x}}$ (pour $\displaystyle x > 0$)</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = x^n$ ($\displaystyle n \in \mathbb{Z}$)</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f'(x) = nx^{n-1}$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration - Dérivée de la fonction carré :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = x^2$, on a :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} = \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h} = \lim_{h \to 0} \frac{2xh + h^2}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \lim_{h \to 0} (2x + h) = 2x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle f'(x) = 2x$ pour tout $\displaystyle x \in \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration - Dérivée de la fonction inverse :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = \frac{1}{x}$ (avec $\displaystyle x \neq 0$), on a :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} = \lim_{h \to 0} \frac{\frac{1}{x+h} - \frac{1}{x}}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \lim_{h \to 0} \frac{\frac{x - (x+h)}{x(x+h)}}{h} = \lim_{h \to 0} \frac{-h}{hx(x+h)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \lim_{h \to 0} \frac{-1}{x(x+h)} = -\frac{1}{x^2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle f'(x) = -\frac{1}{x^2}$ pour tout $\displaystyle x \neq 0$.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration - La fonction racine carrée n'est pas dérivable en 0 :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = \sqrt{x}$ (avec $\displaystyle x \geq 0$), calculons le taux de variation en $\displaystyle 0$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \frac{f(0+h) - f(0)}{h} = \frac{\sqrt{h} - 0}{h} = \frac{\sqrt{h}}{h} = \frac{1}{\sqrt{h}}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Lorsque $\displaystyle h \to 0^+$, on a $\displaystyle \frac{1}{\sqrt{h}} \to +\infty$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La limite n'est pas finie, donc $\displaystyle f$ n'est <strong>pas dérivable en $\displaystyle 0$</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cependant, pour $\displaystyle x > 0$, on peut montrer que $\displaystyle f'(x) = \frac{1}{2\sqrt{x}}$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérations sur les fonctions dérivables</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Dérivée d'une somme</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u$ et $\displaystyle v$ sont deux fonctions dérivables sur un intervalle $\displaystyle I$, alors $\displaystyle u + v$ est dérivable sur $\displaystyle I$ et :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (u + v)' = u' + v'$</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Dérivée d'un produit</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u$ et $\displaystyle v$ sont deux fonctions dérivables sur un intervalle $\displaystyle I$, alors $\displaystyle uv$ est dérivable sur $\displaystyle I$ et :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (uv)' = u'v + uv'$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration - Dérivée d'un produit :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f = uv$, on a :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} = \lim_{h \to 0} \frac{u(x+h)v(x+h) - u(x)v(x)}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On ajoute et soustrait $\displaystyle u(x+h)v(x)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \lim_{h \to 0} \frac{u(x+h)v(x+h) - u(x+h)v(x) + u(x+h)v(x) - u(x)v(x)}{h}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \lim_{h \to 0} \left[u(x+h)\frac{v(x+h) - v(x)}{h} + v(x)\frac{u(x+h) - u(x)}{h}\right]$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle u$ est continue (car dérivable), $\displaystyle u(x+h) \to u(x)$ lorsque $\displaystyle h \to 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle f'(x) = u(x)v'(x) + u'(x)v(x) = u'v + uv'$</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Dérivée de l'inverse</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u$ est une fonction dérivable sur un intervalle $\displaystyle I$ et ne s'annule pas sur $\displaystyle I$, alors $\displaystyle \frac{1}{u}$ est dérivable sur $\displaystyle I$ et :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \left(\frac{1}{u}\right)' = -\frac{u'}{u^2}$</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Dérivée d'un quotient</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u$ et $\displaystyle v$ sont deux fonctions dérivables sur un intervalle $\displaystyle I$ et si $\displaystyle v$ ne s'annule pas sur $\displaystyle I$, alors $\displaystyle \frac{u}{v}$ est dérivable sur $\displaystyle I$ et :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Dérivée d'une fonction composée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle g$ est dérivable sur un intervalle $\displaystyle I$ et si $\displaystyle f$ est dérivable sur $\displaystyle g(I)$, alors la fonction $\displaystyle x \mapsto f(g(x))$ est dérivable sur $\displaystyle I$ et :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (f \circ g)'(x) = f'(g(x)) \times g'(x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas particulier :</strong> Pour $\displaystyle f(x) = g(ax + b)$ où $\displaystyle a$ et $\displaystyle b$ sont des réels :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = a \times g'(ax + b)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'application :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Dériver $\displaystyle f(x) = 3x^2 + 5x - 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = 3 \times 2x + 5 \times 1 - 0 = 6x + 5$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Dériver $\displaystyle f(x) = x^2 \times \frac{1}{x} = x$ (pour $\displaystyle x \neq 0$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Avec la formule du produit : $\displaystyle f'(x) = 2x \times \frac{1}{x} + x^2 \times \left(-\frac{1}{x^2}\right) = 2 - 1 = 1$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 3 :</strong> Dériver $\displaystyle f(x) = \frac{x^2 + 1}{x}$ (pour $\displaystyle x \neq 0$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Avec $\displaystyle u(x) = x^2 + 1$ et $\displaystyle v(x) = x$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = \frac{2x \times x - (x^2 + 1) \times 1}{x^2} = \frac{2x^2 - x^2 - 1}{x^2} = \frac{x^2 - 1}{x^2}$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 4 :</strong> Dériver $\displaystyle f(x) = (2x + 3)^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Avec $\displaystyle g(x) = x^2$ et $\displaystyle h(x) = 2x + 3$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = 2 \times g'(2x + 3) = 2 \times 2(2x + 3) = 4(2x + 3) = 8x + 12$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ou directement : $\displaystyle f'(x) = 2 \times (2x + 3) \times 2 = 4(2x + 3)$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivée de $\displaystyle x \mapsto x^n$ pour $\displaystyle n \in \mathbb{Z}$</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Dérivée de $\displaystyle x^n$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout entier relatif $\displaystyle n$ et pour tout $\displaystyle x$ tel que $\displaystyle x^n$ est défini :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (x^n)' = nx^{n-1}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle (x^5)' = 5x^4$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle (x^{-3})' = -3x^{-4} = -\frac{3}{x^4}$ (pour $\displaystyle x \neq 0$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \left(\frac{1}{x^2}\right)' = (x^{-2})' = -2x^{-3} = -\frac{2}{x^3}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle (x^0)' = (1)' = 0$ (cohérent avec $\displaystyle 0 \times x^{-1} = 0$)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Fonction valeur absolue</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition et courbe représentative</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction valeur absolue est définie par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = |x| = \begin{cases} x & \text{si } x \geq 0 \\ -x & \text{si } x < 0 \end{cases}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sa courbe représentative est formée de deux demi-droites :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle x \geq 0$ : la droite $\displaystyle y = x$</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle x < 0$ : la droite $\displaystyle y = -x$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces deux demi-droites se rejoignent au point $\displaystyle (0, 0)$ en formant un "V".</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Étude de la dérivabilité en 0</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = |x|$, étudions la dérivabilité en $\displaystyle 0$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Taux de variation à droite : $\displaystyle \lim_{h \to 0^+} \frac{f(0+h) - f(0)}{h} = \lim_{h \to 0^+} \frac{|h|}{h} = \lim_{h \to 0^+} \frac{h}{h} = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Taux de variation à gauche : $\displaystyle \lim_{h \to 0^-} \frac{f(0+h) - f(0)}{h} = \lim_{h \to 0^-} \frac{|h|}{h} = \lim_{h \to 0^-} \frac{-h}{h} = -1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les limites à gauche et à droite sont différentes, donc $\displaystyle f$ <strong>n'est pas dérivable en $\displaystyle 0$</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle x > 0$ : $\displaystyle f'(x) = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle x < 0$ : $\displaystyle f'(x) = -1$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Variations et courbes représentatives</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Lien entre dérivée et variations</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Lien entre signe de la dérivée et variations</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction dérivable sur un intervalle $\displaystyle I$.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle f'(x) > 0$ pour tout $\displaystyle x \in I$, alors $\displaystyle f$ est <strong>strictement croissante</strong> sur $\displaystyle I$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle f'(x) < 0$ pour tout $\displaystyle x \in I$, alors $\displaystyle f$ est <strong>strictement décroissante</strong> sur $\displaystyle I$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle f'(x) = 0$ pour tout $\displaystyle x \in I$, alors $\displaystyle f$ est <strong>constante</strong> sur $\displaystyle I$</li>
+                <li style="margin:0; text-align:left;"><strong>Réciproque :</strong> Si $\displaystyle f$ est constante sur $\displaystyle I$, alors $\displaystyle f'(x) = 0$ pour tout $\displaystyle x \in I$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Étudier les variations de $\displaystyle f(x) = x^3 - 3x + 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On calcule : $\displaystyle f'(x) = 3x^2 - 3 = 3(x^2 - 1) = 3(x-1)(x+1)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les valeurs qui annulent $\displaystyle f'$ sont : $\displaystyle x = -1$ et $\displaystyle x = 1$</p>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Tableau de signes de $\displaystyle f'$ :</p>
+            <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px auto; max-width:600px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                <tr style="background:#e8f4f8;">
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:20%;">$\displaystyle x$</td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:12%;">$\displaystyle -\infty$</td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:20%;"></td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:12%;">$\displaystyle -1$</td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:20%;"></td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:12%;">$\displaystyle 1$</td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:20%;"></td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:15%;">$\displaystyle +\infty$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">$\displaystyle f'(x)$</td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center;"></td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2e7d32; font-weight:700;">$\displaystyle +$</td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center;">$\displaystyle 0$</td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#c62828; font-weight:700;">$\displaystyle -$</td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center;">$\displaystyle 0$</td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2e7d32; font-weight:700;">$\displaystyle +$</td>
+                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center;"></td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; vertical-align:middle;">Variations de $\displaystyle f$</td>
+                    <td style="border:0; padding:8px; text-align:center; vertical-align:bottom;"></td>
+                    <td style="border:0; padding:8px; text-align:center; vertical-align:middle; line-height:0.8;">↗</td>
+                    <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-weight:700; color:#2e7d32;">max</td>
+                    <td style="border:0; padding:8px; text-align:center; vertical-align:middle; line-height:0.8;">↘</td>
+                    <td style="border:0; padding:8px; text-align:center; vertical-align:bottom; font-weight:700; color:#c62828;">min</td>
+                    <td style="border:0; padding:8px; text-align:center; vertical-align:middle; line-height:0.8;">↗</td>
+                    <td style="border:0; padding:8px; text-align:center; vertical-align:top;"></td>
+                </tr>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Conclusion : $\displaystyle f$ est <strong>croissante</strong> sur $\displaystyle ]-\infty, -1[ \cup ]1, +\infty[$ et <strong>décroissante</strong> sur $\displaystyle ]-1, 1[$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f$ admet un <strong>maximum local</strong> en $\displaystyle x = -1$ et un <strong>minimum local</strong> en $\displaystyle x = 1$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Extremums et nombre dérivé</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Condition nécessaire pour un extremum</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est dérivable sur un intervalle $\displaystyle I$ et admet un extremum (minimum ou maximum) local en un point $\displaystyle a$ de l'intérieur de $\displaystyle I$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(a) = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La tangente à la courbe au point d'abscisse $\displaystyle a$ est alors <strong>horizontale</strong> (parallèle à l'axe des abscisses).</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La réciproque est <strong>fausse</strong> ! Si $\displaystyle f'(a) = 0$, cela ne garantit pas que $\displaystyle a$ soit un extremum.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Exemple : $\displaystyle f(x) = x^3$ vérifie $\displaystyle f'(0) = 0$ mais $\displaystyle 0$ n'est pas un extremum (la fonction est croissante).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Méthode pour déterminer les extremums :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer $\displaystyle f'(x)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Résoudre $\displaystyle f'(x) = 0$ pour trouver les points critiques</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Étudier le signe de $\displaystyle f'(x)$ autour de chaque point critique</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle f'$ change de signe de $\displaystyle +$ à $\displaystyle -$ : maximum local. Si $\displaystyle f'$ change de signe de $\displaystyle -$ à $\displaystyle +$ : minimum local</li>
+            </ol>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Étude d'une fonction polynôme du second degré</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Étude complète :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f(x) = ax^2 + bx + c$ avec $\displaystyle a \neq 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle f'(x) = 2ax + b$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Résolvons $\displaystyle f'(x) = 0$ : $\displaystyle 2ax + b = 0 \Leftrightarrow x = -\frac{b}{2a}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Variations selon le signe de $\displaystyle a$ :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle a > 0$ : $\displaystyle f'(x) < 0$ pour $\displaystyle x < -\frac{b}{2a}$ et $\displaystyle f'(x) > 0$ pour $\displaystyle x > -\frac{b}{2a}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">→ $\displaystyle f$ est décroissante sur $\displaystyle ]-\infty, -\frac{b}{2a}]$ et croissante sur $\displaystyle [-\frac{b}{2a}, +\infty[$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">→ $\displaystyle f$ admet un <strong>minimum</strong> en $\displaystyle x = -\frac{b}{2a}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle a < 0$ : $\displaystyle f'(x) > 0$ pour $\displaystyle x < -\frac{b}{2a}$ et $\displaystyle f'(x) < 0$ pour $\displaystyle x > -\frac{b}{2a}$</li>
+                <li style="margin:0; text-align:left;">→ $\displaystyle f$ est croissante sur $\displaystyle ]-\infty, -\frac{b}{2a}]$ et décroissante sur $\displaystyle [-\frac{b}{2a}, +\infty[$</li>
+                <li style="margin:0; text-align:left;">→ $\displaystyle f$ admet un <strong>maximum</strong> en $\displaystyle x = -\frac{b}{2a}$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Allure de la courbe :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle a > 0$ : la parabole est "tournée vers le haut" (forme $\displaystyle \cup$)</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle a < 0$ : la parabole est "tournée vers le bas" (forme $\displaystyle \cap$)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Problèmes d'optimisation</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Optimisation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On veut construire un rectangle d'aire maximale avec un périmètre de 20 mètres.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle x$ la longueur et $\displaystyle y$ la largeur. On a : $\displaystyle 2x + 2y = 20$, donc $\displaystyle y = 10 - x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'aire est : $\displaystyle A(x) = x(10 - x) = 10x - x^2$ pour $\displaystyle x \in ]0, 10[$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On calcule : $\displaystyle A'(x) = 10 - 2x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A'(x) = 0 \Leftrightarrow x = 5$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A'(x) > 0$ pour $\displaystyle x < 5$ et $\displaystyle A'(x) < 0$ pour $\displaystyle x > 5$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle A$ admet un maximum en $\displaystyle x = 5$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le rectangle d'aire maximale est un carré de côté 5 mètres.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Algorithmes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Coefficients directeurs des sécantes</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Algorithme - Liste des coefficients directeurs des sécantes</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Pour $\displaystyle f(x) = x^2$ et $\displaystyle a = 2$, calculer les coefficients directeurs pour $\displaystyle h = 1, 0.5, 0.1, 0.01, \ldots$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> f(x):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> x * x<br>
+                <br>
+                a = <span style="color:#bd93f9;">2</span><br>
+                pas = [<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">0.5</span>, <span style="color:#bd93f9;">0.1</span>, <span style="color:#bd93f9;">0.01</span>, <span style="color:#bd93f9;">0.001</span>]<br>
+                <br>
+                <span style="color:#ff79c6;">for</span> h <span style="color:#ff79c6;">in</span> pas:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;coeff = (f(a + h) - f(a)) / h<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"h = {h}, coefficient = {coeff}"</span>)
+            </div>
+
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Dans un tableur Excel :</strong></p>
+            <table style="width:auto; border-collapse:collapse; margin:10px 0; border:2px solid #3498db; font-family:Arial, sans-serif;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:8px; width:50px; text-align:center; font-weight:bold;"></th>
+                        <th style="border:1px solid #ddd; padding:8px; width:150px; text-align:center; font-weight:bold;">A (valeur de h)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:200px; text-align:center; font-weight:bold;">B (coefficient directeur)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=((2+A1)^2-4)/A1</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">2</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">0.5</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=((2+A2)^2-4)/A2</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">3</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">0.1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=((2+A3)^2-4)/A3</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">4</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">0.01</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=((2+A4)^2-4)/A4</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">5</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">0.001</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=((2+A5)^2-4)/A5</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Les formules en rouge sont à recopier. On observe que les coefficients se rapprochent de $\displaystyle 4 = f'(2)$.</em></p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode de Newton</h3>
+
+        <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:12px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:0.95em;"><strong>🌟 Approfondissement (bonus) :</strong> La méthode de Newton est une méthode numérique pour approcher les zéros d'une fonction. Elle n'est pas strictement exigible au programme.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Principe de la méthode de Newton :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle f(x) = 0$, on part d'une valeur initiale $\displaystyle x_0$ proche de la solution.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On construit la suite $\displaystyle (x_n)$ définie par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sous certaines conditions (fonction dérivable, $\displaystyle f'$ ne s'annule pas, valeur initiale bien choisie), cette suite converge vers une solution de $\displaystyle f(x) = 0$.</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Approcher la solution de $\displaystyle x^2 - 2 = 0$ (c'est-à-dire $\displaystyle \sqrt{2}$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle f(x) = x^2 - 2$ et $\displaystyle f'(x) = 2x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Formule de récurrence : $\displaystyle x_{n+1} = x_n - \frac{x_n^2 - 2}{2x_n} = \frac{x_n^2 + 2}{2x_n} = \frac{x_n}{2} + \frac{1}{x_n}$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                x = <span style="color:#bd93f9;">1.5</span><br>
+                <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">5</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;x = x / <span style="color:#bd93f9;">2</span> + <span style="color:#bd93f9;">1</span> / x<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(x)
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Avec $\displaystyle x_0 = 1.5$ : $\displaystyle x_1 \approx 1.417$, $\displaystyle x_2 \approx 1.414$, $\displaystyle x_3 \approx 1.4142$ (converge vers $\displaystyle \sqrt{2} \approx 1.4142$)</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Applications et problèmes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Problèmes types</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Problème 1 - Exploiter les variations pour établir une inégalité :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Montrer que pour tout $\displaystyle x > 0$, on a : $\displaystyle x^2 \geq 2x - 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> On étudie la fonction $\displaystyle f(x) = x^2 - 2x + 1 = (x-1)^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle f'(x) = 2x - 2 = 2(x-1)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = 0$ en $\displaystyle x = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) < 0$ pour $\displaystyle x < 1$ et $\displaystyle f'(x) > 0$ pour $\displaystyle x > 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle f$ admet un minimum en $\displaystyle x = 1$ avec $\displaystyle f(1) = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle x > 0$, on a $\displaystyle f(x) \geq 0$, donc $\displaystyle x^2 \geq 2x - 1$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Problème 2 - Position relative de deux courbes :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Étudier la position relative des courbes $\displaystyle \mathcal{C}_f$ et $\displaystyle \mathcal{C}_g$ représentant respectivement $\displaystyle f(x) = x^2$ et $\displaystyle g(x) = 2x - 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> On étudie le signe de $\displaystyle f(x) - g(x) = x^2 - 2x + 1 = (x-1)^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (x-1)^2 \geq 0$ pour tout $\displaystyle x$, avec égalité seulement en $\displaystyle x = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \mathcal{C}_f$ est au-dessus de $\displaystyle \mathcal{C}_g$ pour tout $\displaystyle x$, et les deux courbes sont tangentes en $\displaystyle x = 1$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Calculer un nombre dérivé :</strong> Utiliser la définition $\displaystyle f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}$ ou les formules de dérivation</li>
+                <li style="margin:0; text-align:left;"><strong>Équation de tangente :</strong> Toujours utiliser $\displaystyle y = f(a) + f'(a)(x - a)$</li>
+                <li style="margin:0; text-align:left;"><strong>Dérivée d'un produit :</strong> Ne pas oublier la formule $\displaystyle (uv)' = u'v + uv'$ (pas $\displaystyle u'v'$ !)</li>
+                <li style="margin:0; text-align:left;"><strong>Dérivée d'un quotient :</strong> Utiliser $\displaystyle \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$ (attention à l'ordre et au signe moins)</li>
+                <li style="margin:0; text-align:left;"><strong>Variations :</strong> Calculer $\displaystyle f'(x)$, étudier son signe, en déduire les variations de $\displaystyle f$</li>
+                <li style="margin:0; text-align:left;"><strong>Extremums :</strong> Résoudre $\displaystyle f'(x) = 0$, puis vérifier le changement de signe de $\displaystyle f'$</li>
+                <li style="margin:0; text-align:left;"><strong>Optimisation :</strong> Modéliser le problème, dériver, trouver les extremums, vérifier qu'ils correspondent au problème</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Dérivée d'un produit :</strong> $\displaystyle (uv)' \neq u'v'$ ! C'est $\displaystyle u'v + uv'$</li>
+                <li style="margin:0; text-align:left;"><strong>Dérivée d'un quotient :</strong> Ne pas confondre avec le produit, attention au signe : $\displaystyle \frac{u'v - uv'}{v^2}$</li>
+                <li style="margin:0; text-align:left;"><strong>Dérivée de $\displaystyle \frac{1}{u}$ :</strong> C'est $\displaystyle -\frac{u'}{u^2}$, ne pas oublier le signe moins</li>
+                <li style="margin:0; text-align:left;"><strong>Dérivée d'une composée :</strong> Pour $\displaystyle f(g(x))$, ne pas oublier de multiplier par $\displaystyle g'(x)$</li>
+                <li style="margin:0; text-align:left;"><strong>Extremum :</strong> $\displaystyle f'(a) = 0$ ne garantit pas un extremum, il faut vérifier le changement de signe</li>
+                <li style="margin:0; text-align:left;"><strong>Tangente :</strong> Ne pas confondre avec la sécante, la tangente passe par $\displaystyle (a, f(a))$ avec la pente $\displaystyle f'(a)$</li>
+                <li style="margin:0; text-align:left;"><strong>Domaine de dérivabilité :</strong> Vérifier que la fonction est définie et dérivable sur l'intervalle considéré</li>
+            </ul>
+        </div>
+
+        <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Formules de dérivation à retenir</strong>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:40%;">Opération</th>
+                        <th style="border:1px solid #ddd; padding:12px;">Dérivée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Somme</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (u + v)' = u' + v'$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Produit</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (uv)' = u'v + uv'$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Inverse</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \left(\frac{1}{u}\right)' = -\frac{u'}{u^2}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Quotient</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Composée</strong><br/>$\displaystyle f(g(x))$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (f \circ g)'(x) = f'(g(x)) \times g'(x)$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Cas particulier</strong><br/>$\displaystyle g(ax + b)$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f'(x) = a \times g'(ax + b)$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+===
+

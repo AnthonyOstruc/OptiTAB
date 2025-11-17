@@ -1,0 +1,480 @@
+=== Calcul Vectoriel et Produit Scalaire - Programme Première
+Difficulté: medium
+Ordre: 6
+Images: 
+
+Titre: Calcul Vectoriel et Produit Scalaire
+Description: Cours complet sur le produit scalaire en première : définition (projection orthogonale, formule avec cosinus), orthogonalité, propriétés (bilinéarité, symétrie), expression en base orthonormée, formule d'Al-Kashi, transformations et applications géométriques.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à V ainsi que les démonstrations (formule d'Al-Kashi, ensemble des points M tels que $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB} = 0$) sont <strong>exigibles</strong> au programme de Première. Ces connaissances sont nécessaires pour les évaluations.</p>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">La section VI (loi des sinus, droite d'Euler, médianes d'un triangle) est marquée comme <strong>bonus</strong> ou <strong>approfondissement</strong>. Elle enrichit votre culture mathématique mais n'est pas strictement exigible pour les évaluations.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition du produit scalaire</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition par la projection orthogonale</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Produit scalaire (projection orthogonale)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ deux vecteurs non nuls.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>produit scalaire</strong> de $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$, noté $\displaystyle \vec{u} \cdot \vec{v}$ ou $\displaystyle \langle \vec{u}, \vec{v} \rangle$, est défini par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos(\widehat{\vec{u}, \vec{v}})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle \widehat{\vec{u}, \vec{v}}$ est l'angle orienté entre les vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle H$ est le projeté orthogonal de l'extrémité de $\displaystyle \vec{v}$ sur la droite portée par $\displaystyle \vec{u}$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \cdot \vec{v} = \vec{u} \cdot \overrightarrow{OH}$ où $\displaystyle O$ est l'origine commune des deux vecteurs.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ deux vecteurs tels que :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \|\vec{u}\| = 3$ et $\displaystyle \|\vec{v}\| = 4$</li>
+                <li style="margin:0; text-align:left;">L'angle entre $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ est $\displaystyle \frac{\pi}{3}$ (60°)</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors : $\displaystyle \vec{u} \cdot \vec{v} = 3 \times 4 \times \cos\left(\frac{\pi}{3}\right) = 12 \times \frac{1}{2} = 6$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Cas particuliers :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \vec{u} = \vec{0}$ ou $\displaystyle \vec{v} = \vec{0}$, alors $\displaystyle \vec{u} \cdot \vec{v} = 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si les vecteurs sont de même sens ($\displaystyle \cos(\widehat{\vec{u}, \vec{v}}) = 1$), alors $\displaystyle \vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\|$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si les vecteurs sont de sens opposés ($\displaystyle \cos(\widehat{\vec{u}, \vec{v}}) = -1$), alors $\displaystyle \vec{u} \cdot \vec{v} = -\|\vec{u}\| \times \|\vec{v}\|$</li>
+                <li style="margin:0; text-align:left;">Si les vecteurs sont perpendiculaires ($\displaystyle \cos(\widehat{\vec{u}, \vec{v}}) = 0$), alors $\displaystyle \vec{u} \cdot \vec{v} = 0$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition avec le cosinus</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Produit scalaire et angle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour deux vecteurs non nuls $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos(\theta)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle \theta$ est la mesure en radians de l'angle géométrique entre les directions des vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation géométrique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le produit scalaire mesure le "recouvrement" des deux vecteurs :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si l'angle est aigu ($\displaystyle 0 < \theta < \frac{\pi}{2}$), le produit scalaire est <strong>positif</strong></li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si l'angle est droit ($\displaystyle \theta = \frac{\pi}{2}$), le produit scalaire est <strong>nul</strong></li>
+                <li style="margin:0; text-align:left;">Si l'angle est obtus ($\displaystyle \frac{\pi}{2} < \theta < \pi$), le produit scalaire est <strong>négatif</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Orthogonalité et caractérisation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Caractérisation de l'orthogonalité</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Caractérisation de l'orthogonalité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ sont <strong>orthogonaux</strong> si et seulement si leur produit scalaire est nul :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \perp \vec{v} \Leftrightarrow \vec{u} \cdot \vec{v} = 0$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \vec{u} = \vec{0}$ ou $\displaystyle \vec{v} = \vec{0}$, alors $\displaystyle \vec{u} \cdot \vec{v} = 0$ et on convient que $\displaystyle \vec{0}$ est orthogonal à tout vecteur.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \vec{u} \neq \vec{0}$ et $\displaystyle \vec{v} \neq \vec{0}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \perp \vec{v} \Leftrightarrow \cos(\widehat{\vec{u}, \vec{v}}) = 0 \Leftrightarrow \vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times 0 = 0$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'application :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Montrer que les vecteurs $\displaystyle \vec{u}(3, 4)$ et $\displaystyle \vec{v}(-4, 3)$ sont orthogonaux</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \cdot \vec{v} = 3 \times (-4) + 4 \times 3 = -12 + 12 = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \vec{u} \perp \vec{v}$.</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Déterminer $\displaystyle m$ pour que $\displaystyle \vec{u}(2, 3)$ et $\displaystyle \vec{v}(m, -4)$ soient orthogonaux</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \cdot \vec{v} = 0 \Leftrightarrow 2m + 3 \times (-4) = 0 \Leftrightarrow 2m - 12 = 0 \Leftrightarrow m = 6$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Propriétés du produit scalaire</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Symétrie et bilinéarité</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Propriétés du produit scalaire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous vecteurs $\displaystyle \vec{u}$, $\displaystyle \vec{v}$, $\displaystyle \vec{w}$ et tout réel $\displaystyle \lambda$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Symétrie :</strong> $\displaystyle \vec{u} \cdot \vec{v} = \vec{v} \cdot \vec{u}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Linéarité à gauche :</strong> $\displaystyle (\lambda \vec{u}) \cdot \vec{v} = \lambda (\vec{u} \cdot \vec{v})$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Linéarité à droite :</strong> $\displaystyle \vec{u} \cdot (\lambda \vec{v}) = \lambda (\vec{u} \cdot \vec{v})$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Distributivité :</strong> $\displaystyle \vec{u} \cdot (\vec{v} + \vec{w}) = \vec{u} \cdot \vec{v} + \vec{u} \cdot \vec{w}$</li>
+                <li style="margin:0; text-align:left;"><strong>Bilinéarité :</strong> Le produit scalaire est linéaire par rapport à chacune de ses deux variables</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'utilisation :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Calculer $\displaystyle (2\vec{u} + 3\vec{v}) \cdot \vec{w}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (2\vec{u} + 3\vec{v}) \cdot \vec{w} = 2\vec{u} \cdot \vec{w} + 3\vec{v} \cdot \vec{w}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">(par distributivité)</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Développer $\displaystyle (\vec{u} + \vec{v}) \cdot (\vec{u} - \vec{v})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (\vec{u} + \vec{v}) \cdot (\vec{u} - \vec{v}) = \vec{u} \cdot \vec{u} - \vec{u} \cdot \vec{v} + \vec{v} \cdot \vec{u} - \vec{v} \cdot \vec{v}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \vec{u} \cdot \vec{u} - \vec{v} \cdot \vec{v}$ (car $\displaystyle \vec{u} \cdot \vec{v} = \vec{v} \cdot \vec{u}$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \|\vec{u}\|^2 - \|\vec{v}\|^2$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Expression en base orthonormée</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Expression du produit scalaire en base orthonormée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans une base orthonormée $\displaystyle (\vec{i}, \vec{j})$, si $\displaystyle \vec{u}(x_1, y_1)$ et $\displaystyle \vec{v}(x_2, y_2)$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \cdot \vec{v} = x_1 x_2 + y_1 y_2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans l'espace, avec une base orthonormée $\displaystyle (\vec{i}, \vec{j}, \vec{k})$, si $\displaystyle \vec{u}(x_1, y_1, z_1)$ et $\displaystyle \vec{v}(x_2, y_2, z_2)$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \cdot \vec{v} = x_1 x_2 + y_1 y_2 + z_1 z_2$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration (dans le plan) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle \vec{u} = x_1 \vec{i} + y_1 \vec{j}$ et $\displaystyle \vec{v} = x_2 \vec{i} + y_2 \vec{j}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par bilinéarité : $\displaystyle \vec{u} \cdot \vec{v} = (x_1 \vec{i} + y_1 \vec{j}) \cdot (x_2 \vec{i} + y_2 \vec{j})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = x_1 x_2 (\vec{i} \cdot \vec{i}) + x_1 y_2 (\vec{i} \cdot \vec{j}) + y_1 x_2 (\vec{j} \cdot \vec{i}) + y_1 y_2 (\vec{j} \cdot \vec{j})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme la base est orthonormée : $\displaystyle \vec{i} \cdot \vec{i} = 1$, $\displaystyle \vec{j} \cdot \vec{j} = 1$ et $\displaystyle \vec{i} \cdot \vec{j} = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \vec{u} \cdot \vec{v} = x_1 x_2 + y_1 y_2$</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Expression de la norme</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans une base orthonormée, si $\displaystyle \vec{u}(x, y)$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \|\vec{u}\| = \sqrt{x^2 + y^2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans l'espace, si $\displaystyle \vec{u}(x, y, z)$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \|\vec{u}\| = \sqrt{x^2 + y^2 + z^2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a aussi : $\displaystyle \|\vec{u}\|^2 = \vec{u} \cdot \vec{u}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Calculer $\displaystyle \vec{u}(3, 4) \cdot \vec{v}(-1, 2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \cdot \vec{v} = 3 \times (-1) + 4 \times 2 = -3 + 8 = 5$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Calculer $\displaystyle \|\vec{u}\|$ avec $\displaystyle \vec{u}(3, 4)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \|\vec{u}\| = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 3 :</strong> Dans l'espace, calculer $\displaystyle \vec{u}(1, 2, 3) \cdot \vec{v}(4, -1, 2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \cdot \vec{v} = 1 \times 4 + 2 \times (-1) + 3 \times 2 = 4 - 2 + 6 = 8$</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Critère d'orthogonalité en base orthonormée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans une base orthonormée, deux vecteurs $\displaystyle \vec{u}(x_1, y_1)$ et $\displaystyle \vec{v}(x_2, y_2)$ sont orthogonaux si et seulement si :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x_1 x_2 + y_1 y_2 = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans l'espace, avec $\displaystyle \vec{u}(x_1, y_1, z_1)$ et $\displaystyle \vec{v}(x_2, y_2, z_2)$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x_1 x_2 + y_1 y_2 + z_1 z_2 = 0$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Développement de $\displaystyle \|\vec{u} + \vec{v}\|^2$</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Identité remarquable du produit scalaire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \|\vec{u} + \vec{v}\|^2 = \|\vec{u}\|^2 + 2\vec{u} \cdot \vec{v} + \|\vec{v}\|^2$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle \|\vec{u} + \vec{v}\|^2 = (\vec{u} + \vec{v}) \cdot (\vec{u} + \vec{v})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par distributivité : $\displaystyle = \vec{u} \cdot \vec{u} + \vec{u} \cdot \vec{v} + \vec{v} \cdot \vec{u} + \vec{v} \cdot \vec{v}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par symétrie : $\displaystyle = \vec{u} \cdot \vec{u} + 2\vec{u} \cdot \vec{v} + \vec{v} \cdot \vec{v}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \|\vec{u} + \vec{v}\|^2 = \|\vec{u}\|^2 + 2\vec{u} \cdot \vec{v} + \|\vec{v}\|^2$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Autres identités remarquables :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \|\vec{u} - \vec{v}\|^2 = \|\vec{u}\|^2 - 2\vec{u} \cdot \vec{v} + \|\vec{v}\|^2$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle (\vec{u} + \vec{v}) \cdot (\vec{u} - \vec{v}) = \|\vec{u}\|^2 - \|\vec{v}\|^2$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \|\vec{u} + \vec{v}\|^2 + \|\vec{u} - \vec{v}\|^2 = 2(\|\vec{u}\|^2 + \|\vec{v}\|^2)$ (identité du parallélogramme)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Formule d'Al-Kashi</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Énoncé et démonstration</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Formule d'Al-Kashi</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle $\displaystyle ABC$, on a :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle a^2 = b^2 + c^2 - 2bc \cos(\widehat{A})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle a = BC$, $\displaystyle b = CA$, $\displaystyle c = AB$ et $\displaystyle \widehat{A}$ est l'angle au sommet $\displaystyle A$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De même : $\displaystyle b^2 = a^2 + c^2 - 2ac \cos(\widehat{B})$ et $\displaystyle c^2 = a^2 + b^2 - 2ab \cos(\widehat{C})$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans le triangle $\displaystyle ABC$, on a : $\displaystyle \overrightarrow{BC} = \overrightarrow{BA} + \overrightarrow{AC}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle BC^2 = \|\overrightarrow{BC}\|^2 = \|\overrightarrow{BA} + \overrightarrow{AC}\|^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par l'identité remarquable : $\displaystyle = \|\overrightarrow{BA}\|^2 + 2\overrightarrow{BA} \cdot \overrightarrow{AC} + \|\overrightarrow{AC}\|^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Or : $\displaystyle \overrightarrow{BA} \cdot \overrightarrow{AC} = \overrightarrow{BA} \cdot \overrightarrow{CA} = \|\overrightarrow{BA}\| \times \|\overrightarrow{CA}\| \times \cos(\widehat{BAC})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle a^2 = c^2 + 2bc \cos(\pi - \widehat{A}) + b^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle \cos(\pi - \widehat{A}) = -\cos(\widehat{A})$, on obtient :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle a^2 = b^2 + c^2 - 2bc \cos(\widehat{A})$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Cas particulier - Théorème de Pythagore :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \widehat{A} = 90°$ (triangle rectangle en $\displaystyle A$), alors $\displaystyle \cos(\widehat{A}) = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La formule d'Al-Kashi devient : $\displaystyle a^2 = b^2 + c^2$, ce qui est le <strong>théorème de Pythagore</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple d'application :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle $\displaystyle ABC$ avec $\displaystyle AB = 5$, $\displaystyle AC = 7$ et $\displaystyle \widehat{A} = 60°$, calculer $\displaystyle BC$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">D'après la formule d'Al-Kashi :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle BC^2 = 7^2 + 5^2 - 2 \times 7 \times 5 \times \cos(60°)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle BC^2 = 49 + 25 - 70 \times \frac{1}{2} = 74 - 35 = 39$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle BC = \sqrt{39} \approx 6,24$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Transformation de l'expression $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB}$</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Transformation avec un point fixe</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Transformation de $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB}$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour transformer l'expression $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB}$, on utilise la relation de Chasles :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overrightarrow{MA} = \overrightarrow{MO} + \overrightarrow{OA}$ et $\displaystyle \overrightarrow{MB} = \overrightarrow{MO} + \overrightarrow{OB}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle O$ est un point fixe choisi judicieusement (par exemple le milieu de $\displaystyle [AB]$ ou le centre d'un repère).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle A$ et $\displaystyle B$ deux points fixes. Transformer $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On choisit $\displaystyle I$ le milieu de $\displaystyle [AB]$ comme point fixe.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB} = (\overrightarrow{MI} + \overrightarrow{IA}) \cdot (\overrightarrow{MI} + \overrightarrow{IB})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \overrightarrow{MI} \cdot \overrightarrow{MI} + \overrightarrow{MI} \cdot \overrightarrow{IB} + \overrightarrow{IA} \cdot \overrightarrow{MI} + \overrightarrow{IA} \cdot \overrightarrow{IB}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = MI^2 + \overrightarrow{MI} \cdot (\overrightarrow{IB} + \overrightarrow{IA}) + \overrightarrow{IA} \cdot \overrightarrow{IB}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle I$ est le milieu de $\displaystyle [AB]$, on a $\displaystyle \overrightarrow{IA} + \overrightarrow{IB} = \vec{0}$ et $\displaystyle \overrightarrow{IA} = -\overrightarrow{IB}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB} = MI^2 - IA^2 = MI^2 - \left(\frac{AB}{2}\right)^2$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Ensemble des points M tels que $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB} = 0$</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Ensemble des points M</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des points $\displaystyle M$ du plan tels que $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB} = 0$ est le <strong>cercle de diamètre $\displaystyle [AB]$</strong> (privé des points $\displaystyle A$ et $\displaystyle B$ si on exclut les cas dégénérés).</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle I$ le milieu de $\displaystyle [AB]$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">D'après la transformation précédente : $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB} = MI^2 - \left(\frac{AB}{2}\right)^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB} = 0 \Leftrightarrow MI^2 = \left(\frac{AB}{2}\right)^2 \Leftrightarrow MI = \frac{AB}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela signifie que $\displaystyle M$ est à distance $\displaystyle \frac{AB}{2}$ de $\displaystyle I$, donc sur le cercle de centre $\displaystyle I$ et de rayon $\displaystyle \frac{AB}{2}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce cercle est précisément le <strong>cercle de diamètre $\displaystyle [AB]$</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De plus, on peut vérifier que pour tout point $\displaystyle M$ du cercle de diamètre $\displaystyle [AB]$, l'angle $\displaystyle \widehat{AMB}$ est droit, donc $\displaystyle \overrightarrow{MA} \perp \overrightarrow{MB}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Application :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des points $\displaystyle M$ tels que $\displaystyle \overrightarrow{MA} \cdot \overrightarrow{MB} = 0$ est donc le cercle de diamètre $\displaystyle [AB]$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce résultat est connu sous le nom de <strong>théorème de l'angle droit</strong> : un triangle est rectangle si et seulement si son hypoténuse est un diamètre du cercle circonscrit.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Applications : calculs d'angles et de longueurs</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Calcul d'un angle</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Méthode :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer l'angle $\displaystyle \theta$ entre deux vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer $\displaystyle \vec{u} \cdot \vec{v}$ et $\displaystyle \|\vec{u}\|$ et $\displaystyle \|\vec{v}\|$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Utiliser la formule : $\displaystyle \cos(\theta) = \frac{\vec{u} \cdot \vec{v}}{\|\vec{u}\| \times \|\vec{v}\|}$</li>
+                <li style="margin:0; text-align:left;">Déterminer $\displaystyle \theta$ à partir de $\displaystyle \cos(\theta)$</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Calculer l'angle entre les vecteurs $\displaystyle \vec{u}(3, 4)$ et $\displaystyle \vec{v}(-1, 2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} \cdot \vec{v} = 3 \times (-1) + 4 \times 2 = 5$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \|\vec{u}\| = \sqrt{3^2 + 4^2} = 5$ et $\displaystyle \|\vec{v}\| = \sqrt{(-1)^2 + 2^2} = \sqrt{5}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(\theta) = \frac{5}{5 \times \sqrt{5}} = \frac{1}{\sqrt{5}} = \frac{\sqrt{5}}{5}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \theta = \arccos\left(\frac{\sqrt{5}}{5}\right) \approx 63,4°$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Calcul d'une longueur</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Méthode :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer la longueur $\displaystyle AB$ dans un repère orthonormé :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle AB = \|\overrightarrow{AB}\| = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans l'espace : $\displaystyle AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2 + (z_B - z_A)^2}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un repère orthonormé, calculer la distance $\displaystyle AB$ avec $\displaystyle A(1, 2)$ et $\displaystyle B(4, 6)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle AB = \sqrt{(4 - 1)^2 + (6 - 2)^2} = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Problèmes géométriques</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Démontrer une orthogonalité :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un repère orthonormé, on donne : $\displaystyle A(1, 2)$, $\displaystyle B(4, 6)$ et $\displaystyle C(-1, 8)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Démontrer que le triangle $\displaystyle ABC$ est rectangle en $\displaystyle A$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overrightarrow{AB}(3, 4)$ et $\displaystyle \overrightarrow{AC}(-2, 6)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overrightarrow{AB} \cdot \overrightarrow{AC} = 3 \times (-2) + 4 \times 6 = -6 + 24 = 18 \neq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc le triangle n'est pas rectangle en $\displaystyle A$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Vérifions en $\displaystyle B$ : $\displaystyle \overrightarrow{BA}(-3, -4)$ et $\displaystyle \overrightarrow{BC}(-5, 2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overrightarrow{BA} \cdot \overrightarrow{BC} = (-3) \times (-5) + (-4) \times 2 = 15 - 8 = 7 \neq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Vérifions en $\displaystyle C$ : $\displaystyle \overrightarrow{CA}(2, -6)$ et $\displaystyle \overrightarrow{CB}(5, -2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overrightarrow{CA} \cdot \overrightarrow{CB} = 2 \times 5 + (-6) \times (-2) = 10 + 12 = 22 \neq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le triangle $\displaystyle ABC$ n'est donc pas rectangle.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Approfondissements possibles</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:12px; margin:12px 0;">
+        <p style="margin:0; text-align:left; font-size:0.95em;"><strong>🌟 Approfondissement (bonus) :</strong> Les résultats suivants enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour les évaluations.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Loi des sinus</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Théorème - Loi des sinus (bonus) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle $\displaystyle ABC$ (non aplati), on a :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \frac{a}{\sin(\widehat{A})} = \frac{b}{\sin(\widehat{B})} = \frac{c}{\sin(\widehat{C})} = 2R$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle a = BC$, $\displaystyle b = CA$, $\displaystyle c = AB$ et $\displaystyle R$ est le rayon du cercle circonscrit au triangle.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule permet de calculer un côté ou un angle d'un triangle quand on connaît deux angles et un côté (ou deux côtés et un angle).</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Droite d'Euler</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Théorème - Droite d'Euler (bonus) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle non équilatéral, le centre de gravité $\displaystyle G$, l'orthocentre $\displaystyle H$ et le centre du cercle circonscrit $\displaystyle O$ sont alignés sur la <strong>droite d'Euler</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De plus, on a : $\displaystyle \overrightarrow{OH} = 3\overrightarrow{OG}$ (relation d'Euler).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette propriété remarquable peut être démontrée en utilisant le produit scalaire et les propriétés des centres remarquables d'un triangle.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Les médianes d'un triangle concourent au centre de gravité</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Théorème - Centre de gravité (bonus) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle $\displaystyle ABC$, les trois médianes (droites passant par un sommet et le milieu du côté opposé) sont <strong>concourantes</strong> en un point $\displaystyle G$ appelé <strong>centre de gravité</strong> du triangle.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le point $\displaystyle G$ vérifie : $\displaystyle \overrightarrow{GA} + \overrightarrow{GB} + \overrightarrow{GC} = \vec{0}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De plus, le centre de gravité divise chaque médiane dans le rapport $\displaystyle 2:1$, le sommet étant compté deux fois.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette propriété peut être démontrée en utilisant les vecteurs et les coordonnées barycentriques.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes pour calculer un produit scalaire</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Méthodes adaptées selon le contexte :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Par projection orthogonale :</strong> Utiliser quand on connaît les normes et la projection orthogonale d'un vecteur sur la droite portée par l'autre</li>
+                <li style="margin:0; text-align:left;"><strong>Avec les coordonnées :</strong> Dans une base orthonormée, utiliser $\displaystyle \vec{u} \cdot \vec{v} = x_1 x_2 + y_1 y_2$ (la plus fréquente)</li>
+                <li style="margin:0; text-align:left;"><strong>Avec les normes et un angle :</strong> Utiliser $\displaystyle \vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos(\theta)$ quand on connaît l'angle</li>
+                <li style="margin:0; text-align:left;"><strong>Avec les normes uniquement :</strong> Utiliser l'identité $\displaystyle \vec{u} \cdot \vec{v} = \frac{1}{2}(\|\vec{u} + \vec{v}\|^2 - \|\vec{u}\|^2 - \|\vec{v}\|^2)$</li>
+                <li style="margin:0; text-align:left;"><strong>Par transformation :</strong> Utiliser la relation de Chasles pour transformer l'expression</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Confondre produit scalaire et produit de nombres :</strong> $\displaystyle \vec{u} \cdot \vec{v}$ est un nombre, pas un vecteur</li>
+                <li style="margin:0; text-align:left;"><strong>Oublier la symétrie :</strong> $\displaystyle \vec{u} \cdot \vec{v} = \vec{v} \cdot \vec{u}$</li>
+                <li style="margin:0; text-align:left;"><strong>Erreur sur la distributivité :</strong> $\displaystyle (\vec{u} + \vec{v}) \cdot \vec{w} = \vec{u} \cdot \vec{w} + \vec{v} \cdot \vec{w}$</li>
+                <li style="margin:0; text-align:left;"><strong>Oublier que le produit scalaire est nul pour l'orthogonalité :</strong> $\displaystyle \vec{u} \perp \vec{v} \Leftrightarrow \vec{u} \cdot \vec{v} = 0$</li>
+                <li style="margin:0; text-align:left;"><strong>Base orthonormée :</strong> Vérifier que la base est bien orthonormée avant d'utiliser la formule avec coordonnées</li>
+                <li style="margin:0; text-align:left;"><strong>Norme au carré :</strong> Ne pas confondre $\displaystyle \|\vec{u}\|^2$ et $\displaystyle \|\vec{u}^2\|$ (seule la première existe)</li>
+                <li style="margin:0; text-align:left;"><strong>Angle :</strong> L'angle dans la formule du produit scalaire est l'angle géométrique ($\displaystyle 0 \leq \theta \leq \pi$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Formules à retenir</strong>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:35%;">Situation</th>
+                        <th style="border:1px solid #ddd; padding:12px;">Formule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Définition générale</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \vec{u} \cdot \vec{v} = \|\vec{u}\| \times \|\vec{v}\| \times \cos(\theta)$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Base orthonormée (plan)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \vec{u}(x_1, y_1) \cdot \vec{v}(x_2, y_2) = x_1 x_2 + y_1 y_2$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Base orthonormée (espace)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \vec{u}(x_1, y_1, z_1) \cdot \vec{v}(x_2, y_2, z_2) = x_1 x_2 + y_1 y_2 + z_1 z_2$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Norme</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \|\vec{u}\| = \sqrt{\vec{u} \cdot \vec{u}}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Identité remarquable</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \|\vec{u} + \vec{v}\|^2 = \|\vec{u}\|^2 + 2\vec{u} \cdot \vec{v} + \|\vec{v}\|^2$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Orthogonalité</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \vec{u} \perp \vec{v} \Leftrightarrow \vec{u} \cdot \vec{v} = 0$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Formule d'Al-Kashi</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle a^2 = b^2 + c^2 - 2bc \cos(\widehat{A})$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+===
+

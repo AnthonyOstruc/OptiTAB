@@ -1,0 +1,572 @@
+=== Utiliser l'Information Chiffrée et Statistique Descriptive - Programme Seconde
+Difficulté: medium
+Ordre: 10
+
+Titre: Utiliser l'Information Chiffrée et Statistique Descriptive : Proportions, Pourcentages, Évolutions, Indicateurs Statistiques
+Description: Cours complet sur les statistiques descriptives en seconde : proportions, pourcentages, évolutions (variation absolue, relative, successives, réciproque), moyenne pondérée, linéarité de la moyenne, écart interquartile, écart type, et exploitation de fonctions Python.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections <strong>I à VI</strong> sont <strong>exigibles</strong> au programme de Seconde. Ces connaissances sont nécessaires pour les évaluations.</p>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">La section <strong>VII (approfondissements)</strong> est marquée comme <strong>bonus</strong> ou <strong>approfondissement</strong>. Elle enrichit votre culture mathématique mais n'est pas strictement exigible pour les évaluations.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Proportion et pourcentage</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définitions</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Proportion</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit une population de taille $\displaystyle N$ et une sous-population de taille $\displaystyle n$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>proportion</strong> de la sous-population dans la population est :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle p = \frac{n}{N}$
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Pourcentage</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>pourcentage</strong> est la proportion exprimée en centièmes :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle \% = p \times 100 = \frac{n}{N} \times 100$
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété - Relations entre effectifs, proportions et pourcentages</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle n = p \times N = \frac{\%}{100} \times N$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle p = \frac{n}{N} = \frac{\%}{100}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \% = p \times 100 = \frac{n}{N} \times 100$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Dans une classe de 30 élèves, 12 sont des filles.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Proportion de filles : $\displaystyle p = \frac{12}{30} = 0,4$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pourcentage de filles : $\displaystyle \% = 0,4 \times 100 = 40\%$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> 25% d'une population de 200 personnes</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Effectif : $\displaystyle n = \frac{25}{100} \times 200 = 50$ personnes</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Pourcentage de pourcentage</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Pourcentage de pourcentage</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Lorsque des ensembles de référence sont inclus les uns dans les autres, on peut calculer un <strong>pourcentage de pourcentage</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle A$ représente $\displaystyle p_1\%$ de $\displaystyle B$ et que $\displaystyle B$ représente $\displaystyle p_2\%$ de $\displaystyle C$, alors $\displaystyle A$ représente $\displaystyle \frac{p_1 \times p_2}{100}\%$ de $\displaystyle C$.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode pratique - Calculer un pourcentage de pourcentage :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer un pourcentage de pourcentage :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Convertir les pourcentages en proportions (diviser par 100)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Multiplier les proportions</li>
+                <li style="margin:0; text-align:left;">Convertir le résultat en pourcentage (multiplier par 100)</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un lycée de 1000 élèves :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">40% sont en Seconde</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Parmi les élèves de Seconde, 30% font allemand</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Quel pourcentage des élèves du lycée sont en Seconde et font allemand ?</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Proportion de Seconde : $\displaystyle p_1 = \frac{40}{100} = 0,4$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Proportion d'allemand parmi les Seconde : $\displaystyle p_2 = \frac{30}{100} = 0,3$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Proportion recherchée : $\displaystyle p = 0,4 \times 0,3 = 0,12$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pourcentage : $\displaystyle 0,12 \times 100 = 12\%$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc 12% des élèves du lycée sont en Seconde et font allemand.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Évolutions</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Variation absolue et variation relative</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Variation absolue</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit une valeur initiale $\displaystyle V_0$ et une valeur finale $\displaystyle V_1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>variation absolue</strong> est :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle \Delta V = V_1 - V_0$
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Variation relative (taux d'évolution)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>variation relative</strong> (ou taux d'évolution) est :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px; font-weight:bold;">
+                $\displaystyle t = \frac{V_1 - V_0}{V_0} = \frac{\Delta V}{V_0}$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le taux d'évolution est souvent exprimé en pourcentage : $\displaystyle t\% = t \times 100$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété - Relation entre deux valeurs successives et taux d'évolution</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle t$ est le taux d'évolution, alors :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle V_1 = V_0(1 + t)$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre $\displaystyle 1 + t$ est appelé <strong>coefficient multiplicateur</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Un prix passe de 50 € à 60 €</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Variation absolue : $\displaystyle \Delta V = 60 - 50 = 10$ €</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Taux d'évolution : $\displaystyle t = \frac{60 - 50}{50} = \frac{10}{50} = 0,2 = 20\%$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Coefficient multiplicateur : $\displaystyle 1 + t = 1,2$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Un prix passe de 80 € à 64 €</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Variation absolue : $\displaystyle \Delta V = 64 - 80 = -16$ €</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Taux d'évolution : $\displaystyle t = \frac{64 - 80}{80} = \frac{-16}{80} = -0,2 = -20\%$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Coefficient multiplicateur : $\displaystyle 1 + t = 0,8$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Évolutions successives</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété - Coefficient multiplicateur global</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si une valeur subit plusieurs évolutions successives de taux $\displaystyle t_1$, $\displaystyle t_2$, ..., $\displaystyle t_n$, alors le <strong>coefficient multiplicateur global</strong> est le <strong>produit</strong> des coefficients multiplicateurs :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px; font-weight:bold;">
+                $\displaystyle C_{\text{global}} = (1 + t_1)(1 + t_2) \cdots (1 + t_n)$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le taux d'évolution global est : $\displaystyle t_{\text{global}} = C_{\text{global}} - 1$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un prix subit une hausse de 20% puis une baisse de 15%.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Coefficient multiplicateur de la hausse : $\displaystyle C_1 = 1 + 0,20 = 1,2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Coefficient multiplicateur de la baisse : $\displaystyle C_2 = 1 + (-0,15) = 0,85$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Coefficient multiplicateur global : $\displaystyle C_{\text{global}} = 1,2 \times 0,85 = 1,02$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Taux d'évolution global : $\displaystyle t_{\text{global}} = 1,02 - 1 = 0,02 = 2\%$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le prix a finalement augmenté de 2%.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Évolution réciproque</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété - Coefficient multiplicateur réciproque</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si une valeur passe de $\displaystyle V_0$ à $\displaystyle V_1$ avec un coefficient multiplicateur $\displaystyle C$, alors pour revenir de $\displaystyle V_1$ à $\displaystyle V_0$, le coefficient multiplicateur réciproque est :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle C_{\text{réciproque}} = \frac{1}{C}$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le taux d'évolution réciproque est : $\displaystyle t_{\text{réciproque}} = \frac{1}{C} - 1 = \frac{1 - C}{C}$</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode pratique - Calculer un taux d'évolution réciproque :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer le taux d'évolution réciproque :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer le coefficient multiplicateur $\displaystyle C = 1 + t$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Calculer le coefficient réciproque $\displaystyle C_{\text{réciproque}} = \frac{1}{C}$</li>
+                <li style="margin:0; text-align:left;">Déduire le taux réciproque : $\displaystyle t_{\text{réciproque}} = C_{\text{réciproque}} - 1$</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un prix augmente de 25%.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Coefficient multiplicateur : $\displaystyle C = 1 + 0,25 = 1,25$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour revenir au prix initial, il faut appliquer :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Coefficient réciproque : $\displaystyle C_{\text{réciproque}} = \frac{1}{1,25} = 0,8$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Taux réciproque : $\displaystyle t_{\text{réciproque}} = 0,8 - 1 = -0,2 = -20\%$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il faut donc une baisse de 20% pour revenir au prix initial.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Remarque :</strong> Une hausse de 25% suivie d'une baisse de 25% ne revient pas au prix initial !</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Moyenne pondérée et linéarité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Moyenne pondérée</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Moyenne pondérée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit une série statistique avec des valeurs $\displaystyle x_1, x_2, \ldots, x_k$ et des effectifs (ou coefficients de pondération) $\displaystyle n_1, n_2, \ldots, n_k$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>moyenne pondérée</strong> est :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px; font-weight:bold;">
+                $\displaystyle \bar{x} = \frac{n_1 x_1 + n_2 x_2 + \cdots + n_k x_k}{n_1 + n_2 + \cdots + n_k} = \frac{\sum_{i=1}^{k} n_i x_i}{\sum_{i=1}^{k} n_i}$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle N = n_1 + n_2 + \cdots + n_k$ est l'effectif total.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété - Cas particulier : moyenne simple</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si tous les effectifs sont égaux à 1, on retrouve la <strong>moyenne simple</strong> :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \bar{x} = \frac{x_1 + x_2 + \cdots + x_k}{k}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notes d'un élève : 12 (coefficient 2), 15 (coefficient 3), 10 (coefficient 1)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Moyenne pondérée : $\displaystyle \bar{x} = \frac{2 \times 12 + 3 \times 15 + 1 \times 10}{2 + 3 + 1} = \frac{24 + 45 + 10}{6} = \frac{79}{6} \approx 13,17$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Linéarité de la moyenne</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété - Linéarité de la moyenne</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit une série statistique de moyenne $\displaystyle \bar{x}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si on transforme chaque valeur $\displaystyle x_i$ en $\displaystyle y_i = ax_i + b$ (où $\displaystyle a$ et $\displaystyle b$ sont des constantes), alors :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle \bar{y} = a\bar{x} + b$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est la <strong>linéarité de la moyenne</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Série de températures en °C : 10, 15, 20</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Moyenne : $\displaystyle \bar{x} = \frac{10 + 15 + 20}{3} = 15$ °C</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour convertir en °F : $\displaystyle y = \frac{9}{5}x + 32$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Moyenne en °F : $\displaystyle \bar{y} = \frac{9}{5} \times 15 + 32 = 27 + 32 = 59$ °F</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Série de notes : 8, 12, 16</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Moyenne : $\displaystyle \bar{x} = \frac{8 + 12 + 16}{3} = 12$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si on ajoute 2 points à chaque note : $\displaystyle y = x + 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Moyenne des nouvelles notes : $\displaystyle \bar{y} = 12 + 2 = 14$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Indicateurs de dispersion</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Écart interquartile</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Quartiles</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour une série statistique ordonnée :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Le <strong>premier quartile</strong> $\displaystyle Q_1$ est la valeur qui sépare les 25% des valeurs les plus petites des 75% restantes</li>
+                <li style="margin:0 0 18px 0; text-align:left;">La <strong>médiane</strong> $\displaystyle Q_2$ (ou deuxième quartile) est la valeur qui sépare la série en deux parties égales</li>
+                <li style="margin:0; text-align:left;">Le <strong>troisième quartile</strong> $\displaystyle Q_3$ est la valeur qui sépare les 75% des valeurs les plus petites des 25% restantes</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Écart interquartile</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>écart interquartile</strong> est la différence entre le troisième et le premier quartile :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle \text{EIQ} = Q_3 - Q_1$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'écart interquartile mesure la dispersion des 50% des valeurs centrales de la série.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété - Interprétation</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Un écart interquartile <strong>petit</strong> indique que les valeurs sont <strong>concentrées</strong> autour de la médiane</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Un écart interquartile <strong>grand</strong> indique que les valeurs sont <strong>dispersées</strong></li>
+                <li style="margin:0; text-align:left;">L'écart interquartile est moins sensible aux valeurs extrêmes que l'étendue</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Série de notes : 8, 10, 12, 13, 14, 15, 16, 18</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Effectif total : 8</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle Q_1$ : valeur à la position $\displaystyle \frac{8+1}{4} = 2,25$ → entre la 2ème et 3ème valeur : $\displaystyle Q_1 = 10$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle Q_2$ (médiane) : valeur à la position $\displaystyle \frac{8+1}{2} = 4,5$ → entre la 4ème et 5ème valeur : $\displaystyle Q_2 = \frac{13+14}{2} = 13,5$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle Q_3$ : valeur à la position $\displaystyle 3 \times \frac{8+1}{4} = 6,75$ → entre la 6ème et 7ème valeur : $\displaystyle Q_3 = 15$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Écart interquartile : $\displaystyle \text{EIQ} = 15 - 10 = 5$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Écart type</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Variance</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit une série statistique de valeurs $\displaystyle x_1, x_2, \ldots, x_k$ avec des effectifs $\displaystyle n_1, n_2, \ldots, n_k$ et de moyenne $\displaystyle \bar{x}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>variance</strong> est :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px; font-weight:bold;">
+                $\displaystyle V = \frac{\sum_{i=1}^{k} n_i (x_i - \bar{x})^2}{\sum_{i=1}^{k} n_i}$
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Écart type</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>écart type</strong> est la racine carrée de la variance :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle \sigma = \sqrt{V}$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'écart type mesure la dispersion des valeurs autour de la moyenne.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété - Interprétation</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Un écart type <strong>petit</strong> indique que les valeurs sont <strong>proches de la moyenne</strong></li>
+                <li style="margin:0 0 18px 0; text-align:left;">Un écart type <strong>grand</strong> indique que les valeurs sont <strong>dispersées</strong> autour de la moyenne</li>
+                <li style="margin:0; text-align:left;">L'écart type a la même unité que les valeurs de la série</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Série : 10, 12, 14, 16, 18 (effectif 1 pour chaque valeur)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Moyenne : $\displaystyle \bar{x} = \frac{10 + 12 + 14 + 16 + 18}{5} = 14$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Variance : $\displaystyle V = \frac{(10-14)^2 + (12-14)^2 + (14-14)^2 + (16-14)^2 + (18-14)^2}{5}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle V = \frac{16 + 4 + 0 + 4 + 16}{5} = \frac{40}{5} = 8$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Écart type : $\displaystyle \sigma = \sqrt{8} \approx 2,83$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Décrire les différences entre deux séries statistiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode pratique - Comparer deux séries statistiques :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour décrire verbalement les différences entre deux séries statistiques, on s'appuie sur :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Indicateurs de tendance centrale :</strong> Comparer les moyennes et les médianes</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Indicateurs de dispersion :</strong> Comparer les écarts interquartiles et les écarts types</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Représentations graphiques :</strong> Comparer les histogrammes, diagrammes en boîtes, etc.</li>
+                <li style="margin:0; text-align:left;"><strong>Formuler des conclusions :</strong> Décrire en termes clairs les différences observées</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comparaison de deux classes :</p>
+            <table style="width:100%; border-collapse:collapse; margin:12px 0; border:2px solid #3498db; font-size:0.9em;">
+                <tr style="background:#e8f4fd;">
+                    <th style="border:1px solid #ddd; padding:8px; text-align:center;">Classe</th>
+                    <th style="border:1px solid #ddd; padding:8px; text-align:center;">Moyenne</th>
+                    <th style="border:1px solid #ddd; padding:8px; text-align:center;">Médiane</th>
+                    <th style="border:1px solid #ddd; padding:8px; text-align:center;">Écart type</th>
+                    <th style="border:1px solid #ddd; padding:8px; text-align:center;">EIQ</th>
+                </tr>
+                <tr>
+                    <td style="border:1px solid #ddd; padding:8px; font-weight:bold;">Classe A</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">13,5</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">14</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">2,1</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">3</td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid #ddd; padding:8px; font-weight:bold;">Classe B</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">12,8</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">13</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">3,5</td>
+                    <td style="border:1px solid #ddd; padding:8px; text-align:center;">5</td>
+                </tr>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Analyse :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">La classe A a une moyenne et une médiane plus élevées que la classe B</li>
+                <li style="margin:0 0 18px 0; text-align:left;">La classe B a un écart type et un écart interquartile plus grands, donc les notes sont plus dispersées</li>
+                <li style="margin:0; text-align:left;">Conclusion : La classe A a de meilleurs résultats en moyenne et des résultats plus homogènes que la classe B</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Fonctions Python pour les statistiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Fonction renvoyant moyenne, écart type et proportion</h3>
+
+        <div style="background:#f0f0f0; border-radius:6px; padding:15px; margin:12px 0; font-family:monospace; font-size:0.9em;">
+            <strong>Fonction Python - Statistiques descriptives :</strong>
+            <pre style="background:#ffffff; padding:12px; border-radius:4px; overflow-x:auto; margin:8px 0; border:1px solid #ddd;">
+def statistiques_descriptives(donnees):
+    """
+    Calcule la moyenne m, l'écart type s, et la proportion
+    d'éléments appartenant à [m - 2s, m + 2s].
+    
+    Paramètres:
+    donnees : liste de nombres
+    
+    Retourne:
+    (m, s, proportion) : tuple contenant moyenne, écart type, proportion
+    """
+    n = len(donnees)
+    
+    # Calcul de la moyenne
+    m = sum(donnees) / n
+    
+    # Calcul de la variance
+    variance = sum((x - m)**2 for x in donnees) / n
+    
+    # Calcul de l'écart type
+    s = variance ** 0.5
+    
+    # Calcul de la proportion d'éléments dans [m - 2s, m + 2s]
+    borne_inf = m - 2 * s
+    borne_sup = m + 2 * s
+    compteur = sum(1 for x in donnees if borne_inf <= x <= borne_sup)
+    proportion = compteur / n
+    
+    return (m, s, proportion)
+
+# Exemple d'utilisation
+notes = [10, 12, 14, 15, 16, 18, 20, 12, 14, 16]
+m, s, prop = statistiques_descriptives(notes)
+
+print(f"Moyenne m = {m:.2f}")
+print(f"Écart type s = {s:.2f}")
+print(f"Proportion dans [m - 2s, m + 2s] = {prop:.2%}")
+print(f"Intervalle [m - 2s, m + 2s] = [{m - 2*s:.2f}, {m + 2*s:.2f}]")
+</pre>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Explication de la fonction :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Moyenne m :</strong> Somme des valeurs divisée par l'effectif total</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Variance :</strong> Moyenne des carrés des écarts à la moyenne</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Écart type s :</strong> Racine carrée de la variance</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Intervalle [m - 2s, m + 2s] :</strong> Intervalle centré sur la moyenne de largeur 4s</li>
+                <li style="margin:0; text-align:left;"><strong>Proportion :</strong> Nombre d'éléments dans l'intervalle divisé par l'effectif total</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété - Règle empirique (approximation)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour de nombreuses distributions statistiques, environ <strong>95%</strong> des valeurs se trouvent dans l'intervalle $\displaystyle [m - 2s, m + 2s]$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette règle est particulièrement valable pour des distributions "en cloche" (normales).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple d'exécution :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour la série : $\displaystyle [10, 12, 14, 15, 16, 18, 20, 12, 14, 16]$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Moyenne : $\displaystyle m = 14,7$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Écart type : $\displaystyle s \approx 2,87$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Intervalle $\displaystyle [m - 2s, m + 2s] = [8,96; 20,44]$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Toutes les valeurs de la série appartiennent à cet intervalle, donc la proportion est $\displaystyle 100\%$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Proportion et pourcentage :</strong> $\displaystyle p = \frac{n}{N}$ et $\displaystyle \% = p \times 100$</li>
+                <li style="margin:0; text-align:left;"><strong>Pourcentage de pourcentage :</strong> Multiplier les proportions (diviser les pourcentages par 100, multiplier, puis multiplier par 100)</li>
+                <li style="margin:0; text-align:left;"><strong>Variation absolue :</strong> $\displaystyle \Delta V = V_1 - V_0$</li>
+                <li style="margin:0; text-align:left;"><strong>Taux d'évolution :</strong> $\displaystyle t = \frac{V_1 - V_0}{V_0}$ et $\displaystyle V_1 = V_0(1 + t)$</li>
+                <li style="margin:0; text-align:left;"><strong>Coefficient multiplicateur :</strong> $\displaystyle C = 1 + t$</li>
+                <li style="margin:0; text-align:left;"><strong>Évolutions successives :</strong> Coefficient global = produit des coefficients</li>
+                <li style="margin:0; text-align:left;"><strong>Évolution réciproque :</strong> Coefficient réciproque = $\displaystyle \frac{1}{C}$</li>
+                <li style="margin:0; text-align:left;"><strong>Moyenne pondérée :</strong> $\displaystyle \bar{x} = \frac{\sum n_i x_i}{\sum n_i}$</li>
+                <li style="margin:0; text-align:left;"><strong>Linéarité de la moyenne :</strong> Si $\displaystyle y_i = ax_i + b$, alors $\displaystyle \bar{y} = a\bar{x} + b$</li>
+                <li style="margin:0; text-align:left;"><strong>Écart interquartile :</strong> $\displaystyle \text{EIQ} = Q_3 - Q_1$</li>
+                <li style="margin:0; text-align:left;"><strong>Écart type :</strong> $\displaystyle \sigma = \sqrt{V}$ où $\displaystyle V = \frac{\sum n_i (x_i - \bar{x})^2}{\sum n_i}$</li>
+                <li style="margin:0; text-align:left;"><strong>Comparaison de séries :</strong> Utiliser moyenne, médiane, écart type, écart interquartile</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Pourcentage de pourcentage :</strong> Ne pas multiplier directement les pourcentages (il faut d'abord les convertir en proportions)</li>
+                <li style="margin:0; text-align:left;"><strong>Évolution réciproque :</strong> Une hausse de $\displaystyle t\%$ suivie d'une baisse de $\displaystyle t\%$ ne revient pas au prix initial</li>
+                <li style="margin:0; text-align:left;"><strong>Coefficient multiplicateur :</strong> Pour une baisse de 20%, le coefficient est $\displaystyle 0,8$ (et non $\displaystyle -0,2$)</li>
+                <li style="margin:0; text-align:left;"><strong>Évolutions successives :</strong> Ne pas additionner les taux d'évolution, multiplier les coefficients</li>
+                <li style="margin:0; text-align:left;"><strong>Moyenne pondérée :</strong> Ne pas oublier de diviser par la somme des effectifs</li>
+                <li style="margin:0; text-align:left;"><strong>Variance :</strong> Calculer d'abord la moyenne, puis les écarts au carré, puis la moyenne de ces carrés</li>
+                <li style="margin:0; text-align:left;"><strong>Écart type :</strong> C'est la racine carrée de la variance (et non la variance elle-même)</li>
+                <li style="margin:0; text-align:left;"><strong>Quartiles :</strong> Attention à bien ordonner la série avant de calculer les quartiles</li>
+                <li style="margin:0; text-align:left;"><strong>Comparaison :</strong> Utiliser plusieurs indicateurs (moyenne ET dispersion) pour une analyse complète</li>
+                <li style="margin:0; text-align:left;"><strong>Fonction Python :</strong> Vérifier que l'intervalle $\displaystyle [m - 2s, m + 2s]$ est bien calculé avec des bornes incluses</li>
+            </ul>
+        </div>
+
+        <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Formules essentielles à retenir</strong>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:40%;">Notion</th>
+                        <th style="border:1px solid #ddd; padding:12px;">Formule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Proportion</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle p = \frac{n}{N}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Pourcentage</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \% = p \times 100$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Variation absolue</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \Delta V = V_1 - V_0$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Taux d'évolution</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle t = \frac{V_1 - V_0}{V_0}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Coefficient multiplicateur</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle C = 1 + t$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Évolutions successives</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle C_{\text{global}} = C_1 \times C_2 \times \cdots \times C_n$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Évolution réciproque</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle C_{\text{réciproque}} = \frac{1}{C}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Moyenne pondérée</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \bar{x} = \frac{\sum n_i x_i}{\sum n_i}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Linéarité de la moyenne</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle y_i = ax_i + b$, alors $\displaystyle \bar{y} = a\bar{x} + b$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Écart interquartile</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{EIQ} = Q_3 - Q_1$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Variance</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V = \frac{\sum n_i (x_i - \bar{x})^2}{\sum n_i}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Écart type</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma = \sqrt{V}$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+===
+
+

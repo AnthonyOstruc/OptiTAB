@@ -1,0 +1,602 @@
+=== Multiples, Diviseurs et Nombres Premiers - Programme Seconde
+Difficulté: medium
+Ordre: 2
+
+Titre: Multiples, Diviseurs et Nombres Premiers : Notions Fondamentales
+Description: Cours complet sur les multiples, diviseurs et nombres premiers en seconde : notations ℕ et ℤ, définitions (multiple, diviseur, pair, impair, premier), démonstrations, fractions irréductibles et algorithmes.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections <strong>I à V</strong> ainsi que les démonstrations sont <strong>exigibles</strong> au programme de Seconde. Ces connaissances sont nécessaires pour les évaluations.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Notations ℕ et ℤ</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">L'ensemble ℕ des entiers naturels</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Ensemble ℕ</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des <strong>entiers naturels</strong>, noté $\displaystyle \mathbb{N}$, est l'ensemble des nombres entiers positifs ou nuls :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px; font-weight:bold;">
+                $\displaystyle \mathbb{N} = \{0, 1, 2, 3, 4, 5, ...\}$
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 0 \in \mathbb{N}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 15 \in \mathbb{N}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 100 \in \mathbb{N}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle -5 \notin \mathbb{N}$ (car $\displaystyle -5 < 0$)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">L'ensemble ℤ des entiers relatifs</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Ensemble ℤ</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ensemble des <strong>entiers relatifs</strong>, noté $\displaystyle \mathbb{Z}$, est l'ensemble des nombres entiers (positifs, négatifs ou nuls) :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px; font-weight:bold;">
+                $\displaystyle \mathbb{Z} = \{..., -3, -2, -1, 0, 1, 2, 3, ...\}$
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle \mathbb{N} \subset \mathbb{Z}$ (tous les entiers naturels sont des entiers relatifs).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En effet, tout entier naturel est aussi un entier relatif (positif).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle -10 \in \mathbb{Z}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 0 \in \mathbb{Z}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 42 \in \mathbb{Z}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \frac{1}{2} \notin \mathbb{Z}$ (car $\displaystyle \frac{1}{2}$ n'est pas un entier)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Multiples et diviseurs</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition de multiple</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Multiple</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle a$ et $\displaystyle b$ deux entiers relatifs.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle b$ est un <strong>multiple</strong> de $\displaystyle a$ (ou que $\displaystyle b$ est divisible par $\displaystyle a$) s'il existe un entier relatif $\displaystyle k$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle b = k \times a$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note alors : $\displaystyle a \mid b$ (lire "$\displaystyle a$ divise $\displaystyle b$").</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 15$ est un multiple de $\displaystyle 3$ car $\displaystyle 15 = 5 \times 3$ (on a $\displaystyle k = 5$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle -12$ est un multiple de $\displaystyle 4$ car $\displaystyle -12 = (-3) \times 4$ (on a $\displaystyle k = -3$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 0$ est un multiple de tout entier $\displaystyle a$ car $\displaystyle 0 = 0 \times a$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle 7$ n'est <strong>pas</strong> un multiple de $\displaystyle 3$ car il n'existe pas d'entier $\displaystyle k$ tel que $\displaystyle 7 = k \times 3$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition de diviseur</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Diviseur</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle a$ et $\displaystyle b$ deux entiers relatifs.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle a$ est un <strong>diviseur</strong> de $\displaystyle b$ (ou que $\displaystyle a$ divise $\displaystyle b$) si $\displaystyle b$ est un multiple de $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela signifie qu'il existe un entier relatif $\displaystyle k$ tel que $\displaystyle b = k \times a$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les notions de <strong>multiple</strong> et de <strong>diviseur</strong> sont <strong>duales</strong> :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle b$ est un multiple de $\displaystyle a$ $\displaystyle \Longleftrightarrow$ $\displaystyle a$ est un diviseur de $\displaystyle b$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle a \mid b$ $\displaystyle \Longleftrightarrow$ $\displaystyle b = k \times a$ pour un certain entier $\displaystyle k$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Les diviseurs de $\displaystyle 12$ sont : $\displaystyle -12, -6, -4, -3, -2, -1, 1, 2, 3, 4, 6, 12$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Les diviseurs positifs de $\displaystyle 12$ sont : $\displaystyle 1, 2, 3, 4, 6, 12$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 5$ est un diviseur de $\displaystyle 25$ car $\displaystyle 25 = 5 \times 5$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle 3$ n'est <strong>pas</strong> un diviseur de $\displaystyle 10$ car $\displaystyle 10 = 3 \times 3 + 1$ (reste non nul)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Propriétés des multiples et diviseurs</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriétés :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Réflexivité :</strong> Tout entier $\displaystyle a$ divise lui-même : $\displaystyle a \mid a$ (car $\displaystyle a = 1 \times a$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Transitivité :</strong> Si $\displaystyle a \mid b$ et $\displaystyle b \mid c$, alors $\displaystyle a \mid c$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Diviseurs de 1 :</strong> Les seuls diviseurs de $\displaystyle 1$ sont $\displaystyle 1$ et $\displaystyle -1$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Diviseurs de 0 :</strong> Tout entier divise $\displaystyle 0$ (car $\displaystyle 0 = 0 \times a$ pour tout $\displaystyle a$)</li>
+                <li style="margin:0; text-align:left;"><strong>Opposés :</strong> Si $\displaystyle a \mid b$, alors $\displaystyle -a \mid b$, $\displaystyle a \mid -b$ et $\displaystyle -a \mid -b$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Nombres pairs et nombres impairs</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Nombre pair</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un entier relatif $\displaystyle n$ est <strong>pair</strong> s'il est un multiple de $\displaystyle 2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela signifie qu'il existe un entier $\displaystyle k$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle n = 2k$
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Nombre impair</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un entier relatif $\displaystyle n$ est <strong>impair</strong> s'il n'est pas pair, c'est-à-dire s'il existe un entier $\displaystyle k$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
+                $\displaystyle n = 2k + 1$
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Nombres pairs :</strong> $\displaystyle -4 = 2 \times (-2)$, $\displaystyle 0 = 2 \times 0$, $\displaystyle 6 = 2 \times 3$, $\displaystyle 100 = 2 \times 50$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Nombres impairs :</strong> $\displaystyle -5 = 2 \times (-3) + 1$, $\displaystyle 1 = 2 \times 0 + 1$, $\displaystyle 7 = 2 \times 3 + 1$, $\displaystyle 99 = 2 \times 49 + 1$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Tout entier relatif est soit pair, soit impair (il n'y a pas d'autre possibilité).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un entier pair a un reste de $\displaystyle 0$ dans la division euclidienne par $\displaystyle 2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un entier impair a un reste de $\displaystyle 1$ dans la division euclidienne par $\displaystyle 2$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Nombres premiers</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Nombre premier</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>nombre premier</strong> est un entier naturel <strong>supérieur ou égal à 2</strong> qui n'admet que deux diviseurs positifs distincts : $\displaystyle 1$ et lui-même.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, un nombre premier $\displaystyle p \geq 2$ vérifie : si $\displaystyle d$ est un diviseur positif de $\displaystyle p$, alors $\displaystyle d = 1$ ou $\displaystyle d = p$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Nombres premiers :</strong> $\displaystyle 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, ...$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Nombres non premiers :</strong> $\displaystyle 4 = 2 \times 2$ (diviseurs : $\displaystyle 1, 2, 4$), $\displaystyle 6 = 2 \times 3$ (diviseurs : $\displaystyle 1, 2, 3, 6$), $\displaystyle 9 = 3 \times 3$ (diviseurs : $\displaystyle 1, 3, 9$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Cas particuliers :</strong> $\displaystyle 0$ et $\displaystyle 1$ ne sont <strong>pas</strong> des nombres premiers (par définition, un nombre premier doit être $\displaystyle \geq 2$)</li>
+                <li style="margin:0; text-align:left;"><strong>Remarque :</strong> $\displaystyle 2$ est le seul nombre premier pair (tous les autres nombres pairs sont divisibles par $\displaystyle 2$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Important :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par convention, on considère uniquement les <strong>entiers naturels</strong> pour définir les nombres premiers.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les nombres premiers sont donc des éléments de $\displaystyle \mathbb{N}$ et sont $\displaystyle \geq 2$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Démonstrations</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Démonstration : La somme de deux multiples de a est multiple de a</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour une valeur numérique de $\displaystyle a$, la somme de deux multiples de $\displaystyle a$ est un multiple de $\displaystyle a$.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle a$ un entier relatif fixé.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle b$ et $\displaystyle c$ deux multiples de $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par définition, il existe des entiers $\displaystyle k$ et $\displaystyle \ell$ tels que :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle b = k \times a$ et $\displaystyle c = \ell \times a$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle b + c = k \times a + \ell \times a = (k + \ell) \times a$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle k + \ell$ est un entier, on a bien : $\displaystyle b + c$ est un multiple de $\displaystyle a$. ✓</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple numérique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle a = 5$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 15$ est un multiple de $\displaystyle 5$ (car $\displaystyle 15 = 3 \times 5$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 20$ est un multiple de $\displaystyle 5$ (car $\displaystyle 20 = 4 \times 5$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 15 + 20 = 35 = 7 \times 5$ est bien un multiple de $\displaystyle 5$ ✓</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Démonstration : Le carré d'un nombre impair est impair</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le carré d'un nombre impair est impair.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle n$ un nombre impair.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par définition, il existe un entier $\displaystyle k$ tel que :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle n = 2k + 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle n^2 = (2k + 1)^2 = (2k)^2 + 2 \times 2k \times 1 + 1^2 = 4k^2 + 4k + 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = 4k(k + 1) + 1 = 2 \times [2k(k + 1)] + 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle 2k(k + 1)$ est un entier, on peut poser $\displaystyle \ell = 2k(k + 1)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle n^2 = 2\ell + 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce qui montre que $\displaystyle n^2$ est impair. ✓</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples numériques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 3$ est impair : $\displaystyle 3^2 = 9$ est impair ✓</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 5$ est impair : $\displaystyle 5^2 = 25$ est impair ✓</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 7$ est impair : $\displaystyle 7^2 = 49$ est impair ✓</li>
+                <li style="margin:0; text-align:left;">$\displaystyle -3$ est impair : $\displaystyle (-3)^2 = 9$ est impair ✓</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Fractions irréductibles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fraction irréductible</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fraction $\displaystyle \frac{a}{b}$ (avec $\displaystyle b \neq 0$) est dite <strong>irréductible</strong> si le numérateur $\displaystyle a$ et le dénominateur $\displaystyle b$ n'ont pas de diviseur commun autre que $\displaystyle 1$ et $\displaystyle -1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, $\displaystyle \frac{a}{b}$ est irréductible si le seul diviseur commun positif de $\displaystyle a$ et $\displaystyle b$ est $\displaystyle 1$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \frac{3}{5}$ est irréductible (les diviseurs communs de $\displaystyle 3$ et $\displaystyle 5$ sont seulement $\displaystyle 1$ et $\displaystyle -1$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \frac{4}{6}$ n'est <strong>pas</strong> irréductible (car $\displaystyle 2$ divise à la fois $\displaystyle 4$ et $\displaystyle 6$). On peut simplifier : $\displaystyle \frac{4}{6} = \frac{2}{3}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \frac{12}{18}$ n'est pas irréductible. On peut simplifier : $\displaystyle \frac{12}{18} = \frac{2}{3}$ (forme irréductible)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \frac{7}{11}$ est irréductible (car $\displaystyle 7$ et $\displaystyle 11$ sont premiers entre eux)</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode pratique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour simplifier une fraction $\displaystyle \frac{a}{b}$ et la mettre sous forme irréductible :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Trouver le <strong>PGCD</strong> (Plus Grand Commun Diviseur) de $\displaystyle a$ et $\displaystyle b$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Diviser le numérateur et le dénominateur par ce PGCD</li>
+                <li style="margin:0; text-align:left;">La fraction obtenue est irréductible</li>
+            </ol>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Pour $\displaystyle \frac{24}{36}$, le PGCD de $\displaystyle 24$ et $\displaystyle 36$ est $\displaystyle 12$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \frac{24}{36} = \frac{24 \div 12}{36 \div 12} = \frac{2}{3}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Algorithmes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Algorithme 1 : Déterminer si un entier naturel a est multiple d'un entier naturel b</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Algorithme - Tester si a est multiple de b</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Principe :</strong> Un entier $\displaystyle a$ est multiple de $\displaystyle b$ si et seulement si le reste de la division euclidienne de $\displaystyle a$ par $\displaystyle b$ est nul.</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                a = <span style="color:#bd93f9;">int</span>(<span style="color:#50fa7b;">input</span>(<span style="color:#f1fa8c;">"Entrez a : "</span>))<br>
+                b = <span style="color:#bd93f9;">int</span>(<span style="color:#50fa7b;">input</span>(<span style="color:#f1fa8c;">"Entrez b : "</span>))<br>
+                <br>
+                <span style="color:#ff79c6;">if</span> b == <span style="color:#bd93f9;">0</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Erreur : b ne peut pas être 0"</span>)<br>
+                <span style="color:#ff79c6;">elif</span> a % b == <span style="color:#bd93f9;">0</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{a} est multiple de {b}"</span>)<br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{a} n'est pas multiple de {b}"</span>)
+            </div>
+
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Dans un tableur Excel :</strong></p>
+            <table style="width:auto; border-collapse:collapse; margin:10px 0; border:2px solid #3498db; font-family:Arial, sans-serif;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:8px; width:50px; text-align:center; font-weight:bold;"></th>
+                        <th style="border:1px solid #ddd; padding:8px; width:150px; text-align:center; font-weight:bold;">A (a)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:150px; text-align:center; font-weight:bold;">B (b)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:200px; text-align:center; font-weight:bold;">C (a est multiple de b ?)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">15</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">3</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=SI(B1=0;"Erreur";SI(MOD(A1;B1)=0;"Oui";"Non"))</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">2</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">14</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">3</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=SI(B2=0;"Erreur";SI(MOD(A2;B2)=0;"Oui";"Non"))</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>La formule en rouge est à recopier. MOD(A1;B1) calcule le reste de la division de A1 par B1.</em></p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Algorithme 2 : Plus grand multiple de a inférieur ou égal à b</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Algorithme - Plus grand multiple de a ≤ b</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Principe :</strong> Le plus grand multiple de $\displaystyle a$ inférieur ou égal à $\displaystyle b$ est $\displaystyle a \times \left\lfloor \frac{b}{a} \right\rfloor$ où $\displaystyle \left\lfloor \frac{b}{a} \right\rfloor$ est la partie entière de $\displaystyle \frac{b}{a}$.</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                a = <span style="color:#bd93f9;">int</span>(<span style="color:#50fa7b;">input</span>(<span style="color:#f1fa8c;">"Entrez a : "</span>))<br>
+                b = <span style="color:#bd93f9;">int</span>(<span style="color:#50fa7b;">input</span>(<span style="color:#f1fa8c;">"Entrez b : "</span>))<br>
+                <br>
+                <span style="color:#ff79c6;">if</span> a == <span style="color:#bd93f9;">0</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">"Erreur : a ne peut pas être 0"</span>)<br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;quotient = b // a<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;plus_grand_multiple = a * quotient<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Le plus grand multiple de {a} ≤ {b} est {plus_grand_multiple}"</span>)
+            </div>
+
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Dans un tableur Excel :</strong></p>
+            <table style="width:auto; border-collapse:collapse; margin:10px 0; border:2px solid #3498db; font-family:Arial, sans-serif;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:8px; width:50px; text-align:center; font-weight:bold;"></th>
+                        <th style="border:1px solid #ddd; padding:8px; width:150px; text-align:center; font-weight:bold;">A (a)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:150px; text-align:center; font-weight:bold;">B (b)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:250px; text-align:center; font-weight:bold;">C (Plus grand multiple de a ≤ b)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">7</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">25</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=SI(A1=0;"Erreur";A1\*ENT(B1/A1))</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">2</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">5</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">18</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=SI(A2=0;"Erreur";A2\*ENT(B2/A2))</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>La formule en rouge est à recopier. ENT(B1/A1) calcule la partie entière de B1/A1.</em></p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple d'exécution :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle a = 7$ et $\displaystyle b = 25$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \frac{25}{7} = 3,57...$ donc $\displaystyle \left\lfloor \frac{25}{7} \right\rfloor = 3$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le plus grand multiple de $\displaystyle 7$ inférieur ou égal à $\displaystyle 25$ est $\displaystyle 7 \times 3 = 21$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Algorithme 3 : Déterminer si un entier naturel est premier</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Algorithme - Tester si un nombre est premier</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Principe :</strong> Un nombre $\displaystyle n \geq 2$ est premier si et seulement s'il n'a pas de diviseur autre que $\displaystyle 1$ et lui-même. On teste donc tous les entiers de $\displaystyle 2$ à $\displaystyle \sqrt{n}$ (ou jusqu'à $\displaystyle n-1$ pour simplifier).</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                n = <span style="color:#bd93f9;">int</span>(<span style="color:#50fa7b;">input</span>(<span style="color:#f1fa8c;">"Entrez un entier naturel n ≥ 2 : "</span>))<br>
+                <br>
+                <span style="color:#ff79c6;">if</span> n < <span style="color:#bd93f9;">2</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{n} n'est pas premier (n doit être ≥ 2)"</span>)<br>
+                <span style="color:#ff79c6;">elif</span> n == <span style="color:#bd93f9;">2</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{n} est premier"</span>)<br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;est_premier = <span style="color:#bd93f9;">True</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> d <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">2</span>, n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> n % d == <span style="color:#bd93f9;">0</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;est_premier = <span style="color:#bd93f9;">False</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">break</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> est_premier:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{n} est premier"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{n} n'est pas premier"</span>)
+            </div>
+
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Version optimisée (test jusqu'à √n) :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> math<br>
+                <br>
+                n = <span style="color:#bd93f9;">int</span>(<span style="color:#50fa7b;">input</span>(<span style="color:#f1fa8c;">"Entrez un entier naturel n ≥ 2 : "</span>))<br>
+                <br>
+                <span style="color:#ff79c6;">if</span> n < <span style="color:#bd93f9;">2</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{n} n'est pas premier"</span>)<br>
+                <span style="color:#ff79c6;">elif</span> n == <span style="color:#bd93f9;">2</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{n} est premier"</span>)<br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;est_premier = <span style="color:#bd93f9;">True</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> d <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">2</span>, <span style="color:#bd93f9;">int</span>(math.sqrt(n)) + <span style="color:#bd93f9;">1</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> n % d == <span style="color:#bd93f9;">0</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;est_premier = <span style="color:#bd93f9;">False</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">break</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> est_premier:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{n} est premier"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"{n} n'est pas premier"</span>)
+            </div>
+
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Dans un tableur Excel :</strong></p>
+            <table style="width:auto; border-collapse:collapse; margin:10px 0; border:2px solid #3498db; font-family:Arial, sans-serif;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:8px; width:50px; text-align:center; font-weight:bold;"></th>
+                        <th style="border:1px solid #ddd; padding:8px; width:150px; text-align:center; font-weight:bold;">A (n)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:200px; text-align:center; font-weight:bold;">B (n est premier ?)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">7</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=SI(OU(A1<2;A1<>ENT(A1));"Non";SI(A1=2;"Oui";SI(SOMMEPROD((MOD(A1;LIGNE(INDIRECT("2:"&A1-1)))=0)\*1)=0;"Oui";"Non")))</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">2</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">15</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=SI(OU(A2<2;A2<>ENT(A2));"Non";SI(A2=2;"Oui";SI(SOMMEPROD((MOD(A2;LIGNE(INDIRECT("2:"&A2-1)))=0)\*1)=0;"Oui";"Non")))</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>La formule en rouge est à recopier. Cette formule teste si n a des diviseurs entre 2 et n-1.</em></p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'exécution :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle n = 7$ : on teste $\displaystyle d = 2, 3, 4, 5, 6$. Aucun ne divise $\displaystyle 7$, donc $\displaystyle 7$ est premier ✓</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle n = 15$ : on trouve que $\displaystyle 3$ divise $\displaystyle 15$ (car $\displaystyle 15 = 3 \times 5$), donc $\displaystyle 15$ n'est pas premier ✗</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle n = 2$ : $\displaystyle 2$ est premier (c'est le plus petit nombre premier) ✓</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Applications et problèmes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Problèmes modélisés</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Partage équitable :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On veut partager $\displaystyle 24$ bonbons entre plusieurs enfants de manière équitable. Combien d'enfants peut-on avoir ?</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> Le nombre d'enfants doit être un diviseur de $\displaystyle 24$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les diviseurs positifs de $\displaystyle 24$ sont : $\displaystyle 1, 2, 3, 4, 6, 8, 12, 24$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut donc avoir $\displaystyle 1, 2, 3, 4, 6, 8, 12$ ou $\displaystyle 24$ enfants.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Cycles répétitifs :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un bus passe toutes les $\displaystyle 12$ minutes. À quels moments (en minutes) le bus passera-t-il entre $\displaystyle 0$ et $\displaystyle 60$ minutes ?</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> Les moments de passage sont les multiples de $\displaystyle 12$ inférieurs ou égaux à $\displaystyle 60$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les multiples de $\displaystyle 12$ sont : $\displaystyle 0, 12, 24, 36, 48, 60$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le bus passera aux minutes : $\displaystyle 0, 12, 24, 36, 48, 60$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 3 - Simplification de fractions :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Simplifier la fraction $\displaystyle \frac{84}{126}$ sous forme irréductible.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> On cherche le PGCD de $\displaystyle 84$ et $\displaystyle 126$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les diviseurs de $\displaystyle 84$ sont : $\displaystyle 1, 2, 3, 4, 6, 7, 12, 14, 21, 28, 42, 84$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les diviseurs de $\displaystyle 126$ sont : $\displaystyle 1, 2, 3, 6, 7, 9, 14, 18, 21, 42, 63, 126$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le PGCD est $\displaystyle 42$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \frac{84}{126} = \frac{84 \div 42}{126 \div 42} = \frac{2}{3}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Vérifier si a divise b :</strong> Calculer le reste de la division euclidienne de $\displaystyle b$ par $\displaystyle a$ (reste = 0 si $\displaystyle a \mid b$)</li>
+                <li style="margin:0; text-align:left;"><strong>Trouver les diviseurs :</strong> Tester tous les entiers de $\displaystyle 1$ à $\displaystyle \sqrt{n}$ (ou jusqu'à $\displaystyle n$)</li>
+                <li style="margin:0; text-align:left;"><strong>Nombres pairs/impairs :</strong> Un nombre est pair si son dernier chiffre est pair (0, 2, 4, 6, 8)</li>
+                <li style="margin:0; text-align:left;"><strong>Nombres premiers :</strong> Tester la divisibilité par les nombres premiers jusqu'à $\displaystyle \sqrt{n}$</li>
+                <li style="margin:0; text-align:left;"><strong>Fractions irréductibles :</strong> Simplifier en divisant numérateur et dénominateur par leur PGCD</li>
+                <li style="margin:0; text-align:left;"><strong>Multiples :</strong> Les multiples de $\displaystyle a$ sont : $\displaystyle ..., -2a, -a, 0, a, 2a, 3a, ...$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>0 et 1 :</strong> $\displaystyle 0$ et $\displaystyle 1$ ne sont <strong>pas</strong> des nombres premiers</li>
+                <li style="margin:0; text-align:left;"><strong>Nombres négatifs :</strong> Les nombres premiers sont définis uniquement pour les entiers naturels $\displaystyle \geq 2$</li>
+                <li style="margin:0; text-align:left;"><strong>Diviseurs :</strong> Ne pas oublier $\displaystyle 1$ et le nombre lui-même dans la liste des diviseurs</li>
+                <li style="margin:0; text-align:left;"><strong>Multiple vs diviseur :</strong> Si $\displaystyle a \mid b$, alors $\displaystyle b$ est multiple de $\displaystyle a$ et $\displaystyle a$ est diviseur de $\displaystyle b$</li>
+                <li style="margin:0; text-align:left;"><strong>Division par 0 :</strong> On ne peut pas diviser par $\displaystyle 0$ (pas de sens pour "multiple de 0")</li>
+                <li style="margin:0; text-align:left;"><strong>Fractions :</strong> Une fraction irréductible n'a pas forcément un numérateur et un dénominateur premiers</li>
+            </ul>
+        </div>
+
+        <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Propriétés à retenir</strong>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:40%;">Notion</th>
+                        <th style="border:1px solid #ddd; padding:12px;">Définition ou Propriété</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Multiple</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle b$ est multiple de $\displaystyle a$ si $\displaystyle b = k \times a$ avec $\displaystyle k \in \mathbb{Z}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Diviseur</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle a$ est diviseur de $\displaystyle b$ si $\displaystyle a \mid b$ (équivalent à "$\displaystyle b$ est multiple de $\displaystyle a$")</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Nombre pair</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle n = 2k$ avec $\displaystyle k \in \mathbb{Z}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Nombre impair</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle n = 2k + 1$ avec $\displaystyle k \in \mathbb{Z}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Nombre premier</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">Entier naturel $\displaystyle \geq 2$ ayant exactement 2 diviseurs positifs : $\displaystyle 1$ et lui-même</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Fraction irréductible</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">Fraction $\displaystyle \frac{a}{b}$ où $\displaystyle a$ et $\displaystyle b$ n'ont pas de diviseur commun autre que $\displaystyle 1$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Somme de multiples</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">La somme de deux multiples de $\displaystyle a$ est un multiple de $\displaystyle a$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Carré d'un impair</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">Le carré d'un nombre impair est impair</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+===
+

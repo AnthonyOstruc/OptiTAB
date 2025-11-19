@@ -87,6 +87,20 @@ class Exercice(BaseEducational):
     reponse_correcte = models.TextField()
     etapes = models.TextField(blank=True, null=True, verbose_name="Étapes de résolution")
     points = models.PositiveIntegerField(default=1)
+    ACCESS_SCOPE_PAID = 'paid'
+    ACCESS_SCOPE_FREE = 'free'
+    ACCESS_SCOPE_BOTH = 'both'
+    ACCESS_SCOPE_CHOICES = [
+        (ACCESS_SCOPE_PAID, 'Abonnés uniquement'),
+        (ACCESS_SCOPE_FREE, 'Gratuit (découverte)'),
+        (ACCESS_SCOPE_BOTH, 'Gratuit + Abonnés'),
+    ]
+    access_scope = models.CharField(
+        max_length=10,
+        choices=ACCESS_SCOPE_CHOICES,
+        default=ACCESS_SCOPE_PAID,
+        help_text="Définit si ce contenu est gratuit, payant ou visible dans les deux parcours."
+    )
     
     class Meta:
         unique_together = [['notion', 'titre']]

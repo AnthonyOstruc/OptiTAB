@@ -26,6 +26,12 @@ const routes = [
     props: { resourceType: 'exercise' }
   },
   {
+    path: '/ressources-gratuites/exercices/notion/:notionId',
+    name: 'FreeExerciseChapter',
+    component: () => import('@/views/FreeExerciseChapter.vue'),
+    props: true
+  },
+  {
     path: '/ressources-gratuites/exercices/:slug',
     name: 'FreeExerciseDetail',
     component: () => import('@/views/FreeCourseDetail.vue'),
@@ -34,7 +40,13 @@ const routes = [
   {
     path: '/ressources-gratuites/syntheses',
     name: 'FreeSummaries',
-    component: () => import('@/views/FreeContentLanding.vue'),
+    component: () => import('@/views/FreeResourceNotions.vue'),
+    props: { resourceType: 'summary' }
+  },
+  {
+    path: '/ressources-gratuites/syntheses/:slug',
+    name: 'FreeSummaryDetail',
+    component: () => import('@/views/FreeCourseDetail.vue'),
     props: { resourceType: 'summary' }
   },
   { path: '/dashboard', name: 'Dashboard', component: () => import('@/views/Dashboard.vue') },

@@ -5,8 +5,13 @@ from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 
 from cours.models import Cours
+from curriculum.models import Exercice
 from .models import FreeLearningResource
-from .serializers import FreeLearningResourceSerializer, CourseFreePreviewSerializer
+from .serializers import (
+    FreeLearningResourceSerializer,
+    CourseFreePreviewSerializer,
+    ExerciceFreePreviewSerializer
+)
 
 
 class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
@@ -78,6 +83,10 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = self._apply_limit(self._get_free_courses_queryset(request), request)
             serializer = CourseFreePreviewSerializer(queryset, many=True, context=self.get_serializer_context())
             return Response(serializer.data)
+        if resource_type == FreeLearningResource.TYPE_EXERCISE:
+            queryset = self._apply_limit(self._get_free_exercises_queryset(request), request)
+            serializer = ExerciceFreePreviewSerializer(queryset, many=True, context=self.get_serializer_context())
+            return Response(serializer.data)
 
         queryset = self.filter_queryset(self.get_queryset())
         queryset = self._apply_limit(queryset, request)
@@ -113,6 +122,27 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 raise NotFound("Cours gratuit introuvable.")
             data = CourseFreePreviewSerializer().to_representation(cours)
             return Response(data)
+        if slug and slug.startswith('exercice-gratuit-'):
+            try:
+                exercice_id = int(slug.replace('exercice-gratuit-', ''))
+            except ValueError:
+                raise NotFound("Exercice gratuit introuvable.")
+            exercice = Exercice.objects.filter(
+                pk=exercice_id,
+                est_actif=True,
+                access_scope__in=[Exercice.ACCESS_SCOPE_FREE, Exercice.ACCESS_SCOPE_BOTH]
+            ).select_related(
+                'notion',
+                'notion__theme',
+                'notion__theme__matiere',
+                'notion__theme__contexte',
+                'notion__theme__contexte__niveau',
+                'notion__theme__contexte__niveau__pays',
+            ).prefetch_related('images').first()
+            if not exercice:
+                raise NotFound("Exercice gratuit introuvable.")
+            serializer = ExerciceFreePreviewSerializer(exercice, context=self.get_serializer_context())
+            return Response(serializer.data)
         return super().retrieve(request, *args, **kwargs)
 
     def _get_free_courses_queryset(self, request):
@@ -150,6 +180,52 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             qs = qs.filter(
                 Q(titre__icontains=search) |
                 Q(contenu__icontains=search) |
+                Q(notion__titre__icontains=search) |
+                Q(notion__theme__matiere__titre__icontains=search)
+            )
+
+        ordering = params.get('ordering')
+        if ordering:
+            qs = qs.order_by(ordering)
+
+        return qs
+
+    def _get_free_exercises_queryset(self, request):
+        qs = (
+            Exercice.objects.filter(est_actif=True)
+            .filter(access_scope__in=[Exercice.ACCESS_SCOPE_FREE, Exercice.ACCESS_SCOPE_BOTH])
+            .select_related(
+                'notion',
+                'notion__theme',
+                'notion__theme__matiere',
+                'notion__theme__contexte',
+                'notion__theme__contexte__niveau',
+                'notion__theme__contexte__niveau__pays',
+            )
+            .prefetch_related('images')
+            .order_by('ordre', 'notion__titre')
+        )
+
+        params = request.query_params
+        matiere_id = params.get('matiere')
+        niveau_id = params.get('niveau')
+        notion_id = params.get('notion')
+        pays_id = params.get('pays')
+        search = params.get('q')
+
+        if matiere_id:
+            qs = qs.filter(notion__theme__matiere_id=matiere_id)
+        if niveau_id:
+            qs = qs.filter(notion__theme__contexte__niveau_id=niveau_id)
+        if notion_id:
+            qs = qs.filter(notion_id=notion_id)
+        if pays_id:
+            qs = qs.filter(notion__theme__contexte__niveau__pays_id=pays_id)
+        if search:
+            qs = qs.filter(
+                Q(titre__icontains=search) |
+                Q(contenu__icontains=search) |
+                Q(question__icontains=search) |
                 Q(notion__titre__icontains=search) |
                 Q(notion__theme__matiere__titre__icontains=search)
             )

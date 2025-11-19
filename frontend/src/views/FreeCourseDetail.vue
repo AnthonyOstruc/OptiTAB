@@ -3,6 +3,7 @@ import { ref, onMounted, nextTick, watch, computed, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
+import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import { getFreeResource } from '@/api/free-content'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
@@ -33,10 +34,36 @@ const renderedContent = computed(() => {
   }
   return resource.value.contenu_html || ''
 })
+const isExerciseResource = computed(() => props.resourceType === 'exercise')
+const exerciseInstruction = computed(() => {
+  if (!resource.value) return ''
+  return resource.value.question || resource.value.contenu || resource.value.accroche || ''
+})
+const exerciseSteps = computed(() => (resource.value?.etapes ? resource.value.etapes : ''))
+const exerciseSolution = computed(() => {
+  if (!resource.value) return ''
+  return resource.value.solution || resource.value.reponse_correcte || ''
+})
+const exerciseDifficulty = computed(() => resource.value?.difficulty || 'medium')
+const exerciseImages = computed(() => resource.value?.images || [])
+
+const safeRenderMath = async () => {
+  try {
+    await renderMath()
+  } catch (_) {
+    // Ignore MathJax failures (e.g., when the content is empty or MathJax is busy)
+  }
+}
 const showScrollTopButton = ref(false)
-const backButtonLabel = computed(() =>
-  props.resourceType === 'exercise' ? 'Retour aux exercices gratuits' : 'Retour aux chapitres gratuits'
-)
+const backButtonLabel = computed(() => {
+  if (props.resourceType === 'exercise') {
+    return 'Retour aux exercices gratuits'
+  }
+  if (props.resourceType === 'summary') {
+    return 'Retour aux fiches gratuites'
+  }
+  return 'Retour aux chapitres gratuits'
+})
 
 function computeAutoZoom(width) {
   let base
@@ -132,7 +159,12 @@ const scrollToSection = (id) => {
 }
 
 const goBack = () => {
-  const routeName = props.resourceType === 'exercise' ? 'FreeExercises' : 'FreeCourses'
+  let routeName = 'FreeCourses'
+  if (props.resourceType === 'exercise') {
+    routeName = 'FreeExercises'
+  } else if (props.resourceType === 'summary') {
+    routeName = 'FreeSummaries'
+  }
   router.push({ name: routeName })
 }
 
@@ -157,9 +189,7 @@ watch(
     }
     await nextTick()
     buildTableOfContents()
-    try {
-      await renderMath()
-    } catch (_) {}
+    await safeRenderMath()
     measureContentHeight()
   },
   { immediate: true }
@@ -211,10 +241,34 @@ onBeforeUnmount(() => {
             </svg>
             <span>{{ backButtonLabel }}</span>
           </button>
-          <h1 class="cours-title">{{ resource.titre }}</h1>
+          <div class="cours-title-row">
+            <h1 class="cours-title">{{ resource.titre }}</h1>
+            <div class="cours-badges">
+              <span v-if="resource.badge" class="cours-badge">{{ resource.badge }}</span>
+              <span v-if="resource.type_label" class="cours-type-pill">{{ resource.type_label }}</span>
+            </div>
+          </div>
+          <p class="cours-context">
+            <span v-if="resource.notion_nom">Chapitre : {{ resource.notion_nom }}</span>
+            <span v-if="resource.matiere_nom">• {{ resource.matiere_nom }}</span>
+            <span v-if="resource.niveau_nom">• {{ resource.niveau_nom }}</span>
+          </p>
         </header>
 
-        <nav v-if="tableOfContents.length" class="toc-container">
+        <div v-if="isExerciseResource" class="exercise-detail-body">
+          <ExerciceQCM
+            :eid="resource.id"
+            :titre="resource.titre"
+            :instruction="exerciseInstruction"
+            :etapes="exerciseSteps"
+            :solution="exerciseSolution"
+            :difficulty="exerciseDifficulty"
+            :preview-images="exerciseImages"
+            :readonly="true"
+          />
+        </div>
+
+        <nav v-if="tableOfContents.length && !isExerciseResource" class="toc-container">
           <div class="toc-header" @click="isTocExpanded = !isTocExpanded">
             <div class="toc-header-content">
               <svg class="toc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -248,13 +302,13 @@ onBeforeUnmount(() => {
           </transition>
         </nav>
 
-        <div class="cours-content-outer" :style="zoomStyle">
+        <div v-if="!isExerciseResource" class="cours-content-outer" :style="zoomStyle">
           <div class="cours-content" ref="contentRef" v-html="renderedContent" />
         </div>
 
         <transition name="scroll-top-fade">
           <button
-            v-show="showScrollTopButton"
+            v-show="showScrollTopButton && !isExerciseResource"
             class="scroll-top-btn"
             @click="scrollToTop"
             aria-label="Retour en haut"
@@ -293,6 +347,194 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   gap: 8px;
+}
+
+.cours-title-row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.cours-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.cours-badge,
+.cours-type-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.cours-badge {
+  background: #e0f2fe;
+  color: #0f172a;
+  border-color: rgba(37, 99, 235, 0.4);
+}
+
+.cours-type-pill {
+  background: #f1f5f9;
+  color: #1d3557;
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
+.cours-context {
+  margin: 0;
+  color: #475569;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.exercise-detail-body {
+  margin: 20px 0 0;
+  width: 100%;
+  padding: 0 0 24px;
+}
+
+.exercise-intro {
+  font-size: 16px;
+  color: #1f2937;
+  margin: 0 0 16px;
+}
+
+.exercise-section {
+  margin-bottom: 24px;
+  padding: 18px;
+  border-radius: 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.exercise-section h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.exercise-card {
+  background: #fff;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  padding: 20px 22px;
+  margin: 18px 0 16px;
+}
+
+.exercise-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 12px;
+}
+
+.exercise-card-title {
+  margin: 0;
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.exercise-card-subtitle {
+  margin: 4px 0 0;
+  color: #475569;
+  font-size: 15px;
+}
+
+.exercise-card-star {
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #fefefe;
+  width: 42px;
+  height: 42px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.exercise-card-tabs {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.exercise-card-panel {
+  margin-top: 10px;
+  padding: 0;
+}
+
+.exercise-section-card {
+  background: #f9fafb;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  padding: 16px 18px;
+  min-height: 190px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.exercise-section-card :deep(*) {
+  margin: 0;
+  line-height: inherit;
+}
+
+.exercise-section-card :deep(p + p),
+.exercise-section-card :deep(p + ul),
+.exercise-section-card :deep(p + ol),
+.exercise-section-card :deep(ul + p),
+.exercise-section-card :deep(ol + p),
+.exercise-section-card :deep(li + li) {
+  margin-top: 4px;
+}
+
+.exercise-section-card :deep(ul),
+.exercise-section-card :deep(ol) {
+  padding-left: 18px;
+}
+
+.exercise-section-card :deep(li) {
+  padding: 0;
+}
+
+.exercise-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #dbeafe;
+}
+
+.exercise-tab {
+  border: none;
+  background: transparent;
+  padding: 8px 20px;
+  font-weight: 600;
+  color: #64748b;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.exercise-tab.active {
+  color: #0f172a;
+  background: #e0f2fe;
+  box-shadow: inset 0 -3px 0 0 #2563eb;
 }
 
 .cours-title {
@@ -470,4 +712,3 @@ onBeforeUnmount(() => {
   transform: translateY(10px);
 }
 </style>
-

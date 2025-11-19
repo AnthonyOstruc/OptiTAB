@@ -157,3 +157,91 @@ class CourseFreePreviewSerializer(serializers.Serializer):
             return file_field.url
         except Exception:
             return ''
+
+
+class ExerciceFreePreviewSerializer(serializers.Serializer):
+    """Sérialise un exercice gratuit en vignette."""
+
+    def to_representation(self, exercice):
+        notion = getattr(exercice, 'notion', None)
+        theme = getattr(notion, 'theme', None)
+        contexte = getattr(theme, 'contexte', None)
+        niveau = getattr(contexte, 'niveau', None) if contexte else None
+        matiere = getattr(theme, 'matiere', None)
+        pays = getattr(niveau, 'pays', None) if niveau else None
+
+        accroche = exercice.question or exercice.contenu or ''
+        excerpt = accroche[:220]
+        cover_image = self._first_image(exercice)
+        images = getattr(exercice, 'images', None)
+        image_data = []
+        if images is not None:
+            for img in images.all():
+                image_url = ''
+                try:
+                    image_url = getattr(img.image, 'url', '') or ''
+                except Exception:
+                    image_url = ''
+                image_data.append({
+                    'id': img.id,
+                    'image': image_url,
+                    'image_type': img.image_type,
+                    'position': img.position,
+                    'legende': img.legende,
+                })
+
+        return {
+            'id': exercice.id,
+            'slug': f'exercice-gratuit-{exercice.id}',
+            'titre': exercice.titre or (notion.titre if notion else 'Exercice OptiTAB'),
+            'accroche': accroche[:160],
+            'resource_type': FreeLearningResource.TYPE_EXERCISE,
+            'type_label': 'Exercice',
+            'excerpt': excerpt,
+            'contenu_html': '',
+            'contenu': exercice.contenu or '',
+            'question': exercice.question or '',
+            'solution': exercice.reponse_correcte or '',
+            'etapes': exercice.etapes or '',
+            'images': image_data,
+            'difficulty': exercice.difficulty or '',
+            'cover_image': cover_image,
+            'badge': exercice.get_difficulty_display(),
+            'lecture_duree': self._estimate_read_time(accroche),
+            'tag_secondaire': getattr(niveau, 'nom', '') or getattr(matiere, 'titre', ''),
+            'matiere': getattr(matiere, 'id', None),
+            'matiere_nom': getattr(matiere, 'titre', ''),
+            'niveau': getattr(niveau, 'id', None),
+            'niveau_nom': getattr(niveau, 'nom', ''),
+            'pays_nom': getattr(pays, 'nom', ''),
+            'notion': getattr(notion, 'id', None),
+            'notion_nom': getattr(notion, 'titre', ''),
+            'theme_id': getattr(theme, 'id', None),
+            'theme_nom': getattr(theme, 'titre', ''),
+            'ordre': exercice.ordre,
+            'est_actif': exercice.est_actif,
+            'est_publie': True,
+            'date_creation': exercice.date_creation,
+            'date_modification': exercice.date_modification,
+        }
+
+    @staticmethod
+    def _first_image(exercice):
+        images = getattr(exercice, 'images', None)
+        if not images:
+            return ''
+        image = images.all().order_by('position', 'id').first()
+        if not image:
+            return ''
+        try:
+            return image.image.url or ''
+        except Exception:
+            return ''
+
+    @staticmethod
+    def _estimate_read_time(content):
+        words = len((content or '').split())
+        if words == 0:
+            return ''
+        minutes = max(1, int((words + 179) / 180))
+        return f"~{minutes} min"

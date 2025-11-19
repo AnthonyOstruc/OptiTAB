@@ -1,0 +1,214 @@
+<script setup>
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import MainLayout from '@/components/layout/MainLayout.vue'
+import BackButton from '@/components/common/BackButton.vue'
+import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
+import { getFreeResources } from '@/api/free-content'
+import { renderMath } from '@/utils/scientificRenderer'
+
+const route = useRoute()
+const router = useRouter()
+
+const loading = ref(false)
+const error = ref(null)
+const exercises = ref([])
+const notionTitle = ref(route.query.title || '')
+
+const notionId = computed(() => route.params.notionId)
+
+const formatCount = (count) => `${count} exercice${count > 1 ? 's' : ''}`
+
+const displayedExercises = computed(() =>
+  exercises.value.map((item, index) => ({
+    id: item.id || item.slug || index,
+    slug: item.slug,
+    titre: item.titre || item.nom || `Exercice ${index + 1}`,
+    instruction: item.question || item.contenu || item.accroche || '',
+    solution: item.solution || item.reponse_correcte || '',
+    etapes: item.etapes || '',
+    difficulty: item.difficulty || item.difficulte || 'medium',
+    previewImages: item.images || [],
+    badge: item.badge,
+    tag: item.tag_secondaire
+  }))
+)
+
+const exercisesCount = computed(() => displayedExercises.value.length)
+
+const fetchExercises = async () => {
+  if (!notionId.value) return
+  loading.value = true
+  error.value = null
+  try {
+    const data = await getFreeResources({ type: 'exercise', notion: notionId.value })
+    const list = Array.isArray(data?.results) ? data.results : data
+    exercises.value = list
+    if (!notionTitle.value && list?.length && list[0]?.notion_nom) {
+      notionTitle.value = list[0].notion_nom
+    }
+    await nextTick()
+    await safeRenderMath()
+  } catch (err) {
+    console.error('Erreur chargement exercices gratuits', err)
+    error.value = err?.message || "Impossible de charger les exercices gratuits pour ce chapitre."
+  } finally {
+    loading.value = false
+  }
+}
+
+const safeRenderMath = async () => {
+  try {
+    await renderMath()
+  } catch (_) {
+    // ignore math errors
+  }
+}
+
+const goBack = () => {
+  router.push({ name: 'FreeExercises' })
+}
+
+watch(
+  () => route.params.notionId,
+  () => {
+    fetchExercises()
+  }
+)
+
+watch(
+  () => route.query.title,
+  (value) => {
+    if (value) notionTitle.value = value
+  }
+)
+
+onMounted(fetchExercises)
+</script>
+
+<template>
+  <MainLayout>
+    <div class="free-exercise-chapter-page">
+      <BackButton text="Retour aux exercices" :custom-action="goBack" position="top-left" />
+
+      <header class="chapter-hero">
+        <p class="chapter-eyebrow">Exercices gratuits</p>
+        <h1>{{ notionTitle || 'Chapitre' }}</h1>
+        <p class="chapter-count">{{ formatCount(exercisesCount) }}</p>
+      </header>
+
+      <div v-if="loading" class="state-card">
+        Chargement des exercices gratuits...
+      </div>
+      <div v-else-if="error" class="state-card">
+        <p>{{ error }}</p>
+        <button @click="fetchExercises">Réessayer</button>
+      </div>
+      <div v-else-if="displayedExercises.length === 0" class="state-card">
+        Aucun exercice gratuit n'est disponible pour ce chapitre pour le moment.
+      </div>
+      <div v-else class="exercise-stack">
+        <div
+          v-for="(exercise, index) in displayedExercises"
+          :key="exercise.id"
+          class="exercise-card-wrapper"
+        >
+          <ExerciceQCM
+            :eid="exercise.id"
+            :titre="exercise.titre"
+            :instruction="exercise.instruction"
+            :solution="exercise.solution"
+            :etapes="exercise.etapes"
+            :difficulty="exercise.difficulty"
+            :preview-images="exercise.previewImages"
+            readonly
+          />
+        </div>
+      </div>
+    </div>
+  </MainLayout>
+</template>
+
+<style scoped>
+.free-exercise-chapter-page {
+  min-height: 100vh;
+  background: #fff;
+  padding: 140px 24px 80px;
+  width: 100%;
+  max-width: none;
+}
+
+.chapter-hero {
+  margin: 0 auto 32px;
+  width: 100%;
+  max-width: 1280px;
+  padding: 32px;
+  box-shadow: none;
+}
+
+.chapter-eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.chapter-hero h1 {
+  margin: 6px 0;
+  font-size: 32px;
+  color: #0f172a;
+}
+
+.chapter-count {
+  margin: 0;
+  font-size: 15px;
+  color: #475569;
+  font-weight: 600;
+}
+
+.state-card {
+  margin-top: 30px;
+  padding: 32px;
+  border-radius: 18px;
+  border: 1px dashed #cbd5f5;
+  text-align: center;
+  color: #475569;
+}
+
+.state-card button {
+  margin-top: 12px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #1d4ed8;
+  color: #fff;
+  cursor: pointer;
+}
+
+.exercise-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+.exercise-card-wrapper {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  .free-exercise-chapter-page {
+    padding: 120px 16px 60px;
+  }
+
+  .exercise-card-wrapper {
+    padding: 18px;
+  }
+}
+</style>

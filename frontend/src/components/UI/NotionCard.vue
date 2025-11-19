@@ -29,6 +29,9 @@
           </div>
         </div>
       </div>
+      <div v-if="$slots.meta" class="notion-card-meta-slot">
+        <slot name="meta" />
+      </div>
     </div>
   </div>
 </template>
@@ -115,6 +118,16 @@ function handleMouseEnter() {
 .notion-card.locked .notion-card-inner:hover {
   border-color: #e5e7eb;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Slot pour ajouter des badges ou infos complémentaires */
+.notion-card-meta-slot {
+  width: 100%;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
 }
 
 /* Icône */

@@ -11,6 +11,7 @@
           <li>Ordre des images : selon la déclaration (1 = [IMAGE_1], 2 = [IMAGE_2], ...)</li>
           <li>MathJax supporté : <code>$formule$</code> (inline), <code>$$formule$$</code> (bloc)</li>
           <li>Markdown supporté : <code>**gras**</code>, <code>*italique*</code></li>
+          <li>Accès gratuit/premium : ajoutez <code>Access: free|paid|both</code> (sinon utilisez le sélecteur ci-dessous)</li>
         </ul>
       </template>
     </FormatHelp>
@@ -20,6 +21,13 @@
       <select v-model="selectedNotion" required>
         <option disabled value="">Choisir notion</option>
         <option v-for="n in filteredNotions" :key="n.id" :value="n.id">{{ formatNotionOption(n) }}</option>
+      </select>
+
+      <label class="scope-label" for="access-scope-select">Accès</label>
+      <select id="access-scope-select" v-model="selectedAccessScope" class="scope-select">
+        <option v-for="opt in ACCESS_SCOPE_OPTIONS" :key="opt.value" :value="opt.value">
+          {{ opt.label }}
+        </option>
       </select>
 
       <!-- Upload d'images -->
@@ -171,6 +179,7 @@
           <th>Titre</th>
           <th>Notion</th>
           <th>Contexte</th>
+          <th>Accès</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -180,6 +189,11 @@
           <td>{{ s.titre }}</td>
           <td>{{ getNotionName(s.notion) }}</td>
           <td class="ctx-cell">{{ getNotionContextLabel(s.notion) }}</td>
+          <td>
+            <span :class="accessScopeBadgeClass(s.access_scope)">
+              {{ accessScopeLabel(s.access_scope) }}
+            </span>
+          </td>
           <td>
             <AdminActionsButtons
               :item="s"
@@ -273,6 +287,12 @@ const filters = ref({})
 const notionTableFilter = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 5
+const ACCESS_SCOPE_OPTIONS = [
+  { value: 'paid', label: 'Premium (abonnés)' },
+  { value: 'free', label: 'Gratuit' },
+  { value: 'both', label: 'Gratuit + Premium' }
+]
+const selectedAccessScope = ref('paid')
 
 // ============================================================================
 // FORMAT D'ENTRÉE (exemple copiable)
@@ -280,6 +300,7 @@ const itemsPerPage = 5
 
 const FORMAT_TEMPLATE = `=== [NOM DE LA FICHE - SOUS-TITRE]
 Images: [image1.png,image2.jpg]
+Access: free
 
 Titre: [Titre de la fiche]
 
@@ -432,7 +453,7 @@ function handleImagesSelect(event) {
   })
 }
 
-// V�rifie si une image est disponible soit localement (s�lectionn�e) soit c�t� serveur (d�j� enregistr�e)
+// V�rifie si une image est disponible soit localement (s�lectionn�e) soit c�t� serveur (d�j� enregistr�e)
 function imageExists(filename) {
   if (!filename) return false
   const file = getImageFile(filename)
@@ -450,6 +471,39 @@ function imageExists(filename) {
   const file = selectedImages.value[index]
   imageManager.removeImage(file.name)
   selectedImages.value.splice(index, 1)
+}
+
+// ============================================================================
+// ACCESS SCOPE HELPERS
+// ============================================================================
+
+const ACCESS_SCOPE_LABELS = {
+  paid: 'Premium',
+  free: 'Gratuit',
+  both: 'Gratuit + Premium'
+}
+
+const DEFAULT_ACCESS_SCOPE = 'paid'
+
+const normalizeString = (value = '') => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+
+function parseAccessScopeToken(rawValue = '') {
+  const cleanValue = normalizeString(String(rawValue || '').trim())
+  if (!cleanValue) return null
+  if (cleanValue.includes('both') || (cleanValue.includes('gratuit') && cleanValue.includes('premium'))) return 'both'
+  if (cleanValue.includes('free') || cleanValue.includes('gratuit')) return 'free'
+  if (cleanValue.includes('paid') || cleanValue.includes('premium') || cleanValue.includes('abonne')) return 'paid'
+  return null
+}
+
+function accessScopeLabel(value) {
+  return ACCESS_SCOPE_LABELS[value] || ACCESS_SCOPE_OPTIONS.find(opt => opt.value === value)?.label || 'Premium'
+}
+
+function accessScopeBadgeClass(value) {
+  if (value === 'free') return 'scope-pill scope-pill--free'
+  if (value === 'both') return 'scope-pill scope-pill--both'
+  return 'scope-pill scope-pill--paid'
 }
 
 // ============================================================================
@@ -473,7 +527,8 @@ function parseSheetBlock(block) {
     titre: '',
     summary: '',
     image: '',
-    notion: null
+    notion: null,
+    access_scope: null
   }
 
   if (selectedNotion.value) sheet.notion = Number(selectedNotion.value)
@@ -488,11 +543,18 @@ function parseSheetBlock(block) {
     if (currentSection === 'header') {
       if (!line) continue
 
+      const normalizedLine = normalizeString(line)
+
       // Helpers pour récupérer le texte après le premier ':'
       const afterColonTrim = (l) => l.split(':').slice(1).join(':').trim()
       const afterColonRaw = (l) => {
         const idx = l.indexOf(':')
         return idx >= 0 ? l.slice(idx + 1) : ''
+      }
+
+      if (normalizedLine.startsWith('access:') || normalizedLine.startsWith('acces:')) {
+        sheet.access_scope = parseAccessScopeToken(afterColonTrim(rawLine))
+        continue
       }
 
       if (line.toLowerCase().startsWith('image:') || line.toLowerCase().startsWith('images:')) {
@@ -585,7 +647,8 @@ async function handleCreate() {
           notion: Number(sheetData.notion || selectedNotion.value),
           titre: sheetData.titre,
           summary: sheetData.summary,
-          reading_time_minutes: Math.max(1, Math.round(sheetData.summary.split(/\s+/).length / 200))
+          reading_time_minutes: Math.max(1, Math.round(sheetData.summary.split(/\s+/).length / 200)),
+          access_scope: sheetData.access_scope || selectedAccessScope.value || DEFAULT_ACCESS_SCOPE
         }
 
         const existingId = byTitle.get((sheetData.titre || '').toLowerCase())
@@ -695,6 +758,7 @@ async function editSheet(s) {
   // Pré-remplir le bloc unique pour édition via le form bulk
   selectedNotion.value = s.notion
   currentEditSheetId.value = s.id
+  selectedAccessScope.value = s.access_scope || DEFAULT_ACCESS_SCOPE
 
   // Récupérer les images existantes pour préremplir la ligne "Images:"
   let imageNames = ''
@@ -740,7 +804,8 @@ async function editSheet(s) {
 
   const header = [
     '=== ' + (s.titre || ''),
-    'Images: ' + imageNames
+    'Images: ' + imageNames,
+    'Access: ' + (s.access_scope || DEFAULT_ACCESS_SCOPE)
   ].join('\n')
 
   rawInput.value = `${header}\n\n${s.summary || ''}`
@@ -983,6 +1048,43 @@ onActivated(() => {
   color: #64748b;
   font-size: 0.85rem;
   max-width: 360px;
+}
+.scope-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.scope-select {
+  margin-bottom: 10px;
+}
+
+.scope-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.scope-pill--free {
+  background: #dcfce7;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.scope-pill--both {
+  background: #e0f2fe;
+  border-color: #bae6fd;
+  color: #0f172a;
+}
+
+.scope-pill--paid {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #991b1b;
 }
 
 /* Pagination */

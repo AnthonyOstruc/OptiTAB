@@ -218,106 +218,103 @@ onBeforeUnmount(() => {
 <template>
   <MainLayout>
     <section class="cours-section">
-      <BackButton 
-        :text="backButtonLabel" 
-        :custom-action="goBack"
-        position="top-left"
-      />
+      <div class="nav-header-base">
+        <BackButton 
+          :text="backButtonLabel" 
+          :custom-action="goBack"
+        />
+      </div>
 
-      <div v-if="loading" class="loading-container">
+      <div class="cours-body">
+        <div v-if="loading" class="loading-container">
         Chargement de la ressource...
-      </div>
+        </div>
 
-      <div v-else-if="error" class="error-state">
-        <p>{{ error }}</p>
-        <button @click="fetchResource">Réessayer</button>
-      </div>
+        <div v-else-if="error" class="error-state">
+          <p>{{ error }}</p>
+          <button @click="fetchResource">Réessayer</button>
+        </div>
 
-      <div v-else-if="resource" class="cours-container">
-        <header class="cours-header">
-          <button class="inline-back" type="button" @click="goBack">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="15 6 9 12 15 18" />
-            </svg>
-            <span>{{ backButtonLabel }}</span>
-          </button>
-          <div class="cours-title-row">
-            <h1 class="cours-title">{{ resource.titre }}</h1>
-            <div class="cours-badges">
-              <span v-if="resource.badge" class="cours-badge">{{ resource.badge }}</span>
-              <span v-if="resource.type_label" class="cours-type-pill">{{ resource.type_label }}</span>
+        <div v-else-if="resource" class="cours-container">
+          <header class="cours-header">
+            <div class="cours-title-row">
+              <h1 class="cours-title">{{ resource.titre }}</h1>
+              <div class="cours-badges">
+                <span v-if="resource.badge" class="cours-badge">{{ resource.badge }}</span>
+                <span v-if="resource.type_label" class="cours-type-pill">{{ resource.type_label }}</span>
+              </div>
             </div>
+            <p class="cours-context">
+              <span v-if="resource.notion_nom">Chapitre : {{ resource.notion_nom }}</span>
+              <span v-if="resource.matiere_nom">• {{ resource.matiere_nom }}</span>
+              <span v-if="resource.niveau_nom">• {{ resource.niveau_nom }}</span>
+            </p>
+          </header>
+
+          <div v-if="isExerciseResource" class="exercise-detail-body">
+            <ExerciceQCM
+              :eid="resource.id"
+              :titre="resource.titre"
+              :instruction="exerciseInstruction"
+              :etapes="exerciseSteps"
+              :solution="exerciseSolution"
+              :difficulty="exerciseDifficulty"
+              :preview-images="exerciseImages"
+              :readonly="true"
+            />
           </div>
-          <p class="cours-context">
-            <span v-if="resource.notion_nom">Chapitre : {{ resource.notion_nom }}</span>
-            <span v-if="resource.matiere_nom">• {{ resource.matiere_nom }}</span>
-            <span v-if="resource.niveau_nom">• {{ resource.niveau_nom }}</span>
-          </p>
-        </header>
 
-        <div v-if="isExerciseResource" class="exercise-detail-body">
-          <ExerciceQCM
-            :eid="resource.id"
-            :titre="resource.titre"
-            :instruction="exerciseInstruction"
-            :etapes="exerciseSteps"
-            :solution="exerciseSolution"
-            :difficulty="exerciseDifficulty"
-            :preview-images="exerciseImages"
-            :readonly="true"
-          />
-        </div>
-
-        <nav v-if="tableOfContents.length && !isExerciseResource" class="toc-container">
-          <div class="toc-header" @click="isTocExpanded = !isTocExpanded">
-            <div class="toc-header-content">
-              <svg class="toc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="8" y1="6" x2="21" y2="6"/>
-                <line x1="8" y1="12" x2="21" y2="12"/>
-                <line x1="8" y1="18" x2="21" y2="18"/>
-                <line x1="3" y1="6" x2="3.01" y2="6"/>
-                <line x1="3" y1="12" x2="3.01" y2="12"/>
-                <line x1="3" y1="18" x2="3.01" y2="18"/>
+          <nav v-if="tableOfContents.length && !isExerciseResource" class="toc-container">
+            <div class="toc-header" @click="isTocExpanded = !isTocExpanded">
+              <div class="toc-header-content">
+                <svg class="toc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="8" y1="6" x2="21" y2="6"/>
+                  <line x1="8" y1="12" x2="21" y2="12"/>
+                  <line x1="8" y1="18" x2="21" y2="18"/>
+                  <line x1="3" y1="6" x2="3.01" y2="6"/>
+                  <line x1="3" y1="12" x2="3.01" y2="12"/>
+                  <line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+                <h3 class="toc-title">Sommaire</h3>
+              </div>
+              <svg class="toc-toggle-icon" :class="{ expanded: isTocExpanded }" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9" />
               </svg>
-              <h3 class="toc-title">Sommaire</h3>
-            </div>
-            <svg class="toc-toggle-icon" :class="{ expanded: isTocExpanded }" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-        </div>
-        <transition name="toc-expand">
-            <div v-show="isTocExpanded" class="toc-body">
-              <ul class="toc-list">
-                <li 
-                  v-for="(item, index) in tableOfContents" 
-                  :key="item.id || index"
-                  :class="['toc-item', `toc-level-${item.level}`]"
-                >
-                  <a class="toc-link" href="#" @click.prevent="scrollToSection(item.id)">
-                    {{ item.text }}
-                  </a>
-                </li>
-              </ul>
-            </div>
+          </div>
+          <transition name="toc-expand">
+              <div v-show="isTocExpanded" class="toc-body">
+                <ul class="toc-list">
+                  <li 
+                    v-for="(item, index) in tableOfContents" 
+                    :key="item.id || index"
+                    :class="['toc-item', `toc-level-${item.level}`]"
+                  >
+                    <a class="toc-link" href="#" @click.prevent="scrollToSection(item.id)">
+                      {{ item.text }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </transition>
+          </nav>
+
+          <div v-if="!isExerciseResource" class="cours-content-outer" :style="zoomStyle">
+            <div class="cours-content" ref="contentRef" v-html="renderedContent" />
+          </div>
+
+          <transition name="scroll-top-fade">
+            <button
+              v-show="showScrollTopButton && !isExerciseResource"
+              class="scroll-top-btn"
+              @click="scrollToTop"
+              aria-label="Retour en haut"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="18 15 12 9 6 15" />
+              </svg>
+            </button>
           </transition>
-        </nav>
-
-        <div v-if="!isExerciseResource" class="cours-content-outer" :style="zoomStyle">
-          <div class="cours-content" ref="contentRef" v-html="renderedContent" />
         </div>
-
-        <transition name="scroll-top-fade">
-          <button
-            v-show="showScrollTopButton && !isExerciseResource"
-            class="scroll-top-btn"
-            @click="scrollToTop"
-            aria-label="Retour en haut"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="18 15 12 9 6 15" />
-            </svg>
-          </button>
-        </transition>
       </div>
     </section>
   </MainLayout>
@@ -328,6 +325,17 @@ onBeforeUnmount(() => {
   padding: 110px 2vw 60px;
   background: #fff;
   min-height: 100vh;
+  position: relative;
+}
+
+.nav-header-base {
+  margin: 0 0 1rem 0;
+  padding: 0;
+  display: flex;
+}
+
+.cours-body {
+  width: 100%;
 }
 
 @media (max-width: 768px) {

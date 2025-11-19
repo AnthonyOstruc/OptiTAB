@@ -1,15 +1,16 @@
 <template>
   <DashboardLayout>
     <section class="exercices-section" ref="exPageRef">
-      <!-- Bouton de retour -->
-      <BackButton 
-        text="Retour aux chapitres" 
-        :customAction="goBackToNotions"
-        position="top-left"
-      />
-      
-      <!-- Navigation ultra-propre -->
-      <div class="clean-navigation">
+      <div class="nav-header-base">
+        <BackButton 
+          text="Retour aux chapitres" 
+          :customAction="goBackToNotions"
+        />
+      </div>
+
+      <div class="exercices-body">
+        <!-- Navigation ultra-propre -->
+        <div class="clean-navigation">
         <div class="nav-grid">
           <button 
             v-for="t in tabs" 
@@ -24,12 +25,10 @@
         </div>
       </div>
 
-      
-      
-      <div v-if="loading" class="loading-skeleton-container">
+        <div v-if="loading" class="loading-skeleton-container">
         <SkeletonList :count="4" />
-      </div>
-      <div v-else-if="error" class="exercices-error">{{ error }}</div>
+        </div>
+        <div v-else-if="error" class="exercices-error">{{ error }}</div>
         <div v-else>
           <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
           <div class="exercices-controls">
@@ -134,6 +133,7 @@
             </div>
           </div>
         </div>
+      </div>
     </section>
   </DashboardLayout>
 </template>
@@ -213,17 +213,19 @@ const activeTab = ref('all')
 const storageKey = computed(() => `optitab_page_exercices_${notionId.value}`)
 const focusKey = computed(() => `optitab_last_exercice_${notionId.value}`)
 
+let isRestoringState = false
+
 // (supprimé: fonction dupliquée)
 
 function saveViewState(extra = {}) {
+  if (isRestoringState && typeof extra.scrollY === 'undefined') {
+    return
+  }
   try {
-    let scrollY = 0
-    try {
-      const container = getScrollContainer(exPageRef.value)
-      scrollY = (container === document.documentElement || container === document.body)
-        ? (window.pageYOffset || document.documentElement.scrollTop || 0)
-        : container.scrollTop
-    } catch (_) {}
+    let scrollY = typeof extra.scrollY === 'number' ? extra.scrollY : 0
+    if (typeof extra.scrollY !== 'number') {
+      scrollY = (typeof window !== 'undefined') ? (window.scrollY || window.pageYOffset || 0) : 0
+    }
 
     const state = {
       perPage: perPage.value,
@@ -240,6 +242,7 @@ function saveViewState(extra = {}) {
 }
 
 function restoreViewState() {
+  isRestoringState = true
   try {
     const raw = sessionStorage.getItem(storageKey.value)
     if (!raw) return null
@@ -252,7 +255,11 @@ function restoreViewState() {
       if (typeof s.searchQuery === 'string') searchQuery.value = s.searchQuery
       return s
     }
-  } catch (_) {}
+  } catch (_) {
+    return null
+  } finally {
+    setTimeout(() => { isRestoringState = false }, 0)
+  }
   return null
 }
 
@@ -296,11 +303,9 @@ onMounted(async () => {
 onActivated(() => {
   updateViewportWidth()
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
-  // Les composants ExerciceQCM enfants gèrent leur propre rendu, mais on force quand même ici
   nextTick(() => {
     if (window.MathJax && window.MathJax.typesetPromise) {
       try {
-        // Vider le cache de MathJax pour forcer un nouveau rendu
         if (window.MathJax.typesetClear) {
           window.MathJax.typesetClear()
         }
@@ -309,37 +314,19 @@ onActivated(() => {
         console.warn('[MathJax] Erreur:', error)
       }
     }
-    // S'assurer que le rendu est bien appliqué avec un second appel après un délai
     setTimeout(() => {
       if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise()
       }
     }, 100)
 
-    // Restaurer la position de scroll (retour depuis onglets Cours/Synthèse/Quiz)
-    const attemptRestore = () => {
+    // Restaurer la position de scroll sauvegardée (comme Cours/Sheets)
+    const saved = restoreViewState()
+    if (saved && typeof saved.scrollY === 'number') {
       try {
-        const raw = sessionStorage.getItem(storageKey.value)
-        if (!raw) return
-        const s = JSON.parse(raw)
-        if (!s || typeof s.scrollY !== 'number') return
-        const container = getScrollContainer(exPageRef.value)
-        if (container === document.documentElement || container === document.body) {
-          window.scrollTo({ top: s.scrollY, behavior: 'auto' })
-        } else {
-          container.scrollTo({ top: s.scrollY, behavior: 'auto' })
-        }
+        window.scrollTo({ top: saved.scrollY, behavior: 'auto' })
       } catch (_) {}
     }
-    // Si un hash #ex-<id> est présent, cibler cet exercice en priorité
-    tryScrollToHashExercice()
-    setTimeout(() => { tryScrollToHashExercice() }, 60)
-    setTimeout(() => { tryScrollToHashExercice() }, 200)
-
-    // Tentatives espacées pour couvrir les réarrangements de layout
-    attemptRestore()
-    setTimeout(attemptRestore, 50)
-    setTimeout(attemptRestore, 200)
   })
 })
 
@@ -384,14 +371,11 @@ async function loadData() {
     loading.value = false
     await nextTick()
 
-    // 1) Si on vient avec un hash #ex-<id>, forcer l'affichage et le scroll vers cet exercice
-    await tryScrollToHashExercice()
-    
-    // 2) Installer l'écouteur de scroll (et le réinitialiser si besoin)
+    // Installer l'écouteur de scroll
     setupScrollListener()
     measureContentHeight()
 
-    // 3) Forcer le rendu MathJax après le chargement des exercices
+    // Forcer le rendu MathJax après le chargement des exercices
     setTimeout(() => {
       if (window.MathJax && window.MathJax.typesetPromise) {
         try {
@@ -404,27 +388,15 @@ async function loadData() {
         }
       }
       measureContentHeight()
-    }, 100)
-    
-    // 4) Sinon, restaurer la position scroll sauvegardée
-    if (!route.hash || !route.hash.startsWith('#ex-')) {
-      const attemptRestore = () => {
+
+      // Restaurer la position de scroll si disponible (comme Cours/Sheets)
+      const saved = restoreViewState()
+      if (saved && typeof saved.scrollY === 'number') {
         try {
-          const raw = sessionStorage.getItem(storageKey.value)
-          if (!raw) return
-          const s = JSON.parse(raw)
-          if (!s || typeof s.scrollY !== 'number') return
-          const container = getScrollContainer(exPageRef.value)
-          if (container === document.documentElement || container === document.body) {
-            window.scrollTo({ top: s.scrollY, behavior: 'auto' })
-          } else {
-            container.scrollTo({ top: s.scrollY, behavior: 'auto' })
-          }
+          window.scrollTo({ top: saved.scrollY, behavior: 'auto' })
         } catch (_) {}
       }
-      setTimeout(attemptRestore, 30)
-      setTimeout(attemptRestore, 120)
-    }
+    }, 150)
   }
 }
 
@@ -739,6 +711,7 @@ async function tryScrollToHashExercice() {
     // S'assurer que l'exercice est visible: retirer filtres qui pourraient le masquer
     const ex = exercices.value.find(e => Number(e.id) === id)
     if (!ex) return false
+    setLastExerciceId(id)
 
     // Adapter l'onglet selon le statut connu
     const st = statusMap.value[id]?.status
@@ -799,26 +772,16 @@ function getScrollContainer(el) {
 let scrollCleanup = null
 function setupScrollListener() {
   try {
-    // Nettoyer l'ancien listener si présent
     if (scrollCleanup) {
       try { scrollCleanup() } catch (_) {}
       scrollCleanup = null
     }
-    const container = getScrollContainer(exPageRef.value)
     const handleScroll = () => {
-      const scrollTop = (container === document.documentElement || container === document.body)
-        ? (window.pageYOffset || document.documentElement.scrollTop || 0)
-        : container.scrollTop
-      // Persister la position pour une reprise fluide
-      saveViewState({ scrollY: scrollTop })
+      const scrollY = (typeof window !== 'undefined') ? (window.scrollY || window.pageYOffset || 0) : 0
+      saveViewState({ scrollY })
     }
-    if (container === document.documentElement || container === document.body) {
-      window.addEventListener('scroll', handleScroll, { passive: true })
-      scrollCleanup = () => window.removeEventListener('scroll', handleScroll)
-    } else {
-      container.addEventListener('scroll', handleScroll, { passive: true })
-      scrollCleanup = () => container.removeEventListener('scroll', handleScroll)
-    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    scrollCleanup = () => window.removeEventListener('scroll', handleScroll)
   } catch (_) {}
 }
 
@@ -1151,8 +1114,53 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 <style scoped>
 .exercices-section {
   background: #fff;
-  padding: 0 5vw 40px 5vw;
-  text-align: center;
+  min-height: 100vh;
+  padding: 0;
+}
+
+:deep(.dashboard-main) {
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+}
+
+:deep(.dashboard-main.with-mobile-nav) {
+  padding-top: 0 !important;
+}
+
+.nav-header-base {
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
+  background: white;
+}
+
+.exercices-body {
+  width: 100%;
+  padding: 0 2rem 1.5rem 2rem;
+}
+
+@media (max-width: 1200px) {
+  .exercices-body {
+    padding: 0 1.5rem 1.25rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .exercices-body {
+    padding: 0 1rem 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .exercices-body {
+    padding: 0 0.75rem 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .exercices-body {
+    padding: 0 0.6rem 0.4rem 0.6rem;
+  }
 }
 
 .exercices-content-outer {
@@ -1176,10 +1184,6 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 
 /* Responsive design pour mobile */
 @media (max-width: 768px) {
-  .exercices-section {
-    padding: 0 3vw 30px 3vw;
-  }
-
   .exercices-title {
     font-size: 1.6rem;
     margin-bottom: 30px;
@@ -1193,10 +1197,6 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 }
 
 @media (max-width: 680px) {
-  .exercices-section {
-    padding: 0 2vw 20px 2vw;
-  }
-
   .exercices-title {
     font-size: 1.4rem;
     margin-bottom: 25px;

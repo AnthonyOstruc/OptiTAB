@@ -6,11 +6,13 @@ from rest_framework.exceptions import NotFound
 
 from cours.models import Cours
 from curriculum.models import Exercice
+from synthesis.models import SynthesisSheet
 from .models import FreeLearningResource
 from .serializers import (
     FreeLearningResourceSerializer,
     CourseFreePreviewSerializer,
-    ExerciceFreePreviewSerializer
+    ExerciceFreePreviewSerializer,
+    SynthesisFreePreviewSerializer
 )
 
 
@@ -87,6 +89,10 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = self._apply_limit(self._get_free_exercises_queryset(request), request)
             serializer = ExerciceFreePreviewSerializer(queryset, many=True, context=self.get_serializer_context())
             return Response(serializer.data)
+        if resource_type == FreeLearningResource.TYPE_SUMMARY:
+            queryset = self._apply_limit(self._get_free_summaries_queryset(request), request)
+            serializer = SynthesisFreePreviewSerializer(queryset, many=True, context=self.get_serializer_context())
+            return Response(serializer.data)
 
         queryset = self.filter_queryset(self.get_queryset())
         queryset = self._apply_limit(queryset, request)
@@ -142,6 +148,32 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             if not exercice:
                 raise NotFound("Exercice gratuit introuvable.")
             serializer = ExerciceFreePreviewSerializer(exercice, context=self.get_serializer_context())
+            return Response(serializer.data)
+        if slug and slug.startswith('synthese-gratuite-'):
+            try:
+                sheet_id = int(slug.replace('synthese-gratuite-', ''))
+            except ValueError:
+                raise NotFound("Résumé gratuit introuvable.")
+            sheet = (
+                SynthesisSheet.objects.filter(
+                    pk=sheet_id,
+                    est_actif=True,
+                    access_scope__in=[SynthesisSheet.ACCESS_SCOPE_FREE, SynthesisSheet.ACCESS_SCOPE_BOTH]
+                )
+                .select_related(
+                    'notion',
+                    'notion__theme',
+                    'notion__theme__matiere',
+                    'notion__theme__contexte',
+                    'notion__theme__contexte__niveau',
+                    'notion__theme__contexte__niveau__pays'
+                )
+                .prefetch_related('images')
+                .first()
+            )
+            if not sheet:
+                raise NotFound("Résumé gratuit introuvable.")
+            serializer = SynthesisFreePreviewSerializer(sheet, context=self.get_serializer_context())
             return Response(serializer.data)
         return super().retrieve(request, *args, **kwargs)
 
@@ -226,6 +258,51 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 Q(titre__icontains=search) |
                 Q(contenu__icontains=search) |
                 Q(question__icontains=search) |
+                Q(notion__titre__icontains=search) |
+                Q(notion__theme__matiere__titre__icontains=search)
+            )
+
+        ordering = params.get('ordering')
+        if ordering:
+            qs = qs.order_by(ordering)
+
+        return qs
+
+    def _get_free_summaries_queryset(self, request):
+        qs = (
+            SynthesisSheet.objects.filter(est_actif=True)
+            .filter(access_scope__in=[SynthesisSheet.ACCESS_SCOPE_FREE, SynthesisSheet.ACCESS_SCOPE_BOTH])
+            .select_related(
+                'notion',
+                'notion__theme',
+                'notion__theme__matiere',
+                'notion__theme__contexte',
+                'notion__theme__contexte__niveau',
+                'notion__theme__contexte__niveau__pays',
+            )
+            .prefetch_related('images')
+            .order_by('ordre', 'notion__titre')
+        )
+
+        params = request.query_params
+        matiere_id = params.get('matiere')
+        niveau_id = params.get('niveau')
+        notion_id = params.get('notion')
+        pays_id = params.get('pays')
+        search = params.get('q')
+
+        if matiere_id:
+            qs = qs.filter(notion__theme__matiere_id=matiere_id)
+        if niveau_id:
+            qs = qs.filter(notion__theme__contexte__niveau_id=niveau_id)
+        if notion_id:
+            qs = qs.filter(notion_id=notion_id)
+        if pays_id:
+            qs = qs.filter(notion__theme__contexte__niveau__pays_id=pays_id)
+        if search:
+            qs = qs.filter(
+                Q(titre__icontains=search) |
+                Q(summary__icontains=search) |
                 Q(notion__titre__icontains=search) |
                 Q(notion__theme__matiere__titre__icontains=search)
             )

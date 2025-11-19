@@ -91,12 +91,6 @@ onMounted(fetchExercises)
     <div class="free-exercise-chapter-page">
       <BackButton text="Retour aux exercices" :custom-action="goBack" position="top-left" />
 
-      <header class="chapter-hero">
-        <p class="chapter-eyebrow">Exercices gratuits</p>
-        <h1>{{ notionTitle || 'Chapitre' }}</h1>
-        <p class="chapter-count">{{ formatCount(exercisesCount) }}</p>
-      </header>
-
       <div v-if="loading" class="state-card">
         Chargement des exercices gratuits...
       </div>
@@ -136,36 +130,6 @@ onMounted(fetchExercises)
   padding: 140px 24px 80px;
   width: 100%;
   max-width: none;
-}
-
-.chapter-hero {
-  margin: 0 auto 32px;
-  width: 100%;
-  max-width: 1280px;
-  padding: 32px;
-  box-shadow: none;
-}
-
-.chapter-eyebrow {
-  margin: 0;
-  text-transform: uppercase;
-  font-size: 13px;
-  letter-spacing: 0.1em;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.chapter-hero h1 {
-  margin: 6px 0;
-  font-size: 32px;
-  color: #0f172a;
-}
-
-.chapter-count {
-  margin: 0;
-  font-size: 15px;
-  color: #475569;
-  font-weight: 600;
 }
 
 .state-card {

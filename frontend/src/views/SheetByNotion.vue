@@ -1,18 +1,19 @@
 <template>
   <DashboardLayout>
     <div class="sheet-by-notion-page">
-      <div class="top-actions">
-        <BackButton text="Retour aux chapitres" :customAction="goBack" position="top-left" />
+      <div class="nav-header-base">
+        <BackButton text="Retour aux chapitres" :customAction="goBack" />
       </div>
 
-      <div v-if="loading" class="loading">
-        <div class="spinner"></div>
-        <p>Chargement...</p>
-      </div>
+      <div class="sheet-content-wrapper">
+        <div v-if="loading" class="loading">
+          <div class="spinner"></div>
+          <p>Chargement...</p>
+        </div>
 
-      <div v-else>
-        <div v-if="!sheet" class="empty-coming">
-          <div class="empty-card">
+        <div v-else>
+          <div v-if="!sheet" class="empty-coming">
+            <div class="empty-card">
             <div class="empty-icon">📘</div>
             <h2 class="empty-title">Fiche de synthèse — bientôt disponible</h2>
             <p class="empty-text">
@@ -22,8 +23,8 @@
               <button class="empty-btn" @click="goBack">Retour aux chapitres</button>
             </div>
           </div>
-        </div>
-        <div v-else class="sheet-container">
+          </div>
+          <div v-else class="sheet-container">
           <header class="sheet-header">
             <h1 class="sheet-title">{{ sheet.titre }}</h1>
           </header>
@@ -105,6 +106,7 @@
               </svg>
             </button>
           </transition>
+          </div>
         </div>
       </div>
     </div>
@@ -569,28 +571,54 @@ watch(() => route.query.q, (val) => {
 <style scoped>
 .sheet-by-notion-page {
   background: #fff;
-  padding: 0 5vw 40px 5vw;
-  text-align: center;
+  min-height: 100vh;
+  padding: 0;
+  text-align: left;
   position: relative;
 }
 
-/* Mobile: utiliser toute la largeur (edge-to-edge) */
+:deep(.dashboard-main) {
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+}
+
+:deep(.dashboard-main.with-mobile-nav) {
+  padding-top: 0 !important;
+}
+
+.nav-header-base {
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
+  background: white;
+}
+
+.sheet-content-wrapper {
+  width: 100%;
+  padding: 0 2rem 1.5rem 2rem;
+}
+
+@media (max-width: 1200px) {
+  .sheet-content-wrapper {
+    padding: 0 1.5rem 1.25rem 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
-  .sheet-by-notion-page {
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: -1rem;   /* compense le padding du layout */
-    margin-right: -1rem;
-    width: calc(100% + 2rem);
-    max-width: none;
+  .sheet-content-wrapper {
+    padding: 0 1rem 0.75rem 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .sheet-by-notion-page {
-    margin-left: -0.75rem;
-    margin-right: -0.75rem;
-    width: calc(100% + 1.5rem);
+  .sheet-content-wrapper {
+    padding: 0 0.75rem 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .sheet-content-wrapper {
+    padding: 0 0.6rem 0.4rem 0.6rem;
   }
 }
 

@@ -6,7 +6,6 @@
         <BackButton 
           text="Retour au dashboard" 
           :customAction="goBackToMatieres"
-          position="top-left"
         />
       </div>
 
@@ -72,16 +71,78 @@ function onNotionClick(notionId) {
   padding: 0;
 }
 
+:deep(.dashboard-main) {
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+}
+
+:deep(.dashboard-main.with-mobile-nav) {
+  padding-top: 0 !important;
+}
+
 .nav-header-base {
-  padding: 0 0 1rem 0;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
   background: white;
+}
+
+@media (max-width: 1200px) {
+  :deep(.dashboard-main) {
+    padding-left: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  :deep(.dashboard-main) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  :deep(.dashboard-main) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+@media (max-width: 360px) {
+  :deep(.dashboard-main) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
 }
 
 .main-content-base {
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 0;
+  padding: 0 2rem 1.5rem 2rem;
+}
+
+@media (max-width: 1200px) {
+  .main-content-base {
+    padding: 0 1.5rem 1.25rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content-base {
+    padding: 0 1rem 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content-base {
+    padding: 0 0.75rem 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .main-content-base {
+    padding: 0 0.6rem 0.4rem 0.6rem;
+  }
 }
 
 .notions-container {

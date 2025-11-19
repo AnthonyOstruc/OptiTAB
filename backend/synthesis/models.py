@@ -8,6 +8,15 @@ from core.models import BaseContent
 
 class SynthesisSheet(BaseContent):
     """Une fiche de synthèse pour une notion"""
+
+    ACCESS_SCOPE_PAID = 'paid'
+    ACCESS_SCOPE_FREE = 'free'
+    ACCESS_SCOPE_BOTH = 'both'
+    ACCESS_SCOPE_CHOICES = [
+        (ACCESS_SCOPE_PAID, 'Abonnés uniquement'),
+        (ACCESS_SCOPE_FREE, 'Gratuit (découverte)'),
+        (ACCESS_SCOPE_BOTH, 'Gratuit + Abonnés'),
+    ]
     notion = models.ForeignKey(
         'curriculum.Notion', 
         on_delete=models.CASCADE, 
@@ -62,6 +71,13 @@ class SynthesisSheet(BaseContent):
         default=5,
         verbose_name="Temps de lecture (min)"
     )
+
+    access_scope = models.CharField(
+        max_length=10,
+        choices=ACCESS_SCOPE_CHOICES,
+        default=ACCESS_SCOPE_PAID,
+        help_text="Définit si cette fiche est gratuite, payante ou visible dans les deux parcours."
+    )
     
     class Meta:
         ordering = ['notion', 'titre']
@@ -71,6 +87,10 @@ class SynthesisSheet(BaseContent):
 
     def __str__(self):
         return f"Fiche - {self.notion.titre} - {self.titre}"
+
+    @property
+    def is_free_preview(self):
+        return self.access_scope in {self.ACCESS_SCOPE_FREE, self.ACCESS_SCOPE_BOTH}
 
 
 class SynthesisImage(models.Model):

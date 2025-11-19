@@ -18,6 +18,14 @@ const loading = ref(false)
 const error = ref(null)
 const resources = ref([])
 
+const resourceTabs = [
+  { label: 'Cours', routeName: 'FreeCourses', resourceType: 'course', icon: '📖' },
+  { label: 'Exercices', routeName: 'FreeExercises', resourceType: 'exercise', icon: '✏️' },
+  { label: 'Synthèse', routeName: 'FreeSummaries', resourceType: 'summary', icon: '📄' }
+]
+
+const currentResourceType = computed(() => props.resourceType)
+
 const typeConfig = computed(() => {
   if (props.resourceType === 'exercise') {
     return {
@@ -48,6 +56,7 @@ const typeConfig = computed(() => {
 
 const isExerciseMode = computed(() => props.resourceType === 'exercise')
 const isSummaryMode = computed(() => props.resourceType === 'summary')
+const isCourseMode = computed(() => props.resourceType === 'course')
 
 const getCardTitle = (resource) => {
   if (isExerciseMode.value && resource?.notion_nom) {
@@ -61,21 +70,16 @@ const getCardDescription = (resource) => {
     return 'Cliquez pour explorer les exercices'
   }
   if (isSummaryMode.value) {
-    return resource?.accroche || resource?.excerpt || 'Cliquez pour lire la fiche'
+    return 'Cliquez pour explorer les chapitres'
+  }
+  if (isCourseMode.value) {
+    return 'Cliquez pour explorer les exercices'
   }
   return resource?.accroche || resource?.excerpt || 'Cliquez pour explorer ce chapitre'
 }
 
-const getAccessLabel = (resource) => {
-  return resource?.badge || resource?.type_label || ''
-}
-
-const getChapterLabel = (resource) => {
-  if (!resource) return ''
-  if (isSummaryMode.value) {
-    return resource?.niveau_nom || resource?.notion_nom || resource?.theme_nom || ''
-  }
-  return resource?.notion_nom || resource?.theme_nom || ''
+const getSummaryLevel = (resource) => {
+  return resource?.niveau_nom || resource?.tag_secondaire || resource?.matiere_nom || ''
 }
 
 const fetchResources = async () => {
@@ -189,12 +193,31 @@ const openExerciseChapter = (chapter) => {
     query: { title: chapter?.name || undefined }
   })
 }
+
+const goToTab = (tab) => {
+  if (!tab || tab.resourceType === props.resourceType) return
+  router.push({ name: tab.routeName })
+}
 </script>
 
 <template>
   <MainLayout>
     <div class="free-course-page">
       <BackButton text="Retour à l'accueil" :custom-action="() => router.push({ name: 'Home' })" position="top-left" />
+
+      <nav class="resource-tab-bar" aria-label="Types de ressources gratuites">
+        <button
+          v-for="tab in resourceTabs"
+          :key="tab.resourceType"
+          class="resource-tab"
+          :class="{ active: tab.resourceType === currentResourceType }"
+          type="button"
+          @click="goToTab(tab)"
+        >
+          <span class="tab-icon">{{ tab.icon }}</span>
+          <span class="tab-label">{{ tab.label }}</span>
+        </button>
+      </nav>
 
       <div v-if="loading" class="state-card">
         Chargement des ressources gratuites...
@@ -256,19 +279,15 @@ const openExerciseChapter = (chapter) => {
                 :disable-prefetch="true"
                 @click="openResource(resource)"
               >
-                <template #meta>
+                <template v-if="isSummaryMode" #meta>
                   <span
-                    v-if="typeConfig.chapterLabel && getChapterLabel(resource)"
+                    v-if="getSummaryLevel(resource)"
                     class="resource-chapter-pill"
                   >
-                    {{ typeConfig.chapterLabel }} : {{ getChapterLabel(resource) }}
+                    {{ getSummaryLevel(resource) }}
                   </span>
-                  <span
-                    v-if="getAccessLabel(resource)"
-                    class="resource-status-pill"
-                  >
-                    {{ getAccessLabel(resource) }}
-                  </span>
+                </template>
+                <template v-else #meta>
                   <span v-if="resource.tag_secondaire" class="resource-tag-pill">
                     {{ resource.tag_secondaire }}
                   </span>
@@ -286,9 +305,10 @@ const openExerciseChapter = (chapter) => {
 .free-course-page {
   min-height: 100vh;
   background: #fff;
-  padding: 140px 24px 80px;
-  max-width: 960px;
-  margin: 0 auto;
+  padding: 140px 32px 80px;
+  max-width: 1200px;
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .theme-block {
@@ -345,6 +365,7 @@ const openExerciseChapter = (chapter) => {
   grid-template-columns: repeat(auto-fill, minmax(280px, 320px));
   gap: 16px;
   justify-content: flex-start;
+  justify-items: start;
 }
 
 .state-card {
@@ -369,6 +390,119 @@ const openExerciseChapter = (chapter) => {
 .resource-status-pill,
 .resource-tag-pill {
   font-size: 12px;
+
+.resource-tab-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0 2rem 0;
+}
+
+.resource-tab {
+  background: #ffffff;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.65rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.resource-tab::before {
+  display: none;
+}
+
+.resource-tab:hover {
+  border-color: #3b82f6;
+  background: #f8fafc;
+  transform: translateY(-1px);
+}
+
+.resource-tab.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+}
+
+.resource-tab.active:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.tab-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: none;
+  filter: none;
+}
+
+.resource-tab:hover .tab-icon {
+  transform: none;
+}
+
+.resource-tab.active .tab-icon {
+  transform: none;
+  filter: none;
+}
+
+.tab-label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: inherit;
+  transition: none;
+  letter-spacing: 0;
+}
+
+.resource-tab.active .tab-label {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .resource-tab-bar {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .resource-tab {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .tab-icon {
+    font-size: 1rem;
+  }
+  
+  .tab-label {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .resource-tab {
+    padding: 0.55rem 0.9rem;
+    font-size: 0.8rem;
+  }
+  
+  .tab-icon {
+    font-size: 0.95rem;
+  }
+  
+  .tab-label {
+    font-size: 0.8rem;
+  }
+}
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 999px;

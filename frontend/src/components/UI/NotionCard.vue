@@ -19,7 +19,7 @@
       <!-- Contenu de la notion -->
       <div class="notion-content">
         <h3 class="notion-title">{{ title }}</h3>
-        <div class="notion-description-container">
+        <div v-if="!hideDescription" class="notion-description-container">
           <p class="notion-description">{{ description || 'Cliquez pour explorer les chapitres' }}</p>
           <!-- Flèche à côté du texte -->
           <div class="notion-arrow">
@@ -44,7 +44,8 @@ const props = defineProps({
   description: { type: String, default: '' },
   notionId: { type: [Number, String], default: null },
   locked: { type: Boolean, default: false },
-  disablePrefetch: { type: Boolean, default: false }
+  disablePrefetch: { type: Boolean, default: false },
+  hideDescription: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['click'])

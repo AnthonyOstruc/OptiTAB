@@ -2,6 +2,7 @@ import re
 from rest_framework import serializers
 
 from .models import FreeLearningResource
+from synthesis.models import SynthesisSheet
 
 
 class FreeLearningResourceSerializer(serializers.ModelSerializer):
@@ -245,3 +246,87 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
             return ''
         minutes = max(1, int((words + 179) / 180))
         return f"~{minutes} min"
+
+
+class SynthesisFreePreviewSerializer(serializers.Serializer):
+    """Sérialise une fiche de synthèse accessible gratuitement."""
+
+    def to_representation(self, sheet: SynthesisSheet):
+        notion = getattr(sheet, 'notion', None)
+        theme = getattr(notion, 'theme', None)
+        contexte = getattr(theme, 'contexte', None)
+        niveau = getattr(contexte, 'niveau', None) if contexte else None
+        matiere = getattr(theme, 'matiere', None)
+        pays = getattr(niveau, 'pays', None) if niveau else None
+
+        summary = sheet.summary or ''
+        excerpt = summary.strip().split('\n')[0]
+        if not excerpt:
+            excerpt = summary[:200]
+
+        images_payload = []
+        images_qs = getattr(sheet, 'images', None)
+        if images_qs is not None:
+            for img in images_qs.all():
+                image_url = ''
+                try:
+                    image_url = getattr(img.image, 'url', '') or ''
+                except Exception:
+                    image_url = ''
+                images_payload.append({
+                    'id': img.id,
+                    'image': image_url,
+                    'image_type': img.image_type,
+                    'position': img.position,
+                    'caption': img.caption,
+                    'legende': img.caption,
+                })
+
+        return {
+            'id': sheet.id,
+            'slug': f'synthese-gratuite-{sheet.id}',
+            'titre': sheet.titre,
+            'accroche': excerpt[:160],
+            'resource_type': FreeLearningResource.TYPE_SUMMARY,
+            'type_label': 'Résumé',
+            'excerpt': summary[:400],
+            'contenu_html': '',
+            'contenu': summary,
+            'images': images_payload,
+            'cover_image': images_payload[0]['image'] if images_payload else '',
+            'badge': self._badge_for_scope(sheet),
+            'lecture_duree': self._format_reading_time(sheet.reading_time_minutes, summary),
+            'tag_secondaire': getattr(niveau, 'nom', '') or getattr(matiere, 'titre', ''),
+            'matiere': getattr(matiere, 'id', None),
+            'matiere_nom': getattr(matiere, 'titre', ''),
+            'niveau': getattr(niveau, 'id', None),
+            'niveau_nom': getattr(niveau, 'nom', ''),
+            'pays_nom': getattr(pays, 'nom', ''),
+            'notion': getattr(notion, 'id', None),
+            'notion_nom': getattr(notion, 'titre', ''),
+            'theme_id': getattr(theme, 'id', None),
+            'theme_nom': getattr(theme, 'titre', ''),
+            'ordre': sheet.ordre,
+            'est_actif': sheet.est_actif,
+            'est_publie': True,
+            'date_creation': sheet.date_creation,
+            'date_modification': sheet.date_modification,
+        }
+
+    @staticmethod
+    def _badge_for_scope(sheet: SynthesisSheet):
+        if getattr(sheet, 'access_scope', SynthesisSheet.ACCESS_SCOPE_PAID) == SynthesisSheet.ACCESS_SCOPE_BOTH:
+            return 'Gratuit + Premium'
+        if sheet.access_scope == SynthesisSheet.ACCESS_SCOPE_FREE:
+            return 'Gratuit'
+        return 'Premium'
+
+    @staticmethod
+    def _format_reading_time(minutes, summary):
+        if minutes:
+            return f"~{max(1, minutes)} min"
+        words = len((summary or '').split())
+        if words == 0:
+            return ''
+        approx = max(1, int((words + 179) / 180))
+        return f"~{approx} min"

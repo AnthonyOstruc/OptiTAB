@@ -1,18 +1,19 @@
 <template>
   <DashboardLayout>
     <section class="cours-section">
-      <!-- Bouton de retour -->
-      <BackButton 
-        text="Retour aux chapitres" 
-        :customAction="goBackToNotions"
-        position="top-left"
-      />
-      
-      <div v-if="loading" class="loading-container">
-        <SkeletonList :count="3" />
+      <div class="nav-header-base">
+        <BackButton 
+          text="Retour aux chapitres" 
+          :customAction="goBackToNotions"
+        />
       </div>
-      
-      <div v-else-if="selectedCours" class="cours-container">
+
+      <div class="cours-body">
+        <div v-if="loading" class="loading-container">
+          <SkeletonList :count="3" />
+        </div>
+        
+        <div v-else-if="selectedCours" class="cours-container">
         <header class="cours-header">
           <h1 class="cours-title">{{ selectedCours.titre }}</h1>
           <template v-if="selectedCours.pdf_url">
@@ -108,7 +109,7 @@
         </transition>
       </div>
       
-      <div v-else-if="cours.length === 0" class="empty-coming">
+        <div v-else-if="cours.length === 0" class="empty-coming">
         <div class="empty-card">
           <div class="empty-icon">📗</div>
           <h2 class="empty-title">Cours — bientôt disponible</h2>
@@ -121,7 +122,7 @@
         </div>
       </div>
       
-      <div v-else class="cours-grid">
+        <div v-else class="cours-grid">
         <div v-for="coursItem in cours" :key="coursItem.id" class="cours-card" @click="viewCours(coursItem)">
           <div class="cours-card-header">
             <h3 class="cours-card-title">{{ coursItem.titre }}</h3>
@@ -131,6 +132,7 @@
           <div class="cours-meta">
             <span class="cours-date">Créé le {{ formatDate(coursItem.date_creation) }}</span>
           </div>
+        </div>
         </div>
       </div>
     </section>
@@ -755,9 +757,55 @@ watch(() => route.query.q, (val) => {
 <style scoped>
 .cours-section {
   background: #fff;
-  padding: 0 5vw 40px 5vw;
-  text-align: center;
+  min-height: 100vh;
+  padding: 0;
   position: relative;
+}
+
+:deep(.dashboard-main) {
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+}
+
+:deep(.dashboard-main.with-mobile-nav) {
+  padding-top: 0 !important;
+}
+
+.nav-header-base {
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
+  background: white;
+}
+
+.cours-body {
+  width: 100%;
+  padding: 0 2rem 1.5rem 2rem;
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .cours-body {
+    padding: 0 1.5rem 1.25rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .cours-body {
+    padding: 0 1rem 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cours-body {
+    padding: 0 0.75rem 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .cours-body {
+    padding: 0 0.6rem 0.4rem 0.6rem;
+  }
 }
 
 .cours-title {
@@ -931,24 +979,6 @@ watch(() => route.query.q, (val) => {
 }
 
 /* Pleine largeur sur mobile (utiliser tout l'espace) */
-@media (max-width: 768px) {
-  .cours-section {
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: -1rem;   /* compense le padding du layout */
-    margin-right: -1rem;
-    width: calc(100% + 2rem);
-  }
-}
-
-@media (max-width: 480px) {
-  .cours-section {
-    margin-left: -0.75rem;
-    margin-right: -0.75rem;
-    width: calc(100% + 1.5rem);
-  }
-}
-
 /* Styles pour le contenu du cours */
 .cours-content {
   text-align: left;

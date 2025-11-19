@@ -71,6 +71,11 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
                     notion__theme__contexte__niveau__pays=user.pays,
                     notion__theme__contexte__niveau=user.niveau_pays
                 )
+
+        # Filtrage par scope d'accès (utile côté admin)
+        access_scope = self.request.query_params.get('access_scope')
+        if access_scope:
+            queryset = queryset.filter(access_scope=access_scope)
         
         # Recherche textuelle
         search = self.request.query_params.get('search', None)
@@ -118,7 +123,8 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             'key_points': original.key_points,
             'formulas': original.formulas,
             'examples': original.examples,
-            'reading_time_minutes': original.reading_time_minutes
+            'reading_time_minutes': original.reading_time_minutes,
+            'access_scope': original.access_scope,
         }
         
         serializer = SynthesisSheetCreateSerializer(data=duplicate_data)

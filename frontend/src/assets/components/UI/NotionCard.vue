@@ -33,7 +33,8 @@ import { useDataPrefetch } from '@/composables/useDataPrefetch'
 const props = defineProps({
   title: { type: String, required: true },
   description: { type: String, default: '' },
-  notionId: { type: [Number, String], default: null }
+  notionId: { type: [Number, String], default: null },
+  disablePrefetch: { type: Boolean, default: false }
 })
 
 const { prefetchNotionContent } = useDataPrefetch()
@@ -42,6 +43,7 @@ const { prefetchNotionContent } = useDataPrefetch()
 let hoverTimeout = null
 
 function handleMouseEnter() {
+  if (props.disablePrefetch) return
   // Annuler le timeout précédent si l'utilisateur survole rapidement plusieurs cartes
   if (hoverTimeout) {
     clearTimeout(hoverTimeout)

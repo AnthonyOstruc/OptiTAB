@@ -24,12 +24,24 @@ class CoursImageInline(admin.TabularInline):
 
 @admin.register(Cours)
 class CoursAdmin(admin.ModelAdmin):
-    list_display = ['titre', 'notion', 'difficulty', 'est_actif', 'pdf_link']
-    list_filter = ['difficulty', 'est_actif']
+    list_display = ['titre', 'notion', 'difficulty', 'access_scope', 'est_actif', 'pdf_link']
+    list_filter = ['difficulty', 'access_scope', 'est_actif']
     search_fields = ['titre', 'notion__titre']
     ordering = ['notion']
-    list_editable = ['est_actif']
-    fields = ('notion', 'titre', 'contenu', 'difficulty', 'ordre', 'video_url', 'pdf_file', 'est_actif', 'date_creation', 'date_modification')
+    list_editable = ['est_actif', 'access_scope']
+    fields = (
+        'notion',
+        'titre',
+        'contenu',
+        'difficulty',
+        'access_scope',
+        'ordre',
+        'video_url',
+        'pdf_file',
+        'est_actif',
+        'date_creation',
+        'date_modification'
+    )
     readonly_fields = ('date_creation', 'date_modification')
     inlines = [CoursImageInline]
     

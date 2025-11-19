@@ -7,6 +7,36 @@ import { requireNiveau, routeRequiresNiveau } from './middlewares/niveauMiddlewa
 
 const routes = [
   { path: '/', name: 'Home', component: () => import('@/views/Home.vue') },
+  {
+    path: '/ressources-gratuites/cours',
+    name: 'FreeCourses',
+    component: () => import('@/views/FreeResourceNotions.vue'),
+    props: { resourceType: 'course' }
+  },
+  {
+    path: '/ressources-gratuites/cours/:slug',
+    name: 'FreeCourseDetail',
+    component: () => import('@/views/FreeCourseDetail.vue'),
+    props: { resourceType: 'course' }
+  },
+  {
+    path: '/ressources-gratuites/exercices',
+    name: 'FreeExercises',
+    component: () => import('@/views/FreeResourceNotions.vue'),
+    props: { resourceType: 'exercise' }
+  },
+  {
+    path: '/ressources-gratuites/exercices/:slug',
+    name: 'FreeExerciseDetail',
+    component: () => import('@/views/FreeCourseDetail.vue'),
+    props: { resourceType: 'exercise' }
+  },
+  {
+    path: '/ressources-gratuites/syntheses',
+    name: 'FreeSummaries',
+    component: () => import('@/views/FreeContentLanding.vue'),
+    props: { resourceType: 'summary' }
+  },
   { path: '/dashboard', name: 'Dashboard', component: () => import('@/views/Dashboard.vue') },
   { path: '/child/:childId', name: 'ChildOverview', component: () => import('@/views/ChildOverview.vue'), meta: { requiresAuth: true } },
 

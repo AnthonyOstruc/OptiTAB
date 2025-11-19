@@ -1,0 +1,473 @@
+﻿<script setup>
+import { ref, onMounted, nextTick, watch, computed, onBeforeUnmount } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import MainLayout from '@/components/layout/MainLayout.vue'
+import BackButton from '@/components/common/BackButton.vue'
+import { getFreeResource } from '@/api/free-content'
+import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
+import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
+
+const props = defineProps({
+  resourceType: {
+    type: String,
+    default: 'course'
+  }
+})
+
+const route = useRoute()
+const router = useRouter()
+const { openModal } = useModalManager()
+
+const resource = ref(null)
+const loading = ref(false)
+const error = ref(null)
+const tableOfContents = ref([])
+const isTocExpanded = ref(false)
+const contentRef = ref(null)
+const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
+const contentHeight = ref(0)
+const renderedContent = computed(() => {
+  if (!resource.value) return ''
+  if (resource.value.contenu) {
+    return renderContentWithImages(resource.value.contenu, resource.value.images || [])
+  }
+  return resource.value.contenu_html || ''
+})
+const showScrollTopButton = ref(false)
+const backButtonLabel = computed(() =>
+  props.resourceType === 'exercise' ? 'Retour aux exercices gratuits' : 'Retour aux chapitres gratuits'
+)
+
+function computeAutoZoom(width) {
+  let base
+  if (width >= 1400) base = 1
+  else if (width >= 1200) base = 0.95
+  else if (width >= 1024) base = 0.9
+  else if (width >= 900) base = 0.85
+  else if (width >= 768) base = 0.8
+  else if (width >= 640) base = 0.78
+  else if (width >= 520) base = 0.76
+  else if (width >= 420) base = 0.74
+  else base = 0.72
+
+  if (width < 1024) {
+    const extra = width < 768 ? 0.1 : 0.07
+    return Math.max(0.6, base - extra)
+  }
+  return base
+}
+
+const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
+
+const zoomStyle = computed(() => {
+  const z = zoomLevel.value || 1
+  const widthPercent = (100 / z).toFixed(3)
+  return {
+    '--course-zoom': z,
+    '--course-content-height': `${contentHeight.value}px`,
+    transform: `scale(${z})`,
+    transformOrigin: 'top left',
+    width: `${widthPercent}%`
+  }
+})
+
+const fetchResource = async () => {
+  loading.value = true
+  error.value = null
+  try {
+    resource.value = await getFreeResource(route.params.slug)
+  } catch (err) {
+    console.error('Erreur chargement de la ressource gratuite', err)
+    error.value = err?.message || "Impossible de charger cette ressource gratuite."
+  } finally {
+    loading.value = false
+  }
+}
+
+const buildTableOfContents = () => {
+  tableOfContents.value = []
+  const root = contentRef.value
+  if (!root) return
+  const selectors = root.querySelectorAll('h1, h2, h3')
+  const toc = []
+  selectors.forEach((heading, index) => {
+    const level = Number(heading.tagName.replace('H', ''))
+    const text = heading.textContent?.trim()
+    if (!text) return
+    const id = heading.id || `free-course-heading-${index}`
+    heading.id = id
+    toc.push({ id, text, level })
+  })
+  tableOfContents.value = toc
+}
+
+const measureContentHeight = () => {
+  if (!contentRef.value) {
+    contentHeight.value = 0
+    return
+  }
+  contentHeight.value = contentRef.value.scrollHeight || contentRef.value.offsetHeight || 0
+}
+
+const updateViewportWidth = () => {
+  if (typeof window === 'undefined') return
+  viewportWidth.value = window.innerWidth
+  nextTick(() => measureContentHeight())
+}
+
+const handleScroll = () => {
+  const threshold = 300
+  showScrollTopButton.value = (window.scrollY || document.documentElement.scrollTop || 0) > threshold
+}
+
+const scrollToTop = () => {
+  if (typeof window === 'undefined') return
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const scrollToSection = (id) => {
+  const el = document.getElementById(id)
+  if (!el) return
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+const goBack = () => {
+  const routeName = props.resourceType === 'exercise' ? 'FreeExercises' : 'FreeCourses'
+  router.push({ name: routeName })
+}
+
+const openSignup = () => {
+  openModal(MODAL_IDS.REGISTER)
+}
+
+watch(
+  () => route.params.slug,
+  () => {
+    resource.value = null
+    fetchResource()
+  }
+)
+
+watch(
+  renderedContent,
+  async (html) => {
+    if (!html) {
+      tableOfContents.value = []
+      return
+    }
+    await nextTick()
+    buildTableOfContents()
+    try {
+      await renderMath()
+    } catch (_) {}
+    measureContentHeight()
+  },
+  { immediate: true }
+)
+
+watch(zoomLevel, () => {
+  nextTick(() => measureContentHeight())
+})
+
+onMounted(() => {
+  fetchResource()
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', updateViewportWidth, { passive: true })
+    window.addEventListener('scroll', handleScroll, { passive: true })
+  }
+})
+
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateViewportWidth)
+    window.removeEventListener('scroll', handleScroll)
+  }
+})
+</script>
+
+<template>
+  <MainLayout>
+    <section class="cours-section">
+      <BackButton 
+        :text="backButtonLabel" 
+        :custom-action="goBack"
+        position="top-left"
+      />
+
+      <div v-if="loading" class="loading-container">
+        Chargement de la ressource...
+      </div>
+
+      <div v-else-if="error" class="error-state">
+        <p>{{ error }}</p>
+        <button @click="fetchResource">Réessayer</button>
+      </div>
+
+      <div v-else-if="resource" class="cours-container">
+        <header class="cours-header">
+          <button class="inline-back" type="button" @click="goBack">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+            <span>{{ backButtonLabel }}</span>
+          </button>
+          <h1 class="cours-title">{{ resource.titre }}</h1>
+        </header>
+
+        <nav v-if="tableOfContents.length" class="toc-container">
+          <div class="toc-header" @click="isTocExpanded = !isTocExpanded">
+            <div class="toc-header-content">
+              <svg class="toc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"/>
+                <line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/>
+                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                <line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+              <h3 class="toc-title">Sommaire</h3>
+            </div>
+            <svg class="toc-toggle-icon" :class="{ expanded: isTocExpanded }" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+        </div>
+        <transition name="toc-expand">
+            <div v-show="isTocExpanded" class="toc-body">
+              <ul class="toc-list">
+                <li 
+                  v-for="(item, index) in tableOfContents" 
+                  :key="item.id || index"
+                  :class="['toc-item', `toc-level-${item.level}`]"
+                >
+                  <a class="toc-link" href="#" @click.prevent="scrollToSection(item.id)">
+                    {{ item.text }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </transition>
+        </nav>
+
+        <div class="cours-content-outer" :style="zoomStyle">
+          <div class="cours-content" ref="contentRef" v-html="renderedContent" />
+        </div>
+
+        <transition name="scroll-top-fade">
+          <button
+            v-show="showScrollTopButton"
+            class="scroll-top-btn"
+            @click="scrollToTop"
+            aria-label="Retour en haut"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="18 15 12 9 6 15" />
+            </svg>
+          </button>
+        </transition>
+      </div>
+    </section>
+  </MainLayout>
+</template>
+
+<style scoped>
+.cours-section {
+  padding: 110px 2vw 60px;
+  background: #fff;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .cours-section {
+    padding-top: 90px;
+  }
+
+  .cours-header {
+    margin-bottom: 0;
+  }
+}
+
+.cours-header {
+  text-align: center;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.cours-title {
+  font-size: clamp(24px, 3vw, 30px);
+  color: #193e8e;
+  margin: 0 0 8px;
+  font-weight: 800;
+}
+
+.detail-meta {
+  color: #475569;
+  font-weight: 600;
+  margin: 8px 0 0;
+}
+
+.inline-back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(25, 62, 142, 0.3);
+  background: #f5f8ff;
+  color: #193e8e;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.inline-back:hover {
+  border-color: #193e8e;
+}
+
+.toc-container {
+  margin: 12px 0 18px;
+  width: 100%;
+  border-radius: 24px;
+  background: #f5f8ff;
+  border: 1px solid rgba(25, 62, 142, 0.12);
+  overflow: hidden;
+  transform-origin: top left;
+}
+
+@media (max-width: 1024px) {
+  .toc-container {
+    transform: scale(0.96);
+  }
+}
+
+@media (max-width: 768px) {
+  .toc-container {
+    transform: scale(0.92);
+    margin: 0 auto;
+  }
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px;
+  cursor: pointer;
+  color: #1d3b8b;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.toc-header-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toc-body {
+  border-top: 1px solid rgba(25, 62, 142, 0.12);
+  padding: 10px 22px 16px;
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.toc-item {
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.toc-link {
+  text-decoration: none;
+  color: #193e8e;
+  font-weight: 600;
+}
+
+.toc-level-3 .toc-link {
+  font-weight: 400;
+  color: #1d4ed8;
+  padding-left: 24px;
+}
+
+.cours-content-outer {
+  width: 100%;
+  transform-origin: top left;
+  transition: transform 0.2s ease;
+  overflow-x: hidden;
+  height: calc(var(--course-content-height, 0px) * var(--course-zoom, 1));
+  margin-top: -8px;
+}
+
+.cours-content {
+  width: 100%;
+  padding: 0 0 40px;
+  line-height: 1.75;
+  color: #1f2937;
+  font-size: 17px;
+}
+
+.cours-content-outer {
+  width: 100%;
+  transform-origin: top left;
+  transition: transform 0.2s ease;
+  overflow-x: hidden;
+  height: calc(var(--course-content-height, 0px) * var(--course-zoom, 1));
+}
+
+@supports (zoom: 1) {
+  .cours-content-outer {
+    zoom: var(--course-zoom, 1);
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+.cours-content :deep(h1),
+.cours-content :deep(h2),
+.cours-content :deep(h3) {
+  color: #0f172a;
+  margin-top: 32px;
+  border-bottom: 2px solid #3b82f6;
+  padding-bottom: 8px;
+}
+
+.scroll-top-btn {
+  position: fixed;
+  bottom: 28px;
+  left: 24px;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: #1d3b8b;
+  color: #fff;
+  box-shadow: 0 15px 30px rgba(29, 59, 139, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1200;
+}
+
+.scroll-top-fade-enter-active,
+.scroll-top-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.scroll-top-fade-enter-from,
+.scroll-top-fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+</style>
+

@@ -76,18 +76,20 @@ const goBack = () => {
   transition: all 0.2s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   margin-bottom: 1rem;
-  /* Monter le bouton de retour */
-  margin-top: -0.5rem;
-  /* Déplacer le bouton vers la gauche */
-  margin-left: -0.5rem;
+  margin-top: 0;
+  margin-left: 0;
 }
 
 .back-button--top-left {
   position: fixed;
-  top: 0.5rem;
-  left: 0.5rem;
+  top: 80px;
+  left: 24px;
   z-index: 1000;
-  margin-bottom: 0;
+  margin: 0;
+  border-radius: 999px;
+  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.15);
+  padding: 0.6rem 0.9rem;
+  font-weight: 600;
 }
 
 .back-button:hover {

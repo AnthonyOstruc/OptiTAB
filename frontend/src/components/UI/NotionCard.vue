@@ -40,7 +40,8 @@ const props = defineProps({
   title: { type: String, required: true },
   description: { type: String, default: '' },
   notionId: { type: [Number, String], default: null },
-  locked: { type: Boolean, default: false }
+  locked: { type: Boolean, default: false },
+  disablePrefetch: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['click'])
@@ -56,7 +57,7 @@ function handleClick() {
 }
 
 function handleMouseEnter() {
-  if (props.locked) return
+  if (props.locked || props.disablePrefetch) return
   // Annuler le timeout précédent si l'utilisateur survole rapidement plusieurs cartes
   if (hoverTimeout) {
     clearTimeout(hoverTimeout)

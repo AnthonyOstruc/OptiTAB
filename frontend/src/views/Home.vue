@@ -3,11 +3,11 @@
 import Header from '@/components/layout/Header.vue'
 import Footer from '@/components/layout/Footer.vue'
 import SectionHero from '@/components/home/SectionHero.vue'
-import CallToAction from '@/components/home/CallToAction.vue'
 import SubjectsSection from '@/components/home/SubjectsSection.vue'
 import IntroFeaturesSection from '@/components/home/IntroFeaturesSection.vue'
 import StepsHowItWorks from '@/components/home/StepsHowItWorks.vue'
 import DemoSection from '@/components/home/DemoSection.vue'
+import FreeContentShowcase from '@/components/home/FreeContentShowcase.vue'
 import PricingPlans from '@/components/home/PricingPlans.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
 import NewsletterSection from '@/components/home/NewsletterSection.vue'
@@ -31,7 +31,8 @@ import {
   etapesParcours,
   faq,
   newsletterSection,
-  pricingPlans
+  pricingPlans,
+  freeContentHomeBlocks
 } from '@/config/homeContent.js'
 
 const matieres = ref([])
@@ -203,6 +204,9 @@ watch(zoomLevel, () => {
         @cta-subscribe="handleDemoSubscribe"
         @cta-pricing="handleDemoPricing"
       />
+
+      <!-- Bloc de ressources gratuites -->
+      <FreeContentShowcase :items="freeContentHomeBlocks" />
 
       <!-- Section Intro Features (accroche + grille) -->
       <IntroFeaturesSection

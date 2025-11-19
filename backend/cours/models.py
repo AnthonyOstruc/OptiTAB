@@ -4,28 +4,47 @@ Chaque chapitre a son cours
 """
 from django.db import models
 from core.models import BaseEducational
-from django.db import models
 
 
 class Cours(BaseEducational):
     """Un cours pour une notion"""
+    ACCESS_SCOPE_PAID = 'paid'
+    ACCESS_SCOPE_FREE = 'free'
+    ACCESS_SCOPE_BOTH = 'both'
+    ACCESS_SCOPE_CHOICES = [
+        (ACCESS_SCOPE_PAID, 'Abonnés uniquement'),
+        (ACCESS_SCOPE_FREE, 'Gratuit (découverte)'),
+        (ACCESS_SCOPE_BOTH, 'Gratuit + Abonnés'),
+    ]
+
     notion = models.OneToOneField(
-        'curriculum.Notion', 
-        on_delete=models.CASCADE, 
+        'curriculum.Notion',
+        on_delete=models.CASCADE,
         related_name='cours',
         null=True  # Temporaire pour migration
     )
     video_url = models.URLField(blank=True, null=True)
-    # PDF optionnel associé au cours (uploadé manuellement via l'admin/outil interne)
+    # PDF optionnel associé au cours (uploadé manuellement via l'admin)
     pdf_file = models.FileField(upload_to='cours_pdfs/', blank=True, null=True)
-    
+    access_scope = models.CharField(
+        max_length=10,
+        choices=ACCESS_SCOPE_CHOICES,
+        default=ACCESS_SCOPE_PAID,
+        help_text="Définit si le cours est gratuit, payant ou visible dans les deux parcours."
+    )
+
     class Meta:
         ordering = ['notion']
         verbose_name = "Cours"
         verbose_name_plural = "Cours"
 
     def __str__(self):
-        return f"Cours - {self.notion.titre}"
+        notion_title = getattr(self.notion, 'titre', 'Sans notion')
+        return f"Cours - {notion_title}"
+
+    @property
+    def is_free_preview(self):
+        return self.access_scope in {self.ACCESS_SCOPE_FREE, self.ACCESS_SCOPE_BOTH}
 
 
 class CoursImage(models.Model):

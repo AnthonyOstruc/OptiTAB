@@ -248,3 +248,5 @@ export const pricingPlans = {
     }
   ]
 };
+
+export { freeContentHomeBlocks } from './freeContent';

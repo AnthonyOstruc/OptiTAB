@@ -1,8 +1,8 @@
 export const freeContentMeta = {
   course: {
-    title: 'Mini cours gratuits',
-    highlight: 'Chapitres offerts',
-    description: 'Apercevez la clarté de nos cours avant de vous abonner.',
+    title: 'Cours gratuits',
+    highlight: 'Mini-cours gratuits',
+    description: 'Testez la méthode OptiTAB avant de vous abonner.',
     badge: 'Cours express',
     accent: '#2563eb',
     routeName: 'FreeCourses',
@@ -39,8 +39,8 @@ export const freeContentMeta = {
   },
   exercise: {
     title: 'Exercices gratuits',
-    highlight: 'Guidés pas-à-pas',
-    description: 'Des exercices corrigés pour réviser gratuitement et montrer notre accompagnement.',
+    highlight: 'Exercices guidés gratuits',
+    description: 'Passez de la théorie à la pratique en quelques minutes.',
     badge: 'Ateliers interactifs',
     accent: '#10b981',
     routeName: 'FreeExercises',
@@ -54,8 +54,8 @@ export const freeContentMeta = {
   },
   summary: {
     title: 'Fiches de résumé',
-    highlight: 'Révision express',
-    description: 'Des fiches ultra-visuelles offertes pour aider à mémoriser les notions clés.',
+    highlight: 'Fiches de révision gratuites',
+    description: 'L\'essentiel du cours, prêt à être mémorisé.',
     badge: 'Focus révision',
     accent: '#f97316',
     routeName: 'FreeSummaries',
@@ -77,11 +77,26 @@ export const freeContentHomeBlocks = Object.entries(freeContentMeta).map(([type,
   badge: meta.badge,
   accent: meta.accent,
   to: { name: meta.routeName },
-  bullets: [
-    'Chapitres offerts mis à jour chaque semaine',
-    'Format interactif pensé pour les mobiles',
-    'Accessible sans compte pour rassurer les parents'
-  ]
+  bullets: type === 'course' 
+    ? [
+        'Cours structurés et faciles à suivre',
+        'Explications claires avec exemples corrigés',
+        'Accès 24h/24 sur mobile et ordinateur',
+        'Sans carte bancaire, sans engagement'
+      ]
+    : type === 'exercise'
+    ? [
+        'Exercices corrigés pas-à-pas',
+        'Astuces et méthodes directement applicables',
+        'Interface fluide pensée pour les mobiles',
+        'Accès immédiat, sans création de compte'
+      ]
+    : [
+        'Notions clés synthétisées en une page',
+        'Idéales avant contrôles et examens',
+        'Consultation rapide sur mobile ou tablette',
+        'Utilisables sans compte ni inscription'
+      ]
 }))
 
 export const freeContentFallback = {

@@ -9,24 +9,28 @@
     <div class="exercice-header">
       <div class="header-top">
         <div class="header-first-row">
-          <div class="difficulty-indicator">
-            <span v-if="difficulty" class="difficulty-stars">{{ diffStars[difficulty] || '★★' }}</span>
+          <div class="header-slot header-slot--left">
+            <button
+              v-if="!readonly && current"
+              class="reset-status-btn"
+              @click="resetStatus"
+              title="Réinitialiser le statut"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                <path d="M21 3v5h-5"/>
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                <path d="M3 21v-5h5"/>
+              </svg>
+            </button>
           </div>
-          <button
-            v-if="!readonly && current"
-            class="reset-status-btn"
-            @click="resetStatus"
-            title="Réinitialiser le statut"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-              <path d="M21 3v5h-5"/>
-              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-              <path d="M3 21v-5h5"/>
-            </svg>
-          </button>
+          <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
+          <div class="header-slot header-slot--right">
+            <div class="difficulty-indicator" v-if="difficulty">
+              <span class="difficulty-stars">{{ diffStars[difficulty] || '★★' }}</span>
+            </div>
+          </div>
         </div>
-        <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
       </div>
 
       <!-- Navigation Tabs -->
@@ -593,19 +597,31 @@ watch(activeTab, () => {
   height: auto;
 }
 
+
 .header-top {
-  display: flex;
-  flex-direction: column;
-  padding: 20px 28px;
-  gap: 12px;
+  padding: 16px 28px;
 }
 
 .header-first-row {
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 100%;
   gap: 12px;
+  min-height: 40px;
+}
+
+.header-slot {
+  width: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.header-slot--left {
+  justify-content: flex-start;
+}
+
+.header-slot--right {
+  justify-content: flex-end;
 }
 
 .exercice-title {
@@ -615,7 +631,7 @@ watch(activeTab, () => {
   margin: 0;
   line-height: 1.3;
   text-align: center;
-  width: 100%;
+  flex: 1;
 }
 
 .header-controls {
@@ -626,12 +642,13 @@ watch(activeTab, () => {
 }
 
 .difficulty-indicator {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 12px;
+  padding: 4px 10px;
   background: rgba(251, 146, 60, 0.1);
   border-radius: 8px;
+  line-height: 1.3;
 }
 
 .difficulty-stars {
@@ -640,7 +657,7 @@ watch(activeTab, () => {
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(245, 158, 11, 0.3);
   letter-spacing: 2px;
-  line-height: 1;
+  line-height: 1.3;
   display: inline-block;
 }
 
@@ -649,12 +666,12 @@ watch(activeTab, () => {
   border: 2px solid #e5e7eb;
   color: #64748b;
   cursor: pointer;
-  padding: 8px;
+  padding: 6px;
   border-radius: 50%;
   transition: all 0.2s ease;
   flex-shrink: 0;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;

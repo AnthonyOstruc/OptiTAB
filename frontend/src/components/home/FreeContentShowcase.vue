@@ -6,9 +6,9 @@
           <SparklesIcon class="eyebrow-icon" />
           Aperçus gratuits
         </span>
-        <h2 class="main-title">Offrez un avant-goût d'OptiTAB</h2>
+        <h2 class="main-title">Découvrez la méthode <span class="highlight-brand">OptiTAB</span></h2>
         <p class="subtitle">
-          Sélectionnez quelques chapitres ouverts pour convaincre les élèves et rassurer les parents avant l'abonnement.
+          Testez gratuitement nos cours structurés et exercices corrigés pour comprendre pourquoi les élèves progressent avec nous.
         </p>
       </div>
 
@@ -126,6 +126,10 @@ const getIcon = (type) => {
   color: #0f172a;
   margin: 0 0 16px 0;
   line-height: 1.2;
+}
+
+.main-title .highlight-brand {
+  color: #2563eb;
 }
 
 .subtitle {

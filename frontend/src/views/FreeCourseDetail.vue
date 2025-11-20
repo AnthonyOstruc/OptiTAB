@@ -60,9 +60,9 @@ const backButtonLabel = computed(() => {
     return 'Retour aux exercices gratuits'
   }
   if (props.resourceType === 'summary') {
-    return 'Retour aux fiches gratuites'
+    return 'Retour aux fiches'
   }
-  return 'Retour aux chapitres gratuits'
+  return 'Retour aux chapitres'
 })
 
 function computeAutoZoom(width) {
@@ -218,12 +218,11 @@ onBeforeUnmount(() => {
 <template>
   <MainLayout>
     <section class="cours-section">
-      <div class="nav-header-base">
-        <BackButton 
-          :text="backButtonLabel" 
-          :custom-action="goBack"
-        />
-      </div>
+      <BackButton 
+        :text="backButtonLabel" 
+        :custom-action="goBack"
+        position="top-left"
+      />
 
       <div class="cours-body">
         <div v-if="loading" class="loading-container">
@@ -239,16 +238,7 @@ onBeforeUnmount(() => {
           <header class="cours-header">
             <div class="cours-title-row">
               <h1 class="cours-title">{{ resource.titre }}</h1>
-              <div class="cours-badges">
-                <span v-if="resource.badge" class="cours-badge">{{ resource.badge }}</span>
-                <span v-if="resource.type_label" class="cours-type-pill">{{ resource.type_label }}</span>
-              </div>
             </div>
-            <p class="cours-context">
-              <span v-if="resource.notion_nom">Chapitre : {{ resource.notion_nom }}</span>
-              <span v-if="resource.matiere_nom">• {{ resource.matiere_nom }}</span>
-              <span v-if="resource.niveau_nom">• {{ resource.niveau_nom }}</span>
-            </p>
           </header>
 
           <div v-if="isExerciseResource" class="exercise-detail-body">
@@ -326,12 +316,6 @@ onBeforeUnmount(() => {
   background: #fff;
   min-height: 100vh;
   position: relative;
-}
-
-.nav-header-base {
-  margin: 0 0 1rem 0;
-  padding: 0;
-  display: flex;
 }
 
 .cours-body {

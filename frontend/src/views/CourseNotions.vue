@@ -1,17 +1,14 @@
 <template>
   <DashboardLayout>
     <div class="notions-page-base">
-      <!-- Navigation Header -->
       <div class="nav-header-base">
         <BackButton 
           text="Retour au dashboard" 
           :customAction="goBackToDashboard"
+          position="top-left-dashboard"
         />
       </div>
-
       
-
-      <!-- Main Content -->
       <div class="main-content-base">
         <div class="notions-container">
           <ThemeNotionsView
@@ -82,37 +79,9 @@ function goBackToDashboard() {
 }
 
 .nav-header-base {
-  padding: 0;
-  margin: 0 0 1rem 0;
-  display: flex;
+  padding: 0 0 1rem 0;
+  margin-bottom: 1.5rem;
   background: white;
-}
-
-@media (max-width: 1200px) {
-  :deep(.dashboard-main) {
-    padding-left: 0 !important;
-  }
-}
-
-@media (max-width: 768px) {
-  :deep(.dashboard-main) {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-}
-
-@media (max-width: 480px) {
-  :deep(.dashboard-main) {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-}
-
-@media (max-width: 360px) {
-  :deep(.dashboard-main) {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
 }
 
 .main-content-base {
@@ -140,14 +109,31 @@ function goBackToDashboard() {
   }
 }
 
-@media (max-width: 360px) {
-  .main-content-base {
-    padding: 0 0.6rem 0.4rem 0.6rem;
-  }
-}
-
 .notions-container {
   width: 100%;
-  padding-bottom: 40px;
+}
+
+/* Align ThemeNotionsView internals left and remove side paddings */
+.notions-page-base .tnv-wrapper {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+}
+
+.notions-page-base .tnv-themes {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.notions-page-base .tnv-notions-grid {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .nav-header-base {
+    padding: 1rem;
+  }
 }
 </style> 

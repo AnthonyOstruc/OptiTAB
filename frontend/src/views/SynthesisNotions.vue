@@ -5,6 +5,7 @@
         <BackButton 
           text="Retour au dashboard" 
           :customAction="goBackToMatieres"
+          position="top-left-dashboard"
         />
       </div>
 
@@ -72,7 +73,7 @@ onMounted(() => { loading.value = false })
 
 .nav-header-base {
   padding: 0;
-  margin: 0 0 1rem 0;
+  margin: 0 0 2.5rem 0;
   display: flex;
   background: white;
 }

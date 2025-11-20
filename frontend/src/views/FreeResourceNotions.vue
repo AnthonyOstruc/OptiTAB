@@ -24,7 +24,7 @@ const resources = ref([])
 const selectedLevels = ref([])
 const showLevelFilter = ref(false)
 const currentPage = ref(1)
-const itemsPerPage = 10
+const itemsPerPage = 12
 const searchQuery = ref('')
 const userStore = useUserStore()
 const subscriptionStore = useSubscriptionStore()
@@ -202,13 +202,37 @@ const filteredResources = computed(() => {
     })
   }
 
-  // Filter by search query
+  // Filter by search query and mark if match is in content
   if (searchQuery.value.trim()) {
     const query = searchQuery.value.toLowerCase().trim()
     filtered = filtered.filter((resource) => {
+      // Chercher dans le titre
       const title = (resource?.titre || resource?.notion_nom || '').toLowerCase()
-      const description = (resource?.accroche || resource?.excerpt || resource?.contenu || '').toLowerCase()
-      return title.includes(query) || description.includes(query)
+      
+      // Chercher dans le contenu texte (champ principal du cours)
+      const content = (resource?.contenu || '').toLowerCase()
+      
+      // Chercher dans les autres champs textuels
+      const accroche = (resource?.accroche || '').toLowerCase()
+      const excerpt = (resource?.excerpt || '').toLowerCase()
+      const question = (resource?.question || '').toLowerCase()
+      
+      // Enlever les balises HTML du contenu pour une meilleure recherche
+      const cleanContent = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ')
+      
+      const titleMatch = title.includes(query)
+      const contentMatch = cleanContent.includes(query)
+      const otherMatch = accroche.includes(query) || excerpt.includes(query) || question.includes(query)
+      
+      // Marquer si le match provient du contenu
+      resource._matchInContent = !titleMatch && (contentMatch || otherMatch)
+      
+      return titleMatch || contentMatch || otherMatch
+    })
+  } else {
+    // Réinitialiser le marqueur si pas de recherche
+    filtered.forEach(resource => {
+      resource._matchInContent = false
     })
   }
 
@@ -506,6 +530,12 @@ const onLockedExercise = (chapter) => {
             >
               <template v-if="isSummaryMode" #meta>
                 <span
+                  v-if="resource._matchInContent"
+                  class="resource-match-pill"
+                >
+                  🔍 Trouvé dans le contenu
+                </span>
+                <span
                   v-if="resource.is_locked"
                   class="resource-locked-pill"
                 >
@@ -519,6 +549,12 @@ const onLockedExercise = (chapter) => {
                 </span>
               </template>
               <template v-else #meta>
+                <span
+                  v-if="resource._matchInContent"
+                  class="resource-match-pill"
+                >
+                  🔍 Trouvé dans le contenu
+                </span>
                 <span
                   v-if="resource.is_locked"
                   class="resource-locked-pill"
@@ -676,7 +712,7 @@ const onLockedExercise = (chapter) => {
   position: relative;
   flex: 1;
   min-width: 280px;
-  max-width: 500px;
+  max-width: 470px;
 }
 
 .search-icon {
@@ -895,7 +931,8 @@ const onLockedExercise = (chapter) => {
 .resource-chapter-pill,
 .resource-status-pill,
 .resource-tag-pill,
-.resource-locked-pill {
+.resource-locked-pill,
+.resource-match-pill {
   font-size: 12px;
   font-weight: 600;
   padding: 3px 10px;
@@ -929,6 +966,13 @@ const onLockedExercise = (chapter) => {
   color: #1d4ed8;
   border-color: rgba(99, 102, 241, 0.35);
   text-transform: uppercase;
+  font-size: 11px;
+}
+
+.resource-match-pill {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: rgba(251, 191, 36, 0.4);
   font-size: 11px;
 }
 

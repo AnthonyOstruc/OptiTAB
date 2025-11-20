@@ -1,5 +1,5 @@
 <template>
-  <header class="header" ref="headerRef">
+  <header :class="['header', { 'header--no-shadow': isFreeResourcePage }]" ref="headerRef">
     <div class="header-desktop">
       <Logo />
       <Navigation @open-login="handleLogin" />
@@ -128,6 +128,10 @@ export default {
   /* S'assurer que le header reste visible */
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+}
+
+.header--no-shadow {
+  box-shadow: none;
 }
 
 .header-mobile {

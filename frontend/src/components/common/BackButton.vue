@@ -1,6 +1,10 @@
 <template>
   <button 
-    :class="['back-button', { 'back-button--top-left': position === 'top-left' }]" 
+    :class="['back-button', { 
+      'back-button--top-left': position === 'top-left',
+      'back-button--top-left-dashboard': position === 'top-left-dashboard',
+      'back-button--sticky': position === 'sticky'
+    }]" 
     @click="goBack"
     :title="title || 'Retour'"
     aria-label="Retour en arrière"
@@ -44,8 +48,8 @@ const props = defineProps({
   },
   position: {
     type: String,
-    default: 'normal', // 'normal' ou 'top-left'
-    validator: (value) => ['normal', 'top-left'].includes(value)
+    default: 'normal', // 'normal', 'top-left', 'top-left-dashboard', ou 'sticky'
+    validator: (value) => ['normal', 'top-left', 'top-left-dashboard', 'sticky'].includes(value)
   }
 })
 
@@ -75,24 +79,37 @@ const goBack = () => {
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  margin-bottom: 1rem;
-  margin-top: 0;
-  margin-left: 0;
 }
 
 .back-button--top-left {
   position: fixed;
-  top: calc(var(--header-height, 60px) + 2px);
-  left: max(0px, env(safe-area-inset-left, 0px));
-  z-index: 1000;
+  top: 80px;
+  left: 20px;
+  z-index: 15000;
   margin: 0;
-  border-radius: 14px;
-  padding: 0.65rem 1rem;
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  color: #374151;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.15);
-  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.back-button--top-left-dashboard {
+  position: fixed;
+  z-index: 15000;
+  margin: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.back-button--sticky {
+  position: sticky;
+  top: 20px;
+  z-index: 1000;
+  margin: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
 .back-button:hover {
@@ -117,102 +134,39 @@ const goBack = () => {
   white-space: nowrap;
 }
 
-/* Version mobile - bouton plus visible */
 @media (max-width: 768px) {
-  .back-button {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9rem;
-    /* Monter encore plus sur mobile */
-    margin-top: -0.75rem;
-    /* Déplacer encore plus vers la gauche sur mobile */
-    margin-left: -0.75rem;
-    /* Améliorer la visibilité sur mobile */
-    background: #ffffff;
-    border: 2px solid #3b82f6;
-    box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
-    font-weight: 600;
+  .back-button--top-left {
+    top: 75px;
+    left: 15px;
   }
   
-  .back-icon {
-    width: 18px;
-    height: 18px;
+  .back-button--top-left-dashboard {
+    top: 0px;
+    left: 0px;
+  }
+  
+  .back-button--sticky {
+    top: 10px;
   }
   
   .back-text {
     display: none;
   }
-  
-  .back-button--top-left {
-    top: calc(var(--header-height, 56px) + 2px);
-    left: max(0px, env(safe-area-inset-left, 0px));
-    padding: 0.6rem 0.85rem;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
-    color: #374151;
-    background: #ffffff;
-  }
 }
 
-/* Version très petit écran - garder le même style que 768px */
 @media (max-width: 480px) {
-  .back-button {
-    /* Garder les mêmes valeurs que 768px pour éviter le changement visuel */
-    margin-top: -0.75rem;
-    margin-left: -0.75rem;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9rem;
-    background: #ffffff;
-    border: 2px solid #3b82f6;
-    box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
-    font-weight: 600;
-  }
-  
-  .back-icon {
-    width: 18px;
-    height: 18px;
-  }
-  
   .back-button--top-left {
-    top: calc(var(--header-height, 54px) + 2px);
-    left: max(0px, env(safe-area-inset-left, 0px));
-    border: 1px solid #e5e7eb;
-    color: #374151;
-    background: #ffffff;
-    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.18);
-  }
-}
-
-/* Version ultra-petit écran - visibilité maximale */
-@media (max-width: 360px) {
-  .back-button {
-    /* Visibilité maximale sur ultra-petit écran */
-    padding: 0.7rem 1rem;
-    font-size: 1.1rem;
-    background: #ffffff;
-    border: 3px solid #3b82f6;
-    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
-    color: #3b82f6;
-    font-weight: 700;
-    /* Position optimisée */
-    margin-top: -0.5rem;
-    margin-left: -0.5rem;
+    top: 70px;
+    left: 10px;
   }
   
-  .back-icon {
-    width: 22px;
-    height: 22px;
+  .back-button--top-left-dashboard {
+    top: 5px;
+    left: 5px;
   }
   
-  .back-button--top-left {
-    top: calc(var(--header-height, 52px) + 1px);
-    left: max(0px, env(safe-area-inset-left, 0px));
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 5px 15px rgba(15, 23, 42, 0.18);
-    color: #374151;
-    padding: 0.7rem 0.85rem;
+  .back-button--sticky {
+    top: 5px;
   }
 }
 </style> 

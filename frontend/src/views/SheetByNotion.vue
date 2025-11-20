@@ -2,7 +2,7 @@
   <DashboardLayout>
     <div class="sheet-by-notion-page">
       <div class="nav-header-base">
-        <BackButton text="Retour aux chapitres" :customAction="goBack" />
+        <BackButton text="Retour aux chapitres" :customAction="goBack" position="top-left-dashboard" />
       </div>
 
       <div class="sheet-content-wrapper">
@@ -591,6 +591,14 @@ watch(() => route.query.q, (val) => {
   margin: 0 0 1rem 0;
   display: flex;
   background: white;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nav-header-base .back-button--top-left-dashboard {
+  top: 0;
+  left: 0;
 }
 
 .sheet-content-wrapper {

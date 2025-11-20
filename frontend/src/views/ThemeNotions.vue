@@ -5,7 +5,7 @@
       <BackButton 
         text="Retour aux thèmes" 
         :customAction="goBackToThemes"
-        position="top-left"
+        position="top-left-dashboard"
       />
       
       <!-- En-tête de la page -->

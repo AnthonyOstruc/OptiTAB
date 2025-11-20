@@ -6,6 +6,7 @@
         <BackButton 
           text="Retour au dashboard" 
           :customAction="goBackToMatieres"
+          position="top-left-dashboard"
         />
       </div>
 

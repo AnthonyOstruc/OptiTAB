@@ -8,8 +8,7 @@
     <!-- Header with title, difficulty, and tabs -->
     <div class="exercice-header">
       <div class="header-top">
-        <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
-        <div class="header-controls">
+        <div class="header-first-row">
           <div class="difficulty-indicator">
             <span v-if="difficulty" class="difficulty-stars">{{ diffStars[difficulty] || '★★' }}</span>
           </div>
@@ -27,6 +26,7 @@
             </svg>
           </button>
         </div>
+        <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
       </div>
 
       <!-- Navigation Tabs -->
@@ -595,11 +595,17 @@ watch(activeTab, () => {
 
 .header-top {
   display: flex;
+  flex-direction: column;
+  padding: 20px 28px;
+  gap: 12px;
+}
+
+.header-first-row {
+  display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 28px;
-  gap: 16px;
-  position: relative;
+  width: 100%;
+  gap: 12px;
 }
 
 .exercice-title {
@@ -608,8 +614,8 @@ watch(activeTab, () => {
   color: #1e293b;
   margin: 0;
   line-height: 1.3;
-  flex: 1;
   text-align: center;
+  width: 100%;
 }
 
 .header-controls {
@@ -617,9 +623,6 @@ watch(activeTab, () => {
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
-  position: absolute;
-  right: 28px;
-  top: 20px;
 }
 
 .difficulty-indicator {
@@ -636,6 +639,9 @@ watch(activeTab, () => {
   color: #f59e0b;
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(245, 158, 11, 0.3);
+  letter-spacing: 2px;
+  line-height: 1;
+  display: inline-block;
 }
 
 .reset-status-btn {

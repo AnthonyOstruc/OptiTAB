@@ -1,52 +1,64 @@
 <template>
   <section class="free-showcase">
-    <div class="showcase-header">
-      <p class="eyebrow">
-        <SparklesIcon class="eyebrow-icon" />
-        Aperçus gratuits
-      </p>
-      <h2>Offrez un avant-goût d'OptiTAB</h2>
-      <p class="header-subtitle">
-        Sélectionnez quelques chapitres ouverts pour convaincre les élèves et rassurer les parents avant l'abonnement.
-      </p>
-    </div>
-
-    <div class="cards-grid">
-      <article
-        v-for="item in items"
-        :key="item.type"
-        class="card"
-        role="button"
-        tabindex="0"
-        @click="goTo(item)"
-        @keyup.enter.prevent="goTo(item)"
-      >
-        <div class="card-badge" :style="{ background: item.accent || '#0f172a' }">
-          {{ item.badge }}
-        </div>
-        <h3>{{ item.title }}</h3>
-        <p class="card-highlight">
-          {{ item.highlight }}
+    <div class="showcase-container">
+      <div class="showcase-header">
+        <span class="eyebrow">
+          <SparklesIcon class="eyebrow-icon" />
+          Aperçus gratuits
+        </span>
+        <h2 class="main-title">Offrez un avant-goût d'OptiTAB</h2>
+        <p class="subtitle">
+          Sélectionnez quelques chapitres ouverts pour convaincre les élèves et rassurer les parents avant l'abonnement.
         </p>
-        <p class="card-description">{{ item.description }}</p>
-        <ul class="card-bullets">
-          <li v-for="bullet in item.bullets" :key="bullet">
-            <CheckCircleIcon class="bullet-icon" />
-            <span>{{ bullet }}</span>
-          </li>
-        </ul>
-        <RouterLink :to="item.to" class="card-link">
-          Explorer gratuitement
-          <ArrowUpRightIcon class="link-icon" />
-        </RouterLink>
-      </article>
+      </div>
+
+      <div class="cards-grid">
+        <article
+          v-for="item in items"
+          :key="item.type"
+          class="preview-card"
+          @click="goTo(item)"
+        >
+          <div class="card-header">
+            <div class="badge" :class="`badge-${item.type}`">
+              {{ item.badge }}
+            </div>
+            <div class="card-icon">
+              <component :is="getIcon(item.type)" />
+            </div>
+          </div>
+          
+          <h3 class="card-title">{{ item.title }}</h3>
+          <p class="card-highlight">{{ item.highlight }}</p>
+          <p class="card-description">{{ item.description }}</p>
+          
+          <ul class="features-list">
+            <li v-for="bullet in item.bullets" :key="bullet">
+              <CheckCircleIcon class="check-icon" />
+              {{ bullet }}
+            </li>
+          </ul>
+          
+          <button class="explore-btn">
+            <span>Explorer gratuitement</span>
+            <ArrowRightIcon class="arrow-icon" />
+          </button>
+        </article>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { RouterLink, useRouter } from 'vue-router'
-import { SparklesIcon, CheckCircleIcon, ArrowUpRightIcon } from '@heroicons/vue/24/outline'
+import { useRouter } from 'vue-router'
+import { 
+  SparklesIcon, 
+  CheckCircleIcon, 
+  ArrowRightIcon,
+  BookOpenIcon,
+  AcademicCapIcon,
+  DocumentTextIcon
+} from '@heroicons/vue/24/outline'
 
 defineProps({
   items: {
@@ -61,166 +73,287 @@ const goTo = (item) => {
   if (!item?.to) return
   router.push(item.to)
 }
+
+const getIcon = (type) => {
+  const icons = {
+    course: BookOpenIcon,
+    exercise: AcademicCapIcon,
+    summary: DocumentTextIcon
+  }
+  return icons[type] || BookOpenIcon
+}
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .free-showcase {
-  padding: 80px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
+  padding: 100px 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.showcase-container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .showcase-header {
   text-align: center;
-  max-width: 820px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  margin-bottom: 64px;
 }
 
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin: 0 auto;
-  padding: 6px 14px;
+  padding: 8px 16px;
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
   border-radius: 999px;
   font-size: 14px;
-  font-weight: 600;
-  color: #0f172a;
-  background: #f1f5f9;
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 20px;
 }
 
 .eyebrow-icon {
   width: 18px;
   height: 18px;
-  color: #f97316;
+  color: #f59e0b;
 }
 
-h2 {
-  font-size: clamp(28px, 4vw, 36px);
+.main-title {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
   color: #0f172a;
-  margin: 0;
+  margin: 0 0 16px 0;
+  line-height: 1.2;
 }
 
-.header-subtitle {
-  margin: 0 auto;
-  color: #475569;
-  font-size: 16px;
+.subtitle {
+  font-size: 18px;
+  color: #64748b;
+  margin: 0;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
 }
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
 }
 
-.card {
-  border-radius: 28px;
-  padding: 32px;
+.preview-card {
   background: #ffffff;
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  border: 2px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 32px;
+  cursor: pointer;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  cursor: pointer;
 }
 
-.card::after {
+.preview-card::before {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(120deg, rgba(248, 250, 252, .8), rgba(59, 130, 246, .3));
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
 }
 
-.card-badge {
-  display: inline-flex;
-  align-self: flex-start;
+.preview-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 48px rgba(59, 130, 246, 0.15);
+  border-color: #93c5fd;
+}
+
+.preview-card:hover::before {
+  transform: scaleX(1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
   padding: 6px 14px;
   border-radius: 999px;
-  color: #fff;
-  font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-course {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-exercise {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-summary {
+  background: #fce7f3;
+  color: #9f1239;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+}
+
+.card-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.3;
 }
 
 .card-highlight {
-  text-transform: uppercase;
   font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #64748b;
+  color: #6366f1;
   margin: 0;
 }
 
 .card-description {
-  color: #1f2937;
+  font-size: 16px;
+  color: #475569;
   margin: 0;
-  font-size: 15px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-.card-bullets {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.features-list {
   list-style: none;
   padding: 0;
-  margin: 4px 0 18px;
+  margin: 8px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.card-bullets li {
+.features-list li {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #475569;
-  font-size: 14px;
+  gap: 10px;
+  font-size: 15px;
+  color: #334155;
+  line-height: 1.4;
 }
 
-.bullet-icon {
-  width: 18px;
-  height: 18px;
+.check-icon {
+  width: 20px;
+  height: 20px;
   color: #22c55e;
+  flex-shrink: 0;
 }
 
-.card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  color: #0f172a;
-  text-decoration: none;
+.explore-btn {
   margin-top: auto;
-  transition: transform 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.card-link:hover {
-  color: #2563eb;
-  transform: translateY(-2px);
+.explore-btn:hover {
+  background: #1e293b;
+  transform: translateX(4px);
 }
 
-.link-icon {
-  width: 18px;
-  height: 18px;
+.arrow-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.explore-btn:hover .arrow-icon {
+  transform: translateX(4px);
 }
 
 @media (max-width: 768px) {
   .free-showcase {
-    padding: 60px 0 30px;
+    padding: 60px 16px;
   }
 
-  .card {
+  .showcase-header {
+    margin-bottom: 48px;
+  }
+
+  .main-title {
+    font-size: 32px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .preview-card {
     padding: 24px;
+  }
+
+  .card-title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .card-icon svg {
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

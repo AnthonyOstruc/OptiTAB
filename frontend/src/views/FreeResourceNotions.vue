@@ -1,10 +1,13 @@
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, watch, nextTick, onBeforeUnmount } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import NotionCard from '@/components/UI/NotionCard.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import { getFreeResources } from '@/api/free-content'
+import { useUserStore } from '@/stores/user'
+import { useSubscriptionStore } from '@/stores/subscription'
+import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 
 const props = defineProps({
   resourceType: {
@@ -14,11 +17,63 @@ const props = defineProps({
 })
 
 const router = useRouter()
+const route = useRoute()
 const loading = ref(false)
 const error = ref(null)
 const resources = ref([])
 const selectedLevels = ref([])
 const showLevelFilter = ref(false)
+const currentPage = ref(1)
+const itemsPerPage = 10
+const searchQuery = ref('')
+const userStore = useUserStore()
+const subscriptionStore = useSubscriptionStore()
+const { openModal } = useModalManager()
+
+// Zoom system for mobile
+const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
+const contentHeight = ref(0)
+const contentRef = ref(null)
+
+function computeAutoZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.78
+  if (width >= 520) return 0.76
+  if (width >= 420) return 0.74
+  return 0.72
+}
+
+const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
+
+const zoomStyle = computed(() => {
+  const z = zoomLevel.value || 1
+  const widthPercent = (100 / z).toFixed(3)
+  return {
+    '--content-zoom': z,
+    '--content-height': `${contentHeight.value}px`,
+    transform: `scale(${z})`,
+    transformOrigin: 'top left',
+    width: `${widthPercent}%`
+  }
+})
+
+function updateViewportWidth() {
+  if (typeof window === 'undefined') return
+  viewportWidth.value = window.innerWidth
+  nextTick(() => measureContentHeight())
+}
+
+function measureContentHeight() {
+  if (!contentRef.value) {
+    contentHeight.value = 0
+    return
+  }
+  contentHeight.value = contentRef.value.scrollHeight || contentRef.value.offsetHeight || 0
+}
 
 const typeConfig = computed(() => {
   if (props.resourceType === 'exercise') {
@@ -91,9 +146,38 @@ const fetchResources = async () => {
 }
 
 onMounted(fetchResources)
+onMounted(() => {
+  updateViewportWidth()
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', updateViewportWidth, { passive: true })
+  }
+})
+
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateViewportWidth)
+  }
+})
+
 watch(() => props.resourceType, () => {
   fetchResources()
   selectedLevels.value = []
+  currentPage.value = 1
+  searchQuery.value = ''
+})
+
+watch(() => selectedLevels.value.length, () => {
+  currentPage.value = 1
+  nextTick(() => measureContentHeight())
+})
+
+watch(() => searchQuery.value, () => {
+  currentPage.value = 1
+  nextTick(() => measureContentHeight())
+})
+
+watch(() => zoomLevel.value, () => {
+  nextTick(() => measureContentHeight())
 })
 
 const availableLevels = computed(() => {
@@ -108,13 +192,27 @@ const availableLevels = computed(() => {
 })
 
 const filteredResources = computed(() => {
-  if (selectedLevels.value.length === 0) {
-    return resources.value
+  let filtered = resources.value
+
+  // Filter by level
+  if (selectedLevels.value.length > 0) {
+    filtered = filtered.filter((resource) => {
+      const level = resource?.niveau_nom || resource?.tag_secondaire
+      return level && selectedLevels.value.includes(level)
+    })
   }
-  return resources.value.filter((resource) => {
-    const level = resource?.niveau_nom || resource?.tag_secondaire
-    return level && selectedLevels.value.includes(level)
-  })
+
+  // Filter by search query
+  if (searchQuery.value.trim()) {
+    const query = searchQuery.value.toLowerCase().trim()
+    filtered = filtered.filter((resource) => {
+      const title = (resource?.titre || resource?.notion_nom || '').toLowerCase()
+      const description = (resource?.accroche || resource?.excerpt || resource?.contenu || '').toLowerCase()
+      return title.includes(query) || description.includes(query)
+    })
+  }
+
+  return filtered
 })
 
 const toggleLevel = (level) => {
@@ -130,78 +228,83 @@ const clearFilters = () => {
   selectedLevels.value = []
 }
 
-const themes = computed(() => {
+const flatList = computed(() => {
   if (!filteredResources.value.length) {
     return []
   }
 
-  const fallbackTitle = typeConfig.value.fallback
-
   if (isExerciseMode.value) {
-    const themeGroups = new Map()
+    const chaptersMap = new Map()
     filteredResources.value.forEach((item, index) => {
-      const themeKey =
-        item.theme_id ??
-        (item.matiere ? `matiere-${item.matiere}` : `autres-${index}`)
-
-      if (!themeGroups.has(themeKey)) {
-        themeGroups.set(themeKey, {
-          id: themeKey,
-          name: item.theme_nom || item.matiere_nom || fallbackTitle,
-          chaptersMap: new Map(),
-          totalCount: 0
-        })
-      }
-
-      const themeGroup = themeGroups.get(themeKey)
       const chapterKey = item.notion || item.notion_nom || `chapitre-${index}`
-      if (!themeGroup.chaptersMap.has(chapterKey)) {
-        themeGroup.chaptersMap.set(chapterKey, {
+      if (!chaptersMap.has(chapterKey)) {
+        chaptersMap.set(chapterKey, {
           id: chapterKey,
           notionId: item.notion || chapterKey,
           name: item.notion_nom || 'Chapitre gratuit',
           description: item.notion_description || item.accroche || item.excerpt || '',
-          exercises: []
+          exercises: [],
+          displayTag: ''
         })
       }
-
-      themeGroup.chaptersMap.get(chapterKey).exercises.push(item)
-      themeGroup.totalCount += 1
+      const chapterEntry = chaptersMap.get(chapterKey)
+      chapterEntry.exercises.push(item)
+      const tag = item.tag_secondaire || item.niveau_nom || item.matiere_nom || ''
+      if (!chapterEntry.displayTag && tag) {
+        chapterEntry.displayTag = tag
+      }
     })
-
-    return Array.from(themeGroups.values())
-      .map((theme) => ({
-        id: theme.id,
-        name: theme.name,
-        chapters: Array.from(theme.chaptersMap.values())
-          .map((chapter) => ({
-            ...chapter,
-            count: chapter.exercises.length
-          }))
-          .sort((a, b) => a.name.localeCompare(b.name)),
-        totalCount: theme.totalCount
+    return Array.from(chaptersMap.values())
+      .map((chapter) => ({
+        ...chapter,
+        count: chapter.exercises.length,
+        isLocked: chapter.exercises.length > 0 && chapter.exercises.every((exercise) => Boolean(exercise.is_locked))
       }))
-      .sort((a, b) => a.name.localeCompare(b.name))
+      .sort((a, b) => {
+        if (a.isLocked !== b.isLocked) {
+          return a.isLocked ? 1 : -1
+        }
+        return a.name.localeCompare(b.name)
+      })
   }
 
-  const groups = new Map()
-  filteredResources.value.forEach((item, index) => {
-    const key =
-      item.theme_id ??
-      (item.matiere ? `matiere-${item.matiere}` : item.notion ? `notion-${item.notion}` : `autres-${index}`)
-
-    if (!groups.has(key)) {
-      groups.set(key, {
-        id: key,
-        name: item.theme_nom || item.matiere_nom || item.notion_nom || fallbackTitle,
-        notions: []
-      })
-    }
-    groups.get(key).notions.push(item)
+  const sorted = [...filteredResources.value].sort((a, b) => {
+    const aLocked = Boolean(a.is_locked)
+    const bLocked = Boolean(b.is_locked)
+    if (aLocked === bLocked) return 0
+    return aLocked ? 1 : -1
   })
 
-  return Array.from(groups.values()).sort((a, b) => a.name.localeCompare(b.name))
+  return sorted
 })
+
+const totalResourceCount = computed(() => {
+  if (isExerciseMode.value) {
+    // Pour les exercices, afficher "X exercices" et "Y chapitres"
+    return {
+      count: filteredResources.value.length,
+      chapterCount: flatList.value.length
+    }
+  }
+  return {
+    count: flatList.value.length,
+    chapterCount: 0
+  }
+})
+
+const totalPages = computed(() => Math.ceil(flatList.value.length / itemsPerPage))
+
+const paginatedList = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return flatList.value.slice(start, end)
+})
+
+const goToPage = (page) => {
+  if (page < 1 || page > totalPages.value) return
+  currentPage.value = page
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 const formatCount = (count, overrideLabel) => {
   const label = overrideLabel || typeConfig.value.counterLabel || 'ressource'
@@ -209,11 +312,21 @@ const formatCount = (count, overrideLabel) => {
 }
 
 const openResource = (resource) => {
-  if (!resource?.slug) return
+  if (!resource) return
+  if (resource.is_locked) {
+    onLockedResource(resource)
+    return
+  }
+  if (!resource.slug) return
   router.push({ name: typeConfig.value.slugRoute, params: { slug: resource.slug } })
 }
 
 const openExerciseChapter = (chapter) => {
+  if (!chapter) return
+  if (chapter.isLocked) {
+    onLockedExercise(chapter)
+    return
+  }
   const notionId = chapter?.notionId || chapter?.id
   if (!notionId) return
   router.push({
@@ -222,21 +335,95 @@ const openExerciseChapter = (chapter) => {
     query: { title: chapter?.name || undefined }
   })
 }
+
+const premiumRoutes = {
+  course: 'CourseByNotion',
+  exercise: 'ExercicesByNotion',
+  summary: 'SynthesisByNotion'
+}
+
+const handleLockedAccess = ({ resourceType, notionId }) => {
+  if (subscriptionStore.hasAccess && notionId && premiumRoutes[resourceType]) {
+    router.push({ name: premiumRoutes[resourceType], params: { notionId } })
+    return
+  }
+
+  if (!userStore.isAuthenticated) {
+    openModal(MODAL_IDS.LOGIN)
+    return
+  }
+
+  router.push({
+    name: 'Billing',
+    query: {
+      redirect: route.fullPath,
+      reason: `${resourceType}_premium`
+    }
+  })
+}
+
+const onLockedResource = (resource) => {
+  if (!resource?.notion) {
+    handleLockedAccess({ resourceType: props.resourceType, notionId: null })
+    return
+  }
+  handleLockedAccess({ resourceType: props.resourceType, notionId: resource.notion })
+}
+
+const onLockedExercise = (chapter) => {
+  handleLockedAccess({ resourceType: 'exercise', notionId: chapter?.notionId })
+}
 </script>
 
 <template>
   <MainLayout>
     <div class="free-course-page">
-      <BackButton text="Retour à l'accueil" :custom-action="() => router.push({ name: 'Home' })" position="top-left" />
+      <div class="header-row">
+        <BackButton text="Retour à l'accueil" :custom-action="() => router.push({ name: 'Home' })" position="top-left" />
+        <div v-if="!loading && totalResourceCount.count > 0" class="resource-count-badge">
+          <template v-if="isExerciseMode && totalResourceCount.chapterCount > 0">
+            {{ totalResourceCount.count }} {{ typeConfig.counterLabel }}{{ totalResourceCount.count > 1 ? 's' : '' }}
+            <span class="badge-separator">+</span>
+            {{ totalResourceCount.chapterCount }} chapitre{{ totalResourceCount.chapterCount > 1 ? 's' : '' }}
+          </template>
+          <template v-else>
+            {{ totalResourceCount.count }} {{ typeConfig.counterLabel }}{{ totalResourceCount.count > 1 ? 's' : '' }}
+          </template>
+        </div>
+      </div>
 
       <div v-if="availableLevels.length > 0" class="filter-section">
-        <button class="filter-toggle" @click="showLevelFilter = !showLevelFilter">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="filter-icon">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-          </svg>
-          Filtrer par niveau
-          <span v-if="selectedLevels.length > 0" class="filter-badge">{{ selectedLevels.length }}</span>
-        </button>
+        <div class="filter-bar">
+          <button class="filter-toggle" @click="showLevelFilter = !showLevelFilter">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="filter-icon">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+            </svg>
+            Filtrer par niveau
+            <span v-if="selectedLevels.length > 0" class="filter-badge">{{ selectedLevels.length }}</span>
+          </button>
+
+          <div class="search-box">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="search-icon">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Rechercher un chapitre ou une méthode..."
+              class="search-input"
+            />
+            <button
+              v-if="searchQuery"
+              class="clear-search-btn"
+              @click="searchQuery = ''"
+              aria-label="Effacer la recherche"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="clear-icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
         
         <div v-if="showLevelFilter" class="filter-dropdown">
           <div class="filter-header">
@@ -267,76 +454,111 @@ const openExerciseChapter = (chapter) => {
         <p>{{ error }}</p>
         <button @click="fetchResources">Réessayer</button>
       </div>
-      <div v-else-if="themes.length === 0" class="state-card">
+      <div v-else-if="flatList.length === 0" class="state-card">
         {{ typeConfig.emptyLabel }}
       </div>
       <template v-else>
-        <section v-for="theme in themes" :key="theme.id" class="theme-block">
-          <div class="theme-header">
-            <h2>{{ theme.name }}</h2>
-            <span class="theme-count">
-              {{
-                isExerciseMode
-                  ? formatCount(theme.totalCount, 'exercice')
-                  : formatCount(theme.notions.length)
-              }}
-            </span>
-          </div>
-
+        <div class="content-wrapper" :style="zoomStyle" ref="contentRef">
+          <div class="notion-grid">
           <template v-if="isExerciseMode">
-            <div class="notion-grid">
-              <NotionCard
-                v-for="chapter in theme.chapters"
-                :key="chapter.id"
-                :title="chapter.name"
-                description="Cliquez pour explorer les exercices"
-                :notion-id="chapter.notionId"
-                :disable-prefetch="true"
-                @click="openExerciseChapter(chapter)"
-              >
-                <template #meta>
-                  <span class="resource-chapter-pill">
-                    {{ formatCount(chapter.count || chapter.exercises.length, 'exercice') }}
-                  </span>
-                  <span
-                    v-if="chapter.exercises[0]?.tag_secondaire"
-                    class="resource-tag-pill"
-                  >
-                    {{ chapter.exercises[0].tag_secondaire }}
-                  </span>
-                </template>
-              </NotionCard>
-            </div>
+            <NotionCard
+              v-for="chapter in paginatedList"
+              :key="chapter.id"
+              :title="chapter.name"
+              description="Cliquez pour explorer les exercices"
+              :notion-id="chapter.notionId"
+              :disable-prefetch="true"
+              :locked="Boolean(chapter.isLocked)"
+              @click="openExerciseChapter(chapter)"
+              @locked-click="() => onLockedExercise(chapter)"
+            >
+              <template #meta>
+                <span
+                  v-if="chapter.isLocked"
+                  class="resource-locked-pill"
+                >
+                  Premium
+                </span>
+                <span class="resource-chapter-pill">
+                  {{ formatCount(chapter.count || chapter.exercises.length, 'exercice') }}
+                </span>
+                <span
+                  v-if="chapter.displayTag"
+                  class="resource-tag-pill"
+                >
+                  {{ chapter.displayTag }}
+                </span>
+              </template>
+            </NotionCard>
           </template>
 
           <template v-else>
-            <div class="notion-grid">
-              <NotionCard
-                v-for="resource in theme.notions"
-                :key="resource.slug"
-                :title="getCardTitle(resource)"
-                :description="getCardDescription(resource)"
-                :notion-id="resource.notion"
-                :disable-prefetch="true"
-                @click="openResource(resource)"
-              >
-                <template v-if="isSummaryMode" #meta>
-                  <span
-                    v-if="getSummaryLevel(resource)"
-                    class="resource-chapter-pill"
-                  >
-                    {{ getSummaryLevel(resource) }}
-                  </span>
-                </template>
-                <template v-else #meta>
-                  <span v-if="resource.tag_secondaire" class="resource-tag-pill">
-                    {{ resource.tag_secondaire }}
-                  </span>
-                </template>
-              </NotionCard>
-            </div>
+            <NotionCard
+              v-for="resource in paginatedList"
+              :key="resource.slug"
+              :title="getCardTitle(resource)"
+              :description="getCardDescription(resource)"
+              :notion-id="resource.notion"
+              :disable-prefetch="true"
+              :locked="Boolean(resource.is_locked)"
+              @click="openResource(resource)"
+              @locked-click="() => onLockedResource(resource)"
+            >
+              <template v-if="isSummaryMode" #meta>
+                <span
+                  v-if="resource.is_locked"
+                  class="resource-locked-pill"
+                >
+                  Premium
+                </span>
+                <span
+                  v-if="getSummaryLevel(resource)"
+                  class="resource-chapter-pill"
+                >
+                  {{ getSummaryLevel(resource) }}
+                </span>
+              </template>
+              <template v-else #meta>
+                <span
+                  v-if="resource.is_locked"
+                  class="resource-locked-pill"
+                >
+                  Premium
+                </span>
+                <span v-if="resource.tag_secondaire" class="resource-tag-pill">
+                  {{ resource.tag_secondaire }}
+                </span>
+              </template>
+            </NotionCard>
           </template>
-        </section>
+        </div>
+
+        <div v-if="totalPages > 1" class="pagination">
+          <button
+            class="pagination-btn"
+            :disabled="currentPage === 1"
+            @click="goToPage(currentPage - 1)"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="pagination-icon">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+          
+          <div class="pagination-info">
+            <span class="pagination-text">Page {{ currentPage }} sur {{ totalPages }}</span>
+          </div>
+          
+          <button
+            class="pagination-btn"
+            :disabled="currentPage === totalPages"
+            @click="goToPage(currentPage + 1)"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="pagination-icon">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+        </div>
+        </div>
       </template>
     </div>
   </MainLayout>
@@ -351,9 +573,171 @@ const openExerciseChapter = (chapter) => {
   margin: 0 auto;
 }
 
+.content-wrapper {
+  transform-origin: top left;
+}
+
+@supports (zoom: 1) {
+  .content-wrapper {
+    zoom: var(--content-zoom, 1);
+    transform: none !important;
+    width: 100% !important;
+  }
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.resource-count-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  white-space: nowrap;
+}
+
+.badge-separator {
+  margin: 0 8px;
+  color: #6366f1;
+  font-weight: 600;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 48px;
+  padding: 20px 0;
+}
+
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.pagination-info {
+  padding: 0 12px;
+}
+
+.pagination-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
 .filter-section {
   position: relative;
   margin-bottom: 24px;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 280px;
+  max-width: 500px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 44px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #334155;
+  background: #fff;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.search-input::placeholder {
+  color: #94a3b8;
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.clear-search-btn:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.clear-icon {
+  width: 16px;
+  height: 16px;
 }
 
 .filter-toggle {
@@ -481,55 +865,6 @@ const openExerciseChapter = (chapter) => {
   font-weight: 500;
 }
 
-.theme-block {
-  margin-bottom: 32px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.chapter-block {
-  margin-bottom: 24px;
-}
-
-.chapter-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 8px 0 12px;
-  padding: 8px 0;
-}
-
-.chapter-header h3 {
-  margin: 0;
-  font-size: 18px;
-  color: #1e293b;
-}
-
-.chapter-count {
-  font-size: 13px;
-  font-weight: 600;
-  color: #475569;
-}
-
-.theme-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.theme-header h2 {
-  margin: 0;
-  font-size: 22px;
-  color: #0f172a;
-}
-
-.theme-count {
-  font-size: 14px;
-  color: #64748b;
-  font-weight: 600;
-}
-
 .notion-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 320px));
@@ -559,7 +894,8 @@ const openExerciseChapter = (chapter) => {
 
 .resource-chapter-pill,
 .resource-status-pill,
-.resource-tag-pill {
+.resource-tag-pill,
+.resource-locked-pill {
   font-size: 12px;
   font-weight: 600;
   padding: 3px 10px;
@@ -588,6 +924,14 @@ const openExerciseChapter = (chapter) => {
   border-color: rgba(34, 197, 94, 0.35);
 }
 
+.resource-locked-pill {
+  background: #eef2ff;
+  color: #1d4ed8;
+  border-color: rgba(99, 102, 241, 0.35);
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
 @media (max-width: 768px) {
   .free-course-page {
     padding: 120px 16px 60px;
@@ -604,60 +948,59 @@ const openExerciseChapter = (chapter) => {
     padding: 110px 14px 56px;
   }
 
-  .theme-block {
-    border: 1px solid #e2e8f0;
-    border-radius: 18px;
-    padding: 18px 16px;
+  .header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
     margin-bottom: 20px;
-    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
-    background: #fff;
   }
 
-  .theme-header {
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
+  .resource-count-badge {
+    font-size: 13px;
+    padding: 6px 14px;
   }
 
-  .theme-header h2 {
-    flex: 1;
-    font-size: 1.05rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .theme-count {
-    font-size: 0.78rem;
-    padding: 3px 10px;
-    background: #eef2ff;
-    border-radius: 999px;
-    color: #1d4ed8;
-    white-space: nowrap;
+  .search-box {
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .filter-toggle {
+    width: 100%;
   }
 
   .notion-grid {
     gap: 12px;
+  }
+
+  .pagination {
+    margin-top: 32px;
+    gap: 12px;
+  }
+
+  .pagination-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pagination-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .pagination-text {
+    font-size: 13px;
   }
 }
 
 @media (max-width: 420px) {
   .free-course-page {
     padding: 105px 12px 48px;
-  }
-
-  .theme-block {
-    padding: 16px 14px;
-  }
-
-  .theme-header h2 {
-    font-size: 1rem;
-  }
-
-  .theme-count {
-    width: auto;
-    font-size: 0.76rem;
   }
 }
 </style>

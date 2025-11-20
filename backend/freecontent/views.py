@@ -180,7 +180,6 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
     def _get_free_courses_queryset(self, request):
         qs = (
             Cours.objects.filter(est_actif=True)
-            .filter(access_scope__in=[Cours.ACCESS_SCOPE_FREE, Cours.ACCESS_SCOPE_BOTH])
             .select_related(
                 'notion',
                 'notion__theme',
@@ -225,7 +224,6 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
     def _get_free_exercises_queryset(self, request):
         qs = (
             Exercice.objects.filter(est_actif=True)
-            .filter(access_scope__in=[Exercice.ACCESS_SCOPE_FREE, Exercice.ACCESS_SCOPE_BOTH])
             .select_related(
                 'notion',
                 'notion__theme',
@@ -271,7 +269,6 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
     def _get_free_summaries_queryset(self, request):
         qs = (
             SynthesisSheet.objects.filter(est_actif=True)
-            .filter(access_scope__in=[SynthesisSheet.ACCESS_SCOPE_FREE, SynthesisSheet.ACCESS_SCOPE_BOTH])
             .select_related(
                 'notion',
                 'notion__theme',

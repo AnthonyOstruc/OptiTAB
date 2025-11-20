@@ -99,6 +99,8 @@ class CourseFreePreviewSerializer(serializers.Serializer):
             'accroche': accroche[:160],
             'resource_type': FreeLearningResource.TYPE_COURSE,
             'type_label': 'Cours',
+            'access_scope': cours.access_scope,
+            'is_locked': cours.access_scope == cours.ACCESS_SCOPE_PAID,
             'excerpt': excerpt,
             'contenu_html': '',
             'contenu': raw_content,
@@ -129,7 +131,11 @@ class CourseFreePreviewSerializer(serializers.Serializer):
     def _badge_for_scope(cours):
         if getattr(cours, 'access_scope', '') == cours.ACCESS_SCOPE_BOTH:
             return 'Gratuit + Premium'
-        return 'Gratuit'
+        if getattr(cours, 'access_scope', '') == cours.ACCESS_SCOPE_FREE:
+            return 'Gratuit'
+        if getattr(cours, 'access_scope', '') == cours.ACCESS_SCOPE_PAID:
+            return 'Premium'
+        return ''
 
     @staticmethod
     def _build_excerpt(content):
@@ -198,6 +204,8 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
             'accroche': accroche[:160],
             'resource_type': FreeLearningResource.TYPE_EXERCISE,
             'type_label': 'Exercice',
+            'access_scope': exercice.access_scope,
+            'is_locked': exercice.access_scope == getattr(exercice, 'ACCESS_SCOPE_PAID', 'paid'),
             'excerpt': excerpt,
             'contenu_html': '',
             'contenu': exercice.contenu or '',
@@ -289,6 +297,8 @@ class SynthesisFreePreviewSerializer(serializers.Serializer):
             'accroche': excerpt[:160],
             'resource_type': FreeLearningResource.TYPE_SUMMARY,
             'type_label': 'Résumé',
+            'access_scope': sheet.access_scope,
+            'is_locked': sheet.access_scope == SynthesisSheet.ACCESS_SCOPE_PAID,
             'excerpt': summary[:400],
             'contenu_html': '',
             'contenu': summary,

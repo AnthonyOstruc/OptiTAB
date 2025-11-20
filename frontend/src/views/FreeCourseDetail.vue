@@ -657,22 +657,6 @@ onBeforeUnmount(() => {
   margin-top: -8px;
 }
 
-.cours-content {
-  width: 100%;
-  padding: 0 0 40px;
-  line-height: 1.75;
-  color: #1f2937;
-  font-size: 17px;
-}
-
-.cours-content-outer {
-  width: 100%;
-  transform-origin: top left;
-  transition: transform 0.2s ease;
-  overflow-x: hidden;
-  height: calc(var(--course-content-height, 0px) * var(--course-zoom, 1));
-}
-
 @supports (zoom: 1) {
   .cours-content-outer {
     zoom: var(--course-zoom, 1);
@@ -680,6 +664,14 @@ onBeforeUnmount(() => {
     width: 100% !important;
     height: auto !important;
   }
+}
+
+.cours-content {
+  width: 100%;
+  padding: 0 0 40px;
+  line-height: 1.75;
+  color: #1f2937;
+  font-size: 17px;
 }
 
 .cours-content :deep(h1),

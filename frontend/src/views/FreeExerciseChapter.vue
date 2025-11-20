@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
@@ -14,6 +14,51 @@ const loading = ref(false)
 const error = ref(null)
 const exercises = ref([])
 const notionTitle = ref(route.query.title || '')
+
+// Zoom system for mobile
+const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
+const contentHeight = ref(0)
+const contentRef = ref(null)
+
+function computeAutoZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.78
+  if (width >= 520) return 0.76
+  if (width >= 420) return 0.74
+  return 0.72
+}
+
+const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
+
+const zoomStyle = computed(() => {
+  const z = zoomLevel.value || 1
+  const widthPercent = (100 / z).toFixed(3)
+  return {
+    '--content-zoom': z,
+    '--content-height': `${contentHeight.value}px`,
+    transform: `scale(${z})`,
+    transformOrigin: 'top left',
+    width: `${widthPercent}%`
+  }
+})
+
+function updateViewportWidth() {
+  if (typeof window === 'undefined') return
+  viewportWidth.value = window.innerWidth
+  nextTick(() => measureContentHeight())
+}
+
+function measureContentHeight() {
+  if (!contentRef.value) {
+    contentHeight.value = 0
+    return
+  }
+  contentHeight.value = contentRef.value.scrollHeight || contentRef.value.offsetHeight || 0
+}
 
 const notionId = computed(() => route.params.notionId)
 
@@ -83,7 +128,23 @@ watch(
   }
 )
 
-onMounted(fetchExercises)
+onMounted(() => {
+  fetchExercises()
+  updateViewportWidth()
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', updateViewportWidth, { passive: true })
+  }
+})
+
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateViewportWidth)
+  }
+})
+
+watch(() => zoomLevel.value, () => {
+  nextTick(() => measureContentHeight())
+})
 </script>
 
 <template>
@@ -101,22 +162,24 @@ onMounted(fetchExercises)
       <div v-else-if="displayedExercises.length === 0" class="state-card">
         Aucun exercice gratuit n'est disponible pour ce chapitre pour le moment.
       </div>
-      <div v-else class="exercise-stack">
-        <div
-          v-for="(exercise, index) in displayedExercises"
-          :key="exercise.id"
-          class="exercise-card-wrapper"
-        >
-          <ExerciceQCM
-            :eid="exercise.id"
-            :titre="exercise.titre"
-            :instruction="exercise.instruction"
-            :solution="exercise.solution"
-            :etapes="exercise.etapes"
-            :difficulty="exercise.difficulty"
-            :preview-images="exercise.previewImages"
-            readonly
-          />
+      <div v-else class="content-wrapper" :style="zoomStyle" ref="contentRef">
+        <div class="exercise-stack">
+          <div
+            v-for="(exercise, index) in displayedExercises"
+            :key="exercise.id"
+            class="exercise-card-wrapper"
+          >
+            <ExerciceQCM
+              :eid="exercise.id"
+              :titre="exercise.titre"
+              :instruction="exercise.instruction"
+              :solution="exercise.solution"
+              :etapes="exercise.etapes"
+              :difficulty="exercise.difficulty"
+              :preview-images="exercise.previewImages"
+              readonly
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -130,6 +193,18 @@ onMounted(fetchExercises)
   padding: 140px 24px 80px;
   width: 100%;
   max-width: none;
+}
+
+.content-wrapper {
+  transform-origin: top left;
+}
+
+@supports (zoom: 1) {
+  .content-wrapper {
+    zoom: var(--content-zoom, 1);
+    transform: none !important;
+    width: 100% !important;
+  }
 }
 
 .state-card {

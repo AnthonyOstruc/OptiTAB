@@ -48,7 +48,7 @@ const props = defineProps({
   hideDescription: { type: Boolean, default: false }
 })
 
-const emit = defineEmits(['click'])
+const emit = defineEmits(['click', 'locked-click'])
 
 const { prefetchNotionContent } = useDataPrefetch()
 
@@ -56,7 +56,10 @@ const { prefetchNotionContent } = useDataPrefetch()
 let hoverTimeout = null
 
 function handleClick() {
-  if (props.locked) return
+  if (props.locked) {
+    emit('locked-click')
+    return
+  }
   emit('click')
 }
 

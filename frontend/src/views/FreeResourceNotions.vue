@@ -17,14 +17,8 @@ const router = useRouter()
 const loading = ref(false)
 const error = ref(null)
 const resources = ref([])
-
-const resourceTabs = [
-  { label: 'Cours', routeName: 'FreeCourses', resourceType: 'course', icon: '📖' },
-  { label: 'Exercices', routeName: 'FreeExercises', resourceType: 'exercise', icon: '✏️' },
-  { label: 'Synthèse', routeName: 'FreeSummaries', resourceType: 'summary', icon: '📄' }
-]
-
-const currentResourceType = computed(() => props.resourceType)
+const selectedLevels = ref([])
+const showLevelFilter = ref(false)
 
 const typeConfig = computed(() => {
   if (props.resourceType === 'exercise') {
@@ -99,10 +93,45 @@ const fetchResources = async () => {
 onMounted(fetchResources)
 watch(() => props.resourceType, () => {
   fetchResources()
+  selectedLevels.value = []
 })
 
+const availableLevels = computed(() => {
+  const levels = new Set()
+  resources.value.forEach((resource) => {
+    const level = resource?.niveau_nom || resource?.tag_secondaire
+    if (level) {
+      levels.add(level)
+    }
+  })
+  return Array.from(levels).sort()
+})
+
+const filteredResources = computed(() => {
+  if (selectedLevels.value.length === 0) {
+    return resources.value
+  }
+  return resources.value.filter((resource) => {
+    const level = resource?.niveau_nom || resource?.tag_secondaire
+    return level && selectedLevels.value.includes(level)
+  })
+})
+
+const toggleLevel = (level) => {
+  const index = selectedLevels.value.indexOf(level)
+  if (index > -1) {
+    selectedLevels.value.splice(index, 1)
+  } else {
+    selectedLevels.value.push(level)
+  }
+}
+
+const clearFilters = () => {
+  selectedLevels.value = []
+}
+
 const themes = computed(() => {
-  if (!resources.value.length) {
+  if (!filteredResources.value.length) {
     return []
   }
 
@@ -110,7 +139,7 @@ const themes = computed(() => {
 
   if (isExerciseMode.value) {
     const themeGroups = new Map()
-    resources.value.forEach((item, index) => {
+    filteredResources.value.forEach((item, index) => {
       const themeKey =
         item.theme_id ??
         (item.matiere ? `matiere-${item.matiere}` : `autres-${index}`)
@@ -156,7 +185,7 @@ const themes = computed(() => {
   }
 
   const groups = new Map()
-  resources.value.forEach((item, index) => {
+  filteredResources.value.forEach((item, index) => {
     const key =
       item.theme_id ??
       (item.matiere ? `matiere-${item.matiere}` : item.notion ? `notion-${item.notion}` : `autres-${index}`)
@@ -193,11 +222,6 @@ const openExerciseChapter = (chapter) => {
     query: { title: chapter?.name || undefined }
   })
 }
-
-const goToTab = (tab) => {
-  if (!tab || tab.resourceType === props.resourceType) return
-  router.push({ name: tab.routeName })
-}
 </script>
 
 <template>
@@ -205,19 +229,36 @@ const goToTab = (tab) => {
     <div class="free-course-page">
       <BackButton text="Retour à l'accueil" :custom-action="() => router.push({ name: 'Home' })" position="top-left" />
 
-      <nav class="resource-tab-bar" aria-label="Types de ressources gratuites">
-        <button
-          v-for="tab in resourceTabs"
-          :key="tab.resourceType"
-          class="resource-tab"
-          :class="{ active: tab.resourceType === currentResourceType }"
-          type="button"
-          @click="goToTab(tab)"
-        >
-          <span class="tab-icon">{{ tab.icon }}</span>
-          <span class="tab-label">{{ tab.label }}</span>
+      <div v-if="availableLevels.length > 0" class="filter-section">
+        <button class="filter-toggle" @click="showLevelFilter = !showLevelFilter">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="filter-icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+          </svg>
+          Filtrer par niveau
+          <span v-if="selectedLevels.length > 0" class="filter-badge">{{ selectedLevels.length }}</span>
         </button>
-      </nav>
+        
+        <div v-if="showLevelFilter" class="filter-dropdown">
+          <div class="filter-header">
+            <span class="filter-title">Niveaux</span>
+            <button v-if="selectedLevels.length > 0" class="clear-btn" @click="clearFilters">Effacer</button>
+          </div>
+          <div class="filter-options">
+            <label
+              v-for="level in availableLevels"
+              :key="level"
+              class="filter-option"
+            >
+              <input
+                type="checkbox"
+                :checked="selectedLevels.includes(level)"
+                @change="toggleLevel(level)"
+              />
+              <span class="filter-label">{{ level }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
 
       <div v-if="loading" class="state-card">
         Chargement des ressources gratuites...
@@ -304,11 +345,140 @@ const goToTab = (tab) => {
 <style scoped>
 .free-course-page {
   min-height: 100vh;
-  background: #fff;
+  background: #ffffff;
   padding: 140px 32px 80px;
   max-width: 1200px;
-  margin-left: 0;
-  margin-right: auto;
+  margin: 0 auto;
+}
+
+.filter-section {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.filter-toggle:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.filter-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.filter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  margin-left: 4px;
+}
+
+.filter-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 240px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+  z-index: 100;
+  padding: 12px;
+}
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 10px;
+}
+
+.filter-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.clear-btn {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clear-btn:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.filter-option:hover {
+  background: #f8fafc;
+}
+
+.filter-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.filter-label {
+  flex: 1;
+  font-size: 14px;
+  color: #334155;
+  font-weight: 500;
 }
 
 .theme-block {
@@ -386,123 +556,11 @@ const goToTab = (tab) => {
   color: #fff;
   cursor: pointer;
 }
+
 .resource-chapter-pill,
 .resource-status-pill,
 .resource-tag-pill {
   font-size: 12px;
-
-.resource-tab-bar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 1.5rem 0 2rem 0;
-}
-
-.resource-tab {
-  background: #ffffff;
-  border: 1.5px solid #d1d5db;
-  border-radius: 8px;
-  padding: 0.65rem 1.25rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  text-align: center;
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: #374151;
-  white-space: nowrap;
-}
-
-.resource-tab::before {
-  display: none;
-}
-
-.resource-tab:hover {
-  border-color: #3b82f6;
-  background: #f8fafc;
-  transform: translateY(-1px);
-}
-
-.resource-tab.active {
-  background: #3b82f6;
-  border-color: #3b82f6;
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
-}
-
-.resource-tab.active:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
-}
-
-.tab-icon {
-  font-size: 1.1rem;
-  line-height: 1;
-  transition: none;
-  filter: none;
-}
-
-.resource-tab:hover .tab-icon {
-  transform: none;
-}
-
-.resource-tab.active .tab-icon {
-  transform: none;
-  filter: none;
-}
-
-.tab-label {
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: inherit;
-  transition: none;
-  letter-spacing: 0;
-}
-
-.resource-tab.active .tab-label {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-@media (max-width: 768px) {
-  .resource-tab-bar {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .resource-tab {
-    padding: 0.6rem 1rem;
-    font-size: 0.85rem;
-  }
-  
-  .tab-icon {
-    font-size: 1rem;
-  }
-  
-  .tab-label {
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .resource-tab {
-    padding: 0.55rem 0.9rem;
-    font-size: 0.8rem;
-  }
-  
-  .tab-icon {
-    font-size: 0.95rem;
-  }
-  
-  .tab-label {
-    font-size: 0.8rem;
-  }
-}
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 999px;
@@ -538,6 +596,68 @@ const goToTab = (tab) => {
   .notion-grid {
     grid-template-columns: 1fr;
     justify-content: stretch;
+  }
+}
+
+@media (max-width: 640px) {
+  .free-course-page {
+    padding: 110px 14px 56px;
+  }
+
+  .theme-block {
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 18px 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+    background: #fff;
+  }
+
+  .theme-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .theme-header h2 {
+    flex: 1;
+    font-size: 1.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .theme-count {
+    font-size: 0.78rem;
+    padding: 3px 10px;
+    background: #eef2ff;
+    border-radius: 999px;
+    color: #1d4ed8;
+    white-space: nowrap;
+  }
+
+  .notion-grid {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .free-course-page {
+    padding: 105px 12px 48px;
+  }
+
+  .theme-block {
+    padding: 16px 14px;
+  }
+
+  .theme-header h2 {
+    font-size: 1rem;
+  }
+
+  .theme-count {
+    width: auto;
+    font-size: 0.76rem;
   }
 }
 </style>

@@ -82,13 +82,16 @@ const goBack = () => {
 
 .back-button--top-left {
   position: fixed;
-  top: 80px;
-  left: 24px;
+  top: calc(var(--header-height, 60px) + 2px);
+  left: max(0px, env(safe-area-inset-left, 0px));
   z-index: 1000;
   margin: 0;
-  border-radius: 999px;
-  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.15);
-  padding: 0.6rem 0.9rem;
+  border-radius: 14px;
+  padding: 0.65rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.15);
   font-weight: 600;
 }
 
@@ -141,13 +144,13 @@ const goBack = () => {
   }
   
   .back-button--top-left {
-    top: 0.25rem;
-    left: 0.25rem;
-    /* Améliorer la visibilité en position fixe */
+    top: calc(var(--header-height, 56px) + 2px);
+    left: max(0px, env(safe-area-inset-left, 0px));
+    padding: 0.6rem 0.85rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
+    color: #374151;
     background: #ffffff;
-    border: 2px solid #3b82f6;
-    box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
   }
 }
 
@@ -172,12 +175,12 @@ const goBack = () => {
   }
   
   .back-button--top-left {
-    top: 0.25rem;
-    left: 0.25rem;
+    top: calc(var(--header-height, 54px) + 2px);
+    left: max(0px, env(safe-area-inset-left, 0px));
+    border: 1px solid #e5e7eb;
+    color: #374151;
     background: #ffffff;
-    border: 2px solid #3b82f6;
-    box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.18);
   }
 }
 
@@ -203,14 +206,13 @@ const goBack = () => {
   }
   
   .back-button--top-left {
-    top: 0.25rem;
-    left: 0.25rem;
-    /* Visibilité maximale en position fixe */
+    top: calc(var(--header-height, 52px) + 1px);
+    left: max(0px, env(safe-area-inset-left, 0px));
     background: #ffffff;
-    border: 3px solid #3b82f6;
-    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
-    color: #3b82f6;
-    padding: 0.7rem 1rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 5px 15px rgba(15, 23, 42, 0.18);
+    color: #374151;
+    padding: 0.7rem 0.85rem;
   }
 }
 </style> 

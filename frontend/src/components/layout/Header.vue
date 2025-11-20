@@ -5,7 +5,12 @@
       <Navigation @open-login="handleLogin" />
     </div>
     <div class="header-mobile">
-      <Logo />
+      <div class="header-mobile-top">
+        <Logo />
+      </div>
+      <div v-if="isFreeResourcePage" class="mobile-free-tabs">
+        <FreeResourceTabs />
+      </div>
       <MobileMenu @open-login="handleLogin" />
     </div>
   </header>
@@ -16,22 +21,28 @@ import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import Logo from '@/components/common/Logo.vue'
 import Navigation from '@/components/layout/Navigation.vue'
 import MobileMenu from '@/components/layout/MobileMenu.vue'
-import { ref, onMounted, onUnmounted } from 'vue'
+import FreeResourceTabs from '@/components/free-content/FreeResourceTabs.vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 export default {
   name: 'Header',
   components: {
     Logo,
     Navigation,
-    MobileMenu
+    MobileMenu,
+    FreeResourceTabs
   },
   setup() {
     const { openModal } = useModalManager()
     const headerRef = ref(null)
+    const route = useRoute()
 
     const handleLogin = () => {
       openModal(MODAL_IDS.LOGIN)
     }
+
+    const isFreeResourcePage = computed(() => route.path?.startsWith('/ressources-gratuites'))
 
     // Empêcher le zoom et les gestes indésirables sur le header
     const handleTouchStart = (e) => {
@@ -83,7 +94,8 @@ export default {
 
     return {
       handleLogin,
-      headerRef
+      headerRef,
+      isFreeResourcePage
     }
   }
 }
@@ -123,9 +135,24 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-height: $header-height;
+  height: $header-height;
   padding: 0 20px;
   box-sizing: border-box;
+  gap: 12px;
+}
+
+.header-mobile-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.mobile-free-tabs {
+  display: none;
+  flex: 1;
+  min-width: 0;
+  pointer-events: auto;
 }
 
 .header-desktop {
@@ -146,6 +173,11 @@ export default {
   .header-mobile {
     display: flex;
   }
+
+  .mobile-free-tabs {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 @media (min-width: #{$max-width-media + 1px}) {
@@ -164,4 +196,5 @@ export default {
       /* Ensure header never scrolls, and allow page scroll to start from it */
       .header { pointer-events: none; }
       .header-mobile, .header-desktop { pointer-events: auto; touch-action: pan-y; }
+      .mobile-free-tabs { pointer-events: auto; }
 </style> 

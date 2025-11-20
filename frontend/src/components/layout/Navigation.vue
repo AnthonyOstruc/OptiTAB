@@ -1,7 +1,7 @@
 <template>
   <nav class="navigation">
     <!-- Main navigation items on the left -->
-    <div class="nav-items">
+    <div v-if="!isFreeResourcePage" class="nav-items">
       <div 
         v-for="item in leftMenuItems" 
         :key="item.key"
@@ -13,8 +13,10 @@
       </div>
     </div>
 
+    <FreeResourceTabs v-else class="free-resource-tabs" />
+
     <!-- Onglets de matières (centre) -->
-    <div v-if="shouldShowMatieresTab" class="matieres-tabs">
+    <div v-if="shouldShowMatieresTab && !isFreeResourcePage" class="matieres-tabs">
       <!-- Onglets des matières sélectionnées -->
       <div class="tabs-container">
         <div 
@@ -84,6 +86,7 @@ import { menuItems } from '@/config/menuItems'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useUserStore } from '@/stores/user'
 import { getMatieresUtilisateur } from '@/api/matieres.js'
+import FreeResourceTabs from '@/components/free-content/FreeResourceTabs.vue'
 
 const emit = defineEmits(['open-login'])
 const router = useRouter()
@@ -97,8 +100,13 @@ const matieres = ref([])
 const showMatieresDropdown = ref(false)
 const isLoadingMatieres = ref(false)
 
+const isFreeResourcePage = computed(() => route.path?.startsWith('/ressources-gratuites'))
+
 // Left side: Main navigation items
 const leftMenuItems = computed(() => {
+  if (isFreeResourcePage.value) {
+    return []
+  }
   return menuItems.filter(item =>
     ['calculator', 'about', 'cours-particuliers'].includes(item.key)
   )
@@ -346,6 +354,13 @@ onMounted(async () => {
 
 .nav-text {
   font-size: 14px;
+}
+
+.free-resource-tabs {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .right-items {

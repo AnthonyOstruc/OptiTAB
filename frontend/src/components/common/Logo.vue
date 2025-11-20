@@ -1,6 +1,7 @@
 <template>
   <router-link to="/">
-    <img src="@/assets/logos/Logo_bg.png" alt="Logo OptiTAB" class="logo" />
+    <img src="@/assets/logos/Logo_bg.png" alt="Logo OptiTAB" class="logo logo-full" />
+    <img src="/favicon.png" alt="OptiTAB" class="logo logo-icon" />
   </router-link>
 </template>
 
@@ -12,12 +13,31 @@ export default {
 
 <style scoped>
 .logo {
+  height: auto;
+  object-fit: contain;
+}
+
+.logo-full {
   width: 100px;
   min-width: 100px;
   max-width: 100px;
-  height: auto;
   margin-left: 0px;
   margin-top: 2px;
-  object-fit: contain;
+}
+
+.logo-icon {
+  display: none;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+}
+
+@media (max-width: 880px) {
+  .logo-full {
+    display: none;
+  }
+  .logo-icon {
+    display: block;
+  }
 }
 </style>

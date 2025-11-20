@@ -104,6 +104,7 @@ function handleMouseEnter() {
   align-items: center;
   text-align: center;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  gap: 0.35rem;
 }
 
 .notion-card.locked .notion-card-inner {
@@ -219,6 +220,7 @@ function handleMouseEnter() {
   
   .notion-card-inner {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     text-align: left;
     padding: 0.9rem;
@@ -257,6 +259,18 @@ function handleMouseEnter() {
     height: 20px;
   }
   
+  .notion-card-meta-slot {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 0.15rem;
+    gap: 8px;
+  }
+
+  .notion-card-meta-slot > * {
+    margin-right: 0;
+  }
+
   .notion-card-inner:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(59, 130, 246, 0.12);

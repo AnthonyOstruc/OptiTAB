@@ -1,7 +1,11 @@
 """
 VUES ULTRA SIMPLES pour cours
 """
-from rest_framework import viewsets
+import os
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from django.core.files.base import ContentFile
 from rest_framework.permissions import IsAuthenticated
 
 from subscriptions.permissions import HasActiveSubscriptionOrPass
@@ -61,3 +65,49 @@ class CoursImageViewSet(viewsets.ModelViewSet):
         if cours_id:
             queryset = queryset.filter(cours_id=cours_id)
         return queryset.order_by('position', 'id')
+
+    @action(detail=False, methods=['post'], url_path='duplicate')
+    def duplicate_images(self, request, *args, **kwargs):
+        source_cours_id = request.data.get('source_cours')
+        target_cours_id = request.data.get('target_cours')
+        replace_existing = bool(request.data.get('replace_existing'))
+
+        if not source_cours_id or not target_cours_id:
+            return Response(
+                {'detail': 'source_cours et target_cours sont requis'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            source_cours = Cours.objects.get(pk=source_cours_id)
+            target_cours = Cours.objects.get(pk=target_cours_id)
+        except Cours.DoesNotExist:
+            return Response({'detail': 'Cours introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        if replace_existing:
+            target_cours.images.all().delete()
+
+        duplicated = 0
+        for img in source_cours.images.all().order_by('position', 'id'):
+            if not img.image:
+                continue
+            new_image = CoursImage(
+                cours=target_cours,
+                image_type=img.image_type,
+                position=img.position,
+                legende=img.legende
+            )
+            try:
+                with img.image.open('rb') as original_file:
+                    filename = os.path.basename(img.image.name or f'cours-image-{img.id}')
+                    new_image.image.save(filename, ContentFile(original_file.read()), save=False)
+                new_image.save()
+                duplicated += 1
+            except Exception:  # pragma: no cover - ignorer les erreurs individuelles
+                continue
+
+        serializer = self.get_serializer(
+            target_cours.images.all().order_by('position', 'id'),
+            many=True
+        )
+        return Response({'duplicated': duplicated, 'images': serializer.data})

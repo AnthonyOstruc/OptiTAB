@@ -591,7 +591,7 @@ watch(activeTab, () => {
 /* Header Section */
 .exercice-header {
   background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: none;
   display: flex;
   flex-direction: column;
   height: auto;
@@ -741,6 +741,9 @@ watch(activeTab, () => {
 /* Tab Content */
 .tab-content {
   min-height: 400px;
+  background: #f5f7ff;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
 }
 
 .content-section {
@@ -764,7 +767,9 @@ watch(activeTab, () => {
 }
 
 .problem-section {
-  background: #ffffff;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
 }
 
 .steps-section {

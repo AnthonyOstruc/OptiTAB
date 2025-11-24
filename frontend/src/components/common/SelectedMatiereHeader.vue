@@ -1016,18 +1016,27 @@ onMounted(async () => {
       subjectsStore.loadActiveMatiereId()
     ])
     
-    // Si aucune matière sélectionnée, en ajouter une par défaut (préférer « Mathématiques »)
-    if (matieres.value.length > 0 && subjectsStore.selectedMatieresIds.length === 0) {
-      const normalize = (s) => (s || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
-      const preferred = matieres.value.find(m => normalize(m.nom || m.titre).includes('mathem'))
-      const def = preferred || matieres.value[0]
-      subjectsStore.addMatiereId(def.id)
-      setActiveMatiere(def.id)
-    }
+    const availableIds = matieres.value
+      .filter(m => m && m.id)
+      .map(m => Number(m.id))
+      .filter(Number.isFinite)
     
-    // Synchroniser l'état local avec le store global
-    if (subjectsStore.activeMatiereId) {
-      activeMatiereId.value = subjectsStore.activeMatiereId
+    const storedSelectedIds = Array.isArray(subjectsStore.selectedMatieresIds)
+      ? subjectsStore.selectedMatieresIds.map(id => Number(id)).filter(Number.isFinite)
+      : []
+    const filteredSelectedIds = storedSelectedIds.filter(id => availableIds.includes(id))
+    setSelectedMatieresIdsSafely(filteredSelectedIds)
+
+    const storedActiveId = Number(subjectsStore.activeMatiereId) || null
+    const hasValidActive = Boolean(storedActiveId && availableIds.includes(storedActiveId))
+
+    if (hasValidActive) {
+      if (!filteredSelectedIds.includes(storedActiveId)) {
+        setSelectedMatieresIdsSafely([...filteredSelectedIds, storedActiveId])
+      }
+      activeMatiereId.value = storedActiveId
+    } else {
+      await ensurePreferredMatiereActive()
     }
     
     // Configurer les event listeners
@@ -1106,7 +1115,7 @@ watch(() => props.matiereId, async (newId) => {
 }, { immediate: true })
 
 // Surveillance des changements dans les matières sélectionnées
-watch(() => selectedMatieres.value, (newMatieres, oldMatieres) => {
+watch(() => selectedMatieres.value, async (newMatieres, oldMatieres) => {
   try {
     console.log('[SelectedMatiereHeader] Changement dans les matières sélectionnées:', {
       nouvelles: newMatieres.map(m => m.id),
@@ -1116,12 +1125,16 @@ watch(() => selectedMatieres.value, (newMatieres, oldMatieres) => {
     
     // Si on a des matières mais pas de matière active, prendre la matière active du store global
     if (!activeMatiereId.value && newMatieres.length > 0) {
-      const storeActiveMatiereId = subjectsStore.activeMatiereId
+      const storeActiveMatiereId = Number(subjectsStore.activeMatiereId) || null
       
       // Si le store a une matière active qui est dans les sélectionnées, l'utiliser
       if (storeActiveMatiereId && newMatieres.find(m => m.id === storeActiveMatiereId)) {
         activeMatiereId.value = storeActiveMatiereId
+        return
       }
+
+      // Sinon, forcer une matière préférée (Mathématiques) pour éviter l'état vide
+      await ensurePreferredMatiereActive()
     }
   } catch (error) {
     handleError(error, 'watch selectedMatieres')
@@ -1129,34 +1142,81 @@ watch(() => selectedMatieres.value, (newMatieres, oldMatieres) => {
 })
 
 // Surveillance des changements de niveau de l'utilisateur
-watch(() => userStore.niveau_pays, async (newNiveau) => {
-  if (newNiveau) {
-    try {
-      console.log('[SelectedMatiereHeader] Niveau changé, rechargement des matières:', newNiveau.nom)
-      await loadMatieres()
-      
-      // Nettoyer les matières sélectionnées qui ne sont plus disponibles pour ce niveau
-      const availableMatiereIds = matieres.value.map(m => m.id)
-      subjectsStore.selectedMatieresIds = subjectsStore.selectedMatieresIds.filter(id => 
-        availableMatiereIds.includes(id)
-      )
-      
-      // Si aucune matière n'est sélectionnée après nettoyage, en ajouter une par défaut (préférer « Mathématiques »)
-      if (subjectsStore.selectedMatieresIds.length === 0 && matieres.value.length > 0) {
-        const normalize = (s) => (s || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
-        const preferred = matieres.value.find(m => normalize(m.nom || m.titre).includes('mathem'))
-        const def = preferred || matieres.value[0]
-        subjectsStore.addMatiereId(def.id)
-        setActiveMatiere(def.id)
-      }
-    } catch (error) {
-      handleError(error, 'watch userStore.niveau_pays')
+const normalizeMatiereLabel = (value = '') => {
+  return (value || '')
+    .toString()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+}
+
+const findPreferredMatiere = () => {
+  if (!Array.isArray(matieres.value) || matieres.value.length === 0) return null
+  const normalizedTarget = 'mathem'
+  const preferred = matieres.value.find((matiere) => {
+    const label = normalizeMatiereLabel(matiere.nom || matiere.titre || '')
+    return label.includes(normalizedTarget)
+  })
+  return preferred || matieres.value[0] || null
+}
+
+const ensurePreferredMatiereActive = async () => {
+  const preferred = findPreferredMatiere()
+  if (!preferred || !preferred.id) return null
+  const preferredId = Number(preferred.id)
+  if (!preferredId) return null
+
+  const selectedIds = Array.isArray(subjectsStore.selectedMatieresIds)
+    ? subjectsStore.selectedMatieresIds.map(id => Number(id))
+    : []
+  const alreadySelected = selectedIds.includes(preferredId)
+  if (!alreadySelected) {
+    await subjectsStore.addMatiereId(preferredId)
+  }
+
+  setActiveMatiere(preferredId)
+  return preferred
+}
+
+const setSelectedMatieresIdsSafely = (ids = []) => {
+  try {
+    const selectedModule = subjectsStore?.stores?.selected
+    if (selectedModule?.setSelectedMatieresIds) {
+      selectedModule.setSelectedMatieresIds(ids)
+    } else {
+      subjectsStore.selectedMatieresIds = ids
     }
+  } catch (error) {
+    handleError(error, 'setSelectedMatieresIdsSafely')
+  }
+}
+
+watch(() => userStore.niveau_pays, async (newNiveau) => {
+  if (!newNiveau) return
+
+  try {
+    console.log('[SelectedMatiereHeader] Niveau changé, rechargement des matières:', newNiveau.nom)
+    await loadMatieres()
+
+    const availableMatiereIds = matieres.value
+      .filter(m => m && m.id)
+      .map(m => Number(m.id))
+      .filter(Number.isFinite)
+
+    const selectedIds = Array.isArray(subjectsStore.selectedMatieresIds)
+      ? subjectsStore.selectedMatieresIds.map(id => Number(id)).filter(Number.isFinite)
+      : []
+
+    const filteredSelected = selectedIds.filter(id => availableMatiereIds.includes(id))
+    setSelectedMatieresIdsSafely(filteredSelected)
+    await ensurePreferredMatiereActive()
+  } catch (error) {
+    handleError(error, 'watch userStore.niveau_pays')
   }
 }, { immediate: false })
 
 // Surveillance des changements de la matière active dans le store global
-watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
+watch(() => subjectsStore.activeMatiereId, async (newActiveMatiereId) => {
   try {
     console.log('[SelectedMatiereHeader] Matière active changée dans le store:', newActiveMatiereId)
     
@@ -1172,11 +1232,13 @@ watch(() => subjectsStore.activeMatiereId, (newActiveMatiereId) => {
       else if (newActiveMatiereId && !subjectsStore.selectedMatieresIds.includes(newActiveMatiereId)) {
         subjectsStore.addMatiereId(newActiveMatiereId)
         console.log('[SelectedMatiereHeader] Matière ajoutée automatiquement aux sélectionnées:', newActiveMatiereId)
+      } else if (!newActiveMatiereId && selectedMatieres.value.length > 0) {
+        await ensurePreferredMatiereActive()
       }
     }
-  } catch (error) {
-    handleError(error, 'watch store activeMatiereId')
-  }
+} catch (error) {
+  handleError(error, 'watch store activeMatiereId')
+}
 }, { immediate: false })
 </script>
 

@@ -47,7 +47,14 @@ export const getCoursImages = (coursId) => apiClient.get(`/api/cours/cours-image
 export const createCoursImage = (payload) => {
   const formData = new FormData()
   formData.append('cours', payload.cours)
-  formData.append('image', payload.image)
+  if (payload.image) {
+    const imageName = payload.imageName || payload.image?.name
+    if (imageName) {
+      formData.append('image', payload.image, imageName)
+    } else {
+      formData.append('image', payload.image)
+    }
+  }
   formData.append('image_type', payload.image_type)
   if (payload.position) formData.append('position', payload.position)
   if (payload.legende) formData.append('legende', payload.legende)
@@ -60,7 +67,14 @@ export const createCoursImage = (payload) => {
 export const updateCoursImage = (id, payload) => {
   const formData = new FormData()
   if (payload.cours) formData.append('cours', payload.cours)
-  if (payload.image) formData.append('image', payload.image)
+  if (payload.image) {
+    const imageName = payload.imageName || payload.image?.name
+    if (imageName) {
+      formData.append('image', payload.image, imageName)
+    } else {
+      formData.append('image', payload.image)
+    }
+  }
   if (payload.image_type) formData.append('image_type', payload.image_type)
   if (payload.position !== undefined) formData.append('position', payload.position)
   if (payload.legende !== undefined) formData.append('legende', payload.legende)
@@ -71,3 +85,11 @@ export const updateCoursImage = (id, payload) => {
   })
 }
 export const deleteCoursImage = (id) => apiClient.delete(`/api/cours/cours-images/${id}/`) 
+
+export const duplicateCoursImages = ({ sourceCoursId, targetCoursId, replaceExisting = false }) => {
+  return apiClient.post('/api/cours/cours-images/duplicate/', {
+    source_cours: sourceCoursId,
+    target_cours: targetCoursId,
+    replace_existing: replaceExisting
+  })
+}

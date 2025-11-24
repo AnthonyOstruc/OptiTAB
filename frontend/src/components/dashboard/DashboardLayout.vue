@@ -3,6 +3,7 @@
     <!-- Header du dashboard -->
     <DashboardHeader 
       :sidebarOpen="sidebarOpen" 
+      :sidebar-collapsed="sidebarCollapsed"
       @toggle-sidebar="toggleSidebarCollapsed"
       @subject-changed="handleSubjectChange"
     />
@@ -42,6 +43,7 @@ import Sidebar from './Sidebar.vue'
 import DashboardHeader from './DashboardHeader.vue'
 import MobileBottomNav from './MobileBottomNav.vue'
 import { useUserStore } from '@/stores/user'
+import { useSidebarStore } from '@/stores/sidebar'
 
 // Props et émissions
 const emit = defineEmits(['sidebar-toggle', 'navigation', 'subject-changed'])
@@ -52,8 +54,15 @@ const route = useRoute()
 const userStore = useUserStore()
 
 // État réactif
-const sidebarOpen = ref(true)
-const sidebarCollapsed = ref(false)
+const sidebarStore = useSidebarStore()
+const sidebarOpen = computed({
+  get: () => sidebarStore.isOpen,
+  set: (value) => sidebarStore.setOpen(value)
+})
+const sidebarCollapsed = computed({
+  get: () => sidebarStore.isCollapsed,
+  set: (value) => sidebarStore.setCollapsed(value)
+})
 const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
 const isMobile = computed(() => viewportWidth.value <= 768)
 const dashboardMainClasses = computed(() => ({
@@ -67,18 +76,13 @@ const handleResize = () => {
 
 // Méthodes
 const toggleSidebar = () => {
-  sidebarOpen.value = !sidebarOpen.value
-  emit('sidebar-toggle', sidebarOpen.value)
-  
-  // Sauvegarder la préférence
-  localStorage.setItem('sidebar-open', sidebarOpen.value.toString())
+  sidebarStore.toggleOpen()
+  emit('sidebar-toggle', sidebarStore.isOpen)
 }
 
 const toggleSidebarCollapsed = () => {
-  sidebarCollapsed.value = !sidebarCollapsed.value
-  // Sauvegarder l'état de la sidebar pliée
-  localStorage.setItem('sidebar-collapsed', sidebarCollapsed.value.toString())
-  console.log('[DashboardLayout] Sidebar toggled:', { collapsed: sidebarCollapsed.value })
+  sidebarStore.toggleCollapsed()
+  console.log('[DashboardLayout] Sidebar toggled:', { collapsed: sidebarStore.isCollapsed })
 }
 
 
@@ -94,22 +98,9 @@ const handleSubjectChange = (subjectId) => {
 // Lifecycle
 onMounted(async () => {
   console.log('[DashboardLayout] onMounted - État initial:', { sidebarOpen: sidebarOpen.value, sidebarCollapsed: sidebarCollapsed.value })
+  sidebarStore.init()
   window.addEventListener('resize', handleResize, { passive: true })
   handleResize()
-  
-  // Restaurer la préférence de la sidebar
-  const savedSidebarState = localStorage.getItem('sidebar-open')
-  if (savedSidebarState !== null) {
-    sidebarOpen.value = savedSidebarState === 'true'
-    console.log('[DashboardLayout] sidebarOpen restauré:', sidebarOpen.value)
-  }
-  
-  // Restaurer l'état de la sidebar pliée
-  const savedCollapsedState = localStorage.getItem('sidebar-collapsed')
-  if (savedCollapsedState !== null) {
-    sidebarCollapsed.value = savedCollapsedState === 'true'
-    console.log('[DashboardLayout] sidebarCollapsed restauré:', sidebarCollapsed.value)
-  }
   
   // Attendre que le DOM soit prêt
   await nextTick()
@@ -124,9 +115,9 @@ onMounted(async () => {
 
 watch(isMobile, (val) => {
   if (val) {
-    sidebarOpen.value = false
+    sidebarStore.setOpen(false)
   } else if (localStorage.getItem('sidebar-open') !== 'false') {
-    sidebarOpen.value = true
+    sidebarStore.setOpen(true)
   }
 }, { immediate: true })
 

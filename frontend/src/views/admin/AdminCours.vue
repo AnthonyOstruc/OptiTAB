@@ -272,10 +272,19 @@
 
         <div class="modal-form">
           <div class="form-group">
-            <label>Nouveau chapitre:</label>
-            <select v-model="duplicateForm.newChapitre" required>
-              <option value="">Choisir un chapitre</option>
-              <option v-for="chapitre in chapitres" :key="chapitre.id" :value="chapitre.id">{{ formatChapitreOption(chapitre) }}</option>
+            <label>Nouvelle notion:</label>
+            <input
+              v-model="duplicateNotionFilter"
+              type="text"
+              placeholder="Filtrer les notions..."
+              class="filter-input"
+              style="margin-bottom:0.5rem"
+            />
+            <select v-model="duplicateForm.newNotion" required>
+              <option value="">Choisir une notion</option>
+              <option v-for="notion in filteredNotionsForDuplicate" :key="notion.id" :value="notion.id">
+                {{ formatNotionOption(notion) }}
+              </option>
             </select>
           </div>
 
@@ -287,7 +296,7 @@
 
         <div class="modal-actions">
           <button class="btn-secondary" @click="cancelDuplicate">Annuler</button>
-          <button class="btn-primary" @click="confirmDuplicate" :disabled="!duplicateForm.newChapitre || !duplicateForm.newTitre.trim()">
+          <button class="btn-primary" @click="confirmDuplicate" :disabled="!duplicateForm.newNotion || !duplicateForm.newTitre.trim()">
             Dupliquer
           </button>
         </div>
@@ -298,7 +307,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import { getCours, createCours, updateCours, deleteCours, getCoursImages, createCoursImage, updateCoursImage, deleteCoursImage, updateCoursFormData } from '@/api/cours'
+import { getCours, createCours, updateCours, deleteCours, getCoursImages, createCoursImage, updateCoursImage, deleteCoursImage, updateCoursFormData, duplicateCoursImages } from '@/api/cours'
 import { getNotions } from '@/api'
 import { AdminActionsButtons } from '@/components/admin'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
@@ -342,9 +351,10 @@ const newImageInput = ref(null)
 const showDuplicateModal = ref(false)
 const duplicateForm = ref({
   originalCours: null,
-  newChapitre: '',
+  newNotion: '',
   newTitre: ''
 })
+const duplicateNotionFilter = ref('')
 
 // Normaliser le contenu pour ignorer les lignes vides (aligné sur AdminCoursPlus)
 function normalizeContent(raw) {
@@ -374,6 +384,24 @@ const filteredNotionsForFilter = computed(() => {
   if (!notionFilter.value) return notions.value
   const q = notionFilter.value.toLowerCase()
   return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(q))
+})
+
+const filteredNotionsForDuplicate = computed(() => {
+  if (!duplicateNotionFilter.value) return notions.value
+  const q = duplicateNotionFilter.value.toLowerCase()
+  return notions.value.filter(n => {
+    const niveauNom = n.niveau_nom
+      || (n.contexte_detail && n.contexte_detail.niveau && n.contexte_detail.niveau.nom)
+      || ''
+    const searchable = [
+      n.titre,
+      n.nom,
+      n.theme_nom,
+      n.matiere_nom,
+      niveauNom
+    ].filter(Boolean).join(' ').toLowerCase()
+    return searchable.includes(q)
+  })
 })
 
 // Computed properties pour la pagination
@@ -682,16 +710,17 @@ function handleDeleteCours(cours) {
 function handleDuplicateCours(cours) {
   duplicateForm.value = {
     originalCours: cours,
-    newChapitre: '',
+    newNotion: '',
     newTitre: `${cours.titre}`
   }
+  duplicateNotionFilter.value = ''
   showDuplicateModal.value = true
 }
 
 // Fonction pour confirmer la duplication
 async function confirmDuplicate() {
-  if (!duplicateForm.value.newChapitre || !duplicateForm.value.newTitre.trim()) {
-    alert('Veuillez sélectionner un chapitre et saisir un titre pour la copie.')
+  if (!duplicateForm.value.newNotion || !duplicateForm.value.newTitre.trim()) {
+    alert('Veuillez sélectionner une notion et saisir un titre pour la copie.')
     return
   }
 
@@ -700,7 +729,7 @@ async function confirmDuplicate() {
     const difficultyMap = { 'facile': 'easy', 'moyen': 'medium', 'difficile': 'hard' }
 
     const payload = {
-      chapitre: Number(duplicateForm.value.newChapitre),
+      notion: Number(duplicateForm.value.newNotion),
       titre: duplicateForm.value.newTitre.trim(),
       contenu: original.contenu,
       ordre: original.ordre || 0,
@@ -710,14 +739,17 @@ async function confirmDuplicate() {
     console.log('Payload envoyé pour duplication cours:', payload)
     console.log('Original cours:', original)
 
-    // Vérifier si le chapitre de destination a déjà un cours
-    const existingCours = cours.value.find(c => c.chapitre == duplicateForm.value.newChapitre)
-    console.log('Cours existant dans le chapitre de destination:', existingCours)
+    // Vérifier si la notion de destination a déjà un cours
+    const existingCours = cours.value.find(c => String(c.notion) === String(duplicateForm.value.newNotion))
+    console.log('Cours existant dans la notion de destination:', existingCours)
+
+    let targetCoursId = null
 
     if (existingCours) {
       // Si un cours existe déjà, proposer de le remplacer
+      const targetNotionName = getNotionName(duplicateForm.value.newNotion)
       const confirmReplace = confirm(
-        `Le chapitre "${getChapitreName(duplicateForm.value.newChapitre)}" a déjà un cours.\n\n` +
+        `La notion "${targetNotionName}" a déjà un cours.\n\n` +
         `Titre actuel: "${existingCours.titre}"\n` +
         `Nouveau titre: "${duplicateForm.value.newTitre.trim()}"\n\n` +
         `Voulez-vous remplacer le cours existant ?`
@@ -729,11 +761,17 @@ async function confirmDuplicate() {
 
       // Remplacer le cours existant
       await updateCours(existingCours.id, payload)
+      targetCoursId = existingCours.id
       console.log('Cours existant mis à jour avec succès')
     } else {
       // Créer un nouveau cours
-      await createCours(payload)
+      const created = await createCours(payload)
+      targetCoursId = created?.data?.id || created?.id || null
       console.log('Nouveau cours créé avec succès')
+    }
+
+    if (original?.id && targetCoursId) {
+      await duplicateCourseImages(original.id, targetCoursId, !!existingCours)
     }
 
     await load()
@@ -741,9 +779,10 @@ async function confirmDuplicate() {
     showDuplicateModal.value = false
     duplicateForm.value = {
       originalCours: null,
-      newChapitre: '',
+      newNotion: '',
       newTitre: ''
     }
+    duplicateNotionFilter.value = ''
 
     alert('Cours dupliqué avec succès !')
   } catch (error) {
@@ -757,9 +796,10 @@ function cancelDuplicate() {
   showDuplicateModal.value = false
   duplicateForm.value = {
     originalCours: null,
-    newChapitre: '',
+    newNotion: '',
     newTitre: ''
   }
+  duplicateNotionFilter.value = ''
 }
 
 // Fonction de prévisualisation (exactement comme dans AdminCoursPlus)
@@ -792,12 +832,6 @@ function handlePreview() {
   })
 }
 
-// Helpers d'affichage (repris d'AdminExercices)
-function getChapitreName(id) {
-  const c = chapitres.value.find(x => String(x.id) === String(id))
-  return c ? c.nom : id
-}
-
 function getNotionById(id) {
   return notions.value.find(x => String(x.id) === String(id))
 }
@@ -808,10 +842,14 @@ function getNotionName(id) {
 }
 
 function formatNotionOption(n) {
+  const niveauNom = n.niveau_nom
+    || (n.contexte_detail && n.contexte_detail.niveau && n.contexte_detail.niveau.nom)
+    || ''
   const parts = [
     n.titre || n.nom,
     n.theme_nom ? `— ${n.theme_nom}` : '',
-    n.matiere_nom ? `— ${n.matiere_nom}` : ''
+    n.matiere_nom ? `— ${n.matiere_nom}` : '',
+    niveauNom ? `— ${niveauNom}` : ''
   ].filter(Boolean)
   return parts.join(' ')
 }
@@ -939,6 +977,19 @@ const previewRenderedContent = computed(() => {
   if (!previewData.value?.contenu) return ''
   return renderPreviewContent(previewData.value)
 })
+
+async function duplicateCourseImages(sourceCoursId, targetCoursId, replaceExisting = false) {
+  if (!sourceCoursId || !targetCoursId) return
+  try {
+    await duplicateCoursImages({
+      sourceCoursId,
+      targetCoursId,
+      replaceExisting
+    })
+  } catch (error) {
+    console.error('[AdminCours] Duplication des images échouée', error)
+  }
+}
 
 // Chapitres supprimés
 

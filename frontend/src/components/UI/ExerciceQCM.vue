@@ -9,7 +9,22 @@
     <div class="exercice-header">
       <div class="header-top">
         <div class="header-first-row">
-          <div class="header-slot header-slot--left">
+        <div class="header-slot header-slot--left">
+          <button
+            class="favorite-btn"
+            type="button"
+            @click="toggleFavorite"
+            :aria-pressed="isFavorite"
+            :title="isFavorite ? 'Supprimer des favoris' : 'Ajouter aux favoris'"
+          >
+            <span class="favorite-icon">{{ isFavorite ? '⭐' : '☆' }}</span>
+          </button>
+        </div>
+          <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
+          <div class="header-slot header-slot--right">
+            <div class="difficulty-indicator" v-if="difficulty">
+              <span class="difficulty-stars">{{ diffStars[difficulty] || '★★' }}</span>
+            </div>
             <button
               v-if="!readonly && current"
               class="reset-status-btn"
@@ -23,12 +38,6 @@
                 <path d="M3 21v-5h5"/>
               </svg>
             </button>
-          </div>
-          <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
-          <div class="header-slot header-slot--right">
-            <div class="difficulty-indicator" v-if="difficulty">
-              <span class="difficulty-stars">{{ diffStars[difficulty] || '★★' }}</span>
-            </div>
           </div>
         </div>
       </div>
@@ -65,7 +74,7 @@
     </div>
 
     <!-- Tab Content -->
-    <div class="tab-content">
+    <div class="tab-content" :style="tabContentStyles">
       <!-- Problem Tab -->
       <div v-show="activeTab === 'problem'" class="content-section problem-section">
         <div class="content-wrapper">
@@ -188,6 +197,7 @@ const exerciceImages = ref([])
 const showImageModal = ref(false)
 const selectedImage = ref(null)
 const activeTab = ref('problem')
+const isFavorite = ref(false)
 
 // Computed
 const diffStars = computed(() => ({
@@ -195,6 +205,23 @@ const diffStars = computed(() => ({
   medium: '★★',
   hard: '★★★'
 }))
+
+const tabContentStyles = computed(() => {
+  const backgrounds = {
+    problem: '#f5f7ff',
+    method: '#f0f9ff',
+    solution: '#f0fdf4'
+  }
+  return {
+    background: backgrounds[activeTab.value] || '#f5f7ff',
+    borderBottomLeftRadius: '18px',
+    borderBottomRightRadius: '18px'
+  }
+})
+
+const toggleFavorite = () => {
+  isFavorite.value = !isFavorite.value
+}
 
 // Methods
 
@@ -611,17 +638,39 @@ watch(activeTab, () => {
 }
 
 .header-slot {
-  width: 56px;
   display: flex;
   align-items: center;
 }
 
 .header-slot--left {
+  width: 56px;
   justify-content: flex-start;
 }
 
 .header-slot--right {
   justify-content: flex-end;
+  gap: 12px;
+}
+
+.favorite-btn {
+  background: #fff;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.favorite-btn:hover {
+  background: #eef2ff;
+}
+
+.favorite-icon {
+  font-size: 1.25rem;
 }
 
 .exercice-title {
@@ -691,7 +740,7 @@ watch(activeTab, () => {
   gap: 0;
   padding: 0;
   background: #f8fafc;
-  border-top: 1px solid #e5e7eb;
+  border-top: none;
   width: 100%;
 }
 
@@ -741,9 +790,6 @@ watch(activeTab, () => {
 /* Tab Content */
 .tab-content {
   min-height: 400px;
-  background: #f5f7ff;
-  border-bottom-left-radius: 18px;
-  border-bottom-right-radius: 18px;
 }
 
 .content-section {
@@ -766,18 +812,10 @@ watch(activeTab, () => {
   max-width: 100%;
 }
 
-.problem-section {
-  background: transparent;
-  border-radius: 0;
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
-}
-
-.steps-section {
-  background: #f0f9ff;
-}
-
+.problem-section,
+.steps-section,
 .answer-section {
-  background: #f0fdf4;
+  background: transparent;
 }
 
 .problem-content,

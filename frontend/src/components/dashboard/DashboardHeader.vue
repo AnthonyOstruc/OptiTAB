@@ -2,11 +2,14 @@
   <header class="dashboard-header">
     <!-- Bouton burger fixe en position absolue -->
     <button 
-      class="burger-btn-fixed" 
+      :class="['burger-btn-fixed', { 'burger-collapsed': sidebarCollapsed }]" 
+      type="button"
       @click="$emit('toggle-sidebar')" 
       aria-label="Ouvrir ou fermer le menu"
+      :aria-pressed="sidebarCollapsed.toString()"
+      :aria-expanded="(!sidebarCollapsed).toString()"
     >
-      <span class="burger-icon-fixed">&#9776;</span>
+      <span class="burger-icon-fixed" :class="{ 'burger-icon-collapsed': sidebarCollapsed }">&#9776;</span>
     </button>
 
     <!-- Navigation admin (visible uniquement dans les pages admin) -->
@@ -91,6 +94,17 @@ import BillingTabs from '@/components/payments/BillingTabs.vue'
 // Émissions d'événements
 const emit = defineEmits(['toggle-sidebar', 'subject-changed', 'search'])
 
+defineProps({
+  sidebarOpen: {
+    type: Boolean,
+    default: true
+  },
+  sidebarCollapsed: {
+    type: Boolean,
+    default: false
+  }
+})
+
 // Router
 const router = useRouter()
 const route = useRoute()
@@ -174,11 +188,7 @@ const handleLogout = () => {
   z-index: 101;
   /* Transitions professionnelles */
   transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  /* POSITION CENTRÉE VERTICALEMENT */
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
+  overflow: visible;
 }
 
 .burger-btn-fixed:hover {
@@ -201,6 +211,54 @@ const handleLogout = () => {
 
 .burger-btn-fixed:hover .burger-icon-fixed {
   color: #1e40af;
+}
+
+.burger-btn-fixed.burger-collapsed {
+  border-color: #f87171;
+  background: #fef2f2;
+  box-shadow: 0 8px 22px rgba(248, 113, 113, 0.3);
+}
+
+.burger-btn-fixed.burger-collapsed::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid rgba(248, 113, 113, 0.5);
+  animation: burgerHalo 1.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.burger-btn-fixed.burger-collapsed .burger-icon-fixed {
+  color: #b91c1c;
+}
+
+.burger-icon-fixed.burger-icon-collapsed {
+  animation: burgerIconPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes burgerHalo {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.55;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
+@keyframes burgerIconPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
 }
 
 /* Section droite */

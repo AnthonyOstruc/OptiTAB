@@ -1,0 +1,477 @@
+=== Schéma de Bernoulli et Loi Binomiale - Programme Bac France Terminal
+Difficulté: medium
+Ordre: 3
+
+Titre: Schéma de Bernoulli et Loi Binomiale
+Description: Cours complet sur le schéma de Bernoulli et la loi binomiale selon le programme du bac français : modélisation, calculs de probabilités, algorithmes et applications.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>✅ Pour le programme :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à IV couvrent le cœur du programme de Terminale sur le schéma de Bernoulli et la loi binomiale. Les parties marquées <strong>"🌟 Bonus"</strong> sont des approfondissements utiles mais ne sont pas strictement exigibles au Bac.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Épreuve de Bernoulli et loi de Bernoulli</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition d'une épreuve de Bernoulli</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Épreuve de Bernoulli</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>épreuve de Bernoulli</strong> est une expérience aléatoire qui ne peut avoir que <strong>deux issues</strong> :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Succès</strong> (S) avec une probabilité $\displaystyle p$</li>
+                <li style="margin:0; text-align:left;"><strong>Échec</strong> (É) avec une probabilité $\displaystyle q = 1 - p$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'épreuves de Bernoulli :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Lancer une pièce de monnaie : Pile (succès) ou Face (échec)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Interroger un élève : Réponse correcte (succès) ou incorrecte (échec)</li>
+                <li style="margin:0; text-align:left;">Test d'un produit : Défectueux (succès) ou conforme (échec)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Loi de Bernoulli</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Loi de Bernoulli</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La variable aléatoire $\displaystyle X$ qui vaut $\displaystyle 1$ en cas de succès et $\displaystyle 0$ en cas d'échec suit une <strong>loi de Bernoulli</strong> de paramètre $\displaystyle p$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note souvent simplement :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:450px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle X \sim \mathrm{Bernoulli}(p)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>Note : On peut aussi noter $\displaystyle X \sim \mathcal{B}(1, p)$ (loi binomiale avec $\displaystyle n = 1$), mais la notation $\displaystyle \mathrm{Bernoulli}(p)$ est plus simple et claire.</em></p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Loi de probabilité de Bernoulli</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P(X = 1) = p$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle P(X = 0) = 1 - p = q$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Espérance : $\displaystyle E(X) = p$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Variance : $\displaystyle V(X) = p(1-p) = pq$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Schéma de Bernoulli</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Schéma de Bernoulli</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>schéma de Bernoulli</strong> est la <strong>répétition de $\displaystyle n$ épreuves de Bernoulli indépendantes</strong> de même paramètre $\displaystyle p$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les conditions sont :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Les $\displaystyle n$ répétitions sont <strong>indépendantes</strong></li>
+                <li style="margin:0 0 12px 0; text-align:left;">La probabilité $\displaystyle p$ est <strong>identique</strong> à chaque répétition</li>
+                <li style="margin:0; text-align:left;">Chaque répétition ne peut avoir que deux issues (succès ou échec)</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Conditions importantes :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour qu'une situation soit modélisable par un schéma de Bernoulli, il faut vérifier l'<strong>indépendance</strong> et l'<strong>identité</strong> des probabilités.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">On lance 10 fois une pièce équilibrée. C'est un schéma de Bernoulli avec $\displaystyle n = 10$ et $\displaystyle p = \frac{1}{2}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Chaque lancer est indépendant et la probabilité d'obtenir Pile est toujours $\displaystyle \frac{1}{2}$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Loi binomiale</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et valeurs possibles</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Loi binomiale</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un schéma de Bernoulli de paramètres $\displaystyle n$ et $\displaystyle p$, la variable aléatoire $\displaystyle X$ qui compte le <strong>nombre de succès</strong> suit une <strong>loi binomiale</strong> de paramètres $\displaystyle n$ et $\displaystyle p$, notée $\displaystyle \mathcal{B}(n, p)$.</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle X \sim \mathcal{B}(n, p)$</p>
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Valeurs possibles</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle X \sim \mathcal{B}(n, p)$, alors $\displaystyle X$ peut prendre toutes les valeurs entières de $\displaystyle 0$ à $\displaystyle n$ :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle X \in \{0, 1, 2, \ldots, n\}$</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Expression de la loi binomiale</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Loi de probabilité binomiale</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle X \sim \mathcal{B}(n, p)$ et $\displaystyle k \in \{0, 1, 2, \ldots, n\}$ :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$ est le <strong>coefficient binomial</strong>.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration (niveau Terminale, possible à l'écrit) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour obtenir exactement $\displaystyle k$ succès parmi $\displaystyle n$ épreuves :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Il y a $\displaystyle \binom{n}{k}$ façons de choisir les $\displaystyle k$ positions des succès parmi $\displaystyle n$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">La probabilité d'avoir $\displaystyle k$ succès (chacun de probabilité $\displaystyle p$) est $\displaystyle p^k$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">La probabilité d'avoir $\displaystyle n-k$ échecs (chacun de probabilité $\displaystyle 1-p$) est $\displaystyle (1-p)^{n-k}$</li>
+                <li style="margin:0; text-align:left;">Par indépendance, la probabilité d'une issue avec $\displaystyle k$ succès est $\displaystyle p^k \times (1-p)^{n-k}$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$ ✓</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Explication de la formule :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \binom{n}{k}$ : nombre de façons d'obtenir $\displaystyle k$ succès parmi $\displaystyle n$ essais</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle p^k$ : probabilité d'avoir $\displaystyle k$ succès</li>
+                <li style="margin:0; text-align:left;">$\displaystyle (1-p)^{n-k}$ : probabilité d'avoir $\displaystyle (n-k)$ échecs</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Coefficient binomial</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Coefficient binomial</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le coefficient binomial $\displaystyle \binom{n}{k}$ se calcule avec :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Propriétés utiles :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \binom{n}{0} = 1$ et $\displaystyle \binom{n}{n} = 1$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \binom{n}{k} = \binom{n}{n-k}$ (symétrie)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \binom{n}{1} = n$ et $\displaystyle \binom{n}{n-1} = n$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Calculs de probabilités</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Probabilités "au plus" et "au moins"</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Probabilités cumulées</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle X \sim \mathcal{B}(n, p)$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Probabilité "au plus $\displaystyle k$" :</strong> $\displaystyle P(X \leq k) = \sum_{i=0}^k P(X = i)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Probabilité "au moins $\displaystyle k$" :</strong> $\displaystyle P(X \geq k) = \sum_{i=k}^n P(X = i)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Probabilité "entre $\displaystyle k$ et $\displaystyle k'$" :</strong> $\displaystyle P(k \leq X \leq k') = \sum_{i=k}^{k'} P(X = i)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Relation utile :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette relation permet de simplifier les calculs en utilisant la calculatrice.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Espérance et variance</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Espérance et variance de la loi binomiale</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle X \sim \mathcal{B}(n, p)$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Espérance :</strong> $\displaystyle E(X) = np$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Variance :</strong> $\displaystyle V(X) = np(1-p) = npq$</li>
+                <li style="margin:0; text-align:left;"><strong>Écart-type :</strong> $\displaystyle \sigma(X) = \sqrt{np(1-p)}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation de l'espérance :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si on répète l'expérience un grand nombre de fois, le nombre moyen de succès sera proche de $\displaystyle np$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemples de calculs</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">On lance une pièce équilibrée 5 fois. Quelle est la probabilité d'obtenir exactement 3 piles ?</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Résolution :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle X$ = nombre de piles suit $\displaystyle \mathcal{B}(5, \frac{1}{2})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(X = 3) = \binom{5}{3} \times \left(\frac{1}{2}\right)^3 \times \left(\frac{1}{2}\right)^2 = 10 \times \frac{1}{8} \times \frac{1}{4} = \frac{5}{16}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Un élève répond au hasard à un QCM de 10 questions avec 4 choix par question. Quelle est la probabilité qu'il ait au moins 6 bonnes réponses ?</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Résolution :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle X$ = nombre de bonnes réponses suit $\displaystyle \mathcal{B}(10, \frac{1}{4})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(X \geq 6) = 1 - P(X \leq 5)$ (à calculer avec la calculatrice)</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. 🌟 Application avancée - Problèmes de seuil, comparaison et optimisation</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Application avancée :</strong> Cette section présente des applications plus poussées de la loi binomiale (problèmes de seuil, décisions). Elle est utile pour comprendre les liens avec les fluctuations d'échantillonnage et les décisions statistiques, mais n'est pas strictement exigible au Bac.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Problème de seuil</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour déterminer le plus petit entier $\displaystyle k$ tel que $\displaystyle P(X > k) \leq \alpha$ (où $\displaystyle \alpha$ est un réel strictement positif) :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">On cherche $\displaystyle k$ tel que $\displaystyle P(X > k) = 1 - P(X \leq k) \leq \alpha$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Donc $\displaystyle P(X \leq k) \geq 1 - \alpha$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">On teste les valeurs de $\displaystyle k$ jusqu'à trouver la plus petite vérifiant cette condition</li>
+                <li style="margin:0; text-align:left;">On peut utiliser un algorithme pour automatiser la recherche</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Avec $\displaystyle X \sim \mathcal{B}(20, 0,3)$ et $\displaystyle \alpha = 0,05$, déterminer le plus petit entier $\displaystyle k$ tel que $\displaystyle P(X > k) \leq 0,05$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Résolution :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On cherche $\displaystyle k$ tel que $\displaystyle P(X \leq k) \geq 0,95$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En testant avec la calculatrice : $\displaystyle P(X \leq 9) \approx 0,952$, donc $\displaystyle k = 9$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Chercher un intervalle pour une probabilité donnée</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour chercher un intervalle $\displaystyle I$ tel que $\displaystyle P(X \in I) \leq \alpha$ ou $\displaystyle P(X \in I) \geq 1 - \alpha$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">On peut chercher un intervalle centré autour de l'espérance $\displaystyle E(X) = np$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">On teste différents intervalles $\displaystyle [a, b]$ et on calcule $\displaystyle P(a \leq X \leq b)$</li>
+                <li style="margin:0; text-align:left;">On utilise un algorithme pour trouver l'intervalle optimal</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. 🌟 Bonus - Algorithmes</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement :</strong> Les algorithmes suivants illustrent des applications du schéma de Bernoulli. Cette section est un approfondissement utile mais n'est pas strictement exigible au Bac.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Simulation de la planche de Galton</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Principe :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La planche de Galton est un dispositif où une bille tombe et rebondit sur des clous, chaque rebond étant une épreuve de Bernoulli (gauche ou droite avec probabilité $\displaystyle \frac{1}{2}$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>nombre de rebonds vers la droite</strong> suit une loi binomiale $\displaystyle \mathcal{B}(n, \frac{1}{2})$ où $\displaystyle n$ est le nombre de clous.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La position finale peut ensuite se déduire de ce nombre.</p>
+        </div>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">def</span> planche_galton(n):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;position = <span style="color:#bd93f9;">0</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#bd93f9;">range</span>(n):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> random() < <span style="color:#bd93f9;">0.5</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position += <span style="color:#bd93f9;">1</span>  <span style="color:#6272a4;"># Rebond à droite</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position -= <span style="color:#bd93f9;">1</span>  <span style="color:#6272a4;"># Rebond à gauche</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> position
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Problème de la surréservation</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Problème :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Étant donné une variable aléatoire binomiale $\displaystyle X$ et un réel strictement positif $\displaystyle \alpha$, déterminer le plus petit entier $\displaystyle k$ tel que $\displaystyle P(X > k) \leq \alpha$.</p>
+        </div>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">def</span> surreservation(n, p, alpha):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;k = <span style="color:#bd93f9;">0</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">while</span> P_binomiale(n, p, k+<span style="color:#bd93f9;">1</span>, n) > alpha:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k += <span style="color:#bd93f9;">1</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> k
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Simulation d'un échantillon</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Principe :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Simuler un échantillon de taille $\displaystyle m$ d'une variable aléatoire binomiale $\displaystyle \mathcal{B}(n, p)$.</p>
+        </div>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">def</span> echantillon_binomial(n, p, m):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;echantillon = []<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#bd93f9;">range</span>(m):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;succes = <span style="color:#bd93f9;">0</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> j <span style="color:#ff79c6;">in</span> <span style="color:#bd93f9;">range</span>(n):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> random() < p:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;succes += <span style="color:#bd93f9;">1</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echantillon.append(succes)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> echantillon
+        </div>
+    </div>
+
+    <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+        <strong>Note :</strong>
+        <p style="margin:8px 0; text-align:left; font-size:1em;">En évaluation, l'algorithme pourra être donné en pseudo-code ou en français ; ici il est illustré en Python.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. 🌟 Bonus - Approfondissements possibles</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement :</strong> Les sections suivantes enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour le Bac.</p>
+        <p style="margin:8px 0 0 0; text-align:left; font-size:0.95em;"><em>Note : La loi géométrique et la loi de Poisson ne font pas partie du programme officiel de Terminale. Elles sont présentées ici pour aller plus loin et enrichir votre culture mathématique.</em></p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Loi géométrique</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Loi géométrique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La loi géométrique modélise le nombre d'épreuves de Bernoulli nécessaires pour obtenir le premier succès.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle Y$ suit une loi géométrique de paramètre $\displaystyle p$, alors :</p>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(Y = k) = (1-p)^{k-1} \times p$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">pour $\displaystyle k \in \mathbb{N}^{\ast}$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Loi de Poisson</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Loi de Poisson</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La loi de Poisson est la limite de lois binomiales lorsque $\displaystyle n$ est grand et $\displaystyle p$ est petit, avec $\displaystyle np = \lambda$ constant.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle Z$ suit une loi de Poisson de paramètre $\displaystyle \lambda$, alors :</p>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(Z = k) = \frac{\lambda^k e^{-\lambda}}{k!}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>Interprétation : La loi de Poisson modélise des événements rares (nombre d'appels dans un centre, nombre d'accidents, etc.).</em></p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Erreurs fréquentes et conseils</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Confondre "exactement $\displaystyle k$" et "au plus $\displaystyle k$" : $\displaystyle P(X = k) \neq P(X \leq k)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Oublier que les répétitions doivent être <strong>indépendantes</strong></li>
+                <li style="margin:0 0 12px 0; text-align:left;">Se tromper dans l'identification du paramètre $\displaystyle p$ (succès vs échec)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Confondre $\displaystyle \binom{n}{k}$ et $\displaystyle \binom{k}{n}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Oublier de vérifier que $\displaystyle 0 \leq k \leq n$</li>
+                <li style="margin:0; text-align:left;">Ne pas utiliser les probabilités conditionnelles quand les épreuves ne sont pas indépendantes</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Bien identifier ce qui constitue un "succès" dans l'énoncé</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Vérifier que les conditions d'indépendance sont respectées</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser la calculatrice pour les calculs complexes de probabilités cumulées</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Pour les probabilités "au moins", utiliser $\displaystyle P(X \geq k) = 1 - P(X \leq k-1)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Construire un arbre pour visualiser les issues possibles</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Vérifier la cohérence des résultats (probabilités entre 0 et 1)</li>
+                <li style="margin:0; text-align:left;">Interpréter les résultats dans le contexte de l'exercice</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Tableau récapitulatif</h2>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Formules et définitions à retenir</strong>
+            <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                <thead>
+                    <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:35%;">Notion</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Formule / Définition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Épreuve de Bernoulli</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Deux issues : Succès (probabilité $\displaystyle p$) ou Échec (probabilité $\displaystyle 1-p$)</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Loi de Bernoulli</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle X \sim \mathrm{Bernoulli}(p)$<br/>$\displaystyle P(X = 1) = p$, $\displaystyle P(X = 0) = 1-p$<br/>$\displaystyle E(X) = p$, $\displaystyle V(X) = p(1-p)$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Schéma de Bernoulli</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Répétition de $\displaystyle n$ épreuves de Bernoulli <strong>indépendantes</strong> de même paramètre $\displaystyle p$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Loi binomiale</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle X \sim \mathcal{B}(n, p)$<br/>$\displaystyle X \in \{0, 1, 2, \ldots, n\}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Probabilité binomiale</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$<br/>pour $\displaystyle k \in \{0, 1, 2, \ldots, n\}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Coefficient binomial</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$<br/>Propriétés : $\displaystyle \binom{n}{0} = 1$, $\displaystyle \binom{n}{n} = 1$, $\displaystyle \binom{n}{k} = \binom{n}{n-k}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Probabilité "au plus $\displaystyle k$"</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle P(X \leq k) = \sum_{i=0}^k P(X = i)$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Probabilité "au moins $\displaystyle k$"</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle P(X \geq k) = \sum_{i=k}^n P(X = i) = 1 - P(X \leq k-1)$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Probabilité "entre $\displaystyle k$ et $\displaystyle k'$"</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle P(k \leq X \leq k') = \sum_{i=k}^{k'} P(X = i)$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Espérance (loi binomiale)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle E(X) = np$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Variance (loi binomiale)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle V(X) = np(1-p) = npq$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Écart-type (loi binomiale)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle \sigma(X) = \sqrt{np(1-p)}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Conditions d'indépendance</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Les $\displaystyle n$ répétitions doivent être <strong>indépendantes</strong> et la probabilité $\displaystyle p$ doit être <strong>identique</strong> à chaque répétition</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+===
+

@@ -3,6 +3,7 @@
     <!-- Header du dashboard -->
     <DashboardHeader 
       :sidebarOpen="sidebarOpen" 
+      :sidebar-collapsed="sidebarCollapsed"
       @toggle-sidebar="toggleSidebarCollapsed"
       @subject-changed="handleSubjectChange"
     />
@@ -35,11 +36,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch } from 'vue'
+import { computed, ref, onMounted, nextTick, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Sidebar from './Sidebar.vue'
 import DashboardHeader from './DashboardHeader.vue'
 import { useUserStore } from '@/stores/user'
+import { useSidebarStore } from '@/stores/sidebar'
 
 // Props et émissions
 const emit = defineEmits(['sidebar-toggle', 'navigation', 'subject-changed'])
@@ -50,23 +52,25 @@ const route = useRoute()
 const userStore = useUserStore()
 
 // État réactif
-const sidebarOpen = ref(true)
-const sidebarCollapsed = ref(false)
+const sidebarStore = useSidebarStore()
+const sidebarOpen = computed({
+  get: () => sidebarStore.isOpen,
+  set: (value) => sidebarStore.setOpen(value)
+})
+const sidebarCollapsed = computed({
+  get: () => sidebarStore.isCollapsed,
+  set: (value) => sidebarStore.setCollapsed(value)
+})
 
 // Méthodes
 const toggleSidebar = () => {
-  sidebarOpen.value = !sidebarOpen.value
-  emit('sidebar-toggle', sidebarOpen.value)
-  
-  // Sauvegarder la préférence
-  localStorage.setItem('sidebar-open', sidebarOpen.value.toString())
+  sidebarStore.toggleOpen()
+  emit('sidebar-toggle', sidebarStore.isOpen)
 }
 
 const toggleSidebarCollapsed = () => {
-  sidebarCollapsed.value = !sidebarCollapsed.value
-  // Sauvegarder l'état de la sidebar pliée
-  localStorage.setItem('sidebar-collapsed', sidebarCollapsed.value.toString())
-  console.log('[DashboardLayout] Sidebar toggled:', { collapsed: sidebarCollapsed.value })
+  sidebarStore.toggleCollapsed()
+  console.log('[DashboardLayout] Sidebar toggled:', { collapsed: sidebarStore.isCollapsed })
 }
 
 
@@ -82,20 +86,7 @@ const handleSubjectChange = (subjectId) => {
 // Lifecycle
 onMounted(async () => {
   console.log('[DashboardLayout] onMounted - État initial:', { sidebarOpen: sidebarOpen.value, sidebarCollapsed: sidebarCollapsed.value })
-  
-  // Restaurer la préférence de la sidebar
-  const savedSidebarState = localStorage.getItem('sidebar-open')
-  if (savedSidebarState !== null) {
-    sidebarOpen.value = savedSidebarState === 'true'
-    console.log('[DashboardLayout] sidebarOpen restauré:', sidebarOpen.value)
-  }
-  
-  // Restaurer l'état de la sidebar pliée
-  const savedCollapsedState = localStorage.getItem('sidebar-collapsed')
-  if (savedCollapsedState !== null) {
-    sidebarCollapsed.value = savedCollapsedState === 'true'
-    console.log('[DashboardLayout] sidebarCollapsed restauré:', sidebarCollapsed.value)
-  }
+  sidebarStore.init()
   
   // Attendre que le DOM soit prêt
   await nextTick()
@@ -108,23 +99,13 @@ onMounted(async () => {
   }
 })
 
-// Watcher pour s'assurer que la sidebar reste pliée lors de la navigation
-watch(() => route.path, (newPath, oldPath) => {
-  // Si l'utilisateur navigue vers une nouvelle page, on ne change pas l'état de la sidebar
-  // La sidebar reste dans son état actuel (pliée ou dépliée)
-  console.log('[DashboardLayout] Navigation détectée:', { from: oldPath, to: newPath, sidebarCollapsed: sidebarCollapsed.value })
-}, { immediate: false })
+onUnmounted(() => {
+  // aucun nettoyage nécessaire : le store garde les listeners globaux tant que l'app vit
+})
 
-// Watcher pour tracer tous les changements de sidebarCollapsed
-watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
-  console.log('[DashboardLayout] sidebarCollapsed changé:', { 
-    from: oldValue, 
-    to: newValue, 
-    windowWidth: window.innerWidth,
-    windowHeight: window.innerHeight,
-    stack: new Error().stack 
-  })
-}, { immediate: false })
+watch(() => route.path, (newPath, oldPath) => {
+  console.log('[DashboardLayout] Navigation détectée:', { from: oldPath, to: newPath, sidebarCollapsed: sidebarCollapsed.value })
+})
 </script>
 
 <style scoped>

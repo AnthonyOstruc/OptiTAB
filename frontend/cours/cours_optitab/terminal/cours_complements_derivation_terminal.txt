@@ -1,0 +1,670 @@
+=== Compléments sur la Dérivation - Programme Bac France Terminal
+Difficulté: medium
+Ordre: 6
+Images: convexite_concavite.png
+
+Titre: Compléments sur la Dérivation : Composition, Dérivée Seconde et Convexité
+Description: Cours complet sur les compléments de dérivation selon le programme du bac français : dérivée d'une fonction composée, dérivée seconde, fonctions convexes et concaves, points d'inflexion et applications.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>✅ Pour le programme :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à IV couvrent le cœur du programme de Terminale sur les compléments de dérivation. Les parties marquées <strong>"🌟 Bonus"</strong> ainsi que la section VI sont des approfondissements utiles mais ne sont pas strictement exigibles au Bac.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">0. Rappels - Dérivées à connaître par cœur</h2>
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Rappel de Première :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les tableaux et formules ci-dessous sont des rappels du programme de Première. Ils doivent être maîtrisés avant d'aborder les compléments de Terminale.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Dérivées des fonctions usuelles <span style="color:#10b981; font-size:0.9em;">(Rappel de Première)</span></h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Tableau des dérivées fondamentales</strong></p>
+            <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Fonction $\displaystyle f(x)$</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Dérivée $\displaystyle f'(x)$</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Domaine de dérivabilité</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle k$ (constante)</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle x$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 1$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle x^n$ avec $\displaystyle n \geq 1$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle nx^{n-1}$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{1}{x}$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle -\frac{1}{x^2}$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}^{\ast}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \sqrt{x}$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{1}{2\sqrt{x}}$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle ]0, +\infty[$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle e^x$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle e^x$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \ln(x)$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{1}{x}$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle ]0, +\infty[$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \sin(x)$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \cos(x)$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \cos(x)$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle -\sin(x)$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 À retenir absolument :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle (e^x)' = e^x$ : l'exponentielle est sa propre dérivée !</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle (\ln x)' = \frac{1}{x}$ : le logarithme népérien a pour dérivée l'inverse</li>
+                <li style="margin:0; text-align:left;">$\displaystyle (\sin x)' = \cos x$ et $\displaystyle (\cos x)' = -\sin x$ : attention au signe négatif pour le cosinus</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérations sur les dérivées <span style="color:#10b981; font-size:0.9em;">(Rappel de Première)</span></h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Opérations sur les dérivées</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle u$ et $\displaystyle v$ deux fonctions dérivables sur un intervalle $\displaystyle I$, et $\displaystyle k$ une constante réelle.</p>
+            <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #dc2626; border-radius:8px; overflow:hidden;">
+                <thead>
+                    <tr style="background:#dc2626; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Fonction</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Dérivée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle k \times u$</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle k \times u'$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle u + v$</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle u' + v'$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle u - v$</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle u' - v'$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle u \times v$</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle u' \times v + u \times v'$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \frac{1}{v}$ (si $\displaystyle v \neq 0$)</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle -\frac{v'}{v^2}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \frac{u}{v}$ (si $\displaystyle v \neq 0$)</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \frac{u' \times v - u \times v'}{v^2}$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention - Erreurs fréquentes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Pour la dérivée d'un <strong>produit</strong>, ce n'est <strong>PAS</strong> $\displaystyle (u \times v)' = u' \times v'$ !</li>
+                <li style="margin:0 0 12px 0; text-align:left;">C'est : $\displaystyle (u \times v)' = u' \times v + u \times v'$ (formule de Leibniz)</li>
+                <li style="margin:0; text-align:left;">Pour la dérivée d'un <strong>quotient</strong>, ne pas oublier le <strong>carré</strong> au dénominateur : $\displaystyle \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'application :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle (3x^2 + 5x)' = 6x + 5$ (somme)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle (x \times e^x)' = 1 \times e^x + x \times e^x = e^x(1 + x)$ (produit)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \left(\frac{x^2 + 1}{x}\right)' = \frac{2x \times x - (x^2 + 1) \times 1}{x^2} = \frac{x^2 - 1}{x^2}$ (quotient)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \left(\frac{1}{x^2 + 1}\right)' = -\frac{2x}{(x^2 + 1)^2}$ (inverse)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Rappel - Équation de la tangente <span style="color:#10b981; font-size:0.9em;">(Rappel de Première)</span></h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Rappel - Tangente à une courbe</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est dérivable en $\displaystyle a$, la <strong>tangente</strong> à la courbe représentative de $\displaystyle f$ au point $\displaystyle A(a, f(a))$ a pour équation :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle y = f'(a)(x - a) + f(a)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le coefficient directeur de la tangente est $\displaystyle f'(a)$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Utilisation dans ce chapitre :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans l'étude de la convexité, on compare la position de la courbe par rapport à ses tangentes :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Convexe</strong> : la courbe est <strong>au-dessus</strong> de toutes ses tangentes</li>
+                <li style="margin:0; text-align:left;"><strong>Concave</strong> : la courbe est <strong>en-dessous</strong> de toutes ses tangentes</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#fff8dc; border:2px solid #ffa500; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🆕 Nouveau en Terminale :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à IV introduisent les notions nouvelles du programme de Terminale : dérivée d'une composée (formule générale), dérivée seconde, convexité/concavité et points d'inflexion.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Dérivée d'une fonction composée</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Notation et définition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Composée de deux fonctions</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle u$ et $\displaystyle v$ deux fonctions telles que l'image de $\displaystyle u$ est incluse dans le domaine de définition de $\displaystyle v$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>composée</strong> de $\displaystyle v$ par $\displaystyle u$, notée $\displaystyle v \circ u$ (lue "$\displaystyle v$ rond $\displaystyle u$"), est la fonction définie par :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (v \circ u)(x) = v(u(x))$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle u(x) = x^2 + 1$ et $\displaystyle v(x) = \sqrt{x}$, alors $\displaystyle (v \circ u)(x) = \sqrt{x^2 + 1}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle u(x) = 2x + 3$ et $\displaystyle v(x) = e^x$, alors $\displaystyle (v \circ u)(x) = e^{2x + 3}$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle u(x) = \sin(x)$ et $\displaystyle v(x) = x^2$, alors $\displaystyle (v \circ u)(x) = \sin^2(x)$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème de dérivation d'une composée</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Dérivée d'une fonction composée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle u$ est dérivable sur un intervalle $\displaystyle I$ et si $\displaystyle v$ est dérivable sur $\displaystyle u(I)$, alors la fonction composée $\displaystyle v \circ u$ est dérivable sur $\displaystyle I$ et :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (v \circ u)'(x) = (v' \circ u)(x) \times u'(x)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : $\displaystyle (v(u(x)))' = v'(u(x)) \times u'(x)$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Dérivées composées à connaître</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle u$ une fonction dérivable sur un intervalle $\displaystyle I$.</p>
+            <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9c27b0; border-radius:8px; overflow:hidden;">
+                <thead>
+                    <tr style="background:#9c27b0; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Fonction</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Dérivée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle u^n$ avec $\displaystyle n \geq 1$</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle n u^{n-1} u'$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \frac{1}{u}$ (si $\displaystyle u \neq 0$)</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle -\frac{u'}{u^2}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \sqrt{u}$ (si $\displaystyle u > 0$)</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \frac{u'}{2\sqrt{u}}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle e^{u}$</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle u' e^{u}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \ln(u)$ (si $\displaystyle u > 0$)</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \frac{u'}{u}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \sin(u)$</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle u' \cos(u)$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \cos(u)$</td>
+                        <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle -u' \sin(u)$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'application :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle ((x^2 + 1)^3)' = 3 \times 2x \times (x^2 + 1)^2 = 6x(x^2 + 1)^2$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle (e^{2x + 1})' = 2 \times e^{2x + 1} = 2e^{2x + 1}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle (\ln(x^2 + 3))' = \frac{2x}{x^2 + 3}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle (\sin(3x))' = 3 \times \cos(3x) = 3\cos(3x)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode pratique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour dériver $\displaystyle v(u(x))$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">On dérive la fonction <strong>extérieure</strong> $\displaystyle v$ en laissant $\displaystyle u(x)$ tel quel</li>
+                <li style="margin:0; text-align:left;">On multiplie par la dérivée de la fonction <strong>intérieure</strong> $\displaystyle u$</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples détaillés :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Dériver $\displaystyle f(x) = e^{x^2 + 1}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On identifie : $\displaystyle u(x) = x^2 + 1$ et $\displaystyle v(x) = e^x$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle u'(x) = 2x$ et $\displaystyle v'(x) = e^x$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle f'(x) = v'(u(x)) \times u'(x) = e^{x^2 + 1} \times 2x = 2x e^{x^2 + 1}$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Dériver $\displaystyle f(x) = \ln(x^2 + 3x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On identifie : $\displaystyle u(x) = x^2 + 3x$ et $\displaystyle v(x) = \ln(x)$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle u'(x) = 2x + 3$ et $\displaystyle v'(x) = \frac{1}{x}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle f'(x) = v'(u(x)) \times u'(x) = \frac{1}{x^2 + 3x} \times (2x + 3) = \frac{2x + 3}{x^2 + 3x}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Dérivée seconde</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Dérivée seconde</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction dérivable sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si la fonction dérivée $\displaystyle f'$ est elle-même dérivable sur $\displaystyle I$, alors on appelle <strong>dérivée seconde</strong> de $\displaystyle f$ la dérivée de $\displaystyle f'$, notée $\displaystyle f''$.</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f'' = (f')'$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f(x) = x^3$, alors $\displaystyle f'(x) = 3x^2$ et $\displaystyle f''(x) = 6x$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f(x) = e^x$, alors $\displaystyle f'(x) = e^x$ et $\displaystyle f''(x) = e^x$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f(x) = \sin(x)$, alors $\displaystyle f'(x) = \cos(x)$ et $\displaystyle f''(x) = -\sin(x)$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle f(x) = x^4 - 2x^2 + 1$, alors $\displaystyle f'(x) = 4x^3 - 4x$ et $\displaystyle f''(x) = 12x^2 - 4$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La dérivée seconde mesure la <strong>variation de la pente</strong> de la courbe. Elle indique comment la dérivée première change.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f''(x) > 0$, la pente augmente (la courbe "accélère" vers le haut).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f''(x) < 0$, la pente diminue (la courbe "ralentit" vers le bas).</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Fonctions convexes et concaves</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition géométrique</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fonction convexe</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction $\displaystyle f$ est dite <strong>convexe</strong> sur un intervalle $\displaystyle I$ si, pour tous points $\displaystyle A$ et $\displaystyle B$ de la courbe représentative de $\displaystyle f$, le segment $\displaystyle [AB]$ est situé <strong>au-dessus</strong> de la courbe.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : la courbe est située <strong>en-dessous</strong> de toutes ses sécantes.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fonction concave</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction $\displaystyle f$ est dite <strong>concave</strong> sur un intervalle $\displaystyle I$ si, pour tous points $\displaystyle A$ et $\displaystyle B$ de la courbe représentative de $\displaystyle f$, le segment $\displaystyle [AB]$ est situé <strong>en-dessous</strong> de la courbe.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : la courbe est située <strong>au-dessus</strong> de toutes ses sécantes.</p>
+        </div>
+
+        <div style="text-align:center; margin:20px 0;">
+            [IMAGE_1]
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Caractérisation pour les fonctions deux fois dérivables</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Caractérisation de la convexité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction deux fois dérivable sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les propriétés suivantes sont <strong>équivalentes</strong> (admis) :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f$ est <strong>convexe</strong> sur $\displaystyle I$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">La courbe représentative de $\displaystyle f$ est située <strong>au-dessus</strong> de toutes ses tangentes</li>
+                <li style="margin:0 0 12px 0; text-align:left;">La fonction dérivée $\displaystyle f'$ est <strong>croissante</strong> sur $\displaystyle I$</li>
+                <li style="margin:0; text-align:left;">La dérivée seconde $\displaystyle f''$ est <strong>positive</strong> sur $\displaystyle I$ : $\displaystyle f''(x) \geq 0$ pour tout $\displaystyle x \in I$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Caractérisation de la concavité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction deux fois dérivable sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les propriétés suivantes sont <strong>équivalentes</strong> (admis) :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f$ est <strong>concave</strong> sur $\displaystyle I$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">La courbe représentative de $\displaystyle f$ est située <strong>en-dessous</strong> de toutes ses tangentes</li>
+                <li style="margin:0 0 12px 0; text-align:left;">La fonction dérivée $\displaystyle f'$ est <strong>décroissante</strong> sur $\displaystyle I$</li>
+                <li style="margin:0; text-align:left;">La dérivée seconde $\displaystyle f''$ est <strong>négative</strong> sur $\displaystyle I$ : $\displaystyle f''(x) \leq 0$ pour tout $\displaystyle x \in I$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Tableau récapitulatif</strong></p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #9c27b0;">
+                <thead>
+                    <tr style="background:#9c27b0; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center;">Signe de $\displaystyle f''(x)$</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center;">Variation de $\displaystyle f'$</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center;">Convexité de $\displaystyle f$</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center;">Position courbe/tangentes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle f''(x) > 0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle f'$ croissante ↗</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Convexe</strong> (forme U)</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">Courbe au-dessus des tangentes</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle f''(x) < 0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle f'$ décroissante ↘</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Concave</strong> (forme ∩)</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">Courbe en-dessous des tangentes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = x^2$ : $\displaystyle f''(x) = 2 > 0$ donc $\displaystyle f$ est <strong>convexe</strong> sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = -x^2$ : $\displaystyle f''(x) = -2 < 0$ donc $\displaystyle f$ est <strong>concave</strong> sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = e^x$ : $\displaystyle f''(x) = e^x > 0$ donc $\displaystyle f$ est <strong>convexe</strong> sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = \ln(x)$ : $\displaystyle f''(x) = -\frac{1}{x^2} < 0$ pour $\displaystyle x > 0$ donc $\displaystyle f$ est <strong>concave</strong> sur $\displaystyle ]0, +\infty[$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f(x) = x^3$ : $\displaystyle f''(x) = 6x$ change de signe en $\displaystyle 0$, donc $\displaystyle f$ n'est ni convexe ni concave sur $\displaystyle \mathbb{R}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Pour aller plus loin - Démonstration : Si $\displaystyle f''$ est positive, alors la courbe est au-dessus de ses tangentes</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Démonstration optionnelle :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em;">Cette démonstration est donnée pour la culture mathématique. Certains professeurs la font en classe, d'autres non. Elle n'est pas strictement exigible au Bac mais peut être demandée dans certains sujets.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration (niveau Terminale, possible à l'écrit) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction deux fois dérivable sur un intervalle $\displaystyle I$ telle que $\displaystyle f''(x) \geq 0$ pour tout $\displaystyle x \in I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On veut montrer que la courbe représentative de $\displaystyle f$ est au-dessus de toutes ses tangentes.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle a \in I$ et $\displaystyle T_a$ la tangente à la courbe au point d'abscisse $\displaystyle a$ :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle T_a(x) = f'(a)(x - a) + f(a)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On considère la fonction $\displaystyle g(x) = f(x) - T_a(x) = f(x) - f'(a)(x - a) - f(a)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle g(a) = f(a) - f(a) = 0$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle g'(x) = f'(x) - f'(a)$ donc $\displaystyle g'(a) = 0$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle g''(x) = f''(x) \geq 0$ pour tout $\displaystyle x \in I$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle g''(x) \geq 0$, la fonction $\displaystyle g'$ est croissante.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle x > a$ : $\displaystyle g'(x) \geq g'(a) = 0$, donc $\displaystyle g$ est croissante sur $\displaystyle [a, +\infty[ \cap I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle g(a) = 0$ et $\displaystyle g$ est croissante, on a $\displaystyle g(x) \geq 0$ pour $\displaystyle x \geq a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle x < a$ : $\displaystyle g'(x) \leq g'(a) = 0$, donc $\displaystyle g$ est décroissante sur $\displaystyle ]-\infty, a] \cap I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle g(a) = 0$ et $\displaystyle g$ est décroissante, on a $\displaystyle g(x) \geq 0$ pour $\displaystyle x \leq a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ainsi, $\displaystyle g(x) \geq 0$ pour tout $\displaystyle x \in I$, c'est-à-dire $\displaystyle f(x) \geq T_a(x)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La courbe est donc au-dessus de toutes ses tangentes.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Points d'inflexion</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Point d'inflexion</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un point $\displaystyle A(a, f(a))$ est un <strong>point d'inflexion</strong> de la courbe représentative de $\displaystyle f$ si la courbe traverse sa tangente en ce point.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : la courbe change de "côté" par rapport à sa tangente en $\displaystyle a$.</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Condition pour un point d'inflexion</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction deux fois dérivable sur un intervalle $\displaystyle I$ contenant $\displaystyle a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle A(a, f(a))$ est un point d'inflexion, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f''(a) = 0$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f''$ change de signe en $\displaystyle a$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le point d'inflexion marque le passage d'une zone <strong>convexe</strong> à une zone <strong>concave</strong> (ou inversement).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = x^3$ : $\displaystyle f''(x) = 6x$ s'annule en $\displaystyle 0$ et change de signe. Le point $\displaystyle (0, 0)$ est un point d'inflexion.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = x^4$ : $\displaystyle f''(x) = 12x^2$ s'annule en $\displaystyle 0$ mais ne change pas de signe. Le point $\displaystyle (0, 0)$ n'est <strong>pas</strong> un point d'inflexion.</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f(x) = x^3 - 3x$ : $\displaystyle f''(x) = 6x$ s'annule en $\displaystyle 0$ et change de signe. Le point $\displaystyle (0, 0)$ est un point d'inflexion.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode pour déterminer les points d'inflexion</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Calculer $\displaystyle f''(x)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Résoudre $\displaystyle f''(x) = 0$ pour trouver les valeurs candidates</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Étudier le signe de $\displaystyle f''(x)$ autour de chaque valeur candidate</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f''$ change de signe en $\displaystyle a$, alors $\displaystyle (a, f(a))$ est un point d'inflexion</li>
+                <li style="margin:0; text-align:left;">Calculer $\displaystyle f(a)$ pour obtenir les coordonnées du point d'inflexion</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple détaillé :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Étudier les points d'inflexion de $\displaystyle f(x) = x^4 - 6x^2 + 4$</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 1 :</strong> Calculer $\displaystyle f''(x)$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle f'(x) = 4x^3 - 12x$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle f''(x) = 12x^2 - 12 = 12(x^2 - 1) = 12(x - 1)(x + 1)$</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 2 :</strong> Résoudre $\displaystyle f''(x) = 0$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle f''(x) = 0 \Leftrightarrow x = -1$ ou $\displaystyle x = 1$</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 3 :</strong> Étudier le signe de $\displaystyle f''(x)$</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Pour $\displaystyle x < -1$ : $\displaystyle f''(x) > 0$ (convexe)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Pour $\displaystyle -1 < x < 1$ : $\displaystyle f''(x) < 0$ (concave)</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle x > 1$ : $\displaystyle f''(x) > 0$ (convexe)</li>
+            </ul>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 4 :</strong> Calculer les ordonnées</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle f(-1) = 1 - 6 + 4 = -1$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle f(1) = 1 - 6 + 4 = -1$</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Conclusion :</strong> La courbe admet deux points d'inflexion : $\displaystyle I_1(-1, -1)$ et $\displaystyle I_2(1, -1)$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Applications de la convexité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Démontrer des inégalités avec la convexité</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em;">L'utilisation de la convexité pour démontrer des inégalités est un approfondissement. Cette technique n'est pas strictement exigible au Bac mais peut apparaître dans certains exercices plus poussés.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode - Utiliser la convexité pour démontrer des inégalités :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est convexe sur un intervalle $\displaystyle I$, alors pour tous $\displaystyle a, b \in I$ et pour tout $\displaystyle t \in [0, 1]$ :</p>
+            <div style="background:#fef3c7; border:3px solid #f59e0b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f(ta + (1-t)b) \leq tf(a) + (1-t)f(b)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette inégalité traduit le fait que la courbe est en-dessous de la sécante.</p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>Pour $\displaystyle t = \frac{1}{2}$, on obtient : $\displaystyle f\left(\frac{a + b}{2}\right) \leq \frac{f(a) + f(b)}{2}$ (inégalité de Jensen simple).</em></p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Démontrer que pour tous réels positifs $\displaystyle a$ et $\displaystyle b$ :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \frac{a + b}{2} \geq \sqrt{ab}$ (moyenne arithmétique $\geq$ moyenne géométrique)</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On considère la fonction $\displaystyle f(x) = x^2$ sur $\displaystyle [0, +\infty[$.</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle f'(x) = 2x$ et $\displaystyle f''(x) = 2 > 0$ pour tout $\displaystyle x > 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle f$ est <strong>convexe</strong> sur $\displaystyle [0, +\infty[$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par la propriété de convexité avec $\displaystyle t = \frac{1}{2}$ :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle f\left(\frac{\sqrt{a} + \sqrt{b}}{2}\right) \leq \frac{f(\sqrt{a}) + f(\sqrt{b})}{2}$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">C'est-à-dire : $\displaystyle \left(\frac{\sqrt{a} + \sqrt{b}}{2}\right)^2 \leq \frac{a + b}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En développant le membre de gauche :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \frac{a + 2\sqrt{ab} + b}{4} \leq \frac{a + b}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En multipliant par 4 : $\displaystyle a + 2\sqrt{ab} + b \leq 2(a + b)$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">Soit : $\displaystyle 2\sqrt{ab} \leq a + b$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">En divisant par 2 : $\displaystyle \sqrt{ab} \leq \frac{a + b}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce qui est équivalent à : $\displaystyle \frac{a + b}{2} \geq \sqrt{ab}$ ✓</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Esquisser l'allure d'une courbe à partir des tableaux de variations</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour esquisser l'allure de la courbe représentative de $\displaystyle f$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser le tableau de variations de $\displaystyle f$ pour connaître les variations et les extremums</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser le tableau de variations de $\displaystyle f'$ (ou le signe de $\displaystyle f''$) pour déterminer les zones de convexité/concavité</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Repérer les points d'inflexion (où $\displaystyle f''$ change de signe)</li>
+                <li style="margin:0; text-align:left;">Tracer la courbe en respectant : variations, convexité/concavité, et points d'inflexion</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction telle que :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f$ est croissante sur $\displaystyle ]-\infty, 0]$ et décroissante sur $\displaystyle [0, +\infty[$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f''(x) < 0$ sur $\displaystyle ]-\infty, 0[$ (concave) et $\displaystyle f''(x) > 0$ sur $\displaystyle ]0, +\infty[$ (convexe)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f''(0) = 0$ et $\displaystyle f''$ change de signe en $\displaystyle 0$ (point d'inflexion)</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La courbe a donc : un maximum en $\displaystyle 0$, est concave avant $\displaystyle 0$, convexe après $\displaystyle 0$, avec un point d'inflexion en $\displaystyle 0$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. 🌟 Bonus - Approfondissements</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement :</strong> Les sections suivantes enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour le Bac.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Courbe de Lorenz</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Application de la convexité en économie</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>courbe de Lorenz</strong> est utilisée en économie pour mesurer l'inégalité de répartition des richesses.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle L(x)$ représente la proportion de richesses détenue par les $\displaystyle x\%$ les plus pauvres, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle L(0) = 0$ et $\displaystyle L(100) = 100$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle L$ est croissante et <strong>convexe</strong></li>
+                <li style="margin:0; text-align:left;">Plus la courbe est "proche" de la droite $\displaystyle y = x$, plus la répartition est équitable</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>L'étude de la convexité permet d'analyser le degré d'inégalité dans une société.</em></p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Dérivée n-ième</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Dérivée n-ième</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On définit par récurrence la <strong>dérivée n-ième</strong> d'une fonction $\displaystyle f$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f^{(0)} = f$ (dérivée d'ordre 0)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f^{(1)} = f'$ (dérivée première)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f^{(2)} = f''$ (dérivée seconde)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f^{(n+1)} = (f^{(n)})'$ pour tout $\displaystyle n \geq 0$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>Exemple : Pour $\displaystyle f(x) = e^x$, on a $\displaystyle f^{(n)}(x) = e^x$ pour tout $\displaystyle n$.</em></p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Inégalité arithmético-géométrique</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Inégalité arithmético-géométrique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous réels positifs $\displaystyle a_1, a_2, \ldots, a_n$ :</p>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \sqrt[n]{a_1 a_2 \cdots a_n} \leq \frac{a_1 + a_2 + \cdots + a_n}{n}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette inégalité peut être démontrée en utilisant la convexité de la fonction $\displaystyle x \mapsto -\ln(x)$ sur $\displaystyle ]0, +\infty[$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>L'égalité a lieu si et seulement si tous les $\displaystyle a_i$ sont égaux.</em></p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Oublier de multiplier par $\displaystyle u'$</strong> dans la dérivée d'une composée : $\displaystyle (v(u(x)))' = v'(u(x)) \times u'(x)$</li>
+                <li style="margin:0; text-align:left;"><strong>Confondre convexité et croissance :</strong> Une fonction peut être convexe et décroissante</li>
+                <li style="margin:0; text-align:left;"><strong>Penser que $\displaystyle f''(a) = 0$ implique un point d'inflexion :</strong> Il faut aussi que $\displaystyle f''$ change de signe</li>
+                <li style="margin:0; text-align:left;"><strong>Oublier de vérifier le signe de $\displaystyle f''$</strong> pour déterminer la convexité</li>
+                <li style="margin:0; text-align:left;"><strong>Confondre "au-dessus" et "en-dessous"</strong> : Convexe = courbe au-dessus des tangentes, Concave = courbe en-dessous des tangentes</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Pour dériver une composée :</strong> Identifier clairement la fonction intérieure $\displaystyle u$ et la fonction extérieure $\displaystyle v$</li>
+                <li style="margin:0; text-align:left;"><strong>Pour étudier la convexité :</strong> Calculer $\displaystyle f''(x)$ et étudier son signe</li>
+                <li style="margin:0; text-align:left;"><strong>Pour trouver les points d'inflexion :</strong> Résoudre $\displaystyle f''(x) = 0$ puis vérifier le changement de signe</li>
+                <li style="margin:0; text-align:left;"><strong>Pour esquisser une courbe :</strong> Utiliser les tableaux de variations de $\displaystyle f$, $\displaystyle f'$ et le signe de $\displaystyle f''$</li>
+                <li style="margin:0; text-align:left;"><strong>Pour démontrer des inégalités :</strong> Utiliser la propriété de convexité ou de concavité avec l'inégalité des sécantes</li>
+                <li style="margin:0; text-align:left;"><strong>Mémoire visuelle :</strong> Convexe = forme U (bol), Concave = forme ∩ (chapeau)</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===
+

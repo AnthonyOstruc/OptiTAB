@@ -2,7 +2,7 @@
   <header class="dashboard-header">
     <!-- Bouton burger fixe en position absolue -->
     <button 
-      :class="['burger-btn-fixed', { 'burger-collapsed': sidebarCollapsed }]" 
+      :class="['burger-btn-fixed', { 'burger-collapsed': sidebarCollapsed, 'sidebar-hidden': !sidebarOpen }]" 
       type="button"
       @click="$emit('toggle-sidebar')" 
       aria-label="Ouvrir ou fermer le menu"
@@ -150,11 +150,12 @@ const handleLogout = () => {
 /* Bouton burger fixe - Solution professionnelle */
 .burger-btn-fixed {
   position: absolute;
-  left: 0.75rem; /* Légèrement plus à gauche pour centrer avec la barre latérale */
+  left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  pointer-events: auto;
+  background: #ecfdf5;
+  border: 1px solid #34d399;
   border-radius: 8px;
   width: 40px;
   height: 40px;
@@ -162,43 +163,37 @@ const handleLogout = () => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.07);
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.25);
   z-index: 101;
-  /* Transitions professionnelles */
   transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  /* POSITION CENTRÉE VERTICALEMENT */
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .burger-btn-fixed:hover {
-  background: #f8fafc;
-  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.12);
-  border-color: #d1d5db;
+  background: #dcfce7;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  border-color: #059669;
 }
 
 .burger-btn-fixed:active {
-  background: #f1f5f9;
-  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.07);
+  background: #bbf7d0;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.2);
 }
 
 .burger-icon-fixed {
   font-size: 1.5rem;
-  color: #2563eb;
+  color: #047857;
   transition: color 0.2s ease;
   font-weight: 500;
 }
 
 .burger-btn-fixed:hover .burger-icon-fixed {
-  color: #1e40af;
+  color: #065f46;
 }
 
 .burger-btn-fixed.burger-collapsed {
-  border-color: #f87171;
-  background: #fef2f2;
-  box-shadow: 0 8px 22px rgba(248, 113, 113, 0.3);
+  border-color: #f97316;
+  background: #fff7ed;
+  box-shadow: 0 8px 22px rgba(249, 115, 22, 0.3);
 }
 
 .burger-btn-fixed.burger-collapsed::after {
@@ -206,13 +201,33 @@ const handleLogout = () => {
   position: absolute;
   inset: -10px;
   border-radius: 50%;
-  border: 2px solid rgba(248, 113, 113, 0.5);
+  border: 2px solid rgba(249, 115, 22, 0.5);
   animation: burgerHalo 1.8s ease-in-out infinite;
   pointer-events: none;
 }
 
 .burger-btn-fixed.burger-collapsed .burger-icon-fixed {
-  color: #b91c1c;
+  color: #c2410c;
+}
+
+.burger-btn-fixed.sidebar-hidden {
+  border-color: #dc2626;
+  background: #fee2e2;
+  box-shadow: 0 10px 26px rgba(220, 38, 38, 0.25);
+}
+
+.burger-btn-fixed.sidebar-hidden .burger-icon-fixed {
+  color: #991b1b;
+}
+
+.burger-btn-fixed.sidebar-hidden::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid rgba(220, 38, 38, 0.5);
+  animation: burgerHalo 1.8s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .burger-icon-fixed.burger-icon-collapsed {

@@ -64,6 +64,7 @@ import FullPageSpinner from '@/components/common/FullPageSpinner.vue'
 import { useNotificationStore } from '@/stores/notifications'
 import { useCheckoutIntentStore } from '@/stores/checkoutIntent'
 import { useToast } from '@/composables/useToast'
+import { useSidebarStore } from '@/stores/sidebar'
 
 const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()
@@ -72,6 +73,7 @@ const { isModalOpen, closeModal, openModal } = useModalManager()
 const notificationStore = useNotificationStore()
 const checkoutIntentStore = useCheckoutIntentStore()
 const { info: toastInfo, error: toastError } = useToast()
+const sidebarStore = useSidebarStore()
 
 if (typeof window !== 'undefined') {
   checkoutIntentStore.initFromStorage()
@@ -113,6 +115,12 @@ watch(
     }
   }
 )
+
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    sidebarStore.init()
+  }
+})
 
 // Computed
 const isLoginModalOpen = computed(() => isModalOpen(MODAL_IDS.LOGIN))

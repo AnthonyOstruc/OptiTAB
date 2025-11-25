@@ -2,36 +2,37 @@
   <div class="dashboard-layout">
     <!-- Header du dashboard -->
     <DashboardHeader 
-      :sidebarOpen="sidebarOpen" 
+      :sidebar-open="sidebarOpen" 
       :sidebar-collapsed="sidebarCollapsed"
-      @toggle-sidebar="toggleSidebarCollapsed"
+      @toggle-sidebar="handleHeaderToggle"
       @subject-changed="handleSubjectChange"
     />
     
     <!-- Contenu principal -->
     <div class="dashboard-main-container">
-                <!-- Sidebar principale -->
+      <!-- Sidebar principale -->
       <Sidebar 
-        v-show="sidebarOpen" 
+        v-if="!isMobile && sidebarOpen" 
         :collapsed="sidebarCollapsed"
         @navigation="handleNavigation"
         @toggle-collapsed="toggleSidebarCollapsed"
         ref="sidebarRef"
       />
     
-    <!-- Debug: Indicateur d'état de la sidebar (temporaire) -->
-    <div v-if="false" style="position: fixed; top: 10px; right: 10px; background: #333; color: white; padding: 5px; border-radius: 4px; font-size: 12px; z-index: 9999;">
-      Sidebar: {{ sidebarCollapsed ? 'Pliée' : 'Dépliée' }}
-    </div>
+      <!-- Debug: Indicateur d'etat de la sidebar (temporaire) -->
+      <div v-if="false" style="position: fixed; top: 10px; right: 10px; background: #333; color: white; padding: 5px; border-radius: 4px; font-size: 12px; z-index: 9999;">
+        Sidebar: {{ sidebarCollapsed ? 'Pliee' : 'Depliee' }}
+      </div>
       
       <!-- Contenu du dashboard -->
       <div class="dashboard-content">
-        <main class="dashboard-main">
+        <main class="dashboard-main" :class="dashboardMainClasses">
           <slot />
         </main>
       </div>
     </div>
 
+    <MobileBottomNav v-if="isMobile" />
   </div>
 </template>
 
@@ -40,18 +41,16 @@ import { computed, ref, onMounted, nextTick, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Sidebar from './Sidebar.vue'
 import DashboardHeader from './DashboardHeader.vue'
+import MobileBottomNav from './MobileBottomNav.vue'
 import { useUserStore } from '@/stores/user'
 import { useSidebarStore } from '@/stores/sidebar'
 
-// Props et émissions
 const emit = defineEmits(['sidebar-toggle', 'navigation', 'subject-changed'])
 
-// Références
 const sidebarRef = ref(null)
 const route = useRoute()
 const userStore = useUserStore()
 
-// État réactif
 const sidebarStore = useSidebarStore()
 const sidebarOpen = computed({
   get: () => sidebarStore.isOpen,
@@ -61,8 +60,19 @@ const sidebarCollapsed = computed({
   get: () => sidebarStore.isCollapsed,
   set: (value) => sidebarStore.setCollapsed(value)
 })
+const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
+const isMobile = computed(() => viewportWidth.value <= 768)
+const dashboardMainClasses = computed(() => ({
+  'with-mobile-nav': isMobile.value
+}))
+const lastDesktopOpenState = ref(true)
+const lastDesktopCollapsedState = ref(false)
 
-// Méthodes
+const handleResize = () => {
+  if (typeof window === 'undefined') return
+  viewportWidth.value = window.innerWidth
+}
+
 const toggleSidebar = () => {
   sidebarStore.toggleOpen()
   emit('sidebar-toggle', sidebarStore.isOpen)
@@ -73,7 +83,24 @@ const toggleSidebarCollapsed = () => {
   console.log('[DashboardLayout] Sidebar toggled:', { collapsed: sidebarStore.isCollapsed })
 }
 
+const handleHeaderToggle = () => {
+  if (isMobile.value) {
+    toggleSidebar()
+  } else {
+    if (!sidebarOpen.value) {
+      sidebarStore.setCollapsed(false)
+      sidebarStore.setOpen(true)
+      return
+    }
 
+    if (!sidebarCollapsed.value) {
+      sidebarStore.setCollapsed(true)
+      return
+    }
+
+    sidebarStore.setOpen(false)
+  }
+}
 
 const handleNavigation = (navigationData) => {
   emit('navigation', navigationData)
@@ -83,28 +110,52 @@ const handleSubjectChange = (subjectId) => {
   emit('subject-changed', subjectId)
 }
 
-// Lifecycle
 onMounted(async () => {
-  console.log('[DashboardLayout] onMounted - État initial:', { sidebarOpen: sidebarOpen.value, sidebarCollapsed: sidebarCollapsed.value })
+  console.log('[DashboardLayout] onMounted - etat initial:', { sidebarOpen: sidebarOpen.value, sidebarCollapsed: sidebarCollapsed.value })
   sidebarStore.init()
+  window.addEventListener('resize', handleResize, { passive: true })
+  handleResize()
   
-  // Attendre que le DOM soit prêt
   await nextTick()
   
-  console.log('[DashboardLayout] onMounted - État final:', { sidebarOpen: sidebarOpen.value, sidebarCollapsed: sidebarCollapsed.value })
+  console.log('[DashboardLayout] onMounted - etat final:', { sidebarOpen: sidebarOpen.value, sidebarCollapsed: sidebarCollapsed.value })
   
-  // Initialiser la sidebar si elle existe
   if (sidebarRef.value) {
-    // La sidebar se charge automatiquement via onMounted
+    // Sidebar initialisee automatiquement
   }
 })
 
 onUnmounted(() => {
-  // aucun nettoyage nécessaire : le store garde les listeners globaux tant que l'app vit
+  window.removeEventListener('resize', handleResize)
+})
+
+watch(isMobile, (val, oldVal) => {
+  if (val) {
+    if (oldVal === false || oldVal === undefined) {
+      lastDesktopOpenState.value = sidebarOpen.value
+      lastDesktopCollapsedState.value = sidebarCollapsed.value
+    }
+    sidebarStore.setOpen(false, { persist: false })
+  } else {
+    sidebarStore.setOpen(lastDesktopOpenState.value ?? true)
+    sidebarStore.setCollapsed(lastDesktopCollapsedState.value ?? false)
+  }
+}, { immediate: true })
+
+watch(() => sidebarOpen.value, (value) => {
+  if (!isMobile.value) {
+    lastDesktopOpenState.value = value
+  }
+})
+
+watch(() => sidebarCollapsed.value, (value) => {
+  if (!isMobile.value) {
+    lastDesktopCollapsedState.value = value
+  }
 })
 
 watch(() => route.path, (newPath, oldPath) => {
-  console.log('[DashboardLayout] Navigation détectée:', { from: oldPath, to: newPath, sidebarCollapsed: sidebarCollapsed.value })
+  console.log('[DashboardLayout] Navigation detectee:', { from: oldPath, to: newPath, sidebarCollapsed: sidebarCollapsed.value })
 })
 </script>
 
@@ -160,7 +211,11 @@ watch(() => route.path, (newPath, oldPath) => {
   min-height: 0;
 }
 
-/* Responsive design - Optimisé pour que le header et les onglets restent visibles */
+.dashboard-main.with-mobile-nav {
+  padding-bottom: 5.5rem;
+}
+
+/* Responsive design - Optimise pour que le header et les onglets restent visibles */
 @media (max-width: 1200px) {
   .dashboard-main {
     padding: 1.25rem 1.5rem;
@@ -214,7 +269,7 @@ watch(() => route.path, (newPath, oldPath) => {
   }
   
   .dashboard-layout {
-    /* Assurer que le layout reste stable même sur très petit écran */
+    /* Assurer que le layout reste stable meme sur tres petit ecran */
     min-height: 100vh;
   }
   
@@ -224,7 +279,7 @@ watch(() => route.path, (newPath, oldPath) => {
   }
 }
 
-/* Assurer que le layout reste stable même sur très petit écran */
+/* Assurer que le layout reste stable meme sur tres petit ecran */
 @media (max-width: 360px) {
   .dashboard-main {
     padding: 0.4rem 0.6rem;
@@ -248,7 +303,7 @@ watch(() => route.path, (newPath, oldPath) => {
   }
 }
 
-/* États spéciaux */
+/* Etats speciaux */
 .dashboard-layout.loading {
   pointer-events: none;
   opacity: 0.7;

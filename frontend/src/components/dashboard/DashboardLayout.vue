@@ -69,8 +69,8 @@ const dashboardMainClasses = computed(() => ({
   'with-mobile-nav': isMobile.value
 }))
 // Conserver l'état d'ouverture original lors d'une fermeture auto sur mobile
-const autoClosedByViewport = ref(false)
 const lastDesktopOpenState = ref(true)
+const lastDesktopCollapsedState = ref(false)
 
 const handleResize = () => {
   if (typeof window === 'undefined') return
@@ -93,12 +93,22 @@ const handleHeaderToggle = () => {
   if (isMobile.value) {
     toggleSidebar()
   } else {
-    // Si la sidebar a été masquée (état mobile), on la réactive avant de gérer le pliage
+    // Cycle desktop: full -> compact -> hidden -> full ...
     if (!sidebarOpen.value) {
+      // Réaffiche la barre en mode plein (icônes + labels)
+      sidebarStore.setCollapsed(false)
       sidebarStore.setOpen(true)
       return
     }
-    toggleSidebarCollapsed()
+
+    if (!sidebarCollapsed.value) {
+      // Passer du plein format au mode compact (icônes seules)
+      sidebarStore.setCollapsed(true)
+      return
+    }
+
+    // Sinon (compact), on masque complètement la barre
+    sidebarStore.setOpen(false)
   }
 }
 
@@ -129,27 +139,35 @@ onMounted(async () => {
     // La sidebar se charge automatiquement via onMounted
   }
 
-  // Sur desktop, garantir que la sidebar reste visible m\u00eame si un \u00e9tat mobile l'avait ferm\u00e9
-  if (!isMobile.value && !sidebarOpen.value) {
-    sidebarStore.setOpen(true)
+})
+
+watch(isMobile, (val, oldVal) => {
+  if (val) {
+    // On mémorise exactement l'état desktop actuel avant de forcer la fermeture mobile
+    if (oldVal === false || oldVal === undefined) {
+      lastDesktopOpenState.value = sidebarOpen.value
+      lastDesktopCollapsedState.value = sidebarCollapsed.value
+    }
+    // Passer en mode mobile : masquer la sidebar sans écraser la préférence desktop
+    sidebarStore.setOpen(false, { persist: false })
+  } else {
+    // Retour desktop : restaurer l'état précédemment mémorisé
+    sidebarStore.setOpen(lastDesktopOpenState.value ?? true)
+    sidebarStore.setCollapsed(lastDesktopCollapsedState.value ?? false)
+  }
+}, { immediate: true })
+
+watch(() => sidebarOpen.value, (value) => {
+  if (!isMobile.value) {
+    lastDesktopOpenState.value = value
   }
 })
 
-watch(isMobile, (val) => {
-  if (val) {
-    // Mémoriser l'état d'ouverture avant la fermeture auto
-    lastDesktopOpenState.value = sidebarOpen.value
-    autoClosedByViewport.value = true
-    sidebarStore.setOpen(false, { persist: false })
-  } else if (autoClosedByViewport.value) {
-    // Restaurer l'état précédent uniquement si la fermeture était automatique
-    sidebarStore.setOpen(lastDesktopOpenState.value ?? true)
-    autoClosedByViewport.value = false
-  } else if (!sidebarOpen.value) {
-    // Si on revient sur desktop avec un état fermé (hérité du mobile), on rouvre
-    sidebarStore.setOpen(true)
+watch(() => sidebarCollapsed.value, (value) => {
+  if (!isMobile.value) {
+    lastDesktopCollapsedState.value = value
   }
-}, { immediate: true })
+})
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)

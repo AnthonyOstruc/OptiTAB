@@ -59,11 +59,15 @@ function computeAutoZoom(width) {
 const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
 
 const zoomStyle = computed(() => {
-  const z = zoomLevel.value || 1
+  const baseHeight = `${contentHeight.value}px`
+  let z = zoomLevel.value || 1
+  if (viewportWidth.value <= 768) {
+    z = Math.max(0.6, z - 0.08)
+  }
   const widthPercent = (100 / z).toFixed(3)
   return {
     '--home-zoom': z,
-    '--home-content-height': `${contentHeight.value}px`,
+    '--home-content-height': baseHeight,
     transform: `scale(${z})`,
     transformOrigin: 'top left',
     width: `${widthPercent}%`

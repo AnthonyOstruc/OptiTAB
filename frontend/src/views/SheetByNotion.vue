@@ -235,11 +235,15 @@ function computeAutoZoom(width) {
 const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
 
 const zoomStyle = computed(() => {
-  const z = zoomLevel.value || 1
+  const baseHeight = `${contentHeight.value}px`
+  let z = zoomLevel.value || 1
+  if (viewportWidth.value <= 768) {
+    z = Math.max(0.45, z * 0.75)
+  }
   const widthPercent = (100 / z).toFixed(3)
   return {
     '--sheet-zoom': z,
-    '--sheet-content-height': `${contentHeight.value}px`,
+    '--sheet-content-height': baseHeight,
     transform: `scale(${z})`,
     transformOrigin: 'top left',
     width: `${widthPercent}%`
@@ -614,13 +618,13 @@ watch(() => route.query.q, (val) => {
 
 @media (max-width: 768px) {
   .sheet-content-wrapper {
-    padding: 0 1rem 0.75rem 1rem;
+    padding: 0 0.65rem 0.65rem 0.65rem;
   }
 }
 
 @media (max-width: 480px) {
 .sheet-content-wrapper {
-    padding: 0 0.75rem 0.5rem 0.75rem;
+    padding: 0 0rem 0rem 0rem;
   }
 }
 
@@ -648,7 +652,7 @@ watch(() => route.query.q, (val) => {
 
 @media (max-width: 360px) {
   .sheet-content-wrapper {
-    padding: 0 0.6rem 0.4rem 0.6rem;
+    padding: 0 0.35rem 0.35rem 0.35rem;
   }
 }
 
@@ -662,7 +666,7 @@ watch(() => route.query.q, (val) => {
   text-align: center;
 }
 
-.sheet-title { font-size: 2rem; font-weight: 800; margin: 0.25rem 0 0.5rem; color: #193e8e; text-align: center; }
+.sheet-title { font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 800; margin: 0.25rem 0 0.5rem; color: #193e8e; text-align: center; }
 .sheet-content { 
   text-align: left;
   max-width: 100%;
@@ -783,7 +787,7 @@ watch(() => route.query.q, (val) => {
 
 /* Harmoniser la taille du h1 avec la page Cours en mobile */
 @media (max-width: 640px) {
-  .sheet-title { font-size: 1.5rem; }
+  .sheet-title { font-size: 1.25rem; }
 }
 
 /* Styles du sommaire */
@@ -791,13 +795,14 @@ watch(() => route.query.q, (val) => {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 0.6rem 1rem; /* compact height */
-  margin: 1rem 0;      /* moins d'espace vertical */
+  padding: 0.3rem 0.75rem;
+  margin: 0.8rem auto;
+  width: 100%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   text-align: left;
 }
 /* Aligner la position du sommaire avec la page Cours */
-.sheet-by-notion-page .toc-container { margin: 0.5rem 0; }
+.sheet-by-notion-page .toc-container { margin: 0.5rem 0; width: 100%; }
 
 .toc-header {
   display: flex;
@@ -826,7 +831,7 @@ watch(() => route.query.q, (val) => {
 }
 
 .toc-title {
-  font-size: 1.125rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #193e8e;
   margin: 0;
@@ -847,9 +852,9 @@ watch(() => route.query.q, (val) => {
   list-style: none;
   padding: 0;
   margin: 0;
-  padding-top: 1rem;
-  border-top: 2px solid #cbd5e1;
-  margin-top: 1rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #cbd5e1;
+  margin-top: 0.6rem;
 }
 
 .toc-item {
@@ -869,14 +874,14 @@ watch(() => route.query.q, (val) => {
   display: block;
   width: 100%;
   text-align: left;
-  padding: 0.625rem 0.875rem;
-  color: #334155;
+  padding: 0.35rem 0.55rem;
+  color: #2d3a61;
   background: transparent;
   border: none;
   border-radius: 6px;
   transition: all 0.2s ease;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.76rem;
+  line-height: 1.35;
   cursor: pointer;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -892,12 +897,12 @@ watch(() => route.query.q, (val) => {
 
 .toc-level-2 .toc-link {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.82rem;
 }
 
 .toc-level-3 .toc-link {
   font-weight: 400;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: #64748b;
 }
 
@@ -919,35 +924,47 @@ watch(() => route.query.q, (val) => {
   opacity: 0;
 }
 
+@media (max-width: 768px) {
+  .toc-container {
+    width: calc(100% - 0.35rem);
+    margin-left: 0.35rem;
+    margin-right: 0;
+  }
+}
+
 @media (max-width: 640px) {
   .toc-container {
-    padding: 0.5rem 0.75rem; /* encore plus compact sur mobile */
-    margin: 0.75rem 0;
+    padding: 0.12rem 0.3rem;
+    margin: 0.5rem auto;
+    width: calc(100% - 0.3rem);
+    margin-left: 0.3rem;
+    margin-right: 0;
+    transform: none;
   }
 
   .toc-header {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.35rem;
   }
 
   .toc-title {
-    font-size: 1rem;
+    font-size: 0.78rem;
   }
 
   .toc-level-3 {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
   }
 
   .toc-link {
-    font-size: 0.875rem;
-    padding: 0.4rem 0.5rem;
+    font-size: 0.65rem;
+    padding: 0.22rem 0.3rem;
   }
 
   .toc-level-2 .toc-link {
-    font-size: 0.95rem;
+    font-size: 0.7rem;
   }
 
   .toc-level-3 .toc-link {
-    font-size: 0.85rem;
+    font-size: 0.62rem;
   }
 }
 

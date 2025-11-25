@@ -462,11 +462,15 @@ function computeAutoZoom(width) {
 const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
 
 const zoomStyle = computed(() => {
-  const z = zoomLevel.value || 1
+  const baseHeight = `${contentHeight.value}px`
+  let z = zoomLevel.value || 1
+  if (viewportWidth.value <= 768) {
+    z = Math.max(0.6, z - 0.08)
+  }
   const widthPercent = (100 / z).toFixed(3)
   return {
     '--course-zoom': z,
-    '--course-content-height': `${contentHeight.value}px`,
+    '--course-content-height': baseHeight,
     transform: `scale(${z})`,
     transformOrigin: 'top left',
     width: `${widthPercent}%`
@@ -845,24 +849,24 @@ watch(() => route.query.q, (val) => {
 
 @media (max-width: 768px) {
   .cours-body {
-    padding: 0 1rem 0.75rem 1rem;
+    padding: 0 0.65rem 0.65rem 0.65rem;
   }
 }
 
 @media (max-width: 480px) {
   .cours-body {
-    padding: 0 0.75rem 0.5rem 0.75rem;
+    padding: 0 0rem 0rem 0rem;
   }
 }
 
 @media (max-width: 360px) {
   .cours-body {
-    padding: 0 0.6rem 0.4rem 0.6rem;
+    padding: 0 0.35rem 0.35rem 0.35rem;
   }
 }
 
 .cours-title {
-  font-size: 2rem;
+  font-size: clamp(1.3rem, 4vw, 2rem);
   color: #193e8e;
   margin: 0.25rem 0 0.5rem;
   font-weight: 800;
@@ -1012,8 +1016,7 @@ watch(() => route.query.q, (val) => {
     align-items: flex-start;
   }
   .cours-title {
-    font-size: 1.5rem;
-    /* Harmoniser avec la page Synthèse: même espace sous le titre */
+    font-size: 1.25rem;
     margin-bottom: 0.5rem;
   }
   
@@ -1144,8 +1147,8 @@ watch(() => route.query.q, (val) => {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 0.6rem 1rem; /* compact height */
-  margin: 1rem 0;      /* moins d'espace vertical */
+  padding: 0.3rem 0.75rem; /* plus compact */
+  margin: 0.8rem 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   text-align: left;
 }
@@ -1157,7 +1160,7 @@ watch(() => route.query.q, (val) => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0;
+  padding: 0.15rem 0;
   border-bottom: none;
   cursor: pointer;
   user-select: none;
@@ -1171,7 +1174,7 @@ watch(() => route.query.q, (val) => {
 .toc-header-content {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .toc-icon {
@@ -1180,7 +1183,7 @@ watch(() => route.query.q, (val) => {
 }
 
 .toc-title {
-  font-size: 1.125rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #193e8e;
   margin: 0;
@@ -1201,9 +1204,9 @@ watch(() => route.query.q, (val) => {
   list-style: none;
   padding: 0;
   margin: 0;
-  padding-top: 1rem;
-  border-top: 2px solid #cbd5e1;
-  margin-top: 1rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #cbd5e1;
+  margin-top: 0.6rem;
 }
 
 .toc-item {
@@ -1223,14 +1226,14 @@ watch(() => route.query.q, (val) => {
   display: block;
   width: 100%;
   text-align: left;
-  padding: 0.625rem 0.875rem;
-  color: #334155;
+  padding: 0.35rem 0.6rem;
+  color: #2d3a61;
   background: transparent;
   border: none;
   border-radius: 6px;
   transition: all 0.2s ease;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.8rem;
+  line-height: 1.35;
   cursor: pointer;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -1246,13 +1249,57 @@ watch(() => route.query.q, (val) => {
 
 .toc-level-2 .toc-link {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.84rem;
 }
 
 .toc-level-3 .toc-link {
   font-weight: 400;
-  font-size: 0.9rem;
+  font-size: 0.72rem;
   color: #64748b;
+}
+
+@media (max-width: 768px) {
+  .toc-container {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.75rem;
+    width: calc(100% - 0.35rem);
+    margin-left: 0.35rem;
+    margin-right: 0;
+    max-width: none;
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  .toc-title {
+    font-size: 0.78rem;
+  }
+
+  .toc-list {
+    padding-top: 0.35rem;
+    margin-top: 0.35rem;
+    border-top-width: 1px;
+  }
+
+  .toc-link {
+    padding: 0.25rem 0.35rem;
+    font-size: 0.68rem;
+    line-height: 1.25;
+  }
+
+  .toc-level-2 {
+    margin-left: 0.35rem;
+  }
+
+  .toc-level-3 {
+    margin-left: 0.75rem;
+  }
+
+  .toc-level-2 .toc-link {
+    font-size: 0.72rem;
+  }
+
+  .toc-level-3 .toc-link {
+    font-size: 0.62rem;
+  }
 }
 
 .toc-level-3 .toc-link:hover {
@@ -1275,33 +1322,36 @@ watch(() => route.query.q, (val) => {
 
 @media (max-width: 640px) {
   .toc-container {
-    padding: 0.5rem 0.75rem; /* encore plus compact sur mobile */
-    margin: 0.75rem 0;
+    padding: 0.12rem 0.3rem;
+    margin: 0.5rem 0;
+    width: calc(100% - 0.3rem);
+    margin-left: 0.3rem;
+    margin-right: 0;
   }
 
   .toc-header {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.35rem;
   }
 
   .toc-title {
-    font-size: 1rem;
+    font-size: 0.72rem;
   }
 
   .toc-level-3 {
-    margin-left: 1rem;
+    margin-left: 0.6rem;
   }
 
   .toc-link {
-    font-size: 0.875rem;
-    padding: 0.4rem 0.5rem;
+    font-size: 0.6rem;
+    padding: 0.22rem 0.3rem;
   }
 
   .toc-level-2 .toc-link {
-    font-size: 0.95rem;
+    font-size: 0.64rem;
   }
 
   .toc-level-3 .toc-link {
-    font-size: 0.85rem;
+    font-size: 0.58rem;
   }
 }
 

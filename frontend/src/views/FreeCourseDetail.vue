@@ -87,11 +87,15 @@ function computeAutoZoom(width) {
 const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
 
 const zoomStyle = computed(() => {
-  const z = zoomLevel.value || 1
+  const baseHeight = `${contentHeight.value}px`
+  let z = zoomLevel.value || 1
+  if (viewportWidth.value <= 768) {
+    z = Math.max(0.6, z - 0.08)
+  }
   const widthPercent = (100 / z).toFixed(3)
   return {
     '--course-zoom': z,
-    '--course-content-height': `${contentHeight.value}px`,
+    '--course-content-height': baseHeight,
     transform: `scale(${z})`,
     transformOrigin: 'top left',
     width: `${widthPercent}%`
@@ -579,8 +583,26 @@ onBeforeUnmount(() => {
 
 @media (max-width: 768px) {
   .toc-container {
-    transform: scale(0.92);
+    transform: scale(0.85);
     margin: 0 auto;
+  }
+
+  .toc-header {
+    font-size: 0.95rem;
+    padding: 6px 14px;
+  }
+
+  .toc-body {
+    padding: 8px 14px 12px;
+  }
+
+  .toc-item {
+    font-size: 0.9rem;
+  }
+
+  .toc-level-3 .toc-link {
+    padding-left: 18px;
+    font-size: 0.85rem;
   }
 }
 

@@ -788,7 +788,6 @@ watch(() => route.query.q, (val) => {
   background: white;
   padding-top: 1.5rem;
   padding-bottom: 1rem;
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.05);
 }
 
 .nav-header-base .back-button--top-left-dashboard {

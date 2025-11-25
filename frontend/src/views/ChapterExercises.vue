@@ -215,6 +215,26 @@ const focusKey = computed(() => `optitab_last_exercice_${notionId.value}`)
 
 let isRestoringState = false
 
+function readSavedViewState() {
+  try {
+    const raw = sessionStorage.getItem(storageKey.value)
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    return parsed && typeof parsed === 'object' ? parsed : null
+  } catch (_) {
+    return null
+  }
+}
+
+function applyInitialScrollFromStorage() {
+  const saved = readSavedViewState()
+  if (saved && typeof saved.scrollY === 'number') {
+    scrollToPosition({ top: saved.scrollY, behavior: 'auto' })
+  } else {
+    scrollToTop({ behavior: 'auto' })
+  }
+}
+
 // (supprimé: fonction dupliquée)
 
 function saveViewState(extra = {}) {
@@ -291,6 +311,7 @@ onMounted(async () => {
   if (typeof window !== 'undefined') {
     window.addEventListener('resize', updateViewportWidth, { passive: true })
   }
+  applyInitialScrollFromStorage()
   // Synchroniser la recherche locale avec l'URL (barre globale)
   const q0 = route.query?.q
   if (typeof q0 !== 'undefined' && q0 !== null) {
@@ -302,6 +323,7 @@ onMounted(async () => {
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
 onActivated(() => {
   updateViewportWidth()
+  applyInitialScrollFromStorage()
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
   nextTick(() => {
     if (window.MathJax && window.MathJax.typesetPromise) {
@@ -777,7 +799,7 @@ function readScrollTop(container) {
 
 function scrollToPosition({ top = 0, behavior = 'auto', targetEl } = {}) {
   if (typeof document === 'undefined') return
-  const container = getScrollContainer(targetEl ?? exPageRef.value)
+  const container = getScrollContainer(targetEl ?? exPageRef.value) || document.documentElement || document.body
   if (!container) return
   if (container === document.documentElement || container === document.body) {
     if (typeof window !== 'undefined') {

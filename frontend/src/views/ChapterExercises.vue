@@ -222,10 +222,10 @@ function saveViewState(extra = {}) {
     return
   }
   try {
-    let scrollY = typeof extra.scrollY === 'number' ? extra.scrollY : 0
-    if (typeof extra.scrollY !== 'number') {
-      scrollY = (typeof window !== 'undefined') ? (window.scrollY || window.pageYOffset || 0) : 0
-    }
+    const container = getScrollContainer(exPageRef.value)
+    const scrollY = typeof extra.scrollY === 'number'
+      ? extra.scrollY
+      : readScrollTop(container)
 
     const state = {
       perPage: perPage.value,
@@ -323,9 +323,9 @@ onActivated(() => {
     // Restaurer la position de scroll sauvegardée (comme Cours/Sheets)
     const saved = restoreViewState()
     if (saved && typeof saved.scrollY === 'number') {
-      try {
-        window.scrollTo({ top: saved.scrollY, behavior: 'auto' })
-      } catch (_) {}
+      scrollToPosition({ top: saved.scrollY, behavior: 'auto' })
+    } else {
+      scrollToTop({ behavior: 'auto' })
     }
   })
 })
@@ -392,9 +392,9 @@ async function loadData() {
       // Restaurer la position de scroll si disponible (comme Cours/Sheets)
       const saved = restoreViewState()
       if (saved && typeof saved.scrollY === 'number') {
-        try {
-          window.scrollTo({ top: saved.scrollY, behavior: 'auto' })
-        } catch (_) {}
+        scrollToPosition({ top: saved.scrollY, behavior: 'auto' })
+      } else {
+        scrollToTop({ behavior: 'auto' })
       }
     }, 150)
   }
@@ -504,12 +504,7 @@ function measureContentHeight() {
 function handlePageChange(page) {
   currentPage.value = page
   // scroll to top of exercises (dans le bon conteneur)
-  const container = getScrollContainer(exPageRef.value)
-  if (container === document.documentElement || container === document.body) {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  } else {
-    container.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  scrollToTop({ behavior: 'smooth' })
   // Sauvegarder l'état
   saveViewState()
   // Forcer le rendu MathJax après le changement de page
@@ -758,6 +753,7 @@ async function tryScrollToHashExercice() {
 
 // Trouver le conteneur scrollable le plus proche
 function getScrollContainer(el) {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return null
   let parent = el ? el.parentElement : null
   while (parent) {
     const style = window.getComputedStyle(parent)
@@ -769,6 +765,33 @@ function getScrollContainer(el) {
   return document.scrollingElement || document.documentElement
 }
 
+function readScrollTop(container) {
+  if (typeof document === 'undefined') return 0
+  if (!container) return 0
+  if (container === document.documentElement || container === document.body) {
+    if (typeof window === 'undefined') return 0
+    return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+  }
+  return container.scrollTop || 0
+}
+
+function scrollToPosition({ top = 0, behavior = 'auto', targetEl } = {}) {
+  if (typeof document === 'undefined') return
+  const container = getScrollContainer(targetEl ?? exPageRef.value)
+  if (!container) return
+  if (container === document.documentElement || container === document.body) {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top, behavior })
+    }
+  } else {
+    container.scrollTo({ top, behavior })
+  }
+}
+
+function scrollToTop(options = {}) {
+  scrollToPosition({ ...options, top: 0 })
+}
+
 let scrollCleanup = null
 function setupScrollListener() {
   try {
@@ -776,12 +799,19 @@ function setupScrollListener() {
       try { scrollCleanup() } catch (_) {}
       scrollCleanup = null
     }
+    const container = getScrollContainer(exPageRef.value)
+    if (!container) return
     const handleScroll = () => {
-      const scrollY = (typeof window !== 'undefined') ? (window.scrollY || window.pageYOffset || 0) : 0
-      saveViewState({ scrollY })
+      saveViewState({ scrollY: readScrollTop(container) })
     }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    scrollCleanup = () => window.removeEventListener('scroll', handleScroll)
+    if (container === document.documentElement || container === document.body) {
+      if (typeof window === 'undefined') return
+      window.addEventListener('scroll', handleScroll, { passive: true })
+      scrollCleanup = () => window.removeEventListener('scroll', handleScroll)
+    } else {
+      container.addEventListener('scroll', handleScroll, { passive: true })
+      scrollCleanup = () => container.removeEventListener('scroll', handleScroll)
+    }
   } catch (_) {}
 }
 

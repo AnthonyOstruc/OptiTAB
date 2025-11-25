@@ -391,9 +391,18 @@ async function loadCoursData() {
         setupScrollListener()
         measureContentHeight()
         // Restaurer la position de scroll si disponible
-        const s = restoreCoursViewState()
-        if (s && typeof s.scrollY === 'number') {
-          try { window.scrollTo({ top: s.scrollY, behavior: 'auto' }) } catch {}
+        const container = getScrollContainer(coursContentRef.value)
+        const savedState = restoreCoursViewState()
+        if (savedState && typeof savedState.scrollY === 'number') {
+          try {
+            if (container === document.documentElement || container === document.body) {
+              window.scrollTo({ top: savedState.scrollY, behavior: 'auto' })
+            } else {
+              container.scrollTo({ top: savedState.scrollY, behavior: 'auto' })
+            }
+          } catch {}
+        } else {
+          scrollToTop({ behavior: 'auto', targetEl: coursContentRef.value })
         }
       }, 150)
     })
@@ -665,13 +674,13 @@ function setupScrollListener() {
 }
 
 // Fonction pour remonter en haut
-function scrollToTop() {
-  const container = getScrollContainer(coursContentRef.value)
+function scrollToTop({ behavior = 'smooth', targetEl } = {}) {
+  const container = getScrollContainer(targetEl ?? coursContentRef.value)
 
   if (container === document.documentElement || container === document.body) {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior })
   } else {
-    container.scrollTo({ top: 0, behavior: 'smooth' })
+    container.scrollTo({ top: 0, behavior })
   }
 }
 

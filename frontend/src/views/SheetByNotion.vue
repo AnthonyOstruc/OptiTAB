@@ -327,6 +327,7 @@ async function fetchSheet(nId) {
   } finally {
     loading.value = false
     await nextTick()
+    scrollToTop({ behavior: 'auto' })
     if (window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise()
     }
@@ -493,13 +494,13 @@ function setupScrollListener() {
 }
 
 // Fonction pour remonter en haut
-function scrollToTop() {
-  const container = getScrollContainer(sheetContentRef.value)
+function scrollToTop({ behavior = 'smooth', targetEl } = {}) {
+  const container = getScrollContainer(targetEl ?? sheetContentRef.value)
 
   if (container === document.documentElement || container === document.body) {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior })
   } else {
-    container.scrollTo({ top: 0, behavior: 'smooth' })
+    container.scrollTo({ top: 0, behavior })
   }
 }
 

@@ -63,17 +63,17 @@ export const useSidebarStore = defineStore('sidebar', {
       }
     },
 
-    setOpen(value) {
+    setOpen(value, { persist = true } = {}) {
       if (this.isOpen === value) return
       this.isOpen = value
-      if (typeof window !== 'undefined') {
+      if (persist && typeof window !== 'undefined') {
         localStorage.setItem('sidebar-open', value.toString())
       }
       this.broadcastState()
     },
 
-    toggleOpen() {
-      this.setOpen(!this.isOpen)
+    toggleOpen(options) {
+      this.setOpen(!this.isOpen, options)
     },
 
     setCollapsed(value) {

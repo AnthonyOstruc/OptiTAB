@@ -2,9 +2,9 @@
   <div class="dashboard-layout">
     <!-- Header du dashboard -->
     <DashboardHeader 
-      :sidebarOpen="sidebarOpen" 
+      :sidebar-open="sidebarOpen" 
       :sidebar-collapsed="sidebarCollapsed"
-      @toggle-sidebar="toggleSidebarCollapsed"
+      @toggle-sidebar="handleHeaderToggle"
       @subject-changed="handleSubjectChange"
     />
     
@@ -68,6 +68,9 @@ const isMobile = computed(() => viewportWidth.value <= 768)
 const dashboardMainClasses = computed(() => ({
   'with-mobile-nav': isMobile.value
 }))
+// Conserver l'état d'ouverture original lors d'une fermeture auto sur mobile
+const autoClosedByViewport = ref(false)
+const lastDesktopOpenState = ref(true)
 
 const handleResize = () => {
   if (typeof window === 'undefined') return
@@ -83,6 +86,20 @@ const toggleSidebar = () => {
 const toggleSidebarCollapsed = () => {
   sidebarStore.toggleCollapsed()
   console.log('[DashboardLayout] Sidebar toggled:', { collapsed: sidebarStore.isCollapsed })
+}
+
+// Desktop: plier/déplier. Mobile: ouvrir/fermer.
+const handleHeaderToggle = () => {
+  if (isMobile.value) {
+    toggleSidebar()
+  } else {
+    // Si la sidebar a été masquée (état mobile), on la réactive avant de gérer le pliage
+    if (!sidebarOpen.value) {
+      sidebarStore.setOpen(true)
+      return
+    }
+    toggleSidebarCollapsed()
+  }
 }
 
 
@@ -111,12 +128,25 @@ onMounted(async () => {
   if (sidebarRef.value) {
     // La sidebar se charge automatiquement via onMounted
   }
+
+  // Sur desktop, garantir que la sidebar reste visible m\u00eame si un \u00e9tat mobile l'avait ferm\u00e9
+  if (!isMobile.value && !sidebarOpen.value) {
+    sidebarStore.setOpen(true)
+  }
 })
 
 watch(isMobile, (val) => {
   if (val) {
-    sidebarStore.setOpen(false)
-  } else if (localStorage.getItem('sidebar-open') !== 'false') {
+    // Mémoriser l'état d'ouverture avant la fermeture auto
+    lastDesktopOpenState.value = sidebarOpen.value
+    autoClosedByViewport.value = true
+    sidebarStore.setOpen(false, { persist: false })
+  } else if (autoClosedByViewport.value) {
+    // Restaurer l'état précédent uniquement si la fermeture était automatique
+    sidebarStore.setOpen(lastDesktopOpenState.value ?? true)
+    autoClosedByViewport.value = false
+  } else if (!sidebarOpen.value) {
+    // Si on revient sur desktop avec un état fermé (hérité du mobile), on rouvre
     sidebarStore.setOpen(true)
   }
 }, { immediate: true })

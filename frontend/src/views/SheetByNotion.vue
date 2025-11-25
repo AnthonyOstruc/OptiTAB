@@ -5,7 +5,7 @@
         <BackButton text="Retour aux chapitres" :customAction="goBack" position="top-left-dashboard" />
       </div>
 
-      <div class="sheet-content-wrapper">
+      <div class="sheet-content-wrapper" :class="{ 'sheet-loading': loading }">
         <div v-if="loading" class="loading">
           <div class="spinner"></div>
           <p>Chargement...</p>
@@ -619,9 +619,31 @@ watch(() => route.query.q, (val) => {
 }
 
 @media (max-width: 480px) {
-  .sheet-content-wrapper {
+.sheet-content-wrapper {
     padding: 0 0.75rem 0.5rem 0.75rem;
   }
+}
+
+/* Empêche la page de défiler pendant le chargement */
+.sheet-content-wrapper.sheet-loading {
+  box-sizing: border-box;
+  max-height: calc(100vh - 4rem);
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.sheet-content-wrapper.sheet-loading .loading {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 @media (max-width: 360px) {

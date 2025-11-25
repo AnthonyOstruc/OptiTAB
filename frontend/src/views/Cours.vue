@@ -1,6 +1,15 @@
 <template>
   <DashboardLayout>
     <section class="cours-section">
+      <div
+        v-if="showInitialSpinner"
+        class="cours-initial-loader"
+        role="status"
+        aria-live="polite"
+      >
+        <LoadingSpinner size="large" color="#1e40af" />
+        <p>Chargement du cours...</p>
+      </div>
       <div class="nav-header-base">
         <BackButton 
           text="Retour aux chapitres" 
@@ -148,6 +157,7 @@ import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import SkeletonList from '@/components/common/SkeletonList.vue'
+import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import { getCours } from '@/api/cours'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
@@ -159,6 +169,7 @@ const subjectsStore = useSubjectsStore()
 const cours = ref([])
 const selectedCours = ref(null)
 const loading = ref(true)
+const initialLoadCompleted = ref(false)
 const coursContentRef = ref(null)
 const tableOfContents = ref([])
 const isTocExpanded = ref(false)
@@ -168,6 +179,7 @@ let tocDebounce = null
 let scrollCleanup = null
 const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
 const contentHeight = ref(0)
+const showInitialSpinner = computed(() => loading.value && !initialLoadCompleted.value)
 
 // Recherche dans la page
 const searchQuery = ref('')
@@ -411,6 +423,9 @@ async function loadCoursData() {
     cours.value = []
   } finally {
     loading.value = false
+    if (!initialLoadCompleted.value) {
+      initialLoadCompleted.value = true
+    }
   }
 }
 
@@ -770,6 +785,27 @@ watch(() => route.query.q, (val) => {
   min-height: 100vh;
   padding: 0;
   position: relative;
+}
+
+.cours-initial-loader {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  z-index: 20;
+  padding: 2rem;
+  text-align: center;
+  pointer-events: all;
+}
+
+.cours-initial-loader p {
+  margin: 0;
+  font-weight: 600;
+  color: #1f2937;
 }
 
 :deep(.dashboard-main) {

@@ -72,6 +72,17 @@ class SynthesisSheet(BaseContent):
         verbose_name="Temps de lecture (min)"
     )
 
+    show_on_home = models.BooleanField(
+        default=False,
+        verbose_name="Mettre en avant sur l'accueil",
+        help_text="Active l'affichage de cette fiche sur la page d'accueil."
+    )
+    show_on_public_site = models.BooleanField(
+        default=True,
+        verbose_name="Visible sur le site public",
+        help_text="Permet de masquer une fiche tout en la conservant en base."
+    )
+
     access_scope = models.CharField(
         max_length=10,
         choices=ACCESS_SCOPE_CHOICES,

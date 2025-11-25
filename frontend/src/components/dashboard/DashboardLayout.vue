@@ -69,8 +69,9 @@ const dashboardMainClasses = computed(() => ({
   'with-mobile-nav': isMobile.value
 }))
 // Conserver l'état d'ouverture original lors d'une fermeture auto sur mobile
-const lastDesktopOpenState = ref(true)
-const lastDesktopCollapsedState = ref(false)
+const lastDesktopOpenState = ref(sidebarStore.isOpen)
+const lastDesktopCollapsedState = ref(sidebarStore.isCollapsed)
+let responsiveWatchInitialized = false
 
 const handleResize = () => {
   if (typeof window === 'undefined') return
@@ -142,16 +143,20 @@ onMounted(async () => {
 })
 
 watch(isMobile, (val, oldVal) => {
+  // La première exécution intervient à chaque montage du layout;
+  // ignorer le mode desktop pour ne pas écraser la préférence sauvegardée.
+  if (!responsiveWatchInitialized) {
+    responsiveWatchInitialized = true
+    if (!val) return
+  }
+
   if (val) {
-    // On mémorise exactement l'état desktop actuel avant de forcer la fermeture mobile
     if (oldVal === false || oldVal === undefined) {
       lastDesktopOpenState.value = sidebarOpen.value
       lastDesktopCollapsedState.value = sidebarCollapsed.value
     }
-    // Passer en mode mobile : masquer la sidebar sans écraser la préférence desktop
     sidebarStore.setOpen(false, { persist: false })
   } else {
-    // Retour desktop : restaurer l'état précédemment mémorisé
     sidebarStore.setOpen(lastDesktopOpenState.value ?? true)
     sidebarStore.setCollapsed(lastDesktopCollapsedState.value ?? false)
   }

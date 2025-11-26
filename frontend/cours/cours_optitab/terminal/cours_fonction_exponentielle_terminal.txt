@@ -1,580 +1,634 @@
-
-=== Fonction Exponentielle - Cours Complet Terminal
+=== Fonction Exponentielle - Programme Première
 Difficulté: medium
-Ordre: 3
-Images: graphe_exponentielle.png, courbe_etude_exponentielle.png
+Ordre: 4
+Images: graphe_exponentielle.png 
 
-Titre: La Fonction Exponentielle : Propriétés, Calculs et Applications
-Description: Cours complet sur la fonction exponentielle : définition, propriétés algébriques, dérivée, étude complète, équations et inéquations exponentielles, applications.
+Titre: La Fonction Exponentielle : Définition et Propriétés
+Description: Cours complet sur la fonction exponentielle en première : définition par l'équation différentielle f' = f, propriétés algébriques, nombre e, variations, applications (croissance/décroissance exponentielle) et algorithmes.
 
-<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition et propriété fondamentale</h2>
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections <strong>I à V</strong> sont <strong>exigibles</strong> au programme de Première (sans les utilisations de $\displaystyle \ln$ dans les exemples, qui seront étudiées en Terminale). Ces connaissances sont nécessaires pour les évaluations.</p>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections <strong>VI (algorithmes approfondis)</strong> et <strong>VII (démonstrations approfondies)</strong> sont marquées comme <strong>bonus</strong> ou <strong>approfondissement</strong>. Elles enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour les évaluations.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition de la fonction exponentielle</h2>
+
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Définition rigoureuse</h3>
-        <p style="font-size:1em;">La <strong>fonction exponentielle</strong> est définie comme la fonction réciproque du logarithme népérien :</p>
-        <div style="text-align:left; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
-            $\displaystyle e^x = \exp(x) \quad \text{où} \quad \exp : \mathbb{R} \to ]0, +\infty[$
-        </div>
-        <p style="font-size:1em;">Plus précisément, pour tout $x \in \mathbb{R}$ :</p>
-        <div style="text-align:left; margin:15px 0; padding:15px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
-            $\displaystyle e^x = \lim_{n \to +\infty} \left(1 + \frac{x}{n}\right)^n$
-        </div>
-        
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <strong>Définition alternative :</strong> La fonction exponentielle est l'unique fonction $f$ définie sur $\mathbb{R}$ qui vérifie :
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
-                <li style="margin:0; text-align:left;">$\displaystyle f'(x) = f(x)$ pour tout $x \in \mathbb{R}$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle f(0) = 1$</li>
+        <h3 style="color:#34495e; margin-top:0;">Définition par l'équation différentielle</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Définition de la fonction exponentielle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il existe une unique fonction dérivable sur $\displaystyle \mathbb{R}$ notée $\displaystyle \exp$ et appelée <strong>fonction exponentielle</strong> telle que :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \exp'(x) = \exp(x)$ pour tout $\displaystyle x \in \mathbb{R}$ (sa dérivée est égale à elle-même)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \exp(0) = 1$</li>
             </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Notation :</strong> On note $\displaystyle \exp(x)$ ou $\displaystyle e^x$ la valeur de la fonction exponentielle en $\displaystyle x$.</p>
         </div>
-        
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; border-radius:4px; margin:10px 0;">
-            <strong>💡 À retenir :</strong> Le nombre $\displaystyle e \approx 2{,}718$ est appelé <strong>nombre d'Euler</strong>. On a : $\displaystyle e^1 = e$ et $\displaystyle e^0 = 1$.
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction exponentielle est la seule fonction dont la dérivée est égale à la fonction elle-même. C'est une propriété remarquable qui caractérise complètement cette fonction.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette définition permet de construire la fonction exponentielle de manière unique, en partant de la condition initiale $\displaystyle \exp(0) = 1$ et en utilisant l'équation différentielle $\displaystyle f' = f$.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Important :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'existence et l'unicité de la fonction exponentielle sont <strong>admis</strong> au programme de Première. Ces résultats seront démontrés dans les classes supérieures.</p>
         </div>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Ensemble de définition et ensemble image</h3>
+        <h3 style="color:#34495e; margin-top:0;">Le nombre e</h3>
+
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <ul style="margin:0; padding-left:20px;">
-                <li style="margin:0; text-align:left;"><strong>Domaine de définition :</strong> $\displaystyle D_f = \mathbb{R}$ (définie pour tout réel)</li>
-                <li style="margin:0; text-align:left;"><strong>Ensemble image :</strong> $\displaystyle \exp(\mathbb{R}) = ]0, +\infty[$ (toujours strictement positive)</li>
-            </ul>
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Le nombre e</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre $\displaystyle e$ est défini par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle e = \exp(1)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est un nombre irrationnel dont une valeur approchée est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle e \approx 2,718281828459045...$</p>
         </div>
-        
-        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
-            <strong>⚠️ Important :</strong> Pour tout $\displaystyle x \in \mathbb{R}$, on a : $\displaystyle e^x > 0$. La fonction exponentielle ne s'annule jamais et ne prend jamais de valeur négative.
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Notation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note indifféremment :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \exp(x)$ : notation fonctionnelle</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle e^x$ : notation exponentielle (la plus courante)</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces deux notations représentent exactement la même fonction.</p>
         </div>
     </div>
 
     <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Propriétés algébriques</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Règles de calcul fondamentales</h3>
-        <p style="font-size:1em;">Pour tous réels $\displaystyle a$ et $\displaystyle b$, et tout entier $\displaystyle n$ :</p>
-        
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
-                    <th style="border:1px solid #ddd; padding:15px; text-align:center; font-weight:700; color:#2c3e50;">Propriété</th>
-                    <th style="border:1px solid #ddd; padding:15px; text-align:center; font-weight:700; color:#2c3e50;">Formule</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">Produit</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle e^a \times e^b = e^{a+b}$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">Quotient</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle \frac{e^a}{e^b} = e^{a-b}$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">Puissance</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle (e^a)^n = e^{na}$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">Inverse</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle \frac{1}{e^a} = e^{-a}$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">Exponentielle nulle</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle e^0 = 1$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">Opposé</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle e^{-a} = \frac{1}{e^a}$</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Règle mnémotechnique :</strong> Les exposants <strong>s'additionnent</strong> pour un produit, se <strong>soustraient</strong> pour un quotient, et se <strong>multiplient</strong> pour une puissance.
-        </div>
-        
-    </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemples d'application des propriétés</h3>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 1 :</strong> Simplifier $\displaystyle e^3 \times e^5$
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle e^3 \times e^5 = e^{3+5} = e^8$
-            </div>
-        </div>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 2 :</strong> Simplifier $\displaystyle \frac{e^7}{e^2}$
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle \frac{e^7}{e^2} = e^{7-2} = e^5$
-            </div>
-        </div>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 3 :</strong> Simplifier $\displaystyle (e^2)^3$
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle (e^2)^3 = e^{2 \times 3} = e^6$
-            </div>
-        </div>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 4 :</strong> Simplifier $\displaystyle \frac{e^4 \times e^{-2}}{e^3}$
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle \frac{e^4 \times e^{-2}}{e^3} = \frac{e^{4-2}}{e^3} = \frac{e^2}{e^3} = e^{2-3} = e^{-1} = \frac{1}{e}$
-            </div>
-        </div>
-    </div>
+        <h3 style="color:#34495e; margin-top:0;">Règles de calcul</h3>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Dérivée de la fonction exponentielle</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Formules de dérivation</h3>
-        
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
-                    <th style="border:1px solid #ddd; padding:15px; text-align:center; font-weight:700; color:#2c3e50;">Fonction</th>
-                    <th style="border:1px solid #ddd; padding:15px; text-align:center; font-weight:700; color:#2c3e50;">Dérivée</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle e^x$</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle (e^x)' = e^x$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle e^{u(x)}$ (composée)</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle (e^u)' = u' \times e^u$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle e^{ax+b}$</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle (e^{ax+b})' = a \times e^{ax+b}$</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
-            <strong>⚠️ Attention :</strong> Pour dériver $e^{u(x)}$, on multiplie par la dérivée de $u$ : $(e^u)' = u' \times e^u$, et non simplement $e^u$ !
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemples de calculs de dérivées</h3>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 1 :</strong> Dérivée de $\displaystyle f(x) = e^{2x}$
-            <p style="margin:8px 0;">On pose $\displaystyle u(x) = 2x$, donc $\displaystyle u'(x) = 2$</p>
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle f'(x) = 2 \times e^{2x} = 2e^{2x}$
-            </div>
-        </div>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 2 :</strong> Dérivée de $\displaystyle f(x) = e^{x^2+3x}$
-            <p style="margin:8px 0;">On pose $\displaystyle u(x) = x^2 + 3x$, donc $\displaystyle u'(x) = 2x + 3$</p>
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle f'(x) = (2x + 3) \times e^{x^2+3x} = (2x+3)e^{x^2+3x}$
-            </div>
-        </div>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 3 :</strong> Dérivée de $\displaystyle f(x) = x^2 e^x$ (produit)
-            <p style="margin:8px 0;">On pose $\displaystyle u(x) = x^2$ et $\displaystyle v(x) = e^x$</p>
-            <p style="margin:8px 0;">Donc $\displaystyle u'(x) = 2x$ et $\displaystyle v'(x) = e^x$</p>
-            <p style="margin:8px 0;">On applique $\displaystyle (uv)' = u'v + uv'$ :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
-                <li style="margin:0 0 24px 0; text-align:left;">$\displaystyle f'(x) = 2x \times e^x + x^2 \times e^x$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle f'(x) = e^x(2x + x^2) = x(x+2)e^x$</li>
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Propriétés algébriques</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous réels $\displaystyle x$ et $\displaystyle y$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Produit :</strong> $\displaystyle e^{x+y} = e^x \times e^y$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Quotient :</strong> $\displaystyle e^{x-y} = \frac{e^x}{e^y}$ (pour $\displaystyle e^y \neq 0$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Puissance :</strong> $\displaystyle (e^x)^n = e^{nx}$ pour tout entier $\displaystyle n$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Inverse :</strong> $\displaystyle e^{-x} = \frac{1}{e^x}$ (donc $\displaystyle e^x \times e^{-x} = 1$)</li>
+                <li style="margin:0; text-align:left;"><strong>Puissance fractionnaire :</strong> $\displaystyle e^{\frac{x}{n}} = \sqrt[n]{e^x}$ pour tout entier $\displaystyle n > 0$</li>
             </ul>
         </div>
-        
+
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 4 :</strong> Dérivée de $\displaystyle f(x) = \frac{e^x}{x}$ (quotient)
-            <p style="margin:8px 0;">On pose $\displaystyle u(x) = e^x$ et $\displaystyle v(x) = x$</p>
-            <p style="margin:8px 0;">Donc $\displaystyle u'(x) = e^x$ et $\displaystyle v'(x) = 1$</p>
-            <p style="margin:8px 0;">On applique $\displaystyle \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$ :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
-                <li style="margin:0 0 24px 0; text-align:left;">$\displaystyle f'(x) = \frac{e^x \times x - e^x \times 1}{x^2}$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle f'(x) = \frac{xe^x - e^x}{x^2} = \frac{e^x(x-1)}{x^2}$</li>
+            <strong>Exemples de transformations :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Simplifier $\displaystyle e^{2x+3} \times e^{-x}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle e^{2x+3} \times e^{-x} = e^{(2x+3)+(-x)} = e^{2x+3-x} = e^{x+3}$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Simplifier $\displaystyle \frac{e^{3x}}{e^{2x+1}}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \frac{e^{3x}}{e^{2x+1}} = e^{3x-(2x+1)} = e^{3x-2x-1} = e^{x-1}$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 3 :</strong> Écrire $\displaystyle (e^x)^2 \times e^{-3x}$ sous la forme $\displaystyle e^{ax+b}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (e^x)^2 \times e^{-3x} = e^{2x} \times e^{-3x} = e^{2x+(-3x)} = e^{-x}$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 4 :</strong> Montrer que $\displaystyle e^x \times e^{-x} = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle e^x \times e^{-x} = e^{x+(-x)} = e^0 = 1$</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour multiplier : <strong>additionner</strong> les exposants : $\displaystyle e^a \times e^b = e^{a+b}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour diviser : <strong>soustraire</strong> les exposants : $\displaystyle \frac{e^a}{e^b} = e^{a-b}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour une puissance : <strong>multiplier</strong> l'exposant : $\displaystyle (e^x)^n = e^{nx}$</li>
+                <li style="margin:0; text-align:left;">Penser à réduire les expressions avant de calculer : $\displaystyle e^{2x+1} = e^{2x} \times e = e \times e^{2x}$</li>
             </ul>
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Étude complète de la fonction exponentielle</h2>
-    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Lien avec les suites géométriques</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Suite géométrique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout réel $\displaystyle a$, la suite $\displaystyle (e^{na})_{n \in \mathbb{N}}$ est une <strong>suite géométrique</strong> de raison $\displaystyle e^a$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En effet : $\displaystyle e^{(n+1)a} = e^{na + a} = e^{na} \times e^a = e^a \times e^{na}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La suite $\displaystyle (e^{2n})_{n \in \mathbb{N}}$ définie par $\displaystyle u_n = e^{2n}$ est une suite géométrique de raison $\displaystyle e^2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle u_0 = e^0 = 1$, $\displaystyle u_1 = e^2$, $\displaystyle u_2 = e^4 = (e^2)^2$, $\displaystyle u_3 = e^6 = (e^2)^3$, ...</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Étude de la fonction exponentielle</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Signe et limites</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Signe de la fonction exponentielle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout réel $\displaystyle x$, on a : $\displaystyle e^x > 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction exponentielle est <strong>strictement positive</strong> sur $\displaystyle \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Limites</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \lim_{x \to -\infty} e^x = 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \lim_{x \to +\infty} e^x = +\infty$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \lim_{x \to 0} \frac{e^x - 1}{x} = 1$ (limite remarquable)</li>
+            </ul>
+        </div>
+    </div>
+
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Sens de variation</h3>
-        <p style="font-size:1em;">La fonction $\displaystyle f(x) = e^x$ est dérivable sur $\displaystyle \mathbb{R}$ et $\displaystyle f'(x) = e^x$.</p>
-        <p style="font-size:1em;">Puisque $\displaystyle e^x > 0$ pour tout $\displaystyle x \in \mathbb{R}$, on a $\displaystyle f'(x) > 0$ sur $\displaystyle \mathbb{R}$.</p>
-        
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>✅ Conclusion :</strong> La fonction exponentielle est <strong>strictement croissante</strong> sur $\mathbb{R}$.
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Variations de la fonction exponentielle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction exponentielle est <strong>strictement croissante</strong> sur $\displaystyle \mathbb{R}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous réels $\displaystyle x$ et $\displaystyle y$ : si $\displaystyle x < y$, alors $\displaystyle e^x < e^y$.</p>
         </div>
-        
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Justification :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle (e^x)' = e^x > 0$ pour tout $\displaystyle x \in \mathbb{R}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme la dérivée est strictement positive, la fonction exponentielle est strictement croissante sur $\displaystyle \mathbb{R}$.</p>
+        </div>
+
         <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px auto; max-width:500px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
             <tr style="background:#e8f4f8;">
-                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">$\displaystyle x$</td>
-                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:15%;">$\displaystyle -\infty$</td>
-                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; color:#2c3e50; width:45%;"></td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">$\displaystyle x$</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:25%;">$\displaystyle -\infty$</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:25%;"></td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:25%;">$\displaystyle +\infty$</td>
+            </tr>
+            <tr style="background:#f8f9fa;">
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; font-size:18px;">$\displaystyle e^x$</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; vertical-align:bottom; font-size:0.95em;">$\displaystyle 0$</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; vertical-align:middle; line-height:0.8;">↗</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle +\infty$</td>
+            </tr>
+        </table>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Valeurs remarquables :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle e^0 = 1$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle e^1 = e \approx 2,718$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle e^{-1} = \frac{1}{e} \approx 0,368$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \lim_{x \to -\infty} e^x = 0$ et $\displaystyle \lim_{x \to +\infty} e^x = +\infty$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Courbe représentative</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Caractéristiques de la courbe de $\displaystyle x \mapsto e^x$ :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Passe par le point $\displaystyle (0, 1)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Strictement croissante sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Asymptote horizontale : $\displaystyle y = 0$ (axe des abscisses) en $\displaystyle -\infty$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Croissance très rapide vers $\displaystyle +\infty$ quand $\displaystyle x \to +\infty$</li>
+                <li style="margin:0; text-align:left;">La tangente au point $\displaystyle (0, 1)$ a pour équation $\displaystyle y = x + 1$ (car $\displaystyle f'(0) = e^0 = 1$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:12px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:0.95em;"><strong>🌟 Remarque culture (bonus) :</strong> Pour $\displaystyle x > 0$, la fonction exponentielle croît beaucoup plus vite que toute fonction puissance : $\displaystyle \lim_{x \to +\infty} \frac{e^x}{x^n} = +\infty$ pour tout entier $\displaystyle n \geq 1$. Cette propriété sera étudiée en Terminale.</p>
+        </div>
+    </div>
+
+    [IMAGE_1]
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Équations et inéquations exponentielles</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Résolution d'équations et inéquations exponentielles</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous réels $\displaystyle a$ et $\displaystyle b$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Équation :</strong> $\displaystyle e^a = e^b \Longleftrightarrow a = b$</li>
+                <li style="margin:0; text-align:left;"><strong>Inéquation :</strong> $\displaystyle e^a < e^b \Longleftrightarrow a < b$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette propriété découle de la croissance stricte de la fonction exponentielle.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 :</strong> Résoudre $\displaystyle e^{2x+1} = e^{x-3}$
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle e^{2x+1} = e^{x-3} \Longleftrightarrow 2x + 1 = x - 3$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \Longleftrightarrow 2x - x = -3 - 1$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \Longleftrightarrow x = -4$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> $\displaystyle S = \{-4\}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 :</strong> Résoudre $\displaystyle e^{-3x+5} < e^{x-3}$
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle e^{-3x+5} < e^{x-3} \Longleftrightarrow -3x + 5 < x - 3$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \Longleftrightarrow -3x - x < -3 - 5$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \Longleftrightarrow -4x < -8$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \Longleftrightarrow x > 2$ (en divisant par $\displaystyle -4$, on change le sens de l'inégalité)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> $\displaystyle S = ]2, +\infty[$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 3 :</strong> Résoudre $\displaystyle e^{x^2-1} = e^{2x+3}$
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle e^{x^2-1} = e^{2x+3} \Longleftrightarrow x^2 - 1 = 2x + 3$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \Longleftrightarrow x^2 - 2x - 4 = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le discriminant est : $\displaystyle \Delta = (-2)^2 - 4 \times 1 \times (-4) = 4 + 16 = 20$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les solutions sont : $\displaystyle x_1 = \frac{2 - \sqrt{20}}{2} = 1 - \sqrt{5}$ et $\displaystyle x_2 = \frac{2 + \sqrt{20}}{2} = 1 + \sqrt{5}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> $\displaystyle S = \{1 - \sqrt{5}, 1 + \sqrt{5}\}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Fonctions exponentielles de base e : e<sup>-kt</sup> et e<sup>kt</sup></h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Fonction t ↦ e<sup>kt</sup> avec k > 0</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Étude de la fonction $\displaystyle t \mapsto e^{kt}$ avec $\displaystyle k > 0$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle k > 0$, la fonction $\displaystyle f(t) = e^{kt}$ est une <strong>croissance exponentielle</strong>.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Dérivée :</strong> $\displaystyle f'(t) = k e^{kt} > 0$ (strictement croissante)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Limites :</strong> $\displaystyle \lim_{t \to -\infty} e^{kt} = 0$ et $\displaystyle \lim_{t \to +\infty} e^{kt} = +\infty$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Valeur initiale :</strong> $\displaystyle f(0) = e^0 = 1$</li>
+                <li style="margin:0; text-align:left;"><strong>Courbe :</strong> Croissance de plus en plus rapide quand $\displaystyle t$ augmente</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle k = 2$, la fonction $\displaystyle f(t) = e^{2t}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(0) = 1$, $\displaystyle f(1) = e^2 \approx 7,39$, $\displaystyle f(2) = e^4 \approx 54,60$, $\displaystyle f(3) = e^6 \approx 403,43$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La croissance s'accélère de plus en plus.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Fonction t ↦ e<sup>-kt</sup> avec k > 0</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Étude de la fonction $\displaystyle t \mapsto e^{-kt}$ avec $\displaystyle k > 0$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle k > 0$, la fonction $\displaystyle f(t) = e^{-kt}$ est une <strong>décroissance exponentielle</strong>.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Dérivée :</strong> $\displaystyle f'(t) = -k e^{-kt} < 0$ (strictement décroissante)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Limites :</strong> $\displaystyle \lim_{t \to -\infty} e^{-kt} = +\infty$ et $\displaystyle \lim_{t \to +\infty} e^{-kt} = 0$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Valeur initiale :</strong> $\displaystyle f(0) = e^0 = 1$</li>
+                <li style="margin:0; text-align:left;"><strong>Courbe :</strong> Décroissance rapide puis ralentit en s'approchant de $\displaystyle 0$</li>
+            </ul>
+        </div>
+
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px auto; max-width:500px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <tr style="background:#e8f4f8;">
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">$\displaystyle t$</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:15%;">$\displaystyle 0$</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:45%;"></td>
                 <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:15%;">$\displaystyle +\infty$</td>
             </tr>
             <tr style="background:#f8f9fa;">
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; font-weight:700; color:#2c3e50; font-size:18px;">$\displaystyle e^x$</td>
-                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center;"></td>
-                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; color:#2e7d32; font-size:1.3em; font-weight:700;">$\displaystyle +$</td>
-                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center;"></td>
-            </tr>
-            <tr style="background:#ffffff; height:80px;">
-                    <td style="border:0; padding:15px; text-align:center; font-weight:700; color:#2c3e50; vertical-align:middle; font-size:18px;">$\displaystyle e^x$</td>
-                <td style="border:0; padding:8px; text-align:center; vertical-align:bottom; font-size:0.95em;">$\displaystyle 0$</td>
-                <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.5em; line-height:0.8;">↗</td>
-                <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle +\infty$</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; font-size:18px;">$\displaystyle e^{-kt}$</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; vertical-align:top;">$\displaystyle 1$</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; vertical-align:middle; line-height:0.8;">↘</td>
+                <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; vertical-align:bottom; font-size:0.95em;">$\displaystyle 0$</td>
             </tr>
         </table>
-    </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Limites de la fonction exponentielle</h3>
-        
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
-                    <th style="border:1px solid #ddd; padding:15px; text-align:center; font-weight:700; color:#2c3e50;">Limite</th>
-                    <th style="border:1px solid #ddd; padding:15px; text-align:center; font-weight:700; color:#2c3e50;">Valeur</th>
-                    <th style="border:1px solid #ddd; padding:15px; text-align:center; font-weight:700; color:#2c3e50;">Interprétation</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle\lim_{x \to +\infty} e^x$</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle +\infty$</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">Croissance rapide vers $\displaystyle +\infty$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle\lim_{x \to -\infty} e^x$</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle 0$</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">Asymptote horizontale $\displaystyle y = 0$ en $\displaystyle -\infty$</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        [IMAGE_1]
-        
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; border-radius:4px; margin:10px 0;">
-            <strong>💡 À retenir :</strong> 
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li style="margin:0; text-align:left;">En $\displaystyle +\infty$, $\displaystyle e^x$ tend vers $\displaystyle +\infty$ <strong>très rapidement</strong></li>
-                <li style="margin:0; text-align:left;">En $\displaystyle -\infty$, $\displaystyle e^x$ tend vers $\displaystyle 0$ en restant toujours strictement positif</li>
-                <li style="margin:0; text-align:left;">L'axe des abscisses ($\displaystyle y = 0$) est une <strong>asymptote horizontale</strong> en $\displaystyle -\infty$</li>
-            </ul>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle k = 0,5$, la fonction $\displaystyle f(t) = e^{-0,5t}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(0) = 1$, $\displaystyle f(1) = e^{-0,5} \approx 0,607$, $\displaystyle f(2) = e^{-1} \approx 0,368$, $\displaystyle f(3) = e^{-1,5} \approx 0,223$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La décroissance est rapide au début puis ralentit.</p>
         </div>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Limites de référence importantes</h3>
-        
-        <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-            <thead>
-                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
-                    <th style="border:1px solid #ddd; padding:15px; text-align:center; font-weight:700; color:#2c3e50;">Limite</th>
-                    <th style="border:1px solid #ddd; padding:15px; text-align:center; font-weight:700; color:#2c3e50;">Valeur</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle\lim_{x \to 0} \frac{e^x - 1}{x}$</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle 1$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle\lim_{x \to +\infty} \frac{e^x}{x^n}$ (pour tout $\displaystyle n > 0$)</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle +\infty$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle\lim_{x \to +\infty} \frac{x^n}{e^x}$ (pour tout $\displaystyle n > 0$)</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle 0$</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle\lim_{x \to +\infty} x e^{-x}$</td>
-                    <td style="border:1px solid #ddd; padding:15px; text-align:center;">$\displaystyle 0$</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
-            <strong>⚠️ Important :</strong> La fonction exponentielle <strong>l'emporte toujours</strong> sur les polynômes : en $\displaystyle +\infty$, $\displaystyle e^x$ croît plus vite que n'importe quelle puissance de $\displaystyle x$.
+        <h3 style="color:#34495e; margin-top:0;">Dérivée de la fonction x ↦ e<sup>ax+b</sup></h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Dérivée de e<sup>ax+b</sup></strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = e^{ax+b}$ avec $\displaystyle a$ et $\displaystyle b$ réels, on a :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px; font-weight:bold;">
+                $\displaystyle f'(x) = a e^{ax+b}$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par conséquent :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle a > 0$ : $\displaystyle f'(x) > 0$ pour tout $\displaystyle x$, donc $\displaystyle f$ est <strong>strictement croissante</strong></li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle a < 0$ : $\displaystyle f'(x) < 0$ pour tout $\displaystyle x$, donc $\displaystyle f$ est <strong>strictement décroissante</strong></li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 :</strong> Dériver $\displaystyle f(x) = e^{3x-2}$
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle a = 3$ et $\displaystyle b = -2$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle f'(x) = 3 e^{3x-2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle a = 3 > 0$, la fonction $\displaystyle f$ est strictement croissante sur $\displaystyle \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 :</strong> Dériver $\displaystyle g(x) = e^{-2x+1}$
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle a = -2$ et $\displaystyle b = 1$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle g'(x) = -2 e^{-2x+1}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle a = -2 < 0$, la fonction $\displaystyle g$ est strictement décroissante sur $\displaystyle \mathbb{R}$.</p>
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Équations exponentielles</h2>
-    
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Applications : modélisation</h2>
+
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Méthodes de résolution</h3>
-        
-        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>Méthode 1 : Égalité de deux exponentielles</strong>
-            <div style="text-align:left; margin:10px 0;">
-                $\displaystyle e^a = e^b \quad \Leftrightarrow \quad a = b$
+        <h3 style="color:#34495e; margin-top:0;">Croissance exponentielle</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Évolution d'un capital à taux fixe :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un capital de $\displaystyle C_0$ euros est placé à un taux d'intérêt composé de $\displaystyle r\%$ par an.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le capital au bout de $\displaystyle t$ années est modélisé par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle C(t) = C_0 \left(1 + \frac{r}{100}\right)^t$</p>
+            <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:12px; margin:12px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;"><strong>⚠️ Remarque :</strong> On peut aussi écrire cette formule sous la forme $\displaystyle C(t) = C_0 e^{kt}$ où $\displaystyle k = \ln\left(1 + \frac{r}{100}\right)$. Le logarithme népérien $\displaystyle \ln$ sera étudié en Terminale ; ici, on admet cette écriture.</p>
             </div>
-            <p style="margin:8px 0;">Si deux exponentielles sont égales, leurs exposants sont égaux.</p>
-        </div>
-        
-        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>Méthode 2 : Exponentielle égale à un nombre</strong>
-            <div style="text-align:left; margin:10px 0;">
-                $\displaystyle e^x = k \quad \Leftrightarrow \quad x = \ln(k) \quad \text{(si } k > 0\text{)}$
-            </div>
-            <p style="margin:8px 0;">Si $\displaystyle k \leq 0$, l'équation n'a pas de solution car $\displaystyle e^x > 0$ pour tout $\displaystyle x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Application numérique :</strong> Si $\displaystyle C_0 = 1000$ € et $\displaystyle r = 5\%$, alors $\displaystyle k \approx 0,0488$ et $\displaystyle C(10) = 1000 \times e^{0,488} \approx 1628,89$ €</p>
         </div>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemples de résolution d'équations</h3>
-        
+        <h3 style="color:#34495e; margin-top:0;">Décroissance exponentielle</h3>
+
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 1 :</strong> Résoudre $\displaystyle e^{2x+1} = e^{x-3}$
-            <p style="margin:8px 0;">On identifie une égalité de deux exponentielles :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle e^{2x+1} = e^{x-3} \quad \Leftrightarrow \quad 2x + 1 = x - 3$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \Leftrightarrow \quad 2x - x = -3 - 1$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle \Leftrightarrow \quad x = -4$</li>
-            </ul>
-            <div style="background:#ecfdf5; border-radius:4px; padding:10px; margin:10px 0;">
-                <strong>✅ Solution :</strong> $\displaystyle S = \{-4\}$
+            <strong>Exemple - Décroissance radioactive :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La quantité $\displaystyle N(t)$ d'un élément radioactif au temps $\displaystyle t$ (en années) suit une loi de décroissance exponentielle :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle N(t) = N_0 e^{-\lambda t}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle N_0$ est la quantité initiale et $\displaystyle \lambda > 0$ est la constante de désintégration.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>demi-vie</strong> $\displaystyle T$ est le temps au bout duquel la moitié de l'élément s'est désintégrée :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle N(T) = \frac{N_0}{2} \Leftrightarrow e^{-\lambda T} = \frac{1}{2}$</p>
+            <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:12px; margin:12px 0;">
+                <p style="margin:0; text-align:left; font-size:0.95em;"><strong>⚠️ Remarque :</strong> On peut montrer que $\displaystyle T = \frac{\ln(2)}{\lambda}$, où $\displaystyle \ln$ est le logarithme népérien. Le logarithme népérien sera étudié en Terminale ; ici, on admet cette formule.</p>
             </div>
-        </div>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 2 :</strong> Résoudre $\displaystyle e^x = 5$
-            <p style="margin:8px 0;">On applique la fonction logarithme népérien :</p>
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle e^x = 5 \quad \Leftrightarrow \quad x = \ln(5)$
-            </div>
-            <div style="background:#ecfdf5; border-radius:4px; padding:10px; margin:10px 0;">
-                <strong>✅ Solution :</strong> $\displaystyle S = \{\ln(5)\}$ (environ $\displaystyle 1{,}609$)
-            </div>
-        </div>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 3 :</strong> Résoudre $\displaystyle e^{2x} - 3e^x + 2 = 0$
-            <p style="margin:8px 0;">On pose $\displaystyle X = e^x$ (avec $\displaystyle X > 0$), l'équation devient :</p>
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle X^2 - 3X + 2 = 0$
-            </div>
-            <p style="margin:8px 0;">On résout l'équation du second degré : $\displaystyle \Delta = 9 - 8 = 1$</p>
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle X_1 = \frac{3 + 1}{2} = 2 \quad \text{et} \quad X_2 = \frac{3 - 1}{2} = 1$
-            </div>
-            <p style="margin:8px 0;">On revient à la variable $\displaystyle x$ :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
-                <li style="margin:0; text-align:left;">$\displaystyle e^x = 2 \Leftrightarrow x = \ln(2)$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle e^x = 1 \Leftrightarrow x = \ln(1) = 0$</li>
-            </ul>
-            <div style="background:#ecfdf5; border-radius:4px; padding:10px; margin:10px 0;">
-                <strong>✅ Solution :</strong> $\displaystyle S = \{0 ; \ln(2)\}$
-            </div>
-        </div>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 4 :</strong> Résoudre $\displaystyle e^x = -2$
-            <p style="margin:8px 0;">Puisque $\displaystyle e^x > 0$ pour tout $\displaystyle x \in \mathbb{R}$, et que $\displaystyle -2 < 0$, l'équation n'a pas de solution.</p>
-            <div style="background:#fef2f2; border-radius:4px; padding:10px; margin:10px 0;">
-                <strong>✅ Solution :</strong> $\displaystyle S = \emptyset$ (ensemble vide)
-            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Application :</strong> Pour le carbone-14, $\displaystyle T \approx 5730$ ans. Si $\displaystyle N_0 = 100$, alors après 5730 ans, il reste environ $\displaystyle 50$ unités.</p>
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Inéquations exponentielles</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Méthode de résolution</h3>
-        
-        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>Propriété fondamentale :</strong>
-            <p style="margin:8px 0;">La fonction exponentielle est <strong>strictement croissante</strong> sur $\mathbb{R}$, donc elle <strong>conserve l'ordre</strong> :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle e^a < e^b \quad \Leftrightarrow \quad a < b$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle e^a \leq e^b \quad \Leftrightarrow \quad a \leq b$</li>
-            </ul>
-        </div>
-        
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; border-radius:4px; margin:10px 0;">
-            <strong>💡 Méthode :</strong> Pour résoudre une inéquation exponentielle, on compare les exposants en conservant le sens de l'inégalité.
-        </div>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Algorithmes approfondis</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:12px; margin:12px 0;">
+        <p style="margin:0; text-align:left; font-size:0.95em;"><strong>🌟 Approfondissement algorithmique (bonus) :</strong> Les algorithmes suivants enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour les évaluations en Première.</p>
     </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemples de résolution d'inéquations</h3>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 1 :</strong> Résoudre $\displaystyle e^{2x-1} < e^{x+3}$
-            <p style="margin:8px 0;">La fonction exponentielle est croissante, donc :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle e^{2x-1} < e^{x+3} \quad \Leftrightarrow \quad 2x - 1 < x + 3$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \Leftrightarrow \quad 2x - x < 3 + 1$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle \Leftrightarrow \quad x < 4$</li>
-            </ul>
-            <div style="background:#ecfdf5; border-radius:4px; padding:10px; margin:10px 0;">
-                <strong>✅ Solution :</strong> $\displaystyle S = \,]-\infty, 4[$
-            </div>
-        </div>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 2 :</strong> Résoudre $\displaystyle e^x \geq 7$
-            <p style="margin:8px 0;">On applique le logarithme népérien (qui est croissant) :</p>
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle e^x \geq 7 \quad \Leftrightarrow \quad x \geq \ln(7)$
-            </div>
-            <div style="background:#ecfdf5; border-radius:4px; padding:10px; margin:10px 0;">
-                <strong>✅ Solution :</strong> $\displaystyle S = [\ln(7), +\infty[$ (soit environ $\displaystyle [1{,}946 ; +\infty[$)
-            </div>
-        </div>
-        
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 3 :</strong> Résoudre $\displaystyle e^{2x} - 5e^x + 6 > 0$
-            <p style="margin:8px 0;">On pose $\displaystyle X = e^x$ (avec $\displaystyle X > 0$), l'inéquation devient :</p>
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle X^2 - 5X + 6 > 0$
-            </div>
-            <p style="margin:8px 0;">On factorise : $\displaystyle (X - 2)(X - 3) > 0$</p>
-            <p style="margin:8px 0;">Tableau de signes : $\displaystyle X < 2$ ou $\displaystyle X > 3$</p>
-            <p style="margin:8px 0;">On revient à $\displaystyle e^x$ :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
-                <li style="margin:0; text-align:left;">$\displaystyle e^x < 2 \Leftrightarrow x < \ln(2)$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle e^x > 3 \Leftrightarrow x > \ln(3)$</li>
-            </ul>
-            <div style="background:#ecfdf5; border-radius:4px; padding:10px; margin:10px 0;">
-                <strong>✅ Solution :</strong> $\displaystyle S = \,]-\infty, \ln(2)[ \cup ]\ln(3), +\infty[$
-            </div>
-        </div>
-    </div>
+        <h3 style="color:#34495e; margin-top:0;">Méthode d'Euler pour construire l'exponentielle</h3>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Applications et exercices types</h2>
-    
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemple complet : Étude d'une fonction avec exponentielle</h3>
-        <p style="font-size:1em;"><strong>Énoncé :</strong> Étudier la fonction $\displaystyle f(x) = (2x - 1)e^x$ sur $\displaystyle \mathbb{R}$</p>
-        
-        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:10px 0;">
-            <strong>Étape 1 :</strong> Domaine de définition
-            <p style="margin:8px 0;">$\displaystyle f$ est définie sur $\displaystyle \mathbb{R}$ (produit de deux fonctions définies sur $\displaystyle \mathbb{R}$)</p>
-        </div>
-        
-        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:10px 0;">
-            <strong>Étape 2 :</strong> Calcul de la dérivée
-            <p style="margin:8px 0;">$\displaystyle f$ est un produit $\displaystyle u \times v$ avec $\displaystyle u(x) = 2x - 1$ et $\displaystyle v(x) = e^x$</p>
-            <p style="margin:8px 0;">Donc $\displaystyle u'(x) = 2$ et $\displaystyle v'(x) = e^x$</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f'(x) = 2 \times e^x + (2x - 1) \times e^x$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f'(x) = e^x(2 + 2x - 1)$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle f'(x) = e^x(2x + 1)$</li>
-            </ul>
-        </div>
-        
-        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:10px 0;">
-            <strong>Étape 3 :</strong> Signe de $\displaystyle f'(x)$
-            <p style="margin:8px 0;">$\displaystyle f'(x) = e^x(2x + 1)$</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle e^x > 0$ pour tout $\displaystyle x$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 2x + 1 = 0 \Leftrightarrow x = -\dfrac{1}{2}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle 2x + 1 > 0 \Leftrightarrow x > -\dfrac{1}{2}$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle 2x + 1 < 0 \Leftrightarrow x < -\dfrac{1}{2}$</li>
-            </ul>
-            <p style="margin:8px 0;">Donc $\displaystyle f'(x) < 0$ pour $\displaystyle x < -\dfrac{1}{2}$ et $\displaystyle f'(x) > 0$ pour $\displaystyle x > -\dfrac{1}{2}$</p>
-        </div>
-        
-        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:10px 0;">
-            <strong>Étape 4 :</strong> Valeur du minimum
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f\left(-\dfrac{1}{2}\right) = \left(2 \times \left(-\dfrac{1}{2}\right) - 1\right) e^{-1/2}$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle = (-1 - 1)e^{-1/2} = -2e^{-1/2} = -\dfrac{2}{e^{1/2}} = -\dfrac{2}{\sqrt{e}}$</li>
-            </ul>
-        </div>
-        
-        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:10px 0;">
-            <strong>Étape 5 :</strong> Limites
-            <p style="margin:8px 0;">En $\displaystyle +\infty$ : forme indéterminée "$\displaystyle \infty \times \infty$"</p>
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle\lim_{x \to +\infty} (2x - 1)e^x = +\infty \quad \text{(car } e^x \text{ l'emporte)}$
-            </div>
-            <p style="margin:8px 0;">En $\displaystyle -\infty$ : forme indéterminée "$\displaystyle -\infty \times 0$"</p>
-            <p style="margin:8px 0;">On factorise : $\displaystyle (2x - 1)e^x = e^x \times 2x \times \left(1 - \frac{1}{2x}\right)$</p>
-            <div style="margin:10px 0; text-align:left;">
-                $\displaystyle\lim_{x \to -\infty} xe^x = 0 \quad \text{donc} \quad \displaystyle\lim_{x \to -\infty} (2x-1)e^x = 0$
-            </div>
-        </div>
-        
-        <div style="background:#f8f9fa; padding:15px; border-radius:4px; margin:10px 0;">
-            <strong>Étape 6 :</strong> Tableau de variations
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Algorithme - Construction de l'exponentielle par la méthode d'Euler</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Principe :</strong> On approche la fonction exponentielle en résolvant numériquement l'équation différentielle $\displaystyle y' = y$ avec $\displaystyle y(0) = 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise la méthode d'Euler : $\displaystyle y(x + h) \approx y(x) + h \times y'(x) = y(x) + h \times y(x) = y(x)(1 + h)$</p>
             
-            <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px auto; max-width:600px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
-                <tr style="background:#e8f4f8;">
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; font-weight:700; color:#2c3e50; width:20%;">$\displaystyle x$</td>
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:12%;">$\displaystyle -\infty$</td>
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; color:#2c3e50; width:20%;"></td>
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:12%;">$\displaystyle -\frac{1}{2}$</td>
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; color:#2c3e50; width:20%;"></td>
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:12%;">$\displaystyle +\infty$</td>
-                </tr>
-                <tr style="background:#f8f9fa;">
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; font-weight:700; color:#2c3e50; font-size:18px;">$\displaystyle f\'(x)$</td>
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center;"></td>
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; color:#c62828; font-size:1.3em; font-weight:700;">$\displaystyle -$</td>
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; font-size:1.1em;">$\displaystyle 0$</td>
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center; color:#2e7d32; font-size:1.3em; font-weight:700;">$\displaystyle +$</td>
-                    <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:15px; text-align:center;"></td>
-                </tr>
-                <tr style="background:#ffffff; height:90px;">
-                    <td style="border:0; padding:15px; text-align:center; font-weight:700; color:#2c3e50; vertical-align:middle; font-size:18px;">$\displaystyle f(x)$</td>
-                    <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle 0$</td>
-                    <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.5em; line-height:0.8;">↘</td>
-                    <td style="border:0; padding:8px; text-align:center; vertical-align:bottom; font-weight:700; color:#c62828; font-size:0.9em;">$\displaystyle -\frac{2}{\sqrt{e}}$</td>
-                    <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.5em; line-height:0.8;">↗</td>
-                    <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle +\infty$</td>
-                </tr>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                x = <span style="color:#bd93f9;">0</span><br>
+                y = <span style="color:#bd93f9;">1</span><br>
+                h = <span style="color:#bd93f9;">0.1</span><br>
+                n = <span style="color:#bd93f9;">10</span><br>
+                <br>
+                <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;y = y * (<span style="color:#bd93f9;">1</span> + h)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;x = x + h<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"x = {x:.1f}, e^x ≈ {y:.4f}"</span>)
+            </div>
+
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Dans un tableur Excel :</strong></p>
+            <table style="width:auto; border-collapse:collapse; margin:10px 0; border:2px solid #3498db; font-family:Arial, sans-serif;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:8px; width:50px; text-align:center; font-weight:bold;"></th>
+                        <th style="border:1px solid #ddd; padding:8px; width:150px; text-align:center; font-weight:bold;">A (x)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:200px; text-align:center; font-weight:bold;">B (e^x ≈)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">0</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">1</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">2</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">=A1+0.1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=B1*(1+0.1)</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">3</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">=A2+0.1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=B2*(1+0.1)</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">4</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">...</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">...</td>
+                    </tr>
+                </tbody>
             </table>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Les formules en rouge sont à recopier vers le bas. Pour $\displaystyle x = 1$, on obtient $\displaystyle e^1 \approx 2,594$ avec $\displaystyle h = 0,1$ et $\displaystyle n = 10$.</em></p>
         </div>
-        
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>✅ Conclusion :</strong>
-            <ul style="margin:8px 0; padding-left:20px;">
-                <li style="margin:0; text-align:left;">$\displaystyle f$ est <strong>décroissante</strong> sur $\displaystyle \,]-\infty, -\frac{1}{2}]$ de $\displaystyle 0$ à $\displaystyle -\frac{2}{\sqrt{e}}$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle f$ admet un <strong>minimum</strong> en $\displaystyle x = -\frac{1}{2}$ : $\displaystyle f(-\frac{1}{2}) = -\frac{2}{\sqrt{e}} \approx -1{,}21$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle f$ est <strong>croissante</strong> sur $\displaystyle [-\frac{1}{2}, +\infty[$ de $\displaystyle -\frac{2}{\sqrt{e}}$ à $\displaystyle +\infty$</li>
-                <li style="margin:0; text-align:left;">L'axe des abscisses est <strong>asymptote horizontale</strong> en $\displaystyle -\infty$</li>
-            </ul>
-        </div>
-        
-        [IMAGE_2]
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Erreurs fréquentes et conseils</h2>
-    
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <div style="background:#fef2f2; border-radius:6px; border-left:6px solid #ef4444; padding:15px; margin:12px 0;">
-            <strong>❌ Pièges à éviter :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
-                <li style="margin:0 0 18px 0; text-align:left;">Confondre $\displaystyle e^{a+b}$ et $\displaystyle e^a + e^b$ : on a $\displaystyle e^{a+b} = e^a \times e^b$, pas $\displaystyle e^a + e^b$ !</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Oublier de multiplier par $\displaystyle u'$ dans $\displaystyle (e^u)' = u'e^u$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Croire que $\displaystyle e^x$ peut être nul ou négatif : $\displaystyle e^x > 0$ pour tout $\displaystyle x$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Inverser le sens des inégalités : la fonction exponentielle est croissante donc conserve l'ordre</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Oublier que $\displaystyle e^0 = 1$ (et non 0)</li>
-                <li style="margin:0; text-align:left;">Confondre $\displaystyle e^{-x}$ et $\displaystyle -e^x$ : $\displaystyle e^{-x} = \dfrac{1}{e^x} > 0$ tandis que $\displaystyle -e^x < 0$</li>
+        <h3 style="color:#34495e; margin-top:0;">Approximation de e par la suite (1 + 1/n)<sup>n</sup></h3>
+
+        <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:12px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:0.95em;"><strong>🌟 Approfondissement (bonus) :</strong> La convergence de cette suite vers $\displaystyle e$ est une propriété intéressante mais n'est pas exigible au programme de Première.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>📐 Algorithme - Valeur approchée de e</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Propriété :</strong> La suite $\displaystyle u_n = \left(1 + \frac{1}{n}\right)^n$ converge vers $\displaystyle e$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle e = \lim_{n \to +\infty} \left(1 + \frac{1}{n}\right)^n$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> math<br>
+                <br>
+                n = <span style="color:#bd93f9;">1</span><br>
+                <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">11</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;n = n * <span style="color:#bd93f9;">10</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;approx = (<span style="color:#bd93f9;">1</span> + <span style="color:#bd93f9;">1</span>/n) ** n<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"n = {n}, (1+1/n)^n ≈ {approx:.10f}, erreur = {abs(math.e - approx):.10f}"</span>)
+            </div>
+
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Dans un tableur Excel :</strong></p>
+            <table style="width:auto; border-collapse:collapse; margin:10px 0; border:2px solid #3498db; font-family:Arial, sans-serif;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:8px; width:50px; text-align:center; font-weight:bold;"></th>
+                        <th style="border:1px solid #ddd; padding:8px; width:150px; text-align:center; font-weight:bold;">A (n)</th>
+                        <th style="border:1px solid #ddd; padding:8px; width:200px; text-align:center; font-weight:bold;">B ((1+1/n)^n)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">1</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">10</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=(1+1/A1)^A1</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">2</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">100</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=(1+1/A2)^A2</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">3</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">1000</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=(1+1/A3)^A3</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">4</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">10000</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=(1+1/A4)^A4</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-weight:bold; background:#e8f4f8;">5</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace;">100000</td>
+                        <td style="border:1px solid #ddd; padding:8px; text-align:center; font-family:monospace; color:#e74c3c;">=(1+1/A5)^A5</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Les formules en rouge sont à recopier. On observe que plus $\displaystyle n$ augmente, plus $\displaystyle (1 + 1/n)^n$ se rapproche de $\displaystyle e \approx 2,71828$.</em></p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Approfondissements possibles</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:12px; margin:12px 0;">
+        <p style="margin:0; text-align:left; font-size:0.95em;"><strong>🌟 Approfondissement (bonus) :</strong> Les démonstrations suivantes enrichissent votre culture mathématique mais ne sont pas strictement exigibles pour les évaluations.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Unicité de la fonction exponentielle</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration (bonus) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Supposons qu'il existe deux fonctions $\displaystyle f$ et $\displaystyle g$ dérivables sur $\displaystyle \mathbb{R}$ telles que :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f' = f$ et $\displaystyle f(0) = 1$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle g' = g$ et $\displaystyle g(0) = 1$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Considérons la fonction $\displaystyle h(x) = \frac{f(x)}{g(x)}$ pour $\displaystyle x \in \mathbb{R}$ (remarque : $\displaystyle g(x) \neq 0$ car $\displaystyle g$ est solution de $\displaystyle y' = y$ avec $\displaystyle g(0) = 1$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle h'(x) = \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2} = \frac{f(x)g(x) - f(x)g(x)}{g(x)^2} = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle h$ est constante. Comme $\displaystyle h(0) = \frac{f(0)}{g(0)} = \frac{1}{1} = 1$, on a $\displaystyle h(x) = 1$ pour tout $\displaystyle x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ainsi : $\displaystyle \frac{f(x)}{g(x)} = 1$, donc $\displaystyle f(x) = g(x)$ pour tout $\displaystyle x \in \mathbb{R}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction exponentielle est donc unique.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Propriété exp(x + y) = exp(x) × exp(y)</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration (bonus) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Fixons $\displaystyle y \in \mathbb{R}$ et considérons la fonction $\displaystyle g(x) = \frac{\exp(x + y)}{\exp(x)}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle g'(x) = \frac{\exp'(x + y) \exp(x) - \exp(x + y) \exp'(x)}{\exp(x)^2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = \frac{\exp(x + y) \exp(x) - \exp(x + y) \exp(x)}{\exp(x)^2} = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle g$ est constante. Comme $\displaystyle g(0) = \frac{\exp(y)}{\exp(0)} = \exp(y)$, on a $\displaystyle g(x) = \exp(y)$ pour tout $\displaystyle x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ainsi : $\displaystyle \frac{\exp(x + y)}{\exp(x)} = \exp(y)$, donc $\displaystyle \exp(x + y) = \exp(x) \times \exp(y)$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">La fonction exponentielle est strictement positive et croissante</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration (bonus) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>1. Strictement positive :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle \exp(x) = \exp\left(\frac{x}{2} + \frac{x}{2}\right) = \exp\left(\frac{x}{2}\right) \times \exp\left(\frac{x}{2}\right) = \left(\exp\left(\frac{x}{2}\right)\right)^2 \geq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De plus, si $\displaystyle \exp(x) = 0$, alors en utilisant $\displaystyle \exp(x) \times \exp(-x) = 1$, on aurait $\displaystyle 0 = 1$, ce qui est impossible.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \exp(x) > 0$ pour tout $\displaystyle x \in \mathbb{R}$.</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>2. Strictement croissante :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle x < y$. On a : $\displaystyle y = x + (y - x)$ avec $\displaystyle y - x > 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \exp(y) = \exp(x + (y - x)) = \exp(x) \times \exp(y - x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle \exp(y - x) > 1$ (car $\displaystyle y - x > 0$ et $\displaystyle \exp(0) = 1$ avec $\displaystyle \exp' = \exp > 0$), on a :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \exp(y) = \exp(x) \times \exp(y - x) > \exp(x) \times 1 = \exp(x)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \exp$ est strictement croissante sur $\displaystyle \mathbb{R}$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Simplifier des expressions :</strong> Utiliser les propriétés $\displaystyle e^{a+b} = e^a \times e^b$ et $\displaystyle e^{a-b} = \frac{e^a}{e^b}$</li>
+                <li style="margin:0; text-align:left;"><strong>Calculer une puissance :</strong> $\displaystyle (e^x)^n = e^{nx}$ pour tout entier $\displaystyle n$</li>
+                <li style="margin:0; text-align:left;"><strong>Signe :</strong> Toujours se rappeler que $\displaystyle e^x > 0$ pour tout $\displaystyle x$</li>
+                <li style="margin:0; text-align:left;"><strong>Inégalités :</strong> Utiliser la croissance stricte : $\displaystyle e^a < e^b \Leftrightarrow a < b$</li>
+                <li style="margin:0; text-align:left;"><strong>Modélisation :</strong> Reconnaître les formes $\displaystyle e^{kt}$ (croissance) et $\displaystyle e^{-kt}$ (décroissance)</li>
+                <li style="margin:0; text-align:left;"><strong>Limites :</strong> Retenir $\displaystyle \lim_{x \to -\infty} e^x = 0$ et $\displaystyle \lim_{x \to +\infty} e^x = +\infty$</li>
+                <li style="margin:0; text-align:left;"><strong>Valeur approchée :</strong> Mémoriser $\displaystyle e \approx 2,718$</li>
             </ul>
         </div>
 
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>✅ Conseils méthodologiques :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
-                <li style="margin:0 0 18px 0; text-align:left;">Toujours utiliser les <strong>propriétés algébriques</strong> pour simplifier avant de résoudre</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Pour les équations : ramener à une égalité de la forme $\displaystyle e^A = e^B$ ou $\displaystyle e^x = k$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Pour les inéquations : utiliser la croissance de la fonction exponentielle</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Penser au changement de variable $\displaystyle X = e^x$ pour les équations du second degré</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Vérifier que les solutions trouvées sont bien dans le domaine de définition</li>
-                <li style="margin:0 0 18px 0; text-align:left;">S'entraîner à reconnaître les formes indéterminées et savoir les lever</li>
-                <li style="margin:0; text-align:left;">Maîtriser les limites de référence (notamment $\displaystyle \lim_{x \to +\infty} \dfrac{e^x}{x^n} = +\infty$)</li>
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Produit :</strong> $\displaystyle e^a \times e^b \neq e^{ab}$ ! C'est $\displaystyle e^{a+b}$</li>
+                <li style="margin:0; text-align:left;"><strong>Puissance :</strong> $\displaystyle (e^x)^n \neq e^{x^n}$ ! C'est $\displaystyle e^{nx}$</li>
+                <li style="margin:0; text-align:left;"><strong>Somme :</strong> $\displaystyle e^a + e^b \neq e^{a+b}$ ! Il n'y a pas de simplification pour la somme</li>
+                <li style="margin:0; text-align:left;"><strong>Signe :</strong> Ne jamais dire que $\displaystyle e^x$ peut être négatif, c'est toujours strictement positif</li>
+                <li style="margin:0; text-align:left;"><strong>Valeur en 0 :</strong> $\displaystyle e^0 = 1$, pas $\displaystyle 0$</li>
+                <li style="margin:0; text-align:left;"><strong>Exposant négatif :</strong> $\displaystyle e^{-x} = \frac{1}{e^x}$, ne pas oublier que c'est l'inverse</li>
+                <li style="margin:0; text-align:left;"><strong>Limite en -∞ :</strong> $\displaystyle \lim_{x \to -\infty} e^x = 0$, pas $\displaystyle -\infty$</li>
             </ul>
+        </div>
+
+        <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Propriétés à retenir</strong>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:40%;">Propriété</th>
+                        <th style="border:1px solid #ddd; padding:12px;">Formule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Produit</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{x+y} = e^x \times e^y$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Quotient</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{x-y} = \frac{e^x}{e^y}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Puissance</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (e^x)^n = e^{nx}$ ($\displaystyle n \in \mathbb{Z}$)</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Inverse</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{-x} = \frac{1}{e^x}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Valeur en 0</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^0 = 1$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Dérivée</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (e^x)' = e^x$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Limites</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to -\infty} e^x = 0$ et $\displaystyle \lim_{x \to +\infty} e^x = +\infty$</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 

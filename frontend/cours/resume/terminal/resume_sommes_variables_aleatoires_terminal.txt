@@ -1,0 +1,377 @@
+===Résumé Sommes de Variables Aléatoires Terminal
+
+Titre: Résumé : Sommes de Variables Aléatoires - Linéarité de l'espérance et Additivité de la variance
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+<div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>📚 Objectif pédagogique :</strong> Maîtriser la linéarité de l'espérance et l'additivité de la variance pour les sommes de variables aléatoires. Applications à la loi binomiale et aux échantillons.</p>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Rappels : Espérance, variance et écart-type</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:20px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notion</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">Espérance</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">$\displaystyle E(X) = \sum_{i} x_i \times P(X = x_i)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">Variance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">$\displaystyle V(X) = E(X^2) - [E(X)]^2$<br/>$\displaystyle V(X) = \sum_{i} (x_i - E(X))^2 \times P(X = x_i)$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">Écart-type</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">$\displaystyle \sigma(X) = \sqrt{V(X)}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:22px 16px;">Loi de Bernoulli</td>
+<td style="border:none; padding:22px 16px;">$\displaystyle X \sim \mathrm{Bernoulli}(p)$<br/>$\displaystyle E(X) = p$<br/>$\displaystyle V(X) = p(1-p)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Somme de deux variables aléatoires</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Définition - Somme de variables aléatoires</strong></p>
+<p style="margin:5px 0 0 0;">Soient $\displaystyle X$ et $\displaystyle Y$ deux variables aléatoires définies sur le même univers.</p>
+<p style="margin:5px 0 0 0;">La variable aléatoire <strong>somme</strong> $\displaystyle S = X + Y$ est définie par :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle S(\omega) = X(\omega) + Y(\omega)$</p>
+</div>
+<p style="margin:5px 0 0 0;"><em style="font-size:0.9em;">Pour toute issue $\displaystyle \omega$ de l'univers</em></p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Linéarité de l'espérance</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Théorème - Linéarité de l'espérance</strong></p>
+<p style="margin:5px 0 0 0;">Soient $\displaystyle X$ et $\displaystyle Y$ deux variables aléatoires définies sur le même univers, et $\displaystyle a$ un réel.</p>
+</div>
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:20px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">Espérance de la somme</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">$\displaystyle E(X + Y) = E(X) + E(Y)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:22px 16px;">Espérance du produit par un réel</td>
+<td style="border:none; padding:22px 16px;">$\displaystyle E(aX) = a \times E(X)$</td>
+</tr>
+</tbody>
+</table>
+<div style="background:#ecfdf5; border-left:4px solid #10b981; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>💡 Important :</strong> La linéarité de l'espérance est valable pour <strong>toutes</strong> les variables aléatoires, qu'elles soient indépendantes ou non.</p>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#fff8dc; border-left:4px solid #ffa500; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Méthode - Calculer l'espérance en utilisant la linéarité</strong></p>
+<ol style="margin:8px 0; padding-left:20px; line-height:1.8;">
+<li style="margin:8px 0;">Représenter la variable comme somme de variables plus simples</li>
+<li style="margin:8px 0;">Appliquer la linéarité : $\displaystyle E(X + Y) = E(X) + E(Y)$</li>
+<li style="margin:8px 0;">Calculer les espérances des composantes</li>
+</ol>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Variables aléatoires indépendantes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Définition - Variables indépendantes</strong></p>
+<p style="margin:5px 0 0 0;">Dans le cadre d'une <strong>succession d'épreuves indépendantes</strong>, les variables aléatoires associées à chaque épreuve sont dites <strong>indépendantes</strong>.</p>
+<p style="margin:5px 0 0 0;"><em style="font-size:0.9em;">Le résultat d'une épreuve n'influence pas les résultats des autres épreuves</em></p>
+</div>
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:20px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Situation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Indépendance</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">Schéma de Bernoulli</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">Variables de Bernoulli indépendantes</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">Lancer deux dés</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">Résultats indépendants</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; padding:22px 16px;">Tirage avec remise</td>
+<td style="border:none; padding:22px 16px;">Résultats indépendants</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Additivité de la variance</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Théorème - Additivité de la variance</strong></p>
+<p style="margin:5px 0 0 0;">Soient $\displaystyle X$ et $\displaystyle Y$ deux variables aléatoires <strong>indépendantes</strong> définies sur le même univers, et $\displaystyle a$ un réel.</p>
+</div>
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:20px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">Variance de la somme</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">$\displaystyle V(X + Y) = V(X) + V(Y)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:22px 16px;">Variance du produit par un réel</td>
+<td style="border:none; padding:22px 16px;">$\displaystyle V(aX) = a^2 \times V(X)$</td>
+</tr>
+</tbody>
+</table>
+<div style="background:#fff8dc; border-left:4px solid #ffa500; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>⚠️ Attention :</strong> L'additivité de la variance <strong>n'est valable que si les variables sont indépendantes</strong>.</p>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#fff8dc; border-left:4px solid #ffa500; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Méthode - Calculer la variance en exprimant comme somme</strong></p>
+<ol style="margin:8px 0; padding-left:20px; line-height:1.8;">
+<li style="margin:8px 0;">Vérifier que les variables sont indépendantes</li>
+<li style="margin:8px 0;">Exprimer la variable comme somme de variables indépendantes</li>
+<li style="margin:8px 0;">Appliquer l'additivité : $\displaystyle V(X + Y) = V(X) + V(Y)$</li>
+</ol>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Application à la loi binomiale</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#f3e5f5; border-left:4px solid #9c27b0; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Propriété - Loi binomiale comme somme</strong></p>
+<p style="margin:5px 0 0 0;">Dans un schéma de Bernoulli de paramètres $\displaystyle n$ et $\displaystyle p$, le nombre de succès $\displaystyle X$ peut s'écrire :</p>
+<div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle X = X_1 + X_2 + \cdots + X_n$</p>
+</div>
+<p style="margin:5px 0 0 0;"><em style="font-size:0.9em;">où chaque $\displaystyle X_i \sim \mathrm{Bernoulli}(p)$ et les $\displaystyle X_i$ sont indépendantes</em></p>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Théorème - Espérance et variance de la loi binomiale</strong></p>
+<p style="margin:5px 0 0 0;">Pour $\displaystyle X \sim \mathcal{B}(n, p)$ :</p>
+</div>
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:20px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Paramètre</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">Espérance</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">$\displaystyle E(X) = np$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">Variance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">$\displaystyle V(X) = np(1-p)$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; padding:22px 16px;">Écart-type</td>
+<td style="border:none; padding:22px 16px;">$\displaystyle \sigma(X) = \sqrt{np(1-p)}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Échantillon de taille n</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Définition - Échantillon</strong></p>
+<p style="margin:5px 0 0 0;">Un <strong>échantillon de taille $\displaystyle n$</strong> d'une loi de probabilité est une liste $\displaystyle (X_1, X_2, \ldots, X_n)$ de variables aléatoires <strong>indépendantes et identiques</strong> suivant cette loi.</p>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Théorème - Espérance, variance et écart-type</strong></p>
+<p style="margin:5px 0 0 0;">Pour un échantillon $\displaystyle (X_1, X_2, \ldots, X_n)$ de variables indépendantes de même loi, d'espérance $\displaystyle \mu$ et de variance $\displaystyle \sigma^2$ :</p>
+</div>
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:20px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Variable</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">Somme $\displaystyle S_n$</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">$\displaystyle E(S_n) = n\mu$<br/>$\displaystyle V(S_n) = n\sigma^2$<br/>$\displaystyle \sigma(S_n) = \sqrt{n}\sigma$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:22px 16px;">Moyenne $\displaystyle M_n$</td>
+<td style="border:none; padding:22px 16px;">$\displaystyle E(M_n) = \mu$<br/>$\displaystyle V(M_n) = \frac{\sigma^2}{n}$<br/>$\displaystyle \sigma(M_n) = \frac{\sigma}{\sqrt{n}}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#ecfdf5; border-left:4px solid #10b981; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Application - Fréquence de succès</strong></p>
+<p style="margin:5px 0 0 0;">Pour un échantillon de taille $\displaystyle n$ de variables de Bernoulli : $\displaystyle X_1, \ldots, X_n \sim \mathrm{Bernoulli}(p)$ indépendantes.</p>
+<p style="margin:5px 0 0 0;">La <strong>fréquence de succès</strong> est : $\displaystyle F_n = \frac{X_1 + \cdots + X_n}{n}$</p>
+<div style="background:#ecfdf5; border:3px solid #10b981; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle E(F_n) = p$<br/>$\displaystyle V(F_n) = \frac{p(1-p)}{n}$</p>
+</div>
+<p style="margin:5px 0 0 0;"><em style="font-size:0.9em;">Plus $\displaystyle n$ est grand, plus la fréquence varie peu autour de $\displaystyle p$</em></p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Erreurs fréquentes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:20px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Erreur</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Correction</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">Oublier l'indépendance pour la variance</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">L'additivité de la variance nécessite l'<strong>indépendance</strong> des variables</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">Confondre $\displaystyle V(aX) = a^2V(X)$ avec $\displaystyle V(aX) = aV(X)$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">Attention au <strong>carré</strong> : $\displaystyle V(aX) = a^2 \times V(X)$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">Penser que la linéarité nécessite l'indépendance</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:22px 16px;">La linéarité de l'espérance est valable <strong>même si les variables ne sont pas indépendantes</strong></td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">Oublier que $\displaystyle V(M_n) = \frac{\sigma^2}{n}$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">$\displaystyle V(M_n) = \frac{\sigma^2}{n}$ et non $\displaystyle \frac{\sigma^2}{n^2}$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; padding:22px 16px;">Ne pas vérifier l'indépendance</td>
+<td style="border:none; padding:22px 16px;">Toujours vérifier que les variables sont bien indépendantes avant d'appliquer l'additivité</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Formules essentielles — mémo rapide</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:20px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">Linéarité de l'espérance</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">$\displaystyle E(X + Y) = E(X) + E(Y)$<br/>$\displaystyle E(aX) = a \times E(X)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">Variance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">$\displaystyle V(X) = E(X^2) - [E(X)]^2$<br/>$\displaystyle \sigma(X) = \sqrt{V(X)}$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">Additivité de la variance (indépendantes)</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">$\displaystyle V(X + Y) = V(X) + V(Y)$<br/>$\displaystyle V(aX) = a^2 \times V(X)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">Loi binomiale</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">$\displaystyle E(X) = np$<br/>$\displaystyle V(X) = np(1-p)$<br/>$\displaystyle \sigma(X) = \sqrt{np(1-p)}$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">Échantillon - Somme</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:22px 16px;">$\displaystyle E(S_n) = n\mu$<br/>$\displaystyle V(S_n) = n\sigma^2$<br/>$\displaystyle \sigma(S_n) = \sqrt{n}\sigma$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">Échantillon - Moyenne</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:22px 16px;">$\displaystyle E(M_n) = \mu$<br/>$\displaystyle V(M_n) = \frac{\sigma^2}{n}$<br/>$\displaystyle \sigma(M_n) = \frac{\sigma}{\sqrt{n}}$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; padding:22px 16px;">Fréquence de succès</td>
+<td style="border:none; padding:22px 16px;">$\displaystyle E(F_n) = p$<br/>$\displaystyle V(F_n) = \frac{p(1-p)}{n}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Méthodologie — stratégie de résolution</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#fff8dc; border-left:4px solid #ffa500; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Stratégie pour calculer l'espérance</strong></p>
+<ol style="margin:8px 0; padding-left:20px; line-height:1.8;">
+<li style="margin:8px 0;">Identifier la variable complexe à étudier</li>
+<li style="margin:8px 0;">La décomposer en somme de variables plus simples</li>
+<li style="margin:8px 0;">Appliquer la linéarité : $\displaystyle E(X + Y) = E(X) + E(Y)$</li>
+<li style="margin:8px 0;">Calculer les espérances des composantes</li>
+</ol>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#fff8dc; border-left:4px solid #ffa500; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Stratégie pour calculer la variance</strong></p>
+<ol style="margin:8px 0; padding-left:20px; line-height:1.8;">
+<li style="margin:8px 0;"><strong>Vérifier l'indépendance</strong> des variables</li>
+<li style="margin:8px 0;">Exprimer la variable comme somme de variables indépendantes</li>
+<li style="margin:8px 0;">Appliquer l'additivité : $\displaystyle V(X + Y) = V(X) + V(Y)$</li>
+<li style="margin:8px 0;">Attention à $\displaystyle V(aX) = a^2 \times V(X)$ (le carré !)</li>
+</ol>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:20px 0; border-radius:6px;">
+<div style="background:#fff8dc; border-left:4px solid #ffa500; padding:12px; margin:12px 0;">
+<p style="margin:0;"><strong>Points de vigilance</strong></p>
+<ul style="margin:8px 0; padding-left:20px; line-height:1.8;">
+<li style="margin:8px 0;">Toujours vérifier l'indépendance avant d'appliquer l'additivité de la variance</li>
+<li style="margin:8px 0;">La linéarité de l'espérance fonctionne même sans indépendance</li>
+<li style="margin:8px 0;">Pour les échantillons, bien distinguer somme $\displaystyle S_n$ et moyenne $\displaystyle M_n$</li>
+<li style="margin:8px 0;">Interpréter les résultats dans le contexte de l'exercice</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+===
+

@@ -86,8 +86,7 @@ class Exercice(BaseEducational):
     question = models.TextField()
     reponse_correcte = models.TextField()
     etapes = models.TextField(blank=True, null=True, verbose_name="Étapes de résolution")
-    points = models.PositiveIntegerField(default=1)
-    exercice_type = models.CharField(max_length=120, blank=True, default='', verbose_name="Type d'exercice")
+    ordre = None
     ACCESS_SCOPE_PAID = 'paid'
     ACCESS_SCOPE_FREE = 'free'
     ACCESS_SCOPE_BOTH = 'both'
@@ -105,7 +104,7 @@ class Exercice(BaseEducational):
     
     class Meta:
         unique_together = [['notion', 'titre']]
-        ordering = ['notion', 'ordre', 'titre']
+        ordering = ['notion', 'titre', 'id']
         verbose_name = "Exercice"
         verbose_name_plural = "Exercices"
 
@@ -114,18 +113,10 @@ class Exercice(BaseEducational):
 
 
 class ExerciceImage(models.Model):
-    """Image associée à un exercice (énoncé ou solution)"""
-    TYPE_CHOICES = [
-        ('donnee', 'Donnée'),
-        ('solution', 'Solution'),
-        ('illustration', 'Illustration'),
-    ]
-
+    """Image associee a un exercice (enonce ou solution)"""
     exercice = models.ForeignKey(Exercice, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='exercice_images/')
-    image_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='donnee')
     position = models.PositiveIntegerField(null=True, blank=True)
-    legende = models.CharField(max_length=255, null=True, blank=True)
     date_creation = models.DateTimeField(auto_now_add=True)
     date_modification = models.DateTimeField(auto_now=True)
 
@@ -139,3 +130,4 @@ class ExerciceImage(models.Model):
 
     def __str__(self):
         return f"Image {self.id} - Exercice {self.exercice_id}"
+

@@ -197,7 +197,6 @@ function generateExerciceHTML(exercice, includeSolution = true) {
     <div class="exercice-container">
       <div class="exercice-header">
         <h2 class="exercice-titre">${titre}</h2>
-        ${exercice.points ? `<div class="exercice-points">${exercice.points} point(s)</div>` : ''}
       </div>
       
       <div class="section enonce-section">

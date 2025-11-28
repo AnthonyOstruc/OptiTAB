@@ -107,27 +107,22 @@ def duplicate_theme_deep(original: Theme, target_contexte: MatiereContexte, new_
                 )
 
         # Exercices
-        for ex in notion.exercices.all().order_by('ordre', 'id'):
+        for ex in notion.exercices.all().order_by('id'):
             new_ex = Exercice.objects.create(
                 notion=new_notion,
                 titre=ex.titre,
                 contenu=ex.contenu,
                 difficulty=ex.difficulty,
-                ordre=ex.ordre,
                 est_actif=ex.est_actif,
                 question=ex.question,
                 reponse_correcte=ex.reponse_correcte,
                 etapes=ex.etapes,
-                points=ex.points,
-                exercice_type=ex.exercice_type,
             )
             for eimg in ex.images.all().order_by('position', 'id'):
                 ExerciceImage.objects.create(
                     exercice=new_ex,
                     image=eimg.image,
-                    image_type=eimg.image_type,
                     position=eimg.position,
-                    legende=eimg.legende,
                 )
 
     return new_theme
@@ -224,27 +219,22 @@ def duplicate_notion_deep(original: Notion, target_theme: Theme, new_title: str 
             )
 
     # Exercices
-    for ex in original.exercices.all().order_by('ordre', 'id'):
+    for ex in original.exercices.all().order_by('id'):
         new_ex = Exercice.objects.create(
             notion=new_notion,
             titre=ex.titre,
             contenu=ex.contenu,
             difficulty=ex.difficulty,
-            ordre=ex.ordre,
             est_actif=ex.est_actif,
             question=ex.question,
             reponse_correcte=ex.reponse_correcte,
             etapes=ex.etapes,
-            points=ex.points,
-            exercice_type=ex.exercice_type,
         )
         for eimg in ex.images.all().order_by('position', 'id'):
             ExerciceImage.objects.create(
                 exercice=new_ex,
                 image=eimg.image,
-                image_type=eimg.image_type,
                 position=eimg.position,
-                legende=eimg.legende,
             )
 
     return new_notion

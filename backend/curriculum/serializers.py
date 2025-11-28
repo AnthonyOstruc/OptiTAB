@@ -257,9 +257,7 @@ class ExerciceSerializer(serializers.ModelSerializer):
                         else (img.image.url if getattr(img.image, 'url', None) else '')
                     )
                 ),
-                'image_type': img.image_type,
                 'position': img.position,
-                'legende': img.legende,
             }
             for img in qs.all().order_by('position', 'id')
         ]
@@ -270,7 +268,6 @@ class ExerciceImageSerializer(serializers.ModelSerializer):
         model = ExerciceImage
         fields = '__all__'
         extra_kwargs = {
-            'legende': {'required': False, 'allow_blank': True},
             'position': {'required': False},
         }
 

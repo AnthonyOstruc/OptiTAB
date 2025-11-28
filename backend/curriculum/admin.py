@@ -260,18 +260,18 @@ class ExerciceAdmin(admin.ModelAdmin):
         'date_creation'
     ]
     search_fields = [
-        'titre', 'contenu', 'question', 'reponse_correcte', 'exercice_type',
+        'titre', 'contenu', 'question', 'reponse_correcte',
         'notion__titre',
         'notion__theme__titre', 'notion__theme__matiere__titre'
     ]
     list_editable = ['access_scope']
-    ordering = ['notion', 'ordre', 'titre']
+    ordering = ['notion', 'titre', 'id']
     
     # Inline pour gérer les images d'exercice
     class ExerciceImageInline(admin.TabularInline):
         model = ExerciceImage
         extra = 1
-        fields = ("preview", "image", "image_type", "position", "legende")
+        fields = ("preview", "image", "position")
         readonly_fields = ("preview",)
         can_delete = True
 
@@ -350,9 +350,8 @@ class ExerciceAdmin(admin.ModelAdmin):
 # Administration dédiée aux images d'exercice
 @admin.register(ExerciceImage)
 class ExerciceImageAdmin(admin.ModelAdmin):
-    list_display = ("id", "exercice", "image_type", "position", "legende", "image_link")
-    list_filter = ("image_type",)
-    search_fields = ("exercice__titre", "legende")
+    list_display = ("id", "exercice", "position", "image_link")
+    search_fields = ("exercice__titre",)
     ordering = ("exercice", "position", "id")
 
     def image_link(self, obj):

@@ -78,9 +78,7 @@
             <thead>
               <tr>
                 <th>Aperçu</th>
-                <th>Type</th>
                 <th>Position</th>
-                <th>Légende</th>
                 <th>Remplacer</th>
                 <th>Actions</th>
               </tr>
@@ -90,21 +88,11 @@
                 <td style="width:120px">
                   <img :src="img.image" alt="apercu" class="srv-preview" />
                 </td>
-                <td>
-                  <select v-model="img.image_type">
-                    <option value="donnee">Donnée</option>
-                    <option value="solution">Solution</option>
-                    <option value="illustration">Illustration</option>
-                  </select>
-                </td>
                 <td style="width:100px">
                   <input v-model.number="img.position" type="number" min="0" />
                 </td>
                 <td>
-                  <input v-model="img.legende" placeholder="Légende" />
-                </td>
-                <td>
-                  <input type="file" accept="image/*" @change="onSelectReplaceFile(i, $event)" />
+                  <input type="file" accept="image/*" @change="onSelectReplaceFile(img, $event)" />
                 </td>
                 <td style="white-space:nowrap; padding: 0.5rem;">
                   <div style="display: flex; gap: 0.5rem; align-items: center;">
@@ -120,13 +108,7 @@
             <h6>Ajouter une image</h6>
             <div class="add-grid">
               <input type="file" accept="image/*" ref="newImageInput" @change="onSelectNewImage($event)" />
-              <select v-model="newImage.image_type">
-                <option value="donnee">Donnée</option>
-                <option value="solution">Solution</option>
-                <option value="illustration">Illustration</option>
-              </select>
               <input v-model.number="newImage.position" type="number" min="0" placeholder="Position" />
-              <input v-model="newImage.legende" placeholder="Légende (optionnel)" />
               <button type="button" class="btn-primary" @click="addNewImage">Ajouter</button>
             </div>
           </div>
@@ -333,7 +315,8 @@ const selectedImages = ref([])
 const imagesInput = ref(null)
 const serverImages = ref([])
 const imageManageLoading = ref(false)
-const newImage = ref({ file: null, image_type: 'donnee', position: 0, legende: '' })
+const replaceImageFiles = ref({})
+const newImage = ref({ file: null, position: 0 })
 const newImageInput = ref(null)
 const showDuplicateModal = ref(false)
 const duplicateForm = ref({
@@ -623,28 +606,24 @@ function handlePreview() {
   }
 
   // Construire les images d'aperçu: priorité aux nouveaux fichiers, sinon images enregistrées
-  if (selectedImages.value.length > 0) {
-    previewImages.value = selectedImages.value.map((file, index) => ({
-      id: `preview-${index}`,
-      image: URL.createObjectURL(file),
-      image_type: 'donnee',
-      position: index + 1,
-      legende: file.name
-    }))
-  } else if (serverImages.value.length > 0) {
-    previewImages.value = serverImages.value
-      .slice()
-      .sort((a, b) => (a.position || 0) - (b.position || 0))
-      .map((img, idx) => ({
-        id: img.id ?? `server-${idx}`,
-        image: img.image,
-        image_type: img.image_type || 'donnee',
-        position: img.position || idx + 1,
-        legende: img.legende || ''
+    if (selectedImages.value.length > 0) {
+      previewImages.value = selectedImages.value.map((file, index) => ({
+        id: `preview-${index}`,
+        image: URL.createObjectURL(file),
+        position: index + 1
       }))
-  } else {
-    previewImages.value = []
-  }
+    } else if (serverImages.value.length > 0) {
+      previewImages.value = serverImages.value
+        .slice()
+        .sort((a, b) => (a.position || 0) - (b.position || 0))
+        .map((img, idx) => ({
+          id: img.id ?? `server-${idx}`,
+          image: img.image,
+          position: img.position || idx + 1
+        }))
+    } else {
+      previewImages.value = []
+    }
   
   showPreview.value = true
 }
@@ -676,10 +655,10 @@ function getImagePreview(file) {
   return URL.createObjectURL(file)
 }
 
-function onSelectReplaceFile(rowIndex, event) {
+function onSelectReplaceFile(row, event) {
   const file = event?.target?.files?.[0]
-  if (!file) return
-  serverImages.value[rowIndex].__replace_file = file
+  if (!file || !row?.id) return
+  replaceImageFiles.value[row.id] = file
 }
 
 async function saveImageRow(row) {
@@ -687,14 +666,18 @@ async function saveImageRow(row) {
     if (!form.value.id || !row?.id) return
     const payload = {
       exercice: form.value.id,
-      image_type: row.image_type,
-      position: row.position,
-      legende: row.legende
+      position: row.position
     }
-    if (row.__replace_file) payload.image = row.__replace_file
+    const replacement = replaceImageFiles.value[row.id]
+    if (replacement) {
+      payload.image = replacement
+    }
     await updateExerciceImage(row.id, payload)
     const { data } = await getExerciceImages(form.value.id)
     serverImages.value = (data || []).slice().sort((a, b) => (a.position || 0) - (b.position || 0))
+    if (replacement) {
+      delete replaceImageFiles.value[row.id]
+    }
   } catch (e) {
     console.error('[AdminExercices] saveImageRow error', e)
     alert("Erreur lors de l'enregistrement de l'image")
@@ -707,6 +690,9 @@ async function removeImageRow(row) {
   try {
     await deleteExerciceImage(row.id)
     serverImages.value = serverImages.value.filter(img => img.id !== row.id)
+    if (row.id && replaceImageFiles.value[row.id]) {
+      delete replaceImageFiles.value[row.id]
+    }
   } catch (e) {
     console.error('[AdminExercices] removeImageRow error', e)
     alert('Suppression impossible')
@@ -728,14 +714,12 @@ async function addNewImage() {
     const payload = {
       exercice: form.value.id,
       image: newImage.value.file,
-      image_type: newImage.value.image_type || 'donnee',
-      position: newImage.value.position || (serverImages.value.length + 1),
-      legende: newImage.value.legende || ''
+      position: newImage.value.position || (serverImages.value.length + 1)
     }
     const res = await createExerciceImage(payload)
     const created = res?.data || null
     if (created) serverImages.value.push(created)
-    newImage.value = { file: null, image_type: 'donnee', position: 0, legende: '' }
+    newImage.value = { file: null, position: 0 }
     if (newImageInput.value) newImageInput.value.value = ''
   } catch (e) {
     console.error('[AdminExercices] addNewImage error', e)

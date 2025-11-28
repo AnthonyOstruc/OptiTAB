@@ -35,22 +35,6 @@
             <div class="exercices-controls">
               <div class="controls-row">
                 <div class="filter-row">
-                  <div class="filter-group">
-                    <span class="filter-label">Filtrer</span>
-                    <div class="filter-buttons type-filter-buttons">
-                      <button
-                        v-for="opt in typeFilterOptions"
-                        :key="opt.value"
-                        :class="['filter-btn', 'type-filter-btn', { active: opt.value === selectedTypeFilter }]"
-                        @click="selectedTypeFilter = opt.value; handleTypeFilterChange()"
-                      >
-                        {{ opt.label }}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="filter-divider"></div>
-
                   <div class="filter-item">
                     <span class="filter-label">Difficulté</span>
                       <div class="filter-buttons">
@@ -139,42 +123,12 @@ const exercices = ref([])
 const perPage = ref(5)
 const currentPage = ref(1)
 
-// Filtre par type (configurable par niveau)
-const typeFilterOptions = ref([])
-const selectedTypeFilter = ref('all')
-
 // Filtre difficulté
 const difficultyOptions = ['all','easy','medium','hard']
 const selectedDifficulty = ref('all')
 
 // Recherche
 const searchQuery = ref('')
-
-// Construire les options de filtre selon le niveau utilisateur
-function refreshTypeFilterOptions() {
-  const niveau = userStore.niveau_pays
-  const rawOptions = Array.isArray(niveau?.exercice_filter_options)
-    ? niveau.exercice_filter_options
-    : []
-  const cleaned = rawOptions
-    .map(o => (typeof o === 'string' || typeof o === 'number') ? String(o).trim() : '')
-    .filter(Boolean)
-  const unique = Array.from(new Set(cleaned))
-  const defaultLabel = (niveau?.exercice_filter_default || 'Tous').trim() || 'Tous'
-  const baseOption = { value: 'all', label: defaultLabel }
-  typeFilterOptions.value = [baseOption, ...unique.map(val => ({ value: val, label: val })) ]
-
-  // Réinitialiser la sélection si l'option courante n'existe plus
-  if (!typeFilterOptions.value.find(o => o.value === selectedTypeFilter.value)) {
-    selectedTypeFilter.value = baseOption.value
-  }
-}
-
-// Mettre à jour quand le niveau change
-watch(() => userStore.niveau_pays, () => {
-  refreshTypeFilterOptions()
-}, { immediate: true })
-
 
 // Status filtering tabs avec design amélioré
 const tabs = computed(() => [
@@ -251,7 +205,6 @@ function saveViewState(extra = {}) {
       perPage: perPage.value,
       currentPage: currentPage.value,
       selectedDifficulty: selectedDifficulty.value,
-      selectedTypeFilter: selectedTypeFilter.value,
       activeTab: activeTab.value,
       searchQuery: searchQuery.value,
       scrollY,
@@ -272,7 +225,6 @@ function restoreViewState() {
       if (typeof s.perPage === 'number') perPage.value = s.perPage
       if (typeof s.currentPage === 'number') currentPage.value = Math.max(1, s.currentPage)
       if (typeof s.selectedDifficulty === 'string') selectedDifficulty.value = s.selectedDifficulty
-      if (typeof s.selectedTypeFilter === 'string') selectedTypeFilter.value = s.selectedTypeFilter
       if (typeof s.activeTab === 'string') activeTab.value = s.activeTab
       if (typeof s.searchQuery === 'string') searchQuery.value = s.searchQuery
       return s
@@ -454,22 +406,6 @@ const filteredExercices = computed(() => {
     })
   }
 
-  // Filtre par type (configurable par niveau)
-  if (selectedTypeFilter.value !== 'all') {
-    const target = selectedTypeFilter.value.toLowerCase().trim()
-    list = list.filter(e => {
-      const fields = [
-        e.exercice_type,
-        e.type,
-        e.titre,
-        e.nom
-      ]
-      return fields
-        .filter(Boolean)
-        .some(field => String(field).toLowerCase().includes(target))
-    })
-  }
-  
   // Filtre par difficulté
   if (selectedDifficulty.value !== 'all') {
     list = list.filter(e => e.difficulty === selectedDifficulty.value)
@@ -638,14 +574,8 @@ function goBackToNotions() {
   }
 }
 
-function handleTypeFilterChange() {
-  currentPage.value = 1
-  saveViewState()
-}
-
-
 // Sauvegarder à chaque changement significatif
-watch([perPage, currentPage, selectedDifficulty, selectedTypeFilter, activeTab, searchQuery], () => {
+watch([perPage, currentPage, selectedDifficulty, activeTab, searchQuery], () => {
   saveViewState()
 })
 
@@ -755,7 +685,6 @@ async function tryScrollToHashExercice() {
       activeTab.value = 'all'
     }
     selectedDifficulty.value = 'all'
-    selectedTypeFilter.value = 'all'
     searchQuery.value = ''
 
     await nextTick()

@@ -47,9 +47,7 @@ export const createExerciceImage = (payload) => {
   const formData = new FormData()
   formData.append('exercice', payload.exercice)
   formData.append('image', payload.image)
-  formData.append('image_type', payload.image_type)
   if (payload.position) formData.append('position', payload.position)
-  if (payload.legende !== undefined) formData.append('legende', payload.legende)
   return apiClient.post('/api/exercice-images/', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -60,9 +58,7 @@ export const updateExerciceImage = (id, payload) => {
   const formData = new FormData()
   if (payload.exercice) formData.append('exercice', payload.exercice)
   if (payload.image) formData.append('image', payload.image)
-  if (payload.image_type) formData.append('image_type', payload.image_type)
   if (payload.position !== undefined) formData.append('position', payload.position)
-  if (payload.legende !== undefined) formData.append('legende', payload.legende)
   return apiClient.patch(`/api/exercice-images/${id}/`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'

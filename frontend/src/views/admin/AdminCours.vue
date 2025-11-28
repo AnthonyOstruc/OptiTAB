@@ -124,20 +124,6 @@
         </div>
       </div>
       
-      <div class="form-group">
-        <label>Ordre d'affichage:</label>
-        <input v-model.number="form.ordre" type="number" min="0" />
-      </div>
-      
-      <div class="form-group">
-        <label>Difficulté:</label>
-        <select v-model="form.difficulte">
-          <option value="facile">Facile</option>
-          <option value="moyen">Moyen</option>
-          <option value="difficile">Difficile</option>
-        </select>
-      </div>
-      
       <button class="btn-primary" type="submit">{{ form.id ? 'Mettre à jour' : 'Créer' }}</button>
       <button v-if="form.id" class="btn-secondary" type="button" @click="resetForm">Annuler</button>
       <button class="btn-secondary" type="button" @click="handlePreview">Prévisualiser</button>
@@ -164,10 +150,6 @@
         </div>
 
         <div class="preview-cours">
-          <div class="preview-header">
-            <span class="difficulty-badge" :class="previewData.difficulty">{{ getDifficultyLabel(previewData.difficulty) }}</span>
-            <span class="ordre-badge">Ordre: {{ previewData.ordre }}</span>
-          </div>
           <div class="preview-content" v-html="previewRenderedContent"></div>
         </div>
       </div>
@@ -195,8 +177,6 @@
           <th>Titre</th>
           <th>Notion</th>
           <th>Contexte</th>
-          <th>Ordre</th>
-          <th>Difficulté</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -206,8 +186,6 @@
           <td>{{ cours.titre }}</td>
           <td>{{ getNotionName(cours.notion) }}</td>
           <td class="ctx-cell">{{ getNotionContextLabel(cours.notion) }}</td>
-          <td>{{ cours.ordre || 0 }}</td>
-          <td><span class="difficulte-badge" :class="`difficulte-${cours.difficulte || cours.difficulty || 'moyen'}`">{{ cours.difficulte || cours.difficulty || 'moyen' }}</span></td>
           <td>
             <AdminActionsButtons
               :item="cours"
@@ -329,9 +307,9 @@ const form = ref({
   id: null, 
   notion: '', 
   titre: '', 
-  contenu: '', 
+  contenu: '',
   ordre: 0,
-  difficulte: 'moyen',
+  difficulty: 'medium',
   __pdf_file: null
 })
 const filters = ref({ notion: 'all' })
@@ -471,7 +449,7 @@ function resetForm() {
     titre: '',
     contenu: '',
     ordre: 0,
-    difficulte: 'moyen'
+    difficulty: 'medium'
   }
   showPreview.value = false
   previewData.value = null
@@ -603,27 +581,16 @@ async function addNewImage() {
   }
 }
 
-// Fonction pour obtenir le label de difficulté (comme dans AdminCoursPlus)
-function getDifficultyLabel(difficulty) {
-  const labels = {
-    'easy': 'Facile',
-    'medium': 'Moyen',
-    'hard': 'Difficile'
-  }
-  return labels[difficulty] || difficulty
-}
-
 async function handleSave() {
   if (!form.value.notion || !form.value.titre || !form.value.contenu) return
 
   try {
-    const difficultyMap = { 'facile': 'easy', 'moyen': 'medium', 'difficile': 'hard' }
     const payload = {
       notion: Number(form.value.notion),
       titre: form.value.titre,
       contenu: normalizeContent(form.value.contenu),
       ordre: form.value.ordre,
-      difficulty: difficultyMap[form.value.difficulte] || 'medium'
+      difficulty: form.value.difficulty || 'medium'
     }
 
     let courseId = form.value.id
@@ -656,18 +623,15 @@ async function handleSave() {
 }
 
 function editCours(cours) {
-  // Mapping inverse pour la difficulté (anglais vers français)
-  const difficultyMap = { 'easy': 'facile', 'medium': 'moyen', 'hard': 'difficile' }
-  const difficulte = cours.difficulte || cours.difficulty || 'medium'
-  const difficulteFr = difficultyMap[difficulte] || 'moyen'
-  
+  const difficultyValue = cours.difficulty || 'medium'
+
   form.value = { 
     id: cours.id,
     notion: cours.notion,
     titre: cours.titre || '',
     contenu: cours.contenu || '',
     ordre: cours.ordre || 0,
-    difficulte: difficulteFr,
+    difficulty: difficultyValue,
     __pdf_file: null
   }
   
@@ -726,14 +690,12 @@ async function confirmDuplicate() {
 
   try {
     const original = duplicateForm.value.originalCours
-    const difficultyMap = { 'facile': 'easy', 'moyen': 'medium', 'difficile': 'hard' }
-
     const payload = {
       notion: Number(duplicateForm.value.newNotion),
       titre: duplicateForm.value.newTitre.trim(),
       contenu: original.contenu,
       ordre: original.ordre || 0,
-      difficulty: original.difficulty || difficultyMap[original.difficulte] || 'medium'
+      difficulty: original.difficulty || 'medium'
     }
 
     console.log('Payload envoyé pour duplication cours:', payload)
@@ -815,9 +777,6 @@ function handlePreview() {
   previewData.value = {
     titre: form.value.titre,
     contenu: normalizeContent(form.value.contenu),
-    ordre: form.value.ordre || 0,
-    difficulte: form.value.difficulte || 'moyen',
-    difficulty: form.value.difficulte === 'facile' ? 'easy' : form.value.difficulte === 'moyen' ? 'medium' : 'hard',
     image: imageNames, // Chaîne de noms d'images séparés par des virgules
     images: selectedImages.value,
     // Images côté serveur (existant) pour le mode édition, utilisées si aucune nouvelle image sélectionnée
@@ -1212,34 +1171,6 @@ function slugify(text) {
   font-size: 0.875rem;
 }
 
-.cours-ordre {
-  font-weight: 500;
-}
-
-.difficulte-badge {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: capitalize;
-}
-
-.difficulte-facile {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.difficulte-moyen {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.difficulte-difficile {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
 /* Styles pour l'upload d'images */
 .images-file-input {
   width: 100%;
@@ -1385,44 +1316,6 @@ function slugify(text) {
   background: #f8f9fa;
   border-radius: 6px;
   padding: 1rem;
-}
-
-.preview-header {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.difficulty-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-.difficulty-badge.easy {
-  background: #e8f5e8;
-  color: #2e7d32;
-}
-
-.difficulty-badge.medium {
-  background: #fff3e0;
-  color: #f57c00;
-}
-
-.difficulty-badge.hard {
-  background: #ffebee;
-  color: #c62828;
-}
-
-.ordre-badge {
-  padding: 0.25rem 0.75rem;
-  background: #e3f2fd;
-  color: #1976d2;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 500;
 }
 
 .preview-content {

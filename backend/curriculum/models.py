@@ -87,6 +87,7 @@ class Exercice(BaseEducational):
     reponse_correcte = models.TextField()
     etapes = models.TextField(blank=True, null=True, verbose_name="Étapes de résolution")
     points = models.PositiveIntegerField(default=1)
+    exercice_type = models.CharField(max_length=120, blank=True, default='', verbose_name="Type d'exercice")
     ACCESS_SCOPE_PAID = 'paid'
     ACCESS_SCOPE_FREE = 'free'
     ACCESS_SCOPE_BOTH = 'both'

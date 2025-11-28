@@ -601,9 +601,13 @@ class ExerciceViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         notion = self.request.query_params.get('notion')
+        ex_type = self.request.query_params.get('exercice_type') or self.request.query_params.get('type')
         
         if notion:
             queryset = queryset.filter(notion_id=notion)
+
+        if ex_type:
+            queryset = queryset.filter(exercice_type__iexact=ex_type)
             
         return queryset.filter(est_actif=True)
 

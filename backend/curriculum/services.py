@@ -119,6 +119,7 @@ def duplicate_theme_deep(original: Theme, target_contexte: MatiereContexte, new_
                 reponse_correcte=ex.reponse_correcte,
                 etapes=ex.etapes,
                 points=ex.points,
+                exercice_type=ex.exercice_type,
             )
             for eimg in ex.images.all().order_by('position', 'id'):
                 ExerciceImage.objects.create(
@@ -235,6 +236,7 @@ def duplicate_notion_deep(original: Notion, target_theme: Theme, new_title: str 
             reponse_correcte=ex.reponse_correcte,
             etapes=ex.etapes,
             points=ex.points,
+            exercice_type=ex.exercice_type,
         )
         for eimg in ex.images.all().order_by('position', 'id'):
             ExerciceImage.objects.create(

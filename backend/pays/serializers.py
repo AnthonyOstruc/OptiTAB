@@ -23,7 +23,19 @@ class NiveauSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Niveau
-        fields = ['id', 'nom', 'pays', 'ordre', 'couleur', 'est_actif', 'pays_nom', 'pays_drapeau', 'statistiques']
+        fields = [
+            'id',
+            'nom',
+            'pays',
+            'ordre',
+            'couleur',
+            'est_actif',
+            'pays_nom',
+            'pays_drapeau',
+            'exercice_filter_options',
+            'exercice_filter_default',
+            'statistiques',
+        ]
 
     def get_statistiques(self, obj):
         # Importer localement pour éviter les imports circulaires
@@ -58,6 +70,9 @@ class NiveauSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
+        # Garantir des valeurs sûres pour les options de filtre d'exercices
+        data['exercice_filter_options'] = data.get('exercice_filter_options') or []
+        data['exercice_filter_default'] = data.get('exercice_filter_default') or 'Tous'
         include_stats = self.context.get('include_stats', False)
         if not include_stats:
             data.pop('statistiques', None)

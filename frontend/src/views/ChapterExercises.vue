@@ -5,6 +5,7 @@
         <BackButton 
           text="Retour aux chapitres" 
           :customAction="goBackToNotions"
+          position="top-left-dashboard"
         />
       </div>
 
@@ -31,94 +32,65 @@
         <div v-else-if="error" class="exercices-error">{{ error }}</div>
         <div v-else>
           <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
-          <div class="exercices-controls">
-            <div class="controls-row">
-              <!-- Barre de recherche -->
-              <div class="search-section">
-                <div class="search-container">
-                  <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="m21 21-4.35-4.35"/>
-                  </svg>
-                  <input
-                    v-model="searchQuery"
-                    type="text"
-                    placeholder="Rechercher un exercice..."
-                    class="search-input"
-                    @input="handleSearch"
-                  />
-                  <button
-                    v-if="searchQuery"
-                    @click="clearSearch"
-                    class="clear-search-btn"
-                    aria-label="Effacer la recherche"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <line x1="18" y1="6" x2="6" y2="18"/>
-                      <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                  </button>
+            <div class="exercices-controls">
+              <div class="controls-row">
+                <div class="filter-row">
+                  <div class="filter-group">
+                    <span class="filter-label">Filtrer</span>
+                    <div class="filter-buttons type-filter-buttons">
+                      <button
+                        v-for="opt in typeFilterOptions"
+                        :key="opt.value"
+                        :class="['filter-btn', 'type-filter-btn', { active: opt.value === selectedTypeFilter }]"
+                        @click="selectedTypeFilter = opt.value; handleTypeFilterChange()"
+                      >
+                        {{ opt.label }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="filter-divider"></div>
+
+                  <div class="filter-item">
+                    <span class="filter-label">Difficulté</span>
+                      <div class="filter-buttons">
+                        <button
+                          v-for="d in difficultyOptions"
+                          :key="d"
+                          :class="['filter-btn', { active: d === selectedDifficulty }]"
+                          @click="selectedDifficulty = d; currentPage = 1"
+                        >
+                          <span v-if="d === 'all'" class="difficulty-text">Toutes</span>
+                          <span v-else class="difficulty-stars">
+                            {{ d === 'easy' ? '⭐️' : d === 'medium' ? '⭐️⭐️' : '⭐️⭐️⭐️' }}
+                          </span>
+                        </button>
+                      </div>
+                  </div>
                 </div>
               </div>
-
-              <div class="filter-row">
-            <div class="filter-item">
-              <span class="filter-label">Exercices par page</span>
-              <div class="filter-buttons">
-                <button
-                  v-for="n in perPageOptions"
-                  :key="n"
-                  :class="['filter-btn', { active: n === perPage }]"
-                  @click="perPage = n; currentPage = 1"
-                >
-                  {{ n }}
-                </button>
+            </div>
+            <div class="exercices-list">
+              <div
+                v-for="exercice in paginated"
+                :key="exercice.id"
+                :id="`ex-${exercice.id}`"
+                class="exercice-item-wrapper"
+                @click="setLastExerciceId(exercice.id)"
+              >
+                <ExerciceQCM
+                  :eid="exercice.id"
+                  :titre="exercice.titre || exercice.nom"
+                  :instruction="exercice.instruction || exercice.contenu || exercice.question"
+                  :solution="exercice.solution || exercice.reponse_correcte || ''"
+                  :etapes="exercice.etapes || ''"
+                  :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
+                  :current="statusMap[exercice.id]?.status"
+                  @status-changed="handleStatus"
+                />
               </div>
-          </div>
-
-            <div class="filter-divider"></div>
-
-            <div class="filter-item">
-              <span class="filter-label">Difficulté</span>
-              <div class="filter-buttons">
-                <button
-                  v-for="d in difficultyOptions"
-                  :key="d"
-                  :class="['filter-btn', { active: d === selectedDifficulty }]"
-                  @click="selectedDifficulty = d; currentPage = 1"
-                >
-                  <span v-if="d === 'all'" class="difficulty-text">Toutes</span>
-                  <span v-else class="difficulty-stars">
-                    {{ d === 'easy' ? '★' : d === 'medium' ? '★★' : '★★★' }}
-                  </span>
-                </button>
-              </div>
+              <Pagination :total="filteredExercices.length" :perPage="perPage" :page="currentPage" @update:page="handlePageChange" />
             </div>
-            </div>
-
-          </div>
-          </div>
-          <div class="exercices-list">
-            <div
-              v-for="exercice in paginated"
-              :key="exercice.id"
-              :id="`ex-${exercice.id}`"
-              class="exercice-item-wrapper"
-              @click="setLastExerciceId(exercice.id)"
-            >
-              <ExerciceQCM
-                :eid="exercice.id"
-                :titre="exercice.titre || exercice.nom"
-                :instruction="exercice.instruction || exercice.contenu || exercice.question"
-                :solution="exercice.solution || exercice.reponse_correcte || ''"
-                :etapes="exercice.etapes || ''"
-                :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
-                :current="statusMap[exercice.id]?.status"
-                @status-changed="handleStatus"
-              />
-            </div>
-            <Pagination :total="filteredExercices.length" :perPage="perPage" :page="currentPage" @update:page="handlePageChange" />
-          </div>
           </div>
           <div v-else class="empty-coming">
             <div class="empty-card">
@@ -164,9 +136,12 @@ const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 19
 const contentHeight = ref(0)
 
 const exercices = ref([])
-const perPageOptions = [1,3,5]
 const perPage = ref(5)
 const currentPage = ref(1)
+
+// Filtre par type (configurable par niveau)
+const typeFilterOptions = ref([])
+const selectedTypeFilter = ref('all')
 
 // Filtre difficulté
 const difficultyOptions = ['all','easy','medium','hard']
@@ -174,6 +149,31 @@ const selectedDifficulty = ref('all')
 
 // Recherche
 const searchQuery = ref('')
+
+// Construire les options de filtre selon le niveau utilisateur
+function refreshTypeFilterOptions() {
+  const niveau = userStore.niveau_pays
+  const rawOptions = Array.isArray(niveau?.exercice_filter_options)
+    ? niveau.exercice_filter_options
+    : []
+  const cleaned = rawOptions
+    .map(o => (typeof o === 'string' || typeof o === 'number') ? String(o).trim() : '')
+    .filter(Boolean)
+  const unique = Array.from(new Set(cleaned))
+  const defaultLabel = (niveau?.exercice_filter_default || 'Tous').trim() || 'Tous'
+  const baseOption = { value: 'all', label: defaultLabel }
+  typeFilterOptions.value = [baseOption, ...unique.map(val => ({ value: val, label: val })) ]
+
+  // Réinitialiser la sélection si l'option courante n'existe plus
+  if (!typeFilterOptions.value.find(o => o.value === selectedTypeFilter.value)) {
+    selectedTypeFilter.value = baseOption.value
+  }
+}
+
+// Mettre à jour quand le niveau change
+watch(() => userStore.niveau_pays, () => {
+  refreshTypeFilterOptions()
+}, { immediate: true })
 
 
 // Status filtering tabs avec design amélioré
@@ -251,6 +251,7 @@ function saveViewState(extra = {}) {
       perPage: perPage.value,
       currentPage: currentPage.value,
       selectedDifficulty: selectedDifficulty.value,
+      selectedTypeFilter: selectedTypeFilter.value,
       activeTab: activeTab.value,
       searchQuery: searchQuery.value,
       scrollY,
@@ -271,6 +272,7 @@ function restoreViewState() {
       if (typeof s.perPage === 'number') perPage.value = s.perPage
       if (typeof s.currentPage === 'number') currentPage.value = Math.max(1, s.currentPage)
       if (typeof s.selectedDifficulty === 'string') selectedDifficulty.value = s.selectedDifficulty
+      if (typeof s.selectedTypeFilter === 'string') selectedTypeFilter.value = s.selectedTypeFilter
       if (typeof s.activeTab === 'string') activeTab.value = s.activeTab
       if (typeof s.searchQuery === 'string') searchQuery.value = s.searchQuery
       return s
@@ -451,6 +453,22 @@ const filteredExercices = computed(() => {
       return title.includes(query) || content.includes(query)
     })
   }
+
+  // Filtre par type (configurable par niveau)
+  if (selectedTypeFilter.value !== 'all') {
+    const target = selectedTypeFilter.value.toLowerCase().trim()
+    list = list.filter(e => {
+      const fields = [
+        e.exercice_type,
+        e.type,
+        e.titre,
+        e.nom
+      ]
+      return fields
+        .filter(Boolean)
+        .some(field => String(field).toLowerCase().includes(target))
+    })
+  }
   
   // Filtre par difficulté
   if (selectedDifficulty.value !== 'all') {
@@ -620,21 +638,14 @@ function goBackToNotions() {
   }
 }
 
-// Fonctions de recherche
-function handleSearch() {
-  currentPage.value = 1
-  saveViewState()
-}
-
-function clearSearch() {
-  searchQuery.value = ''
+function handleTypeFilterChange() {
   currentPage.value = 1
   saveViewState()
 }
 
 
 // Sauvegarder à chaque changement significatif
-watch([perPage, currentPage, selectedDifficulty, activeTab, searchQuery], () => {
+watch([perPage, currentPage, selectedDifficulty, selectedTypeFilter, activeTab, searchQuery], () => {
   saveViewState()
 })
 
@@ -744,6 +755,7 @@ async function tryScrollToHashExercice() {
       activeTab.value = 'all'
     }
     selectedDifficulty.value = 'all'
+    selectedTypeFilter.value = 'all'
     searchQuery.value = ''
 
     await nextTick()
@@ -1169,7 +1181,7 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 
 <style scoped>
 .exercices-section {
-  background: #fff;
+  background: #f8fafc;
   min-height: 100vh;
   padding: 0;
 }
@@ -1184,10 +1196,16 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 }
 
 .nav-header-base {
-  padding: 0;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0.75rem 0.25rem 0.75rem 0.25rem;
   margin: 0 0 1rem 0;
   display: flex;
-  background: white;
+  background: #f8fafc;
+  box-shadow: none;
 }
 
 .exercices-body {
@@ -1329,67 +1347,7 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   align-items: center;
   gap: 1.5rem;
   flex-wrap: wrap;
-}
-
-/* Barre de recherche */
-.search-section {
-  flex: 1;
-  min-width: 200px;
-}
-
-.search-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 0.5rem 0.75rem;
-  transition: all 0.2s ease;
-}
-
-.search-container:focus-within {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.search-icon {
-  color: #6b7280;
-  margin-right: 0.5rem;
-  flex-shrink: 0;
-}
-
-.search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 0.875rem;
-  color: #374151;
-  padding: 0;
-}
-
-.search-input::placeholder {
-  color: #9ca3af;
-}
-
-.clear-search-btn {
-  background: none;
-  border: none;
-  color: #6b7280;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  margin-left: 0.5rem;
-}
-
-.clear-search-btn:hover {
-  background: #f3f4f6;
-  color: #374151;
+  justify-content: space-between;
 }
 
 .filter-row {
@@ -1397,9 +1355,18 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   align-items: center;
   gap: 1.5rem;
   flex-wrap: wrap;
-  flex-shrink: 0;
 }
 
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.type-filter-buttons {
+  flex-wrap: wrap;
+}
 .filter-item {
   display: flex;
   align-items: center;
@@ -1423,6 +1390,11 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 .filter-buttons {
   display: flex;
   gap: 0.25rem;
+}
+
+.type-filter-btn {
+  min-width: 90px;
+  padding: 0.35rem 0.8rem;
 }
 
 .filter-btn {
@@ -1454,7 +1426,7 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 
 .difficulty-stars {
   color: inherit;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 .difficulty-text {
@@ -1512,24 +1484,6 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
     align-items: stretch;
   }
 
-  .search-section {
-    min-width: auto;
-    flex: none;
-  }
-
-  .search-container {
-    padding: 0.4rem 0.6rem;
-  }
-
-  .search-input {
-    font-size: 0.8rem;
-  }
-
-  .search-icon {
-    width: 14px;
-    height: 14px;
-  }
-
   .filter-row {
     flex-direction: row;
     gap: 0.5rem;
@@ -1563,6 +1517,7 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
     font-size: 0.75rem;
     min-width: 1.8rem;
   }
+
 }
 
 /* Navigation ultra-propre */

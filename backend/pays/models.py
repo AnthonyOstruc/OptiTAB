@@ -25,6 +25,9 @@ class Niveau(BaseSimple):
     """Un niveau scolaire dans un pays (ex: 6ème France, Grade 6 Canada)"""
     pays = models.ForeignKey(Pays, on_delete=models.CASCADE, related_name='niveaux')
     couleur = models.CharField(max_length=7, default='#3b82f6')
+    # Options de filtre d'exercices spécifiques à ce niveau (ex: "Type bac", "Problème")
+    exercice_filter_options = models.JSONField(default=list, blank=True)
+    exercice_filter_default = models.CharField(max_length=120, default='Tous', blank=True)
     # Inherits: nom, ordre, est_actif, timestamps
 
     class Meta:

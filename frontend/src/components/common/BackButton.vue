@@ -94,6 +94,8 @@ const goBack = () => {
 
 .back-button--top-left-dashboard {
   position: fixed;
+  top: 1px;
+  left: 1px;
   z-index: 15000;
   margin: 0;
   background: #ffffff;
@@ -141,8 +143,8 @@ const goBack = () => {
   }
   
   .back-button--top-left-dashboard {
-    top: 0px;
-    left: 0px;
+    top: 1px;
+    left: 1px;
   }
   
   .back-button--sticky {

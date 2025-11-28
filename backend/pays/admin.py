@@ -62,7 +62,7 @@ class NiveauAdmin(admin.ModelAdmin):
             'fields': ['nom']
         }),
         ('Paramètres', {
-            'fields': ['ordre', 'couleur', 'est_actif']
+            'fields': ['ordre', 'couleur', 'exercice_filter_default', 'exercice_filter_options', 'est_actif']
         }),
         ('Métadonnées', {
             'fields': ['date_creation', 'date_modification'],

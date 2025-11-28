@@ -361,6 +361,39 @@ export const useSubjectsStore = defineStore('subjects', () => {
   // ========================================
   // FALLBACKS / AUTO-SET DEFAULTS
   // ========================================
+  const normalizeMatiereLabel = (value = '') => {
+    return (value || '')
+      .toString()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '')
+      .toLowerCase()
+  }
+
+  const pickPreferredMatiereId = (matieres = []) => {
+    const candidates = (matieres || [])
+      .map((item) => {
+        const id = Number(item?.id ?? item?.matiere?.id)
+        const label = normalizeMatiereLabel(item?.nom || item?.titre || item?.matiere?.titre || '')
+        return Number.isFinite(id) ? { id, label } : null
+      })
+      .filter(Boolean)
+
+    if (candidates.length === 0) return null
+
+    // Prioritiser Mathématiques "principales" (éviter les parcours bases par défaut)
+    const mathWithoutBase = candidates.find(
+      ({ label }) => label.includes('math') && !label.includes('base')
+    )
+    if (mathWithoutBase) return mathWithoutBase.id
+
+    // Sinon, choisir n'importe quelle matière contenant "math"
+    const anyMath = candidates.find(({ label }) => label.includes('math'))
+    if (anyMath) return anyMath.id
+
+    // Fallback: première matière disponible
+    return candidates[0].id
+  }
+
   const ensureDefaultMatiereIfMissing = async () => {
     try {
       // Si on a déjà une matière active, rien à faire
@@ -376,17 +409,17 @@ export const useSubjectsStore = defineStore('subjects', () => {
       const resp = await getMatieresUtilisateur().catch(() => null)
       const matieres = resp?.data?.matieres_disponibles || []
       if (Array.isArray(matieres) && matieres.length > 0) {
-        const firstId = Number(matieres[0].id ?? matieres[0].matiere?.id)
-        if (firstId && Number.isFinite(firstId)) {
+        const preferredId = pickPreferredMatiereId(matieres)
+        if (preferredId && Number.isFinite(preferredId)) {
           // Définir sélection et actif localement
-          selectedStore.setSelectedMatieresIds([firstId])
-          activeStore.setActiveMatiereId(firstId)
+          selectedStore.setSelectedMatieresIds([preferredId])
+          activeStore.setActiveMatiereId(preferredId)
           
           // Si connecté, synchroniser vers backend en arrière-plan
           if (isUserAuthenticated()) {
             try { await syncWithBackend() } catch (_) {}
           }
-          logOperation('ensureDefaultMatiereIfMissing', { status: 'set_default', firstId })
+          logOperation('ensureDefaultMatiereIfMissing', { status: 'set_default', preferredId })
         }
       } else {
         logOperation('ensureDefaultMatiereIfMissing', { status: 'no_matieres_available' }, 'warn')

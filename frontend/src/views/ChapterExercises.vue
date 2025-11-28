@@ -34,7 +34,27 @@
           <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
             <div class="exercices-controls">
               <div class="controls-row">
+                <div class="filter-cta">
+                  <span class="filter-cta-icon" aria-hidden="true">★</span>
+                  <span class="filter-cta-text">Utilisez les filtres pour affiner votre sélection d'exercices</span>
+                </div>
                 <div class="filter-row">
+                  <div class="filter-group">
+                    <span class="filter-label">Filtrer</span>
+                    <div class="filter-buttons type-filter-buttons">
+                      <button
+                        v-for="opt in typeFilterOptions"
+                        :key="opt.value"
+                        :class="['filter-btn', 'type-filter-btn', { active: opt.value === selectedTypeFilter }]"
+                        @click="selectedTypeFilter = opt.value; handleTypeFilterChange()"
+                      >
+                        {{ opt.label }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="filter-divider"></div>
+
                   <div class="filter-item">
                     <span class="filter-label">Difficulté</span>
                       <div class="filter-buttons">
@@ -46,7 +66,7 @@
                         >
                           <span v-if="d === 'all'" class="difficulty-text">Toutes</span>
                           <span v-else class="difficulty-stars">
-                            {{ d === 'easy' ? '⭐️' : d === 'medium' ? '⭐️⭐️' : '⭐️⭐️⭐️' }}
+                            {{ d === 'easy' ? '⭐' : d === 'medium' ? '⭐⭐' : '⭐⭐⭐' }}
                           </span>
                         </button>
                       </div>
@@ -123,12 +143,39 @@ const exercices = ref([])
 const perPage = ref(5)
 const currentPage = ref(1)
 
+// Filtre par type (configurable par niveau)
+const typeFilterOptions = ref([])
+const selectedTypeFilter = ref('all')
+
 // Filtre difficulté
 const difficultyOptions = ['all','easy','medium','hard']
 const selectedDifficulty = ref('all')
 
 // Recherche
 const searchQuery = ref('')
+
+// Construire les options de filtre selon le niveau utilisateur
+function refreshTypeFilterOptions() {
+  const niveau = userStore.niveau_pays
+  const rawOptions = Array.isArray(niveau?.exercice_filter_options)
+    ? niveau.exercice_filter_options
+    : []
+  const cleaned = rawOptions
+    .map(o => (typeof o === 'string' || typeof o === 'number') ? String(o).trim() : '')
+    .filter(Boolean)
+  const unique = Array.from(new Set(cleaned))
+  const defaultLabel = (niveau?.exercice_filter_default || 'Tous').trim() || 'Tous'
+  const baseOption = { value: 'all', label: defaultLabel }
+  typeFilterOptions.value = [baseOption, ...unique.map(val => ({ value: val, label: val }))]
+
+  if (!typeFilterOptions.value.find(o => o.value === selectedTypeFilter.value)) {
+    selectedTypeFilter.value = baseOption.value
+  }
+}
+
+watch(() => userStore.niveau_pays, () => {
+  refreshTypeFilterOptions()
+}, { immediate: true })
 
 // Status filtering tabs avec design amélioré
 const tabs = computed(() => [
@@ -201,11 +248,12 @@ function saveViewState(extra = {}) {
       ? extra.scrollY
       : readScrollTop(container)
 
-    const state = {
-      perPage: perPage.value,
-      currentPage: currentPage.value,
-      selectedDifficulty: selectedDifficulty.value,
-      activeTab: activeTab.value,
+  const state = {
+    perPage: perPage.value,
+    currentPage: currentPage.value,
+    selectedDifficulty: selectedDifficulty.value,
+    selectedTypeFilter: selectedTypeFilter.value,
+    activeTab: activeTab.value,
       searchQuery: searchQuery.value,
       scrollY,
       t: Date.now(),
@@ -222,10 +270,11 @@ function restoreViewState() {
     if (!raw) return null
     const s = JSON.parse(raw)
     if (s && typeof s === 'object') {
-      if (typeof s.perPage === 'number') perPage.value = s.perPage
-      if (typeof s.currentPage === 'number') currentPage.value = Math.max(1, s.currentPage)
-      if (typeof s.selectedDifficulty === 'string') selectedDifficulty.value = s.selectedDifficulty
-      if (typeof s.activeTab === 'string') activeTab.value = s.activeTab
+  if (typeof s.perPage === 'number') perPage.value = s.perPage
+  if (typeof s.currentPage === 'number') currentPage.value = Math.max(1, s.currentPage)
+  if (typeof s.selectedDifficulty === 'string') selectedDifficulty.value = s.selectedDifficulty
+  if (typeof s.selectedTypeFilter === 'string') selectedTypeFilter.value = s.selectedTypeFilter
+  if (typeof s.activeTab === 'string') activeTab.value = s.activeTab
       if (typeof s.searchQuery === 'string') searchQuery.value = s.searchQuery
       return s
     }
@@ -406,6 +455,22 @@ const filteredExercices = computed(() => {
     })
   }
 
+  // Filtre par type (configurable par niveau)
+  if (selectedTypeFilter.value !== 'all') {
+    const target = selectedTypeFilter.value.toLowerCase().trim()
+    list = list.filter(e => {
+      const fields = [
+        e.exercice_type,
+        e.type,
+        e.titre,
+        e.nom
+      ]
+      return fields
+        .filter(Boolean)
+        .some(field => String(field).toLowerCase().includes(target))
+    })
+  }
+
   // Filtre par difficulté
   if (selectedDifficulty.value !== 'all') {
     list = list.filter(e => e.difficulty === selectedDifficulty.value)
@@ -502,6 +567,11 @@ function handlePageChange(page) {
   })
 }
 
+function handleTypeFilterChange() {
+  currentPage.value = 1
+  saveViewState()
+}
+
 async function handleStatus({ exerciceId, status }) {
   try {
     if (status) {
@@ -575,7 +645,7 @@ function goBackToNotions() {
 }
 
 // Sauvegarder à chaque changement significatif
-watch([perPage, currentPage, selectedDifficulty, activeTab, searchQuery], () => {
+watch([perPage, currentPage, selectedDifficulty, selectedTypeFilter, activeTab, searchQuery], () => {
   saveViewState()
 })
 
@@ -685,6 +755,7 @@ async function tryScrollToHashExercice() {
       activeTab.value = 'all'
     }
     selectedDifficulty.value = 'all'
+    selectedTypeFilter.value = 'all'
     searchQuery.value = ''
 
     await nextTick()
@@ -1263,9 +1334,9 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 .exercices-controls {
   margin-bottom: 1.5rem;
   padding: 0.75rem 1rem;
-  background: #f8fafc;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  background: transparent;
+  border-radius: 0;
+  border: none;
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -1316,6 +1387,41 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   flex-shrink: 0;
 }
 
+.filter-cta {
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.15);
+  font-weight: 500;
+  color: #4338ca;
+}
+
+.filter-cta-icon {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #4338ca;
+  border-radius: 50%;
+  color: white;
+}
+
+.filter-cta-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.filter-cta-text {
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
 .filter-buttons {
   display: flex;
   gap: 0.25rem;
@@ -1329,15 +1435,17 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 .filter-btn {
   background: white;
   border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+  padding: 0.35rem 0.9rem;
   cursor: pointer;
   font-weight: 500;
   color: #6b7280;
   transition: all 0.2s ease;
   min-width: 2rem;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  min-height: 38px;
 }
 
 .filter-btn:hover {

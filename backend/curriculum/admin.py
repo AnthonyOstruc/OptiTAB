@@ -247,8 +247,8 @@ class ExerciceAdmin(admin.ModelAdmin):
     Administration des exercices
     """
     list_display = [
-        'titre', 'notion_info', 'exercice_type', 'points', 'difficulty_display', 
-        'access_scope', 'ordre', 'status_display', 'date_creation'
+        'titre', 'notion_info', 'difficulty_display',
+        'access_scope', 'status_display', 'date_creation'
     ]
     list_filter = [
         'notion__theme__matiere',
@@ -256,8 +256,6 @@ class ExerciceAdmin(admin.ModelAdmin):
         'notion',
         'difficulty',
         'access_scope',
-        'exercice_type',
-        'points',
         'est_actif',
         'date_creation'
     ]
@@ -266,7 +264,7 @@ class ExerciceAdmin(admin.ModelAdmin):
         'notion__titre',
         'notion__theme__titre', 'notion__theme__matiere__titre'
     ]
-    list_editable = ['ordre', 'points', 'access_scope']
+    list_editable = ['access_scope']
     ordering = ['notion', 'ordre', 'titre']
     
     # Inline pour gérer les images d'exercice
@@ -298,7 +296,7 @@ class ExerciceAdmin(admin.ModelAdmin):
             'fields': ('contenu', 'question', 'reponse_correcte'),
         }),
         (_('Configuration'), {
-            'fields': ('ordre', 'difficulty', 'points', 'access_scope', 'exercice_type'),
+            'fields': ('difficulty', 'access_scope'),
             'classes': ['collapse']
         }),
         (_('Statut et métadonnées'), {

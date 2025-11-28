@@ -24,8 +24,8 @@ class CoursImageInline(admin.TabularInline):
 
 @admin.register(Cours)
 class CoursAdmin(admin.ModelAdmin):
-    list_display = ['titre', 'notion', 'difficulty', 'access_scope', 'est_actif', 'pdf_link']
-    list_filter = ['difficulty', 'access_scope', 'est_actif']
+    list_display = ['titre', 'notion', 'access_scope', 'est_actif', 'pdf_link']
+    list_filter = ['access_scope', 'est_actif']
     search_fields = ['titre', 'notion__titre']
     ordering = ['notion']
     list_editable = ['est_actif', 'access_scope']
@@ -33,9 +33,7 @@ class CoursAdmin(admin.ModelAdmin):
         'notion',
         'titre',
         'contenu',
-        'difficulty',
         'access_scope',
-        'ordre',
         'video_url',
         'pdf_file',
         'est_actif',

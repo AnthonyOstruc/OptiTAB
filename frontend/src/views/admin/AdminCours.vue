@@ -179,9 +179,9 @@
         <label>Filtrer par notion:</label>
         <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
         <select v-model="filters.notion">
-          <option value="">Toutes les notions</option>
+          <option value="all">Toutes les notions</option>
           <option v-for="notion in filteredNotionsForFilter" :key="notion.id" :value="notion.id">
-            {{ notion.titre || notion.nom }}
+            {{ formatNotionOption(notion) }}
           </option>
         </select>
       </div>
@@ -334,7 +334,7 @@ const form = ref({
   difficulte: 'moyen',
   __pdf_file: null
 })
-const filters = ref({})
+const filters = ref({ notion: 'all' })
 
 // Pagination
 const currentPage = ref(1)
@@ -368,7 +368,7 @@ function normalizeContent(raw) {
 // Computed properties
 const filteredCours = computed(() => {
   let filtered = cours.value
-  if (filters.value.notion) {
+  if (filters.value.notion && filters.value.notion !== 'all') {
     filtered = filtered.filter(c => String(c.notion) === String(filters.value.notion))
   }
   return filtered.sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
@@ -376,14 +376,14 @@ const filteredCours = computed(() => {
 
 const filteredNotionsForForm = computed(() => {
   if (!notionFormFilter.value) return notions.value
-  const q = notionFormFilter.value.toLowerCase()
-  return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(q))
+  const query = notionFormFilter.value.toLowerCase()
+  return notions.value.filter(n => (formatNotionOption(n) || '').toLowerCase().includes(query))
 })
 
 const filteredNotionsForFilter = computed(() => {
   if (!notionFilter.value) return notions.value
-  const q = notionFilter.value.toLowerCase()
-  return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(q))
+  const query = notionFilter.value.toLowerCase()
+  return notions.value.filter(n => (formatNotionOption(n) || '').toLowerCase().includes(query))
 })
 
 const filteredNotionsForDuplicate = computed(() => {
@@ -841,17 +841,29 @@ function getNotionName(id) {
   return n ? (n.titre || n.nom) : id
 }
 
+function notionContext(notion) {
+  if (!notion) return { matiereNom: '', themeNom: '', paysNom: '', niveauNom: '' }
+  const matiereNom = notion.matiere_nom || notion.contexte_detail?.matiere_nom || ''
+  const themeNom = notion.theme_nom || ''
+  const paysNom = notion.pays_nom || notion.contexte_detail?.pays?.nom || ''
+  const niveauNom = notion.niveau_nom || notion.contexte_detail?.niveau?.nom || ''
+  return { matiereNom, themeNom, paysNom, niveauNom }
+}
+
 function formatNotionOption(n) {
-  const niveauNom = n.niveau_nom
-    || (n.contexte_detail && n.contexte_detail.niveau && n.contexte_detail.niveau.nom)
-    || ''
+  if (!n) return ''
+  const ctx = notionContext(n)
+  const contextParts = [ctx.matiereNom, ctx.themeNom].filter(Boolean)
+  const geographicParts = [ctx.paysNom, ctx.niveauNom].filter(Boolean)
+  const contextLabel = contextParts.join(' / ')
+  const geographicLabel = geographicParts.join(' / ')
   const parts = [
-    n.titre || n.nom,
-    n.theme_nom ? `— ${n.theme_nom}` : '',
-    n.matiere_nom ? `— ${n.matiere_nom}` : '',
-    niveauNom ? `— ${niveauNom}` : ''
-  ].filter(Boolean)
-  return parts.join(' ')
+    n.titre || n.nom || '',
+    contextLabel ? ' - ' + contextLabel : '',
+    geographicLabel ? ' (' + geographicLabel + ')' : ''
+  ]
+    .filter(Boolean)
+  return parts.join('')
 }
 
 function getNotionContextLabel(notionId) {

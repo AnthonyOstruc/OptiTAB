@@ -8,7 +8,7 @@
         <input v-model="notionFormFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
         <select v-model="form.notion" required>
           <option value="">Choisir une notion</option>
-          <option v-for="n in filteredNotionsForForm" :key="n.id" :value="n.id">{{ (n.titre || n.nom) }}</option>
+          <option v-for="n in filteredNotionsForForm" :key="n.id" :value="n.id">{{ formatNotionOption(n) }}</option>
         </select>
       </div>
       <div v-if="currentContext" class="context-panel">
@@ -180,7 +180,7 @@
         <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
         <select v-model="filters.notion">
           <option value="">Toutes les notions</option>
-          <option v-for="n in filteredNotionsForFilter" :key="n.id" :value="n.id">{{ n.titre || n.nom }}</option>
+          <option v-for="n in filteredNotionsForFilter" :key="n.id" :value="n.id">{{ formatNotionOption(n) }}</option>
         </select>
       </div>
     </div>
@@ -355,14 +355,14 @@ const filteredExercices = computed(() => {
 
 const filteredNotionsForForm = computed(() => {
   if (!notionFormFilter.value) return notions.value
-  const q = notionFormFilter.value.toLowerCase()
-  return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(q))
+  const query = notionFormFilter.value.toLowerCase()
+  return notions.value.filter(n => (formatNotionOption(n) || '').toLowerCase().includes(query))
 })
 
 const filteredNotionsForFilter = computed(() => {
   if (!notionFilter.value) return notions.value
-  const q = notionFilter.value.toLowerCase()
-  return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(q))
+  const query = notionFilter.value.toLowerCase()
+  return notions.value.filter(n => (formatNotionOption(n) || '').toLowerCase().includes(query))
 })
 
 // Computed properties pour la pagination
@@ -823,6 +823,31 @@ function slugify(text) {
 function getNotionName(id) {
   const n = getNotionById(id)
   return n ? (n.titre || n.nom) : id
+}
+
+function notionContext(notion) {
+  if (!notion) return { matiereNom: '', themeNom: '', paysNom: '', niveauNom: '' }
+  const matiereNom = notion.matiere_nom || notion.contexte_detail?.matiere_nom || ''
+  const themeNom = notion.theme_nom || ''
+  const paysNom = notion.pays_nom || notion.contexte_detail?.pays?.nom || ''
+  const niveauNom = notion.niveau_nom || notion.contexte_detail?.niveau?.nom || ''
+  return { matiereNom, themeNom, paysNom, niveauNom }
+}
+
+function formatNotionOption(n) {
+  if (!n) return ''
+  const ctx = notionContext(n)
+  const contextParts = [ctx.matiereNom, ctx.themeNom].filter(Boolean)
+  const geographicParts = [ctx.paysNom, ctx.niveauNom].filter(Boolean)
+  const contextLabel = contextParts.join(' / ')
+  const geographicLabel = geographicParts.join(' / ')
+  const parts = [
+    n.titre || n.nom || '',
+    contextLabel ? ' - ' + contextLabel : '',
+    geographicLabel ? ' (' + geographicLabel + ')' : ''
+  ]
+    .filter(Boolean)
+  return parts.join('')
 }
 
 function getNotionContextLabel(notionId) {

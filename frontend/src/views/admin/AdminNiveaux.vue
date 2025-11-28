@@ -35,57 +35,91 @@
 
     <!-- Liste des niveaux groupés par pays -->
     <div v-if="!loading">
-      <div v-for="group in niveauxByPays" :key="group.pays_id" class="pays-group">
-        <div class="pays-header">
-          <h2 class="pays-title">{{ group.pays_nom }}</h2>
+      <div class="filters">
+        <div class="filter-group">
+          <label>Filtrer les niveaux</label>
+          <input
+            v-model="niveauFilter"
+            type="text"
+            placeholder="Nom, description ou pays"
+          />
         </div>
+        <div class="filter-group">
+          <label>Pays</label>
+          <select v-model="paysFilter">
+            <option value="">Tous les pays</option>
+            <option v-for="p in pays" :key="p.id" :value="p.id">
+              {{ p.nom }}
+            </option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Statut</label>
+          <select v-model="statusFilter">
+            <option value="all">Tous</option>
+            <option value="active">Actifs</option>
+            <option value="inactive">Inactifs</option>
+          </select>
+        </div>
+      </div>
 
-        <div class="niveaux-list">
-          <div v-for="niveau in group.niveaux" :key="niveau.id" class="niveau-card">
-            <div class="niveau-header">
-              <div class="niveau-info">
-                <div class="niveau-color" :style="{ backgroundColor: niveau.couleur }"></div>
-                <div>
-                  <h3>{{ niveau.nom }}</h3>
-                  <p>{{ niveau.description || 'Aucune description' }}</p>
+      <div v-if="filteredNiveaux.length === 0" class="empty-state">
+        <p>Aucun niveau ne correspond aux filtres sélectionnés.</p>
+      </div>
+
+      <div v-else>
+        <div v-for="group in niveauxByPays" :key="group.pays_id" class="pays-group">
+          <div class="pays-header">
+            <h2 class="pays-title">{{ group.pays_nom }}</h2>
+          </div>
+
+          <div class="niveaux-list">
+            <div v-for="niveau in group.niveaux" :key="niveau.id" class="niveau-card">
+              <div class="niveau-header">
+                <div class="niveau-info">
+                  <div class="niveau-color" :style="{ backgroundColor: niveau.couleur }"></div>
+                  <div>
+                    <h3>{{ niveau.nom }}</h3>
+                    <p>{{ niveau.description || 'Aucune description' }}</p>
+                  </div>
+                </div>
+                <div class="niveau-actions">
+                  <AdminActionsButtons
+                    :item="niveau"
+                    :actions="['edit', 'delete']"
+                    edit-label="Modifier"
+                    confirm-message="Êtes-vous sûr de vouloir supprimer ce niveau ?"
+                    @edit="editNiveau"
+                    @delete="handleDeleteNiveau"
+                  />
                 </div>
               </div>
-              <div class="niveau-actions">
-                <AdminActionsButtons
-                  :item="niveau"
-                  :actions="['edit', 'delete']"
-                  edit-label="Modifier"
-                  confirm-message="Êtes-vous sûr de vouloir supprimer ce niveau ?"
-                  @edit="editNiveau"
-                  @delete="handleDeleteNiveau"
-                />
+  
+              <div class="niveau-stats">
+                <div class="stat-item">
+                  <span class="stat-label">Matières:</span>
+                  <span class="stat-value">{{ niveau.statistiques?.matieres || 0 }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Cours:</span>
+                  <span class="stat-value">{{ niveau.statistiques?.cours || 0 }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Exercices:</span>
+                  <span class="stat-value">{{ niveau.statistiques?.exercices || 0 }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Quiz:</span>
+                  <span class="stat-value">{{ niveau.statistiques?.quiz || 0 }}</span>
+                </div>
               </div>
-            </div>
 
-            <div class="niveau-stats">
-              <div class="stat-item">
-                <span class="stat-label">Matières:</span>
-                <span class="stat-value">{{ niveau.statistiques?.matieres || 0 }}</span>
+              <div class="niveau-status">
+                <span :class="['status-badge', niveau.est_actif ? 'active' : 'inactive']">
+                  {{ niveau.est_actif ? 'Actif' : 'Inactif' }}
+                </span>
+                <span class="ordre-badge">Ordre: {{ niveau.ordre }}</span>
               </div>
-              <div class="stat-item">
-                <span class="stat-label">Cours:</span>
-                <span class="stat-value">{{ niveau.statistiques?.cours || 0 }}</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Exercices:</span>
-                <span class="stat-value">{{ niveau.statistiques?.exercices || 0 }}</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Quiz:</span>
-                <span class="stat-value">{{ niveau.statistiques?.quiz || 0 }}</span>
-              </div>
-            </div>
-
-            <div class="niveau-status">
-              <span :class="['status-badge', niveau.est_actif ? 'active' : 'inactive']">
-                {{ niveau.est_actif ? 'Actif' : 'Inactif' }}
-              </span>
-              <span class="ordre-badge">Ordre: {{ niveau.ordre }}</span>
             </div>
           </div>
         </div>
@@ -170,6 +204,28 @@
             Niveau actif
           </label>
         </div>
+
+        <div class="divider"></div>
+
+        <div class="form-group">
+          <label>Exercice filter options (JSON)</label>
+          <textarea
+            v-model="modalFilterOptions"
+            rows="4"
+            placeholder='Ex: ["Découverte", "Entraînement"]'
+          ></textarea>
+          <small class="muted">
+            Entrez un tableau JSON. L’ordre définit le menu déroulant des exercices.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Valeur par défaut</label>
+          <input
+            v-model="modalFilterDefault"
+            placeholder="Tous"
+          />
+        </div>
       </form>
 
       <template #footer>
@@ -211,14 +267,21 @@ export default {
     const saving = ref(false)
     const showCreateModal = ref(false)
     const showEditModal = ref(false)
-
+    const niveauFilter = ref('')
+    const paysFilter = ref('')
+    const statusFilter = ref('all')
+    const modalFilterOptions = ref('[]')
+    const modalFilterDefault = ref('Tous')
     const formData = ref({
+      id: null,
       nom: '',
       description: '',
       pays: null,
       ordre: 0,
       couleur: '#3b82f6',
-      est_actif: true
+      est_actif: true,
+      exercice_filter_options: [],
+      exercice_filter_default: 'Tous'
     })
 
     // Computed
@@ -235,9 +298,33 @@ export default {
     )
 
     // Groupement par pays pour l'affichage
+    const filteredNiveaux = computed(() => {
+      const query = niveauFilter.value.trim().toLowerCase()
+      return niveaux.value.filter(n => {
+        if (paysFilter.value) {
+          const matchesPaysId = String(n.pays) === String(paysFilter.value)
+          const matchesPaysNom = String(n.pays_nom || '').toLowerCase() === String(paysFilter.value).toLowerCase()
+          if (!matchesPaysId && !matchesPaysNom) return false
+        }
+        if (query) {
+          const searchable = [
+            n.nom,
+            n.description,
+            n.pays_nom
+          ].filter(Boolean).join(' ').toLowerCase()
+          if (!searchable.includes(query)) return false
+        }
+        if (statusFilter.value !== 'all') {
+          if (statusFilter.value === 'active' && !n.est_actif) return false
+          if (statusFilter.value === 'inactive' && n.est_actif) return false
+        }
+        return true
+      })
+    })
+
     const niveauxByPays = computed(() => {
       const groupsMap = new Map()
-      for (const n of niveaux.value) {
+      for (const n of filteredNiveaux.value) {
         const key = n.pays ?? `p-${n.pays_nom}`
         if (!groupsMap.has(key)) {
           groupsMap.set(key, {
@@ -284,10 +371,13 @@ export default {
     }
 
     const openCreateModal = async () => {
+      closeModal()
       console.log('🎯 Bouton Nouveau Niveau cliqué')
       console.log('showCreateModal avant:', showCreateModal.value)
       console.log('🌍 Appel de loadPays()...')
       await loadPays() // Charger les pays disponibles
+      modalFilterOptions.value = '[]'
+      modalFilterDefault.value = 'Tous'
       showCreateModal.value = true
       console.log('showCreateModal après:', showCreateModal.value)
     }
@@ -302,12 +392,38 @@ export default {
         pays: niveau.pays || null,
         ordre: niveau.ordre,
         couleur: niveau.couleur,
-        est_actif: niveau.est_actif
+        est_actif: niveau.est_actif,
+        exercice_filter_options: niveau.exercice_filter_options || [],
+        exercice_filter_default: niveau.exercice_filter_default || 'Tous'
       }
+      modalFilterOptions.value = JSON.stringify(niveau.exercice_filter_options || [], null, 2)
+      modalFilterDefault.value = niveau.exercice_filter_default || 'Tous'
       showEditModal.value = true
     }
 
+    const parseModalFilterOptions = () => {
+      try {
+        const parsed = JSON.parse(modalFilterOptions.value || '[]')
+        if (!Array.isArray(parsed)) {
+          showToast('Les options doivent être un tableau JSON', 'error')
+          return null
+        }
+        return parsed
+      } catch (error) {
+        showToast('Le format JSON des options est invalide', 'error')
+        return null
+      }
+    }
+
     const saveNiveau = async () => {
+      const parsedOptions = parseModalFilterOptions()
+      if (parsedOptions === null) {
+        return
+      }
+
+      formData.value.exercice_filter_options = parsedOptions
+      formData.value.exercice_filter_default = modalFilterDefault.value || 'Tous'
+
       try {
         saving.value = true
         
@@ -354,17 +470,23 @@ export default {
       showCreateModal.value = false
       showEditModal.value = false
       formData.value = {
+        id: null,
         nom: '',
         description: '',
         pays: null,
         ordre: 0,
         couleur: '#3b82f6',
-        est_actif: true
+        est_actif: true,
+        exercice_filter_options: [],
+        exercice_filter_default: 'Tous'
       }
+      modalFilterOptions.value = '[]'
+      modalFilterDefault.value = 'Tous'
     }
 
     onMounted(() => {
       loadNiveaux()
+      loadPays()
     })
 
     return {
@@ -379,6 +501,12 @@ export default {
       totalMatieres,
       totalCours,
       niveauxByPays,
+      filteredNiveaux,
+      niveauFilter,
+      paysFilter,
+      statusFilter,
+      modalFilterOptions,
+      modalFilterDefault,
       openCreateModal,
       editNiveau,
       saveNiveau,
@@ -405,6 +533,38 @@ export default {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.filter-group input,
+.filter-group select {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+
+}
+.empty-state {
+  padding: 1rem 1.5rem;
+  background: #f8fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #475569;
+  margin-bottom: 1.5rem;
 }
 
 .assignment-section {
@@ -616,10 +776,21 @@ export default {
   gap: 0.5rem;
 }
 
+.divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 1rem 0;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+}
+
+.muted {
+  color: #6b7280;
+  font-size: 0.85rem;
 }
 
 .form-group label {

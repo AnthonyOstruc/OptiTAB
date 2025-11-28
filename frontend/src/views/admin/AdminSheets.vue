@@ -163,9 +163,9 @@
         <label>Filtrer par notion:</label>
         <input v-model="notionTableFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
         <select v-model="filters.notion">
-          <option value="">Toutes les notions</option>
+          <option value="all">Toutes les notions</option>
           <option v-for="notion in filteredNotionsForFilter" :key="notion.id" :value="notion.id">
-            {{ notion.titre || notion.nom }}
+            {{ formatNotionOption(notion) }}
           </option>
         </select>
       </div>
@@ -283,7 +283,7 @@ const imageManageLoading = ref(false)
 const currentEditSheetId = ref(null)
 
 // Filtres et pagination pour le tableau (mêmes patterns que AdminCours)
-const filters = ref({})
+const filters = ref({ notion: 'all' })
 const notionTableFilter = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 5
@@ -845,12 +845,12 @@ const filteredNotions = computed(() => {
 const filteredNotionsForFilter = computed(() => {
   if (!notionTableFilter.value) return notions.value
   const f = notionTableFilter.value.toLowerCase()
-  return notions.value.filter(n => ((n.titre || n.nom || '') + '').toLowerCase().includes(f))
+  return notions.value.filter(n => (formatNotionOption(n) || '').toLowerCase().includes(f))
 })
 
 const filteredSheets = computed(() => {
   let arr = sheets.value
-  if (filters.value.notion) arr = arr.filter(s => String(s.notion) === String(filters.value.notion))
+  if (filters.value.notion && filters.value.notion !== 'all') arr = arr.filter(s => String(s.notion) === String(filters.value.notion))
   return arr.slice().sort((a, b) => String(a.titre || '').localeCompare(String(b.titre || '')))
 })
 
@@ -995,6 +995,17 @@ onActivated(() => {
   background: #f8f9fa;
   border-radius: 6px;
   padding: 1rem;
+}
+
+.filters .filter-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  background: white;
+  appearance: none;
+  cursor: pointer;
 }
 
 .preview-header {

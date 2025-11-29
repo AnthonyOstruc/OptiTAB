@@ -158,6 +158,7 @@ import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import SkeletonList from '@/components/common/SkeletonList.vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
+import { useZoom } from '@/composables/useZoom'
 import { getCours } from '@/api/cours'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
@@ -177,9 +178,19 @@ const showScrollTopButton = ref(false)
 let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
-const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
-const contentHeight = ref(0)
 const showInitialSpinner = computed(() => loading.value && !initialLoadCompleted.value)
+
+// Utiliser le composable de zoom
+const {
+  viewportWidth,
+  contentHeight,
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom()
 
 // Recherche dans la page
 const searchQuery = ref('')
@@ -332,10 +343,9 @@ function formatDate(dateString) {
 }
 
 onMounted(async () => {
+  detectMobileAndZoomSupport()
   updateViewportWidth()
-  if (typeof window !== 'undefined') {
-    window.addEventListener('resize', updateViewportWidth, { passive: true })
-  }
+  setupViewportListener()
   // Restaurer la requête depuis l'URL
   if (route.query?.q) {
     try { searchQuery.value = String(route.query.q) } catch {}
@@ -345,6 +355,7 @@ onMounted(async () => {
 
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
 onActivated(() => {
+  detectMobileAndZoomSupport()
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
   nextTick(() => {
     scheduleFormulaWrapRetry()
@@ -353,7 +364,7 @@ onActivated(() => {
     setTimeout(() => {
       scheduleFormulaWrapRetry()
       renderMath()
-      measureContentHeight()
+      measureContentHeightForCours()
     }, 100)
   })
 })
@@ -401,7 +412,7 @@ async function loadCoursData() {
         updateHeadingMatches()
         setupTocObserver()
         setupScrollListener()
-        measureContentHeight()
+        measureContentHeightForCours()
         // Restaurer la position de scroll si disponible
         const container = getScrollContainer(coursContentRef.value)
         const savedState = restoreCoursViewState()
@@ -447,50 +458,16 @@ const renderedContent = computed(() => {
   return renderContentWithImages(content, images)
 })
 
-function computeAutoZoom(width) {
-  if (width >= 1400) return 1
-  if (width >= 1200) return 0.95
-  if (width >= 1024) return 0.9
-  if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.78
-  if (width >= 520) return 0.76
-  if (width >= 420) return 0.74
-  return 0.72
-}
-
-const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
-
-const zoomStyle = computed(() => {
-  const baseHeight = `${contentHeight.value}px`
-  let z = zoomLevel.value || 1
-  if (viewportWidth.value <= 768) {
-    z = Math.max(0.6, z - 0.08)
-  }
-  const widthPercent = (100 / z).toFixed(3)
-  return {
-    '--course-zoom': z,
-    '--course-content-height': baseHeight,
-    transform: `scale(${z})`,
-    transformOrigin: 'top left',
-    width: `${widthPercent}%`
-  }
+const zoomStyle = createZoomStyle({
+  cssVar: '--course-zoom',
+  heightVar: '--course-content-height',
+  mobileZoomAdjustment: (z) => Math.max(0.6, z - 0.08)
 })
 
-function updateViewportWidth() {
-  if (typeof window === 'undefined') return
-  viewportWidth.value = window.innerWidth
-  nextTick(() => measureContentHeight())
+function measureContentHeightForCours() {
+  measureContentHeight(coursContentRef)
 }
 
-function measureContentHeight() {
-  // Mesurer la hauteur réelle (non transformée) du contenu
-  if (!coursContentRef.value) {
-    contentHeight.value = 0
-    return
-  }
-  contentHeight.value = coursContentRef.value.scrollHeight || coursContentRef.value.offsetHeight || 0
-}
 
 function scheduleFormulaWrapRetry(attempt = 0) {
   const MAX_ATTEMPTS = 8
@@ -498,7 +475,7 @@ function scheduleFormulaWrapRetry(attempt = 0) {
   const hasScrollableContent = coursContentRef.value.querySelector('mjx-container, .MathJax_Display, .MathJax_SVG_Display, table')
   if (hasScrollableContent) {
     prepareScrollableContent()
-    measureContentHeight()
+    measureContentHeightForCours()
     return
   }
   if (attempt < MAX_ATTEMPTS) {
@@ -619,7 +596,7 @@ function setupTocObserver() {
       extractTableOfContents()
       buildSearchIndex()
       updateHeadingMatches()
-      measureContentHeight()
+      measureContentHeightForCours()
     }, 200)
   })
   tocObserver.observe(coursContentRef.value, {
@@ -719,7 +696,7 @@ watch(selectedCours, () => {
         // Réinitialiser l'écouteur de scroll pour le nouveau cours
         if (scrollCleanup) scrollCleanup()
         setupScrollListener()
-        measureContentHeight()
+        measureContentHeightForCours()
       }, 100)
     })
   }
@@ -728,17 +705,17 @@ watch(selectedCours, () => {
 watch(renderedContent, () => {
   nextTick(() => {
     scheduleFormulaWrapRetry()
-    measureContentHeight()
+    measureContentHeightForCours()
   })
 })
 
-watch(zoomLevel, () => {
+watch(viewportWidth, () => {
   nextTick(() => {
     scheduleFormulaWrapRetry()
     if (typeof window !== 'undefined' && window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise().catch(() => {})
     }
-    measureContentHeight()
+    measureContentHeightForCours()
   })
 }, { immediate: true })
 
@@ -752,9 +729,7 @@ onBeforeUnmount(() => {
   if (scrollCleanup) {
     try { scrollCleanup() } catch (e) {}
   }
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', updateViewportWidth)
-  }
+  cleanupViewportListener()
   // Sauvegarder l'état courant (cours sélectionné + scroll)
   saveCoursViewState()
 })

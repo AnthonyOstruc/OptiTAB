@@ -126,6 +126,7 @@ import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import Tabs from '@/components/common/Tabs.vue'
 import BackButton from '@/components/common/BackButton.vue'
+import { useZoom } from '@/composables/useZoom'
 
 defineOptions({ name: 'ExercisesByNotion' })
 
@@ -136,8 +137,18 @@ const subjectsStore = useSubjectsStore()
 const notionId = ref(route.params.notionId)
 const exPageRef = ref(null)
 const exOuterRef = ref(null)
-const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
-const contentHeight = ref(0)
+
+// Utiliser le composable de zoom
+const {
+  viewportWidth,
+  contentHeight,
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom()
 
 const exercices = ref([])
 const perPage = ref(5)
@@ -310,10 +321,9 @@ const error = ref('')
 const chapitres = ref([])
 
 onMounted(async () => {
+  detectMobileAndZoomSupport()
   updateViewportWidth()
-  if (typeof window !== 'undefined') {
-    window.addEventListener('resize', updateViewportWidth, { passive: true })
-  }
+  setupViewportListener()
   applyInitialScrollFromStorage()
   // Synchroniser la recherche locale avec l'URL (barre globale)
   const q0 = route.query?.q
@@ -325,6 +335,7 @@ onMounted(async () => {
 
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
 onActivated(() => {
+  detectMobileAndZoomSupport()
   updateViewportWidth()
   applyInitialScrollFromStorage()
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
@@ -398,7 +409,7 @@ async function loadData() {
 
     // Installer l'écouteur de scroll
     setupScrollListener()
-    measureContentHeight()
+    measureContentHeightForExercices()
 
     // Forcer le rendu MathJax après le chargement des exercices
     setTimeout(() => {
@@ -412,7 +423,7 @@ async function loadData() {
           console.warn('[MathJax] Erreur:', error)
         }
       }
-      measureContentHeight()
+      measureContentHeightForExercices()
 
       // Restaurer la position de scroll si disponible (comme Cours/Sheets)
       const saved = restoreViewState()
@@ -501,49 +512,15 @@ const paginated = computed(() => {
   return filteredExercices.value.slice(start, start + perPage.value)
 })
 
-function computeAutoZoom(width) {
-  if (width >= 1400) return 1
-  if (width >= 1200) return 0.95
-  if (width >= 1024) return 0.9
-  if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.78
-  if (width >= 520) return 0.76
-  if (width >= 420) return 0.74
-  return 0.72
-}
-
-const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
-
-const zoomStyle = computed(() => {
-  const baseHeight = `${contentHeight.value}px`
-  let z = zoomLevel.value || 1
-  if (viewportWidth.value <= 768) {
-    z = Math.max(0.45, z * 0.75)
-  }
-  const widthPercent = (100 / z).toFixed(3)
-  return {
-    '--exercices-zoom': z,
-    '--exercices-content-height': baseHeight,
-    transform: `scale(${z})`,
-    transformOrigin: 'top left',
-    width: `${widthPercent}%`
-  }
+const zoomStyle = createZoomStyle({
+  cssVar: '--exercices-zoom',
+  heightVar: '--exercices-content-height',
+  mobileZoomAdjustment: (z) => Math.max(0.45, z * 0.75)
 })
 
-function updateViewportWidth() {
-  if (typeof window === 'undefined') return
-  viewportWidth.value = window.innerWidth
-  nextTick(() => measureContentHeight())
-}
 
-function measureContentHeight() {
-  // Mesurer la hauteur réelle du bloc zoomé (contrôles)
-  if (!exOuterRef.value) {
-    contentHeight.value = 0
-    return
-  }
-  contentHeight.value = exOuterRef.value.scrollHeight || exOuterRef.value.offsetHeight || 0
+function measureContentHeightForExercices() {
+  measureContentHeight(exOuterRef)
 }
 
 function handlePageChange(page) {
@@ -674,7 +651,7 @@ watch(() => route.query.q, (val) => {
   }
 })
 
-watch(zoomLevel, () => {
+watch(viewportWidth, () => {
   nextTick(() => {
     if (typeof window !== 'undefined' && window.MathJax && window.MathJax.typesetPromise) {
       try {
@@ -686,7 +663,7 @@ watch(zoomLevel, () => {
         console.warn('[MathJax] Erreur:', error)
       }
     }
-    measureContentHeight()
+    measureContentHeightForExercices()
   })
 }, { immediate: true })
 
@@ -709,9 +686,7 @@ watch(paginated, () => {
 
 onBeforeUnmount(() => {
   saveViewState()
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', updateViewportWidth)
-  }
+  cleanupViewportListener()
 })
 
 onDeactivated(() => {
@@ -1240,20 +1215,9 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 .exercices-content-outer {
   width: 100%;
   transform-origin: top left;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, zoom 0.2s ease;
   overflow-x: hidden;
-  /* Fallback: ajuster la hauteur réelle à l'échelle visible quand zoom n'est pas supporté */
-  height: calc(var(--exercices-content-height, 0px) * var(--exercices-zoom, 1));
-}
-
-/* Préférer le zoom natif sur Chrome/Edge/Safari pour éviter l'espace blanc */
-@supports (zoom: 1) {
-  .exercices-content-outer {
-    zoom: var(--exercices-zoom, 1);
-    transform: none !important;
-    width: 100% !important;
-    height: auto !important;
-  }
+  /* Les styles seront appliqués dynamiquement via JS selon le support du zoom */
 }
 
 /* Responsive design pour mobile */

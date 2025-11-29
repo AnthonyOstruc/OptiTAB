@@ -8,6 +8,7 @@ import { getFreeResources } from '@/api/free-content'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
+import { useZoom } from '@/composables/useZoom'
 
 const props = defineProps({
   resourceType: {
@@ -30,53 +31,28 @@ const userStore = useUserStore()
 const subscriptionStore = useSubscriptionStore()
 const { openModal } = useModalManager()
 
-// Zoom system for mobile
-const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
-const contentHeight = ref(0)
 const contentRef = ref(null)
 
-function computeAutoZoom(width) {
-  if (width >= 1400) return 1
-  if (width >= 1200) return 0.95
-  if (width >= 1024) return 0.9
-  if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.78
-  if (width >= 520) return 0.76
-  if (width >= 420) return 0.74
-  return 0.72
-}
+// Utiliser le composable de zoom
+const {
+  viewportWidth,
+  contentHeight,
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom()
 
-const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
-
-const zoomStyle = computed(() => {
-  const baseHeight = `${contentHeight.value}px`
-  let z = zoomLevel.value || 1
-  if (viewportWidth.value <= 768) {
-    z = Math.max(0.6, z - 0.08)
-  }
-  const widthPercent = (100 / z).toFixed(3)
-  return {
-    '--content-zoom': z,
-    '--content-height': baseHeight,
-    transform: `scale(${z})`,
-    transformOrigin: 'top left',
-    width: `${widthPercent}%`
-  }
+const zoomStyle = createZoomStyle({
+  cssVar: '--content-zoom',
+  heightVar: '--content-height',
+  mobileZoomAdjustment: (z) => Math.max(0.6, z - 0.08)
 })
 
-function updateViewportWidth() {
-  if (typeof window === 'undefined') return
-  viewportWidth.value = window.innerWidth
-  nextTick(() => measureContentHeight())
-}
-
-function measureContentHeight() {
-  if (!contentRef.value) {
-    contentHeight.value = 0
-    return
-  }
-  contentHeight.value = contentRef.value.scrollHeight || contentRef.value.offsetHeight || 0
+function measureContentHeightForFreeResources() {
+  measureContentHeight(contentRef)
 }
 
 const typeConfig = computed(() => {
@@ -149,18 +125,15 @@ const fetchResources = async () => {
   }
 }
 
-onMounted(fetchResources)
 onMounted(() => {
+  detectMobileAndZoomSupport()
   updateViewportWidth()
-  if (typeof window !== 'undefined') {
-    window.addEventListener('resize', updateViewportWidth, { passive: true })
-  }
+  setupViewportListener()
+  fetchResources()
 })
 
 onBeforeUnmount(() => {
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', updateViewportWidth)
-  }
+  cleanupViewportListener()
 })
 
 watch(() => props.resourceType, () => {
@@ -172,16 +145,16 @@ watch(() => props.resourceType, () => {
 
 watch(() => selectedLevels.value.length, () => {
   currentPage.value = 1
-  nextTick(() => measureContentHeight())
+  nextTick(() => measureContentHeightForFreeResources())
 })
 
 watch(() => searchQuery.value, () => {
   currentPage.value = 1
-  nextTick(() => measureContentHeight())
+  nextTick(() => measureContentHeightForFreeResources())
 })
 
-watch(() => zoomLevel.value, () => {
-  nextTick(() => measureContentHeight())
+watch(viewportWidth, () => {
+  nextTick(() => measureContentHeightForFreeResources())
 })
 
 const availableLevels = computed(() => {

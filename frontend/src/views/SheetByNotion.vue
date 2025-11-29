@@ -121,6 +121,7 @@ import BackButton from '@/components/common/BackButton.vue'
 import { getSynthesisSheets, getSynthesisSheet } from '@/api/synthesis'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { renderContentWithImages } from '@/utils/scientificRenderer'
+import { useZoom } from '@/composables/useZoom'
 
 const route = useRoute()
 const router = useRouter()
@@ -138,8 +139,18 @@ const showScrollTopButton = ref(false)
 let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
-const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
-const contentHeight = ref(0)
+
+// Utiliser le composable de zoom
+const {
+  viewportWidth,
+  contentHeight,
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom()
 
 // Recherche dans la page
 const searchQuery = ref('')
@@ -220,51 +231,14 @@ const rendered = computed(() => {
   return renderContentWithImages(html, images)
 })
 
-function computeAutoZoom(width) {
-  if (width >= 1400) return 1
-  if (width >= 1200) return 0.95
-  if (width >= 1024) return 0.9
-  if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.78
-  if (width >= 520) return 0.76
-  if (width >= 420) return 0.74
-  return 0.72
-}
-
-const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
-
-const zoomStyle = computed(() => {
-  const baseHeight = `${contentHeight.value}px`
-  let z = zoomLevel.value || 1
-  if (viewportWidth.value <= 768) {
-    z = Math.max(0.45, z * 0.75)
-  }
-  const widthPercent = (100 / z).toFixed(3)
-  return {
-    '--sheet-zoom': z,
-    '--sheet-content-height': baseHeight,
-    transform: `scale(${z})`,
-    transformOrigin: 'top left',
-    width: `${widthPercent}%`
-  }
+const zoomStyle = createZoomStyle({
+  cssVar: '--sheet-zoom',
+  heightVar: '--sheet-content-height',
+  mobileZoomAdjustment: (z) => Math.max(0.45, z * 0.75)
 })
 
-function updateViewportWidth() {
-  if (typeof window === 'undefined') return
-  viewportWidth.value = window.innerWidth
-  // Mesurer après redimensionnement pour ajuster la hauteur visible
-  nextTick(() => measureContentHeight())
-}
-
-function measureContentHeight() {
-  // Mesure la hauteur non transformée du contenu
-  if (!sheetContentRef.value) {
-    contentHeight.value = 0
-    return
-  }
-  // Utiliser scrollHeight pour tenir compte du contenu débordant
-  contentHeight.value = sheetContentRef.value.scrollHeight || sheetContentRef.value.offsetHeight || 0
+function measureContentHeightForSheets() {
+  measureContentHeight(sheetContentRef)
 }
 
 function prepareTablesForScroll() {
@@ -290,7 +264,7 @@ function prepareTablesForScroll() {
   })
 
   // Mise à jour des mesures après normalisation des tableaux
-  measureContentHeight()
+  measureContentHeightForSheets()
 }
 
 function goBack() {
@@ -343,16 +317,15 @@ async function fetchSheet(nId) {
       updateHeadingMatches()
       setupTocObserver()
       setupScrollListener()
-      measureContentHeight()
+      measureContentHeightForSheets()
     }, 150)
   }
 }
 
 onMounted(() => {
+  detectMobileAndZoomSupport()
   updateViewportWidth()
-  if (typeof window !== 'undefined') {
-    window.addEventListener('resize', updateViewportWidth, { passive: true })
-  }
+  setupViewportListener()
   if (route.query?.q) {
     try { searchQuery.value = String(route.query.q) } catch {}
   }
@@ -361,6 +334,7 @@ onMounted(() => {
 
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
 onActivated(() => {
+  detectMobileAndZoomSupport()
   updateViewportWidth()
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
   nextTick(() => {
@@ -382,7 +356,7 @@ onActivated(() => {
       if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise()
       }
-      measureContentHeight()
+      measureContentHeightForSheets()
     }, 100)
   })
 })
@@ -426,7 +400,7 @@ function setupTocObserver() {
     tocDebounce = setTimeout(() => {
       extractTableOfContents()
       buildSearchIndex()
-      measureContentHeight()
+      measureContentHeightForSheets()
     }, 200)
   })
   tocObserver.observe(sheetContentRef.value, {
@@ -519,17 +493,17 @@ watch(() => route.params.notionId, (newId, oldId) => {
 watch(rendered, () => {
   nextTick(() => {
     prepareTablesForScroll()
-    measureContentHeight()
+    measureContentHeightForSheets()
   })
 })
 
-watch(zoomLevel, () => {
+watch(viewportWidth, () => {
   nextTick(() => {
     prepareTablesForScroll()
     if (typeof window !== 'undefined' && window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise().catch(() => {})
     }
-    measureContentHeight()
+    measureContentHeightForSheets()
   })
 }, { immediate: true })
 
@@ -544,9 +518,7 @@ onBeforeUnmount(() => {
   if (scrollCleanup) {
     try { scrollCleanup() } catch {}
   }
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', updateViewportWidth)
-  }
+  cleanupViewportListener()
 })
 
 // Garder la requête dans l'URL pour partage/retour

@@ -588,13 +588,16 @@ const onLockedExercise = (chapter) => {
 
 .content-wrapper {
   transform-origin: top left;
+  transition: transform 0.2s ease, zoom 0.2s ease;
+  overflow: visible;
+  /* Les styles (zoom ou transform) seront appliqués dynamiquement via JS selon le support du zoom */
 }
 
-@supports (zoom: 1) {
+/* Sur mobile, assurer que le conteneur ne crée pas de problèmes de scroll */
+@media (max-width: 768px) {
   .content-wrapper {
-    zoom: var(--content-zoom, 1);
-    transform: none !important;
-    width: 100% !important;
+    min-height: auto;
+    overflow: visible;
   }
 }
 

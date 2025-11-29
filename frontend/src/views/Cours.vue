@@ -1028,19 +1028,16 @@ watch(() => route.query.q, (val) => {
 .cours-content-outer {
   width: 100%;
   transform-origin: top left;
-  transition: transform 0.2s ease;
-  overflow-x: hidden;
-  /* Fallback: ajuster la hauteur réelle à l'échelle visible quand zoom n'est pas supporté */
-  height: calc(var(--course-content-height, 0px) * var(--course-zoom, 1));
+  transition: transform 0.2s ease, zoom 0.2s ease;
+  overflow: visible;
+  /* Les styles (zoom ou transform) seront appliqués dynamiquement via JS selon le support du zoom */
 }
 
-/* Préférer zoom (Chrome/Edge/Safari) pour éviter l'espace blanc en bas lié au transform */
-@supports (zoom: 1) {
+/* Sur mobile, assurer que le conteneur ne crée pas de problèmes de scroll */
+@media (max-width: 768px) {
   .cours-content-outer {
-    zoom: var(--course-zoom, 1);
-    transform: none !important;
-    width: 100% !important;
-    height: auto !important;
+    min-height: auto;
+    overflow: visible;
   }
 }
 

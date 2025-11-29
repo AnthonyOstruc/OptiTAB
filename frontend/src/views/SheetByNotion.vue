@@ -657,20 +657,16 @@ watch(() => route.query.q, (val) => {
 .sheet-content-outer {
   width: 100%;
   transform-origin: top left;
-  transition: transform 0.2s ease;
-  overflow-x: hidden;
-  /* Fallback (sans support de zoom): ajuste la hauteur réelle à l'échelle visible */
-  height: calc(var(--sheet-content-height, 0px) * var(--sheet-zoom, 1));
+  transition: transform 0.2s ease, zoom 0.2s ease;
+  overflow: visible;
+  /* Les styles (zoom ou transform) seront appliqués dynamiquement via JS selon le support du zoom */
 }
 
-/* Sur navigateurs qui supportent zoom (Chrome/Edge/Safari),
-   on préfère zoom pour éviter l'espace blanc en bas lié au transform */
-@supports (zoom: 1) {
+/* Sur mobile, assurer que le conteneur ne crée pas de problèmes de scroll */
+@media (max-width: 768px) {
   .sheet-content-outer {
-    zoom: var(--sheet-zoom, 1);
-    transform: none !important;
-    width: 100% !important;
-    height: auto !important;
+    min-height: auto;
+    overflow: visible;
   }
 }
 

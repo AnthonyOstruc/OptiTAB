@@ -211,6 +211,9 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
   /* Assurer que le layout reste stable */
   min-height: 100vh;
   min-height: 100dvh; /* Utiliser dvh sur navigateurs modernes pour mobile */
+  /* Empêcher le bounce scroll sur iOS qui affecte les éléments fixed */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Container principal */

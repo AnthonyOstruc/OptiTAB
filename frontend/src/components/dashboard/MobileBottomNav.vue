@@ -160,6 +160,13 @@ const handleTouch = async (item, event) => {
   /* Improve compositing stability on iOS fixed elements */
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
+  /* Empêcher complètement le scroll depuis la barre - CRITIQUE pour iOS */
+  touch-action: none;
+  overscroll-behavior: contain;
+  /* Force le navigateur à garder cet élément fixe même pendant le scroll */
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .mobile-nav-item {

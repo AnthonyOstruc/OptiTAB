@@ -346,6 +346,7 @@ onMounted(async () => {
   detectMobileAndZoomSupport()
   updateViewportWidth()
   setupViewportListener()
+  
   // Restaurer la requête depuis l'URL
   if (route.query?.q) {
     try { searchQuery.value = String(route.query.q) } catch {}
@@ -367,6 +368,9 @@ onActivated(() => {
       measureContentHeightForCours()
     }, 100)
   })
+  
+  // Note: KeepAlive préserve automatiquement le DOM et la position de scroll
+  // Pas besoin de manipulation manuelle
 })
 
 // Fonction de chargement (réutilisable au changement de notion)
@@ -413,20 +417,6 @@ async function loadCoursData() {
         setupTocObserver()
         setupScrollListener()
         measureContentHeightForCours()
-        // Restaurer la position de scroll si disponible
-        const container = getScrollContainer(coursContentRef.value)
-        const savedState = restoreCoursViewState()
-        if (savedState && typeof savedState.scrollY === 'number') {
-          try {
-            if (container === document.documentElement || container === document.body) {
-              window.scrollTo({ top: savedState.scrollY, behavior: 'auto' })
-            } else {
-              container.scrollTo({ top: savedState.scrollY, behavior: 'auto' })
-            }
-          } catch {}
-        } else {
-          scrollToTop({ behavior: 'auto', targetEl: coursContentRef.value })
-        }
       }, 150)
     })
   } catch (error) {
@@ -434,6 +424,11 @@ async function loadCoursData() {
     cours.value = []
   } finally {
     loading.value = false
+    await nextTick()
+    scrollToTop({ behavior: 'auto', useWindow: true })
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise()
+    }
     if (!initialLoadCompleted.value) {
       initialLoadCompleted.value = true
     }
@@ -670,12 +665,15 @@ function setupScrollListener() {
 }
 
 // Fonction pour remonter en haut
-function scrollToTop({ behavior = 'smooth', targetEl } = {}) {
+function scrollToTop({ behavior = 'smooth', targetEl, useWindow = false } = {}) {
   const container = getScrollContainer(targetEl ?? coursContentRef.value)
+  const isDocumentContainer = !container || container === document.documentElement || container === document.body
 
-  if (container === document.documentElement || container === document.body) {
+  if (useWindow || isDocumentContainer) {
     window.scrollTo({ top: 0, behavior })
-  } else {
+  }
+
+  if (container && !isDocumentContainer) {
     container.scrollTo({ top: 0, behavior })
   }
 }

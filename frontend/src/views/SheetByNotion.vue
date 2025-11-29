@@ -650,8 +650,15 @@ watch(() => route.query.q, (val) => {
   hyphens: auto;
   line-height: 1.6;
   color: #333;
-  padding: 1rem 0;
+  padding: 1rem 0 100px 0; /* Espace en bas pour la barre d'outils mobile */
   background: transparent;
+}
+
+/* Sur mobile, augmenter le padding pour les barres d'outils */
+@media (max-width: 768px) {
+  .sheet-content {
+    padding-bottom: 120px;
+  }
 }
 
 .sheet-content-outer {

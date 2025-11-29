@@ -1021,8 +1021,15 @@ watch(() => route.query.q, (val) => {
   line-height: 1.6;
   color: #333;
   /* Réduire le padding global pour limiter les grands espaces verticaux */
-  padding: 1rem 0;
+  padding: 1rem 0 100px 0; /* Espace en bas pour la barre d'outils mobile */
   background: transparent;
+}
+
+/* Sur mobile, augmenter le padding pour les barres d'outils */
+@media (max-width: 768px) {
+  .cours-content {
+    padding-bottom: 120px;
+  }
 }
 
 .cours-content-outer {

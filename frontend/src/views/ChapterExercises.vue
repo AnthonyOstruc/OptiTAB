@@ -1266,6 +1266,14 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   margin: 0 auto;
   align-items: stretch;
   transition: max-width 0.3s ease;
+  padding-bottom: 100px; /* Espace pour la barre d'outils mobile */
+}
+
+/* Sur mobile, augmenter le padding pour les barres d'outils */
+@media (max-width: 768px) {
+  .exercices-list {
+    padding-bottom: 120px;
+  }
 }
 
 /* Coming soon card */

@@ -10,28 +10,27 @@
       </div>
 
       <div class="exercices-body">
-        <!-- Navigation ultra-propre -->
-        <div class="clean-navigation">
-        <div class="nav-grid">
-          <button 
-            v-for="t in tabs" 
-            :key="t.key"
-            :class="['nav-item', { active: t.key === activeTab }]"
-            @click="activeTab = t.key; currentPage = 1"
-          >
-            <span class="nav-icon">{{ t.icon }}</span>
-            <span class="nav-label">{{ t.shortLabel }}</span>
-            <span class="nav-count">{{ t.count }}</span>
-          </button>
-        </div>
-      </div>
-
         <div v-if="loading" class="loading-skeleton-container">
         <SkeletonList :count="4" />
         </div>
         <div v-else-if="error" class="exercices-error">{{ error }}</div>
         <div v-else>
           <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
+            <!-- Navigation ultra-propre -->
+            <div class="clean-navigation">
+              <div class="nav-grid">
+                <button 
+                  v-for="t in tabs" 
+                  :key="t.key"
+                  :class="['nav-item', { active: t.key === activeTab }]"
+                  @click="activeTab = t.key; currentPage = 1"
+                >
+                  <span class="nav-icon">{{ t.icon }}</span>
+                  <span class="nav-label">{{ t.shortLabel }}</span>
+                  <span class="nav-count">{{ t.count }}</span>
+                </button>
+              </div>
+            </div>
             <div class="exercices-controls">
               <div class="controls-row">
                 <div class="filter-cta">
@@ -1216,8 +1215,16 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   width: 100%;
   transform-origin: top left;
   transition: transform 0.2s ease, zoom 0.2s ease;
-  overflow-x: hidden;
+  overflow: visible;
   /* Les styles seront appliqués dynamiquement via JS selon le support du zoom */
+}
+
+/* Sur mobile, assurer que le conteneur ne crée pas de problèmes de scroll */
+@media (max-width: 768px) {
+  .exercices-content-outer {
+    min-height: auto;
+    overflow: visible;
+  }
 }
 
 /* Responsive design pour mobile */
@@ -1524,6 +1531,8 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 /* Navigation ultra-propre */
 .clean-navigation {
   margin: 1.5rem 0 1rem 0;
+  position: relative;
+  z-index: 1;
 }
 
 .nav-grid {

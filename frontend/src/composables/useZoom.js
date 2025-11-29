@@ -106,13 +106,22 @@ export function useZoom() {
         }
       } else {
         // Fallback transform pour mobile et navigateurs sans support zoom
-        return {
+        const style = {
           ...baseStyle,
           transform: `scale(${z})`,
           transformOrigin: 'top left',
-          width: `${widthPercent}%`,
-          height: `calc(${baseHeight} * ${z})`
+          width: `${widthPercent}%`
         }
+        
+        // Seulement appliquer la hauteur si elle est mesurée et valide
+        if (contentHeight.value > 0) {
+          style.height = `calc(${baseHeight} * ${z})`
+        } else {
+          style.height = 'auto'
+          style.minHeight = 'auto'
+        }
+        
+        return style
       }
     })
   }

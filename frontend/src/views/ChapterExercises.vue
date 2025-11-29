@@ -15,22 +15,23 @@
         </div>
         <div v-else-if="error" class="exercices-error">{{ error }}</div>
         <div v-else>
-          <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
-            <!-- Navigation ultra-propre -->
-            <div class="clean-navigation">
-              <div class="nav-grid">
-                <button 
-                  v-for="t in tabs" 
-                  :key="t.key"
-                  :class="['nav-item', { active: t.key === activeTab }]"
-                  @click="activeTab = t.key; currentPage = 1"
-                >
-                  <span class="nav-icon">{{ t.icon }}</span>
-                  <span class="nav-label">{{ t.shortLabel }}</span>
-                  <span class="nav-count">{{ t.count }}</span>
-                </button>
-              </div>
+          <!-- Navigation ultra-propre (en dehors du zoom pour éviter les conflits) -->
+          <div v-if="exercices.length > 0" class="clean-navigation">
+            <div class="nav-grid">
+              <button 
+                v-for="t in tabs" 
+                :key="t.key"
+                :class="['nav-item', { active: t.key === activeTab }]"
+                @click="activeTab = t.key; currentPage = 1"
+              >
+                <span class="nav-icon">{{ t.icon }}</span>
+                <span class="nav-label">{{ t.shortLabel }}</span>
+                <span class="nav-count">{{ t.count }}</span>
+              </button>
             </div>
+          </div>
+          
+          <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
             <div class="exercices-controls">
               <div class="controls-row">
                 <div class="filter-cta">
@@ -237,16 +238,7 @@ function readSavedViewState() {
   }
 }
 
-function applyInitialScrollFromStorage() {
-  const saved = readSavedViewState()
-  if (saved && typeof saved.scrollY === 'number') {
-    scrollToPosition({ top: saved.scrollY, behavior: 'auto' })
-  } else {
-    scrollToTop({ behavior: 'auto' })
-  }
-}
-
-// (supprimé: fonction dupliquée)
+// (supprimé: fonctions de scroll initial - KeepAlive garde le DOM automatiquement)
 
 function saveViewState(extra = {}) {
   if (isRestoringState && typeof extra.scrollY === 'undefined') {
@@ -323,20 +315,34 @@ onMounted(async () => {
   detectMobileAndZoomSupport()
   updateViewportWidth()
   setupViewportListener()
-  applyInitialScrollFromStorage()
+  
   // Synchroniser la recherche locale avec l'URL (barre globale)
   const q0 = route.query?.q
   if (typeof q0 !== 'undefined' && q0 !== null) {
     try { searchQuery.value = String(q0) } catch {}
   }
+  
+  // Restaurer l'état sauvegardé (uniquement au premier montage, pas lors des réactivations KeepAlive)
+  restoreViewState()
+  
   await loadData()
+  
+  // Restaurer la position de scroll APRÈS le chargement initial
+  nextTick(() => {
+    setTimeout(() => {
+      const saved = readSavedViewState()
+      if (saved && typeof saved.scrollY === 'number') {
+        scrollToPosition({ top: saved.scrollY, behavior: 'auto' })
+      }
+    }, 200)
+  })
 })
 
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
 onActivated(() => {
   detectMobileAndZoomSupport()
   updateViewportWidth()
-  applyInitialScrollFromStorage()
+  
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
   nextTick(() => {
     if (window.MathJax && window.MathJax.typesetPromise) {
@@ -354,15 +360,10 @@ onActivated(() => {
         window.MathJax.typesetPromise()
       }
     }, 100)
-
-    // Restaurer la position de scroll sauvegardée (comme Cours/Sheets)
-    const saved = restoreViewState()
-    if (saved && typeof saved.scrollY === 'number') {
-      scrollToPosition({ top: saved.scrollY, behavior: 'auto' })
-    } else {
-      scrollToTop({ behavior: 'auto' })
-    }
   })
+  
+  // Note: KeepAlive préserve automatiquement le DOM et la position de scroll
+  // Pas besoin de restaurer manuellement
 })
 
 async function loadData() {
@@ -393,9 +394,6 @@ async function loadData() {
       ])
     )
 
-    // Restaurer l'état de vue
-    restoreViewState()
-
     const total = Math.max(1, Math.ceil((filteredExercices?.value?.length || 0) / Math.max(1, perPage.value)))
     if (currentPage.value > total) currentPage.value = total
     error.value = ''
@@ -423,14 +421,9 @@ async function loadData() {
         }
       }
       measureContentHeightForExercices()
-
-      // Restaurer la position de scroll si disponible (comme Cours/Sheets)
-      const saved = restoreViewState()
-      if (saved && typeof saved.scrollY === 'number') {
-        scrollToPosition({ top: saved.scrollY, behavior: 'auto' })
-      } else {
-        scrollToTop({ behavior: 'auto' })
-      }
+      
+      // Note: KeepAlive préserve automatiquement le scroll
+      // Pas besoin de restaurer manuellement sauf si nouvelle notion
     }, 150)
   }
 }
@@ -1182,6 +1175,19 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   box-shadow: none;
 }
 
+/* Sur mobile, empêcher complètement le scroll depuis le header */
+@media (max-width: 768px) {
+  .nav-header-base {
+    /* 🔒 EMPÊCHER le scroll depuis le header - CRITIQUE pour iOS */
+    touch-action: none;
+    overscroll-behavior: contain;
+    /* 🎯 Forcer le navigateur à garder le header fixe */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
 .exercices-body {
   width: 100%;
   padding: 0 2rem 1.5rem 2rem;
@@ -1216,6 +1222,7 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   transform-origin: top left;
   transition: transform 0.2s ease, zoom 0.2s ease;
   overflow: visible;
+  margin-top: 0; /* Pas d'espace avec la navigation au-dessus */
   /* Les styles seront appliqués dynamiquement via JS selon le support du zoom */
 }
 

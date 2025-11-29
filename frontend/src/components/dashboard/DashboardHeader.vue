@@ -157,15 +157,28 @@ const handleLogout = () => {
   z-index: 12001; /* Toujours au-dessus du contenu du dashboard */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
-  /* Laisser passer les gestes de scroll sans d�placer le header */
+  /* Laisser passer les gestes de scroll sans déplacer le header */
   pointer-events: none;
-  touch-action: pan-y;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-
+  /* Sur desktop, permettre le scroll vertical */
+  touch-action: pan-y;
 }
 
 .dashboard-header > * { pointer-events: auto; }
+
+/* Sur mobile, empêcher complètement le scroll depuis le header */
+@media (max-width: 768px) {
+  .dashboard-header {
+    /* 🔒 EMPÊCHER le scroll depuis le header - CRITIQUE pour iOS */
+    touch-action: none;
+    overscroll-behavior: contain;
+    /* 🎯 Forcer le navigateur à garder le header fixe */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
 
 
 /* Bouton burger fixe - Solution professionnelle */
@@ -519,5 +532,4 @@ const handleLogout = () => {
     display: none;
   }
 }
-  .dashboard-header > * { pointer-events: auto; }
 </style>

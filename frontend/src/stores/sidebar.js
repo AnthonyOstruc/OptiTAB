@@ -7,6 +7,10 @@ const readBoolean = (key, defaultValue) => {
   return stored === 'true'
 }
 
+const getFirstVisitKey = (userId) => {
+  return userId ? `sidebar-first-visit-${userId}` : 'sidebar-first-visit'
+}
+
 export const useSidebarStore = defineStore('sidebar', {
   state: () => ({
     isOpen: true,
@@ -87,6 +91,21 @@ export const useSidebarStore = defineStore('sidebar', {
 
     toggleCollapsed() {
       this.setCollapsed(!this.isCollapsed)
+    },
+
+    ensureFirstVisitOpen(userId) {
+      if (typeof window === 'undefined') return
+      try {
+        const key = getFirstVisitKey(userId)
+        const alreadyOnboarded = localStorage.getItem(key) === 'true'
+        if (alreadyOnboarded) return
+
+        this.setCollapsed(false)
+        this.setOpen(true)
+        localStorage.setItem(key, 'true')
+      } catch (error) {
+        console.warn('Impossible de forcer l\'ouverture initiale de la sidebar:', error)
+      }
     },
 
     broadcastState() {

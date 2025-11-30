@@ -79,6 +79,17 @@ if (typeof window !== 'undefined') {
   checkoutIntentStore.initFromStorage()
 }
 
+// Forcer l'ouverture de la sidebar lors de la toute première visite d'un utilisateur identifié
+watch(
+  () => userStore.id,
+  (userId) => {
+    if (userId) {
+      sidebarStore.ensureFirstVisitOpen(userId)
+    }
+  },
+  { immediate: true }
+)
+
 // Fonction pour générer une clé unique pour KeepAlive
 // Utilise les params de la route au lieu du path complet pour préserver l'état
 function getComponentKey(route) {

@@ -1499,35 +1499,37 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 
 .filter-empty {
   display: flex;
-  justify-content: flex-start;
-  padding: 12px 0 24px;
+  justify-content: center;
+  padding: 28px 0 36px;
 }
 
 .filter-empty-card {
   background: #fff;
   border: 1px dashed #cbd5e1;
   border-radius: 14px;
-  padding: 18px 20px;
-  max-width: 560px;
-  text-align: left;
+  padding: 22px 26px;
+  max-width: 680px;
+  min-width: 420px;
+  text-align: center;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
 .filter-empty-title {
-  font-weight: 700;
+  font-weight: 800;
   color: #0f172a;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  font-size: 1.05rem;
 }
 
 .filter-empty-text {
   color: #475569;
-  margin: 0 0 12px;
-  font-size: 0.95rem;
+  margin: 0 0 14px;
+  font-size: 1rem;
 }
 
 .filter-empty-actions {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 10px;
   margin-bottom: 8px;
 }
@@ -1537,7 +1539,7 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   color: #fff;
   border: none;
   border-radius: 10px;
-  padding: 0.55rem 0.95rem;
+  padding: 0.6rem 1.1rem;
   font-weight: 700;
   cursor: pointer;
 }

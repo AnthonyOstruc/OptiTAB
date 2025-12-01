@@ -43,7 +43,7 @@
                     <span class="filter-label">Filtrer</span>
                     <div class="filter-buttons type-filter-buttons">
                       <button
-                        v-for="opt in typeFilterOptions"
+                        v-for="opt in renderedTypeFilterOptions"
                         :key="opt.value"
                         :class="['filter-btn', 'type-filter-btn', { active: opt.value === selectedTypeFilter }]"
                         @click="selectedTypeFilter = opt.value; handleTypeFilterChange()"
@@ -59,14 +59,14 @@
                     <span class="filter-label">Difficulté</span>
                       <div class="filter-buttons">
                         <button
-                          v-for="d in difficultyOptions"
-                          :key="d"
-                          :class="['filter-btn', { active: d === selectedDifficulty }]"
-                          @click="selectedDifficulty = d; currentPage = 1"
+                          v-for="opt in renderedDifficultyOptions"
+                          :key="opt.value"
+                          :class="['filter-btn', { active: opt.value === selectedDifficulty }]"
+                          @click="selectedDifficulty = opt.value; currentPage = 1"
                         >
-                          <span v-if="d === 'all'" class="difficulty-text">Toutes</span>
+                          <span v-if="opt.value === 'all'" class="difficulty-text">Toutes</span>
                           <span v-else class="difficulty-stars">
-                            {{ d === 'easy' ? '⭐' : d === 'medium' ? '⭐⭐' : '⭐⭐⭐' }}
+                            {{ opt.value === 'easy' ? '⭐' : opt.value === 'medium' ? '⭐⭐' : '⭐⭐⭐' }}
                           </span>
                         </button>
                       </div>
@@ -75,25 +75,40 @@
               </div>
             </div>
             <div class="exercices-list">
-              <div
-                v-for="exercice in paginated"
-                :key="exercice.id"
-                :id="`ex-${exercice.id}`"
-                class="exercice-item-wrapper"
-                @click="setLastExerciceId(exercice.id)"
-              >
-                <ExerciceQCM
-                  :eid="exercice.id"
-                  :titre="exercice.titre || exercice.nom"
-                  :instruction="exercice.instruction || exercice.contenu || exercice.question"
-                  :solution="exercice.solution || exercice.reponse_correcte || ''"
-                  :etapes="exercice.etapes || ''"
-                  :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
-                  :current="statusMap[exercice.id]?.status"
-                  @status-changed="handleStatus"
-                />
+              <div v-if="filteredExercices.length === 0" class="filter-empty">
+                <div class="filter-empty-card">
+                  <div class="filter-empty-title">{{ emptyMessage.title }}</div>
+                  <p class="filter-empty-text">{{ emptyMessage.text }}</p>
+                  <div class="filter-empty-actions" v-if="emptyMessage.showReset">
+                    <button class="filter-empty-btn" @click="resetFilters">Réinitialiser les filtres</button>
+                  </div>
+                  <div class="filter-empty-current" v-if="emptyMessage.showCurrentFilters">
+                    <span v-if="selectedTypeFilter !== 'all'">Type : {{ selectedTypeLabel }}</span>
+                    <span v-if="selectedDifficulty !== 'all'">Difficulté : {{ selectedDifficultyLabel }}</span>
+                  </div>
+                </div>
               </div>
-              <Pagination :total="filteredExercices.length" :perPage="perPage" :page="currentPage" @update:page="handlePageChange" />
+              <template v-else>
+                <div
+                  v-for="exercice in paginated"
+                  :key="exercice.id"
+                  :id="`ex-${exercice.id}`"
+                  class="exercice-item-wrapper"
+                  @click="setLastExerciceId(exercice.id)"
+                >
+                  <ExerciceQCM
+                    :eid="exercice.id"
+                    :titre="exercice.titre || exercice.nom"
+                    :instruction="exercice.instruction || exercice.contenu || exercice.question"
+                    :solution="exercice.solution || exercice.reponse_correcte || ''"
+                    :etapes="exercice.etapes || ''"
+                    :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
+                    :current="statusMap[exercice.id]?.status"
+                    @status-changed="handleStatus"
+                  />
+                </div>
+                <Pagination :total="filteredExercices.length" :perPage="perPage" :page="currentPage" @update:page="handlePageChange" />
+              </template>
             </div>
           </div>
           <div v-else class="empty-coming">
@@ -187,6 +202,181 @@ function refreshTypeFilterOptions() {
 watch(() => userStore.niveau_pays, () => {
   refreshTypeFilterOptions()
 }, { immediate: true })
+
+const selectedTypeLabel = computed(() => {
+  const opt = typeFilterOptions.value.find(o => o.value === selectedTypeFilter.value)
+  return opt?.label || 'Tous'
+})
+
+const selectedDifficultyLabel = computed(() => {
+  const map = { easy: '★', medium: '★★', hard: '★★★', all: 'Toutes' }
+  return map[selectedDifficulty.value] || 'Toutes'
+})
+
+const filtersActive = computed(() => {
+  return (
+    selectedTypeFilter.value !== 'all' ||
+    selectedDifficulty.value !== 'all' ||
+    (searchQuery.value && searchQuery.value.trim())
+  )
+})
+
+const baseTabCounts = computed(() => {
+  const acquiredCount = exercices.value.filter(e => statusMap.value[e.id]?.status === 'acquired').length
+  const notAcquiredCount = exercices.value.filter(e => statusMap.value[e.id]?.status === 'not_acquired').length
+  const doneCount = exercices.value.filter(e => statusMap.value[e.id]).length
+  const todoCount = exercices.value.filter(e => !statusMap.value[e.id]).length
+  return {
+    all: todoCount,
+    done: doneCount,
+    acquired: acquiredCount,
+    not_acquired: notAcquiredCount
+  }
+})
+
+const emptyMessage = computed(() => {
+  const baseCount = baseTabCounts.value[activeTab.value] ?? exercices.value.length
+  if (baseCount === 0) {
+    if (activeTab.value === 'all') {
+      return {
+        title: 'Bravo ! Tous les exercices ont été faits',
+        text: 'Aucun exercice restant à faire.',
+        showReset: false,
+        showCurrentFilters: false
+      }
+    }
+    if (activeTab.value === 'done') {
+      return {
+        title: 'Aucun exercice marqué comme fait',
+        text: 'Marquez un exercice comme fait pour le voir ici.',
+        showReset: false,
+        showCurrentFilters: false
+      }
+    }
+    if (activeTab.value === 'acquired') {
+      return {
+        title: "Tout est acquis pour l'instant",
+        text: 'Les exercices validés apparaîtront ici.',
+        showReset: false,
+        showCurrentFilters: false
+      }
+    }
+    if (activeTab.value === 'not_acquired') {
+      return {
+        title: 'À revoir est vide',
+        text: 'Rien à revoir pour le moment, continuez comme ça !',
+        showReset: false,
+        showCurrentFilters: false
+      }
+    }
+  }
+
+  return {
+    title: 'Aucun exercice pour ce filtre',
+    text: 'Ajustez les filtres ou réinitialisez pour tout voir.',
+    showReset: true,
+    showCurrentFilters: filtersActive.value
+  }
+})
+
+function normalizeDifficulty(val) {
+  if (typeof val === 'string' || typeof val === 'number') {
+    return String(val).toLowerCase().trim()
+  }
+  return ''
+}
+
+const difficultyCounts = computed(() => {
+  const counts = { easy: 0, medium: 0, hard: 0 }
+  for (const ex of exercices.value) {
+    const d = normalizeDifficulty(ex.difficulty || ex.difficulte)
+    if (d === 'easy' || d === 'medium' || d === 'hard') {
+      counts[d] = (counts[d] || 0) + 1
+    }
+  }
+  return counts
+})
+
+const renderedDifficultyOptions = computed(() => {
+  return difficultyOptions
+    .map(value => {
+      const normalized = normalizeDifficulty(value)
+      const count = value === 'all' ? exercices.value.length : (difficultyCounts.value[normalized] || 0)
+      return { value, count }
+    })
+    .filter(opt => opt.value === 'all' || opt.count > 0)
+})
+
+watch(renderedDifficultyOptions, (opts) => {
+  const exists = opts.some(opt => opt.value === selectedDifficulty.value)
+  if (!exists) {
+    selectedDifficulty.value = 'all'
+  }
+})
+
+function normalizeTypeValue(val) {
+  if (typeof val === 'string' || typeof val === 'number') {
+    return String(val).toLowerCase().trim()
+  }
+  return ''
+}
+
+function exerciceMatchesType(exercice, target) {
+  const normalizedTarget = normalizeTypeValue(target)
+  if (!normalizedTarget) return false
+  const fields = [
+    exercice.exercice_type,
+    exercice.type,
+    exercice.titre,
+    exercice.nom
+  ]
+  return fields
+    .map(normalizeTypeValue)
+    .some(field => field.includes(normalizedTarget))
+}
+
+const typeCounts = computed(() => {
+  const counts = {}
+  const options = typeFilterOptions.value.filter(opt => opt.value !== 'all')
+  if (!options.length || !exercices.value.length) return counts
+
+  for (const opt of options) {
+    const normalized = normalizeTypeValue(opt.value)
+    if (!normalized) continue
+    counts[normalized] = 0
+  }
+
+  for (const exercice of exercices.value) {
+    for (const opt of options) {
+      const normalized = normalizeTypeValue(opt.value)
+      if (!normalized) continue
+      if (exerciceMatchesType(exercice, normalized)) {
+        counts[normalized] = (counts[normalized] || 0) + 1
+      }
+    }
+  }
+
+  return counts
+})
+
+const renderedTypeFilterOptions = computed(() => {
+  return typeFilterOptions.value
+    .map(opt => {
+      const normalized = normalizeTypeValue(opt.value)
+      const count = opt.value === 'all'
+        ? exercices.value.length
+        : (typeCounts.value[normalized] || 0)
+      return { ...opt, count }
+    })
+    .filter(opt => opt.value === 'all' || opt.count > 0)
+})
+
+watch(renderedTypeFilterOptions, (opts) => {
+  const exists = opts.some(opt => opt.value === selectedTypeFilter.value)
+  if (!exists) {
+    selectedTypeFilter.value = 'all'
+  }
+})
 
 // Status filtering tabs avec design amélioré
 const tabs = computed(() => [
@@ -460,23 +650,12 @@ const filteredExercices = computed(() => {
 
   // Filtre par type (configurable par niveau)
   if (selectedTypeFilter.value !== 'all') {
-    const target = selectedTypeFilter.value.toLowerCase().trim()
-    list = list.filter(e => {
-      const fields = [
-        e.exercice_type,
-        e.type,
-        e.titre,
-        e.nom
-      ]
-      return fields
-        .filter(Boolean)
-        .some(field => String(field).toLowerCase().includes(target))
-    })
+    list = list.filter(e => exerciceMatchesType(e, selectedTypeFilter.value))
   }
 
   // Filtre par difficulté
   if (selectedDifficulty.value !== 'all') {
-    list = list.filter(e => e.difficulty === selectedDifficulty.value)
+    list = list.filter(e => normalizeDifficulty(e.difficulty || e.difficulte) === normalizeDifficulty(selectedDifficulty.value))
   }
   
   // Filtre par statut
@@ -503,6 +682,13 @@ const paginated = computed(() => {
   const start = (currentPage.value - 1) * perPage.value
   return filteredExercices.value.slice(start, start + perPage.value)
 })
+
+function ensureCurrentPageValid() {
+  const total = Math.max(1, Math.ceil(filteredExercices.value.length / Math.max(1, perPage.value)))
+  if (currentPage.value > total) {
+    currentPage.value = total
+  }
+}
 
 const zoomStyle = createZoomStyle({
   cssVar: '--exercices-zoom',
@@ -537,6 +723,13 @@ function handlePageChange(page) {
 }
 
 function handleTypeFilterChange() {
+  currentPage.value = 1
+  saveViewState()
+}
+
+function resetFilters() {
+  selectedTypeFilter.value = 'all'
+  selectedDifficulty.value = 'all'
   currentPage.value = 1
   saveViewState()
 }
@@ -675,6 +868,13 @@ watch(paginated, () => {
     measureContentHeight()
   })
 }, { deep: true })
+
+watch(
+  () => filteredExercices.value.length,
+  () => {
+    ensureCurrentPageValid()
+  }
+)
 
 onBeforeUnmount(() => {
   saveViewState()
@@ -1295,6 +1495,63 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 
 .exercices-list.full-width {
   max-width: 95vw;
+}
+
+.filter-empty {
+  display: flex;
+  justify-content: flex-start;
+  padding: 12px 0 24px;
+}
+
+.filter-empty-card {
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 18px 20px;
+  max-width: 560px;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.filter-empty-title {
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.filter-empty-text {
+  color: #475569;
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+.filter-empty-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.filter-empty-btn {
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.55rem 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.filter-empty-btn:hover {
+  filter: brightness(1.05);
+}
+
+.filter-empty-current {
+  color: #64748b;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 }
 .exercices-loader, .exercices-error {
   font-size: 1.2rem;

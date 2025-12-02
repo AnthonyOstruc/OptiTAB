@@ -1,4 +1,4 @@
-=== Matrices - Opérations Fondamentales
+=== Découverte - Matrices - Opérations Fondamentales
 Difficulté: easy
 
 Énoncé: On considère les matrices suivantes :
@@ -237,7 +237,7 @@ $\\$
 
 ===
 
-=== Matrices - Déterminants et Inverses
+=== Entraînement - Matrices - Déterminants et Inverses
 Difficulté: medium
 
 Énoncé: On considère les matrices suivantes :
@@ -360,7 +360,7 @@ $\\$
 
 ===
 
-=== Matrices - Systèmes Linéaires
+=== Entraînement - Matrices - Systèmes Linéaires
 Difficulté: medium
 
 Énoncé: Résoudre les systèmes linéaires suivants en utilisant les matrices.
@@ -490,7 +490,7 @@ $\\$
 
 ===
 
-=== Matrices - Puissances et Suites
+=== Problème - Matrices - Puissances et Suites
 Difficulté: hard
 
 Énoncé: On considère la matrice $\displaystyle A = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$ et la suite de matrices $\displaystyle (M_n)$ définie par $\displaystyle M_0 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$ et $\displaystyle M_{n+1} = A \times M_n$.
@@ -560,13 +560,13 @@ $\\$
     $\\$
     
     ● **Analyse des résultats :**
-        $\qquad$• $\displaystyle A^1 = \begin{pmatrix} 2^1 & 1 \times 1 \\ 0 & 2^1 \end{pmatrix}$
+        $\qquad$• $\displaystyle A^1 = \begin{pmatrix} 2^1 & 1 \times 2^0 \\ 0 & 2^1 \end{pmatrix}$
         $\\$
-        $\qquad$• $\displaystyle A^2 = \begin{pmatrix} 2^2 & 4 \times 1 \\ 0 & 2^2 \end{pmatrix}$
+        $\qquad$• $\displaystyle A^2 = \begin{pmatrix} 2^2 & 2 \times 2^1 \\ 0 & 2^2 \end{pmatrix}$
         $\\$
-        $\qquad$• $\displaystyle A^3 = \begin{pmatrix} 2^3 & 12 \times 1 \\ 0 & 2^3 \end{pmatrix}$
+        $\qquad$• $\displaystyle A^3 = \begin{pmatrix} 2^3 & 3 \times 2^2 \\ 0 & 2^3 \end{pmatrix}$
         $\\$
-        $\qquad$• $\displaystyle A^4 = \begin{pmatrix} 2^4 & 32 \times 1 \\ 0 & 2^4 \end{pmatrix}$
+        $\qquad$• $\displaystyle A^4 = \begin{pmatrix} 2^4 & 4 \times 2^3 \\ 0 & 2^4 \end{pmatrix}$
     $\\$
     
     ● **Conjecture :** $\displaystyle A^n = \begin{pmatrix} 2^n & n \times 2^{n-1} \\ 0 & 2^n \end{pmatrix}$
@@ -654,7 +654,7 @@ $\\$
 
 ===
 
-=== Matrices - Graphes et Matrices d'Adjacence
+=== Entraînement - Matrices - Graphes et Matrices d'Adjacence
 Difficulté: medium
 Image: graphe_adjacence.png
 
@@ -766,7 +766,7 @@ $\\$
         $\qquad$• (Calculs similaires pour les autres lignes...)
     $\\$
     
-    ● **Résultat :** $\displaystyle M^3 = \begin{pmatrix} 0 & 0 & 0 & 1 & 2 \\ 1 & 0 & 0 & 0 & 0 \\ 1 & 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 2 & 0 \end{pmatrix}$
+    ● **Résultat :** $\displaystyle M^3 = \begin{pmatrix} 0 & 0 & 0 & 1 & 2 \\ 1 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 2 & 0 \end{pmatrix}$
     $\\$
     
     ● **Interprétation détaillée :** Comment lire les cases de $\displaystyle M^3$
@@ -776,9 +776,11 @@ $\\$
         $\\$
         $\qquad$• $\displaystyle (A, E) = 2$ : deux chemins de longueur 3 de A vers E : **A → B → D → E** et **A → C → D → E**
         $\\$
-        $\qquad$• **Ligne B → [1, 0, 0, 0, 0] :**
+        $\qquad$• **Ligne B → [1, 0, 0, 0, 1] :**
         $\\$
-        $\qquad$• $\displaystyle (B, A) = 1$ : un chemin de longueur 3 de B vers A : **B → C → D → E → A**
+        $\qquad$• $\displaystyle (B, A) = 1$ : un chemin de longueur 3 de B vers A : **B → D → E → A**
+        $\\$
+        $\qquad$• $\displaystyle (B, E) = 1$ : un chemin de longueur 3 de B vers E : **B → C → D → E**
         $\\$
         $\qquad$• **Ligne E → [0, 0, 1, 2, 0] :**
         $\\$
@@ -793,22 +795,20 @@ $\\$
     $\\$
     
     ● **Étape 1 :** Calculer $\displaystyle M + M^2 + M^3 + M^4 + M^5$
-        $\qquad$• **Calculs détaillés :**
+        $\qquad$• On calcule successivement $\displaystyle M^4 = M^3 \times M$ et $\displaystyle M^5 = M^4 \times M$
         $\\$
-        $\qquad$• $\displaystyle M^4 = M^3 \times M = \begin{pmatrix} 0 & 0 & 0 & 1 & 2 \\ 1 & 0 & 0 & 0 & 0 \\ 1 & 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 2 & 0 \end{pmatrix} \begin{pmatrix} 0 & 1 & 1 & 0 & 0 \\ 0 & 0 & 1 & 1 & 0 \\ 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 & 0 \end{pmatrix}$
+        $\qquad$• On additionne ensuite toutes les matrices : $\displaystyle M + M^2 + M^3 + M^4 + M^5$
         $\\$
-        $\qquad$• $\displaystyle M^5 = M^4 \times M$ (calculs similaires...)
-        $\\$
-        $\qquad$• $\displaystyle M + M^2 + M^3 + M^4 + M^5 = \begin{pmatrix} 1 & 2 & 3 & 4 & 3 \\ 2 & 1 & 2 & 2 & 2 \\ 2 & 1 & 1 & 2 & 2 \\ 2 & 2 & 2 & 1 & 2 \\ 2 & 2 & 3 & 4 & 1 \end{pmatrix}$
+        $\qquad$• **Vérification (par calcul ou à l'aide d'un logiciel) :** Tous les coefficients de cette somme sont strictement positifs (non nuls)
     $\\$
     
-    ● **Étape 2 :** Vérifier s'il y a des coefficients nuls
-        $\qquad$• Si tous les coefficients sont non nuls → fortement connexe
+    ● **Étape 2 :** Interprétation
+        $\qquad$• Si tous les coefficients de $\displaystyle M + M^2 + M^3 + M^4 + M^5$ sont non nuls, cela signifie qu'il existe au moins un chemin orienté entre chaque paire de sommets
         $\\$
-        $\qquad$• Si au moins un coefficient est nul → pas fortement connexe
+        $\qquad$• Le graphe est donc fortement connexe
     $\\$
     
-    ● **Résultat :** Le graphe n'est pas fortement connexe (certains coefficients sont nuls)
+    ● **Résultat :** Le graphe est fortement connexe (tous les coefficients de la somme sont non nuls)
     $\\$
 
 **Question 5 : Compter le nombre de chemins de longueur 2 de A vers E**
@@ -852,13 +852,13 @@ $\\$
 $\\$
 3. $\displaystyle M^3$ compte les chemins de longueur 3
 $\\$
-4. Le graphe n'est pas fortement connexe
+4. Le graphe est fortement connexe
 $\\$
 5. 0 chemins de longueur 2 de A vers E
 
 ===
 
-=== Matrices - Transformations Géométriques
+=== Entraînement - Matrices - Transformations Géométriques
 Difficulté: medium
 
 Énoncé: On considère les transformations géométriques suivantes du plan.
@@ -1002,7 +1002,7 @@ $\\$
 
 ===
 
-=== Matrices - Déterminants 3×3 et Règle de Sarrus
+=== Entraînement - Matrices - Déterminants 3×3 et Règle de Sarrus
 Difficulté: medium
 
 Énoncé: On considère les matrices suivantes :
@@ -1236,7 +1236,7 @@ $\\$
 
 ===
 
-=== Matrices - Suites Matricielles et Récurrence
+=== Problème - Matrices - Suites Matricielles et Récurrence
 Difficulté: hard
 
 Énoncé: On considère la matrice $\displaystyle A = \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix}$ et la suite de matrices $\displaystyle (M_n)$ définie par $\displaystyle M_0 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$ et $\displaystyle M_{n+1} = A \times M_n$.
@@ -1396,7 +1396,7 @@ $\\$
 
 ===
 
-=== Matrices - Graphes et Chemins
+=== Entraînement - Matrices - Graphes et Chemins
 Difficulté: medium
 Image: graphe_chemins.png
 
@@ -1512,33 +1512,35 @@ $\\$
         $\qquad$• (Calculs similaires pour les autres lignes...)
     $\\$
     
-    ● **Résultat :** $\displaystyle M^3 = \begin{pmatrix} 2 & 1 & 1 & 1 \\ 1 & 1 & 2 & 0 \\ 2 & 0 & 1 & 2 \\ 1 & 0 & 1 & 2 \end{pmatrix}$
+    ● **Résultat :** $\displaystyle M^3 = \begin{pmatrix} 3 & 1 & 1 & 1 \\ 1 & 2 & 2 & 0 \\ 1 & 1 & 2 & 2 \\ 1 & 0 & 1 & 2 \end{pmatrix}$
     $\\$
     
     ● **Interprétation détaillée :** Comment lire les cases de $\displaystyle M^3$
-        $\qquad$• **Ligne A → [2, 1, 1, 1] :**
+        $\qquad$• **Ligne A → [3, 1, 1, 1] :**
         $\\$
-        $\qquad$• $\displaystyle (A, A) = 2$ : deux chemins de longueur 3 de A vers A : **A → B → C → A** et **A → C → D → A**
+        $\qquad$• $\displaystyle (A, A) = 3$ : trois chemins de longueur 3 de A vers A : **A → B → C → A**, **A → C → D → A** et **A → B → D → A**
         $\\$
         $\qquad$• $\displaystyle (A, B) = 1$ : un chemin de longueur 3 de A vers B : **A → C → A → B**
         $\\$
-        $\qquad$• $\displaystyle (A, C) = 1$ : un chemin de longueur 3 de A vers C : **A → B → D → C** (impossible, pas d'arc D→C)
+        $\qquad$• $\displaystyle (A, C) = 1$ : un chemin de longueur 3 de A vers C : **A → C → A → C**
         $\\$
         $\qquad$• $\displaystyle (A, D) = 1$ : un chemin de longueur 3 de A vers D : **A → B → C → D**
         $\\$
-        $\qquad$• **Ligne B → [1, 1, 2, 0] :**
+        $\qquad$• **Ligne B → [1, 2, 2, 0] :**
         $\\$
         $\qquad$• $\displaystyle (B, A) = 1$ : un chemin de longueur 3 de B vers A : **B → C → D → A**
         $\\$
-        $\qquad$• $\displaystyle (B, B) = 1$ : un chemin de longueur 3 de B vers B : **B → C → A → B**
+        $\qquad$• $\displaystyle (B, B) = 2$ : deux chemins de longueur 3 de B vers B : **B → C → A → B** et **B → D → A → B**
         $\\$
         $\qquad$• $\displaystyle (B, C) = 2$ : deux chemins de longueur 3 de B vers C : **B → D → A → C** et **B → C → A → C**
         $\\$
-        $\qquad$• **Ligne C → [2, 0, 1, 2] :**
+        $\qquad$• **Ligne C → [1, 1, 2, 2] :**
         $\\$
-        $\qquad$• $\displaystyle (C, A) = 2$ : deux chemins de longueur 3 de C vers A : **C → A → B → A** et **C → D → A → A** (impossible)
+        $\qquad$• $\displaystyle (C, A) = 1$ : un chemin de longueur 3 de C vers A : **C → A → C → A**
         $\\$
-        $\qquad$• $\displaystyle (C, C) = 1$ : un chemin de longueur 3 de C vers C : **C → A → B → C**
+        $\qquad$• $\displaystyle (C, B) = 1$ : un chemin de longueur 3 de C vers B : **C → D → A → B**
+        $\\$
+        $\qquad$• $\displaystyle (C, C) = 2$ : deux chemins de longueur 3 de C vers C : **C → A → B → C** et **C → D → A → C**
         $\\$
         $\qquad$• $\displaystyle (C, D) = 2$ : deux chemins de longueur 3 de C vers D : **C → A → B → D** et **C → A → C → D**
     $\\$
@@ -1585,16 +1587,20 @@ $\\$
     $\\$
     
     ● **Étape 1 :** Calculer $\displaystyle M + M^2 + M^3 + M^4$
-        $\qquad$• $\displaystyle M^4 = M^3 \times M = \begin{pmatrix} 3 & 1 & 2 & 2 \\ 2 & 1 & 1 & 2 \\ 3 & 1 & 1 & 1 \\ 2 & 1 & 1 & 1 \end{pmatrix}$
+        $\qquad$• On calcule successivement $\displaystyle M^4 = M^3 \times M$
         $\\$
-        $\qquad$• $\displaystyle M + M^2 + M^3 + M^4 = \begin{pmatrix} 6 & 2 & 5 & 5 \\ 5 & 2 & 4 & 4 \\ 6 & 2 & 3 & 5 \\ 4 & 2 & 3 & 3 \end{pmatrix}$
+        $\qquad$• On additionne ensuite toutes les matrices : $\displaystyle M + M^2 + M^3 + M^4$
+        $\\$
+        $\qquad$• **Vérification (par calcul ou à l'aide d'un logiciel) :** Tous les coefficients de cette somme sont strictement positifs (non nuls)
     $\\$
     
-    ● **Étape 2 :** Vérifier s'il y a des coefficients nuls
-        $\qquad$• Tous les coefficients sont non nuls ✓
+    ● **Étape 2 :** Interprétation
+        $\qquad$• Si tous les coefficients de $\displaystyle M + M^2 + M^3 + M^4$ sont non nuls, cela signifie qu'il existe au moins un chemin orienté entre chaque paire de sommets
+        $\\$
+        $\qquad$• Le graphe est donc fortement connexe
     $\\$
     
-    ● **Résultat :** Le graphe est fortement connexe
+    ● **Résultat :** Le graphe est fortement connexe (tous les coefficients de la somme sont non nuls)
     $\\$
 
 Solution:

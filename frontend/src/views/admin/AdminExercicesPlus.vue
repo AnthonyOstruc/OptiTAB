@@ -22,7 +22,7 @@
       <input v-model="notionFilter" type="text" placeholder="Filtrer les notions..." class="filter-input" />
       <select v-model="selectedNotion" required>
         <option disabled value="">Choisir notion</option>
-        <option v-for="n in filteredNotions" :key="n.id" :value="n.id">{{ (n.nom || n.titre) }}</option>
+        <option v-for="n in filteredNotions" :key="n.id" :value="n.id">{{ formatNotionOption(n) }}</option>
       </select>
 
       <!-- Upload d'images -->
@@ -538,6 +538,28 @@ function getNotionById(id) {
   return notions.value.find(x => String(x.id) === String(id))
 }
 
+function notionContext(notion) {
+  if (!notion) return { matiereNom: '', themeNom: '', paysNom: '', niveauNom: '' }
+  const matiereNom = notion.matiere_nom || notion.contexte_detail?.matiere_nom || ''
+  const themeNom = notion.theme_nom || ''
+  const paysNom = notion.pays_nom || notion.contexte_detail?.pays?.nom || ''
+  const niveauNom = notion.niveau_nom || notion.contexte_detail?.niveau?.nom || ''
+  return { matiereNom, themeNom, paysNom, niveauNom }
+}
+
+function formatNotionOption(n) {
+  if (!n) return ''
+  const ctx = notionContext(n)
+  const contextParts = [ctx.matiereNom, ctx.themeNom].filter(Boolean).join(' / ')
+  const geoParts = [ctx.paysNom, ctx.niveauNom].filter(Boolean).join(' / ')
+  const parts = [
+    n.nom || n.titre || '',
+    contextParts ? ` - ${contextParts}` : '',
+    geoParts ? ` (${geoParts})` : ''
+  ].filter(Boolean)
+  return parts.join('')
+}
+
 function chapterContext(chapitre) {
   if (!chapitre) return null
   const notion = getNotionById(chapitre.notion)
@@ -707,12 +729,11 @@ function handlePreview() {
 
 // Notions filtrées (par texte seulement)
 const filteredNotions = computed(() => {
-  if (!notionFilter.value) {
-    return notions.value
-  }
+  const allNotions = notions.value || []
+  if (!notionFilter.value) return allNotions
   const filter = notionFilter.value.toLowerCase()
-  return notions.value.filter(notion =>
-    (notion.nom || notion.titre || '').toLowerCase().includes(filter)
+  return allNotions.filter(notion =>
+    (formatNotionOption(notion) || '').toLowerCase().includes(filter)
   )
 })
 

@@ -233,7 +233,7 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 'notion__theme__contexte__niveau__pays',
             )
             .prefetch_related('images')
-            .order_by('ordre', 'notion__titre')
+            .order_by('notion__titre', 'id')
         )
 
         params = request.query_params

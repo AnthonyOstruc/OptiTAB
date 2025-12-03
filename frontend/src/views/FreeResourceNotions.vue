@@ -21,7 +21,10 @@ const router = useRouter()
 const route = useRoute()
 const loading = ref(false)
 const error = ref(null)
-const resources = ref([])
+const resources = ref([]) // liste courante (page)
+const allResources = ref([]) // fallback si pas de pagination serveur
+const totalCount = ref(0)
+const isServerPaginated = ref(true)
 const selectedLevels = ref([])
 const showLevelFilter = ref(false)
 const currentPage = ref(1)
@@ -111,14 +114,44 @@ const getSummaryLevel = (resource) => {
   return resource?.niveau_nom || resource?.tag_secondaire || resource?.matiere_nom || ''
 }
 
-const fetchResources = async () => {
+const fetchResources = async (page = 1, retried = false) => {
   loading.value = true
   error.value = null
   try {
-    const data = await getFreeResources({ type: props.resourceType })
-    resources.value = Array.isArray(data?.results) ? data.results : data
+    const data = await getFreeResources({ type: props.resourceType, page, page_size: itemsPerPage })
+    const list = Array.isArray(data?.results) ? data.results : data
+    const count = Number(data?.count) || 0
+    allResources.value = list || []
+    totalCount.value = count
+    isServerPaginated.value = count > 0
+
+    if (count > 0) {
+      resources.value = list || []
+      currentPage.value = page
+    } else {
+      // Pas de pagination serveur: fallback client
+      currentPage.value = page
+      const start = (page - 1) * itemsPerPage
+      resources.value = (list || []).slice(start, start + itemsPerPage)
+    }
   } catch (err) {
     console.error('Erreur chargement ressources gratuites', err)
+    if (!retried) {
+      // Fallback: certains endpoints n'acceptent pas page/page_size -> tenter sans pagination serveur
+      try {
+        const data = await getFreeResources({ type: props.resourceType })
+        const list = Array.isArray(data?.results) ? data.results : data
+        allResources.value = list || []
+        totalCount.value = 0
+        isServerPaginated.value = false
+        currentPage.value = page
+        const start = (page - 1) * itemsPerPage
+        resources.value = (list || []).slice(start, start + itemsPerPage)
+        return
+      } catch (fallbackErr) {
+        console.error('Erreur fallback ressources gratuites', fallbackErr)
+      }
+    }
     error.value = err?.message || "Impossible de charger ces ressources gratuites."
   } finally {
     loading.value = false
@@ -129,7 +162,7 @@ onMounted(() => {
   detectMobileAndZoomSupport()
   updateViewportWidth()
   setupViewportListener()
-  fetchResources()
+  fetchResources(1)
 })
 
 onBeforeUnmount(() => {
@@ -137,7 +170,7 @@ onBeforeUnmount(() => {
 })
 
 watch(() => props.resourceType, () => {
-  fetchResources()
+  fetchResources(1)
   selectedLevels.value = []
   currentPage.value = 1
   searchQuery.value = ''
@@ -145,12 +178,16 @@ watch(() => props.resourceType, () => {
 
 watch(() => selectedLevels.value.length, () => {
   currentPage.value = 1
-  nextTick(() => measureContentHeightForFreeResources())
+  if (!hasServerPagination.value) {
+    nextTick(() => measureContentHeightForFreeResources())
+  }
 })
 
 watch(() => searchQuery.value, () => {
   currentPage.value = 1
-  nextTick(() => measureContentHeightForFreeResources())
+  if (!hasServerPagination.value) {
+    nextTick(() => measureContentHeightForFreeResources())
+  }
 })
 
 watch(viewportWidth, () => {
@@ -168,8 +205,11 @@ const availableLevels = computed(() => {
   return Array.from(levels).sort()
 })
 
+const hasServerPagination = computed(() => isServerPaginated.value && totalCount.value > 0)
+
 const filteredResources = computed(() => {
-  let filtered = resources.value
+  const baseList = hasServerPagination.value ? resources.value : allResources.value
+  let filtered = [...(baseList || [])]
 
   // Filter by level
   if (selectedLevels.value.length > 0) {
@@ -280,31 +320,46 @@ const flatList = computed(() => {
 })
 
 const totalResourceCount = computed(() => {
+  const count = totalCount.value || filteredResources.value.length
   if (isExerciseMode.value) {
-    // Pour les exercices, afficher "X exercices" et "Y chapitres"
+    // Pour les exercices, afficher "X exercices" et "Y chapitres" (chapitres sur la page courante)
     return {
-      count: filteredResources.value.length,
+      count,
       chapterCount: flatList.value.length
     }
   }
   return {
-    count: flatList.value.length,
+    count,
     chapterCount: 0
   }
 })
 
-const totalPages = computed(() => Math.ceil(flatList.value.length / itemsPerPage))
+const totalPages = computed(() => {
+  if (hasServerPagination.value) {
+    return Math.max(1, Math.ceil((totalCount.value || flatList.value.length) / itemsPerPage))
+  }
+  return Math.max(1, Math.ceil(filteredResources.value.length / itemsPerPage))
+})
 
 const paginatedList = computed(() => {
+  if (hasServerPagination.value) {
+    return flatList.value
+  }
   const start = (currentPage.value - 1) * itemsPerPage
   const end = start + itemsPerPage
-  return flatList.value.slice(start, end)
+  return filteredResources.value.slice(start, end)
 })
 
 const goToPage = (page) => {
   if (page < 1 || page > totalPages.value) return
-  currentPage.value = page
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  if (hasServerPagination.value) {
+    fetchResources(page).then(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    })
+  } else {
+    currentPage.value = page
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }
 
 const formatCount = (count, overrideLabel) => {

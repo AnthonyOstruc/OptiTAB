@@ -1,16 +1,45 @@
 <template>
-  <BaseHistory
-    ref="baseHistoryRef"
-    title="🧭 Historique des Exercices"
-    list-title="📝 Exercices effectués"
-    loading-text="Chargement des exercices..."
-    api-endpoint="/api/suivis/exercices/stats/"
-    :navigation-handler="navigateToExercice"
-    :items-per-page="6"
-    :filtered-items="filteredExercicesList"
-    @data-loaded="onDataLoaded"
-    @filter-changed="onFilterChanged"
-  >
+  <div class="exercices-history-wrapper">
+    <div v-if="suggestionCards.length" class="practice-suggestions">
+      <div class="suggestion-header">
+        <div class="suggestion-title">Conseils rapides</div>
+        <div class="suggestion-subtitle">Des exercices proches pour consolider ou revoir</div>
+      </div>
+      <div class="suggestion-cards">
+        <div
+          v-for="card in suggestionCards"
+          :key="card.key"
+          class="suggestion-card"
+        >
+          <div class="suggestion-card-head">
+            <span class="badge" :class="card.badgeClass">{{ card.badge }}</span>
+            <span class="suggestion-notion">{{ card.notionLabel }}</span>
+          </div>
+          <div class="suggestion-body">
+            <div class="suggestion-text">
+              <div class="suggestion-title-line">{{ card.title }}</div>
+              <div class="suggestion-desc">{{ card.subtitle }}</div>
+            </div>
+            <button class="suggestion-cta" @click="openSuggestion(card)">
+              {{ card.cta }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <BaseHistory
+      ref="baseHistoryRef"
+      title="🧭 Historique des Exercices"
+      list-title="📝 Exercices effectués"
+      loading-text="Chargement des exercices..."
+      api-endpoint="/api/suivis/exercices/stats/"
+      :navigation-handler="navigateToExercice"
+      :items-per-page="6"
+      :filtered-items="filteredExercicesList"
+      @data-loaded="onDataLoaded"
+      @filter-changed="onFilterChanged"
+    >
     <!-- Actions en-tête: bouton Archive -->
     <template #header-actions>
       <button class="view-history-btn" @click="goToFullHistory" title="Archive" aria-label="Archive">
@@ -148,11 +177,18 @@
 
 
     <!-- Liste des exercices -->
-    <template #items-list="{ items, toggleDetails, isExpanded, navigateToItem }">
-             <div v-for="exercice in items" :key="exercice.id" class="exercice-card" :class="{ 'correct': exercice.est_correct, 'incorrect': !exercice.est_correct }">
-        <div class="exercice-card-header" @click="toggleDetails(exercice.id)">
+        <template #items-list="{ items, toggleDetails, isExpanded, navigateToItem }">
+             <div
+          v-for="exercice in items"
+          :key="exercice.exercice_id || exercice.id"
+          :id="`ex-${exercice.exercice_id || exercice.id}`"
+          class="exercice-card"
+          :class="{ 'correct': exercice.est_correct, 'incorrect': !exercice.est_correct }"
+          @click="navigateToItem(exercice)"
+        >
+        <div class="exercice-card-header">
           <div class="exercice-card-title-section">
-            <h5 class="exercice-card-title clickable-title" @click.stop="navigateToItem(exercice)" :title="'Accéder à l\'exercice: ' + exercice.exercice_titre">
+            <h5 class="exercice-card-title clickable-title" :title="'Accéder à l\'exercice: ' + exercice.exercice_titre">
               {{ exercice.exercice_titre }}
               <svg class="navigation-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M7 17l9.2-9.2M17 17V7H7"></path>
@@ -162,11 +198,11 @@
               {{ exercice.matiere.titre }} → {{ exercice.notion.titre }}
             </div>
           </div>
-          <div class="exercice-card-actions">
-            <div class="exercice-status" :class="getStatusClass(exercice.est_correct)">
-              {{ exercice.est_correct ? '✅' : '❌' }}
-            </div>
-            <button class="expand-toggle" :class="{ expanded: isExpanded(exercice.id) }">
+            <div class="exercice-card-actions">
+              <div class="exercice-status" :class="getStatusClass(exercice.est_correct)">
+                {{ exercice.est_correct ? '✅' : '❌' }}
+              </div>
+            <button class="expand-toggle" :class="{ expanded: isExpanded(exercice.id) }" @click.stop="toggleDetails(exercice.id)">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="6,9 12,15 18,9"></polyline>
               </svg>
@@ -201,7 +237,8 @@
       <p>Aucun exercice trouvé avec ces filtres</p>
       <p class="empty-hint">Essayez de modifier vos filtres ou commencez à faire des exercices !</p>
     </template>
-  </BaseHistory>
+    </BaseHistory>
+  </div>
 </template>
 
 <script setup>
@@ -234,6 +271,54 @@ const matiereNotionStats = ref([])
 // Pagination pour le tableau récapitulatif
 const SUMMARY_PER_PAGE = 5
 const summaryPage = ref(1)
+
+const sortedRecent = computed(() => {
+  return [...currentExercicesList.value].sort((a, b) => {
+    const da = new Date(a.date_creation || a.created_at || a.date || 0).getTime()
+    const db = new Date(b.date_creation || b.created_at || b.date || 0).getTime()
+    return db - da
+  })
+})
+
+const lastDone = computed(() => sortedRecent.value[0] || null)
+const lastIncorrect = computed(() => sortedRecent.value.find((e) => e.est_correct === false) || null)
+
+const suggestionCards = computed(() => {
+  const cards = []
+
+  if (lastIncorrect.value?.notion?.id) {
+    cards.push({
+      key: `retry-${lastIncorrect.value.notion.id}`,
+      badge: 'À revoir',
+      badgeClass: 'badge-warning',
+      notionLabel: lastIncorrect.value.notion.titre || 'Notion',
+      title: 'Reprends où tu t’es arrêté',
+      subtitle: `Revois l’exercice “${lastIncorrect.value.exercice_titre || 'Dernier exercice'}”.`,
+      cta: 'Réessayer cet exercice',
+      route: { name: 'ExerciceDetail', params: { exerciceId: String(lastIncorrect.value.exercice_id) } }
+    })
+  }
+
+  if (lastDone.value?.notion?.id) {
+    cards.push({
+      key: `practice-${lastDone.value.notion.id}`,
+      badge: 'Entraînement',
+      badgeClass: 'badge-info',
+      notionLabel: lastDone.value.notion.titre || 'Notion',
+      title: 'Poursuis là où tu t’es arrêté',
+      subtitle: `Continue “${lastDone.value.exercice_titre || 'Dernier exercice'}” ou un exercice proche.`,
+      cta: 'Reprendre cet exercice',
+      route: { name: 'ExerciceDetail', params: { exerciceId: String(lastDone.value.exercice_id) } }
+    })
+  }
+
+  return cards.slice(0, 2)
+})
+
+const openSuggestion = (card) => {
+  if (!card?.route) return
+  router.push(card.route).catch(() => {})
+}
 
 // Chapitres supprimés: plus de tri dédié
 
@@ -291,15 +376,31 @@ const navigateToExercice = async (exercice) => {
   try {
     console.log(`[ExercicesHistory] 🚀 Navigation vers exercice: ${exercice.exercice_titre}`)
 
-    const exerciceId = exercice.exercice_id
+    const notionId = exercice?.notion?.id || exercice?.notion_id || exercice?.notion?.notion_id
+    const exerciceId = exercice?.exercice_id || exercice?.id
 
-    // Navigation directe vers la page détail de l'exercice
-    await router.push({
-      name: 'ExerciceDetail',
-      params: { exerciceId: String(exerciceId) }
-    })
+    // Préférer la page notion avec ancre vers l'exercice
+    if (notionId && exerciceId) {
+      await router.push({
+        name: 'ExercicesByNotion',
+        params: { notionId: String(notionId) },
+        hash: `#ex-${exerciceId}`
+      })
+      console.log(`[ExercicesHistory] ✅ Navigation complétée (notion ${notionId} -> ex-${exerciceId})`)
+      return
+    }
 
-    console.log(`[ExercicesHistory] ✅ Navigation complétée`)
+    // Fallback: page détail
+    if (exerciceId) {
+      await router.push({
+        name: 'ExerciceDetail',
+        params: { exerciceId: String(exerciceId) }
+      })
+      console.log(`[ExercicesHistory] ✅ Navigation complétée (fallback détail)`)
+      return
+    }
+
+    console.warn('[ExercicesHistory] Impossible de naviguer: notionId ou exerciceId manquant')
   } catch (error) {
     console.error(`[ExercicesHistory] ❌ Erreur de navigation:`, error)
   }
@@ -428,6 +529,140 @@ defineExpose({
 </script>
 
 <style scoped>
+.exercices-history-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.practice-suggestions {
+  background: linear-gradient(135deg, #f8fbff 0%, #eef2ff 100%);
+  border: 1px solid #e0e7ff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+}
+
+.suggestion-header {
+  margin-bottom: 10px;
+}
+
+.suggestion-title {
+  font-weight: 800;
+  color: #1d4ed8;
+}
+
+.suggestion-subtitle {
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.suggestion-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.suggestion-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.suggestion-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.suggestion-notion {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 0.95rem;
+  text-align: right;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.badge-warning {
+  background: #fef3c7;
+  color: #9a3412;
+  border: 1px solid #fcd34d;
+}
+
+.badge-info {
+  background: #e0f2fe;
+  color: #0ea5e9;
+  border: 1px solid #bae6fd;
+}
+
+.suggestion-body {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.suggestion-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #1f2937;
+}
+
+.suggestion-title-line {
+  font-weight: 800;
+}
+
+.suggestion-desc {
+  color: #475569;
+  font-size: 0.92rem;
+}
+
+.suggestion-cta {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.suggestion-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+}
+
+.suggestion-cta:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .suggestion-body {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .suggestion-cta {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 /* Stats globales */
 .stats-grid {
   display: grid;
@@ -590,6 +825,7 @@ defineExpose({
   overflow: hidden;
   transition: all 0.2s;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  cursor: pointer;
 }
 
 .exercice-card:hover {

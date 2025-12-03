@@ -183,7 +183,7 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
         images = getattr(exercice, 'images', None)
         image_data = []
         if images is not None:
-            for img in images.all():
+            for img in images.all().order_by('position', 'id'):
                 image_url = ''
                 try:
                     image_url = getattr(img.image, 'url', '') or ''
@@ -192,9 +192,10 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
                 image_data.append({
                     'id': img.id,
                     'image': image_url,
-                    'image_type': img.image_type,
-                    'position': img.position,
-                    'legende': img.legende,
+                    # Champs historiques supprimés du modèle: on renvoie une valeur vide pour compatibilité
+                    'image_type': getattr(img, 'image_type', '') or '',
+                    'position': getattr(img, 'position', None),
+                    'legende': getattr(img, 'legende', '') or '',
                 })
 
         return {
@@ -213,9 +214,9 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
             'solution': exercice.reponse_correcte or '',
             'etapes': exercice.etapes or '',
             'images': image_data,
-            'difficulty': exercice.difficulty or '',
+            'difficulty': getattr(exercice, 'difficulty', '') or '',
             'cover_image': cover_image,
-            'badge': exercice.get_difficulty_display(),
+            'badge': self._safe_badge(exercice),
             'lecture_duree': self._estimate_read_time(accroche),
             'tag_secondaire': getattr(niveau, 'nom', '') or getattr(matiere, 'titre', ''),
             'matiere': getattr(matiere, 'id', None),
@@ -254,6 +255,13 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
             return ''
         minutes = max(1, int((words + 179) / 180))
         return f"~{minutes} min"
+
+    @staticmethod
+    def _safe_badge(exercice):
+        try:
+            return exercice.get_difficulty_display()
+        except Exception:
+            return ''
 
 
 class SynthesisFreePreviewSerializer(serializers.Serializer):

@@ -614,6 +614,7 @@ async function loadData() {
       
       // Note: KeepAlive préserve automatiquement le scroll
       // Pas besoin de restaurer manuellement sauf si nouvelle notion
+      tryScrollToHashExercice()
     }, 150)
   }
 }
@@ -632,7 +633,7 @@ watch(() => route.hash, (newHash, oldHash) => {
     tryScrollToHashExercice()
   }
 })
-
+ 
 const totalPages = computed(() => Math.ceil(exercices.value.length / perPage.value))
 
 const filteredExercices = computed(() => {

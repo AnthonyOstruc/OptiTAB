@@ -9,17 +9,24 @@
     <div class="exercice-header">
       <div class="header-top">
         <div class="header-first-row">
-        <div class="header-slot header-slot--left">
-          <button
-            class="favorite-btn"
-            type="button"
-            @click="toggleFavorite"
-            :aria-pressed="isFavorite"
-            :title="isFavorite ? 'Supprimer des favoris' : 'Ajouter aux favoris'"
-          >
-            <span class="favorite-icon">{{ isFavorite ? '⭐' : '☆' }}</span>
-          </button>
-        </div>
+          <div class="header-slot header-slot--left">
+            <button
+              class="flag-btn"
+              type="button"
+              @click="handleReport"
+              :aria-pressed="hasReportedIssue"
+              :class="{ reported: hasReportedIssue }"
+              :title="hasReportedIssue ? 'Signalement envoyé' : 'Signaler une erreur dans cet exercice'"
+              aria-label="Signaler une erreur dans cet exercice"
+            >
+              <span class="flag-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 3h10l-1.5 4L16 11H6v10H4V3z"/>
+                  <path d="M6 13h9.5l-1.25 3L16 19H6z" opacity="0.2"/>
+                </svg>
+              </span>
+            </button>
+          </div>
           <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
           <div class="header-slot header-slot--right">
             <div class="difficulty-indicator" v-if="difficulty">
@@ -126,6 +133,78 @@
       </div>
     </div>
 
+    <!-- Report Modal -->
+    <div v-if="showReportModal" class="report-modal-overlay" @click.self="closeReportModal">
+      <div class="report-modal">
+        <button class="report-close" type="button" @click="closeReportModal" aria-label="Fermer">
+          ×
+        </button>
+        <div class="report-modal-header">
+          <div class="report-icon">🚩</div>
+          <div class="report-headings">
+            <p class="report-kicker">Merci de nous aider à corriger</p>
+            <h4>Signaler un problème</h4>
+            <p class="report-subtitle">Décrivez le souci. Vous recevrez un email de confirmation immédiatement.</p>
+          </div>
+        </div>
+        <div class="report-modal-body">
+          <label class="report-label">
+            Email de contact
+            <input
+              v-model="reportEmail"
+              type="email"
+              class="report-input"
+              placeholder="vous@example.com"
+            />
+          </label>
+          <div class="report-names">
+            <label class="report-label">
+              Prénom
+              <input
+                v-model="reportFirstName"
+                type="text"
+                class="report-input"
+                placeholder="Votre prénom"
+              />
+            </label>
+            <label class="report-label">
+              Nom
+              <input
+                v-model="reportLastName"
+                type="text"
+                class="report-input"
+                placeholder="Votre nom"
+              />
+            </label>
+          </div>
+          <label class="report-label">
+            Problème rencontré
+            <textarea
+              v-model="reportDescription"
+              rows="4"
+              class="report-input"
+              placeholder="Ex: L'énoncé contient une faute ou un résultat incorrect..."
+            ></textarea>
+          </label>
+        </div>
+        <div class="report-modal-footer">
+          <div class="report-actions">
+            <button class="report-btn ghost" type="button" @click="closeReportModal" :disabled="sendingReport">
+              Annuler
+            </button>
+            <button class="report-btn primary" type="button" @click="submitReport" :disabled="sendingReport">
+              <span v-if="sendingReport" class="report-spinner" aria-hidden="true"></span>
+              {{ sendingReport ? 'Envoi...' : 'Envoyer le signalement' }}
+            </button>
+          </div>
+          <div class="report-footnote">
+            <span class="report-footnote-icon">✉️</span>
+            Un email “votre message a été pris en compte” sera envoyé à l’adresse indiquée.
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Image Modal -->
     <div v-if="showImageModal" class="image-modal-overlay" @click="closeImageModal">
       <div class="image-modal" @click.stop>
@@ -147,6 +226,9 @@
 <script setup>
 import { ref, onMounted, computed, nextTick, watch } from 'vue'
 import { getExerciceImages } from '@/api'
+import { sendContactMessage } from '@/api/contact'
+import { useUserStore } from '@/stores/user'
+import { useToast } from '@/composables/useToast'
 
 // Props
 const props = defineProps({
@@ -191,13 +273,22 @@ const props = defineProps({
 // Emits
 const emit = defineEmits(['status-changed', 'xp-gained'])
 
+const { info: toastInfo, success: toastSuccess, error: toastError } = useToast()
+const userStore = useUserStore()
+
 // Reactive data
 const showSolution = ref(false)
 const exerciceImages = ref([])
 const showImageModal = ref(false)
 const selectedImage = ref(null)
 const activeTab = ref('problem')
-const isFavorite = ref(false)
+const hasReportedIssue = ref(false)
+const showReportModal = ref(false)
+const sendingReport = ref(false)
+const reportDescription = ref('')
+const reportEmail = ref('')
+const reportFirstName = ref('')
+const reportLastName = ref('')
 
 // Computed
 const diffStars = computed(() => ({
@@ -219,8 +310,71 @@ const tabContentStyles = computed(() => {
   }
 })
 
-const toggleFavorite = () => {
-  isFavorite.value = !isFavorite.value
+const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+
+function prefillReportFields() {
+  if (!reportEmail.value && userStore.email) {
+    reportEmail.value = userStore.email
+  }
+  if (!reportFirstName.value && userStore.firstName) {
+    reportFirstName.value = userStore.firstName
+  }
+  if (!reportLastName.value && userStore.lastName) {
+    reportLastName.value = userStore.lastName
+  }
+}
+
+const handleReport = () => {
+  if (hasReportedIssue.value) {
+    toastInfo('Signalement déjà envoyé pour cet exercice.', 2800)
+    return
+  }
+  prefillReportFields()
+  showReportModal.value = true
+}
+
+const closeReportModal = () => {
+  if (!sendingReport.value) {
+    showReportModal.value = false
+  }
+}
+
+async function submitReport() {
+  if (sendingReport.value) return
+  const description = (reportDescription.value || '').trim()
+  const email = (reportEmail.value || '').trim()
+  const first = (reportFirstName.value || userStore.firstName || 'Élève').trim() || 'Élève'
+  const last = (reportLastName.value || userStore.lastName || 'OptiTAB').trim() || 'OptiTAB'
+
+  if (!description || description.length < 10) {
+    toastError('Décrivez le problème (10 caractères minimum).', 3600)
+    return
+  }
+  if (!email || !emailPattern.test(email)) {
+    toastError('Renseignez un email valide pour recevoir la confirmation.', 3600)
+    return
+  }
+
+  const subject = `Signalement exercice ${props.eid ? `#${props.eid}` : ''} - ${props.titre || 'Exercice'}`
+  const message = `${description}\n\n---\nExercice ID: ${props.eid || 'inconnu'}\nTitre: ${props.titre || '—'}`.trim()
+
+  sendingReport.value = true
+  try {
+    await sendContactMessage({
+      firstName: first,
+      lastName: last,
+      email,
+      subject,
+      message
+    })
+    hasReportedIssue.value = true
+    showReportModal.value = false
+    toastSuccess('Message pris en compte. Un email de confirmation vient de vous être envoyé.', 4200)
+  } catch (error) {
+    toastError('Impossible d\'envoyer le signalement pour le moment. Réessayez.', 4200)
+  } finally {
+    sendingReport.value = false
+  }
 }
 
 // Methods
@@ -563,6 +717,14 @@ onMounted(() => {
     loadExerciceImages()
   }
   renderMath()
+  prefillReportFields()
+})
+
+watch(showReportModal, (val) => {
+  if (val && typeof window !== 'undefined') {
+    // S'assurer que le modal est visible en haut sur mobile
+    requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }))
+  }
 })
 
 // Watcher sur activeTab pour forcer le rendu quand on change d'onglet
@@ -652,9 +814,9 @@ watch(activeTab, () => {
   gap: 12px;
 }
 
-.favorite-btn {
-  background: #fff;
-  border: 1px solid rgba(59, 130, 246, 0.4);
+.flag-btn {
+  background: #fff7ed;
+  border: 1px solid #fdba74;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -663,14 +825,25 @@ watch(activeTab, () => {
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: #c2410c;
+  box-shadow: 0 1px 4px rgba(249, 115, 22, 0.25);
 }
 
-.favorite-btn:hover {
-  background: #eef2ff;
+.flag-btn:hover {
+  background: #ffedd5;
+  border-color: #f97316;
+  color: #9a3412;
 }
 
-.favorite-icon {
-  font-size: 1.25rem;
+.flag-btn.reported {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+}
+
+.flag-icon svg {
+  display: block;
 }
 
 .exercice-title {
@@ -1435,6 +1608,257 @@ watch(activeTab, () => {
 }
 
 /* Modal styles */
+.report-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 12010;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.report-modal {
+  background: #ffffff;
+  border-radius: 18px;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: 0 16px 48px rgba(15, 23, 42, 0.16);
+  border: 1px solid #e2e8f0;
+  padding: 22px;
+  color: #0f172a;
+  position: relative;
+}
+
+.report-modal-header {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.report-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff7ed, #fffbeb);
+  color: #c2410c;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  border: 1px solid #fed7aa;
+  box-shadow: 0 8px 20px rgba(249, 115, 22, 0.22);
+}
+
+.report-headings {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.report-modal-header h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.report-kicker {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: #0f172a;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.report-subtitle {
+  margin: 4px 0 0;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.report-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0 10px;
+}
+
+.report-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #334155;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.report-input {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 11px 12px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.report-input::placeholder {
+  color: #94a3b8;
+}
+
+.report-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
+  background: #fff;
+}
+
+.report-names {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.report-modal-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.report-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.report-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 11px 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  min-width: 150px;
+}
+
+.report-btn.primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+}
+
+.report-btn.primary:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.report-btn.ghost {
+  background: #f8fafc;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+}
+
+.report-btn.ghost:hover {
+  background: #e2e8f0;
+}
+
+.report-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.report-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
+}
+
+.report-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  color: #475569;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.report-close:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.report-footnote {
+  margin: 0;
+  color: #475569;
+  font-size: 0.86rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.report-footnote-icon {
+  font-size: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.report-footnote {
+  margin: 10px 0 0;
+  color: #475569;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+@media (max-width: 540px) {
+  .report-modal-overlay {
+    align-items: flex-start;
+    padding: 0.75rem;
+  }
+  .report-modal {
+    padding: 16px;
+    width: 100%;
+    max-width: none;
+    border-radius: 12px;
+    margin-top: calc(env(safe-area-inset-top, 12px));
+  }
+  .report-names {
+    grid-template-columns: 1fr;
+  }
+  .report-actions {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+}
+
 .image-modal-overlay {
   position: fixed;
   top: 0;

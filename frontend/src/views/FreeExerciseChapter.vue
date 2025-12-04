@@ -84,7 +84,7 @@ const fetchExercises = async () => {
   loading.value = true
   error.value = null
   try {
-    const data = await getFreeResources({ type: 'exercise', notion: notionId.value })
+    const data = await getFreeResources({ type: 'exercise', notion: notionId.value, page_size: 500 })
     const list = Array.isArray(data?.results) ? data.results : data
     exercises.value = list
     currentPage.value = 1

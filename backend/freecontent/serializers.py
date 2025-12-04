@@ -348,3 +348,22 @@ class SynthesisFreePreviewSerializer(serializers.Serializer):
             return ''
         approx = max(1, int((words + 179) / 180))
         return f"~{approx} min"
+
+
+class ExerciseNotionSummarySerializer(serializers.Serializer):
+    """
+    Résumé par chapitre (notion) pour les exercices gratuits.
+    Utilisé pour paginer par notion plutôt que par exercice.
+    """
+
+    notion = serializers.IntegerField()
+    notion_nom = serializers.CharField()
+    matiere_nom = serializers.CharField(required=False, allow_blank=True, default='')
+    niveau_nom = serializers.CharField(required=False, allow_blank=True, default='')
+    tag_secondaire = serializers.CharField(required=False, allow_blank=True, default='')
+    is_locked = serializers.BooleanField(default=False)
+    count = serializers.IntegerField()
+    resource_type = serializers.SerializerMethodField()
+
+    def get_resource_type(self, obj):
+        return getattr(FreeLearningResource, 'TYPE_EXERCISE', 'exercise')

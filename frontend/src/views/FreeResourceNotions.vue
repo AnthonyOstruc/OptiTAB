@@ -24,6 +24,8 @@ const error = ref(null)
 const resources = ref([]) // liste courante (page)
 const allResources = ref([]) // fallback si pas de pagination serveur
 const totalCount = ref(0)
+const totalExercisesCount = ref(0)
+const totalChaptersCount = ref(0)
 const isServerPaginated = ref(true)
 const selectedLevels = ref([])
 const showLevelFilter = ref(false)
@@ -120,11 +122,28 @@ const fetchResources = async (page = 1, retried = false) => {
   loading.value = true
   error.value = null
   try {
-    const data = await getFreeResources({ type: props.resourceType, page, page_size: itemsPerPage })
+    const params = {
+      type: props.resourceType,
+      page,
+      page_size: itemsPerPage
+    }
+    if (isExerciseMode.value) {
+      params.group_by = 'notion'
+    }
+    const data = await getFreeResources(params)
     const list = Array.isArray(data?.results) ? data.results : data
     const count = Number(data?.count) || 0
+    const totalExercises = Number(data?.total_exercises || data?.totalExercises || 0)
     allResources.value = list || []
-    totalCount.value = count
+    if (isExerciseMode.value) {
+      totalExercisesCount.value = totalExercises || list?.reduce((acc, item) => acc + (Number(item?.count) || 1), 0) || 0
+      totalChaptersCount.value = count || (list ? list.length : 0)
+      totalCount.value = totalChaptersCount.value
+    } else {
+      totalExercisesCount.value = 0
+      totalChaptersCount.value = 0
+      totalCount.value = count
+    }
     isServerPaginated.value = count > 0
 
     if (count > 0) {
@@ -141,10 +160,16 @@ const fetchResources = async (page = 1, retried = false) => {
     if (!retried) {
       // Fallback: certains endpoints n'acceptent pas page/page_size -> tenter sans pagination serveur
       try {
-        const data = await getFreeResources({ type: props.resourceType })
+        const fallbackParams = { type: props.resourceType }
+        if (isExerciseMode.value) {
+          fallbackParams.group_by = 'notion'
+        }
+        const data = await getFreeResources(fallbackParams)
         const list = Array.isArray(data?.results) ? data.results : data
         allResources.value = list || []
         totalCount.value = 0
+        totalExercisesCount.value = 0
+        totalChaptersCount.value = 0
         isServerPaginated.value = false
         currentPage.value = page
         const start = (page - 1) * itemsPerPage
@@ -288,12 +313,14 @@ const flatList = computed(() => {
           name: chapterName,
           description: item?.notion_description || item?.accroche || item?.excerpt || '',
           exercises: [],
-          displayTag: ''
+          displayTag: '',
+          totalCount: 0
         })
       }
       const chapterEntry = chaptersMap.get(chapterKey)
       chapterEntry.exercises = chapterEntry.exercises || []
       chapterEntry.exercises.push(item)
+      chapterEntry.totalCount = (chapterEntry.totalCount || 0) + (Number(item?.count) || 1)
       const tag = item.tag_secondaire || item.niveau_nom || item.matiere_nom || ''
       if (!chapterEntry.displayTag && tag) {
         chapterEntry.displayTag = tag
@@ -304,7 +331,7 @@ const flatList = computed(() => {
         const exercisesList = Array.isArray(chapter.exercises) ? chapter.exercises : []
         return {
           ...chapter,
-          count: exercisesList.length,
+          count: typeof chapter.totalCount === 'number' ? chapter.totalCount : exercisesList.length,
           isLocked: exercisesList.length > 0 && exercisesList.every((exercise) => Boolean(exercise.is_locked))
         }
       })
@@ -327,14 +354,16 @@ const flatList = computed(() => {
 })
 
 const totalResourceCount = computed(() => {
-  const count = totalCount.value || filteredResources.value.length
   if (isExerciseMode.value) {
-    // Pour les exercices, afficher "X exercices" et "Y chapitres" (chapitres sur la page courante)
+    // Pour les exercices, afficher "X exercices" et "Y chapitres" (chapitres globaux)
+    const exercisesCount = totalExercisesCount.value || totalCount.value || filteredResources.value.length
+    const chapterCount = totalChaptersCount.value || flatList.value.length
     return {
-      count,
-      chapterCount: flatList.value.length
+      count: exercisesCount,
+      chapterCount
     }
   }
+  const count = totalCount.value || filteredResources.value.length
   return {
     count,
     chapterCount: 0
@@ -343,7 +372,10 @@ const totalResourceCount = computed(() => {
 
 const totalPages = computed(() => {
   if (hasServerPagination.value) {
-    return Math.max(1, Math.ceil((totalCount.value || flatList.value.length) / itemsPerPage))
+    const totalForPagination = isExerciseMode.value
+      ? (totalChaptersCount.value || flatList.value.length)
+      : (totalCount.value || filteredResources.value.length)
+    return Math.max(1, Math.ceil(totalForPagination / itemsPerPage))
   }
   const listLength = isExerciseMode.value ? flatList.value.length : filteredResources.value.length
   return Math.max(1, Math.ceil(listLength / itemsPerPage))

@@ -1,8 +1,9 @@
-from django.db.models import Q
+from django.db.models import Q, Count, Case, When, Value, BooleanField, F
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
+from rest_framework.pagination import PageNumberPagination
 
 from cours.models import Cours
 from curriculum.models import Exercice
@@ -12,8 +13,17 @@ from .serializers import (
     FreeLearningResourceSerializer,
     CourseFreePreviewSerializer,
     ExerciceFreePreviewSerializer,
-    SynthesisFreePreviewSerializer
+    SynthesisFreePreviewSerializer,
+    ExerciseNotionSummarySerializer
 )
+
+
+class FreeLearningResourcePagination(PageNumberPagination):
+    """Pagination simple pour limiter la payload des ressources gratuites."""
+
+    page_size = 12
+    page_size_query_param = 'page_size'
+    max_page_size = 500
 
 
 class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
@@ -26,6 +36,7 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = FreeLearningResourceSerializer
     permission_classes = [AllowAny]
     lookup_field = 'slug'
+    pagination_class = FreeLearningResourcePagination
     queryset = (
         FreeLearningResource.objects
         .filter(est_actif=True, est_publie=True)
@@ -83,27 +94,24 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
 
         if resource_type == FreeLearningResource.TYPE_COURSE:
             queryset = self._apply_limit(self._get_free_courses_queryset(request), request)
-            serializer = CourseFreePreviewSerializer(queryset, many=True, context=self.get_serializer_context())
-            return Response(serializer.data)
+            return self._paginate_and_serialize(queryset, CourseFreePreviewSerializer)
         if resource_type == FreeLearningResource.TYPE_EXERCISE:
+            group_param = request.query_params.get('group_by') or request.query_params.get('group') or ''
+            group_by_notion = str(group_param).lower() == 'notion'
+            group_flag = str(request.query_params.get('group_by_notion', '')).lower() in ('1', 'true', 'yes')
+            if group_by_notion or group_flag:
+                return self._list_free_exercises_grouped(request)
             queryset = self._apply_limit(self._get_free_exercises_queryset(request), request)
-            serializer = ExerciceFreePreviewSerializer(queryset, many=True, context=self.get_serializer_context())
-            return Response(serializer.data)
+            return self._paginate_and_serialize(queryset, ExerciceFreePreviewSerializer)
         if resource_type == FreeLearningResource.TYPE_SUMMARY:
             queryset = self._apply_limit(self._get_free_summaries_queryset(request), request)
-            serializer = SynthesisFreePreviewSerializer(queryset, many=True, context=self.get_serializer_context())
-            return Response(serializer.data)
+            return self._paginate_and_serialize(queryset, SynthesisFreePreviewSerializer)
 
         queryset = self.filter_queryset(self.get_queryset())
         queryset = self._apply_limit(queryset, request)
 
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        serializer_class = self.get_serializer_class()
+        return self._paginate_and_serialize(queryset, serializer_class)
 
     def retrieve(self, request, *args, **kwargs):
         slug = kwargs.get(self.lookup_field)
@@ -220,6 +228,61 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             qs = qs.order_by(ordering)
 
         return qs
+
+    def _list_free_exercises_grouped(self, request):
+        """
+        Retourne une pagination par notion (chapitre) avec le nombre d'exercices et le statut de verrou.
+        """
+        base_queryset = self._get_free_exercises_queryset(request)
+        total_exercises = base_queryset.count()
+
+        grouped_qs = (
+            base_queryset
+            .values(
+                'notion',
+                'notion__titre',
+                'notion__theme__matiere__titre',
+                'notion__theme__contexte__niveau__nom',
+            )
+            .annotate(
+                count=Count('id'),
+                free_count=Count('id', filter=Q(access_scope__in=[Exercice.ACCESS_SCOPE_FREE, Exercice.ACCESS_SCOPE_BOTH])),
+                notion_nom=F('notion__titre'),
+                matiere_nom=F('notion__theme__matiere__titre'),
+                niveau_nom=F('notion__theme__contexte__niveau__nom'),
+                tag_secondaire=F('notion__theme__contexte__niveau__nom'),
+            )
+            .annotate(
+                is_locked=Case(
+                    When(free_count__gt=0, then=Value(False)),
+                    default=Value(True),
+                    output_field=BooleanField()
+                )
+            )
+            .order_by('notion__titre', 'notion')
+        )
+
+        grouped_qs = self._apply_limit(grouped_qs, request)
+
+        page = self.paginate_queryset(grouped_qs)
+        serializer = ExerciseNotionSummarySerializer(page or grouped_qs, many=True, context=self.get_serializer_context())
+
+        if page is not None:
+            response = self.get_paginated_response(serializer.data)
+            response.data['total_exercises'] = total_exercises
+            return response
+
+        return Response(serializer.data)
+
+    def _paginate_and_serialize(self, queryset, serializer_class):
+        """Applique la pagination standard et serialise le resultat."""
+        page = self.paginate_queryset(queryset)
+        context = self.get_serializer_context()
+        if page is not None:
+            serializer = serializer_class(page, many=True, context=context)
+            return self.get_paginated_response(serializer.data)
+        serializer = serializer_class(queryset, many=True, context=context)
+        return Response(serializer.data)
 
     def _get_free_exercises_queryset(self, request):
         qs = (

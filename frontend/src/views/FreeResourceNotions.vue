@@ -551,7 +551,8 @@ const onLockedExercise = (chapter) => {
       </div>
 
       <div v-if="loading" class="state-card">
-        Chargement des ressources gratuites...
+        <div class="state-card__spinner" aria-hidden="true"></div>
+        <p>Chargement des ressources gratuites...</p>
       </div>
       <div v-else-if="error" class="state-card">
         <p>{{ error }}</p>
@@ -1000,6 +1001,16 @@ const onLockedExercise = (chapter) => {
   color: #475569;
 }
 
+.state-card__spinner {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 14px;
+  border-radius: 999px;
+  border: 4px solid #e0e7ff;
+  border-top-color: #2563eb;
+  animation: spin 0.9s linear infinite;
+}
+
 .state-card button {
   margin-top: 12px;
   padding: 10px 18px;
@@ -1127,6 +1138,15 @@ const onLockedExercise = (chapter) => {
 @media (max-width: 420px) {
   .free-course-page {
     padding: 105px 12px 48px;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>

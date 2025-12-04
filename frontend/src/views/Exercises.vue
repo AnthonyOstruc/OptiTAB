@@ -37,6 +37,7 @@
     <!-- Section de chargement -->
     <section v-else-if="isLoading" class="loading-section">
       <div class="loading-spinner">
+        <div class="spinner" aria-hidden="true"></div>
         <p>Chargement de vos exercices...</p>
       </div>
     </section>
@@ -232,9 +233,31 @@ function onSubjectClick(matiere) {
   text-align: center;
   color: #193e8e;
   font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .loading-spinner p {
   margin: 0;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 4px solid #e5ecff;
+  border-top-color: #2563eb;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style> 

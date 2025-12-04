@@ -150,6 +150,14 @@ const goToPage = (page) => {
     measureContentHeightForFreeExercises()
   })
 }
+
+const buildInstruction = (exercise) => {
+  if (!exercise?._locked) {
+    return exercise.instruction
+  }
+  const raw = exercise.instruction || ''
+  return `<span class="locked-blur">${raw}</span>`
+}
 </script>
 
 <template>
@@ -158,7 +166,8 @@ const goToPage = (page) => {
       <BackButton text="Retour aux exercices" :custom-action="goBack" position="top-left" />
 
       <div v-if="loading" class="state-card">
-        Chargement des exercices gratuits...
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <p class="loading-text">Chargement des exercices gratuits...</p>
       </div>
       <div v-else-if="error" class="state-card">
         <p>{{ error }}</p>
@@ -179,7 +188,7 @@ const goToPage = (page) => {
             <ExerciceQCM
               :eid="exercise.id || exercise.slug || index"
               :titre="exercise.titre"
-              :instruction="exercise._locked ? `<span class='locked-blur'>${exercise.instruction}</span>` : exercise.instruction"
+              :instruction="buildInstruction(exercise)"
               :solution="exercise.solution"
               :etapes="exercise.etapes"
               :difficulty="exercise.difficulty"
@@ -374,6 +383,32 @@ const goToPage = (page) => {
   filter: blur(5px);
   opacity: 0.35;
   pointer-events: none;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  border: 4px solid #e5ecff;
+  border-top-color: #2563eb;
+  animation: spin 0.9s linear infinite;
+}
+
+.loading-text {
+  margin: 0;
+  font-weight: 600;
+  color: #1d3b8b;
+  font-size: 15px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {

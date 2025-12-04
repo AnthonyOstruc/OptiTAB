@@ -230,7 +230,8 @@ onBeforeUnmount(() => {
 
       <div class="cours-body">
         <div v-if="loading" class="loading-container">
-        Chargement de la ressource...
+          <div class="loading-spinner" aria-hidden="true"></div>
+          <p class="loading-text">Chargement de la ressource...</p>
         </div>
 
         <div v-else-if="error" class="error-state">
@@ -324,6 +325,31 @@ onBeforeUnmount(() => {
 
 .cours-body {
   width: 100%;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid #e5ecff;
+  border-top-color: #2563eb;
+  animation: spin 0.9s linear infinite;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 36px 0;
+}
+
+.loading-text {
+  margin: 0;
+  font-weight: 600;
+  color: #1d3b8b;
+  font-size: 15px;
 }
 
 @media (max-width: 768px) {
@@ -716,5 +742,14 @@ onBeforeUnmount(() => {
 .scroll-top-fade-leave-to {
   opacity: 0;
   transform: translateY(10px);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

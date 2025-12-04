@@ -113,8 +113,8 @@
     </div>
 
     <div class="leaderboard-loading" v-else>
-      <div class="skeleton me"></div>
-      <div class="skeleton row" v-for="i in 6" :key="i"></div>
+      <div class="spinner" aria-hidden="true"></div>
+      <p class="loading-text">Chargement du classement...</p>
     </div>
   </div>
 </template>
@@ -464,10 +464,41 @@ onMounted(() => {
   }
 }
 
-.leaderboard-loading .skeleton { height: 44px; border-radius: 10px; background: linear-gradient(90deg, #f3f4f6, #e5e7eb, #f3f4f6); background-size: 200% 100%; animation: shimmer 1.2s infinite; margin-bottom: .5rem; }
-.leaderboard-loading .skeleton.me { height: 64px; }
+.leaderboard-loading {
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #1f2937;
+  font-weight: 600;
+}
 
-@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 4px solid #e5ecff;
+  border-top-color: #2563eb;
+  animation: spin 0.9s linear infinite;
+}
+
+.loading-text {
+  margin: 0;
+  color: #1d3b8b;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 @media (max-width: 520px) {
   .leaderboard-header { flex-wrap: wrap; row-gap: .5rem; }

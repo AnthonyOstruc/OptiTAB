@@ -134,6 +134,15 @@ const extractLevels = (list) => {
   return Array.from(levels).sort()
 }
 
+const sortByLockStatus = (list) => {
+  return [...(list || [])].sort((a, b) => {
+    const aLocked = Boolean(a?.is_locked)
+    const bLocked = Boolean(b?.is_locked)
+    if (aLocked === bLocked) return 0
+    return aLocked ? 1 : -1
+  })
+}
+
 const fetchResources = async (page = 1, retried = false) => {
   loading.value = true
   error.value = null
@@ -325,10 +334,11 @@ const hasServerPagination = computed(() => isServerPaginated.value && totalCount
 
 const filteredResources = computed(() => {
   const baseList = hasServerPagination.value ? resources.value : allResources.value
-  // Si pagination serveur active, on retourne directement la page courante (filtrage déjà fait côté backend)
+  // Si pagination serveur active, on applique juste un tri pour mettre les gratuits devant
   if (hasServerPagination.value) {
-    return baseList || []
+    return sortByLockStatus(baseList)
   }
+
   let filtered = [...(baseList || [])]
 
   // Filter by level
@@ -373,7 +383,7 @@ const filteredResources = computed(() => {
     })
   }
 
-  return filtered
+  return sortByLockStatus(filtered)
 })
 
 const toggleLevel = (level) => {

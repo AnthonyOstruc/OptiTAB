@@ -197,7 +197,14 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 'notion__theme__contexte__niveau__pays',
             )
             .prefetch_related('images')
-            .order_by('ordre', 'notion__titre')
+            .annotate(
+                is_locked=Case(
+                    When(access_scope=Cours.ACCESS_SCOPE_PAID, then=Value(True)),
+                    default=Value(False),
+                    output_field=BooleanField()
+                )
+            )
+            .order_by('is_locked', 'ordre', 'notion__titre')
         )
 
         params = request.query_params
@@ -272,7 +279,7 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                     output_field=BooleanField()
                 )
             )
-            .order_by('notion__titre', 'notion')
+            .order_by('is_locked', 'notion__titre', 'notion')
         )
 
         grouped_qs = self._apply_limit(grouped_qs, request)
@@ -309,7 +316,14 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 'notion__theme__contexte__niveau__pays',
             )
             .prefetch_related('images')
-            .order_by('notion__titre', 'id')
+            .annotate(
+                is_locked=Case(
+                    When(access_scope=Exercice.ACCESS_SCOPE_PAID, then=Value(True)),
+                    default=Value(False),
+                    output_field=BooleanField()
+                )
+            )
+            .order_by('is_locked', 'notion__titre', 'id')
         )
 
         params = request.query_params
@@ -365,7 +379,14 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 'notion__theme__contexte__niveau__pays',
             )
             .prefetch_related('images')
-            .order_by('ordre', 'notion__titre')
+            .annotate(
+                is_locked=Case(
+                    When(access_scope=SynthesisSheet.ACCESS_SCOPE_PAID, then=Value(True)),
+                    default=Value(False),
+                    output_field=BooleanField()
+                )
+            )
+            .order_by('is_locked', 'ordre', 'notion__titre')
         )
 
         params = request.query_params

@@ -35,6 +35,7 @@ const searchQuery = ref('')
 const userStore = useUserStore()
 const subscriptionStore = useSubscriptionStore()
 const { openModal } = useModalManager()
+let searchTimeoutId = null
 
 const contentRef = ref(null)
 
@@ -130,6 +131,12 @@ const fetchResources = async (page = 1, retried = false) => {
     if (isExerciseMode.value) {
       params.group_by = 'notion'
     }
+    if (selectedLevels.value.length > 0) {
+      params.niveau_nom = selectedLevels.value.join(',')
+    }
+    if (searchQuery.value.trim()) {
+      params.q = searchQuery.value.trim()
+    }
     const data = await getFreeResources(params)
     const list = Array.isArray(data?.results) ? data.results : data
     const count = Number(data?.count) || 0
@@ -139,6 +146,10 @@ const fetchResources = async (page = 1, retried = false) => {
       totalExercisesCount.value = totalExercises || list?.reduce((acc, item) => acc + (Number(item?.count) || 1), 0) || 0
       totalChaptersCount.value = count || (list ? list.length : 0)
       totalCount.value = totalChaptersCount.value
+      isServerPaginated.value = count > 0
+      resources.value = list || []
+      currentPage.value = page
+      return
     } else {
       totalExercisesCount.value = 0
       totalChaptersCount.value = 0
@@ -167,14 +178,25 @@ const fetchResources = async (page = 1, retried = false) => {
         const data = await getFreeResources(fallbackParams)
         const list = Array.isArray(data?.results) ? data.results : data
         allResources.value = list || []
-        totalCount.value = 0
-        totalExercisesCount.value = 0
-        totalChaptersCount.value = 0
-        isServerPaginated.value = false
-        currentPage.value = page
-        const start = (page - 1) * itemsPerPage
-        resources.value = (list || []).slice(start, start + itemsPerPage)
-        return
+        if (isExerciseMode.value) {
+          totalExercisesCount.value = list?.reduce((acc, item) => acc + (Number(item?.count) || 1), 0) || 0
+          totalChaptersCount.value = list ? list.length : 0
+          totalCount.value = totalChaptersCount.value
+          isServerPaginated.value = false
+          currentPage.value = page
+          const start = (page - 1) * itemsPerPage
+          resources.value = (list || []).slice(start, start + itemsPerPage)
+          return
+        } else {
+          totalCount.value = 0
+          totalExercisesCount.value = 0
+          totalChaptersCount.value = 0
+          isServerPaginated.value = false
+          currentPage.value = page
+          const start = (page - 1) * itemsPerPage
+          resources.value = (list || []).slice(start, start + itemsPerPage)
+          return
+        }
       } catch (fallbackErr) {
         console.error('Erreur fallback ressources gratuites', fallbackErr)
       }
@@ -194,6 +216,9 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   cleanupViewportListener()
+  if (searchTimeoutId) {
+    clearTimeout(searchTimeoutId)
+  }
 })
 
 watch(() => props.resourceType, () => {
@@ -205,14 +230,23 @@ watch(() => props.resourceType, () => {
 
 watch(() => selectedLevels.value.length, () => {
   currentPage.value = 1
-  if (!hasServerPagination.value) {
+  if (hasServerPagination.value || isExerciseMode.value) {
+    fetchResources(1)
+  } else {
     nextTick(() => measureContentHeightForFreeResources())
   }
 })
 
 watch(() => searchQuery.value, () => {
   currentPage.value = 1
-  if (!hasServerPagination.value) {
+  if (hasServerPagination.value || isExerciseMode.value) {
+    if (searchTimeoutId) {
+      clearTimeout(searchTimeoutId)
+    }
+    searchTimeoutId = setTimeout(() => {
+      fetchResources(1)
+    }, 250)
+  } else {
     nextTick(() => measureContentHeightForFreeResources())
   }
 })
@@ -223,7 +257,8 @@ watch(viewportWidth, () => {
 
 const availableLevels = computed(() => {
   const levels = new Set()
-  resources.value.forEach((resource) => {
+  const baseList = hasServerPagination.value ? resources.value : allResources.value
+  baseList.forEach((resource) => {
     const level = resource?.niveau_nom || resource?.tag_secondaire
     if (level) {
       levels.add(level)
@@ -236,6 +271,10 @@ const hasServerPagination = computed(() => isServerPaginated.value && totalCount
 
 const filteredResources = computed(() => {
   const baseList = hasServerPagination.value ? resources.value : allResources.value
+  // Si pagination serveur active, on retourne directement la page courante (filtrage déjà fait côté backend)
+  if (hasServerPagination.value) {
+    return baseList || []
+  }
   let filtered = [...(baseList || [])]
 
   // Filter by level

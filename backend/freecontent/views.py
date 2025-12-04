@@ -203,6 +203,13 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         params = request.query_params
         matiere_id = params.get('matiere')
         niveau_id = params.get('niveau')
+        niveau_names = (
+            params.getlist('niveau_nom')
+            or params.getlist('niveau_nom[]')
+            or []
+        )
+        if not niveau_names and params.get('niveau_nom'):
+            niveau_names = [v.strip() for v in params.get('niveau_nom', '').split(',') if v.strip()]
         notion_id = params.get('notion')
         pays_id = params.get('pays')
         search = params.get('q')
@@ -211,6 +218,8 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             qs = qs.filter(notion__theme__matiere_id=matiere_id)
         if niveau_id:
             qs = qs.filter(notion__theme__contexte__niveau_id=niveau_id)
+        if niveau_names:
+            qs = qs.filter(notion__theme__contexte__niveau__nom__in=niveau_names)
         if notion_id:
             qs = qs.filter(notion_id=notion_id)
         if pays_id:
@@ -302,6 +311,13 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         params = request.query_params
         matiere_id = params.get('matiere')
         niveau_id = params.get('niveau')
+        niveau_names = (
+            params.getlist('niveau_nom')
+            or params.getlist('niveau_nom[]')
+            or []
+        )
+        if not niveau_names and params.get('niveau_nom'):
+            niveau_names = [v.strip() for v in params.get('niveau_nom', '').split(',') if v.strip()]
         notion_id = params.get('notion')
         pays_id = params.get('pays')
         search = params.get('q')
@@ -310,6 +326,8 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             qs = qs.filter(notion__theme__matiere_id=matiere_id)
         if niveau_id:
             qs = qs.filter(notion__theme__contexte__niveau_id=niveau_id)
+        if niveau_names:
+            qs = qs.filter(notion__theme__contexte__niveau__nom__in=niveau_names)
         if notion_id:
             qs = qs.filter(notion_id=notion_id)
         if pays_id:
@@ -347,6 +365,13 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         params = request.query_params
         matiere_id = params.get('matiere')
         niveau_id = params.get('niveau')
+        niveau_names = (
+            params.getlist('niveau_nom')
+            or params.getlist('niveau_nom[]')
+            or []
+        )
+        if not niveau_names and params.get('niveau_nom'):
+            niveau_names = [v.strip() for v in params.get('niveau_nom', '').split(',') if v.strip()]
         notion_id = params.get('notion')
         pays_id = params.get('pays')
         search = params.get('q')
@@ -355,6 +380,8 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             qs = qs.filter(notion__theme__matiere_id=matiere_id)
         if niveau_id:
             qs = qs.filter(notion__theme__contexte__niveau_id=niveau_id)
+        if niveau_names:
+            qs = qs.filter(notion__theme__contexte__niveau__nom__in=niveau_names)
         if notion_id:
             qs = qs.filter(notion_id=notion_id)
         if pays_id:

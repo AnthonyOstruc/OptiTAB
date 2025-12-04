@@ -83,8 +83,8 @@ const goBack = () => {
 
 .back-button--top-left {
   position: fixed;
-  top: 80px;
-  left: 20px;
+  top: calc(var(--header-height, 60px));
+  left: env(safe-area-inset-left, 0px);
   z-index: 15000;
   margin: 0;
   background: #ffffff;
@@ -138,8 +138,8 @@ const goBack = () => {
 
 @media (max-width: 768px) {
   .back-button--top-left {
-    top: 75px;
-    left: 15px;
+    top: calc(var(--header-height, 60px));
+    left: env(safe-area-inset-left, 0px);
   }
   
   .back-button--top-left-dashboard {
@@ -158,8 +158,8 @@ const goBack = () => {
 
 @media (max-width: 480px) {
   .back-button--top-left {
-    top: 70px;
-    left: 10px;
+    top: calc(var(--header-height, 60px));
+    left: env(safe-area-inset-left, 0px);
   }
   
   .back-button--top-left-dashboard {

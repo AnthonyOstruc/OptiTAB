@@ -91,6 +91,7 @@ const isSummaryMode = computed(() => props.resourceType === 'summary')
 const isCourseMode = computed(() => props.resourceType === 'course')
 
 const getCardTitle = (resource) => {
+  if (!resource) return 'Chapitre'
   if (isExerciseMode.value && resource?.notion_nom) {
     return resource.notion_nom
   }
@@ -98,6 +99,7 @@ const getCardTitle = (resource) => {
 }
 
 const getCardDescription = (resource) => {
+  if (!resource) return 'Cliquez pour explorer'
   if (isExerciseMode.value) {
     return 'Cliquez pour explorer les exercices'
   }
@@ -276,19 +278,21 @@ const flatList = computed(() => {
 
   if (isExerciseMode.value) {
     const chaptersMap = new Map()
-    filteredResources.value.forEach((item, index) => {
+    filteredResources.value.filter(Boolean).forEach((item, index) => {
       const chapterKey = item.notion || item.notion_nom || `chapitre-${index}`
+      const chapterName = item?.notion_nom || item?.titre || item?.nom || typeConfig.value.fallback || 'Chapitre'
       if (!chaptersMap.has(chapterKey)) {
         chaptersMap.set(chapterKey, {
           id: chapterKey,
           notionId: item.notion || chapterKey,
-          name: item.notion_nom || 'Chapitre gratuit',
-          description: item.notion_description || item.accroche || item.excerpt || '',
+          name: chapterName,
+          description: item?.notion_description || item?.accroche || item?.excerpt || '',
           exercises: [],
           displayTag: ''
         })
       }
       const chapterEntry = chaptersMap.get(chapterKey)
+      chapterEntry.exercises = chapterEntry.exercises || []
       chapterEntry.exercises.push(item)
       const tag = item.tag_secondaire || item.niveau_nom || item.matiere_nom || ''
       if (!chapterEntry.displayTag && tag) {
@@ -296,16 +300,19 @@ const flatList = computed(() => {
       }
     })
     return Array.from(chaptersMap.values())
-      .map((chapter) => ({
-        ...chapter,
-        count: chapter.exercises.length,
-        isLocked: chapter.exercises.length > 0 && chapter.exercises.every((exercise) => Boolean(exercise.is_locked))
-      }))
+      .map((chapter) => {
+        const exercisesList = Array.isArray(chapter.exercises) ? chapter.exercises : []
+        return {
+          ...chapter,
+          count: exercisesList.length,
+          isLocked: exercisesList.length > 0 && exercisesList.every((exercise) => Boolean(exercise.is_locked))
+        }
+      })
       .sort((a, b) => {
         if (a.isLocked !== b.isLocked) {
           return a.isLocked ? 1 : -1
         }
-        return a.name.localeCompare(b.name)
+        return (a.name || '').localeCompare(b.name || '')
       })
   }
 
@@ -338,16 +345,18 @@ const totalPages = computed(() => {
   if (hasServerPagination.value) {
     return Math.max(1, Math.ceil((totalCount.value || flatList.value.length) / itemsPerPage))
   }
-  return Math.max(1, Math.ceil(filteredResources.value.length / itemsPerPage))
+  const listLength = isExerciseMode.value ? flatList.value.length : filteredResources.value.length
+  return Math.max(1, Math.ceil(listLength / itemsPerPage))
 })
 
 const paginatedList = computed(() => {
+  const sourceList = isExerciseMode.value ? flatList.value : filteredResources.value
   if (hasServerPagination.value) {
-    return flatList.value
+    return sourceList
   }
   const start = (currentPage.value - 1) * itemsPerPage
   const end = start + itemsPerPage
-  return filteredResources.value.slice(start, end)
+  return sourceList.slice(start, end)
 })
 
 const goToPage = (page) => {
@@ -365,6 +374,12 @@ const goToPage = (page) => {
 const formatCount = (count, overrideLabel) => {
   const label = overrideLabel || typeConfig.value.counterLabel || 'ressource'
   return `${count} ${label}${count > 1 ? 's' : ''}`
+}
+
+const getExerciseCount = (chapter) => {
+  if (!chapter) return 0
+  if (typeof chapter.count === 'number') return chapter.count
+  return Array.isArray(chapter.exercises) ? chapter.exercises.length : 0
 }
 
 const openResource = (resource) => {
@@ -520,7 +535,7 @@ const onLockedExercise = (chapter) => {
             <NotionCard
               v-for="chapter in paginatedList"
               :key="chapter.id"
-              :title="chapter.name"
+              :title="chapter.name || typeConfig.fallback || 'Chapitre'"
               description="Cliquez pour explorer les exercices"
               :notion-id="chapter.notionId"
               :disable-prefetch="true"
@@ -536,7 +551,7 @@ const onLockedExercise = (chapter) => {
                   Premium
                 </span>
                 <span class="resource-chapter-pill">
-                  {{ formatCount(chapter.count || chapter.exercises.length, 'exercice') }}
+                  {{ formatCount(getExerciseCount(chapter), 'exercice') }}
                 </span>
                 <span
                   v-if="chapter.displayTag"

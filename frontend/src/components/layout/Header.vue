@@ -132,6 +132,7 @@ export default {
 
 .header--no-shadow {
   box-shadow: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .header-mobile {

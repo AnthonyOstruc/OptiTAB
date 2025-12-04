@@ -15,6 +15,8 @@ const loading = ref(false)
 const error = ref(null)
 const exercises = ref([])
 const notionTitle = ref(route.query.title || '')
+const currentPage = ref(1)
+const itemsPerPage = 5
 
 const contentRef = ref(null)
 
@@ -55,11 +57,27 @@ const displayedExercises = computed(() =>
     difficulty: item.difficulty || item.difficulte || 'medium',
     previewImages: item.images || [],
     badge: item.badge,
-    tag: item.tag_secondaire
+    tag: item.tag_secondaire,
+    _locked: Boolean(item.is_locked)
   }))
 )
 
 const exercisesCount = computed(() => displayedExercises.value.length)
+
+const orderedExercises = computed(() => {
+  const unlocked = displayedExercises.value.filter((ex) => !ex._locked)
+  const locked = displayedExercises.value.filter((ex) => ex._locked)
+  return [...unlocked, ...locked]
+})
+
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil((orderedExercises.value.length || 0) / itemsPerPage))
+)
+
+const paginatedExercises = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  return orderedExercises.value.slice(start, start + itemsPerPage)
+})
 
 const fetchExercises = async () => {
   if (!notionId.value) return
@@ -69,6 +87,7 @@ const fetchExercises = async () => {
     const data = await getFreeResources({ type: 'exercise', notion: notionId.value })
     const list = Array.isArray(data?.results) ? data.results : data
     exercises.value = list
+    currentPage.value = 1
     if (!notionTitle.value && list?.length && list[0]?.notion_nom) {
       notionTitle.value = list[0].notion_nom
     }
@@ -122,6 +141,15 @@ onBeforeUnmount(() => {
 watch(viewportWidth, () => {
   nextTick(() => measureContentHeightForFreeExercises())
 })
+
+const goToPage = (page) => {
+  if (page < 1 || page > totalPages.value) return
+  currentPage.value = page
+  nextTick(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    measureContentHeightForFreeExercises()
+  })
+}
 </script>
 
 <template>
@@ -140,16 +168,18 @@ watch(viewportWidth, () => {
         Aucun exercice gratuit n'est disponible pour ce chapitre pour le moment.
       </div>
       <div v-else class="content-wrapper" :style="zoomStyle" ref="contentRef">
-        <div class="exercise-stack">
+        <div class="exercise-stack" v-if="displayedExercises.length > 0">
           <div
-            v-for="(exercise, index) in displayedExercises"
-            :key="exercise.id"
+            v-for="(exercise, index) in paginatedExercises"
+            :key="exercise.id || exercise.slug || index"
             class="exercise-card-wrapper"
+            :class="{ 'locked-tabs': exercise._locked }"
           >
+            <div v-if="exercise._locked" class="locked-pill">Exercice premium</div>
             <ExerciceQCM
-              :eid="exercise.id"
+              :eid="exercise.id || exercise.slug || index"
               :titre="exercise.titre"
-              :instruction="exercise.instruction"
+              :instruction="exercise._locked ? `<span class='locked-blur'>${exercise.instruction}</span>` : exercise.instruction"
               :solution="exercise.solution"
               :etapes="exercise.etapes"
               :difficulty="exercise.difficulty"
@@ -157,6 +187,26 @@ watch(viewportWidth, () => {
               readonly
             />
           </div>
+          <div v-if="totalPages > 1" class="pagination">
+            <button
+              class="pagination-btn"
+              :disabled="currentPage === 1"
+              @click="goToPage(currentPage - 1)"
+            >
+              &larr;
+            </button>
+            <span class="pagination-text">Page {{ currentPage }} / {{ totalPages }}</span>
+            <button
+              class="pagination-btn"
+              :disabled="currentPage === totalPages"
+              @click="goToPage(currentPage + 1)"
+            >
+              &rarr;
+            </button>
+          </div>
+        </div>
+        <div v-else class="state-card">
+          Aucun exercice gratuit n'est disponible pour ce chapitre pour le moment.
         </div>
       </div>
     </div>
@@ -216,6 +266,114 @@ watch(viewportWidth, () => {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pagination-btn {
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #1e293b;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-text {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.locked-pill {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #eef2ff;
+  color: #1d4ed8;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  z-index: 2;
+}
+
+.locked-tabs {
+  position: relative;
+}
+
+:deep(.locked-blur) {
+  filter: blur(2px);
+  display: inline-block;
+  position: relative;
+}
+
+:deep(.locked-blur)::after {
+  content: ' 🔒';
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+:deep(.locked-tabs .tabs-container .tab-btn:nth-child(2)),
+:deep(.locked-tabs .tabs-container .tab-btn:nth-child(3)) {
+  position: relative;
+  overflow: hidden;
+}
+
+:deep(.locked-tabs .tabs-container .tab-btn:nth-child(2)::after),
+:deep(.locked-tabs .tabs-container .tab-btn:nth-child(3)::after) {
+  content: '🔒';
+  margin-left: 6px;
+  font-size: 12px;
+}
+
+:deep(.locked-tabs .tabs-container .tab-btn:nth-child(2)),
+:deep(.locked-tabs .tabs-container .tab-btn:nth-child(3)) {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+:deep(.locked-tabs .steps-section),
+:deep(.locked-tabs .answer-section) {
+  position: relative;
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+:deep(.locked-tabs .steps-section::after),
+:deep(.locked-tabs .answer-section::after) {
+  content: 'Section réservée aux abonnés';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.92));
+  color: #1d4ed8;
+  font-weight: 700;
+  border: 1px dashed #cbd5f5;
+  border-radius: 12px;
+}
+
+:deep(.locked-tabs .problem-section .problem-content) {
+  position: relative;
+}
+
+:deep(.locked-tabs .problem-section .problem-content > :nth-of-type(n+3)) {
+  filter: blur(5px);
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {

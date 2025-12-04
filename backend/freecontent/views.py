@@ -208,7 +208,11 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             or params.getlist('niveau_nom[]')
             or []
         )
-        if not niveau_names and params.get('niveau_nom'):
+        if len(niveau_names) == 1 and ',' in niveau_names[0]:
+            # Support ?niveau_nom=a,b,c
+            niveau_names = [v.strip() for v in niveau_names[0].split(',') if v.strip()]
+        elif not niveau_names and params.get('niveau_nom'):
+            # Fallback simple
             niveau_names = [v.strip() for v in params.get('niveau_nom', '').split(',') if v.strip()]
         notion_id = params.get('notion')
         pays_id = params.get('pays')
@@ -316,7 +320,9 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             or params.getlist('niveau_nom[]')
             or []
         )
-        if not niveau_names and params.get('niveau_nom'):
+        if len(niveau_names) == 1 and ',' in niveau_names[0]:
+            niveau_names = [v.strip() for v in niveau_names[0].split(',') if v.strip()]
+        elif not niveau_names and params.get('niveau_nom'):
             niveau_names = [v.strip() for v in params.get('niveau_nom', '').split(',') if v.strip()]
         notion_id = params.get('notion')
         pays_id = params.get('pays')
@@ -370,7 +376,9 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             or params.getlist('niveau_nom[]')
             or []
         )
-        if not niveau_names and params.get('niveau_nom'):
+        if len(niveau_names) == 1 and ',' in niveau_names[0]:
+            niveau_names = [v.strip() for v in niveau_names[0].split(',') if v.strip()]
+        elif not niveau_names and params.get('niveau_nom'):
             niveau_names = [v.strip() for v in params.get('niveau_nom', '').split(',') if v.strip()]
         notion_id = params.get('notion')
         pays_id = params.get('pays')

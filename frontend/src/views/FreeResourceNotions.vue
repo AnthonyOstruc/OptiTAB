@@ -26,9 +26,13 @@ const allResources = ref([]) // fallback si pas de pagination serveur
 const totalCount = ref(0)
 const totalExercisesCount = ref(0)
 const totalChaptersCount = ref(0)
+const levelOptions = ref([])
+const levelOptionsLoaded = ref(false)
 const isServerPaginated = ref(true)
 const selectedLevels = ref([])
 const showLevelFilter = ref(false)
+const filterDropdownRef = ref(null)
+const filterButtonRef = ref(null)
 const currentPage = ref(1)
 const itemsPerPage = 12
 const searchQuery = ref('')
@@ -119,14 +123,30 @@ const getSummaryLevel = (resource) => {
   return resource?.niveau_nom || resource?.tag_secondaire || resource?.matiere_nom || ''
 }
 
+const extractLevels = (list) => {
+  const levels = new Set()
+  ;(list || []).forEach((resource) => {
+    const level = resource?.niveau_nom || resource?.tag_secondaire
+    if (level) {
+      levels.add(level)
+    }
+  })
+  return Array.from(levels).sort()
+}
+
 const fetchResources = async (page = 1, retried = false) => {
   loading.value = true
   error.value = null
   try {
+    const filtersActive = selectedLevels.value.length > 0 || Boolean(searchQuery.value.trim())
+    const useServerPagination = !filtersActive || isExerciseMode.value
+    const effectivePage = useServerPagination ? page : 1
+    const effectivePageSize = (!useServerPagination && !isExerciseMode.value) ? 500 : itemsPerPage
+
     const params = {
       type: props.resourceType,
-      page,
-      page_size: itemsPerPage
+      page: effectivePage,
+      page_size: effectivePageSize
     }
     if (isExerciseMode.value) {
       params.group_by = 'notion'
@@ -142,6 +162,7 @@ const fetchResources = async (page = 1, retried = false) => {
     const count = Number(data?.count) || 0
     const totalExercises = Number(data?.total_exercises || data?.totalExercises || 0)
     allResources.value = list || []
+    // Ne pas écraser la liste complète des niveaux; elle est chargée séparément
     if (isExerciseMode.value) {
       totalExercisesCount.value = totalExercises || list?.reduce((acc, item) => acc + (Number(item?.count) || 1), 0) || 0
       totalChaptersCount.value = count || (list ? list.length : 0)
@@ -153,17 +174,17 @@ const fetchResources = async (page = 1, retried = false) => {
     } else {
       totalExercisesCount.value = 0
       totalChaptersCount.value = 0
-      totalCount.value = count
+      totalCount.value = useServerPagination ? count : (list ? list.length : 0)
     }
-    isServerPaginated.value = count > 0
+    isServerPaginated.value = useServerPagination && count > 0
 
-    if (count > 0) {
+    if (isServerPaginated.value) {
       resources.value = list || []
       currentPage.value = page
     } else {
-      // Pas de pagination serveur: fallback client
-      currentPage.value = page
-      const start = (page - 1) * itemsPerPage
+      // Pas de pagination serveur: fallback client (filtre actif)
+      currentPage.value = 1
+      const start = 0
       resources.value = (list || []).slice(start, start + itemsPerPage)
     }
   } catch (err) {
@@ -174,6 +195,12 @@ const fetchResources = async (page = 1, retried = false) => {
         const fallbackParams = { type: props.resourceType }
         if (isExerciseMode.value) {
           fallbackParams.group_by = 'notion'
+        }
+        if (selectedLevels.value.length > 0) {
+          fallbackParams.niveau_nom = selectedLevels.value.join(',')
+        }
+        if (searchQuery.value.trim()) {
+          fallbackParams.q = searchQuery.value.trim()
         }
         const data = await getFreeResources(fallbackParams)
         const list = Array.isArray(data?.results) ? data.results : data
@@ -204,6 +231,29 @@ const fetchResources = async (page = 1, retried = false) => {
     error.value = err?.message || "Impossible de charger ces ressources gratuites."
   } finally {
     loading.value = false
+    // Charger la liste complète des niveaux en arrière-plan si pas encore fait
+    if (!levelOptionsLoaded.value) {
+      fetchLevelOptions()
+    }
+  }
+}
+
+const fetchLevelOptions = async () => {
+  try {
+    const params = {
+      type: props.resourceType,
+      page: 1,
+      page_size: 500
+    }
+    if (isExerciseMode.value) {
+      params.group_by = 'notion'
+    }
+    const data = await getFreeResources(params)
+    const list = Array.isArray(data?.results) ? data.results : data
+    levelOptions.value = extractLevels(list)
+    levelOptionsLoaded.value = true
+  } catch (_) {
+    // si erreur, on garde les options existantes
   }
 }
 
@@ -212,6 +262,8 @@ onMounted(() => {
   updateViewportWidth()
   setupViewportListener()
   fetchResources(1)
+  fetchLevelOptions()
+  document.addEventListener('click', handleClickOutside)
 })
 
 onBeforeUnmount(() => {
@@ -219,52 +271,54 @@ onBeforeUnmount(() => {
   if (searchTimeoutId) {
     clearTimeout(searchTimeoutId)
   }
+  document.removeEventListener('click', handleClickOutside)
 })
 
 watch(() => props.resourceType, () => {
   fetchResources(1)
   selectedLevels.value = []
+  levelOptions.value = []
+  levelOptionsLoaded.value = false
   currentPage.value = 1
   searchQuery.value = ''
+  fetchLevelOptions()
 })
 
 watch(() => selectedLevels.value.length, () => {
   currentPage.value = 1
-  if (hasServerPagination.value || isExerciseMode.value) {
-    fetchResources(1)
-  } else {
-    nextTick(() => measureContentHeightForFreeResources())
-  }
+  fetchResources(1)
 })
 
 watch(() => searchQuery.value, () => {
   currentPage.value = 1
-  if (hasServerPagination.value || isExerciseMode.value) {
-    if (searchTimeoutId) {
-      clearTimeout(searchTimeoutId)
-    }
-    searchTimeoutId = setTimeout(() => {
-      fetchResources(1)
-    }, 250)
-  } else {
-    nextTick(() => measureContentHeightForFreeResources())
+  if (searchTimeoutId) {
+    clearTimeout(searchTimeoutId)
   }
+  searchTimeoutId = setTimeout(() => {
+    fetchResources(1)
+  }, 250)
 })
 
 watch(viewportWidth, () => {
   nextTick(() => measureContentHeightForFreeResources())
 })
 
+const handleClickOutside = (event) => {
+  if (!showLevelFilter.value) return
+  const dropdownEl = filterDropdownRef.value
+  const buttonEl = filterButtonRef.value
+  const target = event.target
+  if (dropdownEl && dropdownEl.contains(target)) return
+  if (buttonEl && buttonEl.contains(target)) return
+  showLevelFilter.value = false
+}
+
 const availableLevels = computed(() => {
-  const levels = new Set()
+  if (levelOptions.value.length > 0) {
+    return levelOptions.value
+  }
   const baseList = hasServerPagination.value ? resources.value : allResources.value
-  baseList.forEach((resource) => {
-    const level = resource?.niveau_nom || resource?.tag_secondaire
-    if (level) {
-      levels.add(level)
-    }
-  })
-  return Array.from(levels).sort()
+  return extractLevels(baseList)
 })
 
 const hasServerPagination = computed(() => isServerPaginated.value && totalCount.value > 0)
@@ -536,7 +590,7 @@ const onLockedExercise = (chapter) => {
 
       <div v-if="availableLevels.length > 0" class="filter-section">
         <div class="filter-bar">
-          <button class="filter-toggle" @click="showLevelFilter = !showLevelFilter">
+          <button class="filter-toggle" ref="filterButtonRef" @click="showLevelFilter = !showLevelFilter">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="filter-icon">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
             </svg>
@@ -567,7 +621,7 @@ const onLockedExercise = (chapter) => {
           </div>
         </div>
         
-        <div v-if="showLevelFilter" class="filter-dropdown">
+        <div v-if="showLevelFilter" class="filter-dropdown" ref="filterDropdownRef">
           <div class="filter-header">
             <span class="filter-title">Niveaux</span>
             <button v-if="selectedLevels.length > 0" class="clear-btn" @click="clearFilters">Effacer</button>

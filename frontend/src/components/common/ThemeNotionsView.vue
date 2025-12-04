@@ -2,13 +2,9 @@
   <div class="tnv-wrapper">
     <!-- Loading with Skeleton -->
     <div v-if="loading" class="tnv-loading-skeleton">
-      <div v-for="i in 2" :key="i" class="tnv-theme-skeleton">
-        <div class="skeleton-theme-header">
-          <div class="skeleton-line skeleton-theme-title"></div>
-        </div>
-        <div class="tnv-skeleton-grid">
-          <SkeletonCard v-for="j in 4" :key="j" />
-        </div>
+      <div class="tnv-loading-spinner">
+        <div class="tnv-spinner" aria-hidden="true"></div>
+        <p class="tnv-loading-text">Chargement des chapitres...</p>
       </div>
     </div>
 
@@ -355,6 +351,7 @@ let currentAbortController = null
 async function load(matiereId) {
   if (!matiereId) return
   error.value = ''
+  loading.value = true
 
   const key = cacheKey(matiereId)
   const entry = cache.get(key) || readFromStorage(matiereId)
@@ -362,7 +359,7 @@ async function load(matiereId) {
     themes.value = entry.v.themes
     themeToNotions.value = entry.v.themeToNotions
     directNotions.value = entry.v.directNotions
-    loading.value = false
+    setTimeout(() => { loading.value = false }, 120)
   } else {
     loading.value = true
   }
@@ -702,6 +699,7 @@ function highlightQuery(text) {
   margin: 0;
   box-sizing: border-box;
   overflow-x: hidden;
+  min-height: 60vh;
 }
 
 .tnv-lock-banner {
@@ -941,7 +939,49 @@ function highlightQuery(text) {
 .tnv-loading-skeleton {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  text-align: center;
+  gap: 12px;
+  position: relative;
+}
+
+.tnv-loading-spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 0;
+}
+
+.tnv-spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 4px solid #e5ecff;
+  border-top-color: #2563eb;
+  animation: tnv-spin 0.9s linear infinite;
+}
+
+.tnv-loading-text {
+  margin: 0;
+  font-weight: 700;
+  color: #1d3b8b;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+}
+
+@keyframes tnv-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .tnv-theme-skeleton {

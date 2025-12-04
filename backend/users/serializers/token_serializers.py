@@ -1,6 +1,7 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth.models import update_last_login
 from ..models import CustomUser
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -19,6 +20,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Vérifier le mot de passe directement pour éviter un double appel à authenticate()
         if not user.check_password(password):
             raise AuthenticationFailed("Mot de passe incorrect.")
+
+        update_last_login(None, user)
 
         # Générer les tokens directement
         refresh = RefreshToken.for_user(user)

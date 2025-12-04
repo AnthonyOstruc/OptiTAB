@@ -11,6 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from allauth.socialaccount.models import SocialAccount
 from allauth.socialaccount.providers.google.provider import GoogleProvider
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import update_last_login
 from django.conf import settings
 import logging
 from google.oauth2 import id_token
@@ -80,6 +81,8 @@ class GoogleLoginView(APIView):
                 uid=google_uid,
                 defaults={'extra_data': idinfo}
             )
+
+            update_last_login(None, user)
 
             # Générer tokens JWT applicatifs
             refresh = RefreshToken.for_user(user)
@@ -218,6 +221,8 @@ class GoogleOAuthCodeExchangeView(APIView):
                 defaults={'extra_data': idinfo}
             )
 
+            update_last_login(None, user)
+
             refresh = RefreshToken.for_user(user)
             user_data = {
                 'id': user.id,
@@ -314,6 +319,8 @@ class GoogleOAuthAccessTokenView(APIView):
                 uid=google_uid or email,
                 defaults={'extra_data': info}
             )
+
+            update_last_login(None, user)
 
             refresh = RefreshToken.for_user(user)
             user_data = {

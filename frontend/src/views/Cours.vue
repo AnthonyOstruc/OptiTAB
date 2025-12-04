@@ -2,7 +2,7 @@
   <DashboardLayout>
     <section class="cours-section">
       <div
-        v-if="showInitialSpinner"
+        v-if="showLoadingSpinner"
         class="cours-initial-loader"
         role="status"
         aria-live="polite"
@@ -170,7 +170,6 @@ const subjectsStore = useSubjectsStore()
 const cours = ref([])
 const selectedCours = ref(null)
 const loading = ref(true)
-const initialLoadCompleted = ref(false)
 const coursContentRef = ref(null)
 const tableOfContents = ref([])
 const isTocExpanded = ref(false)
@@ -178,7 +177,7 @@ const showScrollTopButton = ref(false)
 let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
-const showInitialSpinner = computed(() => loading.value && !initialLoadCompleted.value)
+const showLoadingSpinner = computed(() => loading.value)
 
 // Utiliser le composable de zoom
 const {
@@ -428,9 +427,6 @@ async function loadCoursData() {
     scrollToTop({ behavior: 'auto', useWindow: true })
     if (window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise()
-    }
-    if (!initialLoadCompleted.value) {
-      initialLoadCompleted.value = true
     }
   }
 }

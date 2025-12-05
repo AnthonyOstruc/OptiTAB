@@ -17,8 +17,7 @@
           </div>
           <div class="suggestion-body">
             <div class="suggestion-text">
-              <div class="suggestion-title-line">{{ card.title }}</div>
-              <div class="suggestion-desc">{{ card.subtitle }}</div>
+              <div class="suggestion-title-line"></div>
             </div>
             <button class="suggestion-cta" @click="openSuggestion(card)">
               {{ card.cta }}
@@ -287,6 +286,8 @@ const suggestionCards = computed(() => {
   const cards = []
 
   if (lastIncorrect.value?.notion?.id) {
+    const notionId = lastIncorrect.value.notion.id
+    const exerciceId = lastIncorrect.value.exercice_id || lastIncorrect.value.id
     cards.push({
       key: `retry-${lastIncorrect.value.notion.id}`,
       badge: 'À revoir',
@@ -295,11 +296,14 @@ const suggestionCards = computed(() => {
       title: 'Reprends où tu t’es arrêté',
       subtitle: `Revois l’exercice “${lastIncorrect.value.exercice_titre || 'Dernier exercice'}”.`,
       cta: 'Réessayer cet exercice',
-      route: { name: 'ExerciceDetail', params: { exerciceId: String(lastIncorrect.value.exercice_id) } }
+      notionId,
+      exerciceId
     })
   }
 
   if (lastDone.value?.notion?.id) {
+    const notionId = lastDone.value.notion.id
+    const exerciceId = lastDone.value.exercice_id || lastDone.value.id
     cards.push({
       key: `practice-${lastDone.value.notion.id}`,
       badge: 'Entraînement',
@@ -308,16 +312,38 @@ const suggestionCards = computed(() => {
       title: 'Poursuis là où tu t’es arrêté',
       subtitle: `Continue “${lastDone.value.exercice_titre || 'Dernier exercice'}” ou un exercice proche.`,
       cta: 'Reprendre cet exercice',
-      route: { name: 'ExerciceDetail', params: { exerciceId: String(lastDone.value.exercice_id) } }
+      notionId,
+      exerciceId
     })
   }
 
   return cards.slice(0, 2)
 })
 
-const openSuggestion = (card) => {
-  if (!card?.route) return
-  router.push(card.route).catch(() => {})
+const openSuggestion = async (card) => {
+  try {
+    const notionId = card?.notionId || card?.notion?.id || card?.notion_id
+    const exerciceId = card?.exerciceId || card?.exercice_id || card?.id
+
+    if (notionId && exerciceId) {
+      await router.push({
+        name: 'ExercicesByNotion',
+        params: { notionId: String(notionId) },
+        hash: `#ex-${exerciceId}`
+      })
+      return
+    }
+
+    if (exerciceId) {
+      await router.push({
+        name: 'ExerciceDetail',
+        params: { exerciceId: String(exerciceId) }
+      })
+      return
+    }
+  } catch (error) {
+    console.error('[ExercicesHistory] Navigation suggestion échouée:', error)
+  }
 }
 
 // Chapitres supprimés: plus de tri dédié
@@ -536,11 +562,11 @@ defineExpose({
 }
 
 .practice-suggestions {
-  background: linear-gradient(135deg, #f8fbff 0%, #eef2ff 100%);
-  border: 1px solid #e0e7ff;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 14px 16px;
-  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+  padding: 16px 16px 14px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
 }
 
 .suggestion-header {
@@ -559,19 +585,19 @@ defineExpose({
 
 .suggestion-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
 }
 
 .suggestion-card {
   background: #fff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 12px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
 }
 
 .suggestion-card-head {
@@ -585,7 +611,7 @@ defineExpose({
 .suggestion-notion {
   font-weight: 700;
   color: #0f172a;
-  font-size: 0.95rem;
+  font-size: 1rem;
   text-align: right;
 }
 
@@ -613,39 +639,39 @@ defineExpose({
   gap: 10px;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .suggestion-text {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   color: #1f2937;
 }
 
 .suggestion-title-line {
   font-weight: 800;
-}
-
-.suggestion-desc {
-  color: #475569;
-  font-size: 0.92rem;
+  font-size: 0;
 }
 
 .suggestion-cta {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: #2563eb;
   color: #fff;
   border: none;
   border-radius: 10px;
-  padding: 10px 12px;
+  padding: 10px 14px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+  min-width: 150px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
 }
 
 .suggestion-cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
 }
 
 .suggestion-cta:active {
@@ -653,13 +679,50 @@ defineExpose({
 }
 
 @media (max-width: 640px) {
-  .suggestion-body {
+  .practice-suggestions {
+    padding: 12px 12px 14px;
+  }
+
+  .suggestion-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .suggestion-card {
+    padding: 12px;
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .suggestion-card-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .suggestion-notion {
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .suggestion-body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
   .suggestion-cta {
     width: 100%;
     text-align: center;
+    align-self: stretch;
+  }
+
+  .suggestion-title-line {
+    font-size: 1rem;
+  }
+
+  .suggestion-desc {
+    font-size: 0.9rem;
   }
 }
 

@@ -348,7 +348,7 @@ onActivated(() => {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  z-index: 50;
+  z-index: 80;
   padding: 2rem;
   text-align: center;
   pointer-events: all;
@@ -438,16 +438,6 @@ onActivated(() => {
   background: white;
   border-radius: 0;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e2e8f0;
-  border-top: 3px solid #3b82f6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
 }
 
 .error-icon {
@@ -834,9 +824,6 @@ onActivated(() => {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
 
 /* Responsive */
 @media (max-width: 768px) {

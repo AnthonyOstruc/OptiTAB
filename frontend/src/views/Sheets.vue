@@ -1,6 +1,15 @@
 <template>
   <DashboardLayout>
     <div class="synthesis-page">
+      <div
+        v-if="loading"
+        class="synthesis-initial-loader"
+        role="status"
+        aria-live="polite"
+      >
+        <LoadingSpinner size="large" color="#1e40af" />
+        <p>Chargement des fiches...</p>
+      </div>
       <!-- Header compact -->
       <header class="page-header">
         <div class="header-content">
@@ -30,9 +39,7 @@
 
       <!-- États de chargement -->
       <div v-if="loading" class="loading-container">
-          <div class="loading-spinner"></div>
-        <span>Chargement des fiches...</span>
-        </div>
+      </div>
 
       <div v-else-if="error" class="error-container">
         <div class="error-icon">⚠️</div>
@@ -142,6 +149,7 @@ import { getSynthesisSheets, getSynthesisMatieres } from '@/api/synthesis'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useSmartNavigation } from '@/composables/useSmartNavigation'
 import { useUserStore } from '@/stores/user'
+import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 
 // Composables
 const route = useRoute()
@@ -325,9 +333,31 @@ onActivated(() => {
 
 <style scoped>
 .synthesis-page {
+  position: relative;
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   padding: 1rem;
+}
+
+.synthesis-initial-loader {
+  position: absolute;
+  inset: 0;
+  background: rgba(248, 250, 252, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  z-index: 50;
+  padding: 2rem;
+  text-align: center;
+  pointer-events: all;
+}
+
+.synthesis-initial-loader p {
+  margin: 0;
+  font-weight: 600;
+  color: #1f2937;
 }
 
 /* Header moderne */

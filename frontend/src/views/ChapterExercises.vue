@@ -1,6 +1,15 @@
 <template>
   <DashboardLayout>
     <section class="exercices-section" ref="exPageRef">
+      <div
+        v-if="loading"
+        class="exercices-initial-loader"
+        role="status"
+        aria-live="polite"
+      >
+        <LoadingSpinner size="large" color="#1e40af" />
+        <p>Chargement des exercices...</p>
+      </div>
       <div class="nav-header-base">
         <BackButton 
           text="Retour aux chapitres" 
@@ -134,6 +143,7 @@ import { ref, onMounted, onActivated, onDeactivated, onBeforeUnmount, nextTick, 
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import SkeletonList from '@/components/common/SkeletonList.vue'
+import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import { getExercices, getStatuses, createStatus, updateStatus, deleteStatus } from '@/api'
 import { useUserStore } from '@/stores/user'
 import { useSubjectsStore } from '@/stores/subjects/index'
@@ -513,19 +523,14 @@ onMounted(async () => {
   }
   
   // Restaurer l'état sauvegardé (uniquement au premier montage, pas lors des réactivations KeepAlive)
-  restoreViewState()
+  const restoredViewState = restoreViewState()
+  const hasSavedScroll = restoredViewState && typeof restoredViewState.scrollY === 'number'
+  const hasHash = (route.hash || '').startsWith('#ex-')
+  if (!hasSavedScroll && !hasHash) {
+    scrollToTop({ behavior: 'auto' })
+  }
   
   await loadData()
-  
-  // Restaurer la position de scroll APRÈS le chargement initial
-  nextTick(() => {
-    setTimeout(() => {
-      const saved = readSavedViewState()
-      if (saved && typeof saved.scrollY === 'number') {
-        scrollToPosition({ top: saved.scrollY, behavior: 'auto' })
-      }
-    }, 200)
-  })
 })
 
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
@@ -597,6 +602,7 @@ async function loadData() {
     // Installer l'écouteur de scroll
     setupScrollListener()
     measureContentHeightForExercices()
+    restoreScrollPositionAfterLoad()
 
     // Forcer le rendu MathJax après le chargement des exercices
     setTimeout(() => {
@@ -998,6 +1004,20 @@ function scrollToTop(options = {}) {
   scrollToPosition({ ...options, top: 0 })
 }
 
+function restoreScrollPositionAfterLoad() {
+  nextTick(() => {
+    setTimeout(() => {
+      const saved = readSavedViewState()
+      const hasHash = (route.hash || '').startsWith('#ex-')
+      if (saved && typeof saved.scrollY === 'number') {
+        scrollToPosition({ top: saved.scrollY, behavior: 'auto' })
+      } else if (!hasHash) {
+        scrollToTop({ behavior: 'auto' })
+      }
+    }, 200)
+  })
+}
+
 let scrollCleanup = null
 function setupScrollListener() {
   try {
@@ -1352,6 +1372,28 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   background: #f8fafc;
   min-height: 100vh;
   padding: 0;
+  position: relative;
+}
+
+.exercices-initial-loader {
+  position: absolute;
+  inset: 0;
+  background: rgba(248, 250, 252, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  z-index: 80;
+  padding: 2rem;
+  text-align: center;
+  pointer-events: all;
+}
+
+.exercices-initial-loader p {
+  margin: 0;
+  font-weight: 600;
+  color: #1f2937;
 }
 
 :deep(.dashboard-main) {

@@ -162,6 +162,7 @@ const subjectsStore = useSubjectsStore()
 const notionId = ref(route.params.notionId)
 const exPageRef = ref(null)
 const exOuterRef = ref(null)
+const firstVisit = ref(true)
 
 // Utiliser le composable de zoom
 const {
@@ -424,6 +425,7 @@ const activeTab = ref('all')
 // --- Persistence (sessionStorage) ---
 const storageKey = computed(() => `optitab_page_exercices_${notionId.value}`)
 const focusKey = computed(() => `optitab_last_exercice_${notionId.value}`)
+const firstVisitKey = computed(() => `optitab_first_visit_exercices_${notionId.value}`)
 
 let isRestoringState = false
 
@@ -512,6 +514,7 @@ const error = ref('')
 const chapitres = ref([])
 
 onMounted(async () => {
+  initFirstVisitFlag()
   detectMobileAndZoomSupport()
   updateViewportWidth()
   setupViewportListener()
@@ -629,6 +632,7 @@ async function loadData() {
 watch(() => route.params.notionId, async (newId, oldId) => {
   if (newId && newId !== oldId) {
     notionId.value = newId
+    initFirstVisitFlag()
     await loadData()
   }
 })
@@ -1007,11 +1011,21 @@ function scrollToTop(options = {}) {
 function restoreScrollPositionAfterLoad() {
   nextTick(() => {
     setTimeout(() => {
-      const saved = readSavedViewState()
+      // Première visite: on force tout en haut
+      if (firstVisit.value) {
+        scrollToTop({ behavior: 'auto' })
+        return
+      }
+
       const hasHash = (route.hash || '').startsWith('#ex-')
+      const saved = readSavedViewState()
+
+      // Hash explicite: on laisse le scroll se gérer via tryScrollToHashExercice
+      if (hasHash) return
+
       if (saved && typeof saved.scrollY === 'number') {
         scrollToPosition({ top: saved.scrollY, behavior: 'auto' })
-      } else if (!hasHash) {
+      } else {
         scrollToTop({ behavior: 'auto' })
       }
     }, 200)
@@ -1364,6 +1378,18 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
   }
   
   return currentY
+}
+
+function initFirstVisitFlag() {
+  try {
+    const already = sessionStorage.getItem(firstVisitKey.value)
+    firstVisit.value = already !== '1'
+    if (firstVisit.value) {
+      sessionStorage.setItem(firstVisitKey.value, '1')
+    }
+  } catch (_) {
+    firstVisit.value = false
+  }
 }
 </script>
 

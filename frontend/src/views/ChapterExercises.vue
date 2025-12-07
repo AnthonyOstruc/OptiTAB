@@ -1369,7 +1369,7 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 
 <style scoped>
 .exercices-section {
-  background: #f8fafc;
+  background: #fff;
   min-height: 100vh;
   padding: 0;
   position: relative;
@@ -1407,15 +1407,17 @@ function formatScientificContent(text, pdf, startY, contentWidth, margin, isTitl
 
 .nav-header-base {
   position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  padding: 0.75rem 0.25rem 0.75rem 0.25rem;
-  margin: 0 0 1rem 0;
+  top: 0.5rem;
+  z-index: 120;
+  padding: 0;
+  margin: 0 0 0.75rem 0;
   display: flex;
-  background: #f8fafc;
-  box-shadow: none;
+  background: transparent;
+  pointer-events: none; /* let content scroll; only the button catches events */
+}
+
+.nav-header-base > * {
+  pointer-events: auto;
 }
 
 /* Sur mobile, empêcher complètement le scroll depuis le header */

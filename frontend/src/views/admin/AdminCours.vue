@@ -181,27 +181,32 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="cours in paginatedCours" :key="cours.id">
-          <td>{{ cours.id }}</td>
-          <td>{{ cours.titre }}</td>
-          <td>{{ getNotionName(cours.notion) }}</td>
-          <td class="ctx-cell">{{ getNotionContextLabel(cours.notion) }}</td>
-          <td>
-            <AdminActionsButtons
-              :item="cours"
-              :actions="['edit', 'duplicate', 'delete']"
-              edit-label="Éditer"
-              duplicate-label="Dupliquer"
-              confirm-message="Êtes-vous sûr de vouloir supprimer ce cours ?"
-              @edit="editCours"
-              @duplicate="handleDuplicateCours"
-              @delete="handleDeleteCours"
-            />
-          </td>
+        <tr v-if="isLoadingCours">
+          <td colspan="5" class="loading-row">Chargement des cours...</td>
         </tr>
-        <tr v-if="paginatedCours.length === 0">
-          <td colspan="7" style="text-align:center; font-style: italic;">Aucun cours trouvé.</td>
-        </tr>
+        <template v-else>
+          <tr v-for="cours in paginatedCours" :key="cours.id">
+            <td>{{ cours.id }}</td>
+            <td>{{ cours.titre }}</td>
+            <td>{{ getNotionName(cours.notion) }}</td>
+            <td class="ctx-cell">{{ getNotionContextLabel(cours.notion) }}</td>
+            <td>
+              <AdminActionsButtons
+                :item="cours"
+                :actions="['edit', 'duplicate', 'delete']"
+                edit-label="Éditer"
+                duplicate-label="Dupliquer"
+                confirm-message="Êtes-vous sûr de vouloir supprimer ce cours ?"
+                @edit="editCours"
+                @duplicate="handleDuplicateCours"
+                @delete="handleDeleteCours"
+              />
+            </td>
+          </tr>
+          <tr v-if="paginatedCours.length === 0">
+            <td colspan="5" style="text-align:center; font-style: italic;">Aucun cours trouvé.</td>
+          </tr>
+        </template>
       </tbody>
     </table>
 
@@ -209,8 +214,8 @@
     <div v-if="totalPages > 1" class="pagination">
       <button 
         class="pagination-btn" 
-        @click="currentPage--" 
-        :disabled="currentPage === 1"
+        @click="prevPage" 
+        :disabled="currentPage === 1 || isLoadingCours"
       >
         Précédent
       </button>
@@ -221,7 +226,8 @@
           :key="page"
           class="pagination-number"
           :class="{ active: page === currentPage }"
-          @click="currentPage = page"
+          @click="goToPage(page)"
+          :disabled="isLoadingCours"
         >
           {{ page }}
         </button>
@@ -229,15 +235,15 @@
       
       <button 
         class="pagination-btn" 
-        @click="currentPage++" 
-        :disabled="currentPage === totalPages"
+        @click="nextPage" 
+        :disabled="currentPage === totalPages || isLoadingCours"
       >
         Suivant
       </button>
     </div>
     
     <div v-if="totalPages > 1" class="pagination-info">
-      Page {{ currentPage }} sur {{ totalPages }} ({{ filteredCours.length }} cours au total)
+      Page {{ currentPage }} sur {{ totalPages }} ({{ totalItems }} cours au total)
     </div>
 
     <!-- Modale de duplication -->
@@ -317,6 +323,8 @@ const filters = ref({ notion: 'all' })
 // Pagination
 const currentPage = ref(1)
 const itemsPerPage = 5
+const totalCours = ref(0)
+const isLoadingCours = ref(false)
 
 const showPreview = ref(false)
 const previewData = ref(null)
@@ -344,14 +352,6 @@ function normalizeContent(raw) {
 }
 
 // Computed properties
-const filteredCours = computed(() => {
-  let filtered = cours.value
-  if (filters.value.notion && filters.value.notion !== 'all') {
-    filtered = filtered.filter(c => String(c.notion) === String(filters.value.notion))
-  }
-  return filtered.sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
-})
-
 const filteredNotionsForForm = computed(() => {
   if (!notionFormFilter.value) return notions.value
   const query = notionFormFilter.value.toLowerCase()
@@ -382,17 +382,13 @@ const filteredNotionsForDuplicate = computed(() => {
   })
 })
 
+const paginatedCours = computed(() => cours.value)
+const totalItems = computed(() => totalCours.value || 0)
+
 // Computed properties pour la pagination
 const totalPages = computed(() => {
-  const total = filteredCours.value.length
+  const total = totalItems.value
   return Math.ceil(total / itemsPerPage)
-})
-
-const paginatedCours = computed(() => {
-  const allFiltered = filteredCours.value
-  const start = (currentPage.value - 1) * itemsPerPage
-  const end = start + itemsPerPage
-  return allFiltered.slice(start, end)
 })
 
 const displayedPages = computed(() => {
@@ -419,28 +415,87 @@ const displayedPages = computed(() => {
   return pages
 })
 
-async function load() {
+async function loadCours(options = {}) {
+  const { skipPageGuard = false } = options
+  isLoadingCours.value = true
   try {
-    const [nts, cResp] = await Promise.all([
-      getNotions(),
-      getCours()
-    ])
-    notions.value = Array.isArray(nts) ? nts : (nts?.data || [])
-    cours.value = Array.isArray(cResp?.data) ? cResp.data : (Array.isArray(cResp) ? cResp : [])
+    const page = Math.max(currentPage.value || 1, 1)
+    const notionParam = (filters.value.notion && filters.value.notion !== 'all') ? filters.value.notion : undefined
+    const response = await getCours({
+      limit: itemsPerPage,
+      offset: (page - 1) * itemsPerPage,
+      notion: notionParam
+    })
+    const data = response?.data ?? response
+    const results = Array.isArray(data?.results) ? data.results : (Array.isArray(data) ? data : [])
+    const ordered = [...results].sort((a, b) => {
+      const ao = Number(a?.ordre ?? 0)
+      const bo = Number(b?.ordre ?? 0)
+      if (ao !== bo) return ao - bo
+      return String(a?.titre || '').localeCompare(String(b?.titre || ''))
+    })
+    cours.value = ordered
+    const total = Number(data?.count ?? results.length ?? 0)
+    totalCours.value = Number.isFinite(total) ? total : results.length
+    const maxPage = Math.max(1, Math.ceil((totalCours.value || 0) / itemsPerPage))
+    if (!skipPageGuard && totalCours.value > 0 && currentPage.value > maxPage) {
+      currentPage.value = maxPage
+      await loadCours({ skipPageGuard: true })
+      return
+    }
   } catch (error) {
-    console.error('[AdminCours] Erreur lors du chargement:', error)
+    console.error('[AdminCours] Erreur lors du chargement des cours:', error)
     cours.value = []
-    // Chapitres supprimés
-    notions.value = []
+    totalCours.value = 0
+  } finally {
+    isLoadingCours.value = false
   }
 }
 
-onMounted(load)
+async function loadInitial() {
+  try {
+    const nts = await getNotions()
+    const rawNotions = nts?.data ?? nts
+    const list = Array.isArray(rawNotions?.results) ? rawNotions.results : (Array.isArray(rawNotions) ? rawNotions : [])
+    notions.value = list
+  } catch (error) {
+    console.error('[AdminCours] Erreur lors du chargement des notions:', error)
+    notions.value = []
+  } finally {
+    await loadCours()
+  }
+}
+
+onMounted(loadInitial)
 
 // Watcher pour réinitialiser la page courante quand les filtres changent
 watch(() => filters.value.notion, () => {
   currentPage.value = 1
+  loadCours()
 })
+
+function goToPage(page) {
+  const total = totalPages.value || 0
+  const maxPage = total > 0 ? total : 1
+  const target = Math.min(Math.max(page, 1), maxPage)
+  if (target === currentPage.value) return
+  currentPage.value = target
+  loadCours()
+}
+
+function nextPage() {
+  if (totalPages.value && currentPage.value < totalPages.value) {
+    currentPage.value += 1
+    loadCours()
+  }
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value -= 1
+    loadCours()
+  }
+}
 
 function resetForm() {
   form.value = {
@@ -616,7 +671,7 @@ async function handleSave() {
     // Remettre le chapitre sélectionné pour permettre d'ajouter un autre cours dans le même chapitre
     form.value.notion = currentNotion
 
-    await load()
+    await loadCours()
   } catch (e) {
     console.error('[AdminCours] Erreur:', e)
   }
@@ -659,7 +714,7 @@ function editCours(cours) {
 async function removeCours(id) {
   try {
     await deleteCours(id)
-    await load()
+    await loadCours()
   } catch (e) {
     console.error('Erreur:', e)
   }
@@ -702,7 +757,15 @@ async function confirmDuplicate() {
     console.log('Original cours:', original)
 
     // Vérifier si la notion de destination a déjà un cours
-    const existingCours = cours.value.find(c => String(c.notion) === String(duplicateForm.value.newNotion))
+    let existingCours = null
+    try {
+      const existingResp = await getCours({ notion: payload.notion, limit: 1, offset: 0 })
+      const existingData = existingResp?.data ?? existingResp
+      const existingResults = Array.isArray(existingData?.results) ? existingData.results : (Array.isArray(existingData) ? existingData : [])
+      existingCours = existingResults[0] || null
+    } catch (checkError) {
+      console.warn('Impossible de vérifier les cours existants pour la duplication:', checkError)
+    }
     console.log('Cours existant dans la notion de destination:', existingCours)
 
     let targetCoursId = null
@@ -736,7 +799,7 @@ async function confirmDuplicate() {
       await duplicateCourseImages(original.id, targetCoursId, !!existingCours)
     }
 
-    await load()
+    await loadCours()
 
     showDuplicateModal.value = false
     duplicateForm.value = {
@@ -1116,6 +1179,12 @@ function slugify(text) {
 
 .admin-table tr:hover {
   background: #f9fafb;
+}
+
+.loading-row {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
 }
 
 .preview-section {

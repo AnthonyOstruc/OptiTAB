@@ -180,32 +180,37 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="exercice in paginatedExercices" :key="exercice.id">
-          <td>{{ exercice.id }}</td>
-          <td>{{ exercice.titre || exercice.nom }}</td>
-          <td>{{ getNotionName(exercice.notion) }}</td>
-          <td class="ctx-cell">{{ getNotionContextLabel(exercice.notion) }}</td>
-          <td>
-            <span class="difficulte-badge" :class="`difficulte-${exercice.difficulte || exercice.difficulty}`">
-              {{ exercice.difficulte || exercice.difficulty }}
-            </span>
-          </td>
-          <td>
-            <AdminActionsButtons
-              :item="exercice"
-              :actions="['edit', 'duplicate', 'delete']"
-              edit-label="Éditer"
-              duplicate-label="Dupliquer"
-              confirm-message="Êtes-vous sûr de vouloir supprimer cet exercice ?"
-              @edit="editExercice"
-              @duplicate="handleDuplicateExercice"
-              @delete="handleDeleteExercice"
-            />
-          </td>
+        <tr v-if="isLoadingExercices">
+          <td colspan="6" class="loading-row">Chargement des exercices...</td>
         </tr>
-        <tr v-if="paginatedExercices.length === 0">
-          <td colspan="6" style="text-align:center; font-style: italic;">Aucun exercice trouvé.</td>
-        </tr>
+        <template v-else>
+          <tr v-for="exercice in paginatedExercices" :key="exercice.id">
+            <td>{{ exercice.id }}</td>
+            <td>{{ exercice.titre || exercice.nom }}</td>
+            <td>{{ getNotionName(exercice.notion) }}</td>
+            <td class="ctx-cell">{{ getNotionContextLabel(exercice.notion) }}</td>
+            <td>
+              <span class="difficulte-badge" :class="`difficulte-${exercice.difficulte || exercice.difficulty}`">
+                {{ exercice.difficulte || exercice.difficulty }}
+              </span>
+            </td>
+            <td>
+              <AdminActionsButtons
+                :item="exercice"
+                :actions="['edit', 'duplicate', 'delete']"
+                edit-label="Éditer"
+                duplicate-label="Dupliquer"
+                confirm-message="Êtes-vous sûr de vouloir supprimer cet exercice ?"
+                @edit="editExercice"
+                @duplicate="handleDuplicateExercice"
+                @delete="handleDeleteExercice"
+              />
+            </td>
+          </tr>
+          <tr v-if="paginatedExercices.length === 0">
+            <td colspan="6" style="text-align:center; font-style: italic;">Aucun exercice trouvé.</td>
+          </tr>
+        </template>
       </tbody>
     </table>
 
@@ -213,8 +218,8 @@
     <div v-if="totalPages > 1" class="pagination">
       <button 
         class="pagination-btn" 
-        @click="currentPage--" 
-        :disabled="currentPage === 1"
+        @click="prevPage" 
+        :disabled="currentPage === 1 || isLoadingExercices"
       >
         Précédent
       </button>
@@ -225,7 +230,8 @@
           :key="page"
           class="pagination-number"
           :class="{ active: page === currentPage }"
-          @click="currentPage = page"
+          @click="goToPage(page)"
+          :disabled="isLoadingExercices"
         >
           {{ page }}
         </button>
@@ -233,15 +239,15 @@
       
       <button 
         class="pagination-btn" 
-        @click="currentPage++" 
-        :disabled="currentPage === totalPages"
+        @click="nextPage" 
+        :disabled="currentPage === totalPages || isLoadingExercices"
       >
         Suivant
       </button>
     </div>
     
     <div v-if="totalPages > 1" class="pagination-info">
-      Page {{ currentPage }} sur {{ totalPages }} ({{ filteredExercices.length }} exercice(s) au total)
+      Page {{ currentPage }} sur {{ totalPages }} ({{ totalItems }} exercice(s) au total)
     </div>
 
     <!-- Modale de duplication -->
@@ -307,6 +313,8 @@ const filters = ref({ notion: '' })
 // Pagination
 const currentPage = ref(1)
 const itemsPerPage = 5
+const totalExercices = ref(0)
+const isLoadingExercices = ref(false)
 
 const showPreview = ref(false)
 const previewData = ref(null)
@@ -326,15 +334,8 @@ const duplicateForm = ref({
 })
 
 // Computed properties
-const filteredExercices = computed(() => {
-  let filtered = exercices.value
-
-  if (filters.value.notion) {
-    filtered = filtered.filter(e => String(e.notion) === String(filters.value.notion))
-  }
-
-  return filtered
-})
+const paginatedExercices = computed(() => exercices.value)
+const totalItems = computed(() => totalExercices.value || 0)
 
 const filteredNotionsForForm = computed(() => {
   if (!notionFormFilter.value) return notions.value
@@ -350,15 +351,8 @@ const filteredNotionsForFilter = computed(() => {
 
 // Computed properties pour la pagination
 const totalPages = computed(() => {
-  const total = filteredExercices.value.length
+  const total = totalItems.value
   return Math.ceil(total / itemsPerPage)
-})
-
-const paginatedExercices = computed(() => {
-  const allFiltered = filteredExercices.value
-  const start = (currentPage.value - 1) * itemsPerPage
-  const end = start + itemsPerPage
-  return allFiltered.slice(start, end)
 })
 
 const displayedPages = computed(() => {
@@ -388,7 +382,9 @@ const displayedPages = computed(() => {
 async function loadInitial() {
   try {
     const nts = await getNotions()
-    notions.value = nts || []
+    const rawNotions = nts?.data ?? nts
+    const list = Array.isArray(rawNotions?.results) ? rawNotions.results : (Array.isArray(rawNotions) ? rawNotions : [])
+    notions.value = list
     await reloadExercices()
   } catch (error) {
     console.error('[AdminExercices] Erreur chargement chapitres:', error)
@@ -406,17 +402,65 @@ watch(() => form.value.notion, async () => {
 // Watcher pour réinitialiser la page courante quand les filtres changent
 watch(() => filters.value.notion, () => {
   currentPage.value = 1
+  reloadExercices()
 })
 
-async function reloadExercices() {
+function goToPage(page) {
+  const total = totalPages.value || 0
+  const maxPage = total > 0 ? total : 1
+  const target = Math.min(Math.max(page, 1), maxPage)
+  if (target === currentPage.value) return
+  currentPage.value = target
+  reloadExercices()
+}
+
+function nextPage() {
+  if (totalPages.value && currentPage.value < totalPages.value) {
+    currentPage.value += 1
+    reloadExercices()
+  }
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value -= 1
+    reloadExercices()
+  }
+}
+
+async function reloadExercices(options = {}) {
+  const { skipPageGuard = false } = options
   try {
-    const params = {}
-    // Ne pas filtrer quand "Tous les chapitres" est sélectionné
-    if (form.value.notion) params.notion = Number(form.value.notion)
-    exercices.value = await getExercices(params)
+    isLoadingExercices.value = true
+    const page = Math.max(currentPage.value || 1, 1)
+    const notionParam = filters.value.notion || form.value.notion || ''
+    const response = await getExercices({
+      limit: itemsPerPage,
+      offset: (page - 1) * itemsPerPage,
+      notion: notionParam || undefined
+    })
+    const data = response?.data ?? response
+    const results = Array.isArray(data?.results) ? data.results : (Array.isArray(data) ? data : [])
+    const ordered = [...results].sort((a, b) => {
+      const ao = Number(a?.ordre ?? 0)
+      const bo = Number(b?.ordre ?? 0)
+      if (ao !== bo) return ao - bo
+      return String(a?.titre || a?.nom || '').localeCompare(String(b?.titre || b?.nom || ''))
+    })
+    exercices.value = ordered
+    const total = Number(data?.count ?? results.length ?? 0)
+    totalExercices.value = Number.isFinite(total) ? total : results.length
+    const maxPage = Math.max(1, Math.ceil((totalExercices.value || 0) / itemsPerPage))
+    if (!skipPageGuard && totalExercices.value > 0 && currentPage.value > maxPage) {
+      currentPage.value = maxPage
+      await reloadExercices({ skipPageGuard: true })
+    }
   } catch (error) {
     console.error('[AdminExercices] Erreur lors du chargement exercices:', error)
     exercices.value = []
+    totalExercices.value = 0
+  } finally {
+    isLoadingExercices.value = false
   }
 }
 
@@ -1117,6 +1161,12 @@ function getNotionContextCode(notionId) {
 
 .admin-table tr:hover {
   background: #f9fafb;
+}
+
+.loading-row {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
 }
 
 .type-badge {

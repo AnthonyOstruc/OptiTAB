@@ -7,8 +7,21 @@ import apiClient, { apiUtils } from './client'
  */
 export const getExercices = (chapitreId = null, niveauId = null) => {
   const params = new URLSearchParams()
-  if (chapitreId) params.append('chapitre', chapitreId)
-  if (niveauId) params.append('niveau', niveauId)
+  const options = (chapitreId && typeof chapitreId === 'object' && !Array.isArray(chapitreId)) ? chapitreId : null
+
+  if (options) {
+    const { chapitre, niveau, notion, matiere, limit, offset, search, q } = options
+    if (chapitre) params.append('chapitre', chapitre)
+    if (niveau) params.append('niveau', niveau)
+    if (notion) params.append('notion', notion)
+    if (matiere) params.append('matiere', matiere)
+    if (search || q) params.append('search', search || q)
+    if (limit != null) params.append('limit', limit)
+    if (offset != null) params.append('offset', offset)
+  } else {
+    if (chapitreId) params.append('chapitre', chapitreId)
+    if (niveauId) params.append('niveau', niveauId)
+  }
   
   const url = `/api/exercices/${params.toString() ? '?' + params.toString() : ''}`
   return apiClient.get(url)

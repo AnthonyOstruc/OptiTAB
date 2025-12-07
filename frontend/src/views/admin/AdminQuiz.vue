@@ -102,32 +102,73 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="quiz in filteredQuiz" :key="quiz.id">
-          <td>{{ quiz.id }}</td>
-          <td>{{ quiz.titre }}</td>
-          <td>{{ (getNotionById(quiz.notion)?.titre || getNotionById(quiz.notion)?.nom || quiz.notion) }}</td>
-          <td class="ctx-cell">{{ getContextLabelByNotion(quiz.notion) }}</td>
-          <td>{{ (quiz.questions_data && quiz.questions_data.length) || quiz.nombre_questions || 0 }}</td>
-          <td>{{ quiz.temps_limite || 0 }} min</td>
-          <td><span class="difficulte-badge" :class="`difficulte-${quiz.difficulte || quiz.difficulty || 'moyen'}`">{{ quiz.difficulte || quiz.difficulty || 'moyen' }}</span></td>
-          <td>
-            <AdminActionsButtons
-              :item="quiz"
-              :actions="['edit', 'duplicate', 'delete']"
-              edit-label="Éditer"
-              duplicate-label="Dupliquer"
-              confirm-message="Êtes-vous sûr de vouloir supprimer ce quiz ?"
-              @edit="editQuiz"
-              @duplicate="handleDuplicateQuiz"
-              @delete="handleDeleteQuiz"
-            />
-          </td>
+        <tr v-if="isLoadingQuiz">
+          <td colspan="8" class="loading-row">Chargement des quiz...</td>
         </tr>
-        <tr v-if="filteredQuiz.length === 0">
-          <td colspan="8" style="text-align:center; font-style: italic;">Aucun quiz trouvé.</td>
-        </tr>
+        <template v-else>
+          <tr v-for="quiz in paginatedQuiz" :key="quiz.id">
+            <td>{{ quiz.id }}</td>
+            <td>{{ quiz.titre }}</td>
+            <td>{{ (getNotionById(quiz.notion)?.titre || getNotionById(quiz.notion)?.nom || quiz.notion) }}</td>
+            <td class="ctx-cell">{{ getContextLabelByNotion(quiz.notion) }}</td>
+            <td>{{ (quiz.questions_data && quiz.questions_data.length) || quiz.nombre_questions || 0 }}</td>
+            <td>{{ quiz.temps_limite || 0 }} min</td>
+            <td><span class="difficulte-badge" :class="`difficulte-${quiz.difficulte || quiz.difficulty || 'moyen'}`">{{ quiz.difficulte || quiz.difficulty || 'moyen' }}</span></td>
+            <td>
+              <AdminActionsButtons
+                :item="quiz"
+                :actions="['edit', 'duplicate', 'delete']"
+                edit-label="Éditer"
+                duplicate-label="Dupliquer"
+                confirm-message="Êtes-vous sûr de vouloir supprimer ce quiz ?"
+                @edit="editQuiz"
+                @duplicate="handleDuplicateQuiz"
+                @delete="handleDeleteQuiz"
+              />
+            </td>
+          </tr>
+          <tr v-if="paginatedQuiz.length === 0">
+            <td colspan="8" style="text-align:center; font-style: italic;">Aucun quiz trouvé.</td>
+          </tr>
+        </template>
       </tbody>
     </table>
+
+    <!-- Pagination -->
+    <div v-if="totalPages > 1" class="pagination">
+      <button 
+        class="pagination-btn" 
+        @click="prevPage" 
+        :disabled="currentPage === 1 || isLoadingQuiz"
+      >
+        Précédent
+      </button>
+      
+      <div class="pagination-numbers">
+        <button
+          v-for="page in displayedPages"
+          :key="page"
+          class="pagination-number"
+          :class="{ active: page === currentPage }"
+          @click="goToPage(page)"
+          :disabled="isLoadingQuiz"
+        >
+          {{ page }}
+        </button>
+      </div>
+      
+      <button 
+        class="pagination-btn" 
+        @click="nextPage" 
+        :disabled="currentPage === totalPages || isLoadingQuiz"
+      >
+        Suivant
+      </button>
+    </div>
+    
+    <div v-if="totalPages > 1" class="pagination-info">
+      Page {{ currentPage }} sur {{ totalPages }} ({{ totalItems }} quiz au total)
+    </div>
 
     <!-- Modale de duplication -->
     <div v-if="showDuplicateModal" class="modal-overlay" @click="cancelDuplicate">
@@ -154,7 +195,7 @@
 
         <div class="modal-actions">
           <button class="btn-secondary" @click="cancelDuplicate">Annuler</button>
-          <button class="btn-primary" @click="confirmDuplicate" :disabled="!duplicateForm.newChapitre || !duplicateForm.newTitre.trim()">
+          <button class="btn-primary" @click="confirmDuplicate" :disabled="!duplicateForm.newNotion || !duplicateForm.newTitre.trim()">
             Dupliquer
           </button>
         </div>
@@ -164,7 +205,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { getQuizAdmin, createQuiz, updateQuiz, deleteQuiz } from '@/api/quiz'
 import { getNotions } from '@/api'
 import { AdminActionsButtons } from '@/components/admin'
@@ -188,20 +229,17 @@ const filters = ref({ notion: 'all' })
 const showDuplicateModal = ref(false)
 const duplicateForm = ref({
   originalQuiz: null,
-  newChapitre: '',
+  newNotion: '',
   newTitre: ''
 })
+const currentPage = ref(1)
+const itemsPerPage = 5
+const totalQuiz = ref(0)
+const isLoadingQuiz = ref(false)
 
 // Computed properties
-const filteredQuiz = computed(() => {
-  let filtered = quiz.value
-  
-  if (filters.value.notion && filters.value.notion !== 'all') {
-    filtered = filtered.filter(q => String(q.notion) === String(filters.value.notion))
-  }
-
-  return filtered
-})
+const paginatedQuiz = computed(() => quiz.value)
+const totalItems = computed(() => totalQuiz.value || 0)
 
 const filteredNotionsForForm = computed(() => {
   if (!notionFormFilter.value) return notions.value
@@ -215,24 +253,101 @@ const filteredNotions = computed(() => {
   return notions.value.filter(n => (formatNotionOption(n) || '').toLowerCase().includes(query))
 })
 
-async function load() {
-  try {
-    const [qRes, nt] = await Promise.all([
-      getQuizAdmin(),
-      getNotions()
-    ])
-    quiz.value = Array.isArray(qRes?.data) ? qRes.data : (Array.isArray(qRes) ? qRes : [])
-    notions.value = Array.isArray(nt) ? nt : (nt?.data || [])
-  } catch (error) {
-    console.error('[AdminQuiz] Erreur lors du chargement:', error)
-    quiz.value = []
-    chapitres.value = []
-    notions.value = []
+const totalPages = computed(() => {
+  const total = totalItems.value
+  return Math.ceil(total / itemsPerPage)
+})
+
+const displayedPages = computed(() => {
+  const pages = []
+  const total = totalPages.value
+  const current = currentPage.value
+  let startPage = Math.max(1, current - 2)
+  let endPage = Math.min(total, current + 2)
+  if (current <= 3) endPage = Math.min(5, total)
+  if (current >= total - 2) startPage = Math.max(1, total - 4)
+  for (let i = startPage; i <= endPage; i++) pages.push(i)
+  return pages
+})
+
+function goToPage(page) {
+  const total = totalPages.value || 0
+  const maxPage = total > 0 ? total : 1
+  const target = Math.min(Math.max(page, 1), maxPage)
+  if (target === currentPage.value) return
+  currentPage.value = target
+  loadQuiz()
+}
+
+function nextPage() {
+  if (totalPages.value && currentPage.value < totalPages.value) {
+    currentPage.value += 1
+    loadQuiz()
   }
 }
 
-onMounted(load)
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value -= 1
+    loadQuiz()
+  }
+}
 
+async function loadQuiz(options = {}) {
+  const { skipPageGuard = false } = options
+  isLoadingQuiz.value = true
+  try {
+    const page = Math.max(currentPage.value || 1, 1)
+    const notionParam = (filters.value.notion && filters.value.notion !== 'all') ? filters.value.notion : undefined
+    const resp = await getQuizAdmin({
+      limit: itemsPerPage,
+      offset: (page - 1) * itemsPerPage,
+      notion: notionParam
+    })
+    const data = resp?.data ?? resp
+    const results = Array.isArray(data?.results) ? data.results : (Array.isArray(data) ? data : [])
+    const ordered = [...results].sort((a, b) => {
+      const at = String(a?.titre || '')
+      const bt = String(b?.titre || '')
+      return at.localeCompare(bt)
+    })
+    quiz.value = ordered
+    const total = Number(data?.count ?? results.length ?? 0)
+    totalQuiz.value = Number.isFinite(total) ? total : results.length
+    const maxPage = Math.max(1, Math.ceil((totalQuiz.value || 0) / itemsPerPage))
+    if (!skipPageGuard && totalQuiz.value > 0 && currentPage.value > maxPage) {
+      currentPage.value = maxPage
+      await loadQuiz({ skipPageGuard: true })
+    }
+  } catch (error) {
+    console.error('[AdminQuiz] Erreur lors du chargement:', error)
+    quiz.value = []
+    totalQuiz.value = 0
+  } finally {
+    isLoadingQuiz.value = false
+  }
+}
+
+async function loadInitial() {
+  try {
+    const nt = await getNotions()
+    const rawNotions = nt?.data ?? nt
+    const list = Array.isArray(rawNotions?.results) ? rawNotions.results : (Array.isArray(rawNotions) ? rawNotions : [])
+    notions.value = list
+  } catch (error) {
+    console.error('[AdminQuiz] Erreur lors du chargement des notions:', error)
+    notions.value = []
+  } finally {
+    await loadQuiz()
+  }
+}
+
+onMounted(loadInitial)
+
+watch(() => filters.value.notion, () => {
+  currentPage.value = 1
+  loadQuiz()
+})
 function resetForm() {
   form.value = { 
     id: null, 
@@ -321,7 +436,7 @@ function handleDeleteQuiz(quiz) {
 function handleDuplicateQuiz(quiz) {
   duplicateForm.value = {
     originalQuiz: quiz,
-    newChapitre: '',
+    newNotion: '',
     newTitre: `${quiz.titre}`
   }
   showDuplicateModal.value = true
@@ -329,8 +444,8 @@ function handleDuplicateQuiz(quiz) {
 
 // Fonction pour confirmer la duplication
 async function confirmDuplicate() {
-  if (!duplicateForm.value.newChapitre || !duplicateForm.value.newTitre.trim()) {
-    alert('Veuillez sélectionner un chapitre et saisir un titre pour la copie.')
+  if (!duplicateForm.value.newNotion || !duplicateForm.value.newTitre.trim()) {
+    alert('Veuillez sélectionner une notion et saisir un titre pour la copie.')
     return
   }
 
@@ -339,7 +454,7 @@ async function confirmDuplicate() {
     const difficultyMap = { 'facile': 'easy', 'moyen': 'medium', 'difficile': 'hard' }
 
     const payload = {
-      chapitre: Number(duplicateForm.value.newChapitre),
+      notion: Number(duplicateForm.value.newNotion),
       titre: duplicateForm.value.newTitre.trim(),
       contenu: original.contenu || original.description || '',
       duree_minutes: original.duree_minutes || original.temps_limite || 30,
@@ -356,7 +471,7 @@ async function confirmDuplicate() {
     showDuplicateModal.value = false
     duplicateForm.value = {
       originalQuiz: null,
-      newChapitre: '',
+      newNotion: '',
       newTitre: ''
     }
 
@@ -594,6 +709,12 @@ function getContextCodeByNotion(notionId) {
 
 .admin-table tr:hover {
   background: #f9fafb;
+}
+
+.loading-row {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
 }
 
 /* Styles pour la modale de duplication */

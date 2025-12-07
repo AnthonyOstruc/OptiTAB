@@ -8,18 +8,35 @@ import apiClient, { apiUtils } from './client'
  */
 export const getCours = (matiereId = null, notionId = null, chapitreId = null) => {
   let url = '/api/cours/cours/'
-  const params = []
-  
-  if (matiereId) params.push(`matiere=${matiereId}`)
-  if (notionId) params.push(`notion=${notionId}`)
-  // chapitreId obsolète
-  
-  if (params.length > 0) {
-    url += '?' + params.join('&')
+  const params = new URLSearchParams()
+  const options = (matiereId && typeof matiereId === 'object' && !Array.isArray(matiereId)) ? matiereId : null
+
+  if (options) {
+    const { matiere, notion, chapitre, limit, offset, search, q } = options
+    if (matiere) params.append('matiere', matiere)
+    if (notion) params.append('notion', notion)
+    if (chapitre) params.append('chapitre', chapitre)
+    if (search || q) params.append('search', search || q)
+    if (limit != null) params.append('limit', limit)
+    if (offset != null) params.append('offset', offset)
+  } else {
+    if (matiereId) params.append('matiere', matiereId)
+    if (notionId) params.append('notion', notionId)
+    // chapitreId obsolète
   }
+
+  const queryString = params.toString()
+  if (queryString) {
+    url += `?${queryString}`
+  }
+
   // Utiliser un cache mémoire avec TTL pour accélérer les rechargements
   // Contenus de cours changent rarement → TTL généreux (5 minutes)
-  return apiUtils.cachedGet(url, { ttl: 300000 })
+  if (!options) {
+    return apiUtils.cachedGet(url, { ttl: 300000 })
+  }
+
+  return apiClient.get(url)
 }
 
 /**

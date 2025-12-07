@@ -34,6 +34,7 @@ class CoursViewSet(viewsets.ModelViewSet):
         # Nouveau filtrage direct par notion (suppression des chapitres)
         notion = self.request.query_params.get('notion')
         matiere = self.request.query_params.get('matiere')
+        search = self.request.query_params.get('search') or self.request.query_params.get('q')
 
         if notion:
             queryset = queryset.filter(notion_id=notion)
@@ -42,7 +43,38 @@ class CoursViewSet(viewsets.ModelViewSet):
             queryset = queryset.select_related('notion', 'notion__theme', 'notion__theme__matiere')
             queryset = queryset.filter(notion__theme__matiere_id=matiere)
 
-        return queryset.filter(est_actif=True)
+        if search:
+            queryset = queryset.filter(titre__icontains=search)
+
+        return queryset.filter(est_actif=True).select_related('notion', 'notion__theme', 'notion__theme__matiere').order_by('ordre', 'id')
+
+    def list(self, request, *args, **kwargs):
+        """Pagination légère pour l'admin via ?limit=5&offset=0."""
+        queryset = self.filter_queryset(self.get_queryset())
+
+        limit = request.query_params.get('limit')
+        offset = request.query_params.get('offset', 0)
+
+        if limit is not None:
+            try:
+                limit_value = int(limit)
+                offset_value = int(offset or 0)
+                if limit_value <= 0 or offset_value < 0:
+                    raise ValueError
+            except ValueError:
+                return Response({'detail': 'Paramètres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
+
+            total = queryset.count()
+            serializer = self.get_serializer(queryset[offset_value:offset_value + limit_value], many=True)
+            return Response({
+                'count': total,
+                'limit': limit_value,
+                'offset': offset_value,
+                'results': serializer.data
+            })
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class CoursImageViewSet(viewsets.ModelViewSet):

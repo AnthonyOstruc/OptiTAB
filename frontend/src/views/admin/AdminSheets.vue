@@ -184,32 +184,37 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="s in paginatedSheets" :key="s.id">
-          <td>{{ s.id }}</td>
-          <td>{{ s.titre }}</td>
-          <td>{{ getNotionName(s.notion) }}</td>
-          <td class="ctx-cell">{{ getNotionContextLabel(s.notion) }}</td>
-          <td>
-            <span :class="accessScopeBadgeClass(s.access_scope)">
-              {{ accessScopeLabel(s.access_scope) }}
-            </span>
-          </td>
-          <td>
-            <AdminActionsButtons
-              :item="s"
-              :actions="['edit', 'duplicate', 'delete']"
-              edit-label="Éditer"
-              duplicate-label="Dupliquer"
-              confirm-message="Êtes-vous sûr de vouloir supprimer cette fiche ?"
-              @edit="editSheet"
-              @duplicate="handleDuplicateSheet"
-              @delete="handleDeleteSheet"
-            />
-          </td>
+        <tr v-if="isLoadingSheets">
+          <td colspan="6" class="loading-row">Chargement des fiches...</td>
         </tr>
-        <tr v-if="paginatedSheets.length === 0">
-          <td colspan="5" style="text-align:center; font-style: italic;">Aucune fiche trouvée.</td>
-        </tr>
+        <template v-else>
+          <tr v-for="s in paginatedSheets" :key="s.id">
+            <td>{{ s.id }}</td>
+            <td>{{ s.titre }}</td>
+            <td>{{ getNotionName(s.notion) }}</td>
+            <td class="ctx-cell">{{ getNotionContextLabel(s.notion) }}</td>
+            <td>
+              <span :class="accessScopeBadgeClass(s.access_scope)">
+                {{ accessScopeLabel(s.access_scope) }}
+              </span>
+            </td>
+            <td>
+              <AdminActionsButtons
+                :item="s"
+                :actions="['edit', 'duplicate', 'delete']"
+                edit-label="Éditer"
+                duplicate-label="Dupliquer"
+                confirm-message="Êtes-vous sûr de vouloir supprimer cette fiche ?"
+                @edit="editSheet"
+                @duplicate="handleDuplicateSheet"
+                @delete="handleDeleteSheet"
+              />
+            </td>
+          </tr>
+          <tr v-if="paginatedSheets.length === 0">
+            <td colspan="6" style="text-align:center; font-style: italic;">Aucune fiche trouvée.</td>
+          </tr>
+        </template>
       </tbody>
     </table>
 
@@ -217,8 +222,8 @@
     <div v-if="totalPages > 1" class="pagination">
       <button 
         class="pagination-btn" 
-        @click="currentPage--" 
-        :disabled="currentPage === 1"
+        @click="prevPage" 
+        :disabled="currentPage === 1 || isLoadingSheets"
       >
         Précédent
       </button>
@@ -229,7 +234,8 @@
           :key="page"
           class="pagination-number"
           :class="{ active: page === currentPage }"
-          @click="currentPage = page"
+          @click="goToPage(page)"
+          :disabled="isLoadingSheets"
         >
           {{ page }}
         </button>
@@ -237,15 +243,15 @@
       
       <button 
         class="pagination-btn" 
-        @click="currentPage++" 
-        :disabled="currentPage === totalPages"
+        @click="nextPage" 
+        :disabled="currentPage === totalPages || isLoadingSheets"
       >
         Suivant
       </button>
     </div>
     
     <div v-if="totalPages > 1" class="pagination-info">
-      Page {{ currentPage }} sur {{ totalPages }} ({{ filteredSheets.length }} fiches au total)
+      Page {{ currentPage }} sur {{ totalPages }} ({{ totalSheets }} fiches au total)
     </div>
   </div>
   
@@ -287,6 +293,8 @@ const filters = ref({ notion: 'all' })
 const notionTableFilter = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 5
+const totalSheets = ref(0)
+const isLoadingSheets = ref(false)
 const ACCESS_SCOPE_OPTIONS = [
   { value: 'paid', label: 'Premium (abonnés)' },
   { value: 'free', label: 'Gratuit' },
@@ -848,18 +856,8 @@ const filteredNotionsForFilter = computed(() => {
   return notions.value.filter(n => (formatNotionOption(n) || '').toLowerCase().includes(f))
 })
 
-const filteredSheets = computed(() => {
-  let arr = sheets.value
-  if (filters.value.notion && filters.value.notion !== 'all') arr = arr.filter(s => String(s.notion) === String(filters.value.notion))
-  return arr.slice().sort((a, b) => String(a.titre || '').localeCompare(String(b.titre || '')))
-})
-
-const totalPages = computed(() => Math.ceil((filteredSheets.value.length || 0) / itemsPerPage))
-const paginatedSheets = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage
-  const end = start + itemsPerPage
-  return filteredSheets.value.slice(start, end)
-})
+const paginatedSheets = computed(() => sheets.value)
+const totalPages = computed(() => Math.ceil((totalSheets.value || 0) / itemsPerPage))
 const displayedPages = computed(() => {
   const pages = []
   const total = totalPages.value
@@ -872,15 +870,60 @@ const displayedPages = computed(() => {
   return pages
 })
 
-watch(() => filters.value.notion, () => { currentPage.value = 1 })
+watch(() => filters.value.notion, () => {
+  currentPage.value = 1
+  loadTable()
+})
+
+function goToPage(page) {
+  const total = totalPages.value || 0
+  const maxPage = total > 0 ? total : 1
+  const target = Math.min(Math.max(page, 1), maxPage)
+  if (target === currentPage.value) return
+  currentPage.value = target
+  loadTable()
+}
+
+function nextPage() {
+  if (totalPages.value && currentPage.value < totalPages.value) {
+    currentPage.value += 1
+    loadTable()
+  }
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value -= 1
+    loadTable()
+  }
+}
 
 async function loadTable() {
   try {
-    const res = await getSynthesisSheets()
-    sheets.value = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : [])
+    isLoadingSheets.value = true
+    const page = Math.max(currentPage.value || 1, 1)
+    const notionParam = (filters.value.notion && filters.value.notion !== 'all') ? filters.value.notion : undefined
+    const res = await getSynthesisSheets({
+      limit: itemsPerPage,
+      offset: (page - 1) * itemsPerPage,
+      notion: notionParam
+    })
+    const data = res?.data ?? res
+    const results = Array.isArray(data?.results) ? data.results : (Array.isArray(data) ? data : [])
+    sheets.value = results.slice().sort((a, b) => String(a.titre || '').localeCompare(String(b.titre || '')))
+    const total = Number(data?.count ?? results.length ?? 0)
+    totalSheets.value = Number.isFinite(total) ? total : results.length
+    const maxPage = Math.max(1, Math.ceil((totalSheets.value || 0) / itemsPerPage))
+    if (totalSheets.value > 0 && currentPage.value > maxPage) {
+      currentPage.value = maxPage
+      await loadTable()
+    }
   } catch (e) {
     console.error('[AdminSheets] Erreur chargement des fiches:', e)
     sheets.value = []
+    totalSheets.value = 0
+  } finally {
+    isLoadingSheets.value = false
   }
 }
 
@@ -1054,6 +1097,11 @@ onActivated(() => {
 }
 .admin-table tr:hover {
   background: #f9fafb;
+}
+.loading-row {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
 }
 .ctx-cell {
   color: #64748b;

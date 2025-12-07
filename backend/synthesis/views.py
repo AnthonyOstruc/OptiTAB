@@ -64,13 +64,14 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
         
         # Filtrage par contexte utilisateur (pays/niveau) si l'utilisateur est connecté
         user = self.request.user
-        if user.is_authenticated and hasattr(user, 'pays') and hasattr(user, 'niveau_pays'):
-            if user.pays and user.niveau_pays:
-                # Filtrer par les contextes correspondant au pays/niveau de l'utilisateur
-                queryset = queryset.filter(
-                    notion__theme__contexte__niveau__pays=user.pays,
-                    notion__theme__contexte__niveau=user.niveau_pays
-                )
+        if user.is_authenticated and not (user.is_staff or user.is_superuser):
+            if hasattr(user, 'pays') and hasattr(user, 'niveau_pays'):
+                if user.pays and user.niveau_pays:
+                    # Filtrer par les contextes correspondant au pays/niveau de l'utilisateur
+                    queryset = queryset.filter(
+                        notion__theme__contexte__niveau__pays=user.pays,
+                        notion__theme__contexte__niveau=user.niveau_pays
+                    )
 
         # Filtrage par scope d'accès (utile côté admin)
         access_scope = self.request.query_params.get('access_scope')
@@ -87,6 +88,35 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             )
         
         return queryset
+
+    def list(self, request, *args, **kwargs):
+        """Pagination simple via ?limit=5&offset=0 pour l'admin."""
+        queryset = self.filter_queryset(self.get_queryset())
+
+        limit = request.query_params.get('limit')
+        offset = request.query_params.get('offset', 0)
+
+        if limit is not None:
+            try:
+                limit_value = int(limit)
+                offset_value = int(offset or 0)
+                if limit_value <= 0 or offset_value < 0:
+                    raise ValueError
+            except ValueError:
+                return Response({'detail': 'Paramètres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
+
+            total = queryset.count()
+            page_qs = queryset[offset_value:offset_value + limit_value]
+            serializer = self.get_serializer(page_qs, many=True)
+            return Response({
+                'count': total,
+                'limit': limit_value,
+                'offset': offset_value,
+                'results': serializer.data
+            })
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     @action(detail=True, methods=['post'])
     def add_image(self, request, pk=None):

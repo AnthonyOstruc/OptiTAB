@@ -636,11 +636,51 @@ class ExerciceViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         notion = self.request.query_params.get('notion')
+        matiere = self.request.query_params.get('matiere')
+        search = self.request.query_params.get('search') or self.request.query_params.get('q')
         
         if notion:
             queryset = queryset.filter(notion_id=notion)
+        if matiere:
+            queryset = queryset.filter(notion__theme__matiere_id=matiere)
+        if search:
+            queryset = queryset.filter(models.Q(titre__icontains=search) | models.Q(question__icontains=search))
             
-        return queryset.filter(est_actif=True)
+        # L'exercice n'a pas de champ "ordre"; on garde un tri stable par notion puis titre/id.
+        return (
+            queryset
+            .select_related('notion', 'notion__theme', 'notion__theme__matiere')
+            .filter(est_actif=True)
+            .order_by('notion_id', 'titre', 'id')
+        )
+
+    def list(self, request, *args, **kwargs):
+        """Supporte une pagination simple via ?limit=5&offset=0 pour l'admin."""
+        queryset = self.filter_queryset(self.get_queryset())
+
+        limit = request.query_params.get('limit')
+        offset = request.query_params.get('offset', 0)
+
+        if limit is not None:
+            try:
+                limit_value = int(limit)
+                offset_value = int(offset or 0)
+                if limit_value <= 0 or offset_value < 0:
+                    raise ValueError
+            except ValueError:
+                return Response({'detail': 'Paramètres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
+
+            total = queryset.count()
+            serializer = self.get_serializer(queryset[offset_value:offset_value + limit_value], many=True)
+            return Response({
+                'count': total,
+                'limit': limit_value,
+                'offset': offset_value,
+                'results': serializer.data
+            })
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     @action(detail=True, methods=['get'], url_path='pdf')
     def pdf_single(self, request, pk=None):

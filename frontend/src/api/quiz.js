@@ -5,7 +5,19 @@ import apiClient, { apiUtils } from './client'
 // Désormais filtrage par notion directement (suppression chapitres)
 // Accélérer via cache mémoire (TTL court mais suffisant)
 export const getQuiz = (notionId) => apiUtils.cachedGet(`/api/quiz/quiz/`, { params: { notion: notionId }, ttl: 180000 })
-export const getQuizAdmin = () => apiClient.get('/api/quiz/quiz/')
+export const getQuizAdmin = (options = null) => {
+  const params = new URLSearchParams()
+  if (options && typeof options === 'object') {
+    const { notion, matiere, limit, offset, search, q } = options
+    if (notion) params.append('notion', notion)
+    if (matiere) params.append('matiere', matiere)
+    if (search || q) params.append('search', search || q)
+    if (limit != null) params.append('limit', limit)
+    if (offset != null) params.append('offset', offset)
+  }
+  const qs = params.toString()
+  return apiClient.get(`/api/quiz/quiz/${qs ? '?' + qs : ''}`)
+}
 export const createQuiz = (payload) => apiClient.post('/api/quiz/quiz/', payload)
 export const updateQuiz = (id, payload) => apiClient.patch(`/api/quiz/quiz/${id}/`, payload)
 export const deleteQuiz = (id) => apiClient.delete(`/api/quiz/quiz/${id}/`) 

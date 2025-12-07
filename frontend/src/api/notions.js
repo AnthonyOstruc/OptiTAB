@@ -14,10 +14,26 @@ const normalizeNotionPayload = (payload = {}) => {
 }
 
 // ----- Admin CRUD Notions -----
+// Signature étendue: accepte soit (matiereId, niveauId) pour compatibilité,
+// soit un objet d'options { matiere, niveau, theme, contexte, limit, offset } pour la pagination.
 export const getNotions = (matiereId = null, niveauId = null) => {
   const params = new URLSearchParams()
-  if (matiereId) params.append('matiere', matiereId)
-  if (niveauId) params.append('niveau', niveauId)
+  const options = (matiereId && typeof matiereId === 'object' && !Array.isArray(matiereId)) ? matiereId : null
+
+  if (options) {
+    const { matiere, niveau, theme, contexte, limit, offset, search, q } = options
+    if (matiere) params.append('matiere', matiere)
+    if (niveau) params.append('niveau', niveau)
+    if (theme) params.append('theme', theme)
+    if (contexte) params.append('contexte', contexte)
+    if (search || q) params.append('search', search || q)
+    if (limit != null) params.append('limit', limit)
+    if (offset != null) params.append('offset', offset)
+  } else {
+    if (matiereId) params.append('matiere', matiereId)
+    if (niveauId) params.append('niveau', niveauId)
+  }
+
   params.append('format', 'json')
   const url = `/api/notions/${params.toString() ? '?' + params.toString() : ''}`
   return apiClient.get(url)

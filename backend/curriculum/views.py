@@ -44,6 +44,7 @@ class MatiereViewSet(viewsets.ModelViewSet):
         queryset = super().get_queryset()
         pays = self.request.query_params.get('pays')
         niveau = self.request.query_params.get('niveau')
+        contexte = self.request.query_params.get('contexte')
         
         # Bypass filtering for admin users
         if hasattr(self.request, 'user') and self.request.user.is_authenticated:
@@ -481,11 +482,17 @@ class NotionViewSet(viewsets.ModelViewSet):
         theme = self.request.query_params.get('theme')
         matiere = self.request.query_params.get('matiere')
         niveau = self.request.query_params.get('niveau')
+        contexte = self.request.query_params.get('contexte')
+        search = self.request.query_params.get('search') or self.request.query_params.get('q')
 
         if theme:
             queryset = queryset.filter(theme_id=theme)
         if matiere:
             queryset = queryset.filter(theme__matiere_id=matiere)
+        if contexte:
+            queryset = queryset.filter(theme__contexte_id=contexte)
+        if search:
+            queryset = queryset.filter(titre__icontains=search)
         # niveau param plus utilisé; filtrage par contexte se fait via Theme
 
         # Pour l'admin, ne pas filtrer par est_actif afin d'afficher toutes les notions
@@ -494,6 +501,34 @@ class NotionViewSet(viewsets.ModelViewSet):
             return queryset.order_by('theme_id', 'ordre', 'titre')
 
         return queryset.filter(est_actif=True).order_by('ordre', 'titre')
+
+    def list(self, request, *args, **kwargs):
+        """Supporte une pagination simple via ?limit=5&offset=0 pour l'admin."""
+        queryset = self.filter_queryset(self.get_queryset())
+
+        limit = request.query_params.get('limit')
+        offset = request.query_params.get('offset', 0)
+
+        if limit is not None:
+            try:
+                limit_value = int(limit)
+                offset_value = int(offset or 0)
+                if limit_value <= 0 or offset_value < 0:
+                    raise ValueError
+            except ValueError:
+                return Response({'detail': 'Paramètres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
+
+            total = queryset.count()
+            serializer = self.get_serializer(queryset[offset_value:offset_value + limit_value], many=True)
+            return Response({
+                'count': total,
+                'limit': limit_value,
+                'offset': offset_value,
+                'results': serializer.data
+            })
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def partial_update(self, request, *args, **kwargs):
         # Accepter 'nom' comme alias de 'titre' côté admin/frontend

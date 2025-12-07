@@ -67,35 +67,40 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="notion in paginatedNotions" :key="notion.id">
-          <td>{{ notion.id }}</td>
-          <td>{{ notion.ordre || 0 }}</td>
-          <td>{{ notion.nom }}</td>
-          <td>
-            <span v-if="notion.theme_nom" 
-                  class="theme-badge" 
-                  :style="{ backgroundColor: notion.theme_couleur, color: '#fff' }">
-              {{ notion.theme_nom }}
-            </span>
-            <span v-else class="no-theme">Aucun thème</span>
-          </td>
-          
-          <td>
-            <AdminActionsButtons
-              :item="notion"
-              :actions="['edit', 'duplicate', 'delete']"
-              edit-label="Éditer"
-              duplicate-label="Dupliquer"
-              confirm-message="Êtes-vous sûr de vouloir supprimer cette notion ?"
-              @edit="editNotion"
-              @duplicate="handleDuplicateNotion"
-              @delete="handleDeleteNotion"
-            />
-          </td>
+        <tr v-if="isLoadingNotions">
+          <td colspan="5" class="loading-row">Chargement des notions...</td>
         </tr>
-        <tr v-if="paginatedNotions.length === 0">
-          <td colspan="5" style="text-align:center; font-style: italic;">Aucune notion trouvée.</td>
-        </tr>
+        <template v-else>
+          <tr v-for="notion in paginatedNotions" :key="notion.id">
+            <td>{{ notion.id }}</td>
+            <td>{{ notion.ordre || 0 }}</td>
+            <td>{{ notion.nom }}</td>
+            <td>
+              <span v-if="notion.theme_nom" 
+                    class="theme-badge" 
+                    :style="{ backgroundColor: notion.theme_couleur, color: '#fff' }">
+                {{ notion.theme_nom }}
+              </span>
+              <span v-else class="no-theme">Aucun thème</span>
+            </td>
+            
+            <td>
+              <AdminActionsButtons
+                :item="notion"
+                :actions="['edit', 'duplicate', 'delete']"
+                edit-label="Éditer"
+                duplicate-label="Dupliquer"
+                confirm-message="Êtes-vous sûr de vouloir supprimer cette notion ?"
+                @edit="editNotion"
+                @duplicate="handleDuplicateNotion"
+                @delete="handleDeleteNotion"
+              />
+            </td>
+          </tr>
+          <tr v-if="paginatedNotions.length === 0">
+            <td colspan="5" style="text-align:center; font-style: italic;">Aucune notion trouvée.</td>
+          </tr>
+        </template>
       </tbody>
     </table>
 
@@ -103,8 +108,8 @@
     <div v-if="totalPages > 1" class="pagination">
       <button 
         class="pagination-btn" 
-        @click="currentPage--" 
-        :disabled="currentPage === 1"
+        @click="prevPage" 
+        :disabled="currentPage === 1 || isLoadingNotions"
       >
         Précédent
       </button>
@@ -115,7 +120,8 @@
           :key="page"
           class="pagination-number"
           :class="{ active: page === currentPage }"
-          @click="currentPage = page"
+          @click="goToPage(page)"
+          :disabled="isLoadingNotions"
         >
           {{ page }}
         </button>
@@ -123,15 +129,15 @@
       
       <button 
         class="pagination-btn" 
-        @click="currentPage++" 
-        :disabled="currentPage === totalPages"
+        @click="nextPage" 
+        :disabled="currentPage >= totalPages || isLoadingNotions"
       >
         Suivant
       </button>
     </div>
     
     <div v-if="totalPages > 1" class="pagination-info">
-      Page {{ currentPage }} sur {{ totalPages }} ({{ filteredNotions.length }} notion(s) au total)
+      Page {{ currentPage }} sur {{ totalPages }} ({{ totalItems }} notion(s) au total)
     </div>
 
   <!-- Duplication Modal -->
@@ -196,6 +202,8 @@ const filters = ref({
 // Pagination
 const currentPage = ref(1)
 const itemsPerPage = 5
+const totalNotions = ref(0)
+const isLoadingNotions = ref(false)
 
 // UI state for duplication modal
 const duplicateState = ref({
@@ -263,45 +271,13 @@ const filteredThemesForForm = computed(() => {
   )
 })
 
-const filteredNotions = computed(() => {
-  let filtered = notions.value
-  
-  // Filtrage par contexte
-  if (filters.value.contexte) {
-    filtered = filtered.filter(n => {
-      // Trouver le thème de la notion
-      const theme = themes.value.find(t => t.id === n.theme)
-      return theme && String(theme.contexte) === String(filters.value.contexte)
-    })
-  }
-  
-  // Filtrage par thème
-  if (filters.value.theme) {
-    filtered = filtered.filter(n =>
-      String(n.theme) === String(filters.value.theme)
-    )
-  }
-
-  // Tri par ordre puis par nom
-  return [...filtered].sort((a, b) => {
-    const ao = Number(a?.ordre ?? 0)
-    const bo = Number(b?.ordre ?? 0)
-    if (ao !== bo) return ao - bo
-    return String(a?.nom || '').localeCompare(String(b?.nom || ''))
-  })
-})
+const paginatedNotions = computed(() => notions.value)
+const totalItems = computed(() => totalNotions.value || 0)
 
 // Computed properties pour la pagination
 const totalPages = computed(() => {
-  const total = filteredNotions.value.length
+  const total = totalItems.value
   return Math.ceil(total / itemsPerPage)
-})
-
-const paginatedNotions = computed(() => {
-  const allFiltered = filteredNotions.value
-  const start = (currentPage.value - 1) * itemsPerPage
-  const end = start + itemsPerPage
-  return allFiltered.slice(start, end)
 })
 
 const displayedPages = computed(() => {
@@ -328,25 +304,61 @@ const displayedPages = computed(() => {
   return pages
 })
 
-async function load() {
+async function loadNotions(options = {}) {
+  const { skipPageGuard = false } = options
+  isLoadingNotions.value = true
   try {
-    const [{ data: nData }, { data: tData }, contextesRes] = await Promise.all([
-      getNotions(),
-      getThemes(),
-      getContextes()
-    ])
-    notions.value = nData || []
-    themes.value = tData || []
-    contextesOptions.value = Array.isArray(contextesRes) ? contextesRes : (contextesRes?.data || [])
+    const page = Math.max(currentPage.value || 1, 1)
+    const response = await getNotions({
+      limit: itemsPerPage,
+      offset: (page - 1) * itemsPerPage,
+      theme: filters.value.theme || undefined,
+      contexte: filters.value.contexte || undefined
+    })
+    const data = response?.data ?? response
+    const results = Array.isArray(data?.results) ? data.results : (Array.isArray(data) ? data : [])
+    const orderedResults = [...results].sort((a, b) => {
+      const ao = Number(a?.ordre ?? 0)
+      const bo = Number(b?.ordre ?? 0)
+      if (ao !== bo) return ao - bo
+      return String(a?.nom || '').localeCompare(String(b?.nom || ''))
+    })
+    notions.value = orderedResults
+    const total = Number(data?.count ?? results.length ?? 0)
+    totalNotions.value = Number.isFinite(total) ? total : results.length
+    const maxPage = Math.max(1, Math.ceil((totalNotions.value || 0) / itemsPerPage))
+    if (!skipPageGuard && totalNotions.value > 0 && currentPage.value > maxPage) {
+      currentPage.value = maxPage
+      await loadNotions({ skipPageGuard: true })
+      return
+    }
   } catch (error) {
-    console.error('[AdminNotions] Erreur lors du chargement:', error)
+    console.error('[AdminNotions] Erreur lors du chargement des notions:', error)
     notions.value = []
-    themes.value = []
-    contextesOptions.value = []
+    totalNotions.value = 0
+  } finally {
+    isLoadingNotions.value = false
   }
 }
 
-onMounted(load)
+async function loadInitial() {
+  try {
+    const [{ data: tData }, contextesRes] = await Promise.all([
+      getThemes(),
+      getContextes()
+    ])
+    themes.value = tData || []
+    contextesOptions.value = Array.isArray(contextesRes) ? contextesRes : (contextesRes?.data || [])
+  } catch (error) {
+    console.error('[AdminNotions] Erreur lors du chargement des métadonnées:', error)
+    themes.value = []
+    contextesOptions.value = []
+  } finally {
+    await loadNotions()
+  }
+}
+
+onMounted(loadInitial)
 
 // Watcher pour réinitialiser le filtre thème quand le contexte change
 watch(() => filters.value.contexte, (newContexte, oldContexte) => {
@@ -355,13 +367,38 @@ watch(() => filters.value.contexte, (newContexte, oldContexte) => {
     filters.value.theme = ''
     // Réinitialiser la page courante
     currentPage.value = 1
+    loadNotions()
   }
 })
 
 // Watcher pour réinitialiser la page courante quand le filtre thème change
 watch(() => filters.value.theme, () => {
   currentPage.value = 1
+  loadNotions()
 })
+
+function goToPage(page) {
+  const total = totalPages.value || 0
+  const maxPage = total > 0 ? total : 1
+  const targetPage = Math.min(Math.max(page, 1), maxPage)
+  if (targetPage === currentPage.value) return
+  currentPage.value = targetPage
+  loadNotions()
+}
+
+function nextPage() {
+  if (totalPages.value && currentPage.value < totalPages.value) {
+    currentPage.value += 1
+    loadNotions()
+  }
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value -= 1
+    loadNotions()
+  }
+}
 
 function resetForm() {
   form.value = { 
@@ -398,7 +435,7 @@ async function handleSave() {
     // Remettre le thème sélectionné pour permettre d'ajouter une autre notion dans le même thème
     form.value.theme = currentTheme
 
-    await load()
+    await loadNotions()
   } catch (e) {
     console.error('[AdminNotions] Erreur:', e)
   }
@@ -419,7 +456,7 @@ function editNotion(notion) {
 async function removeNotion(id) {
   try {
     await deleteNotion(id)
-    await load()
+    await loadNotions()
   } catch (e) {
     console.error('Erreur:', e)
   }
@@ -452,7 +489,7 @@ async function confirmDuplicate() {
   try {
     await duplicateNotion(src.id, { theme: targetThemeId, nom: newTitle })
     closeDuplicateModal()
-    await load()
+    await loadNotions()
   } catch (e) {
     console.error('[AdminNotions] Erreur de duplication:', e)
     alert('Erreur lors de la duplication de la notion')
@@ -602,6 +639,12 @@ async function confirmDuplicate() {
   color: #6b7280;
   font-style: italic;
   font-size: 0.875rem;
+}
+
+.loading-row {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
 }
 
 /* Pagination */

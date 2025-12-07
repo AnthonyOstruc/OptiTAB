@@ -679,6 +679,7 @@ async function handleCreate() {
 
         // Ajouter images si présentes (déclarées ou via fichiers sélectionnés)
         if (sheetId) {
+          const uploadedNames = new Set()
           const declared = (sheetData.image && sheetData.image.trim())
             ? sheetData.image
             : (selectedImages.value || []).map(f => f.name).join(',')
@@ -687,6 +688,18 @@ async function handleCreate() {
             const file = imageManager.getImage(imageNames[i])
             if (file) {
               await createSynthesisImage({ sheet: sheetId, image: file, image_type: 'illustration', position: i + 1 })
+              uploadedNames.add(imageNames[i])
+            }
+          }
+          // Fallback: si des fichiers ont été sélectionnés mais pas déclarés (ou noms différents),
+          // les envoyer quand même dans l'ordre sélectionné.
+          if (selectedImages.value && selectedImages.value.length) {
+            let position = imageNames.length + 1
+            for (const file of selectedImages.value) {
+              const key = file.name || ''
+              if (key && uploadedNames.has(key)) continue
+              await createSynthesisImage({ sheet: sheetId, image: file, image_type: 'illustration', position })
+              position += 1
             }
           }
           // Mémoriser les images déclarées pour cette fiche

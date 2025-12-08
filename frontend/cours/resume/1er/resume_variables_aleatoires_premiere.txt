@@ -1,0 +1,551 @@
+===Résumé Variables Aléatoires Première
+
+Images: 
+
+Titre: Résumé : Variables Aléatoires Réelles
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+<div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>📚 Objectif pédagogique :</strong> Maîtriser les variables aléatoires réelles : définition, loi de probabilité, espérance, variance, écart type et applications.</p>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Variable aléatoire réelle</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition - Variable aléatoire réelle</strong></p>
+<p style="margin:5px 0 0 0;">Soit $\displaystyle (\Omega, P)$ un espace probabilisé fini.</p>
+<p style="margin:5px 0 0 0;">Une <strong>variable aléatoire réelle</strong> $\displaystyle X$ est une fonction qui, à chaque issue $\displaystyle \omega$ de l'univers $\displaystyle \Omega$, associe un nombre réel $\displaystyle X(\omega)$.</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle X : \Omega \to \mathbb{R}$</p>
+<p style="margin:5px 0 0 0; font-size:0.95em;">$\displaystyle \omega \mapsto X(\omega)$</p>
+</div>
+<p style="margin:5px 0 0 0;">En pratique, $\displaystyle X$ modélise le <strong>résultat numérique</strong> d'une expérience aléatoire.</p>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9c27b0; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(156,39,176,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e5f5;">
+<td style="border:none; border-bottom:1px solid #e1bee7; padding:18px 16px;"><strong>Variable aléatoire</strong></td>
+<td style="border:none; border-bottom:1px solid #e1bee7; padding:18px 16px;">Lettre <strong>majuscule</strong> : $\displaystyle X, Y, Z$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;"><strong>Valeurs possibles</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Lettres <strong>minuscules</strong> : $\displaystyle x, y, z$</td>
+</tr>
+<tr style="background:#f3e5f5;">
+<td style="border:none; padding:18px 16px;"><strong>Événement</strong></td>
+<td style="border:none; padding:18px 16px;">$\displaystyle \{X = a\}$ : "$\displaystyle X$ prend la valeur $\displaystyle a$"</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Langage naturel</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notation symbolique</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#d1fae5;">
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">La somme des dés vaut 7</td>
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">$\displaystyle X = 7$ ou $\displaystyle \{X = 7\}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">La somme est inférieure ou égale à 5</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle X \leq 5$ ou $\displaystyle \{X \leq 5\}$</td>
+</tr>
+<tr style="background:#d1fae5;">
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">Probabilité que la somme vaille 10</td>
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">$\displaystyle P(X = 10)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Probabilité que la somme soit au moins 8</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle P(X \geq 8)$</td>
+</tr>
+<tr style="background:#d1fae5;">
+<td style="border:none; padding:18px 16px;">Le nombre de piles est entre 1 et 2</td>
+<td style="border:none; padding:18px 16px;">$\displaystyle 1 \leq X \leq 2$ ou $\displaystyle \{1 \leq X \leq 2\}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:33%;">Exemple</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:33%;">Variable $\displaystyle X$</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:34%;">Valeurs possibles</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Lancer d'un dé</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Numéro obtenu</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle \{1, 2, 3, 4, 5, 6\}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Somme de deux dés</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Somme des résultats</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle \{2, 3, 4, \ldots, 12\}$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">3 lancers de pièce</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Nombre de piles</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle \{0, 1, 2, 3\}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">Gain dans un jeu</td>
+<td style="border:none; padding:18px 16px;">Gain (en euros)</td>
+<td style="border:none; padding:18px 16px;">$\displaystyle \{-1, 2, 5\}$ (exemple)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Loi de probabilité d'une variable aléatoire</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition - Loi de probabilité</strong></p>
+<p style="margin:5px 0 0 0;">Soit $\displaystyle X$ une variable aléatoire prenant les valeurs $\displaystyle x_1, x_2, \ldots, x_n$.</p>
+<p style="margin:5px 0 0 0;">La <strong>loi de probabilité</strong> de $\displaystyle X$ est l'ensemble des probabilités $\displaystyle P(X = x_i)$ pour toutes les valeurs possibles $\displaystyle x_i$.</p>
+<p style="margin:5px 0 0 0;">Elle se présente sous forme d'un <strong>tableau</strong> :</p>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9c27b0; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(156,39,176,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:20%;">$\displaystyle x_i$</th>
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:20%;">$\displaystyle x_1$</th>
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:20%;">$\displaystyle x_2$</th>
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:20%;">$\displaystyle \cdots$</th>
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:20%;">$\displaystyle x_n$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e5f5;">
+<td style="border:none; padding:18px 16px; text-align:center; font-weight:bold;">$\displaystyle P(X = x_i)$</td>
+<td style="border:none; padding:18px 16px; text-align:center;">$\displaystyle p_1$</td>
+<td style="border:none; padding:18px 16px; text-align:center;">$\displaystyle p_2$</td>
+<td style="border:none; padding:18px 16px; text-align:center;">$\displaystyle \cdots$</td>
+<td style="border:none; padding:18px 16px; text-align:center;">$\displaystyle p_n$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Propriété fondamentale</strong></p>
+<p style="margin:5px 0 0 0;">La loi de probabilité d'une variable aléatoire vérifie :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle p_1 + p_2 + \cdots + p_n = 1$</p>
+</div>
+<p style="margin:5px 0 0 0;">Et : $\displaystyle 0 \leq P(X = x_i) \leq 1$ pour tout $\displaystyle i$</p>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:14.28%;">$\displaystyle x_i$</th>
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:14.28%;">1</th>
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:14.28%;">2</th>
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:14.28%;">3</th>
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:14.28%;">4</th>
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:14.28%;">5</th>
+<th style="border:none; padding:14px 16px; text-align:center; font-weight:600; font-size:1.05em; width:14.28%;">6</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; padding:18px 16px; text-align:center; font-weight:bold;">$\displaystyle P(X = x_i)$</td>
+<td style="border:none; padding:18px 16px; text-align:center;">$\displaystyle \frac{1}{6}$</td>
+<td style="border:none; padding:18px 16px; text-align:center;">$\displaystyle \frac{1}{6}$</td>
+<td style="border:none; padding:18px 16px; text-align:center;">$\displaystyle \frac{1}{6}$</td>
+<td style="border:none; padding:18px 16px; text-align:center;">$\displaystyle \frac{1}{6}$</td>
+<td style="border:none; padding:18px 16px; text-align:center;">$\displaystyle \frac{1}{6}$</td>
+<td style="border:none; padding:18px 16px; text-align:center;">$\displaystyle \frac{1}{6}$</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:10px 0 0 0; text-align:center; font-size:0.95em; color:#6c757d;"><em>Exemple : Loi de probabilité d'un dé équilibré (loi uniforme)</em></p>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Calcul de probabilité</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#d1fae5;">
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">$\displaystyle P(X \leq a)$</td>
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">$\displaystyle \sum_{x_i \leq a} P(X = x_i)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle P(X \geq a)$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle \sum_{x_i \geq a} P(X = x_i)$</td>
+</tr>
+<tr style="background:#d1fae5;">
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">$\displaystyle P(a \leq X \leq b)$</td>
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">$\displaystyle \sum_{a \leq x_i \leq b} P(X = x_i)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">$\displaystyle P(X > a)$</td>
+<td style="border:none; padding:18px 16px;">$\displaystyle 1 - P(X \leq a)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Espérance d'une variable aléatoire</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition - Espérance</strong></p>
+<p style="margin:5px 0 0 0;">Soit $\displaystyle X$ une variable aléatoire prenant les valeurs $\displaystyle x_1, x_2, \ldots, x_n$ avec les probabilités $\displaystyle p_1, p_2, \ldots, p_n$.</p>
+<p style="margin:5px 0 0 0;">L'<strong>espérance</strong> de $\displaystyle X$, notée $\displaystyle E(X)$ ou $\displaystyle \mu$, est la <strong>moyenne pondérée</strong> des valeurs de $\displaystyle X$ par leurs probabilités :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:500px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle E(X) = \sum_{i=1}^{n} x_i \times P(X = x_i)$</p>
+</div>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Interprétation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#d1fae5;">
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;"><strong>Valeur moyenne</strong></td>
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">Valeur moyenne que prendrait $\displaystyle X$ sur un très grand nombre de répétitions</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;"><strong>Centre de gravité</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Centre de gravité de la distribution de probabilité</td>
+</tr>
+<tr style="background:#d1fae5;">
+<td style="border:none; padding:18px 16px;"><strong>Gain moyen</strong></td>
+<td style="border:none; padding:18px 16px;">Dans un contexte de jeu : gain moyen par partie sur le long terme</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;"><strong>Linéarité</strong></td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">$\displaystyle E(aX + b) = aE(X) + b$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;"><strong>Additivité</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle E(X + Y) = E(X) + E(Y)$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; padding:18px 16px;"><strong>Constante</strong></td>
+<td style="border:none; padding:18px 16px;">Si $\displaystyle X = c$ (constante), alors $\displaystyle E(X) = c$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition - Jeu équitable</strong></p>
+<p style="margin:5px 0 0 0;">Un jeu est dit <strong>équitable</strong> si l'espérance du gain net est nulle :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle E(\text{gain net }) = 0$</p>
+</div>
+<p style="margin:5px 0 0 0;">Avec : <strong>gain net</strong> = gain brut - mise payée</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Variance et écart type</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:33%;">Concept</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:33%;">Notation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:34%;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;"><strong>Variance</strong></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle V(X)$ ou $\displaystyle \sigma^2$</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle E\left((X - E(X))^2\right)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;"><strong>Écart type</strong></td>
+<td style="border:none; padding:18px 16px;">$\displaystyle \sigma(X)$ ou $\displaystyle \sigma$</td>
+<td style="border:none; padding:18px 16px;">$\displaystyle \sqrt{V(X)}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Formule pratique de la variance</strong></p>
+<p style="margin:5px 0 0 0;">La variance peut se calculer par :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle V(X) = E(X^2) - [E(X)]^2$</p>
+</div>
+<p style="margin:5px 0 0 0;">où $\displaystyle E(X^2) = \sum_{i=1}^{n} x_i^2 \times P(X = x_i)$</p>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Interprétation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#d1fae5;">
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;"><strong>Variance</strong></td>
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">Mesure la <strong>dispersion</strong> des valeurs autour de l'espérance<br/>Plus elle est grande, plus les valeurs sont dispersées</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;"><strong>Variance nulle</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle V(X) = 0$ si et seulement si $\displaystyle X$ est constante (pas de hasard)</td>
+</tr>
+<tr style="background:#d1fae5;">
+<td style="border:none; padding:18px 16px;"><strong>Écart type</strong></td>
+<td style="border:none; padding:18px 16px;">Donne un ordre de grandeur de l'écart typique par rapport à l'espérance<br/>A la <strong>même unité</strong> que $\displaystyle X$ (contrairement à la variance)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;"><strong>Variance d'une transformation</strong></td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">$\displaystyle V(aX + b) = a^2 V(X)$<br/><em>(une constante ajoutée ne change pas la variance)</em></td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;"><strong>Écart type d'une transformation</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle \sigma(aX + b) = |a| \sigma(X)$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; padding:18px 16px;"><strong>Positivité</strong></td>
+<td style="border:none; padding:18px 16px;">$\displaystyle V(X) \geq 0$ (la variance est toujours positive ou nulle)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Erreurs fréquentes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Piège fréquent</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Correction</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Oublier de vérifier la somme des probabilités</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Elle doit toujours valoir <strong>1</strong><br/>$\displaystyle \sum_{i=1}^{n} P(X = x_i) = 1$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Confondre $\displaystyle E(X^2)$ et $\displaystyle [E(X)]^2$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Ce sont des quantités <strong>différentes</strong> !<br/>$\displaystyle E(X^2) = \sum x_i^2 \times P(X = x_i)$<br/>$\displaystyle [E(X)]^2 = \left(\sum x_i \times P(X = x_i)\right)^2$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Oublier la racine carrée pour l'écart type</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">L'écart type est $\displaystyle \sqrt{V(X)}$, pas $\displaystyle V(X)$<br/>$\displaystyle \sigma(X) = \sqrt{V(X)}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Mal interpréter l'espérance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">C'est une <strong>moyenne sur le long terme</strong>, pas une valeur garantie<br/>L'espérance peut ne pas être une valeur possible (ex: $\displaystyle E(X) = 3.5$ pour un dé)</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Confondre gain brut et gain net</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Le <strong>gain net</strong> = gain brut - mise payée<br/>Pour un jeu équitable : $\displaystyle E(\text{gain net}) = 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Oublier les unités</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Si $\displaystyle X$ est en euros :<br/>$\displaystyle E(X)$ en euros<br/>$\displaystyle V(X)$ en <strong>euros²</strong><br/>$\displaystyle \sigma(X)$ en euros</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; padding:18px 16px;">Confondre variable aléatoire et valeur</td>
+<td style="border:none; padding:18px 16px;">Bien distinguer $\displaystyle X$ (variable aléatoire) de $\displaystyle x$ (valeur particulière)<br/>$\displaystyle P(X = x)$ est la probabilité que $\displaystyle X$ prenne la valeur $\displaystyle x$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Formules essentielles — mémo rapide</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Loi de probabilité</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle \sum_{i=1}^{n} P(X = x_i) = 1$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Espérance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle E(X) = \sum_{i=1}^{n} x_i \times P(X = x_i)$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Variance (définition)</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle V(X) = E\left((X - E(X))^2\right)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Variance (formule pratique)</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle V(X) = E(X^2) - [E(X)]^2$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Écart type</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle \sigma(X) = \sqrt{V(X)}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Linéarité de l'espérance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle E(aX + b) = aE(X) + b$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Propriété de la variance</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle V(aX + b) = a^2 V(X)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">Jeu équitable</td>
+<td style="border:none; padding:18px 16px;">$\displaystyle E(\text{gain net}) = 0$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Méthodologie — stratégie de résolution</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ffa500; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(255,165,0,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ffa500 0%, #ff8c00 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Type de problème</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Méthode recommandée</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fff8dc;">
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Déterminer la loi de probabilité</td>
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">1. Identifier toutes les valeurs possibles<br/>2. Dénombrer les issues pour chaque valeur<br/>3. Calculer $\displaystyle P(X = x_i)$<br/>4. Présenter sous forme de tableau<br/>5. Vérifier que la somme vaut 1</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Calculer l'espérance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Utiliser : $\displaystyle E(X) = \sum_{i=1}^{n} x_i \times P(X = x_i)$<br/>Multiplier chaque valeur par sa probabilité et additionner</td>
+</tr>
+<tr style="background:#fff8dc;">
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Calculer la variance</td>
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Utiliser la formule pratique : $\displaystyle V(X) = E(X^2) - [E(X)]^2$<br/>1. Calculer $\displaystyle E(X)$<br/>2. Calculer $\displaystyle E(X^2)$<br/>3. Appliquer la formule</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Calculer l'écart type</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Calculer d'abord la variance, puis :<br/>$\displaystyle \sigma(X) = \sqrt{V(X)}$</td>
+</tr>
+<tr style="background:#fff8dc;">
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Rendre un jeu équitable</td>
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">1. Déterminer la loi du gain brut $\displaystyle G$<br/>2. Calculer $\displaystyle E(G)$<br/>3. Résoudre $\displaystyle E(G) - m = 0$ pour trouver la mise $\displaystyle m$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">Calculer $\displaystyle P(X \leq a)$ ou $\displaystyle P(X \geq a)$</td>
+<td style="border:none; padding:18px 16px;">Sommer les probabilités des valeurs qui vérifient la condition<br/>$\displaystyle P(X \leq a) = \sum_{x_i \leq a} P(X = x_i)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Point de vigilance</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Conseil</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#d1fae5;">
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">Vérification de la loi</td>
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">Toujours vérifier que la somme des probabilités vaut 1</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Calcul de la variance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Utiliser la formule pratique $\displaystyle V(X) = E(X^2) - [E(X)]^2$ plutôt que la définition</td>
+</tr>
+<tr style="background:#d1fae5;">
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">Distinction importante</td>
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">Ne pas confondre $\displaystyle E(X^2)$ (espérance des carrés) et $\displaystyle [E(X)]^2$ (carré de l'espérance)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Interprétation de l'espérance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">L'espérance est une moyenne théorique, pas une valeur garantie</td>
+</tr>
+<tr style="background:#d1fae5;">
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">Jeu équitable</td>
+<td style="border:none; border-bottom:1px solid #a7f3d0; padding:18px 16px;">Bien distinguer gain brut et gain net</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">Unités</td>
+<td style="border:none; padding:18px 16px;">Attention aux unités : variance en unité², écart type en unité</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+===

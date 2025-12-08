@@ -145,11 +145,11 @@
     <div>
       <div class="form-group">
         <label>Thème cible</label>
-        <input v-model="themeFilter" type="text" placeholder="Rechercher un thème..." class="filter-input" />
+        <input v-model="duplicateThemeFilter" type="text" placeholder="Rechercher un thème..." class="filter-input" />
         <select v-model="duplicateState.targetTheme" required>
           <option value="">Choisir un thème cible</option>
           <option
-            v-for="theme in filteredThemes"
+            v-for="theme in filteredThemesForModal"
             :key="theme.id"
             :value="theme.id"
           >
@@ -187,6 +187,7 @@ const contextesOptions = ref([])
 const contexteFilter = ref('')
 const themeFilter = ref('')
 const themeFormFilter = ref('')
+const duplicateThemeFilter = ref('')
 const form = ref({
   id: null,
   nom: '',
@@ -262,6 +263,20 @@ const filteredThemesForForm = computed(() => {
     return themes.value
   }
   const filter = themeFormFilter.value.toLowerCase()
+  return themes.value.filter(theme =>
+    theme.nom.toLowerCase().includes(filter) ||
+    theme.contexte_detail?.matiere_nom.toLowerCase().includes(filter) ||
+    theme.contexte_detail?.pays?.nom.toLowerCase().includes(filter) ||
+    theme.contexte_detail?.niveau?.nom.toLowerCase().includes(filter) ||
+    `${theme.nom} — ${theme.contexte_detail?.matiere_nom} — ${theme.contexte_detail?.pays?.nom} - ${theme.contexte_detail?.niveau?.nom}`.toLowerCase().includes(filter)
+  )
+})
+
+const filteredThemesForModal = computed(() => {
+  if (!duplicateThemeFilter.value) {
+    return themes.value
+  }
+  const filter = duplicateThemeFilter.value.toLowerCase()
   return themes.value.filter(theme =>
     theme.nom.toLowerCase().includes(filter) ||
     theme.contexte_detail?.matiere_nom.toLowerCase().includes(filter) ||
@@ -469,6 +484,7 @@ function handleDeleteNotion(notion) {
 
 async function handleDuplicateNotion(notion) {
   // Open modal pre-filled with same theme
+  duplicateThemeFilter.value = ''
   duplicateState.value = {
     open: true,
     sourceNotion: notion,

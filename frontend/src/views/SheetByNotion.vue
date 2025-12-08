@@ -714,10 +714,10 @@ watch(() => route.query.q, (val) => {
 
 /* Mise à l'échelle automatique du contenu */
 .sheet-content :deep(table) {
-  width: 100% !important;
-  max-width: 100% !important;
-  table-layout: auto !important;
-  white-space: normal !important;
+  width: 100%;
+  max-width: 100%;
+  table-layout: auto;
+  white-space: normal;
   margin: 1.25rem 0;
   border-collapse: collapse;
 }

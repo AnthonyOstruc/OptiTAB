@@ -1875,7 +1875,7 @@ function initFirstVisitFlag() {
 
 /* Navigation ultra-propre */
 .clean-navigation {
-  margin: 1.5rem 0 1rem 0;
+  margin: 4em 0 1rem 0;
   position: relative;
   z-index: 1;
 }
@@ -1981,7 +1981,7 @@ function initFirstVisitFlag() {
 /* Responsive */
 @media (max-width: 680px) {
   .clean-navigation {
-    margin: 1.5rem 0 1rem 0;
+    margin: 4em 0 1rem 0;
     padding: 0 0.5rem;
   }
 
@@ -2014,7 +2014,7 @@ function initFirstVisitFlag() {
 
 @media (max-width: 360px) {
   .clean-navigation {
-    margin: 1.5rem 0 1rem 0;
+    margin: 4em 0 1rem 0;
   }
 
   .nav-grid {

@@ -555,7 +555,7 @@ const handleLockedAccess = ({ resourceType, notionId }) => {
   }
 
   if (!userStore.isAuthenticated) {
-    openModal(MODAL_IDS.LOGIN)
+    openModal(MODAL_IDS.REGISTER)
     return
   }
 

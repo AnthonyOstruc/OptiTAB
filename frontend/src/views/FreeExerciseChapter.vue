@@ -151,6 +151,15 @@ const goToPage = (page) => {
   })
 }
 
+const showSignupModal = () => {
+  if (window?.dispatchEvent) {
+    const evt = new CustomEvent('open-signup-modal', { detail: { source: 'free-exercises-lock' } })
+    window.dispatchEvent(evt)
+    return
+  }
+  alert('Crée un compte (gratuit) pour afficher toutes les questions et solutions.')
+}
+
 const buildInstruction = (exercise) => {
   if (!exercise?._locked) {
     return exercise.instruction
@@ -195,6 +204,15 @@ const buildInstruction = (exercise) => {
               :preview-images="exercise.previewImages"
               readonly
             />
+            <div
+              class="locked-cta"
+              role="button"
+              tabindex="0"
+              @click="showSignupModal"
+              @keydown.enter.prevent="showSignupModal"
+            >
+              Crée un compte pour tout voir
+            </div>
           </div>
           <div v-if="totalPages > 1" class="pagination">
             <button
@@ -265,7 +283,7 @@ const buildInstruction = (exercise) => {
 .exercise-stack {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
   width: 100%;
 }
 
@@ -320,6 +338,35 @@ const buildInstruction = (exercise) => {
 
 .locked-tabs {
   position: relative;
+}
+
+.locked-cta {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  background: #eef2ff;
+  border: 1px dashed #93c5fd;
+  color: #1d4ed8;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.locked-cta:hover,
+.locked-cta:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.18);
+  outline: none;
+}
+
+.separator-cta {
+  margin: 32px 0 0 0;
+  border-style: dashed;
+  background: #eef2ff;
+  color: #1d4ed8;
+  display: block;
+  width: 100%;
 }
 
 :deep(.locked-blur) {
@@ -379,7 +426,7 @@ const buildInstruction = (exercise) => {
   position: relative;
 }
 
-:deep(.locked-tabs .problem-section .problem-content > :nth-of-type(n+3)) {
+:deep(.locked-tabs .problem-section .problem-content > :nth-of-type(n+2)) {
   filter: blur(5px);
   opacity: 0.35;
   pointer-events: none;

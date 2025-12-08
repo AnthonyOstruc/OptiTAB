@@ -84,7 +84,7 @@ import Footer from '@/components/layout/Footer.vue'
 /* Base Layout */
 .subscription-page {
   min-height: 100vh;
-  padding: 2.5rem 2rem;
+  padding: 2.5rem 1.5rem;
   font-size: 0.96rem;
   width: 100%;
   max-width: none;
@@ -136,17 +136,20 @@ import Footer from '@/components/layout/Footer.vue'
 
 /* Subscription Wrapper */
 .subscription-wrapper {
-  margin-bottom: 3rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
 }
 
 :deep(.subscription-manager) {
-  max-width: 100%;
-  margin: 0;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 /* Contact Section */
 .contact-section {
-  max-width: 1100px;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto 3.5rem;
   padding: 0;
   background: #ffffff;

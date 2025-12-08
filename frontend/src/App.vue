@@ -49,6 +49,7 @@
 
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue'
+import { onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import LoginModal from '@/components/modals/LoginModal.vue'
@@ -153,6 +154,17 @@ onMounted(() => {
   if (typeof window !== 'undefined') {
     sidebarStore.init()
   }
+
+  // Ouvrir le modal de création de compte quand un composant émet l'événement global
+  if (typeof window !== 'undefined') {
+    window.addEventListener('open-signup-modal', handleOpenSignupModal)
+  }
+})
+
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('open-signup-modal', handleOpenSignupModal)
+  }
 })
 
 // Computed
@@ -168,6 +180,10 @@ const closeForgotPasswordModal = () => closeModal(MODAL_IDS.FORGOT_PASSWORD)
 // Pays/Niveau modal methods
 const closePaysNiveauModal = () => {
   isPaysNiveauModalOpen.value = false
+}
+
+const handleOpenSignupModal = () => {
+  openModal(MODAL_IDS.REGISTER)
 }
 
 // Initialiser le store des matières seulement quand l'utilisateur est configuré

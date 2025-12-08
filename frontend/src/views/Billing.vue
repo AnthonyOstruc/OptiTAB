@@ -242,8 +242,8 @@ import { useSubscriptionStore } from '@/stores/subscription'
 import { getNiveauxByPays } from '@/api/niveaux'
 import { useUserStore } from '@/stores/user'
 
-const plans = ref([])
-const loading = ref(true)
+const plans = ref(DEFAULT_PLANS)
+const loading = ref(false)
 const submitting = ref(false)
 const subscriptionStore = useSubscriptionStore()
 const userStore = useUserStore()
@@ -461,10 +461,11 @@ onMounted(async () => {
     await subscriptionStore.fetchStatus({ force: true }).catch(() => {})
     const { data } = await getPlans()
     const remote = (data?.plans || [])
-    plans.value = remote.length ? remote : DEFAULT_PLANS
+    if (remote.length) {
+      plans.value = remote
+    }
     await loadNiveauxOptions()
   } catch (e) {
-    plans.value = DEFAULT_PLANS
   } finally {
     loading.value = false
   }
@@ -590,7 +591,7 @@ async function subscribe(priceId) {
   border-radius: 16px;
   padding: 1.75rem 2rem;
   margin: 0 auto 2rem;
-  max-width: 960px;
+  max-width: 1200px;
   box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08);
 }
 
@@ -748,7 +749,7 @@ async function subscribe(priceId) {
 /* Pricing Grid */
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.75rem; /* léger dézoom global */
   align-items: start;
 }
@@ -921,7 +922,7 @@ async function subscribe(priceId) {
 
 /* Contact Section */
 .contact-section {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto 3rem; /* moins d'espace */
   padding: 0;
   background: #ffffff;
@@ -1020,7 +1021,7 @@ async function subscribe(priceId) {
 
 /* Trust Section */
 .trust-section {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto 3.5rem; /* moins d'espace */
   padding: 0 1rem;
 }

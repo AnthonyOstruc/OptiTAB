@@ -1088,13 +1088,14 @@ onMounted(() => {
 
 <style scoped>
 .subscription-manager {
-  max-width: 600px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
 }
 
 .subscription-card {
   background: white;
+  border: 1px solid #e5e7eb;
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   overflow: hidden;

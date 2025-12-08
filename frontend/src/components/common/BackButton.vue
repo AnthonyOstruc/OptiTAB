@@ -85,7 +85,7 @@ const goBack = () => {
   position: fixed;
   top: calc(var(--header-height, 60px));
   left: env(safe-area-inset-left, 0px);
-  z-index: 15000;
+  z-index: 9000; /* sous les modales */
   margin: 0;
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -96,7 +96,7 @@ const goBack = () => {
   position: fixed;
   top: 1px;
   left: 1px;
-  z-index: 15000;
+  z-index: 9000; /* sous les modales */
   margin: 0;
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -106,7 +106,7 @@ const goBack = () => {
 .back-button--sticky {
   position: sticky;
   top: 20px;
-  z-index: 1000;
+  z-index: 9000; /* sous les modales */
   margin: 0;
   background: #ffffff;
   border: 1px solid #e5e7eb;

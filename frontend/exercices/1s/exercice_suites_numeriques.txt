@@ -3118,3 +3118,409 @@ $\\$
 **C3.** Pour $\displaystyle n = 5$ : $\displaystyle S_5 = 2^7 - 5 - 3 = 128 - 8 = 120$ ✓
 
 ===
+
+
+
+
+=== Entraînement - Représentation graphique d'une suite récurrente (toile d'araignée)
+Difficulté: medium
+Image: suite_recurrence_toile_araignee_1.png
+
+Énoncé:
+On considère la suite $\displaystyle (u_n)$ définie par récurrence :
+$\displaystyle u_0 = 1$ et $\displaystyle u_{n+1} = \frac{1}{2}u_n + 1$ pour tout $\displaystyle n \in \mathbb{N}$
+
+On note $\displaystyle f$ la fonction définie sur $\displaystyle \mathbb{R}$ par $\displaystyle f(x) = \frac{1}{2}x + 1$.
+
+$\\$
+**Question 1 : Calculs des premiers termes**
+    $\qquad$ Calculer $\displaystyle u_1$, $\displaystyle u_2$ et $\displaystyle u_3$ à l'aide de la relation de récurrence.
+
+**Question 2 : Méthode graphique (toile d'araignée)**
+    $\qquad$ En utilisant la représentation graphique fournie (courbe de $\displaystyle f$ et droite $\displaystyle y = x$), déterminer graphiquement les valeurs de $\displaystyle u_1$, $\displaystyle u_2$, $\displaystyle u_3$ et $\displaystyle u_4$ en partant de $\displaystyle u_0 = 1$.
+
+**Question 3 : Point fixe**
+    $\qquad$ Résoudre l'équation $\displaystyle f(\ell) = \ell$ pour trouver le point fixe de la fonction $\displaystyle f$. Que représente ce point sur le graphique ?
+
+**Question 4 : Sens de variation**
+    $\qquad$ En observant la construction graphique, que peut-on conjecturer sur le comportement de la suite $\displaystyle (u_n)$ ?
+
+**Question 5 : Vérification algébrique**
+    $\qquad$ Montrer que la suite $\displaystyle (v_n)$ définie par $\displaystyle v_n = u_n - 2$ est une suite géométrique. En déduire l'expression de $\displaystyle u_n$ en fonction de $\displaystyle n$.
+
+Étapes:
+
+
+
+**Question 1 : Calculs des premiers termes**
+
+    ● **Calcul de $\displaystyle u_1$ :**
+        $\qquad$• $\displaystyle u_1 = f(u_0) = \frac{1}{2} \times 1 + 1 = \frac{1}{2} + 1 = \frac{3}{2} = 1,5$
+    $\\$
+
+    ● **Calcul de $\displaystyle u_2$ :**
+        $\qquad$• $\displaystyle u_2 = f(u_1) = \frac{1}{2} \times \frac{3}{2} + 1 = \frac{3}{4} + 1 = \frac{7}{4} = 1,75$
+    $\\$
+
+    ● **Calcul de $\displaystyle u_3$ :**
+        $\qquad$• $\displaystyle u_3 = f(u_2) = \frac{1}{2} \times \frac{7}{4} + 1 = \frac{7}{8} + 1 = \frac{15}{8} = 1,875$
+    $\\$
+
+**Question 2 : Méthode graphique (toile d'araignée)**
+[IMAGE_1]
+    ● **Principe de la construction :**
+        $\qquad$• On dispose de la courbe $\displaystyle C_f$ de la fonction $\displaystyle f(x) = \frac{1}{2}x + 1$
+        $\\$
+        $\qquad$• On dispose de la droite $\displaystyle \Delta : y = x$ (première bissectrice)
+        $\\$
+        $\qquad$• La droite $\displaystyle y = x$ permet de "rabattre" l'ordonnée sur l'abscisse
+    $\\$
+
+    ● **Étape 1 : Déterminer $\displaystyle u_1$ graphiquement**
+        $\qquad$• On place $\displaystyle u_0 = 1$ sur l'axe des abscisses
+        $\\$
+        $\qquad$• On monte verticalement jusqu'à la courbe $\displaystyle C_f$ : on atteint le point de coordonnées $\displaystyle (u_0, f(u_0)) = (1, u_1)$
+        $\\$
+        $\qquad$• L'ordonnée de ce point est $\displaystyle u_1 = f(u_0) = 1,5$
+        $\\$
+        $\qquad$• On se déplace horizontalement vers la droite $\displaystyle y = x$ : on atteint le point $\displaystyle (u_1, u_1)$
+        $\\$
+        $\qquad$• La projection sur l'axe des abscisses donne $\displaystyle u_1 = 1,5$
+    $\\$
+
+    ● **Étape 2 : Déterminer $\displaystyle u_2$ graphiquement**
+        $\qquad$• Depuis le point $\displaystyle (u_1, u_1)$ sur la droite $\displaystyle y = x$
+        $\\$
+        $\qquad$• On monte (ou descend) verticalement jusqu'à la courbe $\displaystyle C_f$ : on atteint $\displaystyle (u_1, f(u_1)) = (u_1, u_2)$
+        $\\$
+        $\qquad$• L'ordonnée donne $\displaystyle u_2 = f(u_1) = 1,75$
+        $\\$
+        $\qquad$• On va horizontalement vers la droite $\displaystyle y = x$ pour "rabattre" $\displaystyle u_2$ sur l'axe des abscisses
+    $\\$
+
+    ● **Étape 3 : Répétition pour $\displaystyle u_3$ et $\displaystyle u_4$**
+        $\qquad$• On répète le processus : verticalement vers $\displaystyle C_f$, puis horizontalement vers $\displaystyle y = x$
+        $\\$
+        $\qquad$• Graphiquement, on obtient : $\displaystyle u_3 = \frac{15}{8} = 1,875$ et $\displaystyle u_4 = \frac{31}{16} = 1,9375$
+        $\\$
+        $\qquad$• Ces valeurs forment une "toile d'araignée" qui converge vers le point fixe
+    $\\$
+
+    ● **Visualisation sur le graphique :**
+        $\qquad$• Les segments verticaux et horizontaux alternés créent un motif en "escalier" ou "toile"
+        $\\$
+        $\qquad$• La suite semble se rapprocher progressivement d'une valeur limite
+    $\\$
+
+**Question 3 : Point fixe**
+
+    ● **Résolution de l'équation $\displaystyle f(\ell) = \ell$ :**
+        $\qquad$• $\displaystyle \frac{1}{2}\ell + 1 = \ell$
+        $\\$
+        $\qquad$• $\displaystyle 1 = \ell - \frac{1}{2}\ell$
+        $\\$
+        $\qquad$• $\displaystyle 1 = \frac{1}{2}\ell$
+        $\\$
+        $\qquad$• $\displaystyle \ell = 2$
+    $\\$
+
+    ● **Interprétation graphique :**
+        $\qquad$• Le point fixe $\displaystyle \ell = 2$ correspond à l'intersection de la courbe $\displaystyle C_f$ et de la droite $\displaystyle y = x$
+        $\\$
+        $\qquad$• C'est le point de coordonnées $\displaystyle (2, 2)$
+        $\\$
+        $\qquad$• Sur le graphique, c'est vers ce point que la "toile d'araignée" converge
+        $\\$
+        $\qquad$• Si $\displaystyle u_n = 2$, alors $\displaystyle u_{n+1} = f(2) = 2$, donc la suite reste constante
+    $\\$
+
+**Question 4 : Sens de variation**
+
+    ● **Observation graphique :**
+        $\qquad$• La suite part de $\displaystyle u_0 = 1$
+        $\\$
+        $\qquad$• Les termes successifs sont : $\displaystyle 1 < 1,5 < 1,75 < 1,875 < ...$
+        $\\$
+        $\qquad$• La suite $\displaystyle (u_n)$ est <strong>strictement croissante</strong>
+        $\\$
+        $\qquad$• Les termes se rapprochent de plus en plus de la valeur $\displaystyle \ell = 2$ sans jamais l'atteindre
+    $\\$
+
+    ● **Conjecture :**
+        $\qquad$• La suite $\displaystyle (u_n)$ est croissante et converge vers $\displaystyle 2$
+        $\\$
+        $\qquad$• On peut écrire : $\displaystyle \lim_{n \to +\infty} u_n = 2$
+    $\\$
+
+**Question 5 : Vérification algébrique**
+
+    ● **Étude de la suite auxiliaire $\displaystyle (v_n)$ :**
+        $\qquad$• On pose $\displaystyle v_n = u_n - 2$ pour tout $\displaystyle n \in \mathbb{N}$
+    $\\$
+
+    ● **Calcul de $\displaystyle v_{n+1}$ :**
+        $\qquad$• $\displaystyle v_{n+1} = u_{n+1} - 2$
+        $\\$
+        $\qquad$• $\displaystyle v_{n+1} = \left(\frac{1}{2}u_n + 1\right) - 2$
+        $\\$
+        $\qquad$• $\displaystyle v_{n+1} = \frac{1}{2}u_n - 1$
+        $\\$
+        $\qquad$• $\displaystyle v_{n+1} = \frac{1}{2}(u_n - 2)$
+        $\\$
+        $\qquad$• $\displaystyle v_{n+1} = \frac{1}{2}v_n$
+    $\\$
+
+    ● **Conclusion :**
+        $\qquad$• La suite $\displaystyle (v_n)$ est géométrique de raison $\displaystyle q = \frac{1}{2}$
+        $\\$
+        $\qquad$• Premier terme : $\displaystyle v_0 = u_0 - 2 = 1 - 2 = -1$
+    $\\$
+
+    ● **Expression de $\displaystyle v_n$ :**
+        $\qquad$• $\displaystyle v_n = v_0 \times q^n = -1 \times \left(\frac{1}{2}\right)^n = -\frac{1}{2^n}$
+    $\\$
+
+    ● **Expression de $\displaystyle u_n$ :**
+        $\qquad$• $\displaystyle u_n = v_n + 2 = 2 - \frac{1}{2^n}$
+    $\\$
+
+    ● **Vérification avec les premiers termes :**
+        $\qquad$• $\displaystyle u_0 = 2 - \frac{1}{2^0} = 2 - 1 = 1$ ✓
+        $\\$
+        $\qquad$• $\displaystyle u_1 = 2 - \frac{1}{2^1} = 2 - \frac{1}{2} = \frac{3}{2}$ ✓
+        $\\$
+        $\qquad$• $\displaystyle u_2 = 2 - \frac{1}{2^2} = 2 - \frac{1}{4} = \frac{7}{4}$ ✓
+    $\\$
+
+    ● **Comportement à l'infini :**
+        $\qquad$• Lorsque $\displaystyle n \to +\infty$, on a $\displaystyle \frac{1}{2^n} \to 0$
+        $\\$
+        $\qquad$• Donc $\displaystyle \lim_{n \to +\infty} u_n = 2$ (confirme la conjecture graphique)
+    $\\$
+
+**Synthèse des méthodes**
+
+    ● <strong>Méthode graphique (toile d'araignée) :</strong>
+        $\qquad$• Permet de visualiser rapidement le comportement de la suite
+        $\\$
+        $\qquad$• Indique la convergence vers le point fixe
+        $\\$
+        $\qquad$• Utile pour conjecturer sans calculs lourds
+    $\\$
+
+    ● <strong>Méthode algébrique :</strong>
+        $\qquad$• Permet de prouver rigoureusement les conjectures
+        $\\$
+        $\qquad$• Donne l'expression exacte de $\displaystyle u_n$
+        $\\$
+        $\qquad$• Confirme la limite de la suite
+    $\\$
+
+Solution:
+1. $\displaystyle u_1 = 1,5$ ; $\displaystyle u_2 = 1,75$ ; $\displaystyle u_3 = 1,875$
+$\\$
+2. Graphiquement : $\displaystyle u_1 = 1,5$, $\displaystyle u_2 = 1,75$, $\displaystyle u_3 = 1,875$, $\displaystyle u_4 \approx 1,9375$ (construction en toile d'araignée)
+$\\$
+3. Point fixe : $\displaystyle \ell = 2$ (intersection de $\displaystyle C_f$ et de la droite $\displaystyle y = x$)
+$\\$
+4. La suite est croissante et converge vers $\displaystyle 2$
+$\\$
+5. $\displaystyle (v_n)$ est géométrique de raison $\displaystyle \frac{1}{2}$ ; $\displaystyle u_n = 2 - \frac{1}{2^n}$ ; $\displaystyle \lim_{n \to +\infty} u_n = 2$
+
+===
+
+=== Entraînement - Étude graphique d'une suite avec point fixe répulsif
+Difficulté: medium
+Image: suite_recurrence_toile_araignee_2.png
+
+Énoncé:
+On considère la suite $\displaystyle (u_n)$ définie par récurrence :
+$\displaystyle u_0 = 0,5$ et $\displaystyle u_{n+1} = 2u_n - 1$ pour tout $\displaystyle n \in \mathbb{N}$
+
+On note $\displaystyle f$ la fonction définie sur $\displaystyle \mathbb{R}$ par $\displaystyle f(x) = 2x - 1$.
+
+$\\$
+**Question 1 : Calculs des premiers termes**
+    $\qquad$ Calculer $\displaystyle u_1$, $\displaystyle u_2$, $\displaystyle u_3$ et $\displaystyle u_4$.
+
+**Question 2 : Point fixe**
+    $\qquad$ Déterminer le point fixe $\displaystyle \ell$ de la fonction $\displaystyle f$.
+
+**Question 3 : Représentation graphique**
+    $\qquad$ À l'aide de la méthode de la toile d'araignée, représenter graphiquement les quatre premiers termes de la suite.
+
+**Question 4 : Analyse du comportement**
+    $\qquad$ Que constate-t-on sur le comportement de la suite ? La suite converge-t-elle vers le point fixe ?
+
+**Question 5 : Étude algébrique**
+    $\qquad$ a) Montrer que la suite $\displaystyle (v_n)$ définie par $\displaystyle v_n = u_n - 1$ est une suite géométrique.
+    $\qquad$ b) En déduire l'expression de $\displaystyle u_n$ en fonction de $\displaystyle n$.
+    $\qquad$ c) Déterminer le comportement de $\displaystyle (u_n)$ lorsque $\displaystyle n$ tend vers $\displaystyle +\infty$.
+
+Étapes:
+
+
+
+**Question 1 : Calculs des premiers termes**
+
+    ● **Calcul de $\displaystyle u_1$ :**
+        $\qquad$• $\displaystyle u_1 = f(u_0) = 2 \times 0,5 - 1 = 1 - 1 = 0$
+    $\\$
+
+    ● **Calcul de $\displaystyle u_2$ :**
+        $\qquad$• $\displaystyle u_2 = f(u_1) = 2 \times 0 - 1 = -1$
+    $\\$
+
+    ● **Calcul de $\displaystyle u_3$ :**
+        $\qquad$• $\displaystyle u_3 = f(u_2) = 2 \times (-1) - 1 = -2 - 1 = -3$
+    $\\$
+
+    ● **Calcul de $\displaystyle u_4$ :**
+        $\qquad$• $\displaystyle u_4 = f(u_3) = 2 \times (-3) - 1 = -6 - 1 = -7$
+    $\\$
+
+    ● **Observation :**
+        $\qquad$• Les termes sont : $\displaystyle 0,5 \to 0 \to -1 \to -3 \to -7$
+        $\\$
+        $\qquad$• La suite semble décroître rapidement vers $\displaystyle -\infty$
+    $\\$
+
+**Question 2 : Point fixe**
+
+    ● **Résolution de $\displaystyle f(\ell) = \ell$ :**
+        $\qquad$• $\displaystyle 2\ell - 1 = \ell$
+        $\\$
+        $\qquad$• $\displaystyle 2\ell - \ell = 1$
+        $\\$
+        $\qquad$• $\displaystyle \ell = 1$
+    $\\$
+
+    ● **Interprétation :**
+        $\qquad$• Le point fixe est $\displaystyle \ell = 1$
+        $\\$
+        $\qquad$• Il correspond à l'intersection de la courbe $\displaystyle C_f$ et de la droite $\displaystyle y = x$ au point $\displaystyle (1, 1)$
+    $\\$
+
+**Question 3 : Représentation graphique**
+[IMAGE_2]
+
+    ● **Construction de la toile d'araignée :**
+        $\qquad$• <strong>Étape 1 :</strong> On place $\displaystyle u_0 = 0,5$ sur l'axe des abscisses
+        $\\$
+        $\qquad$• <strong>Étape 2 :</strong> On va verticalement jusqu'à la courbe $\displaystyle C_f$ → ordonnée $\displaystyle u_1 = 0$
+        $\\$
+        $\qquad$• <strong>Étape 3 :</strong> On va horizontalement vers la droite $\displaystyle y = x$ → point $\displaystyle (0, 0)$
+        $\\$
+        $\qquad$• <strong>Étape 4 :</strong> On descend verticalement vers $\displaystyle C_f$ → ordonnée $\displaystyle u_2 = -1$
+        $\\$
+        $\qquad$• <strong>Étape 5 :</strong> On va horizontalement vers $\displaystyle y = x$ → point $\displaystyle (-1, -1)$
+        $\\$
+        $\qquad$• On répète : $\displaystyle u_3 = -3$, puis $\displaystyle u_4 = -7$
+    $\\$
+
+    ● **Observation graphique :**
+        $\qquad$• La toile d'araignée s'éloigne du point fixe $\displaystyle (1, 1)$
+        $\\$
+        $\qquad$• Les segments s'allongent de plus en plus vers le bas à gauche
+        $\\$
+        $\qquad$• La suite diverge en s'éloignant du point fixe
+    $\\$
+
+**Question 4 : Analyse du comportement**
+
+    ● **Constatations :**
+        $\qquad$• La suite part de $\displaystyle u_0 = 0,5$ (proche de $\displaystyle \ell = 1$)
+        $\\$
+        $\qquad$• Mais elle ne converge PAS vers le point fixe
+        $\\$
+        $\qquad$• Au contraire, elle s'en éloigne : $\displaystyle 0,5 \to 0 \to -1 \to -3 \to -7$
+        $\\$
+        $\qquad$• La suite est strictement décroissante
+    $\\$
+
+    ● **Nature du point fixe :**
+        $\qquad$• Le point fixe $\displaystyle \ell = 1$ est dit <strong>"répulsif"</strong>
+        $\\$
+        $\qquad$• Cela signifie que si $\displaystyle u_0 \neq \ell$, la suite s'éloigne du point fixe
+        $\\$
+        $\qquad$• Graphiquement : la pente de $\displaystyle f$ au point fixe est $\displaystyle f'(1) = 2 > 1$, ce qui explique le caractère répulsif
+    $\\$
+
+    ● **Réponse :**
+        $\qquad$• La suite ne converge pas vers le point fixe
+        $\\$
+        $\qquad$• Elle diverge vers $\displaystyle -\infty$
+    $\\$
+
+**Question 5 : Étude algébrique**
+
+    ● **a) Suite auxiliaire $\displaystyle (v_n)$ :**
+        $\qquad$• On pose $\displaystyle v_n = u_n - 1$
+        $\\$
+        $\qquad$• Calcul de $\displaystyle v_{n+1}$ :
+        $\\$
+        $\qquad\qquad$- $\displaystyle v_{n+1} = u_{n+1} - 1 = (2u_n - 1) - 1 = 2u_n - 2 = 2(u_n - 1) = 2v_n$
+        $\\$
+        $\qquad$• Donc $\displaystyle (v_n)$ est géométrique de raison $\displaystyle q = 2$
+        $\\$
+        $\qquad$• Premier terme : $\displaystyle v_0 = u_0 - 1 = 0,5 - 1 = -0,5 = -\frac{1}{2}$
+    $\\$
+
+    ● **b) Expression de $\displaystyle u_n$ :**
+        $\qquad$• $\displaystyle v_n = v_0 \times q^n = -\frac{1}{2} \times 2^n = -\frac{2^n}{2} = -2^{n-1}$
+        $\\$
+        $\qquad$• Donc $\displaystyle u_n = v_n + 1 = 1 - 2^{n-1}$
+    $\\$
+
+    ● **Vérification :**
+        $\qquad$• $\displaystyle u_0 = 1 - 2^{-1} = 1 - \frac{1}{2} = 0,5$ ✓
+        $\\$
+        $\qquad$• $\displaystyle u_1 = 1 - 2^0 = 1 - 1 = 0$ ✓
+        $\\$
+        $\qquad$• $\displaystyle u_2 = 1 - 2^1 = 1 - 2 = -1$ ✓
+        $\\$
+        $\qquad$• $\displaystyle u_3 = 1 - 2^2 = 1 - 4 = -3$ ✓
+    $\\$
+
+    ● **c) Comportement à l'infini :**
+        $\qquad$• Lorsque $\displaystyle n \to +\infty$, on a $\displaystyle 2^{n-1} \to +\infty$
+        $\\$
+        $\qquad$• Donc $\displaystyle u_n = 1 - 2^{n-1} \to -\infty$
+        $\\$
+        $\qquad$• <strong>Conclusion :</strong> $\displaystyle \lim_{n \to +\infty} u_n = -\infty$
+        $\\$
+        $\qquad$• La suite diverge vers $\displaystyle -\infty$ (confirme l'observation graphique)
+    $\\$
+
+**Synthèse : Point fixe attractif vs répulsif**
+
+    ● <strong>Point fixe attractif :</strong>
+        $\qquad$• Si $\displaystyle |f'(\ell)| < 1$, le point fixe est attractif
+        $\\$
+        $\qquad$• La suite converge vers $\displaystyle \ell$ (exemple précédent : $\displaystyle f(x) = \frac{1}{2}x + 1$)
+    $\\$
+
+    ● <strong>Point fixe répulsif :</strong>
+        $\qquad$• Si $\displaystyle |f'(\ell)| > 1$, le point fixe est répulsif
+        $\\$
+        $\qquad$• La suite s'éloigne de $\displaystyle \ell$ (cet exercice : $\displaystyle f(x) = 2x - 1$, avec $\displaystyle f'(1) = 2$)
+    $\\$
+
+    ● <strong>Utilité de la méthode graphique :</strong>
+        $\qquad$• Elle permet de visualiser immédiatement si la suite converge ou diverge
+        $\\$
+        $\qquad$• La forme de la toile d'araignée (spirale convergente ou divergente) est très informative
+    $\\$
+
+Solution:
+1. $\displaystyle u_1 = 0$ ; $\displaystyle u_2 = -1$ ; $\displaystyle u_3 = -3$ ; $\displaystyle u_4 = -7$
+$\\$
+2. Point fixe : $\displaystyle \ell = 1$
+$\\$
+3. Construction graphique : toile d'araignée qui s'éloigne du point fixe vers le bas à gauche
+$\\$
+4. La suite ne converge pas vers le point fixe ; elle diverge vers $\displaystyle -\infty$ (point fixe répulsif)
+$\\$
+5. a) $\displaystyle (v_n)$ est géométrique de raison $\displaystyle 2$ ; b) $\displaystyle u_n = 1 - 2^{n-1}$ ; c) $\displaystyle \lim_{n \to +\infty} u_n = -\infty$
+
+===

@@ -1,30 +1,45 @@
 <template>
   <div class="parent-dashboard">
-    <div class="header">
-      <h1>Tableau de bord Parent</h1>
-      <p class="subtitle">Suivez la progression de vos enfants, simplement.</p>
-    </div>
-
-    <div class="add-child">
-      <input v-model="newChildEmail" type="email" placeholder="Email de l'élève" class="input" />
-      <button class="btn" :disabled="adding" @click="handleAddChild">Ajouter</button>
-      <span v-if="addMessage" class="hint">{{ addMessage }}</span>
-    </div>
-
-    <div class="create-child">
-      <details>
-        <summary>Créer un compte pour un enfant</summary>
-        <div class="form-row">
-          <input v-model="create.first_name" class="input" placeholder="Prénom" />
-          <input v-model="create.last_name" class="input" placeholder="Nom" />
+    <div class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">Espace parents</p>
+        <h1>Suivi simple et pédagogique</h1>
+        <p class="subtitle">Visualisez le rythme de travail et proposez un coup de pouce sans jargon.</p>
+        <div class="steps">
+          <span class="step-pill">1. Inviter l'élève</span>
+          <span class="step-pill">2. 2-3 séances courtes / semaine</span>
+          <span class="step-pill">3. Lire le mini-bilan</span>
         </div>
-        <div class="form-row">
-          <input v-model="create.email" class="input" placeholder="Email" />
+        <ul class="hero-tips">
+          <li>Fixez ensemble un objectif réaliste pour la semaine.</li>
+          <li>Appuyez-vous sur les derniers exercices pour relancer avec du concret.</li>
+        </ul>
+      </div>
+      <div class="hero-actions">
+        <div class="action-card">
+          <div class="card-title">Inviter un enfant</div>
+          <p class="card-sub">Nous envoyons un lien d'acceptation par email.</p>
+          <div class="input-row">
+            <input v-model="newChildEmail" type="email" placeholder="Email de l'élève" class="input" />
+            <button class="btn" :disabled="adding" @click="handleAddChild">Envoyer</button>
+          </div>
+          <p v-if="addMessage" class="hint">{{ addMessage }}</p>
         </div>
-        <button class="btn" :disabled="creating" @click="handleCreateChild">Créer le compte</button>
-        <div v-if="createMessage" class="hint">{{ createMessage }}</div>
-        <div v-if="tempPassword" class="temp-pass">Mot de passe temporaire: <code>{{ tempPassword }}</code></div>
-      </details>
+        <div class="action-card">
+          <div class="card-title">Créer un compte élève</div>
+          <p class="card-sub">Utile si l'élève n'a pas d'email.</p>
+          <div class="form-row">
+            <input v-model="create.first_name" class="input" placeholder="Prénom" />
+            <input v-model="create.last_name" class="input" placeholder="Nom" />
+          </div>
+          <div class="form-row">
+            <input v-model="create.email" class="input" placeholder="Email" />
+          </div>
+          <button class="btn secondary full" :disabled="creating" @click="handleCreateChild">Créer le compte</button>
+          <div v-if="createMessage" class="hint">{{ createMessage }}</div>
+          <div v-if="tempPassword" class="temp-pass">Mot de passe temporaire: <code>{{ tempPassword }}</code></div>
+        </div>
+      </div>
     </div>
 
     <div v-if="loading" class="loading">
@@ -32,8 +47,8 @@
     </div>
 
     <div v-else>
-      <div v-if="pendingInvitations.length" class="pending-section">
-        <h2>Invitations en attente</h2>
+      <div v-if="pendingInvitations.length" class="callout">
+        <div class="callout-title">Invitations en attente</div>
         <div class="pending-list">
           <div class="pending-card" v-for="invite in pendingInvitations" :key="invite.link_id">
             <div class="pending-info">
@@ -48,9 +63,9 @@
         </div>
       </div>
 
-      <div v-if="declinedInvitations.length" class="declined-section">
-        <h2>Invitations refusées</h2>
-        <p class="declined-hint">Ces élèves ont refusé l'accès. Vous pouvez renvoyer une invitation en saisissant à nouveau leur email.</p>
+      <div v-if="declinedInvitations.length" class="callout warning">
+        <div class="callout-title">Invitations refusées</div>
+        <p class="callout-text">Ces élèves ont refusé l'accès. Vous pouvez renvoyer une invitation en saisissant à nouveau leur email.</p>
         <ul class="declined-list">
           <li v-for="invite in declinedInvitations" :key="invite.link_id">
             {{ invite.first_name }} {{ invite.last_name }} — refusé le {{ formatDateTime(invite.responded_at) || '—' }}
@@ -68,18 +83,37 @@
           <div class="child-header">
             <div class="avatar">{{ initials(c.display_name) }}</div>
             <div class="child-info">
-              <div class="name">
+              <div class="name-line">
                 <span v-if="c.pays_flag" class="flag">{{ c.pays_flag }}</span>
-                {{ c.display_name }}
+                <span class="name">{{ c.display_name }}</span>
+                <span class="status-chip">{{ statusLabel(c) }}</span>
               </div>
-              <div class="meta">
-                <span v-if="c.niveau">{{ c.niveau }}</span>
+              <div class="tags">
+                <span v-if="c.niveau" class="tag">{{ c.niveau }}</span>
+                <span class="tag muted">Dernière activité {{ lastActivityLabel(c) }}</span>
               </div>
-              <div class="status-chip">{{ statusLabel(c) }}</div>
             </div>
             <div class="xp">
               <div class="xp-value">{{ c.xp }} XP</div>
               <div class="level">Niveau {{ c.level }}</div>
+            </div>
+          </div>
+
+          <div class="mini-metrics">
+            <div class="metric">
+              <div class="metric-label">Temps cette semaine</div>
+              <div class="metric-value">{{ timeWorkedLabel(c) }}</div>
+              <div class="metric-sub">{{ timeWorkedDelta(c) }}</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Rythme conseillé</div>
+              <div class="metric-value">{{ attendanceLabel(c) }}</div>
+              <div class="metric-sub">{{ attendanceSub(c) }}</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Mini-bilan</div>
+              <div class="pill tone" :class="alertTone(c)">{{ alertMessage(c) }}</div>
+              <div class="metric-sub">{{ progressHint(c) }}</div>
             </div>
           </div>
 
@@ -92,9 +126,9 @@
             </section>
 
             <section class="block tutoring">
-              <div class="tutoring-text">
+              <div>
                 <div class="section-title">Besoin d'un coup de pouce ?</div>
-                <p>OptiTAB propose aussi des cours particuliers en ligne pour débloquer un chapitre précis.</p>
+                <p class="tutoring-text">Planifiez une mini-séance guidée pour débloquer un chapitre précis.</p>
               </div>
               <button class="btn tertiary">Demander un cours ciblé</button>
             </section>
@@ -121,11 +155,13 @@
             </section>
 
             <section class="block history history-embed">
+              <div class="section-title">Historique détaillé</div>
               <ExercicesHistory :child-id="c.id" :show-suggestions="false" />
             </section>
 
             <div class="actions">
-              <button class="btn secondary" @click="askRemoveChild(c)" :disabled="removingId === c.id">Retirer cet élève</button>
+              <button class="btn secondary" @click="openChild(c.id)">Ouvrir le détail</button>
+              <button class="btn tertiary" @click="askRemoveChild(c)" :disabled="removingId === c.id">Retirer cet élève</button>
             </div>
           </div>
         </div>
@@ -201,20 +237,6 @@ function attendanceSub(child) {
   return 'Cet indicateur se mettra à jour après les premières séances.'
 }
 
-function attendanceTone(child) {
-  const done = child.metrics?.weekly_done ?? 0
-  const goal = child.metrics?.weekly_goal
-  if (!goal) return 'neutral'
-  const ratio = goal ? done / goal : 0
-  if (ratio >= 0.75) return 'ok'
-  if (ratio >= 0.4) return 'warn'
-  return 'danger'
-}
-
-function toneClass(tone) {
-  return tone ? `tone-${tone}` : ''
-}
-
 function formatMinutes(minutes) {
   const total = Number(minutes)
   if (!Number.isFinite(total) || total <= 0) return '0 min'
@@ -238,22 +260,6 @@ function timeWorkedDelta(child) {
     return `${sign}${formatMinutes(Math.abs(delta))} vs semaine dernière`
   }
   return 'Planifiez une première séance cette semaine'
-}
-
-function chaptersLabel(child) {
-  const raw = child.metrics?.recent_chapters || child.metrics?.chapters_worked || child.metrics?.chapters || []
-  if (Array.isArray(raw) && raw.length) return raw.slice(0, 3).join(', ')
-  if (typeof raw === 'string' && raw.trim()) return raw
-  if (child.last_activity?.chapitre_title) return child.last_activity.chapitre_title
-  return 'Pas encore de chapitre travaillé. Cette zone se remplira dès les premières séances.'
-}
-
-function globalLevelLabel(child) {
-  const acquired = child.metrics?.acquired_count ?? 0
-  const toReview = child.metrics?.not_acquired_count ?? 0
-  if (toReview >= acquired + 2) return 'Niveau général : à renforcer'
-  if (acquired >= 5 && toReview <= 1) return 'Niveau général : en bonne voie'
-  return 'Niveau général : en cours de consolidation'
 }
 
 function normalizeActivity(item = {}) {
@@ -380,6 +386,14 @@ function alertTone(child) {
 
 function alertMessage(child) {
   return alertData(child).message
+}
+
+function lastActivityLabel(child) {
+  const recent = recentActivity(child)
+  const entry = recent.find(a => a.when) || child.last_activity || {}
+  const when = entry.when || entry.created_at || entry.date
+  const label = humanizeDate(when)
+  return label || '—'
 }
 
 function helpActions(child) {
@@ -521,89 +535,98 @@ async function handleCreateChild() {
 </script>
 
 <style scoped>
-.parent-dashboard { margin: 1rem 0 1.5rem; padding-bottom: 40px; }
-.header h1 { margin: 0; font-size: 1.5rem; font-weight: 800; color: #1f2937; }
-.subtitle { margin: .25rem 0 0; color: #64748b; }
-
-.add-child { display:flex; align-items:center; gap:.5rem; margin-top:.75rem; }
-.input { flex:1; padding:.5rem .6rem; border:1px solid #e5e7eb; border-radius:8px; }
-.hint { color:#64748b; }
-.create-child { margin-top:.5rem; }
-.form-row { display:flex; gap:.5rem; margin-top:.35rem; }
-.temp-pass { margin-top:.5rem; background:#f8fafc; border:1px solid #e2e8f0; padding:.5rem .6rem; border-radius:8px; }
-
-.pending-section { margin-top:1.2rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:1rem; }
-.pending-section h2 { margin:0 0 .6rem; font-size:1rem; font-weight:700; color:#1f2937; }
-.pending-list { display:flex; flex-direction:column; gap:.6rem; }
-.pending-card { display:flex; align-items:center; justify-content:space-between; gap:.75rem; background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:.7rem .9rem; }
-.pending-info .name { font-weight:700; color:#1f2937; }
-.pending-info .email { color:#475569; font-size:.85rem; }
-.pending-info .meta { color:#94a3b8; font-size:.78rem; margin-top:.15rem; }
-.btn.tertiary { background:#e0e7ff; color:#4338ca; border:1px solid #c7d2fe; }
-.btn.tertiary:hover { background:#c7d2fe; }
-
-.declined-section { margin-top:1.2rem; background:#fff7ed; border:1px dashed #fdba74; border-radius:12px; padding:1rem; }
-.declined-section h2 { margin:0; font-size:1rem; font-weight:700; color:#9a3412; }
-.declined-hint { margin:.35rem 0 .6rem; color:#9a3412; font-size:.85rem; }
-.declined-list { margin:0; padding-left:1.1rem; color:#f97316; font-size:.85rem; }
-
+.parent-dashboard { max-width: 1180px; margin: 0 auto 2rem; padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: 1.2rem; }
+.hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 1rem; background: linear-gradient(120deg, #eef2ff 0%, #f5f7fb 45%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 18px; padding: 1.1rem 1.3rem; box-shadow: 0 6px 16px rgba(15,23,42,0.06); }
+.hero-text h1 { margin: .1rem 0 .35rem; font-size: 1.7rem; font-weight: 800; color: #0f172a; }
+.eyebrow { margin: 0; color: #4338ca; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; font-size: .75rem; }
+.subtitle { margin: 0 0 .7rem; color: #475569; font-weight: 500; }
+.steps { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 .5rem; }
+.step-pill { display: inline-flex; align-items: center; gap: .35rem; background: #fff; border: 1px solid #e5e7eb; color: #0f172a; padding: .35rem .65rem; border-radius: 999px; font-weight: 700; font-size: .9rem; }
+.hero-tips { margin: .35rem 0 0; padding-left: 1.15rem; color: #334155; display: flex; flex-direction: column; gap: .25rem; list-style: disc; }
+.hero-actions { display: grid; grid-template-columns: 1fr; gap: .75rem; }
+.action-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 10px rgba(15,23,42,0.05); display: flex; flex-direction: column; gap: .5rem; }
+.card-title { font-weight: 800; color: #111827; margin: 0; }
+.card-sub { margin: 0; color: #64748b; font-size: .92rem; }
+.input-row { display: flex; gap: .5rem; }
+.input { flex: 1; padding: .6rem .65rem; border: 1px solid #e5e7eb; border-radius: 10px; font-size: .95rem; background: #fff; transition: border-color .15s ease, box-shadow .15s ease; }
+.input:focus { outline: none; border-color: #a5b4fc; box-shadow: 0 0 0 3px rgba(164, 185, 255, 0.35); }
+.hint { color: #475569; font-size: .9rem; margin: 0; }
+.form-row { display: flex; gap: .5rem; }
+.full { width: 100%; }
+.temp-pass { margin: 0; background: #f8fafc; border: 1px solid #e2e8f0; padding: .55rem .7rem; border-radius: 8px; color: #0f172a; }
+.temp-pass code { background: #e0e7ff; padding: .05rem .25rem; border-radius: 6px; }
 .loading { display: flex; justify-content: center; align-items: center; height: 80px; }
 .spinner { width: 36px; height: 36px; border: 4px solid #e5e7eb; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
+.callout { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: .9rem 1rem; box-shadow: 0 1px 6px rgba(15,23,42,0.04); }
+.callout-title { margin: 0 0 .35rem; font-weight: 800; color: #0f172a; }
+.callout-text { margin: 0 0 .35rem; color: #475569; }
+.callout.warning { background: #fff7ed; border-color: #fdba74; }
+.pending-list { display: flex; flex-direction: column; gap: .6rem; }
+.pending-card { display: flex; align-items: center; justify-content: space-between; gap: .75rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: .75rem .95rem; }
+.pending-info .name { font-weight: 700; color: #1f2937; }
+.pending-info .email { color: #475569; font-size: .87rem; }
+.pending-info .meta { color: #94a3b8; font-size: .8rem; margin-top: .1rem; }
+.declined-list { margin: 0; padding-left: 1.1rem; color: #b45309; font-size: .9rem; }
 .empty { text-align: center; color: #64748b; padding: 1rem; }
-
-.children-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: .75rem; }
-.child-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: .9rem; box-shadow: 0 2px 6px rgba(30,41,59,0.06); }
-.child-header { display: grid; grid-template-columns: auto 1fr auto; gap: .6rem; align-items: center; }
-.avatar { width: 38px; height: 38px; border-radius: 50%; background: #eef2ff; color: #4f46e5; display:flex; align-items:center; justify-content:center; font-weight: 800; }
-.child-info .name { font-weight: 800; color: #111827; display:flex; align-items:center; gap:.4rem; }
-.child-info .meta { color: #64748b; font-size: .85rem; }
-.flag { font-size: 1.1rem; }
+.children-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.child-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 1rem; box-shadow: 0 2px 8px rgba(30,41,59,0.06); display: flex; flex-direction: column; gap: .9rem; }
+.child-header { display: grid; grid-template-columns: auto 1fr auto; gap: .6rem; align-items: start; }
+.avatar { width: 44px; height: 44px; border-radius: 50%; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+.name-line { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; }
+.name { font-weight: 800; color: #111827; font-size: 1.05rem; }
+.tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .1rem; }
+.tag { background: #f1f5f9; color: #0f172a; padding: .18rem .5rem; border-radius: 999px; font-size: .82rem; font-weight: 700; }
+.tag.muted { color: #475569; }
+.flag { font-size: 1.05rem; }
 .xp { text-align: right; }
 .xp-value { font-weight: 800; color: #2563eb; }
-.level { color: #64748b; font-weight: 700; font-size: .9rem; }
-
-.child-body { margin-top: .6rem; display: flex; flex-direction: column; gap: .75rem; }
-.block { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:.75rem .9rem; }
-.section-title { margin:0 0 .35rem; font-size:1rem; font-weight:800; color:#0f172a; }
-
-.grid-2 { display:grid; grid-template-columns: 1fr; gap:.75rem; }
-.activity-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:.55rem; }
-.activity-row { display:flex; gap:.5rem; align-items:flex-start; }
-.activity-row .icon { font-size:1.05rem; }
-.activity-text .primary { font-weight:700; color:#0f172a; }
-.activity-text .secondary { color:#64748b; font-size:.9rem; display:flex; gap:.35rem; flex-wrap:wrap; }
-.empty-hint { color:#94a3b8; font-size:.9rem; margin-top:.15rem; }
-
-.watch-help .block { height:100%; }
-.alert { border-left:4px solid #f97316; }
-.alert-text { margin:0; color:#0f172a; line-height:1.4; }
-.help-list { margin:0; padding-left:1.1rem; color:#0f172a; display:flex; flex-direction:column; gap:.3rem; }
-.help-list li { color:#475569; }
-
-.tutoring { display:flex; align-items:center; justify-content:space-between; gap:.75rem; flex-wrap:wrap; }
-.tutoring-text p { margin:.15rem 0 0; color:#475569; }
-
-.status-chip { display:inline-block; margin-top:.3rem; padding:.2rem .55rem; border-radius:999px; background:#dcfce7; color:#166534; font-size:.75rem; font-weight:600; }
-
-.actions { display:flex; justify-content:flex-end; gap:.5rem; }
-.btn { background:#2563eb; color:white; border:none; border-radius:8px; padding:.5rem .9rem; font-weight:700; cursor:pointer; }
-.btn:hover { background:#1e40af; }
-.btn.secondary { background:#f1f5f9; color:#0f172a; border:1px solid #e2e8f0; }
-.btn.secondary:hover { background:#e2e8f0; }
-.btn.danger { background:#dc2626; }
-.btn.danger:hover { background:#b91c1c; }
-
-@media (max-width: 520px) {
+.level { color: #475569; font-weight: 700; font-size: .92rem; }
+.mini-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .8rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 11px; padding: .8rem .9rem; }
+.metric { display: flex; flex-direction: column; gap: .1rem; }
+.metric-label { color: #475569; font-weight: 700; font-size: .9rem; }
+.metric-value { color: #0f172a; font-weight: 800; font-size: 1.05rem; }
+.metric-sub { color: #64748b; font-size: .9rem; }
+.child-body { display: flex; flex-direction: column; gap: .8rem; }
+.block { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: .85rem 1rem; }
+.section-title { margin: 0 0 .35rem; font-size: 1rem; font-weight: 800; color: #0f172a; }
+.help-list { margin: 0; padding-left: 1.1rem; color: #475569; display: flex; flex-direction: column; gap: .35rem; }
+.tutoring { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; }
+.tutoring-text { margin: .15rem 0 0; color: #475569; }
+.activity-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .55rem; }
+.activity-row { display: flex; gap: .5rem; align-items: flex-start; }
+.activity-row .icon { font-size: 1.05rem; }
+.activity-text .primary { font-weight: 700; color: #0f172a; }
+.activity-text .secondary { color: #64748b; font-size: .9rem; display: flex; gap: .35rem; flex-wrap: wrap; }
+.empty-hint { color: #94a3b8; font-size: .9rem; margin-top: .15rem; }
+.status-chip { display: inline-block; padding: .2rem .55rem; border-radius: 999px; background: #dcfce7; color: #166534; font-size: .78rem; font-weight: 700; }
+.pill { display: inline-flex; align-items: center; padding: .25rem .45rem; border-radius: 999px; background: #e5e7eb; color: #0f172a; font-weight: 700; font-size: .85rem; }
+.pill.tone { background: #eef2ff; color: #1f2937; border: 1px solid #e0e7ff; }
+.tone-ok { background: #ecfdf3; color: #166534; border-color: #bbf7d0; }
+.tone-warn { background: #fff7ed; color: #9a3412; border-color: #fdba74; }
+.tone-danger { background: #fef2f2; color: #b91c1c; border-color: #fecdd3; }
+.history-embed { background: #fff; border: 1px solid #e5e7eb; }
+.actions { display: flex; justify-content: flex-end; gap: .6rem; flex-wrap: wrap; }
+.btn { background: #2563eb; color: white; border: none; border-radius: 10px; padding: .55rem 1rem; font-weight: 700; cursor: pointer; transition: background .15s ease, transform .1s ease; }
+.btn:hover { background: #1e40af; }
+.btn:disabled { opacity: .65; cursor: not-allowed; }
+.btn.secondary { background: #f1f5f9; color: #0f172a; border: 1px solid #e2e8f0; }
+.btn.secondary:hover { background: #e2e8f0; }
+.btn.tertiary { background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; }
+.btn.tertiary:hover { background: #c7d2fe; }
+.btn.danger { background: #dc2626; }
+.btn.danger:hover { background: #b91c1c; }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.45); display: flex; align-items: center; justify-content: center; z-index: 30; padding: 1rem; }
+.modal { background: #fff; border-radius: 12px; padding: 1rem 1.2rem; width: 100%; max-width: 420px; box-shadow: 0 10px 30px rgba(15,23,42,0.2); border: 1px solid #e2e8f0; }
+.modal-title { margin: 0 0 .35rem; font-size: 1.1rem; font-weight: 800; color: #0f172a; }
+.modal-text { margin: 0 0 .8rem; color: #475569; }
+.modal-actions { display: flex; justify-content: flex-end; gap: .5rem; }
+@media (max-width: 1024px) { .hero { grid-template-columns: 1fr; } }
+@media (max-width: 640px) {
+  .steps { flex-direction: column; align-items: flex-start; }
+  .input-row, .form-row { flex-direction: column; }
   .child-header { grid-template-columns: auto 1fr; }
-  .xp { grid-column: 1 / -1; display:flex; gap:.6rem; }
-  .overview-grid { grid-template-columns: 1fr; }
+  .xp { grid-column: 1 / -1; display: flex; gap: .6rem; }
+  .mini-metrics { grid-template-columns: 1fr; }
 }
-
-.modal-backdrop { position: fixed; inset:0; background: rgba(15,23,42,0.45); display:flex; align-items:center; justify-content:center; z-index: 30; padding:1rem; }
-.modal { background:#fff; border-radius:12px; padding:1rem 1.2rem; width:100%; max-width:420px; box-shadow:0 10px 30px rgba(15,23,42,0.2); border:1px solid #e2e8f0; }
-.modal-title { margin:0 0 .35rem; font-size:1.1rem; font-weight:800; color:#0f172a; }
-.modal-text { margin:0 0 .8rem; color:#475569; }
-.modal-actions { display:flex; justify-content:flex-end; gap:.5rem; }
 </style>

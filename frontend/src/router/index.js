@@ -5,6 +5,19 @@ import { apiUtils } from '@/api/client'
 import { matiereMiddleware, exercicesMiddleware, quizMiddleware } from './middlewares/matiereMiddleware'
 import { requireNiveau, routeRequiresNiveau } from './middlewares/niveauMiddleware'
 
+const ALWAYS_SCROLL_TO_TOP_ROUTES = [
+  'CGV',
+  'CGU',
+  'Confidentialite',
+  'Legal',
+  'Cookies',
+  'About',
+  'CoursParticuliers',
+  'FreeCourses',
+  'FreeExercises',
+  'FreeSummaries'
+]
+
 const routes = [
   { path: '/', name: 'Home', component: () => import('@/views/Home.vue') },
   {
@@ -68,8 +81,14 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true, onAdminDenied: 'QuizComingSoon' }, 
     beforeEnter: quizMiddleware 
   },
-  // Accès direct au quiz par notion (chapitres supprimés)
-{ path: '/quiz-notion/:notionId', name: 'QuizByNotion', component: () => import('@/views/ChapterQuiz.vue'), meta: { requiresAuth: true, requiresSubscription: true, requiresAdmin: true, onAdminDenied: 'QuizComingSoon' }, beforeEnter: quizMiddleware },
+  {
+    path: '/quiz-notion/153',
+    name: 'QuizHomeworkByNotion',
+    component: () => import('@/views/HomeworkByNotion.vue'),
+    meta: { requiresAuth: true, requiresSubscription: true }
+  },
+// Accès direct : remplacé par une page énoncé simple
+{ path: '/quiz-notion/:notionId', name: 'QuizByNotion', component: () => import('@/views/HomeworkByNotion.vue'), meta: { requiresAuth: true, requiresSubscription: true }, beforeEnter: quizMiddleware },
   { path: '/quiz-coming-soon', name: 'QuizComingSoon', component: () => import('@/views/QuizComingSoon.vue'), meta: { requiresAuth: true } },
   { 
     path: '/course-notions/:matiereId', 
@@ -149,9 +168,7 @@ const router = createRouter({
   // Restaurer intelligemment la position de scroll
   scrollBehavior(to, from, savedPosition) {
     try {
-      // Routes qui doivent toujours s'ouvrir en haut de la page
-      const alwaysScrollToTopRoutes = ['CGV', 'CGU', 'Confidentialite', 'Legal', 'Cookies', 'About', 'CoursParticuliers']
-      if (alwaysScrollToTopRoutes.includes(to.name)) {
+      if (ALWAYS_SCROLL_TO_TOP_ROUTES.includes(to.name)) {
         return { top: 0, behavior: 'instant' }
       }
 
@@ -241,8 +258,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to) => {
   // Routes qui doivent toujours s'ouvrir en haut (pas de restauration de scroll)
-  const alwaysScrollToTopRoutes = ['CGV', 'CGU', 'Confidentialite', 'Legal', 'Cookies', 'About', 'CoursParticuliers']
-  if (alwaysScrollToTopRoutes.includes(to.name)) {
+  if (ALWAYS_SCROLL_TO_TOP_ROUTES.includes(to.name)) {
     // Forcer le scroll en haut après le chargement
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'instant' })

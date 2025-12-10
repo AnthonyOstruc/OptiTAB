@@ -84,39 +84,61 @@
           </div>
 
           <div class="child-body">
-            <div class="metrics-grid">
-              <div class="metric">
-                <div class="label">Objectif hebdo</div>
-                <div class="bar">
-                  <div class="fill" :style="{ width: (c.metrics?.weekly_progress || 0) + '%' }"></div>
-                </div>
-                <div class="hint">{{ c.metrics ? (c.metrics.weekly_done + ' / ' + c.metrics.weekly_goal) : '—' }}</div>
+            <section class="block help">
+              <div class="section-title">Comment aider {{ firstName(c.display_name) }} aujourd'hui ?</div>
+              <ul class="help-list">
+                <li v-for="(suggestion, idx) in helpActions(c)" :key="idx">{{ suggestion }}</li>
+              </ul>
+            </section>
+
+            <section class="block tutoring">
+              <div class="tutoring-text">
+                <div class="section-title">Besoin d'un coup de pouce ?</div>
+                <p>OptiTAB propose aussi des cours particuliers en ligne pour débloquer un chapitre précis.</p>
               </div>
-              <div class="metric small">
-                <div class="kpi">{{ c.metrics?.done_total ?? '—' }}</div>
-                <div class="kpi-label">Exercices</div>
+              <button class="btn tertiary">Demander un cours ciblé</button>
+            </section>
+
+            <section class="block">
+              <div class="section-title">Derniers exercices réalisés</div>
+              <ul class="activity-list" v-if="recentActivity(c).length">
+                <li v-for="(a, idx) in recentActivity(c)" :key="idx" class="activity-row">
+                  <span class="icon">{{ activityIcon(a.type) }}</span>
+                  <div class="activity-text">
+                    <div class="primary">{{ a.title }}</div>
+                    <div class="secondary">
+                      <span v-if="a.chapter">{{ a.chapter }}</span>
+                      <span v-if="a.when">• {{ humanizeDate(a.when) }}</span>
+                      <span v-if="a.duration">• {{ a.duration }}</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <div class="empty" v-else>
+                <div>Aucun exercice enregistré pour le moment.</div>
+                <div class="empty-hint">Les 5 derniers exercices apparaîtront ici dès la première séance.</div>
               </div>
-              <div class="metric small ok">
-                <div class="kpi">{{ c.metrics?.acquired_count ?? '—' }}</div>
-                <div class="kpi-label">Acquis</div>
-              </div>
-              <div class="metric small ko">
-                <div class="kpi">{{ c.metrics?.not_acquired_count ?? '—' }}</div>
-                <div class="kpi-label">À revoir</div>
-              </div>
-            </div>
-            <div class="last-activity" v-if="c.last_activity">
-              <div class="label">Dernière activité</div>
-              <div class="activity-line">
-                <span class="activity-title">{{ c.last_activity.exercice_title }}</span>
-                <span class="activity-meta" v-if="c.last_activity.chapitre_title">• {{ c.last_activity.chapitre_title }}</span>
-              </div>
-            </div>
+            </section>
+
+            <section class="block history history-embed">
+              <ExercicesHistory :child-id="c.id" :show-suggestions="false" />
+            </section>
+
             <div class="actions">
-              <button class="btn" @click="openChild(c.id)">Voir détails</button>
-              <button class="btn secondary" @click="handleRemoveChild(c.id)" :disabled="removingId === c.id">Retirer</button>
+              <button class="btn secondary" @click="askRemoveChild(c)" :disabled="removingId === c.id">Retirer cet élève</button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="confirmOpen" class="modal-backdrop">
+      <div class="modal">
+        <div class="modal-title">Retirer l'accès parent pour {{ childToRemove?.display_name || 'cet élève' }} ?</div>
+        <p class="modal-text">L'élève ne sera plus rattaché à ce compte parent. Voulez-vous continuer ?</p>
+        <div class="modal-actions">
+          <button class="btn secondary" @click="cancelRemove" :disabled="removingId">Annuler</button>
+          <button class="btn danger" @click="confirmRemoveChild" :disabled="removingId">Oui, retirer</button>
         </div>
       </div>
     </div>
@@ -128,6 +150,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { fetchMyChildren, addChild, removeChild } from '@/api/users'
 import apiClient from '@/api/client'
+import ExercicesHistory from './ExercicesHistory.vue'
 
 const loading = ref(true)
 const children = ref([])
@@ -142,6 +165,8 @@ const creating = ref(false)
 const createMessage = ref('')
 const tempPassword = ref('')
 const create = ref({ first_name: '', last_name: '', email: '' })
+const confirmOpen = ref(false)
+const childToRemove = ref(null)
 
 function applyChildrenPayload(payload = {}) {
   children.value = payload.children || []
@@ -156,15 +181,235 @@ function initials(name) {
   return (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase()
 }
 
-function weeklyProgress(child) {
-  // Placeholder MVP: sans stats par enfant, afficher une progression symbolique selon le niveau
-  const lvl = child?.level || 0
-  return Math.min(100, (lvl % 10) * 10)
+function firstName(name) {
+  if (!name) return "l'élève"
+  return String(name).trim().split(/\s+/)[0]
 }
 
-function weeklyHint(child) {
-  const progress = weeklyProgress(child)
-  return progress >= 100 ? 'Objectif atteint 🎯' : `Progression: ${progress}%`
+function attendanceLabel(child) {
+  const done = child.metrics?.weekly_done ?? 0
+  const goal = child.metrics?.weekly_goal
+  if (!goal || goal <= 0) return "Objectif hebdo non défini (ex. 4 séances/semaine)"
+  if (goal >= 10) return `${done} séance(s) cette semaine • pensez à fixer un objectif réaliste`
+  const plural = done > 1 ? 's' : ''
+  return `${done} séance${plural} sur ${goal} prévues`
+}
+
+function attendanceSub(child) {
+  const progress = child.metrics?.weekly_progress
+  if (typeof progress === 'number') return `Progression: ${Math.round(progress)}%`
+  return 'Cet indicateur se mettra à jour après les premières séances.'
+}
+
+function attendanceTone(child) {
+  const done = child.metrics?.weekly_done ?? 0
+  const goal = child.metrics?.weekly_goal
+  if (!goal) return 'neutral'
+  const ratio = goal ? done / goal : 0
+  if (ratio >= 0.75) return 'ok'
+  if (ratio >= 0.4) return 'warn'
+  return 'danger'
+}
+
+function toneClass(tone) {
+  return tone ? `tone-${tone}` : ''
+}
+
+function formatMinutes(minutes) {
+  const total = Number(minutes)
+  if (!Number.isFinite(total) || total <= 0) return '0 min'
+  const h = Math.floor(total / 60)
+  const m = Math.round(total % 60)
+  if (h && m) return `${h}h${m}`
+  if (h) return `${h}h`
+  return `${m} min`
+}
+
+function timeWorkedLabel(child) {
+  const minutes = child.metrics?.time_spent_minutes_7d ?? child.metrics?.time_spent_minutes
+  if (!Number.isFinite(minutes) || minutes <= 0) return '0 min pour le moment'
+  return formatMinutes(minutes)
+}
+
+function timeWorkedDelta(child) {
+  const delta = child.metrics?.time_spent_delta_minutes
+  if (Number.isFinite(delta) && delta !== 0) {
+    const sign = delta > 0 ? '+' : '-'
+    return `${sign}${formatMinutes(Math.abs(delta))} vs semaine dernière`
+  }
+  return 'Planifiez une première séance cette semaine'
+}
+
+function chaptersLabel(child) {
+  const raw = child.metrics?.recent_chapters || child.metrics?.chapters_worked || child.metrics?.chapters || []
+  if (Array.isArray(raw) && raw.length) return raw.slice(0, 3).join(', ')
+  if (typeof raw === 'string' && raw.trim()) return raw
+  if (child.last_activity?.chapitre_title) return child.last_activity.chapitre_title
+  return 'Pas encore de chapitre travaillé. Cette zone se remplira dès les premières séances.'
+}
+
+function globalLevelLabel(child) {
+  const acquired = child.metrics?.acquired_count ?? 0
+  const toReview = child.metrics?.not_acquired_count ?? 0
+  if (toReview >= acquired + 2) return 'Niveau général : à renforcer'
+  if (acquired >= 5 && toReview <= 1) return 'Niveau général : en bonne voie'
+  return 'Niveau général : en cours de consolidation'
+}
+
+function normalizeActivity(item = {}) {
+  return {
+    type: item.type || item.content_type || 'exercise',
+    title: item.exercice_title || item.title || 'Activité',
+    chapter: item.chapitre_title || item.chapter || '',
+    matiere: item.matiere?.titre || item.matiere || '',
+    notion: item.notion?.titre || item.notion || '',
+    when: item.when || item.created_at || item.date || '',
+    duration: item.duration ? formatMinutes(item.duration) : item.duration_minutes ? formatMinutes(item.duration_minutes) : '',
+    est_correct: item.est_correct ?? item.correct ?? item.success ?? null,
+    score: item.score ?? item.note ?? item.average ?? null
+  }
+}
+
+function recentActivity(child) {
+  const list = Array.isArray(child.recent_activities) ? child.recent_activities : []
+  const source = list.length ? list : (child.last_activity ? [child.last_activity] : [])
+  const normalized = source.map(normalizeActivity)
+  const exercises = normalized.filter(a => (a.type || '').toLowerCase().includes('exercice') || (a.type || '').toLowerCase().includes('exercise'))
+  const chosen = exercises.length ? exercises : normalized
+  return chosen.slice(0, 5)
+}
+
+function activityIcon(type) {
+  const key = String(type || '').toLowerCase()
+  if (key.includes('course')) return '📘'
+  if (key.includes('resum') || key.includes('resume')) return '📝'
+  return '✅'
+}
+
+function humanizeDate(iso) {
+  if (!iso) return ''
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return ''
+  const diffMs = Date.now() - d.getTime()
+  const minutes = Math.floor(diffMs / 60000)
+  if (minutes < 1) return "à l'instant"
+  if (minutes < 60) return `il y a ${minutes} min`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `il y a ${hours} h`
+  const days = Math.floor(hours / 24)
+  if (days < 7) return `il y a ${days} j`
+  return d.toLocaleDateString()
+}
+
+function chaptersProgress(child) {
+  const raw = child.metrics?.chapters_progress || child.metrics?.chapters || []
+  const list = Array.isArray(raw) ? raw : []
+  const normalized = list.map(item => {
+    const percent = clampPercent(item.percent ?? item.progress ?? item.mastery)
+    const state = stateFromPercent(percent)
+    return {
+      name: item.name || item.title || item.chapitre || 'Chapitre',
+      percent,
+      state,
+      stateLabel: stateLabel(state)
+    }
+  }).filter(item => item.name)
+  if (!normalized.length && child.last_activity?.chapitre_title) {
+    normalized.push({
+      name: child.last_activity.chapitre_title,
+      percent: 30,
+      state: 'progress',
+      stateLabel: stateLabel('progress')
+    })
+  }
+  return normalized.slice(0, 4)
+}
+
+function clampPercent(value) {
+  const n = Number(value)
+  if (!Number.isFinite(n)) return 0
+  return Math.min(100, Math.max(0, Math.round(n)))
+}
+
+function stateFromPercent(percent) {
+  if (percent >= 70) return 'ok'
+  if (percent >= 40) return 'warn'
+  return 'progress'
+}
+
+function stateLabel(state) {
+  if (state === 'ok') return 'maîtrisé'
+  if (state === 'warn') return 'à renforcer'
+  return 'en cours'
+}
+
+function progressHint(child) {
+  const list = chaptersProgress(child)
+  if (!list.length) return 'Point fort à venir dès les premières séances.'
+  const sorted = [...list].sort((a, b) => b.percent - a.percent)
+  const top = sorted[0]
+  const lows = sorted.filter(item => item.percent < 50).map(item => item.name).slice(0, 2)
+  if (!lows.length) return `Point fort actuel : ${top.name}`
+  return `Point fort actuel : ${top.name} • À travailler : ${lows.join(', ')}`
+}
+
+function alertData(child) {
+  const alerts = []
+  const recent = recentActivity(child)
+  const last = recent.find(a => a.when)?.when || child.last_activity?.when || child.last_activity?.created_at || child.last_activity?.date
+  if (last) {
+    const d = new Date(last)
+    if (!Number.isNaN(d.getTime())) {
+      const days = Math.floor((Date.now() - d.getTime()) / 86400000)
+      if (days >= 7) alerts.push('Aucune activité depuis 7 jours.')
+      else if (days >= 4) alerts.push('Aucune activité depuis 4 jours.')
+    }
+  } else {
+    alerts.push("Aucune activité depuis la création de l'accès.")
+  }
+  const toReview = child.metrics?.not_acquired_count ?? 0
+  if (toReview >= 3) alerts.push('Plusieurs exercices sous 40 % récemment.')
+  const tone = alerts.length === 0 ? 'ok' : (toReview >= 3 || alerts.some(a => a.includes('7 jours')) ? 'danger' : 'warn')
+  const message = alerts[0] || `Tout va bien, ${firstName(child.display_name)} travaille régulièrement.`
+  return { tone, message }
+}
+
+function alertTone(child) {
+  return `tone-${alertData(child).tone}`
+}
+
+function alertMessage(child) {
+  return alertData(child).message
+}
+
+function helpActions(child) {
+  const name = firstName(child.display_name)
+  const actions = []
+  const toReview = child.metrics?.not_acquired_count ?? 0
+  const lastChapter = child.last_activity?.chapitre_title
+  const alert = alertData(child)
+  if (alert.tone === 'danger') actions.push(`Proposer à ${name} une séance de 20 minutes dès aujourd'hui pour relancer le rythme.`)
+  if (alert.tone !== 'ok' && toReview > 0) actions.push(`Encourager ${name} à refaire 1 série d'exercices sur un chapitre à revoir.`)
+  if (lastChapter) actions.push(`Suggérer à ${name} de consolider "${lastChapter}".`)
+  actions.push(`Inviter ${name} à lancer une première courte séance sur OptiTAB cette semaine.`)
+  actions.push('Si besoin, demander un cours ciblé.')
+  return actions.slice(0, 3)
+}
+
+function askRemoveChild(child) {
+  childToRemove.value = child
+  confirmOpen.value = true
+}
+
+function cancelRemove() {
+  confirmOpen.value = false
+  childToRemove.value = null
+}
+
+async function confirmRemoveChild() {
+  if (!childToRemove.value) return
+  await handleRemoveChild(childToRemove.value.id)
+  cancelRemove()
 }
 
 function openChild(childId) {
@@ -308,7 +553,7 @@ async function handleCreateChild() {
 
 .empty { text-align: center; color: #64748b; padding: 1rem; }
 
-.children-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: .75rem; }
+.children-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: .75rem; }
 .child-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: .9rem; box-shadow: 0 2px 6px rgba(30,41,59,0.06); }
 .child-header { display: grid; grid-template-columns: auto 1fr auto; gap: .6rem; align-items: center; }
 .avatar { width: 38px; height: 38px; border-radius: 50%; background: #eef2ff; color: #4f46e5; display:flex; align-items:center; justify-content:center; font-weight: 800; }
@@ -319,22 +564,26 @@ async function handleCreateChild() {
 .xp-value { font-weight: 800; color: #2563eb; }
 .level { color: #64748b; font-weight: 700; font-size: .9rem; }
 
-.child-body { margin-top: .6rem; display: grid; gap: .6rem; }
-.metrics-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: .6rem; align-items: end; }
-.metric .label { color: #475569; font-weight: 700; margin-bottom: .25rem; }
-.metric .bar { height: 10px; background:#eef2ff; border-radius: 999px; overflow: hidden; }
-.metric .fill { height: 100%; background:#10b981; width: 0; transition: width .3s ease; }
-.metric .hint { color: #64748b; font-size:.875rem; margin-top:.25rem; }
-.metric.small { text-align: center; background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; padding:.4rem .5rem; }
-.metric.small .kpi { font-weight: 800; color:#111827; }
-.metric.small.ok .kpi { color:#16a34a; }
-.metric.small.ko .kpi { color:#dc2626; }
-.metric.small .kpi-label { color:#64748b; font-size:.8rem; }
-.last-activity { margin-top:.6rem; }
-.last-activity .label { color:#475569; font-weight:700; margin-bottom:.25rem; }
-.activity-line { display:flex; gap:.4rem; align-items: baseline; }
-.activity-title { font-weight:700; color:#111827; }
-.activity-meta { color:#64748b; font-size:.9rem; }
+.child-body { margin-top: .6rem; display: flex; flex-direction: column; gap: .75rem; }
+.block { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:.75rem .9rem; }
+.section-title { margin:0 0 .35rem; font-size:1rem; font-weight:800; color:#0f172a; }
+
+.grid-2 { display:grid; grid-template-columns: 1fr; gap:.75rem; }
+.activity-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:.55rem; }
+.activity-row { display:flex; gap:.5rem; align-items:flex-start; }
+.activity-row .icon { font-size:1.05rem; }
+.activity-text .primary { font-weight:700; color:#0f172a; }
+.activity-text .secondary { color:#64748b; font-size:.9rem; display:flex; gap:.35rem; flex-wrap:wrap; }
+.empty-hint { color:#94a3b8; font-size:.9rem; margin-top:.15rem; }
+
+.watch-help .block { height:100%; }
+.alert { border-left:4px solid #f97316; }
+.alert-text { margin:0; color:#0f172a; line-height:1.4; }
+.help-list { margin:0; padding-left:1.1rem; color:#0f172a; display:flex; flex-direction:column; gap:.3rem; }
+.help-list li { color:#475569; }
+
+.tutoring { display:flex; align-items:center; justify-content:space-between; gap:.75rem; flex-wrap:wrap; }
+.tutoring-text p { margin:.15rem 0 0; color:#475569; }
 
 .status-chip { display:inline-block; margin-top:.3rem; padding:.2rem .55rem; border-radius:999px; background:#dcfce7; color:#166534; font-size:.75rem; font-weight:600; }
 
@@ -343,10 +592,18 @@ async function handleCreateChild() {
 .btn:hover { background:#1e40af; }
 .btn.secondary { background:#f1f5f9; color:#0f172a; border:1px solid #e2e8f0; }
 .btn.secondary:hover { background:#e2e8f0; }
+.btn.danger { background:#dc2626; }
+.btn.danger:hover { background:#b91c1c; }
 
 @media (max-width: 520px) {
   .child-header { grid-template-columns: auto 1fr; }
   .xp { grid-column: 1 / -1; display:flex; gap:.6rem; }
-  .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .overview-grid { grid-template-columns: 1fr; }
 }
+
+.modal-backdrop { position: fixed; inset:0; background: rgba(15,23,42,0.45); display:flex; align-items:center; justify-content:center; z-index: 30; padding:1rem; }
+.modal { background:#fff; border-radius:12px; padding:1rem 1.2rem; width:100%; max-width:420px; box-shadow:0 10px 30px rgba(15,23,42,0.2); border:1px solid #e2e8f0; }
+.modal-title { margin:0 0 .35rem; font-size:1.1rem; font-weight:800; color:#0f172a; }
+.modal-text { margin:0 0 .8rem; color:#475569; }
+.modal-actions { display:flex; justify-content:flex-end; gap:.5rem; }
 </style>

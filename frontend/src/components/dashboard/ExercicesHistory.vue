@@ -1,6 +1,6 @@
 <template>
   <div class="exercices-history-wrapper">
-    <div v-if="suggestionCards.length" class="practice-suggestions">
+    <div v-if="showSuggestions && suggestionCards.length" class="practice-suggestions">
       <div class="suggestion-header">
         <div class="suggestion-title">Conseils rapides</div>
         <div class="suggestion-subtitle">Des exercices proches pour consolider ou revoir</div>
@@ -33,6 +33,7 @@
       list-title="📝 Exercices effectués"
       loading-text="Chargement des exercices..."
       api-endpoint="/api/suivis/exercices/stats/"
+      :extra-params="historyParams"
       :navigation-handler="navigateToExercice"
       :items-per-page="6"
       :filtered-items="filteredExercicesList"
@@ -246,6 +247,17 @@ import { useRouter } from 'vue-router'
 import BaseHistory from './BaseHistory.vue'
 import apiClient from '@/api/client'
 
+const props = defineProps({
+  childId: {
+    type: [Number, String],
+    default: null
+  },
+  showSuggestions: {
+    type: Boolean,
+    default: true
+  }
+})
+
 // Router
 const router = useRouter()
 
@@ -281,6 +293,12 @@ const sortedRecent = computed(() => {
 
 const lastDone = computed(() => sortedRecent.value[0] || null)
 const lastIncorrect = computed(() => sortedRecent.value.find((e) => e.est_correct === false) || null)
+
+const historyParams = computed(() => {
+  const params = {}
+  if (props.childId) params.child_id = props.childId
+  return params
+})
 
 const suggestionCards = computed(() => {
   const cards = []

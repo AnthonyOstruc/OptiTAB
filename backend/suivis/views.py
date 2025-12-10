@@ -146,8 +146,28 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
         avec filtrage par matière, notion et chapitre
         """
         try:
-            # Récupérer tous les exercices de l'utilisateur avec les relations
-            user_exercice_suivis = SuiviExercice.objects.filter(user=request.user).select_related(
+            # Choisir l'utilisateur cible (lui-même, ou un enfant si parent)
+            target_user_id = request.user.id
+            child_id_param = request.query_params.get('child_id') or request.query_params.get('child')
+            if child_id_param:
+                try:
+                    child_id_int = int(child_id_param)
+                except Exception:
+                    return Response({'error': 'child_id invalide'}, status=status.HTTP_400_BAD_REQUEST)
+
+                # Vérifier le lien parent-enfant
+                from users.models import ParentChild
+                link_exists = ParentChild.objects.filter(
+                    parent=request.user,
+                    child_id=child_id_int,
+                    status=ParentChild.STATUS_ACCEPTED,
+                ).exists()
+                if not link_exists:
+                    return Response({'error': 'Enfant non lié à ce compte parent'}, status=status.HTTP_403_FORBIDDEN)
+                target_user_id = child_id_int
+
+            # Récupérer tous les exercices de l'utilisateur cible avec les relations
+            user_exercice_suivis = SuiviExercice.objects.filter(user_id=target_user_id).select_related(
                 'exercice__notion__theme__matiere'
             ).order_by('-date_creation')
             

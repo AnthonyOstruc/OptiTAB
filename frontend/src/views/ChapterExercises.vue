@@ -25,7 +25,7 @@
         <div v-else-if="error" class="exercices-error">{{ error }}</div>
         <div v-else>
           <!-- Navigation ultra-propre (en dehors du zoom pour éviter les conflits) -->
-          <div v-if="exercices.length > 0" class="clean-navigation">
+          <div v-if="exercices.length > 0 && !statementOnlyMode" class="clean-navigation">
             <div class="nav-grid">
               <button 
                 v-for="t in tabs" 
@@ -41,7 +41,7 @@
           </div>
           
           <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
-            <div class="exercices-controls">
+            <div v-if="!statementOnlyMode" class="exercices-controls">
               <div class="controls-row">
                 <div class="filter-cta">
                   <span class="filter-cta-icon" aria-hidden="true">★</span>
@@ -99,7 +99,7 @@
               </div>
               <template v-else>
                 <div
-                  v-for="exercice in paginated"
+                  v-for="exercice in visibleExercices"
                   :key="exercice.id"
                   :id="`ex-${exercice.id}`"
                   class="exercice-item-wrapper"
@@ -107,17 +107,41 @@
                 >
                   <ExerciceQCM
                     :eid="exercice.id"
-                    :titre="exercice.titre || exercice.nom"
-                    :instruction="exercice.instruction || exercice.contenu || exercice.question"
-                    :solution="exercice.solution || exercice.reponse_correcte || ''"
-                    :etapes="exercice.etapes || ''"
+                    :titre="getTitre(exercice)"
+                    :instruction="getInstruction(exercice)"
+                    :solution="statementOnlyMode ? '' : (exercice.solution || exercice.reponse_correcte || '')"
+                    :etapes="statementOnlyMode ? '' : (exercice.etapes || '')"
                     :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
-                    :current="statusMap[exercice.id]?.status"
+                    :current="statementOnlyMode ? null : statusMap[exercice.id]?.status"
+                    :readonly="statementOnlyMode"
                     @status-changed="handleStatus"
                   />
                 </div>
-                <Pagination :total="filteredExercices.length" :perPage="perPage" :page="currentPage" @update:page="handlePageChange" />
+                <Pagination 
+                  v-if="!statementOnlyMode" 
+                  :total="filteredExercices.length" 
+                  :perPage="perPage" 
+                  :page="currentPage" 
+                  @update:page="handlePageChange" 
+                />
               </template>
+            </div>
+            <div v-if="statementOnlyMode" class="assignment-cta">
+              <div class="assignment-card">
+                <div class="assignment-text">
+                  <h3 class="assignment-title">Exercice Çÿ rendre</h3>
+                  <p class="assignment-subtitle">RÇ¸alise l'exercice sans afficher de correction puis partage-le sur WhatsApp.</p>
+                  <p class="assignment-note">Aucune solution n'est affichÇ¸e ici pour te laisser travailler en autonomie.</p>
+                </div>
+                <a
+                  :href="whatsappLink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="assignment-btn"
+                >
+                  Envoyer sur WhatsApp
+                </a>
+              </div>
             </div>
           </div>
           <div v-else class="empty-coming">
@@ -160,9 +184,11 @@ const router = useRouter()
 const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()
 const notionId = ref(route.params.notionId)
+const statementOnlyMode = computed(() => route.meta?.statementOnlyMode || route.query?.mode === 'whatsapp')
 const exPageRef = ref(null)
 const exOuterRef = ref(null)
 const firstVisit = ref(true)
+const WHATSAPP_PHONE = '33764040251'
 
 // Utiliser le composable de zoom
 const {
@@ -179,6 +205,14 @@ const {
 const exercices = ref([])
 const perPage = ref(5)
 const currentPage = ref(1)
+const whatsappMessage = computed(() => {
+  const titre = exercices.value[0]?.titre || exercices.value[0]?.nom
+  const label = titre ? `"${titre}"` : `la notion ${notionId.value}`
+  return `Bonjour, voici mon exercice termine pour ${label}. Je t'envoie mon travail.`
+})
+const whatsappLink = computed(() => {
+  return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(whatsappMessage.value)}`
+})
 
 // Filtre par type (configurable par niveau)
 const typeFilterOptions = ref([])
@@ -231,6 +265,14 @@ const filtersActive = computed(() => {
     (searchQuery.value && searchQuery.value.trim())
   )
 })
+
+function getInstruction(exercice) {
+  return exercice?.instruction || exercice?.contenu || exercice?.question || ''
+}
+
+function getTitre(exercice) {
+  return exercice?.titre || exercice?.nom || 'Exercice'
+}
 
 const baseTabCounts = computed(() => {
   const acquiredCount = exercices.value.filter(e => statusMap.value[e.id]?.status === 'acquired').length
@@ -573,9 +615,10 @@ async function loadData() {
     exercices.value = []
     statusMap.value = {}
 
+    const shouldLoadStatuses = !statementOnlyMode.value
     const [exercicesData, statusesResp] = await Promise.all([
       getExercices({ notion: notionId.value, niveau: niveauId }),
-      getStatuses()
+      shouldLoadStatuses ? getStatuses() : Promise.resolve(null)
     ])
 
     notionNom.value = 'Notion'
@@ -583,14 +626,18 @@ async function loadData() {
     exercices.value = Array.isArray(exercicesData) ? exercicesData : []
     console.log(`[ExercisesByNotion] Exercices chargés pour niveau ${niveauId}:`, exercices.value.length)
 
-    const stats = statusesResp?.data || []
-    const list = Array.isArray(stats) ? stats : (stats?.results || [])
-    statusMap.value = Object.fromEntries(
-      list.map(s => [
-        s.exercice,
-        { status: s.est_correct ? 'acquired' : 'not_acquired', id: s.id }
-      ])
-    )
+    if (shouldLoadStatuses) {
+      const stats = statusesResp?.data || []
+      const list = Array.isArray(stats) ? stats : (stats?.results || [])
+      statusMap.value = Object.fromEntries(
+        list.map(s => [
+          s.exercice,
+          { status: s.est_correct ? 'acquired' : 'not_acquired', id: s.id }
+        ])
+      )
+    } else {
+      statusMap.value = {}
+    }
 
     const total = Math.max(1, Math.ceil((filteredExercices?.value?.length || 0) / Math.max(1, perPage.value)))
     if (currentPage.value > total) currentPage.value = total
@@ -694,6 +741,10 @@ const paginated = computed(() => {
   return filteredExercices.value.slice(start, start + perPage.value)
 })
 
+const visibleExercices = computed(() => {
+  return statementOnlyMode.value ? exercices.value.slice(0, 1) : paginated.value
+})
+
 function ensureCurrentPageValid() {
   const total = Math.max(1, Math.ceil(filteredExercices.value.length / Math.max(1, perPage.value)))
   if (currentPage.value > total) {
@@ -746,6 +797,7 @@ function resetFilters() {
 }
 
 async function handleStatus({ exerciceId, status }) {
+  if (statementOnlyMode.value) return
   try {
     if (status) {
       // Vérifier si un statut existe déjà pour cet exercice
@@ -1978,6 +2030,67 @@ function initFirstVisitFlag() {
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
+.assignment-cta {
+  margin-top: 1.5rem;
+}
+
+.assignment-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.assignment-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.assignment-title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.assignment-subtitle {
+  margin: 0;
+  color: #1f2937;
+  font-size: 0.98rem;
+}
+
+.assignment-note {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.92rem;
+}
+
+.assignment-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.15rem;
+  background: #25d366;
+  color: #0b2b18;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid #1ebe5d;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.assignment-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(37, 211, 102, 0.28);
+}
+
 /* Responsive */
 @media (max-width: 680px) {
   .clean-navigation {
@@ -2009,6 +2122,16 @@ function initFirstVisitFlag() {
     padding: 0.1rem 0.25rem;
     min-width: 1rem;
     height: 1rem;
+  }
+
+  .assignment-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .assignment-btn {
+    width: 100%;
+    text-align: center;
   }
 }
 

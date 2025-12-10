@@ -3,22 +3,12 @@
     <FormatHelp :format-template="QUIZ_FORMAT_TEMPLATE">
       <template #notes>
         <div class="format-examples">
-          
-          <h4>Support des images</h4>
+          <h4>Format énoncé unique</h4>
           <ul>
-            <li>Uploadez vos images via la section "📁 Images pour les quiz"</li>
-            <li>Référencez les images avec : <code>Images: nom_image1.png, nom_image2.jpg</code></li>
-            <li>Types supportés : JPG, PNG, GIF, WebP (max 10MB)</li>
-            <li>Les images seront associées aux questions du quiz</li>
-            <li>Format alternatif : <code>Titre ;; Instructions ;; Difficulté ;; JSON_Questions</code></li>
-          </ul>
-          
-          <h4>Sauts de ligne dans les explications</h4>
-          <ul>
-            <li><code>\\</code> ou <code>//</code> : Saut de ligne simple</li>
-            <li><code>/n</code> : Saut de ligne alternatif</li>
-            <li><code>\n</code> : Saut de ligne littéral</li>
-            <li><code>$//$</code> : Saut de ligne en mode LaTeX</li>
+            <li>Séparez chaque énoncé par une ligne <code>===</code></li>
+            <li>Champs : <code>Titre</code>, <code>Difficulté</code>, <code>Images</code>, <code>Énoncé</code></li>
+            <li>Chaque bloc crée un quiz avec une seule question “réponse libre” basée sur l'énoncé.</li>
+            <li>Images : <code>Images: nom1.jpg, nom2.png</code> et marqueurs <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code> dans le texte si besoin.</li>
           </ul>
         </div>
       </template>
@@ -57,7 +47,7 @@
 
       <textarea 
         v-model="rawInput" 
-        placeholder="Collez ici vos quiz"
+        placeholder="Collez ici vos énoncés (séparés par ===)"
         class="quiz-textarea"
       ></textarea>
       
@@ -74,7 +64,7 @@
           @click="handleCreate" 
           :disabled="!selectedNotion || !previewList.length"
         >
-          Créer {{ previewList.length || '' }} quiz
+          Créer {{ previewList.length || '' }} énoncés
         </button>
         <button 
           class="btn-clear" 
@@ -169,20 +159,17 @@ const imagesInput = ref(null)
 // CONSTANTES DU FORMAT
 // ============================================================================
 
-const QUIZ_FORMAT_TEMPLATE = `Titre: Quiz Dérivées
-Instructions: Testez vos connaissances sur les dérivées
-Difficulté: medium
-Images: image1.png, image2.jpg
+const QUIZ_FORMAT_TEMPLATE = `=== [Titre de l'énoncé]
+Difficulté: [easy/medium/hard]
+Images: [nom1.jpg,nom2.png] (optionnel)
 
-Question: Quelle est la dérivée de $f(x) = x^2$ ?
-A: $2x$
-B: $x$
-C: $2$
-D: $x^2$
-Correct: A
-Explication: La dérivée de $x^2$ est $2x$ d'après la règle de puissance.\\
-Pour $x^n$, la dérivée est $n \\cdot x^{n-1}$.\\
-Donc pour $x^2$ : $2 \\cdot x^{2-1} = 2x
+Énoncé:
+[Votre texte ici]
+
+[IMAGE_1]
+
+[suite de l'énoncé]
+
 ===`
 
 // ============================================================================
@@ -597,13 +584,7 @@ function parseInput() {
   const text = rawInput.value.trim()
   if (!text) return []
 
-  // Format bloc === ... ===
-  if (text.includes('===')) {
-    return parseBlockFormat(text)
-  }
-  
-  // Format ligne avec ;;
-  return parseLineFormat(text)
+  return parseBlockFormat(text)
 }
 
 function parseBlockFormat(text) {
@@ -611,116 +592,78 @@ function parseBlockFormat(text) {
   
   return blocks.map((block) => {
     let titre = ''
-    let instruction = ''
+    let enonceLines = []
     let difficulty = 'medium'
     let image = ''
-    const questions = []
-    let currentQuestion = null
-    let inExplanation = false
+    let inEnonce = false
 
     const lines = block.split('\n')
     
     for (const line of lines) {
       const trimmed = line.trim()
+      if (!trimmed) continue
+
       if (trimmed.startsWith('Titre:')) {
         titre = trimmed.slice(6).trim()
-        inExplanation = false
-      } else if (trimmed.startsWith('Instructions:')) {
-        instruction = trimmed.slice(12).trim()
-        inExplanation = false
-      } else if (trimmed.startsWith('Difficulté:') || trimmed.startsWith('Difficulty:')) {
-        difficulty = trimmed.split(':')[1].trim().toLowerCase()
-        inExplanation = false
-      } else if (trimmed.startsWith('Images:')) {
+        continue
+      }
+      if (trimmed.toLowerCase().startsWith('difficult')) {
+        const parts = trimmed.split(':')
+        difficulty = (parts[1] || difficulty).trim().toLowerCase()
+        continue
+      }
+      if (trimmed.startsWith('Images:')) {
         image = trimmed.slice(7).trim()
-        inExplanation = false
-      } else if (trimmed.startsWith('Question:')) {
-        // Sauver la question précédente
-        if (currentQuestion && currentQuestion.question) {
-          questions.push({ ...currentQuestion })
-        }
-        // Nouvelle question
-        currentQuestion = {
-          question: normalizeLineBreaks(trimmed.slice(9).trim()),
-          options: [],
-          correct_answer: 0,
-          explanation: ''
-        }
-        inExplanation = false
-      } else if (/^[A-F]:/.test(trimmed)) {
-        if (currentQuestion) {
-          currentQuestion.options.push(normalizeLineBreaks(trimmed.slice(2).trim()))
-        }
-        inExplanation = false
-      } else if (trimmed.startsWith('Correct:')) {
-        if (currentQuestion) {
-          const answer = trimmed.slice(8).trim().toUpperCase()
-          currentQuestion.correct_answer = answer.charCodeAt(0) - 65 // A=0, B=1, etc.
-        }
-        inExplanation = false
-      } else if (trimmed.startsWith('Explication:')) {
-        if (currentQuestion) {
-          let explanation = trimmed.slice(12).trim()
-          currentQuestion.explanation = normalizeLineBreaks(explanation)
-          inExplanation = true
-        }
-      } else if (currentQuestion && inExplanation) {
-        // Conserver les retours à la ligne, mais éviter les lignes vides doublées
-        let additionalText = normalizeLineBreaks(line)
-        // Supprimer les retours en début créés par "\\" en fin de ligne précédente
-        additionalText = additionalText.replace(/^\n+/, '')
-        if (additionalText.length > 0) {
-          const needsSeparator = currentQuestion.explanation && !currentQuestion.explanation.endsWith('\n')
-          currentQuestion.explanation += (needsSeparator ? '\n' : '') + additionalText.trimEnd()
-        }
-      } else if (currentQuestion && trimmed) {
-        // Lignes supplémentaires (ex: [IMAGE_1]) rattachées à l'énoncé
-        const extra = normalizeLineBreaks(trimmed)
-        currentQuestion.question = currentQuestion.question
-          ? currentQuestion.question + '\n' + extra
-          : extra
+        continue
+      }
+      if (trimmed.toLowerCase().startsWith('énoncé:') || trimmed.toLowerCase().startsWith('enonce:')) {
+        const rest = trimmed.split(':').slice(1).join(':').trim()
+        if (rest) enonceLines.push(rest)
+        inEnonce = true
+        continue
+      }
+      if (titre === '') {
+        titre = trimmed
+        continue
+      }
+      if (inEnonce) {
+        enonceLines.push(line)
+      } else {
+        enonceLines.push(line)
       }
     }
-    
-    // Ajouter la dernière question
-    if (currentQuestion && currentQuestion.question) {
-      questions.push({ ...currentQuestion })
-    }
+
+    const enonce = normalizeLineBreaks(enonceLines.join('\n').trim())
+    const questionText = enonce || titre || 'Énoncé'
+    const question = fixQuestion({
+      question: questionText,
+      options: ['Réponse libre'],
+      correct_answer: 0,
+      explanation: ''
+    })
 
     return {
-      titre: titre || 'Quiz sans titre',
-      instruction: instruction || 'Quiz',
+      titre: titre || 'Énoncé',
+      instruction: enonce || 'Énoncé',
       difficulty,
       image,
-      questions,
+      questions: [question],
       chapitre: undefined,
       notion: Number(selectedNotion.value)
     }
   })
 }
 
-function parseLineFormat(text) {
-  const lines = text.split('\n').map(l => l.trim()).filter(Boolean)
-  
-  return lines.map((line) => {
-    const parts = line.split(';;').map(p => p.trim())
-    
-    let questions = []
-    try {
-      questions = parts[3] ? JSON.parse(parts[3]) : []
-    } catch (e) {
-      console.warn('JSON invalide pour les questions:', parts[3])
-    }
-
-    return {
-      titre: parts[0] || 'Quiz sans titre',
-      instruction: parts[1] || 'Quiz',
-      difficulty: (parts[2] || 'medium').toLowerCase(),
-      questions,
-      chapitre: undefined,
-      notion: Number(selectedNotion.value)
-    }
-  })
+function fixQuestion(question) {
+  const q = { ...question }
+  if (!Array.isArray(q.options) || q.options.length === 0) {
+    q.options = ['Réponse à rédiger']
+    q.correct_answer = 0
+  }
+  if (typeof q.correct_answer !== 'number' || Number.isNaN(q.correct_answer)) {
+    q.correct_answer = 0
+  }
+  return q
 }
 
 async function handleCreate() {

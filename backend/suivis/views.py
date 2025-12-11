@@ -2,11 +2,11 @@
 VUES ULTRA SIMPLES pour suivis
 """
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, action
-from .models import SuiviExercice, SuiviQuiz
-from .serializers import SuiviExerciceSerializer, SuiviQuizSerializer
+from .models import SuiviExercice, SuiviQuiz, QuizSubmission
+from .serializers import SuiviExerciceSerializer, SuiviQuizSerializer, QuizSubmissionSerializer
 from django.db import transaction
 from users.models import UserNotification
 from django.utils import timezone
@@ -656,3 +656,142 @@ class StatusViewSet(viewsets.ModelViewSet):
         # Les exercices guidés ne donnent jamais d'XP
         response_data.update({ 'xp_gagne': 0 })
         return Response(response_data, status=status.HTTP_201_CREATED)
+
+
+class QuizSubmissionViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet pour gérer les soumissions manuelles de quiz
+    - Les élèves peuvent voir leurs propres soumissions
+    - Les admins peuvent voir toutes les soumissions et les noter
+    """
+    queryset = QuizSubmission.objects.all()
+    serializer_class = QuizSubmissionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Filtre selon le rôle de l'utilisateur"""
+        user = self.request.user
+        queryset = super().get_queryset().select_related(
+            'user', 'quiz', 'quiz__notion', 'corrige_par'
+        )
+        
+        # Les admins voient tout, les élèves voient seulement leurs soumissions
+        if not user.is_staff:
+            queryset = queryset.filter(user=user)
+        
+        # Filtres optionnels pour l'admin
+        if user.is_staff:
+            status_filter = self.request.query_params.get('status')
+            user_id = self.request.query_params.get('user')
+            quiz_id = self.request.query_params.get('quiz')
+            
+            if status_filter:
+                queryset = queryset.filter(status=status_filter)
+            if user_id:
+                queryset = queryset.filter(user_id=user_id)
+            if quiz_id:
+                queryset = queryset.filter(quiz_id=quiz_id)
+        
+        return queryset.order_by('-date_creation')
+
+    def perform_create(self, serializer):
+        """
+        Créer une soumission
+        - Élève: crée pour lui-même
+        - Admin: peut spécifier un user_id pour créer pour un élève
+        """
+        user = self.request.user
+        
+        # Si admin et user_id fourni, créer pour cet utilisateur
+        if user.is_staff:
+            user_id = self.request.data.get('user_id') or self.request.data.get('user')
+            if user_id:
+                from django.contrib.auth import get_user_model
+                User = get_user_model()
+                try:
+                    target_user = User.objects.get(id=user_id)
+                    serializer.save(user=target_user)
+                    return
+                except User.DoesNotExist:
+                    pass
+        
+        # Sinon, créer pour l'utilisateur connecté
+        serializer.save(user=user)
+
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated, IsAdminUser])
+    def grade(self, request, pk=None):
+        """Action pour noter une soumission (admin seulement)"""
+        submission = self.get_object()
+        
+        note = request.data.get('note')
+        commentaire = request.data.get('commentaire', '')
+        
+        # Validation de la note
+        if note is None:
+            return Response(
+                {'error': 'La note est requise'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            note = float(note)
+            if note < 0 or note > 20:
+                return Response(
+                    {'error': 'La note doit être entre 0 et 20'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except (ValueError, TypeError):
+            return Response(
+                {'error': 'Note invalide'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Mettre à jour la soumission
+        submission.note = note
+        submission.commentaire = commentaire
+        submission.status = 'graded'
+        submission.corrige_par = request.user
+        submission.date_correction = timezone.now()
+        submission.save()
+        
+        serializer = self.get_serializer(submission)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def stats(self, request):
+        """Statistiques pour l'élève ou l'admin"""
+        user = request.user
+        
+        if user.is_staff:
+            # Stats admin: toutes les soumissions
+            total = QuizSubmission.objects.count()
+            pending = QuizSubmission.objects.filter(status='pending').count()
+            graded = QuizSubmission.objects.filter(status='graded').count()
+            
+            return Response({
+                'total': total,
+                'pending': pending,
+                'graded': graded
+            })
+        else:
+            # Stats élève: ses propres soumissions
+            user_submissions = QuizSubmission.objects.filter(user=user)
+            total = user_submissions.count()
+            pending = user_submissions.filter(status='pending').count()
+            graded = user_submissions.filter(status='graded').count()
+            
+            # Calculer la moyenne des notes
+            graded_submissions = user_submissions.filter(status='graded', note__isnull=False)
+            moyenne = None
+            if graded_submissions.exists():
+                moyenne = round(
+                    sum(s.note for s in graded_submissions) / graded_submissions.count(), 
+                    2
+                )
+            
+            return Response({
+                'total': total,
+                'pending': pending,
+                'graded': graded,
+                'moyenne': moyenne
+            })

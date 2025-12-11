@@ -133,6 +133,7 @@ const routes = [
   { path: '/progress', name: 'Progress', component: () => import('@/views/Progress.vue'), meta: { requiresAuth: true } },
   { path: '/historique-exercices', name: 'ExercisesHistory', component: () => import('@/views/ExercisesHistory.vue'), meta: { requiresAuth: true } },
   { path: '/historique-quiz', name: 'QuizzesHistory', component: () => import('@/views/QuizzesHistory.vue'), meta: { requiresAuth: true } },
+  { path: '/mes-quiz-rendus', name: 'QuizSubmissionsStudent', component: () => import('@/views/QuizSubmissionsStudent.vue'), meta: { requiresAuth: true } },
   { path: '/calculator', name: 'Calculator', component: () => import('@/views/Calculator.vue') },
   { path: '/test-filtrage-strict', name: 'TestFiltrageStrict', component: () => import('@/views/TestFiltrageStrict.vue') },
   {
@@ -154,6 +155,7 @@ const routes = [
       { path: 'sheets', name: 'AdminSheets', component: () => import('@/views/admin/AdminSheets.vue') },
       { path: 'quiz', name: 'AdminQuiz', component: () => import('@/views/admin/AdminQuiz.vue') },
       { path: 'quiz-plus', name: 'AdminQuizPlus', component: () => import('@/views/admin/AdminQuizPlus.vue') },
+      { path: 'quiz-submissions', name: 'AdminQuizSubmissions', component: () => import('@/views/admin/AdminQuizSubmissions.vue') },
       { path: 'niveaux', name: 'AdminNiveaux', component: () => import('@/views/admin/AdminNiveaux.vue') },
       { path: 'pays', name: 'AdminPays', component: () => import('@/views/admin/AdminPays.vue') },
       { path: '', redirect: { name: 'AdminMatieres' } }

@@ -29,6 +29,7 @@ from users.views.profile_views import (
     RecommendationsView,
     DailyLoginStreakView,
     ChangePasswordView,
+    UserListView,
 )
 from users.views.social_auth_views import GoogleLoginView, GoogleOAuthCodeExchangeView, GoogleOAuthAccessTokenView
 from rest_framework.routers import DefaultRouter
@@ -66,6 +67,7 @@ urlpatterns = [
     path('email/change/', EmailChangeRequestView.as_view(), name='email_change'),
     path('email/change-confirm/<str:token>/', EmailChangeConfirmView.as_view(), name='email_change_confirm'),
     path('logout/', UserLogoutView.as_view(), name='logout'),
+    path('users/', UserListView.as_view(), name='user_list'),  # Liste des utilisateurs
     path('me/', MeView.as_view(), name='me'),  # pour obtenir les infos de l'utilisateur connecté
     path('me/gamification/', MeGamificationView.as_view(), name='me_gamification'),
     path('me/update-xp/', UpdateUserXPView.as_view(), name='me_update_xp'),

@@ -312,6 +312,25 @@ class UserSummarySerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
+class UserListSerializer(serializers.ModelSerializer):
+    """
+    Serializer for listing users with essential information.
+    
+    Used for admin forms and user selection dropdowns.
+    """
+    
+    full_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'email', 'first_name', 'last_name', 'full_name', 'role', 'is_active']
+        read_only_fields = fields
+    
+    def get_full_name(self, obj):
+        """Retourne le nom complet de l'utilisateur."""
+        return f"{obj.first_name} {obj.last_name}".strip() if obj.first_name or obj.last_name else obj.email
+
+
 # Professional aliases for consistency
 UserSerializer = UserDetailSerializer  # Main user serializer
 UserSerializerWithNiveau = UserDetailSerializer  # Compatibility alias

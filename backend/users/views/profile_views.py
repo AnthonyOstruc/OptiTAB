@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 from core.services import ResponseService, QuerySetService
-from ..serializers.user_profile import UserDetailSerializer, UserUpdateSerializer, ChangePasswordSerializer
+from ..serializers.user_profile import UserDetailSerializer, UserUpdateSerializer, ChangePasswordSerializer, UserListSerializer
 from rest_framework.decorators import api_view
 from ..serializers.geographic_data import UserPaysNiveauUpdateSerializer
 from pays.models import Pays, Niveau
@@ -1598,3 +1598,52 @@ class UserProfileAPIView(generics.RetrieveUpdateAPIView):
             )
         
         return ResponseService.validation_error(serializer.errors)
+
+
+class UserListView(generics.ListAPIView):
+    """
+    Liste tous les utilisateurs avec filtrage optionnel par rôle.
+    
+    Query params:
+        - role: Filtrer par rôle (student, parent)
+        - search: Rechercher par nom ou email
+        - limit: Nombre maximum de résultats (défaut: 100)
+        - offset: Décalage pour la pagination
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserListSerializer
+    
+    def get_queryset(self):
+        queryset = CustomUser.objects.filter(is_active=True).select_related('pays', 'niveau_pays')
+        
+        # Filtrage par rôle
+        role = self.request.query_params.get('role', None)
+        if role:
+            queryset = queryset.filter(role=role)
+        
+        # Recherche par nom ou email
+        search = self.request.query_params.get('search', None)
+        if search:
+            queryset = queryset.filter(
+                Q(first_name__icontains=search) |
+                Q(last_name__icontains=search) |
+                Q(email__icontains=search)
+            )
+        
+        # Limiter le nombre de résultats
+        limit = self.request.query_params.get('limit', 100)
+        try:
+            limit = int(limit)
+        except (ValueError, TypeError):
+            limit = 100
+        
+        return queryset.order_by('last_name', 'first_name')[:limit]
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        
+        return ResponseService.success(
+            message="Utilisateurs récupérés avec succès",
+            data={'results': serializer.data, 'count': len(serializer.data)}
+        )

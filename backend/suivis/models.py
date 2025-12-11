@@ -42,3 +42,43 @@ class SuiviQuiz(BaseModel):
 
     def __str__(self):
         return f"{self.user.email} - {self.quiz.titre} - Tentative {self.tentative_numero}"
+
+
+class QuizSubmission(BaseModel):
+    """Soumission manuelle de quiz par les élèves (envoyé par WhatsApp)"""
+    STATUS_CHOICES = [
+        ('pending', 'En attente'),
+        ('graded', 'Noté'),
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quiz_submissions')
+    quiz = models.ForeignKey('quiz.Quiz', on_delete=models.CASCADE, related_name='submissions')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    
+    # Note attribuée par l'admin (sur 20)
+    note = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, help_text="Note sur 20")
+    
+    # Commentaire de correction de l'admin
+    commentaire = models.TextField(blank=True, default='', help_text="Commentaire de correction")
+    
+    # Informations sur la correction
+    corrige_par = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True, 
+        related_name='quiz_corriges',
+        help_text="Administrateur qui a corrigé"
+    )
+    date_correction = models.DateTimeField(null=True, blank=True, help_text="Date de correction")
+    
+    # Notes pour l'admin (numéro WhatsApp, date de réception, etc.)
+    notes_admin = models.TextField(blank=True, default='', help_text="Notes privées pour l'admin")
+    
+    class Meta:
+        ordering = ['-date_creation']
+        verbose_name = "Soumission de quiz"
+        verbose_name_plural = "Soumissions de quiz"
+    
+    def __str__(self):
+        return f"{self.user.email} - {self.quiz.titre} - {self.get_status_display()}"

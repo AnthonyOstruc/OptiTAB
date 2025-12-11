@@ -1,6 +1,6 @@
 <template>
   <DashboardLayout>
-    <section class="homework-section">
+    <section class="quiz-section">
       <div class="nav-header-base">
         <BackButton
           text="Retour"
@@ -9,25 +9,31 @@
         />
       </div>
 
-      <div class="homework-card">
-        <header class="homework-header">
-          <div class="homework-meta">
-            <span class="homework-chip">Notion #{{ notionId }}</span>
-            <h2 class="homework-title">Énoncé d'exercice</h2>
-            <p class="homework-subtitle">
-              Collez ou rédigez ici l'énoncé complet. Aucune question à choix multiple n'est affichée.
-            </p>
-          </div>
-        </header>
+      <div class="quiz-container">
+        <!-- Loading state -->
+        <div v-if="loading" class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Chargement des quiz...</p>
+        </div>
 
-        <div class="homework-body">
-          <div class="statement-card">
-            <h3 class="statement-heading">Énoncé</h3>
-            <div class="statement-content" v-html="homeworkStatement"></div>
-            <div v-if="!homeworkStatement" class="statement-placeholder">
-              Aucun énoncé enregistré pour l'instant. Ajoutez le texte de l'exercice.
-            </div>
-          </div>
+        <!-- Empty state -->
+        <div v-else-if="!loading && quizList.length === 0" class="empty-state">
+          <div class="empty-icon">📝</div>
+          <h3>Aucun quiz disponible</h3>
+          <p>Il n'y a pas encore de quiz pour cette notion.</p>
+        </div>
+
+        <!-- Quiz list -->
+        <div v-else class="quiz-list">
+          <ExerciceQCM
+            v-for="quiz in quizList"
+            :key="quiz.id"
+            :eid="quiz.id"
+            :titre="quiz.titre"
+            :exercices-list="quiz.questions_data"
+            :difficulty="quiz.difficulty"
+            :readonly="false"
+          />
         </div>
       </div>
     </section>
@@ -35,94 +41,117 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
+import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
+import { getQuizByNotion } from '@/api/quiz'
 
 const route = useRoute()
 const router = useRouter()
 const notionId = route.params.notionId
 
-// Placez ici le texte de l'énoncé. Laisser vide pour afficher le placeholder.
-const homeworkStatement = ref('')
+const loading = ref(true)
+const quizList = ref([])
+
+async function loadQuiz() {
+  loading.value = true
+  try {
+    const response = await getQuizByNotion(notionId)
+    // S'assurer que questions_data est bien un tableau
+    quizList.value = (response.data || response || []).map(quiz => ({
+      ...quiz,
+      questions_data: Array.isArray(quiz.questions_data) ? quiz.questions_data : []
+    }))
+  } catch (error) {
+    console.error('Erreur lors du chargement des quiz:', error)
+    quizList.value = []
+  } finally {
+    loading.value = false
+  }
+}
 
 function goBack() {
   router.back()
 }
+
+onMounted(() => {
+  loadQuiz()
+})
 </script>
 
 <style scoped>
-.homework-section {
+.quiz-section {
   padding: 1rem 0 2rem;
+  min-height: 100vh;
 }
 
-.homework-card {
-  max-width: 1024px;
+.quiz-container {
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem 2rem;
 }
 
-.homework-header {
-  margin-bottom: 1.25rem;
-}
-
-.homework-meta {
+.loading-state {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-}
-
-.homework-chip {
-  display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.6rem;
-  background: #eef2ff;
-  color: #4338ca;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  width: fit-content;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
 }
 
-.homework-title {
-  margin: 0;
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #0f172a;
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-.homework-subtitle {
-  margin: 0;
-  color: #475569;
-  font-size: 0.98rem;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.statement-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 1.2rem 1.4rem;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-}
-
-.statement-heading {
-  margin: 0 0 0.75rem 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.statement-content {
-  white-space: pre-wrap;
-  color: #111827;
-  line-height: 1.5;
+.loading-state p {
+  color: #64748b;
   font-size: 1rem;
+  margin: 0;
 }
 
-.statement-placeholder {
-  color: #94a3b8;
-  font-style: italic;
-  font-size: 0.98rem;
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.quiz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 </style>

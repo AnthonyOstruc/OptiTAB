@@ -51,61 +51,95 @@
 
       <!-- Navigation Tabs -->
       <div class="tabs-container">
-        <button 
-          class="tab-btn" 
-          :class="{ 'active': activeTab === 'problem' }"
-          @click="activeTab = 'problem'"
-        >
-          <span class="tab-icon">📝</span>
-          <span class="tab-label">Énoncé</span>
-        </button>
-        <button 
-          class="tab-btn" 
-          :class="{ 'active': activeTab === 'method' }"
-          @click="activeTab = 'method'"
-          v-if="etapes"
-        >
-          <span class="tab-icon">🔢</span>
-          <span class="tab-label">Étapes</span>
-        </button>
-        <button 
-          class="tab-btn" 
-          :class="{ 'active': activeTab === 'solution' }"
-          @click="activeTab = 'solution'"
-          v-if="solution"
-        >
-          <span class="tab-icon">✅</span>
-          <span class="tab-label">Solution</span>
-        </button>
+        <!-- Tabs pour exercices multiples (Ex1, Ex2, Ex3, etc.) -->
+        <template v-if="exercicesList && exercicesList.length > 0">
+          <button 
+            v-for="(ex, idx) in exercicesList" 
+            :key="idx"
+            class="tab-btn" 
+            :class="{ 'active': activeTab === `ex${idx}` }"
+            @click="activeTab = `ex${idx}`"
+          >
+            <span class="tab-icon">📝</span>
+            <span class="tab-label">Ex {{ idx + 1 }}</span>
+          </button>
+        </template>
+        
+        <!-- Tabs standards (Énoncé/Étapes/Solution) -->
+        <template v-else>
+          <button 
+            class="tab-btn" 
+            :class="{ 'active': activeTab === 'problem' }"
+            @click="activeTab = 'problem'"
+          >
+            <span class="tab-icon">📝</span>
+            <span class="tab-label">Énoncé</span>
+          </button>
+          <button 
+            class="tab-btn" 
+            :class="{ 'active': activeTab === 'method' }"
+            @click="activeTab = 'method'"
+            v-if="etapes"
+          >
+            <span class="tab-icon">🔢</span>
+            <span class="tab-label">Étapes</span>
+          </button>
+          <button 
+            class="tab-btn" 
+            :class="{ 'active': activeTab === 'solution' }"
+            @click="activeTab = 'solution'"
+            v-if="solution"
+          >
+            <span class="tab-icon">✅</span>
+            <span class="tab-label">Solution</span>
+          </button>
+        </template>
       </div>
     </div>
 
     <!-- Tab Content -->
     <div class="tab-content" :style="tabContentStyles">
-      <!-- Problem Tab -->
-      <div v-show="activeTab === 'problem'" class="content-section problem-section">
-        <div class="content-wrapper">
-          <div class="problem-content" v-html="renderInstructionWithImages(instruction)" @click="handleImageClick"></div>
+      <!-- Mode exercices multiples -->
+      <template v-if="exercicesList && exercicesList.length > 0">
+        <div 
+          v-for="(ex, idx) in exercicesList" 
+          :key="idx"
+          v-show="activeTab === `ex${idx}`" 
+          class="content-section problem-section"
+        >
+          <div class="content-wrapper">
+            <div class="problem-content" v-html="renderInstructionWithImages(ex.question)" @click="handleImageClick"></div>
+          </div>
         </div>
-      </div>
+      </template>
+      
+      <!-- Mode standard (Énoncé/Étapes/Solution) -->
+      <template v-else>
+        <!-- Problem Tab -->
+        <div v-show="activeTab === 'problem'" class="content-section problem-section">
+          <div class="content-wrapper">
+            <div class="problem-content" v-html="renderInstructionWithImages(instruction)" @click="handleImageClick"></div>
+          </div>
+        </div>
 
-      <!-- Method Tab -->
-      <div v-show="activeTab === 'method'" class="content-section steps-section" v-if="etapes">
-        <div class="content-wrapper">
-          <div class="steps-content" v-html="renderInstructionWithImages(etapes)" @click="handleImageClick"></div>
+        <!-- Method Tab -->
+        <div v-show="activeTab === 'method'" class="content-section steps-section" v-if="etapes">
+          <div class="content-wrapper">
+            <div class="steps-content" v-html="renderInstructionWithImages(etapes)" @click="handleImageClick"></div>
+          </div>
         </div>
-      </div>
 
-      <!-- Solution Tab -->
-      <div v-show="activeTab === 'solution'" class="content-section answer-section" v-if="solution">
-        <div class="content-wrapper">
-          <div class="answer-content" v-html="renderInstructionWithImages(solution)" @click="handleImageClick"></div>
+        <!-- Solution Tab -->
+        <div v-show="activeTab === 'solution'" class="content-section answer-section" v-if="solution">
+          <div class="content-wrapper">
+            <div class="answer-content" v-html="renderInstructionWithImages(solution)" @click="handleImageClick"></div>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
 
-    <!-- Assessment Section -->
-    <div v-if="!readonly" class="assessment-section">
+    <!-- Assessment Section (masqué pour les sujets d'examen avec exercices multiples) -->
+    <div v-if="!readonly && !exercicesList" class="assessment-section">
       <div class="assessment-header">
         <h4 class="assessment-title">Auto-évaluation</h4>
         <p class="assessment-description">Évaluez votre compréhension de cet exercice</p>
@@ -129,6 +163,23 @@
         >
           <span class="btn-icon">❌</span>
           <span class="btn-text">À revoir</span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Section pour les sujets d'examen - bouton WhatsApp -->
+    <div v-if="exercicesList && exercicesList.length > 0" class="exam-actions-section">
+      <div class="exam-info">
+        <p class="exam-description">📝 Réalisez tous les exercices sur votre copie</p>
+        <p class="exam-hint">Envoyez votre travail pour recevoir votre note et la correction</p>
+      </div>
+      
+      <div class="whatsapp-action">
+        <button class="whatsapp-btn" @click="sendExamToWhatsApp">
+          <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+          </svg>
+          <span class="whatsapp-text">Envoyer par WhatsApp</span>
         </button>
       </div>
     </div>
@@ -267,6 +318,10 @@ const props = defineProps({
   readonly: {
     type: Boolean,
     default: false
+  },
+  exercicesList: {
+    type: Array,
+    default: null
   }
 })
 
@@ -281,7 +336,7 @@ const showSolution = ref(false)
 const exerciceImages = ref([])
 const showImageModal = ref(false)
 const selectedImage = ref(null)
-const activeTab = ref('problem')
+const activeTab = ref(props.exercicesList && props.exercicesList.length > 0 ? 'ex0' : 'problem')
 const hasReportedIssue = ref(false)
 const showReportModal = ref(false)
 const sendingReport = ref(false)
@@ -303,8 +358,11 @@ const tabContentStyles = computed(() => {
     method: '#f0f9ff',
     solution: '#f0fdf4'
   }
+  // Si c'est un onglet ex0, ex1, ex2, etc., utiliser le background 'problem'
+  const bg = activeTab.value.startsWith('ex') ? '#f5f7ff' : (backgrounds[activeTab.value] || '#f5f7ff')
+  
   return {
-    background: backgrounds[activeTab.value] || '#f5f7ff',
+    background: bg,
     borderBottomLeftRadius: '18px',
     borderBottomRightRadius: '18px'
   }
@@ -662,8 +720,39 @@ function handleImageClick(event) {
   }
 }
 
+// Fonction pour envoyer l'examen par WhatsApp
+function sendExamToWhatsApp() {
+  // Construire le message WhatsApp
+  const message = `🎓 *Demande de correction*\n\n` +
+    `📝 Exercice: ${props.titre}\n` +
+    `📚 Type: Sujet d'examen (${props.exercicesList?.length || 0} exercices)\n\n` +
+    `Je souhaite envoyer ma copie pour correction.\n` +
+    `Merci de me communiquer ma note et la correction détaillée.`
+  
+  // Encoder le message pour l'URL
+  const encodedMessage = encodeURIComponent(message)
+  
+  // Numéro WhatsApp (à configurer selon vos besoins)
+  // Format international sans le + : 33612345678 pour la France, 961XXXXXXXX pour le Liban
+  const phoneNumber = '33612345678' // À REMPLACER par votre numéro
+  
+  // Créer l'URL WhatsApp
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
+  
+  // Ouvrir WhatsApp dans un nouvel onglet
+  window.open(whatsappUrl, '_blank')
+  
+  // Toast de confirmation
+  toastInfo('Redirection vers WhatsApp...')
+}
+
 // Détecter la présence de marqueurs d'images [IMAGE_1], [IMAGE_2], ...
 function hasImageMarkers() {
+  // Si on a une liste d'exercices
+  if (props.exercicesList && props.exercicesList.length > 0) {
+    return props.exercicesList.some(ex => ex.question && /\[IMAGE_\d+\]/.test(ex.question))
+  }
+  // Sinon mode standard
   const texts = [props.instruction, props.etapes, props.solution].filter(Boolean)
   return texts.some(t => /\[IMAGE_\d+\]/.test(t))
 }
@@ -695,7 +784,7 @@ async function loadExerciceImages() {
 }
 
 // Watch for content changes to re-render MathJax
-watch(() => [props.instruction, props.etapes, props.solution], renderMath, { immediate: true })
+watch(() => [props.instruction, props.etapes, props.solution, props.exercicesList], renderMath, { immediate: true, deep: true })
 
 // Watch for preview images changes
 watch(() => props.previewImages, () => {
@@ -1137,6 +1226,77 @@ watch(activeTab, () => {
   border-color: #fcd34d;
 }
 
+/* Section pour les sujets d'examen */
+.exam-actions-section {
+  padding: 32px;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+}
+
+.exam-info {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.exam-description {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 6px 0;
+}
+
+.exam-hint {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* Bouton WhatsApp */
+.whatsapp-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.whatsapp-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  background: #25D366;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
+}
+
+.whatsapp-btn:hover {
+  background: #20BA5A;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+  transform: translateY(-1px);
+}
+
+.whatsapp-btn:active {
+  transform: translateY(0);
+}
+
+.whatsapp-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.whatsapp-text {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 .assessment-header {
   text-align: center;
   margin-bottom: 20px;
@@ -1371,6 +1531,23 @@ watch(activeTab, () => {
     padding: 24px;
   }
   
+  .exam-actions-section {
+    padding: 24px;
+  }
+  
+  .whatsapp-btn {
+    padding: 12px 24px;
+  }
+  
+  .whatsapp-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .whatsapp-text {
+    font-size: 0.95rem;
+  }
+  
   .assessment-buttons {
     flex-direction: row;
     gap: 0.75rem;
@@ -1483,6 +1660,25 @@ watch(activeTab, () => {
   
   .assessment-section {
     padding: 20px;
+  }
+  
+  .exam-actions-section {
+    padding: 20px;
+  }
+  
+  .whatsapp-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .whatsapp-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .whatsapp-text {
+    font-size: 0.9rem;
   }
   
   /* MathJax responsive - garder la taille normale */

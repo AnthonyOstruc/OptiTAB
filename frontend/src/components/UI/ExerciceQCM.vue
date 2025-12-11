@@ -31,13 +31,10 @@
           <div class="header-slot header-slot--right">
             <div v-if="bestScore !== null" class="score-badge" :class="getScoreClass(bestScore)">
               <span class="score-icon">🎯</span>
-              <span class="score-text">{{ bestScore.toFixed(1) }}/20</span>
+              <span class="score-text">{{ bestScore.toFixed(2) }}/20</span>
               <span v-if="attemptCount > 1" class="attempt-count" :title="`${attemptCount} tentatives`">
                 ({{ attemptCount }})
               </span>
-            </div>
-            <div class="difficulty-indicator" v-if="difficulty">
-              <span class="difficulty-stars">{{ diffStars[difficulty] || '★★' }}</span>
             </div>
             <button
               v-if="!readonly && current"

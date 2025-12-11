@@ -1,156 +1,144 @@
 <template>
-  <div class="admin-quiz-submissions">
-    <h2 class="admin-title">📝 Notation des Quiz (WhatsApp)</h2>
-    
-    <!-- Statistiques -->
-    <div class="stats-cards">
-      <div class="stat-card total">
-        <div class="stat-icon">📊</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.total || 0 }}</div>
-          <div class="stat-label">Total</div>
-        </div>
-      </div>
-      <div class="stat-card pending">
-        <div class="stat-icon">⏳</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.pending || 0 }}</div>
-          <div class="stat-label">En attente</div>
-        </div>
-      </div>
-      <div class="stat-card graded">
-        <div class="stat-icon">✅</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.graded || 0 }}</div>
-          <div class="stat-label">Notés</div>
-        </div>
+  <div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h2 class="admin-title" style="margin-bottom: 0;">Notation des Quiz</h2>
+      <div style="display: flex; gap: 0.5rem; font-size: 0.875rem; color: #6b7280;">
+        <span>Total: <strong>{{ stats.total || 0 }}</strong></span>
+        <span>•</span>
+        <span style="color: #f59e0b;">En attente: <strong>{{ stats.pending || 0 }}</strong></span>
+        <span>•</span>
+        <span style="color: #10b981;">Notés: <strong>{{ stats.graded || 0 }}</strong></span>
       </div>
     </div>
 
-    <!-- Formulaire rapide d'enregistrement -->
-    <QuickSubmissionForm 
-      v-if="showQuickForm" 
-      @submitted="onSubmissionCreated" 
-      class="quick-form"
-    />
+    <div v-if="showQuickForm" class="admin-form" style="margin-bottom: 1rem;">
+      <QuickSubmissionForm @submitted="onSubmissionCreated" />
+    </div>
 
-    <button @click="showQuickForm = !showQuickForm" class="btn-toggle-form">
-      {{ showQuickForm ? '➖ Masquer le formulaire' : '➕ Enregistrer une nouvelle réception' }}
-    </button>
-
-    <!-- Filtres -->
     <div class="filters">
-      <select v-model="filterStatus" class="filter-select">
-        <option value="">Tous les statuts</option>
-        <option value="pending">En attente</option>
-        <option value="graded">Notés</option>
-      </select>
+      <button @click="showQuickForm = !showQuickForm" class="btn-secondary">
+        {{ showQuickForm ? 'Masquer' : 'Nouvelle réception' }}
+      </button>
       
-      <button @click="loadSubmissions" class="btn-refresh">
-        🔄 Actualiser
+      <div class="filter-group">
+        <select v-model="filterStatus">
+          <option value="">Tous statuts</option>
+          <option value="pending">En attente</option>
+          <option value="graded">Notés</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <select v-model="filterPays">
+          <option value="">Tous pays</option>
+          <option v-for="pays in paysList" :key="pays.id" :value="pays.id">
+            {{ pays.nom }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <select v-model="filterNiveau">
+          <option value="">Tous niveaux</option>
+          <option v-for="niveau in niveauxList" :key="niveau.id" :value="niveau.id">
+            {{ niveau.nom }}
+          </option>
+        </select>
+      </div>
+      
+      <button @click="loadSubmissions" class="btn-primary">
+        Actualiser
       </button>
     </div>
 
     <!-- Loading -->
-    <div v-if="loading" class="loading-state">
-      <div class="loading-spinner"></div>
+    <div v-if="loading" style="text-align: center; padding: 2rem; color: #6b7280;">
       <p>Chargement...</p>
     </div>
 
     <!-- Liste des soumissions -->
-    <div v-else-if="submissions.length === 0" class="empty-state">
-      <div class="empty-icon">📭</div>
-      <h3>Aucune soumission</h3>
+    <div v-else-if="submissions.length === 0" style="text-align: center; padding: 2rem; color: #6b7280;">
       <p>{{ filterStatus === 'pending' ? 'Aucune soumission en attente' : 'Aucune soumission trouvée' }}</p>
     </div>
 
-    <div v-else class="submissions-list">
-      <div 
-        v-for="submission in submissions" 
-        :key="submission.id" 
-        class="submission-card"
-        :class="{ 'pending': submission.status === 'pending', 'graded': submission.status === 'graded' }"
-      >
-        <div class="submission-header">
-          <div class="submission-info">
-            <h3>{{ submission.user_name || submission.user_email }}</h3>
-            <p class="quiz-title">{{ submission.quiz_titre }}</p>
-            <p class="notion-title">📚 {{ submission.quiz_notion_titre }}</p>
-          </div>
-          <div class="submission-status">
-            <span class="status-badge" :class="submission.status">
-              {{ submission.status === 'pending' ? '⏳ En attente' : '✅ Noté' }}
+    <table v-else class="admin-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Pays</th>
+          <th>Niveau</th>
+          <th>Notion</th>
+          <th>Date soumission</th>
+          <th>Statut</th>
+          <th>Note</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="submission in submissions" :key="submission.id">
+          <td>{{ submission.user_name || '—' }}</td>
+          <td>{{ submission.user_email }}</td>
+          <td>{{ submission.user_pays_nom || '—' }}</td>
+          <td>{{ submission.user_niveau_nom || '—' }}</td>
+          <td>{{ submission.quiz_notion_titre }}</td>
+          <td>{{ formatDate(submission.date_creation) }}</td>
+          <td>
+            <span 
+              class="status-badge" 
+              :class="submission.status"
+            >
+              {{ submission.status === 'pending' ? 'En attente' : 'Noté' }}
             </span>
-          </div>
-        </div>
-
-        <div class="submission-details">
-          <div class="detail-row">
-            <span class="label">Date de soumission:</span>
-            <span class="value">{{ formatDate(submission.date_creation) }}</span>
-          </div>
-          
-          <div v-if="submission.status === 'graded'" class="graded-info">
-            <div class="detail-row">
-              <span class="label">Note:</span>
-              <span class="value note-value">{{ submission.note }}/20</span>
+          </td>
+          <td>
+            <span v-if="submission.status === 'graded'" style="font-weight: 600;">
+              {{ submission.note }}/20
+            </span>
+            <span v-else style="color: #9ca3af;">—</span>
+          </td>
+          <td>
+            <div style="display: flex; gap: 0.5rem;">
+              <button 
+                @click="openGradeModal(submission)"
+                :class="submission.status === 'pending' ? 'btn-primary' : 'btn-secondary'"
+                style="padding: 0.5rem 0.75rem; font-size: 0.875rem;"
+              >
+                {{ submission.status === 'pending' ? 'Noter' : 'Modifier' }}
+              </button>
+              <button 
+                @click="deleteSubmission(submission)"
+                class="btn-danger"
+                style="padding: 0.5rem 0.75rem; font-size: 0.875rem;"
+              >
+                Supprimer
+              </button>
             </div>
-            <div v-if="submission.commentaire" class="detail-row">
-              <span class="label">Commentaire:</span>
-              <span class="value">{{ submission.commentaire }}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Corrigé le:</span>
-              <span class="value">{{ formatDate(submission.date_correction) }}</span>
-            </div>
-          </div>
-
-          <div v-if="submission.notes_admin" class="admin-notes">
-            <span class="label">Notes admin:</span>
-            <p>{{ submission.notes_admin }}</p>
-          </div>
-        </div>
-
-        <div class="submission-actions">
-          <button 
-            v-if="submission.status === 'pending'" 
-            @click="openGradeModal(submission)"
-            class="btn-grade"
-          >
-            ✏️ Noter
-          </button>
-          <button 
-            v-else
-            @click="openGradeModal(submission)"
-            class="btn-edit-grade"
-          >
-            📝 Modifier la note
-          </button>
-        </div>
-      </div>
-    </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <!-- Modal de notation -->
     <div v-if="showGradeModal" class="modal-overlay" @click.self="closeGradeModal">
       <div class="modal-content">
         <div class="modal-header">
-          <h3>{{ currentSubmission?.status === 'pending' ? 'Noter' : 'Modifier la note' }}</h3>
-          <button @click="closeGradeModal" class="btn-close">×</button>
+          <h3>{{ currentSubmission?.status === 'pending' ? 'Noter le quiz' : 'Modifier la note' }}</h3>
+          <button @click="closeGradeModal" class="modal-close">&times;</button>
         </div>
-
+        
         <div class="modal-body">
-          <div class="form-group">
-            <label>Élève:</label>
-            <p class="student-name">{{ currentSubmission?.user_name || currentSubmission?.user_email }}</p>
+          <div class="info-row">
+            <span class="info-label">Élève</span>
+            <span class="info-value">{{ currentSubmission?.user_name || currentSubmission?.user_email }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Notion</span>
+            <span class="info-value">{{ currentSubmission?.quiz_notion_titre }}</span>
           </div>
 
           <div class="form-group">
-            <label>Quiz:</label>
-            <p>{{ currentSubmission?.quiz_titre }}</p>
-          </div>
-
-          <div class="form-group">
-            <label for="note">Note sur 20: *</label>
+            <label for="note">Note sur 20 *</label>
             <input 
               id="note"
               v-model.number="gradeForm.note" 
@@ -158,30 +146,29 @@
               min="0" 
               max="20" 
               step="0.25"
-              class="form-input"
-              placeholder="Ex: 15.5"
+              placeholder="15.5"
+              class="input-note"
             />
           </div>
 
           <div class="form-group">
-            <label for="commentaire">Commentaire de correction:</label>
+            <label for="commentaire">Commentaire</label>
             <textarea 
               id="commentaire"
               v-model="gradeForm.commentaire" 
               rows="4"
-              class="form-textarea"
-              placeholder="Ajoutez vos commentaires pour l'élève..."
+              placeholder="Ajoutez vos commentaires..."
             ></textarea>
           </div>
 
-          <div v-if="gradeError" class="error-message">
+          <div v-if="gradeError" class="error-box">
             {{ gradeError }}
           </div>
         </div>
 
         <div class="modal-footer">
-          <button @click="closeGradeModal" class="btn-cancel">Annuler</button>
-          <button @click="submitGrade" class="btn-submit" :disabled="grading">
+          <button @click="closeGradeModal" class="btn-secondary">Annuler</button>
+          <button @click="submitGrade" class="btn-primary" :disabled="grading">
             {{ grading ? 'Enregistrement...' : 'Enregistrer' }}
           </button>
         </div>
@@ -195,14 +182,21 @@ import { ref, onMounted, watch } from 'vue'
 import { 
   getQuizSubmissions, 
   gradeQuizSubmission, 
-  getQuizSubmissionStats 
+  getQuizSubmissionStats,
+  deleteQuizSubmission
 } from '@/api/quizSubmissions'
+import { getPays } from '@/api/pays'
+import { getNiveaux } from '@/api/niveaux'
 import QuickSubmissionForm from '@/components/admin/QuickSubmissionForm.vue'
 
 const submissions = ref([])
 const stats = ref({ total: 0, pending: 0, graded: 0 })
 const loading = ref(false)
 const filterStatus = ref('pending') // Par défaut, afficher les en attente
+const filterPays = ref('')
+const filterNiveau = ref('')
+const paysList = ref([])
+const niveauxList = ref([])
 const showQuickForm = ref(false)
 
 const showGradeModal = ref(false)
@@ -214,14 +208,34 @@ const gradeForm = ref({
 const grading = ref(false)
 const gradeError = ref('')
 
-onMounted(() => {
+onMounted(async () => {
+  await loadPaysList()
+  await loadNiveauxList()
   loadSubmissions()
   loadStats()
 })
 
-watch(filterStatus, () => {
+watch([filterStatus, filterPays, filterNiveau], () => {
   loadSubmissions()
 })
+
+async function loadPaysList() {
+  try {
+    const response = await getPays()
+    paysList.value = response?.data || response || []
+  } catch (error) {
+    console.error('Erreur chargement pays:', error)
+  }
+}
+
+async function loadNiveauxList() {
+  try {
+    const response = await getNiveaux()
+    niveauxList.value = response?.data || response || []
+  } catch (error) {
+    console.error('Erreur chargement niveaux:', error)
+  }
+}
 
 async function loadSubmissions() {
   loading.value = true
@@ -229,6 +243,12 @@ async function loadSubmissions() {
     const filters = {}
     if (filterStatus.value) {
       filters.status = filterStatus.value
+    }
+    if (filterPays.value) {
+      filters.pays = filterPays.value
+    }
+    if (filterNiveau.value) {
+      filters.niveau = filterNiveau.value
     }
     submissions.value = await getQuizSubmissions(filters)
   } catch (error) {
@@ -305,6 +325,21 @@ function onSubmissionCreated() {
   showQuickForm.value = false
 }
 
+async function deleteSubmission(submission) {
+  if (!confirm(`Voulez-vous vraiment supprimer la soumission de ${submission.user_name || submission.user_email} ?`)) {
+    return
+  }
+
+  try {
+    await deleteQuizSubmission(submission.id)
+    await loadSubmissions()
+    await loadStats()
+  } catch (error) {
+    console.error('Erreur suppression:', error)
+    alert('Erreur lors de la suppression')
+  }
+}
+
 function formatDate(dateString) {
   if (!dateString) return '-'
   const date = new Date(dateString)
@@ -319,236 +354,110 @@ function formatDate(dateString) {
 </script>
 
 <style scoped>
-.admin-quiz-submissions {
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
 .admin-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 2rem;
-}
-
-/* Stats Cards */
-.stats-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.stat-card.total {
-  border-left: 4px solid #3b82f6;
-}
-
-.stat-card.pending {
-  border-left: 4px solid #f59e0b;
-}
-
-.stat-card.graded {
-  border-left: 4px solid #10b981;
-}
-
-.stat-icon {
-  font-size: 2.5rem;
-}
-
-.stat-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.stat-label {
-  font-size: 0.875rem;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Quick Form */
-.quick-form {
-  margin-bottom: 1.5rem;
-}
-
-.btn-toggle-form {
-  width: 100%;
-  padding: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-bottom: 1.5rem;
+  color: #1f2937;
 }
 
-.btn-toggle-form:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+.admin-form {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Filtres */
 .filters {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
 }
 
-.filter-select {
-  padding: 0.75rem 1rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
+.filter-group select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
   background: white;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
   cursor: pointer;
-  transition: all 0.2s;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
-.filter-select:hover {
-  border-color: #3b82f6;
-}
-
-.btn-refresh {
-  padding: 0.75rem 1.5rem;
+.btn-primary {
   background: #3b82f6;
   color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
 }
 
-.btn-refresh:hover {
+.btn-primary:hover:not(:disabled) {
   background: #2563eb;
-  transform: translateY(-2px);
 }
 
-/* Loading & Empty States */
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  gap: 1rem;
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: 4px solid #e5e7eb;
-  border-top-color: #3b82f6;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+.btn-secondary {
+  background: #6b7280;
+  color: white;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.btn-secondary:hover {
+  background: #4b5563;
 }
 
-.empty-state {
-  text-align: center;
-  padding: 4rem 2rem;
+.btn-danger {
+  background: #ef4444;
+  color: white;
 }
 
-.empty-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  opacity: 0.6;
+.btn-danger:hover {
+  background: #dc2626;
 }
 
-.empty-state h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 0.5rem 0;
-}
-
-.empty-state p {
-  color: #64748b;
-  font-size: 1rem;
-}
-
-/* Submissions List */
-.submissions-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.submission-card {
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
   background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #e2e8f0;
-  transition: all 0.2s;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.submission-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
-}
-
-.submission-card.pending {
-  border-left-color: #f59e0b;
-}
-
-.submission-card.graded {
-  border-left-color: #10b981;
-}
-
-.submission-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.submission-info h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 0.5rem 0;
-}
-
-.quiz-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #3b82f6;
-  margin: 0 0 0.25rem 0;
-}
-
-.notion-title {
+.admin-table th,
+.admin-table td {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
   font-size: 0.875rem;
-  color: #64748b;
-  margin: 0;
+}
+
+.admin-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.admin-table tbody tr:hover {
+  background: #f9fafb;
 }
 
 .status-badge {
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
@@ -562,279 +471,153 @@ function formatDate(dateString) {
   color: #065f46;
 }
 
-.submission-details {
-  margin-bottom: 1rem;
-}
-
-.detail-row {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.detail-row .label {
-  font-weight: 600;
-  color: #64748b;
-  min-width: 180px;
-}
-
-.detail-row .value {
-  color: #1e293b;
-}
-
-.note-value {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #3b82f6;
-}
-
-.graded-info {
-  background: #f8fafc;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-top: 1rem;
-}
-
-.admin-notes {
-  background: #fef3c7;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-top: 1rem;
-}
-
-.admin-notes .label {
-  font-weight: 600;
-  color: #92400e;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.admin-notes p {
-  margin: 0;
-  color: #78350f;
-}
-
-.submission-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.btn-grade,
-.btn-edit-grade {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-grade {
-  background: #3b82f6;
-  color: white;
-}
-
-.btn-grade:hover {
-  background: #2563eb;
-  transform: translateY(-2px);
-}
-
-.btn-edit-grade {
-  background: #64748b;
-  color: white;
-}
-
-.btn-edit-grade:hover {
-  background: #475569;
-  transform: translateY(-2px);
-}
-
-/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
+  backdrop-filter: blur(2px);
 }
 
 .modal-content {
   background: white;
-  border-radius: 16px;
-  max-width: 600px;
+  border-radius: 0.75rem;
+  max-width: 500px;
   width: 100%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .modal-header h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1e293b;
   margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
 }
 
-.btn-close {
+.modal-close {
   background: none;
   border: none;
-  font-size: 2rem;
-  color: #64748b;
+  font-size: 1.75rem;
+  color: #9ca3af;
   cursor: pointer;
   padding: 0;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 0.375rem;
   transition: all 0.2s;
 }
 
-.btn-close:hover {
-  background: #f1f5f9;
-  color: #1e293b;
+.modal-close:hover {
+  background: #f3f4f6;
+  color: #1f2937;
 }
 
 .modal-body {
   padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 0.375rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.info-row:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.info-value {
+  color: #1f2937;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
   display: block;
   font-weight: 600;
-  color: #1e293b;
   margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #374151;
 }
 
-.student-name {
-  font-size: 1.125rem;
-  color: #3b82f6;
-  margin: 0;
-}
-
-.form-input,
-.form-textarea {
+.form-group input,
+.form-group textarea {
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
+  padding: 0.625rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
   transition: all 0.2s;
 }
 
-.form-input:focus,
-.form-textarea:focus {
+.form-group input:focus,
+.form-group textarea:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.form-textarea {
+.input-note {
+  max-width: 150px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.form-group textarea {
   resize: vertical;
+  min-height: 100px;
   font-family: inherit;
 }
 
-.error-message {
-  padding: 0.75rem;
+.error-box {
   background: #fee2e2;
   color: #991b1b;
-  border-radius: 8px;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
   margin-top: 1rem;
 }
 
 .modal-footer {
   display: flex;
-  gap: 1rem;
-  padding: 1.5rem;
-  border-top: 1px solid #e2e8f0;
-}
-
-.btn-cancel,
-.btn-submit {
-  flex: 1;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-cancel {
-  background: #f1f5f9;
-  color: #64748b;
-}
-
-.btn-cancel:hover {
-  background: #e2e8f0;
-}
-
-.btn-submit {
-  background: #3b82f6;
-  color: white;
-}
-
-.btn-submit:hover:not(:disabled) {
-  background: #2563eb;
-}
-
-.btn-submit:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-@media (max-width: 768px) {
-  .admin-quiz-submissions {
-    padding: 1rem;
-  }
-
-  .admin-title {
-    font-size: 1.5rem;
-  }
-
-  .stats-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .filters {
-    flex-direction: column;
-  }
-
-  .submission-header {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .detail-row {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .detail-row .label {
-    min-width: auto;
-  }
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  justify-content: flex-end;
 }
 </style>
 

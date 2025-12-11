@@ -50,6 +50,7 @@ import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import { getQuizByNotion, getQuizAttempts } from '@/api/quiz'
+import { getQuizSubmissions } from '@/api/quizSubmissions'
 
 const route = useRoute()
 const router = useRouter()
@@ -82,8 +83,20 @@ async function loadQuiz() {
           
           console.log(`[Quiz ${quiz.id}] Tentatives trouvées:`, attempts.length)
           
+          // Charger aussi les soumissions manuelles (notes données par l'admin)
+          let manualSubmissions = []
+          try {
+            const submissionsResponse = await getQuizSubmissions({ quiz: quiz.id })
+            manualSubmissions = Array.isArray(submissionsResponse) ? submissionsResponse : []
+            console.log(`[Quiz ${quiz.id}] Soumissions manuelles trouvées:`, manualSubmissions.length)
+          } catch (error) {
+            console.log(`[Quiz ${quiz.id}] Pas de soumissions manuelles ou erreur:`, error.message)
+          }
+          
           // Trouver la meilleure note
           let bestScore = null
+          
+          // 1. Notes des tentatives automatiques
           if (attempts.length > 0) {
             const scores = attempts
               .filter(a => a.score != null && a.total_points != null && a.total_points > 0)
@@ -91,8 +104,29 @@ async function loadQuiz() {
             
             if (scores.length > 0) {
               bestScore = Math.max(...scores)
-              console.log(`[Quiz ${quiz.id}] Meilleure note: ${bestScore.toFixed(1)}/20`)
+              console.log(`[Quiz ${quiz.id}] Meilleure note (tentatives): ${bestScore.toFixed(2)}/20`)
             }
+          }
+          
+          // 2. Notes des soumissions manuelles (notées par l'admin)
+          if (manualSubmissions.length > 0) {
+            const manualScores = manualSubmissions
+              .filter(s => s.status === 'graded' && s.note != null)
+              .map(s => s.note)
+            
+            if (manualScores.length > 0) {
+              const bestManualScore = Math.max(...manualScores)
+              console.log(`[Quiz ${quiz.id}] Meilleure note (manuel): ${bestManualScore.toFixed(2)}/20`)
+              
+              // Prendre la meilleure entre les deux
+              bestScore = bestScore !== null 
+                ? Math.max(bestScore, bestManualScore)
+                : bestManualScore
+            }
+          }
+          
+          if (bestScore !== null) {
+            console.log(`[Quiz ${quiz.id}] Note finale affichée: ${bestScore.toFixed(2)}/20`)
           }
           
           return {

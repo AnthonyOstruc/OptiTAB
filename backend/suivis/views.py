@@ -684,6 +684,8 @@ class QuizSubmissionViewSet(viewsets.ModelViewSet):
             status_filter = self.request.query_params.get('status')
             user_id = self.request.query_params.get('user')
             quiz_id = self.request.query_params.get('quiz')
+            pays_id = self.request.query_params.get('pays')
+            niveau_id = self.request.query_params.get('niveau')
             
             if status_filter:
                 queryset = queryset.filter(status=status_filter)
@@ -691,6 +693,10 @@ class QuizSubmissionViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(user_id=user_id)
             if quiz_id:
                 queryset = queryset.filter(quiz_id=quiz_id)
+            if pays_id:
+                queryset = queryset.filter(user__pays_id=pays_id)
+            if niveau_id:
+                queryset = queryset.filter(user__niveau_pays_id=niveau_id)
         
         return queryset.order_by('-date_creation')
 

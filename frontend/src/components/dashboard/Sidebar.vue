@@ -212,7 +212,7 @@ const isActiveRoute = (menuKey) => {
 // Fonction pour déterminer si l'onglet Admin doit être actif
 const isAdminActive = computed(() => { 
   const p = route.path || ''; 
-  return p.startsWith('/admin') && !p.startsWith('/admin/newsletter') && !p.startsWith('/admin/subscriptions') && !p.startsWith('/admin/subscribers')
+  return p.startsWith('/admin') && !p.startsWith('/admin/newsletter') && !p.startsWith('/admin/subscriptions') && !p.startsWith('/admin/subscribers') && !p.startsWith('/admin/quiz-submissions')
 })
 
 // Prefetch au survol (hover) - déclenché 150ms après le survol

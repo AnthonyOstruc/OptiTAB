@@ -15,6 +15,8 @@ export const getQuizSubmissions = async (filters = {}) => {
     if (filters.status) params.append('status', filters.status)
     if (filters.user) params.append('user', filters.user)
     if (filters.quiz) params.append('quiz', filters.quiz)
+    if (filters.pays) params.append('pays', filters.pays)
+    if (filters.niveau) params.append('niveau', filters.niveau)
     
     const queryString = params.toString()
     const response = await apiClient.get(`/api/suivis/quiz-submissions/${queryString ? '?' + queryString : ''}`)

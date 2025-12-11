@@ -707,6 +707,7 @@ class QuizSubmissionViewSet(viewsets.ModelViewSet):
         - Admin: peut spécifier un user_id pour créer pour un élève
         """
         user = self.request.user
+        target_user = user
         
         # Si admin et user_id fourni, créer pour cet utilisateur
         if user.is_staff:
@@ -716,13 +717,76 @@ class QuizSubmissionViewSet(viewsets.ModelViewSet):
                 User = get_user_model()
                 try:
                     target_user = User.objects.get(id=user_id)
-                    serializer.save(user=target_user)
-                    return
                 except User.DoesNotExist:
                     pass
         
-        # Sinon, créer pour l'utilisateur connecté
-        serializer.save(user=user)
+        # Sauvegarder la soumission
+        submission = serializer.save(user=target_user)
+        
+        # Envoyer un email de confirmation à l'élève
+        try:
+            from core.services import EmailService
+            from django.conf import settings
+            from django.core.mail import EmailMultiAlternatives
+            
+            quiz_title = submission.quiz.titre if submission.quiz else "Quiz"
+            student_name = target_user.first_name or 'OptiTABien'
+            
+            subject = f'Votre quiz "{quiz_title}" a bien été reçu'
+            text_body = (
+                f"Bonjour {student_name},\n\n"
+                f"Nous avons bien reçu votre soumission pour le quiz \"{quiz_title}\".\n\n"
+                f"Votre travail sera corrigé et noté dans les plus brefs délais.\n"
+                f"Vous recevrez un email dès que la correction sera disponible.\n\n"
+                f"Bon courage pour la suite !\n"
+                f"L'équipe OptiTAB"
+            )
+            
+            logo_url = EmailService._resolve_logo_url()
+            html_body = f"""
+                <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                    <tr>
+                      <td style="padding:24px 24px 0 24px;">
+                        {f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block;margin-bottom:16px;"/>' if logo_url else ''}
+                        <h1 style="margin:0 0 12px 0;font-size:22px;color:#111827;">Quiz bien reçu ✅</h1>
+                        <p style="margin:0;color:#4b5563;font-size:15px;line-height:1.6;">
+                          Bonjour {student_name},<br/>
+                          Nous avons bien reçu votre soumission pour le quiz <strong>"{quiz_title}"</strong>.
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:24px;">
+                        <div style="background:#eff6ff;border:2px solid #93c5fd;padding:16px;border-radius:10px;margin-bottom:16px;">
+                          <p style="margin:0;color:#1e40af;font-size:14px;line-height:1.6;">
+                            📝 Votre travail sera corrigé et noté dans les plus brefs délais.
+                          </p>
+                        </div>
+                        <p style="margin:16px 0 0 0;color:#6b7280;font-size:14px;line-height:1.6;">
+                          Vous recevrez un email dès que la correction sera disponible dans votre espace personnel.
+                        </p>
+                        <p style="margin:16px 0 0 0;color:#6b7280;font-size:14px;line-height:1.6;">
+                          Bon courage pour la suite !<br/>
+                          L'équipe OptiTAB
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+            """
+            
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[target_user.email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+            logger.info(f"Email de confirmation de soumission envoyé à {target_user.email}")
+        except Exception as e:
+            logger.warning(f"Erreur lors de l'envoi de l'email de confirmation: {e}")
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated, IsAdminUser])
     def grade(self, request, pk=None):
@@ -759,6 +823,19 @@ class QuizSubmissionViewSet(viewsets.ModelViewSet):
         submission.corrige_par = request.user
         submission.date_correction = timezone.now()
         submission.save()
+        
+        # Envoyer un email de notification à l'élève
+        try:
+            from core.services import EmailService
+            quiz_title = submission.quiz.titre if submission.quiz else "Quiz"
+            EmailService.send_quiz_grade_notification(
+                user=submission.user,
+                quiz_title=quiz_title,
+                note=note,
+                commentaire=commentaire
+            )
+        except Exception as e:
+            logger.warning(f"Erreur lors de l'envoi de l'email de notation: {e}")
         
         serializer = self.get_serializer(submission)
         return Response(serializer.data)

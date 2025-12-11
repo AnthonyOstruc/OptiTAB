@@ -11,6 +11,25 @@
       </div>
 
       <div class="quiz-container">
+        <!-- Instructions pour les élèves -->
+        <div v-if="!loading && quizList.length > 0" class="instructions-box">
+          <h3>Comment travailler ce chapitre ?</h3>
+          <div class="instructions-list">
+            <div class="instruction-item">
+              <span class="number">1</span>
+              <p><strong>Faites l'exercice en ligne</strong> pour tester vos connaissances</p>
+            </div>
+            <div class="instruction-item">
+              <span class="number">2</span>
+              <p><strong>Envoyez vos photos par WhatsApp</strong> à un professionnel pour correction et notation</p>
+            </div>
+            <div class="instruction-item">
+              <span class="number">3</span>
+              <p><strong>Pas compris ?</strong> Réservez une séance avec un professionnel pour des explications personnalisées</p>
+            </div>
+          </div>
+        </div>
+
         <!-- Loading state -->
         <div v-if="loading" class="loading-state">
           <div class="loading-spinner"></div>
@@ -243,5 +262,65 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+}
+
+.instructions-box {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.instructions-box h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.instructions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.instruction-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.instruction-item .number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.instruction-item p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.instruction-item strong {
+  color: #1f2937;
+}
+
+@media (max-width: 768px) {
+  .instructions-box {
+    padding: 1rem;
+  }
 }
 </style>

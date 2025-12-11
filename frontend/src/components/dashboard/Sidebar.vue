@@ -186,19 +186,25 @@ const isActiveRoute = (menuKey) => {
   // Mapping des clés de menu vers les chemins de route
   const routeMapping = {
     'dashboard': '/dashboard',
-    'cours': ['/online-courses', '/course-notions', '/course-notion', '/cours'],
+    'cours': ['/online-courses', '/course-notions', '/course-notion'],
     'exercices': ['/exercises', '/notions', '/exercicies', '/theme-notions', '/exercices-notion', '/exercices', '/chapter-exercises'],
     'fiches': ['/sheets'],
     'quiz': ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
     'progress': '/progress',
     'calculator': '/calculator',
     'abonnement': ['/billing', '/subscription'],
+    'cours-particuliers': '/cours-particuliers',
     'admin': '/admin' // Spécialement pour les routes admin
   }
 
   const targetRoutes = routeMapping[menuKey]
 
   if (!targetRoutes) return false
+
+  // Vérification spéciale pour éviter que /cours-particuliers active "cours"
+  if (currentPath === '/cours-particuliers') {
+    return menuKey === 'cours-particuliers'
+  }
 
   // Si c'est un tableau, vérifier si le chemin actuel correspond à l'un des chemins
   if (Array.isArray(targetRoutes)) {
@@ -264,6 +270,8 @@ async function handleSidebarClick(item) {
     router.push('/dashboard')
   } else if (item.key === 'abonnement') {
     router.push('/billing')
+  } else if (item.key === 'cours-particuliers') {
+    router.push('/cours-particuliers')
   } 
   // Routes intelligentes avec matière
   else if (['exercices', 'fiches', 'quiz', 'cours'].includes(item.key)) {

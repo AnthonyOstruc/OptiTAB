@@ -33,13 +33,6 @@ export const menuItems = [
     description: 'Calculatrices et outils mathématiques'
   },
   {
-    key: 'cours-particuliers',
-    text: 'Cours Particuliers',
-    icon: UserGroupIcon,
-    href: '/cours-particuliers',
-    description: 'Cours particuliers personnalisés'
-  },
-  {
     key: 'about',
     text: 'À Propos',
     icon: InformationCircleIcon,
@@ -73,6 +66,13 @@ export const menuItems = [
     icon: QuestionMarkCircleIcon,
     href: '/quiz',
     description: 'Quiz à choix multiples'
+  },
+  {
+    key: 'cours-particuliers',
+    text: 'Cours Particuliers',
+    icon: UserGroupIcon,
+    href: '/cours-particuliers',
+    description: 'Cours particuliers personnalisés'
   },
   {
     key: 'abonnement',

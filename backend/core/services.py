@@ -255,6 +255,84 @@ class EmailService:
         email.send(fail_silently=False)
 
     @staticmethod
+    def send_quiz_grade_notification(user, quiz_title, note, commentaire=''):
+        """Envoie une notification par email lorsqu'un quiz est noté"""
+        first_name = (user.first_name or '').strip() or 'OptiTABien'
+        note_formatted = f"{note:.2f}/20"
+        subject = f'Votre quiz "{quiz_title}" a été corrigé'
+
+        text_body = (
+            f"Bonjour {first_name},\n\n"
+            f"Votre quiz \"{quiz_title}\" a été corrigé.\n\n"
+            f"Note obtenue : {note_formatted}\n"
+        )
+        
+        if commentaire:
+            text_body += f"\nCommentaire du professeur :\n{commentaire}\n"
+        
+        text_body += (
+            "\nVous pouvez consulter vos résultats dans votre espace personnel.\n\n"
+            "Bon courage pour la suite !\nL'équipe OptiTAB"
+        )
+
+        logo_url = EmailService._resolve_logo_url()
+        commentaire_html = f"""
+            <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
+              <p style="margin:0;color:#374151;font-size:14px;line-height:1.6;font-style:italic;">
+                "{commentaire}"
+              </p>
+            </div>
+        """ if commentaire else ""
+
+        html_body = f"""
+            <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                <tr>
+                  <td style="padding:24px 24px 0 24px;">
+                    {f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block;margin-bottom:16px;"/>' if logo_url else ''}
+                    <h1 style="margin:0 0 12px 0;font-size:22px;color:#111827;">Quiz corrigé ✅</h1>
+                    <p style="margin:0;color:#4b5563;font-size:15px;line-height:1.6;">
+                      Bonjour {first_name},<br/>
+                      Votre quiz <strong>"{quiz_title}"</strong> a été corrigé.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:24px;">
+                    <div style="background:#f0fdf4;border:2px solid #86efac;padding:16px;border-radius:10px;text-align:center;margin-bottom:16px;">
+                      <p style="margin:0;color:#166534;font-size:14px;font-weight:600;">Note obtenue</p>
+                      <p style="margin:8px 0 0 0;color:#15803d;font-size:32px;font-weight:700;">{note_formatted}</p>
+                    </div>
+                    {commentaire_html}
+                    <p style="margin:16px 0 0 0;color:#6b7280;font-size:14px;line-height:1.6;">
+                      Vous pouvez consulter vos résultats détaillés dans votre espace personnel.
+                    </p>
+                    <p style="margin:16px 0 0 0;color:#6b7280;font-size:14px;line-height:1.6;">
+                      Bon courage pour la suite !<br/>
+                      L'équipe OptiTAB
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+        """
+
+        try:
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[user.email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+            logger.info(f"Email de notation de quiz envoyé à {user.email}")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur envoi email de notation de quiz à {user.email}: {e}")
+            return False
+
+    @staticmethod
     def send_contact_message(first_name: str, last_name: str, email: str, subject: str, message: str, ticket_id: str | None = None) -> bool:
         """Envoie un message du formulaire de contact vers la boîte de réception OptiTAB.
 

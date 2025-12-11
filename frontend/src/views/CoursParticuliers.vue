@@ -1,5 +1,5 @@
 <template>
-  <MainLayout>
+  <DashboardLayout>
     <div class="cours-particuliers-page">
       <!-- Hero Section -->
       <section class="hero-section">
@@ -523,12 +523,12 @@
       @close="closeContactModal"
       @success="handleContactSuccess"
     />
-  </MainLayout>
+  </DashboardLayout>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import MainLayout from '@/components/layout/MainLayout.vue'
+import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
 import ContactModal from '@/components/common/ContactModal.vue'
@@ -691,7 +691,7 @@ function scrollToProfesseur(e) {
 .hero-section {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 120px 2rem 80px 2rem;
+  padding: 40px 2rem 60px 2rem;
   text-align: center;
   position: relative;
 }

@@ -89,6 +89,15 @@
               <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11c1.657 0 3-1.79 3-4s-1.343-4-3-4-3 1.79-3 4 1.343 4 3 4z"/><path d="M8 13c-3.866 0-7 2.239-7 5v3h14v-3c0-2.761-3.134-5-7-5z"/></svg></span>
               <span v-if="!collapsed" class="sidebar-label">Abonnés</span>
             </li>
+            <li
+              class="sidebar-item"
+              :class="{ active: route.path.startsWith('/admin/quiz-submissions') }"
+              @click="router.push('/admin/quiz-submissions')"
+              :title="collapsed ? 'Notation des Quiz' : ''"
+            >
+              <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></span>
+              <span v-if="!collapsed" class="sidebar-label">Notation Quiz</span>
+            </li>
           </template>
         </ul>
       </div>

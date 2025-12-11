@@ -34,6 +34,8 @@
             :exercices-list="quiz.questions_data"
             :difficulty="quiz.difficulty"
             :readonly="false"
+            :best-score="quiz.bestScore"
+            :attempt-count="quiz.attemptCount"
           />
         </div>
       </div>
@@ -47,7 +49,7 @@ import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
-import { getQuizByNotion } from '@/api/quiz'
+import { getQuizByNotion, getQuizAttempts } from '@/api/quiz'
 
 const route = useRoute()
 const router = useRouter()
@@ -60,13 +62,66 @@ async function loadQuiz() {
   loading.value = true
   try {
     const response = await getQuizByNotion(notionId)
-    // S'assurer que questions_data est bien un tableau
-    quizList.value = (response.data || response || []).map(quiz => ({
-      ...quiz,
-      questions_data: Array.isArray(quiz.questions_data) ? quiz.questions_data : []
-    }))
+    const quizData = response.data || response || []
+    
+    console.log(`[HomeworkByNotion] Quiz chargés:`, quizData.length)
+    
+    // Charger les tentatives pour chaque quiz en parallèle
+    const quizWithAttempts = await Promise.all(
+      quizData.map(async (quiz) => {
+        try {
+          const attemptsResponse = await getQuizAttempts(quiz.id)
+          // Gérer différentes structures de réponse
+          let attempts = attemptsResponse
+          if (attemptsResponse?.data) {
+            attempts = Array.isArray(attemptsResponse.data) 
+              ? attemptsResponse.data 
+              : (attemptsResponse.data?.data || attemptsResponse.data?.results || [])
+          }
+          attempts = Array.isArray(attempts) ? attempts : []
+          
+          console.log(`[Quiz ${quiz.id}] Tentatives trouvées:`, attempts.length)
+          
+          // Trouver la meilleure note
+          let bestScore = null
+          if (attempts.length > 0) {
+            const scores = attempts
+              .filter(a => a.score != null && a.total_points != null && a.total_points > 0)
+              .map(a => (a.score / a.total_points) * 20)
+            
+            if (scores.length > 0) {
+              bestScore = Math.max(...scores)
+              console.log(`[Quiz ${quiz.id}] Meilleure note: ${bestScore.toFixed(1)}/20`)
+            }
+          }
+          
+          return {
+            ...quiz,
+            questions_data: Array.isArray(quiz.questions_data) ? quiz.questions_data : [],
+            bestScore: bestScore,
+            attemptCount: attempts.length
+          }
+        } catch (error) {
+          console.error(`[Quiz ${quiz.id}] Erreur chargement tentatives:`, error)
+          return {
+            ...quiz,
+            questions_data: Array.isArray(quiz.questions_data) ? quiz.questions_data : [],
+            bestScore: null,
+            attemptCount: 0
+          }
+        }
+      })
+    )
+    
+    quizList.value = quizWithAttempts
+    console.log('[HomeworkByNotion] Quiz avec notes:', quizList.value.map(q => ({
+      id: q.id,
+      titre: q.titre,
+      bestScore: q.bestScore,
+      attemptCount: q.attemptCount
+    })))
   } catch (error) {
-    console.error('Erreur lors du chargement des quiz:', error)
+    console.error('[HomeworkByNotion] Erreur lors du chargement des quiz:', error)
     quizList.value = []
   } finally {
     loading.value = false

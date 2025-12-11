@@ -29,6 +29,13 @@
           </div>
           <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
           <div class="header-slot header-slot--right">
+            <div v-if="bestScore !== null" class="score-badge" :class="getScoreClass(bestScore)">
+              <span class="score-icon">🎯</span>
+              <span class="score-text">{{ bestScore.toFixed(1) }}/20</span>
+              <span v-if="attemptCount > 1" class="attempt-count" :title="`${attemptCount} tentatives`">
+                ({{ attemptCount }})
+              </span>
+            </div>
             <div class="difficulty-indicator" v-if="difficulty">
               <span class="difficulty-stars">{{ diffStars[difficulty] || '★★' }}</span>
             </div>
@@ -322,6 +329,14 @@ const props = defineProps({
   exercicesList: {
     type: Array,
     default: null
+  },
+  bestScore: {
+    type: Number,
+    default: null
+  },
+  attemptCount: {
+    type: Number,
+    default: 0
   }
 })
 
@@ -369,6 +384,14 @@ const tabContentStyles = computed(() => {
 })
 
 const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+
+// Fonction pour déterminer la classe CSS selon la note
+function getScoreClass(score) {
+  if (score >= 16) return 'score-excellent'
+  if (score >= 12) return 'score-good'
+  if (score >= 10) return 'score-average'
+  return 'score-needs-work'
+}
 
 function prefillReportFields() {
   if (!reportEmail.value && userStore.email) {
@@ -950,6 +973,59 @@ watch(activeTab, () => {
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
+}
+
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.score-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.score-icon {
+  font-size: 1rem;
+}
+
+.score-text {
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+.attempt-count {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.score-excellent {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.score-good {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+}
+
+.score-average {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+.score-needs-work {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
 }
 
 .difficulty-indicator {
@@ -1606,6 +1682,20 @@ watch(activeTab, () => {
 
   .header-controls {
     gap: 8px;
+  }
+
+  .score-badge {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    gap: 5px;
+  }
+
+  .score-text {
+    font-size: 0.85rem;
+  }
+
+  .attempt-count {
+    display: none; /* Masquer le nombre de tentatives sur mobile */
   }
 
   .difficulty-indicator {

@@ -1,32 +1,5 @@
 <template>
   <div class="exercices-history-wrapper">
-    <div v-if="showSuggestions && suggestionCards.length" class="practice-suggestions">
-      <div class="suggestion-header">
-        <div class="suggestion-title">Conseils rapides</div>
-        <div class="suggestion-subtitle">Des exercices proches pour consolider ou revoir</div>
-      </div>
-      <div class="suggestion-cards">
-        <div
-          v-for="card in suggestionCards"
-          :key="card.key"
-          class="suggestion-card"
-        >
-          <div class="suggestion-card-head">
-            <span class="badge" :class="card.badgeClass">{{ card.badge }}</span>
-            <span class="suggestion-notion">{{ card.notionLabel }}</span>
-          </div>
-          <div class="suggestion-body">
-            <div class="suggestion-text">
-              <div class="suggestion-title-line"></div>
-            </div>
-            <button class="suggestion-cta" @click="openSuggestion(card)">
-              {{ card.cta }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <BaseHistory
       ref="baseHistoryRef"
       title="🧭 Historique des Exercices"

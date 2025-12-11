@@ -98,6 +98,21 @@
                   <span class="label">Corrigé le:</span>
                   <span class="value">{{ formatDate(submission.date_correction) }}</span>
                 </div>
+
+                <!-- Solution du quiz (visible uniquement après correction) -->
+                <div v-if="submission.quiz_solution" class="solution-section">
+                  <button 
+                    class="solution-toggle" 
+                    @click="toggleSolution(submission.id)"
+                  >
+                    <span>📝 {{ expandedSolutions.has(submission.id) ? 'Masquer' : 'Voir' }} la solution</span>
+                    <span class="toggle-icon">{{ expandedSolutions.has(submission.id) ? '▲' : '▼' }}</span>
+                  </button>
+                  <div v-if="expandedSolutions.has(submission.id)" class="solution-content">
+                    <div class="solution-header">📖 Solution du quiz</div>
+                    <div class="solution-text" v-html="renderSolution(submission.quiz_solution)"></div>
+                  </div>
+                </div>
               </div>
 
               <div v-else class="pending-message">
@@ -112,7 +127,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
@@ -122,6 +137,7 @@ const router = useRouter()
 const submissions = ref([])
 const stats = ref(null)
 const loading = ref(false)
+const expandedSolutions = ref(new Set())
 
 onMounted(() => {
   loadSubmissions()
@@ -161,6 +177,32 @@ function formatDate(dateString) {
     hour: '2-digit',
     minute: '2-digit'
   })
+}
+
+function toggleSolution(submissionId) {
+  if (expandedSolutions.value.has(submissionId)) {
+    expandedSolutions.value.delete(submissionId)
+  } else {
+    expandedSolutions.value.add(submissionId)
+    // Render MathJax après l'affichage de la solution
+    nextTick(() => {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise()
+      }
+    })
+  }
+  // Forcer la réactivité du Set
+  expandedSolutions.value = new Set(expandedSolutions.value)
+}
+
+function renderSolution(solution) {
+  if (!solution) return ''
+  // Convertir les retours à la ligne en <br> et traiter le Markdown basique
+  let html = solution
+    .replace(/\n/g, '<br>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+  return html
 }
 </script>
 
@@ -443,6 +485,86 @@ function formatDate(dateString) {
   font-size: 0.875rem;
 }
 
+/* Solution Section */
+.solution-section {
+  margin-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1rem;
+}
+
+.solution-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.solution-toggle:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4);
+  transform: translateY(-1px);
+}
+
+.toggle-icon {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+.solution-content {
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  border: 2px solid #86efac;
+  border-radius: 12px;
+  overflow: hidden;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.solution-header {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.solution-text {
+  padding: 1.25rem;
+  color: #166534;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.solution-text strong {
+  color: #14532d;
+}
+
+.solution-text em {
+  font-style: italic;
+}
+
 @media (max-width: 768px) {
   .page-title {
     font-size: 1.5rem;
@@ -471,6 +593,16 @@ function formatDate(dateString) {
     flex-direction: column;
     gap: 0.5rem;
     text-align: center;
+  }
+
+  .solution-toggle {
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .solution-text {
+    padding: 1rem;
+    font-size: 0.875rem;
   }
 }
 </style>

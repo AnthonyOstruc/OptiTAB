@@ -672,7 +672,8 @@ class QuizSubmissionViewSet(viewsets.ModelViewSet):
         """Filtre selon le rôle de l'utilisateur"""
         user = self.request.user
         queryset = super().get_queryset().select_related(
-            'user', 'quiz', 'quiz__notion', 'corrige_par'
+            'user', 'quiz', 'quiz__notion', 'quiz__notion__theme', 
+            'quiz__notion__theme__matiere', 'corrige_par'
         )
         
         # Les admins voient tout, les élèves voient seulement leurs soumissions

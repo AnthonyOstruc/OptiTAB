@@ -46,13 +46,13 @@
     </div>
 
     <!-- Slot supplémentaire: stats matière/notion -->
-    <div v-if="!loading && matiereNotionStats.length > 0" class="matiere-stats">
-      <slot name="matiere-notion-stats" :stats="matiereNotionStats" />
+    <div v-if="!loading && matiereNotionStatsComputed.length > 0" class="matiere-stats">
+      <slot name="matiere-notion-stats" :stats="matiereNotionStatsComputed" />
     </div>
 
     <!-- Section principale (liste des items) -->
     <div v-if="!loading" class="items-list-section">
-      <div class="items-list-header" @click="toggleItemsListSection">
+      <div class="items-list-header" @click="!props.disableCollapse && toggleItemsListSection()">
         <h4 class="section-subtitle">{{ listTitle }} ({{ filteredItemsList.length }})</h4>
         
         <!-- Filtres personnalisés -->
@@ -60,7 +60,7 @@
           <slot name="custom-filters" :filters="customFilters" :selected="selectedCustomFilter" />
         </div>
         
-        <button class="section-toggle" :class="{ expanded: isItemsListExpanded }">
+        <button v-if="!props.disableCollapse" class="section-toggle" :class="{ expanded: isItemsListExpanded }">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="6,9 12,15 18,9"></polyline>
           </svg>
@@ -168,6 +168,14 @@ const props = defineProps({
   filteredItems: {
     type: Array,
     default: null
+  },
+  matiereNotionStatsOverride: {
+    type: Array,
+    default: null
+  },
+  disableCollapse: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -187,6 +195,7 @@ const globalStats = ref({})
 const itemsList = ref([])
 const matiereStats = ref([])
 const matiereNotionStats = ref([])
+const matiereNotionStatsComputed = computed(() => props.matiereNotionStatsOverride ?? matiereNotionStats.value)
 
 const resetHistoryState = () => {
   loading.value = false

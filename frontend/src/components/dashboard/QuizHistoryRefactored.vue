@@ -5,17 +5,19 @@
     loading-text="Chargement des quiz..."
     api-endpoint="/api/suivis/quiz/stats/"
     :extra-params="{ limit: 6 }"
-    :custom-filters="masteryFilters"
+    :custom-filters="[]"
     :navigation-handler="navigateToQuiz"
     :items-per-page="6"
+    :matiere-notion-stats-override="matiereNotionStats"
+    :disable-collapse="true"
     :filtered-items="filteredQuizList"
     @data-loaded="onDataLoaded"
     @filter-changed="onFilterChanged"
   >
     <!-- Actions en-tête: bouton Voir l'historique complet -->
     <template #header-actions>
-      <button class="view-history-btn" @click="goToFullHistory" title="Voir tout l'historique" aria-label="Voir tout l'historique">
-        Voir l'historique
+      <button class="view-history-btn" @click="goToFullHistory" title="Archive" aria-label="Archive">
+        Archive
       </button>
     </template>
     <!-- Statistiques globales -->
@@ -23,15 +25,15 @@
       <div class="stats-grid">
         <div class="stat-card quiz-completed">
           <span class="stat-label">Quiz effectués</span>
-          <span class="stat-value">{{ stats.completed || 0 }}</span>
+          <span class="stat-value">{{ combinedStats.completed }}</span>
         </div>
         <div class="stat-card quiz-average">
           <span class="stat-label">Note moyenne</span>
-          <span class="stat-value">{{ stats.average || 0 }}/10</span>
+          <span class="stat-value">{{ combinedStats.average }}/10</span>
         </div>
         <div class="stat-card quiz-notions">
           <span class="stat-label">Notions maîtrisées</span>
-          <span class="stat-value">{{ stats.masteredNotions || 0 }}</span>
+          <span class="stat-value">{{ combinedStats.masteredNotions }}</span>
         </div>
       </div>
     </template>
@@ -60,58 +62,43 @@
               {{ sortField === 'incorrect_count' && sortDirection === 'asc' ? '↑' : '↓' }}
             </span>
           </div>
-          <div class="sortable-header" @click="sortBy('average_percent')">
+          <div class="sortable-header" @click="sortBy('average_on_20')">
             Moyenne
-            <span class="sort-icon" :class="{ active: sortField === 'average_percent' }">
-              {{ sortField === 'average_percent' && sortDirection === 'asc' ? '↑' : '↓' }}
+            <span class="sort-icon" :class="{ active: sortField === 'average_on_20' }">
+              {{ sortField === 'average_on_20' && sortDirection === 'asc' ? '↑' : '↓' }}
             </span>
           </div>
         </div>
 
-        <template v-for="row in sortedStats" :key="`${row.matiere.id}-${row.notion.id}`">
+        <template v-for="row in pagedSummaryRows" :key="`${row.matiere.id}-${row.notion.id}`">
           <div class="summary-row">
             <div class="cell matiere">{{ row.matiere.titre }}</div>
             <div class="cell notion">
-              <button class="notion-toggle" @click="toggleNotionDetails(row)">
-                <span class="notion-label">{{ row.notion.titre }}</span>
-                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :class="{ expanded: isNotionExpanded(row) }">
-                  <polyline points="6,9 12,15 18,9"></polyline>
-                </svg>
-              </button>
+              <span class="notion-label">{{ row.notion.titre }}</span>
             </div>
             <div class="cell count">{{ row.count }}</div>
             <div class="cell correct">{{ row.correct_count }}</div>
             <div class="cell incorrect">{{ row.incorrect_count }}</div>
-            <div class="cell average" :class="getAverageClass(row.average_percent)">{{ formatAverage(row.average_percent) }}</div>
-          </div>
-
-          <div v-if="isNotionExpanded(row)" class="summary-details-row">
-            <div class="details-cell">
-              <div class="chapter-table">
-                <div class="chapter-header">
-                  <div>Chapitre</div>
-                  <div>Faits</div>
-                  <div>Réussis</div>
-                  <div>Ratés</div>
-                  <div>Réussite</div>
-                  <div>Moyenne</div>
-                </div>
-                <div v-if="getNotionDetails(row).loading" class="chapter-loading">Chargement des détails...</div>
-                <div v-else-if="getNotionDetails(row).error" class="chapter-error">{{ getNotionDetails(row).error }}</div>
-                <div v-else>
-                  <div v-for="ch in getNotionDetails(row).chapters" :key="ch.chapitre.id" class="chapter-row">
-                    <div class="cell chapitre">{{ ch.chapitre.titre }}</div>
-                    <div class="cell count">{{ ch.count }}</div>
-                    <div class="cell correct">{{ ch.correct_count }}</div>
-                    <div class="cell incorrect">{{ ch.incorrect_count }}</div>
-                    <div class="cell ratio">{{ Math.round(ch.ratio_percent) }}%</div>
-                    <div class="cell average" :class="getAverageClass(ch.average_percent)">{{ (Math.round(ch.average_10 * 10) / 10) }}/10</div>
-                  </div>
-                </div>
-              </div>
+            <div class="cell average">
+              <span class="avg-badge" :class="getAverageOn20Class(row.average_on_20)">{{ formatAverageOn20(row.average_on_20) }}</span>
             </div>
           </div>
         </template>
+
+        <div v-if="summaryTotalPages > 1" class="summary-pagination">
+          <button class="pg-btn" :disabled="summaryPage <= 1" @click="goToSummaryPage(summaryPage-1)">‹ Précédent</button>
+          <button
+            v-for="p in summaryVisiblePages"
+            :key="p + '-p'"
+            class="pg-page"
+            :class="{ active: p === summaryPage, dots: p === '...' }"
+            :disabled="p === '...'"
+            @click="p !== '...' && goToSummaryPage(p)"
+          >
+            {{ p }}
+          </button>
+          <button class="pg-btn" :disabled="summaryPage >= summaryTotalPages" @click="goToSummaryPage(summaryPage+1)">Suivant ›</button>
+        </div>
       </div>
     </template>
 
@@ -129,67 +116,24 @@
       </div>
     </template>
 
-    <!-- Filtres personnalisés -->
-    <template #custom-filters="{ filters, selected }">
-      <button 
-        v-for="filter in filters" 
-        :key="filter.value"
-        @click="updateSelectedMastery(filter.value)"
-        :class="['inline-mastery-btn', { active: selected === filter.value }, filter.class]"
-      >
-        <span v-if="filter.icon" class="inline-mastery-icon">{{ filter.icon }}</span>
-        <span class="inline-mastery-label">{{ filter.label }}</span>
-      </button>
-    </template>
-
     <!-- Liste des quiz -->
-    <template #items-list="{ items, toggleDetails, isExpanded, navigateToItem }">
-      <div v-for="quiz in items" :key="quiz.id" class="quiz-card" :class="{ 'multiple-attempts': quiz.total_attempts > 1 }">
-        <div class="quiz-card-header" @click="toggleDetails(quiz.id)">
-          <div class="quiz-card-title-section">
-            <h5 class="quiz-card-title clickable-title" @click.stop="navigateToItem(quiz)" :title="'Accéder au quiz: ' + quiz.quiz_titre">
-              {{ quiz.quiz_titre }}
-              <svg class="navigation-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M7 17l9.2-9.2M17 17V7H7"></path>
-              </svg>
-            </h5>
-            <div class="quiz-breadcrumb-compact">
-              {{ quiz.matiere.titre }} → {{ quiz.notion.titre }}
+    <template #items-list="{ items, navigateToItem }">
+      <div
+        v-for="quiz in items"
+        :key="quiz.id"
+        class="quiz-card"
+        :class="{ 'manual-quiz': quiz.is_manual }"
+        @click="navigateToItem(quiz)"
+      >
+        <div class="quiz-card-content">
+          <div class="quiz-info">
+            <h5 class="quiz-card-title">{{ quiz.quiz_titre }}</h5>
+            <div class="quiz-meta">
+              {{ quiz.matiere.titre }} • {{ quiz.notion.titre }}
             </div>
           </div>
-          <div class="quiz-card-actions">
-            <div class="quiz-score" :class="getScoreClass(quiz.score_on_10)">
-              {{ quiz.score_on_10 }}/10
-              <span v-if="quiz.total_attempts > 1" class="retry-indicator">↻</span>
-            </div>
-            <button class="expand-toggle" :class="{ expanded: isExpanded(quiz.id) }">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="6,9 12,15 18,9"></polyline>
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        <div v-if="isExpanded(quiz.id)" class="quiz-card-details">
-          <div class="quiz-breadcrumb">
-            <span class="breadcrumb-item">{{ quiz.matiere.titre }}</span>
-            <span class="breadcrumb-separator">→</span>
-            <span class="breadcrumb-item">{{ quiz.notion.titre }}</span>
-            <span class="breadcrumb-separator">→</span>
-            <span class="breadcrumb-item">{{ quiz.chapitre.titre }}</span>
-          </div>
-          
-          <div class="quiz-meta">
-            <span class="quiz-attempt">
-              Tentative #{{ quiz.tentative_numero }}
-              <span v-if="quiz.total_attempts > 1" class="total-attempts">
-                ({{ quiz.total_attempts }} au total)
-              </span>
-            </span>
-            <span class="quiz-date">{{ formatDate(quiz.date_creation) }}</span>
-            <span class="quiz-time" v-if="quiz.temps_total_seconde">
-              {{ formatTime(quiz.temps_total_seconde) }}
-            </span>
+          <div class="quiz-score" :class="getScoreClass(getScoreOn10(quiz))">
+            {{ formatScoreDisplay(quiz) }}
           </div>
         </div>
       </div>
@@ -207,49 +151,141 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import BaseHistory from './BaseHistory.vue'
 import apiClient from '@/api/client'
+import { getQuizSubmissions } from '@/api/quizSubmissions'
+import { useUserStore } from '@/stores/user'
 
 // Router
 const router = useRouter()
+const userStore = useUserStore()
 
-// État
-const selectedMastery = ref('all')
 const currentQuizList = ref([])
 const matiereNotionStats = ref([])
 const sortField = ref('count')
 const sortDirection = ref('desc')
-const expandedNotions = ref(new Set())
-const notionDetails = ref({})
+const SUMMARY_PER_PAGE = 5
+const summaryPage = ref(1)
 
-// Filtres de maîtrise pour quiz
-const masteryFilters = [
-  { value: 'all', label: 'Tous', icon: '', class: 'all' },
-  { value: 'mastered', label: 'Maîtrisés', icon: '✅', class: 'mastered' },
-  { value: 'average', label: 'Moyens', icon: '⚠️', class: 'average' },
-  { value: 'poor', label: 'Non maîtrisés', icon: '❌', class: 'poor' }
-]
+const roundToOneDecimal = (value) => Math.round(Number(value || 0) * 10) / 10
 
-// Computed pour filtrer les quiz selon le niveau de maîtrise
-const filteredQuizList = computed(() => {
-  let filtered = currentQuizList.value
+const sortByDateDesc = (list = []) => {
+  return [...list].sort((a, b) => {
+    const da = new Date(a?.date_creation || a?.created_at || 0).getTime()
+    const db = new Date(b?.date_creation || b?.created_at || 0).getTime()
+    return db - da
+  })
+}
 
-  // Filtrer par niveau de maîtrise
-  if (selectedMastery.value !== 'all') {
-    filtered = filtered.filter(quiz => {
-      const score = quiz.score_on_10
-      switch (selectedMastery.value) {
-        case 'mastered':
-          return score >= 7 // Maîtrisé
-        case 'average':
-          return score >= 5 && score < 7 // Moyen
-        case 'poor':
-          return score < 5 // Non maîtrisé
-        default:
-          return true
-      }
-    })
+const getScoreOn10 = (quiz) => {
+  if (quiz?.manual_note != null) {
+    return Number(quiz.manual_note) / 2
+  }
+  return Number(quiz?.score_on_10 || 0)
+}
+
+const formatScoreDisplay = (quiz) => {
+  if (quiz?.is_manual && quiz?.manual_note != null) {
+    return `${roundToOneDecimal(quiz.manual_note)}/20`
+  }
+  return `${roundToOneDecimal(getScoreOn10(quiz))}/10`
+}
+
+const buildMatiereFromQuiz = (quiz = {}) => {
+  const mat = quiz?.notion?.theme?.matiere || quiz?.matiere
+  if (mat && typeof mat === 'object') {
+    return { id: mat.id ?? null, titre: mat.titre || mat.nom || 'Matière' }
+  }
+  if (mat) {
+    return { id: mat, titre: 'Matière' }
+  }
+  return { id: null, titre: 'Matière' }
+}
+
+const buildNotionFromQuiz = (quiz = {}) => {
+  const notion = quiz?.notion
+  if (notion && typeof notion === 'object') {
+    return { id: notion.id ?? null, titre: notion.titre || notion.nom || 'Notion' }
+  }
+  if (quiz?.notion_id) {
+    return { id: quiz.notion_id, titre: 'Notion' }
+  }
+  return { id: null, titre: 'Notion' }
+}
+
+const buildChapitreFromQuiz = (quiz = {}) => {
+  const chapitre = quiz?.chapitre
+  if (chapitre && typeof chapitre === 'object') {
+    return { id: chapitre.id ?? null, titre: chapitre.titre || 'Chapitre' }
+  }
+  if (quiz?.chapitre_id) {
+    return { id: quiz.chapitre_id, titre: 'Chapitre' }
+  }
+  return { id: null, titre: 'Quiz' }
+}
+
+const mapManualSubmission = (submission = {}) => {
+  const quiz = submission.quiz || {}
+  const manualNote = submission?.note
+  const fallbackDate = submission?.date_correction || submission?.date_creation || submission?.created_at || submission?.updated_at || new Date().toISOString()
+
+  // Construire matiere avec le titre depuis la submission si disponible
+  let matiere = buildMatiereFromQuiz(quiz)
+  if (submission?.quiz_matiere_titre) {
+    matiere = {
+      id: quiz?.notion?.theme?.matiere?.id || matiere.id,
+      titre: submission.quiz_matiere_titre
+    }
   }
 
-  return filtered
+  // Construire notion avec le titre depuis la submission si disponible
+  let notion = buildNotionFromQuiz(quiz)
+  if (submission?.quiz_notion_titre) {
+    notion = {
+      id: quiz?.notion?.id || submission?.quiz?.notion?.id || notion.id,
+      titre: submission.quiz_notion_titre
+    }
+  }
+
+  return {
+    id: `manual-${submission.id}`,
+    quiz_id: quiz?.id || submission?.quiz_id || submission?.quizId,
+    quiz_titre: submission?.quiz_titre || quiz?.titre || 'Quiz rendu',
+    matiere: matiere,
+    notion: notion,
+    chapitre: buildChapitreFromQuiz(quiz),
+    score_on_10: manualNote != null ? Number(manualNote) / 2 : 0,
+    manual_note: manualNote != null ? Number(manualNote) : null,
+    tentative_numero: 1,
+    total_attempts: 1,
+    date_creation: fallbackDate,
+    temps_total_seconde: null,
+    is_manual: true,
+    commentaire_admin: submission?.commentaire || submission?.notes_admin || ''
+  }
+}
+
+// Derniers quiz (6 plus récents)
+const filteredQuizList = computed(() => {
+  const sorted = sortByDateDesc(currentQuizList.value)
+  return sorted.slice(0, 6)
+})
+
+// Stats combinées (auto + notes admin)
+const combinedStats = computed(() => {
+  const list = currentQuizList.value || []
+  const completed = list.length
+  const average = completed ? roundToOneDecimal(list.reduce((sum, quiz) => sum + getScoreOn10(quiz), 0) / completed) : 0
+  const masteredNotions = new Set(
+    list
+      .filter(quiz => getScoreOn10(quiz) >= 7)
+      .map(quiz => quiz?.notion?.id)
+      .filter(Boolean)
+  ).size
+
+  return {
+    completed,
+    average,
+    masteredNotions
+  }
 })
 
 // Tri du tableau récapitulatif
@@ -263,6 +299,44 @@ const sortedStats = computed(() => {
   return sorted
 })
 
+const summaryTotalPages = computed(() => Math.ceil((sortedStats.value.length || 0) / SUMMARY_PER_PAGE))
+
+const summaryVisiblePages = computed(() => {
+  const pages = []
+  const total = summaryTotalPages.value
+  const current = summaryPage.value
+
+  if (total <= 1) return [1]
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i)
+  } else {
+    if (current <= 4) {
+      for (let i = 1; i <= 5; i++) pages.push(i)
+      pages.push('...')
+      pages.push(total)
+    } else if (current >= total - 3) {
+      pages.push(1)
+      pages.push('...')
+      for (let i = total - 4; i <= total; i++) {
+        if (i > 1) pages.push(i)
+      }
+    } else {
+      pages.push(1)
+      pages.push('...')
+      for (let i = current - 1; i <= current + 1; i++) pages.push(i)
+      pages.push('...')
+      pages.push(total)
+    }
+  }
+  return pages
+})
+
+const pagedSummaryRows = computed(() => {
+  const start = (summaryPage.value - 1) * SUMMARY_PER_PAGE
+  const end = start + SUMMARY_PER_PAGE
+  return sortedStats.value.slice(start, end)
+})
+
 const sortBy = (field) => {
   if (sortField.value === field) {
     sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
@@ -270,12 +344,15 @@ const sortBy = (field) => {
     sortField.value = field
     sortDirection.value = 'desc'
   }
+  summaryPage.value = 1
 }
 
 const formatAverage = (average) => {
   if (average === 0) return '0%'
   return `${Math.round(average)}%`
 }
+
+const formatAverageOn20 = (value) => `${roundToOneDecimal(value || 0)}/20`
 
 const getAverageClass = (average) => {
   if (average >= 90) return 'excellent'
@@ -284,13 +361,35 @@ const getAverageClass = (average) => {
   return 'poor'
 }
 
+const getAverageOn20Class = (average) => {
+  if (average >= 16) return 'avg-good'
+  if (average >= 10) return 'avg-medium'
+  return 'avg-poor'
+}
+
 // Méthodes
-const onDataLoaded = (data) => {
-  const fullList = Array.isArray(data.quiz_list) ? data.quiz_list : []
-  // Limiter visuellement à 6 pour le dashboard
-  currentQuizList.value = fullList.slice(0, 6)
+const onDataLoaded = async (data) => {
+  const automaticList = Array.isArray(data.quiz_list) ? data.quiz_list : []
+  let manualList = []
+
+  // Ne charger que les soumissions de l'utilisateur courant
+  const userId = userStore?.id
+  if (userId) {
+    try {
+      const submissionsResponse = await getQuizSubmissions({ status: 'graded', user: userId })
+      manualList = Array.isArray(submissionsResponse) ? submissionsResponse : []
+    } catch (error) {
+      console.warn('[QuizHistory] Impossible de charger les notes admin:', error)
+    }
+  }
+
+  const manualFormatted = manualList.map(mapManualSubmission)
+
+  const fullList = sortByDateDesc([...automaticList, ...manualFormatted])
+  currentQuizList.value = fullList
   // Construire l'agrégat matière/notion côté client
   matiereNotionStats.value = computeMatiereNotionFromQuizList(fullList)
+  summaryPage.value = 1
 }
 
 const onFilterChanged = (filters) => {
@@ -307,80 +406,10 @@ const goToFullHistory = () => {
   router.push({ name: 'QuizzesHistory' })
 }
 
-// Expansion notion → chapitres
-const buildNotionKey = (row) => `${row.matiere.id}-${row.notion.id}`
-
-const isNotionExpanded = (row) => expandedNotions.value.has(buildNotionKey(row))
-
-const getNotionDetails = (row) => {
-  const key = buildNotionKey(row)
-  if (!notionDetails.value[key]) {
-    notionDetails.value[key] = { loading: false, error: '', chapters: [] }
+const goToSummaryPage = (page) => {
+  if (typeof page === 'number' && page >= 1 && page <= summaryTotalPages.value) {
+    summaryPage.value = page
   }
-  return notionDetails.value[key]
-}
-
-const toggleNotionDetails = async (row) => {
-  const key = buildNotionKey(row)
-  if (expandedNotions.value.has(key)) {
-    expandedNotions.value.delete(key)
-    return
-  }
-  expandedNotions.value.add(key)
-  const details = getNotionDetails(row)
-  if (details.chapters && details.chapters.length > 0) return
-  await fetchNotionChapterDetails(row.matiere.id, row.notion.id)
-}
-
-const fetchNotionChapterDetails = async (matiereId, notionId) => {
-  const key = `${matiereId}-${notionId}`
-  notionDetails.value[key] = { loading: true, error: '', chapters: [] }
-  try {
-    const response = await apiClient.get('/api/suivis/quiz/stats/', { params: { matiere: matiereId, notion: notionId } })
-    const list = Array.isArray(response?.data?.quiz_list) ? response.data.quiz_list : []
-    const chapters = await computeChapterStats(list)
-    notionDetails.value[key] = { loading: false, error: '', chapters }
-  } catch (error) {
-    const message = (error?.response?.data?.error) || 'Erreur lors du chargement des détails'
-    notionDetails.value[key] = { loading: false, error: message, chapters: [] }
-  }
-}
-
-const computeChapterStats = async (quizList) => {
-  const map = new Map()
-
-  for (const item of quizList) {
-    const chap = item?.chapitre || {}
-    const chapId = chap?.id
-    if (!chapId) continue
-    if (!map.has(chapId)) {
-      map.set(chapId, {
-        chapitre: { id: chapId, titre: chap?.titre || 'Chapitre' },
-        count: 0,
-        correct_count: 0,
-        incorrect_count: 0,
-        sum_score_10: 0,
-      })
-    }
-    const agg = map.get(chapId)
-    agg.count += 1
-    agg.sum_score_10 += Number(item.score_on_10 || 0)
-    if ((item.score_on_10 || 0) >= 7) agg.correct_count += 1
-    else agg.incorrect_count += 1
-  }
-
-  const chapters = Array.from(map.values()).map(ch => {
-    const ratio = ch.count > 0 ? (ch.correct_count / ch.count) : 0
-    const avg10 = ch.count > 0 ? ch.sum_score_10 / ch.count : 0
-    return {
-      ...ch,
-      ratio_percent: ratio * 100,
-      average_10: Math.round(avg10 * 10) / 10,
-      average_percent: ratio * 100,
-    }
-  })
-  chapters.sort((a, b) => String(a.chapitre.titre).localeCompare(String(b.chapitre.titre), 'fr', { sensitivity: 'base' }))
-  return chapters
 }
 
 const computeMatiereNotionFromQuizList = (quizList) => {
@@ -396,16 +425,19 @@ const computeMatiereNotionFromQuizList = (quizList) => {
         count: 0,
         correct_count: 0,
         incorrect_count: 0,
+        sum_score_10: 0,
       })
     }
     const agg = map.get(key)
     agg.count += 1
+    agg.sum_score_10 += getScoreOn10(item)
     if ((item.score_on_10 || 0) >= 7) agg.correct_count += 1
     else agg.incorrect_count += 1
   }
   const rows = Array.from(map.values()).map(r => ({
     ...r,
-    average_percent: r.count > 0 ? (r.correct_count / r.count) * 100 : 0
+    average_percent: r.count > 0 ? (r.correct_count / r.count) * 100 : 0,
+    average_on_20: r.count > 0 ? roundToOneDecimal((r.sum_score_10 / r.count) * 2) : 0
   }))
   rows.sort((a, b) => String(a.matiere.titre).localeCompare(String(b.matiere.titre), 'fr', { sensitivity: 'base' }) || String(a.notion.titre).localeCompare(String(b.notion.titre), 'fr', { sensitivity: 'base' }))
   return rows
@@ -415,8 +447,12 @@ const navigateToQuiz = async (quiz) => {
   try {
     console.log(`[QuizHistory] 🚀 Navigation rapide vers quiz: ${quiz.quiz_titre}`)
     
-    const chapitreId = quiz.chapitre.id
-    const quizId = quiz.quiz_id
+    const chapitreId = quiz?.chapitre?.id
+    const quizId = quiz?.quiz_id
+    if (!chapitreId || !quizId) {
+      console.warn('[QuizHistory] Navigation impossible: identifiants manquants', { chapitreId, quizId })
+      return
+    }
     
     // Navigation optimisée avec remplacement de l'historique pour éviter les allers-retours
     await router.push({
@@ -428,10 +464,6 @@ const navigateToQuiz = async (quiz) => {
   } catch (error) {
     console.error(`[QuizHistory] ❌ Erreur de navigation:`, error)
   }
-}
-
-const updateSelectedMastery = (value) => {
-  selectedMastery.value = value
 }
 
 // Méthodes utilitaires
@@ -454,59 +486,114 @@ const formatTime = (seconds) => {
 
 // Exposer les méthodes pour le template
 defineExpose({
-  updateSelectedMastery
 })
 </script>
 
 <style scoped>
 /* Bouton voir l'historique */
 .view-history-btn {
-  background: #111827;
+  background: #2563eb;
   color: #fff;
   border: none;
   border-radius: 6px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
+  padding: 0.4rem 0.875rem;
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
-.view-history-btn:hover { background: #1f2937; }
-/* Tableau résumé matière/notion - aligné avec Exercices */
+.view-history-btn:hover { 
+  background: #1d4ed8;
+}
+/* Tableau résumé matière/notion */
 .summary-table {
-  border: 1px solid #d1d5db;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #fff;
   margin-bottom: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
 }
 .summary-header,
 .summary-row {
   display: grid;
   grid-template-columns: 1.5fr 2fr 0.8fr 0.8fr 0.8fr 0.8fr;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
+  gap: 0.75rem;
+  padding: 0.65rem 0.875rem;
   align-items: center;
 }
 .summary-header {
   background: #f9fafb;
   font-weight: 600;
-  color: #374151;
-  font-size: 0.875rem;
+  color: #1f2937;
+  font-size: 0.8rem;
   border-bottom: 1px solid #e5e7eb;
 }
-.summary-row { border-bottom: 1px solid #f3f4f6; }
+.summary-row { 
+  border-bottom: 1px solid #f3f4f6;
+  transition: background 0.15s ease;
+}
+.summary-row:hover {
+  background: #f9fafb;
+}
 .summary-row:last-child { border-bottom: none; }
-.summary-row .cell { font-size: 0.875rem; color: #374151; }
+.summary-row .cell { font-size: 0.825rem; color: #1f2937; }
 .summary-row .cell.count,
 .summary-row .cell.correct,
 .summary-row .cell.incorrect { text-align: center; font-weight: 600; }
-.summary-row .cell.correct { color: #16a34a; }
+.summary-row .cell.correct { color: #059669; }
 .summary-row .cell.incorrect { color: #dc2626; }
 
-.summary-row .cell.average { font-weight: 600; text-align: center; padding: 0.25rem 0.5rem; border-radius: 4px; }
-.summary-row .cell.average.excellent { color: #16a34a; background: #dcfce7; }
-.summary-row .cell.average.good { color: #2563eb; background: #dbeafe; }
-.summary-row .cell.average.average { color: #d97706; background: #fef3c7; }
-.summary-row .cell.average.poor { color: #dc2626; background: #fee2e2; }
+.summary-row .cell.average { text-align: center; }
+.avg-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.avg-badge.avg-good { background: #d1fae5; color: #065f46; }
+.avg-badge.avg-medium { background: #fef08a; color: #854d0e; }
+.avg-badge.avg-poor { background: #fecaca; color: #991b1b; }
+
+.summary-pagination {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  justify-content: center;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.pg-btn, .pg-page {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  min-width: 32px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.pg-btn:hover:not(:disabled), .pg-page:hover:not(:disabled):not(.dots) {
+  border-color: #d1d5db;
+  background: #f9fafb;
+}
+
+.pg-page.dots { cursor: default; background: transparent; border: none; }
+.pg-page.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+  font-weight: 600;
+}
+.pg-btn:disabled, .pg-page:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 
 .sortable-header { display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; padding: 0.25rem; border-radius: 4px; gap: 0.35rem; }
 .sortable-header:hover { background-color: #f3f4f6; }
@@ -514,7 +601,7 @@ defineExpose({
 .sort-icon.active { color: #2563eb; font-weight: 700; }
 
 @media (max-width: 768px) {
-  .summary-header, .summary-row { grid-template-columns: 1fr 1fr 0.7fr 0.7fr 0.7fr 0.7fr; padding: 0.5rem 0.75rem; }
+  .summary-header, .summary-row { grid-template-columns: 1fr 1fr 0.7fr 0.7fr 0.7fr 0.9fr; padding: 0.5rem 0.75rem; }
 }
 
 /* Notion toggle + détails */
@@ -542,8 +629,8 @@ defineExpose({
 /* Stats globales */
 .stats-grid {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
+  gap: 0.75rem;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 
@@ -551,71 +638,72 @@ defineExpose({
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  padding: 1rem;
-  min-width: 140px;
+  padding: 0.75rem 1rem;
+  min-width: 120px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .stat-label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: #6b7280;
   margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .stat-value {
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1f2937;
 }
 
-.stat-card.quiz-completed {
-  border-color: #8b5cf6;
-}
 .stat-card.quiz-completed .stat-value {
-  color: #8b5cf6;
+  color: #2563eb;
 }
 
-.stat-card.quiz-average {
-  border-color: #f59e0b;
-}
 .stat-card.quiz-average .stat-value {
-  color: #d97706;
+  color: #059669;
 }
 
-.stat-card.quiz-notions {
-  border-color: #10b981;
-}
 .stat-card.quiz-notions .stat-value {
-  color: #059669;
+  color: #8b5cf6;
 }
 
 /* Stats par matière */
 .section-subtitle {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  margin-top: 1rem;
 }
 
 .matiere-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
 }
 
 .matiere-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: #fff;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 0.75rem 0.875rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.matiere-card:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
 .matiere-name {
   font-weight: 600;
   color: #1f2937;
   margin-bottom: 0.5rem;
+  font-size: 0.875rem;
 }
 
 .matiere-info {
@@ -625,14 +713,15 @@ defineExpose({
 }
 
 .matiere-average {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
-  color: #059669;
+  color: #2563eb;
 }
 
 .matiere-count {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #6b7280;
+  font-weight: 500;
 }
 
 /* Filtres personnalisés */
@@ -640,7 +729,7 @@ defineExpose({
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.25rem 0.5rem;
+  padding: 0.3rem 0.6rem;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   background: white;
@@ -649,7 +738,6 @@ defineExpose({
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
-  min-height: 28px;
 }
 
 .inline-mastery-btn:hover {
@@ -660,12 +748,8 @@ defineExpose({
 .inline-mastery-btn.active {
   font-weight: 600;
   color: white;
-  border-width: 1px;
-}
-
-.inline-mastery-btn.active {
-  background: #3b82f6;
-  border-color: #3b82f6;
+  background: #2563eb;
+  border-color: #2563eb;
 }
 
 .inline-mastery-icon {
@@ -681,123 +765,64 @@ defineExpose({
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 0.75rem 0.875rem;
   transition: all 0.2s;
+  cursor: pointer;
 }
 
 .quiz-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-color: #2563eb;
 }
 
-.quiz-card.multiple-attempts {
-  border-left: 3px solid #f59e0b;
+.quiz-card.manual-quiz {
+  border-left: 3px solid #8b5cf6;
 }
 
-.quiz-card-header {
+.quiz-card-content {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  cursor: pointer;
-  padding: 0.5rem;
-  margin: -0.5rem -0.5rem 0.75rem -0.5rem;
-  border-radius: 6px;
-  transition: background-color 0.2s;
-}
-
-.quiz-card-header:hover {
-  background-color: #f8fafc;
-}
-
-.quiz-card-title-section {
-  flex: 1;
-}
-
-.quiz-card-actions {
-  display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
+}
+
+.quiz-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .quiz-card-title {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: #1f2937;
   margin: 0 0 0.25rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.clickable-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  margin: -0.25rem;
-  border-radius: 4px;
-  transition: all 0.2s;
-}
-
-.clickable-title:hover {
-  color: #3b82f6;
-  background: #f0f9ff;
-}
-
-.navigation-icon {
-  opacity: 0;
-  transition: opacity 0.2s;
-  flex-shrink: 0;
-}
-
-.clickable-title:hover .navigation-icon {
-  opacity: 1;
-}
-
-.quiz-breadcrumb-compact {
-  font-size: 0.7rem;
+.quiz-meta {
+  font-size: 0.75rem;
   color: #6b7280;
   font-weight: 500;
 }
 
 .quiz-score {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 700;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-}
-
-.expand-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #6b7280;
-  transition: all 0.2s;
-}
-
-.expand-toggle:hover {
-  background-color: #e5e7eb;
-  color: #374151;
-}
-
-.expand-toggle svg {
-  transition: transform 0.2s;
-}
-
-.expand-toggle.expanded svg {
-  transform: rotate(180deg);
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  white-space: nowrap;
 }
 
 .quiz-score.score-good {
-  background: #dcfce7;
-  color: #166534;
+  background: #d1fae5;
+  color: #065f46;
 }
 
 .quiz-score.score-average {
-  background: #fef3c7;
-  color: #92400e;
+  background: #fef08a;
+  color: #854d0e;
 }
 
 .quiz-score.score-poor {
@@ -805,89 +830,25 @@ defineExpose({
   color: #991b1b;
 }
 
-.retry-indicator {
-  margin-left: 0.25rem;
-  font-size: 0.8rem;
-  opacity: 0.7;
-}
-
-.quiz-card-details {
-  border-top: 1px solid #f3f4f6;
-  padding-top: 0.75rem;
-  margin-top: 0.5rem;
-  animation: slideDown 0.2s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.quiz-breadcrumb {
-  font-size: 0.75rem;
-  color: #6b7280;
-  margin-bottom: 0.5rem;
-}
-
-.breadcrumb-item {
-  font-weight: 500;
-}
-
-.breadcrumb-separator {
-  margin: 0 0.25rem;
-}
-
-.quiz-meta {
-  display: flex;
-  gap: 1rem;
-  font-size: 0.75rem;
-  color: #9ca3af;
-}
-
-.quiz-attempt {
-  font-weight: 600;
-}
-
-.total-attempts {
-  color: #6b7280;
-  font-weight: 400;
-  font-size: 0.7rem;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .stats-grid {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
   }
   
   .matiere-grid {
     grid-template-columns: 1fr;
   }
   
-  .quiz-meta {
+  .quiz-card-content {
     flex-direction: column;
-    gap: 0.25rem;
-  }
-  
-  .quiz-card-header {
     align-items: flex-start;
+    gap: 0.5rem;
   }
   
-  .quiz-card-actions {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.25rem;
-  }
-  
-  .quiz-breadcrumb-compact {
-    font-size: 0.65rem;
+  .quiz-score {
+    align-self: flex-start;
   }
 }
 </style>

@@ -9,7 +9,7 @@
           <li>Images multiples : Séparez les noms de fichiers par des virgules : <code>image1.jpg,image2.png</code></li>
           <li>Positionnement d'images : Utilisez <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code>, etc. dans les questions pour positionner les images</li>
           <li>Ordre des images : Les images sont assignées dans l'ordre de leur déclaration (1ère = [IMAGE_1], 2ème = [IMAGE_2], etc.)</li>
-          <li>Réponse correcte : Utilisez <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code> ou les indices <code>0</code>, <code>1</code>, <code>2</code>, <code>3</code></li>
+          <li><strong>Solution :</strong> Utilisez <code>Solution:</code> à la fin pour ajouter la solution complète (visible après correction)</li>
           <li>MathJax supporté : <code>$formule$</code> (inline) et <code>$$formule$$</code> (bloc)</li>
           <li>Markdown supporté : <code>**gras**</code> et <code>*italique*</code></li>
           <li>Laissez <code>Image:</code> vide si pas d'image</li>
@@ -109,6 +109,14 @@
           :difficulty="quiz.difficulty" 
           :preview-images="getPreviewImages(quiz.image, quiz)"
         />
+
+        <!-- Aperçu de la solution -->
+        <div v-if="quiz.solution" class="preview-solution">
+          <div class="preview-solution-header">
+            📖 Solution (sera visible après correction)
+          </div>
+          <div class="preview-solution-content" v-html="renderPreviewSolution(quiz.solution)"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -150,6 +158,11 @@ Ex2:
 
 Ex3:
 [Énoncé de l'exercice 3]
+
+Solution:
+[Solution complète du quiz ici]
+[Peut contenir plusieurs lignes]
+[MathJax et Markdown supportés]
 
 ===`
 
@@ -299,6 +312,7 @@ class QuizCreator {
         contenu: quizData.instruction || quizData.titre || 'Quiz',
         difficulty: quizData.difficulty || 'medium',
         questions_data: Array.isArray(quizData.questions) ? quizData.questions : [],
+        solution: quizData.solution || '',
       })
 
       const quizId = (quizRes && quizRes.data && quizRes.data.id) ? quizRes.data.id : (quizRes && quizRes.id ? quizRes.id : null)
@@ -598,7 +612,8 @@ function parseBlock(block, index) {
     difficulty: 'medium',
     image: '',
     questions: [],
-    notion: Number(selectedNotion.value)
+    notion: Number(selectedNotion.value),
+    solution: ''
   }
 
   let currentExercice = null
@@ -643,6 +658,33 @@ function parseBlock(block, index) {
     if (trimmedLine.match(/^Instructions?:/i)) {
       quiz.instruction = trimmedLine.replace(/^Instructions?:/i, '').trim()
       continue
+    }
+
+    // Détection de la section Solution (arrête le parsing des exercices)
+    if (trimmedLine.match(/^Solution:/i)) {
+      // Sauvegarder le dernier exercice si il existe
+      if (currentExercice && currentExercice.question.trim()) {
+        quiz.questions.push(fixQuestion(currentExercice))
+        currentExercice = null
+      }
+      
+      // Récupérer tout le contenu après "Solution:" jusqu'à la fin du bloc
+      const solutionStartIndex = i
+      const solutionLines = []
+      
+      // Ajouter le contenu après "Solution:" sur la même ligne
+      const solutionMatch = trimmedLine.match(/^Solution:\s*(.*)$/i)
+      if (solutionMatch && solutionMatch[1].trim()) {
+        solutionLines.push(solutionMatch[1].trim())
+      }
+      
+      // Ajouter toutes les lignes suivantes
+      for (let j = i + 1; j < lines.length; j++) {
+        solutionLines.push(lines[j])
+      }
+      
+      quiz.solution = solutionLines.join('\n').trim()
+      break // Sortir de la boucle, tout le reste est la solution
     }
 
     // Détection d'un nouvel exercice (Ex1:, Ex2:, Ex3:, etc.)
@@ -847,6 +889,16 @@ function getImageFile(imageName) {
 function getPreviewImages(imageString, exerciceData = null) {
   return imageManager.createPreviewImages(imageString, exerciceData)
 }
+
+function renderPreviewSolution(solution) {
+  if (!solution) return ''
+  // Convertir les retours à la ligne en <br> et traiter le Markdown basique
+  let html = solution
+    .replace(/\n/g, '<br>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+  return html
+}
 </script>
 
 <style src="@/styles/admin-common.css"></style>
@@ -933,5 +985,38 @@ function getPreviewImages(imageString, exerciceData = null) {
   cursor: not-allowed;
 }
 
-/* Pas de styles supplémentaires nécessaires */
+/* Preview Solution */
+.preview-solution {
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  border: 2px solid #86efac;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.preview-solution-header {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.preview-solution-content {
+  padding: 1.25rem;
+  color: #166534;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.preview-solution-content strong {
+  color: #14532d;
+  font-weight: 700;
+}
+
+.preview-solution-content em {
+  font-style: italic;
+}
 </style> 

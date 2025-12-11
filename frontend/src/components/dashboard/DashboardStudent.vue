@@ -31,6 +31,9 @@
         Bienvenue {{ userStore.firstName }} sur votre tableau de bord
       </h1>
     </div>
+
+    <!-- Notifications de corrections en attente -->
+    <PendingCorrections />
     
     <!-- Classement + Niveau + Objectifs -->
     <div class="section leaderboard-section">
@@ -47,8 +50,8 @@
 
 
 
-    <!-- Historique des quiz → masqué (conservé mais non rendu) -->
-    <QuizHistory v-if="false" />
+    <!-- Historique des quiz -->
+    <QuizHistory />
 
     <!-- Historique des exercices avec filtres → rendu immédiat -->
     <ExercicesHistory />
@@ -88,6 +91,7 @@ import XPBadges from '@/components/dashboard/XPBadges.vue'
 import LoginStreak from '@/components/dashboard/LoginStreak.vue'
 import QuizHistory from '@/components/dashboard/QuizHistoryRefactored.vue'
 import ExercicesHistory from '@/components/dashboard/ExercicesHistory.vue'
+import PendingCorrections from '@/components/dashboard/PendingCorrections.vue'
 
 
 // StreakTestButton supprimé

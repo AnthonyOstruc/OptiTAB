@@ -55,6 +55,8 @@
             :readonly="false"
             :best-score="quiz.bestScore"
             :attempt-count="quiz.attemptCount"
+            :solution="quiz.solution"
+            :is-graded="quiz.isGraded"
           />
         </div>
       </div>
@@ -128,6 +130,7 @@ async function loadQuiz() {
           }
           
           // 2. Notes des soumissions manuelles (notées par l'admin)
+          let gradedSubmission = null
           if (manualSubmissions.length > 0) {
             const manualScores = manualSubmissions
               .filter(s => s.status === 'graded' && s.note != null)
@@ -136,6 +139,11 @@ async function loadQuiz() {
             if (manualScores.length > 0) {
               const bestManualScore = Math.max(...manualScores)
               console.log(`[Quiz ${quiz.id}] Meilleure note (manuel): ${bestManualScore.toFixed(2)}/20`)
+              
+              // Trouver la soumission avec la meilleure note pour récupérer la solution
+              gradedSubmission = manualSubmissions
+                .filter(s => s.status === 'graded' && s.note != null)
+                .sort((a, b) => b.note - a.note)[0]
               
               // Prendre la meilleure entre les deux
               bestScore = bestScore !== null 
@@ -152,7 +160,10 @@ async function loadQuiz() {
             ...quiz,
             questions_data: Array.isArray(quiz.questions_data) ? quiz.questions_data : [],
             bestScore: bestScore,
-            attemptCount: attempts.length
+            attemptCount: attempts.length,
+            // Passer la solution seulement si noté
+            solution: gradedSubmission?.quiz_solution || null,
+            isGraded: gradedSubmission !== null
           }
         } catch (error) {
           console.error(`[Quiz ${quiz.id}] Erreur chargement tentatives:`, error)

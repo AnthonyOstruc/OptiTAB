@@ -67,6 +67,16 @@
             <span class="tab-icon">📝</span>
             <span class="tab-label">Ex {{ idx + 1 }}</span>
           </button>
+          <!-- Onglet Solution (visible seulement si noté) -->
+          <button 
+            v-if="isGraded && solution"
+            class="tab-btn solution-tab" 
+            :class="{ 'active': activeTab === 'solution' }"
+            @click="activeTab = 'solution'"
+          >
+            <span class="tab-icon">✅</span>
+            <span class="tab-label">Solution</span>
+          </button>
         </template>
         
         <!-- Tabs standards (Énoncé/Étapes/Solution) -->
@@ -113,6 +123,14 @@
         >
           <div class="content-wrapper">
             <div class="problem-content" v-html="renderInstructionWithImages(ex.question)" @click="handleImageClick"></div>
+          </div>
+        </div>
+        
+        <!-- Solution Tab (pour exercices multiples, visible si noté) -->
+        <div v-show="activeTab === 'solution'" class="content-section solution-section-tab" v-if="isGraded && solution">
+          <div class="content-wrapper solution-wrapper">
+            <div class="solution-tab-header">📖 Correction complète du quiz</div>
+            <div class="solution-tab-content" v-html="renderSolutionContent(solution)" @click="handleImageClick"></div>
           </div>
         </div>
       </template>
@@ -334,6 +352,10 @@ const props = defineProps({
   attemptCount: {
     type: Number,
     default: 0
+  },
+  isGraded: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -590,6 +612,18 @@ function renderInstructionWithImages(instruction) {
   return processedText
 }
 
+function renderSolutionContent(solutionText) {
+  if (!solutionText) return ''
+  // Traiter le texte de la solution avec support Markdown basique et LaTeX
+  let html = unescapeLatex(solutionText)
+  // Convertir les retours à la ligne en <br>
+  html = html.replace(/\n/g, '<br>')
+  // Traiter le Markdown basique
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+  html = html.replace(/\*(.*?)\*/g, '<em>$1</em>')
+  return html
+}
+
 function renderMath() {
   nextTick(() => {
     const doTypeset = () => {
@@ -742,19 +776,30 @@ function handleImageClick(event) {
 
 // Fonction pour envoyer l'examen par WhatsApp
 function sendExamToWhatsApp() {
-  // Construire le message WhatsApp
-  const message = `🎓 *Demande de correction*\n\n` +
-    `📝 Exercice: ${props.titre}\n` +
-    `📚 Type: Sujet d'examen (${props.exercicesList?.length || 0} exercices)\n\n` +
-    `Je souhaite envoyer ma copie pour correction.\n` +
-    `Merci de me communiquer ma note et la correction détaillée.`
+  // Récupérer les informations de l'utilisateur
+  const userName = userStore.firstName && userStore.lastName 
+    ? `${userStore.firstName} ${userStore.lastName}` 
+    : userStore.email || 'Élève'
+  
+  const userEmail = userStore.email || ''
+  const userLevel = userStore.niveau_pays?.nom || userStore.level || 'Non spécifié'
+  
+  // Construire le message WhatsApp simple et pédagogique
+  const message = 
+    `Bonjour !\n\n` +
+    `Je vous envoie mon travail pour le quiz suivant :\n\n` +
+    `*Quiz :* ${props.titre}\n` +
+    `*Nom :* ${userName}\n` +
+    `*Email :* ${userEmail}\n` +
+    `*Niveau :* ${userLevel}\n\n` +
+    `*J'envoie mes photos juste apres ce message*\n\n` +
+    `Merci de corriger mon travail et de me donner ma note avec vos commentaires.`
   
   // Encoder le message pour l'URL
   const encodedMessage = encodeURIComponent(message)
   
-  // Numéro WhatsApp (à configurer selon vos besoins)
-  // Format international sans le + : 33612345678 pour la France, 961XXXXXXXX pour le Liban
-  const phoneNumber = '33612345678' // À REMPLACER par votre numéro
+  // Numéro WhatsApp (format international sans le +)
+  const phoneNumber = '33764040251'
   
   // Créer l'URL WhatsApp
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
@@ -1109,6 +1154,22 @@ watch(activeTab, () => {
   background: #ffffff;
 }
 
+/* Onglet Solution spécial */
+.tab-btn.solution-tab {
+  color: #059669;
+}
+
+.tab-btn.solution-tab:hover {
+  background: rgba(16, 185, 129, 0.1);
+  color: #047857;
+}
+
+.tab-btn.solution-tab.active {
+  color: #059669;
+  border-bottom-color: #059669;
+  background: #f0fdf4;
+}
+
 .tab-icon {
   font-size: 1.2rem;
   transition: transform 0.3s ease;
@@ -1151,6 +1212,44 @@ watch(activeTab, () => {
 .steps-section,
 .answer-section {
   background: transparent;
+}
+
+/* Solution Tab Content (pour quiz notés) */
+.solution-section-tab {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+}
+
+.solution-wrapper {
+  background: transparent;
+}
+
+.solution-tab-header {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  padding: 1rem 1.25rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.solution-tab-content {
+  color: #166534;
+  font-size: 1rem;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  padding: 0.5rem;
+}
+
+.solution-tab-content strong {
+  color: #14532d;
+  font-weight: 700;
+}
+
+.solution-tab-content em {
+  font-style: italic;
 }
 
 .problem-content,

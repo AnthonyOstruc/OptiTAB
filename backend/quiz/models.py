@@ -16,6 +16,12 @@ class Quiz(BaseEducational):
     )
     questions_data = models.JSONField(default=list)  # Questions en JSON
     duree_minutes = models.PositiveIntegerField(default=30)
+    solution = models.TextField(
+        blank=True, 
+        default='', 
+        verbose_name="Solution du quiz",
+        help_text="Solution complète du quiz, visible par l'élève après correction"
+    )
     
     class Meta:
         ordering = ['notion', 'ordre']

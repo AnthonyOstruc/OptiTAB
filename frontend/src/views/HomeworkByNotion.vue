@@ -3,7 +3,8 @@
     <section class="quiz-section">
       <div class="nav-header-base">
         <BackButton
-          text="Retour"
+          text="Retour aux chapitres"
+          title="Retour aux chapitres"
           :customAction="goBack"
           position="top-left-dashboard"
         />

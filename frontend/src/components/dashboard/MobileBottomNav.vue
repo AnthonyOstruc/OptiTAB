@@ -97,10 +97,6 @@ const handleClick = async (item) => {
     }
 
     if (item.key === 'quiz') {
-      if (!userStore.isAdmin) {
-        router.push({ name: 'QuizComingSoon' }).catch(() => {})
-        return
-      }
       if (activeId) {
         try { await prefetchThemesNotions(activeId) } catch (_) {}
         router.push({ name: 'QuizNotions', params: { matiereId: String(activeId) } }).catch(() => {})

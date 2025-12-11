@@ -13,7 +13,6 @@
     <button 
       v-for="tab in tabs" 
       :key="tab.key"
-      v-show="tab.key !== 'quiz'"
       :class="['chapter-nav-btn', { active: tab.key === activeTab }]"
       :aria-pressed="tab.key === activeTab"
       :aria-label="tab.label"
@@ -460,18 +459,16 @@ function handleTabClick(tabKey) {
   }
 }
 
-// Navigation avec flèches (pour mobile) - Exclure le quiz
+// Navigation avec flèches (pour mobile) - inclure tous les onglets
 function navigatePrevious() {
-  // Filtrer les tabs pour exclure le quiz
-  const visibleTabs = tabs.value.filter(t => t.key !== 'quiz')
+  const visibleTabs = tabs.value
   const currentIndex = visibleTabs.findIndex(t => t.key === activeTab.value)
   const previousIndex = currentIndex > 0 ? currentIndex - 1 : visibleTabs.length - 1
   handleTabClick(visibleTabs[previousIndex].key)
 }
 
 function navigateNext() {
-  // Filtrer les tabs pour exclure le quiz
-  const visibleTabs = tabs.value.filter(t => t.key !== 'quiz')
+  const visibleTabs = tabs.value
   const currentIndex = visibleTabs.findIndex(t => t.key === activeTab.value)
   const nextIndex = currentIndex < visibleTabs.length - 1 ? currentIndex + 1 : 0
   handleTabClick(visibleTabs[nextIndex].key)

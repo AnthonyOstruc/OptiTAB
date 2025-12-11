@@ -275,11 +275,6 @@ async function handleSidebarClick(item) {
         router.push({ name: 'Sheets' })
       }
     } else if (item.key === 'quiz') {
-      // Non-admin: rediriger vers la page "Bientôt disponible"
-      if (!userStore.isAdmin) {
-        router.push({ name: 'QuizComingSoon' })
-        return
-      }
       if (activeId) {
         // Prefetch immédiat au clic
         prefetchThemesNotions(activeId).catch(() => {})

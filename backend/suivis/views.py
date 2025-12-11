@@ -148,7 +148,7 @@ class SuiviExerciceViewSet(viewsets.ModelViewSet):
         try:
             # Choisir l'utilisateur cible (lui-même, ou un enfant si parent)
             target_user_id = request.user.id
-            child_id_param = request.query_params.get('child_id') or request.query_params.get('child')
+            child_id_param = request.query_params.get('child_id') or request.query_params.get('child') or request.query_params.get('user_id')
             if child_id_param:
                 try:
                     child_id_int = int(child_id_param)
@@ -439,10 +439,44 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
         """
         Endpoint pour récupérer les statistiques complètes des quiz de l'utilisateur
         avec filtrage par matière, notion et chapitre
+        
+        Supporte le paramètre 'user_id' pour les parents qui veulent voir les stats de leur enfant
         """
         try:
-            # Récupérer tous les quiz de l'utilisateur avec les relations
-            user_quiz_attempts = SuiviQuiz.objects.filter(user=request.user).select_related(
+            # Déterminer l'utilisateur cible
+            target_user = request.user
+            user_id_param = request.query_params.get('user_id')
+            
+            if user_id_param:
+                from users.models import ParentChild
+                from django.contrib.auth import get_user_model
+                User = get_user_model()
+                
+                # Vérifier si l'utilisateur connecté est un parent de l'enfant demandé
+                try:
+                    child = User.objects.get(id=user_id_param)
+                    # Vérifier qu'il y a un lien parent-enfant accepté
+                    link_exists = ParentChild.objects.filter(
+                        parent=request.user,
+                        child=child,
+                        status=ParentChild.STATUS_ACCEPTED
+                    ).exists()
+                    
+                    if link_exists:
+                        target_user = child
+                    else:
+                        return Response(
+                            {'error': 'Vous n\'avez pas accès aux données de cet utilisateur'},
+                            status=status.HTTP_403_FORBIDDEN
+                        )
+                except User.DoesNotExist:
+                    return Response(
+                        {'error': 'Utilisateur non trouvé'},
+                        status=status.HTTP_404_NOT_FOUND
+                    )
+            
+            # Récupérer tous les quiz de l'utilisateur cible avec les relations
+            user_quiz_attempts = SuiviQuiz.objects.filter(user=target_user).select_related(
                 'quiz__notion__theme__matiere'
             ).order_by('-date_creation')
             

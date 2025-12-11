@@ -55,6 +55,12 @@ export const updateUserPaysNiveau = (paysOrPayload, maybeNiveauId) => {
 }
 
 /**
+ * Met à jour le rôle de l'utilisateur connecté (student/parent).
+ * Expects: role (string) - 'student' ou 'parent'
+ */
+export const updateUserRole = (role) => apiClient.patch('/api/users/me/update/', { role })
+
+/**
  * Récupère les infos de gamification (xp, level, xp_to_next)
  */
 export const fetchUserGamification = () => apiClient.get('/api/users/me/gamification/')

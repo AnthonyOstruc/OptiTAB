@@ -1,43 +1,167 @@
 <template>
-  <div class="parent-dashboard">
+  <div class="parent-dashboard" ref="contentRef" :style="zoomStyle">
     <div class="hero">
-      <div class="hero-text">
-        <p class="eyebrow">Espace parents</p>
-        <h1>Suivi simple et pédagogique</h1>
-        <p class="subtitle">Visualisez le rythme de travail et proposez un coup de pouce sans jargon.</p>
-        <div class="steps">
-          <span class="step-pill">1. Inviter l'élève</span>
-          <span class="step-pill">2. 2-3 séances courtes / semaine</span>
-          <span class="step-pill">3. Lire le mini-bilan</span>
+      <div class="hero-content">
+        <div class="hero-header">
+          <div class="badge">Espace parents</div>
+          <h1>Suivez les progrès de vos enfants</h1>
+          <p class="description">Accompagnez leur apprentissage avec une vision claire et pédagogique</p>
         </div>
-        <ul class="hero-tips">
-          <li>Fixez ensemble un objectif réaliste pour la semaine.</li>
-          <li>Appuyez-vous sur les derniers exercices pour relancer avec du concret.</li>
-        </ul>
-      </div>
-      <div class="hero-actions">
-        <div class="action-card">
-          <div class="card-title">Inviter un enfant</div>
-          <p class="card-sub">Nous envoyons un lien d'acceptation par email.</p>
-          <div class="input-row">
-            <input v-model="newChildEmail" type="email" placeholder="Email de l'élève" class="input" />
-            <button class="btn" :disabled="adding" @click="handleAddChild">Envoyer</button>
+
+        <div class="services-info">
+          <div class="services-header">
+            <h2 class="services-title">Ressources pédagogiques disponibles</h2>
+            <p class="services-subtitle">Un accompagnement complet pour la réussite de votre enfant</p>
           </div>
-          <p v-if="addMessage" class="hint">{{ addMessage }}</p>
+          <div class="services-grid">
+            <div class="service-item">
+              <div class="service-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-name">Cours complets</div>
+                <div class="service-desc">Leçons détaillées par chapitre</div>
+              </div>
+            </div>
+            <div class="service-item">
+              <div class="service-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-name">Fiches de synthèse</div>
+                <div class="service-desc">Révisions ciblées et efficaces</div>
+              </div>
+            </div>
+            <div class="service-item">
+              <div class="service-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-name">Exercices interactifs</div>
+                <div class="service-desc">Pratique adaptée au niveau</div>
+              </div>
+            </div>
+            <div class="service-item">
+              <div class="service-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-name">Correction personnalisée</div>
+                <div class="service-desc">Retours détaillés sur les devoirs</div>
+              </div>
+            </div>
+            <div class="service-item">
+              <div class="service-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-name">Outils intelligents</div>
+                <div class="service-desc">Calculateurs mathématiques avancés</div>
+              </div>
+            </div>
+            <div class="service-item">
+              <div class="service-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-name">Cours particuliers</div>
+                <div class="service-desc">Accompagnement individuel en ligne</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="action-card">
-          <div class="card-title">Créer un compte élève</div>
-          <p class="card-sub">Utile si l'élève n'a pas d'email.</p>
-          <div class="form-row">
-            <input v-model="create.first_name" class="input" placeholder="Prénom" />
-            <input v-model="create.last_name" class="input" placeholder="Nom" />
+
+        <div class="quick-actions">
+          <div class="action-card">
+            <div class="card-header">
+              <div class="icon-wrapper blue">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-5 2a3 3 0 00-3 3v1a1 1 0 001 1h14a1 1 0 001-1v-1a3 3 0 00-3-3H5z" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <h3>Inviter un élève</h3>
+                <p>L'élève recevra une invitation à accepter sur son compte</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <input v-model="newChildEmail" type="email" placeholder="email@exemple.com" class="input" />
+                <button class="btn primary" :disabled="adding" @click="handleAddChild">
+                  <span v-if="!adding">Envoyer</span>
+                  <span v-else>...</span>
+                </button>
+              </div>
+              <div v-if="addMessage" class="message" :class="addMessage.includes('✅') ? 'success' : 'error'">
+                {{ addMessage }}
+              </div>
+              <div class="subscription-cta">
+                <div class="cta-content">
+                  <div class="cta-title"><span class="cta-icon">✨</span> Offrez le meilleur à votre enfant</div>
+                  <div class="cta-text">Accès illimité aux cours, exercices et suivi personnalisé</div>
+                </div>
+                <button class="btn-cta" @click="goToSubscriptions">Découvrir les offres</button>
+              </div>
+            </div>
           </div>
-          <div class="form-row">
-            <input v-model="create.email" class="input" placeholder="Email" />
+
+          <div class="action-card">
+            <div class="card-header">
+              <div class="icon-wrapper green">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-5 2a3 3 0 00-3 3v1a1 1 0 001 1h14a1 1 0 001-1v-1a3 3 0 00-3-3H5zm13-3a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm-1-3a1 1 0 10-2 0v2a1 1 0 102 0V6z" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <h3>Créer un compte</h3>
+                <p>Si l'élève n'a toujours pas de compte</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="input-row">
+                <input v-model="create.first_name" class="input" placeholder="Prénom" />
+                <input v-model="create.last_name" class="input" placeholder="Nom" />
+              </div>
+              <input v-model="create.email" class="input" placeholder="Email" />
+              <button class="btn secondary full" :disabled="creating" @click="handleCreateChild">
+                <span v-if="!creating">Créer le compte</span>
+                <span v-else>Création...</span>
+              </button>
+              <div class="note">
+                <span>💡</span>
+                <span>Si l'élève n'a pas d'email,</span>
+                <button class="btn-link" @click="openContactModal">contactez le support</button>
+              </div>
+              <div v-if="createMessage" class="message" :class="createMessage.includes('✅') ? 'success' : 'error'">
+                {{ createMessage }}
+              </div>
+              <div v-if="tempPassword" class="temp-password">
+                <span class="label">Mot de passe :</span>
+                <code>{{ tempPassword }}</code>
+              </div>
+            </div>
           </div>
-          <button class="btn secondary full" :disabled="creating" @click="handleCreateChild">Créer le compte</button>
-          <div v-if="createMessage" class="hint">{{ createMessage }}</div>
-          <div v-if="tempPassword" class="temp-pass">Mot de passe temporaire: <code>{{ tempPassword }}</code></div>
         </div>
       </div>
     </div>
@@ -78,91 +202,54 @@
         <p v-else>Aucun enfant rattaché pour le moment.</p>
       </div>
 
-      <div class="children-grid" v-else>
-        <div class="child-card" v-for="c in children" :key="c.id">
+      <div v-else>
+        <div class="tabs-container" v-if="children.length > 1">
+          <div class="tabs">
+            <button 
+              v-for="(child, idx) in children" 
+              :key="child.id"
+              class="tab"
+              :class="{ active: selectedChildIndex === idx }"
+              @click="selectedChildIndex = idx"
+            >
+              <span class="tab-avatar">{{ initials(child.display_name) }}</span>
+              <span class="tab-name">{{ child.display_name }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="child-card" v-if="selectedChild">
           <div class="child-header">
-            <div class="avatar">{{ initials(c.display_name) }}</div>
+            <div class="avatar">{{ initials(selectedChild.display_name) }}</div>
             <div class="child-info">
               <div class="name-line">
-                <span v-if="c.pays_flag" class="flag">{{ c.pays_flag }}</span>
-                <span class="name">{{ c.display_name }}</span>
-                <span class="status-chip">{{ statusLabel(c) }}</span>
+                <span v-if="selectedChild.pays_flag" class="flag">{{ selectedChild.pays_flag }}</span>
+                <span class="name">{{ selectedChild.display_name }}</span>
+                <span class="status-chip">{{ statusLabel(selectedChild) }}</span>
               </div>
               <div class="tags">
-                <span v-if="c.niveau" class="tag">{{ c.niveau }}</span>
-                <span class="tag muted">Dernière activité {{ lastActivityLabel(c) }}</span>
+                <span v-if="selectedChild.niveau" class="tag">{{ selectedChild.niveau }}</span>
+                <span class="tag muted">Dernière activité {{ lastActivityLabel(selectedChild) }}</span>
               </div>
             </div>
             <div class="xp">
-              <div class="xp-value">{{ c.xp }} XP</div>
-              <div class="level">Niveau {{ c.level }}</div>
+              <div class="xp-value">{{ selectedChild.xp }} XP</div>
+              <div class="level">Niveau {{ selectedChild.level }}</div>
             </div>
           </div>
 
-          <div class="mini-metrics">
-            <div class="metric">
-              <div class="metric-label">Temps cette semaine</div>
-              <div class="metric-value">{{ timeWorkedLabel(c) }}</div>
-              <div class="metric-sub">{{ timeWorkedDelta(c) }}</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">Rythme conseillé</div>
-              <div class="metric-value">{{ attendanceLabel(c) }}</div>
-              <div class="metric-sub">{{ attendanceSub(c) }}</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">Mini-bilan</div>
-              <div class="pill tone" :class="alertTone(c)">{{ alertMessage(c) }}</div>
-              <div class="metric-sub">{{ progressHint(c) }}</div>
-            </div>
-          </div>
+          <section class="block">
+            <div class="section-title">Historique des quiz</div>
+            <QuizHistory :child-id="selectedChild.id" :key="`quiz-${selectedChild.id}`" />
+          </section>
 
-          <div class="child-body">
-            <section class="block help">
-              <div class="section-title">Comment aider {{ firstName(c.display_name) }} aujourd'hui ?</div>
-              <ul class="help-list">
-                <li v-for="(suggestion, idx) in helpActions(c)" :key="idx">{{ suggestion }}</li>
-              </ul>
-            </section>
+          <section class="block">
+            <div class="section-title">Historique des exercices</div>
+            <ExercicesHistory :child-id="selectedChild.id" :show-suggestions="false" :key="`exercices-${selectedChild.id}`" />
+          </section>
 
-            <section class="block tutoring">
-              <div>
-                <div class="section-title">Besoin d'un coup de pouce ?</div>
-                <p class="tutoring-text">Planifiez une mini-séance guidée pour débloquer un chapitre précis.</p>
-              </div>
-              <button class="btn tertiary">Demander un cours ciblé</button>
-            </section>
-
-            <section class="block">
-              <div class="section-title">Derniers exercices réalisés</div>
-              <ul class="activity-list" v-if="recentActivity(c).length">
-                <li v-for="(a, idx) in recentActivity(c)" :key="idx" class="activity-row">
-                  <span class="icon">{{ activityIcon(a.type) }}</span>
-                  <div class="activity-text">
-                    <div class="primary">{{ a.title }}</div>
-                    <div class="secondary">
-                      <span v-if="a.chapter">{{ a.chapter }}</span>
-                      <span v-if="a.when">• {{ humanizeDate(a.when) }}</span>
-                      <span v-if="a.duration">• {{ a.duration }}</span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-              <div class="empty" v-else>
-                <div>Aucun exercice enregistré pour le moment.</div>
-                <div class="empty-hint">Les 5 derniers exercices apparaîtront ici dès la première séance.</div>
-              </div>
-            </section>
-
-            <section class="block history history-embed">
-              <div class="section-title">Historique détaillé</div>
-              <ExercicesHistory :child-id="c.id" :show-suggestions="false" />
-            </section>
-
-            <div class="actions">
-              <button class="btn secondary" @click="openChild(c.id)">Ouvrir le détail</button>
-              <button class="btn tertiary" @click="askRemoveChild(c)" :disabled="removingId === c.id">Retirer cet élève</button>
-            </div>
+          <div class="actions-minimal">
+            <button class="btn-link-danger" @click="askRemoveChild(selectedChild)" :disabled="removingId === selectedChild.id">Retirer cet élève</button>
           </div>
         </div>
       </div>
@@ -178,15 +265,46 @@
         </div>
       </div>
     </div>
+
+    <ContactModal 
+      :isOpen="isContactModalOpen" 
+      :initialSubject="contactModalSubject"
+      @close="closeContactModal"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { fetchMyChildren, addChild, removeChild } from '@/api/users'
 import apiClient from '@/api/client'
 import ExercicesHistory from './ExercicesHistory.vue'
+import QuizHistory from './QuizHistoryRefactored.vue'
+import ContactModal from '@/components/common/ContactModal.vue'
+import { useZoom } from '@/composables/useZoom'
+
+// Zoom responsive
+const contentRef = ref(null)
+const {
+  viewportWidth,
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom()
+
+const zoomStyle = createZoomStyle({
+  cssVar: '--parent-zoom',
+  heightVar: '--parent-height',
+  mobileZoomAdjustment: (z) => Math.max(0.65, z - 0.05)
+})
+
+function measureContentHeightForParent() {
+  measureContentHeight(contentRef)
+}
 
 const loading = ref(true)
 const children = ref([])
@@ -203,6 +321,10 @@ const tempPassword = ref('')
 const create = ref({ first_name: '', last_name: '', email: '' })
 const confirmOpen = ref(false)
 const childToRemove = ref(null)
+const isContactModalOpen = ref(false)
+const contactModalSubject = ref('')
+const selectedChildIndex = ref(0)
+const selectedChild = computed(() => children.value[selectedChildIndex.value] || null)
 
 function applyChildrenPayload(payload = {}) {
   children.value = payload.children || []
@@ -431,6 +553,11 @@ function openChild(childId) {
 }
 
 onMounted(async () => {
+  // Setup zoom responsive
+  detectMobileAndZoomSupport()
+  updateViewportWidth()
+  setupViewportListener()
+  
   try {
     const res = await fetchMyChildren()
     const data = res?.data?.data || {}
@@ -439,7 +566,16 @@ onMounted(async () => {
     applyChildrenPayload()
   } finally {
     loading.value = false
+    nextTick(() => measureContentHeightForParent())
   }
+})
+
+onBeforeUnmount(() => {
+  cleanupViewportListener()
+})
+
+watch(viewportWidth, () => {
+  nextTick(() => measureContentHeightForParent())
 })
 
 async function refreshChildren() {
@@ -505,6 +641,24 @@ function statusLabel(child) {
   return 'Lien actif'
 }
 
+function openContactModal() {
+  contactModalSubject.value = "Création de compte élève sans email"
+  isContactModalOpen.value = true
+}
+
+function closeContactModal() {
+  isContactModalOpen.value = false
+  contactModalSubject.value = ''
+}
+
+function goToSubscriptions() {
+  router.push('/billing')
+}
+
+function viewAsStudent(childId) {
+  router.push(`/dashboard/student/${childId}`)
+}
+
 async function handleCreateChild() {
   createMessage.value = ''
   tempPassword.value = ''
@@ -535,98 +689,1293 @@ async function handleCreateChild() {
 </script>
 
 <style scoped>
-.parent-dashboard { max-width: 1180px; margin: 0 auto 2rem; padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: 1.2rem; }
-.hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 1rem; background: linear-gradient(120deg, #eef2ff 0%, #f5f7fb 45%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 18px; padding: 1.1rem 1.3rem; box-shadow: 0 6px 16px rgba(15,23,42,0.06); }
-.hero-text h1 { margin: .1rem 0 .35rem; font-size: 1.7rem; font-weight: 800; color: #0f172a; }
-.eyebrow { margin: 0; color: #4338ca; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; font-size: .75rem; }
-.subtitle { margin: 0 0 .7rem; color: #475569; font-weight: 500; }
-.steps { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 .5rem; }
-.step-pill { display: inline-flex; align-items: center; gap: .35rem; background: #fff; border: 1px solid #e5e7eb; color: #0f172a; padding: .35rem .65rem; border-radius: 999px; font-weight: 700; font-size: .9rem; }
-.hero-tips { margin: .35rem 0 0; padding-left: 1.15rem; color: #334155; display: flex; flex-direction: column; gap: .25rem; list-style: disc; }
-.hero-actions { display: grid; grid-template-columns: 1fr; gap: .75rem; }
-.action-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 10px rgba(15,23,42,0.05); display: flex; flex-direction: column; gap: .5rem; }
-.card-title { font-weight: 800; color: #111827; margin: 0; }
-.card-sub { margin: 0; color: #64748b; font-size: .92rem; }
-.input-row { display: flex; gap: .5rem; }
-.input { flex: 1; padding: .6rem .65rem; border: 1px solid #e5e7eb; border-radius: 10px; font-size: .95rem; background: #fff; transition: border-color .15s ease, box-shadow .15s ease; }
-.input:focus { outline: none; border-color: #a5b4fc; box-shadow: 0 0 0 3px rgba(164, 185, 255, 0.35); }
-.hint { color: #475569; font-size: .9rem; margin: 0; }
-.form-row { display: flex; gap: .5rem; }
-.full { width: 100%; }
-.temp-pass { margin: 0; background: #f8fafc; border: 1px solid #e2e8f0; padding: .55rem .7rem; border-radius: 8px; color: #0f172a; }
-.temp-pass code { background: #e0e7ff; padding: .05rem .25rem; border-radius: 6px; }
-.loading { display: flex; justify-content: center; align-items: center; height: 80px; }
-.spinner { width: 36px; height: 36px; border: 4px solid #e5e7eb; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.callout { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: .9rem 1rem; box-shadow: 0 1px 6px rgba(15,23,42,0.04); }
-.callout-title { margin: 0 0 .35rem; font-weight: 800; color: #0f172a; }
-.callout-text { margin: 0 0 .35rem; color: #475569; }
-.callout.warning { background: #fff7ed; border-color: #fdba74; }
-.pending-list { display: flex; flex-direction: column; gap: .6rem; }
-.pending-card { display: flex; align-items: center; justify-content: space-between; gap: .75rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: .75rem .95rem; }
-.pending-info .name { font-weight: 700; color: #1f2937; }
-.pending-info .email { color: #475569; font-size: .87rem; }
-.pending-info .meta { color: #94a3b8; font-size: .8rem; margin-top: .1rem; }
-.declined-list { margin: 0; padding-left: 1.1rem; color: #b45309; font-size: .9rem; }
-.empty { text-align: center; color: #64748b; padding: 1rem; }
-.children-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-.child-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 1rem; box-shadow: 0 2px 8px rgba(30,41,59,0.06); display: flex; flex-direction: column; gap: .9rem; }
-.child-header { display: grid; grid-template-columns: auto 1fr auto; gap: .6rem; align-items: start; }
-.avatar { width: 44px; height: 44px; border-radius: 50%; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-weight: 800; }
-.name-line { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; }
-.name { font-weight: 800; color: #111827; font-size: 1.05rem; }
-.tags { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .1rem; }
-.tag { background: #f1f5f9; color: #0f172a; padding: .18rem .5rem; border-radius: 999px; font-size: .82rem; font-weight: 700; }
-.tag.muted { color: #475569; }
-.flag { font-size: 1.05rem; }
-.xp { text-align: right; }
-.xp-value { font-weight: 800; color: #2563eb; }
-.level { color: #475569; font-weight: 700; font-size: .92rem; }
-.mini-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .8rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 11px; padding: .8rem .9rem; }
-.metric { display: flex; flex-direction: column; gap: .1rem; }
-.metric-label { color: #475569; font-weight: 700; font-size: .9rem; }
-.metric-value { color: #0f172a; font-weight: 800; font-size: 1.05rem; }
-.metric-sub { color: #64748b; font-size: .9rem; }
-.child-body { display: flex; flex-direction: column; gap: .8rem; }
-.block { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: .85rem 1rem; }
-.section-title { margin: 0 0 .35rem; font-size: 1rem; font-weight: 800; color: #0f172a; }
-.help-list { margin: 0; padding-left: 1.1rem; color: #475569; display: flex; flex-direction: column; gap: .35rem; }
-.tutoring { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; }
-.tutoring-text { margin: .15rem 0 0; color: #475569; }
-.activity-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .55rem; }
-.activity-row { display: flex; gap: .5rem; align-items: flex-start; }
-.activity-row .icon { font-size: 1.05rem; }
-.activity-text .primary { font-weight: 700; color: #0f172a; }
-.activity-text .secondary { color: #64748b; font-size: .9rem; display: flex; gap: .35rem; flex-wrap: wrap; }
-.empty-hint { color: #94a3b8; font-size: .9rem; margin-top: .15rem; }
-.status-chip { display: inline-block; padding: .2rem .55rem; border-radius: 999px; background: #dcfce7; color: #166534; font-size: .78rem; font-weight: 700; }
-.pill { display: inline-flex; align-items: center; padding: .25rem .45rem; border-radius: 999px; background: #e5e7eb; color: #0f172a; font-weight: 700; font-size: .85rem; }
-.pill.tone { background: #eef2ff; color: #1f2937; border: 1px solid #e0e7ff; }
-.tone-ok { background: #ecfdf3; color: #166534; border-color: #bbf7d0; }
-.tone-warn { background: #fff7ed; color: #9a3412; border-color: #fdba74; }
-.tone-danger { background: #fef2f2; color: #b91c1c; border-color: #fecdd3; }
-.history-embed { background: #fff; border: 1px solid #e5e7eb; }
-.actions { display: flex; justify-content: flex-end; gap: .6rem; flex-wrap: wrap; }
-.btn { background: #2563eb; color: white; border: none; border-radius: 10px; padding: .55rem 1rem; font-weight: 700; cursor: pointer; transition: background .15s ease, transform .1s ease; }
-.btn:hover { background: #1e40af; }
-.btn:disabled { opacity: .65; cursor: not-allowed; }
-.btn.secondary { background: #f1f5f9; color: #0f172a; border: 1px solid #e2e8f0; }
-.btn.secondary:hover { background: #e2e8f0; }
-.btn.tertiary { background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; }
-.btn.tertiary:hover { background: #c7d2fe; }
-.btn.danger { background: #dc2626; }
-.btn.danger:hover { background: #b91c1c; }
-.modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.45); display: flex; align-items: center; justify-content: center; z-index: 30; padding: 1rem; }
-.modal { background: #fff; border-radius: 12px; padding: 1rem 1.2rem; width: 100%; max-width: 420px; box-shadow: 0 10px 30px rgba(15,23,42,0.2); border: 1px solid #e2e8f0; }
-.modal-title { margin: 0 0 .35rem; font-size: 1.1rem; font-weight: 800; color: #0f172a; }
-.modal-text { margin: 0 0 .8rem; color: #475569; }
-.modal-actions { display: flex; justify-content: flex-end; gap: .5rem; }
-@media (max-width: 1024px) { .hero { grid-template-columns: 1fr; } }
-@media (max-width: 640px) {
-  .steps { flex-direction: column; align-items: flex-start; }
-  .input-row, .form-row { flex-direction: column; }
-  .child-header { grid-template-columns: auto 1fr; }
-  .xp { grid-column: 1 / -1; display: flex; gap: .6rem; }
-  .mini-metrics { grid-template-columns: 1fr; }
+/* Layout */
+.parent-dashboard { 
+  width: 100%;
+  padding: 2rem 1rem;
+  transform-origin: top left;
+}
+
+/* Support zoom natif */
+@supports (zoom: 1) {
+  .parent-dashboard {
+    zoom: var(--parent-zoom, 1);
+    transform: none !important;
+    width: 100% !important;
+  }
+}
+
+/* Hero Section */
+.hero { 
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 2rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.hero-content {
+  width: 100%;
+}
+
+.hero-header {
+  margin-bottom: 2rem;
+}
+
+.badge {
+  display: inline-block;
+  background: white;
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.hero-header h1 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  line-height: 1.3;
+  color: #0f172a;
+}
+
+.description {
+  font-size: 0.9375rem;
+  margin: 0;
+  font-weight: 400;
+  color: #64748b;
+}
+
+/* Services Info */
+.services-info {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.services-header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.services-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 0.25rem;
+}
+
+.services-subtitle {
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin: 0;
+  font-weight: 400;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.service-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  transition: background-color 0.15s;
+}
+
+.service-item:hover {
+  background: #f1f5f9;
+}
+
+.service-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.service-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.service-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.125rem;
+}
+
+.service-desc {
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* Quick Actions */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.action-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.action-card:hover {
+  border-color: #cbd5e0;
+}
+
+.card-header {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-wrapper.blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.icon-wrapper.green {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.card-header h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.card-header p {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Forms */
+.input-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.input-group .input {
+  flex: 2;
+  min-width: 0;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.input-row .input {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input {
+  padding: 0.625rem 0.875rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: border-color 0.15s;
+  background: white;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: white;
+}
+
+.input::placeholder {
+  color: #94a3b8;
+}
+
+.full {
+  width: 100%;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.btn.primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.btn.secondary {
+  background: white;
+  color: #475569;
+  border: 1px solid #cbd5e0;
+}
+
+.btn.secondary:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Messages */
+.message {
+  padding: 0.625rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.message.success {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.message.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.temp-password {
+  padding: 0.625rem 0.75rem;
+  background: #fffbeb;
+  border: 1px solid #fde047;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+}
+
+.temp-password .label {
+  font-weight: 500;
+  color: #78350f;
+}
+
+.temp-password code {
+  background: #fef9c3;
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+  color: #78350f;
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: #075985;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-link:hover {
+  color: #1d4ed8;
+}
+
+.subscription-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  margin-top: 0.75rem;
+}
+
+.cta-icon {
+  font-size: 1.25rem;
+  margin-right: 0.375rem;
+}
+
+.cta-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.cta-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 0.125rem;
+  display: flex;
+  align-items: center;
+}
+
+.cta-text {
+  font-size: 0.75rem;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.btn-cta {
+  padding: 0.5rem 1rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-cta:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* Tabs */
+.tabs-container {
+  margin-bottom: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.tab.active {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.tab-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.tab.active .tab-avatar {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.tab-name {
+  font-weight: 600;
+}
+
+/* Loading State */
+.loading { 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  padding: 4rem;
+}
+
+.spinner { 
+  width: 48px; 
+  height: 48px; 
+  border: 4px solid #e2e8f0; 
+  border-top: 4px solid #3b82f6; 
+  border-radius: 50%; 
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { 
+  to { transform: rotate(360deg); } 
+}
+
+/* Callouts */
+.callout { 
+  background: white;
+  border: 2px solid #e2e8f0; 
+  border-radius: 16px; 
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.callout-title { 
+  margin: 0 0 1rem; 
+  font-weight: 700; 
+  font-size: 1.125rem;
+  color: #1a202c;
+}
+
+.callout-text { 
+  margin: 0 0 1rem; 
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+.callout.warning { 
+  background: #fffbeb;
+  border-color: #fbbf24;
+}
+
+.callout.warning .callout-title {
+  color: #92400e;
+}
+
+.pending-list { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.75rem;
+}
+
+.pending-card { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 1rem;
+  background: #f7fafc;
+  border: 1px solid #e2e8f0; 
+  border-radius: 12px; 
+  padding: 1rem 1.25rem;
+  transition: all 0.2s;
+}
+
+.pending-card:hover {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.pending-info .name { 
+  font-weight: 700; 
+  color: #1a202c;
+  margin-bottom: 0.25rem;
+}
+
+.pending-info .email { 
+  color: #718096;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.pending-info .meta { 
+  color: #a0aec0;
+  font-size: 0.8rem;
+}
+
+.declined-list { 
+  margin: 0; 
+  padding-left: 1.5rem;
+  color: #92400e;
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.empty { 
+  text-align: center; 
+  color: #718096;
+  padding: 3rem 1rem;
+  font-size: 1rem;
+}
+/* Children Grid */
+.children-grid { 
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 1.25rem;
+}
+
+.child-card { 
+  background: white;
+  border: 1px solid #e2e8f0; 
+  border-radius: 8px; 
+  padding: 1.25rem;
+  display: flex; 
+  flex-direction: column; 
+  gap: 1rem;
+}
+
+.child-card:hover {
+  border-color: #cbd5e0;
+}
+
+.child-header { 
+  display: grid; 
+  grid-template-columns: auto 1fr auto; 
+  gap: 1rem;
+  align-items: start;
+}
+
+.avatar { 
+  width: 48px; 
+  height: 48px; 
+  border-radius: 50%; 
+  background: #f1f5f9;
+  color: #475569;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid #e2e8f0;
+}
+
+.name-line { 
+  display: flex; 
+  align-items: center; 
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.name { 
+  font-weight: 700;
+  color: #1a202c;
+  font-size: 1.25rem;
+}
+
+.tags { 
+  display: flex; 
+  gap: 0.5rem;
+  flex-wrap: wrap; 
+  margin-top: 0.5rem;
+}
+
+.tag { 
+  background: #edf2f7;
+  color: #2d3748;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.tag.muted { 
+  color: #718096;
+  background: #f7fafc;
+}
+
+.flag { 
+  font-size: 1.25rem;
+}
+
+.xp { 
+  text-align: right;
+}
+
+.xp-value { 
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #2563eb;
+}
+
+.level { 
+  color: #718096;
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+/* Metrics */
+.mini-metrics { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0; 
+  border-radius: 6px; 
+  padding: 1rem;
+}
+
+.metric { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.375rem;
+}
+
+.metric-label { 
+  color: #64748b;
+  font-weight: 500;
+  font-size: 0.8125rem;
+}
+
+.metric-value { 
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.metric-sub { 
+  color: #94a3b8;
+  font-size: 0.8125rem;
+}
+
+.child-body { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1rem;
+}
+
+.block { 
+  background: #f8fafc;
+  border: 1px solid #e2e8f0; 
+  border-radius: 6px; 
+  padding: 1rem;
+}
+
+.section-title { 
+  margin: 0 0 0.625rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.help-list { 
+  margin: 0; 
+  padding-left: 1.5rem;
+  color: #4a5568;
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.5rem;
+  line-height: 1.6;
+}
+
+.tutoring { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.tutoring-text { 
+  margin: 0.25rem 0 0;
+  color: #718096;
+  line-height: 1.5;
+}
+/* Activity */
+.activity-list { 
+  list-style: none; 
+  padding: 0; 
+  margin: 0; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.75rem;
+}
+
+.activity-row { 
+  display: flex; 
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.activity-row:hover {
+  background: #edf2f7;
+}
+
+.activity-row .icon { 
+  font-size: 1.25rem;
+}
+
+.activity-text .primary { 
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 0.25rem;
+}
+
+.activity-text .secondary { 
+  color: #718096;
+  font-size: 0.875rem;
+  display: flex; 
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.empty-hint { 
+  color: #a0aec0;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* Status Pills */
+.status-chip { 
+  display: inline-block; 
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  background: #d1fae5;
+  color: #065f46;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.pill { 
+  display: inline-flex; 
+  align-items: center; 
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  background: #edf2f7;
+  color: #1a202c;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.pill.tone { 
+  background: #eef2ff;
+  color: #1e40af;
+  border: 1px solid #c7d2fe;
+}
+
+.tone-ok { 
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #6ee7b7;
+}
+
+.tone-warn { 
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fbbf24;
+}
+
+.tone-danger { 
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.history-embed { 
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+/* Actions */
+.actions-minimal { 
+  display: flex; 
+  justify-content: flex-end; 
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn-link-danger {
+  background: none;
+  border: none;
+  color: #dc2626;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-link-danger:hover:not(:disabled) {
+  color: #b91c1c;
+}
+
+.btn-link-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn.tertiary { 
+  background: #edf2f7;
+  color: #4a5568;
+  border: 1px solid #cbd5e0;
+}
+
+.btn.tertiary:hover:not(:disabled) { 
+  background: #e2e8f0;
+  border-color: #a0aec0;
+}
+
+.btn.danger { 
+  background: #f56565;
+  color: white;
+}
+
+.btn.danger:hover:not(:disabled) { 
+  background: #e53e3e;
+  box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
+}
+/* Modal */
+.modal-backdrop { 
+  position: fixed; 
+  inset: 0; 
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  z-index: 50;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal { 
+  background: white;
+  border-radius: 20px; 
+  padding: 2rem;
+  width: 100%; 
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-title { 
+  margin: 0 0 0.75rem;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.modal-text { 
+  margin: 0 0 1.5rem;
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+.modal-actions { 
+  display: flex; 
+  justify-content: flex-end; 
+  gap: 0.75rem;
+}
+
+/* Responsive */
+@media (max-width: 1330px) {
+  .subscription-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .subscription-cta .btn-cta {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .quick-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .parent-dashboard {
+    padding: 1rem 0.75rem;
+  }
+  
+  .hero {
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+  }
+
+  .hero-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .description {
+    font-size: 0.9rem;
+  }
+  
+  .services-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .service-item {
+    padding: 0.625rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .service-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .service-name {
+    font-size: 0.75rem;
+  }
+  
+  .service-desc {
+    display: none;
+  }
+
+  .quick-actions {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .action-card {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .input-group {
+    flex-direction: column;
+  }
+
+  .input-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .input-row .input {
+    min-width: 0;
+  }
+
+  .child-header {
+    grid-template-columns: auto 1fr;
+  }
+
+  .xp {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 1rem;
+    padding-top: 0.5rem;
+  }
+
+  .mini-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions .btn {
+    width: 100%;
+  }
+  
+  .tabs {
+    gap: 0.25rem;
+  }
+  
+  .tab {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .tab-avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 0.625rem;
+  }
+  
+  .tab-name {
+    display: none;
+  }
+  
+  .child-card {
+    padding: 1rem;
+  }
+  
+  .block {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .parent-dashboard {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .hero {
+    border-radius: 8px;
+    padding: 1rem 0.75rem;
+  }
+
+  .hero-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .description {
+    font-size: 0.85rem;
+  }
+  
+  .badge {
+    font-size: 0.625rem;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  .services-header {
+    margin-bottom: 0.75rem;
+  }
+  
+  .services-title {
+    font-size: 0.9rem;
+  }
+  
+  .services-subtitle {
+    font-size: 0.75rem;
+  }
+  
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.375rem;
+  }
+  
+  .service-item {
+    padding: 0.5rem;
+  }
+  
+  .service-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .service-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .service-name {
+    font-size: 0.65rem;
+    line-height: 1.2;
+  }
+  
+  .action-card {
+    padding: 1rem;
+  }
+  
+  .card-header {
+    margin-bottom: 0.875rem;
+  }
+  
+  .card-title {
+    font-size: 0.9rem;
+  }
+  
+  .card-subtitle {
+    font-size: 0.75rem;
+  }
+  
+  .input-group input,
+  .input-row input {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    min-width: 0;
+  }
+  
+  .input-row {
+    gap: 0.5rem;
+  }
+  
+  .btn {
+    font-size: 0.8rem;
+    padding: 0.625rem 1rem;
+  }
+  
+  .tabs-container {
+    margin-bottom: 1rem;
+  }
+  
+  .tab {
+    padding: 0.375rem 0.5rem;
+  }
+  
+  .tab-avatar {
+    width: 22px;
+    height: 22px;
+    font-size: 0.5625rem;
+  }
+  
+  .child-card {
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 0.875rem;
+  }
+  
+  .name {
+    font-size: 1rem;
+  }
+  
+  .tag {
+    font-size: 0.625rem;
+    padding: 0.125rem 0.375rem;
+  }
+  
+  .xp-value {
+    font-size: 1rem;
+  }
+  
+  .level {
+    font-size: 0.7rem;
+  }
+  
+  .block {
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+  
+  .section-title {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .parent-dashboard {
+    padding: 0.5rem 0.375rem;
+  }
+  
+  .hero {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .hero-header h1 {
+    font-size: 1.125rem;
+  }
+  
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .service-item {
+    padding: 0.375rem;
+  }
+  
+  .service-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .service-name {
+    font-size: 0.6rem;
+  }
 }
 </style>

@@ -6,11 +6,16 @@
         <div class="progress-bar">
           <div class="progress-step" :class="{ active: currentStep >= 1, completed: currentStep > 1 }">
             <span class="step-number">1</span>
-            <span class="step-label">Pays</span>
+            <span class="step-label">Profil</span>
           </div>
           <div class="progress-line" :class="{ completed: currentStep > 1 }"></div>
           <div class="progress-step" :class="{ active: currentStep >= 2, completed: currentStep > 2 }">
             <span class="step-number">2</span>
+            <span class="step-label">Pays</span>
+          </div>
+          <div class="progress-line" :class="{ completed: currentStep > 2 }"></div>
+          <div class="progress-step" :class="{ active: currentStep >= 3, completed: currentStep > 3 }">
+            <span class="step-number">3</span>
             <span class="step-label">Niveau</span>
           </div>
         </div>
@@ -18,8 +23,66 @@
         <p class="modal-subtitle">{{ getStepSubtitle() }}</p>
       </div>
 
-      <!-- Étape 1: Sélection du pays -->
+      <!-- Étape 1: Sélection du type de profil (élève/parent) -->
       <div v-if="currentStep === 1" class="step-content">
+        <div class="section-header">
+          <h3>👤 Vous êtes...</h3>
+          <p>Sélectionnez votre profil pour personnaliser votre expérience</p>
+        </div>
+
+        <div class="role-grid">
+          <div 
+            class="role-card"
+            :class="{ selected: selectedRole === 'student' }"
+            @click="selectRole('student')"
+          >
+            <div class="role-icon">🎓</div>
+            <div class="role-info">
+              <h4>Élève / Étudiant</h4>
+              <p>J'utilise OptiTAB pour apprendre et m'exercer</p>
+            </div>
+            <div v-if="selectedRole === 'student'" class="selected-indicator">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div 
+            class="role-card"
+            :class="{ selected: selectedRole === 'parent' }"
+            @click="selectRole('parent')"
+          >
+            <div class="role-icon">👨‍👩‍👧</div>
+            <div class="role-info">
+              <h4>Parent</h4>
+              <p>Je souhaite suivre la progression de mon enfant</p>
+            </div>
+            <div v-if="selectedRole === 'parent'" class="selected-indicator">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <div></div>
+          <button 
+            @click="nextStep" 
+            :disabled="!selectedRole"
+            class="btn-primary"
+          >
+            <span>Continuer</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Étape 2: Sélection du pays -->
+      <div v-if="currentStep === 2" class="step-content">
         <div class="section-header">
           <h3>📍 Sélectionnez votre pays</h3>
           <p>Choisissez votre pays pour personnaliser le contenu selon votre système éducatif</p>
@@ -57,6 +120,12 @@
         </div>
 
         <div class="step-actions">
+          <button @click="previousStep" class="btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Retour
+          </button>
           <button 
             @click="nextStep" 
             :disabled="!selectedPaysId || loadingNiveaux"
@@ -71,8 +140,8 @@
         </div>
       </div>
 
-      <!-- Étape 2: Sélection du niveau -->
-      <div v-if="currentStep === 2" class="step-content">
+      <!-- Étape 3: Sélection du niveau -->
+      <div v-if="currentStep === 3" class="step-content">
         <div class="section-header">
           <h3>📚 Sélectionnez votre niveau scolaire</h3>
           <p>Choisissez votre niveau pour {{ selectedPays?.nom }}</p>
@@ -126,13 +195,17 @@
         </div>
       </div>
 
-      <!-- Étape 3: Confirmation -->
-      <div v-if="currentStep === 3" class="step-content">
+      <!-- Étape 4: Confirmation -->
+      <div v-if="currentStep === 4" class="step-content">
         <div class="confirmation-content">
           <div class="success-icon">✅</div>
           <h3>Configuration terminée !</h3>
           <p>Votre profil a été configuré avec succès.</p>
           <div class="configuration-summary">
+            <div class="summary-item">
+              <span class="label">Profil:</span>
+              <span class="value">{{ selectedRole === 'student' ? 'Élève / Étudiant' : 'Parent' }}</span>
+            </div>
             <div class="summary-item">
               <span class="label">Pays:</span>
               <span class="value">{{ selectedPays?.nom }}</span>
@@ -155,7 +228,7 @@ import { useUserStore } from '@/stores/user'
 import { useToast } from '@/composables/useToast'
 import Modal from '@/components/common/Modal.vue'
 import { getPaysActifs, getPaysNiveaux } from '@/api/pays.js'
-import { updateUserPaysNiveau } from '@/api/users.js'
+import { updateUserPaysNiveau, updateUserRole } from '@/api/users.js'
 
 const props = defineProps({
   isOpen: {
@@ -171,6 +244,7 @@ const { showToast } = useToast()
 
 // États réactifs
 const currentStep = ref(1)
+const selectedRole = ref(null)
 const paysDisponibles = ref([])
 const niveaux = ref([])
 const selectedPaysId = ref(null)
@@ -192,9 +266,10 @@ const selectedNiveau = computed(() =>
 // Méthodes
 const getStepSubtitle = () => {
   switch (currentStep.value) {
-    case 1: return 'Étape 1 sur 2 - Choisissez votre pays'
-    case 2: return 'Étape 2 sur 2 - Choisissez votre niveau'
-    case 3: return 'Configuration terminée'
+    case 1: return 'Étape 1 sur 3 - Choisissez votre profil'
+    case 2: return 'Étape 2 sur 3 - Choisissez votre pays'
+    case 3: return 'Étape 3 sur 3 - Choisissez votre niveau'
+    case 4: return 'Configuration terminée'
     default: return ''
   }
 }
@@ -244,9 +319,18 @@ const selectNiveau = (niveau) => {
   selectedNiveauId.value = niveau.id
 }
 
+const selectRole = (role) => {
+  selectedRole.value = role
+}
+
 const nextStep = () => {
-  if (currentStep.value === 1 && selectedPaysId.value) {
+  if (currentStep.value === 1 && selectedRole.value) {
     currentStep.value = 2
+    if (paysDisponibles.value.length === 0) {
+      loadPays()
+    }
+  } else if (currentStep.value === 2 && selectedPaysId.value) {
+    currentStep.value = 3
     loadNiveauxPourPays(selectedPaysId.value)
   }
 }
@@ -254,24 +338,30 @@ const nextStep = () => {
 const previousStep = () => {
   if (currentStep.value === 2) {
     currentStep.value = 1
+  } else if (currentStep.value === 3) {
+    currentStep.value = 2
     niveaux.value = []
     selectedNiveauId.value = null
   }
 }
 
 const saveConfiguration = async () => {
-  if (!selectedPaysId.value || !selectedNiveauId.value) return
+  if (!selectedRole.value || !selectedPaysId.value || !selectedNiveauId.value) return
   
   try {
     saving.value = true
     
+    // Sauvegarder le rôle (élève/parent)
+    await updateUserRole(selectedRole.value)
+    
+    // Sauvegarder pays et niveau
     await updateUserPaysNiveau(selectedPaysId.value, selectedNiveauId.value)
     
     // Mettre à jour le store utilisateur
     await userStore.fetchUser()
     
     // Passer à l'étape de confirmation
-    currentStep.value = 3
+    currentStep.value = 4
     
     showToast('Configuration enregistrée avec succès !', 'success')
     
@@ -296,7 +386,7 @@ watch(() => props.isOpen, (isOpen) => {
 })
 
 watch(selectedPaysId, (newPaysId) => {
-  if (newPaysId && currentStep.value === 2) {
+  if (newPaysId && currentStep.value === 3) {
     loadNiveauxPourPays(newPaysId)
   }
 })
@@ -452,14 +542,14 @@ onMounted(() => {
   background-color: #5a67d8;
 }
 
-.pays-grid, .niveaux-grid {
+.pays-grid, .niveaux-grid, .role-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
 }
 
-.pays-card, .niveau-card {
+.pays-card, .niveau-card, .role-card {
   background: white;
   border: 2px solid #e5e7eb;
   border-radius: 0.75rem;
@@ -472,18 +562,18 @@ onMounted(() => {
   gap: 1rem;
 }
 
-.pays-card:hover, .niveau-card:hover {
+.pays-card:hover, .niveau-card:hover, .role-card:hover {
   border-color: #667eea;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
 }
 
-.pays-card.selected, .niveau-card.selected {
+.pays-card.selected, .niveau-card.selected, .role-card.selected {
   border-color: #667eea;
   background-color: #f8fafc;
 }
 
-.pays-flag {
+.pays-flag, .role-icon {
   font-size: 2rem;
   flex-shrink: 0;
 }
@@ -495,18 +585,18 @@ onMounted(() => {
   flex-shrink: 0;
 }
 
-.pays-info, .niveau-info {
+.pays-info, .niveau-info, .role-info {
   flex: 1;
 }
 
-.pays-info h4, .niveau-info h4 {
+.pays-info h4, .niveau-info h4, .role-info h4 {
   font-size: 1rem;
   font-weight: 600;
   color: #1f2937;
   margin-bottom: 0.25rem;
 }
 
-.pays-info p, .niveau-info p {
+.pays-info p, .niveau-info p, .role-info p {
   font-size: 0.875rem;
   color: #6b7280;
   margin: 0;

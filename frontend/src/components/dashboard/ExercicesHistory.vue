@@ -1,8 +1,7 @@
 <template>
-  <div class="exercices-history-wrapper">
-    <BaseHistory
-      ref="baseHistoryRef"
-      title="🧭 Historique des Exercices"
+  <BaseHistory
+    ref="baseHistoryRef"
+    title="🧭 Historique des Exercices"
       list-title="📝 Exercices effectués"
       loading-text="Chargement des exercices..."
       api-endpoint="/api/suivis/exercices/stats/"
@@ -35,7 +34,7 @@
           <span class="stat-value">{{ stats.percentage || 0 }}%</span>
         </div>
         <div class="stat-card exercice-notions">
-          <span class="stat-label">Notions maîtrisées</span>
+          <span class="stat-label">Chapitres maîtrisés</span>
           <span class="stat-value">{{ stats.masteredNotions || 0 }}</span>
         </div>
       </div>
@@ -49,7 +48,7 @@
       <div class="summary-table desktop-only">
         <div class="summary-header">
           <div>Matière</div>
-          <div>Notion</div>
+          <div>Chapitre</div>
           <div class="sortable-header" @click="sortBy('exercice_count')">
             Faits
             <span class="sort-icon" :class="{ active: sortField === 'exercice_count' }">
@@ -210,8 +209,7 @@
       <p>Aucun exercice trouvé avec ces filtres</p>
       <p class="empty-hint">Essayez de modifier vos filtres ou commencez à faire des exercices !</p>
     </template>
-    </BaseHistory>
-  </div>
+  </BaseHistory>
 </template>
 
 <script setup>
@@ -546,12 +544,6 @@ defineExpose({
 </script>
 
 <style scoped>
-.exercices-history-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .practice-suggestions {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -717,73 +709,50 @@ defineExpose({
   }
 }
 
-/* Stats globales */
+/* Stats globales - Design épuré (identique à QuizHistory) */
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(120px, 1fr));
-  gap: 0.75rem;
-  justify-content: center;
-  align-items: stretch;
-  margin: .5rem 0 1rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .stat-card {
-  background: #f9fafb;
-  border: 1px solid #eef2f7;
+  background: #fff;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 0.85rem;
-  min-width: 120px;
+  padding: 1rem 1.5rem;
+  min-width: 140px;
   text-align: center;
 }
 
 .stat-label {
   display: block;
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 500;
   color: #64748b;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .stat-value {
-  font-size: 1.35rem;
-  font-weight: 800;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
 }
 
-.stat-card.exercice-completed {
-  border-color: #8b5cf6;
-}
-.stat-card.exercice-completed .stat-value {
-  color: #8b5cf6;
-}
-
-.stat-card.exercice-correct {
-  border-color: #10b981;
-}
-.stat-card.exercice-correct .stat-value {
-  color: #059669;
-}
-
-.stat-card.exercice-percentage {
-  border-color: #f59e0b;
-}
-.stat-card.exercice-percentage .stat-value {
-  color: #d97706;
-}
-
-.stat-card.exercice-notions {
-  border-color: #3b82f6;
-}
-.stat-card.exercice-notions .stat-value {
-  color: #2563eb;
-}
+/* Couleurs des valeurs - même palette que QuizHistory */
+.stat-card.exercice-completed .stat-value { color: #3b82f6; }
+.stat-card.exercice-correct .stat-value { color: #10b981; }
+.stat-card.exercice-percentage .stat-value { color: #10b981; }
+.stat-card.exercice-notions .stat-value { color: #8b5cf6; }
 
 /* Statistiques par matière */
 .section-subtitle {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  color: #374151;
-  margin-bottom: 1rem;
-  text-align: center;
+  color: #1e293b;
+  margin: 1.25rem 0 0.75rem;
 }
 
 .matiere-grid {
@@ -803,24 +772,27 @@ defineExpose({
 
 .matiere-name {
   font-weight: 600;
-  color: #374151;
+  color: #334155;
   margin-bottom: 0.5rem;
+  font-size: 0.875rem;
 }
 
 .matiere-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.875rem;
 }
 
 .matiere-average {
-  font-weight: 600;
-  color: #059669;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #10b981;
 }
 
 .matiere-count {
-  color: #6b7280;
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
 }
 
 /* Filtres de maîtrise inline */
@@ -871,28 +843,27 @@ defineExpose({
   font-size: 0.75rem;
 }
 
-/* Cartes d'exercices */
+/* Cartes d'exercices - Design épuré */
 .exercice-card {
   background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
   overflow: hidden;
-  transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: border-color 0.2s, box-shadow 0.2s;
   cursor: pointer;
 }
 
 .exercice-card:hover {
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transform: translateY(-1px);
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
 }
 
 .exercice-card.correct {
-  border-color: #10b981;
+  border-left: 3px solid #10b981;
 }
 
 .exercice-card.incorrect {
-  border-color: #ef4444;
+  border-left: 3px solid #ef4444;
 }
 
 .exercice-card-header {
@@ -905,7 +876,7 @@ defineExpose({
 }
 
 .exercice-card-header:hover {
-  background-color: #f9fafb;
+  background-color: #f8fafc;
 }
 
 .exercice-card-title-section {
@@ -916,7 +887,7 @@ defineExpose({
 .exercice-card-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #1f2937;
+  color: #1e293b;
   margin: 0 0 0.25rem 0;
   line-height: 1.4;
 }
@@ -935,7 +906,7 @@ defineExpose({
 
 .navigation-icon {
   flex-shrink: 0;
-  color: #6b7280;
+  color: #64748b;
   transition: color 0.2s;
 }
 
@@ -945,7 +916,8 @@ defineExpose({
 
 .exercice-breadcrumb-compact {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: #64748b;
+  font-weight: 500;
   line-height: 1.3;
 }
 
@@ -979,7 +951,7 @@ defineExpose({
 
 .expand-toggle {
   background: none;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   width: 32px;
   height: 32px;
@@ -987,14 +959,14 @@ defineExpose({
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #6b7280;
+  color: #64748b;
   transition: all 0.2s;
 }
 
 .expand-toggle:hover {
-  background-color: #f9fafb;
-  border-color: #d1d5db;
-  color: #374151;
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #334155;
 }
 
 .expand-toggle svg {
@@ -1007,8 +979,8 @@ defineExpose({
 
 .exercice-card-details {
   padding: 1rem;
-  border-top: 1px solid #e5e7eb;
-  background-color: #f9fafb;
+  border-top: 1px solid #e2e8f0;
+  background-color: #f8fafc;
 }
 
 .exercice-breadcrumb {
@@ -1021,19 +993,19 @@ defineExpose({
 }
 
 .breadcrumb-item {
-  color: #374151;
+  color: #334155;
   font-weight: 500;
 }
 
 .breadcrumb-separator {
-  color: #9ca3af;
+  color: #94a3b8;
 }
 
 .exercice-meta {
   display: flex;
   gap: 1rem;
   font-size: 0.75rem;
-  color: #6b7280;
+  color: #64748b;
   flex-wrap: wrap;
 }
 
@@ -1050,37 +1022,32 @@ defineExpose({
 /* État vide */
 .empty-hint {
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: #94a3b8;
   margin-top: 0.5rem;
 }
 
-/* Bouton voir l'historique */
+/* Bouton Archive */
 .view-history-btn {
   background: #3b82f6;
   color: #fff;
   border: none;
   border-radius: 8px;
   padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
+  transition: background 0.2s ease;
 }
 .view-history-btn:hover { 
-  background: #2563eb; 
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.4);
+  background: #2563eb;
 }
 
-/* Tableau résumé matière/notion - Version simple et pédagogique */
+/* Tableau résumé matière/notion - Design épuré */
 .summary-table {
-  border-top: 1px solid #e6eaf0;
-  border-radius: 0;
-  background: transparent;
-  margin-top: .5rem;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
   margin-bottom: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Utilitaires responsive */
@@ -1105,116 +1072,151 @@ defineExpose({
 .summary-header,
 .summary-row {
   display: grid;
-  grid-template-columns: 1.5fr 2fr 0.8fr 0.8fr 0.8fr 0.8fr;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
+  grid-template-columns: 1.5fr 2.5fr 0.75fr 0.75fr 0.75fr 1fr;
+  gap: 0.5rem;
+  padding: 0.875rem 1rem;
   align-items: center;
 }
+
 .summary-header {
-  background: #f9fafb;
+  background: #f8fafc;
   font-weight: 600;
-  color: #374151;
-  font-size: 0.875rem;
-  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid #e2e8f0;
 }
-.summary-row {
-  border-bottom: 1px solid #f3f4f6;
+
+.summary-row { 
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s ease;
 }
-.summary-row:last-child {
-  border-bottom: none;
+.summary-row:last-child { border-bottom: none; }
+.summary-row:hover { background: #f8fafc; }
+
+.summary-row .cell { 
+  font-size: 0.875rem; 
+  color: #334155;
 }
-.summary-row .cell {
-  font-size: 0.875rem;
-  color: #374151;
+
+.summary-row .cell.matiere {
+  font-weight: 500;
+  color: #475569;
 }
+
+.summary-row .cell.notion .notion-label {
+  color: #1e293b;
+  font-weight: 500;
+}
+
 .summary-row .cell.count,
 .summary-row .cell.correct,
 .summary-row .cell.incorrect { 
-  text-align: center;
+  text-align: center; 
   font-weight: 600;
-}
-.summary-row .cell.correct { 
-  color: #16a34a; 
-}
-.summary-row .cell.incorrect { 
-  color: #dc2626; 
+  font-size: 0.875rem;
 }
 
-/* Moyenne simple et claire */
+.summary-row .cell.correct { color: #10b981; }
+.summary-row .cell.incorrect { color: #ef4444; }
+
+.summary-row .cell.average { text-align: center; }
+
+.summary-row .cell.average .avg-badge,
 .summary-row .cell.average {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  padding: 0.25rem 0.625rem;
+  border-radius: 6px;
   font-weight: 600;
-  text-align: center;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  font-size: 0.8125rem;
 }
+
 .summary-row .cell.average.excellent { 
-  color: #16a34a; 
-  background: #dcfce7;
+  background: #dcfce7; 
+  color: #166534; 
 }
 .summary-row .cell.average.good { 
-  color: #d97706; 
-  background: #fef3c7;
+  background: #fef3c7; 
+  color: #92400e; 
 }
 .summary-row .cell.average.poor { 
-  color: #dc2626; 
-  background: #fee2e2;
+  background: #fee2e2; 
+  color: #991b1b; 
 }
 
 /* Pagination du tableau récapitulatif */
 .summary-pagination {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.75rem 0.5rem 1rem;
-}
-.pg-btn {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 0.35rem 0.6rem;
-  color: #6b7280;
-  cursor: pointer;
-}
-.pg-btn:disabled { opacity: .5; cursor: not-allowed; }
-.pg-page {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  width: 34px;
-  height: 34px;
-  display: inline-flex;
+  gap: 0.375rem;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
-  cursor: pointer;
+  padding: 0.75rem;
+  border-top: 1px solid #f1f5f9;
 }
-.pg-page.active { background: #3b82f6; border-color:#3b82f6; color:#fff; }
-.pg-page.dots { cursor: default; }
 
-/* En-têtes triables - Version simple */
-.sortable-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.pg-btn, .pg-page {
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
   cursor: pointer;
-  user-select: none;
-  padding: 0.25rem;
+  min-width: 32px;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.15s ease;
+}
+
+.pg-btn:hover:not(:disabled), 
+.pg-page:hover:not(:disabled):not(.dots) {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+}
+
+.pg-page.dots { 
+  cursor: default; 
+  background: transparent; 
+  border: none; 
+  color: #94a3b8;
+}
+
+.pg-page.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #fff;
+  font-weight: 600;
+}
+
+.pg-btn:disabled, .pg-page:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* En-têtes triables */
+.sortable-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  cursor: pointer; 
+  user-select: none; 
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  margin: -0.25rem -0.5rem;
   border-radius: 4px;
-  gap: 0.35rem;
+  transition: background 0.15s;
 }
-.sortable-header:hover {
-  background-color: #f3f4f6;
+.sortable-header:hover { background: #e2e8f0; }
+.sort-icon { 
+  font-size: 0.75rem; 
+  color: #94a3b8; 
+  font-weight: 600;
 }
-.sort-icon {
-  font-size: 1rem;
-  color: #6b7280;
-  font-weight: 700;
-}
-.sort-icon.active {
-  color: #2563eb;
-  font-weight: 700;
-}
+.sort-icon.active { color: #3b82f6; }
 
 
 /* Notion toggle */
@@ -1521,7 +1523,7 @@ defineExpose({
   border-color: #fca5a5;
 }
 
-.stat-label {
+.stat-item .stat-label {
   font-size: 0.5625rem;
   color: #64748b;
   font-weight: 600;
@@ -1535,7 +1537,7 @@ defineExpose({
   width: 100%;
 }
 
-.stat-value {
+.stat-item .stat-value {
   font-size: 1.125rem;
   font-weight: 800;
   color: #0f172a;
@@ -1544,11 +1546,11 @@ defineExpose({
   white-space: nowrap;
 }
 
-.stat-value.success {
+.stat-item .stat-value.success {
   color: #059669;
 }
 
-.stat-value.error {
+.stat-item .stat-value.error {
   color: #dc2626;
 }
 
@@ -1595,16 +1597,16 @@ defineExpose({
     gap: 0.5rem;
   }
   
-  .stat-card {
+  .stats-grid .stat-card {
     min-width: 0;
     padding: 0.75rem 0.5rem;
   }
 
-  .stat-label {
+  .stats-grid .stat-label {
     font-size: 0.7rem;
   }
 
-  .stat-value {
+  .stats-grid .stat-value {
     font-size: 1.15rem;
   }
 
@@ -1664,7 +1666,7 @@ defineExpose({
     gap: 0.5rem;
   }
 
-  .stat-card {
+  .stats-grid .stat-card {
     padding: 0.65rem 0.5rem;
   }
 
@@ -1719,26 +1721,26 @@ defineExpose({
 
   /* Les règles pour 4 colonnes sont déjà définies plus haut dans cette media query */
 
-  .stat-item {
+  .summary-cards .stat-item {
     padding: 0.625rem 0.375rem;
     border-radius: 8px;
   }
 
-  .stat-item.highlight {
+  .summary-cards .stat-item.highlight {
     grid-column: auto !important;
     padding: 0.625rem 0.375rem;
     border-radius: 8px;
   }
 
-  .stat-label {
+  .summary-cards .stat-item .stat-label {
     font-size: 0.5625rem;
   }
 
-  .stat-value {
+  .summary-cards .stat-item .stat-value {
     font-size: 1.0625rem;
   }
 
-  .stat-item.highlight .stat-value {
+  .summary-cards .stat-item.highlight .stat-value {
     font-size: 0.9375rem;
     padding: 0.1875rem 0.25rem;
   }
@@ -1760,28 +1762,28 @@ defineExpose({
     min-width: 0 !important;
   }
 
-  .stat-item {
+  .summary-cards .stat-item {
     padding: 0.625rem 0.375rem !important;
     border-radius: 8px !important;
     min-width: 0 !important;
   }
 
-  .stat-item.highlight {
+  .summary-cards .stat-item.highlight {
     grid-column: auto !important;
     grid-row: auto !important;
     padding: 0.625rem 0.375rem !important;
   }
 
-  .stat-label {
+  .summary-cards .stat-item .stat-label {
     font-size: 0.5625rem !important;
     letter-spacing: 0.03em !important;
   }
 
-  .stat-value {
+  .summary-cards .stat-item .stat-value {
     font-size: 1rem !important;
   }
 
-  .stat-item.highlight .stat-value {
+  .summary-cards .stat-item.highlight .stat-value {
     font-size: 0.9375rem !important;
     padding: 0.1875rem 0.25rem !important;
   }

@@ -8,9 +8,16 @@
     <form @submit.prevent="handleSubmit" class="form-body">
       <div class="form-group">
         <label for="user">Élève *</label>
+        <input 
+          v-model="userSearch" 
+          type="text" 
+          placeholder="Rechercher un élève..."
+          class="search-input"
+          @input="filterUsers"
+        />
         <select v-model="form.userId" id="user" required>
           <option value="">-- Sélectionner un élève --</option>
-          <option v-for="user in users" :key="user.id" :value="user.id">
+          <option v-for="user in filteredUsers" :key="user.id" :value="user.id">
             {{ user.full_name && user.full_name.trim() ? `${user.full_name} (${user.email})` : user.email }}
           </option>
         </select>
@@ -78,6 +85,8 @@ const form = ref({
 })
 
 const users = ref([])
+const filteredUsers = ref([])
+const userSearch = ref('')
 const allQuiz = ref([])
 const filteredQuiz = ref([])
 const quizSearch = ref('')
@@ -97,6 +106,7 @@ async function loadUsers() {
     const response = await apiClient.get('/api/users/users/?role=student&limit=1000')
     // ResponseService enveloppe dans { data: { results: [...] } }
     users.value = response.data?.data?.results || response.data?.results || response.data || []
+    filteredUsers.value = users.value
     console.log('Utilisateurs chargés:', users.value.length)
   } catch (err) {
     console.error('Erreur chargement utilisateurs:', err)
@@ -111,6 +121,20 @@ async function loadQuiz() {
   } catch (err) {
     console.error('Erreur chargement quiz:', err)
   }
+}
+
+function filterUsers() {
+  const search = userSearch.value.toLowerCase()
+  if (!search) {
+    filteredUsers.value = users.value
+    return
+  }
+  
+  filteredUsers.value = users.value.filter(user => {
+    const fullName = user.full_name?.toLowerCase() || ''
+    const email = user.email?.toLowerCase() || ''
+    return fullName.includes(search) || email.includes(search)
+  })
 }
 
 function filterQuiz() {
@@ -154,7 +178,15 @@ async function handleSubmit() {
     }, 2000)
   } catch (err) {
     console.error('Erreur création soumission:', err)
-    error.value = err.response?.data?.detail || 'Erreur lors de l\'enregistrement'
+    
+    // Gérer les erreurs de soumission dupliquée
+    const errorData = err.response?.data
+    if (errorData?.existing_submission_id && errorData?.status) {
+      const statusText = errorData.status === 'graded' ? 'déjà corrigée' : 'en attente de correction'
+      error.value = `⚠️ Cet élève a déjà une soumission pour ce quiz (${statusText}). Impossible de créer un doublon.`
+    } else {
+      error.value = errorData?.detail || errorData?.non_field_errors?.[0] || 'Erreur lors de l\'enregistrement'
+    }
   } finally {
     submitting.value = false
   }
@@ -166,6 +198,8 @@ function resetForm() {
     quizId: '',
     notes_admin: ''
   }
+  userSearch.value = ''
+  filteredUsers.value = users.value
   quizSearch.value = ''
   filteredQuiz.value = allQuiz.value
   error.value = ''

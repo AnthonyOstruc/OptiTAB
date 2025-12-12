@@ -44,6 +44,7 @@
         <div class="level-container">
           <XPBadges />
           <LoginStreak />
+          <PrivateTutorCTA />
         </div>
       </div>
     </div>
@@ -89,6 +90,7 @@ import LeaderboardWidget from '@/components/dashboard/LeaderboardWidget.vue'
 
 import XPBadges from '@/components/dashboard/XPBadges.vue'
 import LoginStreak from '@/components/dashboard/LoginStreak.vue'
+import PrivateTutorCTA from '@/components/dashboard/PrivateTutorCTA.vue'
 import QuizHistory from '@/components/dashboard/QuizHistoryRefactored.vue'
 import ExercicesHistory from '@/components/dashboard/ExercicesHistory.vue'
 import PendingCorrections from '@/components/dashboard/PendingCorrections.vue'

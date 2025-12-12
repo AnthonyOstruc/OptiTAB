@@ -29,7 +29,7 @@
         </div>
         <div class="stat-card quiz-average">
           <span class="stat-label">Note moyenne</span>
-          <span class="stat-value">{{ (combinedStats.average * 2).toFixed(1) }}/20</span>
+          <span class="stat-value">{{ combinedStats.average.toFixed(1) }}/20</span>
         </div>
         <div class="stat-card quiz-notions">
           <span class="stat-label">Chapitres maîtrisés</span>
@@ -71,11 +71,11 @@
           </div>
         </div>
 
-        <template v-for="row in pagedSummaryRows" :key="`${row.matiere.id}-${row.notion.id}`">
+        <template v-for="row in pagedSummaryRows" :key="`${row.matiere.id}-${row.notion.id}-${row.quiz_id || ''}`">
           <div class="summary-row">
             <div class="cell matiere">{{ row.matiere.titre }}</div>
             <div class="cell notion">
-              <span class="notion-label">{{ row.notion.titre }}</span>
+              <span class="notion-label">{{ row.quiz_titre || row.notion.quiz_titre || row.notion.titre }}</span>
             </div>
             <div class="cell count">{{ row.count }}</div>
             <div class="cell correct">{{ row.correct_count }}</div>
@@ -116,10 +116,10 @@
             {{ sortDirection === 'asc' ? '↑' : '↓' }}
           </button>
         </div>
-        <template v-for="row in pagedSummaryRows" :key="`${row.matiere.id}-${row.notion.id}`">
+        <template v-for="row in pagedSummaryRows" :key="`${row.matiere.id}-${row.notion.id}-${row.quiz_id || ''}`">
           <div class="summary-card">
             <div class="card-header">
-              <div class="card-title">{{ row.notion.titre }}</div>
+              <div class="card-title">{{ row.quiz_titre || row.notion.quiz_titre || row.notion.titre }}</div>
               <div class="card-subtitle">{{ row.matiere.titre }}</div>
             </div>
             <div class="card-stats">
@@ -493,11 +493,17 @@ const computeMatiereNotionFromQuizList = (quizList) => {
   for (const item of quizList) {
     const mat = item?.matiere || {}
     const not = item?.notion || {}
-    const key = `${mat.id}-${not.id}`
+    const quizId = item?.quiz_id || item?.id
+    const quizTitre = item?.quiz_titre || ''
+    
+    // Clé unique par quiz (pas par notion) pour avoir des lignes séparées par quiz
+    const key = `${mat.id}-${not.id}-${quizId}`
     if (!map.has(key)) {
       map.set(key, {
         matiere: { id: mat.id, titre: mat.titre || '' },
-        notion: { id: not.id, titre: not.titre || '' },
+        notion: { id: not.id, titre: not.titre || '', quiz_titre: quizTitre },
+        quiz_id: quizId,
+        quiz_titre: quizTitre,
         count: 0,
         correct_count: 0,
         incorrect_count: 0,
@@ -507,7 +513,7 @@ const computeMatiereNotionFromQuizList = (quizList) => {
     const agg = map.get(key)
     agg.count += 1
     agg.sum_score_10 += getScoreOn10(item)
-    if ((item.score_on_10 || 0) >= 7) agg.correct_count += 1
+    if (getScoreOn10(item) >= 7) agg.correct_count += 1
     else agg.incorrect_count += 1
   }
   const rows = Array.from(map.values()).map(r => ({
@@ -515,7 +521,11 @@ const computeMatiereNotionFromQuizList = (quizList) => {
     average_percent: r.count > 0 ? (r.correct_count / r.count) * 100 : 0,
     average_on_20: r.count > 0 ? roundToOneDecimal((r.sum_score_10 / r.count) * 2) : 0
   }))
-  rows.sort((a, b) => String(a.matiere.titre).localeCompare(String(b.matiere.titre), 'fr', { sensitivity: 'base' }) || String(a.notion.titre).localeCompare(String(b.notion.titre), 'fr', { sensitivity: 'base' }))
+  rows.sort((a, b) => 
+    String(a.matiere.titre).localeCompare(String(b.matiere.titre), 'fr', { sensitivity: 'base' }) || 
+    String(a.notion.titre).localeCompare(String(b.notion.titre), 'fr', { sensitivity: 'base' }) ||
+    String(a.quiz_titre || '').localeCompare(String(b.quiz_titre || ''), 'fr', { sensitivity: 'base' })
+  )
   return rows
 }
 

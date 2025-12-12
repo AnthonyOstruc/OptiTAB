@@ -57,6 +57,7 @@
             :attempt-count="quiz.attemptCount"
             :solution="quiz.solution"
             :is-graded="quiz.isGraded"
+            :initial-tab="initialTab"
           />
         </div>
       </div>
@@ -79,6 +80,9 @@ const notionId = route.params.notionId
 
 const loading = ref(true)
 const quizList = ref([])
+
+// Détecter si on doit ouvrir l'onglet solution automatiquement
+const initialTab = route.query.tab || null
 
 async function loadQuiz() {
   loading.value = true
@@ -161,8 +165,8 @@ async function loadQuiz() {
             questions_data: Array.isArray(quiz.questions_data) ? quiz.questions_data : [],
             bestScore: bestScore,
             attemptCount: attempts.length,
-            // Passer la solution seulement si noté
-            solution: gradedSubmission?.quiz_solution || null,
+            // Passer la solution seulement si noté (depuis la soumission ou depuis le quiz original)
+            solution: gradedSubmission?.quiz_solution || quiz.solution || null,
             isGraded: gradedSubmission !== null
           }
         } catch (error) {

@@ -45,6 +45,15 @@
           </option>
         </select>
       </div>
+
+      <div class="filter-group">
+        <input 
+          v-model="filterStudent" 
+          type="text" 
+          placeholder="Rechercher un élève (nom ou email)..."
+          style="padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; min-width: 250px;"
+        />
+      </div>
       
       <button @click="loadSubmissions" class="btn-primary">
         Actualiser
@@ -57,7 +66,7 @@
     </div>
 
     <!-- Liste des soumissions -->
-    <div v-else-if="submissions.length === 0" style="text-align: center; padding: 2rem; color: #6b7280;">
+    <div v-else-if="filteredSubmissions.length === 0" style="text-align: center; padding: 2rem; color: #6b7280;">
       <p>{{ filterStatus === 'pending' ? 'Aucune soumission en attente' : 'Aucune soumission trouvée' }}</p>
     </div>
 
@@ -76,7 +85,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="submission in submissions" :key="submission.id">
+        <tr v-for="submission in filteredSubmissions" :key="submission.id">
           <td>{{ submission.user_name || '—' }}</td>
           <td>{{ submission.user_email }}</td>
           <td>{{ submission.user_pays_nom || '—' }}</td>
@@ -178,7 +187,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { 
   getQuizSubmissions, 
   gradeQuizSubmission, 
@@ -195,9 +204,24 @@ const loading = ref(false)
 const filterStatus = ref('pending') // Par défaut, afficher les en attente
 const filterPays = ref('')
 const filterNiveau = ref('')
+const filterStudent = ref('')
 const paysList = ref([])
 const niveauxList = ref([])
 const showQuickForm = ref(false)
+
+// Filtrer les soumissions par nom ou email d'élève
+const filteredSubmissions = computed(() => {
+  if (!filterStudent.value) {
+    return submissions.value
+  }
+  
+  const searchTerm = filterStudent.value.toLowerCase().trim()
+  return submissions.value.filter(submission => {
+    const name = (submission.user_name || '').toLowerCase()
+    const email = (submission.user_email || '').toLowerCase()
+    return name.includes(searchTerm) || email.includes(searchTerm)
+  })
+})
 
 const showGradeModal = ref(false)
 const currentSubmission = ref(null)
@@ -215,7 +239,7 @@ onMounted(async () => {
   loadStats()
 })
 
-watch([filterStatus, filterPays, filterNiveau], () => {
+watch([filterStatus, filterPays, filterNiveau, filterStudent], () => {
   loadSubmissions()
 })
 

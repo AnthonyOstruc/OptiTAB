@@ -593,31 +593,52 @@ class SuiviQuizViewSet(viewsets.ModelViewSet):
                 matiere_stats[matiere_id]['quiz_count'] += 1
                 matiere_stats[matiere_id]['total_score'] += attempt_data['score_on_10']
             
-            # Agrégat matière/notion (mêmes clés que exercices pour cohérence frontend)
+            # Agrégat par chapitre (notion) - chaque quiz est compté individuellement
+            # On regroupe les tentatives multiples d'un même quiz, mais on garde des lignes séparées pour des quiz différents
             matiere_notion_stats = {}
             for attempt_data in full_quiz_list:
                 mat = attempt_data['matiere']
                 notion = attempt_data['notion']
-                key = (mat['id'], notion['id'])
+                quiz_id = attempt_data['quiz_id']
+                quiz_titre = attempt_data.get('quiz_titre', '')
+                
+                # Clé unique par quiz (pas par notion)
+                key = (mat['id'], notion['id'], quiz_id)
                 if key not in matiere_notion_stats:
                     matiere_notion_stats[key] = {
                         'matiere': { 'id': mat['id'], 'titre': mat['titre'] },
-                        'notion': { 'id': notion['id'], 'titre': notion['titre'] },
-                        'exercice_count': 0,
+                        'notion': { 'id': notion['id'], 'titre': notion['titre'], 'quiz_titre': quiz_titre },
+                        'quiz_id': quiz_id,
+                        'quiz_titre': quiz_titre,
+                        'count': 0,
                         'correct_count': 0,
                         'incorrect_count': 0,
+                        'total_score': 0,
                     }
                 agg = matiere_notion_stats[key]
-                agg['exercice_count'] += 1
-                if (attempt_data.get('score_on_10') or 0) >= 7:
+                agg['count'] += 1
+                score = attempt_data.get('score_on_10') or 0
+                agg['total_score'] += score
+                if score >= 7:
                     agg['correct_count'] += 1
                 else:
                     agg['incorrect_count'] += 1
 
-            # Liste triée pour stabilité d'affichage
+            # Calculer la moyenne sur 20 pour chaque quiz
+            for agg in matiere_notion_stats.values():
+                if agg['count'] > 0:
+                    agg['average_on_20'] = round((agg['total_score'] / agg['count']) * 2, 1)
+                else:
+                    agg['average_on_20'] = 0
+
+            # Liste triée pour stabilité d'affichage (par matière, puis notion, puis titre du quiz)
             matiere_notion_stats_list = list(matiere_notion_stats.values())
             try:
-                matiere_notion_stats_list.sort(key=lambda x: (str(x['matiere']['titre']).lower(), str(x['notion']['titre']).lower()))
+                matiere_notion_stats_list.sort(key=lambda x: (
+                    str(x['matiere']['titre']).lower(), 
+                    str(x['notion']['titre']).lower(),
+                    str(x.get('quiz_titre', '')).lower()
+                ))
             except Exception:
                 pass
 
@@ -755,6 +776,21 @@ class QuizSubmissionViewSet(viewsets.ModelViewSet):
                 except User.DoesNotExist:
                     pass
         
+        # Vérifier qu'il n'existe pas déjà une soumission pour cet élève et ce quiz
+        quiz_id = serializer.validated_data.get('quiz').id
+        existing = QuizSubmission.objects.filter(
+            user=target_user,
+            quiz_id=quiz_id
+        ).first()
+        
+        if existing:
+            from rest_framework.exceptions import ValidationError
+            raise ValidationError({
+                'error': 'Une soumission existe déjà pour cet élève et ce quiz',
+                'existing_submission_id': existing.id,
+                'status': existing.status
+            })
+        
         # Sauvegarder la soumission
         submission = serializer.save(user=target_user)
         
@@ -863,14 +899,46 @@ class QuizSubmissionViewSet(viewsets.ModelViewSet):
         try:
             from core.services import EmailService
             quiz_title = submission.quiz.titre if submission.quiz else "Quiz"
+            notion_id = submission.quiz.notion_id if submission.quiz and submission.quiz.notion_id else None
+            
             EmailService.send_quiz_grade_notification(
                 user=submission.user,
                 quiz_title=quiz_title,
                 note=note,
-                commentaire=commentaire
+                commentaire=commentaire,
+                notion_id=notion_id
             )
         except Exception as e:
             logger.warning(f"Erreur lors de l'envoi de l'email de notation: {e}")
+        
+        # Envoyer un email de notification au(x) parent(s) rattaché(s)
+        try:
+            from core.services import EmailService
+            from users.models import ParentChild
+            
+            # Trouver tous les parents acceptés pour cet élève
+            parent_links = ParentChild.objects.filter(
+                child=submission.user,
+                status=ParentChild.STATUS_ACCEPTED
+            ).select_related('parent')
+            
+            quiz_title = submission.quiz.titre if submission.quiz else "Quiz"
+            notion_id = submission.quiz.notion_id if submission.quiz and submission.quiz.notion_id else None
+            
+            for link in parent_links:
+                try:
+                    EmailService.send_quiz_grade_notification_to_parent(
+                        parent=link.parent,
+                        child=submission.user,
+                        quiz_title=quiz_title,
+                        note=note,
+                        commentaire=commentaire,
+                        notion_id=notion_id
+                    )
+                except Exception as e:
+                    logger.warning(f"Erreur lors de l'envoi de l'email au parent {link.parent.email}: {e}")
+        except Exception as e:
+            logger.warning(f"Erreur lors de la notification des parents: {e}")
         
         serializer = self.get_serializer(submission)
         return Response(serializer.data)

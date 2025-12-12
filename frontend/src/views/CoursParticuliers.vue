@@ -1,6 +1,6 @@
 <template>
-  <DashboardLayout>
-    <div class="cours-particuliers-page">
+  <component :is="layoutComponent">
+    <div class="cours-particuliers-page" :class="{ 'public-layout': !isAuthenticated }">
       <!-- Hero Section -->
       <section class="hero-section">
         <div class="hero-decoration">
@@ -23,9 +23,9 @@
           </p>
           
           <div class="hero-cta">
-            <router-link to="/contact" class="btn-primary">
+            <button @click="openContactModal('Réserver un cours')" class="btn-primary">
               Réserver un cours
-            </router-link>
+            </button>
             <a href="#professeur" class="btn-secondary" @click.prevent="scrollToProfesseur">
               Rencontrer le professeur
             </a>
@@ -523,15 +523,24 @@
       @close="closeContactModal"
       @success="handleContactSuccess"
     />
-  </DashboardLayout>
+  </component>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
+import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
 import ContactModal from '@/components/common/ContactModal.vue'
+import { useUserStore } from '@/stores/user'
+
+// Store utilisateur pour vérifier l'authentification
+const userStore = useUserStore()
+
+// Layout dynamique selon l'authentification
+const isAuthenticated = computed(() => userStore.isAuthenticated)
+const layoutComponent = computed(() => isAuthenticated.value ? DashboardLayout : MainLayout)
 
 // Gestion du modal de contact
 const isContactModalOpen = ref(false)
@@ -656,14 +665,30 @@ function scrollToProfesseur(e) {
   e.preventDefault()
   const element = document.getElementById('professeur')
   if (element) {
+    // Chercher le conteneur scrollable du dashboard
+    const scrollContainer = document.querySelector('.dashboard-main')
     const offset = 100 // Offset pour le header fixe
-    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
-    const offsetPosition = elementPosition - offset
     
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    })
+    if (scrollContainer) {
+      // Calculer la position relative au conteneur scrollable
+      const containerRect = scrollContainer.getBoundingClientRect()
+      const elementRect = element.getBoundingClientRect()
+      const offsetPosition = scrollContainer.scrollTop + elementRect.top - containerRect.top - offset
+      
+      scrollContainer.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    } else {
+      // Fallback si pas de conteneur dashboard
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+      const offsetPosition = elementPosition - offset
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    }
   }
 }
 </script>
@@ -685,6 +710,11 @@ function scrollToProfesseur(e) {
 .cours-particuliers-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f5f9 100%);
+}
+
+/* Ajouter du padding-top quand on utilise le MainLayout (non connecté) */
+.cours-particuliers-page.public-layout {
+  padding-top: 80px;
 }
 
 /* Hero Section - Style comme le home */
@@ -801,6 +831,8 @@ function scrollToProfesseur(e) {
   font-size: 1.05rem;
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15);
+  border: none;
+  cursor: pointer;
 }
 
 .btn-primary:hover,

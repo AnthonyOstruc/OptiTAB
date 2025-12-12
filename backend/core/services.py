@@ -255,11 +255,16 @@ class EmailService:
         email.send(fail_silently=False)
 
     @staticmethod
-    def send_quiz_grade_notification(user, quiz_title, note, commentaire=''):
+    def send_quiz_grade_notification(user, quiz_title, note, commentaire='', notion_id=None):
         """Envoie une notification par email lorsqu'un quiz est noté"""
+        from django.conf import settings
         first_name = (user.first_name or '').strip() or 'OptiTABien'
         note_formatted = f"{note:.2f}/20"
         subject = f'Votre quiz "{quiz_title}" a été corrigé'
+
+        # Construire l'URL vers la correction (avec ouverture automatique de l'onglet Solution)
+        frontend_url = getattr(settings, 'FRONTEND_URL', 'http://localhost:3000')
+        correction_url = f"{frontend_url}/quiz-notion/{notion_id}?tab=solution" if notion_id else None
 
         text_body = (
             f"Bonjour {first_name},\n\n"
@@ -269,6 +274,9 @@ class EmailService:
         
         if commentaire:
             text_body += f"\nCommentaire du professeur :\n{commentaire}\n"
+        
+        if correction_url:
+            text_body += f"\nConsultez votre correction : {correction_url}\n"
         
         text_body += (
             "\nVous pouvez consulter vos résultats dans votre espace personnel.\n\n"
@@ -304,6 +312,9 @@ class EmailService:
                       <p style="margin:8px 0 0 0;color:#15803d;font-size:32px;font-weight:700;">{note_formatted}</p>
                     </div>
                     {commentaire_html}
+                    {f'''<div style="margin:20px 0;text-align:center;">
+                      <a href="{correction_url}" style="display:inline-block;background:#2563eb;color:#ffffff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">📖 Voir ma correction</a>
+                    </div>''' if correction_url else ''}
                     <p style="margin:16px 0 0 0;color:#6b7280;font-size:14px;line-height:1.6;">
                       Vous pouvez consulter vos résultats détaillés dans votre espace personnel.
                     </p>
@@ -330,6 +341,100 @@ class EmailService:
             return True
         except Exception as e:
             logger.error(f"Erreur envoi email de notation de quiz à {user.email}: {e}")
+            return False
+
+    @staticmethod
+    def send_quiz_grade_notification_to_parent(parent, child, quiz_title, note, commentaire='', notion_id=None):
+        """Envoie une notification par email au parent lorsqu'un quiz de son enfant est noté"""
+        from django.conf import settings
+        parent_name = (parent.first_name or '').strip() or 'Parent'
+        child_name = (child.first_name or '').strip() or 'votre enfant'
+        note_formatted = f"{note:.1f}/20"
+        subject = f'Quiz corrigé pour {child_name} - "{quiz_title}"'
+
+        # Construire l'URL vers la correction (le parent peut consulter via son dashboard)
+        frontend_url = getattr(settings, 'FRONTEND_URL', 'http://localhost:3000')
+        correction_url = f"{frontend_url}/quiz-notion/{notion_id}?tab=solution" if notion_id else None
+
+        text_body = (
+            f"Bonjour {parent_name},\n\n"
+            f"Le quiz \"{quiz_title}\" de {child_name} a été corrigé.\n\n"
+            f"Note obtenue : {note_formatted}\n"
+        )
+        
+        if commentaire:
+            text_body += f"\nCommentaire du professeur :\n{commentaire}\n"
+        
+        if correction_url:
+            text_body += f"\nLien vers le quiz : {correction_url}\n"
+        
+        text_body += (
+            "\nVous pouvez consulter les résultats dans votre espace parent.\n\n"
+            "L'équipe OptiTAB"
+        )
+
+        logo_url = EmailService._resolve_logo_url()
+        commentaire_html = f"""
+            <div style="background:#f3f4f6;padding:16px;border-radius:8px;margin:16px 0;">
+              <p style="margin:0;color:#374151;font-size:14px;line-height:1.6;font-style:italic;">
+                "{commentaire}"
+              </p>
+            </div>
+        """ if commentaire else ""
+
+        # Couleur de la note selon la valeur
+        note_color = "#15803d" if note >= 10 else "#dc2626"
+        note_bg = "#f0fdf4" if note >= 10 else "#fef2f2"
+        note_border = "#86efac" if note >= 10 else "#fecaca"
+
+        html_body = f"""
+            <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                <tr>
+                  <td style="padding:24px 24px 0 24px;">
+                    {f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block;margin-bottom:16px;"/>' if logo_url else ''}
+                    <h1 style="margin:0 0 12px 0;font-size:22px;color:#111827;">📊 Résultat du quiz</h1>
+                    <p style="margin:0;color:#4b5563;font-size:15px;line-height:1.6;">
+                      Bonjour {parent_name},<br/>
+                      Le quiz <strong>"{quiz_title}"</strong> de <strong>{child_name}</strong> a été corrigé.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:24px;">
+                    <div style="background:{note_bg};border:2px solid {note_border};padding:16px;border-radius:10px;text-align:center;margin-bottom:16px;">
+                      <p style="margin:0;color:#374151;font-size:14px;font-weight:600;">Note de {child_name}</p>
+                      <p style="margin:8px 0 0 0;color:{note_color};font-size:32px;font-weight:700;">{note_formatted}</p>
+                    </div>
+                    {commentaire_html}
+                    {f'''<div style="margin:20px 0;text-align:center;">
+                      <a href="{correction_url}" style="display:inline-block;background:#2563eb;color:#ffffff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;">📖 Voir le quiz</a>
+                    </div>''' if correction_url else ''}
+                    <p style="margin:16px 0 0 0;color:#6b7280;font-size:14px;line-height:1.6;">
+                      Vous pouvez suivre la progression de votre enfant dans votre espace parent.
+                    </p>
+                    <p style="margin:16px 0 0 0;color:#6b7280;font-size:14px;line-height:1.6;">
+                      L'équipe OptiTAB
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+        """
+
+        try:
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[parent.email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+            logger.info(f"Email de notation de quiz envoyé au parent {parent.email} pour {child.email}")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur envoi email de notation au parent {parent.email}: {e}")
             return False
 
     @staticmethod

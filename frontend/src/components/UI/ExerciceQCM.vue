@@ -30,11 +30,8 @@
           <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
           <div class="header-slot header-slot--right">
             <div v-if="bestScore !== null" class="score-badge" :class="getScoreClass(bestScore)">
-              <span class="score-icon">🎯</span>
-              <span class="score-text">{{ bestScore.toFixed(2) }}/20</span>
-              <span v-if="attemptCount > 1" class="attempt-count" :title="`${attemptCount} tentatives`">
-                ({{ attemptCount }})
-              </span>
+              <span class="score-label">Note :</span>
+              <span class="score-value">{{ bestScore.toFixed(1) }}/20</span>
             </div>
             <button
               v-if="!readonly && current"
@@ -67,14 +64,18 @@
             <span class="tab-icon">📝</span>
             <span class="tab-label">Ex {{ idx + 1 }}</span>
           </button>
-          <!-- Onglet Solution (visible seulement si noté) -->
+          <!-- Onglet Solution (toujours visible, verrouillé si pas noté) -->
           <button 
-            v-if="isGraded && solution"
             class="tab-btn solution-tab" 
-            :class="{ 'active': activeTab === 'solution' }"
-            @click="activeTab = 'solution'"
+            :class="{ 
+              'active': activeTab === 'solution', 
+              'locked': !isGraded || !solution 
+            }"
+            @click="isGraded && solution ? activeTab = 'solution' : null"
+            :disabled="!isGraded || !solution"
+            :title="!isGraded || !solution ? 'Solution disponible après notation par un professeur' : ''"
           >
-            <span class="tab-icon">✅</span>
+            <span class="tab-icon">{{ isGraded && solution ? '✅' : '🔒' }}</span>
             <span class="tab-label">Solution</span>
           </button>
         </template>
@@ -129,7 +130,6 @@
         <!-- Solution Tab (pour exercices multiples, visible si noté) -->
         <div v-show="activeTab === 'solution'" class="content-section solution-section-tab" v-if="isGraded && solution">
           <div class="content-wrapper solution-wrapper">
-            <div class="solution-tab-header">📖 Correction complète du quiz</div>
             <div class="solution-tab-content" v-html="renderSolutionContent(solution)" @click="handleImageClick"></div>
           </div>
         </div>
@@ -356,6 +356,10 @@ const props = defineProps({
   isGraded: {
     type: Boolean,
     default: false
+  },
+  initialTab: {
+    type: String,
+    default: null
   }
 })
 
@@ -370,7 +374,11 @@ const showSolution = ref(false)
 const exerciceImages = ref([])
 const showImageModal = ref(false)
 const selectedImage = ref(null)
-const activeTab = ref(props.exercicesList && props.exercicesList.length > 0 ? 'ex0' : 'problem')
+const activeTab = ref(
+  props.initialTab && props.isGraded && props.solution && props.initialTab === 'solution' 
+    ? 'solution' 
+    : (props.exercicesList && props.exercicesList.length > 0 ? 'ex0' : 'problem')
+)
 const hasReportedIssue = ref(false)
 const showReportModal = ref(false)
 const sendingReport = ref(false)
@@ -1021,53 +1029,49 @@ watch(activeTab, () => {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  border-radius: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
   font-weight: 600;
   font-size: 0.9rem;
   line-height: 1;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid currentColor;
   transition: all 0.2s ease;
 }
 
-.score-badge:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.score-icon {
-  font-size: 1rem;
-}
-
-.score-text {
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
-}
-
-.attempt-count {
-  font-size: 0.75rem;
-  opacity: 0.8;
+.score-label {
+  font-size: 0.85rem;
   font-weight: 500;
+  opacity: 0.9;
+}
+
+.score-value {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 
 .score-excellent {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
+  background: #ecfdf5;
+  color: #059669;
+  border-color: #10b981;
 }
 
 .score-good {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white;
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: #3b82f6;
 }
 
 .score-average {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: white;
+  background: #fef3c7;
+  color: #d97706;
+  border-color: #f59e0b;
 }
 
 .score-needs-work {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #ef4444;
 }
 
 .difficulty-indicator {
@@ -1168,6 +1172,18 @@ watch(activeTab, () => {
   color: #059669;
   border-bottom-color: #059669;
   background: #f0fdf4;
+}
+
+/* Onglet Solution verrouillé */
+.tab-btn.solution-tab.locked {
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.tab-btn.solution-tab.locked:hover {
+  background: transparent;
+  color: #9ca3af;
 }
 
 .tab-icon {

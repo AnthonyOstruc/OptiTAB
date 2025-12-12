@@ -79,6 +79,7 @@ class QuizSubmission(BaseModel):
         ordering = ['-date_creation']
         verbose_name = "Soumission de quiz"
         verbose_name_plural = "Soumissions de quiz"
+        unique_together = [['user', 'quiz']]
     
     def __str__(self):
         return f"{self.user.email} - {self.quiz.titre} - {self.get_status_display()}"

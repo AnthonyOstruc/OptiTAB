@@ -255,6 +255,96 @@ class EmailService:
         email.send(fail_silently=False)
 
     @staticmethod
+    def send_gift_subscription_notification(recipient, gifter, plan, niveau=None):
+        """Envoie une notification à un élève lorsqu'un parent lui offre un abonnement."""
+        try:
+            first_name = (recipient.first_name or '').strip() or 'OptiTABien'
+            gifter_name = (gifter.first_name or '').strip() or 'Quelqu\'un'
+            plan_name = getattr(plan, 'name', None) or getattr(plan, 'titre', None) or 'OptiTAB Premium'
+            niveau_name = ''
+            if niveau:
+                niveau_name = getattr(niveau, 'nom', '') or ''
+                if hasattr(niveau, 'pays') and niveau.pays:
+                    pays_name = getattr(niveau.pays, 'nom', '')
+                    if pays_name:
+                        niveau_name = f"{niveau_name} ({pays_name})"
+            
+            subject = '🎁 Vous avez reçu un abonnement OptiTAB !'
+            
+            text_body = (
+                f"Bonjour {first_name},\n\n"
+                f"Bonne nouvelle ! {gifter_name} vous a offert un abonnement {plan_name} sur OptiTAB.\n\n"
+            )
+            if niveau_name:
+                text_body += f"Niveau : {niveau_name}\n\n"
+            text_body += (
+                "Votre accès premium est maintenant activé. "
+                "Connectez-vous à votre compte pour profiter de tous les cours, exercices et fonctionnalités.\n\n"
+                "À très vite sur OptiTAB !\n"
+                "L'équipe OptiTAB"
+            )
+            
+            logo_url = EmailService._resolve_logo_url()
+            frontend_url = getattr(settings, 'FRONTEND_URL', '') or 'https://www.optitab.net'
+            
+            html_body = f"""
+                <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                    <tr>
+                      <td style="padding:24px 24px 0 24px;">
+                        {f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block;margin-bottom:16px;"/>' if logo_url else ''}
+                        <div style="text-align:center;margin-bottom:20px;">
+                          <span style="font-size:48px;">🎁</span>
+                        </div>
+                        <h1 style="margin:0 0 12px 0;font-size:22px;color:#111827;text-align:center;">Vous avez reçu un cadeau !</h1>
+                        <p style="margin:0 0 16px 0;color:#4b5563;font-size:15px;line-height:1.6;text-align:center;">
+                          {gifter_name} vous a offert un abonnement <strong>{plan_name}</strong>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:0 24px 24px 24px;">
+                        <div style="background:linear-gradient(135deg,#eef2ff 0%,#e0e7ff 100%);border-radius:12px;padding:20px;margin-bottom:20px;">
+                          <p style="margin:0;color:#312e81;font-size:15px;line-height:1.6;">
+                            <strong>Votre accès premium est activé</strong><br/>
+                            Profitez de tous les cours, exercices corrigés et fonctionnalités avancées.
+                          </p>
+                          {f'<p style="margin:12px 0 0 0;color:#4338ca;font-size:14px;"><strong>Niveau :</strong> {niveau_name}</p>' if niveau_name else ''}
+                        </div>
+                        <div style="text-align:center;">
+                          <a href="{frontend_url}/dashboard" style="display:inline-block;background:#4f46e5;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:10px;font-size:15px;">
+                            Accéder à mon espace
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:16px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;">
+                        <p style="margin:0;color:#6b7280;font-size:13px;line-height:1.6;text-align:center;">
+                          Merci de faire confiance à OptiTAB pour réussir en maths !
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+            """
+            
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[recipient.email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+            
+            logger.info(f"Email cadeau abonnement envoyé à {recipient.email}")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur envoi email cadeau abonnement à {recipient.email}: {e}")
+            return False
+
+    @staticmethod
     def send_quiz_grade_notification(user, quiz_title, note, commentaire='', notion_id=None):
         """Envoie une notification par email lorsqu'un quiz est noté"""
         from django.conf import settings

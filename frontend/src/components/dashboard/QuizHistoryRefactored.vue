@@ -1193,6 +1193,30 @@ defineExpose({
 /* ─────────────────────────────────────────────────────────────────
    Responsive
    ───────────────────────────────────────────────────────────────── */
+
+/* Écrans moyens (tablettes, petits écrans) */
+@media (max-width: 1024px) {
+  .summary-table {
+    overflow-x: auto;
+  }
+  
+  .summary-header,
+  .summary-row {
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 900px) {
+  /* Sur écrans moyens, basculer vers les cartes mobiles */
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+}
+
 @media (max-width: 768px) {
   .desktop-only {
     display: none !important;

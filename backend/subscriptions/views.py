@@ -527,8 +527,32 @@ class CreateCheckoutSessionView(APIView):
             # Utiliser DRF pour parser le payload JSON
             price_id = request.data.get('price_id')
             niveau_payload = request.data.get('niveau_pays_id') or request.data.get('niveau_id')
+            beneficiary_email = request.data.get('beneficiary_email')  # Email de l'élève (pour parents)
             
-            logger.info("Checkout request user=%s niveau=%s price=%s", request.user.id, request.data.get('niveau_pays_id'), price_id)
+            logger.info("Checkout request user=%s niveau=%s price=%s beneficiary=%s", 
+                       request.user.id, request.data.get('niveau_pays_id'), price_id, beneficiary_email)
+            
+            # Déterminer l'utilisateur bénéficiaire (l'élève ou soi-même)
+            beneficiary_user = request.user
+            payer_user = request.user
+            
+            if beneficiary_email:
+                # Vérifier que le bénéficiaire est différent du payeur
+                if beneficiary_email.strip().lower() == request.user.email.lower():
+                    return JsonResponse({
+                        'error': "Vous ne pouvez pas utiliser votre propre email comme bénéficiaire."
+                    }, status=400)
+                
+                # Chercher l'utilisateur bénéficiaire par email
+                try:
+                    beneficiary_user = User.objects.get(email__iexact=beneficiary_email.strip(), is_active=True)
+                except User.DoesNotExist:
+                    return JsonResponse({
+                        'error': f"Aucun compte actif trouvé avec l'email {beneficiary_email}. L'élève doit d'abord créer son compte OptiTAB."
+                    }, status=404)
+                
+                logger.info("User %s subscribing for beneficiary %s", payer_user.id, beneficiary_user.id)
+            
             # Récupérer le plan
             try:
                 plan = SubscriptionPlan.objects.get(stripe_price_id=price_id)
@@ -543,39 +567,47 @@ class CreateCheckoutSessionView(APIView):
                 except Niveau.DoesNotExist:
                     return JsonResponse({'error': 'Niveau sélectionné invalide'}, status=400)
             else:
-                niveau_obj = getattr(request.user, 'niveau_pays', None)
+                # Utiliser le niveau du bénéficiaire s'il existe
+                niveau_obj = getattr(beneficiary_user, 'niveau_pays', None)
 
             if not niveau_obj:
                 return JsonResponse({
                     'error': "Sélectionnez votre niveau scolaire pour finaliser l'abonnement."
                 }, status=400)
 
-            # Créer ou récupérer le client Stripe
-            existing_customer_id = _get_stripe_customer_id(request.user)
+            # Créer ou récupérer le client Stripe (basé sur le payeur, pas le bénéficiaire)
+            existing_customer_id = _get_stripe_customer_id(payer_user)
             if existing_customer_id:
                 customer_id = existing_customer_id
             else:
-                customer_id = _create_stripe_customer(request.user)
+                customer_id = _create_stripe_customer(payer_user)
             
             # Créer la session de checkout (abonnement récurrent ou pass unique)
             plan_mode = _resolve_plan_mode(plan)
             is_subscription = (plan_mode == 'subscription')
 
+            # Vérifier si le BÉNÉFICIAIRE a déjà un abonnement pour ce niveau
             if plan_mode == 'subscription':
                 has_level_subscription = UserSubscription.objects.filter(
-                    user=request.user,
+                    user=beneficiary_user,
                     niveau_pays=niveau_obj
                 ).filter(
                     models.Q(status__in=['active', 'trialing']) |
                     models.Q(cancel_at_period_end=True, current_period_end__gt=timezone.now())
                 ).exists()
                 if has_level_subscription:
+                    if beneficiary_email:
+                        return JsonResponse({
+                            'error': f"L'élève {beneficiary_user.email} a déjà un abonnement actif pour ce niveau."
+                        }, status=400)
                     return JsonResponse({
                         'error': "Vous avez déjà un abonnement actif pour ce niveau."
                     }, status=400)
 
+            # Metadata avec info sur le bénéficiaire
             metadata = {
-                'user_id': request.user.id,
+                'user_id': str(beneficiary_user.id),  # L'abonnement est pour le bénéficiaire
+                'payer_user_id': str(payer_user.id),  # Info sur qui a payé
                 'plan_id': plan.id,
                 'plan_mode': plan_mode,
                 'niveau_pays_id': str(niveau_obj.id),
@@ -583,6 +615,11 @@ class CreateCheckoutSessionView(APIView):
                 'niveau_label': _format_level_label_from_obj(niveau_obj),
                 'access_days': str(plan.access_days or ''),
             }
+            
+            # Ajouter l'info de souscription parent → enfant si applicable
+            if beneficiary_email:
+                metadata['is_gift'] = 'true'
+                metadata['beneficiary_email'] = beneficiary_user.email
 
             create_kwargs = dict(
                 customer=customer_id,
@@ -1156,8 +1193,15 @@ class CheckoutSessionStatusView(APIView):
 
         metadata = session.get('metadata') or {}
         session_user_id = metadata.get('user_id')
-        if session_user_id:
-            if str(session_user_id) != str(request.user.id):
+        payer_user_id = metadata.get('payer_user_id')  # Pour les achats parent → enfant
+        
+        # Vérifier que la session appartient à l'utilisateur (soit comme bénéficiaire, soit comme payeur)
+        if session_user_id or payer_user_id:
+            current_user_id = str(request.user.id)
+            is_beneficiary = str(session_user_id) == current_user_id if session_user_id else False
+            is_payer = str(payer_user_id) == current_user_id if payer_user_id else False
+            
+            if not is_beneficiary and not is_payer:
                 return JsonResponse({'detail': 'Cette session ne correspond pas à votre compte'}, status=403)
         else:
             customer_email = (session.get('customer_details') or {}).get('email')
@@ -1894,9 +1938,29 @@ def handle_checkout_session_completed(session):
             if updated_fields:
                 user.save(update_fields=updated_fields)
         
+        # Envoyer un email de notification à l'élève si c'est un achat parent → enfant
+        metadata = session.get('metadata', {})
+        is_gift = metadata.get('is_gift') == 'true'
+        payer_user_id = metadata.get('payer_user_id')
+        
+        if is_gift and payer_user_id:
+            try:
+                payer = User.objects.get(id=payer_user_id)
+                # Notifier l'élève qu'il a reçu un abonnement
+                EmailService.send_gift_subscription_notification(
+                    recipient=user,
+                    gifter=payer,
+                    plan=plan,
+                    niveau=niveau_obj
+                )
+                logger.info(f"Email de cadeau d'abonnement envoyé à {user.email} de la part de {payer.email}")
+            except User.DoesNotExist:
+                logger.warning(f"Payeur {payer_user_id} introuvable pour envoi email cadeau")
+            except Exception as email_exc:
+                logger.error(f"Erreur envoi email cadeau abonnement: {email_exc}")
+        
     except Exception as e:
         logger.error(f"Erreur dans handle_checkout_session_completed: {e}")
-
 
 def handle_checkout_session_payment_completed(session):
     """Gérer la completion d'une session de checkout en mode paiement unique"""
@@ -1972,6 +2036,26 @@ def handle_checkout_session_payment_completed(session):
                 updated_fields.append('pays')
             if updated_fields:
                 user.save(update_fields=updated_fields)
+        
+        # Envoyer un email de notification à l'élève si c'est un achat parent → enfant
+        is_gift = metadata.get('is_gift') == 'true'
+        payer_user_id = metadata.get('payer_user_id')
+        
+        if is_gift and payer_user_id:
+            try:
+                payer = User.objects.get(id=payer_user_id)
+                # Notifier l'élève qu'il a reçu un pass
+                EmailService.send_gift_subscription_notification(
+                    recipient=user,
+                    gifter=payer,
+                    plan=plan,
+                    niveau=niveau_obj
+                )
+                logger.info(f"Email de cadeau de pass envoyé à {user.email} de la part de {payer.email}")
+            except User.DoesNotExist:
+                logger.warning(f"Payeur {payer_user_id} introuvable pour envoi email cadeau")
+            except Exception as email_exc:
+                logger.error(f"Erreur envoi email cadeau pass: {email_exc}")
     except Exception as e:
         logger.error(f"Erreur dans handle_checkout_session_payment_completed: {e}")
 

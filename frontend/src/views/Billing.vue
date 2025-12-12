@@ -63,6 +63,40 @@
         </div>
       </div>
 
+      <!-- Section pour offrir un abonnement -->
+      <div class="beneficiary-card">
+        <div class="beneficiary-toggle">
+          <label class="toggle-label">
+            <input 
+              type="checkbox" 
+              v-model="subscribeForChild"
+              class="toggle-input"
+            />
+            <span class="toggle-switch"></span>
+            <div class="toggle-content">
+              <span class="toggle-title">Offrir cet abonnement à quelqu'un d'autre</span>
+              <span class="toggle-subtitle">Souscrire pour un enfant, proche ou élève</span>
+            </div>
+          </label>
+        </div>
+        <div v-if="subscribeForChild" class="beneficiary-form">
+          <label for="beneficiary-email">Email du bénéficiaire</label>
+          <input
+            id="beneficiary-email"
+            type="email"
+            v-model="beneficiaryEmail"
+            placeholder="email@exemple.com"
+            :class="{ 'input-error': beneficiaryEmailError }"
+          />
+          <p v-if="beneficiaryEmailError" class="error-message">
+            {{ beneficiaryEmailError }}
+          </p>
+          <p v-else class="hint-message">
+            Le bénéficiaire doit avoir un compte OptiTAB. L'abonnement sera activé sur son compte.
+          </p>
+        </div>
+      </div>
+
       <!-- Pricing Cards -->
       <div class="pricing-container">
         <div v-if="loading" class="loading-state">
@@ -247,6 +281,38 @@ const loading = ref(false)
 const submitting = ref(false)
 const subscriptionStore = useSubscriptionStore()
 const userStore = useUserStore()
+
+// Variables pour offrir un abonnement à quelqu'un d'autre
+const subscribeForChild = ref(false)
+const beneficiaryEmail = ref('')
+const beneficiaryEmailError = ref('')
+
+// Validation de l'email bénéficiaire
+const validateBeneficiaryEmail = () => {
+  beneficiaryEmailError.value = ''
+  if (!subscribeForChild.value) return true
+  
+  if (!beneficiaryEmail.value.trim()) {
+    beneficiaryEmailError.value = "L'email de l'élève est requis"
+    return false
+  }
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(beneficiaryEmail.value.trim())) {
+    beneficiaryEmailError.value = "Veuillez entrer une adresse email valide"
+    return false
+  }
+  
+  return true
+}
+
+// Réinitialiser l'email quand on désactive l'option
+watch(subscribeForChild, (newVal) => {
+  if (!newVal) {
+    beneficiaryEmail.value = ''
+    beneficiaryEmailError.value = ''
+  }
+})
 
 const niveaux = ref([])
 const niveauxLoading = ref(false)
@@ -508,9 +574,20 @@ async function subscribe(priceId) {
       alert('Ce niveau est déjà débloqué. Sélectionnez un autre niveau pour souscrire.')
       return
     }
+    
+    // Validation de l'email bénéficiaire pour les parents
+    if (subscribeForChild.value && !validateBeneficiaryEmail()) {
+      return
+    }
+    
     const payload = selectedNiveauId.value
       ? { niveau_pays_id: selectedNiveauId.value }
       : {}
+    
+    // Ajouter l'email du bénéficiaire si le parent souscrit pour un enfant
+    if (subscribeForChild.value && beneficiaryEmail.value.trim()) {
+      payload.beneficiary_email = beneficiaryEmail.value.trim()
+    }
 
     if (isCurrentPrice(priceId)) {
       alert('Vous disposez déjà de cet abonnement actif. Utilisez « Gérer mon abonnement » pour le modifier.')
@@ -716,6 +793,134 @@ async function subscribe(priceId) {
   margin-left: 0.35rem;
   font-weight: 400;
   color: #6366f1;
+}
+
+/* Beneficiary Card (Offrir un abonnement) */
+.beneficiary-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  margin: 0 auto 2rem;
+  max-width: 1200px;
+  box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08);
+}
+
+.beneficiary-toggle {
+  margin-bottom: 0;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-input {
+  display: none;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-input:checked + .toggle-switch {
+  background: #4f46e5;
+}
+
+.toggle-input:checked + .toggle-switch::after {
+  transform: translateX(20px);
+}
+
+.toggle-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.toggle-title {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.toggle-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.beneficiary-form {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.beneficiary-form label {
+  display: block;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.beneficiary-form input[type="email"] {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.beneficiary-form input[type="email"]:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.beneficiary-form input[type="email"].input-error {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+.beneficiary-form input[type="email"]::placeholder {
+  color: #9ca3af;
+}
+
+.error-message {
+  margin: 0.5rem 0 0;
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.hint-message {
+  margin: 0.5rem 0 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 
 /* Pricing Container */

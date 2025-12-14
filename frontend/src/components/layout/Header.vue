@@ -11,6 +11,9 @@
       <div v-if="isFreeResourcePage" class="mobile-free-tabs">
         <FreeResourceTabs />
       </div>
+      <div v-else-if="isCalculatorPage" class="mobile-calculator-tabs">
+        <CalculatorTabs />
+      </div>
       <MobileMenu @open-login="handleLogin" />
     </div>
   </header>
@@ -22,6 +25,7 @@ import Logo from '@/components/common/Logo.vue'
 import Navigation from '@/components/layout/Navigation.vue'
 import MobileMenu from '@/components/layout/MobileMenu.vue'
 import FreeResourceTabs from '@/components/free-content/FreeResourceTabs.vue'
+import CalculatorTabs from '@/components/calculator/CalculatorTabs.vue'
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -31,7 +35,8 @@ export default {
     Logo,
     Navigation,
     MobileMenu,
-    FreeResourceTabs
+    FreeResourceTabs,
+    CalculatorTabs
   },
   setup() {
     const { openModal } = useModalManager()
@@ -43,6 +48,7 @@ export default {
     }
 
     const isFreeResourcePage = computed(() => route.path?.startsWith('/ressources-gratuites'))
+    const isCalculatorPage = computed(() => route.path === '/calculator')
 
     // Empêcher le zoom et les gestes indésirables sur le header
     const handleTouchStart = (e) => {
@@ -95,7 +101,8 @@ export default {
     return {
       handleLogin,
       headerRef,
-      isFreeResourcePage
+      isFreeResourcePage,
+      isCalculatorPage
     }
   }
 }
@@ -160,6 +167,13 @@ export default {
   pointer-events: auto;
 }
 
+.mobile-calculator-tabs {
+  display: none;
+  flex: 1;
+  min-width: 0;
+  pointer-events: auto;
+}
+
 .header-desktop {
   display: flex;
   align-items: center;
@@ -183,6 +197,11 @@ export default {
     display: flex;
     justify-content: center;
   }
+
+  .mobile-calculator-tabs {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 @media (min-width: #{$max-width-media + 1px}) {
@@ -202,4 +221,5 @@ export default {
       .header { pointer-events: none; }
       .header-mobile, .header-desktop { pointer-events: auto; touch-action: pan-y; }
       .mobile-free-tabs { pointer-events: auto; }
+      .mobile-calculator-tabs { pointer-events: auto; }
 </style> 

@@ -63,6 +63,7 @@
       @subject-changed="handleSubjectChange"
       @search="handleSearch"
     />
+    <CalculatorTabs v-else-if="isCalculatorPage" class="header-calculator-tabs" />
     <BillingTabs v-else-if="isBillingPage" class="header-billing-tabs" />
     <router-link 
       v-else-if="isSubscriptionPage" 
@@ -90,6 +91,7 @@ import UserMenu from './UserMenu.vue'
 import ConditionalHeader from '@/components/common/ConditionalHeader.vue'
 import NotificationCenter from '@/components/notifications/NotificationCenter.vue'
 import BillingTabs from '@/components/payments/BillingTabs.vue'
+import CalculatorTabs from '@/components/calculator/CalculatorTabs.vue'
 
 // Émissions d'événements
 const emit = defineEmits(['toggle-sidebar', 'subject-changed', 'search'])
@@ -313,6 +315,17 @@ const handleLogout = () => {
   pointer-events: auto;
 }
 
+.header-calculator-tabs {
+  position: relative;
+  left: 0;
+  top: 0;
+  transform: none;
+  pointer-events: auto;
+  max-width: 700px;
+  width: auto;
+  flex: 1;
+}
+
 .header-billing-tabs {
   position: absolute;
   left: 50%;
@@ -464,6 +477,7 @@ const handleLogout = () => {
   }
   /* Mobile: placer le CTA dans le flux, centré, sans chevauchement */
   .header-billing-tabs,
+  .header-calculator-tabs,
   .header-back-button {
     position: static;
     transform: none;
@@ -473,6 +487,10 @@ const handleLogout = () => {
     justify-content: center;
     width: fit-content;
     max-width: calc(100% - 140px); /* leave space for right icons */
+  }
+
+  .header-calculator-tabs {
+    max-width: calc(100% - 100px);
   }
 
   .header-back-button {

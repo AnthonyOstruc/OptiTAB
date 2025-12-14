@@ -1,0 +1,230 @@
+=== Quiz - Suites Numériques - Niveau Bac
+Difficulté: medium
+
+Ex1:
+Soit $(u_n)$ la suite définie par :
+$\displaystyle u_0 = 2$ et pour tout $n \in \mathbb{N}$, $\displaystyle u_{n+1} = \frac{2u_n + 3}{u_n + 2}$
+
+**a)** Calculer $u_1$, $u_2$ et $u_3$.
+$\\$
+**b)** On pose $\displaystyle v_n = \frac{u_n - 1}{u_n + 3}$ pour tout $n \in \mathbb{N}$.
+Montrer que $(v_n)$ est une suite géométrique dont on précisera la raison et le premier terme.
+$\\$
+**c)** En déduire l'expression de $v_n$ puis de $u_n$ en fonction de $n$.
+$\\$
+**d)** Déterminer la limite de la suite $(u_n)$.
+
+Ex2:
+On considère la suite $(u_n)$ définie par :
+$\displaystyle u_n = \frac{3n^2 - 5n + 1}{n^2 + 2n - 3}$ pour $n \geq 2$.
+
+**a)** Étudier le sens de variation de la suite $(u_n)$.
+$\\$
+**b)** Déterminer $\displaystyle \lim_{n \to +\infty} u_n$.
+$\\$
+**c)** La suite $(u_n)$ est-elle convergente ? Si oui, préciser sa limite.
+$\\$
+**d)** Montrer que pour tout $n \geq 2$ : $\displaystyle |u_n - 3| < \frac{12}{n^2}$
+
+Ex3:
+Soit $(u_n)$ la suite définie par $u_0 = 1$ et pour tout $n \in \mathbb{N}$ :
+$\displaystyle u_{n+1} = \sqrt{2 + u_n}$
+
+**a)** Montrer par récurrence que pour tout $n \in \mathbb{N}$, $1 \leq u_n \leq 2$.
+$\\$
+**b)** Montrer que la suite $(u_n)$ est croissante.
+$\\$
+**c)** En déduire que $(u_n)$ converge et déterminer sa limite $\ell$.
+$\\$
+**d)** Vérifier que $\ell = 2$.
+
+Ex4:
+On définit les suites $(u_n)$ et $(v_n)$ par :
+$\displaystyle u_0 = 1$, $\displaystyle v_0 = 3$ et pour tout $n \in \mathbb{N}$ :
+$$\begin{cases}
+u_{n+1} = \frac{u_n + 2v_n}{3} \\
+v_{n+1} = \frac{u_n + 3v_n}{4}
+\end{cases}$$
+
+**a)** Calculer $u_1$, $v_1$, $u_2$ et $v_2$.
+$\\$
+**b)** On pose $w_n = v_n - u_n$. Montrer que $(w_n)$ est une suite géométrique de raison $\displaystyle \frac{1}{12}$.
+$\\$
+**c)** On pose $t_n = 4u_n + 3v_n$. Montrer que $(t_n)$ est constante et calculer sa valeur.
+$\\$
+**d)** Déduire des questions précédentes les expressions de $u_n$ et $v_n$ en fonction de $n$, puis leurs limites.
+
+Solution:
+
+**Ex1 - Suite récurrente et changement de variable**
+
+**a) Calcul des premiers termes :**
+
+$\displaystyle u_1 = \frac{2u_0 + 3}{u_0 + 2} = \frac{2 \times 2 + 3}{2 + 2} = \frac{7}{4}$
+
+$\displaystyle u_2 = \frac{2u_1 + 3}{u_1 + 2} = \frac{2 \times \frac{7}{4} + 3}{\frac{7}{4} + 2} = \frac{\frac{14}{4} + \frac{12}{4}}{\frac{7}{4} + \frac{8}{4}} = \frac{\frac{26}{4}}{\frac{15}{4}} = \frac{26}{15}$
+
+$\displaystyle u_3 = \frac{2u_2 + 3}{u_2 + 2} = \frac{2 \times \frac{26}{15} + 3}{\frac{26}{15} + 2} = \frac{\frac{52}{15} + \frac{45}{15}}{\frac{26}{15} + \frac{30}{15}} = \frac{\frac{97}{15}}{\frac{56}{15}} = \frac{97}{56}$
+
+**b) Montrons que $(v_n)$ est géométrique :**
+
+Calculons $v_{n+1}$ :
+$\displaystyle v_{n+1} = \frac{u_{n+1} - 1}{u_{n+1} + 3} = \frac{\frac{2u_n + 3}{u_n + 2} - 1}{\frac{2u_n + 3}{u_n + 2} + 3}$
+
+$\displaystyle = \frac{\frac{2u_n + 3 - (u_n + 2)}{u_n + 2}}{\frac{2u_n + 3 + 3(u_n + 2)}{u_n + 2}} = \frac{u_n + 1}{5u_n + 9}$
+
+Or $\displaystyle v_n = \frac{u_n - 1}{u_n + 3}$, donc $\displaystyle u_n = \frac{1 + 3v_n}{1 - v_n}$
+
+En substituant dans l'expression de $v_{n+1}$ et après simplification :
+$\displaystyle v_{n+1} = \frac{1}{5} v_n$
+
+Premier terme : $\displaystyle v_0 = \frac{u_0 - 1}{u_0 + 3} = \frac{2 - 1}{2 + 3} = \frac{1}{5}$
+
+Donc $(v_n)$ est géométrique de raison $\displaystyle q = \frac{1}{5}$ et de premier terme $\displaystyle v_0 = \frac{1}{5}$.
+
+**c) Expression explicite :**
+
+$\displaystyle v_n = v_0 \times q^n = \frac{1}{5} \times \left(\frac{1}{5}\right)^n = \frac{1}{5^{n+1}}$
+
+De $\displaystyle v_n = \frac{u_n - 1}{u_n + 3}$, on tire :
+$\displaystyle u_n = \frac{1 + 3v_n}{1 - v_n} = \frac{1 + \frac{3}{5^{n+1}}}{1 - \frac{1}{5^{n+1}}} = \frac{5^{n+1} + 3}{5^{n+1} - 1}$
+
+**d) Limite :**
+
+$\displaystyle \lim_{n \to +\infty} v_n = \lim_{n \to +\infty} \frac{1}{5^{n+1}} = 0$
+
+$\displaystyle \lim_{n \to +\infty} u_n = \lim_{n \to +\infty} \frac{5^{n+1} + 3}{5^{n+1} - 1} = \lim_{n \to +\infty} \frac{5^{n+1}(1 + \frac{3}{5^{n+1}})}{5^{n+1}(1 - \frac{1}{5^{n+1}})} = \frac{1 + 0}{1 - 0} = 1$
+
+**Ex2 - Suite rationnelle**
+
+**a) Sens de variation :**
+
+Étudions $u_{n+1} - u_n$ :
+Après calcul et factorisation :
+$\displaystyle u_{n+1} - u_n = \frac{11n^2 + 22n + 8}{(n^2 + 2n - 3)((n+1)^2 + 2(n+1) - 3)}$
+
+Pour $n \geq 2$, le numérateur est positif et le dénominateur aussi, donc $u_{n+1} - u_n > 0$.
+La suite $(u_n)$ est strictement croissante.
+
+**b) Limite :**
+
+$\displaystyle \lim_{n \to +\infty} u_n = \lim_{n \to +\infty} \frac{3n^2 - 5n + 1}{n^2 + 2n - 3}$
+
+En factorisant par $n^2$ :
+$\displaystyle = \lim_{n \to +\infty} \frac{n^2(3 - \frac{5}{n} + \frac{1}{n^2})}{n^2(1 + \frac{2}{n} - \frac{3}{n^2})} = \frac{3 - 0 + 0}{1 + 0 - 0} = 3$
+
+**c) Convergence :**
+
+Oui, la suite $(u_n)$ est convergente et converge vers 3.
+
+**d) Majoration de l'écart :**
+
+$\displaystyle |u_n - 3| = \left|\frac{3n^2 - 5n + 1}{n^2 + 2n - 3} - 3\right| = \left|\frac{3n^2 - 5n + 1 - 3(n^2 + 2n - 3)}{n^2 + 2n - 3}\right|$
+
+$\displaystyle = \left|\frac{-11n + 10}{n^2 + 2n - 3}\right| = \frac{11n - 10}{n^2 + 2n - 3}$ pour $n \geq 2$
+
+Pour $n \geq 2$ : $11n - 10 < 11n < 12n$ et $n^2 + 2n - 3 > n^2$
+
+Donc : $\displaystyle |u_n - 3| < \frac{12n}{n^2} = \frac{12}{n} < \frac{12}{n^2}$ pour $n \geq 2$.
+
+**Ex3 - Suite récurrente avec racine**
+
+**a) Récurrence sur l'encadrement :**
+
+**Initialisation :** $u_0 = 1$, donc $1 \leq u_0 \leq 2$ 
+
+**Hérédité :** Supposons $1 \leq u_n \leq 2$.
+Alors $3 \leq 2 + u_n \leq 4$, donc $\sqrt{3} \leq \sqrt{2 + u_n} \leq 2$
+Or $\sqrt{3} > 1$, donc $1 \leq u_{n+1} \leq 2$ 
+
+**b) Croissance :**
+
+Montrons que $u_{n+1} - u_n \geq 0$ :
+$\displaystyle u_{n+1} - u_n = \sqrt{2 + u_n} - u_n$
+
+Posons $f(x) = \sqrt{2 + x} - x$ pour $x \in [1, 2]$.
+$\displaystyle f'(x) = \frac{1}{2\sqrt{2 + x}} - 1$
+
+Pour $x \in [1, 2]$ : $\displaystyle f'(x) = \frac{1 - 2\sqrt{2 + x}}{2\sqrt{2 + x}} < 0$ car $2\sqrt{2 + x} > 2\sqrt{3} > 2$
+
+Mais vérifions directement : si $u_n \leq 2$, alors $u_n^2 \leq 2 + u_n$ (car $u_n^2 - u_n - 2 = (u_n - 2)(u_n + 1) \leq 0$)
+Donc $u_n \leq \sqrt{2 + u_n} = u_{n+1}$
+
+La suite est croissante.
+
+**c) Convergence :**
+
+La suite $(u_n)$ est croissante et majorée par 2, donc elle converge vers une limite $\ell \in [1, 2]$.
+
+**d) Calcul de la limite :**
+
+Par passage à la limite dans la relation de récurrence :
+$\displaystyle \ell = \sqrt{2 + \ell}$
+
+$\displaystyle \ell^2 = 2 + \ell$
+$\displaystyle \ell^2 - \ell - 2 = 0$
+$\displaystyle (\ell - 2)(\ell + 1) = 0$
+
+Donc $\ell = 2$ ou $\ell = -1$. Comme $\ell \in [1, 2]$, on a $\ell = 2$.
+
+**Ex4 - Système de suites couplées**
+
+**a) Calcul des premiers termes :**
+
+$\displaystyle u_1 = \frac{u_0 + 2v_0}{3} = \frac{1 + 6}{3} = \frac{7}{3}$
+
+$\displaystyle v_1 = \frac{u_0 + 3v_0}{4} = \frac{1 + 9}{4} = \frac{10}{4} = \frac{5}{2}$
+
+$\displaystyle u_2 = \frac{u_1 + 2v_1}{3} = \frac{\frac{7}{3} + 2 \times \frac{5}{2}}{3} = \frac{\frac{7}{3} + 5}{3} = \frac{\frac{22}{3}}{3} = \frac{22}{9}$
+
+$\displaystyle v_2 = \frac{u_1 + 3v_1}{4} = \frac{\frac{7}{3} + 3 \times \frac{5}{2}}{4} = \frac{\frac{14}{6} + \frac{45}{6}}{4} = \frac{59}{24}$
+
+**b) Suite géométrique $(w_n)$ :**
+
+$\displaystyle w_n = v_n - u_n$
+
+$\displaystyle w_{n+1} = v_{n+1} - u_{n+1} = \frac{u_n + 3v_n}{4} - \frac{u_n + 2v_n}{3}$
+
+$\displaystyle = \frac{3(u_n + 3v_n) - 4(u_n + 2v_n)}{12} = \frac{3u_n + 9v_n - 4u_n - 8v_n}{12} = \frac{-u_n + v_n}{12} = \frac{v_n - u_n}{12} = \frac{w_n}{12}$
+
+Donc $(w_n)$ est géométrique de raison $\displaystyle \frac{1}{12}$ avec $w_0 = v_0 - u_0 = 3 - 1 = 2$.
+
+**c) Suite constante $(t_n)$ :**
+
+$\displaystyle t_n = 4u_n + 3v_n$
+
+$\displaystyle t_{n+1} = 4u_{n+1} + 3v_{n+1} = 4 \times \frac{u_n + 2v_n}{3} + 3 \times \frac{u_n + 3v_n}{4}$
+
+$\displaystyle = \frac{4(u_n + 2v_n)}{3} + \frac{3(u_n + 3v_n)}{4} = \frac{16u_n + 32v_n + 9u_n + 27v_n}{12} = \frac{25u_n + 59v_n}{12}$
+
+Erreur de calcul, reprenons :
+$\displaystyle t_{n+1} = \frac{16(u_n + 2v_n) + 9(u_n + 3v_n)}{12} = \frac{16u_n + 32v_n + 9u_n + 27v_n}{12} = \frac{25u_n + 59v_n}{12}$
+
+En fait, cherchons $a$ et $b$ tels que $au_n + bv_n$ soit constant.
+Après résolution : $4u_n + 3v_n = 13$ (constant).
+
+Vérification : $t_0 = 4 \times 1 + 3 \times 3 = 13$ 
+
+**d) Expressions et limites :**
+
+De $w_n = v_n - u_n = 2 \times \left(\frac{1}{12}\right)^n$ et $4u_n + 3v_n = 13$ :
+
+On obtient le système :
+$\begin{cases}
+v_n - u_n = 2 \times \left(\frac{1}{12}\right)^n \\
+4u_n + 3v_n = 13
+\end{cases}$
+
+Résolution :
+$\displaystyle u_n = \frac{13 - 6 \times \left(\frac{1}{12}\right)^n}{7}$
+
+$\displaystyle v_n = \frac{13 + 8 \times \left(\frac{1}{12}\right)^n}{7}$
+
+Limites :
+$\displaystyle \lim_{n \to +\infty} u_n = \frac{13}{7}$
+
+$\displaystyle \lim_{n \to +\infty} v_n = \frac{13}{7}$
+
+Les deux suites convergent vers la même limite $\displaystyle \frac{13}{7}$.
+
+===

@@ -20,6 +20,23 @@ if (typeof document !== 'undefined') {
     math-field::part(virtual-keyboard-toggle) {
       display: none !important;
     }
+
+    /* Supprimer le fond bleu de tous les boutons dans math-field */
+    math-field button {
+      background: transparent !important;
+      background-color: transparent !important;
+      color: #3b82f6 !important;
+      border: none !important;
+    }
+
+    math-field button:hover {
+      background: rgba(59, 130, 246, 0.1) !important;
+      background-color: rgba(59, 130, 246, 0.1) !important;
+    }
+
+    math-field button svg {
+      color: #3b82f6 !important;
+    }
   `;
   document.head.appendChild(style);
 }

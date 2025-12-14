@@ -1,9 +1,9 @@
 <template>
   <nav class="navigation">
     <!-- Main navigation items on the left -->
-    <div v-if="!isFreeResourcePage" class="nav-items">
-      <div 
-        v-for="item in leftMenuItems" 
+    <div v-if="!isFreeResourcePage && !isCalculatorPage" class="nav-items">
+      <div
+        v-for="item in leftMenuItems"
         :key="item.key"
         class="nav-item cursor-pointer"
         @click="handleItemClick(item)"
@@ -13,10 +13,12 @@
       </div>
     </div>
 
-    <FreeResourceTabs v-else class="free-resource-tabs" />
+    <FreeResourceTabs v-else-if="isFreeResourcePage" class="free-resource-tabs" />
+
+    <CalculatorTabs v-else-if="isCalculatorPage" class="calculator-tabs" />
 
     <!-- Onglets de matières (centre) -->
-    <div v-if="shouldShowMatieresTab && !isFreeResourcePage" class="matieres-tabs">
+    <div v-if="shouldShowMatieresTab && !isFreeResourcePage && !isCalculatorPage" class="matieres-tabs">
       <!-- Onglets des matières sélectionnées -->
       <div class="tabs-container">
         <div 
@@ -87,6 +89,7 @@ import { useSubjectsStore } from '@/stores/subjects/index'
 import { useUserStore } from '@/stores/user'
 import { getMatieresUtilisateur } from '@/api/matieres.js'
 import FreeResourceTabs from '@/components/free-content/FreeResourceTabs.vue'
+import CalculatorTabs from '@/components/calculator/CalculatorTabs.vue'
 
 const emit = defineEmits(['open-login'])
 const router = useRouter()
@@ -101,6 +104,7 @@ const showMatieresDropdown = ref(false)
 const isLoadingMatieres = ref(false)
 
 const isFreeResourcePage = computed(() => route.path?.startsWith('/ressources-gratuites'))
+const isCalculatorPage = computed(() => route.path === '/calculator')
 
 // Left side: Main navigation items
 const leftMenuItems = computed(() => {
@@ -361,6 +365,13 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.calculator-tabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: auto;
 }
 
 .right-items {

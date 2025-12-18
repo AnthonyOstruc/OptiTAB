@@ -62,8 +62,15 @@
               </div>
               <div v-else class="functions-list">
                 <div v-for="(func, index) in graphFunctions" :key="index" class="function-item">
-                  <span class="function-color" :style="{ backgroundColor: func.color }"></span>
-                  <span class="function-expression" :ref="el => functionExpressionRefs[index] = el"></span>
+                  <input 
+                    type="color" 
+                    :value="func.color" 
+                    @input="changeColor(index, $event.target.value)"
+                    class="function-color-picker"
+                    title="Changer la couleur"
+                  />
+                  <span class="function-name">f<sub>{{ index + 1 }}</sub>(x) =</span>
+                  <span class="function-expression" :ref="el => functionExpressionRefs[index] = el" @click="editFunction(index)" style="cursor: pointer;" title="Cliquer pour modifier"></span>
                   <button @click="removeFunction(index)" class="remove-function-btn">×</button>
                 </div>
               </div>
@@ -84,6 +91,10 @@
                 <label class="checkbox-label">
                   <input type="checkbox" v-model="showTicks" />
                   Afficher les graduations
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="snapToGrid" />
+                  Accrocher aux intersections de la grille
                 </label>
               </div>
               <div class="bounds-row">
@@ -306,6 +317,34 @@
               <!-- Segments -->
               <div class="shape-section">
                 <h5 class="shape-title">Ajouter un segment</h5>
+                
+                <!-- Option 1: Relier deux points existants -->
+                <div v-if="points.length >= 2" class="segment-from-points">
+                  <p class="helper-text">Relier deux points :</p>
+                  <div class="bounds-row">
+                    <div class="bound-input">
+                      <label>Point 1 :</label>
+                      <select v-model.number="segmentPoint1Index" class="bound-field">
+                        <option v-for="(point, index) in points" :key="index" :value="index">
+                          P{{ index + 1 }} ({{ point.x }}, {{ point.y }})
+                        </option>
+                      </select>
+                    </div>
+                    <div class="bound-input">
+                      <label>Point 2 :</label>
+                      <select v-model.number="segmentPoint2Index" class="bound-field">
+                        <option v-for="(point, index) in points" :key="index" :value="index">
+                          P{{ index + 1 }} ({{ point.x }}, {{ point.y }})
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <button @click="addSegmentFromPoints" class="action-btn">Relier les points</button>
+                  <div class="divider-text">ou</div>
+                </div>
+                
+                <!-- Option 2: Saisir manuellement les coordonnées -->
+                <p class="helper-text">Saisir les coordonnées :</p>
                 <div class="bounds-row">
                   <div class="bound-input">
                     <label>x₁ :</label>
@@ -403,6 +442,22 @@
             </button>
           </div>
 
+          <!-- Message d'erreur professionnel -->
+          <div v-if="errorMessage" class="error-message-container">
+            <div class="error-message-content">
+              <svg class="error-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <div class="error-text">
+                <div class="error-title">{{ errorMessage.title }}</div>
+                <div class="error-description">{{ errorMessage.description }}</div>
+                <div v-if="errorMessage.examples" class="error-examples">{{ errorMessage.examples }}</div>
+              </div>
+            </div>
+          </div>
+
           <!-- Panneaux flottants au-dessus de l'input -->
           <div class="floating-panels">
             <!-- Champs de bornes pour les intégrales -->
@@ -494,6 +549,10 @@
                 <label class="integral-type-label">
                   <input type="checkbox" v-model="showTicks" />
                   Afficher les graduations
+                </label>
+                <label class="integral-type-label">
+                  <input type="checkbox" v-model="snapToGrid" />
+                  Accrocher aux intersections de la grille
                 </label>
               </div>
               <div class="bounds-row">
@@ -778,7 +837,37 @@
               <!-- Option pour ajouter des segments -->
               <div class="segment-option">
                 <h5 class="functions-title">Ajouter un segment</h5>
+                
+                <!-- Option 1: Relier deux points existants -->
+                <div v-if="points.length >= 2" class="segment-from-points">
+                  <p class="helper-text">Relier deux points :</p>
+                  <div class="bounds-row">
+                    <div class="bound-input">
+                      <label>Point 1 :</label>
+                      <select v-model.number="segmentPoint1Index" class="bound-field">
+                        <option v-for="(point, index) in points" :key="index" :value="index">
+                          P{{ index + 1 }} ({{ point.x }}, {{ point.y }})
+                        </option>
+                      </select>
+                    </div>
+                    <div class="bound-input">
+                      <label>Point 2 :</label>
+                      <select v-model.number="segmentPoint2Index" class="bound-field">
+                        <option v-for="(point, index) in points" :key="index" :value="index">
+                          P{{ index + 1 }} ({{ point.x }}, {{ point.y }})
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <button @click="addSegmentFromPoints" class="calculate-integral-btn" style="background: #10b981;">
+                    Relier les points
+                  </button>
+                  <div class="divider-text">ou</div>
+                </div>
+                
+                <!-- Option 2: Saisir manuellement les coordonnées -->
                 <div class="segment-controls">
+                  <p class="helper-text">Saisir les coordonnées :</p>
                   <div class="bounds-row">
                     <div class="bound-input">
                       <label for="segment-x1">Point A - x₁ :</label>
@@ -1129,12 +1218,61 @@ import { useSubjectsStore } from '@/stores/subjects/index'
 import { useUserStore } from '@/stores/user'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 
+// Import des composables calculator
+import { 
+  useGraph, 
+  useGraphShapes, 
+  useGraphAnalysis,
+  GRAPH_COLORS,
+  KEYBOARD_TOOLS,
+  createGraphLayout,
+  PLOTLY_CONFIG,
+  convertLatexToJS,
+  evaluateFunction,
+  generateFunctionData
+} from '@/composables/calculator'
+
 // Store pour les matières
 const subjectsStore = useSubjectsStore()
 const userStore = useUserStore()
 const { openModal } = useModalManager()
 const route = useRoute()
 const router = useRouter()
+
+// Initialisation des composables
+const graph = useGraph()
+const shapes = useGraphShapes()
+
+// Destructuration du composable graph pour utilisation dans le template
+const { 
+  graphContainer, 
+  functionExpressionRefs,
+  xMin, xMax, yMin, yMax, 
+  showGrid, showAxes, showTicks,
+  graphFunctions
+} = graph
+
+// Destructuration du composable shapes
+const {
+  points, segments, circles,
+  pointX, pointY,
+  segmentX1, segmentY1, segmentX2, segmentY2,
+  circleH, circleK, circleR
+} = shapes
+
+// Initialisation du composable analysis avec les refs du graph
+const analysis = useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax)
+
+// Destructuration du composable analysis
+const {
+  showIntersections, intersectionPoints, hiddenIntersections, intersectionRefs,
+  showAxisIntersections, axisIntersectionPoints, hiddenAxisIntersections,
+  verticalAsymptotes, horizontalAsymptotes,
+  showIntegralArea, integralA, integralB, integralFunc1Index, integralFunc2Index, integralResult,
+  showAreaBetweenCurves, areaCurve1Index, areaCurve2Index, areaA, areaB, areaBetweenResult,
+  showTangent, tangentFuncIndex, tangentX, tangentEquation,
+  showRoots, rootsPoints
+} = analysis
 
 const preview = ref(null)
 const mf = ref(null)
@@ -1146,7 +1284,6 @@ const formulaRefs = []
 const finalResultRef = ref(null)
 const originalExpressionRef = ref(null)
 const resultData = ref(null)
-const functionExpressionRefs = ref([])
 const placeholderRef = ref(null)
 const showSteps = ref(false)
 const showCustomKeyboard = ref(false)
@@ -1154,6 +1291,7 @@ const activeTab = ref('algebra')
 const isCalculating = ref(false)
 const selectedOperation = computed(() => route.query.operation || 'derivative')
 const hasCalculated = ref(false)
+const errorMessage = ref(null)
 const isAuthenticated = computed(() => userStore.isAuthenticated)
 const layoutComponent = computed(() => isAuthenticated.value ? DashboardLayout : MainLayout)
 const layoutListeners = computed(() => isAuthenticated.value ? { 'subject-changed': handleSubjectChange } : {})
@@ -1171,67 +1309,23 @@ const isDefiniteIntegral = ref(false)
 const limitPoint = ref('')
 const limitDirection = ref('')
 
-// Variables pour le graphique
-const graphContainer = ref(null)
-const xMin = ref(-10)
-const xMax = ref(10)
-const yMin = ref(-10)
-const yMax = ref(10)
-const graphFunctions = ref([])
-const currentGraphColor = ref('#3b82f6')
-const verticalAsymptotes = ref('')
-const horizontalAsymptotes = ref('')
-const showIntersections = ref(false)
-const showAxisIntersections = ref(false)
-const intersectionPoints = ref([])
-const axisIntersectionPoints = ref([])
-const intersectionRefs = ref([])
-const hiddenIntersections = ref([])
-const hiddenAxisIntersections = ref([])
-const showIntegralArea = ref(false)
-const integralA = ref(0)
-const integralB = ref(1)
-const integralFunc1Index = ref(0)
-const integralFunc2Index = ref(-1)
-const integralResult = ref(null)
-const showAreaBetweenCurves = ref(false)
-const areaCurve1Index = ref(0)
-const areaCurve2Index = ref(1)
-const areaA = ref(null)
-const areaB = ref(null)
-const areaBetweenResult = ref(null)
-const showTangent = ref(false)
-const tangentFuncIndex = ref(0)
-const tangentX = ref(0)
-const tangentEquation = ref('')
-const showRoots = ref(false)
-const rootsPoints = ref([])
-const circles = ref([])
-const circleH = ref(0)
-const circleK = ref(0)
-const circleR = ref(1)
-
-// Variables pour l'affichage de la grille et des axes
-const showGrid = ref(true)
-const showAxes = ref(true)
-const showTicks = ref(true)
-
-// Variables pour les points
-const points = ref([])
-const pointX = ref(0)
-const pointY = ref(0)
-
-// Variables pour les segments
-const segments = ref([])
-const segmentX1 = ref(0)
-const segmentY1 = ref(0)
-const segmentX2 = ref(1)
-const segmentY2 = ref(1)
-
 // Variable pour afficher/masquer le panneau d'options
 const showGraphOptions = ref(false)
 const activeSection = ref('')
 const activeGraphTab = ref('functions')
+
+// Mode snap to grid pour les points
+const snapToGrid = ref(true)
+
+// Sélection de points pour créer des segments
+const segmentPoint1Index = ref(0)
+const segmentPoint2Index = ref(1)
+
+// Outils pour le clavier personnalisé (depuis la config)
+const algebraTools = KEYBOARD_TOOLS.algebra
+const trigonometryTools = KEYBOARD_TOOLS.trigonometry
+const exponentialTools = KEYBOARD_TOOLS.exponential
+const specialFunctions = KEYBOARD_TOOLS.special
 
 // Configuration des opérations disponibles
 const operations = [
@@ -1277,51 +1371,6 @@ const operations = [
 const selectedSubject = subjectsStore.selectedSubject
 const subjects = subjectsStore.subjects
 
-// Outils pour le clavier personnalisé
-const algebraTools = [
-  { label: '', slot: 'fraction', insert: '\\frac' },
-  { label: '', slot: 'sqrt', insert: '\\sqrt{}' },
-  { label: '', slot: 'nsqrt', insert: '\\sqrt[n]{}' },
-  { label: '', slot: 'exposant', insert: '^\\square' },
-  { label: 'ln', insert: '\\ln(' },
-  { label: '', slot: 'exp', insert: '\\exp(' }
-]
-
-const trigonometryTools = [
-  { label: 'sin', insert: '\\sin(' },
-  { label: 'cos', insert: '\\cos(' },
-  { label: 'tan', insert: '\\tan(' },
-  { label: 'csc', insert: '\\csc(' },
-  { label: 'sec', insert: '\\sec(' },
-  { label: 'cot', insert: '\\cot(' },
-  { label: 'arcsin', insert: '\\arcsin(' },
-  { label: 'arccos', insert: '\\arccos(' },
-  { label: 'arctan', insert: '\\arctan(' }
-]
-
-const exponentialTools = [
-  { label: 'exp', insert: '\\exp(' },
-  { label: 'ln', insert: '\\ln(' },
-  { label: 'log', insert: '\\log(' },
-  { label: 'log₁₀', insert: '\\log_{10}(' },
-  { label: 'log₂', insert: '\\log_{2}(' },
-  { label: 'e^x', insert: 'e^{' },
-  { label: '10^x', insert: '10^{' },
-  { label: '2^x', insert: '2^{' }
-]
-
-const specialFunctions = [
-  { label: '|x|', insert: '\\left|' },
-  { label: '√', insert: '\\sqrt{' },
-  { label: '∛', insert: '\\sqrt[3]{' },
-  { label: 'ⁿ√', insert: '\\sqrt[n]{' },
-  { label: 'π', insert: '\\pi' },
-  { label: 'e', insert: 'e' },
-  { label: 'sinh', insert: '\\sinh(' },
-  { label: 'cosh', insert: '\\cosh(' },
-  { label: 'tanh', insert: '\\tanh(' }
-]
-
 
 
 // Fonctions utilitaires
@@ -1358,6 +1407,7 @@ watch(selectedOperation, (newOperation, oldOperation) => {
   }
   // Initialiser le graphique si on sélectionne l'onglet graphique
   if (newOperation === 'graph') {
+    graphFunctions.value = []
     nextTick(() => {
       initializeGraph()
     })
@@ -1540,6 +1590,11 @@ onMounted(async () => {
   // Rendre le placeholder initial
   renderPlaceholder()
   
+  // Initialiser le graphique si on est sur l'opération graph
+  if (selectedOperation.value === 'graph') {
+    nextTick(() => initializeGraph())
+  }
+  
   // Gestionnaire de clic à l'extérieur pour fermer le clavier
   document.addEventListener('click', handleClickOutside)
 })
@@ -1561,6 +1616,7 @@ watch(() => selectedOperation.value, () => {
   
   // Vider le graphique si c'est l'opération graphique
   if (selectedOperation.value === 'graph') {
+    graphFunctions.value = []
     clearGraph()
     nextTick(() => initializeGraph())
   }
@@ -1901,6 +1957,80 @@ function toggleVirtualKeyboard() {
 }
 
 // Fonctions pour le graphique
+// Fonction pour isoler y dans une équation simple
+function solveForY(leftSide, rightSide) {
+  try {
+    // Remplacer les espaces
+    let left = leftSide.replace(/\s/g, '')
+    let right = rightSide.replace(/\s/g, '')
+    
+    // Cas 1: y est seul à gauche (y = ...)
+    if (left === 'y') {
+      return right
+    }
+    
+    // Cas 2: y est seul à droite (... = y)
+    if (right === 'y') {
+      return left
+    }
+    
+    // Cas 3: Équations linéaires simples comme y+2x=0 ou 2x+y=3
+    // On cherche y isolé ou avec un coefficient
+    
+    // Si y est à gauche
+    if (left.includes('y')) {
+      // Déplacer tout ce qui n'est pas y vers la droite
+      // Pattern: y + terme ou y - terme ou terme + y ou terme - y
+      
+      // y + terme = right  =>  y = right - terme
+      let match = left.match(/^y\+(.+)$/)
+      if (match) {
+        return `(${right})-(${match[1]})`
+      }
+      
+      // y - terme = right  =>  y = right + terme
+      match = left.match(/^y-(.+)$/)
+      if (match) {
+        return `(${right})+(${match[1]})`
+      }
+      
+      // terme + y = right  =>  y = right - terme
+      match = left.match(/^(.+)\+y$/)
+      if (match) {
+        return `(${right})-(${match[1]})`
+      }
+      
+      // terme - y = right  =>  y = terme - right
+      match = left.match(/^(.+)-y$/)
+      if (match) {
+        return `(${match[1]})-(${right})`
+      }
+      
+      // coef*y = right  =>  y = right / coef
+      match = left.match(/^([\-\d\.]*)\*?y$/)
+      if (match && match[1]) {
+        const coef = match[1] === '-' ? '-1' : match[1]
+        return `(${right})/(${coef})`
+      }
+      
+      // Si y est le seul terme
+      if (left === 'y') {
+        return right
+      }
+    }
+    
+    // Si y est à droite, inverser
+    if (right.includes('y')) {
+      return solveForY(right, left)
+    }
+    
+    return null
+  } catch (error) {
+    console.error('Erreur solveForY:', error)
+    return null
+  }
+}
+
 async function plotFunction() {
   if (!mf.value?.value || !mf.value.value.trim()) {
     if (preview.value) {
@@ -1910,29 +2040,98 @@ async function plotFunction() {
   }
 
   try {
-    const expression = mf.value.value
+    let rawExpression = mf.value.value.trim()
     const color = getNextColor()
+    
+    // Nettoyer l'expression : remplacer les espaces multiples
+    rawExpression = rawExpression.replace(/\s+/g, ' ')
+    
+    // Vérifier qu'il n'y a pas de variables autres que x et y
+    // Créer une copie pour l'analyse
+    let testExpression = rawExpression
+      // Retirer les commandes LaTeX courantes
+      .replace(/\\(sin|cos|tan|ln|log|exp|sqrt|frac|left|right|vert|pi|abs)/g, '')
+      .replace(/\\[a-zA-Z]+/g, '') // Retirer toutes les autres commandes LaTeX
+      .replace(/Math\.[a-zA-Z]+/g, '') // Retirer Math.xxx
+      .replace(/\d+(\.\d+)?/g, '') // Retirer les nombres (entiers et décimaux)
+      .replace(/[+\-*/^()={}[\]|.\s,]/g, '') // Retirer les opérateurs et symboles
+    
+    // Trouver toutes les lettres qui restent (ce sont des variables potentielles)
+    const variables = testExpression.match(/[a-zA-Z]/g) || []
+    
+    // Filtrer pour garder uniquement les variables invalides (ni x, ni y, ni e)
+    const invalidVars = variables.filter(v => v !== 'x' && v !== 'y' && v !== 'e')
+    
+    // Si on trouve des variables invalides, afficher un avertissement
+    if (invalidVars.length > 0) {
+      const uniqueInvalidVars = [...new Set(invalidVars)].join(', ')
+      
+      // Afficher un message d'erreur professionnel
+      errorMessage.value = {
+        title: `Variable(s) non autorisée(s) : "${uniqueInvalidVars}"`,
+        description: 'Pour tracer un graphique, utilisez uniquement les variables x et/ou y.',
+        examples: 'Exemples : y = 2x + 3, x² + 3, y + 2x = 0'
+      }
+      
+      return
+    }
+    
+    // Effacer le message d'erreur si tout est OK
+    errorMessage.value = null
+    
+    let processedExpression = rawExpression
+    let displayExpression = rawExpression
     
     // Détecter si c'est une droite verticale (x=nombre) ou horizontale (y=nombre)
     let type = 'function'
     let value = null
     
-    const verticalMatch = expression.match(/^x\s*=\s*([\-\d\.]+)$/)
-    const horizontalMatch = expression.match(/^y\s*=\s*([\-\d\.]+)$/)
+    const verticalMatch = rawExpression.match(/^x\s*=\s*([\-\d\.]+)$/)
+    const horizontalMatch = rawExpression.match(/^y\s*=\s*([\-\d\.]+)$/)
     
     if (verticalMatch) {
       type = 'vertical'
       value = parseFloat(verticalMatch[1])
+      processedExpression = rawExpression
     } else if (horizontalMatch) {
       type = 'horizontal'
       value = parseFloat(horizontalMatch[1])
+      processedExpression = rawExpression
+    } else {
+      // Gérer les équations avec y = ...
+      const yEqualsMatch = rawExpression.match(/^y\s*=\s*(.+)$/)
+      if (yEqualsMatch) {
+        // Si l'utilisateur écrit y = x^2+3, on prend juste x^2+3
+        processedExpression = yEqualsMatch[1].trim()
+        displayExpression = rawExpression // Garder y = pour l'affichage
+      } else {
+        // Gérer les équations linéaires comme y+2x=0
+        const equationMatch = rawExpression.match(/^(.+?)=(.+?)$/)
+        if (equationMatch) {
+          const leftSide = equationMatch[1].trim()
+          const rightSide = equationMatch[2].trim()
+          
+          // Si le côté gauche ou droit contient y
+          if (leftSide.includes('y') || rightSide.includes('y')) {
+            // Essayer d'isoler y (pour les équations linéaires)
+            processedExpression = solveForY(leftSide, rightSide)
+            if (!processedExpression) {
+              if (preview.value) {
+                preview.value.innerHTML = `<span style='color:#ef4444;font-size:0.9rem;'>Impossible de résoudre cette équation. Utilisez le format y = ...</span>`
+              }
+              return
+            }
+            displayExpression = rawExpression
+          }
+        }
+      }
     }
     
     // Ajouter la fonction à la liste
     graphFunctions.value.push({
-      expression: expression,
+      expression: displayExpression,
       color: color,
-      latex: expression,
+      latex: processedExpression,
       type: type,
       value: value
     })
@@ -1958,8 +2157,97 @@ async function plotFunction() {
   }
 }
 
+// Gérer le clic sur le graphique pour ajouter un point
+function handleGraphClick(event) {
+  if (!graphContainer.value || !graphContainer.value._fullLayout) return
+  
+  // Ne rien faire si c'est un clic sur les boutons de la barre d'outils
+  if (event.target.closest('.modebar')) return
+  
+  const xaxis = graphContainer.value._fullLayout.xaxis
+  const yaxis = graphContainer.value._fullLayout.yaxis
+  
+  // Obtenir la position du clic par rapport au conteneur du graphique
+  const plotArea = graphContainer.value.querySelector('.plotly')
+  if (!plotArea) return
+  
+  const bb = plotArea.getBoundingClientRect()
+  
+  // Position du clic dans le conteneur
+  const xInPx = event.clientX - bb.left
+  const yInPx = event.clientY - bb.top
+  
+  // Dimensions et position de la zone de tracé
+  const plotWidth = xaxis._length
+  const plotHeight = yaxis._length
+  const plotLeft = xaxis._offset
+  const plotBottom = yaxis._offset
+  
+  // Vérifier que le clic est dans la zone de tracé
+  if (xInPx < plotLeft || xInPx > plotLeft + plotWidth || 
+      yInPx < plotBottom || yInPx > plotBottom + plotHeight) {
+    return
+  }
+  
+  // Calculer la position relative dans la zone de tracé (0 à 1)
+  const xRel = (xInPx - plotLeft) / plotWidth
+  const yRel = 1 - ((yInPx - plotBottom) / plotHeight) // Inverser Y car les pixels commencent en haut
+  
+  // Convertir en coordonnées du graphique
+  const xRange = xaxis.range[1] - xaxis.range[0]
+  const yRange = yaxis.range[1] - yaxis.range[0]
+  
+  let x = xaxis.range[0] + xRel * xRange
+  let y = yaxis.range[0] + yRel * yRange
+  
+  // Vérifier que les coordonnées sont valides
+  if (x === undefined || y === undefined || isNaN(x) || isNaN(y)) return
+  
+  // Si le mode snap to grid est activé, forcer l'accrochage à la grille
+  if (snapToGrid.value) {
+    x = Math.round(x)
+    y = Math.round(y)
+  } else {
+    // Sinon, arrondir aux intersections de la grille si proche
+    const gridX = Math.round(x)
+    const gridY = Math.round(y)
+    const snapThreshold = 0.15 // Seuil pour accrocher à la grille
+    
+    if (Math.abs(x - gridX) < snapThreshold) x = gridX
+    if (Math.abs(y - gridY) < snapThreshold) y = gridY
+    
+    // Arrondir à 2 décimales pour éviter les valeurs trop longues
+    x = Math.round(x * 100) / 100
+    y = Math.round(y * 100) / 100
+  }
+  
+  // Vérifier si ce point existe déjà
+  const existingPoint = points.value.find(
+    p => Math.abs(p.x - x) < 0.01 && Math.abs(p.y - y) < 0.01
+  )
+  
+  if (existingPoint) {
+    // Si le point existe déjà, on ne l'ajoute pas
+    return
+  }
+  
+  // Choisir une couleur différente pour chaque point (rotation dans GRAPH_COLORS)
+  const colorIndex = points.value.length % GRAPH_COLORS.length
+  const pointColor = GRAPH_COLORS[colorIndex]
+  
+  // Ajouter le point au tableau (utilise le tableau points du composable shapes)
+  points.value.push({
+    x: x,
+    y: y,
+    color: pointColor
+  })
+  
+  // Redessiner le graphique avec le nouveau point
+  plotAllFunctions()
+}
+
 function plotAllFunctions() {
-  if (!graphContainer.value || graphFunctions.value.length === 0) return
+  if (!graphContainer.value) return
 
   const traces = []
   
@@ -2000,7 +2288,7 @@ function plotAllFunctions() {
         })
       } else {
         // Fonction normale
-        const { x, y } = generateFunctionData(func.latex)
+        const { x, y } = generateFunctionData(func.latex, xMin.value, xMax.value, yMin.value, yMax.value, 3000)
         
         // Convertir l'expression LaTeX pour l'affichage dans la légende avec MathJax
         const functionLabel = `f_${index + 1}`
@@ -2076,11 +2364,11 @@ function plotAllFunctions() {
 
   const layout = {
     xaxis: {
-      title: {
+      title: showAxes.value ? {
         text: 'x',
         font: { size: 16, color: '#1e3a8a' },
         standoff: 10
-      },
+      } : { text: '' },
       range: [xMin.value, xMax.value],
       gridcolor: '#e5e7eb',
       showgrid: showGrid.value,
@@ -2092,18 +2380,20 @@ function plotAllFunctions() {
       linecolor: '#374151',
       linewidth: 2,
       mirror: false,
-      dtick: 2,
+      dtick: 1,
       showticklabels: showTicks.value,
       ticks: showTicks.value ? 'outside' : '',
+      scaleanchor: 'y',
+      scaleratio: 1,
       constrain: 'domain',
       constraintoward: 'center'
     },
     yaxis: {
-      title: {
+      title: showAxes.value ? {
         text: 'y',
         font: { size: 16, color: '#1e3a8a' },
         standoff: 10
-      },
+      } : { text: '' },
       range: [yMin.value, yMax.value],
       gridcolor: '#e5e7eb',
       showgrid: showGrid.value,
@@ -2114,12 +2404,14 @@ function plotAllFunctions() {
       showline: showAxes.value,
       linecolor: '#374151',
       linewidth: 2,
-      dtick: 2,
+      dtick: 1,
       mirror: false,
       showticklabels: showTicks.value,
-      ticks: showTicks.value ? 'outside' : ''
+      ticks: showTicks.value ? 'outside' : '',
+      constrain: 'domain',
+      constraintoward: 'center'
     },
-    annotations: [
+    annotations: showAxes.value ? [
       // Flèche pour l'axe X
       {
         x: xMax.value,
@@ -2147,8 +2439,8 @@ function plotAllFunctions() {
         showarrow: false,
         xanchor: 'left',
         yanchor: 'middle',
-        xshift: 10,
-        yshift: -15,
+        xshift: 8,
+        yshift: 0,
         font: {
           size: 16,
           color: '#1e3a8a',
@@ -2182,15 +2474,15 @@ function plotAllFunctions() {
         showarrow: false,
         xanchor: 'center',
         yanchor: 'bottom',
-        xshift: 15,
-        yshift: 5,
+        xshift: 1,
+        yshift: 8,
         font: {
           size: 16,
           color: '#1e3a8a',
           family: 'Arial, sans-serif'
         }
       }
-    ],
+    ] : [],
     plot_bgcolor: 'white',
     paper_bgcolor: 'white',
     margin: { t: 60, r: 60, b: 60, l: 80 },
@@ -2200,9 +2492,9 @@ function plotAllFunctions() {
       bgcolor: 'rgba(255, 255, 255, 0.95)',
       bordercolor: '#e5e7eb',
       borderwidth: 1,
-      x: 1.02,
+      x: 1,
       y: 1,
-      xanchor: 'left',
+      xanchor: 'right',
       yanchor: 'top',
       orientation: 'v',
       itemsizing: 'constant',
@@ -2221,13 +2513,29 @@ function plotAllFunctions() {
     modeBarButtonsToRemove: [
       'zoomIn2d','zoomOut2d','autoScale2d','zoom2d',
       'pan2d','select2d','lasso2d','resetScale2d'
-    ]
+    ],
+    toImageButtonOptions: {
+      format: 'png',
+      filename: 'graphique_optitab',
+      width: 1400,
+      height: 1000,
+      scale: 2
+    }
   }
 
   Plotly.newPlot(graphContainer.value, traces, layout, config)
     .then(() => {
       // Rerendre les expressions après le tracé
       nextTick(() => renderFunctionExpressions())
+      
+      // Retirer l'ancien écouteur s'il existe
+      if (graphContainer.value._clickListener) {
+        graphContainer.value.removeEventListener('click', graphContainer.value._clickListener)
+      }
+      
+      // Ajouter l'écouteur de clic pour ajouter des points
+      graphContainer.value._clickListener = handleGraphClick
+      graphContainer.value.addEventListener('click', handleGraphClick)
     })
     .catch((err) => {
       console.error('Erreur Plotly (plotAllFunctions):', err)
@@ -2730,354 +3038,92 @@ function renderIntersectionExpressions() {
   })
 }
 
-function generateFunctionData(latexExpression) {
-  // Convertir l'expression LaTeX en JavaScript
-  let jsExpression = convertLatexToJS(latexExpression)
-  
-  console.log('Expression LaTeX:', latexExpression)
-  console.log('Expression JS convertie:', jsExpression)
-  
-  const x = []
-  const y = []
-  const numPoints = 3000 // Augmenter significativement pour capturer les variations rapides
-  const step = (xMax.value - xMin.value) / numPoints
-  
-  // Filtrage très permissif pour voir toute la courbe même avec de grandes valeurs
-  const yLimit = Math.max(Math.abs(yMax.value), Math.abs(yMin.value)) * 100
-  
-  let lastWasValid = false
-  
-  for (let i = 0; i <= numPoints; i++) {
-    const xi = xMin.value + i * step
-    
-    const yi = evaluateFunction(jsExpression, xi)
-    
-    // Vérifier que la valeur est valide
-    if (!isNaN(yi) && isFinite(yi) && Math.abs(yi) <= yLimit) {
-      x.push(xi)
-      y.push(yi)
-      lastWasValid = true
-    } else {
-      // Si la valeur n'est pas valide et qu'on avait des points valides avant,
-      // ajouter un point null pour créer une discontinuité visible dans Plotly
-      if (lastWasValid && x.length > 0) {
-        x.push(xi)
-        y.push(null)
-        lastWasValid = false
-      }
-    }
-  }
-  
-  console.log(`Points générés: ${x.length}`)
-  if (x.length > 0) {
-    console.log('Premiers points:', x.slice(0, 5), y.slice(0, 5))
-    console.log('Derniers points:', x.slice(-5), y.slice(-5))
-  } else {
-    console.warn('⚠️ Aucun point valide généré pour:', latexExpression)
-  }
-  
-  return { x, y }
-}
+// Note: generateFunctionData, convertLatexToJS et evaluateFunction sont importés depuis @/composables/calculator
 
-function convertLatexToJS(latex) {
-  let js = String(latex || '')
-  
-  // 0) Normaliser certains tokens LaTeX
-  js = js.replace(/\\left/g, '')
-  js = js.replace(/\\right/g, '')
-  
-  // 0.5) Normaliser les signes moins (gérer le signe négatif en début d'expression ou après opérateur)
-  // Remplacer - par + et mettre le nombre suivant entre parenthèses avec le signe -
-  // Mais seulement si ce n'est pas déjà dans une fraction ou fonction
-  js = js.replace(/([+\-*/^(])[\s]*-[\s]*([a-zA-Z0-9().]+)/g, '$1(-$2)')
-  // Gérer le cas du début de l'expression
-  if (js.trim().startsWith('-')) {
-    js = '(0' + js + ')'
-  }
-  
-  // 1) Fractions avant tout (pour préserver la priorité)
-  js = js.replace(/\\frac{([^}]*)}{([^}]*)}/g, '(($1)/($2))')
-  
-  // 2) Racines (carrée et n-ième)
-  js = js.replace(/\\sqrt\[([^\]]+)\]{([^}]+)}/g, 'Math.pow($2, 1/($1))')
-  js = js.replace(/\\sqrt{([^}]+)}/g, 'Math.sqrt($1)')
-  
-  // 3) Constantes
-  js = js.replace(/\\pi\b/g, 'Math.PI')
-  js = js.replace(/\\e\b/g, 'Math.E')
-  
-  // 4) Exponentielles / Logs
-  js = js.replace(/\\exp\(([^)]+)\)/g, 'Math.exp($1)')
-  js = js.replace(/\\ln\(([^)]+)\)/g, 'Math.log($1)')
-  js = js.replace(/\\log\(([^)]+)\)/g, 'Math.log10($1)')
-  // log base b : \log_{b}(x)
-  js = js.replace(/\\log_\{([^}]+)\}\(([^)]+)\)/g, '(Math.log($2)/Math.log($1))')
-  
-  // 5) Trigonométrie (avec puissances éventuelles)
-  // sin^2(x) -> Math.pow(Math.sin(x),2)
-  const trigAll = ['sin','cos','tan','sinh','cosh','tanh','arcsin','arccos','arctan']
-  for (const fn of trigAll) {
-    const target = fn.startsWith('arc') ? 'a' + fn.slice(3) : fn
-    // D'abord gérer les puissances
-    const powRegex = new RegExp('\\\\' + fn + '\\^\\{([^}]+)\\}\\(([^)]+)\\)', 'g')
-    js = js.replace(powRegex, 'Math.pow(Math.' + target + '($2),$1)')
-    // Puis les appels simples
-    const callRegex = new RegExp('\\\\' + fn + '\\(([^)]+)\\)', 'g')
-    js = js.replace(callRegex, 'Math.' + target + '($1)')
-  }
-  
-  // Fonctions réciproques: sec, csc, cot
-  js = js.replace(/\\sec\(([^)]+)\)/g, '(1/Math.cos($1))')
-  js = js.replace(/\\csc\(([^)]+)\)/g, '(1/Math.sin($1))')
-  js = js.replace(/\\cot\(([^)]+)\)/g, '(1/Math.tan($1))')
-  
-  // Gestion spéciale pour les fonctions sans parenthèses (sin x -> sin(x))
-  js = js.replace(/\\sin\s+([a-zA-Z0-9]+)/g, 'Math.sin($1)')
-  js = js.replace(/\\cos\s+([a-zA-Z0-9]+)/g, 'Math.cos($1)')
-  js = js.replace(/\\tan\s+([a-zA-Z0-9]+)/g, 'Math.tan($1)')
-  js = js.replace(/\\ln\s+([a-zA-Z0-9]+)/g, 'Math.log($1)')
-  js = js.replace(/\\log\s+([a-zA-Z0-9]+)/g, 'Math.log10($1)')
-  js = js.replace(/\\exp\s+([a-zA-Z0-9]+)/g, 'Math.exp($1)')
-  
-  // 6) Valeur absolue (|x| ou \left|x\right|)
-  js = js.replace(/\\\|([^|]+)\\\|/g, 'Math.abs($1)')
-  js = js.replace(/Math\.abs\(([^)]+)\)\)/g, 'Math.abs($1))')
-  
-  // 7) Puissances génériques
-  js = js.replace(/\^\{([^}]+)\}/g, '**($1)')
-  js = js.replace(/\^([a-zA-Z0-9]+)/g, '**$1')
-  
-  // 8) Remplacer e isolé par Math.E (attention à ne pas toucher exp/ etc.)
-  js = js.replace(/\be\b/g, 'Math.E')
-  
-  // 9) Multiplication implicite sûre (évite d'altérer Math.sin(…))
-  // a) )(
-  js = js.replace(/\)\s*\(/g, ')*(')
-  // b) nombre ou x suivi de (
-  js = js.replace(/(\d|x)\s*\(/g, '$1*(')
-  // c) ) suivi de x ou d'une fonction Math.
-  js = js.replace(/\)\s*(x|Math\.)/g, ')*$1')
-  // d) nombre ou x suivi de Math.
-  js = js.replace(/(\d|x)\s*(Math\.)/g, '$1*$2')
-  // e) nombre et variable accolés (2x, x2)
-  js = js.replace(/(\d)(x)/g, '$1*$2')
-  js = js.replace(/(x)(\d)/g, '$1*$2')
-  
-  return js
-}
+// Utiliser getNextColor depuis le composable shapes
+const getNextColor = () => shapes.getNextColor()
 
-function evaluateFunction(expression, x) {
-  // Remplacer x par la valeur avec parenthèses pour gérer les nombres négatifs
-  let expr = expression.replace(/x/g, `(${x})`)
-  
-  // Nettoyer l'expression pour éviter les erreurs
-  expr = expr.replace(/\s+/g, '')
-  
-  // Évaluation sécurisée
-  try {
-    const result = Function('"use strict"; return (' + expr + ')')()
-    
-    // Vérifier que le résultat est valide
-    if (typeof result === 'number' && isFinite(result) && !isNaN(result)) {
-      return result
-    } else {
-      return NaN
-    }
-  } catch (error) {
-    console.warn(`Erreur d'évaluation pour x=${x}:`, error.message)
-    return NaN
-  }
-}
-
-function getNextColor() {
-  const colors = [
-    '#3b82f6', '#ef4444', '#10b981', '#f59e0b', 
-    '#8b5cf6', '#06b6d4', '#f97316', '#84cc16',
-    '#ec4899', '#6366f1', '#14b8a6', '#f43f5e'
-  ]
-  return colors[graphFunctions.value.length % colors.length]
-}
-
-// Fonctions pour gérer les cercles
+// Fonctions pour gérer les cercles - délègue au composable shapes
 function addCircle() {
-  if (circleR.value <= 0) {
-    alert('Le rayon doit être supérieur à 0')
-    return
-  }
-  
-  const color = getNextColor()
-  circles.value.push({
-    h: circleH.value,
-    k: circleK.value,
-    r: circleR.value,
-    color: color
-  })
-  
-  plotAllFunctions()
-  
-  // Réinitialiser les champs
-  circleH.value = 0
-  circleK.value = 0
-  circleR.value = 1
+  shapes.addCircle(plotAllFunctions)
 }
 
 function removeCircle(index) {
-  circles.value.splice(index, 1)
-  plotAllFunctions()
+  shapes.removeCircle(index, plotAllFunctions)
 }
 
-// Fonctions pour gérer les points
+// Fonctions pour gérer les points - délègue au composable shapes
 function addPoint() {
-  const color = getNextColor()
-  points.value.push({
-    x: pointX.value,
-    y: pointY.value,
-    color: color
-  })
-  
-  plotAllFunctions()
-  
-  // Réinitialiser les champs
-  pointX.value = 0
-  pointY.value = 0
+  shapes.addPoint(plotAllFunctions)
 }
 
 function removePoint(index) {
-  points.value.splice(index, 1)
-  plotAllFunctions()
+  shapes.removePoint(index, plotAllFunctions)
 }
 
-function drawPoints(traces) {
-  points.value.forEach((point, index) => {
-    traces.push({
-      x: [point.x],
-      y: [point.y],
-      type: 'scatter',
-      mode: 'markers',
-      marker: {
-        color: point.color,
-        size: 10,
-        symbol: 'circle',
-        line: {
-          color: 'white',
-          width: 2
-        }
-      },
-      name: `Point ${index + 1}: (${point.x}, ${point.y})`,
-      showlegend: true,
-      hovertemplate: `<b>Point ${index + 1}</b><br>(${point.x}, ${point.y})<extra></extra>`
-    })
-  })
-}
-
-// Fonctions pour gérer les segments
+// Fonctions pour gérer les segments - délègue au composable shapes
 function addSegment() {
-  const color = getNextColor()
-  segments.value.push({
-    x1: segmentX1.value,
-    y1: segmentY1.value,
-    x2: segmentX2.value,
-    y2: segmentY2.value,
-    color: color
-  })
+  shapes.addSegment(plotAllFunctions)
+}
+
+function addSegmentFromPoints() {
+  if (points.value.length < 2) return
   
-  plotAllFunctions()
+  const point1 = points.value[segmentPoint1Index.value]
+  const point2 = points.value[segmentPoint2Index.value]
   
-  // Réinitialiser les champs
-  segmentX1.value = 0
-  segmentY1.value = 0
-  segmentX2.value = 1
-  segmentY2.value = 1
+  if (!point1 || !point2 || segmentPoint1Index.value === segmentPoint2Index.value) {
+    return
+  }
+  
+  // Créer le segment en utilisant les coordonnées des points sélectionnés
+  segmentX1.value = point1.x
+  segmentY1.value = point1.y
+  segmentX2.value = point2.x
+  segmentY2.value = point2.y
+  
+  // Ajouter le segment
+  shapes.addSegment(plotAllFunctions)
 }
 
 function removeSegment(index) {
-  segments.value.splice(index, 1)
-  plotAllFunctions()
+  shapes.removeSegment(index, plotAllFunctions)
+}
+
+// Fonctions de dessin - délègue au composable shapes
+function drawPoints(traces) {
+  shapes.drawPoints(traces)
 }
 
 function drawSegments(traces) {
-  segments.value.forEach((segment, index) => {
-    // Dessiner le segment
-    traces.push({
-      x: [segment.x1, segment.x2],
-      y: [segment.y1, segment.y2],
-      type: 'scatter',
-      mode: 'lines',
-      line: {
-        color: segment.color,
-        width: 3
-      },
-      name: `Segment ${index + 1}: [AB]`,
-      showlegend: true,
-      hovertemplate: `<b>Segment ${index + 1}</b><br>De (${segment.x1}, ${segment.y1}) à (${segment.x2}, ${segment.y2})<extra></extra>`
-    })
-    
-    // Ajouter les points d'extrémité
-    traces.push({
-      x: [segment.x1, segment.x2],
-      y: [segment.y1, segment.y2],
-      type: 'scatter',
-      mode: 'markers',
-      marker: {
-        color: segment.color,
-        size: 8,
-        symbol: 'circle',
-        line: {
-          color: 'white',
-          width: 2
-        }
-      },
-      showlegend: false,
-      hovertemplate: `<b>Extrémité</b><br>(%{x}, %{y})<extra></extra>`
-    })
-  })
+  shapes.drawSegments(traces)
 }
 
 function drawCircles(traces) {
-  circles.value.forEach((circle, index) => {
-    const numPoints = 200
-    const xValues = []
-    const yValues = []
+  shapes.drawCircles(traces)
+}
+
+function editFunction(index) {
+  const func = graphFunctions.value[index]
+  if (func && mf.value) {
+    // Charger l'expression dans le champ de saisie
+    mf.value.value = func.expression
+    expressionValue.value = func.expression
     
-    // Générer les points du cercle : (x-h)² + (y-k)² = r²
-    for (let i = 0; i <= numPoints; i++) {
-      const theta = (2 * Math.PI * i) / numPoints
-      const x = circle.h + circle.r * Math.cos(theta)
-      const y = circle.k + circle.r * Math.sin(theta)
-      xValues.push(x)
-      yValues.push(y)
+    // Supprimer la fonction de la liste pour permettre la modification
+    removeFunction(index)
+    
+    // Mettre le focus sur le champ de saisie
+    nextTick(() => {
+      if (mf.value) {
+        mf.value.focus()
+      }
+    })
+    
+    if (preview.value) {
+      preview.value.innerHTML = `<span style='color:#3b82f6;font-size:0.9rem;'>Fonction chargée pour modification</span>`
     }
-    
-    traces.push({
-      x: xValues,
-      y: yValues,
-      type: 'scatter',
-      mode: 'lines',
-      line: {
-        color: circle.color,
-        width: 2
-      },
-      name: `Cercle ${index + 1}: centre(${circle.h}, ${circle.k}), r=${circle.r}`,
-      showlegend: true,
-      hovertemplate: `<b>Cercle ${index + 1}</b><br>x: %{x:.3f}<br>y: %{y:.3f}<extra></extra>`
-    })
-    
-    // Ajouter un point au centre du cercle
-    traces.push({
-      x: [circle.h],
-      y: [circle.k],
-      type: 'scatter',
-      mode: 'markers',
-      marker: {
-        color: circle.color,
-        size: 6,
-        symbol: 'circle'
-      },
-      name: `Centre (${circle.h}, ${circle.k})`,
-      showlegend: false,
-      hovertemplate: `<b>Centre du cercle ${index + 1}</b><br>(${circle.h}, ${circle.k})<extra></extra>`
-    })
-  })
+  }
 }
 
 function removeFunction(index) {
@@ -3088,6 +3134,14 @@ function removeFunction(index) {
     nextTick(() => renderFunctionExpressions())
   } else {
     clearGraph()
+    nextTick(() => initializeGraph())
+  }
+}
+
+function changeColor(index, newColor) {
+  if (graphFunctions.value[index]) {
+    graphFunctions.value[index].color = newColor
+    plotAllFunctions()
   }
 }
 
@@ -3765,76 +3819,9 @@ function initializeGraph() {
   if (selectedOperation.value === 'graph') {
     nextTick(() => {
       if (graphContainer.value) {
-        clearGraph()
-        // Dessiner une grille vide
-        const layout = {
-          title: {
-            text: 'Graphique des fonctions',
-            font: { size: 18, color: '#1e3a8a' }
-          },
-          xaxis: {
-            title: 'x',
-            range: [xMin.value, xMax.value],
-            gridcolor: '#e5e7eb',
-            zerolinecolor: '#374151',
-            zerolinewidth: 2,
-            fixedrange: true,
-            constrain: 'domain',
-            constraintoward: 'center'
-          },
-          yaxis: {
-            title: 'f(x)',
-            range: [yMin.value, yMax.value],
-            gridcolor: '#e5e7eb',
-            zerolinecolor: '#374151',
-            zerolinewidth: 2,
-            fixedrange: true,
-            scaleanchor: 'x',
-            scaleratio: 1,
-            constrain: 'domain',
-            constraintoward: 'center'
-          },
-          plot_bgcolor: '#f8fafc',
-          paper_bgcolor: 'white',
-          margin: { t: 40, r: 40, b: 40, l: 50 },
-          hovermode: 'closest',
-          legend: {
-            font: { size: 13 },
-            bgcolor: 'rgba(255, 255, 255, 0.95)',
-            bordercolor: '#e5e7eb',
-            borderwidth: 1,
-            x: 1.02,
-            y: 1,
-            xanchor: 'left',
-            yanchor: 'top',
-            orientation: 'v',
-            itemsizing: 'constant',
-            itemwidth: 30,
-            tracegroupgap: 5
-          }
-        }
-
-        const config = {
-          responsive: true,
-          displayModeBar: true,
-          displaylogo: false,
-          scrollZoom: false,
-          staticPlot: false,
-          editable: false,
-          modeBarButtonsToRemove: [
-            'zoomIn2d','zoomOut2d','autoScale2d','zoom2d',
-            'pan2d','select2d','lasso2d','resetScale2d'
-          ]
-        }
-
-        Plotly.newPlot(graphContainer.value, [], layout, config)
-          .then(() => {})
-          .catch((err) => {
-            console.error('Erreur Plotly (initializeGraph):', err)
-            if (preview.value) {
-              preview.value.innerHTML = `<span style='color:#ef4444;font-size:0.9rem;'>Erreur d'initialisation du graphique</span>`
-            }
-          })
+        // Utiliser plotAllFunctions pour garantir la même taille de graphique
+        // qu'il soit vide ou avec des fonctions
+        plotAllFunctions()
       }
     })
   }
@@ -3901,6 +3888,66 @@ function initializeGraph() {
   font-size: 0.875rem;
   font-weight: 600;
   color: #374151;
+}
+
+/* Message d'erreur professionnel */
+.error-message-container {
+  margin-top: 0.75rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-message-content {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #ef4444;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.error-icon {
+  flex-shrink: 0;
+  color: #ef4444;
+  margin-top: 0.125rem;
+}
+
+.error-text {
+  flex: 1;
+}
+
+.error-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #991b1b;
+  margin-bottom: 0.25rem;
+}
+
+.error-description {
+  font-size: 0.875rem;
+  color: #7f1d1d;
+  line-height: 1.5;
+}
+
+.error-examples {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #fecaca;
+  font-size: 0.8125rem;
+  color: #991b1b;
+  font-style: italic;
 }
 
 .bound-field {
@@ -4799,9 +4846,9 @@ function initializeGraph() {
 
 .graph-container {
   width: 100%;
-  height: 70vh;
+  aspect-ratio: 4 / 3;
   min-height: 500px;
-  max-height: 800px;
+  max-height: 85vh;
   border: none;
   border-radius: 0;
   background: white;
@@ -4937,6 +4984,47 @@ function initializeGraph() {
   font-weight: 600;
   color: #374151;
   margin: 0 0 0.75rem 0;
+}
+
+.helper-text {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0.5rem 0;
+  font-weight: 500;
+}
+
+.divider-text {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin: 0.75rem 0;
+  position: relative;
+}
+
+.divider-text::before,
+.divider-text::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.divider-text::before {
+  left: 0;
+}
+
+.divider-text::after {
+  right: 0;
+}
+
+.segment-from-points {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
 }
 
 .results-section {
@@ -5305,6 +5393,48 @@ function initializeGraph() {
   border: 2px solid white;
   box-shadow: 0 0 0 1px #e5e7eb;
   flex-shrink: 0;
+}
+
+.function-color-picker {
+  width: 2.5rem;
+  height: 2rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.function-color-picker:hover {
+  border-color: #3b82f6;
+  transform: scale(1.05);
+}
+
+.function-color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.function-color-picker::-webkit-color-swatch {
+  border: none;
+  border-radius: 0.25rem;
+}
+
+.function-color-picker::-moz-color-swatch {
+  border: none;
+  border-radius: 0.25rem;
+}
+
+.function-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1e3a8a;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.function-name sub {
+  font-size: 0.75rem;
 }
 
 .function-expression {

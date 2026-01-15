@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { apiUtils } from '@/api/client'
+import * as analytics from '@/services/analytics'
 import { matiereMiddleware, exercicesMiddleware, quizMiddleware } from './middlewares/matiereMiddleware'
 import { requireNiveau, routeRequiresNiveau } from './middlewares/niveauMiddleware'
 
@@ -259,6 +260,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to) => {
+  try { analytics.pageView(to.fullPath) } catch (_) {}
   // Routes qui doivent toujours s'ouvrir en haut (pas de restauration de scroll)
   if (ALWAYS_SCROLL_TO_TOP_ROUTES.includes(to.name)) {
     // Forcer le scroll en haut après le chargement

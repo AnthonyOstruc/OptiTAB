@@ -100,6 +100,7 @@ import { useRouter } from 'vue-router'
 import { logoutUser } from '@/api'
 import { getInitials } from '@/utils'
 import { Cog6ToothIcon, CreditCardIcon, ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
+import * as analytics from '@/services/analytics'
 
 
 // Props et émissions d'événements
@@ -192,6 +193,7 @@ const handleLogout = async () => {
   const runLocalCleanup = () => {
     if (localCleanupDone) return
     localCleanupDone = true
+    analytics.logout()
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
     userStore.clearUser({ preserveLoadingState: true })

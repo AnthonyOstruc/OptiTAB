@@ -97,6 +97,7 @@ import { ref, onMounted, nextTick, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useGoogleAuth } from '@/composables/useGoogleAuth'
 import { useToast } from '@/composables/useToast'
+import * as analytics from '@/services/analytics'
 
 export default {
   name: 'LoginModal',
@@ -404,6 +405,9 @@ export default {
 
         // IMPORTANT: Charger le profil pour mettre à jour isAuthenticated
         await userStore.fetchUser()
+
+        analytics.login('email_password')
+        if (userStore.id) analytics.setUserId(userStore.id)
 
         if (import.meta.env.DEV) {
           console.debug('✅ Utilisateur chargé, état authentifié:', userStore.isAuthenticated)

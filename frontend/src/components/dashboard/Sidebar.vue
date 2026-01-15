@@ -114,6 +114,7 @@ import { getInitials } from '@/utils'
 import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
 import { apiUtils } from '@/api/client'
 import { useDataPrefetch } from '@/composables/useDataPrefetch'
+import * as analytics from '@/services/analytics'
 
 import { AcademicCapIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
 import { useRoute } from 'vue-router'
@@ -404,6 +405,7 @@ const handleLogout = async () => {
   const runLocalCleanup = () => {
     if (localCleanupDone) return
     localCleanupDone = true
+    analytics.logout()
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
     userStore.clearUser({ preserveLoadingState: true })

@@ -84,6 +84,7 @@ import Logo from '@/components/common/Logo.vue'
 import HamburgerIcon from '@/components/common/HamburgerIcon.vue'
 import CloseIcon from '@/components/common/CloseIcon.vue'
 import { useUserStore } from '@/stores/user'
+import * as analytics from '@/services/analytics'
 
 export default {
   name: 'MobileMenu',
@@ -143,6 +144,7 @@ export default {
       const runLocalCleanup = () => {
         if (localCleanupDone) return
         localCleanupDone = true
+        analytics.logout()
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
         userStore.clearUser({ preserveLoadingState: true })

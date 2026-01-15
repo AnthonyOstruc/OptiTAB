@@ -9,6 +9,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { useToast } from '@/composables/useToast'
+import * as analytics from '@/services/analytics'
 
 export function useGoogleAuth() {
   const router = useRouter()
@@ -106,6 +107,9 @@ export function useGoogleAuth() {
       userStore.setUser(user)
       await userStore.fetchUser()
 
+      analytics.login('google_one_tap')
+      if (userStore.id) analytics.setUserId(userStore.id)
+
       // Fermer toutes les modales d'authentification et rediriger
       closeAuthModals()
       router.push('/dashboard')
@@ -143,6 +147,9 @@ export function useGoogleAuth() {
                   localStorage.setItem('refresh_token', refresh)
                   userStore.setUser(user)
                   await userStore.fetchUser()
+
+                  analytics.login('google_one_tap')
+                  if (userStore.id) analytics.setUserId(userStore.id)
                   closeAuthModals()
                   router.push('/dashboard')
                   showToast('Connexion réussie !', 'success')
@@ -166,6 +173,9 @@ export function useGoogleAuth() {
                           localStorage.setItem('refresh_token', refresh)
                           userStore.setUser(user)
                           await userStore.fetchUser()
+
+                          analytics.login('google_one_tap')
+                          if (userStore.id) analytics.setUserId(userStore.id)
                           closeAuthModals()
                           router.push('/dashboard')
                           showToast('Connexion réussie !', 'success')
@@ -208,6 +218,9 @@ export function useGoogleAuth() {
                   localStorage.setItem('refresh_token', refresh)
                   userStore.setUser(user)
                   await userStore.fetchUser()
+
+                  analytics.login('google_one_tap')
+                  if (userStore.id) analytics.setUserId(userStore.id)
                   closeAuthModals()
                   router.push('/dashboard')
                   showToast('Connexion réussie !', 'success')

@@ -5,7 +5,7 @@
         <BackButton 
           text="Retour au dashboard" 
           :customAction="goBackToDashboard"
-          position="top-left-dashboard"
+          position="main-notions"
         />
       </div>
       
@@ -135,7 +135,7 @@ function goBackToDashboard() {
 @media (max-width: 768px) {
   .nav-header-base {
     padding: 0;
-    margin: 0;
+    margin: 0 0 3rem 0;
   }
 }
 </style> 

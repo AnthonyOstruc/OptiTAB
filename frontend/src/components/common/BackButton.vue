@@ -3,6 +3,7 @@
     :class="['back-button', { 
       'back-button--top-left': position === 'top-left',
       'back-button--top-left-dashboard': position === 'top-left-dashboard',
+      'back-button--main-notions': position === 'main-notions',
       'back-button--sticky': position === 'sticky'
     }]" 
     @click="goBack"
@@ -48,8 +49,8 @@ const props = defineProps({
   },
   position: {
     type: String,
-    default: 'normal', // 'normal', 'top-left', 'top-left-dashboard', ou 'sticky'
-    validator: (value) => ['normal', 'top-left', 'top-left-dashboard', 'sticky'].includes(value)
+    default: 'normal', // 'normal', 'top-left', 'top-left-dashboard', 'main-notions', ou 'sticky'
+    validator: (value) => ['normal', 'top-left', 'top-left-dashboard', 'main-notions', 'sticky'].includes(value)
   }
 })
 
@@ -103,6 +104,18 @@ const goBack = () => {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Position dédiée aux 4 pages principales: Quiz, Exercices, Cours, Fiches */
+.back-button--main-notions {
+  position: fixed;
+  top: 1px;
+  left: 1px;
+  z-index: 9000;
+  margin: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .back-button--sticky {
   position: sticky;
   top: 20px;
@@ -139,12 +152,18 @@ const goBack = () => {
 @media (max-width: 768px) {
   .back-button--top-left {
     /* En mobile, le header fait 56px + marge pour éviter le clash */
-    top: 30px;
+    top: 25px;
     left: 1px;
   }
   
   .back-button--top-left-dashboard {
-    /* Header mobile = 56px, on place le bouton juste en dessous */
+    /* Autres pages non principales */
+    top: 25px;
+    left: 1px;
+  }
+  
+  /* Position dédiée aux 4 pages principales en mobile */
+  .back-button--main-notions {
     top: 30px;
     left: 1px;
   }
@@ -159,9 +178,14 @@ const goBack = () => {
 }
 
 @media (max-width: 480px) {
-  
   .back-button--top-left-dashboard {
-    /* Header mobile = 56px, on place le bouton juste en dessous */
+    /* Autres pages non principales */
+    top: 25px;
+    left: 1px;
+  }
+  
+  /* Position dédiée aux 4 pages principales en mobile petit écran */
+  .back-button--main-notions {
     top: 30px;
     left: 1px;
   }

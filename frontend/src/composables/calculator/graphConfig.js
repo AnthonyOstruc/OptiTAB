@@ -35,6 +35,15 @@ export const DEFAULT_AXIS_CONFIG = {
 }
 
 /**
+ * Détecte si on est sur mobile
+ * @returns {boolean}
+ */
+export function isMobile() {
+  if (typeof window === 'undefined') return false
+  return window.innerWidth <= 768
+}
+
+/**
  * Crée le layout pour le graphique vide ou avec fonctions
  * @param {Object} options - Options de configuration
  * @returns {Object} - Layout Plotly
@@ -50,6 +59,73 @@ export function createGraphLayout(options = {}) {
     showTicks = true
   } = options
 
+  const mobile = isMobile()
+  
+  // Configuration MOBILE
+  if (mobile) {
+    return {
+      xaxis: {
+        range: [xMin, xMax],
+        gridcolor: '#e5e7eb',
+        showgrid: showGrid,
+        zerolinecolor: '#374151',
+        zerolinewidth: showAxes ? 2 : 0,
+        zeroline: showAxes,
+        fixedrange: false,
+        showline: showAxes,
+        linecolor: '#374151',
+        linewidth: 1.5,
+        mirror: false,
+        // MOBILE: Graduations tous les 2
+        tickmode: 'array',
+        tickvals: [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10],
+        showticklabels: showTicks,
+        ticks: showTicks ? 'outside' : '',
+        tickfont: { size: 9 }
+      },
+      yaxis: {
+        range: [yMin, yMax],
+        gridcolor: '#e5e7eb',
+        showgrid: showGrid,
+        zerolinecolor: '#374151',
+        zerolinewidth: showAxes ? 2 : 0,
+        zeroline: showAxes,
+        fixedrange: false,
+        showline: showAxes,
+        linecolor: '#374151',
+        linewidth: 1.5,
+        mirror: false,
+        // MOBILE: Graduations tous les 2
+        tickmode: 'array',
+        tickvals: [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10],
+        showticklabels: showTicks,
+        ticks: showTicks ? 'outside' : '',
+        tickfont: { size: 9 }
+      },
+      annotations: [], // Pas de labels x/y sur mobile
+      plot_bgcolor: 'white',
+      paper_bgcolor: 'white',
+      margin: { t: 10, r: 10, b: 30, l: 30 },
+      hovermode: 'closest',
+      autosize: true,
+      legend: {
+        font: { size: 10 },
+        bgcolor: 'rgba(255, 255, 255, 0.95)',
+        bordercolor: '#e5e7eb',
+        borderwidth: 1,
+        x: 0.5,
+        y: -0.12,
+        xanchor: 'center',
+        yanchor: 'top',
+        orientation: 'h',
+        itemsizing: 'constant',
+        itemwidth: 20,
+        tracegroupgap: 3
+      }
+    }
+  }
+  
+  // Configuration DESKTOP
   return {
     xaxis: {
       title: {
@@ -68,9 +144,13 @@ export function createGraphLayout(options = {}) {
       linecolor: '#374151',
       linewidth: 2,
       mirror: false,
+      tickmode: 'linear',
       dtick: 1,
+      tick0: 0,
+      ticklabelstep: 2,
       showticklabels: showTicks,
       ticks: showTicks ? 'outside' : '',
+      tickfont: { size: 12 },
       scaleanchor: 'y',
       scaleratio: 1
     },
@@ -90,16 +170,21 @@ export function createGraphLayout(options = {}) {
       showline: showAxes,
       linecolor: '#374151',
       linewidth: 2,
+      tickmode: 'linear',
       dtick: 1,
+      tick0: 0,
       mirror: false,
+      ticklabelstep: 2,
       showticklabels: showTicks,
-      ticks: showTicks ? 'outside' : ''
+      ticks: showTicks ? 'outside' : '',
+      tickfont: { size: 12 }
     },
     annotations: createAxisAnnotations(xMax, yMax),
     plot_bgcolor: 'white',
     paper_bgcolor: 'white',
     margin: { t: 60, r: 60, b: 60, l: 80 },
     hovermode: 'closest',
+    autosize: true,
     legend: {
       font: { size: 13 },
       bgcolor: 'rgba(255, 255, 255, 0.95)',

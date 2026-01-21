@@ -544,7 +544,7 @@ function prepareScrollableContent() {
     }
   })
   // Mise à jour de la hauteur mesurée après ajustements
-  measureContentHeight()
+  measureContentHeight(coursContentRef)
 }
 
 // Extraire la table des matières depuis le contenu HTML

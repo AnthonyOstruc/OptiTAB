@@ -928,7 +928,7 @@ watch(paginated, () => {
         console.warn('[MathJax] Erreur:', error)
       }
     }
-    measureContentHeight()
+    measureContentHeightForExercices()
   })
 }, { deep: true })
 

@@ -14,6 +14,18 @@
       <div v-else-if="isCalculatorPage" class="mobile-calculator-tabs">
         <CalculatorTabs />
       </div>
+      <!-- Cours Particuliers à gauche -->
+      <router-link v-if="!isFreeResourcePage && !isCalculatorPage" to="/cours-particuliers" class="mobile-quick-link mobile-quick-link--left">
+        <UserGroupIcon class="mobile-quick-icon" />
+        <span>Cours Particuliers</span>
+      </router-link>
+      <!-- Spacer pour pousser Connexion à droite -->
+      <div v-if="!isFreeResourcePage && !isCalculatorPage" class="mobile-spacer"></div>
+      <!-- Connexion à droite -->
+      <button v-if="!isFreeResourcePage && !isCalculatorPage" class="mobile-quick-link mobile-quick-link--login" @click="handleLogin">
+        <UserIcon class="mobile-quick-icon" />
+        <span>Connexion</span>
+      </button>
       <MobileMenu @open-login="handleLogin" />
     </div>
   </header>
@@ -26,6 +38,7 @@ import Navigation from '@/components/layout/Navigation.vue'
 import MobileMenu from '@/components/layout/MobileMenu.vue'
 import FreeResourceTabs from '@/components/free-content/FreeResourceTabs.vue'
 import CalculatorTabs from '@/components/calculator/CalculatorTabs.vue'
+import { UserGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -36,7 +49,9 @@ export default {
     Navigation,
     MobileMenu,
     FreeResourceTabs,
-    CalculatorTabs
+    CalculatorTabs,
+    UserGroupIcon,
+    UserIcon
   },
   setup() {
     const { openModal } = useModalManager()
@@ -148,16 +163,17 @@ export default {
   justify-content: space-between;
   width: 100%;
   height: $header-height;
-  padding: 0 20px;
+  padding: 0 12px;
   box-sizing: border-box;
-  gap: 12px;
+  gap: 6px;
 }
 
 .header-mobile-top {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-shrink: 0;
+  min-width: 0;
 }
 
 .mobile-free-tabs {
@@ -172,6 +188,52 @@ export default {
   flex: 1;
   min-width: 0;
   pointer-events: auto;
+}
+
+.mobile-spacer {
+  display: none;
+  flex: 1;
+}
+
+.mobile-quick-link {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #10257f;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+  }
+
+  &--left {
+    margin-left: 4px;
+  }
+
+  &--login {
+    background: #667eea;
+    color: white;
+    
+    &:hover {
+      background: #5a67d8;
+    }
+  }
+}
+
+.mobile-quick-icon {
+  width: 16px;
+  height: 16px;
 }
 
 .header-desktop {
@@ -201,6 +263,37 @@ export default {
   .mobile-calculator-tabs {
     display: flex;
     justify-content: center;
+  }
+
+  .mobile-quick-link {
+    display: flex;
+  }
+
+  .mobile-spacer {
+    display: block;
+  }
+}
+
+// Très petits écrans (< 400px)
+@media (max-width: 400px) {
+  .header-mobile {
+    padding: 0 8px;
+    gap: 4px;
+  }
+
+  .mobile-quick-link {
+    padding: 5px 8px;
+    font-size: 11px;
+    gap: 4px;
+
+    &--left {
+      margin-left: 2px;
+    }
+  }
+
+  .mobile-quick-icon {
+    width: 14px;
+    height: 14px;
   }
 }
 

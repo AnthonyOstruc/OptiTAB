@@ -1581,6 +1581,22 @@ function calculatePH() {
   console.log('Calcul de pH à implémenter')
 }
 
+// Variable pour le debounce du resize
+let resizeTimeout = null
+
+// Gestionnaire de redimensionnement pour adapter le graphique mobile/desktop
+function handleResize() {
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
+  resizeTimeout = setTimeout(() => {
+    if (selectedOperation.value === 'graph' && graphContainer.value) {
+      // Re-render le graphique avec la nouvelle configuration mobile/desktop
+      plotAllFunctions()
+    }
+  }, 250) // Debounce 250ms
+}
+
 onMounted(async () => {
   await nextTick()
   if (mf.value) {
@@ -1597,6 +1613,9 @@ onMounted(async () => {
   
   // Gestionnaire de clic à l'extérieur pour fermer le clavier
   document.addEventListener('click', handleClickOutside)
+  
+  // Gestionnaire de redimensionnement pour adapter le graphique
+  window.addEventListener('resize', handleResize)
 })
 
 // Watcher pour mettre à jour le placeholder quand l'opération change
@@ -1732,9 +1751,13 @@ watch([showGrid, showAxes, showTicks], () => {
   }
 })
 
-// Nettoyer l'écouteur d'événement
+// Nettoyer les écouteurs d'événements
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
+  window.removeEventListener('resize', handleResize)
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
 })
 
 // Fonction pour gérer le clic à l'extérieur
@@ -2249,6 +2272,10 @@ function handleGraphClick(event) {
 function plotAllFunctions() {
   if (!graphContainer.value) return
 
+  const mobileViewport =
+    typeof window !== 'undefined' &&
+    (window.matchMedia?.('(max-width: 768px)')?.matches ?? window.innerWidth <= 768)
+
   const traces = []
   
   graphFunctions.value.forEach((func, index) => {
@@ -2380,7 +2407,11 @@ function plotAllFunctions() {
       linecolor: '#374151',
       linewidth: 2,
       mirror: false,
+      tickmode: 'linear',
+      tick0: 0,
       dtick: 1,
+      ticklabelstep: 2,
+      tickfont: { size: mobileViewport ? 9 : 12 },
       showticklabels: showTicks.value,
       ticks: showTicks.value ? 'outside' : '',
       scaleanchor: 'y',
@@ -2406,6 +2437,10 @@ function plotAllFunctions() {
       linewidth: 2,
       dtick: 1,
       mirror: false,
+      tickmode: 'linear',
+      tick0: 0,
+      ticklabelstep: 2,
+      tickfont: { size: mobileViewport ? 9 : 12 },
       showticklabels: showTicks.value,
       ticks: showTicks.value ? 'outside' : '',
       constrain: 'domain',
@@ -4743,7 +4778,20 @@ function initializeGraph() {
 /* Responsive */
 @media (max-width: 768px) {
   .calc {
-    padding: 1rem;
+    padding: 0.75rem;
+    margin: 0.25rem 0 1rem;
+  }
+  
+  /* Titre plus compact sur mobile */
+  .title {
+    font-size: 1.1rem;
+    gap: 0.35rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .title-icon {
+    width: 1.25rem;
+    height: 1.25rem;
   }
   
   .tools-grid {
@@ -4773,6 +4821,26 @@ function initializeGraph() {
     padding: 0.6rem 0.4rem;
     font-size: 0.85rem;
     min-height: 45px;
+  }
+  
+  /* Input container mobile */
+  .input-container {
+    gap: 0.35rem;
+  }
+  
+  .math-input {
+    font-size: 1rem;
+    padding: 0.6rem 0.75rem;
+  }
+  
+  .calculate-btn-inline,
+  .vk-btn {
+    padding: 0.5rem;
+    min-width: 36px;
+  }
+  
+  .expr-row {
+    margin-bottom: 1rem;
   }
   
   /* Responsive pour les champs de bornes */
@@ -5471,6 +5539,7 @@ function initializeGraph() {
   .graph-header {
     flex-direction: column;
     align-items: flex-start;
+    padding: 0 0.75rem;
   }
   
   .graph-actions {
@@ -5483,18 +5552,153 @@ function initializeGraph() {
     flex: 1;
   }
   
+  /* Container graphique mobile optimisé - VRAIE pleine largeur */
   .graph-container {
-    height: 60vh;
-    min-height: 400px;
+    width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+    min-height: 300px;
+    max-height: 85vh;
+    border-radius: 0;
+    background: #fff;
+  }
+  
+  /* Deep selector pour forcer Plotly à s'adapter */
+  .graph-container :deep(.js-plotly-plot),
+  .graph-container :deep(.plotly),
+  .graph-container :deep(.plot-container) {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .graph-container :deep(.main-svg) {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* Supprimer les marges internes de Plotly sur mobile */
+  .graph-container :deep(.plotly .main-svg) {
+    overflow: visible;
   }
 
   .graph-section {
-    margin: 2rem -1rem 0 -1rem;
-    padding: 1rem;
+    margin: 1rem 0 0 0;
+    padding: 0;
+    border-radius: 0;
+    width: 100%;
+  }
+  
+  /* Onglets plus compacts sur mobile - pleine largeur */
+  .graph-tabs-wrapper {
+    margin: 0.5rem 0 0.75rem 0;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+  
+  .graph-tabs-container.top-tabs {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  
+  .graph-tabs {
+    padding: 0;
+    justify-content: space-around;
+  }
+  
+  .graph-tab {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.7rem;
+    min-width: auto;
+    flex: 1;
+  }
+  
+  /* Contenu des onglets */
+  .graph-tab-content-top {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: 0.75rem;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+  
+  .tab-panel {
+    padding: 0.5rem;
+  }
+  
+  .panel-title {
+    font-size: 0.95rem;
   }
   
   .bounds-row {
     grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .bound-input label {
+    font-size: 0.8rem;
+  }
+  
+  .bound-field {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  /* Liste des fonctions sur mobile */
+  .functions-list {
+    gap: 0.375rem;
+  }
+  
+  .function-item {
+    padding: 0.5rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .function-expression {
+    font-size: 0.85rem;
+    max-width: calc(100% - 80px);
+    overflow-x: auto;
+  }
+  
+  /* Formes et analyse */
+  .shapes-list, .shape-item {
+    gap: 0.375rem;
+  }
+  
+  .shape-section, .calc-section {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .shape-title {
+    font-size: 0.9rem;
+  }
+  
+  /* Options d'affichage */
+  .display-options {
+    gap: 0.5rem;
+  }
+  
+  .checkbox-label {
+    font-size: 0.85rem;
+  }
+  
+  /* Résultats d'analyse */
+  .results-section {
+    padding: 0.75rem;
+  }
+  
+  .results-title {
+    font-size: 0.85rem;
+  }
+  
+  .result-item {
+    font-size: 0.8rem;
+    padding: 0.375rem;
   }
 }
 </style> 

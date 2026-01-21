@@ -23,7 +23,8 @@ export {
   createAxisAnnotations,
   PLOTLY_CONFIG,
   OPERATIONS,
-  KEYBOARD_TOOLS
+  KEYBOARD_TOOLS,
+  isMobile
 } from './graphConfig'
 
 // Composable principal du graphique

@@ -12,7 +12,7 @@ import NewsletterSection from '@/components/home/NewsletterSection.vue'
 import PricingSection from '@/components/home/PricingSection.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMatieres } from '@/api'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
@@ -55,6 +55,9 @@ function computeHomeZoom(width) {
 }
 
 const {
+  contentHeight,
+  zoomLevel,
+  supportsNativeZoom,
   detectMobileAndZoomSupport,
   createZoomStyle,
   updateViewportWidth,
@@ -63,10 +66,26 @@ const {
   cleanupViewportListener
 } = useZoom({ computeAutoZoom: computeHomeZoom })
 
-const homeZoomStyle = createZoomStyle({
+const baseHomeZoomStyle = createZoomStyle({
   cssVar: '--home-zoom',
   heightVar: '--home-content-height',
   mobileZoomAdjustment: (z) => z
+})
+
+// En mode mobile (transform: scale), la hauteur calculée peut être sous-estimée sur certains navigateurs,
+// ce qui bloque le scroll. On laisse la hauteur "auto" (donc toujours scrollable) et on compense via
+// une marge négative pour éviter un grand espace vide.
+const homeZoomStyle = computed(() => {
+  const style = baseHomeZoomStyle.value
+  if (supportsNativeZoom.value) return style
+
+  const z = Number(zoomLevel.value || 1)
+  if (!contentHeight.value || !Number.isFinite(z) || z >= 1) {
+    return { ...style, height: 'auto', minHeight: 'auto', marginBottom: '' }
+  }
+
+  const marginBottom = -Math.round(contentHeight.value * (1 - z))
+  return { ...style, height: 'auto', minHeight: 'auto', marginBottom: `${marginBottom}px` }
 })
 
 let homeResizeObserver = null
@@ -91,7 +110,7 @@ const handleOrientationChange = () => {
 }
 
 // Système de zoom JavaScript comme fallback pour mobile
-const zoomLevel = ref(1)
+const legacyZoomLevel = ref(1)
 
 function calculateZoom() {
   if (typeof window === 'undefined') return 1
@@ -111,7 +130,7 @@ function calculateZoom() {
 function applyMobileZoom() {
   if (!homeContentRef.value) return
   const zoom = calculateZoom()
-  zoomLevel.value = zoom
+  legacyZoomLevel.value = zoom
   
   // Appliquer le zoom directement via style inline
   // Ceci surcharge tout CSS et fonctionne sur tous les navigateurs

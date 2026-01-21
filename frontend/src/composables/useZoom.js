@@ -4,7 +4,8 @@ import { ref, computed, nextTick } from 'vue'
  * Composable pour gérer le zoom responsive avec fallback mobile
  * Détecte le support du zoom natif et utilise transform comme fallback sur mobile
  */
-export function useZoom() {
+export function useZoom(options = {}) {
+  const { computeAutoZoom: computeAutoZoomOverride } = options
   const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
   const contentHeight = ref(0)
   const isMobileDevice = ref(false)
@@ -52,7 +53,7 @@ export function useZoom() {
     })
   }
 
-  function computeAutoZoom(width) {
+  function defaultComputeAutoZoom(width) {
     if (width >= 1400) return 1
     if (width >= 1200) return 0.95
     if (width >= 1024) return 0.9
@@ -64,7 +65,8 @@ export function useZoom() {
     return 0.72
   }
 
-  const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
+  const computeZoom = typeof computeAutoZoomOverride === 'function' ? computeAutoZoomOverride : defaultComputeAutoZoom
+  const zoomLevel = computed(() => computeZoom(viewportWidth.value))
 
   function createZoomStyle(options = {}) {
     const {

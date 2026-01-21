@@ -138,12 +138,14 @@ const goBack = () => {
 
 @media (max-width: 768px) {
   .back-button--top-left {
-    top: calc(var(--header-height, 60px));
-    left: env(safe-area-inset-left, 0px);
+    /* En mobile, le header fait 56px + marge pour éviter le clash */
+    top: 30px;
+    left: 1px;
   }
   
   .back-button--top-left-dashboard {
-    top: 1px;
+    /* Header mobile = 56px, on place le bouton juste en dessous */
+    top: 30px;
     left: 1px;
   }
   
@@ -157,14 +159,11 @@ const goBack = () => {
 }
 
 @media (max-width: 480px) {
-  .back-button--top-left {
-    top: calc(var(--header-height, 60px));
-    left: env(safe-area-inset-left, 0px);
-  }
   
   .back-button--top-left-dashboard {
-    top: 5px;
-    left: 5px;
+    /* Header mobile = 56px, on place le bouton juste en dessous */
+    top: 30px;
+    left: 1px;
   }
   
   .back-button--sticky {

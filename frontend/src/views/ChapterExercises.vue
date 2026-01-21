@@ -1484,31 +1484,10 @@ function initFirstVisitFlag() {
 }
 
 .nav-header-base {
-  position: sticky;
-  top: 0.5rem;
-  z-index: 120;
   padding: 0;
-  margin: 0 0 0.75rem 0;
+  margin: 0 0 1rem 0;
   display: flex;
   background: transparent;
-  pointer-events: none; /* let content scroll; only the button catches events */
-}
-
-.nav-header-base > * {
-  pointer-events: auto;
-}
-
-/* Sur mobile, empêcher complètement le scroll depuis le header */
-@media (max-width: 768px) {
-  .nav-header-base {
-    /* 🔒 EMPÊCHER le scroll depuis le header - CRITIQUE pour iOS */
-    touch-action: none;
-    overscroll-behavior: contain;
-    /* 🎯 Forcer le navigateur à garder le header fixe */
-    will-change: transform;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
 }
 
 .exercices-body {

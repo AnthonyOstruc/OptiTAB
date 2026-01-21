@@ -83,7 +83,7 @@ function onNotionClick(notionId) {
 
 .nav-header-base {
   padding: 0;
-  margin: 0 0 1rem 0;
+  margin: 0 0 3rem 0;
   display: flex;
   background: white;
 }

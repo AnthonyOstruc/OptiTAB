@@ -73,7 +73,7 @@ onMounted(() => { loading.value = false })
 
 .nav-header-base {
   padding: 0;
-  margin: 0 0 2.5rem 0;
+  margin: 0 0 3rem 0;
   display: flex;
   background: white;
 }

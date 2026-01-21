@@ -79,8 +79,9 @@ function goBackToDashboard() {
 }
 
 .nav-header-base {
-  padding: 0 0 1rem 0;
-  margin-bottom: 1.5rem;
+  padding: 0;
+  margin: 0 0 3rem 0;
+  display: flex;
   background: white;
 }
 
@@ -133,7 +134,8 @@ function goBackToDashboard() {
 /* Responsive tweaks */
 @media (max-width: 768px) {
   .nav-header-base {
-    padding: 1rem;
+    padding: 0;
+    margin: 0;
   }
 }
 </style> 

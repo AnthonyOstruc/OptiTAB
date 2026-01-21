@@ -799,11 +799,6 @@ watch(() => route.query.q, (val) => {
   padding-bottom: 1rem;
 }
 
-.nav-header-base .back-button--top-left-dashboard {
-  top: 0;
-  left: 0;
-}
-
 .cours-body {
   width: 100%;
   padding: 0 2rem 1.5rem 2rem;

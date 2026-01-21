@@ -1,41 +1,53 @@
 <template>
   <DashboardLayout>
-    <div class="synthesis-page">
-      <div
-        v-if="loading"
-        class="synthesis-initial-loader"
-        role="status"
-        aria-live="polite"
-      >
-        <LoadingSpinner size="large" color="#1e40af" />
-        <p>Chargement des fiches...</p>
-      </div>
-      <!-- Header compact -->
-      <header class="page-header">
-        <div class="header-content">
-          <h1 class="page-title">
-            <span class="title-icon">📋</span>
-            Fiches de Synthèse
-          </h1>
-          <p class="page-subtitle">{{ activeMatiereNom }}</p>
+    <div class="notions-page-base">
+      <!-- Navigation Header -->
+      <div class="nav-header-base">
+        <BackButton 
+          text="Retour au dashboard" 
+          :customAction="goBackToDashboard"
+          position="top-left-dashboard"
+        />
       </div>
 
-        <!-- Barre de recherche moderne -->
-        <div class="search-section">
-          <div class="search-input-wrapper">
-            <input 
-              v-model="searchTerm" 
-              type="text" 
-              placeholder="Rechercher une fiche..."
-              class="search-input"
-            >
-            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.35-4.35"></path>
-            </svg>
+      <!-- Main Content -->
+      <div class="main-content-base">
+        <div class="synthesis-page">
+          <div
+            v-if="loading"
+            class="synthesis-initial-loader"
+            role="status"
+            aria-live="polite"
+          >
+            <LoadingSpinner size="large" color="#1e40af" />
+            <p>Chargement des fiches...</p>
           </div>
-        </div>
-      </header>
+          <!-- Header compact -->
+          <header class="page-header">
+            <div class="header-content">
+              <h1 class="page-title">
+                <span class="title-icon">📋</span>
+                Fiches de Synthèse
+              </h1>
+              <p class="page-subtitle">{{ activeMatiereNom }}</p>
+          </div>
+
+            <!-- Barre de recherche moderne -->
+            <div class="search-section">
+              <div class="search-input-wrapper">
+                <input 
+                  v-model="searchTerm" 
+                  type="text" 
+                  placeholder="Rechercher une fiche..."
+                  class="search-input"
+                >
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+              </div>
+            </div>
+          </header>
 
       <!-- États de chargement -->
       <div v-if="loading" class="loading-container">
@@ -137,6 +149,8 @@
         </div>
       </div>
       </div>
+      </div>
+      </div>
     </div>
   </DashboardLayout>
 </template>
@@ -145,6 +159,7 @@
 import { ref, computed, onMounted, onActivated, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
+import BackButton from '@/components/common/BackButton.vue'
 import { getSynthesisSheets, getSynthesisMatieres } from '@/api/synthesis'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useSmartNavigation } from '@/composables/useSmartNavigation'
@@ -157,6 +172,11 @@ const router = useRouter()
 const subjectsStore = useSubjectsStore()
 const userStore = useUserStore()
 const { matiereIdFromRoute } = useSmartNavigation()
+
+// Fonction pour retourner au dashboard
+function goBackToDashboard() {
+  router.push('/dashboard')
+}
 
 // État réactif
 const fiches = ref([])
@@ -332,9 +352,78 @@ onActivated(() => {
 </script>
 
 <style scoped>
+/* Base layout - same as other pages */
+.notions-page-base {
+  background: #ffffff;
+  min-height: 100vh;
+  padding: 0;
+}
+
+:deep(.dashboard-main) {
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+}
+
+:deep(.dashboard-main.with-mobile-nav) {
+  padding-top: 0 !important;
+}
+
+.nav-header-base {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  background: white;
+}
+
+.main-content-base {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 2rem 1.5rem 2rem;
+}
+
+@media (max-width: 1200px) {
+  :deep(.dashboard-main) {
+    padding-left: 0 !important;
+  }
+  .main-content-base {
+    padding: 0 1.5rem 1.25rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :deep(.dashboard-main) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .main-content-base {
+    padding: 0 1rem 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :deep(.dashboard-main) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .main-content-base {
+    padding: 0 0.75rem 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  :deep(.dashboard-main) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .main-content-base {
+    padding: 0 0.6rem 0.4rem 0.6rem;
+  }
+}
+
+/* Synthesis page content */
 .synthesis-page {
   position: relative;
-  min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   padding: 1rem;
 }

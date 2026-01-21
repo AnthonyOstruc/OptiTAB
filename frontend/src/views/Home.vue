@@ -1,7 +1,5 @@
 <script setup>
 // Importation des composants principaux de la page d'accueil
-import Header from '@/components/layout/Header.vue'
-import Footer from '@/components/layout/Footer.vue'
 import SectionHero from '@/components/home/SectionHero.vue'
 import SubjectsSection from '@/components/home/SubjectsSection.vue'
 import IntroFeaturesSection from '@/components/home/IntroFeaturesSection.vue'
@@ -14,10 +12,11 @@ import NewsletterSection from '@/components/home/NewsletterSection.vue'
 import PricingSection from '@/components/home/PricingSection.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMatieres } from '@/api'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
+import { useZoom } from '@/composables/useZoom'
 
 // Importation du contenu dynamique depuis la configuration centrale
 import {
@@ -41,6 +40,55 @@ const { openModal } = useModalManager()
 
 // Référence pour le contenu avec zoom
 const homeContentRef = ref(null)
+
+function computeHomeZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.72
+  if (width >= 520) return 0.68
+  if (width >= 420) return 0.64
+  if (width >= 360) return 0.6
+  return 0.55
+}
+
+const {
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom({ computeAutoZoom: computeHomeZoom })
+
+const homeZoomStyle = createZoomStyle({
+  cssVar: '--home-zoom',
+  heightVar: '--home-content-height',
+  mobileZoomAdjustment: (z) => z
+})
+
+let homeResizeObserver = null
+const measureHomeContentHeight = () => {
+  measureContentHeight(homeContentRef)
+}
+
+const handleViewportChange = async () => {
+  updateViewportWidth()
+  await nextTick()
+  measureHomeContentHeight()
+}
+
+const handleResize = () => {
+  void handleViewportChange()
+}
+
+const handleOrientationChange = () => {
+  setTimeout(() => {
+    void handleViewportChange()
+  }, 200)
+}
 
 // Système de zoom JavaScript comme fallback pour mobile
 const zoomLevel = ref(1)
@@ -149,6 +197,8 @@ const handleDemoPricing = () => {
 }
 
 onMounted(async () => {
+  detectMobileAndZoomSupport()
+  setupViewportListener()
   try {
     const { data } = await getMatieres()
     // Afficher uniquement les matières autorisées pour la vitrine
@@ -159,26 +209,39 @@ onMounted(async () => {
   }
   
   // Appliquer le zoom JavaScript immédiatement
+  await nextTick()
+  measureHomeContentHeight()
   if (typeof window !== 'undefined') {
     // Petit délai pour s'assurer que le DOM est prêt
     setTimeout(() => {
-      applyMobileZoom()
+      handleResize()
     }, 50)
     
     // Réappliquer lors du redimensionnement
-    window.addEventListener('resize', applyMobileZoom, { passive: true })
+    window.addEventListener('resize', handleResize, { passive: true })
     
     // Réappliquer lors du changement d'orientation
-    window.addEventListener('orientationchange', () => {
-      setTimeout(applyMobileZoom, 150)
-    }, { passive: true })
+    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
+
+    setTimeout(measureHomeContentHeight, 250)
+
+    if (window.ResizeObserver && homeContentRef.value) {
+      homeResizeObserver = new ResizeObserver(() => {
+        measureHomeContentHeight()
+      })
+      homeResizeObserver.observe(homeContentRef.value)
+    }
   }
 })
 
 onUnmounted(() => {
+  cleanupViewportListener()
   if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', applyMobileZoom)
+    window.removeEventListener('resize', handleResize)
+    window.removeEventListener('orientationchange', handleOrientationChange)
   }
+  homeResizeObserver?.disconnect?.()
+  homeResizeObserver = null
 })
 
 // --- FIN LOGIQUE JS ---
@@ -186,7 +249,8 @@ onUnmounted(() => {
 
 <template>
   <MainLayout>
-    <div class="home-content-outer" ref="homeContentRef">
+    <div class="home-content-zoom" :style="homeZoomStyle">
+      <div class="home-content-inner" ref="homeContentRef">
       <!-- Section Hero (accroche principale) -->
       <SectionHero
         :titre="sectionHero.titre"
@@ -253,12 +317,13 @@ onUnmounted(() => {
         :placeholder="newsletterSection.placeholder"
         :bouton="newsletterSection.bouton"
       />
-      <WhatsappChatButton
-        phone="33764040251"
-        message="Bonjour, j'ai une question sur Optitab !"
-        tooltip="Une question ? Discutons sur WhatsApp !"
-      />
+      </div>
     </div>
+    <WhatsappChatButton
+      phone="33764040251"
+      message="Bonjour, j'ai une question sur Optitab !"
+      tooltip="Une question ? Discutons sur WhatsApp !"
+    />
   </MainLayout>
 </template>
 
@@ -274,6 +339,18 @@ onUnmounted(() => {
 
 <!-- Styles globaux pour le zoom - pas de scoped pour éviter les problèmes de priorité -->
 <style lang="scss">
+.home-content-zoom {
+  width: 100%;
+  overflow-y: visible;
+  overflow-x: hidden;
+}
+
+.home-content-inner {
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 /* Container principal avec zoom automatique via CSS */
 .home-content-outer {
   box-sizing: border-box;

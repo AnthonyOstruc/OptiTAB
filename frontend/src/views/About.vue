@@ -1,6 +1,7 @@
 <template>
   <MainLayout>
-    <div class="about-page">
+    <div class="about-zoom" :style="aboutZoomStyle">
+      <div ref="aboutContentRef" class="about-page">
       <!-- Hero Section Pédagogique -->
       <div class="hero-section">
         <div class="hero-content">
@@ -175,8 +176,9 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
-    
+
     <!-- Bouton WhatsApp flottant -->
     <WhatsappChatButton
       phone="33764040251"
@@ -194,15 +196,118 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
 import ContactModal from '@/components/common/ContactModal.vue'
 import about from '@/config/aboutContent.js'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
+import { useZoom } from '@/composables/useZoom'
 
 const { openModal } = useModalManager()
+
+// --- Mobile zoom (same logic as Home) ---
+const aboutContentRef = ref(null)
+
+function computeAboutZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.72
+  if (width >= 520) return 0.68
+  if (width >= 420) return 0.64
+  if (width >= 360) return 0.6
+  return 0.55
+}
+
+const {
+  contentHeight,
+  zoomLevel,
+  supportsNativeZoom,
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom({ computeAutoZoom: computeAboutZoom })
+
+const baseAboutZoomStyle = createZoomStyle({
+  cssVar: '--about-zoom',
+  heightVar: '--about-content-height',
+  mobileZoomAdjustment: (z) => z
+})
+
+// On mobile (transform: scale), keep height auto to avoid scroll blocking on some browsers,
+// then compensate the extra space with a negative margin.
+const aboutZoomStyle = computed(() => {
+  const style = baseAboutZoomStyle.value
+  if (supportsNativeZoom.value) return style
+
+  const z = Number(zoomLevel.value || 1)
+  if (!contentHeight.value || !Number.isFinite(z) || z >= 1) {
+    return { ...style, height: 'auto', minHeight: 'auto', marginBottom: '' }
+  }
+
+  const marginBottom = -Math.round(contentHeight.value * (1 - z))
+  return { ...style, height: 'auto', minHeight: 'auto', marginBottom: `${marginBottom}px` }
+})
+
+let aboutResizeObserver = null
+const measureAboutHeight = () => {
+  measureContentHeight(aboutContentRef)
+}
+
+const handleViewportChange = async () => {
+  updateViewportWidth()
+  await nextTick()
+  measureAboutHeight()
+}
+
+const handleResize = () => {
+  void handleViewportChange()
+}
+
+const handleOrientationChange = () => {
+  setTimeout(() => {
+    void handleViewportChange()
+  }, 200)
+}
+
+onMounted(async () => {
+  detectMobileAndZoomSupport()
+  setupViewportListener()
+
+  await nextTick()
+  measureAboutHeight()
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', handleResize, { passive: true })
+    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
+
+    setTimeout(measureAboutHeight, 250)
+
+    if (window.ResizeObserver && aboutContentRef.value) {
+      aboutResizeObserver = new ResizeObserver(() => {
+        measureAboutHeight()
+      })
+      aboutResizeObserver.observe(aboutContentRef.value)
+    }
+  }
+})
+
+onUnmounted(() => {
+  cleanupViewportListener()
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', handleResize)
+    window.removeEventListener('orientationchange', handleOrientationChange)
+  }
+  aboutResizeObserver?.disconnect?.()
+  aboutResizeObserver = null
+})
 
 // Gestion du modal de contact
 const isContactModalOpen = ref(false)
@@ -262,6 +367,12 @@ const getSectionIcon = (emoji) => {
 }
 
 /* Page Container */
+.about-zoom {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
 .about-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f5f9 100%);

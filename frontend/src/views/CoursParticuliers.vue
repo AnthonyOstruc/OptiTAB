@@ -1,6 +1,11 @@
 <template>
   <component :is="layoutComponent">
-    <div class="cours-particuliers-page" :class="{ 'public-layout': !isAuthenticated }">
+    <div class="cours-particuliers-zoom" :style="coursParticuliersZoomStyle">
+      <div
+        ref="coursParticuliersContentRef"
+        class="cours-particuliers-page"
+        :class="{ 'public-layout': !isAuthenticated }"
+      >
       <!-- Hero Section -->
       <section class="hero-section">
         <div class="hero-decoration">
@@ -507,6 +512,7 @@
           </p>
         </div>
       </section>
+      </div>
     </div>
     
     <!-- Bouton WhatsApp -->
@@ -527,13 +533,14 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
 import ContactModal from '@/components/common/ContactModal.vue'
 import { useUserStore } from '@/stores/user'
+import { useZoom } from '@/composables/useZoom'
 
 // Store utilisateur pour vérifier l'authentification
 const userStore = useUserStore()
@@ -558,6 +565,76 @@ const closeContactModal = () => {
 
 const handleContactSuccess = (message) => {
   alert(message)
+}
+
+// --- Zoom mobile (même logique que Home) ---
+const coursParticuliersContentRef = ref(null)
+
+function computeCoursParticuliersZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.72
+  if (width >= 520) return 0.68
+  if (width >= 420) return 0.64
+  if (width >= 360) return 0.6
+  return 0.55
+}
+
+const {
+  contentHeight,
+  zoomLevel,
+  supportsNativeZoom,
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom({ computeAutoZoom: computeCoursParticuliersZoom })
+
+const baseCoursParticuliersZoomStyle = createZoomStyle({
+  cssVar: '--cours-particuliers-zoom',
+  heightVar: '--cours-particuliers-content-height',
+  mobileZoomAdjustment: (z) => z
+})
+
+// En mode mobile (transform: scale), certains navigateurs peuvent sous-estimer la hauteur et bloquer le scroll.
+// On laisse la hauteur "auto" et on compense l'espace vide avec une marge négative.
+const coursParticuliersZoomStyle = computed(() => {
+  const style = baseCoursParticuliersZoomStyle.value
+  if (supportsNativeZoom.value) return style
+
+  const z = Number(zoomLevel.value || 1)
+  if (!contentHeight.value || !Number.isFinite(z) || z >= 1) {
+    return { ...style, height: 'auto', minHeight: 'auto', marginBottom: '' }
+  }
+
+  const marginBottom = -Math.round(contentHeight.value * (1 - z))
+  return { ...style, height: 'auto', minHeight: 'auto', marginBottom: `${marginBottom}px` }
+})
+
+let coursParticuliersResizeObserver = null
+const measureCoursParticuliersHeight = () => {
+  measureContentHeight(coursParticuliersContentRef)
+}
+
+const handleViewportChange = async () => {
+  updateViewportWidth()
+  await nextTick()
+  measureCoursParticuliersHeight()
+}
+
+const handleResize = () => {
+  void handleViewportChange()
+}
+
+const handleOrientationChange = () => {
+  setTimeout(() => {
+    void handleViewportChange()
+  }, 200)
 }
 
 // Gestion des onglets de tarifs
@@ -661,6 +738,11 @@ function getSubscriptionPriceWeekly(coursesPerWeek, level = null) {
   return Math.round(monthlyPrice / 4)
 }
 
+watch(activeTab, async () => {
+  await nextTick()
+  measureCoursParticuliersHeight()
+})
+
 function scrollToProfesseur(e) {
   e.preventDefault()
   const element = document.getElementById('professeur')
@@ -668,12 +750,16 @@ function scrollToProfesseur(e) {
     // Chercher le conteneur scrollable du dashboard
     const scrollContainer = document.querySelector('.dashboard-main')
     const offset = 100 // Offset pour le header fixe
+    const z = supportsNativeZoom.value ? 1 : Math.max(0.01, Number(zoomLevel.value || 1))
+    const offsetLayout = supportsNativeZoom.value ? offset : offset / z
     
     if (scrollContainer) {
       // Calculer la position relative au conteneur scrollable
       const containerRect = scrollContainer.getBoundingClientRect()
       const elementRect = element.getBoundingClientRect()
-      const offsetPosition = scrollContainer.scrollTop + elementRect.top - containerRect.top - offset
+      const deltaVisual = elementRect.top - containerRect.top
+      const deltaLayout = supportsNativeZoom.value ? deltaVisual : (deltaVisual / z)
+      const offsetPosition = scrollContainer.scrollTop + deltaLayout - offsetLayout
       
       scrollContainer.scrollTo({
         top: offsetPosition,
@@ -681,8 +767,9 @@ function scrollToProfesseur(e) {
       })
     } else {
       // Fallback si pas de conteneur dashboard
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
-      const offsetPosition = elementPosition - offset
+      const rect = element.getBoundingClientRect()
+      const elementPosition = window.pageYOffset + (supportsNativeZoom.value ? rect.top : (rect.top / z))
+      const offsetPosition = elementPosition - offsetLayout
       
       window.scrollTo({
         top: offsetPosition,
@@ -691,6 +778,38 @@ function scrollToProfesseur(e) {
     }
   }
 }
+
+onMounted(async () => {
+  detectMobileAndZoomSupport()
+  setupViewportListener()
+
+  await nextTick()
+  measureCoursParticuliersHeight()
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', handleResize, { passive: true })
+    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
+
+    setTimeout(measureCoursParticuliersHeight, 250)
+
+    if (window.ResizeObserver && coursParticuliersContentRef.value) {
+      coursParticuliersResizeObserver = new ResizeObserver(() => {
+        measureCoursParticuliersHeight()
+      })
+      coursParticuliersResizeObserver.observe(coursParticuliersContentRef.value)
+    }
+  }
+})
+
+onUnmounted(() => {
+  cleanupViewportListener()
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', handleResize)
+    window.removeEventListener('orientationchange', handleOrientationChange)
+  }
+  coursParticuliersResizeObserver?.disconnect?.()
+  coursParticuliersResizeObserver = null
+})
 </script>
 
 <style scoped>
@@ -707,6 +826,12 @@ function scrollToProfesseur(e) {
 }
 
 /* Page Container */
+.cours-particuliers-zoom {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
 .cours-particuliers-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f5f9 100%);

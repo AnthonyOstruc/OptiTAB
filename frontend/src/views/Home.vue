@@ -14,7 +14,7 @@ import NewsletterSection from '@/components/home/NewsletterSection.vue'
 import PricingSection from '@/components/home/PricingSection.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMatieres } from '@/api'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
@@ -39,8 +39,51 @@ const matieres = ref([])
 const router = useRouter()
 const { openModal } = useModalManager()
 
-// Référence pour le contenu (utilisé potentiellement pour d'autres fonctionnalités)
+// Référence pour le contenu avec zoom
 const homeContentRef = ref(null)
+
+// Système de zoom JavaScript comme fallback pour mobile
+const zoomLevel = ref(1)
+
+function calculateZoom() {
+  if (typeof window === 'undefined') return 1
+  const width = window.innerWidth
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.72
+  if (width >= 520) return 0.68
+  if (width >= 420) return 0.64
+  if (width >= 360) return 0.60
+  return 0.55
+}
+
+function applyMobileZoom() {
+  if (!homeContentRef.value) return
+  const zoom = calculateZoom()
+  zoomLevel.value = zoom
+  
+  // Appliquer le zoom directement via style inline
+  // Ceci surcharge tout CSS et fonctionne sur tous les navigateurs
+  const el = homeContentRef.value
+  
+  // Vérifier si le navigateur supporte CSS zoom
+  const supportsZoom = 'zoom' in document.body.style
+  
+  if (supportsZoom) {
+    el.style.zoom = zoom
+    el.style.transform = ''
+    el.style.width = ''
+  } else {
+    // Fallback pour Firefox
+    el.style.zoom = ''
+    el.style.transform = `scale(${zoom})`
+    el.style.transformOrigin = 'top left'
+    el.style.width = `${(100 / zoom).toFixed(2)}%`
+  }
+}
 
 // Handler pour la sélection d'une matière
 const handleSubjectSelected = (subject) => {
@@ -113,6 +156,28 @@ onMounted(async () => {
     matieres.value = (data || []).filter(m => m && m.show_on_home !== false)
   } catch (e) {
     matieres.value = []
+  }
+  
+  // Appliquer le zoom JavaScript immédiatement
+  if (typeof window !== 'undefined') {
+    // Petit délai pour s'assurer que le DOM est prêt
+    setTimeout(() => {
+      applyMobileZoom()
+    }, 50)
+    
+    // Réappliquer lors du redimensionnement
+    window.addEventListener('resize', applyMobileZoom, { passive: true })
+    
+    // Réappliquer lors du changement d'orientation
+    window.addEventListener('orientationchange', () => {
+      setTimeout(applyMobileZoom, 150)
+    }, { passive: true })
+  }
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', applyMobileZoom)
   }
 })
 
@@ -205,7 +270,10 @@ onMounted(async () => {
   height: auto;
   overflow-y: auto;
 }
+</style>
 
+<!-- Styles globaux pour le zoom - pas de scoped pour éviter les problèmes de priorité -->
+<style lang="scss">
 /* Container principal avec zoom automatique via CSS */
 .home-content-outer {
   box-sizing: border-box;
@@ -214,105 +282,145 @@ onMounted(async () => {
 }
 
 /* 
- * Zoom CSS via media queries - fonctionne sur Chrome, Safari, Edge (desktop + mobile)
- * Firefox n'a pas besoin de zoom car il gère mieux le responsive nativement
+ * Zoom CSS avec media queries progressifs (du plus petit au plus grand)
+ * Approche mobile-first pour une meilleure compatibilité
  */
-@supports (zoom: 1) {
-  @media (max-width: 1399px) and (min-width: 1200px) {
-    .home-content-outer { zoom: 0.95; }
+
+/* Mobile très petit (< 360px) - zoom 55% */
+@media screen and (max-width: 359px) {
+  .home-content-outer { 
+    zoom: 0.55 !important;
   }
-  @media (max-width: 1199px) and (min-width: 1024px) {
-    .home-content-outer { zoom: 0.9; }
+}
+
+/* Mobile petit (360-419px) - zoom 60% */
+@media screen and (min-width: 360px) and (max-width: 419px) {
+  .home-content-outer { 
+    zoom: 0.60 !important;
   }
-  @media (max-width: 1023px) and (min-width: 900px) {
-    .home-content-outer { zoom: 0.85; }
+}
+
+/* Mobile moyen (420-519px) - zoom 64% */
+@media screen and (min-width: 420px) and (max-width: 519px) {
+  .home-content-outer { 
+    zoom: 0.64 !important;
   }
-  @media (max-width: 899px) and (min-width: 768px) {
-    .home-content-outer { zoom: 0.8; }
+}
+
+/* Mobile large (520-639px) - zoom 68% */
+@media screen and (min-width: 520px) and (max-width: 639px) {
+  .home-content-outer { 
+    zoom: 0.68 !important;
   }
-  @media (max-width: 767px) and (min-width: 640px) {
-    .home-content-outer { zoom: 0.72; }
+}
+
+/* Tablette portrait (640-767px) - zoom 72% */
+@media screen and (min-width: 640px) and (max-width: 767px) {
+  .home-content-outer { 
+    zoom: 0.72 !important;
   }
-  @media (max-width: 639px) and (min-width: 520px) {
-    .home-content-outer { zoom: 0.68; }
+}
+
+/* Tablette (768-899px) - zoom 80% */
+@media screen and (min-width: 768px) and (max-width: 899px) {
+  .home-content-outer { 
+    zoom: 0.8 !important;
   }
-  @media (max-width: 519px) and (min-width: 420px) {
-    .home-content-outer { zoom: 0.64; }
+}
+
+/* Petit desktop (900-1023px) - zoom 85% */
+@media screen and (min-width: 900px) and (max-width: 1023px) {
+  .home-content-outer { 
+    zoom: 0.85 !important;
   }
-  @media (max-width: 419px) and (min-width: 360px) {
-    .home-content-outer { zoom: 0.60; }
+}
+
+/* Desktop moyen (1024-1199px) - zoom 90% */
+@media screen and (min-width: 1024px) and (max-width: 1199px) {
+  .home-content-outer { 
+    zoom: 0.9 !important;
   }
-  @media (max-width: 359px) {
-    .home-content-outer { zoom: 0.55; }
+}
+
+/* Desktop large (1200-1399px) - zoom 95% */
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
+  .home-content-outer { 
+    zoom: 0.95 !important;
+  }
+}
+
+/* Desktop très large (>= 1400px) - pas de zoom */
+@media screen and (min-width: 1400px) {
+  .home-content-outer { 
+    zoom: 1 !important;
   }
 }
 
 /* 
- * Fallback pour Firefox qui ne supporte pas zoom
- * On utilise transform: scale() avec ajustement de width
+ * Fallback transform pour Firefox (qui ignore zoom)
  */
 @supports not (zoom: 1) {
-  @media (max-width: 1399px) and (min-width: 1200px) {
-    .home-content-outer { 
-      transform: scale(0.95); 
-      transform-origin: top left; 
-      width: calc(100% / 0.95); 
-    }
-  }
-  @media (max-width: 1199px) and (min-width: 1024px) {
-    .home-content-outer { 
-      transform: scale(0.9); 
-      transform-origin: top left; 
-      width: calc(100% / 0.9); 
-    }
-  }
-  @media (max-width: 1023px) and (min-width: 900px) {
-    .home-content-outer { 
-      transform: scale(0.85); 
-      transform-origin: top left; 
-      width: calc(100% / 0.85); 
-    }
-  }
-  @media (max-width: 899px) and (min-width: 768px) {
-    .home-content-outer { 
-      transform: scale(0.8); 
-      transform-origin: top left; 
-      width: calc(100% / 0.8); 
-    }
-  }
-  @media (max-width: 767px) and (min-width: 640px) {
-    .home-content-outer { 
-      transform: scale(0.72); 
-      transform-origin: top left; 
-      width: calc(100% / 0.72); 
-    }
-  }
-  @media (max-width: 639px) and (min-width: 520px) {
-    .home-content-outer { 
-      transform: scale(0.68); 
-      transform-origin: top left; 
-      width: calc(100% / 0.68); 
-    }
-  }
-  @media (max-width: 519px) and (min-width: 420px) {
-    .home-content-outer { 
-      transform: scale(0.64); 
-      transform-origin: top left; 
-      width: calc(100% / 0.64); 
-    }
-  }
-  @media (max-width: 419px) and (min-width: 360px) {
-    .home-content-outer { 
-      transform: scale(0.60); 
-      transform-origin: top left; 
-      width: calc(100% / 0.60); 
-    }
-  }
-  @media (max-width: 359px) {
+  @media screen and (max-width: 359px) {
     .home-content-outer { 
       transform: scale(0.55); 
       transform-origin: top left; 
-      width: calc(100% / 0.55); 
+      width: 181.82%; 
+    }
+  }
+  @media screen and (min-width: 360px) and (max-width: 419px) {
+    .home-content-outer { 
+      transform: scale(0.60); 
+      transform-origin: top left; 
+      width: 166.67%; 
+    }
+  }
+  @media screen and (min-width: 420px) and (max-width: 519px) {
+    .home-content-outer { 
+      transform: scale(0.64); 
+      transform-origin: top left; 
+      width: 156.25%; 
+    }
+  }
+  @media screen and (min-width: 520px) and (max-width: 639px) {
+    .home-content-outer { 
+      transform: scale(0.68); 
+      transform-origin: top left; 
+      width: 147.06%; 
+    }
+  }
+  @media screen and (min-width: 640px) and (max-width: 767px) {
+    .home-content-outer { 
+      transform: scale(0.72); 
+      transform-origin: top left; 
+      width: 138.89%; 
+    }
+  }
+  @media screen and (min-width: 768px) and (max-width: 899px) {
+    .home-content-outer { 
+      transform: scale(0.8); 
+      transform-origin: top left; 
+      width: 125%; 
+    }
+  }
+  @media screen and (min-width: 900px) and (max-width: 1023px) {
+    .home-content-outer { 
+      transform: scale(0.85); 
+      transform-origin: top left; 
+      width: 117.65%; 
+    }
+  }
+  @media screen and (min-width: 1024px) and (max-width: 1199px) {
+    .home-content-outer { 
+      transform: scale(0.9); 
+      transform-origin: top left; 
+      width: 111.11%; 
+    }
+  }
+  @media screen and (min-width: 1200px) and (max-width: 1399px) {
+    .home-content-outer { 
+      transform: scale(0.95); 
+      transform-origin: top left; 
+      width: 105.26%; 
     }
   }
 }

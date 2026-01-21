@@ -22,8 +22,9 @@ import Footer from './Footer.vue'
 .main-content {
   flex: 1;
   width: 100%;
-  max-width: 100vw;
   margin: 0 auto;
   padding-bottom: 0;
+  /* Permettre au zoom de fonctionner - pas de max-width restrictif */
+  overflow-x: hidden;
 }
 </style> 

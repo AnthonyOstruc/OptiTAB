@@ -19,6 +19,11 @@
         <UserGroupIcon class="mobile-quick-icon" />
         <span>Cours Particuliers</span>
       </router-link>
+      <!-- Nous contacter -->
+      <a v-if="!isFreeResourcePage && !isCalculatorPage" href="#contact" class="mobile-quick-link mobile-quick-link--contact">
+        <EnvelopeIcon class="mobile-quick-icon" />
+        <span>Nous contacter</span>
+      </a>
       <!-- Spacer pour pousser Connexion à droite -->
       <div v-if="!isFreeResourcePage && !isCalculatorPage" class="mobile-spacer"></div>
       <!-- Connexion à droite -->
@@ -38,7 +43,7 @@ import Navigation from '@/components/layout/Navigation.vue'
 import MobileMenu from '@/components/layout/MobileMenu.vue'
 import FreeResourceTabs from '@/components/free-content/FreeResourceTabs.vue'
 import CalculatorTabs from '@/components/calculator/CalculatorTabs.vue'
-import { UserGroupIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { UserGroupIcon, UserIcon, EnvelopeIcon } from '@heroicons/vue/24/outline'
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -51,7 +56,8 @@ export default {
     FreeResourceTabs,
     CalculatorTabs,
     UserGroupIcon,
-    UserIcon
+    UserIcon,
+    EnvelopeIcon
   },
   setup() {
     const { openModal } = useModalManager()
@@ -221,6 +227,17 @@ export default {
     margin-left: 4px;
   }
 
+  &--contact {
+    color: #10257f;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    
+    &:hover {
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+      border-color: #667eea;
+    }
+  }
+
   &--login {
     background: #667eea;
     color: white;
@@ -271,6 +288,13 @@ export default {
 
   .mobile-spacer {
     display: block;
+  }
+}
+
+// Écrans < 530px - masquer "Nous contacter"
+@media (max-width: 530px) {
+  .mobile-quick-link--contact {
+    display: none !important;
   }
 }
 

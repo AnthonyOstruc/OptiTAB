@@ -40,7 +40,18 @@ const router = useRouter()
 const { openModal } = useModalManager()
 
 // Système de zoom automatique pour mobile (comme Cours.vue)
-const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
+// Utiliser documentElement.clientWidth comme fallback fiable sur mobile
+function getViewportWidth() {
+  if (typeof window === 'undefined') return 1920
+  // Sur mobile, window.innerWidth peut inclure les scrollbars
+  // documentElement.clientWidth est plus fiable pour la largeur visible
+  return Math.min(
+    window.innerWidth || 1920,
+    document.documentElement.clientWidth || 1920
+  )
+}
+
+const viewportWidth = ref(getViewportWidth())
 const contentHeight = ref(0)
 const homeContentRef = ref(null)
 
@@ -58,6 +69,16 @@ function computeAutoZoom(width) {
 
 const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
 
+// Détection du support CSS zoom
+const supportsZoom = computed(() => {
+  if (typeof CSS === 'undefined') return false
+  try {
+    return CSS.supports('zoom', '1')
+  } catch {
+    return false
+  }
+})
+
 const zoomStyle = computed(() => {
   const baseHeight = `${contentHeight.value}px`
   let z = zoomLevel.value || 1
@@ -65,18 +86,29 @@ const zoomStyle = computed(() => {
     z = Math.max(0.6, z - 0.08)
   }
   const widthPercent = (100 / z).toFixed(3)
-  return {
-    '--home-zoom': z,
-    '--home-content-height': baseHeight,
-    transform: `scale(${z})`,
-    transformOrigin: 'top left',
-    width: `${widthPercent}%`
+  
+  // Si le navigateur supporte zoom (Chrome, Edge, Safari), l'utiliser directement
+  // Sinon utiliser transform comme fallback (Firefox)
+  if (supportsZoom.value) {
+    return {
+      '--home-zoom': z,
+      '--home-content-height': baseHeight,
+      zoom: z
+    }
+  } else {
+    return {
+      '--home-zoom': z,
+      '--home-content-height': baseHeight,
+      transform: `scale(${z})`,
+      transformOrigin: 'top left',
+      width: `${widthPercent}%`
+    }
   }
 })
 
 function updateViewportWidth() {
   if (typeof window === 'undefined') return
-  viewportWidth.value = window.innerWidth
+  viewportWidth.value = getViewportWidth()
   nextTick(() => measureContentHeight())
 }
 
@@ -159,10 +191,22 @@ onMounted(async () => {
     matieres.value = []
   }
   
-  // Initialiser le système de zoom
-  updateViewportWidth()
+  // Initialiser le système de zoom immédiatement
   if (typeof window !== 'undefined') {
+    // Forcer la mise à jour initiale du viewport
+    viewportWidth.value = getViewportWidth()
+    
+    // Écouter les changements de taille
     window.addEventListener('resize', updateViewportWidth, { passive: true })
+    
+    // Écouter aussi les changements d'orientation sur mobile
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        viewportWidth.value = getViewportWidth()
+        measureContentHeight()
+      }, 100)
+    }, { passive: true })
+    
     // Mesurer la hauteur après le chargement complet
     setTimeout(() => {
       measureContentHeight()
@@ -275,19 +319,9 @@ watch(zoomLevel, () => {
 
 /* Container pour le zoom automatique sur mobile */
 .home-content-outer {
-  transition: transform 0.2s ease;
   overflow-x: hidden;
-  /* Fallback: ajuster la hauteur réelle à l'échelle visible quand zoom n'est pas supporté */
-  height: calc(var(--home-content-height, 0px) * var(--home-zoom, 1));
-}
-
-/* Préférer zoom (Chrome/Edge/Safari) pour éviter l'espace blanc en bas lié au transform */
-@supports (zoom: 1) {
-  .home-content-outer {
-    zoom: var(--home-zoom, 1);
-    transform: none !important;
-    width: 100% !important;
-    height: auto !important;
-  }
+  width: 100%;
+  box-sizing: border-box;
+  /* Le zoom/transform est appliqué via JavaScript inline style pour une meilleure compatibilité mobile */
 }
 </style> 

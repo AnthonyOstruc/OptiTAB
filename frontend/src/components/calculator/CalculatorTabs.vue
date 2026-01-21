@@ -103,9 +103,9 @@ const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1920
 // Tous les onglets disponibles
 const allTabs = [
   {
-    id: 'derivative',
-    name: 'Dérivée',
-    icon: ArrowTrendingUpIcon
+    id: 'graph',
+    name: 'Graphique',
+    icon: ChartBarIcon
   },
   {
     id: 'integral',
@@ -113,9 +113,9 @@ const allTabs = [
     icon: Square3Stack3DIcon
   },
   {
-    id: 'graph',
-    name: 'Graphique',
-    icon: ChartBarIcon
+    id: 'derivative',
+    name: 'Dérivée',
+    icon: ArrowTrendingUpIcon
   },
   {
     id: 'expand',
@@ -187,7 +187,7 @@ const activeTabData = computed(() => {
 const activeTabName = computed(() => activeTabData.value.name)
 const activeTabIcon = computed(() => activeTabData.value.icon)
 
-const activeTab = computed(() => route.query.operation || 'derivative')
+const activeTab = computed(() => route.query.operation || 'graph')
 
 const isMoreTabActive = computed(() => {
   return moreTabs.value.some(tab => tab.id === activeTab.value)

@@ -456,6 +456,8 @@ const handleLogout = () => {
     left: 0;
     right: 0;
     width: 100%;
+    /* 🔒 ACTIVER pointer-events sur TOUTE la surface du header (pas seulement les enfants) */
+    pointer-events: auto;
     /* 🔒 EMPÊCHER le scroll depuis le header - CRITIQUE pour iOS */
     touch-action: none;
     overscroll-behavior: contain;

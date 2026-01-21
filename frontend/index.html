@@ -16,34 +16,15 @@
       gtag('config', '%VITE_GA_MEASUREMENT_ID%', { send_page_view: false });
     </script>
     <script>
-      // Empêcher le zoom automatique sur mobile après orientation change
+      // Gestion simplifiée du viewport pour mobile
       (function() {
-        var viewport = document.querySelector('meta[name="viewport"]');
-        function fixViewport() {
-          if (viewport) {
-            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
-          }
-        }
-        // Fixer après chargement
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', fixViewport);
-        } else {
-          fixViewport();
-        }
-        // Fixer après changement d'orientation
+        // Écouter les changements d'orientation pour s'assurer que le viewport est correct
         window.addEventListener('orientationchange', function() {
-          setTimeout(fixViewport, 100);
-        });
-        // Assurer que le zoom est à 100% au chargement
-        window.addEventListener('load', function() {
-          if (window.visualViewport) {
-            // Utiliser visualViewport si disponible pour un meilleur contrôle
-            var initialScale = window.visualViewport.scale;
-            if (initialScale !== 1.0) {
-              // Forcer le reset si le zoom est différent de 1.0
-              fixViewport();
-            }
-          }
+          // Petit délai pour laisser le navigateur recalculer
+          setTimeout(function() {
+            // Déclencher un événement resize pour que Vue recalcule le zoom
+            window.dispatchEvent(new Event('resize'));
+          }, 150);
         });
       })();
     </script>

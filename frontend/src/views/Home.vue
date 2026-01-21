@@ -14,7 +14,7 @@ import NewsletterSection from '@/components/home/NewsletterSection.vue'
 import PricingSection from '@/components/home/PricingSection.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
-import { ref, onMounted, onUnmounted, computed, nextTick, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMatieres } from '@/api'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
@@ -39,84 +39,8 @@ const matieres = ref([])
 const router = useRouter()
 const { openModal } = useModalManager()
 
-// Système de zoom automatique pour mobile (comme Cours.vue)
-// Utiliser documentElement.clientWidth comme fallback fiable sur mobile
-function getViewportWidth() {
-  if (typeof window === 'undefined') return 1920
-  // Sur mobile, window.innerWidth peut inclure les scrollbars
-  // documentElement.clientWidth est plus fiable pour la largeur visible
-  return Math.min(
-    window.innerWidth || 1920,
-    document.documentElement.clientWidth || 1920
-  )
-}
-
-const viewportWidth = ref(getViewportWidth())
-const contentHeight = ref(0)
+// Référence pour le contenu (utilisé potentiellement pour d'autres fonctionnalités)
 const homeContentRef = ref(null)
-
-function computeAutoZoom(width) {
-  if (width >= 1400) return 1
-  if (width >= 1200) return 0.95
-  if (width >= 1024) return 0.9
-  if (width >= 900) return 0.85
-  if (width >= 768) return 0.8
-  if (width >= 640) return 0.78
-  if (width >= 520) return 0.76
-  if (width >= 420) return 0.74
-  return 0.72
-}
-
-const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
-
-// Détection du support CSS zoom
-const supportsZoom = computed(() => {
-  if (typeof CSS === 'undefined') return false
-  try {
-    return CSS.supports('zoom', '1')
-  } catch {
-    return false
-  }
-})
-
-const zoomStyle = computed(() => {
-  const baseHeight = `${contentHeight.value}px`
-  let z = zoomLevel.value || 1
-  if (viewportWidth.value <= 768) {
-    z = Math.max(0.6, z - 0.08)
-  }
-  const widthPercent = (100 / z).toFixed(3)
-  
-  // Si le navigateur supporte zoom (Chrome, Edge, Safari), l'utiliser directement
-  // Sinon utiliser transform comme fallback (Firefox)
-  if (supportsZoom.value) {
-    return {
-      '--home-zoom': z,
-      '--home-content-height': baseHeight,
-      zoom: z
-    }
-  } else {
-    return {
-      '--home-zoom': z,
-      '--home-content-height': baseHeight,
-      transform: `scale(${z})`,
-      transformOrigin: 'top left',
-      width: `${widthPercent}%`
-    }
-  }
-})
-
-function updateViewportWidth() {
-  if (typeof window === 'undefined') return
-  viewportWidth.value = getViewportWidth()
-  nextTick(() => measureContentHeight())
-}
-
-function measureContentHeight() {
-  if (homeContentRef.value) {
-    contentHeight.value = homeContentRef.value.scrollHeight
-  }
-}
 
 // Handler pour la sélection d'une matière
 const handleSubjectSelected = (subject) => {
@@ -190,41 +114,6 @@ onMounted(async () => {
   } catch (e) {
     matieres.value = []
   }
-  
-  // Initialiser le système de zoom immédiatement
-  if (typeof window !== 'undefined') {
-    // Forcer la mise à jour initiale du viewport
-    viewportWidth.value = getViewportWidth()
-    
-    // Écouter les changements de taille
-    window.addEventListener('resize', updateViewportWidth, { passive: true })
-    
-    // Écouter aussi les changements d'orientation sur mobile
-    window.addEventListener('orientationchange', () => {
-      setTimeout(() => {
-        viewportWidth.value = getViewportWidth()
-        measureContentHeight()
-      }, 100)
-    }, { passive: true })
-    
-    // Mesurer la hauteur après le chargement complet
-    setTimeout(() => {
-      measureContentHeight()
-    }, 100)
-  }
-})
-
-onUnmounted(() => {
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', updateViewportWidth)
-  }
-})
-
-// Watcher pour mesurer la hauteur quand le zoom change
-watch(zoomLevel, () => {
-  nextTick(() => {
-    measureContentHeight()
-  })
 })
 
 // --- FIN LOGIQUE JS ---
@@ -232,7 +121,7 @@ watch(zoomLevel, () => {
 
 <template>
   <MainLayout>
-    <div class="home-content-outer" :style="zoomStyle" ref="homeContentRef">
+    <div class="home-content-outer" ref="homeContentRef">
       <!-- Section Hero (accroche principale) -->
       <SectionHero
         :titre="sectionHero.titre"
@@ -317,11 +206,114 @@ watch(zoomLevel, () => {
   overflow-y: auto;
 }
 
-/* Container pour le zoom automatique sur mobile */
+/* Container principal avec zoom automatique via CSS */
 .home-content-outer {
-  overflow-x: hidden;
-  width: 100%;
   box-sizing: border-box;
-  /* Le zoom/transform est appliqué via JavaScript inline style pour une meilleure compatibilité mobile */
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* 
+ * Zoom CSS via media queries - fonctionne sur Chrome, Safari, Edge (desktop + mobile)
+ * Firefox n'a pas besoin de zoom car il gère mieux le responsive nativement
+ */
+@supports (zoom: 1) {
+  @media (max-width: 1399px) and (min-width: 1200px) {
+    .home-content-outer { zoom: 0.95; }
+  }
+  @media (max-width: 1199px) and (min-width: 1024px) {
+    .home-content-outer { zoom: 0.9; }
+  }
+  @media (max-width: 1023px) and (min-width: 900px) {
+    .home-content-outer { zoom: 0.85; }
+  }
+  @media (max-width: 899px) and (min-width: 768px) {
+    .home-content-outer { zoom: 0.8; }
+  }
+  @media (max-width: 767px) and (min-width: 640px) {
+    .home-content-outer { zoom: 0.72; }
+  }
+  @media (max-width: 639px) and (min-width: 520px) {
+    .home-content-outer { zoom: 0.68; }
+  }
+  @media (max-width: 519px) and (min-width: 420px) {
+    .home-content-outer { zoom: 0.64; }
+  }
+  @media (max-width: 419px) and (min-width: 360px) {
+    .home-content-outer { zoom: 0.60; }
+  }
+  @media (max-width: 359px) {
+    .home-content-outer { zoom: 0.55; }
+  }
+}
+
+/* 
+ * Fallback pour Firefox qui ne supporte pas zoom
+ * On utilise transform: scale() avec ajustement de width
+ */
+@supports not (zoom: 1) {
+  @media (max-width: 1399px) and (min-width: 1200px) {
+    .home-content-outer { 
+      transform: scale(0.95); 
+      transform-origin: top left; 
+      width: calc(100% / 0.95); 
+    }
+  }
+  @media (max-width: 1199px) and (min-width: 1024px) {
+    .home-content-outer { 
+      transform: scale(0.9); 
+      transform-origin: top left; 
+      width: calc(100% / 0.9); 
+    }
+  }
+  @media (max-width: 1023px) and (min-width: 900px) {
+    .home-content-outer { 
+      transform: scale(0.85); 
+      transform-origin: top left; 
+      width: calc(100% / 0.85); 
+    }
+  }
+  @media (max-width: 899px) and (min-width: 768px) {
+    .home-content-outer { 
+      transform: scale(0.8); 
+      transform-origin: top left; 
+      width: calc(100% / 0.8); 
+    }
+  }
+  @media (max-width: 767px) and (min-width: 640px) {
+    .home-content-outer { 
+      transform: scale(0.72); 
+      transform-origin: top left; 
+      width: calc(100% / 0.72); 
+    }
+  }
+  @media (max-width: 639px) and (min-width: 520px) {
+    .home-content-outer { 
+      transform: scale(0.68); 
+      transform-origin: top left; 
+      width: calc(100% / 0.68); 
+    }
+  }
+  @media (max-width: 519px) and (min-width: 420px) {
+    .home-content-outer { 
+      transform: scale(0.64); 
+      transform-origin: top left; 
+      width: calc(100% / 0.64); 
+    }
+  }
+  @media (max-width: 419px) and (min-width: 360px) {
+    .home-content-outer { 
+      transform: scale(0.60); 
+      transform-origin: top left; 
+      width: calc(100% / 0.60); 
+    }
+  }
+  @media (max-width: 359px) {
+    .home-content-outer { 
+      transform: scale(0.55); 
+      transform-origin: top left; 
+      width: calc(100% / 0.55); 
+    }
+  }
 }
 </style> 

@@ -28,6 +28,10 @@
             </button>
           </div>
           <h3 v-if="titre" class="exercice-title">{{ titre }}</h3>
+          <!-- Indicateur de difficulté -->
+          <div v-if="difficulty" class="difficulty-indicator">
+            <span class="difficulty-stars">{{ difficultyStars }}</span>
+          </div>
           <div class="header-slot header-slot--right">
             <div v-if="bestScore !== null" class="score-badge" :class="getScoreClass(bestScore)">
               <span class="score-label">Note :</span>
@@ -393,6 +397,16 @@ const diffStars = computed(() => ({
   medium: '★★',
   hard: '★★★'
 }))
+
+// Computed pour afficher les étoiles de difficulté
+const difficultyStars = computed(() => {
+  const stars = {
+    easy: '⭐',
+    medium: '⭐⭐',
+    hard: '⭐⭐⭐'
+  }
+  return stars[props.difficulty] || stars.medium
+})
 
 const tabContentStyles = computed(() => {
   const backgrounds = {
@@ -1077,10 +1091,6 @@ watch(activeTab, () => {
 .difficulty-indicator {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 10px;
-  background: rgba(251, 146, 60, 0.1);
-  border-radius: 8px;
   line-height: 1.3;
 }
 

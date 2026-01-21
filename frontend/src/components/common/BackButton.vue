@@ -180,7 +180,7 @@ const goBack = () => {
 @media (max-width: 480px) {
   .back-button--top-left-dashboard {
     /* Autres pages non principales */
-    top: 25px;
+    top: 21px;
     left: 1px;
   }
   

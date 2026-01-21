@@ -165,6 +165,11 @@ const handleTouch = async (item, event) => {
   backface-visibility: hidden;
 }
 
+/* Bloquer le scroll sur tous les enfants du footer */
+.mobile-bottom-nav * {
+  touch-action: none;
+}
+
 .mobile-nav-item {
   background: none;
   border: none;

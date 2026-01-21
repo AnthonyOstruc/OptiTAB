@@ -304,6 +304,8 @@ watch(() => sidebarCollapsed.value, (newValue, oldValue) => {
   .dashboard-main-container {
     /* Assurer que le container principal reste stable */
     flex-shrink: 1;
+    /* Compenser le header fixe sur mobile (56px = min-height du header mobile) */
+    margin-top: 56px;
   }
 }
 

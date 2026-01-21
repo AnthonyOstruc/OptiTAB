@@ -169,20 +169,6 @@ const handleLogout = () => {
 
 .dashboard-header > * { pointer-events: auto; }
 
-/* Sur mobile, empêcher complètement le scroll depuis le header */
-@media (max-width: 768px) {
-  .dashboard-header {
-    /* 🔒 EMPÊCHER le scroll depuis le header - CRITIQUE pour iOS */
-    touch-action: none;
-    overscroll-behavior: contain;
-    /* 🎯 Forcer le navigateur à garder le header fixe */
-    will-change: transform;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-}
-
-
 /* Bouton burger fixe - Solution professionnelle */
 .burger-btn-fixed {
   position: absolute;
@@ -464,7 +450,27 @@ const handleLogout = () => {
   .dashboard-header {
     padding: 0.6rem 0.7rem;
     min-height: 56px;
+    /* 🔒 Header FIXE sur mobile pour bloquer le scroll depuis le header */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    /* 🔒 EMPÊCHER le scroll depuis le header - CRITIQUE pour iOS */
+    touch-action: none;
+    overscroll-behavior: contain;
+    /* 🎯 Forcer le navigateur à garder le header fixe */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
+  
+  /* Bloquer le scroll aussi sur tous les enfants du header */
+  .dashboard-header > *,
+  .dashboard-header * {
+    touch-action: none;
+  }
+  
   .burger-btn-fixed { 
     display: none;
   }

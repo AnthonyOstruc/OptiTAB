@@ -1,6 +1,7 @@
 <template>
   <MainLayout>
-    <div class="cgv-page">
+    <div class="cgv-zoom" :style="cgvZoomStyle">
+      <div ref="cgvContentRef" class="cgv-page">
       <!-- Header Section -->
       <div class="cgv-header">
         <div class="container">
@@ -289,6 +290,7 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
 
     <!-- Bouton retour en haut -->
@@ -313,7 +315,78 @@
 <script setup>
 import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { useZoom } from '@/composables/useZoom'
+
+// --- Mobile zoom (same logic as Home/About) ---
+const cgvContentRef = ref(null)
+
+function computeCgvZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.72
+  if (width >= 520) return 0.68
+  if (width >= 420) return 0.64
+  if (width >= 360) return 0.6
+  return 0.55
+}
+
+const {
+  contentHeight,
+  zoomLevel,
+  supportsNativeZoom,
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom({ computeAutoZoom: computeCgvZoom })
+
+const baseCgvZoomStyle = createZoomStyle({
+  cssVar: '--cgv-zoom',
+  heightVar: '--cgv-content-height',
+  mobileZoomAdjustment: (z) => z
+})
+
+// On mobile (transform: scale), keep height auto to avoid scroll blocking on some browsers,
+// then compensate extra space with a negative margin.
+const cgvZoomStyle = computed(() => {
+  const style = baseCgvZoomStyle.value
+  if (supportsNativeZoom.value) return style
+
+  const z = Number(zoomLevel.value || 1)
+  if (!contentHeight.value || !Number.isFinite(z) || z >= 1) {
+    return { ...style, height: 'auto', minHeight: 'auto', marginBottom: '' }
+  }
+
+  const marginBottom = -Math.round(contentHeight.value * (1 - z))
+  return { ...style, height: 'auto', minHeight: 'auto', marginBottom: `${marginBottom}px` }
+})
+
+let cgvResizeObserver = null
+const measureCgvHeight = () => {
+  measureContentHeight(cgvContentRef)
+}
+
+const handleViewportChange = async () => {
+  updateViewportWidth()
+  await nextTick()
+  measureCgvHeight()
+}
+
+const handleResize = () => {
+  void handleViewportChange()
+}
+
+const handleOrientationChange = () => {
+  setTimeout(() => {
+    void handleViewportChange()
+  }, 200)
+}
 
 // Date actuelle
 const currentDate = ref(new Date().toLocaleDateString('fr-FR', {
@@ -380,28 +453,66 @@ const scrollToSection = (sectionId, event) => {
   const element = document.getElementById(sectionId)
   if (element) {
     const offset = 80 // Hauteur du header
-    const elementPosition = element.offsetTop - offset
+    const z = supportsNativeZoom.value ? 1 : Math.max(0.01, Number(zoomLevel.value || 1))
+    const offsetLayout = supportsNativeZoom.value ? offset : offset / z
+
+    const rect = element.getBoundingClientRect()
+    const elementPosition = window.pageYOffset + (supportsNativeZoom.value ? rect.top : (rect.top / z))
+    const elementTarget = elementPosition - offsetLayout
     window.scrollTo({
-      top: elementPosition,
+      top: elementTarget,
       behavior: 'smooth'
     })
   }
 }
 
 // Lifecycle hooks
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
+onMounted(async () => {
+  detectMobileAndZoomSupport()
+  setupViewportListener()
+
+  window.addEventListener('scroll', handleScroll, { passive: true })
   // Définir la première section comme active au chargement
   activeSection.value = 'objet'
+
+  await nextTick()
+  measureCgvHeight()
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', handleResize, { passive: true })
+    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
+
+    setTimeout(measureCgvHeight, 250)
+
+    if (window.ResizeObserver && cgvContentRef.value) {
+      cgvResizeObserver = new ResizeObserver(() => {
+        measureCgvHeight()
+      })
+      cgvResizeObserver.observe(cgvContentRef.value)
+    }
+  }
 })
 
 onUnmounted(() => {
+  cleanupViewportListener()
   window.removeEventListener('scroll', handleScroll)
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', handleResize)
+    window.removeEventListener('orientationchange', handleOrientationChange)
+  }
+  cgvResizeObserver?.disconnect?.()
+  cgvResizeObserver = null
 })
 </script>
 
 <style scoped>
 /* Page Container */
+.cgv-zoom {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
 .cgv-page {
   min-height: 100vh;
   background: #ffffff;

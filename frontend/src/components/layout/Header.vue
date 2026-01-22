@@ -20,10 +20,10 @@
         <span>Cours Particuliers</span>
       </router-link>
       <!-- Nous contacter -->
-      <a v-if="!isFreeResourcePage && !isCalculatorPage" href="#contact" class="mobile-quick-link mobile-quick-link--contact">
+      <router-link v-if="!isFreeResourcePage && !isCalculatorPage" to="/contact" class="mobile-quick-link mobile-quick-link--contact">
         <EnvelopeIcon class="mobile-quick-icon" />
         <span>Nous contacter</span>
-      </a>
+      </router-link>
       <!-- Spacer pour pousser Connexion à droite -->
       <div v-if="!isFreeResourcePage && !isCalculatorPage" class="mobile-spacer"></div>
       <!-- Connexion à droite -->
@@ -225,6 +225,14 @@ export default {
 
   &--left {
     margin-left: 4px;
+    color: #10257f;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    
+    &:hover {
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+      border-color: #667eea;
+    }
   }
 
   &--contact {

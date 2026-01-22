@@ -1191,7 +1191,7 @@ onUnmounted(() => {
 }
 
 .feature-card:hover .feature-icon {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .feature-icon {

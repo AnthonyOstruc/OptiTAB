@@ -76,6 +76,7 @@ class UserRegistrationView(generics.CreateAPIView):
                 'last_name': user.last_name,
                 'is_staff': user.is_staff,
                 'email_verified': not bool(user.verification_code),
+                'role': user.role,
             }
             return ResponseService.success(
                 message="Compte créé et connecté",

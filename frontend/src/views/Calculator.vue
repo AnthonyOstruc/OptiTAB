@@ -1187,7 +1187,14 @@
         
 
         
-        <div ref="graphContainer" class="graph-container"></div>
+        <div class="graph-container-wrapper">
+          <!-- Indicateur de chargement de Plotly -->
+          <div v-if="isPlotlyLoading" class="plotly-loading-overlay">
+            <div class="plotly-loading-spinner"></div>
+            <span>Chargement du graphique...</span>
+          </div>
+          <div ref="graphContainer" class="graph-container"></div>
+        </div>
       </div>
     </section>
   </component>
@@ -1212,7 +1219,6 @@ import {
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import { normalizeAccents, fixAccentSpacing, cleanText, renderInlineMath } from '@/utils/textCleaner'
-import Plotly from 'plotly.js-dist-min'
 
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useUserStore } from '@/stores/user'
@@ -1292,6 +1298,36 @@ const isCalculating = ref(false)
 const selectedOperation = computed(() => route.query.operation || 'graph')
 const hasCalculated = ref(false)
 const errorMessage = ref(null)
+
+// Plotly est chargé dynamiquement pour optimiser le temps de chargement initial
+let Plotly = null
+const isPlotlyLoading = ref(false)
+const isPlotlyLoaded = ref(false)
+
+async function loadPlotly() {
+  if (Plotly) return Plotly
+  if (isPlotlyLoading.value) {
+    // Attendre que le chargement en cours se termine
+    while (isPlotlyLoading.value) {
+      await new Promise(resolve => setTimeout(resolve, 50))
+    }
+    return Plotly
+  }
+  
+  isPlotlyLoading.value = true
+  try {
+    const module = await import('plotly.js-dist-min')
+    Plotly = module.default
+    isPlotlyLoaded.value = true
+    return Plotly
+  } catch (error) {
+    console.error('Erreur lors du chargement de Plotly:', error)
+    throw error
+  } finally {
+    isPlotlyLoading.value = false
+  }
+}
+
 const isAuthenticated = computed(() => userStore.isAuthenticated)
 const layoutComponent = computed(() => isAuthenticated.value ? DashboardLayout : MainLayout)
 const layoutListeners = computed(() => isAuthenticated.value ? { 'subject-changed': handleSubjectChange } : {})
@@ -1609,6 +1645,14 @@ onMounted(async () => {
   // Initialiser le graphique si on est sur l'opération graph
   if (selectedOperation.value === 'graph') {
     nextTick(() => initializeGraph())
+  } else {
+    // Précharger Plotly en arrière-plan après un court délai
+    // pour que le graphique soit prêt quand l'utilisateur clique dessus
+    setTimeout(() => {
+      loadPlotly().catch(() => {
+        // Silencieux - le chargement sera réessayé si nécessaire
+      })
+    }, 1000)
   }
   
   // Gestionnaire de clic à l'extérieur pour fermer le clavier
@@ -2269,8 +2313,18 @@ function handleGraphClick(event) {
   plotAllFunctions()
 }
 
-function plotAllFunctions() {
+async function plotAllFunctions() {
   if (!graphContainer.value) return
+  
+  // Charger Plotly dynamiquement si ce n'est pas déjà fait
+  try {
+    await loadPlotly()
+  } catch (error) {
+    if (preview.value) {
+      preview.value.innerHTML = `<span style='color:#ef4444;font-size:0.9rem;'>Erreur de chargement du graphique</span>`
+    }
+    return
+  }
 
   const mobileViewport =
     typeof window !== 'undefined' &&
@@ -3830,9 +3884,9 @@ function renderFunctionExpressions() {
   })
 }
 
-function clearGraph() {
+async function clearGraph() {
   graphFunctions.value = []
-  if (graphContainer.value) {
+  if (graphContainer.value && Plotly) {
     Plotly.purge(graphContainer.value)
   }
   if (preview.value) {
@@ -3840,8 +3894,8 @@ function clearGraph() {
   }
 }
 
-function resetZoom() {
-  if (graphContainer.value && graphFunctions.value.length > 0) {
+async function resetZoom() {
+  if (graphContainer.value && graphFunctions.value.length > 0 && Plotly) {
     Plotly.relayout(graphContainer.value, {
       'xaxis.range': [xMin.value, xMax.value],
       'yaxis.range': [yMin.value, yMax.value]
@@ -3850,15 +3904,14 @@ function resetZoom() {
 }
 
 // Initialiser le graphique quand l'onglet graphique est sélectionné
-function initializeGraph() {
+async function initializeGraph() {
   if (selectedOperation.value === 'graph') {
-    nextTick(() => {
-      if (graphContainer.value) {
-        // Utiliser plotAllFunctions pour garantir la même taille de graphique
-        // qu'il soit vide ou avec des fonctions
-        plotAllFunctions()
-      }
-    })
+    await nextTick()
+    if (graphContainer.value) {
+      // Utiliser plotAllFunctions pour garantir la même taille de graphique
+      // qu'il soit vide ou avec des fonctions
+      await plotAllFunctions()
+    }
   }
 }
 </script>
@@ -4912,6 +4965,11 @@ function initializeGraph() {
   color: #2563eb;
 }
 
+.graph-container-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .graph-container {
   width: 100%;
   aspect-ratio: 4 / 3;
@@ -4921,6 +4979,39 @@ function initializeGraph() {
   border-radius: 0;
   background: white;
   margin: 0;
+}
+
+/* Indicateur de chargement de Plotly */
+.plotly-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 10;
+  gap: 1rem;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.plotly-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: plotly-spin 0.8s linear infinite;
+}
+
+@keyframes plotly-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Wrapper pour le système d'onglets */
@@ -5553,10 +5644,16 @@ function initializeGraph() {
   }
   
   /* Container graphique mobile optimisé - VRAIE pleine largeur */
-  .graph-container {
+  .graph-container-wrapper {
     width: 100vw !important;
     margin-left: calc(-50vw + 50%) !important;
     margin-right: calc(-50vw + 50%) !important;
+  }
+  
+  .graph-container {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     height: auto !important;
     aspect-ratio: 1 / 1;
     min-height: 300px;

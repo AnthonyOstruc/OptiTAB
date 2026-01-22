@@ -453,12 +453,8 @@ const scrollToSection = (sectionId, event) => {
   const element = document.getElementById(sectionId)
   if (element) {
     const offset = 80 // Hauteur du header
-    const z = supportsNativeZoom.value ? 1 : Math.max(0.01, Number(zoomLevel.value || 1))
-    const offsetLayout = supportsNativeZoom.value ? offset : offset / z
-
     const rect = element.getBoundingClientRect()
-    const elementPosition = window.pageYOffset + (supportsNativeZoom.value ? rect.top : (rect.top / z))
-    const elementTarget = elementPosition - offsetLayout
+    const elementTarget = window.pageYOffset + rect.top - offset
     window.scrollTo({
       top: elementTarget,
       behavior: 'smooth'

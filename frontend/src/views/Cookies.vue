@@ -1,6 +1,7 @@
-a<template>
+<template>
   <MainLayout>
-    <div class="cgv-page">
+    <div class="cookies-zoom" :style="cookiesZoomStyle">
+      <div ref="cookiesContentRef" class="cgv-page">
       <!-- Header Section -->
       <div class="cgv-header">
         <div class="container">
@@ -282,7 +283,10 @@ a<template>
         </div>
       </div>
 
-      <!-- Bouton retour en haut -->
+      </div>
+    </div>
+
+    <!-- Bouton retour en haut -->
       <button 
         v-show="showBackToTop" 
         @click="scrollToTop"
@@ -298,14 +302,84 @@ a<template>
         message="Bonjour, j'ai une question sur la politique de cookies d'OptiTAB !"
         tooltip="Une question ? Discutons sur WhatsApp !"
       />
-    </div>
   </MainLayout>
 </template>
 
 <script setup>
 import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { useZoom } from '@/composables/useZoom'
+
+// --- Mobile zoom (same logic as Home/About + other legal pages) ---
+const cookiesContentRef = ref(null)
+
+function computeCookiesZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.72
+  if (width >= 520) return 0.68
+  if (width >= 420) return 0.64
+  if (width >= 360) return 0.6
+  return 0.55
+}
+
+const {
+  contentHeight,
+  zoomLevel,
+  supportsNativeZoom,
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom({ computeAutoZoom: computeCookiesZoom })
+
+const baseCookiesZoomStyle = createZoomStyle({
+  cssVar: '--cookies-zoom',
+  heightVar: '--cookies-content-height',
+  mobileZoomAdjustment: (z) => z
+})
+
+// On mobile (transform: scale), keep height auto to avoid scroll blocking on some browsers,
+// then compensate extra space with a negative margin.
+const cookiesZoomStyle = computed(() => {
+  const style = baseCookiesZoomStyle.value
+  if (supportsNativeZoom.value) return style
+
+  const z = Number(zoomLevel.value || 1)
+  if (!contentHeight.value || !Number.isFinite(z) || z >= 1) {
+    return { ...style, height: 'auto', minHeight: 'auto', marginBottom: '' }
+  }
+
+  const marginBottom = -Math.round(contentHeight.value * (1 - z))
+  return { ...style, height: 'auto', minHeight: 'auto', marginBottom: `${marginBottom}px` }
+})
+
+let cookiesResizeObserver = null
+const measureCookiesHeight = () => {
+  measureContentHeight(cookiesContentRef)
+}
+
+const handleViewportChange = async () => {
+  updateViewportWidth()
+  await nextTick()
+  measureCookiesHeight()
+}
+
+const handleResize = () => {
+  void handleViewportChange()
+}
+
+const handleOrientationChange = () => {
+  setTimeout(() => {
+    void handleViewportChange()
+  }, 200)
+}
 
 // Date actuelle
 const currentDate = ref(new Date().toLocaleDateString('fr-FR', {
@@ -366,28 +440,62 @@ const scrollToSection = (sectionId, event) => {
   const element = document.getElementById(sectionId)
   if (element) {
     const offset = 80 // Hauteur du header
-    const elementPosition = element.offsetTop - offset
+    const rect = element.getBoundingClientRect()
+    const elementTarget = window.pageYOffset + rect.top - offset
     window.scrollTo({
-      top: elementPosition,
+      top: elementTarget,
       behavior: 'smooth'
     })
   }
 }
 
 // Lifecycle hooks
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
+onMounted(async () => {
+  detectMobileAndZoomSupport()
+  setupViewportListener()
+
+  window.addEventListener('scroll', handleScroll, { passive: true })
   // Définir la première section comme active au chargement
   activeSection.value = 'definition'
+
+  await nextTick()
+  measureCookiesHeight()
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', handleResize, { passive: true })
+    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
+
+    setTimeout(measureCookiesHeight, 250)
+
+    if (window.ResizeObserver && cookiesContentRef.value) {
+      cookiesResizeObserver = new ResizeObserver(() => {
+        measureCookiesHeight()
+      })
+      cookiesResizeObserver.observe(cookiesContentRef.value)
+    }
+  }
 })
 
 onUnmounted(() => {
+  cleanupViewportListener()
   window.removeEventListener('scroll', handleScroll)
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', handleResize)
+    window.removeEventListener('orientationchange', handleOrientationChange)
+  }
+  cookiesResizeObserver?.disconnect?.()
+  cookiesResizeObserver = null
 })
 </script>
 
 <style scoped>
 /* Page Container */
+.cookies-zoom {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
 .cgv-page {
   min-height: 100vh;
   background: #ffffff;

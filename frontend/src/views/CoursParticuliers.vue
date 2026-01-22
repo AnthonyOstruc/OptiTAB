@@ -750,16 +750,12 @@ function scrollToProfesseur(e) {
     // Chercher le conteneur scrollable du dashboard
     const scrollContainer = document.querySelector('.dashboard-main')
     const offset = 100 // Offset pour le header fixe
-    const z = supportsNativeZoom.value ? 1 : Math.max(0.01, Number(zoomLevel.value || 1))
-    const offsetLayout = supportsNativeZoom.value ? offset : offset / z
     
     if (scrollContainer) {
       // Calculer la position relative au conteneur scrollable
       const containerRect = scrollContainer.getBoundingClientRect()
       const elementRect = element.getBoundingClientRect()
-      const deltaVisual = elementRect.top - containerRect.top
-      const deltaLayout = supportsNativeZoom.value ? deltaVisual : (deltaVisual / z)
-      const offsetPosition = scrollContainer.scrollTop + deltaLayout - offsetLayout
+      const offsetPosition = scrollContainer.scrollTop + (elementRect.top - containerRect.top) - offset
       
       scrollContainer.scrollTo({
         top: offsetPosition,
@@ -768,8 +764,7 @@ function scrollToProfesseur(e) {
     } else {
       // Fallback si pas de conteneur dashboard
       const rect = element.getBoundingClientRect()
-      const elementPosition = window.pageYOffset + (supportsNativeZoom.value ? rect.top : (rect.top / z))
-      const offsetPosition = elementPosition - offsetLayout
+      const offsetPosition = window.pageYOffset + rect.top - offset
       
       window.scrollTo({
         top: offsetPosition,

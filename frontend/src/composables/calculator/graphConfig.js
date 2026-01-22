@@ -334,7 +334,7 @@ export const OPERATIONS = [
     id: 'graph',
     name: 'Graphique',
     description: 'Tracer le graphique d\'une fonction',
-    placeholder: { text: 'Fonction à tracer (ex: ', latex: 'x^{2}, \\sin(x), \\ln(x)' }
+    placeholder: { text: 'Fonction à tracer (ex: ', latex: 'x^{2}, \\sin(x)' }
   }
 ]
 

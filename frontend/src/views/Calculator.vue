@@ -6,50 +6,31 @@
       <!-- Système d'onglets pour le graphique -->
       <div v-if="selectedOperation === 'graph'" class="graph-tabs-wrapper">
         <div class="graph-tabs-container top-tabs">
+          <button 
+            class="tabs-nav-btn tabs-nav-prev" 
+            @click="scrollTabsLeft"
+            :disabled="!canScrollLeft"
+          >
+            ‹
+          </button>
           <div class="graph-tabs">
             <button 
+              v-for="tab in visibleTabs"
+              :key="tab"
               class="graph-tab" 
-              :class="{ active: activeGraphTab === 'functions' }"
-              @click="activeGraphTab = 'functions'"
+              :class="{ active: activeGraphTab === tab }"
+              @click="activeGraphTab = tab"
             >
-              📈 Fonctions
-            </button>
-            <button 
-              class="graph-tab" 
-              :class="{ active: activeGraphTab === 'axes' }"
-              @click="activeGraphTab = 'axes'"
-            >
-              ⚙️ Axes
-            </button>
-            <button 
-              class="graph-tab" 
-              :class="{ active: activeGraphTab === 'asymptotes' }"
-              @click="activeGraphTab = 'asymptotes'"
-            >
-              📐 Asymptotes
-            </button>
-            <button 
-              class="graph-tab" 
-              :class="{ active: activeGraphTab === 'analysis' }"
-              @click="activeGraphTab = 'analysis'"
-            >
-              🔍 Analyse
-            </button>
-            <button 
-              class="graph-tab" 
-              :class="{ active: activeGraphTab === 'calculus' }"
-              @click="activeGraphTab = 'calculus'"
-            >
-              📊 Calcul
-            </button>
-            <button 
-              class="graph-tab" 
-              :class="{ active: activeGraphTab === 'shapes' }"
-              @click="activeGraphTab = 'shapes'"
-            >
-              🟢 Formes
+              {{ getTabLabel(tab) }}
             </button>
           </div>
+          <button 
+            class="tabs-nav-btn tabs-nav-next" 
+            @click="scrollTabsRight"
+            :disabled="!canScrollRight"
+          >
+            ›
+          </button>
         </div>
         
         <!-- Contenu des onglets directement sous les onglets -->
@@ -406,6 +387,12 @@
             </div>
         </div>
       </div>
+
+      <!-- Zone de résultat pour les opérations non-graphique (affichée en haut) -->
+      <div v-if="selectedOperation !== 'graph'" class="result-preview-container">
+        <div ref="preview" class="result-preview"></div>
+      </div>
+
       <div class="expr-row">
         <div class="expr-box">
           <!-- Input principal en premier -->
@@ -437,10 +424,35 @@
                 <circle cx="12" cy="12" r="10"/>
               </svg>
             </button>
-            <button class="vk-btn" @click="toggleVirtualKeyboard" title="Afficher le clavier scientifique">
-              <Bars3BottomLeftIcon class="vk-icon" />
+            <button class="vk-btn" @click="toggleCustomKeyboard" title="Afficher le clavier scientifique">
+              <svg class="vk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="4" width="20" height="14" rx="2"/>
+                <line x1="5" y1="8" x2="7" y2="8"/>
+                <line x1="9" y1="8" x2="11" y2="8"/>
+                <line x1="13" y1="8" x2="15" y2="8"/>
+                <line x1="17" y1="8" x2="19" y2="8"/>
+                <line x1="5" y1="12" x2="7" y2="12"/>
+                <line x1="9" y1="12" x2="11" y2="12"/>
+                <line x1="13" y1="12" x2="15" y2="12"/>
+                <line x1="17" y1="12" x2="19" y2="12"/>
+                <line x1="7" y1="16" x2="17" y2="16"/>
+              </svg>
             </button>
           </div>
+
+          <!-- Clavier scientifique personnalisé -->
+          <Transition name="keyboard-slide">
+            <ScientificKeyboard 
+              v-if="showCustomKeyboard"
+              :visible="showCustomKeyboard"
+              @insert="handleKeyboardInsert"
+              @backspace="handleKeyboardBackspace"
+              @submit="handleKeyboardSubmit"
+              @calculate="handleKeyboardCalculate"
+              @moveLeft="handleKeyboardMoveLeft"
+              @moveRight="handleKeyboardMoveRight"
+            />
+          </Transition>
 
           <!-- Message d'erreur professionnel -->
           <div v-if="errorMessage" class="error-message-container">
@@ -1152,29 +1164,6 @@
         </div> <!-- Fermeture de expr-box -->
       </div> <!-- Fermeture de expr-row -->
 
-      <div v-if="isAuthenticated && steps.length" class="deriv-steps">
-        <h3 class="steps-title">{{ getStepsTitle() }}</h3>
-        <ul class="steps-list">
-          <li v-for="(step, i) in steps" :key="i">
-            <div v-if="step.text" class="step-text">
-              <span class="step-num">Étape {{ i + 1 }} :</span>
-              <span :ref="el => textRefs[i] = el"></span>
-            </div>
-            <div v-if="step.formula" class="step-formula" :ref="el => formulaRefs[i] = el"></div>
-          </li>
-        </ul>
-        <div v-if="steps.length" class="final-result">
-          <span class="final-label">Résultat final :</span>
-          <span ref="finalResultRef"></span>
-        </div>
-      </div>
-
-      <div v-else-if="!isAuthenticated && hasCalculated" class="steps-cta">
-        <h3 class="steps-title">Étapes du calcul</h3>
-        <p class="cta-text">Connectez-vous pour afficher les étapes détaillées du calcul.</p>
-        <button class="login-cta-btn" @click="openLogin">Se connecter</button>
-      </div>
-
       <!-- Conteneur du graphique -->
       <div v-if="selectedOperation === 'graph'" class="graph-section">
         <div class="graph-header">
@@ -1218,7 +1207,6 @@ import {
 } from '@heroicons/vue/24/outline'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
-import { normalizeAccents, fixAccentSpacing, cleanText, renderInlineMath } from '@/utils/textCleaner'
 
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useUserStore } from '@/stores/user'
@@ -1237,6 +1225,9 @@ import {
   evaluateFunction,
   generateFunctionData
 } from '@/composables/calculator'
+
+// Import du clavier scientifique
+import ScientificKeyboard from '@/components/calculator/ScientificKeyboard.vue'
 
 // Store pour les matières
 const subjectsStore = useSubjectsStore()
@@ -1284,15 +1275,10 @@ const preview = ref(null)
 const mf = ref(null)
 const isFocused = ref(false)
 const expressionValue = ref('')
-const steps = ref([])
-const textRefs = [];
-const formulaRefs = []
-const finalResultRef = ref(null)
 const originalExpressionRef = ref(null)
 const resultData = ref(null)
 const placeholderRef = ref(null)
-const showSteps = ref(false)
-const showCustomKeyboard = ref(false)
+const showCustomKeyboard = ref(false)  // Clavier caché par défaut
 const activeTab = ref('algebra')
 const isCalculating = ref(false)
 const selectedOperation = computed(() => route.query.operation || 'graph')
@@ -1349,6 +1335,42 @@ const limitDirection = ref('')
 const showGraphOptions = ref(false)
 const activeSection = ref('')
 const activeGraphTab = ref('functions')
+
+// Navigation des onglets sur mobile (carousel de 4 onglets)
+const allGraphTabs = ['functions', 'axes', 'asymptotes', 'analysis', 'calculus', 'shapes']
+const tabsStartIndex = ref(0)
+const visibleTabsCount = 4
+
+const visibleTabs = computed(() => {
+  return allGraphTabs.slice(tabsStartIndex.value, tabsStartIndex.value + visibleTabsCount)
+})
+
+const canScrollLeft = computed(() => tabsStartIndex.value > 0)
+const canScrollRight = computed(() => tabsStartIndex.value < allGraphTabs.length - visibleTabsCount)
+
+const scrollTabsLeft = () => {
+  if (canScrollLeft.value) {
+    tabsStartIndex.value--
+  }
+}
+
+const scrollTabsRight = () => {
+  if (canScrollRight.value) {
+    tabsStartIndex.value++
+  }
+}
+
+const getTabLabel = (tab) => {
+  const labels = {
+    functions: '📈 Fonctions',
+    axes: '⚙️ Axes',
+    asymptotes: '📐 Asymptotes',
+    analysis: '🔍 Analyse',
+    calculus: '📊 Calcul',
+    shapes: '🟢 Formes'
+  }
+  return labels[tab] || tab
+}
 
 // Mode snap to grid pour les points
 const snapToGrid = ref(true)
@@ -1472,7 +1494,7 @@ function getPlaceholderData() {
     case 'factor':
       return { text: 'Expression à factoriser (ex: ', latex: 'x^{2}-1' }
     case 'graph':
-      return { text: 'Fonction à tracer (ex: ', latex: 'x^{2}, \\sin(x), \\ln(x)' }
+      return { text: 'Fonction à tracer (ex: ', latex: 'x^{2}, \\sin(x)' }
     default:
       return { text: 'Expression (ex: ', latex: '(x+1)^{2}' }
   }
@@ -1507,24 +1529,6 @@ function renderPlaceholder() {
       console.error('Erreur de rendu KaTeX pour le placeholder:', error)
       placeholderRef.value.textContent = data.text + data.latex + ')'
     }
-  }
-}
-
-// Obtenir le titre des étapes selon l'opération
-function getStepsTitle() {
-  switch (selectedOperation.value) {
-    case 'integral':
-      return 'Étapes de l\'intégration :'
-    case 'derivative':
-      return 'Étapes de la dérivation :'
-    case 'limit':
-      return 'Étapes du calcul de limite :'
-    case 'expand':
-      return 'Étapes du développement :'
-    case 'factor':
-      return 'Étapes de la factorisation :'
-    default:
-      return 'Étapes du calcul :'
   }
 }
 
@@ -1669,7 +1673,6 @@ watch(() => selectedOperation.value, () => {
     mf.value.value = ''
   }
   expressionValue.value = ''
-  steps.value = []
   hasCalculated.value = false
   
   // Vider le preview
@@ -1855,20 +1858,44 @@ function insert(val) {
       field.executeCommand('moveToPreviousPlaceholder');
       field.executeCommand('insert', '\\placeholder{☐}');
       field.executeCommand('moveToNextPlaceholder'); 
-    } else if (val === '\\sqrt[n]{}') {
-      field.executeCommand('insert', '\\sqrt[{}]{}');
-      field.executeCommand('moveToPreviousPlaceholder');
-      field.executeCommand('moveToPreviousPlaceholder');
-      field.executeCommand('insert', '\\placeholder{☐}');
-      field.executeCommand('moveToNextPlaceholder');
-      field.executeCommand('moveToNextPlaceholder');
-      field.executeCommand('insert', '\\placeholder{☐}');
-      field.executeCommand('moveToPreviousPlaceholder');
+    } else if (val === '\\sqrt[n]{}' || val === '\\sqrt[{}]{}') {
+      field.executeCommand('insert', '\\sqrt[#0]{#0}');
     } else if (val === '\\sqrt{}') {
-      field.executeCommand('insert', '\\sqrt{}');
-      field.executeCommand('moveToPreviousPlaceholder');
-      field.executeCommand('insert', '\\placeholder{☐}');
-      field.executeCommand('moveToNextPlaceholder');
+      field.executeCommand('insert', '\\sqrt{#0}');
+    } else if (val === '\\frac{}{}') {
+      field.executeCommand('insert', '\\frac{#0}{#0}');
+    } else if (val === '\\binom{}{}') {
+      field.executeCommand('insert', '\\binom{#0}{#0}');
+    } else if (val === '^{}') {
+      field.executeCommand('insert', '^{#0}');
+    } else if (val === '_{}') {
+      field.executeCommand('insert', '_{#0}');
+    } else if (val === '^2') {
+      field.executeCommand('insert', '^{2}');
+    } else if (val === '|{}|') {
+      field.executeCommand('insert', '\\left|#0\\right|');
+    } else if (val === '{}!') {
+      field.executeCommand('insert', '{#0}!');
+    } else if (val === '\\lfloor{}\\rfloor') {
+      field.executeCommand('insert', '\\lfloor{#0}\\rfloor');
+    } else if (val === '\\lceil{}\\rceil') {
+      field.executeCommand('insert', '\\lceil{#0}\\rceil');
+    } else if (val === '\\log_{}') {
+      field.executeCommand('insert', '\\log_{#0}');
+    } else if (val === '\\int_{}^{}') {
+      field.executeCommand('insert', '\\int_{#0}^{#0}');
+    } else if (val === 'e^{}') {
+      field.executeCommand('insert', 'e^{#0}');
+    } else if (val === 'x_{}') {
+      field.executeCommand('insert', 'x_{#0}');
+    } else if (val === 'y_{}') {
+      field.executeCommand('insert', 'y_{#0}');
+    } else if (val === 'x^{}') {
+      field.executeCommand('insert', 'x^{#0}');
+    } else if (val === '\\overline{}') {
+      field.executeCommand('insert', '\\overline{#0}');
+    } else if (val === '\\vec{}') {
+      field.executeCommand('insert', '\\vec{#0}');
     } else {
       field.executeCommand('insert', val);
     }
@@ -1942,38 +1969,17 @@ async function calculate() {
         // Si l'opération n'est pas reconnue, afficher une erreur
         throw new Error(`Opération non reconnue: ${selectedOperation.value}`)
     }
-    katex.render(data.result_latex, preview.value, { throwOnError: false, displayMode: true })
-    steps.value = Array.isArray(data.steps) ? data.steps : []
-    await nextTick()
-    steps.value.forEach((step, i) => {
-      if (step.formula && formulaRefs[i]) {
-        try {
-          katex.render(step.formula.replace(/\$/g, ''), formulaRefs[i], { throwOnError: false, displayMode: true })
-        } catch (e) {
-          formulaRefs[i].innerText = step.formula
-        }
-      }
-      if (step.text && textRefs[i]) {
-        // Enlève le point final si présent et normalise les caractères accentués
-        let cleanText = step.text.trim().replace(/\.$/, '')
-        // Applique une correction supplémentaire pour les caractères accentués
-        cleanText = fixAccentSpacing(cleanText)
-        renderInlineMath(cleanText, textRefs[i])
-      }
-    })
-    // Affiche le résultat final en bas
-    if (finalResultRef.value && data.result_latex) {
+    // Afficher uniquement le résultat final
+    if (preview.value && data.result_latex) {
       try {
-        katex.render(data.result_latex, finalResultRef.value, { throwOnError: false, displayMode: true })
+        katex.render(data.result_latex, preview.value, { throwOnError: false, displayMode: true })
       } catch (e) {
-        finalResultRef.value.innerText = data.result_latex
+        preview.value.innerText = data.result_latex
       }
     }
   } catch (e) {
     let msg = e?.response?.data?.detail || e.message || 'Erreur inconnue'
     resultData.value = null
-    steps.value = []
-    showSteps.value = false
     // Afficher l'erreur dans une zone dédiée
     if (preview.value) {
       preview.value.innerHTML = `<span style='color:#ef4444'>Erreur : ${msg}</span>`
@@ -2020,6 +2026,56 @@ function toggleVirtualKeyboard() {
       // Fallback simple : focus sur le champ
       mf.value.focus()
     }
+  }
+}
+
+// Fonction pour basculer le clavier personnalisé
+function toggleCustomKeyboard() {
+  showCustomKeyboard.value = !showCustomKeyboard.value
+  if (showCustomKeyboard.value && mf.value) {
+    mf.value.focus()
+  }
+}
+
+// Fonctions pour gérer les événements du clavier personnalisé
+function handleKeyboardInsert(val) {
+  insert(val)
+}
+
+function handleKeyboardBackspace() {
+  if (mf.value) {
+    mf.value.executeCommand('deleteBackward')
+    mf.value.focus()
+  }
+}
+
+function handleKeyboardSubmit() {
+  if (selectedOperation.value === 'graph') {
+    plotFunction()
+  } else {
+    calculate()
+  }
+}
+
+function handleKeyboardCalculate() {
+  if (selectedOperation.value === 'graph') {
+    plotFunction()
+  } else {
+    calculate()
+  }
+}
+
+function handleKeyboardMoveLeft() {
+  if (mf.value) {
+    mf.value.executeCommand('moveToPreviousChar')
+    mf.value.focus()
+  }
+}
+
+function handleKeyboardMoveRight() {
+  if (mf.value) {
+    mf.value.executeCommand('moveToNextChar')
+    mf.value.focus()
   }
 }
 
@@ -4353,7 +4409,7 @@ async function initializeGraph() {
   max-width: 100%;
   margin: 0;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
 }
 
 /* Panneaux flottants au-dessus de l'input */
@@ -4596,114 +4652,25 @@ async function initializeGraph() {
   filter: invert(0.4);
 }
 
-/* Étapes de dérivation */
-.deriv-steps {
-  margin-top: 2rem;
-  padding: 1.5rem;
+/* Zone de résultat pour les opérations non-graphique */
+.result-preview-container {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
   background: #f8fafc;
   border-radius: 0.75rem;
   border: 1px solid #e2e8f0;
   width: 100%;
+  min-height: 60px;
 }
 
-.steps-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #1e3a8a;
-  margin-bottom: 1rem;
-}
-
-.steps-list,
-.steps-list li {
-  list-style: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.steps-list li {
-  margin-bottom: 1rem !important;
-  padding: 1rem !important;
-  background: white;
-  border-radius: 0.5rem;
-  border: 1px solid #e5e7eb;
-}
-
-.step-text {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.2em;
-  margin-bottom: 0.5rem;
-}
-
-.step-num {
-  font-weight: bold;
-  color: #3b82f6;
-  margin-right: 0.5rem;
-}
-
-.step-text span.katex {
-  font-size: 1.13em;
-  vertical-align: middle;
-  color: #193e8e;
-}
-
-.step-formula {
-  margin-top: 0.5rem;
+.result-preview {
   text-align: center;
+  padding: 0.5rem;
+  font-size: 1.1rem;
 }
 
-.final-result {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background: #dbeafe;
-  border-radius: 0.5rem;
-  border: 1px solid #93c5fd;
-  text-align: center;
-}
-
-.final-label {
-  font-weight: bold;
-  color: #1e3a8a;
-  margin-right: 0.5rem;
-}
-
-/* Bloc d'incitation à la connexion pour les étapes */
-.steps-cta {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: #f0f9ff;
-  border-radius: 0.75rem;
-  border: 1px solid #bfdbfe;
-  text-align: center;
-  width: 100%;
-}
-
-.steps-cta .cta-text {
-  color: #1e3a8a;
-  margin: 0.5rem 0 1rem;
-}
-
-.login-cta-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1rem;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
-}
-
-.login-cta-btn:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+.result-preview .katex {
+  font-size: 1.2em;
 }
 
 /* Conteneur du clavier */
@@ -5025,6 +4992,43 @@ async function initializeGraph() {
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem 0.5rem 0 0;
   overflow: hidden;
+  display: flex;
+  align-items: stretch;
+}
+
+/* Boutons de navigation des onglets */
+.tabs-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  min-width: 32px;
+  background: #f8fafc;
+  border: none;
+  color: #64748b;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.tabs-nav-btn:hover:not(:disabled) {
+  background: #e2e8f0;
+  color: #3b82f6;
+}
+
+.tabs-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.tabs-nav-prev {
+  border-right: 1px solid #e2e8f0;
+}
+
+.tabs-nav-next {
+  border-left: 1px solid #e2e8f0;
 }
 
 /* Contenu des onglets en haut */
@@ -5039,15 +5043,16 @@ async function initializeGraph() {
 
 .graph-tabs {
   display: flex;
+  flex: 1;
   gap: 0;
   background: #f8fafc;
   border-bottom: 2px solid #e2e8f0;
-  overflow-x: auto;
+  overflow: hidden;
 }
 
 .graph-tab {
   flex: 1;
-  min-width: fit-content;
+  min-width: 0;
   padding: 0.875rem 1.25rem;
   background: transparent;
   border: none;
@@ -5700,16 +5705,19 @@ async function initializeGraph() {
     border-right: none;
   }
   
+  .tabs-nav-btn {
+    width: 28px;
+    min-width: 28px;
+    font-size: 1.2rem;
+  }
+  
   .graph-tabs {
     padding: 0;
-    justify-content: space-around;
   }
   
   .graph-tab {
-    padding: 0.6rem 0.4rem;
+    padding: 0.5rem 0.4rem;
     font-size: 0.7rem;
-    min-width: auto;
-    flex: 1;
   }
   
   /* Contenu des onglets */
@@ -5797,5 +5805,31 @@ async function initializeGraph() {
     font-size: 0.8rem;
     padding: 0.375rem;
   }
+}
+
+/* Extra petit écran - onglets encore plus compacts */
+@media (max-width: 420px) {
+  .tabs-nav-btn {
+    width: 24px;
+    min-width: 24px;
+    font-size: 1rem;
+  }
+  
+  .graph-tab {
+    padding: 0.4rem 0.3rem;
+    font-size: 0.6rem;
+  }
+}
+
+/* Transition animation pour le clavier */
+.keyboard-slide-enter-active,
+.keyboard-slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.keyboard-slide-enter-from,
+.keyboard-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 </style> 

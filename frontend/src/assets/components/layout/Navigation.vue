@@ -2,15 +2,15 @@
   <nav class="navigation">
     <!-- Main navigation items on the left -->
     <div class="nav-items">
-      <div 
-        v-for="item in leftMenuItems" 
+      <router-link
+        v-for="item in leftMenuItems"
         :key="item.key"
-        class="nav-item cursor-pointer"
-        @click="handleItemClick(item)"
+        :to="item.href"
+        class="nav-item"
       >
         <component :is="item.icon" class="nav-icon" />
         <span class="nav-text">{{ item.text }}</span>
-      </div>
+      </router-link>
     </div>
 
     <!-- Onglets de matières (centre) -->
@@ -59,19 +59,37 @@
 
     <!-- Auth and contact items on the right -->
     <div class="right-items">
-      <component 
-        :is="item.external ? 'a' : 'div'"
-        v-for="item in rightMenuItems" 
-        :key="item.key"
-        :href="item.external ? item.href : undefined"
-        :target="item.external ? '_blank' : undefined"
-        :rel="item.external ? 'noopener noreferrer' : undefined"
-        :class="['right-item', 'cursor-pointer', item.key === 'login' ? 'btn-login' : '']"
-        @click="handleItemClick(item)"
-      >
-        <component :is="item.icon" class="right-icon" />
-        <span class="right-text">{{ item.text }}</span>
-      </component>
+      <template v-for="item in rightMenuItems" :key="item.key">
+        <button
+          v-if="item.emit"
+          type="button"
+          :class="['right-item', item.key === 'login' ? 'btn-login' : '']"
+          @click="handleItemClick(item)"
+        >
+          <component :is="item.icon" class="right-icon" />
+          <span class="right-text">{{ item.text }}</span>
+        </button>
+
+        <a
+          v-else-if="item.external"
+          :href="item.href"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="right-item"
+        >
+          <component :is="item.icon" class="right-icon" />
+          <span class="right-text">{{ item.text }}</span>
+        </a>
+
+        <router-link
+          v-else
+          :to="item.href"
+          class="right-item"
+        >
+          <component :is="item.icon" class="right-icon" />
+          <span class="right-text">{{ item.text }}</span>
+        </router-link>
+      </template>
     </div>
   </nav>
 </template>
@@ -100,7 +118,7 @@ const isLoadingMatieres = ref(false)
 // Left side: Main navigation items
 const leftMenuItems = computed(() => {
   return menuItems.filter(item =>
-    ['calculator', 'about', 'cours-particuliers'].includes(item.key)
+    ['calculator', 'about', 'cours-particuliers', 'ressources-gratuites'].includes(item.key)
   )
 })
 
@@ -309,6 +327,7 @@ onMounted(async () => {
   font-weight: 500;
   border-radius: 6px;
   transition: all 0.2s ease;
+  cursor: pointer;
   
   &:hover {
     background: rgba(102, 126, 234, 0.1);
@@ -338,6 +357,9 @@ onMounted(async () => {
   text-decoration: none;
   color: #10257f;
   font-weight: 500;
+  border: none;
+  background: transparent;
+  cursor: pointer;
   border-radius: 6px;
   transition: all 0.2s ease;
   

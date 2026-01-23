@@ -11,7 +11,8 @@ import {
   Squares2X2Icon, // <- icône dashboard
   QuestionMarkCircleIcon, // <- icône quiz
   InformationCircleIcon, // <- icône about
-  UserGroupIcon // <- icône cours particuliers
+  UserGroupIcon, // <- icône cours particuliers
+  SparklesIcon // <- icône ressources gratuites
 } from '@heroicons/vue/24/outline'
 const DashboardIcon = Squares2X2Icon;
 // Centralized menu configuration for OptiTAB
@@ -37,6 +38,13 @@ export const menuItems = [
     icon: UserGroupIcon,
     href: '/cours-particuliers',
     description: 'Cours particuliers personnalisés'
+  },
+  {
+    key: 'ressources-gratuites',
+    text: 'Ressources gratuites',
+    icon: SparklesIcon,
+    href: '/ressources-gratuites/cours',
+    description: 'Cours, exercices et fiches gratuits'
   },
   {
     key: 'about',

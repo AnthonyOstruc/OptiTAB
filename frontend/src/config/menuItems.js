@@ -12,6 +12,7 @@ import {
   QuestionMarkCircleIcon, // <- icône quiz
   InformationCircleIcon, // <- icône about
   UserGroupIcon, // <- icône cours particuliers
+  SparklesIcon, // <- icône ressources gratuites
   CreditCardIcon // <- icône abonnement
 } from '@heroicons/vue/24/outline'
 const DashboardIcon = Squares2X2Icon;
@@ -73,6 +74,13 @@ export const menuItems = [
     icon: UserGroupIcon,
     href: '/cours-particuliers',
     description: 'Cours particuliers personnalisés'
+  },
+  {
+    key: 'ressources-gratuites',
+    text: 'Ressources gratuites',
+    icon: SparklesIcon,
+    href: '/ressources-gratuites/cours',
+    description: 'Cours, exercices et fiches gratuits'
   },
   {
     key: 'abonnement',

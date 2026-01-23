@@ -101,7 +101,7 @@ export default {
 
     // Computed
     const navigationItems = menuItems.filter(item =>
-      ['calculator', 'cours-particuliers', 'about', 'contact'].includes(item.key)
+      ['calculator', 'cours-particuliers', 'ressources-gratuites', 'about', 'contact'].includes(item.key)
     )
     const isAuthenticated = computed(() => userStore.isAuthenticated)
 

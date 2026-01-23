@@ -17,32 +17,60 @@
           v-for="item in items"
           :key="item.type"
           class="preview-card"
-          @click="goTo(item)"
         >
-          <div class="card-header">
-            <div class="badge" :class="`badge-${item.type}`">
-              {{ item.badge }}
+          <router-link v-if="item?.to" :to="item.to" class="preview-card-link">
+            <div class="card-header">
+              <div class="badge" :class="`badge-${item.type}`">
+                {{ item.badge }}
+              </div>
+              <div class="card-icon">
+                <component :is="getIcon(item.type)" />
+              </div>
             </div>
-            <div class="card-icon">
-              <component :is="getIcon(item.type)" />
+            
+            <h3 class="card-title">{{ item.title }}</h3>
+            <p class="card-highlight">{{ item.highlight }}</p>
+            <p class="card-description">{{ item.description }}</p>
+            
+            <ul class="features-list">
+              <li v-for="bullet in item.bullets" :key="bullet">
+                <CheckCircleIcon class="check-icon" />
+                {{ bullet }}
+              </li>
+            </ul>
+            
+            <span class="explore-btn">
+              <span>Explorer gratuitement</span>
+              <ArrowRightIcon class="arrow-icon" />
+            </span>
+          </router-link>
+
+          <template v-else>
+            <div class="card-header">
+              <div class="badge" :class="`badge-${item.type}`">
+                {{ item.badge }}
+              </div>
+              <div class="card-icon">
+                <component :is="getIcon(item.type)" />
+              </div>
             </div>
-          </div>
-          
-          <h3 class="card-title">{{ item.title }}</h3>
-          <p class="card-highlight">{{ item.highlight }}</p>
-          <p class="card-description">{{ item.description }}</p>
-          
-          <ul class="features-list">
-            <li v-for="bullet in item.bullets" :key="bullet">
-              <CheckCircleIcon class="check-icon" />
-              {{ bullet }}
-            </li>
-          </ul>
-          
-          <button class="explore-btn">
-            <span>Explorer gratuitement</span>
-            <ArrowRightIcon class="arrow-icon" />
-          </button>
+            
+            <h3 class="card-title">{{ item.title }}</h3>
+            <p class="card-highlight">{{ item.highlight }}</p>
+            <p class="card-description">{{ item.description }}</p>
+            
+            <ul class="features-list">
+              <li v-for="bullet in item.bullets" :key="bullet">
+                <CheckCircleIcon class="check-icon" />
+                {{ bullet }}
+              </li>
+            </ul>
+            
+            <span class="explore-btn" role="link" aria-disabled="true">
+              <span>Explorer gratuitement</span>
+              <ArrowRightIcon class="arrow-icon" />
+            </span>
+          </template>
         </article>
       </div>
     </div>
@@ -50,7 +78,6 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
 import { 
   SparklesIcon, 
   CheckCircleIcon, 
@@ -66,13 +93,6 @@ defineProps({
     default: () => []
   }
 })
-
-const router = useRouter()
-
-const goTo = (item) => {
-  if (!item?.to) return
-  router.push(item.to)
-}
 
 const getIcon = (type) => {
   const icons = {
@@ -153,13 +173,22 @@ const getIcon = (type) => {
   border: 2px solid #e2e8f0;
   border-radius: 24px;
   padding: 32px;
-  cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   gap: 16px;
   position: relative;
   overflow: hidden;
+}
+
+.preview-card-link {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
 }
 
 .preview-card::before {

@@ -14,7 +14,7 @@ function getSiteBaseUrl() {
   const fromEnv = normalizeSiteUrl(import.meta?.env?.VITE_SITE_URL)
   if (fromEnv) return fromEnv
   if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin
-  return 'https://www.optitab.net'
+  return 'https://optitab.net'
 }
 
 function ensureMeta(attr, key, content) {
@@ -78,7 +78,7 @@ function ensureJsonLd(id, jsonObject) {
 function canonicalizePath(pathLike) {
   if (!pathLike) return '/'
   try {
-    const base = (typeof window !== 'undefined' && window.location?.origin) ? window.location.origin : 'https://www.optitab.net'
+    const base = (typeof window !== 'undefined' && window.location?.origin) ? window.location.origin : 'https://optitab.net'
     const url = new URL(String(pathLike), base)
     let pathname = url.pathname || '/'
     if (pathname.length > 1) {

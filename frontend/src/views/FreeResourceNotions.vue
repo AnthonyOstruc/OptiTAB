@@ -165,14 +165,119 @@ const sortByLockStatus = (list) => {
   })
 }
 
+const SEARCH_STOPWORDS = new Set([
+  'cours',
+  'course',
+  'en',
+  'lign',
+  'ligne',
+  'online',
+  'de',
+  'des',
+  'du',
+  'la',
+  'le',
+  'les',
+  'un',
+  'une',
+  'et',
+  'a',
+  'au',
+  'aux',
+  'pour',
+  'avec',
+  'sur',
+  'dans',
+  'd',
+  'l'
+])
+
+function stripHtml(text) {
+  return String(text || '').replace(/<[^>]*>/g, ' ')
+}
+
+function normalizeText(text) {
+  return String(text || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[’']/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function expandToken(token) {
+  const t = String(token || '').trim()
+  if (!t) return []
+  const set = new Set([t])
+
+  if (t === 'maths' || t.includes('math')) {
+    set.add('math')
+    set.add('mathematique')
+    set.add('mathematiques')
+  }
+
+  if (t === 'mathematique' || t === 'mathematiques') {
+    set.add('math')
+  }
+
+  if (t === 'terminale' || t.startsWith('terminal')) {
+    set.add('terminale')
+    set.add('terminal')
+  }
+
+  if (t === 'premiere' || t === '1ere' || t === '1re') {
+    set.add('premiere')
+    set.add('1ere')
+    set.add('1re')
+  }
+
+  if (t === 'seconde' || t === '2nde' || t === '2de') {
+    set.add('seconde')
+    set.add('2nde')
+    set.add('2de')
+  }
+
+  return Array.from(set)
+}
+
+function queryTokenGroups(query) {
+  const normalized = normalizeText(query)
+  if (!normalized) return []
+  const rawTokens = normalized.split(' ').filter(Boolean).filter((t) => t.length >= 2)
+  const base = rawTokens.filter((t) => !SEARCH_STOPWORDS.has(t))
+  if (base.length === 0) return []
+  return base.map((t) => expandToken(t)).filter((group) => group.length > 0)
+}
+
+function groupMatches(text, group) {
+  if (!text || !group || !group.length) return false
+  return group.some((variant) => variant && text.includes(variant))
+}
+
+function groupsAllMatch(text, groups) {
+  if (!groups || groups.length === 0) return false
+  return groups.every((group) => groupMatches(text, group))
+}
+
+function groupsScore(text, groups) {
+  if (!groups || groups.length === 0) return 0
+  let score = 0
+  for (const group of groups) {
+    if (groupMatches(text, group)) score += 1
+  }
+  return score
+}
+
 const fetchResources = async (page = 1, retried = false) => {
   loading.value = true
   error.value = null
   try {
     const filtersActive = selectedLevels.value.length > 0 || Boolean(searchQuery.value.trim())
-    const useServerPagination = !filtersActive || isExerciseMode.value
+    const useServerPagination = !filtersActive
     const effectivePage = useServerPagination ? page : 1
-    const effectivePageSize = (!useServerPagination && !isExerciseMode.value) ? 500 : itemsPerPage
+    const effectivePageSize = useServerPagination ? itemsPerPage : 500
 
     const params = {
       type: props.resourceType,
@@ -196,11 +301,11 @@ const fetchResources = async (page = 1, retried = false) => {
     // Ne pas écraser la liste complète des niveaux; elle est chargée séparément
     if (isExerciseMode.value) {
       totalExercisesCount.value = totalExercises || list?.reduce((acc, item) => acc + (Number(item?.count) || 1), 0) || 0
-      totalChaptersCount.value = count || (list ? list.length : 0)
+      totalChaptersCount.value = useServerPagination ? (count || (list ? list.length : 0)) : (list ? list.length : 0)
       totalCount.value = totalChaptersCount.value
-      isServerPaginated.value = count > 0
+      isServerPaginated.value = useServerPagination && count > 0
       resources.value = list || []
-      currentPage.value = page
+      currentPage.value = useServerPagination ? page : 1
       return
     } else {
       totalExercisesCount.value = 0
@@ -373,8 +478,51 @@ const filteredResources = computed(() => {
 
   // Filter by search query and mark if match is in content
   if (searchQuery.value.trim()) {
-    const query = searchQuery.value.toLowerCase().trim()
-    filtered = filtered.filter((resource) => {
+    const groups = queryTokenGroups(searchQuery.value)
+
+    // RequÃªte trop gÃ©nÃ©rique (ex: "cours en ligne") -> ne pas filtrer
+    if (groups.length === 0) {
+      filtered.forEach((resource) => { resource._matchInContent = false })
+      return sortByLockStatus(filtered)
+    }
+
+    const sortScored = (a, b) => {
+      const aLocked = Boolean(a.resource?.is_locked)
+      const bLocked = Boolean(b.resource?.is_locked)
+      if (aLocked !== bLocked) return aLocked ? 1 : -1
+      if (b.score !== a.score) return b.score - a.score
+      if (b.titleScore !== a.titleScore) return b.titleScore - a.titleScore
+      return String(a.resource?.titre || a.resource?.notion_nom || '').localeCompare(String(b.resource?.titre || b.resource?.notion_nom || ''))
+    }
+
+    const scored = filtered.map((resource) => {
+      const titleText = normalizeText(`${resource?.titre || ''} ${resource?.notion_nom || ''}`)
+      const metaText = normalizeText(`${resource?.matiere_nom || ''} ${resource?.niveau_nom || ''} ${resource?.pays_nom || ''} ${resource?.tag_secondaire || ''}`)
+      const bodyText = normalizeText(`${resource?.accroche || ''} ${resource?.excerpt || ''} ${resource?.question || ''} ${stripHtml(resource?.contenu || '')}`)
+      const fullText = `${titleText} ${metaText} ${bodyText}`.trim()
+
+      const titleScore = groupsScore(titleText, groups)
+      const bodyScore = groupsScore(`${metaText} ${bodyText}`.trim(), groups)
+      const score = groupsScore(fullText, groups)
+
+      resource._matchInContent = titleScore === 0 && bodyScore > 0
+
+      return { resource, score, titleScore, bodyScore, fullText }
+    })
+
+    const strictMatches = scored.filter(({ fullText }) => groupsAllMatch(fullText, groups))
+    if (strictMatches.length > 0) {
+      return strictMatches
+        .sort(sortScored)
+        .map(({ resource }) => resource)
+    }
+
+    // Fallback (OR): afficher les meilleurs rÃ©sultats si aucun match strict
+    return scored
+      .filter(({ score }) => score > 0)
+      .sort(sortScored)
+      .map(({ resource }) => resource)
+    /* filtered = filtered.filter((resource) => {
       // Chercher dans le titre
       const title = (resource?.titre || resource?.notion_nom || '').toLowerCase()
       
@@ -397,7 +545,7 @@ const filteredResources = computed(() => {
       resource._matchInContent = !titleMatch && (contentMatch || otherMatch)
       
       return titleMatch || contentMatch || otherMatch
-    })
+    }) */
   } else {
     // Réinitialiser le marqueur si pas de recherche
     filtered.forEach(resource => {

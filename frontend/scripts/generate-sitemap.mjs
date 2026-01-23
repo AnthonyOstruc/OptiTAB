@@ -77,7 +77,7 @@ async function buildSitemap() {
     process.env.VITE_SITE_URL ||
     process.env.SITE_URL ||
     process.env.PUBLIC_SITE_URL ||
-    'https://www.optitab.net'
+    'https://optitab.net'
   )
 
   const apiBase = normalizeSiteUrl(
@@ -165,4 +165,3 @@ async function buildSitemap() {
 }
 
 await buildSitemap()
-

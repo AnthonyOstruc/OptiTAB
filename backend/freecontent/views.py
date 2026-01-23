@@ -18,6 +18,122 @@ from .serializers import (
     ExerciseNotionSummarySerializer
 )
 
+SEARCH_STOPWORDS = {
+    'a',
+    'au',
+    'aux',
+    'avec',
+    'chez',
+    'dans',
+    'de',
+    'des',
+    'du',
+    'en',
+    'et',
+    'l',
+    'la',
+    'le',
+    'les',
+    'd',
+    'cours',
+    'exercice',
+    'exercices',
+    'fiche',
+    'fiches',
+    'resume',
+    'résumé',
+    'synthese',
+    'synthèse',
+    'enligne',
+    'ligne',
+    'online',
+    'gratuit',
+    'gratuits',
+    'gratuite',
+    'gratuites',
+    'gratuitement',
+    'corrige',
+    'corriges',
+    'corrigee',
+    'corrigees',
+    'corrigé',
+    'corrigés',
+    'corrigée',
+    'corrigées',
+    'programme',
+}
+
+SEARCH_SYNONYMS = {
+    'maths': ['maths', 'math', 'mathematique', 'mathematiques', 'mathématique', 'mathématiques'],
+    'math': ['math', 'maths', 'mathematique', 'mathematiques', 'mathématique', 'mathématiques'],
+    'mathematique': ['mathematique', 'mathematiques', 'mathématique', 'mathématiques', 'maths', 'math'],
+    'mathematiques': ['mathematiques', 'mathematique', 'mathématiques', 'mathématique', 'maths', 'math'],
+    'terminal': ['terminal', 'terminale', 'tle'],
+    'terminale': ['terminale', 'terminal', 'tle'],
+    'premiere': ['premiere', 'première', '1ere', '1ère', '1re'],
+    'première': ['première', 'premiere', '1ere', '1ère', '1re'],
+    'seconde': ['seconde', '2nde', '2de'],
+    '2nde': ['2nde', '2de', 'seconde'],
+    '2de': ['2de', '2nde', 'seconde'],
+    'physique': ['physique'],
+    'chimie': ['chimie'],
+    'informatique': ['informatique'],
+}
+
+
+def _tokenize_search(value):
+    text = str(value or '').strip().lower()
+    if not text:
+        return []
+    # Supporte accents + chiffres (1ere, 2nde...)
+    tokens = re.findall(r"[0-9a-zà-ÿ]+", text)
+    cleaned = []
+    for token in tokens:
+        if len(token) < 2:
+            continue
+        if token in SEARCH_STOPWORDS:
+            continue
+        cleaned.append(token)
+
+    # Dédupliquer en conservant l'ordre pour éviter des Q() énormes
+    seen = set()
+    unique = []
+    for token in cleaned:
+        if token in seen:
+            continue
+        seen.add(token)
+        unique.append(token)
+    return unique[:8]
+
+
+def _expand_search_token(token):
+    if not token:
+        return []
+    if token in SEARCH_SYNONYMS:
+        return SEARCH_SYNONYMS[token]
+    # Tolérance simple pour les petites erreurs ("emaths" -> "maths")
+    if token.startswith('e') and len(token) > 3:
+        maybe = token[1:]
+        if maybe in SEARCH_SYNONYMS:
+            return SEARCH_SYNONYMS[maybe]
+        return [token, maybe]
+    return [token]
+
+
+def build_search_q(value, fields):
+    tokens = _tokenize_search(value)
+    if not tokens or not fields:
+        return None
+    query = Q()
+    for token in tokens:
+        variants = _expand_search_token(token)
+        token_q = Q()
+        for variant in variants:
+            for field in fields:
+                token_q |= Q(**{f'{field}__icontains': variant})
+        query &= token_q
+    return query
+
 
 class FreeLearningResourcePagination(PageNumberPagination):
     """Pagination simple pour limiter la payload des ressources gratuites."""
@@ -77,12 +193,18 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         if pays_id:
             qs = qs.filter(niveau__pays_id=pays_id)
         if search:
-            qs = qs.filter(
-                Q(titre__icontains=search) |
-                Q(excerpt__icontains=search) |
-                Q(accroche__icontains=search) |
-                Q(contenu_html__icontains=search)
-            )
+            search_q = build_search_q(search, [
+                'titre',
+                'excerpt',
+                'accroche',
+                'contenu_html',
+                'matiere__titre',
+                'niveau__nom',
+                'niveau__pays__nom',
+                'notion__titre',
+            ])
+            if search_q:
+                qs = qs.filter(search_q)
 
         ordering = params.get('ordering')
         if ordering:
@@ -255,12 +377,16 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         if pays_id:
             qs = qs.filter(notion__theme__contexte__niveau__pays_id=pays_id)
         if search:
-            qs = qs.filter(
-                Q(titre__icontains=search) |
-                Q(contenu__icontains=search) |
-                Q(notion__titre__icontains=search) |
-                Q(notion__theme__matiere__titre__icontains=search)
-            )
+            search_q = build_search_q(search, [
+                'titre',
+                'contenu',
+                'notion__titre',
+                'notion__theme__matiere__titre',
+                'notion__theme__contexte__niveau__nom',
+                'notion__theme__contexte__niveau__pays__nom',
+            ])
+            if search_q:
+                qs = qs.filter(search_q)
 
         ordering = params.get('ordering')
         if ordering:
@@ -372,13 +498,17 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         if pays_id:
             qs = qs.filter(notion__theme__contexte__niveau__pays_id=pays_id)
         if search:
-            qs = qs.filter(
-                Q(titre__icontains=search) |
-                Q(contenu__icontains=search) |
-                Q(question__icontains=search) |
-                Q(notion__titre__icontains=search) |
-                Q(notion__theme__matiere__titre__icontains=search)
-            )
+            search_q = build_search_q(search, [
+                'titre',
+                'contenu',
+                'question',
+                'notion__titre',
+                'notion__theme__matiere__titre',
+                'notion__theme__contexte__niveau__nom',
+                'notion__theme__contexte__niveau__pays__nom',
+            ])
+            if search_q:
+                qs = qs.filter(search_q)
 
         ordering = params.get('ordering')
         if ordering:
@@ -435,12 +565,16 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         if pays_id:
             qs = qs.filter(notion__theme__contexte__niveau__pays_id=pays_id)
         if search:
-            qs = qs.filter(
-                Q(titre__icontains=search) |
-                Q(summary__icontains=search) |
-                Q(notion__titre__icontains=search) |
-                Q(notion__theme__matiere__titre__icontains=search)
-            )
+            search_q = build_search_q(search, [
+                'titre',
+                'summary',
+                'notion__titre',
+                'notion__theme__matiere__titre',
+                'notion__theme__contexte__niveau__nom',
+                'notion__theme__contexte__niveau__pays__nom',
+            ])
+            if search_q:
+                qs = qs.filter(search_q)
 
         ordering = params.get('ordering')
         if ordering:

@@ -1,8 +1,79 @@
 import re
 from rest_framework import serializers
+from django.utils.text import slugify
 
 from .models import FreeLearningResource
 from synthesis.models import SynthesisSheet
+
+
+def build_seo_prefixed_slug(prefix, object_id, *, pays='', niveau='', matiere='', titre='', max_length=140):
+    """
+    Construit un slug SEO stable sous la forme:
+      <prefix>-<id>-<pays>-<niveau>-<matiere>-<titre>
+
+    L'ID est toujours présent pour garder une URL stable et permettre
+    une résolution robuste côté API même si le titre change.
+    """
+    base = f"{prefix}-{object_id}"
+
+    def norm(value):
+        raw = str(value or '').strip()
+        if not raw:
+            return ''
+        return slugify(raw)  # ASCII, minuscules, tirets
+
+    pays_slug = norm(pays)
+    niveau_slug = norm(niveau)
+    matiere_slug = norm(matiere)
+    titre_slug = norm(titre)
+
+    # Dédupliquer en conservant l'ordre
+    parts = []
+    for part in (pays_slug, niveau_slug, matiere_slug, titre_slug):
+        if not part:
+            continue
+        if part in parts:
+            continue
+        parts.append(part)
+
+    if not parts:
+        return base
+
+    full = f"{base}-{'-'.join(parts)}"
+    if len(full) <= max_length:
+        return full
+
+    # Si trop long: on garde base + (pays/niveau/matiere) et on tronque le titre en priorité.
+    keep_unique = []
+    for part in (pays_slug, niveau_slug, matiere_slug):
+        if part and part not in keep_unique:
+            keep_unique.append(part)
+
+    prefix_part = f"{base}-{'-'.join(keep_unique)}" if keep_unique else base
+
+    if not titre_slug:
+        return prefix_part[:max_length].rstrip('-')
+
+    available = max_length - len(prefix_part) - 1
+    if available <= 10:
+        # Trop serré: retirer des éléments moins importants (matiere puis pays puis niveau) pour libérer de la place
+        reduced_keep = keep_unique[:]
+        for drop in (matiere_slug, pays_slug, niveau_slug):
+            if available > 10:
+                break
+            if drop and drop in reduced_keep:
+                reduced_keep.remove(drop)
+            prefix_part = f"{base}-{'-'.join(reduced_keep)}" if reduced_keep else base
+            available = max_length - len(prefix_part) - 1
+
+    if available <= 0:
+        return base[:max_length].rstrip('-')
+
+    trimmed_title = titre_slug[:available].rstrip('-')
+    if not trimmed_title:
+        return prefix_part[:max_length].rstrip('-')
+
+    return f"{prefix_part}-{trimmed_title}"
 
 
 class FreeLearningResourceSerializer(serializers.ModelSerializer):
@@ -94,7 +165,14 @@ class CourseFreePreviewSerializer(serializers.Serializer):
 
         return {
             'id': cours.id,
-            'slug': f'cours-gratuit-{cours.id}',
+            'slug': build_seo_prefixed_slug(
+                'cours-gratuit',
+                cours.id,
+                pays=getattr(pays, 'nom', ''),
+                niveau=getattr(niveau, 'nom', ''),
+                matiere=getattr(matiere, 'titre', ''),
+                titre=titre
+            ),
             'titre': titre,
             'accroche': accroche[:160],
             'resource_type': FreeLearningResource.TYPE_COURSE,
@@ -200,7 +278,14 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
 
         return {
             'id': exercice.id,
-            'slug': f'exercice-gratuit-{exercice.id}',
+            'slug': build_seo_prefixed_slug(
+                'exercice-gratuit',
+                exercice.id,
+                pays=getattr(pays, 'nom', ''),
+                niveau=getattr(niveau, 'nom', ''),
+                matiere=getattr(matiere, 'titre', ''),
+                titre=(exercice.titre or (notion.titre if notion else 'Exercice OptiTAB'))
+            ),
             'titre': exercice.titre or (notion.titre if notion else 'Exercice OptiTAB'),
             'accroche': accroche[:160],
             'resource_type': FreeLearningResource.TYPE_EXERCISE,
@@ -300,7 +385,14 @@ class SynthesisFreePreviewSerializer(serializers.Serializer):
 
         return {
             'id': sheet.id,
-            'slug': f'synthese-gratuite-{sheet.id}',
+            'slug': build_seo_prefixed_slug(
+                'synthese-gratuite',
+                sheet.id,
+                pays=getattr(pays, 'nom', ''),
+                niveau=getattr(niveau, 'nom', ''),
+                matiere=getattr(matiere, 'titre', ''),
+                titre=(sheet.titre or (notion.titre if notion else 'Synthese OptiTAB'))
+            ),
             'titre': sheet.titre,
             'accroche': excerpt[:160],
             'resource_type': FreeLearningResource.TYPE_SUMMARY,

@@ -211,6 +211,17 @@ watch(
   resource,
   (value) => {
     if (!value) return
+    const canonicalSlug = value?.slug ? String(value.slug) : ''
+    const currentSlug = route?.params?.slug ? String(route.params.slug) : ''
+    if (canonicalSlug && currentSlug && canonicalSlug !== currentSlug) {
+      router.replace({
+        name: route.name,
+        params: { ...route.params, slug: canonicalSlug },
+        query: route.query,
+        hash: route.hash
+      }).catch(() => {})
+      return
+    }
     const prefix = seoPrefixForResourceType(props.resourceType)
     const matiere = value?.matiere_nom ? String(value.matiere_nom).trim() : ''
     const niveau = value?.niveau_nom ? String(value.niveau_nom).trim() : (value?.tag_secondaire ? String(value.tag_secondaire).trim() : '')

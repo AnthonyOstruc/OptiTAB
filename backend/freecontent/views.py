@@ -1,3 +1,4 @@
+import re
 from django.db.models import Q, Count, Case, When, Value, BooleanField, F
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
@@ -115,9 +116,23 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         slug = kwargs.get(self.lookup_field)
+
+        def parse_prefixed_id(value, prefix):
+            if not value:
+                return None
+            match = re.match(rf'^{re.escape(prefix)}-(\d+)', str(value))
+            if not match:
+                return None
+            try:
+                return int(match.group(1))
+            except (TypeError, ValueError):
+                return None
+
         if slug and slug.startswith('cours-gratuit-'):
             try:
-                course_id = int(slug.replace('cours-gratuit-', ''))
+                course_id = parse_prefixed_id(slug, 'cours-gratuit')
+                if course_id is None:
+                    raise ValueError()
             except ValueError:
                 raise NotFound("Cours gratuit introuvable.")
             cours = Cours.objects.filter(
@@ -138,7 +153,9 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             return Response(data)
         if slug and slug.startswith('exercice-gratuit-'):
             try:
-                exercice_id = int(slug.replace('exercice-gratuit-', ''))
+                exercice_id = parse_prefixed_id(slug, 'exercice-gratuit')
+                if exercice_id is None:
+                    raise ValueError()
             except ValueError:
                 raise NotFound("Exercice gratuit introuvable.")
             exercice = Exercice.objects.filter(
@@ -159,7 +176,9 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             return Response(serializer.data)
         if slug and slug.startswith('synthese-gratuite-'):
             try:
-                sheet_id = int(slug.replace('synthese-gratuite-', ''))
+                sheet_id = parse_prefixed_id(slug, 'synthese-gratuite')
+                if sheet_id is None:
+                    raise ValueError()
             except ValueError:
                 raise NotFound("Résumé gratuit introuvable.")
             sheet = (

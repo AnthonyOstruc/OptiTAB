@@ -7,6 +7,7 @@ import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import { getFreeResource } from '@/api/free-content'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
+import { setPageSeo } from '@/services/seo'
 
 const props = defineProps({
   resourceType: {
@@ -175,6 +176,43 @@ const goBack = () => {
 const openSignup = () => {
   openModal(MODAL_IDS.REGISTER)
 }
+
+function stripHtml(input) {
+  return String(input || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+}
+
+function pickSeoDescription(value) {
+  const raw = value?.excerpt || value?.accroche || value?.question || value?.contenu || value?.contenu_html || ''
+  const cleaned = stripHtml(raw)
+  if (!cleaned) return ''
+  return cleaned.length > 160 ? `${cleaned.slice(0, 157).trimEnd()}...` : cleaned
+}
+
+function pickSeoImage(value) {
+  const cover = value?.cover_image
+  if (cover) return cover
+  const img = Array.isArray(value?.images) ? value.images[0]?.image : ''
+  return img || ''
+}
+
+watch(
+  resource,
+  (value) => {
+    if (!value) return
+    const title = value?.titre ? String(value.titre) : undefined
+    const description = pickSeoDescription(value) || undefined
+    const image = pickSeoImage(value) || undefined
+
+    setPageSeo({
+      title,
+      description,
+      canonicalPath: route.path,
+      ogType: 'article',
+      image
+    })
+  },
+  { immediate: true }
+)
 
 watch(
   () => route.params.slug,

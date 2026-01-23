@@ -26,7 +26,7 @@
             <svg viewBox="0 0 24 24"><rect x="2.1" y="3.2" width="5.0" height="5.0" rx="1.0"/><path d="M5.6 12.4 L7.8 18.4 L10.0 6.4 L21.2 6.4"/><rect x="13.6" y="10.0" width="7.2" height="7.2" rx="1.0"/></svg>
           </button>
           <button class="calc-btn fn" @click="insert('\\log_{}')">log</button>
-        </div>
+          </div>
 
         <div class="calc-row">
           <button class="calc-btn fn" @click="insert('|{}|')">|□|</button>

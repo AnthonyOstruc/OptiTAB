@@ -48,6 +48,33 @@ function ensureLink(rel, href) {
   }
 }
 
+function ensureJsonLd(id, jsonObject) {
+  if (typeof document === 'undefined') return
+  const scriptId = String(id || 'seo-jsonld')
+  const existing = document.getElementById(scriptId)
+
+  if (!jsonObject) {
+    if (existing && existing.parentNode) {
+      existing.parentNode.removeChild(existing)
+    }
+    return
+  }
+
+  let el = existing
+  if (!el) {
+    el = document.createElement('script')
+    el.type = 'application/ld+json'
+    el.id = scriptId
+    document.head.appendChild(el)
+  }
+
+  try {
+    el.textContent = JSON.stringify(jsonObject)
+  } catch (_) {
+    el.textContent = ''
+  }
+}
+
 function canonicalizePath(pathLike) {
   if (!pathLike) return '/'
   try {
@@ -122,6 +149,48 @@ export function setPageSeo({
   if (finalImage) {
     ensureMeta('name', 'twitter:image', finalImage)
   }
+
+  try {
+    const siteUrl = getSiteBaseUrl()
+    const organizationId = `${siteUrl}/#organization`
+    const websiteId = `${siteUrl}/#website`
+    const webPageId = `${finalCanonical}#webpage`
+
+    ensureJsonLd('seo-jsonld', {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          '@id': organizationId,
+          name: DEFAULT_SITE_NAME,
+          url: siteUrl,
+          logo: {
+            '@type': 'ImageObject',
+            url: toAbsoluteUrl(DEFAULT_IMAGE_PATH)
+          }
+        },
+        {
+          '@type': 'WebSite',
+          '@id': websiteId,
+          url: siteUrl,
+          name: DEFAULT_SITE_NAME,
+          publisher: { '@id': organizationId },
+          inLanguage: 'fr-FR'
+        },
+        {
+          '@type': 'WebPage',
+          '@id': webPageId,
+          url: finalCanonical,
+          name: finalTitle,
+          description: finalDescription,
+          isPartOf: { '@id': websiteId },
+          inLanguage: 'fr-FR'
+        }
+      ]
+    })
+  } catch (_) {
+    // Never block rendering on JSON-LD.
+  }
 }
 
 const ROUTE_SEO = {
@@ -133,12 +202,12 @@ const ROUTE_SEO = {
   CoursParticuliers: {
     title: 'Cours particuliers de maths - OptiTAB',
     description:
-      "Cours particuliers de maths, physique et informatique. Professeur experimente, methode personnalisee, progression mesuree.",
+      "Cours particuliers de maths (et physique/informatique), en ligne ou a domicile. College, lycee (Seconde, Premiere, Terminale) et prepa. Methode personnalisee et exercices corriges.",
     canonicalPath: '/cours-particuliers'
   },
   FreeCourses: {
     title: 'Cours gratuits de maths - OptiTAB',
-    description: 'Cours gratuits de maths, physique et informatique : chapitres clairs, exemples et exercices.',
+    description: 'Cours en ligne gratuits (maths, physique, informatique) : chapitres clairs, methodes et exemples (programme francais).',
     canonicalPath: '/ressources-gratuites/cours'
   },
   FreeCourseDetail: {
@@ -148,7 +217,7 @@ const ROUTE_SEO = {
   },
   FreeExercises: {
     title: 'Exercices gratuits de maths - OptiTAB',
-    description: 'Exercices gratuits de maths, physique et informatique avec correction et explications.',
+    description: 'Exercices corriges gratuits (maths, physique, informatique) avec correction et explications. Niveaux: Seconde, Premiere, Terminale.',
     canonicalPath: '/ressources-gratuites/exercices'
   },
   FreeExerciseDetail: {
@@ -158,7 +227,7 @@ const ROUTE_SEO = {
   },
   FreeSummaries: {
     title: 'Fiches gratuites (syntheses) - OptiTAB',
-    description: 'Fiches de synthese gratuites pour reviser : definitions, formules, methodes et exemples.',
+    description: 'Fiches de revision gratuites pour reviser: definitions, formules, methodes et exemples (programme francais).',
     canonicalPath: '/ressources-gratuites/syntheses'
   },
   FreeSummaryDetail: {

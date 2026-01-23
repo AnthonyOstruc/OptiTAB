@@ -195,12 +195,34 @@ function pickSeoImage(value) {
   return img || ''
 }
 
+function clampMetaDescription(text) {
+  const cleaned = String(text || '').replace(/\s+/g, ' ').trim()
+  if (!cleaned) return ''
+  return cleaned.length > 160 ? `${cleaned.slice(0, 157).trimEnd()}...` : cleaned
+}
+
+function seoPrefixForResourceType(type) {
+  if (type === 'exercise') return 'Exercice corrige'
+  if (type === 'summary') return 'Fiche de revision'
+  return 'Cours en ligne'
+}
+
 watch(
   resource,
   (value) => {
     if (!value) return
-    const title = value?.titre ? String(value.titre) : undefined
-    const description = pickSeoDescription(value) || undefined
+    const prefix = seoPrefixForResourceType(props.resourceType)
+    const matiere = value?.matiere_nom ? String(value.matiere_nom).trim() : ''
+    const niveau = value?.niveau_nom ? String(value.niveau_nom).trim() : (value?.tag_secondaire ? String(value.tag_secondaire).trim() : '')
+    const baseTitle = value?.titre ? String(value.titre).trim() : ''
+
+    const contextParts = [prefix, matiere, niveau].filter(Boolean)
+    const context = contextParts.join(' ').trim()
+    const title = (baseTitle && context) ? `${context} - ${baseTitle}` : (baseTitle || context || undefined)
+
+    const baseDescription = pickSeoDescription(value)
+    const infoPrefix = [matiere, niveau].filter(Boolean).join(' ').trim()
+    const description = clampMetaDescription(infoPrefix ? `${infoPrefix} - ${baseDescription}` : baseDescription) || undefined
     const image = pickSeoImage(value) || undefined
 
     setPageSeo({

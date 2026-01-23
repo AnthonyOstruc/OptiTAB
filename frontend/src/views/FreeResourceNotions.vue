@@ -97,6 +97,28 @@ const isExerciseMode = computed(() => props.resourceType === 'exercise')
 const isSummaryMode = computed(() => props.resourceType === 'summary')
 const isCourseMode = computed(() => props.resourceType === 'course')
 
+const seoHero = computed(() => {
+  if (isExerciseMode.value) {
+    return {
+      title: 'Exercices corriges en ligne (maths, physique, informatique)',
+      subtitle:
+        'Entrainement avec correction et explications : college et lycee (Seconde, Premiere, Terminale) - programme francais.'
+    }
+  }
+  if (isSummaryMode.value) {
+    return {
+      title: 'Fiches de revision gratuites (maths, physique, informatique)',
+      subtitle:
+        'Definitions, formules, methodes et exemples pour reviser efficacement (programme francais).'
+    }
+  }
+  return {
+    title: 'Cours en ligne gratuits (maths, physique, informatique)',
+    subtitle:
+      'Cours clairs et structures : methodes, exemples et exercices - du college au lycee (Seconde, Premiere, Terminale).'
+  }
+})
+
 const getCardTitle = (resource) => {
   if (!resource) return 'Chapitre'
   if (isExerciseMode.value && resource?.notion_nom) {
@@ -584,6 +606,15 @@ const onLockedExercise = (chapter) => {
 <template>
   <MainLayout>
     <div class="free-course-page">
+      <section class="seo-hero" aria-label="Introduction">
+        <h1 class="seo-hero-title">{{ seoHero.title }}</h1>
+        <p class="seo-hero-subtitle">{{ seoHero.subtitle }}</p>
+        <div class="seo-hero-cta">
+          <router-link class="seo-hero-link primary" :to="{ name: 'CoursParticuliers' }">Cours particuliers</router-link>
+          <router-link class="seo-hero-link secondary" :to="{ name: 'Home' }">Voir la plateforme</router-link>
+        </div>
+      </section>
+
       <div class="header-row">
         <BackButton text="Retour à l'accueil" :custom-action="() => router.push({ name: 'Home' })" position="top-left" />
         <div v-if="!loading && totalResourceCount.count > 0" class="resource-count-badge">
@@ -790,6 +821,68 @@ const onLockedExercise = (chapter) => {
   padding: 140px 32px 80px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.seo-hero {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(99, 102, 241, 0.06));
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  border-radius: 16px;
+  padding: 18px 18px 16px;
+  margin-bottom: 22px;
+}
+
+.seo-hero-title {
+  margin: 0 0 8px;
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.seo-hero-subtitle {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #334155;
+}
+
+.seo-hero-cta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.seo-hero-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.seo-hero-link.primary {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: rgba(37, 99, 235, 0.25);
+}
+
+.seo-hero-link.primary:hover {
+  background: #1d4ed8;
+}
+
+.seo-hero-link.secondary {
+  background: #ffffff;
+  color: #1e40af;
+  border-color: rgba(30, 64, 175, 0.25);
+}
+
+.seo-hero-link.secondary:hover {
+  background: #f8fafc;
 }
 
 .content-wrapper {

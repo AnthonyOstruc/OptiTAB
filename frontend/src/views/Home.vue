@@ -11,6 +11,7 @@ import FaqSection from '@/components/home/FaqSection.vue'
 import NewsletterSection from '@/components/home/NewsletterSection.vue'
 import PricingSection from '@/components/home/PricingSection.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
+import HomeSeoSection from '@/components/home/HomeSeoSection.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -164,17 +165,22 @@ const handleSubjectSelected = (subject) => {
 
 // Handler pour le bouton CTA principal (Découvrir OptiTAB)
 const handleCtaMain = () => {
-  // Rediriger vers la page À propos
-  window.location.href = '/about'
+  // Découvrir la plateforme (démo)
+  const demoSection = document.getElementById('demo')
+  if (demoSection) {
+    demoSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    return
+  }
+  const tarifsSection = document.getElementById('tarifs')
+  if (tarifsSection) tarifsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 // Handler pour le bouton CTA secondaire (Voir les tarifs)
 const handleCtaSecondary = () => {
-  // Scroller vers la section tarifs dans la même page
-  const tarifsSection = document.getElementById('tarifs')
-  if (tarifsSection) {
-    tarifsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  // Réserver un cours en ligne (cours particuliers)
+  router.push({ name: 'CoursParticuliers' }).then(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  })
 }
 
 // Handler pour le bouton CTA principal des étapes (Je m'abonne maintenant)
@@ -274,6 +280,7 @@ onUnmounted(() => {
       <SectionHero
         :titre="sectionHero.titre"
         :sous-titre="sectionHero.sousTitre"
+        :mini-line="sectionHero.miniLine"
         :image="sectionHero.image"
         :highlight="sectionHero.highlight"
         :message-parents="sectionHero.messageParents"
@@ -283,6 +290,9 @@ onUnmounted(() => {
         @cta-main="handleCtaMain"
         @cta-secondary="handleCtaSecondary"
       />
+
+      <!-- Texte SEO (services + liens internes) -->
+      <HomeSeoSection />
 
       <!-- Section Démo avec GIFs et CTA d'abonnement -->
       <DemoSection

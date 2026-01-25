@@ -3,9 +3,9 @@
     <!-- Header -->
     <div class="pricing-header">
       <h2 class="pricing-title">
-        Choisissez votre <span class="pricing-highlight">Abonnement</span>
+        Choisissez votre <span class="pricing-highlight">Abonnement Maths</span>
       </h2>
-      <p class="pricing-desc">Des formules adaptées à tous les besoins, sans engagement</p>
+      <p class="pricing-desc">Plateforme de maths : cours, fiches de synthèse et exercices corrigés (sans engagement)</p>
     </div>
 
     <!-- Loading State -->

@@ -1,9 +1,9 @@
 <template>
   <section class="intro-features-section">
     <div class="intro-features-header">
-      <h1 class="intro-features-title">
+      <h2 class="intro-features-title">
         {{ titre }} <span class="highlight">{{ highlight }}</span>
-      </h1>
+      </h2>
       <p class="intro-features-desc">{{ description }}</p>
     </div>
     <div v-if="features && features.length" class="intro-features-grid">

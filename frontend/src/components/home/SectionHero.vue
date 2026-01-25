@@ -17,9 +17,12 @@
       <h1 class="section-hero__title">
         {{ titre }}<span v-if="highlight"> <span class="highlight-gradient">{{ highlight }}</span></span>
       </h1>
-      <p class="section-hero__subtitle">{{ sousTitre }}</p>
+      <p v-if="subtitleLines.length" class="section-hero__subtitle">
+        <span v-for="(line, idx) in subtitleLines" :key="idx" class="subtitle-line">{{ line }}</span>
+      </p>
+      <p v-if="miniLine" class="section-hero__mini">{{ miniLine }}</p>
       <p v-if="messageParents" class="section-hero__parents">
-        <span class="parents-icon">👨‍👩‍👧‍👦</span>
+        <span class="parents-icon">👥</span>
         {{ messageParents }}
       </p>
       <div class="section-hero__cta-group">
@@ -64,15 +67,26 @@
 <script setup>
 import heroDefaultImage from '@/assets/Images/HeroSection2.png'
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
+import { computed } from 'vue'
 const props = defineProps({
   titre: { type: String, default: '' },
   sousTitre: { type: String, default: '' },
+  miniLine: { type: String, default: '' },
   image: { type: [String, Object], default: () => heroDefaultImage },
   highlight: { type: String, default: '' },
   messageParents: { type: String, default: "Rejoignez la communauté de parents qui font confiance à OptiTAB !" },
   ctaText: { type: String, default: "Découvrir OptiTAB" },
   ctaSecondary: { type: String, default: "" },
   bg: { type: String, default: '#ffffff' }
+})
+
+const subtitleLines = computed(() => {
+  const raw = String(props.sousTitre || '').replaceAll('\r\n', '\n').trim()
+  if (!raw) return []
+  return raw
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean)
 })
 </script>
 
@@ -179,7 +193,7 @@ const props = defineProps({
   position: relative;
   z-index: 2;
   flex: 0 1 auto;
-  max-width: 560px;
+  max-width: 760px;
   color: #18181b;
   text-shadow: 0 2px 8px rgba(255,255,255,0.08);
   text-align: center;
@@ -274,7 +288,7 @@ const props = defineProps({
   }
 }
 .section-hero__title {
-  font-size: 3rem;
+  font-size: 2.8rem;
   font-weight: 800;
   color: #0f172a;
   margin-bottom: 20px;
@@ -338,15 +352,15 @@ const props = defineProps({
   }
 }
 .section-hero__subtitle {
-  font-size: 1.3rem;
+  font-size: 1.12rem;
   color: #475569;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
   font-weight: 500;
-  line-height: 1.6;
+  line-height: 1.65;
   animation: fadeInUp 0.8s ease-out 0.4s both;
   
   @media (max-width: 800px) {
-    font-size: 1.05rem;
+    font-size: 1.02rem;
     margin-bottom: 0.75rem;
     line-height: 1.5;
   }
@@ -357,88 +371,82 @@ const props = defineProps({
     padding: 0 0.5rem;
   }
 }
-.section-hero__parents {
-  font-size: 1.05rem;
-  color: #1e40af;
-  margin: 24px 0 28px 0;
+
+.subtitle-line {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .subtitle-line {
+    white-space: nowrap;
+  }
+}
+
+.section-hero__mini {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0 0 0.75rem 0;
   font-weight: 600;
-  background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%);
-  padding: 16px 20px;
-  border-radius: 16px;
-  border: 2px solid #3b82f6;
-  box-shadow: 0 4px 12px rgba(42, 56, 183, 0.15);
-  position: relative;
-  overflow: hidden;
+  line-height: 1.55;
+  animation: fadeInUp 0.8s ease-out 0.45s both;
+
+  @media (max-width: 800px) {
+    font-size: 0.92rem;
+    margin-bottom: 0.85rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.88rem;
+    padding: 0 0.5rem;
+  }
+}
+.section-hero__parents {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.98rem;
+  color: #0f172a;
+  margin: 14px 0 10px 0;
+  font-weight: 800;
+  background: rgba(37, 99, 235, 0.08);
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
   animation: fadeInUp 0.8s ease-out 0.5s both;
-  transition: all 0.3s ease;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition: left 0.5s ease;
-  }
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(42, 56, 183, 0.25);
-    background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
-    border-color: #2a38b7;
-    
-    &::before {
-      left: 100%;
-    }
-  }
   
   .parents-icon {
-    margin-right: 8px;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     display: inline-block;
-    animation: bounce 2s ease-in-out infinite;
   }
   
   @media (max-width: 800px) {
-    margin: 20px auto 0 auto;
-    padding: 14px 16px;
+    margin: 14px auto 6px auto;
+    padding: 10px 12px;
     font-size: 0.9rem;
-    max-width: 95%;
-    line-height: 1.5;
+    max-width: 96%;
+    line-height: 1.45;
     
     .parents-icon {
-      font-size: 1.1rem;
-      margin-right: 6px;
+      font-size: 1rem;
     }
   }
   
   @media (max-width: 480px) {
-    margin: 16px auto 0 auto;
-    padding: 12px 14px;
-    font-size: 0.85rem;
-    line-height: 1.4;
-    border-radius: 14px;
+    margin: 12px auto 6px auto;
+    padding: 9px 12px;
+    font-size: 0.84rem;
+    border-radius: 999px;
     
     .parents-icon {
-      font-size: 1rem;
-      margin-right: 5px;
+      font-size: 0.95rem;
     }
   }
   
   @media (max-width: 360px) {
     font-size: 0.8rem;
-    padding: 10px 12px;
-  }
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
+    padding: 8px 11px;
   }
 }
 .section-hero__cta-group {
@@ -530,22 +538,23 @@ const props = defineProps({
   }
   
   @media (max-width: 800px) {
-    width: auto;
-    max-width: 280px;
-    padding: 12px 20px;
-    font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+    padding: 11px 18px;
+    font-size: 0.95rem;
   }
   
   @media (max-width: 480px) {
-    max-width: 260px;
-    padding: 11px 18px;
-    font-size: 0.95rem;
+    max-width: 280px;
+    padding: 10px 16px;
+    font-size: 0.92rem;
     border-radius: 10px;
   }
   
   @media (max-width: 360px) {
-    max-width: 240px;
-    padding: 10px 16px;
+    max-width: 260px;
+    padding: 10px 15px;
     font-size: 0.9rem;
   }
 }

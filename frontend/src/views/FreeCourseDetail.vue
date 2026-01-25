@@ -201,10 +201,36 @@ function clampMetaDescription(text) {
   return cleaned.length > 160 ? `${cleaned.slice(0, 157).trimEnd()}...` : cleaned
 }
 
+function getSiteUrl() {
+  const fromEnv = String(import.meta?.env?.VITE_SITE_URL || '').trim()
+  if (fromEnv) return fromEnv.replace(/\/+$/, '')
+  if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin
+  return 'https://optitab.net'
+}
+
+function toAbsoluteUrl(maybeUrlOrPath) {
+  const raw = String(maybeUrlOrPath || '').trim()
+  if (!raw) return ''
+  if (/^https?:\/\//i.test(raw)) return raw
+  const base = getSiteUrl()
+  return `${base}${raw.startsWith('/') ? '' : '/'}${raw}`
+}
+
+function toIsoDate(value) {
+  if (!value) return ''
+  try {
+    const date = new Date(value)
+    if (Number.isNaN(date.getTime())) return ''
+    return date.toISOString()
+  } catch (_) {
+    return ''
+  }
+}
+
 function seoPrefixForResourceType(type) {
-  if (type === 'exercise') return 'Exercice corrige'
-  if (type === 'summary') return 'Fiche de revision'
-  return 'Cours en ligne'
+  if (type === 'exercise') return 'Exercice corrigé gratuit'
+  if (type === 'summary') return 'Fiche de révision gratuite'
+  return 'Cours en ligne gratuit'
 }
 
 watch(
@@ -235,13 +261,52 @@ watch(
     const infoPrefix = [matiere, niveau].filter(Boolean).join(' ').trim()
     const description = clampMetaDescription(infoPrefix ? `${infoPrefix} - ${baseDescription}` : baseDescription) || undefined
     const image = pickSeoImage(value) || undefined
+    const imageAbs = image ? toAbsoluteUrl(image) : ''
+    const canonicalUrl = toAbsoluteUrl(route.path)
+    const siteUrl = getSiteUrl()
+    const organizationId = `${siteUrl}/#organization`
+    const websiteId = `${siteUrl}/#website`
+    const webPageId = `${canonicalUrl}#webpage`
+    const categoryPath = props.resourceType === 'exercise'
+      ? '/ressources-gratuites/exercices'
+      : (props.resourceType === 'summary' ? '/ressources-gratuites/syntheses' : '/ressources-gratuites/cours')
+    const categoryLabel = props.resourceType === 'exercise'
+      ? 'Exercices corrigés gratuits'
+      : (props.resourceType === 'summary' ? 'Fiches de synthèse gratuites' : 'Cours gratuits')
+    const dateModified = toIsoDate(value?.date_modification || value?.updated_at || value?.date_update || value?.date_mise_a_jour)
+
+    const jsonLdGraph = [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: toAbsoluteUrl('/') },
+          { '@type': 'ListItem', position: 2, name: categoryLabel, item: toAbsoluteUrl(categoryPath) },
+          { '@type': 'ListItem', position: 3, name: baseTitle || context || 'Ressource gratuite', item: canonicalUrl }
+        ]
+      },
+      {
+        '@type': 'Article',
+        '@id': `${canonicalUrl}#article`,
+        headline: baseTitle || context || 'Ressource gratuite',
+        description: description || clampMetaDescription(baseDescription) || undefined,
+        inLanguage: 'fr-FR',
+        isPartOf: { '@id': websiteId },
+        mainEntityOfPage: { '@id': webPageId },
+        author: { '@id': organizationId },
+        publisher: { '@id': organizationId },
+        image: imageAbs ? [imageAbs] : undefined,
+        dateModified: dateModified || undefined,
+        keywords: [matiere, niveau].filter(Boolean).join(', ') || undefined
+      }
+    ]
 
     setPageSeo({
       title,
       description,
       canonicalPath: route.path,
       ogType: 'article',
-      image
+      image,
+      jsonLdGraph
     })
   },
   { immediate: true }

@@ -123,6 +123,23 @@ defineProps({
     /* On mobile, cards should span full available width */
     width: 100%;
     max-width: none;
+    padding: 22px 16px;
+    min-height: 250px;
+  }
+
+  .base-card__help-indicator {
+    gap: 4px;
+    font-size: 0.78rem;
+  }
+
+  .help-icon,
+  .help-arrow {
+    font-size: 0.95rem;
+  }
+
+  .help-text {
+    font-size: 0.78rem;
+    white-space: nowrap;
   }
 }
 </style> 

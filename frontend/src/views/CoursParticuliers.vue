@@ -16,15 +16,15 @@
         <div class="hero-content">
           <div class="hero-badge">
             <span class="badge-icon">🎓</span>
-            <span>Cours particuliers d'excellence</span>
+            <span>Cours particuliers en ligne — Maths • Physique‑Chimie • Informatique</span>
           </div>
           
           <h1 class="hero-title">
-            Cours Particuliers <span class="title-highlight">Experts</span>
+            Cours particuliers <span class="title-highlight">en ligne</span>
           </h1>
           
           <p class="hero-subtitle">
-            Un prof dédié, un objectif clair, une progression mesurée
+            Soutien scolaire en ligne : cours particuliers et aide aux devoirs (maths, physique-chimie, informatique) du collège au lycée, en prépa et à l’université.
           </p>
           
           <div class="hero-cta">
@@ -108,7 +108,7 @@
               <div class="feature-icon">⏰</div>
               <h3 class="feature-title">Horaires flexibles</h3>
               <p class="feature-desc">
-                Cours adaptés à votre emploi du temps, en ligne ou en présentiel selon vos besoins.
+                Cours adaptés à votre emploi du temps, 100% en ligne.
               </p>
             </div>
 

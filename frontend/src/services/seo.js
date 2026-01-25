@@ -1,7 +1,9 @@
+import { faq as homeFaq } from '@/config/homeFaq.js'
+
 const DEFAULT_SITE_NAME = 'OptiTAB'
-const DEFAULT_TITLE = 'OptiTAB - Cours particuliers & ressources de maths'
+const DEFAULT_TITLE = 'OptiTAB | Cours particuliers en ligne & plateforme de maths'
 const DEFAULT_DESCRIPTION =
-  "OptiTAB : cours particuliers et ressources en maths, physique et informatique. Cours et exercices gratuits, fiches, quiz et suivi de progression."
+  'OptiTAB : cours particuliers en ligne (maths, physique‑chimie, informatique) et plateforme de maths par abonnement. Cours, fiches de synthèse, exercices corrigés — du collège à l’université.'
 const DEFAULT_IMAGE_PATH = '/Logo_bg.png'
 
 function normalizeSiteUrl(raw) {
@@ -106,6 +108,32 @@ function toAbsoluteUrl(maybeUrlOrPath) {
   return `${getSiteBaseUrl()}${raw.startsWith('/') ? '' : '/'}${raw}`
 }
 
+function buildFaqJsonLd(items) {
+  if (!Array.isArray(items) || items.length === 0) return null
+  const entities = items
+    .map((item) => {
+      const question = String(item?.question || '').trim()
+      const answer = String(item?.answer || '').trim()
+      if (!question || !answer) return null
+      return {
+        '@type': 'Question',
+        name: question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: answer
+        }
+      }
+    })
+    .filter(Boolean)
+    .slice(0, 10)
+
+  if (entities.length === 0) return null
+  return {
+    '@type': 'FAQPage',
+    mainEntity: entities
+  }
+}
+
 export function setPageSeo({
   title,
   description,
@@ -113,13 +141,14 @@ export function setPageSeo({
   canonicalPath,
   canonicalUrl,
   ogType,
-  image
+  image,
+  jsonLdGraph
 } = {}) {
   if (typeof document === 'undefined') return
 
   const finalTitle = buildTitle(title)
   const finalDescription = String(description || DEFAULT_DESCRIPTION).trim() || DEFAULT_DESCRIPTION
-  const finalRobots = String(robots || 'index,follow').trim()
+  const finalRobots = String(robots || 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1').trim()
 
   const path = canonicalizePath(canonicalPath || canonicalUrl || '/')
   const finalCanonical = String(canonicalUrl || `${getSiteBaseUrl()}${path}`).trim()
@@ -156,6 +185,8 @@ export function setPageSeo({
     const websiteId = `${siteUrl}/#website`
     const webPageId = `${finalCanonical}#webpage`
 
+    const extraGraph = Array.isArray(jsonLdGraph) ? jsonLdGraph.filter(Boolean) : []
+
     ensureJsonLd('seo-jsonld', {
       '@context': 'https://schema.org',
       '@graph': [
@@ -164,6 +195,18 @@ export function setPageSeo({
           '@id': organizationId,
           name: DEFAULT_SITE_NAME,
           url: siteUrl,
+          email: 'contact@optitab.net',
+          telephone: '+33764040251',
+          contactPoint: [
+            {
+              '@type': 'ContactPoint',
+              contactType: 'customer support',
+              telephone: '+33764040251',
+              email: 'contact@optitab.net',
+              areaServed: 'FR',
+              availableLanguage: ['fr']
+            }
+          ],
           logo: {
             '@type': 'ImageObject',
             url: toAbsoluteUrl(DEFAULT_IMAGE_PATH)
@@ -185,7 +228,8 @@ export function setPageSeo({
           description: finalDescription,
           isPartOf: { '@id': websiteId },
           inLanguage: 'fr-FR'
-        }
+        },
+        ...extraGraph
       ]
     })
   } catch (_) {
@@ -197,27 +241,31 @@ const ROUTE_SEO = {
   Home: {
     title: DEFAULT_TITLE,
     description: DEFAULT_DESCRIPTION,
-    canonicalPath: '/'
+    canonicalPath: '/',
+    jsonLdGraph: (() => {
+      const faqGraph = buildFaqJsonLd(homeFaq)
+      return faqGraph ? [faqGraph] : undefined
+    })()
   },
   CoursParticuliers: {
-    title: 'Cours particuliers de maths - OptiTAB',
+    title: 'Cours particuliers en ligne (maths, physique‑chimie, informatique)',
     description:
-      "Cours particuliers de maths (et physique/informatique), en ligne ou a domicile. College, lycee (Seconde, Premiere, Terminale) et prepa. Methode personnalisee et exercices corriges.",
+      'Soutien scolaire en ligne : cours particuliers et aide aux devoirs en maths, physique‑chimie et informatique — collège, lycée, prépa, université.',
     canonicalPath: '/cours-particuliers'
   },
   FreeCourses: {
-    title: 'Cours gratuits de maths - OptiTAB',
-    description: 'Cours en ligne gratuits (maths, physique, informatique) : chapitres clairs, methodes et exemples (programme francais).',
+    title: 'Cours de maths en ligne gratuits (Seconde, Première, Terminale)',
+    description: 'Cours de maths gratuits : chapitres clairs, méthodes, exemples et exercices — collège et lycée (Seconde, Première, Terminale).',
     canonicalPath: '/ressources-gratuites/cours'
   },
   FreeCourseDetail: {
     title: 'Cours gratuit - OptiTAB',
-    description: 'Cours gratuit a consulter en ligne : explications, exemples et exercices.',
+    description: 'Cours gratuit à consulter en ligne : explications, exemples et exercices.',
     ogType: 'article'
   },
   FreeExercises: {
-    title: 'Exercices gratuits de maths - OptiTAB',
-    description: 'Exercices corriges gratuits (maths, physique, informatique) avec correction et explications. Niveaux: Seconde, Premiere, Terminale.',
+    title: 'Exercices corrigés de maths gratuits (Seconde, Première, Terminale)',
+    description: 'Exercices corrigés de maths gratuits (Terminale, Première, Seconde) : dérivées, limites, suites, probabilités… avec correction et méthode.',
     canonicalPath: '/ressources-gratuites/exercices'
   },
   FreeExerciseDetail: {
@@ -226,13 +274,13 @@ const ROUTE_SEO = {
     ogType: 'article'
   },
   FreeSummaries: {
-    title: 'Fiches gratuites (syntheses) - OptiTAB',
-    description: 'Fiches de revision gratuites pour reviser: definitions, formules, methodes et exemples (programme francais).',
+    title: 'Fiches de révision de maths gratuites (synthèses)',
+    description: 'Fiches de synthèse gratuites de maths : définitions, formules et méthodes — collège, lycée, prépa.',
     canonicalPath: '/ressources-gratuites/syntheses'
   },
   FreeSummaryDetail: {
     title: 'Fiche gratuite - OptiTAB',
-    description: 'Fiche de synthese gratuite pour reviser rapidement : formules, methodes et exemples.',
+    description: 'Fiche de synthèse gratuite pour réviser rapidement : formules, méthodes et exemples.',
     ogType: 'article'
   },
   About: {
@@ -268,9 +316,10 @@ export function applyRouteSeo(route) {
       title: routeSeo.title || DEFAULT_TITLE,
       description: routeSeo.description || DEFAULT_DESCRIPTION,
       canonicalPath: routeSeo.canonicalPath || route?.path || '/',
-      robots: shouldNoIndex ? 'noindex,nofollow' : 'index,follow',
+      robots: shouldNoIndex ? 'noindex,nofollow' : 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1',
       ogType: routeSeo.ogType || 'website',
-      image: routeSeo.image || DEFAULT_IMAGE_PATH
+      image: routeSeo.image || DEFAULT_IMAGE_PATH,
+      jsonLdGraph: routeSeo.jsonLdGraph
     })
   } catch (_) {
     // Never block navigation on SEO updates.

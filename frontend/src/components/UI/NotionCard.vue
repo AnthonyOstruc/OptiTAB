@@ -1,6 +1,48 @@
 <template>
-  <div class="notion-card" :class="{ locked }" @click="handleClick" @mouseenter="handleMouseEnter">
-    <div class="notion-card-inner">
+  <div class="notion-card" :class="{ locked }" @mouseenter="handleMouseEnter">
+    <router-link v-if="isLink" :to="to" class="notion-card-inner">
+      <div v-if="locked" class="lock-badge">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 11H7C5.89543 11 5 11.8954 5 13V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V13C19 11.8954 18.1046 11 17 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <!-- Icône de la notion -->
+      <div class="notion-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      
+      <!-- Contenu de la notion -->
+      <div class="notion-content">
+        <h3 class="notion-title">{{ title }}</h3>
+        <div v-if="!hideDescription" class="notion-description-container">
+          <p class="notion-description">{{ description || 'Cliquez pour explorer les chapitres' }}</p>
+          <!-- Flèche à côté du texte -->
+          <div class="notion-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div v-if="$slots.meta" class="notion-card-meta-slot">
+        <slot name="meta" />
+      </div>
+    </router-link>
+
+    <div
+      v-else
+      class="notion-card-inner"
+      role="button"
+      tabindex="0"
+      @click="handleClick"
+      @keydown.enter.prevent="handleClick"
+      @keydown.space.prevent="handleClick"
+    >
       <div v-if="locked" class="lock-badge">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M17 11H7C5.89543 11 5 11.8954 5 13V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V13C19 11.8954 18.1046 11 17 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -38,11 +80,13 @@
 
 <script setup>
 import { useDataPrefetch } from '@/composables/useDataPrefetch'
+import { computed } from 'vue'
 
 const props = defineProps({
   title: { type: String, required: true },
   description: { type: String, default: '' },
   notionId: { type: [Number, String], default: null },
+  to: { type: [String, Object], default: null },
   locked: { type: Boolean, default: false },
   disablePrefetch: { type: Boolean, default: false },
   hideDescription: { type: Boolean, default: false }
@@ -51,6 +95,8 @@ const props = defineProps({
 const emit = defineEmits(['click', 'locked-click'])
 
 const { prefetchNotionContent } = useDataPrefetch()
+
+const isLink = computed(() => Boolean(props.to) && !props.locked)
 
 // Debounce pour éviter trop de prefetch
 let hoverTimeout = null

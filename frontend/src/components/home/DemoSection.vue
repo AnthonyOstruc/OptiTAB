@@ -1,5 +1,5 @@
 <template>
-  <section class="demo-section">
+  <section class="demo-section" id="demo">
     <div class="demo-container">
       <!-- Titre accrocheur -->
       <div class="demo-header">
@@ -105,6 +105,7 @@ onMounted(() => {
   padding: 100px 0;
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 80px;
 }
 
 .demo-container {
@@ -567,4 +568,3 @@ onMounted(() => {
   }
 }
 </style>
-

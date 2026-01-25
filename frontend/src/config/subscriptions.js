@@ -20,7 +20,7 @@ export const DEFAULT_PLANS = [
     stripe_price_id: pick('VITE_PRICE_MONTHLY'),
     access_days: null,
     features: [
-      'Accès complet à OptiTAB',
+      'Accès complet à la plateforme de maths',
       'Sans engagement, annulable à tout moment',
     ],
     _badge: 'Recommandé'
@@ -34,7 +34,7 @@ export const DEFAULT_PLANS = [
     stripe_price_id: pick('VITE_PRICE_WEEKLY'),
     access_days: null,
     features: [
-      'Accès complet pendant 7 jours',
+      'Accès plateforme de maths pendant 7 jours',
       'Renouvellement flexible chaque semaine',
     ],
   },
@@ -47,7 +47,7 @@ export const DEFAULT_PLANS = [
     stripe_price_id: pick('VITE_PRICE_YEARLY'),
     access_days: null,
     features: [
-      'Accès complet pendant 12 mois',
+      'Accès plateforme de maths pendant 12 mois',
       'Économisez ~16% vs mensuel',
     ],
   },
@@ -60,7 +60,7 @@ export const DEFAULT_PLANS = [
     stripe_price_id: pick('VITE_PRICE_PASS_MONTH'),
     access_days: 30,
     features: [
-      'Accès 30 jours',
+      'Accès plateforme de maths 30 jours',
       'Paiement unique, non reconduit',
     ],
   },
@@ -73,7 +73,7 @@ export const DEFAULT_PLANS = [
     stripe_price_id: pick('VITE_PRICE_PASS_DAY'),
     access_days: 1,
     features: [
-      'Accès 24 heures',
+      'Accès plateforme de maths 24 heures',
       'Idéal pour un contrôle/devoir',
     ],
   },

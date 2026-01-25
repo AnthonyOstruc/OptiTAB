@@ -2,7 +2,7 @@ export const footerLinks = [
   { label: 'Cours particuliers', href: '/cours-particuliers' },
   { label: 'Cours gratuits', href: '/ressources-gratuites/cours' },
   { label: 'Exercices gratuits', href: '/ressources-gratuites/exercices' },
-  { label: 'Fiches gratuites', href: '/ressources-gratuites/syntheses' },
+  { label: 'Synthèses gratuites', href: '/ressources-gratuites/syntheses' },
   { label: 'Tarifs', href: '/pricing' },
   { label: 'Contact', href: '/contact' },
   { label: 'À propos', href: '/about' },

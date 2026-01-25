@@ -6,7 +6,7 @@
         v-for="item in leftMenuItems"
         :key="item.key"
         :to="item.href"
-        class="nav-item"
+        :class="['nav-item', { 'nav-item--free-resources': item.key === 'ressources-gratuites' }]"
       >
         <component :is="item.icon" class="nav-icon" />
         <span class="nav-text">{{ item.text }}</span>
@@ -367,6 +367,12 @@ onMounted(async () => {
   &:hover {
     background: rgba(102, 126, 234, 0.1);
     color: #667eea;
+  }
+}
+
+@media (max-width: 1032px) {
+  .nav-item--free-resources {
+    display: none;
   }
 }
 

@@ -20,6 +20,15 @@
         <span class="trust-pill">Cours en ligne, méthode &amp; corrections</span>
         <span class="trust-pill">Réponse sous 24h</span>
       </div>
+
+      <div class="home-seo__keyword">
+        <h3 class="home-seo__keyword-title">Soutien scolaire en ligne &amp; aide aux devoirs</h3>
+        <p class="home-seo__keyword-text">
+          Cours de maths en ligne, exercices corrigés et fiches de synthèse pour progresser efficacement.
+          Cours particuliers en ligne : collège, Seconde, Première, Terminale, prépa (MPSI) et Grandes Écoles.
+        </p>
+      </div>
+
       <h3 class="home-seo__offers-title">Deux offres</h3>
       <div class="home-seo__offers" aria-label="Deux offres OptiTAB">
         <article class="offer-card offer-card--subscription">
@@ -130,6 +139,26 @@ const handleContactSuccess = (message) => {
   gap: 10px;
   justify-content: center;
   margin: 0 auto 18px auto;
+}
+
+.home-seo__keyword {
+  margin: 10px auto 18px auto;
+  max-width: 860px;
+}
+
+.home-seo__keyword-title {
+  margin: 0 0 6px 0;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.home-seo__keyword-text {
+  margin: 0;
+  color: #475569;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  font-weight: 600;
 }
 
 .trust-pill {
@@ -297,6 +326,14 @@ const handleContactSuccess = (message) => {
   .home-seo__link {
     font-size: 0.9rem;
     padding: 9px 12px;
+  }
+
+  .home-seo__keyword-title {
+    font-size: 0.98rem;
+  }
+
+  .home-seo__keyword-text {
+    font-size: 0.92rem;
   }
 
   .home-seo__note {

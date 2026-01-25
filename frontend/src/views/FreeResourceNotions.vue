@@ -4,6 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import NotionCard from '@/components/UI/NotionCard.vue'
 import BackButton from '@/components/common/BackButton.vue'
+import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import { getFreeResources } from '@/api/free-content'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
@@ -966,6 +967,12 @@ const onLockedExercise = (chapter) => {
         </div>
       </template>
     </div>
+
+    <WhatsappChatButton
+      phone="33764040251"
+      message="Bonjour, j'ai une question sur OptiTAB !"
+      tooltip="Une question ? Discutons sur WhatsApp !"
+    />
   </MainLayout>
 </template>
 

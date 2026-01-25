@@ -72,6 +72,44 @@ function routeForResource(resource) {
   return null
 }
 
+function extractPathname(loc) {
+  try {
+    const url = new URL(String(loc))
+    return url.pathname || '/'
+  } catch {
+    return null
+  }
+}
+
+function shouldKeepPathForSeo(pathname) {
+  if (!pathname) return false
+  if (pathname === '/') return true
+  if (pathname === '/cours-particuliers') return true
+  if (pathname === '/about') return true
+  if (pathname === '/contact') return true
+  if (pathname.startsWith('/ressources-gratuites/')) return true
+  return false
+}
+
+async function mergeExistingSitemap(outPath, addUrl) {
+  try {
+    const xml = await fs.readFile(outPath, 'utf8')
+    const urlBlocks = xml.match(/<url>[\s\S]*?<\/url>/g) || []
+    for (const block of urlBlocks) {
+      const locMatch = block.match(/<loc>(.*?)<\/loc>/)
+      if (!locMatch) continue
+      const pathname = extractPathname(locMatch[1])
+      if (!shouldKeepPathForSeo(pathname)) continue
+      const lastmodMatch = block.match(/<lastmod>(.*?)<\/lastmod>/)
+      const lastmod = lastmodMatch ? String(lastmodMatch[1]).trim() : ''
+      addUrl(pathname, lastmod)
+    }
+    return true
+  } catch {
+    return false
+  }
+}
+
 async function buildSitemap() {
   const siteUrl = normalizeSiteUrl(
     process.env.VITE_SITE_URL ||
@@ -85,6 +123,8 @@ async function buildSitemap() {
     process.env.VITE_API_URL ||
     'https://optitab-backend.onrender.com'
   )
+
+  const outPath = path.resolve(__dirname, '..', 'public', 'sitemap.xml')
 
   const urls = new Map()
   const addUrl = (pathname, lastmod = '') => {
@@ -101,17 +141,11 @@ async function buildSitemap() {
     }
   }
 
-  // Static public pages
+  // Static public pages (SEO)
   addUrl('/', '')
   addUrl('/cours-particuliers', '')
   addUrl('/about', '')
   addUrl('/contact', '')
-  addUrl('/conditions', '')
-  addUrl('/cgv', '')
-  addUrl('/cgu', '')
-  addUrl('/confidentialite', '')
-  addUrl('/legal', '')
-  addUrl('/cookies', '')
 
   // Free content entry points
   addUrl('/ressources-gratuites/cours', '')
@@ -141,8 +175,12 @@ async function buildSitemap() {
     }
   } catch (err) {
     // Never fail the build if the API is unreachable.
-    // We keep at least the static URLs above.
-    console.warn('[sitemap] API fetch failed, generating a minimal sitemap:', err?.message || err)
+    // We keep at least the static URLs above (and try to keep the previous sitemap entries).
+    console.warn('[sitemap] API fetch failed, attempting to reuse the existing sitemap:', err?.message || err)
+    const merged = await mergeExistingSitemap(outPath, addUrl)
+    if (!merged) {
+      console.warn('[sitemap] No existing sitemap to merge; generating a minimal sitemap.')
+    }
   }
 
   const entries = [...urls.values()].sort((a, b) => a.loc.localeCompare(b.loc, 'fr'))
@@ -159,7 +197,6 @@ async function buildSitemap() {
   }
   lines.push('</urlset>')
 
-  const outPath = path.resolve(__dirname, '..', 'public', 'sitemap.xml')
   await fs.writeFile(outPath, `${lines.join('\n')}\n`, 'utf8')
   console.log(`[sitemap] wrote ${entries.length} urls to ${outPath}`)
 }

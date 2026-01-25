@@ -12,78 +12,96 @@
             </button>
           </div>
           
-          <form @submit.prevent="handleSubmit" class="contact-form-modal">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="modal-firstName" class="form-label">Prénom *</label>
-                <input 
-                  type="text" 
-                  id="modal-firstName" 
-                  v-model="form.firstName"
-                  class="form-input"
-                  placeholder="Votre prénom"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="modal-lastName" class="form-label">Nom *</label>
-                <input 
-                  type="text" 
-                  id="modal-lastName" 
-                  v-model="form.lastName"
-                  class="form-input"
-                  placeholder="Votre nom"
-                  required
-                />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="modal-email" class="form-label">Email *</label>
-              <input 
-                type="email" 
-                id="modal-email" 
-                v-model="form.email"
-                class="form-input"
-                placeholder="votre@email.com"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="modal-subject" class="form-label">Sujet *</label>
-              <select 
-                id="modal-subject" 
-                v-model="form.subject"
-                class="form-select"
-                required
-              >
-                <option value="">Je vous contacte à propos de...</option>
-                <option value="Réserver un cours">Réserver un cours</option>
-                <option value="Choisir un pack">Choisir un pack</option>
+	          <form @submit.prevent="handleSubmit" class="contact-form-modal">
+	            <p v-if="submitError" class="form-submit-error" role="alert">{{ submitError }}</p>
+	            <div class="form-row">
+	              <div class="form-group">
+	                <label for="modal-firstName" class="form-label">Prénom *</label>
+	                <input 
+	                  type="text" 
+	                  id="modal-firstName" 
+	                  v-model="form.firstName"
+	                  class="form-input"
+	                  :class="{ 'form-control--error': fieldErrors.firstName }"
+	                  :aria-invalid="Boolean(fieldErrors.firstName)"
+	                  placeholder="Votre prénom"
+	                  required
+	                />
+	                <p v-if="fieldErrors.firstName" class="form-field-error">{{ fieldErrors.firstName }}</p>
+	              </div>
+	              <div class="form-group">
+	                <label for="modal-lastName" class="form-label">Nom *</label>
+	                <input 
+	                  type="text" 
+	                  id="modal-lastName" 
+	                  v-model="form.lastName"
+	                  class="form-input"
+	                  :class="{ 'form-control--error': fieldErrors.lastName }"
+	                  :aria-invalid="Boolean(fieldErrors.lastName)"
+	                  placeholder="Votre nom"
+	                  required
+	                />
+	                <p v-if="fieldErrors.lastName" class="form-field-error">{{ fieldErrors.lastName }}</p>
+	              </div>
+	            </div>
+	
+	            <div class="form-group">
+	              <label for="modal-email" class="form-label">Email *</label>
+	              <input 
+	                type="email" 
+	                id="modal-email" 
+	                v-model="form.email"
+	                class="form-input"
+	                :class="{ 'form-control--error': fieldErrors.email }"
+	                :aria-invalid="Boolean(fieldErrors.email)"
+	                placeholder="votre@email.com"
+	                required
+	              />
+	              <p v-if="fieldErrors.email" class="form-field-error">{{ fieldErrors.email }}</p>
+	            </div>
+	
+	            <div class="form-group">
+	              <label for="modal-subject" class="form-label">Sujet *</label>
+	              <select 
+	                id="modal-subject" 
+	                v-model="form.subject"
+	                class="form-select"
+	                :class="{ 'form-control--error': fieldErrors.subject }"
+	                :aria-invalid="Boolean(fieldErrors.subject)"
+	                required
+	              >
+	                <option value="">Je vous contacte à propos de...</option>
+	                <option value="Réserver un cours">Réserver un cours</option>
+	                <option value="Choisir un pack">Choisir un pack</option>
                 <option value="Réserver un cours / pack">Réserver un cours / pack</option>
                 <option value="Demande d'information">Demande d'information</option>
                 <option value="Support technique">Support technique</option>
-                <option value="Partenariat">Partenariat</option>
-                <option value="Autre">Autre</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="modal-message" class="form-label">Message *</label>
-              <textarea 
-                id="modal-message" 
-                v-model="form.message"
-                class="form-textarea"
-                placeholder="Votre message..."
-                rows="4"
-                required
-              ></textarea>
-            </div>
-
-            <div class="form-actions">
-              <button type="button" class="btn-cancel" @click="closeModal" :disabled="isSubmitting">
-                Annuler
+	                <option value="Partenariat">Partenariat</option>
+	                <option value="Autre">Autre</option>
+	              </select>
+	              <p v-if="fieldErrors.subject" class="form-field-error">{{ fieldErrors.subject }}</p>
+	            </div>
+	
+	            <div class="form-group">
+	              <label for="modal-message" class="form-label">Message *</label>
+	              <textarea 
+	                id="modal-message" 
+	                v-model="form.message"
+	                class="form-textarea"
+	                :class="{ 'form-control--error': fieldErrors.message }"
+	                :aria-invalid="Boolean(fieldErrors.message)"
+	                placeholder="Votre message..."
+	                rows="4"
+	                minlength="5"
+	                required
+	              ></textarea>
+	              <p class="form-help">Minimum 5 caractères.</p>
+	              <p v-if="fieldErrors.message" class="form-field-error">{{ fieldErrors.message }}</p>
+	            </div>
+	
+	            <div class="form-actions">
+	              <button type="button" class="btn-cancel" @click="closeModal" :disabled="isSubmitting">
+	                Annuler
               </button>
               <button type="submit" class="btn-submit" :disabled="isSubmitting">
                 <span v-if="!isSubmitting">Envoyer</span>
@@ -124,11 +142,11 @@
       </div>
     </Transition>
   </Teleport>
-</template>
+	</template>
 
-<script setup>
-import { ref, watch } from 'vue'
-import { sendContactMessage } from '@/api/contact'
+	<script setup>
+	import { ref, watch } from 'vue'
+	import { sendContactMessage } from '@/api/contact'
 
 const props = defineProps({
   isOpen: {
@@ -143,29 +161,64 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'success'])
 
-const isSubmitting = ref(false)
-const scrollPosition = ref(0)
-const form = ref({
-  firstName: '',
-  lastName: '',
-  email: '',
-  subject: '',
-  message: ''
-})
+	const isSubmitting = ref(false)
+	const scrollPosition = ref(0)
+	const submitError = ref('')
+	const fieldErrors = ref({})
+	const form = ref({
+	  firstName: '',
+	  lastName: '',
+	  email: '',
+	  subject: '',
+	  message: ''
+	})
+	
+	const MIN_MESSAGE_LENGTH = 5
+	const EMAIL_REGEX = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 
-const closeModal = () => {
-  if (!isSubmitting.value) {
-    emit('close')
-  }
-}
+	const closeModal = () => {
+	  if (!isSubmitting.value) {
+	    emit('close')
+	  }
+	}
+	
+	const validate = () => {
+	  const errors = {}
+	  const first = (form.value.firstName || '').trim()
+	  const last = (form.value.lastName || '').trim()
+	  const email = (form.value.email || '').trim()
+	  const subject = (form.value.subject || '').trim()
+	  const message = (form.value.message || '').trim()
+	
+	  if (!first) errors.firstName = 'Champ requis'
+	  if (!last) errors.lastName = 'Champ requis'
+	  if (!email || !EMAIL_REGEX.test(email)) errors.email = 'Email invalide'
+	  if (!subject) errors.subject = 'Champ requis'
+	  if (!message || message.length < MIN_MESSAGE_LENGTH) {
+	    errors.message = `Message trop court (min ${MIN_MESSAGE_LENGTH} caractères)`
+	  }
+	
+	  return errors
+	}
 
-const handleSubmit = async () => {
-  if (isSubmitting.value) return
-  isSubmitting.value = true
-  
-  try {
-    await sendContactMessage({
-      firstName: form.value.firstName,
+	const handleSubmit = async () => {
+	  if (isSubmitting.value) return
+	
+	  submitError.value = ''
+	  fieldErrors.value = {}
+	
+	  const clientErrors = validate()
+	  if (Object.keys(clientErrors).length > 0) {
+	    fieldErrors.value = clientErrors
+	    submitError.value = 'Veuillez corriger les champs indiqués.'
+	    return
+	  }
+	
+	  isSubmitting.value = true
+	  
+	  try {
+	    await sendContactMessage({
+	      firstName: form.value.firstName,
       lastName: form.value.lastName,
       email: form.value.email,
       subject: form.value.subject,
@@ -178,34 +231,48 @@ const handleSubmit = async () => {
     // Émettre l'événement de succès
     emit('success', 'Votre message a été envoyé. Un email de confirmation vous a été adressé. Réponse sous 24h.')
     
-    // Fermer le modal après un court délai
-    setTimeout(() => {
-      emit('close')
-    }, 500)
-  } catch (e) {
-    console.error('Erreur envoi message de contact:', e)
-    alert("Désolé, l'envoi a échoué. Veuillez réessayer plus tard.")
-  } finally {
-    isSubmitting.value = false
-  }
-}
+	    // Fermer le modal après un court délai
+	    setTimeout(() => {
+	      emit('close')
+	    }, 500)
+	  } catch (e) {
+	    console.error('Erreur envoi message de contact:', e)
+	    const data = e?.response?.data
+	    if (data && typeof data === 'object' && data.errors && typeof data.errors === 'object') {
+	      fieldErrors.value = { ...data.errors }
+	      submitError.value = 'Veuillez corriger les champs indiqués.'
+	    } else if (data && typeof data === 'object' && typeof data.message === 'string') {
+	      submitError.value = data.message
+	    } else if (!e?.response) {
+	      submitError.value = "Impossible de contacter le serveur. Vérifiez que le backend tourne sur http://localhost:8000."
+	    } else {
+	      submitError.value = "Désolé, l'envoi a échoué. Veuillez réessayer plus tard."
+	    }
+	  } finally {
+	    isSubmitting.value = false
+	  }
+	}
 
-// Réinitialiser le formulaire quand le modal se ferme ou s'ouvre
-watch(() => props.isOpen, (newVal) => {
-  if (newVal) {
-    // Quand le modal s'ouvre, initialiser le sujet si fourni
-    form.value = { 
-      firstName: '', 
-      lastName: '', 
-      email: '', 
-      subject: props.initialSubject || '', 
-      message: '' 
-    }
-  } else {
-    // Quand le modal se ferme, réinitialiser tout
-    form.value = { firstName: '', lastName: '', email: '', subject: '', message: '' }
-  }
-})
+	// Réinitialiser le formulaire quand le modal se ferme ou s'ouvre
+	watch(() => props.isOpen, (newVal) => {
+	  if (newVal) {
+	    // Quand le modal s'ouvre, initialiser le sujet si fourni
+	    form.value = { 
+	      firstName: '', 
+	      lastName: '', 
+	      email: '', 
+	      subject: props.initialSubject || '', 
+	      message: '' 
+	    }
+	    submitError.value = ''
+	    fieldErrors.value = {}
+	  } else {
+	    // Quand le modal se ferme, réinitialiser tout
+	    form.value = { firstName: '', lastName: '', email: '', subject: '', message: '' }
+	    submitError.value = ''
+	    fieldErrors.value = {}
+	  }
+	})
 
 // Mettre à jour le sujet quand initialSubject change
 watch(() => props.initialSubject, (newSubject) => {
@@ -336,16 +403,27 @@ watch(() => props.isOpen, (newVal) => {
   margin-bottom: 0.9rem;
 }
 
-.form-label {
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.4rem;
-  font-size: 0.85rem;
-}
+	.form-label {
+	  font-weight: 600;
+	  color: #374151;
+	  margin-bottom: 0.4rem;
+	  font-size: 0.85rem;
+	}
+	
+	.form-submit-error {
+	  margin: 0 0 0.85rem 0;
+	  padding: 0.75rem 0.9rem;
+	  border-radius: 10px;
+	  border: 1px solid #fecaca;
+	  background: #fef2f2;
+	  color: #991b1b;
+	  font-size: 0.9rem;
+	  font-weight: 600;
+	}
 
-.form-input,
-.form-select,
-.form-textarea {
+	.form-input,
+	.form-select,
+	.form-textarea {
   padding: 0.6rem;
   border: 1px solid #d1d5db;
   border-radius: 8px;
@@ -353,16 +431,38 @@ watch(() => props.isOpen, (newVal) => {
   transition: all 0.2s ease;
   background: white;
   font-family: inherit;
-  width: 100%;
-}
+	  width: 100%;
+	}
+	
+	.form-control--error {
+	  border-color: #ef4444;
+	}
+	
+	.form-control--error:focus {
+	  border-color: #ef4444;
+	  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+	}
+	
+	.form-help {
+	  margin-top: 0.35rem;
+	  color: #6b7280;
+	  font-size: 0.8rem;
+	}
+	
+	.form-field-error {
+	  margin-top: 0.35rem;
+	  color: #b91c1c;
+	  font-size: 0.82rem;
+	  font-weight: 600;
+	}
 
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
-  outline: none;
-  border-color: #2a38b7;
-  box-shadow: 0 0 0 3px rgba(42, 56, 183, 0.1);
-}
+		.form-input:focus:not(.form-control--error),
+		.form-select:focus:not(.form-control--error),
+		.form-textarea:focus:not(.form-control--error) {
+	  outline: none;
+	  border-color: #2a38b7;
+	  box-shadow: 0 0 0 3px rgba(42, 56, 183, 0.1);
+	}
 
 .form-textarea {
   resize: vertical;
@@ -661,4 +761,3 @@ watch(() => props.isOpen, (newVal) => {
   }
 }
 </style>
-

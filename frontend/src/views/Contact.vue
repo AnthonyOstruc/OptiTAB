@@ -246,9 +246,10 @@ import { sendContactMessage } from '@/api/contact'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 
-const isSubmitting = ref(false)
-const showBackToTop = ref(false)
-const activeSection = ref('')
+	const isSubmitting = ref(false)
+	const showBackToTop = ref(false)
+	const activeSection = ref('')
+	const MIN_MESSAGE_LENGTH = 5
 
 const form = ref({
   firstName: '',
@@ -307,26 +308,42 @@ const scrollToSection = (sectionId, event) => {
   }
 }
 
-const handleSubmit = async () => {
-  if (isSubmitting.value) return
-  isSubmitting.value = true
-  try {
-    await sendContactMessage({
-      firstName: form.value.firstName,
-      lastName: form.value.lastName,
-      email: form.value.email,
+	const handleSubmit = async () => {
+	  if (isSubmitting.value) return
+	  isSubmitting.value = true
+	  try {
+	    const message = (form.value.message || '').trim()
+	    if (message.length < MIN_MESSAGE_LENGTH) {
+	      alert(`Votre message doit contenir au moins ${MIN_MESSAGE_LENGTH} caractères.`)
+	      return
+	    }
+	
+	    await sendContactMessage({
+	      firstName: form.value.firstName,
+	      lastName: form.value.lastName,
+	      email: form.value.email,
       subject: form.value.subject,
       message: form.value.message,
     })
-    alert('Votre message a été envoyé. Un email de confirmation vous a été adressé. Réponse sous 24h.')
-    form.value = { firstName: '', lastName: '', email: '', subject: '', message: '' }
-  } catch (e) {
-    console.error('Erreur envoi message de contact:', e)
-    alert("Désolé, l'envoi a échoué. Veuillez réessayer plus tard.")
-  } finally {
-    isSubmitting.value = false
-  }
-}
+	    alert('Votre message a été envoyé. Un email de confirmation vous a été adressé. Réponse sous 24h.')
+	    form.value = { firstName: '', lastName: '', email: '', subject: '', message: '' }
+	  } catch (e) {
+	    console.error('Erreur envoi message de contact:', e)
+	    const data = e?.response?.data
+	    if (data && typeof data === 'object' && data.errors && typeof data.errors === 'object') {
+	      const firstError = Object.values(data.errors).find(Boolean)
+	      alert(firstError || 'Veuillez corriger le formulaire.')
+	    } else if (data && typeof data === 'object' && typeof data.message === 'string') {
+	      alert(data.message)
+	    } else if (!e?.response) {
+	      alert('Impossible de contacter le serveur. Vérifiez que le backend tourne sur http://localhost:8000.')
+	    } else {
+	      alert("Désolé, l'envoi a échoué. Veuillez réessayer plus tard.")
+	    }
+	  } finally {
+	    isSubmitting.value = false
+	  }
+	}
 
 // Lifecycle hooks
 onMounted(() => {

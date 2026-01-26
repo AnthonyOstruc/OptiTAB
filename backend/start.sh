@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # Script de démarrage pour Render avec collecte des fichiers statiques
- echo "=== Démarrage OptiTAB Backend ==="
+echo "=== Démarrage OptiTAB Backend ==="
+
+# Répertoire du projet (backend)
+PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$PROJECT_ROOT"
 
 # Créer les répertoires médias si manquants (Render persistent disk)
 # Utiliser MEDIA_ROOT si défini (Render) sinon ./media
@@ -25,9 +29,31 @@ if [ "$MEDIA_DIR" != "media" ] && [ -d "media" ]; then
 fi
 
 # Collecte des fichiers statiques
-echo "Collecting static files..."
-python manage.py collectstatic --noinput --clear
+if [ "${SKIP_COLLECTSTATIC:-0}" = "1" ]; then
+  echo "Skipping collectstatic (SKIP_COLLECTSTATIC=1)"
+else
+  if [ -n "$(find staticfiles -type f -print -quit 2>/dev/null)" ]; then
+    echo "Static files already present; skipping collectstatic."
+  else
+    echo "Collecting static files..."
+    python manage.py collectstatic --noinput --clear
+  fi
+fi
 
 # Run gunicorn with correct module path
 echo "Starting Gunicorn..."
-exec gunicorn backendAPI.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 30
+WORKERS=${GUNICORN_WORKERS:-${WEB_CONCURRENCY:-1}}
+THREADS=${GUNICORN_THREADS:-1}
+TIMEOUT=${GUNICORN_TIMEOUT:-120}
+MAX_REQUESTS=${GUNICORN_MAX_REQUESTS:-1000}
+MAX_REQUESTS_JITTER=${GUNICORN_MAX_REQUESTS_JITTER:-100}
+
+echo "Gunicorn config: workers=$WORKERS threads=$THREADS timeout=$TIMEOUT"
+exec gunicorn backendAPI.wsgi:application \
+  --bind 0.0.0.0:${PORT:-10000} \
+  --worker-class gthread \
+  --workers "$WORKERS" \
+  --threads "$THREADS" \
+  --timeout "$TIMEOUT" \
+  --max-requests "$MAX_REQUESTS" \
+  --max-requests-jitter "$MAX_REQUESTS_JITTER"

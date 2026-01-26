@@ -1,14 +1,26 @@
-const DEFAULT_MEASUREMENT_ID = 'G-1LJEYKL7EL'
-
-const measurementId = (import.meta?.env?.VITE_GA_MEASUREMENT_ID || DEFAULT_MEASUREMENT_ID || '').trim()
-
 let lastPagePath = null
 let lastUserId = null
-let didInit = false
 
-function getGtag() {
+function getDataLayer() {
   if (typeof window === 'undefined') return null
-  return typeof window.gtag === 'function' ? window.gtag : null
+
+  const existing = window.dataLayer
+  if (!existing) {
+    window.dataLayer = []
+    return window.dataLayer
+  }
+
+  if (Array.isArray(existing)) return existing
+  if (typeof existing.push === 'function') return existing
+  return null
+}
+
+function pushToDataLayer(payload) {
+  const dataLayer = getDataLayer()
+  if (!dataLayer) return
+  try {
+    dataLayer.push(payload)
+  } catch (_) {}
 }
 
 function isDebugModeEnabled() {
@@ -42,28 +54,9 @@ function isDebugModeEnabled() {
   }
 }
 
-function baseConfig() {
-  const config = { send_page_view: false }
-  if (isDebugModeEnabled()) {
-    config.debug_mode = true
-  }
-  return config
-}
-
 function withDebug(params) {
   if (!isDebugModeEnabled()) return params
   return { ...params, debug_mode: true }
-}
-
-function ensureInitialized() {
-  if (didInit) return
-  didInit = true
-
-  const gtag = getGtag()
-  if (!gtag || !measurementId) return
-
-  // Ensure SPA config + optional debug mode (safe: never sends automatic page_view)
-  gtag('config', measurementId, baseConfig())
 }
 
 function sanitizePath(path) {
@@ -97,10 +90,6 @@ function safePageLocation() {
 }
 
 export function pageView(path) {
-  ensureInitialized()
-  const gtag = getGtag()
-  if (!gtag || !measurementId) return
-
   const pagePath = sanitizePath(path)
   if (!pagePath) return
 
@@ -108,39 +97,38 @@ export function pageView(path) {
   if (pagePath === lastPagePath) return
   lastPagePath = pagePath
 
-  gtag('event', 'page_view', withDebug({
+  pushToDataLayer(withDebug({
+    event: 'page_view',
     page_path: pagePath,
     page_location: safePageLocation(),
-    page_title: typeof document !== 'undefined' ? document.title : ''
+    page_title: typeof document !== 'undefined' ? document.title : '',
+    ...(lastUserId ? { user_id: lastUserId } : {})
   }))
 }
 
 export function login(method = 'email_password') {
-  ensureInitialized()
-  const gtag = getGtag()
-  if (!gtag) return
-  gtag('event', 'login', withDebug({ method: String(method || 'email_password') }))
+  pushToDataLayer(withDebug({
+    event: 'login',
+    method: String(method || 'email_password'),
+    ...(lastUserId ? { user_id: lastUserId } : {})
+  }))
 }
 
 export function logout() {
-  ensureInitialized()
-  const gtag = getGtag()
-  if (!gtag) return
-  gtag('event', 'logout', withDebug({}))
+  pushToDataLayer(withDebug({
+    event: 'logout',
+    ...(lastUserId ? { user_id: lastUserId } : {})
+  }))
 }
 
 export function setUserId(userId) {
-  ensureInitialized()
-  const gtag = getGtag()
-  if (!gtag || !measurementId) return
-
   const id = String(userId ?? '').trim()
   if (!id) return
 
   // Guardrail to avoid accidental PII (e.g. passing an email)
   if (id.includes('@')) {
     if (import.meta?.env?.DEV) {
-      console.warn('[analytics] Refusing to set GA user_id that looks like an email.')
+      console.warn('[analytics] Refusing to set user_id that looks like an email.')
     }
     return
   }
@@ -148,5 +136,5 @@ export function setUserId(userId) {
   if (id === lastUserId) return
   lastUserId = id
 
-  gtag('config', measurementId, { ...baseConfig(), user_id: id })
+  pushToDataLayer(withDebug({ event: 'set_user_id', user_id: id }))
 }

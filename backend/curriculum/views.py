@@ -704,17 +704,44 @@ class ExerciceViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({'detail': 'Playwright non installé côté serveur'}, status=500)
 
-        with sync_playwright() as p:
-            browser = p.chromium.launch()
-            page = browser.new_page()
-            page.set_content(html, wait_until='load')
-            # Attendre que MathJax finisse
-            page.wait_for_function("() => window.MathJax && MathJax.startup && MathJax.startup.promise")
-            page.evaluate("() => MathJax.startup.promise")
-            # Laisser un léger délai pour stabiliser
-            page.wait_for_timeout(500)
-            pdf_bytes = page.pdf(format='A4', margin={'top': '12mm', 'right': '12mm', 'bottom': '12mm', 'left': '12mm'}, print_background=True)
-            browser.close()
+        pdf_bytes = None
+        try:
+            with sync_playwright() as p:
+                browser = None
+                context = None
+                page = None
+                try:
+                    browser = p.chromium.launch(args=["--disable-dev-shm-usage"])
+                    context = browser.new_context()
+                    page = context.new_page()
+                    page.set_content(html, wait_until='load', timeout=60_000)
+                    # Attendre que MathJax finisse
+                    page.wait_for_function(
+                        "() => window.MathJax && MathJax.startup && MathJax.startup.promise",
+                        timeout=60_000,
+                    )
+                    page.evaluate("() => MathJax.startup.promise")
+                    # Laisser un léger délai pour stabiliser
+                    page.wait_for_timeout(500)
+                    pdf_bytes = page.pdf(
+                        format='A4',
+                        margin={'top': '12mm', 'right': '12mm', 'bottom': '12mm', 'left': '12mm'},
+                        print_background=True,
+                    )
+                finally:
+                    try:
+                        if page is not None:
+                            page.close()
+                    finally:
+                        try:
+                            if context is not None:
+                                context.close()
+                        finally:
+                            if browser is not None:
+                                browser.close()
+        except Exception as e:
+            logger.exception("Erreur génération PDF via Playwright")
+            return Response({'detail': f'Erreur génération PDF: {str(e)}'}, status=500)
 
         response = HttpResponse(pdf_bytes, content_type='application/pdf')
         title = f"Exercice_{exercice.id}{'_corrige' if include_solution else ''}.pdf"

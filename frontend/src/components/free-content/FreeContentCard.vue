@@ -26,10 +26,10 @@
     </ul>
 
     <div class="cta-row">
-      <button class="cta-primary" @click="$emit('open-subscription')">
+      <button class="cta-primary" data-cta-name="signup" data-cta-location="card" @click="$emit('open-subscription')">
         Débloquer tout OptiTAB
       </button>
-      <a href="/#tarifs" class="cta-secondary">
+      <a href="/#tarifs" class="cta-secondary" data-cta-name="pricing" data-cta-location="card">
         Voir les tarifs
       </a>
     </div>

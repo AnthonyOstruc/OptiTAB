@@ -68,7 +68,7 @@
     <router-link 
       v-else-if="isSubscriptionPage" 
       to="/billing" 
-      class="header-back-button"
+      class="header-back-button" data-cta-name="subscribe" data-cta-location="header_dashboard"
     >
       <span>← Abonnements</span>
     </router-link>

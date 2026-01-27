@@ -55,10 +55,10 @@
         <h3 class="demo-cta-title">Rejoignez OptiTAB dès maintenant</h3>
         <p class="demo-cta-desc">Accédez à des milliers d'exercices et progressez à votre rythme</p>
         <div class="demo-cta-buttons">
-          <button class="demo-cta-primary" @click="$emit('cta-subscribe')">
+          <button class="demo-cta-primary" data-cta-name="signup" data-cta-location="demo" @click="$emit('cta-subscribe')">
             Commencer gratuitement
           </button>
-          <button class="demo-cta-secondary" @click="$emit('cta-pricing')">
+          <button class="demo-cta-secondary" data-cta-name="pricing" data-cta-location="demo" @click="$emit('cta-pricing')">
             Voir les tarifs
           </button>
         </div>

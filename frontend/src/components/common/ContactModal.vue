@@ -117,7 +117,10 @@
               <a 
                 href="https://wa.me/33764040251?text=Bonjour, j'aimerais poser une question sur les cours particuliers OptiTAB !" 
                 target="_blank" 
+                rel="noopener noreferrer"
                 class="btn-whatsapp"
+                data-cta-name="whatsapp"
+                data-cta-location="modal"
                 @click="closeModal"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.5rem;">

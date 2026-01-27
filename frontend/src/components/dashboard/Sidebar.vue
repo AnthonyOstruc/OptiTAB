@@ -4,15 +4,18 @@
       <div class="sidebar-menu-container">
         <ul>
           <!-- Tableau de bord -->
-          <li 
-            :class="['sidebar-item', { active: isActiveRoute('dashboard') }]" 
-            @click="handleSidebarClick({ key: 'dashboard' })"
-            :title="collapsed ? 'Tableau de bord' : ''"
-          >
-            <span class="sidebar-icon">
-              <Squares2X2Icon />
-            </span>
-            <span v-if="!collapsed" class="sidebar-label">Tableau de bord</span>
+          <li>
+            <button
+              type="button"
+              :class="['sidebar-item', { active: isActiveRoute('dashboard') }]"
+              @click="handleSidebarClick({ key: 'dashboard' })"
+              :title="collapsed ? 'Tableau de bord' : ''"
+            >
+              <span class="sidebar-icon">
+                <Squares2X2Icon />
+              </span>
+              <span v-if="!collapsed" class="sidebar-label">Tableau de bord</span>
+            </button>
           </li>
 
           <!-- Barre de recherche globale (sous Tableau de bord) -->
@@ -34,18 +37,21 @@
           </li>
           
           <!-- Autres éléments du menu -->
-          <li 
-            :class="['sidebar-item', { active: isActiveRoute(item.key) }]" 
-            v-for="item in otherMenuItems" 
-            :key="item.key" 
-            @click="handleSidebarClick(item)"
-            @mouseenter="handleSidebarHover(item)"
-            :title="collapsed ? item.text : ''"
-          >
-            <span class="sidebar-icon">
-              <component :is="item.icon" />
-            </span>
-            <span v-if="!collapsed" class="sidebar-label">{{ item.text }}</span>
+          <li v-for="item in otherMenuItems" :key="item.key">
+            <button
+              type="button"
+              :class="['sidebar-item', { active: isActiveRoute(item.key) }]"
+              :data-cta-name="item.key === 'abonnement' ? 'subscribe' : null"
+              :data-cta-location="item.key === 'abonnement' ? 'nav_sidebar' : null"
+              @click="handleSidebarClick(item)"
+              @mouseenter="handleSidebarHover(item)"
+              :title="collapsed ? item.text : ''"
+            >
+              <span class="sidebar-icon">
+                <component :is="item.icon" />
+              </span>
+              <span v-if="!collapsed" class="sidebar-label">{{ item.text }}</span>
+            </button>
           </li>
           
           <!-- Lien admin -->
@@ -53,50 +59,65 @@
             <li class="sidebar-section-header" v-if="!collapsed">
               <span class="section-title">⚙️ Administration</span>
             </li>
-            <li
-              class="sidebar-item"
-              :class="{ active: isAdminActive }"
-              @click="router.push('/admin/matieres')"
-              :title="collapsed ? 'Admin' : ''"
-            >
-              <span class="sidebar-icon"><AcademicCapIcon class="h-6 w-6" /></span>
-              <span v-if="!collapsed" class="sidebar-label">Admin</span>
+            <li>
+              <button
+                type="button"
+                class="sidebar-item"
+                :class="{ active: isAdminActive }"
+                :title="collapsed ? 'Admin' : ''"
+                @click="router.push('/admin/matieres')"
+              >
+                <span class="sidebar-icon"><AcademicCapIcon class="h-6 w-6" /></span>
+                <span v-if="!collapsed" class="sidebar-label">Admin</span>
+              </button>
             </li>
-            <li
-              class="sidebar-item"
-              :class="{ active: route.path.startsWith('/admin/newsletter') }"
-              @click="router.push('/admin/newsletter')"
-              :title="collapsed ? 'Newsletter' : ''"
-            >
-              <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 7l10 6 10-6"/></svg></span>
-              <span v-if="!collapsed" class="sidebar-label">Newsletter</span>
+            <li>
+              <button
+                type="button"
+                class="sidebar-item"
+                :class="{ active: route.path.startsWith('/admin/newsletter') }"
+                :title="collapsed ? 'Newsletter' : ''"
+                @click="router.push('/admin/newsletter')"
+              >
+                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 7l10 6 10-6"/></svg></span>
+                <span v-if="!collapsed" class="sidebar-label">Newsletter</span>
+              </button>
             </li>
-            <li
-              class="sidebar-item"
-              :class="{ active: route.path.startsWith('/admin/subscriptions') }"
-              @click="router.push('/admin/subscriptions')"
-              :title="collapsed ? 'Abonnements' : ''"
-            >
-              <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
-              <span v-if="!collapsed" class="sidebar-label">Abonnements</span>
+            <li>
+              <button
+                type="button"
+                class="sidebar-item"
+                :class="{ active: route.path.startsWith('/admin/subscriptions') }"
+                :title="collapsed ? 'Abonnements' : ''"
+                @click="router.push('/admin/subscriptions')"
+              >
+                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+                <span v-if="!collapsed" class="sidebar-label">Abonnements</span>
+              </button>
             </li>
-            <li
-              class="sidebar-item"
-              :class="{ active: route.path.startsWith('/admin/subscribers') }"
-              @click="router.push('/admin/subscribers')"
-              :title="collapsed ? 'Abonnés' : ''"
-            >
-              <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11c1.657 0 3-1.79 3-4s-1.343-4-3-4-3 1.79-3 4 1.343 4 3 4z"/><path d="M8 13c-3.866 0-7 2.239-7 5v3h14v-3c0-2.761-3.134-5-7-5z"/></svg></span>
-              <span v-if="!collapsed" class="sidebar-label">Abonnés</span>
+            <li>
+              <button
+                type="button"
+                class="sidebar-item"
+                :class="{ active: route.path.startsWith('/admin/subscribers') }"
+                :title="collapsed ? 'Abonnés' : ''"
+                @click="router.push('/admin/subscribers')"
+              >
+                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11c1.657 0 3-1.79 3-4s-1.343-4-3-4-3 1.79-3 4 1.343 4 3 4z"/><path d="M8 13c-3.866 0-7 2.239-7 5v3h14v-3c0-2.761-3.134-5-7-5z"/></svg></span>
+                <span v-if="!collapsed" class="sidebar-label">Abonnés</span>
+              </button>
             </li>
-            <li
-              class="sidebar-item"
-              :class="{ active: route.path.startsWith('/admin/quiz-submissions') }"
-              @click="router.push('/admin/quiz-submissions')"
-              :title="collapsed ? 'Notation des Quiz' : ''"
-            >
-              <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></span>
-              <span v-if="!collapsed" class="sidebar-label">Notation Quiz</span>
+            <li>
+              <button
+                type="button"
+                class="sidebar-item"
+                :class="{ active: route.path.startsWith('/admin/quiz-submissions') }"
+                :title="collapsed ? 'Notation des Quiz' : ''"
+                @click="router.push('/admin/quiz-submissions')"
+              >
+                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></span>
+                <span v-if="!collapsed" class="sidebar-label">Notation Quiz</span>
+              </button>
             </li>
           </template>
         </ul>
@@ -551,7 +572,7 @@ defineExpose({
 }
 
 .sidebar-menu li {
-  cursor: pointer;
+  cursor: default;
 }
 .sidebar-item {
   display: flex;
@@ -566,6 +587,14 @@ defineExpose({
   border-left: 3px solid transparent;
   margin: 0.125rem 0.5rem;
   user-select: none;
+  width: calc(100% - 1rem);
+  text-align: left;
+  background: transparent;
+  border: none;
+}
+.sidebar-item:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.55);
+  outline-offset: 2px;
 }
 .sidebar-item.active, .sidebar-item:hover {
   background: #eef4ff;

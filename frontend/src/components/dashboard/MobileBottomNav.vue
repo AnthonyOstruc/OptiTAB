@@ -5,6 +5,8 @@
       :key="item.key"
       type="button"
       :class="['mobile-nav-item', { active: isActive(item) }]"
+      :data-cta-name="item.key === 'abonnement' ? 'subscribe' : null"
+      :data-cta-location="item.key === 'abonnement' ? 'nav_bottom' : null"
       @click.stop="handleClick(item)"
       @touchend.stop.prevent="handleTouch(item, $event)"
       :aria-label="item.text"

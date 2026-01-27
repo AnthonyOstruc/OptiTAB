@@ -5,6 +5,7 @@ import { createPinia } from 'pinia'
 import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 import { useSubjectsStore } from '@/stores/subjects/index'
+import { initCtaTracking } from '@/services/analytics'
 
 import 'katex/dist/katex.min.css'
 import 'mathlive'
@@ -47,6 +48,9 @@ const app = createApp(App)
 
 app.use(pinia)
 app.use(router)
+
+// Global delegated tracking for CTA clicks (data-cta-name / data-cta-location)
+initCtaTracking()
 
 // Récupère l'utilisateur via l'API si un token est présent
 const userStore = useUserStore()

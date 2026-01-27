@@ -16,7 +16,7 @@
         Pas encore de compte ?
         <button
           type="button"
-          class="signup-btn"
+          class="signup-btn" data-cta-name="signup" data-cta-location="modal"
           @click="handleSignUp"
         >
           Créer un compte

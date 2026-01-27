@@ -1,0 +1,96 @@
+CTA tracking OptiTAB (data-cta-name / data-cta-location)
+
+Objectif
+- Standardiser le tracking CTA pour GTM/GA4 via un seul event "cta_click"
+- Paramètres envoyés: cta_name, cta_location (+ app_user_id si disponible)
+
+Implémentation globale (SPA incluse)
+- frontend/src/services/analytics.js: initCtaTracking() écoute click + touch/pointer (capture) et fait un closest('[data-cta-name]')
+- Push dataLayer: { event: 'cta_click', cta_name, cta_location, app_user_id? }
+- Protection anti-doublon: init unique + handler stocké sur window (remplacé en dev/HMR). Pas de dédup "fonctionnelle" des clics; on ignore seulement le click qui suit un touch pour éviter un doublon.
+- frontend/src/main.js: initCtaTracking() appelé au démarrage
+
+Anti double comptage (GTM) - IMPORTANT
+- Vérifiez dans votre container GTM qu'il n'existe pas d'ancien tag "clic WhatsApp" / "clic bouton" qui envoie aussi un event GA4 sur les mêmes clics.
+- Reco: ne garder qu'un seul flux (ex: 1 tag GA4 qui se déclenche uniquement quand event == "cta_click").
+
+User-ID / PII (IMPORTANT)
+- Ne jamais envoyer email/téléphone dans la dataLayer.
+- Dans le code: on n'envoie plus `user_id`; on utilise `app_user_id` (id interne non sensible) si disponible.
+- Pour un vrai GA4 User-ID: mappez `app_user_id` vers le champ GA4 `user_id` au niveau du tag de configuration (via GTM), pas comme simple paramètre d'event.
+
+CTAs taggés (élément cliquable + attributs)
+
+LOGIN
+- Header desktop (Navigation): frontend/src/components/layout/Navigation.vue
+  - Bouton "Connexion": data-cta-name="login" data-cta-location="header_public"
+- Header mobile (quick link): frontend/src/components/layout/Header.vue
+  - Bouton "Connexion": data-cta-name="login" data-cta-location="header_public"
+- Menu mobile (hamburger): frontend/src/components/layout/MobileMenu.vue
+  - Bouton "Connexion": data-cta-name="login" data-cta-location="header_public"
+
+SIGNUP (INSCRIPTION)
+- Home / Démo: frontend/src/components/home/DemoSection.vue
+  - Bouton "Commencer gratuitement": data-cta-name="signup" data-cta-location="demo"
+- Home / Étapes: frontend/src/components/home/StepsHowItWorks.vue
+  - Bouton CTA principal: data-cta-name="signup" data-cta-location="steps"
+- Landing ressources gratuites (hero): frontend/src/views/FreeContentLanding.vue
+  - Bouton "Créer un compte gratuit": data-cta-name="signup" data-cta-location="hero"
+- Cards ressources gratuites: frontend/src/components/free-content/FreeContentCard.vue
+  - Bouton "Débloquer tout OptiTAB": data-cta-name="signup" data-cta-location="card"
+- Page À propos: frontend/src/views/About.vue
+  - Bouton "Commencer maintenant": data-cta-name="signup" data-cta-location="about"
+- Modale Connexion: frontend/src/components/modals/LoginModal.vue
+  - Bouton "Créer un compte": data-cta-name="signup" data-cta-location="modal"
+
+SUBSCRIBE (ABONNEMENT)
+- Home / section Tarifs: frontend/src/components/home/PricingPlans.vue
+  - Boutons "S'abonner" / "Acheter le pass": data-cta-name="subscribe" data-cta-location="pricing"
+- Billing (page abonnement): frontend/src/views/Billing.vue
+  - Bouton de sélection d'offre: data-cta-name="subscribe" data-cta-location="billing"
+- Pricing (page interne): frontend/src/components/payments/PricingPlans.vue
+  - Bouton "Choisir ce plan": data-cta-name="subscribe" data-cta-location="pricing"
+- Header dashboard (tabs abonnement): frontend/src/components/payments/BillingTabs.vue
+  - Bouton "Activer mon accès"/"Gérer mon abonnement": data-cta-name="subscribe" data-cta-location="header_dashboard"
+- Header dashboard (retour abonnements): frontend/src/components/dashboard/DashboardHeader.vue
+  - Lien "← Abonnements": data-cta-name="subscribe" data-cta-location="header_dashboard"
+- Subscription (page gestion): frontend/src/views/Subscription.vue
+  - Lien "Voir les offres": data-cta-name="subscribe" data-cta-location="subscription"
+- Billing cancel: frontend/src/views/BillingCancel.vue
+  - Lien "Voir les offres": data-cta-name="subscribe" data-cta-location="billing_cancel"
+- Navigation dashboard mobile (bottom nav): frontend/src/components/dashboard/MobileBottomNav.vue
+  - Bouton "Abonnement": data-cta-name="subscribe" data-cta-location="nav_bottom"
+- Navigation dashboard (sidebar): frontend/src/components/dashboard/Sidebar.vue
+  - Item "Abonnement": data-cta-name="subscribe" data-cta-location="nav_sidebar"
+
+PRICING
+- Home / Démo: frontend/src/components/home/DemoSection.vue
+  - Bouton "Voir les tarifs": data-cta-name="pricing" data-cta-location="demo"
+- Home / Étapes: frontend/src/components/home/StepsHowItWorks.vue
+  - Bouton CTA secondaire: data-cta-name="pricing" data-cta-location="steps"
+- Landing ressources gratuites (hero): frontend/src/views/FreeContentLanding.vue
+  - Lien "Voir les tarifs famille": data-cta-name="pricing" data-cta-location="hero"
+- Cards ressources gratuites: frontend/src/components/free-content/FreeContentCard.vue
+  - Lien "Voir les tarifs": data-cta-name="pricing" data-cta-location="card"
+
+WHATSAPP
+- Bouton WhatsApp flottant: frontend/src/components/home/WhatsappChatButton.vue
+  - Lien icône: data-cta-name="whatsapp" data-cta-location="floating"
+- Footer: frontend/src/components/layout/Footer.vue
+  - Lien WhatsApp: data-cta-name="whatsapp" data-cta-location="footer"
+- Dashboard / Exercices: frontend/src/views/ChapterExercises.vue
+  - Bouton "Envoyer sur WhatsApp": data-cta-name="whatsapp" data-cta-location="exercise"
+- Quiz (examen): frontend/src/components/UI/ExerciceQCM.vue
+  - Bouton "Envoyer par WhatsApp": data-cta-name="whatsapp" data-cta-location="quiz"
+- Modale "Poser une question": frontend/src/components/common/ContactModal.vue
+  - Bouton WhatsApp: data-cta-name="whatsapp" data-cta-location="modal"
+- Page Contact: frontend/src/views/Contact.vue
+  - Lien WhatsApp (section infos + rappel): data-cta-name="whatsapp" data-cta-location="contact"
+- Billing: frontend/src/views/Billing.vue
+  - Bouton WhatsApp: data-cta-name="whatsapp" data-cta-location="billing"
+- Subscription: frontend/src/views/Subscription.vue
+  - Bouton WhatsApp: data-cta-name="whatsapp" data-cta-location="subscription"
+- CGU/CGV: frontend/src/views/CGU.vue, frontend/src/views/CGV.vue
+  - Lien WhatsApp: data-cta-name="whatsapp" data-cta-location="legal"
+- About (contenu HTML): frontend/src/config/aboutContent.js
+  - Lien WhatsApp dans le texte: data-cta-name="whatsapp" data-cta-location="about"

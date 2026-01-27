@@ -61,7 +61,7 @@ export default [
       "Vous avez une question ? Une suggestion ? Nous sommes à votre écoute.",
       "📧 Email : <a href='mailto:contact@optitab.net' class='contact-link'>contact@optitab.net</a>",
       "🌐 Site web : <a href='https://www.optitab.net' target='_blank' class='contact-link'>www.optitab.net</a>",
-      "<img src='/icons/whatsapp.svg' alt='WhatsApp' class='whatsapp-icon-inline' style='width: 20px; height: 20px; color: #25D366; vertical-align: middle; margin-right: 5px;' /> WhatsApp : <a href='https://wa.me/33764040251' target='_blank' class='contact-link'>07 64 04 02 51</a>"
+      "<img src='/icons/whatsapp.svg' alt='WhatsApp' class='whatsapp-icon-inline' style='width: 20px; height: 20px; color: #25D366; vertical-align: middle; margin-right: 5px;' /> WhatsApp : <a href='https://wa.me/33764040251' target='_blank' rel='noopener noreferrer' class='contact-link' data-cta-name='whatsapp' data-cta-location='about'>07 64 04 02 51</a>"
     ],
     socialMedia: true
   },

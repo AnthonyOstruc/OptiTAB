@@ -68,6 +68,8 @@
           v-if="item.emit"
           type="button"
           :class="['right-item', item.key === 'login' ? 'btn-login' : '']"
+          :data-cta-name="item.key === 'login' ? 'login' : null"
+          :data-cta-location="item.key === 'login' ? 'header_public' : null"
           @click="handleItemClick(item)"
         >
           <component :is="item.icon" class="right-icon" />

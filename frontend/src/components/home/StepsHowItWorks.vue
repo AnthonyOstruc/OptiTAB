@@ -71,10 +71,10 @@
           Votre progrès vous attend — connectez-vous pour continuer
         </p>
         <div class="steps-how-cta-group">
-          <button class="steps-how-cta-main" @click="$emit('cta-main')">
+          <button class="steps-how-cta-main" data-cta-name="signup" data-cta-location="steps" @click="$emit('cta-main')">
             {{ ctaText }}
           </button>
-          <button class="steps-how-cta-secondary" @click="$emit('cta-secondary')">
+          <button class="steps-how-cta-secondary" data-cta-name="pricing" data-cta-location="steps" @click="$emit('cta-secondary')">
             {{ ctaSecondary }}
           </button>
         </div>

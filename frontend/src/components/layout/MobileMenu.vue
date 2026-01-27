@@ -50,6 +50,8 @@
         <button 
           v-if="!isAuthenticated" 
           class="login-button" 
+          data-cta-name="login"
+          data-cta-location="header_public"
           @click="handleLoginClick"
         >
           <UserIcon class="login-icon" />

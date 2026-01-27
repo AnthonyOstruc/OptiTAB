@@ -27,7 +27,13 @@
       <!-- Spacer pour pousser Connexion à droite -->
       <div v-if="!isFreeResourcePage && !isCalculatorPage" class="mobile-spacer"></div>
       <!-- Connexion à droite -->
-      <button v-if="!isFreeResourcePage && !isCalculatorPage" class="mobile-quick-link mobile-quick-link--login" @click="handleLogin">
+      <button
+        v-if="!isFreeResourcePage && !isCalculatorPage"
+        class="mobile-quick-link mobile-quick-link--login"
+        data-cta-name="login"
+        data-cta-location="header_public"
+        @click="handleLogin"
+      >
         <UserIcon class="mobile-quick-icon" />
         <span>Connexion</span>
       </button>

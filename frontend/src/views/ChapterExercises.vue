@@ -135,6 +135,8 @@
                 </div>
                 <a
                   :href="whatsappLink"
+                  data-cta-name="whatsapp"
+                  data-cta-location="exercise"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="assignment-btn"

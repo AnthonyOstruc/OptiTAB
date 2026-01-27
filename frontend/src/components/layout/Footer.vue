@@ -10,7 +10,7 @@
         <a href="mailto:contact@optitab.net" class="footer-contact">
           <img src="/icons/envelope.svg" alt="Email" /> contact@optitab.net
         </a>
-        <a href="https://wa.me/33764040251" target="_blank" rel="noopener" class="footer-contact">
+        <a href="https://wa.me/33764040251" target="_blank" rel="noopener noreferrer" class="footer-contact" data-cta-name="whatsapp" data-cta-location="footer">
           <img src="/icons/whatsapp.svg" alt="WhatsApp" /> 07 64 04 02 51
         </a>
       </div>

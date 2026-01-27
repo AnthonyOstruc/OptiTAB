@@ -3,6 +3,8 @@
     <a
       :href="whatsappUrl"
       class="whatsapp-chat-btn"
+      data-cta-name="whatsapp"
+      data-cta-location="floating"
       target="_blank"
       rel="noopener noreferrer"
       :aria-label="tooltip || 'Contacter sur WhatsApp'"

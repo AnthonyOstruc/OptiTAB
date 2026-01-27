@@ -60,7 +60,7 @@
           </div>
           
           <!-- Bouton d'action -->
-          <button class="cta-btn" :disabled="submitting || !c.priceId" @click="handleSubscribe(c)">
+          <button class="cta-btn" data-cta-name="subscribe" data-cta-location="pricing" :disabled="submitting || !c.priceId" @click="handleSubscribe(c)">
             {{ submitting ? 'Redirection…' : c.cta }}
           </button>
           

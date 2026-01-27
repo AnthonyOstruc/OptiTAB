@@ -55,6 +55,8 @@
           @click="selectPlan(plan)"
           :disabled="loadingPlan === plan.id || (userSubscription && userSubscription.plan_type === plan.plan_type)"
           class="select-plan-btn"
+          data-cta-name="subscribe"
+          data-cta-location="pricing"
           :class="{ 
             'current': userSubscription && userSubscription.plan_type === plan.plan_type,
             'loading': loadingPlan === plan.id

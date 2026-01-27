@@ -139,10 +139,10 @@ const openSubscriptionModal = () => {
             {{ meta.context }}
           </p>
           <div class="hero-ctas">
-            <button class="cta-primary" @click="openSubscriptionModal">
+            <button class="cta-primary" data-cta-name="signup" data-cta-location="hero" @click="openSubscriptionModal">
               Créer un compte gratuit
             </button>
-            <a href="/#tarifs" class="cta-secondary">
+            <a href="/#tarifs" class="cta-secondary" data-cta-name="pricing" data-cta-location="hero">
               Voir les tarifs famille
             </a>
           </div>

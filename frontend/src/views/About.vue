@@ -160,7 +160,7 @@
               Des familles nous font déjà confiance pour soutenir l'apprentissage de leurs enfants, rejoignez-les !
             </p>
              <div class="cta-buttons">
-               <button @click="openSignupModal" class="cta-button primary">
+               <button @click="openSignupModal" class="cta-button primary" data-cta-name="signup" data-cta-location="about">
                  Commencer maintenant
                </button>
               <button @click="openContactModal('Parler à un expert')" class="cta-button secondary">

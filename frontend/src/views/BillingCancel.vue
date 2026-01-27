@@ -2,7 +2,7 @@
   <div class="billing-cancel">
     <h1>Paiement annulé</h1>
     <p>Vous pouvez réessayer quand vous voulez.</p>
-    <router-link class="btn" to="/billing">Voir les offres</router-link>
+    <router-link class="btn" to="/billing" data-cta-name="subscribe" data-cta-location="billing_cancel">Voir les offres</router-link>
   </div>
 </template>
 

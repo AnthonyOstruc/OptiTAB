@@ -273,7 +273,7 @@
                     <strong>Support :</strong> <a href="mailto:support@optitab.com" class="link">support@optitab.com</a>
                   </div>
                   <div class="contact-item">
-                    <strong>WhatsApp :</strong> <a href="https://wa.me/33764040251" class="link">07 64 04 02 51</a>
+                    <strong>WhatsApp :</strong> <a href="https://wa.me/33764040251" target="_blank" rel="noopener noreferrer" class="link" data-cta-name="whatsapp" data-cta-location="legal">07 64 04 02 51</a>
                   </div>
                 </div>
               </div>

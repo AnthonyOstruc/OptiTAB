@@ -4,6 +4,8 @@
       class="tab"
       :class="{ active: activeTab === 'Subscription' }"
       :aria-label="ctaLabel"
+      data-cta-name="subscribe"
+      data-cta-location="header_dashboard"
       @click="navigate('Subscription')"
     >
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">

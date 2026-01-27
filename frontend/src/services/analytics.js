@@ -1,9 +1,12 @@
 let lastPagePath = null
 let lastAppUserId = null
 let ctaTrackingInitialized = false
-let lastTouchCta = { ts: 0, el: null }
+let lastTouchTracked = { ts: 0, el: null }
 
-const ALLOWED_CTA_NAMES = new Set(['whatsapp', 'signup', 'login', 'subscribe', 'pricing'])
+// Business CTAs only
+const ALLOWED_CTA_NAMES = new Set(['whatsapp', 'signup', 'login', 'subscribe', 'pricing', 'contact'])
+// Navigation only (menu + logo)
+const ALLOWED_NAV_NAMES = new Set(['home', 'calculator', 'about', 'tutoring', 'free_resources', 'contact'])
 const CTA_TRACKING_WINDOW_FLAG = '__optitab_cta_tracking_initialized__'
 const CTA_TRACKING_WINDOW_HANDLER = '__optitab_cta_tracking_handler__'
 
@@ -147,19 +150,19 @@ export function setUserId(userId) {
   pushToDataLayer(withDebug({ event: 'set_user_id', app_user_id: id }))
 }
 
-function normalizeCtaValue(value) {
+function normalizeTrackValue(value) {
   return String(value ?? '').trim().toLowerCase()
 }
 
-function closestCtaElement(target) {
+function closestElement(target, selector) {
   if (!target) return null
 
   // Text node -> use parent element
   if (target.nodeType === 3) {
-    return target.parentElement?.closest?.('[data-cta-name]') || null
+    return target.parentElement?.closest?.(selector) || null
   }
 
-  return target.closest?.('[data-cta-name]') || null
+  return target.closest?.(selector) || null
 }
 
 export function initCtaTracking() {
@@ -190,29 +193,52 @@ export function initCtaTracking() {
 
       if (eventType === 'pointerup' && !isTouchPointerUp) return
 
-      const ctaEl = closestCtaElement(event?.target)
+      const navEl = closestElement(event?.target, '[data-track="nav"]')
+      if (navEl) {
+        const navName = normalizeTrackValue(navEl.getAttribute('data-nav-name'))
+        if (!ALLOWED_NAV_NAMES.has(navName)) return
+
+        const navLocation = normalizeTrackValue(navEl.getAttribute('data-nav-location')) || 'unknown'
+
+        if (eventType === 'click') {
+          const now = Date.now()
+          if (lastTouchTracked.el && (now - lastTouchTracked.ts) < 800 && lastTouchTracked.el === navEl) {
+            return
+          }
+        } else if (isTouchPointerUp || isTouchEnd) {
+          lastTouchTracked = { ts: Date.now(), el: navEl }
+        }
+
+        pushToDataLayer(withDebug(withAppUserId({
+          event: 'nav_click',
+          nav_name: navName,
+          nav_location: navLocation,
+        })))
+        return
+      }
+
+      const ctaEl = closestElement(event?.target, '[data-cta-name]')
       if (!ctaEl) return
 
-      const ctaName = normalizeCtaValue(ctaEl.getAttribute('data-cta-name'))
+      const ctaName = normalizeTrackValue(ctaEl.getAttribute('data-cta-name'))
       if (!ALLOWED_CTA_NAMES.has(ctaName)) return
 
-      const ctaLocation = normalizeCtaValue(ctaEl.getAttribute('data-cta-location')) || 'unknown'
+      const ctaLocation = normalizeTrackValue(ctaEl.getAttribute('data-cta-location')) || 'unknown'
 
       if (eventType === 'click') {
         const now = Date.now()
-        if (lastTouchCta.el && (now - lastTouchCta.ts) < 800 && lastTouchCta.el === ctaEl) {
+        if (lastTouchTracked.el && (now - lastTouchTracked.ts) < 800 && lastTouchTracked.el === ctaEl) {
           return
         }
       } else if (isTouchPointerUp || isTouchEnd) {
-        lastTouchCta = { ts: Date.now(), el: ctaEl }
+        lastTouchTracked = { ts: Date.now(), el: ctaEl }
       }
 
-      pushToDataLayer(withDebug({
+      pushToDataLayer(withDebug(withAppUserId({
         event: 'cta_click',
         cta_name: ctaName,
         cta_location: ctaLocation,
-        ...(lastAppUserId ? { app_user_id: lastAppUserId } : {})
-      }))
+      })))
     } catch (_) {}
   }
 

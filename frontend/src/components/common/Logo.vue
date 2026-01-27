@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/">
+  <router-link to="/" v-bind="$attrs">
     <img src="@/assets/logos/Logo_bg.png" alt="Logo OptiTAB" class="logo logo-full" />
     <img src="/favicon.png" alt="OptiTAB" class="logo logo-icon" />
   </router-link>
@@ -8,6 +8,7 @@
 <script>
 export default {
   name: 'Logo',
+  inheritAttrs: false,
 }
 </script>
 

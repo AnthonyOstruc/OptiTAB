@@ -20,7 +20,7 @@
     <div class="mobile-panel" :class="{ 'is-open': isOpen }">
       <!-- Panel Header -->
       <div class="panel-header">
-        <Logo />
+        <Logo data-track="nav" data-nav-name="home" data-nav-location="header_public" />
         <button class="close-button" @click="closeMenu" aria-label="Close menu">
           <CloseIcon />
         </button>
@@ -37,6 +37,9 @@
           :target="item.external ? '_blank' : undefined"
           :rel="item.external ? 'noopener noreferrer' : undefined"
           class="navigation-item"
+          :data-track="navNameForMenuItem(item) ? 'nav' : null"
+          :data-nav-name="navNameForMenuItem(item)"
+          :data-nav-location="navNameForMenuItem(item) ? 'header_public' : null"
           @click="handleNavigationClick(item)"
         >
           <component :is="item.icon" class="item-icon" />
@@ -109,6 +112,19 @@ export default {
       ['calculator', 'cours-particuliers', 'ressources-gratuites', 'about', 'contact'].includes(item.key)
     )
     const isAuthenticated = computed(() => userStore.isAuthenticated)
+
+    const HEADER_PUBLIC_NAV_NAME_BY_KEY = {
+      calculator: 'calculator',
+      about: 'about',
+      'cours-particuliers': 'tutoring',
+      'ressources-gratuites': 'free_resources',
+      contact: 'contact',
+    }
+
+    const navNameForMenuItem = (item) => {
+      const key = item?.key
+      return key ? (HEADER_PUBLIC_NAV_NAME_BY_KEY[key] || null) : null
+    }
 
     // Methods
     const toggleMenu = () => {
@@ -212,7 +228,8 @@ export default {
       closeMenu,
       handleNavigationClick,
       handleLoginClick,
-      handleLogout
+      handleLogout,
+      navNameForMenuItem
     }
   }
 }

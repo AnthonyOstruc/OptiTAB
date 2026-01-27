@@ -7,6 +7,9 @@
         :key="item.key"
         :to="item.href"
         :class="['nav-item', { 'nav-item--free-resources': item.key === 'ressources-gratuites' }]"
+        :data-track="navNameForMenuItem(item) ? 'nav' : null"
+        :data-nav-name="navNameForMenuItem(item)"
+        :data-nav-location="navNameForMenuItem(item) ? 'header_public' : null"
       >
         <component :is="item.icon" class="nav-icon" />
         <span class="nav-text">{{ item.text }}</span>
@@ -82,6 +85,9 @@
           target="_blank"
           rel="noopener noreferrer"
           class="right-item"
+          :data-track="navNameForMenuItem(item) ? 'nav' : null"
+          :data-nav-name="navNameForMenuItem(item)"
+          :data-nav-location="navNameForMenuItem(item) ? 'header_public' : null"
         >
           <component :is="item.icon" class="right-icon" />
           <span class="right-text">{{ item.text }}</span>
@@ -91,6 +97,9 @@
           v-else
           :to="item.href"
           class="right-item"
+          :data-track="navNameForMenuItem(item) ? 'nav' : null"
+          :data-nav-name="navNameForMenuItem(item)"
+          :data-nav-location="navNameForMenuItem(item) ? 'header_public' : null"
         >
           <component :is="item.icon" class="right-icon" />
           <span class="right-text">{{ item.text }}</span>
@@ -125,6 +134,19 @@ const isLoadingMatieres = ref(false)
 
 const isFreeResourcePage = computed(() => route.path?.startsWith('/ressources-gratuites'))
 const isCalculatorPage = computed(() => route.path === '/calculator')
+
+const HEADER_PUBLIC_NAV_NAME_BY_KEY = {
+  calculator: 'calculator',
+  about: 'about',
+  'cours-particuliers': 'tutoring',
+  'ressources-gratuites': 'free_resources',
+  contact: 'contact',
+}
+
+const navNameForMenuItem = (item) => {
+  const key = item?.key
+  return key ? (HEADER_PUBLIC_NAV_NAME_BY_KEY[key] || null) : null
+}
 
 // Left side: Main navigation items
 const leftMenuItems = computed(() => {

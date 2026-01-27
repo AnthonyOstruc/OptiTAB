@@ -1,25 +1,45 @@
-CTA tracking OptiTAB (data-cta-name / data-cta-location)
+Tracking OptiTAB (cta_click + nav_click)
 
 Objectif
-- Standardiser le tracking CTA pour GTM/GA4 via un seul event "cta_click"
-- Paramètres envoyés: cta_name, cta_location (+ app_user_id si disponible)
+- Standardiser le tracking des CTA business via un seul event "cta_click"
+- Standardiser le tracking de navigation (menu/logo) via un event séparé "nav_click"
+- Paramètres envoyés:
+  - cta_click: cta_name, cta_location (+ app_user_id si disponible)
+  - nav_click: nav_name, nav_location (+ app_user_id si disponible)
 
 Implémentation globale (SPA incluse)
-- frontend/src/services/analytics.js: initCtaTracking() écoute click + touch/pointer (capture) et fait un closest('[data-cta-name]')
-- Push dataLayer: { event: 'cta_click', cta_name, cta_location, app_user_id? }
+- frontend/src/services/analytics.js: initCtaTracking() écoute click + touch/pointer (capture)
+  - Priorité 1: nav_click via closest('[data-track="nav"]')
+  - Priorité 2: cta_click via closest('[data-cta-name]')
+- Push dataLayer nav_click: { event: 'nav_click', nav_name, nav_location, app_user_id? }
+- Push dataLayer cta_click: { event: 'cta_click', cta_name, cta_location, app_user_id? }
 - Protection anti-doublon: init unique + handler stocké sur window (remplacé en dev/HMR). Pas de dédup "fonctionnelle" des clics; on ignore seulement le click qui suit un touch pour éviter un doublon.
 - frontend/src/main.js: initCtaTracking() appelé au démarrage
 
 Anti double comptage (GTM) - IMPORTANT
 - Vérifiez dans votre container GTM qu'il n'existe pas d'ancien tag "clic WhatsApp" / "clic bouton" qui envoie aussi un event GA4 sur les mêmes clics.
-- Reco: ne garder qu'un seul flux (ex: 1 tag GA4 qui se déclenche uniquement quand event == "cta_click").
+- Reco: ne garder qu'un seul flux (ex: 1 tag GA4 qui se déclenche uniquement quand event == "cta_click" / "nav_click").
 
 User-ID / PII (IMPORTANT)
 - Ne jamais envoyer email/téléphone dans la dataLayer.
 - Dans le code: on n'envoie plus `user_id`; on utilise `app_user_id` (id interne non sensible) si disponible.
 - Pour un vrai GA4 User-ID: mappez `app_user_id` vers le champ GA4 `user_id` au niveau du tag de configuration (via GTM), pas comme simple paramètre d'event.
 
-CTAs taggés (élément cliquable + attributs)
+Navigation taggée (nav_click) (élément cliquable + attributs)
+
+HEADER PUBLIC
+- Logo: frontend/src/components/layout/Header.vue + frontend/src/components/layout/MobileMenu.vue + frontend/src/components/common/Logo.vue
+  - data-track="nav" data-nav-name="home" data-nav-location="header_public"
+- Header desktop (navigation): frontend/src/components/layout/Navigation.vue
+  - data-track="nav" data-nav-location="header_public"
+  - nav_name: calculator | about | tutoring | free_resources | contact
+- Header mobile (quick links): frontend/src/components/layout/Header.vue
+  - "Cours Particuliers": data-track="nav" data-nav-name="tutoring" data-nav-location="header_public"
+  - "Nous contacter": data-track="nav" data-nav-name="contact" data-nav-location="header_public"
+- Menu mobile (hamburger): frontend/src/components/layout/MobileMenu.vue
+  - Items de menu: data-track="nav" + data-nav-name (calculator|about|tutoring|free_resources|contact) + data-nav-location="header_public"
+
+CTAs business taggés (cta_click) (élément cliquable + attributs)
 
 LOGIN
 - Header desktop (Navigation): frontend/src/components/layout/Navigation.vue
@@ -39,7 +59,7 @@ SIGNUP (INSCRIPTION)
 - Cards ressources gratuites: frontend/src/components/free-content/FreeContentCard.vue
   - Bouton "Débloquer tout OptiTAB": data-cta-name="signup" data-cta-location="card"
 - Page À propos: frontend/src/views/About.vue
-  - Bouton "Commencer maintenant": data-cta-name="signup" data-cta-location="about"
+  - Bouton "Commencer maintenant": data-cta-name="signup" data-cta-location="about_page"
 - Modale Connexion: frontend/src/components/modals/LoginModal.vue
   - Bouton "Créer un compte": data-cta-name="signup" data-cta-location="modal"
 
@@ -93,4 +113,4 @@ WHATSAPP
 - CGU/CGV: frontend/src/views/CGU.vue, frontend/src/views/CGV.vue
   - Lien WhatsApp: data-cta-name="whatsapp" data-cta-location="legal"
 - About (contenu HTML): frontend/src/config/aboutContent.js
-  - Lien WhatsApp dans le texte: data-cta-name="whatsapp" data-cta-location="about"
+  - Lien WhatsApp dans le texte: data-cta-name="whatsapp" data-cta-location="about_page"

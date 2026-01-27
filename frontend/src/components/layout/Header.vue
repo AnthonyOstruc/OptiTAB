@@ -1,12 +1,12 @@
 <template>
   <header :class="['header', { 'header--no-shadow': isFreeResourcePage }]" ref="headerRef">
     <div class="header-desktop">
-      <Logo />
+      <Logo data-track="nav" data-nav-name="home" data-nav-location="header_public" />
       <Navigation @open-login="handleLogin" />
     </div>
     <div class="header-mobile">
       <div class="header-mobile-top">
-        <Logo />
+        <Logo data-track="nav" data-nav-name="home" data-nav-location="header_public" />
       </div>
       <div v-if="isFreeResourcePage" class="mobile-free-tabs">
         <FreeResourceTabs />
@@ -15,12 +15,12 @@
         <CalculatorTabs />
       </div>
       <!-- Cours Particuliers à gauche -->
-      <router-link v-if="!isFreeResourcePage && !isCalculatorPage" to="/cours-particuliers" class="mobile-quick-link mobile-quick-link--left">
+      <router-link v-if="!isFreeResourcePage && !isCalculatorPage" to="/cours-particuliers" class="mobile-quick-link mobile-quick-link--left" data-track="nav" data-nav-name="tutoring" data-nav-location="header_public">
         <UserGroupIcon class="mobile-quick-icon" />
         <span>Cours Particuliers</span>
       </router-link>
       <!-- Nous contacter -->
-      <router-link v-if="!isFreeResourcePage && !isCalculatorPage" to="/contact" class="mobile-quick-link mobile-quick-link--contact">
+      <router-link v-if="!isFreeResourcePage && !isCalculatorPage" to="/contact" class="mobile-quick-link mobile-quick-link--contact" data-track="nav" data-nav-name="contact" data-nav-location="header_public">
         <EnvelopeIcon class="mobile-quick-icon" />
         <span>Nous contacter</span>
       </router-link>

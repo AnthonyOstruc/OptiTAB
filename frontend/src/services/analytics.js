@@ -6,7 +6,25 @@ let lastTouchTracked = { ts: 0, el: null }
 // Business CTAs only
 const ALLOWED_CTA_NAMES = new Set(['whatsapp', 'signup', 'login', 'subscribe', 'pricing', 'contact'])
 // Navigation only (menu + logo)
-const ALLOWED_NAV_NAMES = new Set(['home', 'calculator', 'about', 'tutoring', 'free_resources', 'contact'])
+const ALLOWED_NAV_NAMES = new Set([
+  'home',
+  'calculator',
+  'about',
+  'tutoring',
+  'free_resources',
+  'contact',
+  // Content navigation (tabs / footer)
+  'course',
+  'summary',
+  'exercise',
+  'quiz',
+  'pricing',
+  'cgv',
+  'cgu',
+  'privacy',
+  'legal',
+  'cookies',
+])
 const CTA_TRACKING_WINDOW_FLAG = '__optitab_cta_tracking_initialized__'
 const CTA_TRACKING_WINDOW_HANDLER = '__optitab_cta_tracking_handler__'
 
@@ -196,9 +214,9 @@ export function initCtaTracking() {
       const navEl = closestElement(event?.target, '[data-track="nav"]')
       if (navEl) {
         const navName = normalizeTrackValue(navEl.getAttribute('data-nav-name'))
+        const navLocation = normalizeTrackValue(navEl.getAttribute('data-nav-location'))
+        if (!navName || !navLocation) return
         if (!ALLOWED_NAV_NAMES.has(navName)) return
-
-        const navLocation = normalizeTrackValue(navEl.getAttribute('data-nav-location')) || 'unknown'
 
         if (eventType === 'click') {
           const now = Date.now()
@@ -221,9 +239,9 @@ export function initCtaTracking() {
       if (!ctaEl) return
 
       const ctaName = normalizeTrackValue(ctaEl.getAttribute('data-cta-name'))
+      const ctaLocation = normalizeTrackValue(ctaEl.getAttribute('data-cta-location'))
+      if (!ctaName || !ctaLocation) return
       if (!ALLOWED_CTA_NAMES.has(ctaName)) return
-
-      const ctaLocation = normalizeTrackValue(ctaEl.getAttribute('data-cta-location')) || 'unknown'
 
       if (eventType === 'click') {
         const now = Date.now()

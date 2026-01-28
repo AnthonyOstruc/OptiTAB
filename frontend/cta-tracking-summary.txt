@@ -13,6 +13,7 @@ Implémentation globale (SPA incluse)
   - Priorité 2: cta_click via closest('[data-cta-name]')
 - Push dataLayer nav_click: { event: 'nav_click', nav_name, nav_location, app_user_id? }
 - Push dataLayer cta_click: { event: 'cta_click', cta_name, cta_location, app_user_id? }
+- Garde: si name ou location est vide -> on ne push pas d'event (pas de fallback "unknown")
 - Protection anti-doublon: init unique + handler stocké sur window (remplacé en dev/HMR). Pas de dédup "fonctionnelle" des clics; on ignore seulement le click qui suit un touch pour éviter un doublon.
 - frontend/src/main.js: initCtaTracking() appelé au démarrage
 
@@ -33,11 +34,24 @@ HEADER PUBLIC
 - Header desktop (navigation): frontend/src/components/layout/Navigation.vue
   - data-track="nav" data-nav-location="header_public"
   - nav_name: calculator | about | tutoring | free_resources | contact
+- Ressources gratuites (tabs Cours / Synthèse / Exercices): frontend/src/components/free-content/FreeResourceTabs.vue
+  - data-track="nav" data-nav-location="header_public"
+  - nav_name: course | summary | exercise
 - Header mobile (quick links): frontend/src/components/layout/Header.vue
   - "Cours Particuliers": data-track="nav" data-nav-name="tutoring" data-nav-location="header_public"
   - "Nous contacter": data-track="nav" data-nav-name="contact" data-nav-location="header_public"
 - Menu mobile (hamburger): frontend/src/components/layout/MobileMenu.vue
   - Items de menu: data-track="nav" + data-nav-name (calculator|about|tutoring|free_resources|contact) + data-nav-location="header_public"
+
+FOOTER
+- Liens footer: frontend/src/components/layout/Footer.vue
+  - data-track="nav" data-nav-location="footer"
+  - nav_name: tutoring | course | summary | exercise | pricing | contact | about | cgv | cgu | privacy | legal | cookies
+
+DASHBOARD / TABS CONTENU
+- Navigation contenu (tabs Cours / Synthèse / Exercices / Quiz): frontend/src/components/common/ChapterNavigation.vue
+  - data-track="nav" data-nav-location="chapter_navigation"
+  - nav_name: course | summary | exercise | quiz
 
 CTAs business taggés (cta_click) (élément cliquable + attributs)
 

@@ -16,6 +16,9 @@
         class="resource-tab"
         :class="{ active: tab.resourceType === activeType }"
         type="button"
+        data-track="nav"
+        :data-nav-name="tab.navName"
+        data-nav-location="header_public"
         @click="goToTab(tab)">
         <component :is="tab.icon" class="tab-icon" aria-hidden="true" />
         <span class="tab-label">{{ tab.label }}</span>
@@ -48,9 +51,9 @@ const router = useRouter()
 const route = useRoute()
 
 const resourceTabs = [
-  { label: 'Cours', routeName: 'FreeCourses', relatedNames: ['FreeCourses', 'FreeCourseDetail'], resourceType: 'course', icon: BookOpenIcon },
-  { label: 'Synthèse', routeName: 'FreeSummaries', relatedNames: ['FreeSummaries', 'FreeSummaryDetail'], resourceType: 'summary', icon: DocumentTextIcon },
-  { label: 'Exercices', routeName: 'FreeExercises', relatedNames: ['FreeExercises', 'FreeExerciseDetail', 'FreeExerciseChapter'], resourceType: 'exercise', icon: AcademicCapIcon }
+  { label: 'Cours', routeName: 'FreeCourses', relatedNames: ['FreeCourses', 'FreeCourseDetail'], resourceType: 'course', navName: 'course', icon: BookOpenIcon },
+  { label: 'Synthèse', routeName: 'FreeSummaries', relatedNames: ['FreeSummaries', 'FreeSummaryDetail'], resourceType: 'summary', navName: 'summary', icon: DocumentTextIcon },
+  { label: 'Exercices', routeName: 'FreeExercises', relatedNames: ['FreeExercises', 'FreeExerciseDetail', 'FreeExerciseChapter'], resourceType: 'exercise', navName: 'exercise', icon: AcademicCapIcon }
 ]
 
 const activeType = computed(() => {

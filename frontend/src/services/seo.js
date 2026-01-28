@@ -1,9 +1,9 @@
 import { faq as homeFaq } from '@/config/homeFaq.js'
 
 const DEFAULT_SITE_NAME = 'OptiTAB'
-const DEFAULT_TITLE = 'OptiTAB | Cours particuliers en ligne & plateforme de maths'
+const DEFAULT_TITLE = 'Plateforme de maths & cours particuliers en ligne'
 const DEFAULT_DESCRIPTION =
-  'OptiTAB : cours particuliers en ligne (maths, physique‑chimie, informatique) et plateforme de maths par abonnement. Cours, fiches de synthèse, exercices corrigés — du collège à l’université.'
+  'Plateforme de maths & cours particuliers : 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale (Bac), Prépa (MPSI, MP2I, PCSI). Cours, fiches, exercices corrigés.'
 const DEFAULT_IMAGE_PATH = '/Logo_bg.png'
 
 function normalizeSiteUrl(raw) {
@@ -96,9 +96,9 @@ function canonicalizePath(pathLike) {
 
 function buildTitle(title) {
   const value = String(title || '').trim()
-  if (!value) return DEFAULT_TITLE
+  if (!value) return `${DEFAULT_SITE_NAME} - ${DEFAULT_TITLE}`
   if (/optitab/i.test(value)) return value
-  return `${value} | ${DEFAULT_SITE_NAME}`
+  return `${DEFAULT_SITE_NAME} - ${value}`
 }
 
 function toAbsoluteUrl(maybeUrlOrPath) {
@@ -248,55 +248,61 @@ const ROUTE_SEO = {
     })()
   },
   CoursParticuliers: {
-    title: 'Cours particuliers en ligne (maths, physique‑chimie, informatique)',
+    title: 'Cours particuliers de maths en ligne (6e–Prépa)',
     description:
-      'Soutien scolaire en ligne : cours particuliers et aide aux devoirs en maths, physique‑chimie et informatique — collège, lycée, prépa, université.',
+      'Cours particuliers de maths en ligne : 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale (Bac), Prépa (MPSI, MP2I, PCSI). Professeurs experts, suivi.',
     canonicalPath: '/cours-particuliers'
   },
   FreeCourses: {
-    title: 'Cours de maths en ligne gratuits (Seconde, Première, Terminale)',
-    description: 'Cours de maths gratuits : chapitres clairs, méthodes, exemples et exercices — collège et lycée (Seconde, Première, Terminale).',
+    title: 'Cours de maths gratuits (6e–Prépa, Brevet, Bac)',
+    description:
+      'Cours de maths gratuits : 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale, Prépa (MPSI, MP2I, PCSI). Méthodes, exemples, exercices.',
     canonicalPath: '/ressources-gratuites/cours'
   },
   FreeCourseDetail: {
-    title: 'Cours gratuit - OptiTAB',
-    description: 'Cours gratuit à consulter en ligne : explications, exemples et exercices.',
+    title: 'Cours gratuit de maths',
+    description: 'Cours de maths gratuit : explications, exemples et exercices corrigés.',
     ogType: 'article'
   },
   FreeExercises: {
-    title: 'Exercices corrigés de maths gratuits (Seconde, Première, Terminale)',
-    description: 'Exercices corrigés de maths gratuits (Terminale, Première, Seconde) : dérivées, limites, suites, probabilités… avec correction et méthode.',
+    title: 'Exercices de maths corrigés (6e–Prépa)',
+    description:
+      'Exercices de maths corrigés : 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale (Bac), Prépa (MPSI, MP2I, PCSI). Méthode + correction.',
     canonicalPath: '/ressources-gratuites/exercices'
   },
   FreeExerciseDetail: {
-    title: 'Exercice gratuit - OptiTAB',
-    description: 'Exercice gratuit avec correction et explications.',
+    title: 'Exercice de maths corrigé',
+    description: 'Exercice de maths gratuit avec correction, méthode et explications.',
     ogType: 'article'
   },
   FreeSummaries: {
-    title: 'Fiches de révision de maths gratuites (synthèses)',
-    description: 'Fiches de synthèse gratuites de maths : définitions, formules et méthodes — collège, lycée, prépa.',
+    title: 'Fiches de révision de maths (6e–Prépa)',
+    description:
+      'Fiches de révision de maths : formules, méthodes, exemples — 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale (Bac), Prépa (MPSI, MP2I, PCSI).',
     canonicalPath: '/ressources-gratuites/syntheses'
   },
   FreeSummaryDetail: {
-    title: 'Fiche gratuite - OptiTAB',
-    description: 'Fiche de synthèse gratuite pour réviser rapidement : formules, méthodes et exemples.',
+    title: 'Fiche de révision de maths',
+    description: 'Fiche de synthèse gratuite : formules, méthodes et exemples pour réviser vite.',
     ogType: 'article'
   },
   About: {
-    title: 'A propos - OptiTAB',
-    description: "Decouvrez OptiTAB : une plateforme de tutorat et de ressources pour progresser efficacement."
+    title: 'La méthode : cours particuliers & plateforme maths',
+    description:
+      'OptiTAB combine plateforme de maths et cours particuliers : 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale (Bac), Prépa (MPSI, MP2I, PCSI).',
+    canonicalPath: '/about'
   },
   Contact: {
-    title: 'Contact - OptiTAB',
-    description: 'Contactez OptiTAB pour reserver un cours particulier ou poser vos questions.'
+    title: 'Contact : WhatsApp & email',
+    description: "Contactez OptiTAB (WhatsApp ou email) pour un cours particulier ou une question. Réponse rapide 7j/7.",
+    canonicalPath: '/contact'
   },
-  CGV: { title: 'CGV - OptiTAB' },
-  CGU: { title: 'CGU - OptiTAB' },
-  Confidentialite: { title: 'Confidentialite - OptiTAB' },
-  Legal: { title: 'Mentions legales - OptiTAB' },
-  Cookies: { title: 'Cookies - OptiTAB' },
-  Conditions: { title: 'Conditions - OptiTAB' }
+  CGV: { title: 'CGV', canonicalPath: '/cgv' },
+  CGU: { title: 'CGU', canonicalPath: '/cgu' },
+  Confidentialite: { title: 'Confidentialité', canonicalPath: '/confidentialite' },
+  Legal: { title: 'Mentions légales', canonicalPath: '/legal' },
+  Cookies: { title: 'Cookies', canonicalPath: '/cookies' },
+  Conditions: { title: 'Conditions', canonicalPath: '/conditions' }
 }
 
 const NOINDEX_ROUTE_NAMES = new Set([

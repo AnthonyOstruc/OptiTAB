@@ -16,6 +16,9 @@
       :class="['chapter-nav-btn', { active: tab.key === activeTab }]"
       :aria-pressed="tab.key === activeTab"
       :aria-label="tab.label"
+      :data-track="navNameForTab(tab.key) ? 'nav' : null"
+      :data-nav-name="navNameForTab(tab.key)"
+      :data-nav-location="navNameForTab(tab.key) ? 'chapter_navigation' : null"
       @click="handleTabClick(tab.key)"
       @mouseenter="prefetchTab(tab.key)"
     >
@@ -62,6 +65,18 @@ const props = defineProps({
 
 const route = useRoute()
 const router = useRouter()
+
+const NAV_NAME_BY_TAB_KEY = {
+  cours: 'course',
+  sheets: 'summary',
+  exercices: 'exercise',
+  quiz: 'quiz',
+}
+
+const navNameForTab = (tabKey) => {
+  const key = String(tabKey || '').trim().toLowerCase()
+  return NAV_NAME_BY_TAB_KEY[key] || null
+}
 
 // Navigation tabs configuration
 const tabs = computed(() => {

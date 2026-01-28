@@ -20,8 +20,24 @@
       <span class="footer-legal-copyright-text">© {{ new Date().getFullYear() }} <strong class="footer-copyright-bold">OptiTAB</strong>. Tous droits réservés.</span>
       <span v-if="footerLinks.length" class="footer-legal-sep">|</span>
       <template v-for="(link, idx) in footerLinks" :key="link.label">
-        <router-link v-if="link.href.startsWith('/')" :to="link.href" class="footer-legal-link">{{ link.label }}</router-link>
-        <a v-else :href="link.href" class="footer-legal-link" target="_blank" rel="noopener">{{ link.label }}</a>
+        <router-link
+          v-if="link.href.startsWith('/')"
+          :to="link.href"
+          class="footer-legal-link"
+          :data-track="navNameForFooterLink(link) ? 'nav' : null"
+          :data-nav-name="navNameForFooterLink(link)"
+          :data-nav-location="navNameForFooterLink(link) ? 'footer' : null"
+        >{{ link.label }}</router-link>
+        <a
+          v-else
+          :href="link.href"
+          class="footer-legal-link"
+          target="_blank"
+          rel="noopener"
+          :data-track="navNameForFooterLink(link) ? 'nav' : null"
+          :data-nav-name="navNameForFooterLink(link)"
+          :data-nav-location="navNameForFooterLink(link) ? 'footer' : null"
+        >{{ link.label }}</a>
         <span v-if="idx < footerLinks.length - 1" class="footer-legal-sep">|</span>
       </template>
       <span class="footer-legal-sep">|</span>
@@ -34,6 +50,28 @@
 import { footerLinks } from '@/config/footerContent.js';
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue';
 // Footer compact et personnalisé, plus de props dynamiques nécessaires
+
+const FOOTER_NAV_NAME_BY_PATH = {
+  '/cours-particuliers': 'tutoring',
+  '/ressources-gratuites/cours': 'course',
+  '/ressources-gratuites/exercices': 'exercise',
+  '/ressources-gratuites/syntheses': 'summary',
+  '/pricing': 'pricing',
+  '/contact': 'contact',
+  '/about': 'about',
+  '/cgv': 'cgv',
+  '/cgu': 'cgu',
+  '/confidentialite': 'privacy',
+  '/legal': 'legal',
+  '/cookies': 'cookies',
+}
+
+const navNameForFooterLink = (link) => {
+  const href = String(link?.href || '').trim()
+  if (!href || !href.startsWith('/')) return null
+  const normalized = href.length > 1 ? href.replace(/\/+$/, '') : href
+  return FOOTER_NAV_NAME_BY_PATH[normalized] || null
+}
 </script>
 
 <style scoped lang="scss">

@@ -297,12 +297,12 @@ const ROUTE_SEO = {
     description: "Contactez OptiTAB (WhatsApp ou email) pour un cours particulier ou une question. Réponse rapide 7j/7.",
     canonicalPath: '/contact'
   },
-  CGV: { title: 'CGV', canonicalPath: '/cgv' },
-  CGU: { title: 'CGU', canonicalPath: '/cgu' },
-  Confidentialite: { title: 'Confidentialité', canonicalPath: '/confidentialite' },
-  Legal: { title: 'Mentions légales', canonicalPath: '/legal' },
-  Cookies: { title: 'Cookies', canonicalPath: '/cookies' },
-  Conditions: { title: 'Conditions', canonicalPath: '/conditions' }
+  CGV: { title: 'CGV', canonicalPath: '/cgv', noindex: true },
+  CGU: { title: 'CGU', canonicalPath: '/cgu', noindex: true },
+  Confidentialite: { title: 'Confidentialité', canonicalPath: '/confidentialite', noindex: true },
+  Legal: { title: 'Mentions légales', canonicalPath: '/legal', noindex: true },
+  Cookies: { title: 'Cookies', canonicalPath: '/cookies', noindex: true },
+  Conditions: { title: 'Conditions', canonicalPath: '/conditions', noindex: true }
 }
 
 const NOINDEX_ROUTE_NAMES = new Set([

@@ -5,12 +5,7 @@ export const footerLinks = [
   { label: 'Synthèses gratuites', href: '/ressources-gratuites/syntheses' },
   { label: 'Tarifs', href: '/pricing' },
   { label: 'Contact', href: '/contact' },
-  { label: 'À propos', href: '/about' },
-  { label: 'CGV', href: '/cgv' },
-  { label: 'CGU', href: '/cgu' },
-  { label: 'Confidentialité', href: '/confidentialite' },
-  { label: 'Mentions légales', href: '/legal' },
-  { label: 'Cookies', href: '/cookies' }
+  { label: 'À propos', href: '/about' }
 ];
 
 export const footerIntro = {

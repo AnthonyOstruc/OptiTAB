@@ -43,6 +43,8 @@ const { openModal } = useModalManager()
 let searchTimeoutId = null
 
 const contentRef = ref(null)
+const notionGridRef = ref(null)
+const ctaMaxWidthPx = ref(null)
 
 // Utiliser le composable de zoom
 const {
@@ -65,6 +67,41 @@ const zoomStyle = createZoomStyle({
 function measureContentHeightForFreeResources() {
   measureContentHeight(contentRef)
 }
+
+function updateCtaMaxWidthToMatchGrid() {
+  const gridEl = notionGridRef.value
+  if (!gridEl) {
+    ctaMaxWidthPx.value = null
+    return
+  }
+
+  const children = Array.from(gridEl.children || [])
+  if (children.length === 0) {
+    ctaMaxWidthPx.value = null
+    return
+  }
+
+  const gridRect = gridEl.getBoundingClientRect()
+  const firstRect = children[0].getBoundingClientRect()
+  const rowTop = firstRect.top
+  const tolerance = 2
+
+  let maxRight = firstRect.right
+  for (const child of children) {
+    const rect = child.getBoundingClientRect()
+    if (Math.abs(rect.top - rowTop) <= tolerance) {
+      maxRight = Math.max(maxRight, rect.right)
+    }
+  }
+
+  const width = maxRight - gridRect.left
+  ctaMaxWidthPx.value = Number.isFinite(width) && width > 0 ? Math.round(width) : null
+}
+
+const ctaWidthStyle = computed(() => {
+  if (!ctaMaxWidthPx.value) return undefined
+  return { maxWidth: `${ctaMaxWidthPx.value}px` }
+})
 
 const typeConfig = computed(() => {
   if (props.resourceType === 'exercise') {
@@ -367,6 +404,10 @@ const fetchResources = async (page = 1, retried = false) => {
     error.value = err?.message || "Impossible de charger ces ressources gratuites."
   } finally {
     loading.value = false
+    nextTick(() => {
+      measureContentHeightForFreeResources()
+      updateCtaMaxWidthToMatchGrid()
+    })
     // Charger la liste complète des niveaux en arrière-plan si pas encore fait
     if (!levelOptionsLoaded.value) {
       fetchLevelOptions()
@@ -436,7 +477,10 @@ watch(() => searchQuery.value, () => {
 })
 
 watch(viewportWidth, () => {
-  nextTick(() => measureContentHeightForFreeResources())
+  nextTick(() => {
+    measureContentHeightForFreeResources()
+    updateCtaMaxWidthToMatchGrid()
+  })
 })
 
 const handleClickOutside = (event) => {
@@ -718,6 +762,28 @@ const premiumRoutes = {
   summary: 'SynthesisByNotion'
 }
 
+const subscriptionCtaLabel = computed(() => (subscriptionStore.hasAccess ? 'Gérer mon abonnement' : "S'abonner"))
+
+const onSubscriptionCtaClick = () => {
+  if (!userStore.isAuthenticated) {
+    openModal(MODAL_IDS.REGISTER)
+    return
+  }
+
+  if (subscriptionStore.hasAccess) {
+    router.push({ name: 'Subscription' })
+    return
+  }
+
+  router.push({
+    name: 'Billing',
+    query: {
+      redirect: route.fullPath,
+      reason: 'free_resources_cta'
+    }
+  })
+}
+
 const handleLockedAccess = ({ resourceType, notionId }) => {
   if (subscriptionStore.hasAccess && notionId && premiumRoutes[resourceType]) {
     router.push({ name: premiumRoutes[resourceType], params: { notionId } })
@@ -772,6 +838,33 @@ const onLockedExercise = (chapter) => {
         <h1 id="free-resource-title" class="page-title">{{ pageIntro.title }}</h1>
         <p class="page-subtitle">{{ pageIntro.subtitle }}</p>
       </header>
+
+      <section class="free-resource-cta" :style="ctaWidthStyle" aria-label="Accès professeur ou plateforme">
+        <div class="free-resource-cta__copy">
+          <p class="free-resource-cta__title">Besoin d’un professeur ou d’un accès complet&nbsp;?</p>
+          <p class="free-resource-cta__subtitle">Cours particuliers de maths en ligne • Abonnement plateforme OptiTAB</p>
+        </div>
+        <div class="free-resource-cta__actions">
+          <router-link
+            :to="{ name: 'CoursParticuliers' }"
+            class="free-resource-cta__btn free-resource-cta__btn--primary"
+            data-track="nav"
+            data-nav-name="tutoring"
+            data-nav-location="free_resources_banner"
+          >
+            Cours particuliers
+          </router-link>
+          <button
+            type="button"
+            class="free-resource-cta__btn free-resource-cta__btn--secondary"
+            data-cta-name="subscribe"
+            data-cta-location="free_resources_banner"
+            @click="onSubscriptionCtaClick"
+          >
+            {{ subscriptionCtaLabel }}
+          </button>
+        </div>
+      </section>
 
       <div v-if="availableLevels.length > 0" class="filter-section">
         <div class="filter-bar">
@@ -841,7 +934,7 @@ const onLockedExercise = (chapter) => {
       </div>
       <template v-else>
         <div class="content-wrapper" :style="zoomStyle" ref="contentRef">
-          <div class="notion-grid">
+          <div class="notion-grid" ref="notionGridRef">
           <template v-if="isExerciseMode">
             <NotionCard
               v-for="chapter in paginatedList"
@@ -1029,6 +1122,116 @@ const onLockedExercise = (chapter) => {
   line-height: 1.6;
 }
 
+.free-resource-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.10), rgba(99, 102, 241, 0.07));
+  margin: 0 0 22px 0;
+}
+
+.free-resource-cta__copy {
+  min-width: 0;
+}
+
+.free-resource-cta__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.free-resource-cta__subtitle {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.free-resource-cta__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  white-space: nowrap;
+}
+
+.free-resource-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.free-resource-cta__btn--primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 55%, #1d4ed8 100%);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 14px 32px rgba(59, 130, 246, 0.24);
+}
+
+.free-resource-cta__btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 38px rgba(59, 130, 246, 0.3);
+}
+
+.free-resource-cta__btn--primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 52%);
+  transform: translateX(-70%);
+  transition: transform 0.55s ease;
+}
+
+.free-resource-cta__btn--primary:hover::after {
+  transform: translateX(-15%);
+}
+
+.free-resource-cta__btn--secondary {
+  background: rgba(255, 255, 255, 0.9);
+  color: #2563eb;
+  border-color: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+}
+
+.free-resource-cta__btn--secondary:hover {
+  transform: translateY(-1px);
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.32);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.free-resource-cta__btn:active {
+  transform: translateY(0);
+}
+
+.free-resource-cta__btn:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.45);
+  outline-offset: 2px;
+}
+
 .resource-count-badge {
   display: inline-flex;
   align-items: center;
@@ -1055,6 +1258,22 @@ const onLockedExercise = (chapter) => {
 
   .page-subtitle {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .free-resource-cta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .free-resource-cta__actions {
+    justify-content: stretch;
+  }
+
+  .free-resource-cta__btn {
+    width: 100%;
   }
 }
 

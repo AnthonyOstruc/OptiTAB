@@ -136,10 +136,11 @@ const handleTouch = async (item, event) => {
 
 <style scoped>
 .mobile-bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  /* Footer FIXE en bas - ne bouge jamais */
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -148,7 +149,7 @@ const handleTouch = async (item, event) => {
   backdrop-filter: blur(12px);
   border-top: 1px solid rgba(226, 232, 240, 0.9);
   box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.08);
-  z-index: 1050;
+  z-index: 10000;
   /* Block all click events on the footer area to prevent click-through */
   pointer-events: auto;
   /* Visual stability of fixed element on iOS */
@@ -158,7 +159,7 @@ const handleTouch = async (item, event) => {
   /* Improve compositing stability on iOS fixed elements */
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  /* Empêcher complètement le scroll depuis la barre - CRITIQUE pour iOS */
+  /* Empêcher complètement le scroll depuis la barre */
   touch-action: none;
   overscroll-behavior: contain;
   /* Force le navigateur à garder cet élément fixe même pendant le scroll */

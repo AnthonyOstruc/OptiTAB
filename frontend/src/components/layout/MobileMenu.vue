@@ -90,6 +90,7 @@ import HamburgerIcon from '@/components/common/HamburgerIcon.vue'
 import CloseIcon from '@/components/common/CloseIcon.vue'
 import { useUserStore } from '@/stores/user'
 import * as analytics from '@/services/analytics'
+import { lockBodyScroll, unlockBodyScroll } from '@/utils/bodyScrollLock'
 
 export default {
   name: 'MobileMenu',
@@ -126,6 +127,8 @@ export default {
       return key ? (HEADER_PUBLIC_NAV_NAME_BY_KEY[key] || null) : null
     }
 
+    const SCROLL_LOCK_KEY = 'mobile-menu'
+
     // Methods
     const toggleMenu = () => {
       isOpen.value = !isOpen.value
@@ -138,7 +141,11 @@ export default {
     }
 
     const updateBodyScroll = () => {
-      document.body.style.overflow = isOpen.value ? 'hidden' : 'auto'
+      if (isOpen.value) {
+        lockBodyScroll(SCROLL_LOCK_KEY, { mode: 'overflow' })
+      } else {
+        unlockBodyScroll(SCROLL_LOCK_KEY)
+      }
     }
 
     const handleNavigationClick = (item) => {
@@ -211,6 +218,7 @@ export default {
 
     onUnmounted(() => {
       document.removeEventListener('keydown', handleKeydown)
+      unlockBodyScroll(SCROLL_LOCK_KEY)
     })
 
     return {
@@ -274,10 +282,12 @@ export default {
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
+  pointer-events: none;
 
   &.is-open {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
   }
 }
 

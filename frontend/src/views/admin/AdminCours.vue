@@ -23,7 +23,16 @@
         <label>Titre du cours:</label>
         <input v-model="form.titre" placeholder="Titre du cours" required />
       </div>
-      
+
+      <div class="form-group">
+        <label>Accès:</label>
+        <select v-model="form.access_scope">
+          <option v-for="opt in ACCESS_SCOPE_OPTIONS" :key="opt.value" :value="opt.value">
+            {{ opt.label }}
+          </option>
+        </select>
+      </div>
+       
       <div class="form-group">
         <label>Contenu:</label>
         <textarea v-model="form.contenu" rows="6" required></textarea>
@@ -177,12 +186,13 @@
           <th>Titre</th>
           <th>Notion</th>
           <th>Contexte</th>
+          <th>Accès</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-if="isLoadingCours">
-          <td colspan="5" class="loading-row">Chargement des cours...</td>
+          <td colspan="6" class="loading-row">Chargement des cours...</td>
         </tr>
         <template v-else>
           <tr v-for="cours in paginatedCours" :key="cours.id">
@@ -190,6 +200,19 @@
             <td>{{ cours.titre }}</td>
             <td>{{ getNotionName(cours.notion) }}</td>
             <td class="ctx-cell">{{ getNotionContextLabel(cours.notion) }}</td>
+            <td>
+              <select
+                class="scope-select-inline"
+                :class="accessScopeBadgeClass(cours.access_scope)"
+                :value="normalizeAccessScope(cours.access_scope)"
+                :disabled="isLoadingCours || isUpdatingAccessScope(cours.id)"
+                @change="handleChangeAccessScope(cours, $event)"
+              >
+                <option v-for="opt in ACCESS_SCOPE_OPTIONS" :key="opt.value" :value="opt.value">
+                  {{ opt.label }}
+                </option>
+              </select>
+            </td>
             <td>
               <AdminActionsButtons
                 :item="cours"
@@ -204,7 +227,7 @@
             </td>
           </tr>
           <tr v-if="paginatedCours.length === 0">
-            <td colspan="5" style="text-align:center; font-style: italic;">Aucun cours trouvé.</td>
+            <td colspan="6" style="text-align:center; font-style: italic;">Aucun cours trouvé.</td>
           </tr>
         </template>
       </tbody>
@@ -303,6 +326,20 @@ import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
 const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml']
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024 // 10MB
 
+const ACCESS_SCOPE_OPTIONS = [
+  { value: 'paid', label: 'Premium' },
+  { value: 'free', label: 'Gratuit' },
+  { value: 'both', label: 'Gratuit + Premium' }
+]
+
+const ACCESS_SCOPE_LABELS = {
+  paid: 'Premium',
+  free: 'Gratuit',
+  both: 'Gratuit + Premium'
+}
+
+const DEFAULT_ACCESS_SCOPE = 'paid'
+
 const cours = ref([])
 // Chapitres supprimés
 const notions = ref([])
@@ -316,6 +353,7 @@ const form = ref({
   contenu: '',
   ordre: 0,
   difficulty: 'medium',
+  access_scope: DEFAULT_ACCESS_SCOPE,
   __pdf_file: null
 })
 const filters = ref({ notion: 'all' })
@@ -325,6 +363,52 @@ const currentPage = ref(1)
 const itemsPerPage = 5
 const totalCours = ref(0)
 const isLoadingCours = ref(false)
+
+// Accès du cours (gratuit / premium)
+const accessScopeUpdatingIds = ref(new Set())
+
+function normalizeAccessScope(value) {
+  const v = String(value || '').trim()
+  if (v === 'free' || v === 'paid' || v === 'both') return v
+  return DEFAULT_ACCESS_SCOPE
+}
+
+function accessScopeLabel(value) {
+  const normalized = normalizeAccessScope(value)
+  return ACCESS_SCOPE_LABELS[normalized] || ACCESS_SCOPE_LABELS[DEFAULT_ACCESS_SCOPE]
+}
+
+function accessScopeBadgeClass(value) {
+  const normalized = normalizeAccessScope(value)
+  if (normalized === 'free') return 'scope-pill scope-pill--free'
+  if (normalized === 'both') return 'scope-pill scope-pill--both'
+  return 'scope-pill scope-pill--paid'
+}
+
+function isUpdatingAccessScope(id) {
+  return accessScopeUpdatingIds.value.has(Number(id))
+}
+
+async function handleChangeAccessScope(targetCours, event) {
+  if (!targetCours?.id) return
+  const nextValue = normalizeAccessScope(event?.target?.value)
+  const currentValue = normalizeAccessScope(targetCours.access_scope)
+  if (nextValue === currentValue) return
+
+  const previousValue = targetCours.access_scope
+  targetCours.access_scope = nextValue
+  accessScopeUpdatingIds.value.add(Number(targetCours.id))
+
+  try {
+    await updateCours(targetCours.id, { access_scope: nextValue })
+  } catch (e) {
+    console.error('[AdminCours] Erreur update access_scope:', e)
+    targetCours.access_scope = previousValue
+    alert('Erreur lors de la mise à jour de l’accès')
+  } finally {
+    accessScopeUpdatingIds.value.delete(Number(targetCours.id))
+  }
+}
 
 const showPreview = ref(false)
 const previewData = ref(null)
@@ -504,7 +588,8 @@ function resetForm() {
     titre: '',
     contenu: '',
     ordre: 0,
-    difficulty: 'medium'
+    difficulty: 'medium',
+    access_scope: DEFAULT_ACCESS_SCOPE
   }
   showPreview.value = false
   previewData.value = null
@@ -645,7 +730,8 @@ async function handleSave() {
       titre: form.value.titre,
       contenu: normalizeContent(form.value.contenu),
       ordre: form.value.ordre,
-      difficulty: form.value.difficulty || 'medium'
+      difficulty: form.value.difficulty || 'medium',
+      access_scope: form.value.access_scope || DEFAULT_ACCESS_SCOPE
     }
 
     let courseId = form.value.id
@@ -665,11 +751,13 @@ async function handleSave() {
 
     // Sauvegarder le chapitre actuel avant de reset le formulaire
     const currentNotion = form.value.notion
+    const currentAccessScope = form.value.access_scope
 
     resetForm()
 
     // Remettre le chapitre sélectionné pour permettre d'ajouter un autre cours dans le même chapitre
     form.value.notion = currentNotion
+    form.value.access_scope = currentAccessScope || DEFAULT_ACCESS_SCOPE
 
     await loadCours()
   } catch (e) {
@@ -687,6 +775,7 @@ function editCours(cours) {
     contenu: cours.contenu || '',
     ordre: cours.ordre || 0,
     difficulty: difficultyValue,
+    access_scope: normalizeAccessScope(cours.access_scope),
     __pdf_file: null
   }
   
@@ -750,7 +839,8 @@ async function confirmDuplicate() {
       titre: duplicateForm.value.newTitre.trim(),
       contenu: original.contenu,
       ordre: original.ordre || 0,
-      difficulty: original.difficulty || 'medium'
+      difficulty: original.difficulty || 'medium',
+      access_scope: normalizeAccessScope(original.access_scope)
     }
 
     console.log('Payload envoyé pour duplication cours:', payload)
@@ -1153,6 +1243,44 @@ function slugify(text) {
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   font-size: 0.875rem;
+}
+
+.scope-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.scope-select-inline {
+  cursor: pointer;
+  padding-right: 1.75rem;
+}
+
+.scope-select-inline:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.scope-pill--free {
+  background: #dcfce7;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.scope-pill--both {
+  background: #e0f2fe;
+  border-color: #bae6fd;
+  color: #0f172a;
+}
+
+.scope-pill--paid {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #991b1b;
 }
 
 .admin-table {

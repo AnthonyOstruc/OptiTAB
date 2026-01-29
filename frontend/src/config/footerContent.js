@@ -3,9 +3,14 @@ export const footerLinks = [
   { label: 'Cours gratuits', href: '/ressources-gratuites/cours' },
   { label: 'Exercices gratuits', href: '/ressources-gratuites/exercices' },
   { label: 'Synthèses gratuites', href: '/ressources-gratuites/syntheses' },
-  { label: 'Tarifs', href: '/pricing' },
   { label: 'Contact', href: '/contact' },
-  { label: 'À propos', href: '/about' }
+  { label: 'À propos', href: '/about' },
+  { label: 'Mentions légales', href: '/legal' },
+  { label: 'CGU', href: '/cgu' },
+  { label: 'CGV', href: '/cgv' },
+  { label: 'Confidentialité', href: '/confidentialite' },
+  { label: 'Cookies', href: '/cookies' },
+  { label: 'Conditions', href: '/conditions' }
 ];
 
 export const footerIntro = {

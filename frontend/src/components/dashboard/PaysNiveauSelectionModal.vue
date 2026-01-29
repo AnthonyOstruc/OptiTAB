@@ -136,6 +136,7 @@
 <script setup>
 import { watch, onMounted, onUnmounted, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { lockBodyScroll, unlockBodyScroll } from '@/utils/bodyScrollLock'
 import SelectionCard from '@/components/common/SelectionCard.vue'
 
 const props = defineProps({
@@ -236,19 +237,9 @@ const selectRole = (role) => emit('select-role', role)
 // Empêcher le scroll de l'arrière-plan quand le modal est ouvert
 watch(() => props.modelValue, (isOpen) => {
   if (isOpen) {
-    document.body.style.overflow = 'hidden'
-    document.body.style.position = 'fixed'
-    document.body.style.width = '100%'
-    document.body.style.top = `-${window.scrollY}px`
+    lockBodyScroll('pays-niveau-selection-modal', { mode: 'fixed' })
   } else {
-    const scrollY = document.body.style.top
-    document.body.style.overflow = ''
-    document.body.style.position = ''
-    document.body.style.width = ''
-    document.body.style.top = ''
-    if (scrollY) {
-      window.scrollTo(0, parseInt(scrollY || '0') * -1)
-    }
+    unlockBodyScroll('pays-niveau-selection-modal')
   }
 }, { immediate: false })
 
@@ -265,10 +256,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleEscape)
-  document.body.style.overflow = ''
-  document.body.style.position = ''
-  document.body.style.width = ''
-  document.body.style.top = ''
+  unlockBodyScroll('pays-niveau-selection-modal')
 })
 </script>
 

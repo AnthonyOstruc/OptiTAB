@@ -316,13 +316,17 @@ export function applyRouteSeo(route) {
     const routeSeo = ROUTE_SEO[name] || {}
 
     const requiresAuth = Boolean(route?.meta?.requiresAuth || route?.meta?.requiresAdmin || route?.meta?.requiresSubscription)
-    const shouldNoIndex = Boolean(routeSeo.noindex) || requiresAuth || NOINDEX_ROUTE_NAMES.has(name)
+    const isConfiguredNoIndex = Boolean(routeSeo.noindex)
+    const isSystemNoIndex = requiresAuth || NOINDEX_ROUTE_NAMES.has(name)
+    const shouldNoIndex = isConfiguredNoIndex || isSystemNoIndex
 
     setPageSeo({
       title: routeSeo.title || DEFAULT_TITLE,
       description: routeSeo.description || DEFAULT_DESCRIPTION,
       canonicalPath: routeSeo.canonicalPath || route?.path || '/',
-      robots: shouldNoIndex ? 'noindex,nofollow' : 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1',
+      robots: shouldNoIndex
+        ? (isConfiguredNoIndex ? 'noindex,follow' : 'noindex,nofollow')
+        : 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1',
       ogType: routeSeo.ogType || 'website',
       image: routeSeo.image || DEFAULT_IMAGE_PATH,
       jsonLdGraph: routeSeo.jsonLdGraph

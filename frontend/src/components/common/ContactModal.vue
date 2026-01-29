@@ -148,8 +148,9 @@
 	</template>
 
 	<script setup>
-	import { ref, watch } from 'vue'
+	import { ref, watch, onBeforeUnmount } from 'vue'
 	import { sendContactMessage } from '@/api/contact'
+	import { lockBodyScroll, unlockBodyScroll } from '@/utils/bodyScrollLock'
 
 const props = defineProps({
   isOpen: {
@@ -291,25 +292,25 @@ const handleEscape = (e) => {
   }
 }
 
+const SCROLL_LOCK_KEY = 'contact-modal'
+
 watch(() => props.isOpen, (newVal) => {
   if (newVal) {
     document.addEventListener('keydown', handleEscape)
     // Sauvegarder la position de scroll
     scrollPosition.value = window.pageYOffset || document.documentElement.scrollTop
     // Empêcher le scroll de l'arrière-plan
-    document.body.style.overflow = 'hidden'
-    document.body.style.position = 'fixed'
-    document.body.style.top = `-${scrollPosition.value}px`
-    document.body.style.width = '100%'
+    lockBodyScroll(SCROLL_LOCK_KEY, { mode: 'fixed' })
   } else {
     document.removeEventListener('keydown', handleEscape)
     // Réactiver le scroll et restaurer la position
-    document.body.style.overflow = ''
-    document.body.style.position = ''
-    document.body.style.top = ''
-    document.body.style.width = ''
-    window.scrollTo(0, scrollPosition.value)
+    unlockBodyScroll(SCROLL_LOCK_KEY)
   }
+}, { immediate: true })
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleEscape)
+  unlockBodyScroll(SCROLL_LOCK_KEY)
 })
 </script>
 

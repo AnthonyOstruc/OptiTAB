@@ -1,4 +1,5 @@
 import { ref, reactive } from 'vue'
+import { lockBodyScroll, unlockBodyScroll } from '@/utils/bodyScrollLock'
 
 // Global modal state
 const modalStates = reactive({})
@@ -16,8 +17,7 @@ export function useModalManager() {
       activeModals.value.push(modalId)
     }
     
-    // Prevent body scroll
-    document.body.style.overflow = 'hidden'
+    lockBodyScroll(`modal:${modalId}`, { mode: 'overflow' })
   }
 
   // Close a modal
@@ -31,10 +31,7 @@ export function useModalManager() {
       activeModals.value.splice(index, 1)
     }
     
-    // Restore body scroll if no active modals
-    if (activeModals.value.length === 0) {
-      document.body.style.overflow = ''
-    }
+    unlockBodyScroll(`modal:${modalId}`)
   }
 
   // Close all modals
@@ -42,8 +39,10 @@ export function useModalManager() {
     Object.keys(modalStates).forEach(modalId => {
       modalStates[modalId].isOpen = false
     })
+
+    const modalsToUnlock = [...activeModals.value]
     activeModals.value = []
-    document.body.style.overflow = ''
+    modalsToUnlock.forEach((modalId) => unlockBodyScroll(`modal:${modalId}`))
   }
 
   // Check if modal is open

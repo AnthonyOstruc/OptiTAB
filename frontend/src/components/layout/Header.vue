@@ -279,11 +279,28 @@ export default {
 
 // Responsive breakpoints
 @media (max-width: #{$max-width-media}) {
+  .header {
+    /* Forcer le header à rester fixé en haut sur mobile */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    /* Empêcher tout mouvement du header */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /* Bloquer le scroll sur le header lui-même */
+    touch-action: none;
+    overscroll-behavior: contain;
+  }
+
   .header-desktop {
     display: none;
   }
   .header-mobile {
     display: flex;
+    /* Permettre les clics sur les éléments du header */
+    touch-action: manipulation;
   }
 
   .mobile-free-tabs {
@@ -347,10 +364,4 @@ export default {
       @supports (padding: env(safe-area-inset-top)) {
         .header { padding-top: env(safe-area-inset-top); }
       }
-
-      /* Ensure header never scrolls, and allow page scroll to start from it */
-      .header { pointer-events: none; }
-      .header-mobile, .header-desktop { pointer-events: auto; touch-action: pan-y; }
-      .mobile-free-tabs { pointer-events: auto; }
-      .mobile-calculator-tabs { pointer-events: auto; }
 </style> 

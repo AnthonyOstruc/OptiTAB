@@ -192,12 +192,20 @@
             <td>{{ s.id }}</td>
             <td>{{ s.titre }}</td>
             <td>{{ getNotionName(s.notion) }}</td>
-            <td class="ctx-cell">{{ getNotionContextLabel(s.notion) }}</td>
-            <td>
-              <span :class="accessScopeBadgeClass(s.access_scope)">
-                {{ accessScopeLabel(s.access_scope) }}
-              </span>
-            </td>
+             <td class="ctx-cell">{{ getNotionContextLabel(s.notion) }}</td>
+             <td>
+                <select
+                  class="scope-select-inline"
+                  :class="accessScopeBadgeClass(s.access_scope)"
+                  :value="normalizeAccessScope(s.access_scope)"
+                  :disabled="isLoadingSheets || isUpdatingAccessScope(s.id)"
+                  @change="handleChangeAccessScope(s, $event)"
+                >
+                  <option v-for="opt in ACCESS_SCOPE_OPTIONS" :key="opt.value" :value="opt.value">
+                    {{ opt.label }}
+                  </option>
+                </select>
+              </td>
             <td>
               <AdminActionsButtons
                 :item="s"
@@ -259,7 +267,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onActivated, nextTick, watch } from 'vue'
-import { getNotions } from '@/api'
+import { getNotions, apiClient } from '@/api'
 import { getSynthesisSheets, getSynthesisSheet, createSynthesisSheet, updateSynthesisSheet, createSynthesisImage, deleteSynthesisSheet, duplicateSynthesisSheet, updateSynthesisImage, deleteSynthesisImage } from '@/api/synthesis'
 import { renderContentWithImages, renderMath, getImageUrl } from '@/utils/scientificRenderer'
 import FormatHelp from '@/components/admin/FormatHelp.vue'
@@ -492,6 +500,13 @@ const ACCESS_SCOPE_LABELS = {
 }
 
 const DEFAULT_ACCESS_SCOPE = 'paid'
+const accessScopeUpdatingIds = ref(new Set())
+
+function normalizeAccessScope(value) {
+  const v = String(value || '').trim()
+  if (v === 'free' || v === 'paid' || v === 'both') return v
+  return DEFAULT_ACCESS_SCOPE
+}
 
 const normalizeString = (value = '') => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 
@@ -505,13 +520,54 @@ function parseAccessScopeToken(rawValue = '') {
 }
 
 function accessScopeLabel(value) {
-  return ACCESS_SCOPE_LABELS[value] || ACCESS_SCOPE_OPTIONS.find(opt => opt.value === value)?.label || 'Premium'
+  const normalized = normalizeAccessScope(value)
+  return ACCESS_SCOPE_LABELS[normalized] || ACCESS_SCOPE_OPTIONS.find(opt => opt.value === normalized)?.label || 'Premium'
 }
 
 function accessScopeBadgeClass(value) {
-  if (value === 'free') return 'scope-pill scope-pill--free'
-  if (value === 'both') return 'scope-pill scope-pill--both'
+  const normalized = normalizeAccessScope(value)
+  if (normalized === 'free') return 'scope-pill scope-pill--free'
+  if (normalized === 'both') return 'scope-pill scope-pill--both'
   return 'scope-pill scope-pill--paid'
+}
+
+function isUpdatingAccessScope(id) {
+  return accessScopeUpdatingIds.value.has(Number(id))
+}
+
+async function handleChangeAccessScope(targetSheet, event) {
+  if (!targetSheet?.id) return
+  const nextValue = normalizeAccessScope(event?.target?.value)
+  const currentValue = normalizeAccessScope(targetSheet.access_scope)
+  if (nextValue === currentValue) return
+
+  const previousValue = targetSheet.access_scope
+  targetSheet.access_scope = nextValue
+  accessScopeUpdatingIds.value.add(Number(targetSheet.id))
+
+  try {
+    // Le serializer backend exige "summary" (même en PATCH), donc on l'envoie inchangé.
+    let summaryValue = targetSheet.summary
+    if (!summaryValue) {
+      try {
+        const res = await getSynthesisSheet(targetSheet.id)
+        summaryValue = res?.data?.summary ?? res?.summary ?? ''
+      } catch (_) {
+        summaryValue = ''
+      }
+    }
+
+    await apiClient.patch(`/api/sheets/${targetSheet.id}/`, {
+      access_scope: nextValue,
+      summary: summaryValue
+    })
+  } catch (e) {
+    console.error('[AdminSheets] Erreur update access_scope:', e)
+    targetSheet.access_scope = previousValue
+    alert('Erreur lors de la mise à jour de l’accès')
+  } finally {
+    accessScopeUpdatingIds.value.delete(Number(targetSheet.id))
+  }
 }
 
 // ============================================================================
@@ -1139,6 +1195,16 @@ onActivated(() => {
   font-size: 0.8rem;
   font-weight: 600;
   border: 1px solid transparent;
+}
+
+.scope-select-inline {
+  cursor: pointer;
+  padding-right: 1.75rem;
+}
+
+.scope-select-inline:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .scope-pill--free {

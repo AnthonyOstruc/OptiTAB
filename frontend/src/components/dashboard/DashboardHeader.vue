@@ -159,15 +159,11 @@ const handleLogout = () => {
   z-index: 12001; /* Toujours au-dessus du contenu du dashboard */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
-  /* Laisser passer les gestes de scroll sans déplacer le header */
-  pointer-events: none;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  /* Sur desktop, permettre le scroll vertical */
+  /* Permettre le scroll vertical à travers le header */
   touch-action: pan-y;
 }
-
-.dashboard-header > * { pointer-events: auto; }
 
 /* Bouton burger fixe - Solution professionnelle */
 .burger-btn-fixed {
@@ -450,27 +446,28 @@ const handleLogout = () => {
   .dashboard-header {
     padding: 0.6rem 0.7rem;
     min-height: 56px;
-    /* 🔒 Header FIXE sur mobile pour bloquer le scroll depuis le header */
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    /* Header FIXE sur mobile - ne bouge jamais */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
     width: 100%;
-    /* 🔒 ACTIVER pointer-events sur TOUTE la surface du header (pas seulement les enfants) */
+    z-index: 10000;
     pointer-events: auto;
-    /* 🔒 EMPÊCHER le scroll depuis le header - CRITIQUE pour iOS */
+    /* Bloquer le scroll sur le header lui-même */
     touch-action: none;
     overscroll-behavior: contain;
-    /* 🎯 Forcer le navigateur à garder le header fixe */
+    /* Forcer le navigateur à garder le header fixe */
     will-change: transform;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
   
-  /* Bloquer le scroll aussi sur tous les enfants du header */
-  .dashboard-header > *,
-  .dashboard-header * {
-    touch-action: none;
+  /* Permettre les clics sur les éléments interactifs du header */
+  .dashboard-header button,
+  .dashboard-header a,
+  .dashboard-header .clickable {
+    touch-action: manipulation;
   }
   
   .burger-btn-fixed { 

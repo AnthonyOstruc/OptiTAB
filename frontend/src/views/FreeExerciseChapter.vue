@@ -5,11 +5,17 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import { getFreeResources } from '@/api/free-content'
+import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
+import { useUserStore } from '@/stores/user'
+import { useSubscriptionStore } from '@/stores/subscription'
 import { renderMath } from '@/utils/scientificRenderer'
 import { useZoom } from '@/composables/useZoom'
 
 const route = useRoute()
 const router = useRouter()
+const { openModal } = useModalManager()
+const userStore = useUserStore()
+const subscriptionStore = useSubscriptionStore()
 
 const loading = ref(false)
 const error = ref(null)
@@ -151,13 +157,46 @@ const goToPage = (page) => {
   })
 }
 
-const showSignupModal = () => {
-  if (window?.dispatchEvent) {
-    const evt = new CustomEvent('open-signup-modal', { detail: { source: 'free-exercises-lock' } })
-    window.dispatchEvent(evt)
+const subscriptionCtaLabel = computed(() => (subscriptionStore.hasAccess ? 'Gérer mon abonnement' : "S'abonner"))
+
+const onSubscriptionCtaClick = () => {
+  if (!userStore.isAuthenticated) {
+    openModal(MODAL_IDS.REGISTER)
     return
   }
-  alert('Crée un compte (gratuit) pour afficher toutes les questions et solutions.')
+
+  if (subscriptionStore.hasAccess) {
+    router.push({ name: 'Subscription' }).catch(() => {})
+    return
+  }
+
+  router.push({
+    name: 'Billing',
+    query: {
+      redirect: route.fullPath,
+      reason: 'free_exercise_chapter_cta'
+    }
+  }).catch(() => {})
+}
+
+const showSignupModal = () => {
+  if (!userStore.isAuthenticated) {
+    openModal(MODAL_IDS.REGISTER)
+    return
+  }
+
+  if (subscriptionStore.hasAccess) {
+    router.push({ name: 'Subscription' }).catch(() => {})
+    return
+  }
+
+  router.push({
+    name: 'Billing',
+    query: {
+      redirect: route.fullPath,
+      reason: 'free_exercises_lock'
+    }
+  }).catch(() => {})
 }
 
 const buildInstruction = (exercise) => {
@@ -173,6 +212,33 @@ const buildInstruction = (exercise) => {
   <MainLayout>
     <div class="free-exercise-chapter-page">
       <BackButton text="Retour aux exercices" :custom-action="goBack" position="top-left" />
+
+      <section class="free-resource-cta" aria-label="Accès professeur ou plateforme">
+        <div class="free-resource-cta__copy">
+          <p class="free-resource-cta__title">Besoin d’un professeur ou d’un accès complet&nbsp;?</p>
+          <p class="free-resource-cta__subtitle">Cours particuliers de maths en ligne • Abonnement plateforme OptiTAB</p>
+        </div>
+        <div class="free-resource-cta__actions">
+          <router-link
+            :to="{ name: 'CoursParticuliers' }"
+            class="free-resource-cta__btn free-resource-cta__btn--primary"
+            data-track="nav"
+            data-nav-name="tutoring"
+            data-nav-location="free_exercise_chapter_banner"
+          >
+            Cours particuliers
+          </router-link>
+          <button
+            type="button"
+            class="free-resource-cta__btn free-resource-cta__btn--secondary"
+            data-cta-name="subscribe"
+            data-cta-location="free_exercise_chapter_banner"
+            @click="onSubscriptionCtaClick"
+          >
+            {{ subscriptionCtaLabel }}
+          </button>
+        </div>
+      </section>
 
       <div v-if="loading" class="state-card">
         <div class="loading-spinner" aria-hidden="true"></div>
@@ -249,16 +315,134 @@ const buildInstruction = (exercise) => {
   max-width: none;
 }
 
-.content-wrapper {
-  transform-origin: top left;
+.free-resource-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.10), rgba(99, 102, 241, 0.07));
+  margin: 0 0 22px 0;
 }
 
-@supports (zoom: 1) {
-  .content-wrapper {
-    zoom: var(--content-zoom, 1);
-    transform: none !important;
-    width: 100% !important;
+.free-resource-cta__copy {
+  min-width: 0;
+}
+
+.free-resource-cta__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.free-resource-cta__subtitle {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.free-resource-cta__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  white-space: nowrap;
+}
+
+.free-resource-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.free-resource-cta__btn--primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 55%, #1d4ed8 100%);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 14px 32px rgba(59, 130, 246, 0.24);
+}
+
+.free-resource-cta__btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 38px rgba(59, 130, 246, 0.3);
+}
+
+.free-resource-cta__btn--primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 52%);
+  transform: translateX(-70%);
+  transition: transform 0.55s ease;
+}
+
+.free-resource-cta__btn--primary:hover::after {
+  transform: translateX(-15%);
+}
+
+.free-resource-cta__btn--secondary {
+  background: rgba(255, 255, 255, 0.9);
+  color: #2563eb;
+  border-color: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+}
+
+.free-resource-cta__btn--secondary:hover {
+  transform: translateY(-1px);
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.32);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.free-resource-cta__btn:active {
+  transform: translateY(0);
+}
+
+.free-resource-cta__btn:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.45);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .free-resource-cta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
   }
+
+  .free-resource-cta__actions {
+    justify-content: stretch;
+  }
+
+  .free-resource-cta__btn {
+    width: 100%;
+  }
+}
+
+.content-wrapper {
+  transform-origin: top left;
 }
 
 .state-card {

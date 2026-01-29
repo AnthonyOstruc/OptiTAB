@@ -376,18 +376,23 @@ html {
   text-size-adjust: 100%;
   /* Empêcher le sélection de texte qui peut causer du zoom */
   -webkit-tap-highlight-color: transparent;
-    overscroll-behavior: none;
-  }
+  overscroll-behavior-x: none;
+  /* Permettre le scroll vertical */
+  overflow-y: auto;
+  height: 100%;
+}
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: #333;
-  /* Empêcher le zoom lors de double-tap */
-  touch-action: manipulation;
+  /* Permettre tous les gestes de scroll */
+  touch-action: auto;
   /* Assurer que le body utilise toute la largeur */
   width: 100%;
+  min-height: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
   /* Empêcher le zoom sur certains éléments */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -413,15 +418,19 @@ select {
   html {
     width: 100%;
     overflow-x: hidden;
-    overscroll-behavior: none;
+    overflow-y: auto;
+    overscroll-behavior-x: none;
   }
   
   body {
     position: relative;
     width: 100%;
     overflow-x: hidden;
-    overscroll-behavior: none;
-    /* Permettre le zoom CSS de fonctionner */
+    overflow-y: auto;
+    overscroll-behavior-x: none;
+    /* Permettre tous les gestes de scroll sur mobile */
+    touch-action: auto;
+    /* Permettre le scroll tactile fluide sur iOS */
     -webkit-overflow-scrolling: touch;
   }
 }

@@ -56,7 +56,6 @@ const FOOTER_NAV_NAME_BY_PATH = {
   '/ressources-gratuites/cours': 'course',
   '/ressources-gratuites/exercices': 'exercise',
   '/ressources-gratuites/syntheses': 'summary',
-  '/pricing': 'pricing',
   '/contact': 'contact',
   '/about': 'about',
   '/cgv': 'cgv',

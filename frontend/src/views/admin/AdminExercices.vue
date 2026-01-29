@@ -123,7 +123,16 @@
           <option value="difficile">Difficile</option>
         </select>
       </div>
-      
+
+      <div class="form-group">
+        <label>Accès:</label>
+        <select v-model="form.access_scope">
+          <option v-for="opt in ACCESS_SCOPE_OPTIONS" :key="opt.value" :value="opt.value">
+            {{ opt.label }}
+          </option>
+        </select>
+      </div>
+       
       <div class="form-actions">
         <button class="btn-primary" type="submit">{{ form.id ? 'Mettre à jour' : 'Créer' }}</button>
         <button v-if="form.id" class="btn-secondary" type="button" @click="resetForm">Annuler</button>
@@ -176,12 +185,13 @@
           <th>Notion</th>
           <th>Contexte</th>
           <th>Difficulté</th>
+          <th>Accès</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-if="isLoadingExercices">
-          <td colspan="6" class="loading-row">Chargement des exercices...</td>
+          <td colspan="7" class="loading-row">Chargement des exercices...</td>
         </tr>
         <template v-else>
           <tr v-for="exercice in paginatedExercices" :key="exercice.id">
@@ -193,6 +203,19 @@
               <span class="difficulte-badge" :class="`difficulte-${exercice.difficulte || exercice.difficulty}`">
                 {{ exercice.difficulte || exercice.difficulty }}
               </span>
+            </td>
+            <td>
+              <select
+                class="scope-select-inline"
+                :class="accessScopeBadgeClass(exercice.access_scope)"
+                :value="normalizeAccessScope(exercice.access_scope)"
+                :disabled="isLoadingExercices || isUpdatingAccessScope(exercice.id)"
+                @change="handleChangeAccessScope(exercice, $event)"
+              >
+                <option v-for="opt in ACCESS_SCOPE_OPTIONS" :key="opt.value" :value="opt.value">
+                  {{ opt.label }}
+                </option>
+              </select>
             </td>
             <td>
               <AdminActionsButtons
@@ -208,7 +231,7 @@
             </td>
           </tr>
           <tr v-if="paginatedExercices.length === 0">
-            <td colspan="6" style="text-align:center; font-style: italic;">Aucun exercice trouvé.</td>
+            <td colspan="7" style="text-align:center; font-style: italic;">Aucun exercice trouvé.</td>
           </tr>
         </template>
       </tbody>
@@ -292,6 +315,53 @@ import PaysNiveauxDisplay from '@/components/admin/PaysNiveauxDisplay.vue'
 import { AdminActionsButtons } from '@/components/admin'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 
+const ACCESS_SCOPE_OPTIONS = [
+  { value: 'paid', label: 'Premium' },
+  { value: 'free', label: 'Gratuit' },
+  { value: 'both', label: 'Gratuit + Premium' }
+]
+
+const DEFAULT_ACCESS_SCOPE = 'paid'
+const accessScopeUpdatingIds = ref(new Set())
+
+function normalizeAccessScope(value) {
+  const v = String(value || '').trim()
+  if (v === 'free' || v === 'paid' || v === 'both') return v
+  return DEFAULT_ACCESS_SCOPE
+}
+
+function accessScopeBadgeClass(value) {
+  const normalized = normalizeAccessScope(value)
+  if (normalized === 'free') return 'scope-pill scope-pill--free'
+  if (normalized === 'both') return 'scope-pill scope-pill--both'
+  return 'scope-pill scope-pill--paid'
+}
+
+function isUpdatingAccessScope(id) {
+  return accessScopeUpdatingIds.value.has(Number(id))
+}
+
+async function handleChangeAccessScope(targetExercice, event) {
+  if (!targetExercice?.id) return
+  const nextValue = normalizeAccessScope(event?.target?.value)
+  const currentValue = normalizeAccessScope(targetExercice.access_scope)
+  if (nextValue === currentValue) return
+
+  const previousValue = targetExercice.access_scope
+  targetExercice.access_scope = nextValue
+  accessScopeUpdatingIds.value.add(Number(targetExercice.id))
+
+  try {
+    await updateExercice(targetExercice.id, { access_scope: nextValue })
+  } catch (e) {
+    console.error('[AdminExercices] Erreur update access_scope:', e)
+    targetExercice.access_scope = previousValue
+    alert('Erreur lors de la mise à jour de l’accès')
+  } finally {
+    accessScopeUpdatingIds.value.delete(Number(targetExercice.id))
+  }
+}
+
 const exercices = ref([])
 // Chapitres supprimés
 const notions = ref([])
@@ -306,6 +376,7 @@ const form = ref({
   etapes: '', 
   solution: '', 
   difficulte: 'moyen',
+  access_scope: DEFAULT_ACCESS_SCOPE,
   niveaux: []
 })
 const filters = ref({ notion: '' })
@@ -474,6 +545,7 @@ function resetForm() {
     etapes: '', 
     solution: '', 
     difficulte: 'moyen',
+    access_scope: DEFAULT_ACCESS_SCOPE,
     niveaux: []
   }
   showPreview.value = false
@@ -494,6 +566,7 @@ async function handleSave() {
       titre: form.value.nom || 'Exercice',
       contenu: form.value.enonce,
       difficulty: difficultyMap[form.value.difficulte] || 'medium',
+      access_scope: normalizeAccessScope(form.value.access_scope),
       // Champs compatibles modèle Exercice
       question: form.value.enonce,
       reponse_correcte: form.value.solution || '',
@@ -509,11 +582,13 @@ async function handleSave() {
 
     // Sauvegarder le chapitre actuel avant de reset le formulaire
     const currentNotion = form.value.notion
+    const currentAccessScope = form.value.access_scope
 
     resetForm()
 
     // Remettre le chapitre sélectionné pour permettre d'ajouter un autre exercice dans le même chapitre
     form.value.notion = currentNotion
+    form.value.access_scope = currentAccessScope || DEFAULT_ACCESS_SCOPE
 
     await reloadExercices()
   } catch (e) {
@@ -536,6 +611,7 @@ function editExercice(exercice) {
     etapes: exercice.etapes || '',
     solution: exercice.reponse_correcte || exercice.solution || '',
     difficulte: difficultyMap[exercice.difficulty] || exercice.difficulte || 'moyen',
+    access_scope: normalizeAccessScope(exercice.access_scope),
     niveaux: niveauxIds
   }
   
@@ -599,6 +675,7 @@ async function confirmDuplicate() {
       titre: duplicateForm.value.newTitre.trim(),
       contenu: original.contenu || original.question || original.enonce || '',
       difficulty: original.difficulty || difficultyMap[original.difficulte] || 'medium',
+      access_scope: normalizeAccessScope(original.access_scope),
       question: original.contenu || original.question || original.enonce || '',
       reponse_correcte: original.reponse_correcte || original.solution || '',
       etapes: original.etapes || '',
@@ -1133,6 +1210,44 @@ function getNotionContextCode(notionId) {
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   font-size: 0.875rem;
+}
+
+.scope-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.scope-pill--free {
+  background: #dcfce7;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.scope-pill--both {
+  background: #e0f2fe;
+  border-color: #bae6fd;
+  color: #0f172a;
+}
+
+.scope-pill--paid {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.scope-select-inline {
+  cursor: pointer;
+  padding-right: 1.75rem;
+}
+
+.scope-select-inline:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .admin-table {

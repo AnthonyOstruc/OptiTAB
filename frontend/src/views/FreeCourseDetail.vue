@@ -8,6 +8,8 @@ import { getFreeResource } from '@/api/free-content'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
 import { setPageSeo } from '@/services/seo'
+import { useUserStore } from '@/stores/user'
+import { useSubscriptionStore } from '@/stores/subscription'
 
 const props = defineProps({
   resourceType: {
@@ -19,6 +21,8 @@ const props = defineProps({
 const route = useRoute()
 const router = useRouter()
 const { openModal } = useModalManager()
+const userStore = useUserStore()
+const subscriptionStore = useSubscriptionStore()
 
 const resource = ref(null)
 const loading = ref(false)
@@ -66,6 +70,28 @@ const backButtonLabel = computed(() => {
   return 'Retour aux chapitres'
 })
 
+const subscriptionCtaLabel = computed(() => (subscriptionStore.hasAccess ? 'Gérer mon abonnement' : "S'abonner"))
+
+const onSubscriptionCtaClick = () => {
+  if (!userStore.isAuthenticated) {
+    openModal(MODAL_IDS.REGISTER)
+    return
+  }
+
+  if (subscriptionStore.hasAccess) {
+    router.push({ name: 'Subscription' }).catch(() => {})
+    return
+  }
+
+  router.push({
+    name: 'Billing',
+    query: {
+      redirect: route.fullPath,
+      reason: 'free_resource_detail_cta'
+    }
+  }).catch(() => {})
+}
+
 function computeAutoZoom(width) {
   let base
   if (width >= 1400) base = 1
@@ -88,19 +114,26 @@ function computeAutoZoom(width) {
 const zoomLevel = computed(() => computeAutoZoom(viewportWidth.value))
 
 const zoomStyle = computed(() => {
-  const baseHeight = `${contentHeight.value}px`
   let z = zoomLevel.value || 1
   if (viewportWidth.value <= 768) {
     z = Math.max(0.6, z - 0.08)
   }
   const widthPercent = (100 / z).toFixed(3)
-  return {
-    '--course-zoom': z,
-    '--course-content-height': baseHeight,
+
+  const style = {
     transform: `scale(${z})`,
     transformOrigin: 'top left',
-    width: `${widthPercent}%`
+    width: `${widthPercent}%`,
+    height: 'auto',
+    minHeight: 'auto'
   }
+
+  if (contentHeight.value > 0 && Number.isFinite(z) && z < 1) {
+    const marginBottom = -Math.round(contentHeight.value * (1 - z))
+    style.marginBottom = `${marginBottom}px`
+  }
+
+  return style
 })
 
 const fetchResource = async () => {
@@ -181,8 +214,14 @@ function stripHtml(input) {
   return String(input || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
 }
 
-function pickSeoDescription(value) {
-  const raw = value?.excerpt || value?.accroche || value?.question || value?.contenu || value?.contenu_html || ''
+function pickSeoDescription(value, resourceType) {
+  const type = String(resourceType || '').trim().toLowerCase()
+  const raw = type === 'exercise'
+    ? (value?.question || value?.excerpt || value?.accroche || value?.contenu || value?.contenu_html || '')
+    : (type === 'summary'
+        ? (value?.accroche || value?.excerpt || value?.contenu || value?.contenu_html || '')
+        : (value?.excerpt || value?.accroche || value?.contenu || value?.contenu_html || ''))
+
   const cleaned = stripHtml(raw)
   if (!cleaned) return ''
   return cleaned.length > 160 ? `${cleaned.slice(0, 157).trimEnd()}...` : cleaned
@@ -199,6 +238,61 @@ function clampMetaDescription(text) {
   const cleaned = String(text || '').replace(/\s+/g, ' ').trim()
   if (!cleaned) return ''
   return cleaned.length > 160 ? `${cleaned.slice(0, 157).trimEnd()}...` : cleaned
+}
+
+function clampTitle(text, maxLength = 70) {
+  const cleaned = String(text || '').replace(/\s+/g, ' ').trim()
+  if (!cleaned) return ''
+  if (cleaned.length <= maxLength) return cleaned
+  const truncated = cleaned.slice(0, maxLength - 1)
+  const cut = truncated.lastIndexOf(' ')
+  return `${(cut > 20 ? truncated.slice(0, cut) : truncated).trimEnd()}…`
+}
+
+function normalizeSeoSubject(matiereNom) {
+  const raw = String(matiereNom || '').replace(/\s+/g, ' ').trim()
+  if (!raw) return { display: 'Maths', phrase: 'maths' }
+  if (/math/i.test(raw)) return { display: 'Maths', phrase: 'maths' }
+  return { display: raw, phrase: raw }
+}
+
+function buildSeoTitle({ resourceType, baseTitle, subjectDisplay, niveauNom }) {
+  const type = String(resourceType || '').trim().toLowerCase()
+  const niveau = String(niveauNom || '').replace(/\s+/g, ' ').trim()
+  const levelPart = niveau ? ` (${niveau})` : ''
+  const subject = String(subjectDisplay || '').trim()
+
+  const prefix = type === 'exercise'
+    ? `Exercice corrigé gratuit de ${subject}${levelPart}`
+    : (type === 'summary'
+        ? `Fiche de révision gratuite de ${subject}${levelPart}`
+        : `Cours gratuit de ${subject}${levelPart}`)
+
+  const mainTitle = String(baseTitle || '').replace(/\s+/g, ' ').trim()
+  const full = mainTitle ? `${prefix} : ${mainTitle}` : prefix
+  return clampTitle(full, 70)
+}
+
+function buildSeoDescription({ resourceType, subjectPhrase, niveauNom, baseDescription, baseTitle }) {
+  const type = String(resourceType || '').trim().toLowerCase()
+  const niveau = String(niveauNom || '').replace(/\s+/g, ' ').trim()
+  const levelPart = niveau ? ` (${niveau})` : ''
+  const subject = String(subjectPhrase || '').trim() || 'maths'
+
+  const intro = type === 'exercise'
+    ? `Exercice corrigé gratuit de ${subject}${levelPart}.`
+    : (type === 'summary'
+        ? `Fiche de révision gratuite de ${subject}${levelPart}.`
+        : `Cours gratuit de ${subject}${levelPart}.`)
+
+  const detail = String(baseDescription || baseTitle || '').replace(/\s+/g, ' ').trim()
+  const extra = type === 'exercise'
+    ? 'Correction détaillée et méthode.'
+    : (type === 'summary'
+        ? 'Formules, méthodes et exemples.'
+        : 'Cours clair, méthodes et exemples.')
+
+  return clampMetaDescription([intro, detail, extra, 'Accès gratuit sur OptiTAB.'].filter(Boolean).join(' '))
 }
 
 function getSiteUrl() {
@@ -230,7 +324,7 @@ function toIsoDate(value) {
 function seoPrefixForResourceType(type) {
   if (type === 'exercise') return 'Exercice corrigé gratuit'
   if (type === 'summary') return 'Fiche de révision gratuite'
-  return 'Cours en ligne gratuit'
+  return 'Cours gratuit'
 }
 
 watch(
@@ -253,13 +347,25 @@ watch(
     const niveau = value?.niveau_nom ? String(value.niveau_nom).trim() : (value?.tag_secondaire ? String(value.tag_secondaire).trim() : '')
     const baseTitle = value?.titre ? String(value.titre).trim() : ''
 
-    const contextParts = [prefix, matiere, niveau].filter(Boolean)
+    const subject = normalizeSeoSubject(matiere)
+    const contextParts = [prefix, subject.display, niveau].filter(Boolean)
     const context = contextParts.join(' ').trim()
-    const title = (baseTitle && context) ? `${context} - ${baseTitle}` : (baseTitle || context || undefined)
 
-    const baseDescription = pickSeoDescription(value)
-    const infoPrefix = [matiere, niveau].filter(Boolean).join(' ').trim()
-    const description = clampMetaDescription(infoPrefix ? `${infoPrefix} - ${baseDescription}` : baseDescription) || undefined
+    const title = buildSeoTitle({
+      resourceType: props.resourceType,
+      baseTitle,
+      subjectDisplay: subject.display,
+      niveauNom: niveau
+    }) || (baseTitle || context || undefined)
+
+    const baseDescription = pickSeoDescription(value, props.resourceType)
+    const description = buildSeoDescription({
+      resourceType: props.resourceType,
+      subjectPhrase: subject.phrase,
+      niveauNom: niveau,
+      baseDescription,
+      baseTitle,
+    }) || undefined
     const image = pickSeoImage(value) || undefined
     const imageAbs = image ? toAbsoluteUrl(image) : ''
     const canonicalUrl = toAbsoluteUrl(route.path)
@@ -304,12 +410,27 @@ watch(
       title,
       description,
       canonicalPath: route.path,
+      robots: 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1',
       ogType: 'article',
       image,
       jsonLdGraph
     })
   },
   { immediate: true }
+)
+
+watch(
+  error,
+  (value) => {
+    const message = String(value || '').trim()
+    if (!message) return
+    setPageSeo({
+      title: 'Ressource introuvable',
+      description: 'Cette ressource gratuite est introuvable ou indisponible.',
+      canonicalPath: route.path,
+      robots: 'noindex,follow'
+    })
+  }
 )
 
 watch(
@@ -376,15 +497,42 @@ onBeforeUnmount(() => {
         </div>
 
         <div v-else-if="resource" class="cours-container">
-          <header class="cours-header">
-            <div class="cours-title-row">
-              <h1 class="cours-title">{{ resource.titre }}</h1>
-            </div>
-          </header>
+           <header class="cours-header">
+             <div class="cours-title-row">
+               <h1 class="cours-title">{{ resource.titre }}</h1>
+             </div>
+           </header>
 
-          <div v-if="isExerciseResource" class="exercise-detail-body">
-            <ExerciceQCM
-              :eid="resource.id"
+           <section class="free-resource-cta" aria-label="Accès professeur ou plateforme">
+             <div class="free-resource-cta__copy">
+               <p class="free-resource-cta__title">Besoin d’un professeur ou d’un accès complet&nbsp;?</p>
+               <p class="free-resource-cta__subtitle">Cours particuliers de maths en ligne • Abonnement plateforme OptiTAB</p>
+             </div>
+             <div class="free-resource-cta__actions">
+               <router-link
+                 :to="{ name: 'CoursParticuliers' }"
+                 class="free-resource-cta__btn free-resource-cta__btn--primary"
+                 data-track="nav"
+                 data-nav-name="tutoring"
+                 data-nav-location="free_resource_detail_banner"
+               >
+                 Cours particuliers
+               </router-link>
+               <button
+                 type="button"
+                 class="free-resource-cta__btn free-resource-cta__btn--secondary"
+                 data-cta-name="subscribe"
+                 data-cta-location="free_resource_detail_banner"
+                 @click="onSubscriptionCtaClick"
+               >
+                 {{ subscriptionCtaLabel }}
+               </button>
+             </div>
+           </section>
+
+           <div v-if="isExerciseResource" class="exercise-detail-body">
+             <ExerciceQCM
+               :eid="resource.id"
               :titre="resource.titre"
               :instruction="exerciseInstruction"
               :etapes="exerciseSteps"
@@ -429,13 +577,13 @@ onBeforeUnmount(() => {
             </transition>
           </nav>
 
-          <div v-if="!isExerciseResource" class="cours-content-outer" :style="zoomStyle">
-            <div class="cours-content" ref="contentRef" v-html="renderedContent" />
-          </div>
+           <div v-if="!isExerciseResource" class="cours-content-outer" :style="zoomStyle">
+             <div class="cours-content" ref="contentRef" v-html="renderedContent" />
+           </div>
 
-          <transition name="scroll-top-fade">
-            <button
-              v-show="showScrollTopButton && !isExerciseResource"
+           <transition name="scroll-top-fade">
+             <button
+               v-show="showScrollTopButton && !isExerciseResource"
               class="scroll-top-btn"
               @click="scrollToTop"
               aria-label="Retour en haut"
@@ -559,6 +707,132 @@ onBeforeUnmount(() => {
   margin: 20px 0 0;
   width: 100%;
   padding: 0 0 24px;
+}
+
+.free-resource-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.10), rgba(99, 102, 241, 0.07));
+  margin: 18px 0 22px 0;
+}
+
+.free-resource-cta__copy {
+  min-width: 0;
+}
+
+.free-resource-cta__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.free-resource-cta__subtitle {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.free-resource-cta__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  white-space: nowrap;
+}
+
+.free-resource-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.free-resource-cta__btn--primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 55%, #1d4ed8 100%);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 14px 32px rgba(59, 130, 246, 0.24);
+}
+
+.free-resource-cta__btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 38px rgba(59, 130, 246, 0.3);
+}
+
+.free-resource-cta__btn--primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 52%);
+  transform: translateX(-70%);
+  transition: transform 0.55s ease;
+}
+
+.free-resource-cta__btn--primary:hover::after {
+  transform: translateX(-15%);
+}
+
+.free-resource-cta__btn--secondary {
+  background: rgba(255, 255, 255, 0.9);
+  color: #2563eb;
+  border-color: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+}
+
+.free-resource-cta__btn--secondary:hover {
+  transform: translateY(-1px);
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.32);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.free-resource-cta__btn:active {
+  transform: translateY(0);
+}
+
+.free-resource-cta__btn:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.45);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .free-resource-cta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .free-resource-cta__actions {
+    justify-content: stretch;
+  }
+
+  .free-resource-cta__btn {
+    width: 100%;
+  }
 }
 
 .exercise-intro {
@@ -821,17 +1095,7 @@ onBeforeUnmount(() => {
   transform-origin: top left;
   transition: transform 0.2s ease;
   overflow-x: hidden;
-  height: calc(var(--course-content-height, 0px) * var(--course-zoom, 1));
   margin-top: -8px;
-}
-
-@supports (zoom: 1) {
-  .cours-content-outer {
-    zoom: var(--course-zoom, 1);
-    transform: none !important;
-    width: 100% !important;
-    height: auto !important;
-  }
 }
 
 .cours-content {

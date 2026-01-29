@@ -170,7 +170,7 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  // Restaurer intelligemment la position de scroll
+  // Toujours remonter en haut lors d'un clic sur un lien (sauf ancre ou back/forward)
   scrollBehavior(to, from, savedPosition) {
     try {
       if (ALWAYS_SCROLL_TO_TOP_ROUTES.includes(to.name)) {
@@ -188,95 +188,17 @@ const router = createRouter({
         return savedPosition
       }
 
-      // 3) Revenir sur la liste d'exercices d'une notion: restaurer la position précédente
-      if (to.name === 'ExercicesByNotion' && to.params?.notionId) {
-        const key = `optitab_page_exercices_${to.params.notionId}`
-        const raw = sessionStorage.getItem(key)
-        if (raw) {
-          try {
-            const state = JSON.parse(raw)
-            if (state && typeof state.scrollY === 'number') {
-              return { left: 0, top: state.scrollY }
-            }
-          } catch (_) { /* ignore */ }
-        }
-      }
-
-      // 4) Comportement par défaut: ne pas forcer de scroll
-      return false
+      // 3) Comportement par défaut: remonter en haut
+      return { top: 0, left: 0, behavior: 'instant' }
     } catch (_) {
-      return false
+      return { top: 0, left: 0, behavior: 'instant' }
     }
   }
-})
-
-// Utilitaires de persistance du scroll (comportement "onglets")
-function getScrollContainer() {
-  try {
-    return document.querySelector('.dashboard-main') || document.querySelector('.dashboard-content') || document.scrollingElement || document.documentElement
-  } catch (_) {
-    return undefined
-  }
-}
-
-function scrollKeyForRoute(route) {
-  if (!route || !route.name) return null
-  const id = route.params?.notionId || route.params?.matiereId || route.params?.chapitreId || route.params?.exerciceId || ''
-  return `optitab_scroll_route_${route.name}_${id}`
-}
-
-function saveScrollForRoute(route) {
-  try {
-    const key = scrollKeyForRoute(route)
-    if (!key) return
-    const c = getScrollContainer()
-    if (!c) return
-    const y = (c === document.documentElement || c === document.body) ? (window.pageYOffset || document.documentElement.scrollTop || 0) : c.scrollTop
-    sessionStorage.setItem(key, JSON.stringify({ y, t: Date.now() }))
-  } catch (_) {}
-}
-
-function restoreScrollForRoute(route) {
-  try {
-    const key = scrollKeyForRoute(route)
-    if (!key) return
-    const raw = sessionStorage.getItem(key)
-    if (!raw) return
-    const s = JSON.parse(raw)
-    if (!s || typeof s.y !== 'number') return
-    const c = getScrollContainer()
-    if (!c) return
-    if (c === document.documentElement || c === document.body) {
-      window.scrollTo({ top: s.y, behavior: 'auto' })
-    } else {
-      c.scrollTo({ top: s.y, behavior: 'auto' })
-    }
-  } catch (_) {}
-}
-
-// Enregistrer la position avant navigation, restaurer après
-router.beforeEach((to, from, next) => {
-  // Sauvegarde opportuniste, ne bloque jamais la navigation
-  try { saveScrollForRoute(from) } catch (_) {}
-  next()
 })
 
 router.afterEach((to) => {
   try { applyRouteSeo(to) } catch (_) {}
   try { analytics.pageView(to.fullPath) } catch (_) {}
-  // Routes qui doivent toujours s'ouvrir en haut (pas de restauration de scroll)
-  if (ALWAYS_SCROLL_TO_TOP_ROUTES.includes(to.name)) {
-    // Forcer le scroll en haut après le chargement
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'instant' })
-    }, 50)
-    return
-  }
-  // Ne rien faire si ancre spécifique
-  if (to.hash && to.hash.startsWith('#')) return
-  // Restaurer si on a déjà visité la route
-  setTimeout(() => restoreScrollForRoute(to), 30)
-  setTimeout(() => restoreScrollForRoute(to), 120)
 })
 
 // Navigation guard pour protéger le dashboard

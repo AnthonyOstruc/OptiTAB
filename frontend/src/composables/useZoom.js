@@ -112,15 +112,15 @@ export function useZoom(options = {}) {
           ...baseStyle,
           transform: `scale(${z})`,
           transformOrigin: 'top left',
-          width: `${widthPercent}%`
+          width: `${widthPercent}%`,
+          height: 'auto',
+          minHeight: 'auto'
         }
         
         // Seulement appliquer la hauteur si elle est mesurée et valide
-        if (contentHeight.value > 0) {
-          style.height = `calc(${baseHeight} * ${z})`
-        } else {
-          style.height = 'auto'
-          style.minHeight = 'auto'
+        if (contentHeight.value > 0 && Number.isFinite(z) && z < 1) {
+          const marginBottom = -Math.round(contentHeight.value * (1 - z))
+          style.marginBottom = `${marginBottom}px`
         }
         
         return style

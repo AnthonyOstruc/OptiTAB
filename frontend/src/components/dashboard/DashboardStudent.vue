@@ -73,6 +73,7 @@
 import { useUserStore } from '@/stores/user'
 import { ref, onMounted, computed, watch, onBeforeUnmount } from 'vue'
 import { useRouter, onBeforeRouteLeave } from 'vue-router'
+import { lockBodyScroll, unlockBodyScroll } from '@/utils/bodyScrollLock'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { getStatuses, getExercices, getMatieres } from '@/api'
 import {
@@ -197,8 +198,11 @@ async function respondToInvitation(action) {
 }
 
 function lockScroll(lock) {
-  if (typeof document === 'undefined') return
-  document.body.style.overflow = lock ? 'hidden' : ''
+  if (lock) {
+    lockBodyScroll('dashboard-student-invitation', { mode: 'overflow' })
+  } else {
+    unlockBodyScroll('dashboard-student-invitation')
+  }
 }
 
 watch(showInvitationModal, (visible) => {

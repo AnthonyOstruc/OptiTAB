@@ -31,7 +31,8 @@
           <span class="cta-arrow">→</span>
         </button>
         <button v-if="ctaSecondary" class="section-hero__cta secondary" @click="$emit('cta-secondary')">
-          {{ ctaSecondary }}
+          <span class="cta-text">{{ ctaSecondary }}</span>
+          <span class="cta-arrow">→</span>
         </button>
       </div>
       <div class="section-hero__reviews">
@@ -55,7 +56,8 @@
         <span class="cta-arrow">→</span>
       </button>
       <button v-if="ctaSecondary" class="section-hero__cta secondary" @click="$emit('cta-secondary')">
-        {{ ctaSecondary }}
+        <span class="cta-text">{{ ctaSecondary }}</span>
+        <span class="cta-arrow">→</span>
       </button>
       <div class="section-hero__reviews-mobile">
         <GoogleReviewsCompact />

@@ -1,62 +1,52 @@
 <template>
-  <section class="home-seo">
-    <div class="home-seo__inner">
-      <h2 class="home-seo__title">Deux solutions pour réussir</h2>
-      <p class="home-seo__text">
-        <span class="home-seo__text-line">
-          Cours particuliers en ligne (maths, physique‑chimie, informatique) et plateforme de maths par abonnement.
-        </span>
-        <span class="home-seo__text-line">Cours, fiches de synthèse, exercices corrigés — du collège à l’université.</span>
-      </p>
-      <div class="home-seo__links" aria-label="Accès rapide">
-        <router-link to="/cours-particuliers" class="home-seo__link">Cours particuliers</router-link>
-        <router-link to="/ressources-gratuites/cours" class="home-seo__link">Cours gratuits</router-link>
-        <router-link to="/ressources-gratuites/exercices" class="home-seo__link">Exercices gratuits</router-link>
-        <router-link to="/ressources-gratuites/syntheses" class="home-seo__link">Synthèses gratuites</router-link>
-        <button type="button" class="home-seo__link" @click="openContactModal('Demande d\'information')">Contact</button>
-      </div>
-      <div class="home-seo__trust" aria-label="Informations clés">
-        <span class="trust-pill">Collège • Lycée • Prépa • Université</span>
-        <span class="trust-pill">Cours en ligne, méthode &amp; corrections</span>
-        <span class="trust-pill">Réponse sous 24h</span>
-      </div>
+  <section class="offers-section" itemscope itemtype="https://schema.org/WebPage">
+    <div class="offers-section__inner">
+      <!-- Header avec H1 -->
+      <header class="offers-section__header">
+        <h1 class="offers-section__title">Plateforme de maths en ligne et cours particuliers</h1>
+      </header>
 
-      <div class="home-seo__keyword">
-        <h3 class="home-seo__keyword-title">Soutien scolaire en ligne &amp; aide aux devoirs</h3>
-        <p class="home-seo__keyword-text">
-          Cours de maths en ligne, exercices corrigés et fiches de synthèse pour progresser efficacement.
-          Cours particuliers en ligne : collège, Seconde, Première, Terminale, prépa (MPSI) et Grandes Écoles.
-        </p>
-      </div>
-
-      <h3 class="home-seo__offers-title">Deux offres</h3>
-      <div class="home-seo__offers" aria-label="Deux offres OptiTAB">
-        <article class="offer-card offer-card--subscription">
-          <div class="offer-badge">📘 Abonnement</div>
-          <h4 class="offer-title">Plateforme de maths (abonnement)</h4>
-          <ul class="offer-list">
+      <!-- Deux offres principales -->
+      <div class="offers-section__grid">
+        <article class="offer-card" itemscope itemtype="https://schema.org/Product">
+          <meta itemprop="name" content="Abonnement plateforme de maths OptiTAB" />
+          <span class="offer-card__badge">Abonnement</span>
+          <h2 class="offer-card__title">Plateforme de maths en ligne</h2>
+          <ul class="offer-card__list">
             <li>Cours structurés et fiches de synthèse</li>
-            <li>Exercices corrigés (progressifs)</li>
-            <li>Suivi de progression</li>
-            <li>Accès immédiat, en autonomie</li>
+            <li>Exercices corrigés progressifs</li>
+            <li>Suivi de progression en autonomie</li>
+            <li>Programme Première et Terminale + bases</li>
           </ul>
-          <a href="#tarifs" class="offer-cta primary">Voir les formules (Maths)</a>
-          <p class="offer-note">Abonnement = maths uniquement.</p>
+          <a href="#tarifs" class="offer-card__cta" itemprop="url">Découvrir l'abonnement</a>
+          <span class="offer-card__hint">Première • Terminale • Spé maths • Bases</span>
         </article>
-        <article class="offer-card offer-card--tutoring">
-          <div class="offer-badge">👨‍🏫 Cours particuliers</div>
-          <h4 class="offer-title">Cours particuliers en ligne</h4>
-          <ul class="offer-list">
-            <li>Maths, physique‑chimie, informatique</li>
-            <li>Aide aux devoirs / DM + méthode</li>
-            <li>Préparation DS, bac, examens/concours</li>
-            <li>Suivi personnalisé</li>
+
+        <article class="offer-card" itemscope itemtype="https://schema.org/Service">
+          <meta itemprop="name" content="Cours particuliers en ligne OptiTAB" />
+          <span class="offer-card__badge">Cours particuliers</span>
+          <h2 class="offer-card__title">Cours particuliers en visio</h2>
+          <ul class="offer-card__list">
+            <li>Maths, physique-chimie, informatique</li>
+            <li>Préparation brevet, bac et concours</li>
+            <li>Aide aux devoirs et méthode de travail</li>
+            <li>Tous niveaux : collège à prépa</li>
           </ul>
-          <button type="button" class="offer-cta secondary" @click="openContactModal('Réserver un cours')">Réserver une séance</button>
-          <p class="offer-note">Réponse sous 24h.</p>
+          <router-link to="/cours-particuliers" class="offer-card__cta" itemprop="url">Réserver un cours</router-link>
+          <span class="offer-card__hint">Collège • Lycée • Prépa • Réponse sous 24h</span>
         </article>
       </div>
-      <p class="home-seo__note">Objectif&nbsp;: comprendre, s’entraîner et progresser avec une méthode claire.</p>
+
+      <!-- Liens internes optimisés -->
+      <nav class="offers-section__nav" aria-label="Ressources gratuites">
+        <router-link to="/ressources-gratuites/cours" class="offers-section__link">Cours gratuits de maths</router-link>
+        <span class="offers-section__separator">•</span>
+        <router-link to="/ressources-gratuites/exercices" class="offers-section__link">Exercices corrigés gratuits</router-link>
+        <span class="offers-section__separator">•</span>
+        <router-link to="/ressources-gratuites/syntheses" class="offers-section__link">Fiches de synthèse maths</router-link>
+        <span class="offers-section__separator">•</span>
+        <router-link to="/cours-particuliers" class="offers-section__link">Cours particuliers en visio</router-link>
+      </nav>
     </div>
 
     <ContactModal
@@ -90,292 +80,250 @@ const handleContactSuccess = (message) => {
 }
 </script>
 
-<style scoped lang="scss">
-@use '@/assets/variables.scss' as *;
-
-.home-seo {
-  background: #fff;
-  padding: 18px 0 56px 0;
+<style scoped>
+.offers-section {
+  background: #f8fafc;
+  padding: 72px 0;
 }
 
-.home-seo__inner {
-  max-width: 1000px;
+.offers-section__inner {
+  max-width: 920px;
   margin: 0 auto;
-  padding: 0 2vw;
+  padding: 0 24px;
+}
+
+/* Header */
+.offers-section__header {
   text-align: center;
+  margin-bottom: 56px;
 }
 
-.home-seo__title {
-  font-size: 2.05rem;
-  font-weight: 900;
-  color: $bleu-principal;
-  margin: 0 0 12px 0;
-  line-height: 1.15;
-}
-
-.home-seo__text {
-  color: #475569;
-  font-size: 1.06rem;
-  line-height: 1.7;
-  margin: 0 auto 18px auto;
-  max-width: 860px;
-}
-
-.home-seo__text-line {
-  display: block;
-}
-
-.home-seo__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin: 0 auto 14px auto;
-}
-
-.home-seo__trust {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin: 0 auto 18px auto;
-}
-
-.home-seo__keyword {
-  margin: 10px auto 18px auto;
-  max-width: 860px;
-}
-
-.home-seo__keyword-title {
-  margin: 0 0 6px 0;
-  font-size: 1.05rem;
-  font-weight: 900;
-  color: #0f172a;
-}
-
-.home-seo__keyword-text {
+.offers-section__title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #1e293b;
   margin: 0;
-  color: #475569;
-  font-size: 0.98rem;
-  line-height: 1.65;
-  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
 
-.trust-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 800;
-  font-size: 0.92rem;
-  color: #334155;
-  background: rgba(15, 23, 42, 0.04);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-}
-
-.home-seo__offers-title {
-  margin: 18px 0 12px 0;
-  font-size: 1.25rem;
-  font-weight: 900;
-  color: #0f172a;
-}
-
-.home-seo__offers {
+/* Offres */
+.offers-section__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  max-width: 980px;
-  margin: 0 auto 12px auto;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  margin-bottom: 40px;
 }
 
 .offer-card {
   background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid rgba(42, 56, 183, 0.12);
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
-  padding: 16px 16px 14px 16px;
-  text-align: left;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
 }
 
-.offer-card--subscription {
-  background: linear-gradient(135deg, rgba(42, 56, 183, 0.06) 0%, #ffffff 60%);
+.offer-card:hover {
+  box-shadow: 0 12px 40px rgba(42, 56, 183, 0.1);
+  transform: translateY(-4px);
+  border-color: rgba(42, 56, 183, 0.2);
 }
 
-.offer-card--tutoring {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, #ffffff 60%);
+.offer-card__badge {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #2a38b7;
+  background: rgba(42, 56, 183, 0.1);
+  margin-bottom: 20px;
 }
 
-.offer-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 900;
-  font-size: 0.9rem;
-  color: $bleu-principal;
-  background: rgba(42, 56, 183, 0.09);
+.offer-card__title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 20px 0;
+  line-height: 1.3;
+}
+
+.offer-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px 0;
+  flex-grow: 1;
+}
+
+.offer-card__list li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.7;
   margin-bottom: 10px;
 }
 
-.offer-title {
-  margin: 0 0 10px 0;
-  font-size: 1.18rem;
-  font-weight: 900;
-  color: #0f172a;
+.offer-card__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
 }
 
-.offer-list {
-  margin: 0 0 12px 0;
-  padding-left: 1.2rem;
-  color: #334155;
-  line-height: 1.6;
-  font-weight: 600;
+.offer-card__list li:last-child {
+  margin-bottom: 0;
 }
 
-.offer-list li {
-  margin: 0.15rem 0;
-}
-
-.offer-cta {
+.offer-card__cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 12px;
+  width: 100%;
+  padding: 16px 28px;
   border-radius: 12px;
-  font-weight: 900;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-}
-
-.offer-cta.primary {
-  background: $bleu-principal;
-  color: #fff;
-  box-shadow: 0 10px 22px rgba(42, 56, 183, 0.22);
-}
-
-.offer-cta.primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 26px rgba(42, 56, 183, 0.28);
-}
-
-.offer-cta.secondary {
-  background: rgba(42, 56, 183, 0.08);
-  color: $bleu-principal;
-}
-
-.offer-cta.secondary:hover {
-  background: rgba(42, 56, 183, 0.14);
-  transform: translateY(-1px);
-}
-
-.offer-note {
-  margin: 10px 0 0 0;
-  color: #64748b;
-  font-size: 0.92rem;
+  font-size: 1rem;
   font-weight: 600;
-}
-
-.home-seo__link {
-  background: rgba(42, 56, 183, 0.08);
-  color: $bleu-principal;
+  font-family: inherit;
   text-decoration: none;
   border: none;
-  padding: 10px 14px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.98rem;
-  transition: background 0.15s ease, transform 0.15s ease;
   cursor: pointer;
-  font-family: inherit;
+  background: linear-gradient(135deg, #2a38b7 0%, #3d4cc9 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(42, 56, 183, 0.25);
+  transition: all 0.2s ease;
+  margin-bottom: 16px;
 }
 
-.home-seo__link:hover {
-  background: rgba(42, 56, 183, 0.14);
-  transform: translateY(-1px);
+.offer-card__cta:hover {
+  background: linear-gradient(135deg, #232fa0 0%, #3541b5 100%);
+  box-shadow: 0 6px 24px rgba(42, 56, 183, 0.35);
+  transform: translateY(-2px);
 }
 
-.home-seo__note {
+.offer-card__hint {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-align: center;
+  width: 100%;
+  font-weight: 500;
+}
+
+/* Navigation liens */
+.offers-section__nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 56px;
+}
+
+.offers-section__link {
+  font-size: 0.95rem;
+  font-weight: 500;
   color: #64748b;
-  font-size: 0.98rem;
-  margin: 0;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding: 8px 4px;
 }
 
-@media (max-width: 700px) {
-  .home-seo {
-    padding: 10px 0 26px 0;
+.offers-section__link:hover {
+  color: #2a38b7;
+}
+
+.offers-section__separator {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .offers-section {
+    padding: 48px 0;
   }
 
-  .home-seo__inner {
-    padding: 0 4vw;
+  .offers-section__inner {
+    padding: 0 20px;
   }
 
-  .home-seo__title {
-    font-size: 1.3rem;
+  .offers-section__header {
+    margin-bottom: 36px;
   }
 
-  .home-seo__text {
+  .offers-section__title {
+    font-size: 1.6rem;
+  }
+
+  .offers-section__intro {
     font-size: 0.95rem;
-    margin-bottom: 14px;
   }
 
-  .home-seo__link {
-    font-size: 0.9rem;
-    padding: 9px 12px;
-  }
-
-  .home-seo__keyword-title {
-    font-size: 0.98rem;
-  }
-
-  .home-seo__keyword-text {
-    font-size: 0.92rem;
-  }
-
-  .home-seo__note {
-    font-size: 0.92rem;
-  }
-
-  .home-seo__offers-title {
-    font-size: 1.05rem;
-    margin-top: 14px;
-  }
-
-  .home-seo__offers {
-    grid-template-columns: repeat(2, minmax(280px, 1fr));
-    gap: 12px;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    padding: 0 4vw 8px 4vw;
-    margin: 0 -4vw 12px -4vw;
-    justify-content: start;
-    scrollbar-width: none;
-  }
-
-  .home-seo__offers::-webkit-scrollbar {
-    display: none;
+  .offers-section__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
   }
 
   .offer-card {
-    scroll-snap-align: start;
+    padding: 28px 24px;
+    border-radius: 16px;
   }
 
-  .offer-title {
-    font-size: 1.05rem;
+  .offer-card__badge {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    margin-bottom: 16px;
   }
 
-  .offer-list {
+  .offer-card__title {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+  }
+
+  .offer-card__list {
+    margin-bottom: 24px;
+  }
+
+  .offer-card__list li {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    padding-left: 20px;
+  }
+
+  .offer-card__list li::before {
+    width: 6px;
+    height: 6px;
+    top: 9px;
+  }
+
+  .offer-card__cta {
+    padding: 14px 24px;
     font-size: 0.95rem;
+    border-radius: 10px;
   }
 
-  .offer-note {
-    font-size: 0.88rem;
+  .offer-card__hint {
+    font-size: 0.8rem;
+  }
+
+  .offers-section__nav {
+    margin-bottom: 40px;
+    gap: 8px;
+  }
+
+  .offers-section__link {
+    font-size: 0.85rem;
   }
 }
 </style>

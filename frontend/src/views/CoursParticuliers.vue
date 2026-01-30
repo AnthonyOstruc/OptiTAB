@@ -2161,8 +2161,12 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
+  .cours-particuliers-page.public-layout {
+    padding-top: 70px;
+  }
+
   .hero-section {
-    padding: 80px 1rem 40px 1rem;
+    padding: 40px 1rem 40px 1rem;
   }
 
   .hero-title {
@@ -2592,7 +2596,7 @@ onUnmounted(() => {
 
 @media (max-width: 480px) {
   .hero-section {
-    padding: 70px 0.75rem 30px 0.75rem;
+    padding: 35px 0.75rem 30px 0.75rem;
   }
 
   .hero-title {

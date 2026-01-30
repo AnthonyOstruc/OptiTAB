@@ -1,76 +1,78 @@
 <template>
   <MainLayout>
-    <div class="free-resources-home">
-      <!-- Hero Section -->
-      <section class="hero-section">
-        <div class="hero-container">
-          <span class="hero-badge">
-            <SparklesIcon class="badge-icon" />
-            100% Gratuit
-          </span>
-          <h1 class="hero-title">Ressources gratuites <span class="highlight">OptiTAB</span></h1>
-          <p class="hero-subtitle">
-            Découvrez gratuitement notre méthode : cours structurés, exercices corrigés pas-à-pas et fiches de synthèse pour réviser efficacement.
-          </p>
-        </div>
-      </section>
-
-      <!-- Cards Section -->
-      <section class="cards-section">
-        <div class="cards-container">
-          <article
-            v-for="item in freeContentHomeBlocks"
-            :key="item.type"
-            class="resource-card"
-          >
-            <router-link :to="item.to" class="card-link">
-              <div class="card-header">
-                <div class="badge" :class="`badge-${item.type}`">
-                  {{ item.badge }}
-                </div>
-                <div class="card-icon">
-                  <component :is="getIcon(item.type)" />
-                </div>
-              </div>
-              
-              <h2 class="card-title">{{ item.title }}</h2>
-              <p class="card-highlight">{{ item.highlight }}</p>
-              <p class="card-description">{{ item.description }}</p>
-              
-              <ul class="features-list">
-                <li v-for="bullet in item.bullets" :key="bullet">
-                  <CheckCircleIcon class="check-icon" />
-                  <span>{{ bullet }}</span>
-                </li>
-              </ul>
-              
-              <span class="explore-btn">
-                Explorer gratuitement
-                <ArrowRightIcon class="arrow-icon" />
-              </span>
-            </router-link>
-          </article>
-        </div>
-      </section>
-
-      <!-- CTA Section -->
-      <section class="cta-section">
-        <div class="cta-container">
-          <h3 class="cta-title">Envie d'aller plus loin ?</h3>
-          <p class="cta-desc">Accédez à l'ensemble des cours, exercices et synthèses avec un abonnement OptiTAB.</p>
-          <div class="cta-buttons">
-            <button class="cta-primary" @click="openSubscriptionModal">
-              Créer un compte gratuit
-            </button>
-            <router-link to="/#tarifs" class="cta-secondary">
-              Voir les tarifs
-            </router-link>
+    <div class="free-resources-home-zoom" :style="freeResourcesZoomStyle">
+      <div ref="freeResourcesContentRef" class="free-resources-home">
+        <!-- Hero Section -->
+        <section class="hero-section">
+          <div class="hero-container">
+            <span class="hero-badge">
+              <SparklesIcon class="badge-icon" />
+              100% Gratuit
+            </span>
+            <h1 class="hero-title">Ressources gratuites <span class="highlight">OptiTAB</span></h1>
+            <p class="hero-subtitle">
+              Découvrez gratuitement notre méthode : cours structurés, exercices corrigés pas-à-pas et fiches de synthèse pour réviser efficacement.
+            </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- FAQ Section -->
-      <FaqSection :faq="faq" />
+        <!-- Cards Section -->
+        <section class="cards-section">
+          <div class="cards-container">
+            <article
+              v-for="item in freeContentHomeBlocks"
+              :key="item.type"
+              class="resource-card"
+            >
+              <router-link :to="item.to" class="card-link">
+                <div class="card-header">
+                  <div class="badge" :class="`badge-${item.type}`">
+                    {{ item.badge }}
+                  </div>
+                  <div class="card-icon">
+                    <component :is="getIcon(item.type)" />
+                  </div>
+                </div>
+                
+                <h2 class="card-title">{{ item.title }}</h2>
+                <p class="card-highlight">{{ item.highlight }}</p>
+                <p class="card-description">{{ item.description }}</p>
+                
+                <ul class="features-list">
+                  <li v-for="bullet in item.bullets" :key="bullet">
+                    <CheckCircleIcon class="check-icon" />
+                    <span>{{ bullet }}</span>
+                  </li>
+                </ul>
+                
+                <span class="explore-btn">
+                  Explorer gratuitement
+                  <ArrowRightIcon class="arrow-icon" />
+                </span>
+              </router-link>
+            </article>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+          <div class="cta-container">
+            <h3 class="cta-title">Envie d'aller plus loin ?</h3>
+            <p class="cta-desc">Accédez à l'ensemble des cours, exercices et synthèses avec un abonnement OptiTAB.</p>
+            <div class="cta-buttons">
+              <button class="cta-primary" @click="openSubscriptionModal">
+                Créer un compte gratuit
+              </button>
+              <router-link to="/#tarifs" class="cta-secondary">
+                Voir les tarifs
+              </router-link>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <FaqSection :faq="faq" />
+      </div>
     </div>
   </MainLayout>
 </template>
@@ -81,6 +83,8 @@ import FaqSection from '@/components/home/FaqSection.vue'
 import { freeContentHomeBlocks } from '@/config/freeContent'
 import { faq } from '@/config/homeContent'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
+import { useZoom } from '@/composables/useZoom'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { 
   SparklesIcon, 
   CheckCircleIcon, 
@@ -91,6 +95,90 @@ import {
 } from '@heroicons/vue/24/outline'
 
 const { openModal } = useModalManager()
+
+// --- Mobile/desktop zoom (même logique que Home/About) ---
+const freeResourcesContentRef = ref(null)
+
+function computeFreeResourcesHomeZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.72
+  if (width >= 520) return 0.68
+  if (width >= 420) return 0.64
+  if (width >= 360) return 0.6
+  return 0.55
+}
+
+const {
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom({ computeAutoZoom: computeFreeResourcesHomeZoom })
+
+const freeResourcesZoomStyle = createZoomStyle({
+  cssVar: '--free-resources-zoom',
+  heightVar: '--free-resources-content-height',
+  mobileZoomAdjustment: (z) => z
+})
+
+let freeResourcesResizeObserver = null
+const measureFreeResourcesHeight = () => {
+  measureContentHeight(freeResourcesContentRef)
+}
+
+const handleViewportChange = async () => {
+  updateViewportWidth()
+  await nextTick()
+  measureFreeResourcesHeight()
+}
+
+const handleResize = () => {
+  void handleViewportChange()
+}
+
+const handleOrientationChange = () => {
+  setTimeout(() => {
+    void handleViewportChange()
+  }, 200)
+}
+
+onMounted(async () => {
+  detectMobileAndZoomSupport()
+  setupViewportListener()
+
+  await nextTick()
+  measureFreeResourcesHeight()
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', handleResize, { passive: true })
+    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
+
+    setTimeout(measureFreeResourcesHeight, 250)
+
+    if (window.ResizeObserver && freeResourcesContentRef.value) {
+      freeResourcesResizeObserver = new ResizeObserver(() => {
+        measureFreeResourcesHeight()
+      })
+      freeResourcesResizeObserver.observe(freeResourcesContentRef.value)
+    }
+  }
+})
+
+onUnmounted(() => {
+  cleanupViewportListener()
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', handleResize)
+    window.removeEventListener('orientationchange', handleOrientationChange)
+  }
+  freeResourcesResizeObserver?.disconnect?.()
+  freeResourcesResizeObserver = null
+})
 
 const getIcon = (type) => {
   const icons = {
@@ -107,6 +195,12 @@ const openSubscriptionModal = () => {
 </script>
 
 <style scoped>
+.free-resources-home-zoom {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
 .free-resources-home {
   background: #ffffff;
   min-height: 100vh;
@@ -395,9 +489,15 @@ const openSubscriptionModal = () => {
   }
 }
 
+@media (max-width: 700px) {
+  .hero-section {
+    padding-top: 120px;
+  }
+}
+
 @media (max-width: 600px) {
   .hero-section {
-    padding: 60px 16px 40px;
+    padding: 120px 16px 40px;
   }
   
   .cards-section {

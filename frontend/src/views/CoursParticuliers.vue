@@ -2185,8 +2185,12 @@ onUnmounted(() => {
     max-width: 280px;
     text-align: center;
     margin: 0 auto;
-    padding: 10px 20px;
+    padding: 14px 20px;
     font-size: 0.95rem;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .trust-section {
@@ -2573,8 +2577,12 @@ onUnmounted(() => {
     width: 100%;
     max-width: 280px;
     text-align: center;
-    padding: 10px 20px;
+    padding: 14px 20px;
     font-size: 0.95rem;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .cta-final-note {

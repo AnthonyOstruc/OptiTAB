@@ -74,7 +74,11 @@ export default {
       openModal(MODAL_IDS.LOGIN)
     }
 
-    const isFreeResourcePage = computed(() => route.path?.startsWith('/ressources-gratuites'))
+    const isFreeResourcePage = computed(() => {
+      const path = route.path
+      // Exclure la page d'accueil des ressources gratuites, ne montrer les tabs que sur les sous-pages
+      return path?.startsWith('/ressources-gratuites/') && path !== '/ressources-gratuites'
+    })
     const isCalculatorPage = computed(() => route.path === '/calculator')
 
     // Empêcher le zoom et les gestes indésirables sur le header

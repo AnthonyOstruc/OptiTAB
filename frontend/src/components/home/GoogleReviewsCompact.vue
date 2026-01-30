@@ -15,6 +15,7 @@
     <span class="rating-text">
       <span class="star-icon">⭐</span>
       <span class="rating-badge">5/5</span>
+      <span v-if="showReviewCount" class="review-count">({{ reviewCount }} avis)</span>
     </span>
     <span class="link-text">— Voir sur Google</span>
   </a>
@@ -25,6 +26,14 @@ const props = defineProps({
   inline: {
     type: Boolean,
     default: false
+  },
+  showReviewCount: {
+    type: Boolean,
+    default: false
+  },
+  reviewCount: {
+    type: Number,
+    default: 23
   },
   googleReviewsUrl: {
     type: String,
@@ -83,6 +92,13 @@ const props = defineProps({
       border-radius: 0.25rem;
       font-weight: 700;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .review-count {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #6b7280;
+      margin-left: 0.125rem;
     }
   }
   

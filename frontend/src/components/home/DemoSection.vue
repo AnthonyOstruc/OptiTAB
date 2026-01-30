@@ -52,7 +52,7 @@
 
       <!-- Call to Action -->
       <div class="demo-cta-container">
-        <h3 class="demo-cta-title">Rejoignez OptiTAB dès maintenant</h3>
+        <h3 class="demo-cta-title">Rejoignez la plateforme OptiTAB dès maintenant</h3>
         <p class="demo-cta-desc">Accédez à des milliers d'exercices et progressez à votre rythme</p>
         <div class="demo-cta-buttons">
           <button class="demo-cta-primary" data-cta-name="signup" data-cta-location="demo" @click="$emit('cta-subscribe')">
@@ -299,10 +299,12 @@ onMounted(() => {
 // Call to Action
 .demo-cta-container {
   text-align: center;
-  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
-  border-radius: 24px;
-  padding: 60px 40px;
-  box-shadow: 0 10px 40px rgba(42, 56, 183, 0.2);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 48px 32px;
+  max-width: 900px;
+  margin: 0 auto;
   position: relative;
   opacity: 0;
   transform: translateY(40px);
@@ -315,48 +317,45 @@ onMounted(() => {
 }
 
 .demo-cta-title {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 12px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
   position: relative;
   z-index: 1;
 }
 
 .demo-cta-desc {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 36px;
+  font-size: 1rem;
+  color: #64748b;
+  margin-bottom: 28px;
   position: relative;
   z-index: 1;
 }
 
 .demo-cta-buttons {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 20px;
   position: relative;
   z-index: 1;
 }
 
 .demo-cta-primary {
-  background: #ffffff;
-  color: #2a38b7;
-  font-weight: 700;
-  font-size: 1.1rem;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
   border: none;
-  border-radius: 12px;
-  padding: 16px 40px;
+  border-radius: 8px;
+  padding: 14px 32px;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    background: #f8f9fa;
+    background: #1d4ed8;
+    transform: translateY(-1px);
   }
   
   &:active {
@@ -365,20 +364,19 @@ onMounted(() => {
 }
 
 .demo-cta-secondary {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: #ffffff;
+  color: #2563eb;
   font-weight: 600;
   font-size: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  padding: 16px 36px;
+  border: 1px solid #2563eb;
+  border-radius: 8px;
+  padding: 14px 32px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-2px);
+    background: #eff6ff;
+    transform: translateY(-1px);
   }
   
   &:active {
@@ -475,12 +473,12 @@ onMounted(() => {
   }
   
   .demo-cta-container {
-    padding: 48px 32px;
-    border-radius: 24px;
+    padding: 40px 24px;
+    border-radius: 12px;
   }
   
   .demo-cta-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   
   .demo-cta-buttons {
@@ -491,7 +489,7 @@ onMounted(() => {
   .demo-cta-primary,
   .demo-cta-secondary {
     width: 100%;
-    max-width: 350px;
+    max-width: 320px;
     margin: 0 auto;
   }
 }
@@ -527,24 +525,24 @@ onMounted(() => {
   }
   
   .demo-cta-container {
-    padding: 40px 24px;
+    padding: 32px 20px;
   }
   
   .demo-cta-title {
-    font-size: 1.75rem;
+    font-size: 1.35rem;
   }
   
   .demo-cta-desc {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
   }
   
   .demo-cta-primary {
-    padding: 18px 36px;
-    font-size: 1.1rem;
+    padding: 14px 28px;
+    font-size: 1rem;
   }
   
   .demo-cta-secondary {
-    padding: 16px 32px;
+    padding: 14px 28px;
     font-size: 1rem;
   }
 }

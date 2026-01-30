@@ -10,34 +10,38 @@
     </div>
     
     <div class="section-hero__content">
-      <div class="hero-badge">
-        <span class="badge-icon">✨</span>
-        <span class="badge-text">Plateforme d'excellence</span>
-      </div>
       <h1 class="section-hero__title">
         {{ titre }}<span v-if="highlight"> <span class="highlight-gradient">{{ highlight }}</span></span>
       </h1>
       <p v-if="subtitleLines.length" class="section-hero__subtitle">
         <span v-for="(line, idx) in subtitleLines" :key="idx" class="subtitle-line">{{ line }}</span>
       </p>
-      <p v-if="miniLine" class="section-hero__mini">{{ miniLine }}</p>
-      <p v-if="messageParents" class="section-hero__parents">
-        <span class="parents-icon">👥</span>
-        {{ messageParents }}
-      </p>
+      <p v-if="sousTitre2" class="section-hero__subtitle2">{{ sousTitre2 }}</p>
+      <div v-if="microBenefits && microBenefits.length" class="section-hero__benefits">
+        <span v-for="(benefit, idx) in microBenefits" :key="idx" class="benefit-chip">
+          <span class="benefit-icon">✓</span>
+          {{ benefit }}
+        </span>
+      </div>
       <div class="section-hero__cta-group">
         <button v-if="ctaText" class="section-hero__cta main" @click="$emit('cta-main')">
-          <span class="cta-text">{{ ctaText }}</span>
-          <span class="cta-arrow">→</span>
+          <span class="cta-text">
+            {{ ctaText }}
+            <span class="cta-arrow">→</span>
+          </span>
+          <span v-if="ctaHint" class="cta-hint-main">{{ ctaHint }}</span>
         </button>
         <button v-if="ctaSecondary" class="section-hero__cta secondary" @click="$emit('cta-secondary')">
           <span class="cta-text">{{ ctaSecondary }}</span>
+          <span v-if="ctaSecondaryHint" class="cta-hint">({{ ctaSecondaryHint }})</span>
           <span class="cta-arrow">→</span>
         </button>
       </div>
-      <div class="section-hero__reviews">
+      <div class="section-hero__reassurance">
         <GoogleReviewsCompact />
+        <span v-if="reassurance" class="reassurance-text">• {{ reassurance }}</span>
       </div>
+      <p v-if="miniLine" class="section-hero__mini-levels">{{ miniLine }}</p>
     </div>
     <div class="section-hero__image-wrapper" v-if="image">
       <div class="image-glow"></div>
@@ -52,16 +56,22 @@
     <!-- Bouton CTA pour mobile (sous l'image) -->
     <div class="section-hero__cta-mobile">
       <button v-if="ctaText" class="section-hero__cta main" @click="$emit('cta-main')">
-        <span class="cta-text">{{ ctaText }}</span>
-        <span class="cta-arrow">→</span>
+        <span class="cta-text">
+          {{ ctaText }}
+          <span class="cta-arrow">→</span>
+        </span>
+        <span v-if="ctaHint" class="cta-hint-main">{{ ctaHint }}</span>
       </button>
       <button v-if="ctaSecondary" class="section-hero__cta secondary" @click="$emit('cta-secondary')">
         <span class="cta-text">{{ ctaSecondary }}</span>
+        <span v-if="ctaSecondaryHint" class="cta-hint">({{ ctaSecondaryHint }})</span>
         <span class="cta-arrow">→</span>
       </button>
-      <div class="section-hero__reviews-mobile">
+      <div class="section-hero__reassurance-mobile">
         <GoogleReviewsCompact />
+        <span v-if="reassurance" class="reassurance-text">• {{ reassurance }}</span>
       </div>
+      <p v-if="miniLine" class="section-hero__mini-levels-mobile">{{ miniLine }}</p>
     </div>
   </section>
 </template>
@@ -72,13 +82,19 @@ import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
 import { computed } from 'vue'
 const props = defineProps({
   titre: { type: String, default: '' },
+  description: { type: String, default: '' },
   sousTitre: { type: String, default: '' },
+  sousTitre2: { type: String, default: '' },
   miniLine: { type: String, default: '' },
   image: { type: [String, Object], default: () => heroDefaultImage },
+  showImage: { type: Boolean, default: true },
   highlight: { type: String, default: '' },
-  messageParents: { type: String, default: "Rejoignez la communauté de parents qui font confiance à OptiTAB !" },
-  ctaText: { type: String, default: "Découvrir OptiTAB" },
+  microBenefits: { type: Array, default: () => [] },
+  reassurance: { type: String, default: '' },
+  ctaText: { type: String, default: "Voir la démo" },
+  ctaHint: { type: String, default: '' },
   ctaSecondary: { type: String, default: "" },
+  ctaSecondaryHint: { type: String, default: "" },
   bg: { type: String, default: '#ffffff' }
 })
 
@@ -100,8 +116,8 @@ const subtitleLines = computed(() => {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  min-height: 580px;
-  padding: 160px 5vw 48px 5vw;
+  min-height: 480px;
+  padding: 140px 5vw 40px 5vw;
   border-radius: 0;
   gap: 40px;
   overflow: hidden;
@@ -353,23 +369,66 @@ const subtitleLines = computed(() => {
     opacity: 0.3;
   }
 }
+
+.section-hero__description {
+  font-size: 1.02rem;
+  color: #475569;
+  margin-bottom: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+  animation: fadeInUp 0.8s ease-out 0.35s both;
+  max-width: 680px;
+  
+  @media (max-width: 800px) {
+    font-size: 0.95rem;
+    margin-bottom: 0.85rem;
+    line-height: 1.6;
+    padding: 0 0.5rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.88rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
 .section-hero__subtitle {
   font-size: 1.12rem;
   color: #475569;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.65;
   animation: fadeInUp 0.8s ease-out 0.4s both;
   
   @media (max-width: 800px) {
     font-size: 1.02rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
     line-height: 1.5;
   }
   
   @media (max-width: 480px) {
     font-size: 0.95rem;
-    margin-bottom: 0.625rem;
+    margin-bottom: 0.5rem;
+    padding: 0 0.5rem;
+  }
+}
+
+.section-hero__subtitle2 {
+  font-size: 1rem;
+  color: #64748b;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  line-height: 1.6;
+  animation: fadeInUp 0.8s ease-out 0.42s both;
+  
+  @media (max-width: 800px) {
+    font-size: 0.95rem;
+    margin-bottom: 0.85rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.88rem;
+    margin-bottom: 0.75rem;
     padding: 0 0.5rem;
   }
 }
@@ -381,6 +440,32 @@ const subtitleLines = computed(() => {
 @media (min-width: 1024px) {
   .subtitle-line {
     white-space: nowrap;
+  }
+}
+
+// Niveaux en petit en bas
+.section-hero__mini-levels {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  margin: 1rem 0 0 0;
+  font-weight: 500;
+  line-height: 1.4;
+  animation: fadeInUp 0.8s ease-out 0.8s both;
+
+  @media (max-width: 800px) {
+    display: none;
+  }
+}
+
+.section-hero__mini-levels-mobile {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin: 0.75rem 0 0 0;
+  font-weight: 500;
+  text-align: center;
+  
+  @media (min-width: 801px) {
+    display: none;
   }
 }
 
@@ -402,55 +487,108 @@ const subtitleLines = computed(() => {
     padding: 0 0.5rem;
   }
 }
-.section-hero__parents {
-  display: inline-flex;
-  align-items: center;
+
+// Micro-bénéfices (chips)
+.section-hero__benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   justify-content: center;
-  gap: 10px;
-  font-size: 0.98rem;
-  color: #0f172a;
-  margin: 14px 0 10px 0;
-  font-weight: 800;
-  background: rgba(37, 99, 235, 0.08);
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(37, 99, 235, 0.22);
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+  margin: 1rem 0;
   animation: fadeInUp 0.8s ease-out 0.5s both;
   
-  .parents-icon {
-    font-size: 1.05rem;
-    display: inline-block;
+  @media (max-width: 480px) {
+    gap: 0.4rem;
   }
+}
+
+.benefit-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #166534;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
   
-  @media (max-width: 800px) {
-    margin: 14px auto 6px auto;
-    padding: 10px 12px;
-    font-size: 0.9rem;
-    max-width: 96%;
-    line-height: 1.45;
-    
-    .parents-icon {
-      font-size: 1rem;
-    }
+  .benefit-icon {
+    color: #22c55e;
+    font-weight: 700;
   }
   
   @media (max-width: 480px) {
-    margin: 12px auto 6px auto;
-    padding: 9px 12px;
-    font-size: 0.84rem;
-    border-radius: 999px;
-    
-    .parents-icon {
-      font-size: 0.95rem;
-    }
-  }
-  
-  @media (max-width: 360px) {
-    font-size: 0.8rem;
-    padding: 8px 11px;
+    font-size: 0.78rem;
+    padding: 0.3rem 0.625rem;
   }
 }
+
+// Réassurance sous les boutons
+.section-hero__reassurance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  animation: fadeInUp 0.8s ease-out 0.7s both;
+  
+  .reassurance-text {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 800px) {
+    display: none;
+  }
+}
+
+.section-hero__reassurance-mobile {
+  display: none;
+  
+  @media (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    
+    .reassurance-text {
+      font-size: 0.8rem;
+      color: #64748b;
+      font-weight: 500;
+      text-align: center;
+    }
+  }
+}
+
+// Hint sur bouton secondaire
+.cta-hint {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-left: 0.25rem;
+  
+  @media (max-width: 480px) {
+    font-size: 0.75rem;
+  }
+}
+
+.cta-hint-main {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.85;
+  margin-top: 0.125rem;
+  
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+  }
+}
+
 .section-hero__cta-group {
   display: flex;
   gap: 1.1rem;
@@ -487,13 +625,18 @@ const subtitleLines = computed(() => {
   padding: 12px 20px;
   cursor: pointer;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 2px;
+  min-width: 240px;
   transition: all 0.2s ease;
   animation: fadeInUp 0.8s ease-out 0.6s both;
   
   .cta-text {
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   
   .cta-arrow {
@@ -526,6 +669,7 @@ const subtitleLines = computed(() => {
     background: transparent;
     color: #475569;
     border: 2px solid #cbd5e1;
+    flex-direction: row;
     
     &:hover {
       background: #f8fafc;
@@ -540,24 +684,27 @@ const subtitleLines = computed(() => {
   }
   
   @media (max-width: 800px) {
-    width: 100%;
-    max-width: 300px;
+    width: auto;
+    max-width: 100%;
     justify-content: center;
     padding: 11px 18px;
     font-size: 0.95rem;
+    white-space: nowrap;
   }
   
   @media (max-width: 480px) {
-    max-width: 280px;
+    max-width: 100%;
     padding: 10px 16px;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     border-radius: 10px;
+    white-space: nowrap;
   }
   
   @media (max-width: 360px) {
-    max-width: 260px;
-    padding: 10px 15px;
-    font-size: 0.9rem;
+    max-width: 100%;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    white-space: nowrap;
   }
 }
 .section-hero__image-wrapper {
@@ -675,39 +822,43 @@ const subtitleLines = computed(() => {
 }
 
 .section-hero__image {
-  max-width: 500px;
+  max-width: 380px;
+  max-height: 280px;
   width: 100%;
   height: auto;
-  border-radius: 24px;
+  border-radius: 20px;
   background: #fff;
   object-fit: cover;
   filter: brightness(1.08) contrast(1.15) saturate(1.05);
   position: relative;
   z-index: 1;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
   
   @media (max-width: 800px) {
     max-width: 100%;
-    width: 90%;
-    border-radius: 20px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
-  }
-  
-  @media (max-width: 600px) {
-    width: 85%;
-    border-radius: 18px;
+    max-height: 320px;
+    width: 98%;
+    border-radius: 16px;
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
   }
   
+  @media (max-width: 600px) {
+    max-height: 300px;
+    width: 96%;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  
   @media (max-width: 480px) {
-    width: 90%;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    max-height: 280px;
+    width: 98%;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   }
   
   @media (max-width: 360px) {
-    width: 95%;
-    border-radius: 14px;
+    max-height: 260px;
+    width: 100%;
   }
 }
 </style> 

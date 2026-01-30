@@ -43,7 +43,7 @@ export const menuItems = [
     key: 'ressources-gratuites',
     text: 'Ressources gratuites',
     icon: SparklesIcon,
-    href: '/ressources-gratuites/cours',
+    href: '/ressources-gratuites',
     description: 'Cours, exercices et fiches gratuits'
   },
   {

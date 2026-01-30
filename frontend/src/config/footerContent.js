@@ -1,16 +1,14 @@
 export const footerLinks = [
+  // Navigation essentielle
   { label: 'Cours particuliers', href: '/cours-particuliers' },
-  { label: 'Cours gratuits', href: '/ressources-gratuites/cours' },
-  { label: 'Exercices gratuits', href: '/ressources-gratuites/exercices' },
-  { label: 'Synthèses gratuites', href: '/ressources-gratuites/syntheses' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'À propos', href: '/about' },
+  { label: 'Tarifs', href: '/tarifs' },
+  { label: 'Ressources gratuites', href: '/ressources-gratuites' },
+  // Légal
   { label: 'Mentions légales', href: '/legal' },
-  { label: 'CGU', href: '/cgu' },
-  { label: 'CGV', href: '/cgv' },
   { label: 'Confidentialité', href: '/confidentialite' },
   { label: 'Cookies', href: '/cookies' },
-  { label: 'Conditions', href: '/conditions' }
+  { label: 'CGU', href: '/cgu' },
+  { label: 'CGV', href: '/cgv' },
 ];
 
 export const footerIntro = {

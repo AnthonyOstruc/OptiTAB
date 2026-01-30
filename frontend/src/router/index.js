@@ -22,7 +22,12 @@ const ALWAYS_SCROLL_TO_TOP_ROUTES = [
 
 const routes = [
   { path: '/', name: 'Home', component: () => import('@/views/Home.vue') },
-  { path: '/ressources-gratuites', redirect: '/ressources-gratuites/cours' },
+  { path: '/tarifs', name: 'TarifsPage', component: () => import('@/views/TarifsPage.vue') },
+  { 
+    path: '/ressources-gratuites', 
+    name: 'FreeResourcesHome',
+    component: () => import('@/views/FreeResourcesHome.vue')
+  },
   {
     path: '/ressources-gratuites/cours',
     name: 'FreeCourses',

@@ -1,9 +1,9 @@
 <template>
   <section class="offers-section" itemscope itemtype="https://schema.org/WebPage">
     <div class="offers-section__inner">
-      <!-- Header avec H1 -->
+      <!-- Header avec H2 -->
       <header class="offers-section__header">
-        <h1 class="offers-section__title">Plateforme de maths en ligne et cours particuliers</h1>
+        <h2 class="offers-section__title">Plateforme de maths en ligne et cours particuliers</h2>
       </header>
 
       <!-- Deux offres principales -->
@@ -25,14 +25,14 @@
         <article class="offer-card" itemscope itemtype="https://schema.org/Service">
           <meta itemprop="name" content="Cours particuliers en ligne OptiTAB" />
           <span class="offer-card__badge">Cours particuliers</span>
-          <h2 class="offer-card__title">Cours particuliers en visio</h2>
+          <h2 class="offer-card__title">Cours particuliers en ligne</h2>
           <ul class="offer-card__list">
             <li>Maths, physique-chimie, informatique</li>
             <li>Préparation brevet, bac et concours</li>
             <li>Aide aux devoirs et méthode de travail</li>
             <li>Tous niveaux : collège à prépa</li>
           </ul>
-          <router-link to="/cours-particuliers" class="offer-card__cta" itemprop="url">Réserver un cours</router-link>
+          <button @click="openContactModal('Réserver un cours')" class="offer-card__cta" itemprop="url">Réserver un cours</button>
           <span class="offer-card__hint">Collège • Lycée • Prépa • Réponse sous 24h</span>
         </article>
       </div>
@@ -45,7 +45,7 @@
         <span class="offers-section__separator">•</span>
         <router-link to="/ressources-gratuites/syntheses" class="offers-section__link">Fiches de synthèse maths</router-link>
         <span class="offers-section__separator">•</span>
-        <router-link to="/cours-particuliers" class="offers-section__link">Cours particuliers en visio</router-link>
+        <router-link to="/cours-particuliers" class="offers-section__link">Cours particuliers en ligne</router-link>
       </nav>
     </div>
 

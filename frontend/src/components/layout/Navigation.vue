@@ -18,7 +18,7 @@
 
     <FreeResourceTabs v-else-if="isFreeResourcePage" class="free-resource-tabs" />
 
-    <CalculatorTabs v-else-if="isCalculatorPage" class="calculator-tabs" />
+    <CalculatorTabs v-else-if="isCalculatorPage" :class="['calculator-tabs', { 'calculator-tabs--not-logged': !userStore.isAuthenticated }]" />
 
     <!-- Onglets de matières (centre) -->
     <div v-if="shouldShowMatieresTab && !isFreeResourcePage && !isCalculatorPage" class="matieres-tabs">
@@ -132,7 +132,9 @@ const matieres = ref([])
 const showMatieresDropdown = ref(false)
 const isLoadingMatieres = ref(false)
 
-const isFreeResourcePage = computed(() => route.path?.startsWith('/ressources-gratuites'))
+const isFreeResourcePage = computed(() => 
+  route.path?.startsWith('/ressources-gratuites') && route.path !== '/ressources-gratuites'
+)
 const isCalculatorPage = computed(() => route.path === '/calculator')
 
 const HEADER_PUBLIC_NAV_NAME_BY_KEY = {
@@ -394,7 +396,7 @@ onMounted(async () => {
   }
 }
 
-@media (max-width: 1032px) {
+@media (max-width: 1065px) {
   .nav-item--free-resources {
     display: none;
   }
@@ -421,11 +423,17 @@ onMounted(async () => {
   justify-content: flex-start;
   align-items: center;
   margin-right: auto;
+
+  &--not-logged {
+    margin-left: 1em;
+  }
 }
 
 .right-items {
   @extend .flex;
   gap: 10px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .right-item {

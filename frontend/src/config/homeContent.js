@@ -5,13 +5,14 @@ export { faq } from './homeFaq.js'
 
 export const sectionHero = {
   titre: 'Cours particuliers en ligne + plateforme de maths',
-  sousTitre:
-    'Cours particuliers en ligne (maths, physique‑chimie, informatique)\nPlateforme de maths (abonnement) : cours, fiches, exercices corrigés.',
+  sousTitre: 'Cours particuliers en ligne (maths, physique, chimie, info)',
+  sousTitre2: 'Plateforme de maths (abonnement) : cours, fiches, exercices corrigés.',
   miniLine: "Collège • Lycée • Prépa • Université",
-  messageParents: "Rejoignez la communauté de parents qui font confiance à OptiTAB !",
-  ctaText: "Découvrir la plateforme (Maths)",
+  reassurance: "Contenu structuré • Corrections pas à pas • Suivi de progression",
+  ctaText: "Découvrir la plateforme Maths",
   ctaSecondary: "Découvrir les cours particuliers",
   image: heroImage,
+  showImage: false,
   bg: "linear-gradient(135deg, #fefefe 0%, #f8fafc 30%, #f1f5f9 60%, #e2e8f0 100%)"
 };
 
@@ -85,20 +86,20 @@ export const etapesParcours = {
     {
       numero: '01',
       icon: '👤',
-      titre: "Inscrivez-vous Gratuitement",
-      description: "Créez votre compte en quelques secondes et obtenez un accès immédiat à notre contenu de démarrage."
+      titre: "Inscription",
+      description: "Créez votre compte en quelques secondes."
     },
     {
       numero: '02',
       icon: '📘',
-      titre: "Choisissez Votre Niveau",
-      description: "Sélectionnez le niveau adapté à vos besoins."
+      titre: "Niveau",
+      description: "Sélectionnez le niveau adapté."
     },
     {
       numero: '03',
       icon: '📈',
-      titre: "Commencez à Apprendre",
-      description: "Regardez les leçons, pratiquez les exercices et suivez vos progrès en maîtrisant de nouveaux concepts."
+      titre: "Progression",
+      description: "Cours, exercices et suivi de progression."
     }
   ],
   ctaText: "Commencer gratuitement",

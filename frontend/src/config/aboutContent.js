@@ -33,8 +33,24 @@ export default [
       "Outils intelligents : résolveur d’équations, simulateur graphique, etc.",
       "Chaque élève avance à son rythme, selon ses objectifs, et peut suivre ses progrès grâce à un tableau de bord personnalisé."
     ]
-  },
-  {
+  },  {
+    emoji: '👨‍🏫',
+    title: 'Cours particuliers en ligne',
+    content: [
+      "En plus de notre plateforme, nous proposons des <strong>cours particuliers en ligne</strong> dispensés par des professeurs expérimentés.",
+      "Nos cours couvrent les mathématiques, la physique-chimie et l'informatique, du collège jusqu'aux classes préparatoires et à l'université."
+    ],
+    list: [
+      "Cours individuels en visioconférence",
+      "Professeurs diplômés et expérimentés (15+ ans d'expérience)",
+      "Accompagnement personnalisé selon les besoins de l'élève",
+      "Tarifs flexibles : cours à l'unité ou packs économiques",
+      "Premier cours d'évaluation offert"
+    ],
+    additionalContent: [
+      "<a href='/cours-particuliers' class='contact-link'>Découvrir nos cours particuliers →</a>"
+    ]
+  },  {
     emoji: '💡',
     title: 'Ce qui rend OptiTAB unique',
     list: [

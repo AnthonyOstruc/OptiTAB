@@ -16,32 +16,23 @@
       </div>
     </div>
     <div class="footer-legal-separator"></div>
-    <div class="footer-legal-copyright">
+    <!-- Ligne 1: Navigation + Google Reviews -->
+    <div class="footer-nav-row">
       <span class="footer-legal-copyright-text">© {{ new Date().getFullYear() }} <strong class="footer-copyright-bold">OptiTAB</strong>. Tous droits réservés.</span>
-      <span v-if="footerLinks.length" class="footer-legal-sep">|</span>
-      <template v-for="(link, idx) in footerLinks" :key="link.label">
-        <router-link
-          v-if="link.href.startsWith('/')"
-          :to="link.href"
-          class="footer-legal-link"
-          :data-track="navNameForFooterLink(link) ? 'nav' : null"
-          :data-nav-name="navNameForFooterLink(link)"
-          :data-nav-location="navNameForFooterLink(link) ? 'footer' : null"
-        >{{ link.label }}</router-link>
-        <a
-          v-else
-          :href="link.href"
-          class="footer-legal-link"
-          target="_blank"
-          rel="noopener"
-          :data-track="navNameForFooterLink(link) ? 'nav' : null"
-          :data-nav-name="navNameForFooterLink(link)"
-          :data-nav-location="navNameForFooterLink(link) ? 'footer' : null"
-        >{{ link.label }}</a>
-        <span v-if="idx < footerLinks.length - 1" class="footer-legal-sep">|</span>
+      <span class="footer-legal-sep">|</span>
+      <template v-for="(link, idx) in navLinks" :key="link.label">
+        <router-link :to="link.href" class="footer-legal-link">{{ link.label }}</router-link>
+        <span v-if="idx < navLinks.length - 1" class="footer-legal-sep">|</span>
       </template>
       <span class="footer-legal-sep">|</span>
       <GoogleReviewsCompact class="footer-size" />
+    </div>
+    <!-- Ligne 2: Légal -->
+    <div class="footer-legal-row">
+      <template v-for="(link, idx) in legalLinks" :key="link.label">
+        <router-link :to="link.href" class="footer-legal-link">{{ link.label }}</router-link>
+        <span v-if="idx < legalLinks.length - 1" class="footer-legal-sep">|</span>
+      </template>
     </div>
   </footer>
 </template>
@@ -51,26 +42,13 @@ import { footerLinks } from '@/config/footerContent.js';
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue';
 // Footer compact et personnalisé, plus de props dynamiques nécessaires
 
-const FOOTER_NAV_NAME_BY_PATH = {
-  '/cours-particuliers': 'tutoring',
-  '/ressources-gratuites/cours': 'course',
-  '/ressources-gratuites/exercices': 'exercise',
-  '/ressources-gratuites/syntheses': 'summary',
-  '/contact': 'contact',
-  '/about': 'about',
-  '/cgv': 'cgv',
-  '/cgu': 'cgu',
-  '/confidentialite': 'privacy',
-  '/legal': 'legal',
-  '/cookies': 'cookies',
-}
-
-const navNameForFooterLink = (link) => {
-  const href = String(link?.href || '').trim()
-  if (!href || !href.startsWith('/')) return null
-  const normalized = href.length > 1 ? href.replace(/\/+$/, '') : href
-  return FOOTER_NAV_NAME_BY_PATH[normalized] || null
-}
+// Séparer les liens de navigation et légaux
+const navLinks = footerLinks.filter(link => 
+  ['/cours-particuliers', '/tarifs', '/ressources-gratuites'].includes(link.href)
+);
+const legalLinks = footerLinks.filter(link => 
+  ['/legal', '/confidentialite', '/cookies', '/cgu', '/cgv'].includes(link.href)
+);
 </script>
 
 <style scoped lang="scss">
@@ -232,6 +210,32 @@ const navNameForFooterLink = (link) => {
   }
 }
 
+.footer-nav-row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.2rem auto 0.5rem auto;
+  font-size: 0.85rem;
+  color: #e0e6f7;
+  row-gap: 0.2rem;
+}
+
+.footer-legal-row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0 auto 0.7rem auto;
+  font-size: 0.8rem;
+  color: #c7d2fe;
+  row-gap: 0.2rem;
+}
+
 .footer-legal-copyright {
   width: 100%;
   display: flex;
@@ -278,6 +282,18 @@ const navNameForFooterLink = (link) => {
     justify-content: center;
   }
 
+  .footer-nav-row, .footer-legal-row {
+    gap: 0.2rem;
+    font-size: 0.8rem;
+    justify-content: center;
+    text-align: center;
+    padding: 0 1rem;
+  }
+
+  .footer-legal-row {
+    font-size: 0.75rem;
+  }
+
   .footer-legal-copyright {
     gap: 0.2rem;
     font-size: 0.8rem;
@@ -288,6 +304,10 @@ const navNameForFooterLink = (link) => {
 
   .footer-legal-link, .footer-legal-copyright-text {
     font-size: 0.8rem;
+  }
+
+  .footer-legal-row .footer-legal-link {
+    font-size: 0.75rem;
   }
 
   .footer-legal-sep {

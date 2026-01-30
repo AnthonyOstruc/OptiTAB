@@ -5,7 +5,6 @@ import SubjectsSection from '@/components/home/SubjectsSection.vue'
 import IntroFeaturesSection from '@/components/home/IntroFeaturesSection.vue'
 import StepsHowItWorks from '@/components/home/StepsHowItWorks.vue'
 import DemoSection from '@/components/home/DemoSection.vue'
-import FreeContentShowcase from '@/components/home/FreeContentShowcase.vue'
 import PricingPlans from '@/components/home/PricingPlans.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
 import NewsletterSection from '@/components/home/NewsletterSection.vue'
@@ -31,8 +30,7 @@ import {
   etapesParcours,
   faq,
   newsletterSection,
-  pricingPlans,
-  freeContentHomeBlocks
+  pricingPlans
 } from '@/config/homeContent.js'
 
 const matieres = ref([])
@@ -280,12 +278,17 @@ onUnmounted(() => {
       <SectionHero
         :titre="sectionHero.titre"
         :sous-titre="sectionHero.sousTitre"
+        :sous-titre2="sectionHero.sousTitre2"
         :mini-line="sectionHero.miniLine"
         :image="sectionHero.image"
+        :show-image="sectionHero.showImage"
         :highlight="sectionHero.highlight"
-        :message-parents="sectionHero.messageParents"
+        :micro-benefits="sectionHero.microBenefits"
+        :reassurance="sectionHero.reassurance"
         :cta-text="sectionHero.ctaText"
+        :cta-hint="sectionHero.ctaHint"
         :cta-secondary="sectionHero.ctaSecondary"
+        :cta-secondary-hint="sectionHero.ctaSecondaryHint"
         :bg="sectionHero.bg"
         @cta-main="handleCtaMain"
         @cta-secondary="handleCtaSecondary"
@@ -299,9 +302,6 @@ onUnmounted(() => {
         @cta-subscribe="handleDemoSubscribe"
         @cta-pricing="handleDemoPricing"
       />
-
-      <!-- Bloc de ressources gratuites -->
-      <FreeContentShowcase :items="freeContentHomeBlocks" />
 
       <!-- Section Intro Features (accroche + grille) -->
       <IntroFeaturesSection

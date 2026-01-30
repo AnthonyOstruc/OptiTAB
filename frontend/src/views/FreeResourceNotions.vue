@@ -866,15 +866,38 @@ const onLockedExercise = (chapter) => {
         </div>
       </section>
 
-      <div v-if="availableLevels.length > 0" class="filter-section">
+      <div v-if="availableLevels.length > 0" class="filter-section" :style="ctaWidthStyle">
         <div class="filter-bar">
-          <button class="filter-toggle" ref="filterButtonRef" @click="showLevelFilter = !showLevelFilter">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="filter-icon">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-            </svg>
-            Filtrer par niveau
-            <span v-if="selectedLevels.length > 0" class="filter-badge">{{ selectedLevels.length }}</span>
-          </button>
+          <div class="filter-toggle-wrapper">
+            <button class="filter-toggle" ref="filterButtonRef" @click="showLevelFilter = !showLevelFilter">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="filter-icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+              </svg>
+              Filtrer par niveau
+              <span v-if="selectedLevels.length > 0" class="filter-badge">{{ selectedLevels.length }}</span>
+            </button>
+
+            <div v-if="showLevelFilter" class="filter-dropdown" ref="filterDropdownRef">
+              <div class="filter-header">
+                <span class="filter-title">Niveaux</span>
+                <button v-if="selectedLevels.length > 0" class="clear-btn" @click="clearFilters">Effacer</button>
+              </div>
+              <div class="filter-options">
+                <label
+                  v-for="level in availableLevels"
+                  :key="level"
+                  class="filter-option"
+                >
+                  <input
+                    type="checkbox"
+                    :checked="selectedLevels.includes(level)"
+                    @change="toggleLevel(level)"
+                  />
+                  <span class="filter-label">{{ level }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
 
           <div class="search-box">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="search-icon">
@@ -896,27 +919,6 @@ const onLockedExercise = (chapter) => {
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-          </div>
-        </div>
-        
-        <div v-if="showLevelFilter" class="filter-dropdown" ref="filterDropdownRef">
-          <div class="filter-header">
-            <span class="filter-title">Niveaux</span>
-            <button v-if="selectedLevels.length > 0" class="clear-btn" @click="clearFilters">Effacer</button>
-          </div>
-          <div class="filter-options">
-            <label
-              v-for="level in availableLevels"
-              :key="level"
-              class="filter-option"
-            >
-              <input
-                type="checkbox"
-                :checked="selectedLevels.includes(level)"
-                @change="toggleLevel(level)"
-              />
-              <span class="filter-label">{{ level }}</span>
-            </label>
           </div>
         </div>
       </div>
@@ -1266,6 +1268,7 @@ const onLockedExercise = (chapter) => {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    width: 100%;
   }
 
   .free-resource-cta__actions {
@@ -1328,21 +1331,29 @@ const onLockedExercise = (chapter) => {
 
 .filter-section {
   position: relative;
-  margin-bottom: 24px;
+  margin: 0 0 24px 0;
 }
 
 .filter-bar {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 12px;
-  flex-wrap: wrap;
+}
+
+.filter-toggle-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .search-box {
   position: relative;
-  flex: 1;
-  min-width: 280px;
-  max-width: 470px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
 }
 
 .search-icon {
@@ -1644,17 +1655,28 @@ const onLockedExercise = (chapter) => {
     padding: 6px 14px;
   }
 
+  .free-resource-cta {
+    width: 100%;
+    max-width: 100%;
+  }
+
   .filter-bar {
     flex-direction: column;
     align-items: stretch;
+    width: 100%;
   }
 
   .search-box {
     max-width: 100%;
     min-width: 100%;
+    width: 100%;
   }
 
   .filter-toggle {
+    width: 100%;
+  }
+
+  .filter-section {
     width: 100%;
   }
 

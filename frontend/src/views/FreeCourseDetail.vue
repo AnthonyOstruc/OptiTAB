@@ -824,6 +824,7 @@ onBeforeUnmount(() => {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    width: 100%;
   }
 
   .free-resource-cta__actions {

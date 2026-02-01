@@ -11,6 +11,17 @@ import { useSubscriptionStore } from '@/stores/subscription'
 import { renderMath } from '@/utils/scientificRenderer'
 import { useZoom } from '@/composables/useZoom'
 
+const props = defineProps({
+  notionIdOverride: {
+    type: [String, Number],
+    default: null
+  },
+  notionTitleOverride: {
+    type: String,
+    default: ''
+  }
+})
+
 const route = useRoute()
 const router = useRouter()
 const { openModal } = useModalManager()
@@ -20,7 +31,7 @@ const subscriptionStore = useSubscriptionStore()
 const loading = ref(false)
 const error = ref(null)
 const exercises = ref([])
-const notionTitle = ref(route.query.title || '')
+const notionTitle = ref(props.notionTitleOverride || route.query.title || '')
 const currentPage = ref(1)
 const itemsPerPage = 5
 
@@ -48,9 +59,30 @@ function measureContentHeightForFreeExercises() {
   measureContentHeight(contentRef)
 }
 
-const notionId = computed(() => route.params.notionId)
+const notionId = computed(() => props.notionIdOverride || route.params.notionId)
 
 const formatCount = (count) => `${count} exercice${count > 1 ? 's' : ''}`
+
+const formatNiveauLabel = (value) => {
+  if (!value) return ''
+  const normalized = String(value).trim().toLowerCase()
+  if (normalized.includes('terminale') || normalized === 'terminal') {
+    return 'Terminale - Bac'
+  }
+  if (normalized.includes('première') || normalized.includes('premiere')) {
+    return 'Première - Bac'
+  }
+  return value
+}
+
+const chapterMetaLabel = computed(() => {
+  const source = exercises.value.find((item) => item?.pays_nom || item?.niveau_nom)
+  if (!source) return ''
+  const pays = source.pays_nom || ''
+  const niveau = formatNiveauLabel(source.niveau_nom || '')
+  if (pays && niveau) return `${pays} / ${niveau}`
+  return pays || niveau
+})
 
 const displayedExercises = computed(() =>
   exercises.value.map((item, index) => ({
@@ -120,7 +152,7 @@ const goBack = () => {
 }
 
 watch(
-  () => route.params.notionId,
+  notionId,
   () => {
     fetchExercises()
   }
@@ -128,6 +160,13 @@ watch(
 
 watch(
   () => route.query.title,
+  (value) => {
+    if (value && !props.notionTitleOverride) notionTitle.value = value
+  }
+)
+
+watch(
+  () => props.notionTitleOverride,
   (value) => {
     if (value) notionTitle.value = value
   }
@@ -212,6 +251,12 @@ const buildInstruction = (exercise) => {
   <MainLayout>
     <div class="free-exercise-chapter-page">
       <BackButton text="Retour aux exercices" :custom-action="goBack" position="top-left" />
+
+      <header class="free-exercise-intro" aria-labelledby="free-exercise-title">
+        <p v-if="chapterMetaLabel" class="free-exercise-meta">{{ chapterMetaLabel }}</p>
+        <h1 id="free-exercise-title" class="free-exercise-title">{{ notionTitle || 'Exercices' }}</h1>
+        <p v-if="exercisesCount" class="free-exercise-count">{{ formatCount(exercisesCount) }}</p>
+      </header>
 
       <section class="free-resource-cta" aria-label="Accès professeur ou plateforme">
         <div class="free-resource-cta__copy">
@@ -315,6 +360,35 @@ const buildInstruction = (exercise) => {
   max-width: none;
 }
 
+.free-exercise-intro {
+  margin: 4px 0 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.free-exercise-meta {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.free-exercise-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.free-exercise-count {
+  margin: 0;
+  font-size: 14px;
+  color: #475569;
+}
+
 .free-resource-cta {
   display: flex;
   align-items: center;
@@ -345,6 +419,12 @@ const buildInstruction = (exercise) => {
   font-weight: 600;
   color: #475569;
   line-height: 1.45;
+}
+
+@media (max-width: 768px) {
+  .free-exercise-title {
+    font-size: 22px;
+  }
 }
 
 .free-resource-cta__actions {

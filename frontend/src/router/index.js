@@ -53,10 +53,14 @@ const routes = [
     props: true
   },
   {
+    path: '/ressources-gratuites/exercices/:pays/:slug-:id(\\d+)',
+    name: 'FreeExerciseChapterSlug',
+    component: () => import('@/views/FreeExerciseSlug.vue')
+  },
+  {
     path: '/ressources-gratuites/exercices/:slug',
     name: 'FreeExerciseDetail',
-    component: () => import('@/views/FreeCourseDetail.vue'),
-    props: { resourceType: 'exercise' }
+    component: () => import('@/views/FreeExerciseSlug.vue')
   },
   {
     path: '/ressources-gratuites/syntheses',

@@ -408,6 +408,7 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 'notion__titre',
                 'notion__theme__matiere__titre',
                 'notion__theme__contexte__niveau__nom',
+                'notion__theme__contexte__niveau__pays__nom',
             )
             .annotate(
                 count=Count('id'),
@@ -415,6 +416,7 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 notion_nom=F('notion__titre'),
                 matiere_nom=F('notion__theme__matiere__titre'),
                 niveau_nom=F('notion__theme__contexte__niveau__nom'),
+                pays_nom=F('notion__theme__contexte__niveau__pays__nom'),
                 tag_secondaire=F('notion__theme__contexte__niveau__nom'),
             )
             .annotate(

@@ -10,6 +10,7 @@ import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { useZoom } from '@/composables/useZoom'
+import { buildExerciseChapterRouteParams } from '@/utils/freeExerciseSlug'
 
 const props = defineProps({
   resourceType: {
@@ -628,6 +629,8 @@ const flatList = computed(() => {
           id: chapterKey,
           notionId: item.notion || chapterKey,
           name: chapterName,
+          paysNom: item?.pays_nom || '',
+          niveauNom: item?.niveau_nom || '',
           description: item?.notion_description || item?.accroche || item?.excerpt || '',
           exercises: [],
           displayTag: '',
@@ -638,6 +641,8 @@ const flatList = computed(() => {
       chapterEntry.exercises = chapterEntry.exercises || []
       chapterEntry.exercises.push(item)
       chapterEntry.totalCount = (chapterEntry.totalCount || 0) + (Number(item?.count) || 1)
+      if (!chapterEntry.paysNom && item?.pays_nom) chapterEntry.paysNom = item.pays_nom
+      if (!chapterEntry.niveauNom && item?.niveau_nom) chapterEntry.niveauNom = item.niveau_nom
       const tag = item.tag_secondaire || item.niveau_nom || item.matiere_nom || ''
       if (!chapterEntry.displayTag && tag) {
         chapterEntry.displayTag = tag
@@ -646,8 +651,18 @@ const flatList = computed(() => {
     return Array.from(chaptersMap.values())
       .map((chapter) => {
         const exercisesList = Array.isArray(chapter.exercises) ? chapter.exercises : []
+        const routeParams = buildExerciseChapterRouteParams({
+          paysNom: chapter.paysNom,
+          niveauNom: chapter.niveauNom,
+          name: chapter.name,
+          notionNom: chapter.name,
+          id: chapter.notionId || chapter.id
+        })
         return {
           ...chapter,
+          slug: routeParams.slug,
+          paysSlug: routeParams.pays,
+          slugId: routeParams.id,
           count: typeof chapter.totalCount === 'number' ? chapter.totalCount : exercisesList.length,
           isLocked: exercisesList.length > 0 && exercisesList.every((exercise) => Boolean(exercise.is_locked))
         }
@@ -731,6 +746,18 @@ const getExerciseCount = (chapter) => {
   return Array.isArray(chapter.exercises) ? chapter.exercises.length : 0
 }
 
+const getExerciseChapterRoute = (chapter) => {
+  if (!chapter) return null
+  const { pays, slug, id } = buildExerciseChapterRouteParams({
+    paysNom: chapter?.paysNom || chapter?.pays_nom,
+    niveauNom: chapter?.niveauNom || chapter?.niveau_nom,
+    name: chapter?.name,
+    id: chapter?.notionId || chapter?.id
+  })
+  if (!slug || !id) return null
+  return { name: 'FreeExerciseChapterSlug', params: { pays, slug, id } }
+}
+
 const openResource = (resource) => {
   if (!resource) return
   if (resource.is_locked) {
@@ -747,13 +774,9 @@ const openExerciseChapter = (chapter) => {
     onLockedExercise(chapter)
     return
   }
-  const notionId = chapter?.notionId || chapter?.id
-  if (!notionId) return
-  router.push({
-    name: 'FreeExerciseChapter',
-    params: { notionId },
-    query: { title: chapter?.name || undefined }
-  })
+  const routeTarget = getExerciseChapterRoute(chapter)
+  if (!routeTarget) return
+  router.push(routeTarget)
 }
 
 const premiumRoutes = {
@@ -947,11 +970,7 @@ const onLockedExercise = (chapter) => {
               :to="
                 chapter.isLocked
                   ? null
-                  : {
-                      name: 'FreeExerciseChapter',
-                      params: { notionId: chapter?.notionId || chapter?.id },
-                      query: { title: chapter?.name || undefined }
-                    }
+                  : getExerciseChapterRoute(chapter)
               "
               :disable-prefetch="true"
               :locked="Boolean(chapter.isLocked)"

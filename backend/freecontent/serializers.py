@@ -452,6 +452,7 @@ class ExerciseNotionSummarySerializer(serializers.Serializer):
     notion_nom = serializers.CharField()
     matiere_nom = serializers.CharField(required=False, allow_blank=True, default='')
     niveau_nom = serializers.CharField(required=False, allow_blank=True, default='')
+    pays_nom = serializers.CharField(required=False, allow_blank=True, default='')
     tag_secondaire = serializers.CharField(required=False, allow_blank=True, default='')
     is_locked = serializers.BooleanField(default=False)
     count = serializers.IntegerField()

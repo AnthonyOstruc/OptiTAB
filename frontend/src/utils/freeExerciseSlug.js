@@ -27,6 +27,13 @@ export const formatPaysSlug = (value) => {
   return slugifyText(value || '')
 }
 
+export const formatMatiereSlug = (value) => {
+  const normalized = slugifyText(value || '')
+  if (!normalized) return ''
+  if (normalized.includes('math')) return 'maths'
+  return normalized
+}
+
 export const buildExerciseChapterSlug = ({ niveauNom, niveau, name, title, notionNom } = {}) => {
   const levelSlug = formatNiveauSlug(niveauNom || niveau || '')
   const chapterSlug = slugifyText(name || title || notionNom || '')
@@ -34,9 +41,11 @@ export const buildExerciseChapterSlug = ({ niveauNom, niveau, name, title, notio
 }
 
 export const DEFAULT_PAYS_SLUG = 'france'
+export const DEFAULT_MATIERE_SLUG = 'maths'
 
-export const buildExerciseChapterRouteParams = ({ paysNom, niveauNom, name, title, notionNom, id } = {}) => {
+export const buildExerciseChapterRouteParams = ({ paysNom, matiereNom, niveauNom, name, title, notionNom, id } = {}) => {
   const paysSlug = formatPaysSlug(paysNom || '') || DEFAULT_PAYS_SLUG
+  const matiereSlug = formatMatiereSlug(matiereNom || '') || DEFAULT_MATIERE_SLUG
   const slug = buildExerciseChapterSlug({ niveauNom, name, title, notionNom })
-  return { pays: paysSlug, slug, id: id ?? null }
+  return { pays: paysSlug, matiere: matiereSlug, slug, id: id ?? null }
 }

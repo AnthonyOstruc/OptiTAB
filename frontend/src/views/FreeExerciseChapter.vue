@@ -75,13 +75,21 @@ const formatNiveauLabel = (value) => {
   return value
 }
 
+const formatMatiereLabel = (value) => {
+  if (!value) return ''
+  const normalized = String(value).trim().toLowerCase()
+  if (normalized.includes('math')) return 'Maths'
+  return value
+}
+
 const chapterMetaLabel = computed(() => {
-  const source = exercises.value.find((item) => item?.pays_nom || item?.niveau_nom)
+  const source = exercises.value.find((item) => item?.pays_nom || item?.niveau_nom || item?.matiere_nom)
   if (!source) return ''
   const pays = source.pays_nom || ''
+  const matiere = formatMatiereLabel(source.matiere_nom || '')
   const niveau = formatNiveauLabel(source.niveau_nom || '')
-  if (pays && niveau) return `${pays} / ${niveau}`
-  return pays || niveau
+  const parts = [pays, matiere, niveau].filter(Boolean)
+  return parts.join(' / ')
 })
 
 const displayedExercises = computed(() =>
@@ -355,7 +363,7 @@ const buildInstruction = (exercise) => {
 .free-exercise-chapter-page {
   min-height: 100vh;
   background: #fff;
-  padding: 140px 24px 80px;
+  padding: 48px 24px 80px;
   width: 100%;
   max-width: none;
 }
@@ -725,7 +733,7 @@ const buildInstruction = (exercise) => {
 
 @media (max-width: 768px) {
   .free-exercise-chapter-page {
-    padding: 120px 16px 60px;
+    padding: 32px 16px 60px;
   }
 
   .exercise-card-wrapper {

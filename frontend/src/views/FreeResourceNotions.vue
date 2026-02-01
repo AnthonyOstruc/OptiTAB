@@ -630,6 +630,7 @@ const flatList = computed(() => {
           notionId: item.notion || chapterKey,
           name: chapterName,
           paysNom: item?.pays_nom || '',
+          matiereNom: item?.matiere_nom || '',
           niveauNom: item?.niveau_nom || '',
           description: item?.notion_description || item?.accroche || item?.excerpt || '',
           exercises: [],
@@ -642,6 +643,7 @@ const flatList = computed(() => {
       chapterEntry.exercises.push(item)
       chapterEntry.totalCount = (chapterEntry.totalCount || 0) + (Number(item?.count) || 1)
       if (!chapterEntry.paysNom && item?.pays_nom) chapterEntry.paysNom = item.pays_nom
+      if (!chapterEntry.matiereNom && item?.matiere_nom) chapterEntry.matiereNom = item.matiere_nom
       if (!chapterEntry.niveauNom && item?.niveau_nom) chapterEntry.niveauNom = item.niveau_nom
       const tag = item.tag_secondaire || item.niveau_nom || item.matiere_nom || ''
       if (!chapterEntry.displayTag && tag) {
@@ -653,6 +655,7 @@ const flatList = computed(() => {
         const exercisesList = Array.isArray(chapter.exercises) ? chapter.exercises : []
         const routeParams = buildExerciseChapterRouteParams({
           paysNom: chapter.paysNom,
+          matiereNom: chapter.matiereNom,
           niveauNom: chapter.niveauNom,
           name: chapter.name,
           notionNom: chapter.name,
@@ -748,14 +751,15 @@ const getExerciseCount = (chapter) => {
 
 const getExerciseChapterRoute = (chapter) => {
   if (!chapter) return null
-  const { pays, slug, id } = buildExerciseChapterRouteParams({
+  const { pays, matiere, slug, id } = buildExerciseChapterRouteParams({
     paysNom: chapter?.paysNom || chapter?.pays_nom,
+    matiereNom: chapter?.matiereNom || chapter?.matiere_nom,
     niveauNom: chapter?.niveauNom || chapter?.niveau_nom,
     name: chapter?.name,
     id: chapter?.notionId || chapter?.id
   })
   if (!slug || !id) return null
-  return { name: 'FreeExerciseChapterSlug', params: { pays, slug, id } }
+  return { name: 'FreeExerciseChapterSlug', params: { pays, matiere, slug, id } }
 }
 
 const openResource = (resource) => {
@@ -1094,7 +1098,7 @@ const onLockedExercise = (chapter) => {
 .free-course-page {
   min-height: 100vh;
   background: #ffffff;
-  padding: 140px 32px 80px;
+  padding: 48px 32px 80px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -1648,7 +1652,7 @@ const onLockedExercise = (chapter) => {
 
 @media (max-width: 768px) {
   .free-course-page {
-    padding: 120px 16px 60px;
+    padding: 32px 16px 60px;
   }
 
   .notion-grid {
@@ -1659,7 +1663,7 @@ const onLockedExercise = (chapter) => {
 
 @media (max-width: 640px) {
   .free-course-page {
-    padding: 110px 14px 56px;
+    padding: 28px 14px 56px;
   }
 
   .header-row {
@@ -1725,7 +1729,7 @@ const onLockedExercise = (chapter) => {
 
 @media (max-width: 420px) {
   .free-course-page {
-    padding: 105px 12px 48px;
+    padding: 24px 12px 48px;
   }
 }
 

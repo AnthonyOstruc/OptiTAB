@@ -601,7 +601,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .cours-section {
-  padding: 110px 2vw 60px;
+  padding: 48px 2vw 60px;
   background: #fff;
   min-height: 100vh;
   position: relative;
@@ -638,7 +638,7 @@ onBeforeUnmount(() => {
 
 @media (max-width: 768px) {
   .cours-section {
-    padding-top: 90px;
+    padding-top: 32px;
   }
 
   .cours-header {

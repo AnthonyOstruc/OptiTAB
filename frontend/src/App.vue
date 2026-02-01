@@ -66,6 +66,10 @@ import { useNotificationStore } from '@/stores/notifications'
 import { useCheckoutIntentStore } from '@/stores/checkoutIntent'
 import { useToast } from '@/composables/useToast'
 import { useSidebarStore } from '@/stores/sidebar'
+import { useViewportZoom } from '@/composables/useViewportZoom'
+
+// Gestion du zoom viewport sur mobile (désactive le zoom sur les pages protégées)
+useViewportZoom()
 
 const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()

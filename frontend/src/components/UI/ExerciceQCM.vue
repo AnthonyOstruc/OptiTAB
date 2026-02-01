@@ -846,18 +846,26 @@ function hasImageMarkers() {
 
 // Load exercice images (appelé uniquement si des marqueurs d'images existent)
 async function loadExerciceImages() {
-  // Mode aperçu avec images passées en props
-  if (props.eid && props.eid.toString().startsWith('preview-')) {
-    exerciceImages.value = props.previewImages || []
+  // Si des images sont déjà fournies en props (prévisualisation, ressources gratuites, etc.)
+  if (props.previewImages && props.previewImages.length > 0) {
+    exerciceImages.value = props.previewImages
+    nextTick(() => renderMath())
     return
   }
-  
+
+  // Mode aperçu avec images passées en props mais vides → éviter un appel API inutile
+  if (props.eid && props.eid.toString().startsWith('preview-')) {
+    exerciceImages.value = []
+    nextTick(() => renderMath())
+    return
+  }
+
   // Si aucun marqueur d'image dans les contenus, ne rien appeler
   if (!hasImageMarkers()) {
     exerciceImages.value = []
     return
   }
-  
+
   try {
     const { data } = await getExerciceImages(props.eid)
     exerciceImages.value = data
@@ -874,9 +882,14 @@ async function loadExerciceImages() {
 watch(() => [props.instruction, props.etapes, props.solution, props.exercicesList], renderMath, { immediate: true, deep: true })
 
 // Watch for preview images changes
-watch(() => props.previewImages, () => {
+watch(() => props.previewImages, (value) => {
+  if (value && value.length > 0) {
+    exerciceImages.value = value
+    nextTick(() => renderMath())
+    return
+  }
   if (props.eid && props.eid.toString().startsWith('preview-')) {
-    exerciceImages.value = props.previewImages || []
+    exerciceImages.value = []
     nextTick(() => renderMath())
   }
 }, { immediate: true })

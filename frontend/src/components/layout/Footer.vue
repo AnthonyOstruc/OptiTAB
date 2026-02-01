@@ -60,8 +60,8 @@ const legalLinks = footerLinks.filter(link =>
 
 @media (max-width: 768px) {
   .footer {
-    padding-bottom: 6.5rem;
-    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+    padding-bottom: 2.5rem;
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
   }
 }
 .footer-support {

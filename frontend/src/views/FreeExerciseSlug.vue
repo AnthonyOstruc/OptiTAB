@@ -20,6 +20,12 @@ const parseSlugWithId = (value) => {
   return { slug: match[1], id: match[2] }
 }
 
+const normalizeLegacySlug = (value) => {
+  return String(value || '')
+    .replace(/^terminale-bac-/, 'terminal-bac-')
+    .replace(/^premiere-bac-/, 'premiere-1er-')
+}
+
 const resolving = ref(false)
 const resolveError = ref('')
 const resolvedNotionId = ref(null)
@@ -34,7 +40,8 @@ const resolveNotionBySlug = async () => {
     return
   }
   const parsed = parseSlugWithId(slug.value)
-  const targetSlug = parsed.slug
+  const rawSlug = parsed.slug
+  const targetSlug = normalizeLegacySlug(parsed.slug)
   const targetPays = formatPaysSlug(pays.value)
   const targetId = slugIdParam.value || parsed.id
   if (!targetSlug) {
@@ -65,7 +72,11 @@ const resolveNotionBySlug = async () => {
 
         if (canonicalSlug) {
           const currentPays = formatPaysSlug(pays.value)
-          if (canonicalPays !== currentPays || canonicalSlug !== targetSlug || String(targetId) !== String(slugIdParam.value || parsed.id)) {
+          if (
+            canonicalPays !== currentPays ||
+            canonicalSlug !== rawSlug ||
+            String(targetId) !== String(slugIdParam.value || parsed.id)
+          ) {
             router.replace({
               name: 'FreeExerciseChapterSlug',
               params: { pays: canonicalPays, slug: canonicalSlug, id: targetId }
@@ -115,7 +126,11 @@ const resolveNotionBySlug = async () => {
 
         if (canonicalSlug && resolvedId) {
           const currentPays = formatPaysSlug(pays.value)
-          if (canonicalPays !== currentPays || canonicalSlug !== targetSlug || String(resolvedId) !== String(targetId)) {
+          if (
+            canonicalPays !== currentPays ||
+            canonicalSlug !== rawSlug ||
+            String(resolvedId) !== String(targetId)
+          ) {
             router.replace({
               name: 'FreeExerciseChapterSlug',
               params: { pays: canonicalPays, slug: canonicalSlug, id: resolvedId }

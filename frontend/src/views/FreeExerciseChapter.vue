@@ -70,7 +70,7 @@ const formatNiveauLabel = (value) => {
     return 'Terminale - Bac'
   }
   if (normalized.includes('première') || normalized.includes('premiere')) {
-    return 'Première - Bac'
+    return 'Première - 1er'
   }
   return value
 }

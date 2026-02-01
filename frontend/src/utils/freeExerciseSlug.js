@@ -12,10 +12,10 @@ export const formatNiveauSlug = (value) => {
   const normalized = slugifyText(value)
   if (!normalized) return ''
   if (normalized.includes('terminale') || normalized.includes('terminal')) {
-    return 'terminale-bac'
+    return 'terminal-bac'
   }
   if (normalized.includes('premiere') || normalized.includes('premiere') || normalized.includes('1ere') || normalized.includes('1re')) {
-    return 'premiere-bac'
+    return 'premiere-1er'
   }
   if (normalized.includes('seconde') || normalized.includes('2nde') || normalized.includes('2de')) {
     return 'seconde'

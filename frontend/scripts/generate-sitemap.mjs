@@ -40,6 +40,51 @@ function toLastMod(value) {
   }
 }
 
+function slugifyText(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+function formatPaysSlug(value) {
+  return slugifyText(value || '')
+}
+
+function formatMatiereSlug(value) {
+  const normalized = slugifyText(value || '')
+  if (!normalized) return ''
+  if (normalized.includes('math')) return 'maths'
+  return normalized
+}
+
+function formatNiveauSlug(value) {
+  if (!value) return ''
+  const normalized = slugifyText(value)
+  if (!normalized) return ''
+  if (normalized.includes('terminale') || normalized.includes('terminal')) {
+    return 'terminal-bac'
+  }
+  if (normalized.includes('premiere') || normalized.includes('1ere') || normalized.includes('1re')) {
+    return 'premiere-1er'
+  }
+  if (normalized.includes('seconde') || normalized.includes('2nde') || normalized.includes('2de')) {
+    return 'seconde'
+  }
+  return normalized
+}
+
+function buildExerciseChapterSlug({ niveauNom, niveau, name, title, notionNom } = {}) {
+  const levelSlug = formatNiveauSlug(niveauNom || niveau || '')
+  const chapterSlug = slugifyText(name || title || notionNom || '')
+  return [levelSlug, chapterSlug].filter(Boolean).join('-')
+}
+
+const DEFAULT_PAYS_SLUG = 'france'
+const DEFAULT_MATIERE_SLUG = 'maths'
+
 async function fetchAllPages(url) {
   const items = []
   let nextUrl = url
@@ -72,6 +117,20 @@ function routeForResource(resource) {
   return null
 }
 
+function routeForExerciseChapter(resource) {
+  const notionId = resource?.notion || resource?.id
+  if (!notionId) return null
+
+  const paysSlug = formatPaysSlug(resource?.pays_nom || '') || DEFAULT_PAYS_SLUG
+  const matiereSlug = formatMatiereSlug(resource?.matiere_nom || resource?.matiere || '') || DEFAULT_MATIERE_SLUG
+  const slug = buildExerciseChapterSlug({
+    niveauNom: resource?.niveau_nom,
+    name: resource?.notion_nom || resource?.name || resource?.titre
+  })
+  if (!slug) return null
+  return `/ressources-gratuites/exercices/${paysSlug}/${matiereSlug}/${slug}-${notionId}`
+}
+
 function extractPathname(loc) {
   try {
     const url = new URL(String(loc))
@@ -87,6 +146,7 @@ function shouldKeepPathForSeo(pathname) {
   if (pathname === '/cours-particuliers') return true
   if (pathname === '/about') return true
   if (pathname === '/contact') return true
+  if (pathname === '/ressources-gratuites') return true
   if (pathname.startsWith('/ressources-gratuites/')) return true
   return false
 }
@@ -146,6 +206,7 @@ async function buildSitemap() {
   addUrl('/cours-particuliers', '')
   addUrl('/about', '')
   addUrl('/contact', '')
+  addUrl('/ressources-gratuites', '')
 
   // Free content entry points
   addUrl('/ressources-gratuites/cours', '')
@@ -172,6 +233,14 @@ async function buildSitemap() {
         if (!path) continue
         addUrl(path, toLastMod(item?.date_modification))
       }
+    }
+
+    // 3) Exercise chapters (grouped by notion)
+    const chapterItems = await fetchAllPages(`${baseEndpoint}?type=exercise&group_by=notion&page_size=500`)
+    for (const item of chapterItems) {
+      const path = routeForExerciseChapter(item)
+      if (!path) continue
+      addUrl(path, toLastMod(item?.date_modification))
     }
   } catch (err) {
     // Never fail the build if the API is unreachable.

@@ -75,6 +75,15 @@ const formatNiveauLabel = (value) => {
   return value
 }
 
+const formatNiveauGroupLabel = (value) => {
+  if (!value) return ''
+  const normalized = String(value).trim().toLowerCase()
+  if (normalized.includes('lycee')) return 'Lycee'
+  if (normalized.includes('college')) return 'College'
+  if (normalized.includes('prepa')) return 'Prepa'
+  return ''
+}
+
 const formatMatiereLabel = (value) => {
   if (!value) return ''
   const normalized = String(value).trim().toLowerCase()
@@ -88,7 +97,9 @@ const chapterMetaLabel = computed(() => {
   const pays = source.pays_nom || ''
   const matiere = formatMatiereLabel(source.matiere_nom || '')
   const niveau = formatNiveauLabel(source.niveau_nom || '')
-  const parts = [pays, matiere, niveau].filter(Boolean)
+  const groupLabel = formatNiveauGroupLabel(route.params?.niveauGroup || '')
+  const niveauLabel = groupLabel && niveau ? `${groupLabel} ${niveau}` : (niveau || groupLabel)
+  const parts = [pays, matiere, niveauLabel].filter(Boolean)
   return parts.join(' / ')
 })
 

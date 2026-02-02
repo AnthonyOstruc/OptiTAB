@@ -7,6 +7,8 @@ import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import { getFreeResource } from '@/api/free-content'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
+import { buildCourseRouteParams } from '@/utils/freeCourseSlug'
+import { buildSummaryRouteParams } from '@/utils/freeSummarySlug'
 import { setPageSeo } from '@/services/seo'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
@@ -15,6 +17,10 @@ const props = defineProps({
   resourceType: {
     type: String,
     default: 'course'
+  },
+  resolvedSlug: {
+    type: String,
+    default: ''
   }
 })
 
@@ -39,6 +45,12 @@ const renderedContent = computed(() => {
   }
   return resource.value.contenu_html || ''
 })
+
+const effectiveSlug = computed(() => {
+  const override = String(props.resolvedSlug || '').trim()
+  if (override) return override
+  return String(route.params.slug || '').trim()
+})
 const isExerciseResource = computed(() => props.resourceType === 'exercise')
 const exerciseInstruction = computed(() => {
   if (!resource.value) return ''
@@ -51,6 +63,17 @@ const exerciseSolution = computed(() => {
 })
 const exerciseDifficulty = computed(() => resource.value?.difficulty || 'medium')
 const exerciseImages = computed(() => resource.value?.images || [])
+
+const courseRouteMatches = (params, canonical) => {
+  if (!canonical || !params) return false
+  return (
+    String(params.pays || '') === String(canonical.pays || '') &&
+    String(params.niveauGroup || '') === String(canonical.niveauGroup || '') &&
+    String(params.matiere || '') === String(canonical.matiere || '') &&
+    String(params.slug || '') === String(canonical.slug || '') &&
+    String(params.id || '') === String(canonical.id || '')
+  )
+}
 
 const safeRenderMath = async () => {
   try {
@@ -140,7 +163,12 @@ const fetchResource = async () => {
   loading.value = true
   error.value = null
   try {
-    resource.value = await getFreeResource(route.params.slug)
+    const slugToFetch = effectiveSlug.value
+    if (!slugToFetch) {
+      error.value = "Impossible de charger cette ressource gratuite."
+      return
+    }
+    resource.value = await getFreeResource(slugToFetch)
   } catch (err) {
     console.error('Erreur chargement de la ressource gratuite', err)
     error.value = err?.message || "Impossible de charger cette ressource gratuite."
@@ -331,9 +359,63 @@ watch(
   resource,
   (value) => {
     if (!value) return
+    if (props.resourceType === 'course') {
+      const canonicalParams = buildCourseRouteParams({
+        paysNom: value?.pays_nom,
+        matiereNom: value?.matiere_nom,
+        niveauNom: value?.niveau_nom,
+        titre: value?.titre,
+        id: value?.id
+      })
+      if (canonicalParams && !courseRouteMatches(route.params, canonicalParams)) {
+        const routeName = canonicalParams.niveauGroup ? 'FreeCourseSlugGrouped' : 'FreeCourseSlug'
+        const routeParams = canonicalParams.niveauGroup
+          ? canonicalParams
+          : {
+              pays: canonicalParams.pays,
+              matiere: canonicalParams.matiere,
+              slug: canonicalParams.slug,
+              id: canonicalParams.id
+            }
+        router.replace({
+          name: routeName,
+          params: routeParams,
+          query: route.query,
+          hash: route.hash
+        }).catch(() => {})
+        return
+      }
+    }
+    if (props.resourceType === 'summary') {
+      const canonicalParams = buildSummaryRouteParams({
+        paysNom: value?.pays_nom,
+        matiereNom: value?.matiere_nom,
+        niveauNom: value?.niveau_nom,
+        titre: value?.titre,
+        id: value?.id
+      })
+      if (canonicalParams && !courseRouteMatches(route.params, canonicalParams)) {
+        const routeName = canonicalParams.niveauGroup ? 'FreeSummarySlugGrouped' : 'FreeSummarySlug'
+        const routeParams = canonicalParams.niveauGroup
+          ? canonicalParams
+          : {
+              pays: canonicalParams.pays,
+              matiere: canonicalParams.matiere,
+              slug: canonicalParams.slug,
+              id: canonicalParams.id
+            }
+        router.replace({
+          name: routeName,
+          params: routeParams,
+          query: route.query,
+          hash: route.hash
+        }).catch(() => {})
+        return
+      }
+    }
     const canonicalSlug = value?.slug ? String(value.slug) : ''
     const currentSlug = route?.params?.slug ? String(route.params.slug) : ''
-    if (canonicalSlug && currentSlug && canonicalSlug !== currentSlug) {
+    if (props.resourceType === 'exercise' && canonicalSlug && currentSlug && canonicalSlug !== currentSlug) {
       router.replace({
         name: route.name,
         params: { ...route.params, slug: canonicalSlug },
@@ -434,7 +516,7 @@ watch(
 )
 
 watch(
-  () => route.params.slug,
+  () => effectiveSlug.value,
   () => {
     resource.value = null
     fetchResource()

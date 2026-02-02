@@ -5,6 +5,8 @@ import { apiUtils } from '@/api/client'
 import * as analytics from '@/services/analytics'
 import { applyRouteSeo } from '@/services/seo'
 import { matiereMiddleware, exercicesMiddleware, quizMiddleware } from './middlewares/matiereMiddleware'
+import { buildCourseApiSlugFromRoute } from '@/utils/freeCourseSlug'
+import { buildSummaryApiSlugFromRoute } from '@/utils/freeSummarySlug'
 import { requireNiveau, routeRequiresNiveau } from './middlewares/niveauMiddleware'
 
 const ALWAYS_SCROLL_TO_TOP_ROUTES = [
@@ -35,6 +37,24 @@ const routes = [
     props: { resourceType: 'course' }
   },
   {
+    path: '/ressources-gratuites/cours/:pays/:niveauGroup/:matiere/:slug-:id(\\d+)',
+    name: 'FreeCourseSlugGrouped',
+    component: () => import('@/views/FreeCourseDetail.vue'),
+    props: (route) => ({
+      resourceType: 'course',
+      resolvedSlug: buildCourseApiSlugFromRoute(route.params)
+    })
+  },
+  {
+    path: '/ressources-gratuites/cours/:pays/:matiere/:slug-:id(\\d+)',
+    name: 'FreeCourseSlug',
+    component: () => import('@/views/FreeCourseDetail.vue'),
+    props: (route) => ({
+      resourceType: 'course',
+      resolvedSlug: buildCourseApiSlugFromRoute(route.params)
+    })
+  },
+  {
     path: '/ressources-gratuites/cours/:slug',
     name: 'FreeCourseDetail',
     component: () => import('@/views/FreeCourseDetail.vue'),
@@ -51,6 +71,11 @@ const routes = [
     name: 'FreeExerciseChapter',
     component: () => import('@/views/FreeExerciseChapter.vue'),
     props: true
+  },
+  {
+    path: '/ressources-gratuites/exercices/:pays/:niveauGroup/:matiere/:slug-:id(\\d+)',
+    name: 'FreeExerciseChapterSlugGrouped',
+    component: () => import('@/views/FreeExerciseSlug.vue')
   },
   {
     path: '/ressources-gratuites/exercices/:pays/:matiere/:slug-:id(\\d+)',
@@ -72,6 +97,24 @@ const routes = [
     name: 'FreeSummaries',
     component: () => import('@/views/FreeResourceNotions.vue'),
     props: { resourceType: 'summary' }
+  },
+  {
+    path: '/ressources-gratuites/syntheses/:pays/:niveauGroup/:matiere/:slug-:id(\\d+)',
+    name: 'FreeSummarySlugGrouped',
+    component: () => import('@/views/FreeCourseDetail.vue'),
+    props: (route) => ({
+      resourceType: 'summary',
+      resolvedSlug: buildSummaryApiSlugFromRoute(route.params)
+    })
+  },
+  {
+    path: '/ressources-gratuites/syntheses/:pays/:matiere/:slug-:id(\\d+)',
+    name: 'FreeSummarySlug',
+    component: () => import('@/views/FreeCourseDetail.vue'),
+    props: (route) => ({
+      resourceType: 'summary',
+      resolvedSlug: buildSummaryApiSlugFromRoute(route.params)
+    })
   },
   {
     path: '/ressources-gratuites/syntheses/:slug',

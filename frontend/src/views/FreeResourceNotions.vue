@@ -11,6 +11,8 @@ import { useSubscriptionStore } from '@/stores/subscription'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { useZoom } from '@/composables/useZoom'
 import { buildExerciseChapterRouteParams } from '@/utils/freeExerciseSlug'
+import { buildCourseRouteParams } from '@/utils/freeCourseSlug'
+import { buildSummaryRouteParams } from '@/utils/freeSummarySlug'
 
 const props = defineProps({
   resourceType: {
@@ -116,7 +118,7 @@ const typeConfig = computed(() => {
   }
   if (props.resourceType === 'summary') {
     return {
-      slugRoute: 'FreeSummaryDetail',
+      slugRoute: 'FreeSummarySlugGrouped',
       fallback: 'Fiches à découvrir',
       emptyLabel: 'Aucune fiche de synthèse gratuite disponible pour le moment.',
       counterLabel: 'fiche',
@@ -124,7 +126,7 @@ const typeConfig = computed(() => {
     }
   }
   return {
-    slugRoute: 'FreeCourseDetail',
+    slugRoute: 'FreeCourseSlug',
     fallback: 'Chapitres à découvrir',
     emptyLabel: 'Aucun chapitre gratuit disponible pour le moment.',
     counterLabel: 'chapitre',
@@ -665,6 +667,7 @@ const flatList = computed(() => {
           ...chapter,
           slug: routeParams.slug,
           paysSlug: routeParams.pays,
+          niveauGroup: routeParams.niveauGroup,
           slugId: routeParams.id,
           count: typeof chapter.totalCount === 'number' ? chapter.totalCount : exercisesList.length,
           isLocked: exercisesList.length > 0 && exercisesList.every((exercise) => Boolean(exercise.is_locked))
@@ -751,7 +754,7 @@ const getExerciseCount = (chapter) => {
 
 const getExerciseChapterRoute = (chapter) => {
   if (!chapter) return null
-  const { pays, matiere, slug, id } = buildExerciseChapterRouteParams({
+  const { pays, niveauGroup, matiere, slug, id } = buildExerciseChapterRouteParams({
     paysNom: chapter?.paysNom || chapter?.pays_nom,
     matiereNom: chapter?.matiereNom || chapter?.matiere_nom,
     niveauNom: chapter?.niveauNom || chapter?.niveau_nom,
@@ -759,7 +762,57 @@ const getExerciseChapterRoute = (chapter) => {
     id: chapter?.notionId || chapter?.id
   })
   if (!slug || !id) return null
-  return { name: 'FreeExerciseChapterSlug', params: { pays, matiere, slug, id } }
+  const routeName = niveauGroup ? 'FreeExerciseChapterSlugGrouped' : 'FreeExerciseChapterSlug'
+  const params = niveauGroup
+    ? { pays, niveauGroup, matiere, slug, id }
+    : { pays, matiere, slug, id }
+  return { name: routeName, params }
+}
+
+const getCourseRoute = (resource) => {
+  if (!resource) return null
+  const params = buildCourseRouteParams({
+    paysNom: resource?.pays_nom,
+    matiereNom: resource?.matiere_nom,
+    niveauNom: resource?.niveau_nom,
+    titre: resource?.titre,
+    id: resource?.id
+  })
+  if (!params) return null
+  const routeName = params.niveauGroup ? 'FreeCourseSlugGrouped' : 'FreeCourseSlug'
+  const routeParams = params.niveauGroup
+    ? params
+    : { pays: params.pays, matiere: params.matiere, slug: params.slug, id: params.id }
+  return { name: routeName, params: routeParams }
+}
+
+const getSummaryRoute = (resource) => {
+  if (!resource) return null
+  const params = buildSummaryRouteParams({
+    paysNom: resource?.pays_nom,
+    matiereNom: resource?.matiere_nom,
+    niveauNom: resource?.niveau_nom,
+    titre: resource?.titre,
+    id: resource?.id
+  })
+  if (!params) return null
+  const routeName = params.niveauGroup ? 'FreeSummarySlugGrouped' : 'FreeSummarySlug'
+  const routeParams = params.niveauGroup
+    ? params
+    : { pays: params.pays, matiere: params.matiere, slug: params.slug, id: params.id }
+  return { name: routeName, params: routeParams }
+}
+
+const getResourceRoute = (resource) => {
+  if (!resource) return null
+  if (isCourseMode.value) {
+    return getCourseRoute(resource)
+  }
+  if (isSummaryMode.value) {
+    return getSummaryRoute(resource)
+  }
+  if (!resource.slug) return null
+  return { name: typeConfig.value.slugRoute, params: { slug: resource.slug } }
 }
 
 const openResource = (resource) => {
@@ -768,8 +821,9 @@ const openResource = (resource) => {
     onLockedResource(resource)
     return
   }
-  if (!resource.slug) return
-  router.push({ name: typeConfig.value.slugRoute, params: { slug: resource.slug } })
+  const routeTarget = getResourceRoute(resource)
+  if (!routeTarget) return
+  router.push(routeTarget)
 }
 
 const openExerciseChapter = (chapter) => {
@@ -1008,9 +1062,9 @@ const onLockedExercise = (chapter) => {
               :description="getCardDescription(resource)"
               :notion-id="resource.notion"
               :to="
-                resource.is_locked || !resource.slug
+                resource.is_locked
                   ? null
-                  : { name: typeConfig.slugRoute, params: { slug: resource.slug } }
+                  : getResourceRoute(resource)
               "
               :disable-prefetch="true"
               :locked="Boolean(resource.is_locked)"

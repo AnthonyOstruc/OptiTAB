@@ -264,6 +264,16 @@ const ROUTE_SEO = {
     description: 'Cours de maths gratuit : explications, exemples et exercices corrigés.',
     ogType: 'article'
   },
+  FreeCourseSlug: {
+    title: 'Cours gratuit de maths',
+    description: 'Cours de maths gratuit : explications, exemples et exercices corrigés.',
+    ogType: 'article'
+  },
+  FreeCourseSlugGrouped: {
+    title: 'Cours gratuit de maths',
+    description: 'Cours de maths gratuit : explications, exemples et exercices corrigés.',
+    ogType: 'article'
+  },
   FreeExercises: {
     title: 'Exercices de maths corrigés (6e–Prépa)',
     description:
@@ -284,6 +294,16 @@ const ROUTE_SEO = {
   FreeSummaryDetail: {
     title: 'Fiche de révision de maths',
     description: 'Fiche de synthèse gratuite : formules, méthodes et exemples pour réviser vite.',
+    ogType: 'article'
+  },
+  FreeSummarySlug: {
+    title: 'Fiche de r??vision de maths',
+    description: 'Fiche de synth??se gratuite : formules, m??thodes et exemples pour r??viser vite.',
+    ogType: 'article'
+  },
+  FreeSummarySlugGrouped: {
+    title: 'Fiche de r??vision de maths',
+    description: 'Fiche de synth??se gratuite : formules, m??thodes et exemples pour r??viser vite.',
     ogType: 'article'
   },
   About: {

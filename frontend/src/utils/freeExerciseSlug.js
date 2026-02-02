@@ -34,6 +34,21 @@ export const formatMatiereSlug = (value) => {
   return normalized
 }
 
+export const formatNiveauGroupSlug = (value) => {
+  const normalized = slugifyText(value || '')
+  if (!normalized) return ''
+  if (normalized.includes('lycee') || normalized.includes('terminale') || normalized.includes('terminal') || normalized.includes('premiere') || normalized.includes('1ere') || normalized.includes('1re') || normalized.includes('seconde') || normalized.includes('2nde') || normalized.includes('2de') || normalized.includes('bac')) {
+    return 'lycee'
+  }
+  if (normalized.includes('college') || normalized.includes('3e') || normalized.includes('4e') || normalized.includes('5e') || normalized.includes('6e') || normalized.includes('brevet')) {
+    return 'college'
+  }
+  if (normalized.includes('prepa') || normalized.includes('mpsi') || normalized.includes('mp2i') || normalized.includes('pcsi') || normalized.includes('psi') || normalized.includes('mp') || normalized.includes('ecole') || normalized.includes('grandes-ecoles')) {
+    return 'prepa'
+  }
+  return ''
+}
+
 export const buildExerciseChapterSlug = ({ niveauNom, niveau, name, title, notionNom } = {}) => {
   const levelSlug = formatNiveauSlug(niveauNom || niveau || '')
   const chapterSlug = slugifyText(name || title || notionNom || '')
@@ -43,9 +58,10 @@ export const buildExerciseChapterSlug = ({ niveauNom, niveau, name, title, notio
 export const DEFAULT_PAYS_SLUG = 'france'
 export const DEFAULT_MATIERE_SLUG = 'maths'
 
-export const buildExerciseChapterRouteParams = ({ paysNom, matiereNom, niveauNom, name, title, notionNom, id } = {}) => {
+export const buildExerciseChapterRouteParams = ({ paysNom, matiereNom, niveauNom, niveauGroup, name, title, notionNom, id } = {}) => {
   const paysSlug = formatPaysSlug(paysNom || '') || DEFAULT_PAYS_SLUG
   const matiereSlug = formatMatiereSlug(matiereNom || '') || DEFAULT_MATIERE_SLUG
+  const niveauGroupSlug = formatNiveauGroupSlug(niveauGroup || niveauNom || '')
   const slug = buildExerciseChapterSlug({ niveauNom, name, title, notionNom })
-  return { pays: paysSlug, matiere: matiereSlug, slug, id: id ?? null }
+  return { pays: paysSlug, niveauGroup: niveauGroupSlug, matiere: matiereSlug, slug, id: id ?? null }
 }

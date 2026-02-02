@@ -4,13 +4,14 @@ import { useRoute, useRouter } from 'vue-router'
 import FreeCourseDetail from '@/views/FreeCourseDetail.vue'
 import FreeExerciseChapter from '@/views/FreeExerciseChapter.vue'
 import { getFreeResources } from '@/api/free-content'
-import { buildExerciseChapterSlug, formatPaysSlug, formatMatiereSlug, DEFAULT_PAYS_SLUG, DEFAULT_MATIERE_SLUG } from '@/utils/freeExerciseSlug'
+import { buildExerciseChapterSlug, formatPaysSlug, formatMatiereSlug, formatNiveauGroupSlug, DEFAULT_PAYS_SLUG, DEFAULT_MATIERE_SLUG } from '@/utils/freeExerciseSlug'
 
 const route = useRoute()
 const router = useRouter()
 
 const slug = computed(() => String(route.params.slug || ''))
 const pays = computed(() => String(route.params.pays || ''))
+const niveauGroup = computed(() => String(route.params.niveauGroup || ''))
 const matiere = computed(() => String(route.params.matiere || ''))
 const slugIdParam = computed(() => String(route.params.id || ''))
 const isExerciseDetail = computed(() => slug.value.startsWith('exercice-gratuit-'))
@@ -64,6 +65,7 @@ const resolveNotionBySlug = async () => {
       const first = list && list.length ? list[0] : null
       if (first) {
         const canonicalPays = formatPaysSlug(first?.pays_nom || '') || DEFAULT_PAYS_SLUG
+        const canonicalGroup = formatNiveauGroupSlug(first?.niveau_nom || '')
         const canonicalMatiere = formatMatiereSlug(first?.matiere_nom || first?.matiere || '') || DEFAULT_MATIERE_SLUG
         const canonicalSlug = buildExerciseChapterSlug({
           niveauNom: first?.niveau_nom,
@@ -75,16 +77,22 @@ const resolveNotionBySlug = async () => {
 
         if (canonicalSlug) {
           const currentPays = formatPaysSlug(pays.value)
+          const currentGroup = formatNiveauGroupSlug(niveauGroup.value)
           const currentMatiere = formatMatiereSlug(matiere.value)
+          const routeName = canonicalGroup ? 'FreeExerciseChapterSlugGrouped' : 'FreeExerciseChapterSlug'
+          const params = canonicalGroup
+            ? { pays: canonicalPays, niveauGroup: canonicalGroup, matiere: canonicalMatiere, slug: canonicalSlug, id: targetId }
+            : { pays: canonicalPays, matiere: canonicalMatiere, slug: canonicalSlug, id: targetId }
           if (
             canonicalPays !== currentPays ||
+            canonicalGroup !== currentGroup ||
             canonicalMatiere !== currentMatiere ||
             canonicalSlug !== rawSlug ||
             String(targetId) !== String(slugIdParam.value || parsed.id)
           ) {
             router.replace({
-              name: 'FreeExerciseChapterSlug',
-              params: { pays: canonicalPays, matiere: canonicalMatiere, slug: canonicalSlug, id: targetId }
+              name: routeName,
+              params
             }).catch(() => {})
           }
         }
@@ -125,6 +133,7 @@ const resolveNotionBySlug = async () => {
 
       if (match) {
         const canonicalPays = formatPaysSlug(match?.pays_nom || '') || DEFAULT_PAYS_SLUG
+        const canonicalGroup = formatNiveauGroupSlug(match?.niveau_nom || '')
         const canonicalMatiere = formatMatiereSlug(match?.matiere_nom || match?.matiere || '') || DEFAULT_MATIERE_SLUG
         const canonicalSlug = buildExerciseChapterSlug({
           niveauNom: match?.niveau_nom,
@@ -137,16 +146,22 @@ const resolveNotionBySlug = async () => {
 
         if (canonicalSlug && resolvedId) {
           const currentPays = formatPaysSlug(pays.value)
+          const currentGroup = formatNiveauGroupSlug(niveauGroup.value)
           const currentMatiere = formatMatiereSlug(matiere.value)
+          const routeName = canonicalGroup ? 'FreeExerciseChapterSlugGrouped' : 'FreeExerciseChapterSlug'
+          const params = canonicalGroup
+            ? { pays: canonicalPays, niveauGroup: canonicalGroup, matiere: canonicalMatiere, slug: canonicalSlug, id: resolvedId }
+            : { pays: canonicalPays, matiere: canonicalMatiere, slug: canonicalSlug, id: resolvedId }
           if (
             canonicalPays !== currentPays ||
+            canonicalGroup !== currentGroup ||
             canonicalMatiere !== currentMatiere ||
             canonicalSlug !== rawSlug ||
             String(resolvedId) !== String(targetId)
           ) {
             router.replace({
-              name: 'FreeExerciseChapterSlug',
-              params: { pays: canonicalPays, matiere: canonicalMatiere, slug: canonicalSlug, id: resolvedId }
+              name: routeName,
+              params
             }).catch(() => {})
           }
         }
@@ -168,7 +183,7 @@ const goBack = () => {
   router.push({ name: 'FreeExercises' }).catch(() => {})
 }
 
-watch([slug, pays, matiere, slugIdParam], () => {
+watch([slug, pays, niveauGroup, matiere, slugIdParam], () => {
   resolveNotionBySlug()
 }, { immediate: true })
 </script>

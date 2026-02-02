@@ -51,9 +51,9 @@ const router = useRouter()
 const route = useRoute()
 
 const resourceTabs = [
-  { label: 'Cours', routeName: 'FreeCourses', relatedNames: ['FreeCourses', 'FreeCourseDetail'], resourceType: 'course', navName: 'course', icon: BookOpenIcon },
-  { label: 'Synthèse', routeName: 'FreeSummaries', relatedNames: ['FreeSummaries', 'FreeSummaryDetail'], resourceType: 'summary', navName: 'summary', icon: DocumentTextIcon },
-  { label: 'Exercices', routeName: 'FreeExercises', relatedNames: ['FreeExercises', 'FreeExerciseDetail', 'FreeExerciseChapter', 'FreeExerciseChapterSlug', 'FreeExerciseChapterSlugLegacy'], resourceType: 'exercise', navName: 'exercise', icon: AcademicCapIcon }
+  { label: 'Cours', routeName: 'FreeCourses', relatedNames: ['FreeCourses', 'FreeCourseDetail', 'FreeCourseSlugGrouped', 'FreeCourseSlug'], resourceType: 'course', navName: 'course', icon: BookOpenIcon },
+  { label: 'Synthèse', routeName: 'FreeSummaries', relatedNames: ['FreeSummaries', 'FreeSummaryDetail', 'FreeSummarySlugGrouped', 'FreeSummarySlug'], resourceType: 'summary', navName: 'summary', icon: DocumentTextIcon },
+  { label: 'Exercices', routeName: 'FreeExercises', relatedNames: ['FreeExercises', 'FreeExerciseDetail', 'FreeExerciseChapter', 'FreeExerciseChapterSlugGrouped', 'FreeExerciseChapterSlug', 'FreeExerciseChapterSlugLegacy'], resourceType: 'exercise', navName: 'exercise', icon: AcademicCapIcon }
 ]
 
 const activeType = computed(() => {

@@ -345,7 +345,7 @@ const ROUTE_SEO = {
     canonicalPath: '/ressources-gratuites/exercices'
   },
   FreeExerciseDetail: {
-    title: 'Exercice de maths corrigé',
+    title: 'Exercice de maths corrige',
     description: 'Exercice de maths gratuit avec correction, methode et explications.',
     ogType: 'article'
   },
@@ -394,8 +394,8 @@ const ROUTE_SEO = {
   },
   CGV: { title: 'CGV', canonicalPath: '/cgv', noindex: true },
   CGU: { title: 'CGU', canonicalPath: '/cgu', noindex: true },
-  Confidentialite: { title: 'Confidentialité', canonicalPath: '/confidentialite', noindex: true },
-  Legal: { title: 'Mentions légales', canonicalPath: '/legal', noindex: true },
+  Confidentialite: { title: 'Confidentialite', canonicalPath: '/confidentialite', noindex: true },
+  Legal: { title: 'Mentions legales', canonicalPath: '/legal', noindex: true },
   Cookies: { title: 'Cookies', canonicalPath: '/cookies', noindex: true },
   Conditions: { title: 'Conditions', canonicalPath: '/conditions', noindex: true }
 }
@@ -449,4 +449,5 @@ export function applyRouteSeo(route) {
     // Never block navigation on SEO updates.
   }
 }
+
 

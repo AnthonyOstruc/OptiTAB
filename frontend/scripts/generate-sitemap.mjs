@@ -60,6 +60,48 @@ function formatMatiereSlug(value) {
   return normalized
 }
 
+function formatNiveauGroupSlug(value) {
+  const normalized = slugifyText(value || '')
+  if (!normalized) return ''
+  if (
+    normalized.includes('lycee') ||
+    normalized.includes('terminale') ||
+    normalized.includes('terminal') ||
+    normalized.includes('premiere') ||
+    normalized.includes('1ere') ||
+    normalized.includes('1re') ||
+    normalized.includes('seconde') ||
+    normalized.includes('2nde') ||
+    normalized.includes('2de') ||
+    normalized.includes('bac')
+  ) {
+    return 'lycee'
+  }
+  if (
+    normalized.includes('college') ||
+    normalized.includes('3e') ||
+    normalized.includes('4e') ||
+    normalized.includes('5e') ||
+    normalized.includes('6e') ||
+    normalized.includes('brevet')
+  ) {
+    return 'college'
+  }
+  if (
+    normalized.includes('prepa') ||
+    normalized.includes('mpsi') ||
+    normalized.includes('mp2i') ||
+    normalized.includes('pcsi') ||
+    normalized.includes('psi') ||
+    normalized.includes('mp') ||
+    normalized.includes('ecole') ||
+    normalized.includes('grandes-ecoles')
+  ) {
+    return 'prepa'
+  }
+  return ''
+}
+
 function formatNiveauSlug(value) {
   if (!value) return ''
   const normalized = slugifyText(value)
@@ -76,6 +118,29 @@ function formatNiveauSlug(value) {
   return normalized
 }
 
+function buildCoursePathSlug({ niveauNom, titre } = {}) {
+  const levelSlug = formatNiveauSlug(niveauNom || '')
+  const titleSlug = slugifyText(titre || '')
+  if (!levelSlug) return titleSlug
+  if (!titleSlug) return levelSlug
+  if (titleSlug === levelSlug || titleSlug.startsWith(`${levelSlug}-`)) return titleSlug
+  return `${levelSlug}-${titleSlug}`
+}
+
+function buildCourseRouteParams({ paysNom, matiereNom, niveauNom, titre, id } = {}) {
+  const paysSlug = formatPaysSlug(paysNom || '')
+  const matiereSlug = formatMatiereSlug(matiereNom || '')
+  const niveauGroupSlug = formatNiveauGroupSlug(niveauNom || '')
+  const slug = buildCoursePathSlug({ niveauNom, titre })
+  const safeId = id != null ? String(id) : ''
+  if (!paysSlug || !matiereSlug || !slug || !safeId) return null
+  return { pays: paysSlug, niveauGroup: niveauGroupSlug, matiere: matiereSlug, slug, id: safeId }
+}
+
+function buildSummaryRouteParams({ paysNom, matiereNom, niveauNom, titre, id } = {}) {
+  return buildCourseRouteParams({ paysNom, matiereNom, niveauNom, titre, id })
+}
+
 function buildExerciseChapterSlug({ niveauNom, niveau, name, title, notionNom } = {}) {
   const levelSlug = formatNiveauSlug(niveauNom || niveau || '')
   const chapterSlug = slugifyText(name || title || notionNom || '')
@@ -84,6 +149,16 @@ function buildExerciseChapterSlug({ niveauNom, niveau, name, title, notionNom } 
 
 const DEFAULT_PAYS_SLUG = 'france'
 const DEFAULT_MATIERE_SLUG = 'maths'
+
+function buildExerciseChapterRouteParams({ paysNom, matiereNom, niveauNom, niveauGroup, name, title, notionNom, id } = {}) {
+  const paysSlug = formatPaysSlug(paysNom || '') || DEFAULT_PAYS_SLUG
+  const matiereSlug = formatMatiereSlug(matiereNom || '') || DEFAULT_MATIERE_SLUG
+  const niveauGroupSlug = formatNiveauGroupSlug(niveauGroup || niveauNom || '')
+  const slug = buildExerciseChapterSlug({ niveauNom, name, title, notionNom })
+  const safeId = id != null ? String(id) : ''
+  if (!slug || !safeId) return null
+  return { pays: paysSlug, niveauGroup: niveauGroupSlug, matiere: matiereSlug, slug, id: safeId }
+}
 
 async function fetchAllPages(url) {
   const items = []
@@ -110,25 +185,57 @@ function routeForResource(resource) {
   const type = resource?.resource_type || resource?.type || resource?.resourceType
   if (!slug || !type) return null
 
-  if (type === 'course') return `/ressources-gratuites/cours/${slug}`
+  if (type === 'course') {
+    const params = buildCourseRouteParams({
+      paysNom: resource?.pays_nom,
+      matiereNom: resource?.matiere_nom || resource?.matiere,
+      niveauNom: resource?.niveau_nom,
+      titre: resource?.titre,
+      id: resource?.id
+    })
+    if (params) {
+      if (params.niveauGroup) {
+        return `/ressources-gratuites/cours/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
+      }
+      return `/ressources-gratuites/cours/${params.pays}/${params.matiere}/${params.slug}-${params.id}`
+    }
+    return `/ressources-gratuites/cours/${slug}`
+  }
   if (type === 'exercise') return `/ressources-gratuites/exercices/${slug}`
-  if (type === 'summary') return `/ressources-gratuites/syntheses/${slug}`
+  if (type === 'summary') {
+    const params = buildSummaryRouteParams({
+      paysNom: resource?.pays_nom,
+      matiereNom: resource?.matiere_nom || resource?.matiere,
+      niveauNom: resource?.niveau_nom,
+      titre: resource?.titre,
+      id: resource?.id
+    })
+    if (params) {
+      if (params.niveauGroup) {
+        return `/ressources-gratuites/syntheses/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
+      }
+      return `/ressources-gratuites/syntheses/${params.pays}/${params.matiere}/${params.slug}-${params.id}`
+    }
+    return `/ressources-gratuites/syntheses/${slug}`
+  }
 
   return null
 }
 
 function routeForExerciseChapter(resource) {
-  const notionId = resource?.notion || resource?.id
-  if (!notionId) return null
-
-  const paysSlug = formatPaysSlug(resource?.pays_nom || '') || DEFAULT_PAYS_SLUG
-  const matiereSlug = formatMatiereSlug(resource?.matiere_nom || resource?.matiere || '') || DEFAULT_MATIERE_SLUG
-  const slug = buildExerciseChapterSlug({
+  const params = buildExerciseChapterRouteParams({
+    paysNom: resource?.pays_nom,
+    matiereNom: resource?.matiere_nom || resource?.matiere,
     niveauNom: resource?.niveau_nom,
-    name: resource?.notion_nom || resource?.name || resource?.titre
+    niveauGroup: resource?.niveau_group || resource?.niveauGroup,
+    name: resource?.notion_nom || resource?.name || resource?.titre,
+    id: resource?.notion || resource?.id
   })
-  if (!slug) return null
-  return `/ressources-gratuites/exercices/${paysSlug}/${matiereSlug}/${slug}-${notionId}`
+  if (!params) return null
+  if (params.niveauGroup) {
+    return `/ressources-gratuites/exercices/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
+  }
+  return `/ressources-gratuites/exercices/${params.pays}/${params.matiere}/${params.slug}-${params.id}`
 }
 
 function extractPathname(loc) {

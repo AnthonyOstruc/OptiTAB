@@ -64,7 +64,7 @@ const faqItems = [
     answer: 'Oui, vous pouvez changer de niveau a tout moment depuis votre espace abonne.'
   },
   {
-    question: \"Y a-t-il une periode d'essai ?\",
+    question: "Y a-t-il une periode d'essai ?",
     answer: 'Consultez nos ressources gratuites pour decouvrir la methode OptiTAB avant de vous abonner.'
   }
 ]

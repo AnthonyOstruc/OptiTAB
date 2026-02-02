@@ -20,24 +20,9 @@
           <h2 class="faq-title">Questions fréquentes</h2>
           
           <div class="faq-list">
-            <div class="faq-item">
-              <h3 class="faq-question">Puis-je annuler à tout moment ?</h3>
-              <p class="faq-answer">Oui, l'abonnement est sans engagement. Vous pouvez annuler quand vous le souhaitez depuis votre espace personnel.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h3 class="faq-question">Comment fonctionne le paiement ?</h3>
-              <p class="faq-answer">Le paiement est sécurisé via Stripe. Vous êtes prélevé chaque mois à la date d'anniversaire de votre abonnement.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h3 class="faq-question">Puis-je changer de niveau ?</h3>
-              <p class="faq-answer">Oui, vous pouvez changer de niveau à tout moment depuis votre espace abonné.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h3 class="faq-question">Y a-t-il une période d'essai ?</h3>
-              <p class="faq-answer">Consultez nos ressources gratuites pour découvrir la méthode OptiTAB avant de vous abonner.</p>
+            <div v-for="(item, idx) in faqItems" :key="idx" class="faq-item">
+              <h3 class="faq-question">{{ item.question }}</h3>
+              <p class="faq-answer">{{ item.answer }}</p>
             </div>
           </div>
         </div>
@@ -58,8 +43,70 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import PricingPlans from '@/components/home/PricingPlans.vue'
+import { setPageSeo, buildFaqJsonLd, getRobotsForRoute } from '@/services/seo'
+
+const route = useRoute()
+
+const faqItems = [
+  {
+    question: 'Puis-je annuler a tout moment ?',
+    answer: "Oui, l'abonnement est sans engagement. Vous pouvez annuler quand vous le souhaitez depuis votre espace personnel."
+  },
+  {
+    question: 'Comment fonctionne le paiement ?',
+    answer: "Le paiement est securise via Stripe. Vous etes preleve chaque mois a la date d'anniversaire de votre abonnement."
+  },
+  {
+    question: 'Puis-je changer de niveau ?',
+    answer: 'Oui, vous pouvez changer de niveau a tout moment depuis votre espace abonne.'
+  },
+  {
+    question: \"Y a-t-il une periode d'essai ?\",
+    answer: 'Consultez nos ressources gratuites pour decouvrir la methode OptiTAB avant de vous abonner.'
+  }
+]
+
+function getSiteUrl() {
+  const fromEnv = String(import.meta?.env?.VITE_SITE_URL || '').trim()
+  if (fromEnv) return fromEnv.replace(/\\/+$/, '')
+  if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin
+  return 'https://optitab.net'
+}
+
+function toAbsoluteUrl(path) {
+  const raw = String(path || '').trim()
+  if (!raw) return ''
+  if (/^https?:\\/\\//i.test(raw)) return raw
+  const base = getSiteUrl()
+  return `${base}${raw.startsWith('/') ? '' : '/'}${raw}`
+}
+
+const title = 'Tarifs OptiTAB : abonnement maths en ligne'
+const description =
+  'Tarifs OptiTAB : abonnement mensuel sans engagement pour acceder aux cours, exercices corriges et fiches de synthese. Paiement securise, annulation a tout moment.'
+const faqGraph = buildFaqJsonLd(faqItems)
+const jsonLdGraph = [
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: toAbsoluteUrl('/') },
+      { '@type': 'ListItem', position: 2, name: 'Tarifs', item: toAbsoluteUrl('/tarifs') }
+    ]
+  },
+  ...(faqGraph ? [faqGraph] : [])
+]
+
+setPageSeo({
+  title,
+  description,
+  canonicalPath: '/tarifs',
+  robots: getRobotsForRoute({ route }),
+  ogType: 'website',
+  jsonLdGraph
+})
 </script>
 
 <style scoped>

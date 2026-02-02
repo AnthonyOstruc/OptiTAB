@@ -3,13 +3,14 @@ import { ref, onMounted, nextTick, watch, computed, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
+import Breadcrumbs from '@/components/common/Breadcrumbs.vue'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import { getFreeResource } from '@/api/free-content'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
 import { buildCourseRouteParams } from '@/utils/freeCourseSlug'
 import { buildSummaryRouteParams } from '@/utils/freeSummarySlug'
-import { setPageSeo } from '@/services/seo'
+import { setPageSeo, getRobotsForRoute } from '@/services/seo'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
 
@@ -40,10 +41,9 @@ const viewportWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 19
 const contentHeight = ref(0)
 const renderedContent = computed(() => {
   if (!resource.value) return ''
-  if (resource.value.contenu) {
-    return renderContentWithImages(resource.value.contenu, resource.value.images || [])
-  }
-  return resource.value.contenu_html || ''
+  const raw = resource.value.contenu || resource.value.contenu_html || ''
+  if (!raw) return ''
+  return renderContentWithImages(raw, resource.value.images || [], { autoShiftHeadings: true })
 })
 
 const effectiveSlug = computed(() => {
@@ -63,6 +63,35 @@ const exerciseSolution = computed(() => {
 })
 const exerciseDifficulty = computed(() => resource.value?.difficulty || 'medium')
 const exerciseImages = computed(() => resource.value?.images || [])
+const showBlurredTeaser = computed(() => !isExerciseResource.value && !subscriptionStore.hasAccess)
+
+const blurredTeaserLines = computed(() => {
+  const raw = stripHtml(renderedContent.value || resource.value?.contenu_html || resource.value?.contenu || '')
+  const cleaned = raw.replace(/\s+/g, ' ').trim()
+  if (!cleaned) {
+    return [
+      "Contenu complet réservé aux abonnés OptiTAB.",
+      "Méthodes détaillées, démonstrations et exercices bonus.",
+      "Exemples corrigés pas à pas et astuces de professeur.",
+      "Accès illimité à toutes les ressources premium."
+    ]
+  }
+
+  const words = cleaned.split(' ').slice(0, 60)
+  const lines = []
+  const chunkSize = 12
+  for (let i = 0; i < words.length; i += chunkSize) {
+    lines.push(words.slice(i, i + chunkSize).join(' '))
+    if (lines.length >= 4) break
+  }
+  if (lines.length === 0) {
+    return [
+      "Contenu complet réservé aux abonnés OptiTAB.",
+      "Méthodes détaillées, démonstrations et exercices bonus."
+    ]
+  }
+  return lines
+})
 
 const courseRouteMatches = (params, canonical) => {
   if (!canonical || !params) return false
@@ -92,6 +121,36 @@ const backButtonLabel = computed(() => {
   }
   return 'Retour aux chapitres'
 })
+
+const categoryInfo = computed(() => {
+  if (props.resourceType === 'exercise') {
+    return { label: 'Exercices gratuits', path: '/ressources-gratuites/exercices' }
+  }
+  if (props.resourceType === 'summary') {
+    return { label: 'Fiches de synthese gratuites', path: '/ressources-gratuites/syntheses' }
+  }
+  return { label: 'Cours gratuits', path: '/ressources-gratuites/cours' }
+})
+
+const introText = computed(() => {
+  if (!resource.value) return ''
+  const raw = resource.value.accroche || resource.value.excerpt || resource.value.resume || ''
+  const cleaned = stripHtml(raw)
+  if (!cleaned) return ''
+  return cleaned.length > 180 ? `${cleaned.slice(0, 177).trimEnd()}...` : cleaned
+})
+
+const breadcrumbItems = computed(() => [
+  { label: 'Accueil', to: '/' },
+  { label: categoryInfo.value.label, to: categoryInfo.value.path },
+  { label: resource.value?.titre || 'Ressource gratuite' }
+])
+
+const relatedLinks = computed(() => [
+  { label: 'Cours gratuits de maths', to: '/ressources-gratuites/cours' },
+  { label: 'Exercices corriges gratuits', to: '/ressources-gratuites/exercices' },
+  { label: 'Fiches de revision gratuites', to: '/ressources-gratuites/syntheses' }
+])
 
 const subscriptionCtaLabel = computed(() => (subscriptionStore.hasAccess ? 'Gérer mon abonnement' : "S'abonner"))
 
@@ -492,7 +551,7 @@ watch(
       title,
       description,
       canonicalPath: route.path,
-      robots: 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1',
+      robots: getRobotsForRoute({ route }),
       ogType: 'article',
       image,
       jsonLdGraph
@@ -566,6 +625,7 @@ onBeforeUnmount(() => {
         :custom-action="goBack"
         position="top-left"
       />
+      <Breadcrumbs :items="breadcrumbItems" class="breadcrumb-trail" />
 
       <div class="cours-body">
         <div v-if="loading" class="loading-container">
@@ -583,6 +643,7 @@ onBeforeUnmount(() => {
              <div class="cours-title-row">
                <h1 class="cours-title">{{ resource.titre }}</h1>
              </div>
+             <p v-if="introText" class="cours-intro">{{ introText }}</p>
            </header>
 
            <section class="free-resource-cta" aria-label="Accès professeur ou plateforme">
@@ -659,8 +720,35 @@ onBeforeUnmount(() => {
             </transition>
           </nav>
 
-           <div v-if="!isExerciseResource" class="cours-content-outer" :style="zoomStyle">
-             <div class="cours-content" ref="contentRef" v-html="renderedContent" />
+          <div v-if="!isExerciseResource" class="cours-content-outer" :style="zoomStyle">
+            <div class="cours-content" ref="contentRef" v-html="renderedContent" />
+          </div>
+
+          <section class="related-resources" aria-labelledby="related-resources-title">
+            <h2 id="related-resources-title" class="related-resources__title">Ressources liees</h2>
+            <div class="related-resources__list">
+              <router-link
+                v-for="link in relatedLinks"
+                :key="link.to"
+                :to="link.to"
+                class="related-resources__link"
+              >
+                {{ link.label }}
+              </router-link>
+            </div>
+          </section>
+
+           <div v-if="showBlurredTeaser" class="blurred-teaser">
+             <div class="blurred-teaser__header">
+               <h3>Contenu complet</h3>
+               <p>Accès réservé aux abonnés OptiTAB.</p>
+             </div>
+             <div class="blurred-teaser__content" aria-hidden="true">
+               <p v-for="(line, index) in blurredTeaserLines" :key="index">{{ line }}</p>
+             </div>
+             <button class="blurred-teaser__cta" type="button" @click="onSubscriptionCtaClick">
+               Débloquer l’accès complet
+             </button>
            </div>
 
            <transition name="scroll-top-fade">
@@ -687,6 +775,10 @@ onBeforeUnmount(() => {
   background: #fff;
   min-height: 100vh;
   position: relative;
+}
+
+.breadcrumb-trail {
+  margin: 6px 0 16px;
 }
 
 .cours-body {
@@ -735,6 +827,15 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   gap: 8px;
+}
+
+.cours-intro {
+  margin: 0;
+  max-width: 860px;
+  color: #475569;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .cours-title-row {
@@ -1187,6 +1288,116 @@ onBeforeUnmount(() => {
   line-height: 1.75;
   color: #1f2937;
   font-size: 17px;
+}
+
+.related-resources {
+  margin: 24px 0 28px;
+  padding: 20px 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.06), rgba(99, 102, 241, 0.04));
+}
+
+.related-resources__title {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.related-resources__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.related-resources__link {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #1d4ed8;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.related-resources__link:hover {
+  transform: translateY(-1px);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.12);
+}
+
+.blurred-teaser {
+  margin: 24px 0 32px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(99, 102, 241, 0.05));
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.blurred-teaser__header h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.blurred-teaser__header p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.blurred-teaser__content {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px dashed rgba(148, 163, 184, 0.5);
+  filter: blur(6px);
+  user-select: none;
+  pointer-events: none;
+}
+
+.blurred-teaser__content p {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: #1f2937;
+  line-height: 1.5;
+}
+
+.blurred-teaser__content p:last-child {
+  margin-bottom: 0;
+}
+
+.blurred-teaser__cta {
+  align-self: flex-start;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.blurred-teaser__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(37, 99, 235, 0.3);
+}
+
+.blurred-teaser__cta:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.45);
+  outline-offset: 2px;
 }
 
 .cours-content :deep(h1),

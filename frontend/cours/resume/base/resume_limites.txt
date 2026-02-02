@@ -1,0 +1,817 @@
+===Résumé Limites
+
+<div class="seo-metadata" style="display: none;" data-seo-title="Limites de fonctions : formules usuelles, croissances comparées | OptiTAB" data-seo-description="Formulaire complet sur les limites : définitions, limites usuelles, croissances comparées, formes indéterminées, théorèmes et méthodes de calcul du lycée au master." data-seo-url="/limites-fonctions-formules-usuelles" data-seo-keywords="limites, limites usuelles, croissances comparées, formes indéterminées, théorème des gendarmes, continuité, développements limités"></div>
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+<h1 style="color:#2c3e50; font-size:2.2em; margin-bottom:20px; border-bottom:3px solid #3498db; padding-bottom:12px;">Limites de fonctions : formules usuelles et méthodes de calcul</h1>
+
+<div style="background:#e3f2fd; border-left:6px solid #2196f3; padding:20px; margin:20px 0; border-radius:6px; line-height:1.8;">
+<p style="margin:0 0 12px 0; font-size:1.05em;">
+Cette fiche complète présente les <strong>limites de fonctions</strong> avec toutes les <strong>formules usuelles</strong>, les <strong>croissances comparées</strong>, les <strong>formes indéterminées</strong> et les <strong>méthodes de calcul</strong> pour tous les niveaux du lycée au master.
+</p>
+<p style="margin:0 0 12px 0;">
+Les limites sont fondamentales pour étudier le <strong>comportement asymptotique</strong> des fonctions, définir la <a href="/derivation-tableau-formules" style="color:#1976d2; text-decoration:underline;">dérivée</a>, prouver la <strong>continuité</strong> et calculer des <a href="/integration-primitives-integrales" style="color:#1976d2; text-decoration:underline;">intégrales</a>. Maîtriser les limites est essentiel pour progresser en analyse mathématique.
+</p>
+<p style="margin:0;">
+<strong>🎯 Ce que vous allez apprendre :</strong> définitions rigoureuses, limites usuelles, croissances comparées, théorèmes fondamentaux, méthodes de levée d'indétermination et développements limités.
+</p>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:20px; margin:20px 0; border-radius:6px;">
+<h2 style="color:#2c3e50; font-size:1.4em; margin-top:0;">📚 Liens utiles pour approfondir</h2>
+<ul style="line-height:2; margin:10px 0;">
+<li><strong>→</strong> <a href="/derivation-tableau-formules" style="color:#1976d2;">Dérivation : tableaux et formules</a></li>
+<li><strong>→</strong> <a href="/integration-primitives-integrales" style="color:#1976d2;">Intégration et primitives</a></li>
+<li><strong>→</strong> <a href="/fonctions-usuelles-proprietes" style="color:#1976d2;">Fonctions usuelles et propriétés</a></li>
+<li><strong>→</strong> <a href="/trigonometrie-formules-completes" style="color:#1976d2;">Trigonométrie : formules complètes</a></li>
+<li><strong>→</strong> <a href="/exercices-limites-corriges" style="color:#1976d2;">Exercices corrigés sur les limites</a></li>
+</ul>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Qu'est-ce qu'une limite ? Définitions fondamentales</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Notation</th>
+<th style="border:1px solid #ddd; padding:12px;">Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to a} f(x) = L$</td>
+<td style="border:1px solid #ddd; padding:10px;">Quand $\displaystyle x$ se rapproche de $\displaystyle a$, $\displaystyle f(x)$ se rapproche de $\displaystyle L$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to a^+} f(x) = L$</td>
+<td style="border:1px solid #ddd; padding:10px;">Limite à droite : $\displaystyle x$ tend vers $\displaystyle a$ par valeurs supérieures</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to a^-} f(x) = L$</td>
+<td style="border:1px solid #ddd; padding:10px;">Limite à gauche : $\displaystyle x$ tend vers $\displaystyle a$ par valeurs inférieures</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} f(x) = L$</td>
+<td style="border:1px solid #ddd; padding:10px;">Quand $\displaystyle x$ tend vers $\displaystyle +\infty$, $\displaystyle f(x)$ tend vers $\displaystyle L$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to a} f(x) = +\infty$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x)$ devient arbitrairement grand quand $\displaystyle x$ tend vers $\displaystyle a$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#e3f2fd; border-radius:6px; border-left:6px solid #2196f3; padding:15px; margin:12px 0;">
+<strong>💡 Continuité :</strong> $\displaystyle f$ est continue en $\displaystyle a$ si et seulement si $\displaystyle \lim_{x \to a} f(x) = f(a)$
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Opérations sur les limites</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle \lim f$</th>
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle \lim g$</th>
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle \lim(f+g)$</th>
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle \lim(f \times g)$</th>
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle \lim(f/g)$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle L$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle L'$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle L + L'$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle L \times L'$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \dfrac{L}{L'}$ (si $\displaystyle L' \neq 0$)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle L$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle +\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle +\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \pm\infty$ selon signe de $\displaystyle L$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle +\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle +\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle +\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle +\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><span style="color:#ef4444;">FI</span></td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle +\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle -\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><span style="color:#ef4444;">FI</span></td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle -\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><span style="color:#ef4444;">FI</span></td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><span style="color:#ef4444;">FI</span></td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><span style="color:#ef4444;">FI</span></td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \pm\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \pm\infty$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><span style="color:#ef4444;">FI</span></td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+<strong>⚠️ FI = Forme Indéterminée</strong> : il faut étudier plus finement la limite (factorisation, croissances comparées, développements limités...)
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Les 4 formes indéterminées classiques</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Forme indéterminée</th>
+<th style="border:1px solid #ddd; padding:12px; width:35%;">Exemple type</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Méthode de résolution</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \dfrac{0}{0}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{\sin(x)}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Factoriser, simplifier, utiliser limites usuelles ou L'Hôpital</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \dfrac{\infty}{\infty}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} \dfrac{x^2}{e^x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Croissances comparées, factoriser par le terme dominant</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \infty - \infty$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} (x - \sqrt{x^2+1})$</td>
+<td style="border:1px solid #ddd; padding:10px;">Factoriser, expression conjuguée, développements limités</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0 \times \infty$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} x e^{-x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Transformer en quotient : $\displaystyle \dfrac{x}{e^x}$ puis croissances comparées</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 1^\infty$, $\displaystyle 0^0$, $\displaystyle \infty^0$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} (1+x)^{1/x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Passer au logarithme : $\displaystyle \ln(f) = g\ln(u)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Limites usuelles fondamentales</h2>
+
+<h3 style="color:#2c3e50; margin-top:20px;">1. Limites trigonométriques (Lycée)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Limite</th>
+<th style="border:1px solid #ddd; padding:12px;">Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{\sin(x)}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>$\displaystyle 1$</strong></td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{1 - \cos(x)}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{1 - \cos(x)}{x^2}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>$\displaystyle \dfrac{1}{2}$</strong></td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{\tan(x)}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>$\displaystyle 1$</strong></td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{\arcsin(x)}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{\arctan(x)}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 1$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">2. Limites exponentielles et logarithmiques (Lycée/Prépa)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Limite</th>
+<th style="border:1px solid #ddd; padding:12px;">Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{e^x - 1}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>$\displaystyle 1$</strong></td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{\ln(1+x)}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>$\displaystyle 1$</strong></td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{a^x - 1}{x}$ ($\displaystyle a > 0$, $\displaystyle a \neq 1$)</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \ln(a)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0^+} x\ln(x)$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} \dfrac{\ln(x)}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} (1+x)^{1/x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>$\displaystyle e$</strong></td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} \left(1 + \dfrac{1}{x}\right)^x$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>$\displaystyle e$</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">3. Limites polynomiales et puissances</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Limite</th>
+<th style="border:1px solid #ddd; padding:12px;">Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{(1+x)^\alpha - 1}{x}$ ($\displaystyle \alpha \in \mathbb{R}$)</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \alpha$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{\sqrt{1+x} - 1}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \dfrac{1}{2}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} x^\alpha$ ($\displaystyle \alpha > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle +\infty$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} x^\alpha$ ($\displaystyle \alpha < 0$)</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Croissances comparées (Prépa/Licence)</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e3f2fd; border-radius:6px; border-left:6px solid #2196f3; padding:15px; margin:0 0 15px 0;">
+<strong>💡 Principe :</strong> Quand $\displaystyle x \to +\infty$, l'exponentielle l'emporte sur toute puissance, qui l'emporte sur tout logarithme.
+<br><br>
+<strong>Ordre de croissance :</strong> $\displaystyle \ln(x) \ll x^\alpha \ll e^x \ll x! \ll x^x$
+</div>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Limite ($\displaystyle x \to +\infty$)</th>
+<th style="border:1px solid #ddd; padding:12px;">Résultat</th>
+<th style="border:1px solid #ddd; padding:12px;">Explication</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} \dfrac{(\ln x)^\alpha}{x^\beta}$ ($\displaystyle \alpha, \beta > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>$\displaystyle 0$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln$ négligeable devant puissance</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} \dfrac{x^\alpha}{e^{bx}}$ ($\displaystyle \alpha > 0$, $\displaystyle b > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>$\displaystyle 0$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Puissance négligeable devant exponentielle</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} \dfrac{e^x}{x^n}$ ($\displaystyle n \in \mathbb{N}$)</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>$\displaystyle +\infty$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Exponentielle domine toute puissance</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} x^\alpha \ln(x)$ ($\displaystyle \alpha > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle +\infty$</td>
+<td style="border:1px solid #ddd; padding:10px;">Puissance domine</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} x e^{-x}$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{-x}$ décroît plus vite</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} x^n e^{-x}$ ($\displaystyle n \in \mathbb{N}$)</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+<td style="border:1px solid #ddd; padding:10px;">Vrai pour toute puissance</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Théorèmes fondamentaux</h2>
+
+<h3 style="color:#2c3e50; margin-top:20px;">1. Théorème des gendarmes (encadrement)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Théorème</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+Si $\displaystyle g(x) \leq f(x) \leq h(x)$ au voisinage de $\displaystyle a$ et si $\displaystyle \lim_{x \to a} g(x) = \lim_{x \to a} h(x) = L$,<br>
+alors $\displaystyle \lim_{x \to a} f(x) = L$
+</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : $\displaystyle \lim_{x \to +\infty} \dfrac{\sin(x)}{x}$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+On sait que $\displaystyle -1 \leq \sin(x) \leq 1$ donc $\displaystyle -\dfrac{1}{x} \leq \dfrac{\sin(x)}{x} \leq \dfrac{1}{x}$<br><br>
+Or $\displaystyle \lim_{x \to +\infty} -\dfrac{1}{x} = 0$ et $\displaystyle \lim_{x \to +\infty} \dfrac{1}{x} = 0$<br><br>
+Donc $\displaystyle \lim_{x \to +\infty} \dfrac{\sin(x)}{x} = 0$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">2. Limite d'une composée</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Théorème</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+Si $\displaystyle \lim_{x \to a} u(x) = b$ et $\displaystyle \lim_{X \to b} f(X) = L$,<br>
+alors $\displaystyle \lim_{x \to a} f(u(x)) = L$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">3. Limite et ordre</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Propriété</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+Si $\displaystyle f(x) \leq g(x)$ au voisinage de $\displaystyle a$ et si les limites existent,<br>
+alors $\displaystyle \lim_{x \to a} f(x) \leq \lim_{x \to a} g(x)$
+</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+<strong>⚠️ Attention :</strong> L'inégalité stricte $\displaystyle f(x) < g(x)$ devient une inégalité large $\displaystyle \lim f \leq \lim g$ (pas stricte !)
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Développements limités (Prépa/Licence/Master)</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:70%;">DL au voisinage de 0 (ordre 3 minimum)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + \dfrac{x^2}{2} + \dfrac{x^3}{6} + o(x^3)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(1+x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^2}{2} + \dfrac{x^3}{3} + o(x^3)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{6} + \dfrac{x^5}{120} + o(x^5)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - \dfrac{x^2}{2} + \dfrac{x^4}{24} + o(x^4)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{3} + \dfrac{2x^5}{15} + o(x^5)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1-x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + x^2 + x^3 + o(x^3)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1+x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - x + x^2 - x^3 + o(x^3)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle (1+x)^\alpha$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \alpha x + \dfrac{\alpha(\alpha-1)}{2}x^2 + \dfrac{\alpha(\alpha-1)(\alpha-2)}{6}x^3 + o(x^3)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sqrt{1+x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \dfrac{x}{2} - \dfrac{x^2}{8} + \dfrac{x^3}{16} + o(x^3)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arcsin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{6} + \dfrac{3x^5}{40} + o(x^5)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arctan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + \dfrac{x^5}{5} + o(x^5)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sinh(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{6} + \dfrac{x^5}{120} + o(x^5)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cosh(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \dfrac{x^2}{2} + \dfrac{x^4}{24} + o(x^4)$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#e3f2fd; border-radius:6px; border-left:6px solid #2196f3; padding:15px; margin:12px 0;">
+<strong>💡 Utilisation :</strong> Les DL permettent de calculer des limites de formes indéterminées en remplaçant chaque fonction par son développement et en simplifiant.
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Méthodes de calcul pratiques</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ffa500;">
+<thead>
+<tr style="background:#ffa500; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Type de limite</th>
+<th style="border:1px solid #ddd; padding:12px; width:70%;">Méthode recommandée</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle \dfrac{0}{0}$ en $\displaystyle a$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">1. Factoriser et simplifier<br>2. Utiliser limites usuelles si $\displaystyle a = 0$<br>3. DL ou L'Hôpital</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle \dfrac{\infty}{\infty}$ en $\displaystyle +\infty$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">1. Factoriser par le terme dominant<br>2. Croissances comparées<br>3. DL pour forme complexe</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle \infty - \infty$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">1. Factoriser<br>2. Quantité conjuguée (racines)<br>3. Réduire au même dénominateur (fractions)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle 0 \times \infty$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Transformer en quotient : $\displaystyle \dfrac{\infty}{\infty}$ ou $\displaystyle \dfrac{0}{0}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle 1^\infty$, $\displaystyle 0^0$, $\displaystyle \infty^0$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Poser $\displaystyle y = f^g$ puis $\displaystyle \ln(y) = g\ln(f)$ et calculer la limite de $\displaystyle \ln(y)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Polynômes/Fractions rationnelles</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Factoriser par le terme de plus haut degré</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Avec valeurs absolues</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Étudier séparément les limites à gauche et à droite</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Exemples détaillés pas à pas</h2>
+
+<h3 style="color:#2c3e50; margin-top:20px;">Exemple 1 : Forme $\displaystyle \dfrac{0}{0}$ avec limite usuelle</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle \lim_{x \to 0} \dfrac{\sin(3x)}{2x}$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Étape 1 :</strong> Vérifier la forme indéterminée : $\displaystyle \sin(0) = 0$ donc forme $\displaystyle \dfrac{0}{0}$ ✓<br><br>
+<strong>Étape 2 :</strong> Factoriser pour faire apparaître la limite usuelle<br>
+$\displaystyle \dfrac{\sin(3x)}{2x} = \dfrac{3}{2} \cdot \dfrac{\sin(3x)}{3x}$<br><br>
+<strong>Étape 3 :</strong> Posons $\displaystyle u = 3x$, quand $\displaystyle x \to 0$, $\displaystyle u \to 0$<br>
+$\displaystyle \lim_{x \to 0} \dfrac{\sin(3x)}{3x} = \lim_{u \to 0} \dfrac{\sin(u)}{u} = 1$<br><br>
+<strong>Résultat :</strong> $\displaystyle \lim_{x \to 0} \dfrac{\sin(3x)}{2x} = \dfrac{3}{2}$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">Exemple 2 : Forme $\displaystyle \dfrac{\infty}{\infty}$ avec croissances comparées</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle \lim_{x \to +\infty} \dfrac{x^3 + 2x}{e^x}$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Étape 1 :</strong> Forme $\displaystyle \dfrac{\infty}{\infty}$ ✓<br><br>
+<strong>Étape 2 :</strong> Croissance comparée : l'exponentielle l'emporte sur toute puissance<br>
+$\displaystyle \lim_{x \to +\infty} \dfrac{x^3}{e^x} = 0$ (résultat du cours)<br><br>
+<strong>Étape 3 :</strong> Par comparaison<br>
+$\displaystyle 0 \leq \dfrac{x^3 + 2x}{e^x} \leq \dfrac{2x^3}{e^x}$ pour $\displaystyle x$ assez grand<br><br>
+<strong>Résultat :</strong> $\displaystyle \lim_{x \to +\infty} \dfrac{x^3 + 2x}{e^x} = 0$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">Exemple 3 : Forme $\displaystyle \infty - \infty$ avec quantité conjuguée</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle \lim_{x \to +\infty} (\sqrt{x^2 + x} - x)$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Étape 1 :</strong> Forme $\displaystyle \infty - \infty$ ✓<br><br>
+<strong>Étape 2 :</strong> Multiplier par la quantité conjuguée<br>
+$\displaystyle \sqrt{x^2 + x} - x = \dfrac{(\sqrt{x^2 + x} - x)(\sqrt{x^2 + x} + x)}{\sqrt{x^2 + x} + x}$<br><br>
+<strong>Étape 3 :</strong> Simplifier<br>
+$\displaystyle = \dfrac{x^2 + x - x^2}{\sqrt{x^2 + x} + x} = \dfrac{x}{\sqrt{x^2 + x} + x}$<br><br>
+<strong>Étape 4 :</strong> Diviser par $\displaystyle x$<br>
+$\displaystyle = \dfrac{1}{\sqrt{1 + \frac{1}{x}} + 1}$<br><br>
+<strong>Résultat :</strong> $\displaystyle \lim_{x \to +\infty} (\sqrt{x^2 + x} - x) = \dfrac{1}{2}$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">Exemple 4 : Forme $\displaystyle 1^\infty$ avec logarithme</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">$\displaystyle \lim_{x \to +\infty} \left(1 + \dfrac{2}{x}\right)^x$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Étape 1 :</strong> Forme $\displaystyle 1^\infty$ ✓<br><br>
+<strong>Étape 2 :</strong> Poser $\displaystyle y = \left(1 + \dfrac{2}{x}\right)^x$ donc $\displaystyle \ln(y) = x\ln\left(1 + \dfrac{2}{x}\right)$<br><br>
+<strong>Étape 3 :</strong> Calculer $\displaystyle \lim \ln(y)$<br>
+$\displaystyle \ln(y) = x\ln\left(1 + \dfrac{2}{x}\right) = \dfrac{\ln\left(1 + \frac{2}{x}\right)}{\frac{1}{x}}$ (forme $\displaystyle \dfrac{0}{0}$)<br><br>
+<strong>Étape 4 :</strong> Utiliser $\displaystyle \lim_{u \to 0} \dfrac{\ln(1+u)}{u} = 1$ avec $\displaystyle u = \dfrac{2}{x}$<br>
+$\displaystyle \lim \ln(y) = 2$<br><br>
+<strong>Résultat :</strong> $\displaystyle \lim_{x \to +\infty} \left(1 + \dfrac{2}{x}\right)^x = e^2$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Erreurs fréquentes à éviter</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:50%;">❌ Erreur fréquente</th>
+<th style="border:1px solid #ddd; padding:12px; width:50%;">✓ Correction</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{\sin(x)}{x} = 0$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to 0} \dfrac{\sin(x)}{x} = 1$ (limite usuelle fondamentale)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \infty - \infty = 0$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \infty - \infty$ est une forme indéterminée, il faut étudier</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{0}{0} = 0$ ou $\displaystyle = 1$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{0}{0}$ est une forme indéterminée, pas un nombre</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Dire qu'une limite n'existe pas sans justifier</td>
+<td style="border:1px solid #ddd; padding:10px;">Montrer que les limites à gauche et à droite sont différentes, ou que la fonction oscille</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} \dfrac{x^2}{e^x} = +\infty$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to +\infty} \dfrac{x^2}{e^x} = 0$ (croissances comparées)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Oublier la valeur absolue : $\displaystyle \lim_{x \to 0} x\ln(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">C'est $\displaystyle \lim_{x \to 0^+} x\ln(x) = 0$ (limite à droite uniquement)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim (f + g) = \lim f + \lim g$ toujours</td>
+<td style="border:1px solid #ddd; padding:10px;">Vrai seulement si les deux limites existent et sont finies</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Confondre $\displaystyle f(x) < g(x)$ et $\displaystyle \lim f < \lim g$</td>
+<td style="border:1px solid #ddd; padding:10px;">L'inégalité stricte devient large à la limite : $\displaystyle \lim f \leq \lim g$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Asymptotes et comportement asymptotique</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Type d'asymptote</th>
+<th style="border:1px solid #ddd; padding:12px; width:35%;">Condition</th>
+<th style="border:1px solid #ddd; padding:12px; width:35%;">Équation</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Asymptote verticale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to a} f(x) = \pm\infty$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x = a$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Asymptote horizontale</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to \pm\infty} f(x) = b$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y = b$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Asymptote oblique</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to \pm\infty} \dfrac{f(x)}{x} = a$ ($\displaystyle a \neq 0$)<br>et $\displaystyle \lim_{x \to \pm\infty} [f(x) - ax] = b$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle y = ax + b$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : $\displaystyle f(x) = \dfrac{2x^2 + x + 1}{x + 1}$ en $\displaystyle +\infty$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Division euclidienne :</strong> $\displaystyle f(x) = 2x - 1 + \dfrac{2}{x+1}$<br><br>
+<strong>Limite :</strong> $\displaystyle \lim_{x \to +\infty} \dfrac{2}{x+1} = 0$<br><br>
+<strong>Résultat :</strong> Asymptote oblique $\displaystyle y = 2x - 1$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XII. Règle de L'Hôpital (Prépa/Licence)</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Théorème de L'Hôpital</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+Si $\displaystyle \lim_{x \to a} f(x) = \lim_{x \to a} g(x) = 0$ ou $\displaystyle \pm\infty$ (formes $\displaystyle \dfrac{0}{0}$ ou $\displaystyle \dfrac{\infty}{\infty}$),<br>
+et si $\displaystyle \lim_{x \to a} \dfrac{f'(x)}{g'(x)} = L$ (finie ou infinie),<br><br>
+alors $\displaystyle \lim_{x \to a} \dfrac{f(x)}{g(x)} = L$
+</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : $\displaystyle \lim_{x \to 0} \dfrac{e^x - 1 - x}{x^2}$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Vérification :</strong> Forme $\displaystyle \dfrac{0}{0}$ ✓<br><br>
+<strong>Application de L'Hôpital :</strong><br>
+$\displaystyle \lim_{x \to 0} \dfrac{e^x - 1}{2x}$ (encore forme $\displaystyle \dfrac{0}{0}$)<br><br>
+<strong>Nouvelle application :</strong><br>
+$\displaystyle \lim_{x \to 0} \dfrac{e^x}{2} = \dfrac{1}{2}$<br><br>
+<strong>Résultat :</strong> $\displaystyle \lim_{x \to 0} \dfrac{e^x - 1 - x}{x^2} = \dfrac{1}{2}$
+</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+<strong>⚠️ Attention :</strong> La règle de L'Hôpital ne s'applique qu'aux formes $\displaystyle \dfrac{0}{0}$ et $\displaystyle \dfrac{\infty}{\infty}$. Pour les autres FI, il faut d'abord transformer.
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XIII. Limites et continuité</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Propriété</th>
+<th style="border:1px solid #ddd; padding:12px; width:60%;">Énoncé</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Continuité en $\displaystyle a$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle f$ continue en $\displaystyle a$ ⟺ $\displaystyle \lim_{x \to a} f(x) = f(a)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Continuité à droite</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to a^+} f(x) = f(a)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Continuité à gauche</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \lim_{x \to a^-} f(x) = f(a)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Théorème des valeurs intermédiaires</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle f$ continue sur $\displaystyle [a,b]$, alors $\displaystyle f$ prend toutes les valeurs entre $\displaystyle f(a)$ et $\displaystyle f(b)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Prolongement par continuité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle \lim_{x \to a} f(x) = L$ existe et $\displaystyle f$ non définie en $\displaystyle a$,<br>on peut prolonger $\displaystyle f$ en posant $\displaystyle f(a) = L$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:20px; margin:20px 0; border-radius:6px;">
+<h2 style="color:#2c3e50; font-size:1.4em; margin-top:0;">📝 Pour aller plus loin</h2>
+<ul style="line-height:2; margin:10px 0;">
+<li><strong>→</strong> <a href="/exercices-limites-corriges" style="color:#1976d2;">100+ exercices corrigés sur les limites</a></li>
+<li><strong>→</strong> <a href="/asymptotes-etude-fonctions" style="color:#1976d2;">Étude complète de fonctions avec asymptotes</a></li>
+<li><strong>→</strong> <a href="/developpements-limites-exercices" style="color:#1976d2;">Développements limités : cours et exercices</a></li>
+<li><strong>→</strong> <a href="/continuite-theoremes" style="color:#1976d2;">Continuité et théorèmes fondamentaux</a></li>
+</ul>
+</div>
+
+</div>
+===

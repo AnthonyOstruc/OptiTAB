@@ -3,12 +3,15 @@ import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
+import Breadcrumbs from '@/components/common/Breadcrumbs.vue'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import { getFreeResources } from '@/api/free-content'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { renderMath } from '@/utils/scientificRenderer'
+import { setPageSeo, getRobotsForRoute } from '@/services/seo'
+import { buildExerciseChapterRouteParams } from '@/utils/freeExerciseSlug'
 import { useZoom } from '@/composables/useZoom'
 
 const props = defineProps({
@@ -91,6 +94,74 @@ const formatMatiereLabel = (value) => {
   return value
 }
 
+function stripHtml(input) {
+  return String(input || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+}
+
+function clampMetaDescription(text) {
+  const cleaned = String(text || '').replace(/\s+/g, ' ').trim()
+  if (!cleaned) return ''
+  return cleaned.length > 160 ? `${cleaned.slice(0, 157).trimEnd()}...` : cleaned
+}
+
+function clampTitle(text, maxLength = 70) {
+  const cleaned = String(text || '').replace(/\s+/g, ' ').trim()
+  if (!cleaned) return ''
+  if (cleaned.length <= maxLength) return cleaned
+  const truncated = cleaned.slice(0, maxLength - 1)
+  const cut = truncated.lastIndexOf(' ')
+  return `${(cut > 20 ? truncated.slice(0, cut) : truncated).trimEnd()}...`
+}
+
+function normalizeSubject(matiereNom) {
+  const raw = String(matiereNom || '').replace(/\s+/g, ' ').trim()
+  if (!raw) return { display: 'Maths', phrase: 'maths' }
+  if (/math/i.test(raw)) return { display: 'Maths', phrase: 'maths' }
+  return { display: raw, phrase: raw }
+}
+
+function buildSeoTitle({ chapterTitle, subjectDisplay, niveauNom }) {
+  const level = String(niveauNom || '').replace(/\s+/g, ' ').trim()
+  const levelPart = level ? ` (${level})` : ''
+  const subject = String(subjectDisplay || 'Maths').trim()
+  const prefix = `Exercices corriges gratuits de ${subject}${levelPart}`
+  const full = chapterTitle ? `${prefix} : ${chapterTitle}` : prefix
+  return clampTitle(full, 70)
+}
+
+function buildSeoDescription({ chapterTitle, subjectPhrase, niveauNom, count }) {
+  const level = String(niveauNom || '').replace(/\s+/g, ' ').trim()
+  const levelPart = level ? ` (${level})` : ''
+  const subject = String(subjectPhrase || 'maths').trim()
+  const intro = `Exercices corriges gratuits de ${subject}${levelPart}.`
+  const detail = chapterTitle ? `Chapitre ${chapterTitle}.` : ''
+  const countPart = count ? `${count} exercice${count > 1 ? 's' : ''} avec correction.` : 'Corrections detaillees et methode.'
+  return clampMetaDescription([intro, detail, countPart, 'Acces gratuit sur OptiTAB.'].filter(Boolean).join(' '))
+}
+
+function getSiteUrl() {
+  const fromEnv = String(import.meta?.env?.VITE_SITE_URL || '').trim()
+  if (fromEnv) return fromEnv.replace(/\/+$/, '')
+  if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin
+  return 'https://optitab.net'
+}
+
+function toAbsoluteUrl(maybeUrlOrPath) {
+  const raw = String(maybeUrlOrPath || '').trim()
+  if (!raw) return ''
+  if (/^https?:\/\//i.test(raw)) return raw
+  const base = getSiteUrl()
+  return `${base}${raw.startsWith('/') ? '' : '/'}${raw}`
+}
+
+function pickSeoImage(list) {
+  const first = Array.isArray(list) ? list[0] : null
+  const cover = first?.cover_image || first?.image
+  if (cover) return cover
+  const images = Array.isArray(first?.images) ? first.images : []
+  return images[0]?.image || ''
+}
+
 const chapterMetaLabel = computed(() => {
   const source = exercises.value.find((item) => item?.pays_nom || item?.niveau_nom || item?.matiere_nom)
   if (!source) return ''
@@ -102,6 +173,7 @@ const chapterMetaLabel = computed(() => {
   const parts = [pays, matiere, niveauLabel].filter(Boolean)
   return parts.join(' / ')
 })
+
 
 const displayedExercises = computed(() =>
   exercises.value.map((item, index) => ({
@@ -120,6 +192,29 @@ const displayedExercises = computed(() =>
 )
 
 const exercisesCount = computed(() => displayedExercises.value.length)
+
+const introText = computed(() => {
+  if (!notionTitle.value) return ''
+  const count = exercisesCount.value
+  const countText = count ? `${count} exercice${count > 1 ? 's' : ''}` : 'des exercices corriges'
+  const source = exercises.value[0] || {}
+  const matiere = formatMatiereLabel(source.matiere_nom || '') || 'Maths'
+  const niveau = formatNiveauLabel(source.niveau_nom || '')
+  const levelPart = niveau ? ` (${niveau})` : ''
+  return `Retrouvez ${countText} de ${matiere}${levelPart} sur le chapitre ${notionTitle.value}.`
+})
+
+const breadcrumbItems = computed(() => [
+  { label: 'Accueil', to: '/' },
+  { label: 'Exercices gratuits', to: '/ressources-gratuites/exercices' },
+  { label: notionTitle.value || 'Chapitre' }
+])
+
+const relatedLinks = [
+  { label: 'Cours gratuits de maths', to: '/ressources-gratuites/cours' },
+  { label: 'Exercices corriges gratuits', to: '/ressources-gratuites/exercices' },
+  { label: 'Fiches de revision gratuites', to: '/ressources-gratuites/syntheses' }
+]
 
 const orderedExercises = computed(() => {
   const unlocked = displayedExercises.value.filter((ex) => !ex._locked)
@@ -148,8 +243,12 @@ const fetchExercises = async () => {
     if (!notionTitle.value && list?.length && list[0]?.notion_nom) {
       notionTitle.value = list[0].notion_nom
     }
+    if (list?.length) {
+      syncCanonicalRoute(list[0])
+    }
     await nextTick()
     await safeRenderMath()
+    updateSeo()
   } catch (err) {
     console.error('Erreur chargement exercices gratuits', err)
     error.value = err?.message || "Impossible de charger les exercices gratuits pour ce chapitre."
@@ -164,6 +263,85 @@ const safeRenderMath = async () => {
   } catch (_) {
     // ignore math errors
   }
+}
+
+const routeMatches = (params, canonical, hasGroup) => {
+  if (!params || !canonical) return false
+  if (String(params.pays || '') !== String(canonical.pays || '')) return false
+  if (String(params.matiere || '') !== String(canonical.matiere || '')) return false
+  if (String(params.slug || '') !== String(canonical.slug || '')) return false
+  if (String(params.id || '') !== String(canonical.id || '')) return false
+  if (hasGroup && String(params.niveauGroup || '') !== String(canonical.niveauGroup || '')) return false
+  return true
+}
+
+const syncCanonicalRoute = (source) => {
+  if (!source) return
+  const canonicalParams = buildExerciseChapterRouteParams({
+    paysNom: source?.pays_nom,
+    matiereNom: source?.matiere_nom,
+    niveauNom: source?.niveau_nom,
+    niveauGroup: source?.niveau_nom,
+    name: source?.notion_nom || source?.name || source?.titre,
+    id: source?.notion || source?.id
+  })
+  if (!canonicalParams?.slug || !canonicalParams?.id) return
+  const hasGroup = Boolean(canonicalParams.niveauGroup)
+  const routeName = hasGroup ? 'FreeExerciseChapterSlugGrouped' : 'FreeExerciseChapterSlug'
+  const routeParams = hasGroup
+    ? canonicalParams
+    : {
+        pays: canonicalParams.pays,
+        matiere: canonicalParams.matiere,
+        slug: canonicalParams.slug,
+        id: canonicalParams.id
+      }
+  const currentParams = route.params || {}
+  if (route.name !== routeName || !routeMatches(currentParams, routeParams, hasGroup)) {
+    router.replace({ name: routeName, params: routeParams, query: route.query, hash: route.hash }).catch(() => {})
+  }
+}
+
+const updateSeo = () => {
+  if (!notionTitle.value && exercises.value.length === 0) return
+  const first = exercises.value[0] || {}
+  const matiere = formatMatiereLabel(first.matiere_nom || '')
+  const niveau = formatNiveauLabel(first.niveau_nom || '')
+  const subject = normalizeSubject(matiere)
+  const chapterTitle = notionTitle.value || first.notion_nom || 'Chapitre'
+  const title = buildSeoTitle({
+    chapterTitle,
+    subjectDisplay: subject.display,
+    niveauNom: niveau
+  })
+  const description = buildSeoDescription({
+    chapterTitle,
+    subjectPhrase: subject.phrase,
+    niveauNom: niveau,
+    count: exercisesCount.value
+  })
+  const image = pickSeoImage(exercises.value) || undefined
+  const canonicalUrl = toAbsoluteUrl(route.path)
+  const jsonLdGraph = [
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: toAbsoluteUrl('/') },
+        { '@type': 'ListItem', position: 2, name: 'Exercices gratuits', item: toAbsoluteUrl('/ressources-gratuites/exercices') },
+        { '@type': 'ListItem', position: 3, name: chapterTitle, item: canonicalUrl }
+      ]
+    }
+  ]
+
+  setPageSeo({
+    title,
+    description,
+    canonicalPath: route.path,
+    robots: getRobotsForRoute({ route }),
+    ogType: 'website',
+    image,
+    jsonLdGraph
+  })
 }
 
 const goBack = () => {
@@ -188,6 +366,27 @@ watch(
   () => props.notionTitleOverride,
   (value) => {
     if (value) notionTitle.value = value
+  }
+)
+
+watch(
+  () => notionTitle.value,
+  () => {
+    if (exercises.value.length) updateSeo()
+  }
+)
+
+watch(
+  error,
+  (value) => {
+    const message = String(value || '').trim()
+    if (!message) return
+    setPageSeo({
+      title: 'Chapitre introuvable',
+      description: 'Ce chapitre est introuvable ou indisponible.',
+      canonicalPath: route.path,
+      robots: 'noindex,follow'
+    })
   }
 )
 
@@ -270,10 +469,12 @@ const buildInstruction = (exercise) => {
   <MainLayout>
     <div class="free-exercise-chapter-page">
       <BackButton text="Retour aux exercices" :custom-action="goBack" position="top-left" />
+      <Breadcrumbs :items="breadcrumbItems" class="breadcrumb-trail" />
 
       <header class="free-exercise-intro" aria-labelledby="free-exercise-title">
         <p v-if="chapterMetaLabel" class="free-exercise-meta">{{ chapterMetaLabel }}</p>
         <h1 id="free-exercise-title" class="free-exercise-title">{{ notionTitle || 'Exercices' }}</h1>
+        <p v-if="introText" class="free-exercise-intro-text">{{ introText }}</p>
         <p v-if="exercisesCount" class="free-exercise-count">{{ formatCount(exercisesCount) }}</p>
       </header>
 
@@ -366,6 +567,20 @@ const buildInstruction = (exercise) => {
           Aucun exercice gratuit n'est disponible pour ce chapitre pour le moment.
         </div>
       </div>
+
+      <section class="related-resources" aria-labelledby="related-resources-title">
+        <h2 id="related-resources-title" class="related-resources__title">Ressources liees</h2>
+        <div class="related-resources__list">
+          <router-link
+            v-for="link in relatedLinks"
+            :key="link.to"
+            :to="link.to"
+            class="related-resources__link"
+          >
+            {{ link.label }}
+          </router-link>
+        </div>
+      </section>
     </div>
   </MainLayout>
 </template>
@@ -386,6 +601,10 @@ const buildInstruction = (exercise) => {
   gap: 6px;
 }
 
+.breadcrumb-trail {
+  margin: 6px 0 18px;
+}
+
 .free-exercise-meta {
   margin: 0;
   font-size: 12px;
@@ -400,6 +619,13 @@ const buildInstruction = (exercise) => {
   font-size: 28px;
   font-weight: 800;
   color: #0f172a;
+}
+
+.free-exercise-intro-text {
+  margin: 0;
+  font-size: 14px;
+  color: #475569;
+  max-width: 760px;
 }
 
 .free-exercise-count {
@@ -569,6 +795,45 @@ const buildInstruction = (exercise) => {
   flex-direction: column;
   gap: 48px;
   width: 100%;
+}
+
+.related-resources {
+  margin-top: 32px;
+  padding: 20px 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.06), rgba(99, 102, 241, 0.04));
+}
+
+.related-resources__title {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.related-resources__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.related-resources__link {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #1d4ed8;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.related-resources__link:hover {
+  transform: translateY(-1px);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.12);
 }
 
 .exercise-card-wrapper {

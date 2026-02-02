@@ -3,8 +3,11 @@ import { faq as homeFaq } from '@/config/homeFaq.js'
 const DEFAULT_SITE_NAME = 'OptiTAB'
 const DEFAULT_TITLE = 'Plateforme de maths & cours particuliers en ligne'
 const DEFAULT_DESCRIPTION =
-  'Plateforme de maths & cours particuliers : 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale (Bac), Prépa (MPSI, MP2I, PCSI). Cours, fiches, exercices corrigés.'
+  'Plateforme de maths & cours particuliers : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI). Cours, fiches, exercices corriges.'
 const DEFAULT_IMAGE_PATH = '/Logo_bg.png'
+const DEFAULT_ROBOTS_INDEX =
+  'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1'
+const DEFAULT_ROBOTS_NOINDEX = 'noindex,follow'
 
 function normalizeSiteUrl(raw) {
   const value = String(raw || '').trim()
@@ -17,6 +20,23 @@ function getSiteBaseUrl() {
   if (fromEnv) return fromEnv
   if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin
   return 'https://optitab.net'
+}
+
+function removeTrailingSlash(value) {
+  if (!value) return value
+  if (value.length <= 1) return value
+  return value.replace(/\/+$/, '')
+}
+
+function hasQueryParams(query) {
+  if (!query || typeof query !== 'object') return false
+  return Object.keys(query).length > 0
+}
+
+export function getRobotsForRoute({ route, noindex = false } = {}) {
+  const hasQuery = hasQueryParams(route?.query)
+  if (noindex || hasQuery) return DEFAULT_ROBOTS_NOINDEX
+  return DEFAULT_ROBOTS_INDEX
 }
 
 function ensureMeta(attr, key, content) {
@@ -77,6 +97,25 @@ function ensureJsonLd(id, jsonObject) {
   }
 }
 
+
+function normalizeCanonicalUrl(rawUrl) {
+  const raw = String(rawUrl || '').trim()
+  if (!raw) return ''
+  try {
+    const base = getSiteBaseUrl()
+    const url = new URL(raw, base)
+    url.search = ''
+    url.hash = ''
+    url.pathname = url.pathname || '/'
+    if (url.pathname.length > 1) {
+      url.pathname = url.pathname.replace(/\/+$/, '')
+    }
+    return `${url.origin}${url.pathname}`
+  } catch (_) {
+    return ''
+  }
+}
+
 function canonicalizePath(pathLike) {
   if (!pathLike) return '/'
   try {
@@ -108,7 +147,7 @@ function toAbsoluteUrl(maybeUrlOrPath) {
   return `${getSiteBaseUrl()}${raw.startsWith('/') ? '' : '/'}${raw}`
 }
 
-function buildFaqJsonLd(items) {
+export function buildFaqJsonLd(items) {
   if (!Array.isArray(items) || items.length === 0) return null
   const entities = items
     .map((item) => {
@@ -134,6 +173,29 @@ function buildFaqJsonLd(items) {
   }
 }
 
+
+function buildBreadcrumbJsonLd(items) {
+  if (!Array.isArray(items) || items.length === 0) return null
+  const list = items
+    .map((item, index) => {
+      const name = String(item?.name || item?.label || '').trim()
+      const url = String(item?.item || item?.url || item?.to || '').trim()
+      if (!name || !url) return null
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        name,
+        item: toAbsoluteUrl(url)
+      }
+    })
+    .filter(Boolean)
+  if (!list.length) return null
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: list
+  }
+}
+
 export function setPageSeo({
   title,
   description,
@@ -148,10 +210,12 @@ export function setPageSeo({
 
   const finalTitle = buildTitle(title)
   const finalDescription = String(description || DEFAULT_DESCRIPTION).trim() || DEFAULT_DESCRIPTION
-  const finalRobots = String(robots || 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1').trim()
+  const finalRobots = String(robots || DEFAULT_ROBOTS_INDEX).trim()
 
-  const path = canonicalizePath(canonicalPath || canonicalUrl || '/')
-  const finalCanonical = String(canonicalUrl || `${getSiteBaseUrl()}${path}`).trim()
+  const normalizedCanonicalUrl = normalizeCanonicalUrl(canonicalUrl)
+
+  const path = canonicalizePath(canonicalPath || normalizedCanonicalUrl || '/')
+  const finalCanonical = removeTrailingSlash(String(normalizedCanonicalUrl || `${getSiteBaseUrl()}${path}`).trim()) || `${getSiteBaseUrl()}${path}`
 
   const finalImage = toAbsoluteUrl(image || DEFAULT_IMAGE_PATH)
   const finalOgType = String(ogType || 'website').trim() || 'website'
@@ -248,74 +312,85 @@ const ROUTE_SEO = {
     })()
   },
   CoursParticuliers: {
-    title: 'Cours particuliers de maths en ligne (6e–Prépa)',
+    title: 'Cours particuliers de maths en ligne (6e-Prepa)',
     description:
-      'Cours particuliers de maths en ligne : 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale (Bac), Prépa (MPSI, MP2I, PCSI). Professeurs experts, suivi.',
+      'Cours particuliers de maths en ligne : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI). Professeurs experts, suivi.',
     canonicalPath: '/cours-particuliers'
   },
   FreeCourses: {
-    title: 'Cours de maths gratuits (6e–Prépa, Brevet, Bac)',
+    title: 'Cours de maths gratuits (6e-Prepa, Brevet, Bac)',
     description:
-      'Cours de maths gratuits : 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale, Prépa (MPSI, MP2I, PCSI). Méthodes, exemples, exercices.',
+      'Cours de maths gratuits : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale, Prepa (MPSI, MP2I, PCSI). Methodes, exemples, exercices.',
     canonicalPath: '/ressources-gratuites/cours'
   },
   FreeCourseDetail: {
     title: 'Cours gratuit de maths',
-    description: 'Cours de maths gratuit : explications, exemples et exercices corrigés.',
+    description: 'Cours de maths gratuit : explications, exemples et exercices corriges.',
     ogType: 'article'
   },
   FreeCourseSlug: {
     title: 'Cours gratuit de maths',
-    description: 'Cours de maths gratuit : explications, exemples et exercices corrigés.',
+    description: 'Cours de maths gratuit : explications, exemples et exercices corriges.',
     ogType: 'article'
   },
   FreeCourseSlugGrouped: {
     title: 'Cours gratuit de maths',
-    description: 'Cours de maths gratuit : explications, exemples et exercices corrigés.',
+    description: 'Cours de maths gratuit : explications, exemples et exercices corriges.',
     ogType: 'article'
   },
   FreeExercises: {
-    title: 'Exercices de maths corrigés (6e–Prépa)',
+    title: 'Exercices de maths corriges (6e-Prepa)',
     description:
-      'Exercices de maths corrigés : 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale (Bac), Prépa (MPSI, MP2I, PCSI). Méthode + correction.',
+      'Exercices de maths corriges : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI). Methode + correction.',
     canonicalPath: '/ressources-gratuites/exercices'
   },
   FreeExerciseDetail: {
     title: 'Exercice de maths corrigé',
-    description: 'Exercice de maths gratuit avec correction, méthode et explications.',
+    description: 'Exercice de maths gratuit avec correction, methode et explications.',
     ogType: 'article'
   },
   FreeSummaries: {
-    title: 'Fiches de révision de maths (6e–Prépa)',
+    title: 'Fiches de revision de maths (6e-Prepa)',
     description:
-      'Fiches de révision de maths : formules, méthodes, exemples — 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale (Bac), Prépa (MPSI, MP2I, PCSI).',
+      'Fiches de revision de maths : formules, methodes, exemples - 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI).',
     canonicalPath: '/ressources-gratuites/syntheses'
   },
   FreeSummaryDetail: {
-    title: 'Fiche de révision de maths',
-    description: 'Fiche de synthèse gratuite : formules, méthodes et exemples pour réviser vite.',
+    title: 'Fiche de revision de maths',
+    description: 'Fiche de synthese gratuite : formules, methodes et exemples pour reviser vite.',
     ogType: 'article'
   },
   FreeSummarySlug: {
-    title: 'Fiche de r??vision de maths',
-    description: 'Fiche de synth??se gratuite : formules, m??thodes et exemples pour r??viser vite.',
+    title: 'Fiche de revision de maths',
+    description: 'Fiche de synthese gratuite : formules, methodes et exemples pour reviser vite.',
     ogType: 'article'
   },
   FreeSummarySlugGrouped: {
-    title: 'Fiche de r??vision de maths',
-    description: 'Fiche de synth??se gratuite : formules, m??thodes et exemples pour r??viser vite.',
+    title: 'Fiche de revision de maths',
+    description: 'Fiche de synthese gratuite : formules, methodes et exemples pour reviser vite.',
     ogType: 'article'
   },
   About: {
-    title: 'La méthode : cours particuliers & plateforme maths',
+    title: 'La methode : cours particuliers & plateforme maths',
     description:
-      'OptiTAB combine plateforme de maths et cours particuliers : 6e, 5e, 4e, 3e (Brevet), 2nde, 1ère, Terminale (Bac), Prépa (MPSI, MP2I, PCSI).',
+      'OptiTAB combine plateforme de maths et cours particuliers : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI).',
     canonicalPath: '/about'
   },
   Contact: {
     title: 'Contact : WhatsApp & email',
-    description: "Contactez OptiTAB (WhatsApp ou email) pour un cours particulier ou une question. Réponse rapide 7j/7.",
+    description: 'Contactez OptiTAB (WhatsApp ou email) pour un cours particulier ou une question. Reponse rapide 7j/7.',
     canonicalPath: '/contact'
+  },
+  TarifsPage: {
+    title: 'Tarifs OptiTAB : abonnement maths en ligne',
+    description: 'Tarifs OptiTAB : abonnement mensuel sans engagement pour acceder aux cours, exercices corriges et fiches de synthese. Paiement securise, annulation a tout moment.',
+    canonicalPath: '/tarifs'
+  },
+  FreeResourcesHome: {
+    title: 'Ressources gratuites de maths',
+    description: 'Cours gratuits, exercices corriges et fiches de synthese pour reviser efficacement du college a la prepa. Acces libre sur OptiTAB.',
+    canonicalPath: '/ressources-gratuites',
+    faq: homeFaq
   },
   CGV: { title: 'CGV', canonicalPath: '/cgv', noindex: true },
   CGU: { title: 'CGU', canonicalPath: '/cgu', noindex: true },
@@ -339,19 +414,39 @@ export function applyRouteSeo(route) {
     const isConfiguredNoIndex = Boolean(routeSeo.noindex)
     const isSystemNoIndex = requiresAuth || NOINDEX_ROUTE_NAMES.has(name)
     const shouldNoIndex = isConfiguredNoIndex || isSystemNoIndex
+    const robots = getRobotsForRoute({ route, noindex: shouldNoIndex })
+
+    const breadcrumbs = Array.isArray(routeSeo.breadcrumbs) ? [...routeSeo.breadcrumbs] : []
+    if (breadcrumbs.length === 0 && !['Home', 'NotFound'].includes(name)) {
+      if (routeSeo.canonicalPath) {
+        breadcrumbs.push({ name: 'Accueil', item: '/' })
+        if (routeSeo.canonicalPath !== '/') {
+          const label = String(routeSeo.breadcrumbLabel || routeSeo.title || '')
+            .replace(/^OptiTAB\s*-\s*/i, '')
+            .trim()
+          if (label) {
+            breadcrumbs.push({ name: label, item: routeSeo.canonicalPath })
+          }
+        }
+      }
+    }
+
+    const breadcrumbGraph = buildBreadcrumbJsonLd(breadcrumbs)
+    const faqGraph = buildFaqJsonLd(routeSeo.faq)
+    const extraGraph = Array.isArray(routeSeo.jsonLdGraph) ? routeSeo.jsonLdGraph : []
+    const jsonLdGraph = [breadcrumbGraph, faqGraph, ...extraGraph].filter(Boolean)
 
     setPageSeo({
       title: routeSeo.title || DEFAULT_TITLE,
       description: routeSeo.description || DEFAULT_DESCRIPTION,
       canonicalPath: routeSeo.canonicalPath || route?.path || '/',
-      robots: shouldNoIndex
-        ? (isConfiguredNoIndex ? 'noindex,follow' : 'noindex,nofollow')
-        : 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1',
+      robots,
       ogType: routeSeo.ogType || 'website',
       image: routeSeo.image || DEFAULT_IMAGE_PATH,
-      jsonLdGraph: routeSeo.jsonLdGraph
+      jsonLdGraph
     })
   } catch (_) {
     // Never block navigation on SEO updates.
   }
 }
+

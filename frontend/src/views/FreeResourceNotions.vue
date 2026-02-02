@@ -4,6 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import NotionCard from '@/components/UI/NotionCard.vue'
 import BackButton from '@/components/common/BackButton.vue'
+import Breadcrumbs from '@/components/common/Breadcrumbs.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import { getFreeResources } from '@/api/free-content'
 import { useUserStore } from '@/stores/user'
@@ -30,6 +31,7 @@ const allResources = ref([]) // fallback si pas de pagination serveur
 const totalCount = ref(0)
 const totalExercisesCount = ref(0)
 const totalChaptersCount = ref(0)
+const hiddenChaptersCount = ref(0)
 const levelOptions = ref([])
 const levelOptionsLoaded = ref(false)
 const isServerPaginated = ref(true)
@@ -342,6 +344,7 @@ const fetchResources = async (page = 1, retried = false) => {
     if (isExerciseMode.value) {
       totalExercisesCount.value = totalExercises || list?.reduce((acc, item) => acc + (Number(item?.count) || 1), 0) || 0
       totalChaptersCount.value = useServerPagination ? (count || (list ? list.length : 0)) : (list ? list.length : 0)
+      hiddenChaptersCount.value = Number(data?.hidden_chapters_count) || 0
       totalCount.value = totalChaptersCount.value
       isServerPaginated.value = useServerPagination && count > 0
       resources.value = list || []
@@ -350,6 +353,7 @@ const fetchResources = async (page = 1, retried = false) => {
     } else {
       totalExercisesCount.value = 0
       totalChaptersCount.value = 0
+      hiddenChaptersCount.value = Number(data?.hidden_chapters_count) || 0
       totalCount.value = useServerPagination ? count : (list ? list.length : 0)
     }
     isServerPaginated.value = useServerPagination && count > 0
@@ -384,6 +388,7 @@ const fetchResources = async (page = 1, retried = false) => {
         if (isExerciseMode.value) {
           totalExercisesCount.value = list?.reduce((acc, item) => acc + (Number(item?.count) || 1), 0) || 0
           totalChaptersCount.value = list ? list.length : 0
+          hiddenChaptersCount.value = Number(data?.hidden_chapters_count) || 0
           totalCount.value = totalChaptersCount.value
           isServerPaginated.value = false
           currentPage.value = page
@@ -394,6 +399,7 @@ const fetchResources = async (page = 1, retried = false) => {
           totalCount.value = 0
           totalExercisesCount.value = 0
           totalChaptersCount.value = 0
+          hiddenChaptersCount.value = Number(data?.hidden_chapters_count) || 0
           isServerPaginated.value = false
           currentPage.value = page
           const start = (page - 1) * itemsPerPage
@@ -719,6 +725,11 @@ const totalPages = computed(() => {
   return Math.max(1, Math.ceil(listLength / itemsPerPage))
 })
 
+const isLastPage = computed(() => {
+  if (totalPages.value <= 1) return true
+  return currentPage.value >= totalPages.value
+})
+
 const paginatedList = computed(() => {
   const sourceList = isExerciseMode.value ? flatList.value : filteredResources.value
   if (hasServerPagination.value) {
@@ -844,6 +855,13 @@ const premiumRoutes = {
 }
 
 const subscriptionCtaLabel = computed(() => (subscriptionStore.hasAccess ? 'Gérer mon abonnement' : "S'abonner"))
+const hiddenChapterUnits = computed(() => hiddenChaptersCount.value * 5)
+const hiddenExerciseUnits = computed(() => hiddenChaptersCount.value * 8)
+const teaserTitle = computed(() => `Encore + ${hiddenChapterUnits.value} chapitres`)
+const teaserSubtitle = computed(() => {
+  if (!isExerciseMode.value) return ''
+  return `Soit environ ${hiddenExerciseUnits.value} exercices à débloquer`
+})
 
 const onSubscriptionCtaClick = () => {
   if (!userStore.isAuthenticated) {
@@ -1052,6 +1070,26 @@ const onLockedExercise = (chapter) => {
                 </span>
               </template>
             </NotionCard>
+            <div
+              v-if="hiddenChaptersCount > 0 && isLastPage"
+              class="teaser-card"
+              role="button"
+              tabindex="0"
+              @click="onSubscriptionCtaClick"
+              @keydown.enter.prevent="onSubscriptionCtaClick"
+              @keydown.space.prevent="onSubscriptionCtaClick"
+            >
+              <div class="teaser-card__icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 4L4 8L12 12L20 8L12 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 16L12 20L20 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 12L12 16L20 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="teaser-card__title">{{ teaserTitle }}</h3>
+              <p v-if="teaserSubtitle" class="teaser-card__subtitle">{{ teaserSubtitle }}</p>
+              <span class="teaser-card__cta">CLIQUEZ POUR VOUS CONNECTER</span>
+            </div>
           </template>
 
           <template v-else>
@@ -1108,6 +1146,25 @@ const onLockedExercise = (chapter) => {
                 </span>
               </template>
             </NotionCard>
+            <div
+              v-if="hiddenChaptersCount > 0 && isLastPage"
+              class="teaser-card"
+              role="button"
+              tabindex="0"
+              @click="onSubscriptionCtaClick"
+              @keydown.enter.prevent="onSubscriptionCtaClick"
+              @keydown.space.prevent="onSubscriptionCtaClick"
+            >
+              <div class="teaser-card__icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 4L4 8L12 12L20 8L12 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 16L12 20L20 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 12L12 16L20 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="teaser-card__title">{{ teaserTitle }}</h3>
+              <span class="teaser-card__cta">CLIQUEZ POUR VOUS CONNECTER</span>
+            </div>
           </template>
         </div>
 
@@ -1625,6 +1682,68 @@ const onLockedExercise = (chapter) => {
   gap: 16px;
   justify-content: flex-start;
   justify-items: start;
+}
+
+.teaser-card {
+  width: 100%;
+  background: #ffffff;
+  border: 1px dashed rgba(59, 130, 246, 0.35);
+  border-radius: 14px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  color: #1f2937;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.teaser-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(59, 130, 246, 0.6);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+}
+
+.teaser-card:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.45);
+  outline-offset: 2px;
+}
+
+.teaser-card__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.12);
+  color: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teaser-card__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.teaser-card__subtitle {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.teaser-card__cta {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2563eb;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .state-card {

@@ -157,6 +157,7 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = (
         FreeLearningResource.objects
         .filter(est_actif=True, est_publie=True)
+        .filter(Q(notion__isnull=True) | Q(notion__est_actif=True))
         .select_related(
             'matiere',
             'niveau',
@@ -216,8 +217,13 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         resource_type = request.query_params.get('type') or request.query_params.get('resource_type')
 
         if resource_type == FreeLearningResource.TYPE_COURSE:
-            queryset = self._apply_limit(self._get_free_courses_queryset(request), request)
-            return self._paginate_and_serialize(queryset, CourseFreePreviewSerializer)
+            response = self._paginate_and_serialize(
+                self._apply_limit(self._get_free_courses_queryset(request), request),
+                CourseFreePreviewSerializer
+            )
+            hidden_count = self._count_hidden_chapters(self._get_free_courses_queryset(request, include_inactive=True))
+            self._attach_hidden_chapters_count(response, hidden_count)
+            return response
         if resource_type == FreeLearningResource.TYPE_EXERCISE:
             group_param = request.query_params.get('group_by') or request.query_params.get('group') or ''
             group_by_notion = str(group_param).lower() == 'notion'
@@ -227,8 +233,13 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = self._apply_limit(self._get_free_exercises_queryset(request), request)
             return self._paginate_and_serialize(queryset, ExerciceFreePreviewSerializer)
         if resource_type == FreeLearningResource.TYPE_SUMMARY:
-            queryset = self._apply_limit(self._get_free_summaries_queryset(request), request)
-            return self._paginate_and_serialize(queryset, SynthesisFreePreviewSerializer)
+            response = self._paginate_and_serialize(
+                self._apply_limit(self._get_free_summaries_queryset(request), request),
+                SynthesisFreePreviewSerializer
+            )
+            hidden_count = self._count_hidden_chapters(self._get_free_summaries_queryset(request, include_inactive=True))
+            self._attach_hidden_chapters_count(response, hidden_count)
+            return response
 
         queryset = self.filter_queryset(self.get_queryset())
         queryset = self._apply_limit(queryset, request)
@@ -326,27 +337,26 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             return Response(serializer.data)
         return super().retrieve(request, *args, **kwargs)
 
-    def _get_free_courses_queryset(self, request):
+    def _get_free_courses_queryset(self, request, include_inactive=False):
         qs = (
             Cours.objects.filter(est_actif=True)
-            .select_related(
-                'notion',
-                'notion__theme',
-                'notion__theme__matiere',
-                'notion__theme__contexte',
-                'notion__theme__contexte__niveau',
-                'notion__theme__contexte__niveau__pays',
-            )
-            .prefetch_related('images')
-            .annotate(
-                is_locked=Case(
-                    When(access_scope=Cours.ACCESS_SCOPE_PAID, then=Value(True)),
-                    default=Value(False),
-                    output_field=BooleanField()
-                )
-            )
-            .order_by('is_locked', 'ordre', 'notion__titre')
         )
+        if not include_inactive:
+            qs = qs.filter(Q(notion__isnull=True) | Q(notion__est_actif=True))
+        qs = qs.select_related(
+            'notion',
+            'notion__theme',
+            'notion__theme__matiere',
+            'notion__theme__contexte',
+            'notion__theme__contexte__niveau',
+            'notion__theme__contexte__niveau__pays',
+        ).prefetch_related('images').annotate(
+            is_locked=Case(
+                When(access_scope=Cours.ACCESS_SCOPE_PAID, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField()
+            )
+        ).order_by('is_locked', 'ordre', 'notion__titre')
 
         params = request.query_params
         matiere_id = params.get('matiere')
@@ -398,11 +408,19 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         """
         Retourne une pagination par notion (chapitre) avec le nombre d'exercices et le statut de verrou.
         """
-        base_queryset = self._get_free_exercises_queryset(request)
-        total_exercises = base_queryset.count()
+        base_queryset = self._get_free_exercises_queryset(request, include_inactive=True)
+        hidden_chapters_count = (
+            base_queryset
+            .filter(notion__isnull=False, notion__est_actif=False)
+            .values('notion')
+            .distinct()
+            .count()
+        )
+        visible_queryset = base_queryset.filter(Q(notion__isnull=True) | Q(notion__est_actif=True))
+        total_exercises = visible_queryset.count()
 
         grouped_qs = (
-            base_queryset
+            visible_queryset
             .values(
                 'notion',
                 'notion__titre',
@@ -437,9 +455,14 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         if page is not None:
             response = self.get_paginated_response(serializer.data)
             response.data['total_exercises'] = total_exercises
+            response.data['hidden_chapters_count'] = hidden_chapters_count
             return response
 
-        return Response(serializer.data)
+        return Response({
+            'results': serializer.data,
+            'total_exercises': total_exercises,
+            'hidden_chapters_count': hidden_chapters_count,
+        })
 
     def _paginate_and_serialize(self, queryset, serializer_class):
         """Applique la pagination standard et serialise le resultat."""
@@ -451,27 +474,46 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = serializer_class(queryset, many=True, context=context)
         return Response(serializer.data)
 
-    def _get_free_exercises_queryset(self, request):
+    def _attach_hidden_chapters_count(self, response, count):
+        if not response:
+            return
+        if isinstance(response.data, dict):
+            response.data['hidden_chapters_count'] = count
+        else:
+            response.data = {
+                'results': response.data,
+                'hidden_chapters_count': count,
+            }
+
+    def _count_hidden_chapters(self, queryset):
+        return (
+            queryset
+            .filter(notion__isnull=False, notion__est_actif=False)
+            .values('notion')
+            .distinct()
+            .count()
+        )
+
+    def _get_free_exercises_queryset(self, request, include_inactive=False):
         qs = (
             Exercice.objects.filter(est_actif=True)
-            .select_related(
-                'notion',
-                'notion__theme',
-                'notion__theme__matiere',
-                'notion__theme__contexte',
-                'notion__theme__contexte__niveau',
-                'notion__theme__contexte__niveau__pays',
-            )
-            .prefetch_related('images')
-            .annotate(
-                is_locked=Case(
-                    When(access_scope=Exercice.ACCESS_SCOPE_PAID, then=Value(True)),
-                    default=Value(False),
-                    output_field=BooleanField()
-                )
-            )
-            .order_by('is_locked', 'notion__titre', 'id')
         )
+        if not include_inactive:
+            qs = qs.filter(Q(notion__isnull=True) | Q(notion__est_actif=True))
+        qs = qs.select_related(
+            'notion',
+            'notion__theme',
+            'notion__theme__matiere',
+            'notion__theme__contexte',
+            'notion__theme__contexte__niveau',
+            'notion__theme__contexte__niveau__pays',
+        ).prefetch_related('images').annotate(
+            is_locked=Case(
+                When(access_scope=Exercice.ACCESS_SCOPE_PAID, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField()
+            )
+        ).order_by('is_locked', 'notion__titre', 'id')
 
         params = request.query_params
         matiere_id = params.get('matiere')
@@ -518,27 +560,26 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
 
         return qs
 
-    def _get_free_summaries_queryset(self, request):
+    def _get_free_summaries_queryset(self, request, include_inactive=False):
         qs = (
             SynthesisSheet.objects.filter(est_actif=True)
-            .select_related(
-                'notion',
-                'notion__theme',
-                'notion__theme__matiere',
-                'notion__theme__contexte',
-                'notion__theme__contexte__niveau',
-                'notion__theme__contexte__niveau__pays',
-            )
-            .prefetch_related('images')
-            .annotate(
-                is_locked=Case(
-                    When(access_scope=SynthesisSheet.ACCESS_SCOPE_PAID, then=Value(True)),
-                    default=Value(False),
-                    output_field=BooleanField()
-                )
-            )
-            .order_by('is_locked', 'ordre', 'notion__titre')
         )
+        if not include_inactive:
+            qs = qs.filter(Q(notion__isnull=True) | Q(notion__est_actif=True))
+        qs = qs.select_related(
+            'notion',
+            'notion__theme',
+            'notion__theme__matiere',
+            'notion__theme__contexte',
+            'notion__theme__contexte__niveau',
+            'notion__theme__contexte__niveau__pays',
+        ).prefetch_related('images').annotate(
+            is_locked=Case(
+                When(access_scope=SynthesisSheet.ACCESS_SCOPE_PAID, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField()
+            )
+        ).order_by('is_locked', 'ordre', 'notion__titre')
 
         params = request.query_params
         matiere_id = params.get('matiere')

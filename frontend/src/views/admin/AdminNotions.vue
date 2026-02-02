@@ -22,6 +22,13 @@
         <label>Ordre d'affichage:</label>
         <input v-model.number="form.ordre" type="number" min="0" />
       </div>
+
+      <div class="form-group inline-field">
+        <label class="checkbox-label">
+          <input type="checkbox" v-model="form.est_actif" />
+          Notion active (visible dans les ressources gratuites)
+        </label>
+      </div>
       
       <!-- Plus besoin de choisir pays/niveau ici: le thème porte le contexte -->
       
@@ -62,19 +69,33 @@
           <th>ID</th>
           <th>Ordre</th>
           <th>Nom de la notion</th>
+          <th>Actif</th>
           <th>Thème</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-if="isLoadingNotions">
-          <td colspan="5" class="loading-row">Chargement des notions...</td>
+          <td colspan="6" class="loading-row">Chargement des notions...</td>
         </tr>
         <template v-else>
           <tr v-for="notion in paginatedNotions" :key="notion.id">
             <td>{{ notion.id }}</td>
             <td>{{ notion.ordre || 0 }}</td>
             <td>{{ notion.nom }}</td>
+            <td>
+              <label class="status-toggle">
+                <input
+                  type="checkbox"
+                  :checked="notion.est_actif !== false"
+                  :disabled="isLoadingNotions"
+                  @change="toggleNotionActive(notion, $event.target.checked)"
+                />
+                <span :class="['status-pill', (notion.est_actif !== false) ? 'active' : 'inactive']">
+                  {{ (notion.est_actif !== false) ? 'Actif' : 'Inactif' }}
+                </span>
+              </label>
+            </td>
             <td>
               <span v-if="notion.theme_nom" 
                     class="theme-badge" 
@@ -98,7 +119,7 @@
             </td>
           </tr>
           <tr v-if="paginatedNotions.length === 0">
-            <td colspan="5" style="text-align:center; font-style: italic;">Aucune notion trouvée.</td>
+            <td colspan="6" style="text-align:center; font-style: italic;">Aucune notion trouvée.</td>
           </tr>
         </template>
       </tbody>
@@ -193,7 +214,8 @@ const form = ref({
   nom: '',
   theme: '',
   niveaux: [],
-  ordre: 0
+  ordre: 0,
+  est_actif: true
 })
 const filters = ref({
   theme: '',
@@ -421,7 +443,8 @@ function resetForm() {
     nom: '', 
     theme: '', 
     niveaux: [],
-    ordre: 0
+    ordre: 0,
+    est_actif: true
   }
 }
 
@@ -433,7 +456,8 @@ async function handleSave() {
       nom: form.value.nom,
       theme: Number(form.value.theme),
       niveaux: [],
-      ordre: form.value.ordre
+      ordre: form.value.ordre,
+      est_actif: form.value.est_actif
     }
 
     if (form.value.id) {
@@ -464,7 +488,20 @@ function editNotion(notion) {
     nom: notion.nom,
     theme: notion.theme || '',
     niveaux: [],
-    ordre: notion.ordre || 0
+    ordre: notion.ordre || 0,
+    est_actif: notion.est_actif !== false
+  }
+}
+
+async function toggleNotionActive(notion, value) {
+  const prev = notion.est_actif
+  notion.est_actif = value
+  try {
+    await updateNotion(notion.id, { est_actif: value })
+  } catch (e) {
+    console.error('[AdminNotions] Erreur de mise à jour du statut:', e)
+    notion.est_actif = prev
+    alert("Impossible de mettre à jour le statut de la notion.")
   }
 }
 
@@ -547,6 +584,26 @@ async function confirmDuplicate() {
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   font-size: 0.875rem;
+}
+
+.inline-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+}
+
+.checkbox-label input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
 }
 
 .btn-primary {
@@ -655,6 +712,38 @@ async function confirmDuplicate() {
   color: #6b7280;
   font-style: italic;
   font-size: 0.875rem;
+}
+
+.status-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-toggle input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: #10b981;
+}
+
+.status-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.status-pill.active {
+  background: #ecfdf5;
+  color: #047857;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.status-pill.inactive {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: rgba(239, 68, 68, 0.35);
 }
 
 .loading-row {

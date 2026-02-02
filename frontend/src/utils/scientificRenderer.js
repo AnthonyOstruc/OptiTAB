@@ -80,10 +80,22 @@ export function markdownToHtml(text) {
   return html
 }
 
+function shiftHeadingLevels(html, offset) {
+  if (!offset) return html
+  return html.replace(/<(\/?)h([1-6])([^>]*)>/gi, (match, slash, level, rest) => {
+    const current = Number(level)
+    if (!Number.isFinite(current)) return match
+    const next = Math.min(6, Math.max(1, current + offset))
+    return `<${slash}h${next}${rest}>`
+  })
+}
+
+
+
 /**
  * Rendu du contenu avec images intégrées
  */
-export function renderContentWithImages(content, images = []) {
+export function renderContentWithImages(content, images = [], options = {}) {
   if (!content) return ''
 
   // Détecter si le contenu est déjà du HTML structuré
@@ -95,6 +107,13 @@ export function renderContentWithImages(content, images = []) {
   
   // Ensuite, traiter LaTeX et HTML de base
   processedText = unescapeLatex(processedText)
+  const { autoShiftHeadings = false, headingOffset = 0 } = options || {}
+  if (autoShiftHeadings && /<h1/i.test(processedText)) {
+    processedText = shiftHeadingLevels(processedText, 1)
+  } else if (headingOffset) {
+    processedText = shiftHeadingLevels(processedText, headingOffset)
+  }
+
   
   // Si pas d'images, retourner le texte traité
   if (!images || images.length === 0) {
@@ -117,6 +136,8 @@ export function renderContentWithImages(content, images = []) {
         <div class="content-image-container" data-image-position="${position}" style="text-align: center; margin: 2em 0;">
           <img 
             src="${getImageUrl(image.image)}" 
+            loading="lazy"
+            decoding="async" 
             alt="Image ${image.image_type || 'illustration'} - position ${position}"
             class="content-image"
             style="max-width: 100%; height: auto;"
@@ -128,6 +149,11 @@ export function renderContentWithImages(content, images = []) {
     return match // Garder le marqueur si l'image n'existe pas
   })
   
+
+  // Ajouter lazy-loading aux images existantes si absent
+  processedText = processedText.replace(/<img(?![^>]*loading=)([^>]*?)>/gi, '<img loading="lazy"$1>')
+  processedText = processedText.replace(/<img(?![^>]*decoding=)([^>]*?)>/gi, '<img decoding="async"$1>')
+
   return processedText
 }
 

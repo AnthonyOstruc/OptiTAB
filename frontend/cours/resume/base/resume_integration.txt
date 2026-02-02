@@ -1,0 +1,874 @@
+===Résumé Intégration
+
+<div class="seo-metadata" style="display: none;" data-seo-title="Intégration : primitives & intégrales — IPP, changement de variable | OptiTAB" data-seo-description="Fiche complète sur l'intégration : tableau des primitives usuelles, intégrales définies, IPP, changement de variable, erreurs fréquentes et exemples corrigés pour lycée et prépa." data-seo-url="/integration-primitives-integrales" data-seo-keywords="intégration, primitives, intégrales définies, IPP, intégration par parties, changement de variable, primitives usuelles, calcul intégral"></div>
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+<h1 style="color:#2c3e50; font-size:2.2em; margin-bottom:20px; border-bottom:3px solid #3498db; padding-bottom:12px;">Intégration : primitives, intégrales définies et méthodes de calcul</h1>
+
+<div style="background:#e3f2fd; border-left:6px solid #2196f3; padding:20px; margin:20px 0; border-radius:6px; line-height:1.8;">
+<p style="margin:0 0 12px 0; font-size:1.05em;">
+Cette fiche complète résume l'<strong>intégration</strong> et le <strong>calcul des primitives</strong> pour tous les niveaux du lycée au master. Vous y trouverez les <strong>primitives usuelles</strong>, les <strong>méthodes d'intégration</strong> (intégration par parties, changement de variable), les <strong>propriétés des intégrales définies</strong>, ainsi que les <strong>erreurs fréquentes</strong> à éviter.
+</p>
+<p style="margin:0 0 12px 0;">
+L'intégration est l'opération inverse de la <a href="/derivation-tableau-formules" style="color:#1976d2; text-decoration:underline;">dérivation</a>. Elle permet de calculer des <strong>aires</strong>, des <strong>volumes</strong>, des <strong>valeurs moyennes</strong> et de résoudre de nombreux problèmes en mathématiques et en physique.
+</p>
+<p style="margin:0;">
+<strong>🎯 Ce que vous allez apprendre :</strong> définitions fondamentales, tableaux récapitulatifs complets, méthodes de calcul pas à pas, exemples détaillés et pièges classiques à éviter.
+</p>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:20px; margin:20px 0; border-radius:6px;">
+<h2 style="color:#2c3e50; font-size:1.4em; margin-top:0;">📚 Liens utiles pour approfondir</h2>
+<ul style="line-height:2; margin:10px 0;">
+<li><strong>→</strong> <a href="/derivation-tableau-formules" style="color:#1976d2;">Tableau des dérivées usuelles</a> (l'opération inverse)</li>
+<li><strong>→</strong> <a href="/fonctions-usuelles-proprietes" style="color:#1976d2;">Fonctions usuelles et leurs propriétés</a></li>
+<li><strong>→</strong> <a href="/exercices-integration-par-parties" style="color:#1976d2;">Exercices corrigés : intégration par parties</a></li>
+<li><strong>→</strong> <a href="/exercices-changement-variable" style="color:#1976d2;">Exercices corrigés : changement de variable</a></li>
+<li><strong>→</strong> <a href="/trigonometrie-formules-completes" style="color:#1976d2;">Formulaire de trigonométrie</a></li>
+</ul>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Qu'est-ce qu'une primitive ? Définitions fondamentales</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Notion</th>
+<th style="border:1px solid #ddd; padding:12px;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Primitive</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle F$ est une primitive de $\displaystyle f$ sur $\displaystyle I$ si $\displaystyle F'(x) = f(x)$ pour tout $\displaystyle x \in I$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Ensemble des primitives</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle F$ est une primitive de $\displaystyle f$, alors toutes les primitives sont de la forme $\displaystyle F(x) + C$ où $\displaystyle C \in \mathbb{R}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Intégrale définie</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int_a^b f(x)\,dx = [F(x)]_a^b = F(b) - F(a)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Interprétation géométrique</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Aire algébrique entre la courbe de $\displaystyle f$ et l'axe des abscisses entre $\displaystyle a$ et $\displaystyle b$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Propriétés de l'intégrale</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Propriété</th>
+<th style="border:1px solid #ddd; padding:12px; width:60%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Linéarité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int_a^b [kf(x) + lg(x)]\,dx = k\int_a^b f(x)\,dx + l\int_a^b g(x)\,dx$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Relation de Chasles</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Inversion des bornes</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int_a^b f(x)\,dx = -\int_b^a f(x)\,dx$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Intégrale nulle</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int_a^a f(x)\,dx = 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Positivité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle f(x) \geq 0$ sur $\displaystyle [a,b]$, alors $\displaystyle \int_a^b f(x)\,dx \geq 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Inégalité</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle f(x) \leq g(x)$ sur $\displaystyle [a,b]$, alors $\displaystyle \int_a^b f(x)\,dx \leq \int_a^b g(x)\,dx$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Primitives des fonctions usuelles</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction $\displaystyle f(x)$</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Primitive $\displaystyle F(x)$</th>
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Domaine</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle k$ (constante)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle kx$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x^n$ ($\displaystyle n \in \mathbb{N}$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{x^{n+1}}{n+1}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln|x|$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R}^\ast$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{x^n}$ ($\displaystyle n \geq 2$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\dfrac{1}{(n-1)x^{n-1}}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R}^\ast$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sqrt{x}}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 2\sqrt{x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle ]0, +\infty[$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sqrt{x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{2x^{3/2}}{3}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle ]0, +\infty[$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\cos^2(x)}$ ou $\displaystyle 1 + \tan^2(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R} \setminus \{\frac{\pi}{2} + k\pi\}$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+<strong>⚠️ Attention :</strong> La primitive de $\displaystyle \sin(x)$ est $\displaystyle -\cos(x)$ (ne pas oublier le signe $\displaystyle -$)
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Primitives de fonctions composées</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:60%;">Primitive</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle u'(x) \cdot u(x)^n$ ($\displaystyle n \neq -1$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{u(x)^{n+1}}{n+1}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{u'(x)}{u(x)}$ (si $\displaystyle u(x) \neq 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln|u(x)|$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle u'(x) \cdot e^{u(x)}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{u(x)}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle u'(x) \cdot \cos(u(x))$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(u(x))$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle u'(x) \cdot \sin(u(x))$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\cos(u(x))$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{u'(x)}{\sqrt{u(x)}}$ (si $\displaystyle u(x) > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 2\sqrt{u(x)}$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemples pratiques</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>1.</strong> $\displaystyle \int 2x(x^2 + 1)^3\,dx = \dfrac{(x^2+1)^4}{4} + C$ (car $\displaystyle u'(x) = 2x$ et $\displaystyle u(x) = x^2 + 1$)<br><br>
+<strong>2.</strong> $\displaystyle \int \dfrac{2x}{x^2 + 1}\,dx = \ln|x^2 + 1| + C = \ln(x^2 + 1) + C$<br><br>
+<strong>3.</strong> $\displaystyle \int 3x^2 e^{x^3}\,dx = e^{x^3} + C$<br><br>
+<strong>4.</strong> $\displaystyle \int 2x\cos(x^2)\,dx = \sin(x^2) + C$<br><br>
+<strong>5.</strong> $\displaystyle \int \dfrac{1}{2x+3}\,dx = \dfrac{1}{2}\ln|2x+3| + C$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Méthodes d'intégration</h2>
+
+<h3 style="color:#2c3e50; margin-top:20px;">1. Intégration par parties</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+$\displaystyle \int_a^b u'(x)v(x)\,dx = [u(x)v(x)]_a^b - \int_a^b u(x)v'(x)\,dx$<br><br>
+Ou de manière équivalente : $\displaystyle \int u\,dv = uv - \int v\,du$
+</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : $\displaystyle \int x e^x\,dx$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+On pose $\displaystyle u(x) = x$ et $\displaystyle v'(x) = e^x$<br>
+Donc $\displaystyle u'(x) = 1$ et $\displaystyle v(x) = e^x$<br><br>
+$\displaystyle \int x e^x\,dx = x e^x - \int 1 \cdot e^x\,dx = x e^x - e^x + C = (x-1)e^x + C$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">2. Changement de variable</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+Si $\displaystyle x = \varphi(t)$ avec $\displaystyle \varphi$ bijective et dérivable :<br><br>
+$\displaystyle \int_a^b f(x)\,dx = \int_{\varphi^{-1}(a)}^{\varphi^{-1}(b)} f(\varphi(t))\varphi'(t)\,dt$
+</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple : $\displaystyle \int \dfrac{1}{\sqrt{1-x^2}}\,dx$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+On pose $\displaystyle x = \sin(t)$, donc $\displaystyle dx = \cos(t)\,dt$<br><br>
+$\displaystyle \int \dfrac{1}{\sqrt{1-x^2}}\,dx = \int \dfrac{\cos(t)}{\sqrt{1-\sin^2(t)}}\,dt = \int \dfrac{\cos(t)}{|\cos(t)|}\,dt = \int 1\,dt = t + C = \arcsin(x) + C$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Tableau récapitulatif complet des primitives (Lycée → Master)</h2>
+
+<h3 style="color:#2c3e50; margin-top:20px;">1. Fonctions de base (Lycée)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Primitive</th>
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle k$ (constante)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle kx$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x^n$ ($\displaystyle n \in \mathbb{N}$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{x^{n+1}}{n+1}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle n \geq 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x^\alpha$ ($\displaystyle \alpha \in \mathbb{R}$, $\displaystyle \alpha \neq -1$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{x^{\alpha+1}}{\alpha+1}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{x}$ ou $\displaystyle x^{-1}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln|x|$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \neq 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{x^n}$ ou $\displaystyle x^{-n}$ ($\displaystyle n \geq 2$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\dfrac{1}{(n-1)x^{n-1}}$ ou $\displaystyle \dfrac{x^{-n+1}}{-n+1}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \neq 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sqrt{x}$ ou $\displaystyle x^{1/2}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{2x^{3/2}}{3}$ ou $\displaystyle \dfrac{2x\sqrt{x}}{3}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sqrt{x}}$ ou $\displaystyle x^{-1/2}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 2\sqrt{x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sqrt[n]{x}$ ou $\displaystyle x^{1/n}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{nx^{(n+1)/n}}{n+1}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 0$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">2. Fonctions exponentielles et logarithmes (Lycée/Prépa)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Primitive</th>
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{ax}$ ($\displaystyle a \neq 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{a}e^{ax}$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle a^x$ ($\displaystyle a > 0$, $\displaystyle a \neq 1$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{a^x}{\ln(a)}$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln|x|$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \neq 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{ax+b}$ ($\displaystyle a \neq 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{a}\ln|ax+b|$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle ax+b \neq 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\ln(x) - x$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\ln(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{x^2}{2}\ln(x) - \dfrac{x^2}{4}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x^n\ln(x)$ ($\displaystyle n \geq 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{x^{n+1}}{n+1}\ln(x) - \dfrac{x^{n+1}}{(n+1)^2}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 0$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">3. Fonctions trigonométriques (Lycée)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Primitive</th>
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(ax)$ ($\displaystyle a \neq 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{a}\sin(ax)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(ax)$ ($\displaystyle a \neq 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\dfrac{1}{a}\cos(ax)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\ln|\cos(x)|$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x) \neq 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\cos^2(x)}$ ou $\displaystyle 1 + \tan^2(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x) \neq 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sin^2(x)}$ ou $\displaystyle 1 + \cot^2(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\cot(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x) \neq 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos^2(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{x}{2} + \dfrac{\sin(2x)}{4}$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin^2(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{x}{2} - \dfrac{\sin(2x)}{4}$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)\sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{\sin^2(x)}{2}$ ou $\displaystyle -\dfrac{\cos^2(x)}{2}$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">4. Fonctions trigonométriques inverses (Prépa/Licence)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Primitive</th>
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sqrt{1-x^2}}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arcsin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle |x| < 1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\dfrac{1}{\sqrt{1-x^2}}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arccos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle |x| < 1$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1+x^2}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arctan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\dfrac{1}{1+x^2}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{arccot}(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arcsin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\arcsin(x) + \sqrt{1-x^2}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle |x| \leq 1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arccos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\arccos(x) - \sqrt{1-x^2}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle |x| \leq 1$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arctan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\arctan(x) - \dfrac{1}{2}\ln(1+x^2)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">5. Fonctions hyperboliques (Prépa/Licence)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Primitive</th>
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sinh(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cosh(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cosh(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sinh(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tanh(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(\cosh(x))$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\cosh^2(x)}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tanh(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sinh^2(x)}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\text{coth}(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \neq 0$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cosh^2(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{x}{2} + \dfrac{\sinh(2x)}{4}$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sinh^2(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -\dfrac{x}{2} + \dfrac{\sinh(2x)}{4}$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">6. Fonctions hyperboliques inverses (Prépa/Licence)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Primitive</th>
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sqrt{x^2+1}}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{argsinh}(x) = \ln(x + \sqrt{x^2+1})$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sqrt{x^2-1}}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{argcosh}(x) = \ln(x + \sqrt{x^2-1})$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 1$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1-x^2}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{argtanh}(x) = \dfrac{1}{2}\ln\left(\dfrac{1+x}{1-x}\right)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle |x| < 1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{argsinh}(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\text{argsinh}(x) - \sqrt{x^2+1}$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{argcosh}(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\text{argcosh}(x) - \sqrt{x^2-1}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x > 1$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{argtanh}(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\text{argtanh}(x) + \dfrac{1}{2}\ln(1-x^2)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle |x| < 1$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">7. Fractions rationnelles (Prépa/Licence)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Primitive</th>
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{x^2+a^2}$ ($\displaystyle a > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{a}\arctan\left(\dfrac{x}{a}\right)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{x^2-a^2}$ ($\displaystyle a > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{2a}\ln\left|\dfrac{x-a}{x+a}\right|$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \neq \pm a$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{a^2-x^2}$ ($\displaystyle a > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{2a}\ln\left|\dfrac{a+x}{a-x}\right|$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \neq \pm a$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{x}{x^2+a^2}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{2}\ln(x^2+a^2)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sqrt{a^2-x^2}}$ ($\displaystyle a > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arcsin\left(\dfrac{x}{a}\right)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle |x| < a$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sqrt{x^2+a^2}}$ ($\displaystyle a > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(x + \sqrt{x^2+a^2})$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sqrt{x^2-a^2}}$ ($\displaystyle a > 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln|x + \sqrt{x^2-a^2}|$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle |x| > a$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 style="color:#2c3e50; margin-top:20px;">8. Produits de fonctions (Prépa/Licence)</h3>
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Primitive</th>
+<th style="border:1px solid #ddd; padding:12px; width:20%;">Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle xe^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle (x-1)e^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x^2e^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle (x^2-2x+2)e^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x\cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{e^x}{2}[\cos(x) + \sin(x)]$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x\sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{e^x}{2}[\sin(x) - \cos(x)]$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{ax}\cos(bx)$ ($\displaystyle a, b \neq 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{e^{ax}}{a^2+b^2}[a\cos(bx) + b\sin(bx)]$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{ax}\sin(bx)$ ($\displaystyle a, b \neq 0$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{e^{ax}}{a^2+b^2}[a\sin(bx) - b\cos(bx)]$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x) + x\sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x\sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x) - x\cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">—</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Erreurs fréquentes à éviter</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<thead>
+<tr style="background:#ef4444; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:50%;">❌ Erreur fréquente</th>
+<th style="border:1px solid #ddd; padding:12px; width:50%;">✓ Correction</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int \sin(x)\,dx = \cos(x) + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int \sin(x)\,dx = -\cos(x) + C$ (signe négatif !)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int \dfrac{1}{x}\,dx = \ln(x) + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int \dfrac{1}{x}\,dx = \ln|x| + C$ (valeur absolue !)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int x^n\,dx = \dfrac{x^n}{n} + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int x^n\,dx = \dfrac{x^{n+1}}{n+1} + C$ (augmenter l'exposant !)</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int e^{2x}\,dx = e^{2x} + C$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int e^{2x}\,dx = \dfrac{e^{2x}}{2} + C$ (diviser par le coefficient !)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int f(x)g(x)\,dx = \left[\int f(x)\,dx\right]\left[\int g(x)\,dx\right]$</td>
+<td style="border:1px solid #ddd; padding:10px;">Utiliser l'intégration par parties : $\displaystyle \int u\,dv = uv - \int v\,du$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">Oublier la constante $\displaystyle C$ pour une primitive</td>
+<td style="border:1px solid #ddd; padding:10px;">Toujours ajouter $\displaystyle + C$ pour une primitive</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int_a^b f(x)\,dx = F(a) - F(b)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \int_a^b f(x)\,dx = F(b) - F(a)$ (borne sup - borne inf !)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Méthode de calcul pas à pas</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ffa500;">
+<thead>
+<tr style="background:#ffa500; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Type d'intégrale</th>
+<th style="border:1px solid #ddd; padding:12px; width:70%;">Méthode</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Fonction simple</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Appliquer directement la formule du tableau des primitives usuelles</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Somme/différence</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Intégrer terme par terme : $\displaystyle \int [f(x) \pm g(x)]\,dx = \int f(x)\,dx \pm \int g(x)\,dx$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>$\displaystyle u'(x)f(u(x))$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">1. Identifier $\displaystyle u(x)$ et vérifier que $\displaystyle u'(x)$ apparaît<br>2. Utiliser la formule de composition appropriée</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Produit</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Utiliser l'intégration par parties : $\displaystyle \int u\,dv = uv - \int v\,du$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Fonction complexe</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Utiliser un changement de variable : $\displaystyle x = \varphi(t)$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<thead>
+<tr style="background:#10b981; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Exemple détaillé : $\displaystyle \int_0^1 x^2e^x\,dx$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Méthode :</strong> Intégration par parties (deux fois)<br><br>
+<strong>Première IPP :</strong> $\displaystyle u = x^2$, $\displaystyle dv = e^x\,dx$ donc $\displaystyle du = 2x\,dx$, $\displaystyle v = e^x$<br>
+$\displaystyle \int x^2e^x\,dx = x^2e^x - \int 2xe^x\,dx$<br><br>
+<strong>Deuxième IPP :</strong> $\displaystyle u = 2x$, $\displaystyle dv = e^x\,dx$ donc $\displaystyle du = 2\,dx$, $\displaystyle v = e^x$<br>
+$\displaystyle \int 2xe^x\,dx = 2xe^x - \int 2e^x\,dx = 2xe^x - 2e^x$<br><br>
+<strong>Résultat :</strong> $\displaystyle \int x^2e^x\,dx = x^2e^x - 2xe^x + 2e^x = (x^2-2x+2)e^x + C$<br><br>
+<strong>Intégrale définie :</strong> $\displaystyle \int_0^1 x^2e^x\,dx = [(x^2-2x+2)e^x]_0^1 = (1-2+2)e - (0-0+2) = e - 2$
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Formules importantes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Valeur moyenne d'une fonction :</strong><br>
+$\displaystyle \mu = \dfrac{1}{b-a}\int_a^b f(x)\,dx$
+</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Aire entre deux courbes :</strong><br>
+$\displaystyle A = \int_a^b |f(x) - g(x)|\,dx$
+</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Inégalité de la moyenne :</strong><br>
+Si $\displaystyle m \leq f(x) \leq M$ sur $\displaystyle [a,b]$, alors $\displaystyle m(b-a) \leq \int_a^b f(x)\,dx \leq M(b-a)$
+</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Intégrale d'une fonction paire :</strong><br>
+$\displaystyle \int_{-a}^a f(x)\,dx = 2\int_0^a f(x)\,dx$ si $\displaystyle f$ est paire
+</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">
+<strong>Intégrale d'une fonction impaire :</strong><br>
+$\displaystyle \int_{-a}^a f(x)\,dx = 0$ si $\displaystyle f$ est impaire
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+===

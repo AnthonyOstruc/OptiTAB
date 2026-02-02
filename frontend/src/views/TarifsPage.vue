@@ -69,17 +69,27 @@ const faqItems = [
   }
 ]
 
+function normalizeBaseUrl(value) {
+  let result = value
+  while (result.endsWith('/')) {
+    result = result.slice(0, -1)
+  }
+  return result
+}
+
 function getSiteUrl() {
-  const fromEnv = String(import.meta?.env?.VITE_SITE_URL || '').trim()
-  if (fromEnv) return fromEnv.replace(/\\/+$/, '')
-  if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin
+  const fromEnv = String((import.meta.env && import.meta.env.VITE_SITE_URL) || '').trim()
+  if (fromEnv) return normalizeBaseUrl(fromEnv)
+  if (typeof window !== 'undefined' && window.location && window.location.origin) {
+    return window.location.origin
+  }
   return 'https://optitab.net'
 }
 
 function toAbsoluteUrl(path) {
   const raw = String(path || '').trim()
   if (!raw) return ''
-  if (/^https?:\\/\\//i.test(raw)) return raw
+  if (raw.startsWith('http://') || raw.startsWith('https://')) return raw
   const base = getSiteUrl()
   return `${base}${raw.startsWith('/') ? '' : '/'}${raw}`
 }

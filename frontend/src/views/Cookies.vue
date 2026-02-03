@@ -13,7 +13,7 @@
               <span class="gradient-text">OptiTAB</span> - Plateforme d'apprentissage
             </p>
             <div class="cgv-meta">
-              <span class="meta-text">Dernière mise à jour : 16 septembre 2025 • Site web : www.optitab.net</span>
+              <span class="meta-text">Dernière mise à jour : 3 février 2026 • Site web : www.optitab.net</span>
             </div>
           </div>
         </div>
@@ -105,40 +105,38 @@
                 Cookies utilisés sur OptiTAB
               </h2>
               <div class="section-content">
+                <p>
+                  La liste ci-dessous présente les principaux cookies/traceurs utilisés sur OptiTAB. Les
+                  cookies de statistiques ne sont déposés qu'après votre consentement explicite.
+                </p>
                 <div class="cookies-table">
                   <div class="cookie-item">
-                    <div class="cookie-name">Session utilisateur</div>
+                    <div class="cookie-name">optitab_cookie_consent_v1 (OptiTAB)</div>
                     <div class="cookie-details">
-                      <strong>Finalité :</strong> Maintien de votre session de connexion<br>
-                      <strong>Durée :</strong> Session (supprimé à la fermeture du navigateur)<br>
-                      <strong>Type :</strong> Strictement nécessaire
+                      <strong>Finalité :</strong> Mémoriser votre choix de consentement au bandeau cookies<br>
+                      <strong>Durée :</strong> 6 mois<br>
+                      <strong>Type :</strong> Strictement nécessaire<br>
+                      <strong>Remarque :</strong> Stocké en cookie et en localStorage si disponible
                     </div>
                   </div>
                   
                   <div class="cookie-item">
-                    <div class="cookie-name">Préférences utilisateur</div>
+                    <div class="cookie-name">Google Analytics 4 (_ga, _ga_*)</div>
                     <div class="cookie-details">
-                      <strong>Finalité :</strong> Mémorisation de vos paramètres et préférences<br>
-                      <strong>Durée :</strong> 1 an<br>
-                      <strong>Type :</strong> Fonctionnalité
+                      <strong>Finalité :</strong> Mesure d'audience et statistiques de fréquentation<br>
+                      <strong>Durée :</strong> 13 mois maximum<br>
+                      <strong>Type :</strong> Performance<br>
+                      <strong>Dépôt :</strong> Uniquement après acceptation des cookies "Statistiques"
                     </div>
                   </div>
                   
                   <div class="cookie-item">
-                    <div class="cookie-name">Analytiques</div>
+                    <div class="cookie-name">Microsoft Clarity (_clck, _clsk)</div>
                     <div class="cookie-details">
-                      <strong>Finalité :</strong> Analyse du trafic et amélioration du site<br>
-                      <strong>Durée :</strong> 13 mois<br>
-                      <strong>Type :</strong> Performance
-                    </div>
-                  </div>
-                  
-                  <div class="cookie-item">
-                    <div class="cookie-name">Sécurité</div>
-                    <div class="cookie-details">
-                      <strong>Finalité :</strong> Protection contre les attaques et fraudes<br>
-                      <strong>Durée :</strong> 24 heures<br>
-                      <strong>Type :</strong> Strictement nécessaire
+                      <strong>Finalité :</strong> Analyse de l'expérience utilisateur (parcours, heatmaps)<br>
+                      <strong>Durée :</strong> Variable selon le cookie (session à 12 mois)<br>
+                      <strong>Type :</strong> Performance<br>
+                      <strong>Dépôt :</strong> Uniquement après acceptation des cookies "Statistiques"
                     </div>
                   </div>
                 </div>
@@ -152,6 +150,10 @@
                 Gestion de vos cookies
               </h2>
               <div class="section-content">
+                <p>
+                  Vous pouvez modifier vos préférences à tout moment via le lien "Gérer mes cookies"
+                  disponible en pied de page.
+                </p>
                 <h3 class="subsection-title">4.1 Paramètres du navigateur</h3>
                 <p>Vous pouvez configurer votre navigateur pour :</p>
                 <ul class="content-list">
@@ -197,16 +199,26 @@
               <div class="section-content">
                 <p>Notre site peut contenir des cookies provenant de services tiers :</p>
                 
-                <h3 class="subsection-title">5.1 Google Analytics</h3>
-                <p>Nous utilisons Google Analytics pour analyser l'utilisation de notre site :</p>
+                <h3 class="subsection-title">5.1 Google Analytics 4</h3>
+                <p>Nous utilisons Google Analytics 4 pour analyser l'utilisation de notre site :</p>
                 <ul class="content-list">
                   <li><strong>Finalité :</strong> Mesure d'audience et statistiques</li>
                   <li><strong>Données collectées :</strong> Pages visitées, durée de visite, source de trafic</li>
                   <li><strong>Durée :</strong> 13 mois</li>
+                  <li><strong>Dépôt :</strong> Uniquement après acceptation des cookies "Statistiques"</li>
                   <li><strong>Désactivation :</strong> <a href="https://tools.google.com/dlpage/gaoptout" class="link" target="_blank">Outil de désactivation Google Analytics</a></li>
                 </ul>
 
-                <h3 class="subsection-title">5.2 Réseaux sociaux</h3>
+                <h3 class="subsection-title">5.2 Microsoft Clarity</h3>
+                <p>Nous utilisons Microsoft Clarity pour analyser l'expérience utilisateur :</p>
+                <ul class="content-list">
+                  <li><strong>Finalité :</strong> Analyse de l'expérience (parcours, heatmaps)</li>
+                  <li><strong>Données collectées :</strong> Interactions sur la page, navigation</li>
+                  <li><strong>Durée :</strong> Variable selon le cookie (session à 12 mois)</li>
+                  <li><strong>Dépôt :</strong> Uniquement après acceptation des cookies "Statistiques"</li>
+                </ul>
+
+                <h3 class="subsection-title">5.3 Réseaux sociaux</h3>
                 <p>Des boutons de partage peuvent déposer des cookies :</p>
                 <ul class="content-list">
                   <li>Facebook, Twitter, LinkedIn, etc.</li>

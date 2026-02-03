@@ -1,10 +1,12 @@
 ===Résumé Développements Limités
 
-Titre: Résumé : Développements Limités - Formules Usuelles et Règles de Calcul
+Titre: Résumé : Développements Limités - Formulaire et Méthodes de Calcul
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition et notation</h2>
+<h1 style="color:#2c3e50; font-size:2.2em; margin-bottom:20px; border-bottom:3px solid #3498db; padding-bottom:12px;">Développements Limités : formules, propriétés et applications</h1>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition et notations</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
 <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
@@ -16,871 +18,451 @@ Titre: Résumé : Développements Limités - Formules Usuelles et Règles de Cal
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>DL à l'ordre $\displaystyle n$ en $\displaystyle a$</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = c_0 + c_1(x-a) + c_2(x-a)^2 + \cdots + c_n(x-a)^n + o((x-a)^n)$</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>DL à l'ordre $\displaystyle n$ en $\displaystyle 0$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = a_0 + a_1 x + a_2 x^2 + \cdots + a_n x^n + o(x^n)$</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>DL à l'ordre $\displaystyle n$ en $\displaystyle 0$</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = c_0 + c_1 x + c_2 x^2 + \cdots + c_n x^n + o(x^n)$</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>DL à l'ordre $\displaystyle n$ en $\displaystyle a$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = a_0 + a_1 (x-a) + a_2 (x-a)^2 + \cdots + a_n (x-a)^n + o((x-a)^n)$</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Partie régulière</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle c_0 + c_1 x + c_2 x^2 + \cdots + c_n x^n$ (polynôme)</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>Notation petit o</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle o(x^n)$ désigne une fonction négligeable devant $\displaystyle x^n$ quand $\displaystyle x \to 0$</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Reste</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle o(x^n)$ : négligeable devant $\displaystyle x^n$ quand $\displaystyle x \to 0$</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>Partie régulière</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Le polynôme $\displaystyle P(x) = a_0 + a_1 x + \cdots + a_n x^n$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Formule de Taylor-Young</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = \sum_{k=0}^{n} \dfrac{f^{(k)}(0)}{k!} x^k + o(x^n)$</td>
 </tr>
 </tbody>
 </table>
 
 <div style="background:#e3f2fd; border-radius:6px; border-left:6px solid #2196f3; padding:15px; margin:12px 0;">
-<strong>💡 Unicité :</strong> Si un DL existe, il est unique. Les coefficients sont donnés par la formule de Taylor-Young.
+<strong>💡 Interprétation :</strong> Le DL approche localement une fonction par un polynôme. Plus l'ordre est élevé, meilleure est l'approximation.
 </div>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Développements limités usuels au voisinage de 0</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Développements limités usuels en 0</h2>
 
-<h3 style="color:#2c3e50; margin-top:20px;">1. Fonctions exponentielles</h3>
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<h3 style="color:#2c3e50;">Fonctions exponentielles et logarithmes</h3>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
 <thead>
-<tr style="background:#ef4444; color:white;">
-<th style="border:1px solid #ddd; padding:12px; width:30%;">Fonction</th>
-<th style="border:1px solid #ddd; padding:12px;">DL au voisinage de 0</th>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:75%;">Développement limité en 0</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + \dfrac{x^2}{2!} + \dfrac{x^3}{3!} + \dfrac{x^4}{4!} + \dfrac{x^5}{5!} + \cdots + \dfrac{x^n}{n!} + o(x^n)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + \dfrac{x^2}{2!} + \dfrac{x^3}{3!} + \dfrac{x^4}{4!} + \cdots = \sum_{k=0}^{n} \dfrac{x^k}{k!} + o(x^n)$</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$ (ordre 3)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + \dfrac{x^2}{2} + \dfrac{x^3}{6} + o(x^3)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$ (ordre 5)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + \dfrac{x^2}{2} + \dfrac{x^3}{6} + \dfrac{x^4}{24} + \dfrac{x^5}{120} + o(x^5)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{-x}$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - x + \dfrac{x^2}{2} - \dfrac{x^3}{6} + \dfrac{x^4}{24} - \dfrac{x^5}{120} + o(x^5)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^{ax}$ ($\displaystyle a \in \mathbb{R}$)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + ax + \dfrac{a^2x^2}{2} + \dfrac{a^3x^3}{6} + \dfrac{a^4x^4}{24} + o(x^4)$</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h3 style="color:#2c3e50; margin-top:20px;">2. Fonctions logarithmes</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
-<thead>
-<tr style="background:#ef4444; color:white;">
-<th style="border:1px solid #ddd; padding:12px; width:30%;">Fonction</th>
-<th style="border:1px solid #ddd; padding:12px;">DL au voisinage de 0</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(1+x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^2}{2} + \dfrac{x^3}{3} - \dfrac{x^4}{4} + \dfrac{x^5}{5} - \dfrac{x^6}{6} + \cdots + (-1)^{n-1}\dfrac{x^n}{n} + o(x^n)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(1+x)$ (ordre 3)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^2}{2} + \dfrac{x^3}{3} + o(x^3)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^2}{2} + \dfrac{x^3}{3} - \dfrac{x^4}{4} + \cdots = \sum_{k=1}^{n} \dfrac{(-1)^{k+1} x^k}{k} + o(x^n)$</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(1+x)$ (ordre 5)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^2}{2} + \dfrac{x^3}{3} - \dfrac{x^4}{4} + \dfrac{x^5}{5} + o(x^5)$</td>
-</tr>
-<tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(1-x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -x - \dfrac{x^2}{2} - \dfrac{x^3}{3} - \dfrac{x^4}{4} - \dfrac{x^5}{5} + o(x^5)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle -x - \dfrac{x^2}{2} - \dfrac{x^3}{3} - \dfrac{x^4}{4} - \cdots = -\sum_{k=1}^{n} \dfrac{x^k}{k} + o(x^n)$</td>
 </tr>
 </tbody>
 </table>
-</div>
 
-<h3 style="color:#2c3e50; margin-top:20px;">3. Fonctions trigonométriques</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<h3 style="color:#2c3e50;">Fonctions trigonométriques</h3>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
 <thead>
-<tr style="background:#ef4444; color:white;">
-<th style="border:1px solid #ddd; padding:12px; width:30%;">Fonction</th>
-<th style="border:1px solid #ddd; padding:12px;">DL au voisinage de 0</th>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:75%;">Développement limité en 0</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3!} + \dfrac{x^5}{5!} - \dfrac{x^7}{7!} + \cdots + (-1)^n\dfrac{x^{2n+1}}{(2n+1)!} + o(x^{2n+2})$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$ (ordre 5)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{6} + \dfrac{x^5}{120} + o(x^5)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$ (ordre 7)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{6} + \dfrac{x^5}{120} - \dfrac{x^7}{5040} + o(x^7)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3!} + \dfrac{x^5}{5!} - \dfrac{x^7}{7!} + \cdots = \sum_{k=0}^{n} \dfrac{(-1)^k x^{2k+1}}{(2k+1)!} + o(x^{2n+2})$</td>
 </tr>
 <tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - \dfrac{x^2}{2!} + \dfrac{x^4}{4!} - \dfrac{x^6}{6!} + \cdots + (-1)^n\dfrac{x^{2n}}{(2n)!} + o(x^{2n+1})$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)$ (ordre 4)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - \dfrac{x^2}{2} + \dfrac{x^4}{24} + o(x^4)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)$ (ordre 6)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - \dfrac{x^2}{2} + \dfrac{x^4}{24} - \dfrac{x^6}{720} + o(x^6)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - \dfrac{x^2}{2!} + \dfrac{x^4}{4!} - \dfrac{x^6}{6!} + \cdots = \sum_{k=0}^{n} \dfrac{(-1)^k x^{2k}}{(2k)!} + o(x^{2n+1})$</td>
 </tr>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tan(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{3} + \dfrac{2x^5}{15} + \dfrac{17x^7}{315} + o(x^7)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tan(x)$ (ordre 5)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{3} + \dfrac{2x^5}{15} + o(x^5)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{3} + \dfrac{2x^5}{15} + \dfrac{17x^7}{315} + o(x^8)$</td>
 </tr>
 </tbody>
 </table>
-</div>
 
-<h3 style="color:#2c3e50; margin-top:20px;">4. Fonctions trigonométriques inverses</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<h3 style="color:#2c3e50;">Fonctions trigonométriques hyperboliques</h3>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
 <thead>
-<tr style="background:#ef4444; color:white;">
-<th style="border:1px solid #ddd; padding:12px; width:30%;">Fonction</th>
-<th style="border:1px solid #ddd; padding:12px;">DL au voisinage de 0</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arcsin(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{6} + \dfrac{3x^5}{40} + \dfrac{5x^7}{112} + o(x^7)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arcsin(x)$ (ordre 5)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{6} + \dfrac{3x^5}{40} + o(x^5)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arctan(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + \dfrac{x^5}{5} - \dfrac{x^7}{7} + \cdots + (-1)^n\dfrac{x^{2n+1}}{2n+1} + o(x^{2n+2})$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arctan(x)$ (ordre 5)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + \dfrac{x^5}{5} + o(x^5)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arctan(x)$ (ordre 7)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + \dfrac{x^5}{5} - \dfrac{x^7}{7} + o(x^7)$</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h3 style="color:#2c3e50; margin-top:20px;">5. Fonctions hyperboliques</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
-<thead>
-<tr style="background:#ef4444; color:white;">
-<th style="border:1px solid #ddd; padding:12px; width:30%;">Fonction</th>
-<th style="border:1px solid #ddd; padding:12px;">DL au voisinage de 0</th>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:75%;">Développement limité en 0</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sinh(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{3!} + \dfrac{x^5}{5!} + \dfrac{x^7}{7!} + \cdots + \dfrac{x^{2n+1}}{(2n+1)!} + o(x^{2n+2})$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{3!} + \dfrac{x^5}{5!} + \dfrac{x^7}{7!} + \cdots = \sum_{k=0}^{n} \dfrac{x^{2k+1}}{(2k+1)!} + o(x^{2n+2})$</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sinh(x)$ (ordre 5)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{6} + \dfrac{x^5}{120} + o(x^5)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cosh(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \dfrac{x^2}{2!} + \dfrac{x^4}{4!} + \dfrac{x^6}{6!} + \cdots + \dfrac{x^{2n}}{(2n)!} + o(x^{2n+1})$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cosh(x)$ (ordre 6)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \dfrac{x^2}{2} + \dfrac{x^4}{24} + \dfrac{x^6}{720} + o(x^6)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \dfrac{x^2}{2!} + \dfrac{x^4}{4!} + \dfrac{x^6}{6!} + \cdots = \sum_{k=0}^{n} \dfrac{x^{2k}}{(2k)!} + o(x^{2n+1})$</td>
 </tr>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tanh(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + \dfrac{2x^5}{15} - \dfrac{17x^7}{315} + o(x^7)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tanh(x)$ (ordre 5)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + \dfrac{2x^5}{15} + o(x^5)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + \dfrac{2x^5}{15} - \dfrac{17x^7}{315} + o(x^8)$</td>
 </tr>
 </tbody>
 </table>
-</div>
 
-<h3 style="color:#2c3e50; margin-top:20px;">6. Fonctions puissances et racines</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
+<h3 style="color:#2c3e50;">Fonctions puissances et racines</h3>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
 <thead>
-<tr style="background:#ef4444; color:white;">
-<th style="border:1px solid #ddd; padding:12px; width:30%;">Fonction</th>
-<th style="border:1px solid #ddd; padding:12px;">DL au voisinage de 0</th>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:75%;">Développement limité en 0</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle (1+x)^\alpha$ ($\displaystyle \alpha \in \mathbb{R}$)</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle (1+x)^\alpha$</td>
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \alpha x + \dfrac{\alpha(\alpha-1)}{2!}x^2 + \dfrac{\alpha(\alpha-1)(\alpha-2)}{3!}x^3 + \cdots + o(x^n)$</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle (1+x)^\alpha$ (ordre 3)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \alpha x + \dfrac{\alpha(\alpha-1)}{2}x^2 + \dfrac{\alpha(\alpha-1)(\alpha-2)}{6}x^3 + o(x^3)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1+x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - x + x^2 - x^3 + x^4 - \cdots = \sum_{k=0}^{n} (-1)^k x^k + o(x^n)$</td>
 </tr>
 <tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1-x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + x^2 + x^3 + x^4 + \cdots = \sum_{k=0}^{n} x^k + o(x^n)$</td>
+</tr>
+<tr style="background:#ffffff;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sqrt{1+x}$</td>
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \dfrac{x}{2} - \dfrac{x^2}{8} + \dfrac{x^3}{16} - \dfrac{5x^4}{128} + o(x^4)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sqrt{1+x}$ (ordre 3)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \dfrac{x}{2} - \dfrac{x^2}{8} + \dfrac{x^3}{16} + o(x^3)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1+x}$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - x + x^2 - x^3 + x^4 - x^5 + \cdots + (-1)^n x^n + o(x^n)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1-x}$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + x^2 + x^3 + x^4 + x^5 + \cdots + x^n + o(x^n)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1+x}$ (ordre 5)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - x + x^2 - x^3 + x^4 - x^5 + o(x^5)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1-x}$ (ordre 5)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + x^2 + x^3 + x^4 + x^5 + o(x^5)$</td>
 </tr>
 <tr style="background:#f8f9fa;">
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sqrt{1+x}}$</td>
 <td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - \dfrac{x}{2} + \dfrac{3x^2}{8} - \dfrac{5x^3}{16} + \dfrac{35x^4}{128} + o(x^4)$</td>
 </tr>
+</tbody>
+</table>
+
+<h3 style="color:#2c3e50;">Fonctions trigonométriques réciproques</h3>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+<thead>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px; width:75%;">Développement limité en 0</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arcsin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{6} + \dfrac{3x^5}{40} + \dfrac{15x^7}{336} + o(x^8)$</td>
+</tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{\sqrt{1+x}}$ (ordre 3)</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - \dfrac{x}{2} + \dfrac{3x^2}{8} - \dfrac{5x^3}{16} + o(x^3)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arccos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{\pi}{2} - x - \dfrac{x^3}{6} - \dfrac{3x^5}{40} - \dfrac{15x^7}{336} + o(x^8)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arctan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + \dfrac{x^5}{5} - \dfrac{x^7}{7} + \cdots = \sum_{k=0}^{n} \dfrac{(-1)^k x^{2k+1}}{2k+1} + o(x^{2n+2})$</td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Formule de Taylor-Young</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. DL usuels à connaître par cœur (ordre 3 minimum)</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<div style="background:#d4edda; border-radius:8px; border-left:6px solid #28a745; padding:15px; margin:12px 0;">
+<strong style="font-size:1.1em;">📝 Les 8 DL incontournables :</strong>
+</div>
+
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #28a745;">
 <thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Formule de Taylor-Young à l'ordre $\displaystyle n$ en $\displaystyle 0$</th>
+<tr style="background:#28a745; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:15%;">Fonction</th>
+<th style="border:1px solid #ddd; padding:12px;">DL à l'ordre 3 ou 4</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Si $\displaystyle f$ est $\displaystyle n$ fois dérivable en $\displaystyle 0$, alors :<br><br>
-$\displaystyle f(x) = f(0) + f'(0)x + \dfrac{f''(0)}{2!}x^2 + \dfrac{f'''(0)}{3!}x^3 + \cdots + \dfrac{f^{(n)}(0)}{n!}x^n + o(x^n)$<br><br>
-Plus généralement, en $\displaystyle a$ :<br><br>
-$\displaystyle f(x) = f(a) + f'(a)(x-a) + \dfrac{f''(a)}{2!}(x-a)^2 + \cdots + \dfrac{f^{(n)}(a)}{n!}(x-a)^n + o((x-a)^n)$
-</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle e^x$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + \dfrac{x^2}{2} + \dfrac{x^3}{6} + o(x^3)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \ln(1+x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^2}{2} + \dfrac{x^3}{3} + o(x^3)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \sin(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{6} + o(x^4)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \cos(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - \dfrac{x^2}{2} + \dfrac{x^4}{24} + o(x^5)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \tan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{3} + o(x^4)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \dfrac{1}{1+x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - x + x^2 - x^3 + o(x^3)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \sqrt{1+x}$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \dfrac{x}{2} - \dfrac{x^2}{8} + o(x^2)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \arctan(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + o(x^4)$</td>
 </tr>
 </tbody>
 </table>
-
-<div style="background:#e3f2fd; border-radius:6px; border-left:6px solid #2196f3; padding:15px; margin:12px 0;">
-<strong>💡 Utilité :</strong> Cette formule permet de calculer les coefficients du DL à partir des dérivées successives de la fonction.
-</div>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Opérations sur les développements limités</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Opérations sur les DL</h2>
 
-<h3 style="color:#2c3e50; margin-top:20px;">1. Somme et différence</h3>
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
 <thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Règle</th>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Opération</th>
+<th style="border:1px solid #ddd; padding:12px; width:40%;">Règle</th>
+<th style="border:1px solid #ddd; padding:12px; width:35%;">Remarque</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Si $\displaystyle f(x) = a_0 + a_1x + \cdots + a_nx^n + o(x^n)$ et $\displaystyle g(x) = b_0 + b_1x + \cdots + b_nx^n + o(x^n)$<br><br>
-Alors : $\displaystyle f(x) \pm g(x) = (a_0 \pm b_0) + (a_1 \pm b_1)x + \cdots + (a_n \pm b_n)x^n + o(x^n)$
-</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>Somme</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Additionner terme à terme les DL</td>
+<td style="border:1px solid #ddd; padding:10px;">Se placer au même ordre (le plus petit)</td>
 </tr>
-</tbody>
-</table>
-</div>
-
-<h3 style="color:#2c3e50; margin-top:20px;">2. Multiplication</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Règle</th>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Produit</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Multiplier les DL et tronquer</td>
+<td style="border:1px solid #ddd; padding:10px;">Ignorer les termes de degré $\displaystyle > n$</td>
 </tr>
-</thead>
-<tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Pour multiplier deux DL, on effectue le produit des parties régulières en ne conservant que les termes d'ordre $\displaystyle \leq n$<br><br>
-On néglige tout terme de degré $\displaystyle > n$
-</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>Quotient</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Division suivant les puissances croissantes</td>
+<td style="border:1px solid #ddd; padding:10px;">Ou utiliser $\displaystyle \dfrac{1}{1+u}$ avec $\displaystyle u \to 0$</td>
 </tr>
-</tbody>
-</table>
-
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Exemple : $\displaystyle e^x \times \sin(x)$ à l'ordre 3</th>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Composition</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Substituer $\displaystyle x$ par $\displaystyle u(x)$ dans le DL</td>
+<td style="border:1px solid #ddd; padding:10px;">Valable si $\displaystyle u(x) \to 0$ quand $\displaystyle x \to 0$</td>
 </tr>
-</thead>
-<tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-$\displaystyle e^x = 1 + x + \dfrac{x^2}{2} + \dfrac{x^3}{6} + o(x^3)$<br><br>
-$\displaystyle \sin(x) = x - \dfrac{x^3}{6} + o(x^3)$<br><br>
-$\displaystyle e^x \times \sin(x) = (1 + x + \dfrac{x^2}{2})(x - \dfrac{x^3}{6}) + o(x^3)$<br><br>
-$\displaystyle = x + x^2 + \dfrac{x^3}{2} - \dfrac{x^3}{6} + o(x^3) = x + x^2 + \dfrac{x^3}{3} + o(x^3)$
-</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>Intégration</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Intégrer terme à terme le DL</td>
+<td style="border:1px solid #ddd; padding:10px;">L'ordre augmente de 1</td>
 </tr>
-</tbody>
-</table>
-</div>
-
-<h3 style="color:#2c3e50; margin-top:20px;">3. Division (quotient)</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Règle</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Si $\displaystyle g(0) \neq 0$, on peut calculer le DL de $\displaystyle \dfrac{f(x)}{g(x)}$ en faisant la division suivant les puissances croissantes<br><br>
-<strong>Méthode pratique :</strong> Écrire $\displaystyle \dfrac{f(x)}{g(x)} = f(x) \times \dfrac{1}{g(x)}$ et utiliser le DL de $\displaystyle \dfrac{1}{g(x)}$
-</td>
-</tr>
-</tbody>
-</table>
-
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Exemple : $\displaystyle \dfrac{\sin(x)}{\cos(x)} = \tan(x)$ à l'ordre 3</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-$\displaystyle \sin(x) = x - \dfrac{x^3}{6} + o(x^3)$<br><br>
-$\displaystyle \cos(x) = 1 - \dfrac{x^2}{2} + o(x^3)$<br><br>
-$\displaystyle \dfrac{1}{\cos(x)} = \dfrac{1}{1 - \frac{x^2}{2}} = 1 + \dfrac{x^2}{2} + o(x^3)$<br><br>
-$\displaystyle \tan(x) = (x - \dfrac{x^3}{6})(1 + \dfrac{x^2}{2}) + o(x^3) = x + \dfrac{x^3}{2} - \dfrac{x^3}{6} + o(x^3) = x + \dfrac{x^3}{3} + o(x^3)$
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h3 style="color:#2c3e50; margin-top:20px;">4. Composition</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Règle</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Si $\displaystyle u(0) = 0$ et on connaît les DL de $\displaystyle f$ et $\displaystyle u$, on peut calculer le DL de $\displaystyle f(u(x))$ en substituant le DL de $\displaystyle u(x)$ dans celui de $\displaystyle f$<br><br>
-<strong>Condition :</strong> $\displaystyle u(x) = o(1)$ quand $\displaystyle x \to 0$
-</td>
-</tr>
-</tbody>
-</table>
-
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Exemple : $\displaystyle e^{\sin(x)}$ à l'ordre 4</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-$\displaystyle \sin(x) = x - \dfrac{x^3}{6} + o(x^4)$<br><br>
-$\displaystyle e^u = 1 + u + \dfrac{u^2}{2} + \dfrac{u^3}{6} + \dfrac{u^4}{24} + o(u^4)$<br><br>
-En posant $\displaystyle u = \sin(x) = x - \dfrac{x^3}{6}$ :<br><br>
-$\displaystyle e^{\sin(x)} = 1 + (x - \dfrac{x^3}{6}) + \dfrac{(x - \dfrac{x^3}{6})^2}{2} + \dfrac{x^3}{6} + o(x^4)$<br><br>
-$\displaystyle = 1 + x - \dfrac{x^3}{6} + \dfrac{x^2}{2} + \dfrac{x^3}{6} + o(x^4) = 1 + x + \dfrac{x^2}{2} + o(x^4)$
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h3 style="color:#2c3e50; margin-top:20px;">5. Intégration</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Règle</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Si $\displaystyle f(x) = a_0 + a_1x + a_2x^2 + \cdots + a_nx^n + o(x^n)$<br><br>
-Alors : $\displaystyle \int_0^x f(t)dt = a_0x + a_1\dfrac{x^2}{2} + a_2\dfrac{x^3}{3} + \cdots + a_n\dfrac{x^{n+1}}{n+1} + o(x^{n+1})$
-</td>
-</tr>
-</tbody>
-</table>
-
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Exemple : DL de $\displaystyle \int_0^x \dfrac{\sin(t)}{t}dt$ à l'ordre 5</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-$\displaystyle \dfrac{\sin(x)}{x} = 1 - \dfrac{x^2}{6} + \dfrac{x^4}{120} + o(x^5)$<br><br>
-$\displaystyle \int_0^x \dfrac{\sin(t)}{t}dt = x - \dfrac{x^3}{18} + \dfrac{x^5}{600} + o(x^6)$
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h3 style="color:#2c3e50; margin-top:20px;">6. Dérivation</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Règle</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Si $\displaystyle f(x) = a_0 + a_1x + a_2x^2 + \cdots + a_nx^n + o(x^n)$<br><br>
-Alors : $\displaystyle f'(x) = a_1 + 2a_2x + 3a_3x^2 + \cdots + na_nx^{n-1} + o(x^{n-1})$
-</td>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Dérivation</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Dériver terme à terme le DL</td>
+<td style="border:1px solid #ddd; padding:10px;">L'ordre diminue de 1</td>
 </tr>
 </tbody>
 </table>
 
 <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
-<strong>⚠️ Attention :</strong> On perd un ordre en dérivant. Le DL de $\displaystyle f'$ est d'ordre $\displaystyle n-1$ si celui de $\displaystyle f$ est d'ordre $\displaystyle n$.
+<strong>⚠️ Attention :</strong> Pour le produit et le quotient, toujours tronquer à l'ordre souhaité après le calcul. Ne pas garder les termes de degré supérieur.
 </div>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Applications des développements limités</h2>
-
-<h3 style="color:#2c3e50; margin-top:20px;">1. Calcul de limites</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Méthode</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Pour calculer $\displaystyle \lim_{x \to 0} f(x)$, on remplace $\displaystyle f(x)$ par son DL en $\displaystyle 0$<br><br>
-<strong>Forme indéterminée $\displaystyle \dfrac{0}{0}$ :</strong> Calculer les DL du numérateur et du dénominateur au même ordre, puis simplifier
-</td>
-</tr>
-</tbody>
-</table>
-
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Exemple : $\displaystyle \lim_{x \to 0} \dfrac{e^x - 1 - x}{x^2}$</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-$\displaystyle e^x - 1 - x = \dfrac{x^2}{2} + \dfrac{x^3}{6} + o(x^3)$<br><br>
-$\displaystyle \dfrac{e^x - 1 - x}{x^2} = \dfrac{\frac{x^2}{2} + \frac{x^3}{6} + o(x^3)}{x^2} = \dfrac{1}{2} + \dfrac{x}{6} + o(x)$<br><br>
-$\displaystyle \lim_{x \to 0} \dfrac{e^x - 1 - x}{x^2} = \dfrac{1}{2}$
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h3 style="color:#2c3e50; margin-top:20px;">2. Position relative d'une courbe et de sa tangente</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Méthode</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Tangente en $\displaystyle a$ : $\displaystyle y = f(a) + f'(a)(x-a)$<br><br>
-Écart : $\displaystyle f(x) - [f(a) + f'(a)(x-a)]$ correspond aux termes d'ordre $\displaystyle \geq 2$ du DL<br><br>
-Le signe du premier terme non nul donne la position de la courbe par rapport à la tangente
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h3 style="color:#2c3e50; margin-top:20px;">3. Étude locale de fonctions</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Application</th>
-<th style="border:1px solid #ddd; padding:12px;">Méthode</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Recherche d'extremum</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle f'(a) = 0$, étudier le signe de $\displaystyle f''(a)$ ou des dérivées suivantes via le DL</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Point d'inflexion</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle f''(a) = 0$, étudier $\displaystyle f'''(a)$ pour déterminer l'inflexion</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Branches paraboliques</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">DL en $\displaystyle +\infty$ : changement de variable $\displaystyle x = \dfrac{1}{t}$ puis DL en $\displaystyle 0$</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Développements limités généralisés</h2>
-
-<h3 style="color:#2c3e50; margin-top:20px;">1. DL en un point quelconque $\displaystyle a$</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Méthode</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-<strong>Changement de variable :</strong> Poser $\displaystyle h = x - a$ (donc $\displaystyle x = a + h$)<br><br>
-Calculer le DL de $\displaystyle f(a+h)$ en $\displaystyle h = 0$<br><br>
-Revenir à $\displaystyle x$ en remplaçant $\displaystyle h$ par $\displaystyle x - a$
-</td>
-</tr>
-</tbody>
-</table>
-
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Exemple : DL de $\displaystyle \ln(x)$ au voisinage de $\displaystyle x = 1$</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Poser $\displaystyle h = x - 1$ donc $\displaystyle x = 1 + h$<br><br>
-$\displaystyle \ln(x) = \ln(1+h) = h - \dfrac{h^2}{2} + \dfrac{h^3}{3} + o(h^3)$<br><br>
-$\displaystyle \ln(x) = (x-1) - \dfrac{(x-1)^2}{2} + \dfrac{(x-1)^3}{3} + o((x-1)^3)$
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h3 style="color:#2c3e50; margin-top:20px;">2. DL en $\displaystyle +\infty$</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Méthode</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-<strong>Changement de variable :</strong> Poser $\displaystyle t = \dfrac{1}{x}$ (donc quand $\displaystyle x \to +\infty$, $\displaystyle t \to 0^+$)<br><br>
-Calculer le DL de $\displaystyle f\left(\dfrac{1}{t}\right)$ en $\displaystyle t = 0$<br><br>
-Revenir à $\displaystyle x$ en remplaçant $\displaystyle t$ par $\displaystyle \dfrac{1}{x}$
-</td>
-</tr>
-</tbody>
-</table>
-
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Exemple : DL de $\displaystyle f(x) = x + \dfrac{1}{x}$ en $\displaystyle +\infty$</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-Poser $\displaystyle t = \dfrac{1}{x}$ donc $\displaystyle x = \dfrac{1}{t}$<br><br>
-$\displaystyle f\left(\dfrac{1}{t}\right) = \dfrac{1}{t} + t = \dfrac{1}{t}(1 + t^2)$<br><br>
-$\displaystyle = \dfrac{1}{t}(1 + t^2) = \dfrac{1}{t} + t$<br><br>
-$\displaystyle f(x) = x + \dfrac{1}{x}$ (asymptote oblique : $\displaystyle y = x$, écart $\displaystyle \dfrac{1}{x} \to 0$)
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Tableau récapitulatif : DL usuels à l'ordre 5 en 0</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Applications des DL</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<h3 style="color:#2c3e50;">1. Calcul de limites (formes indéterminées)</h3>
 <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
 <thead>
 <tr style="background:#3498db; color:white;">
-<th style="border:1px solid #ddd; padding:12px; width:25%;">Fonction</th>
-<th style="border:1px solid #ddd; padding:12px; width:75%;">DL à l'ordre 5</th>
+<th style="border:1px solid #ddd; padding:12px; width:25%;">Forme indéterminée</th>
+<th style="border:1px solid #ddd; padding:12px;">Méthode avec DL</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + \dfrac{x^2}{2} + \dfrac{x^3}{6} + \dfrac{x^4}{24} + \dfrac{x^5}{120} + o(x^5)$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \dfrac{0}{0}$</td>
+<td style="border:1px solid #ddd; padding:10px;">Développer numérateur et dénominateur, simplifier par la plus petite puissance</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(1+x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^2}{2} + \dfrac{x^3}{3} - \dfrac{x^4}{4} + \dfrac{x^5}{5} + o(x^5)$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \infty - \infty$</td>
+<td style="border:1px solid #ddd; padding:10px;">Mettre au même dénominateur ou factoriser, puis utiliser les DL</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{6} + \dfrac{x^5}{120} + o(x^5)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - \dfrac{x^2}{2} + \dfrac{x^4}{24} + o(x^5)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tan(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{3} + \dfrac{2x^5}{15} + o(x^5)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arcsin(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{6} + \dfrac{3x^5}{40} + o(x^5)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \arctan(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + \dfrac{x^5}{5} + o(x^5)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sinh(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x + \dfrac{x^3}{6} + \dfrac{x^5}{120} + o(x^5)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cosh(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \dfrac{x^2}{2} + \dfrac{x^4}{24} + o(x^5)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \tanh(x)$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle x - \dfrac{x^3}{3} + \dfrac{2x^5}{15} + o(x^5)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle (1+x)^\alpha$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \alpha x + \dfrac{\alpha(\alpha-1)}{2}x^2 + \dfrac{\alpha(\alpha-1)(\alpha-2)}{6}x^3 + o(x^3)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sqrt{1+x}$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + \dfrac{x}{2} - \dfrac{x^2}{8} + \dfrac{x^3}{16} + o(x^3)$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1+x}$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - x + x^2 - x^3 + x^4 - x^5 + o(x^5)$</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \dfrac{1}{1-x}$</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 + x + x^2 + x^3 + x^4 + x^5 + o(x^5)$</td>
+<td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 1^\infty$</td>
+<td style="border:1px solid #ddd; padding:10px;">Écrire $\displaystyle f^g = e^{g \ln f}$ puis développer $\displaystyle \ln f$</td>
 </tr>
 </tbody>
 </table>
+
+<div style="background:#e8f5e9; border-radius:6px; border-left:6px solid #4caf50; padding:15px; margin:12px 0;">
+<strong>✅ Exemple :</strong> $\displaystyle \lim_{x \to 0} \dfrac{\sin x - x}{x^3}$<br><br>
+DL : $\displaystyle \sin x = x - \dfrac{x^3}{6} + o(x^3)$<br>
+Donc : $\displaystyle \dfrac{\sin x - x}{x^3} = \dfrac{-\dfrac{x^3}{6} + o(x^3)}{x^3} = -\dfrac{1}{6} + o(1) \to -\dfrac{1}{6}$
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Exemples détaillés</h2>
-
-<h3 style="color:#2c3e50; margin-top:20px;">Exemple 1 : Calcul d'une limite avec DL</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<h3 style="color:#2c3e50;">2. Équivalents</h3>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #9c27b0;">
 <thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">$\displaystyle \lim_{x \to 0} \dfrac{\sin(x) - x + \frac{x^3}{6}}{x^5}$</th>
+<tr style="background:#9c27b0; color:white;">
+<th style="border:1px solid #ddd; padding:12px;">Équivalent en 0</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-<strong>Étape 1 :</strong> DL de $\displaystyle \sin(x)$ à l'ordre 5<br>
-$\displaystyle \sin(x) = x - \dfrac{x^3}{6} + \dfrac{x^5}{120} + o(x^5)$<br><br>
-<strong>Étape 2 :</strong> Calculer le numérateur<br>
-$\displaystyle \sin(x) - x + \dfrac{x^3}{6} = \dfrac{x^5}{120} + o(x^5)$<br><br>
-<strong>Étape 3 :</strong> Diviser<br>
-$\displaystyle \dfrac{\sin(x) - x + \frac{x^3}{6}}{x^5} = \dfrac{1}{120} + o(1)$<br><br>
-<strong>Résultat :</strong> $\displaystyle \lim_{x \to 0} \dfrac{\sin(x) - x + \frac{x^3}{6}}{x^5} = \dfrac{1}{120}$
-</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin x \sim x$ ; $\displaystyle \tan x \sim x$ ; $\displaystyle \arcsin x \sim x$ ; $\displaystyle \arctan x \sim x$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle 1 - \cos x \sim \dfrac{x^2}{2}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x - 1 \sim x$ ; $\displaystyle \ln(1+x) \sim x$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle (1+x)^\alpha - 1 \sim \alpha x$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sqrt{1+x} - 1 \sim \dfrac{x}{2}$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sinh x \sim x$ ; $\displaystyle \tanh x \sim x$ ; $\displaystyle \cosh x - 1 \sim \dfrac{x^2}{2}$</td>
 </tr>
 </tbody>
 </table>
-</div>
 
-<h3 style="color:#2c3e50; margin-top:20px;">Exemple 2 : Composition de DL</h3>
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+<h3 style="color:#2c3e50;">3. Étude locale de courbes</h3>
+<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
 <thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">DL de $\displaystyle \cos(\sin(x))$ à l'ordre 4</th>
+<tr style="background:#3498db; color:white;">
+<th style="border:1px solid #ddd; padding:12px; width:30%;">Application</th>
+<th style="border:1px solid #ddd; padding:12px;">Comment utiliser le DL</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-<strong>Étape 1 :</strong> DL de $\displaystyle \sin(x)$<br>
-$\displaystyle \sin(x) = x - \dfrac{x^3}{6} + o(x^4)$<br><br>
-<strong>Étape 2 :</strong> DL de $\displaystyle \cos(u)$<br>
-$\displaystyle \cos(u) = 1 - \dfrac{u^2}{2} + \dfrac{u^4}{24} + o(u^4)$<br><br>
-<strong>Étape 3 :</strong> Substituer $\displaystyle u = \sin(x)$<br>
-$\displaystyle u^2 = (x - \dfrac{x^3}{6})^2 = x^2 - \dfrac{x^4}{3} + o(x^4)$<br><br>
-$\displaystyle u^4 = x^4 + o(x^4)$<br><br>
-<strong>Étape 4 :</strong> Calculer<br>
-$\displaystyle \cos(\sin(x)) = 1 - \dfrac{x^2 - \frac{x^4}{3}}{2} + \dfrac{x^4}{24} + o(x^4)$<br><br>
-$\displaystyle = 1 - \dfrac{x^2}{2} + \dfrac{x^4}{6} + \dfrac{x^4}{24} + o(x^4) = 1 - \dfrac{x^2}{2} + \dfrac{5x^4}{24} + o(x^4)$
-</td>
+<td style="border:1px solid #ddd; padding:10px;"><strong>Tangente en $\displaystyle a$</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">La partie de degré $\displaystyle \leq 1$ : $\displaystyle y = f(a) + f'(a)(x-a)$</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Position par rapport à la tangente</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Signe du premier terme non nul après le terme de degré 1</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Point d'inflexion</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">Premier terme non nul après degré 1 est de degré impair</td>
+</tr>
+<tr style="background:#ffffff;">
+<td style="border:1px solid #ddd; padding:10px;"><strong>Branches infinies</strong></td>
+<td style="border:1px solid #ddd; padding:10px;">DL en $\displaystyle +\infty$ : poser $\displaystyle X = 1/x$ puis DL en 0</td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<h3 style="color:#2c3e50; margin-top:20px;">Exemple 3 : Asymptote oblique en $\displaystyle +\infty$</h3>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Méthode pour calculer un DL</h2>
+
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
-<thead>
-<tr style="background:#10b981; color:white;">
-<th style="border:1px solid #ddd; padding:12px;">Étude de $\displaystyle f(x) = \sqrt{x^2 + x + 1}$ en $\displaystyle +\infty$</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">
-<strong>Étape 1 :</strong> Factoriser<br>
-$\displaystyle f(x) = x\sqrt{1 + \dfrac{1}{x} + \dfrac{1}{x^2}}$<br><br>
-<strong>Étape 2 :</strong> Poser $\displaystyle t = \dfrac{1}{x}$ et utiliser $\displaystyle \sqrt{1+u} = 1 + \dfrac{u}{2} - \dfrac{u^2}{8} + o(u^2)$<br>
-$\displaystyle \sqrt{1 + t + t^2} = 1 + \dfrac{t + t^2}{2} - \dfrac{(t + t^2)^2}{8} + o(t^2)$<br><br>
-$\displaystyle = 1 + \dfrac{t}{2} + \dfrac{t^2}{2} - \dfrac{t^2}{8} + o(t^2) = 1 + \dfrac{t}{2} + \dfrac{3t^2}{8} + o(t^2)$<br><br>
-<strong>Étape 3 :</strong> Revenir à $\displaystyle x$<br>
-$\displaystyle f(x) = x(1 + \dfrac{1}{2x} + \dfrac{3}{8x^2}) = x + \dfrac{1}{2} + \dfrac{3}{8x} + o\left(\dfrac{1}{x}\right)$<br><br>
-<strong>Résultat :</strong> Asymptote oblique $\displaystyle y = x + \dfrac{1}{2}$
-</td>
-</tr>
-</tbody>
-</table>
+<div style="background:#e3f2fd; border-radius:6px; border-left:6px solid #2196f3; padding:15px; margin:12px 0;">
+<strong>📋 Étapes à suivre :</strong>
+<ol style="margin:10px 0; padding-left:25px;">
+<li>Identifier la forme de la fonction (composée, produit, quotient...)</li>
+<li>Utiliser les DL usuels comme base</li>
+<li>Effectuer les substitutions si nécessaire (ex: $\displaystyle e^{x^2}$ → remplacer $\displaystyle x$ par $\displaystyle x^2$ dans le DL de $\displaystyle e^x$)</li>
+<li>Appliquer les opérations (produit, quotient...)</li>
+<li>Tronquer à l'ordre demandé</li>
+<li>Vérifier la cohérence (parité de la fonction, valeur en 0...)</li>
+</ol>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Erreurs fréquentes à éviter</h2>
+<div style="background:#e8f5e9; border-radius:6px; border-left:6px solid #4caf50; padding:15px; margin:12px 0;">
+<strong>✅ Exemple : DL de $\displaystyle e^{\sin x}$ à l'ordre 4</strong><br><br>
+1) $\displaystyle \sin x = x - \dfrac{x^3}{6} + o(x^4)$<br><br>
+2) On pose $\displaystyle u = x - \dfrac{x^3}{6}$ et on utilise $\displaystyle e^u = 1 + u + \dfrac{u^2}{2} + \dfrac{u^3}{6} + o(u^3)$<br><br>
+3) $\displaystyle e^{\sin x} = 1 + \left(x - \dfrac{x^3}{6}\right) + \dfrac{1}{2}\left(x - \dfrac{x^3}{6}\right)^2 + \dfrac{1}{6}\left(x - \dfrac{x^3}{6}\right)^3 + o(x^4)$<br><br>
+4) $\displaystyle e^{\sin x} = 1 + x + \dfrac{x^2}{2} - \dfrac{x^3}{6} + \dfrac{x^3}{6} - \dfrac{x^4}{8} + o(x^4)$<br><br>
+5) $\displaystyle e^{\sin x} = 1 + x + \dfrac{x^2}{2} - \dfrac{x^4}{8} + o(x^4)$
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Erreurs fréquentes à éviter</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
 <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #ef4444;">
 <thead>
 <tr style="background:#ef4444; color:white;">
-<th style="border:1px solid #ddd; padding:12px; width:50%;">❌ Erreur fréquente</th>
-<th style="border:1px solid #ddd; padding:12px; width:50%;">✓ Correction</th>
+<th style="border:1px solid #ddd; padding:12px; width:50%;">❌ Erreur</th>
+<th style="border:1px solid #ddd; padding:12px; width:50%;">✅ Correction</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">Négliger des termes trop tôt dans les calculs</td>
-<td style="border:1px solid #ddd; padding:10px;">Toujours pousser le DL à l'ordre demandé, simplifier à la fin</td>
+<td style="border:1px solid #ddd; padding:10px;">Oublier le reste $\displaystyle o(x^n)$</td>
+<td style="border:1px solid #ddd; padding:10px;">Toujours écrire $\displaystyle + o(x^n)$ à la fin</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">Composer des DL quand $\displaystyle u(0) \neq 0$</td>
-<td style="border:1px solid #ddd; padding:10px;">Vérifier que $\displaystyle u(0) = 0$ avant de composer, sinon faire un changement de variable</td>
+<td style="border:1px solid #ddd; padding:10px;">Garder des termes de degré $\displaystyle > n$</td>
+<td style="border:1px solid #ddd; padding:10px;">Tronquer systématiquement à l'ordre demandé</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">Oublier le $\displaystyle o(x^n)$ dans les calculs</td>
-<td style="border:1px solid #ddd; padding:10px;">Toujours conserver le reste $\displaystyle o(x^n)$ jusqu'à la fin</td>
+<td style="border:1px solid #ddd; padding:10px;">Confondre $\displaystyle \ln(1+x)$ et $\displaystyle \ln(x)$</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(x)$ n'a pas de DL en 0 (non défini)</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">Mélanger les ordres dans un produit ou quotient</td>
-<td style="border:1px solid #ddd; padding:10px;">Calculer chaque DL au même ordre ou à un ordre supérieur</td>
+<td style="border:1px solid #ddd; padding:10px;">Oublier les signes alternés</td>
+<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \ln(1+x)$ : signes $\displaystyle +, -, +, -...$<br>$\displaystyle e^x$ : tous les signes sont $\displaystyle +$</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">Confondre $\displaystyle (1+x)^\alpha$ et $\displaystyle 1 + \alpha x$</td>
-<td style="border:1px solid #ddd; padding:10px;">Utiliser la formule complète du binôme généralisé</td>
+<td style="border:1px solid #ddd; padding:10px;">Additionner des DL d'ordres différents</td>
+<td style="border:1px solid #ddd; padding:10px;">Prendre l'ordre minimum des deux DL</td>
 </tr>
 <tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;">Intégrer ou dériver un $\displaystyle o(x^n)$ incorrectement</td>
-<td style="border:1px solid #ddd; padding:10px;">Intégration : $\displaystyle o(x^n) \to o(x^{n+1})$ ; Dérivation : $\displaystyle o(x^n) \to o(x^{n-1})$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;">Oublier les termes pairs/impairs dans sin/cos</td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sin$ : termes impairs ; $\displaystyle \cos$ : termes pairs</td>
+<td style="border:1px solid #ddd; padding:10px;">Composer sans vérifier que $\displaystyle u(x) \to 0$</td>
+<td style="border:1px solid #ddd; padding:10px;">La composition $\displaystyle f(u(x))$ nécessite $\displaystyle u(x) \to 0$</td>
 </tr>
 </tbody>
 </table>
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Tableau des DL selon les niveaux d'étude</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Récapitulatif : formules à retenir</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-<thead>
-<tr style="background:#3498db; color:white;">
-<th style="border:1px solid #ddd; padding:12px; width:20%;">Niveau</th>
-<th style="border:1px solid #ddd; padding:12px; width:80%;">DL à connaître absolument</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Terminale</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Notion non au programme (limites usuelles suffisent)</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Licence 1-2</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">$\displaystyle e^x$, $\displaystyle \ln(1+x)$, $\displaystyle \sin(x)$, $\displaystyle \cos(x)$, $\displaystyle (1+x)^\alpha$, $\displaystyle \dfrac{1}{1+x}$, $\displaystyle \dfrac{1}{1-x}$</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Prépa MPSI/PCSI</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Tous les DL usuels (ordre 3 minimum) + opérations (somme, produit, composition, quotient)</td>
-</tr>
-<tr style="background:#ffffff;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Prépa MP/PC/PSI</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Tous les DL usuels (ordre 5-7) + toutes opérations + DL en $\displaystyle a$ et en $\displaystyle +\infty$ + Taylor-Young</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:1px solid #ddd; padding:10px;"><strong>Licence 3 / Master</strong></td>
-<td style="border:1px solid #ddd; padding:10px;">Tous les DL + séries entières + Taylor avec reste intégral + formules de Taylor-Lagrange</td>
-</tr>
-</tbody>
-</table>
+<div style="background:#fff3cd; border-radius:8px; border:2px solid #ffc107; padding:20px; margin:12px 0;">
+<h3 style="color:#856404; margin-top:0;">🎯 Formule générale de Taylor-Young</h3>
+<p style="font-size:1.2em; text-align:center; margin:15px 0;">
+$\displaystyle f(x) = \sum_{k=0}^{n} \dfrac{f^{(k)}(a)}{k!} (x-a)^k + o((x-a)^n)$
+</p>
+</div>
+
+<div style="display:flex; flex-wrap:wrap; gap:15px; margin-top:20px;">
+<div style="flex:1; min-width:280px; background:#e8f5e9; border-radius:8px; padding:15px;">
+<h4 style="color:#2e7d32; margin-top:0;">Exponentielles</h4>
+$\displaystyle e^x = \sum_{k=0}^{n} \dfrac{x^k}{k!} + o(x^n)$
+</div>
+<div style="flex:1; min-width:280px; background:#e3f2fd; border-radius:8px; padding:15px;">
+<h4 style="color:#1565c0; margin-top:0;">Logarithmes</h4>
+$\displaystyle \ln(1+x) = \sum_{k=1}^{n} \dfrac{(-1)^{k+1} x^k}{k} + o(x^n)$
+</div>
+<div style="flex:1; min-width:280px; background:#fce4ec; border-radius:8px; padding:15px;">
+<h4 style="color:#c2185b; margin-top:0;">Géométrique</h4>
+$\displaystyle \dfrac{1}{1-x} = \sum_{k=0}^{n} x^k + o(x^n)$
+</div>
+<div style="flex:1; min-width:280px; background:#fff3e0; border-radius:8px; padding:15px;">
+<h4 style="color:#e65100; margin-top:0;">Binomiale généralisée</h4>
+$\displaystyle (1+x)^\alpha = \sum_{k=0}^{n} \binom{\alpha}{k} x^k + o(x^n)$
+</div>
+</div>
 </div>
 
 </div>
+
 ===

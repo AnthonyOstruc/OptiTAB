@@ -33,6 +33,10 @@
         <router-link :to="link.href" class="footer-legal-link">{{ link.label }}</router-link>
         <span v-if="idx < legalLinks.length - 1" class="footer-legal-sep">|</span>
       </template>
+      <span class="footer-legal-sep">|</span>
+      <button type="button" class="footer-legal-link footer-cookie-button" @click="openCookiePreferences">
+        Gérer mes cookies
+      </button>
     </div>
   </footer>
 </template>
@@ -49,6 +53,11 @@ const navLinks = footerLinks.filter(link =>
 const legalLinks = footerLinks.filter(link => 
   ['/legal', '/confidentialite', '/cookies', '/cgu', '/cgv'].includes(link.href)
 );
+
+const openCookiePreferences = () => {
+  if (typeof window === 'undefined') return
+  window.dispatchEvent(new CustomEvent('open-cookie-preferences'))
+}
 </script>
 
 <style scoped lang="scss">
@@ -156,6 +165,13 @@ const legalLinks = footerLinks.filter(link =>
   transition: color 0.2s;
   font-size: 0.85rem;
   white-space: nowrap;
+}
+.footer-cookie-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
 }
 .footer-legal-link:hover {
   color: #fff;

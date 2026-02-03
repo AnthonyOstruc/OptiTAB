@@ -43,6 +43,8 @@
 
     <!-- Toast Notifications -->
     <Toast />
+
+    <CookieConsent />
     
   </div>
 </template>
@@ -67,6 +69,7 @@ import { useCheckoutIntentStore } from '@/stores/checkoutIntent'
 import { useToast } from '@/composables/useToast'
 import { useSidebarStore } from '@/stores/sidebar'
 import { useViewportZoom } from '@/composables/useViewportZoom'
+import CookieConsent from '@/components/common/CookieConsent.vue'
 
 // Gestion du zoom viewport sur mobile (désactive le zoom sur les pages protégées)
 useViewportZoom()

@@ -140,6 +140,44 @@ else:
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,optitab-backend.onrender.com,*.onrender.com,optitab.net,www.optitab.net").split(",")
 
 # ========================================
+# SECURITE (HTTPS / COOKIES / HSTS)
+# ========================================
+
+# Valeurs par defaut: activer la securite en prod, la desactiver en local
+SECURE_SSL_REDIRECT = os.getenv(
+    "SECURE_SSL_REDIRECT",
+    "True" if not DEBUG else "False",
+) == "True"
+SESSION_COOKIE_SECURE = os.getenv(
+    "SESSION_COOKIE_SECURE",
+    "True" if not DEBUG else "False",
+) == "True"
+CSRF_COOKIE_SECURE = os.getenv(
+    "CSRF_COOKIE_SECURE",
+    "True" if not DEBUG else "False",
+) == "True"
+
+# HSTS: 1 an en prod par defaut, 0 en local
+SECURE_HSTS_SECONDS = int(
+    os.getenv("SECURE_HSTS_SECONDS", "31536000" if not DEBUG else "0")
+)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv(
+    "SECURE_HSTS_INCLUDE_SUBDOMAINS",
+    "True" if not DEBUG else "False",
+) == "True"
+SECURE_HSTS_PRELOAD = os.getenv(
+    "SECURE_HSTS_PRELOAD",
+    "True" if not DEBUG else "False",
+) == "True"
+
+if not DEBUG:
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+    # Honorer les en-tetes proxy pour detecter HTTPS
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# ========================================
 # BASE DE DONNÉES
 # ========================================
 
@@ -526,16 +564,7 @@ if not DEBUG:
         "http://127.0.0.1:3000",
     ]
 
-    # Configuration HTTPS et sécurité (activées par défaut en production)
-    SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "True") == "True"
-    SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "True") == "True"
-    CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", "True") == "True"
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = 'DENY'
-    # Honorer les en-têtes proxy de Render pour détecter HTTPS
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
+    # Configuration HTTPS et securite definies plus haut (section SECURITE)
     # WhiteNoise compression/manifest déjà configurés via STORAGES
     # Les chemins de base restent identiques
     STATIC_URL = '/static/'

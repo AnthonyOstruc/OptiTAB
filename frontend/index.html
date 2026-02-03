@@ -8,6 +8,60 @@
     <meta name="color-scheme" content="light" />
     <meta name="supported-color-schemes" content="light" />
     <title>OptiTAB - Plateforme de maths &amp; cours particuliers en ligne</title>
+    <script>
+      (function() {
+        window.dataLayer = window.dataLayer || [];
+        var dataLayer = window.dataLayer;
+        window.gtag = window.gtag || function(){dataLayer.push(arguments);};
+        var gtag = window.gtag;
+
+        var storageKey = 'optitab_cookie_consent_v1';
+        var now = Date.now();
+        var stored = null;
+
+        function safeParse(value) {
+          if (!value) return null;
+          try { return JSON.parse(value); } catch (e) { return null; }
+        }
+
+        function getCookie(name) {
+          var escaped = name.replace(/([.$?*|{}()\\[\\]\\\\/+^])/g, '\\\\$1');
+          var match = document.cookie.match(new RegExp('(?:^|; )' + escaped + '=([^;]*)'));
+          return match ? decodeURIComponent(match[1]) : null;
+        }
+
+        function clearStored() {
+          try { localStorage.removeItem(storageKey); } catch (e) {}
+          var secure = window.location && window.location.protocol === 'https:' ? '; Secure' : '';
+          document.cookie = storageKey + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax' + secure;
+        }
+
+        try {
+          stored = safeParse(localStorage.getItem(storageKey));
+        } catch (e) {
+          stored = null;
+        }
+
+        if (!stored) {
+          stored = safeParse(getCookie(storageKey));
+        }
+
+        var analytics = 'denied';
+
+        if (stored && stored.expiresAt && stored.expiresAt > now) {
+          analytics = stored.analytics === 'granted' ? 'granted' : 'denied';
+        } else if (stored && stored.expiresAt && stored.expiresAt <= now) {
+          clearStored();
+        }
+
+        gtag('consent', 'default', {
+          analytics_storage: analytics,
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied'
+        });
+      })();
+    </script>
     <!-- Google Tag Manager -->
     <script>
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

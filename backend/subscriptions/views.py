@@ -1942,6 +1942,7 @@ def handle_checkout_session_completed(session):
         metadata = session.get('metadata', {})
         is_gift = metadata.get('is_gift') == 'true'
         payer_user_id = metadata.get('payer_user_id')
+        payer = None
         
         if is_gift and payer_user_id:
             try:
@@ -1958,6 +1959,25 @@ def handle_checkout_session_completed(session):
                 logger.warning(f"Payeur {payer_user_id} introuvable pour envoi email cadeau")
             except Exception as email_exc:
                 logger.error(f"Erreur envoi email cadeau abonnement: {email_exc}")
+        
+        # Envoyer un email de confirmation à l'abonné (sauf si c'est un cadeau, l'email cadeau suffit)
+        if not is_gift:
+            try:
+                EmailService.send_subscription_confirmation(user, plan, niveau_obj)
+            except Exception as email_exc:
+                logger.error(f"Erreur envoi email confirmation abonnement: {email_exc}")
+        
+        # Notifier l'admin (contact@optitab.net) du nouvel abonnement
+        try:
+            EmailService.send_new_subscription_notification_to_admin(
+                user=user,
+                plan=plan,
+                niveau=niveau_obj,
+                is_gift=is_gift,
+                payer=payer
+            )
+        except Exception as email_exc:
+            logger.error(f"Erreur envoi notification admin nouvel abonnement: {email_exc}")
         
     except Exception as e:
         logger.error(f"Erreur dans handle_checkout_session_completed: {e}")
@@ -2040,6 +2060,7 @@ def handle_checkout_session_payment_completed(session):
         # Envoyer un email de notification à l'élève si c'est un achat parent → enfant
         is_gift = metadata.get('is_gift') == 'true'
         payer_user_id = metadata.get('payer_user_id')
+        payer = None
         
         if is_gift and payer_user_id:
             try:
@@ -2056,6 +2077,26 @@ def handle_checkout_session_payment_completed(session):
                 logger.warning(f"Payeur {payer_user_id} introuvable pour envoi email cadeau")
             except Exception as email_exc:
                 logger.error(f"Erreur envoi email cadeau pass: {email_exc}")
+        
+        # Envoyer un email de confirmation à l'abonné (sauf si c'est un cadeau)
+        if not is_gift:
+            try:
+                EmailService.send_subscription_confirmation(user, plan, niveau_obj)
+            except Exception as email_exc:
+                logger.error(f"Erreur envoi email confirmation pass: {email_exc}")
+        
+        # Notifier l'admin (contact@optitab.net) du nouvel achat
+        try:
+            EmailService.send_new_subscription_notification_to_admin(
+                user=user,
+                plan=plan,
+                niveau=niveau_obj,
+                is_gift=is_gift,
+                payer=payer
+            )
+        except Exception as email_exc:
+            logger.error(f"Erreur envoi notification admin nouveau pass: {email_exc}")
+            
     except Exception as e:
         logger.error(f"Erreur dans handle_checkout_session_payment_completed: {e}")
 

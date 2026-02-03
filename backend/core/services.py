@@ -880,6 +880,238 @@ class EmailService:
           </div>
         """
 
+    @staticmethod
+    def send_subscription_confirmation(user, plan, niveau=None):
+        """Envoie un email de confirmation d'abonnement au nouvel abonné."""
+        try:
+            first_name = (user.first_name or '').strip() or 'OptiTABien'
+            plan_name = getattr(plan, 'name', None) or 'OptiTAB Premium'
+            billing_period = getattr(plan, 'billing_period', '')
+            price = getattr(plan, 'price', None)
+            
+            # Formater la période de facturation
+            period_labels = {
+                'daily': 'par jour',
+                'weekly': 'par semaine',
+                'monthly': 'par mois',
+                'yearly': 'par an',
+            }
+            period_label = period_labels.get(billing_period, '')
+            price_str = f"{price:.2f}€ {period_label}" if price else ''
+            
+            niveau_name = ''
+            if niveau:
+                niveau_name = getattr(niveau, 'nom', '') or ''
+                if hasattr(niveau, 'pays') and niveau.pays:
+                    pays_name = getattr(niveau.pays, 'nom', '')
+                    if pays_name:
+                        niveau_name = f"{niveau_name} ({pays_name})"
+            
+            subject = '✅ Bienvenue sur OptiTAB Premium !'
+            
+            text_body = (
+                f"Bonjour {first_name},\n\n"
+                f"Merci pour votre abonnement {plan_name} sur OptiTAB !\n\n"
+            )
+            if price_str:
+                text_body += f"Montant : {price_str}\n"
+            if niveau_name:
+                text_body += f"Niveau : {niveau_name}\n"
+            text_body += (
+                "\nVotre accès premium est maintenant activé. "
+                "Connectez-vous à votre compte pour profiter de tous les cours, exercices et fonctionnalités.\n\n"
+                "À très vite sur OptiTAB !\n"
+                "L'équipe OptiTAB"
+            )
+            
+            logo_url = EmailService._resolve_logo_url()
+            frontend_url = getattr(settings, 'FRONTEND_URL', '') or 'https://www.optitab.net'
+            
+            html_body = f"""
+                <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                    <tr>
+                      <td style="padding:24px 24px 0 24px;">
+                        {f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block;margin-bottom:16px;"/>' if logo_url else ''}
+                        <div style="text-align:center;margin-bottom:20px;">
+                          <span style="font-size:48px;">🎉</span>
+                        </div>
+                        <h1 style="margin:0 0 12px 0;font-size:22px;color:#111827;text-align:center;">Bienvenue sur OptiTAB Premium !</h1>
+                        <p style="margin:0 0 16px 0;color:#4b5563;font-size:15px;line-height:1.6;text-align:center;">
+                          Merci pour votre confiance, {first_name} !
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:0 24px 24px 24px;">
+                        <div style="background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border-radius:12px;padding:20px;margin-bottom:20px;">
+                          <p style="margin:0;color:#166534;font-size:15px;line-height:1.6;">
+                            <strong>Votre abonnement {plan_name} est activé</strong><br/>
+                            Profitez de tous les cours, exercices corrigés et fonctionnalités avancées.
+                          </p>
+                          {f'<p style="margin:12px 0 0 0;color:#15803d;font-size:14px;"><strong>Montant :</strong> {price_str}</p>' if price_str else ''}
+                          {f'<p style="margin:8px 0 0 0;color:#15803d;font-size:14px;"><strong>Niveau :</strong> {niveau_name}</p>' if niveau_name else ''}
+                        </div>
+                        <div style="text-align:center;">
+                          <a href="{frontend_url}/dashboard" style="display:inline-block;background:#22c55e;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:10px;font-size:15px;">
+                            Accéder à mon espace
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:16px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;">
+                        <p style="margin:0;color:#6b7280;font-size:13px;line-height:1.6;text-align:center;">
+                          Une question ? Contactez-nous à <a href="mailto:contact@optitab.net" style="color:#4f46e5;text-decoration:none;">contact@optitab.net</a>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+            """
+            
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[user.email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+            
+            logger.info(f"Email de confirmation d'abonnement envoyé à {user.email}")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur envoi email de confirmation d'abonnement à {user.email}: {e}")
+            return False
+
+    @staticmethod
+    def send_new_subscription_notification_to_admin(user, plan, niveau=None, is_gift=False, payer=None):
+        """Envoie une notification à contact@optitab.net lorsqu'un nouvel abonnement est souscrit."""
+        try:
+            admin_email = 'contact@optitab.net'
+            user_email = user.email or 'Email inconnu'
+            user_name = f"{user.first_name or ''} {user.last_name or ''}".strip() or 'Utilisateur'
+            plan_name = getattr(plan, 'name', None) or 'Plan inconnu'
+            billing_period = getattr(plan, 'billing_period', '')
+            price = getattr(plan, 'price', None)
+            plan_mode = getattr(plan, 'plan_mode', 'subscription')
+            
+            # Formater la période de facturation
+            period_labels = {
+                'daily': 'Journalier',
+                'weekly': 'Hebdomadaire',
+                'monthly': 'Mensuel',
+                'yearly': 'Annuel',
+            }
+            period_label = period_labels.get(billing_period, billing_period)
+            price_str = f"{price:.2f}€" if price else 'N/A'
+            
+            niveau_name = ''
+            if niveau:
+                niveau_name = getattr(niveau, 'nom', '') or ''
+                if hasattr(niveau, 'pays') and niveau.pays:
+                    pays_name = getattr(niveau.pays, 'nom', '')
+                    if pays_name:
+                        niveau_name = f"{niveau_name} ({pays_name})"
+            
+            # Type d'abonnement
+            type_label = 'Pass unique' if plan_mode == 'one_time' else 'Abonnement récurrent'
+            
+            # Info cadeau
+            gift_info = ''
+            if is_gift and payer:
+                payer_name = f"{payer.first_name or ''} {payer.last_name or ''}".strip() or 'Parent'
+                payer_email = payer.email or 'Email inconnu'
+                gift_info = f"\n🎁 CADEAU offert par : {payer_name} ({payer_email})"
+            
+            subject = f"🆕 Nouvel abonnement : {user_name} - {plan_name}"
+            
+            text_body = (
+                f"Nouvelle souscription sur OptiTAB !\n\n"
+                f"👤 Utilisateur : {user_name}\n"
+                f"📧 Email : {user_email}\n"
+                f"📦 Plan : {plan_name}\n"
+                f"💰 Prix : {price_str}\n"
+                f"📅 Période : {period_label}\n"
+                f"🔄 Type : {type_label}\n"
+            )
+            if niveau_name:
+                text_body += f"📚 Niveau : {niveau_name}\n"
+            if gift_info:
+                text_body += gift_info
+            
+            html_body = f"""
+                <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                    <tr>
+                      <td style="padding:24px;background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);">
+                        <h1 style="margin:0;font-size:20px;color:#ffffff;text-align:center;">🆕 Nouvelle Souscription</h1>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:24px;">
+                        <table width="100%" cellspacing="0" cellpadding="8" style="font-size:14px;color:#374151;">
+                          <tr>
+                            <td style="width:40%;font-weight:600;color:#6b7280;">👤 Utilisateur</td>
+                            <td>{user_name}</td>
+                          </tr>
+                          <tr style="background:#f9fafb;">
+                            <td style="font-weight:600;color:#6b7280;">📧 Email</td>
+                            <td><a href="mailto:{user_email}" style="color:#4f46e5;">{user_email}</a></td>
+                          </tr>
+                          <tr>
+                            <td style="font-weight:600;color:#6b7280;">📦 Plan</td>
+                            <td><strong>{plan_name}</strong></td>
+                          </tr>
+                          <tr style="background:#f9fafb;">
+                            <td style="font-weight:600;color:#6b7280;">💰 Prix</td>
+                            <td style="color:#22c55e;font-weight:600;">{price_str}</td>
+                          </tr>
+                          <tr>
+                            <td style="font-weight:600;color:#6b7280;">📅 Période</td>
+                            <td>{period_label}</td>
+                          </tr>
+                          <tr style="background:#f9fafb;">
+                            <td style="font-weight:600;color:#6b7280;">🔄 Type</td>
+                            <td>{type_label}</td>
+                          </tr>
+                          {f'<tr><td style="font-weight:600;color:#6b7280;">📚 Niveau</td><td>{niveau_name}</td></tr>' if niveau_name else ''}
+                        </table>
+                        {f'''<div style="margin-top:16px;padding:12px;background:#fef3c7;border-radius:8px;border-left:4px solid #f59e0b;">
+                          <p style="margin:0;color:#92400e;font-size:14px;">
+                            <strong>🎁 Cadeau</strong><br/>
+                            Offert par : {payer_name} ({payer_email})
+                          </p>
+                        </div>''' if is_gift and payer else ''}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:16px 24px;background:#f3f4f6;text-align:center;">
+                        <p style="margin:0;color:#6b7280;font-size:12px;">
+                          Notification automatique OptiTAB
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+            """
+            
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[admin_email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+            
+            logger.info(f"Notification de nouvel abonnement envoyée à {admin_email}")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur envoi notification admin pour nouvel abonnement: {e}")
+            return False
+
 
 class ValidationService:
     """Service de validation réutilisable"""

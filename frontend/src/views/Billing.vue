@@ -514,7 +514,7 @@ const isCurrentPrice = (priceId) => {
 const isCurrentPlan = (card) => isCurrentPrice(card?.priceId)
 
 const buttonLabel = (card) => {
-  if (levelAlreadyUnlocked.value) return 'Niveau débloqué'
+  if (levelAlreadyUnlocked.value) return 'Déjà souscrit'
   if (isCurrentPlan(card)) return 'Déjà abonné'
   if (!levelReady.value) return 'Choisir un niveau'
   return submitting.value ? 'Redirection…' : card.cta

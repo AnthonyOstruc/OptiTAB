@@ -4,6 +4,8 @@ try:
 except ImportError:
     from stripe import _error as stripe_error  # type: ignore[attr-defined]
 import json
+import os
+import threading
 from functools import lru_cache
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -19,7 +21,7 @@ from datetime import datetime, timedelta, timezone as dt_timezone
 
 from .models import SubscriptionPlan, UserSubscription, PaymentHistory, AccessPass
 from pays.models import Niveau
-from django.db import DatabaseError, models
+from django.db import DatabaseError, close_old_connections, models, transaction
 from stripe_config import STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUCCESS_URL, CANCEL_URL, FREE_TRIAL_DAYS
 from core.services import EmailService
 
@@ -27,6 +29,8 @@ stripe.api_key = STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
 
 User = get_user_model()
+
+SUBSCRIPTION_EMAIL_DELAY_SECONDS = max(0, int(os.getenv('SUBSCRIPTION_EMAIL_DELAY_SECONDS', '20')))
 
 
 def _from_timestamp(value):
@@ -498,6 +502,324 @@ def _hydrate_payment_history_invoice(payment_history):
         logger.warning(f"Impossible de récupérer la facture Stripe {invoice_id}: {exc}")
 
     return payment_history.invoice_pdf_url, payment_history.hosted_invoice_url
+
+
+_scheduled_subscription_email_jobs = set()
+_scheduled_subscription_email_jobs_lock = threading.Lock()
+
+
+def _send_subscription_emails_job(payment_history_id, stripe_subscription_id, metadata=None):
+    """Envoie (une seule fois) les emails liés à une souscription payée.
+
+    Important : ce job est déclenché après un délai pour laisser Stripe générer le PDF de facture.
+    Il verrouille la ligne PaymentHistory pour éviter les doublons en cas de webhooks en double / concurrence.
+    """
+    close_old_connections()
+    safe_metadata = metadata if isinstance(metadata, dict) else {}
+
+    try:
+        with transaction.atomic():
+            payment_history = (
+                PaymentHistory.objects
+                .select_for_update()
+                .select_related('user')
+                .get(pk=payment_history_id)
+            )
+            if payment_history.email_sent:
+                return
+
+            user_subscription = (
+                UserSubscription.objects
+                .select_related('user', 'plan', 'niveau_pays', 'niveau_pays__pays')
+                .filter(stripe_subscription_id=stripe_subscription_id)
+                .first()
+            )
+            if not user_subscription:
+                logger.warning(
+                    "Email job: abonnement local introuvable (stripe_subscription_id=%s, payment_history_id=%s)",
+                    stripe_subscription_id,
+                    payment_history_id,
+                )
+                return
+
+            pdf_url, hosted_url = _hydrate_payment_history_invoice(payment_history)
+            invoice_link = (pdf_url or hosted_url or '').strip() or None
+
+            is_gift = str(safe_metadata.get('is_gift') or '').lower() == 'true'
+            payer_user_id = safe_metadata.get('payer_user_id')
+            payer = None
+            if is_gift and payer_user_id:
+                try:
+                    payer = User.objects.get(id=payer_user_id)
+                except User.DoesNotExist:
+                    payer = None
+
+            if is_gift and payer:
+                EmailService.send_gift_subscription_notification(
+                    recipient=user_subscription.user,
+                    gifter=payer,
+                    plan=user_subscription.plan,
+                    niveau=user_subscription.niveau_pays,
+                )
+                EmailService.send_gift_purchase_confirmation(
+                    payer=payer,
+                    recipient=user_subscription.user,
+                    plan=user_subscription.plan,
+                    niveau=user_subscription.niveau_pays,
+                    is_pass=False,
+                    invoice_link=invoice_link,
+                )
+            elif not is_gift:
+                EmailService.send_subscription_confirmation(
+                    user_subscription.user,
+                    user_subscription.plan,
+                    user_subscription.niveau_pays,
+                    invoice_link=invoice_link,
+                )
+
+            EmailService.send_new_subscription_notification_to_admin(
+                user=user_subscription.user,
+                plan=user_subscription.plan,
+                niveau=user_subscription.niveau_pays,
+                is_gift=is_gift,
+                payer=payer,
+            )
+
+            payment_history.email_sent = True
+            payment_history.save(update_fields=['email_sent'])
+    except PaymentHistory.DoesNotExist:
+        logger.warning("Email job: PaymentHistory %s introuvable", payment_history_id)
+    except Exception as exc:
+        logger.error("Email job: erreur lors de l'envoi (payment_history_id=%s): %s", payment_history_id, exc)
+
+
+def _schedule_subscription_emails(payment_history_id, stripe_subscription_id, metadata=None):
+    """Programme l'envoi des emails d'abonnement avec un délai (anti-doublon)."""
+    try:
+        delay_seconds = SUBSCRIPTION_EMAIL_DELAY_SECONDS
+    except Exception:
+        delay_seconds = 20
+
+    if delay_seconds < 0:
+        delay_seconds = 0
+
+    with _scheduled_subscription_email_jobs_lock:
+        if payment_history_id in _scheduled_subscription_email_jobs:
+            return
+        _scheduled_subscription_email_jobs.add(payment_history_id)
+
+    def _run_and_cleanup():
+        try:
+            _send_subscription_emails_job(payment_history_id, stripe_subscription_id, metadata=metadata)
+        finally:
+            with _scheduled_subscription_email_jobs_lock:
+                _scheduled_subscription_email_jobs.discard(payment_history_id)
+
+    timer = threading.Timer(delay_seconds, _run_and_cleanup)
+    timer.daemon = True
+    timer.start()
+    logger.info(
+        "Emails d'abonnement programmés dans %ss (payment_history_id=%s, stripe_subscription_id=%s)",
+        delay_seconds,
+        payment_history_id,
+        stripe_subscription_id,
+    )
+
+
+_scheduled_invoice_email_jobs = set()
+_scheduled_invoice_email_jobs_lock = threading.Lock()
+
+
+def _send_invoice_email_job(payment_history_id, stripe_subscription_id, metadata=None):
+    """Envoie (une seule fois) l'email de facture pour une échéance d'abonnement payée.
+
+    Utilisé pour les renouvellements (subscription_cycle, proration, etc.), pas pour la première activation.
+    """
+    close_old_connections()
+    safe_metadata = metadata if isinstance(metadata, dict) else {}
+
+    try:
+        with transaction.atomic():
+            payment_history = (
+                PaymentHistory.objects
+                .select_for_update()
+                .select_related('user')
+                .get(pk=payment_history_id)
+            )
+            if payment_history.email_sent:
+                return
+
+            pdf_url, hosted_url = _hydrate_payment_history_invoice(payment_history)
+            invoice_link = (pdf_url or hosted_url or '').strip()
+            if not invoice_link:
+                logger.warning(
+                    "Invoice email job: lien de facture indisponible (payment_history_id=%s, stripe_subscription_id=%s)",
+                    payment_history_id,
+                    stripe_subscription_id,
+                )
+                return
+
+            is_gift = str(safe_metadata.get('is_gift') or '').lower() == 'true'
+            payer_user_id = safe_metadata.get('payer_user_id')
+            recipient = payment_history.user
+            if is_gift and payer_user_id:
+                try:
+                    payer = User.objects.get(id=payer_user_id)
+                    recipient = payer
+                except User.DoesNotExist:
+                    recipient = payment_history.user
+
+            EmailService.send_invoice_receipt(recipient, payment_history, invoice_link)
+
+            payment_history.email_sent = True
+            payment_history.save(update_fields=['email_sent'])
+    except PaymentHistory.DoesNotExist:
+        logger.warning("Invoice email job: PaymentHistory %s introuvable", payment_history_id)
+    except Exception as exc:
+        logger.error(
+            "Invoice email job: erreur lors de l'envoi (payment_history_id=%s): %s",
+            payment_history_id,
+            exc,
+        )
+
+
+def _schedule_invoice_email(payment_history_id, stripe_subscription_id, metadata=None):
+    """Programme l'envoi de l'email de facture avec un délai (anti-doublon)."""
+    try:
+        delay_seconds = SUBSCRIPTION_EMAIL_DELAY_SECONDS
+    except Exception:
+        delay_seconds = 20
+
+    if delay_seconds < 0:
+        delay_seconds = 0
+
+    with _scheduled_invoice_email_jobs_lock:
+        if payment_history_id in _scheduled_invoice_email_jobs:
+            return
+        _scheduled_invoice_email_jobs.add(payment_history_id)
+
+    def _run_and_cleanup():
+        try:
+            _send_invoice_email_job(payment_history_id, stripe_subscription_id, metadata=metadata)
+        finally:
+            with _scheduled_invoice_email_jobs_lock:
+                _scheduled_invoice_email_jobs.discard(payment_history_id)
+
+    timer = threading.Timer(delay_seconds, _run_and_cleanup)
+    timer.daemon = True
+    timer.start()
+    logger.info(
+        "Email facture programmé dans %ss (payment_history_id=%s, stripe_subscription_id=%s)",
+        delay_seconds,
+        payment_history_id,
+        stripe_subscription_id,
+    )
+
+
+_scheduled_cancellation_email_jobs = set()
+_scheduled_cancellation_email_jobs_lock = threading.Lock()
+
+
+def _send_cancellation_emails_job(user_subscription_id, cancel_type='scheduled', stripe_subscription_id=None, metadata=None):
+    """Envoie les emails liés à une résiliation (utilisateur + admin).
+
+    cancel_type:
+      - 'scheduled' : annulation programmée (cancel_at_period_end)
+      - 'canceled'  : annulation immédiate (status=canceled)
+    """
+    close_old_connections()
+    safe_metadata = metadata if isinstance(metadata, dict) else {}
+    cancel_type = (cancel_type or '').strip().lower() or 'scheduled'
+    is_scheduled = cancel_type == 'scheduled'
+
+    try:
+        with transaction.atomic():
+            user_subscription = (
+                UserSubscription.objects
+                .select_for_update()
+                .select_related('user', 'plan', 'niveau_pays', 'niveau_pays__pays')
+                .get(pk=user_subscription_id)
+            )
+
+            # Protection: si l'état a changé depuis la programmation, ne pas envoyer.
+            if is_scheduled and not user_subscription.cancel_at_period_end:
+                return
+            if (not is_scheduled) and user_subscription.status != 'canceled':
+                return
+
+            recipient = user_subscription.user
+            beneficiary = None
+
+            is_gift = str(safe_metadata.get('is_gift') or '').lower() == 'true'
+            payer_user_id = safe_metadata.get('payer_user_id')
+            if is_gift and payer_user_id:
+                try:
+                    payer = User.objects.get(id=payer_user_id)
+                    beneficiary = user_subscription.user
+                    recipient = payer
+                except User.DoesNotExist:
+                    recipient = user_subscription.user
+
+            EmailService.send_subscription_cancellation_confirmation(
+                user=recipient,
+                plan=user_subscription.plan,
+                niveau=user_subscription.niveau_pays,
+                effective_end=user_subscription.current_period_end,
+                is_scheduled=is_scheduled,
+                beneficiary=beneficiary,
+            )
+            EmailService.send_subscription_cancellation_notification_to_admin(
+                user=recipient,
+                plan=user_subscription.plan,
+                niveau=user_subscription.niveau_pays,
+                effective_end=user_subscription.current_period_end,
+                is_scheduled=is_scheduled,
+                beneficiary=beneficiary,
+            )
+    except UserSubscription.DoesNotExist:
+        logger.warning(
+            "Cancellation email job: abonnement introuvable (user_subscription_id=%s, stripe_subscription_id=%s)",
+            user_subscription_id,
+            stripe_subscription_id,
+        )
+    except Exception as exc:
+        logger.error(
+            "Cancellation email job: erreur lors de l'envoi (user_subscription_id=%s, stripe_subscription_id=%s): %s",
+            user_subscription_id,
+            stripe_subscription_id,
+            exc,
+        )
+
+
+def _schedule_cancellation_emails(user_subscription_id, cancel_type='scheduled', stripe_subscription_id=None, metadata=None):
+    """Programme l'envoi des emails de résiliation (anti-doublon, non bloquant)."""
+    key = f"{user_subscription_id}:{(cancel_type or '').strip().lower()}"
+    with _scheduled_cancellation_email_jobs_lock:
+        if key in _scheduled_cancellation_email_jobs:
+            return
+        _scheduled_cancellation_email_jobs.add(key)
+
+    def _run_and_cleanup():
+        try:
+            _send_cancellation_emails_job(
+                user_subscription_id=user_subscription_id,
+                cancel_type=cancel_type,
+                stripe_subscription_id=stripe_subscription_id,
+                metadata=metadata,
+            )
+        finally:
+            with _scheduled_cancellation_email_jobs_lock:
+                _scheduled_cancellation_email_jobs.discard(key)
+
+    timer = threading.Timer(0, _run_and_cleanup)
+    timer.daemon = True
+    timer.start()
+    logger.info(
+        "Emails résiliation programmés (user_subscription_id=%s, stripe_subscription_id=%s, type=%s)",
+        user_subscription_id,
+        stripe_subscription_id,
+        cancel_type,
+    )
 
 
 def _map_stripe_status(status):
@@ -1643,7 +1965,16 @@ class CancelSubscriptionView(APIView):
             subscription = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id, user=request.user).first()
 
         if subscription:
+            was_scheduled = bool(subscription.cancel_at_period_end)
+            was_canceled = (subscription.status == 'canceled')
             if subscription.cancel_subscription():
+                # Envoyer un email de confirmation de désabonnement (utilisateur + admin) une seule fois.
+                if (not was_canceled) and (not was_scheduled) and bool(subscription.cancel_at_period_end):
+                    _schedule_cancellation_emails(
+                        user_subscription_id=subscription.id,
+                        cancel_type='scheduled',
+                        stripe_subscription_id=subscription.stripe_subscription_id,
+                    )
                 message = 'Annulation programmée à la fin de la période en cours.'
                 return JsonResponse({'success': True, 'message': message})
             return JsonResponse({'error': 'Erreur lors de l\'annulation', 'message': 'Impossible de programmer l\'annulation.'}, status=400)
@@ -2471,28 +2802,8 @@ def handle_checkout_session_completed(session):
             if updated_fields:
                 user.save(update_fields=updated_fields)
 
-        # Envoyer les emails d'abonnement dès que possible.
-        # - Certains environnements n'écoutent pas (ou mal) invoice.payment_succeeded
-        # - Stripe peut livrer les webhooks dans un ordre différent (race condition)
-        # On tente donc de finaliser via la dernière facture de la souscription.
-        latest_invoice = subscription_data.get('latest_invoice')
-        latest_invoice_id = None
-        if isinstance(latest_invoice, str):
-            latest_invoice_id = latest_invoice
-        elif isinstance(latest_invoice, dict):
-            latest_invoice_id = latest_invoice.get('id')
-
-        if latest_invoice_id:
-            try:
-                invoice = stripe.Invoice.retrieve(latest_invoice_id, expand=['lines'])
-                handle_payment_succeeded(invoice)
-            except Exception as exc:
-                logger.warning(
-                    "Impossible de finaliser l'abonnement via latest_invoice (session=%s, invoice=%s): %s",
-                    session.get('id'),
-                    latest_invoice_id,
-                    exc,
-                )
+        # Les emails d'abonnement sont envoyés uniquement après confirmation Stripe (invoice.payment_succeeded),
+        # afin d'éviter les doublons via l'endpoint de finalisation côté frontend.
         
     except Exception as e:
         logger.error(f"Erreur dans handle_checkout_session_completed: {e}")
@@ -2726,6 +3037,7 @@ def handle_payment_succeeded(invoice):
                 if updated_fields:
                     user.save(update_fields=updated_fields)
 
+        previous_status = user_subscription.status
         stripe_status = subscription_data.get('status')
         if stripe_status:
             user_subscription.status = stripe_status
@@ -2797,80 +3109,41 @@ def handle_payment_succeeded(invoice):
                 payment_history.save(update_fields=invoice_updates)
 
         billing_reason = invoice.get('billing_reason')
-        # is_first_charge : true si c'est la première facture d'une nouvelle souscription
-        # billing_reason == 'subscription_create' est le signal officiel de Stripe
-        # payment_created indique que c'est un nouveau paiement (pas un doublon)
-        is_first_charge = billing_reason == 'subscription_create'
+        # is_first_charge : true si c'est la première facture payée d'une nouvelle souscription.
+        # billing_reason == 'subscription_create' est le signal officiel de Stripe.
+        # Avec essai gratuit, la 1ère facture payée arrive souvent avec billing_reason == 'subscription_cycle'.
+        converted_from_trial = (
+            billing_reason == 'subscription_cycle'
+            and previous_status == 'trialing'
+            and bool(stripe_status)
+            and stripe_status != 'trialing'
+        )
+        is_first_charge = (billing_reason == 'subscription_create') or converted_from_trial
         
         # Fallback si billing_reason n'est pas disponible (appel manuel via CheckoutSessionStatusView)
         if billing_reason is None and payment_created:
             # C'est probablement une nouvelle souscription si le paiement vient d'être créé
             is_first_charge = True
 
-        # Envoyer les emails uniquement après paiement confirmé
-        should_send_email = bool(payment_history) and not payment_history.email_sent and is_first_charge
-        if should_send_email:
-            invoice_link = (invoice_pdf_url or hosted_invoice_url or '').strip()
-            if not invoice_link and payment_history:
-                invoice_link = (
-                    (payment_history.invoice_pdf_url or '').strip()
-                    or (payment_history.hosted_invoice_url or '').strip()
-                )
-            invoice_link = invoice_link or None
-
+        # Programmer l'envoi des emails uniquement quand Stripe confirme le paiement.
+        # On applique un délai (ex: 20s) pour laisser Stripe générer le PDF de facture, et on verrouille
+        # PaymentHistory côté job pour éviter tout doublon (webhooks + endpoint de finalisation).
+        invoice_paid = bool(invoice.get('paid')) or (invoice.get('status') == 'paid')
+        should_send_email = bool(payment_history) and (not payment_history.email_sent) and invoice_paid
+        if should_send_email and payment_history:
             metadata = subscription_data.get('metadata') or {}
-            is_gift = metadata.get('is_gift') == 'true'
-            payer_user_id = metadata.get('payer_user_id')
-            payer = None
-
-            if is_gift and payer_user_id:
-                try:
-                    payer = User.objects.get(id=payer_user_id)
-                    EmailService.send_gift_subscription_notification(
-                        recipient=user_subscription.user,
-                        gifter=payer,
-                        plan=user_subscription.plan,
-                        niveau=user_subscription.niveau_pays
-                    )
-                    EmailService.send_gift_purchase_confirmation(
-                        payer=payer,
-                        recipient=user_subscription.user,
-                        plan=user_subscription.plan,
-                        niveau=user_subscription.niveau_pays,
-                        is_pass=False,
-                        invoice_link=invoice_link,
-                    )
-                except User.DoesNotExist:
-                    logger.warning("Payeur %s introuvable pour email cadeau", payer_user_id)
-                except Exception as email_exc:
-                    logger.error(f"Erreur envoi email cadeau abonnement: {email_exc}")
-
-            if not is_gift:
-                try:
-                    EmailService.send_subscription_confirmation(
-                        user_subscription.user,
-                        user_subscription.plan,
-                        user_subscription.niveau_pays,
-                        invoice_link=invoice_link,
-                    )
-                except Exception as email_exc:
-                    logger.error(f"Erreur envoi email confirmation abonnement: {email_exc}")
-
-            try:
-                EmailService.send_new_subscription_notification_to_admin(
-                    user=user_subscription.user,
-                    plan=user_subscription.plan,
-                    niveau=user_subscription.niveau_pays,
-                    is_gift=is_gift,
-                    payer=payer
+            if is_first_charge:
+                _schedule_subscription_emails(
+                    payment_history_id=payment_history.id,
+                    stripe_subscription_id=subscription_id,
+                    metadata=metadata,
                 )
-            except Exception as email_exc:
-                logger.error(f"Erreur envoi notification admin nouvel abonnement: {email_exc}")
-            try:
-                payment_history.email_sent = True
-                payment_history.save(update_fields=['email_sent'])
-            except Exception as email_exc:
-                logger.error(f"Erreur mise à jour email_sent: {email_exc}")
+            else:
+                _schedule_invoice_email(
+                    payment_history_id=payment_history.id,
+                    stripe_subscription_id=subscription_id,
+                    metadata=metadata,
+                )
         
     except Exception as e:
         logger.error(f"Erreur dans handle_payment_succeeded: {e}")
@@ -2890,12 +3163,53 @@ def handle_subscription_updated(subscription):
     """Gérer la mise à jour d'un abonnement"""
     try:
         subscription = _stripe_obj_to_dict(subscription)
-        user_subscription = UserSubscription.objects.get(stripe_subscription_id=subscription['id'])
-        user_subscription.status = subscription.get('status', user_subscription.status)
-        user_subscription.current_period_start = _from_timestamp(subscription.get('current_period_start'))
-        user_subscription.current_period_end = _from_timestamp(subscription.get('current_period_end'))
-        user_subscription.cancel_at_period_end = bool(subscription.get('cancel_at_period_end', user_subscription.cancel_at_period_end))
-        user_subscription.save()
+        stripe_subscription_id = subscription.get('id')
+        if not stripe_subscription_id:
+            return
+
+        metadata = subscription.get('metadata') or {}
+        with transaction.atomic():
+            user_subscription = (
+                UserSubscription.objects
+                .select_for_update()
+                .select_related('user', 'plan', 'niveau_pays', 'niveau_pays__pays')
+                .get(stripe_subscription_id=stripe_subscription_id)
+            )
+            previous_cancel_at_period_end = bool(user_subscription.cancel_at_period_end)
+            previous_status = user_subscription.status
+
+            new_status = subscription.get('status', user_subscription.status)
+            new_cancel_at_period_end = bool(
+                subscription.get('cancel_at_period_end', user_subscription.cancel_at_period_end)
+            )
+
+            user_subscription.status = new_status
+            user_subscription.current_period_start = _from_timestamp(subscription.get('current_period_start'))
+            user_subscription.current_period_end = _from_timestamp(subscription.get('current_period_end'))
+            user_subscription.cancel_at_period_end = new_cancel_at_period_end
+            user_subscription.save()
+
+            cancellation_scheduled_now = (not previous_cancel_at_period_end) and new_cancel_at_period_end
+            canceled_now = (previous_status != 'canceled') and (new_status == 'canceled')
+
+            if cancellation_scheduled_now:
+                transaction.on_commit(
+                    lambda us_id=user_subscription.id, sub_id=stripe_subscription_id, md=metadata: _schedule_cancellation_emails(
+                        user_subscription_id=us_id,
+                        cancel_type='scheduled',
+                        stripe_subscription_id=sub_id,
+                        metadata=md,
+                    )
+                )
+            elif canceled_now and (not previous_cancel_at_period_end):
+                transaction.on_commit(
+                    lambda us_id=user_subscription.id, sub_id=stripe_subscription_id, md=metadata: _schedule_cancellation_emails(
+                        user_subscription_id=us_id,
+                        cancel_type='canceled',
+                        stripe_subscription_id=sub_id,
+                        metadata=md,
+                    )
+                )
         
     except Exception as e:
         logger.error(f"Erreur dans handle_subscription_updated: {e}")
@@ -2904,10 +3218,37 @@ def handle_subscription_deleted(subscription):
     """Gérer la suppression d'un abonnement"""
     try:
         subscription = _stripe_obj_to_dict(subscription)
-        user_subscription = UserSubscription.objects.get(stripe_subscription_id=subscription['id'])
-        user_subscription.status = 'canceled'
-        user_subscription.cancel_at_period_end = False
-        user_subscription.save()
+        stripe_subscription_id = subscription.get('id')
+        if not stripe_subscription_id:
+            return
+
+        metadata = subscription.get('metadata') or {}
+        with transaction.atomic():
+            user_subscription = (
+                UserSubscription.objects
+                .select_for_update()
+                .select_related('user', 'plan', 'niveau_pays', 'niveau_pays__pays')
+                .get(stripe_subscription_id=stripe_subscription_id)
+            )
+            previous_cancel_at_period_end = bool(user_subscription.cancel_at_period_end)
+            previous_status = user_subscription.status
+
+            user_subscription.status = 'canceled'
+            user_subscription.cancel_at_period_end = False
+            user_subscription.current_period_end = _from_timestamp(subscription.get('current_period_end')) or user_subscription.current_period_end
+            user_subscription.save()
+
+            canceled_now = previous_status != 'canceled'
+            # Si l'annulation était déjà programmée (cancel_at_period_end), on a déjà notifié lors de la demande.
+            if canceled_now and (not previous_cancel_at_period_end):
+                transaction.on_commit(
+                    lambda us_id=user_subscription.id, sub_id=stripe_subscription_id, md=metadata: _schedule_cancellation_emails(
+                        user_subscription_id=us_id,
+                        cancel_type='canceled',
+                        stripe_subscription_id=sub_id,
+                        metadata=md,
+                    )
+                )
         
     except Exception as e:
         logger.error(f"Erreur dans handle_subscription_deleted: {e}")

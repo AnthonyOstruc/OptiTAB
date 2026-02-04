@@ -1155,6 +1155,155 @@ class EmailService:
             return False
 
     @staticmethod
+    def send_subscription_cancellation_confirmation(user, plan, niveau=None, effective_end=None, is_scheduled=True, beneficiary=None):
+        """Envoie un email de confirmation de résiliation à l'utilisateur.
+
+        - is_scheduled=True : annulation programmée à la fin de période (cancel_at_period_end)
+        - beneficiary : si achat cadeau, indique le bénéficiaire concerné (optionnel)
+        """
+        try:
+            first_name = (user.first_name or '').strip() or 'OptiTABien'
+            plan_name = getattr(plan, 'name', None) or 'OptiTAB Premium'
+
+            niveau_name = ''
+            if niveau:
+                niveau_name = getattr(niveau, 'nom', '') or ''
+                if hasattr(niveau, 'pays') and niveau.pays:
+                    pays_name = getattr(niveau.pays, 'nom', '')
+                    if pays_name:
+                        niveau_name = f"{niveau_name} ({pays_name})"
+
+            logo_url = EmailService._resolve_logo_url()
+            frontend_url = getattr(settings, 'FRONTEND_URL', '') or 'https://www.optitab.net'
+            frontend_base = frontend_url.rstrip('/')
+            subscription_url = f"{frontend_base}/subscription"
+
+            end_label = None
+            if effective_end:
+                try:
+                    end_label = timezone.localtime(effective_end).strftime('%d %B %Y')
+                except Exception:
+                    end_label = str(effective_end)
+
+            beneficiary_label = ''
+            if beneficiary:
+                beneficiary_label = getattr(beneficiary, 'full_name', '') or ''
+                beneficiary_label = beneficiary_label.strip() or getattr(beneficiary, 'email', '') or ''
+
+            subject = (
+                "Résiliation programmée de votre abonnement OptiTAB"
+                if is_scheduled
+                else "Confirmation de résiliation de votre abonnement OptiTAB"
+            )
+
+            text_body = (
+                f"Bonjour {first_name},\n\n"
+                f"Nous confirmons la résiliation de votre abonnement {plan_name}.\n"
+            )
+            if beneficiary_label:
+                text_body += f"\nBénéficiaire : {beneficiary_label}\n"
+            if niveau_name:
+                text_body += f"Niveau : {niveau_name}\n"
+
+            if is_scheduled:
+                text_body += "\nVotre abonnement ne sera pas renouvelé."
+                if end_label:
+                    text_body += f" Vous gardez l'accès jusqu'au {end_label}.\n"
+                else:
+                    text_body += " Vous gardez l'accès jusqu'à la fin de la période en cours.\n"
+            else:
+                text_body += "\nVotre abonnement est désormais résilié."
+                if end_label:
+                    text_body += f" Accès maintenu jusqu'au {end_label}.\n"
+                else:
+                    text_body += "\n"
+
+            text_body += (
+                f"\nRetrouvez votre statut et vos factures ici : {subscription_url}\n\n"
+                "Une question ? Contactez-nous à contact@optitab.net\n\n"
+                "L'équipe OptiTAB"
+            )
+
+            headline = "Résiliation programmée" if is_scheduled else "Abonnement résilié"
+            status_chip = (
+                '<span style="display:inline-block;background:#fee2e2;color:#991b1b;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;">RÉSILIATION</span>'
+                if not is_scheduled
+                else '<span style="display:inline-block;background:#fff7ed;color:#9a3412;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;">FIN PROGRAMMÉE</span>'
+            )
+
+            details_rows = ""
+            if beneficiary_label:
+                details_rows += f"""
+                  <tr>
+                    <td style="padding:6px 0;color:#6b7280;width:34%;">Bénéficiaire</td>
+                    <td style="padding:6px 0;color:#111827;font-weight:600;">{beneficiary_label}</td>
+                  </tr>
+                """
+            if niveau_name:
+                details_rows += f"""
+                  <tr>
+                    <td style="padding:6px 0;color:#6b7280;">Niveau</td>
+                    <td style="padding:6px 0;color:#111827;font-weight:600;">{niveau_name}</td>
+                  </tr>
+                """
+            if end_label:
+                details_rows += f"""
+                  <tr>
+                    <td style="padding:6px 0;color:#6b7280;">Fin d'accès</td>
+                    <td style="padding:6px 0;color:#111827;font-weight:600;">{end_label}</td>
+                  </tr>
+                """
+
+            html_body = f"""
+              <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                  <tr>
+                    <td style="padding:24px 24px 0 24px;">
+                      {f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block;margin-bottom:16px;"/>' if logo_url else ''}
+                      {status_chip}
+                      <h1 style="margin:12px 0 8px 0;font-size:22px;color:#111827;">{headline}</h1>
+                      <p style="margin:0 0 14px 0;color:#4b5563;font-size:15px;line-height:1.6;">
+                        Bonjour {first_name},<br/>
+                        Nous confirmons la résiliation de votre abonnement <strong>{plan_name}</strong>.
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0 24px 24px 24px;">
+                      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;">
+                        <table width="100%" cellspacing="0" cellpadding="0" style="font-size:14px;">
+                          {details_rows}
+                        </table>
+                      </div>
+                      <div style="text-align:center;margin-top:18px;">
+                        <a href="{subscription_url}" style="display:inline-block;background:#111827;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 22px;border-radius:10px;">
+                          Gérer mon abonnement
+                        </a>
+                      </div>
+                      <p style="margin:16px 0 0 0;color:#6b7280;font-size:13px;line-height:1.6;text-align:center;">
+                        Besoin d'aide ? <a href="mailto:contact@optitab.net" style="color:#4f46e5;text-decoration:none;">contact@optitab.net</a>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            """
+
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[user.email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+            logger.info("Email de résiliation envoyé à %s", user.email)
+            return True
+        except Exception as e:
+            logger.error("Erreur envoi email de résiliation à %s: %s", getattr(user, 'email', ''), e)
+            return False
+
+    @staticmethod
     def send_new_subscription_notification_to_admin(user, plan, niveau=None, is_gift=False, payer=None):
         """Envoie une notification à contact@optitab.net lorsqu'un nouvel abonnement est souscrit."""
         try:
@@ -1279,6 +1428,111 @@ class EmailService:
             return True
         except Exception as e:
             logger.error(f"Erreur envoi notification admin pour nouvel abonnement: {e}")
+            return False
+
+    @staticmethod
+    def send_subscription_cancellation_notification_to_admin(user, plan, niveau=None, effective_end=None, is_scheduled=True, beneficiary=None):
+        """Envoie une notification à contact@optitab.net lorsqu'un abonnement est résilié/programmé."""
+        try:
+            admin_email = 'contact@optitab.net'
+            user_email = getattr(user, 'email', None) or 'Email inconnu'
+            user_name = f"{getattr(user, 'first_name', '') or ''} {getattr(user, 'last_name', '') or ''}".strip() or 'Utilisateur'
+            plan_name = getattr(plan, 'name', None) or 'Plan inconnu'
+
+            niveau_name = ''
+            if niveau:
+                niveau_name = getattr(niveau, 'nom', '') or ''
+                if hasattr(niveau, 'pays') and niveau.pays:
+                    pays_name = getattr(niveau.pays, 'nom', '')
+                    if pays_name:
+                        niveau_name = f"{niveau_name} ({pays_name})"
+
+            end_label = None
+            if effective_end:
+                try:
+                    end_label = timezone.localtime(effective_end).strftime('%d %B %Y')
+                except Exception:
+                    end_label = str(effective_end)
+
+            beneficiary_label = ''
+            if beneficiary:
+                beneficiary_label = getattr(beneficiary, 'full_name', '') or ''
+                beneficiary_label = beneficiary_label.strip() or getattr(beneficiary, 'email', '') or ''
+
+            type_label = 'Annulation programmée (fin de période)' if is_scheduled else 'Annulation immédiate'
+            subject = f"❌ Désabonnement : {user_name} - {plan_name}"
+
+            text_body = (
+                "Un utilisateur vient de résilier son abonnement.\n\n"
+                f"👤 Utilisateur : {user_name}\n"
+                f"📧 Email : {user_email}\n"
+                f"📦 Plan : {plan_name}\n"
+                f"🧾 Type : {type_label}\n"
+            )
+            if beneficiary_label:
+                text_body += f"🎁 Bénéficiaire : {beneficiary_label}\n"
+            if niveau_name:
+                text_body += f"📚 Niveau : {niveau_name}\n"
+            if end_label:
+                text_body += f"🗓 Fin d'accès : {end_label}\n"
+
+            html_body = f"""
+              <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                  <tr>
+                    <td style="padding:24px;background:linear-gradient(135deg,#ef4444 0%,#f97316 100%);">
+                      <h1 style="margin:0;font-size:20px;color:#ffffff;text-align:center;">❌ Désabonnement</h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:24px;">
+                      <table width="100%" cellspacing="0" cellpadding="8" style="font-size:14px;color:#374151;">
+                        <tr>
+                          <td style="width:40%;font-weight:600;color:#6b7280;">👤 Utilisateur</td>
+                          <td>{user_name}</td>
+                        </tr>
+                        <tr style="background:#f9fafb;">
+                          <td style="font-weight:600;color:#6b7280;">📧 Email</td>
+                          <td><a href="mailto:{user_email}" style="color:#4f46e5;">{user_email}</a></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:600;color:#6b7280;">📦 Plan</td>
+                          <td><strong>{plan_name}</strong></td>
+                        </tr>
+                        <tr style="background:#f9fafb;">
+                          <td style="font-weight:600;color:#6b7280;">🧾 Type</td>
+                          <td>{type_label}</td>
+                        </tr>
+                        {f'<tr><td style="font-weight:600;color:#6b7280;">🎁 Bénéficiaire</td><td>{beneficiary_label}</td></tr>' if beneficiary_label else ''}
+                        {f'<tr style="background:#f9fafb;"><td style="font-weight:600;color:#6b7280;">📚 Niveau</td><td>{niveau_name}</td></tr>' if niveau_name else ''}
+                        {f"<tr><td style='font-weight:600;color:#6b7280;'>🗓 Fin d'accès</td><td>{end_label}</td></tr>" if end_label else ''}
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:16px 24px;background:#f3f4f6;text-align:center;">
+                      <p style="margin:0;color:#6b7280;font-size:12px;">
+                        Notification automatique OptiTAB
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            """
+
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[admin_email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+
+            logger.info("Notification de désabonnement envoyée à %s", admin_email)
+            return True
+        except Exception as e:
+            logger.error("Erreur envoi notification admin désabonnement: %s", e)
             return False
 
 

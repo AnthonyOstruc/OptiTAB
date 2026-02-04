@@ -22,10 +22,15 @@ const hasActiveSubscription = (status) => {
   const hasFuturePeriod = periodEndTs > now
 
   if (status.is_active || status.subscription_active) return true
+  if (Array.isArray(status.subscriptions) && status.subscriptions.some(sub => sub?.is_active)) {
+    return true
+  }
   if (['active', 'trialing', 'past_due'].includes(normalizedStatus)) return true
   if (status.cancel_at_period_end && hasFuturePeriod) return true
+  const explicitlyInactive = ['canceled', 'unpaid', 'inactive', 'none'].includes(normalizedStatus)
   if (
     hasFuturePeriod &&
+    !explicitlyInactive &&
     (
       status.has_subscription ||
       status.subscription_id ||
@@ -33,9 +38,6 @@ const hasActiveSubscription = (status) => {
       status.plan_stripe_price_id
     )
   ) {
-    return true
-  }
-  if (Array.isArray(status.subscriptions) && status.subscriptions.some(sub => sub?.is_active)) {
     return true
   }
   return false

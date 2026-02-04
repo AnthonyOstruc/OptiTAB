@@ -345,6 +345,98 @@ class EmailService:
             return False
 
     @staticmethod
+    def send_gift_purchase_confirmation(payer, recipient, plan, niveau=None, is_pass=False):
+        """Envoie une confirmation au payeur lorsqu'il offre un abonnement ou un pass."""
+        try:
+            payer_name = (getattr(payer, 'first_name', '') or '').strip() or 'OptiTABien'
+            recipient_first = (getattr(recipient, 'first_name', '') or '').strip()
+            recipient_last = (getattr(recipient, 'last_name', '') or '').strip()
+            recipient_name = ' '.join([p for p in [recipient_first, recipient_last] if p]).strip()
+            if not recipient_name:
+                recipient_name = getattr(recipient, 'email', '') or 'votre enfant'
+
+            plan_name = getattr(plan, 'name', None) or getattr(plan, 'titre', None) or 'OptiTAB Premium'
+            kind_label = 'pass' if is_pass else 'abonnement'
+
+            niveau_name = ''
+            if niveau:
+                niveau_name = getattr(niveau, 'nom', '') or ''
+                if hasattr(niveau, 'pays') and niveau.pays:
+                    pays_name = getattr(niveau.pays, 'nom', '')
+                    if pays_name:
+                        niveau_name = f"{niveau_name} ({pays_name})"
+
+            subject = 'Confirmation de votre cadeau OptiTAB'
+            text_body = (
+                f"Bonjour {payer_name},\n\n"
+                f"Votre {kind_label} {plan_name} a bien été offert à {recipient_name}.\n"
+            )
+            if niveau_name:
+                text_body += f"Niveau : {niveau_name}\n"
+            text_body += (
+                "\nVous pouvez retrouver les détails dans votre espace Abonnement.\n\n"
+                "Merci pour votre confiance,\n"
+                "L'équipe OptiTAB"
+            )
+
+            logo_url = EmailService._resolve_logo_url()
+            frontend_url = getattr(settings, 'FRONTEND_URL', '') or 'https://www.optitab.net'
+            recipient_line = f"<strong>{recipient_name}</strong>" if recipient_name else "votre enfant"
+            level_line = f'<p style="margin:6px 0 0 0;color:#4338ca;font-size:14px;"><strong>Niveau :</strong> {niveau_name}</p>' if niveau_name else ''
+
+            html_body = f"""
+                <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                    <tr>
+                      <td style="padding:24px 24px 0 24px;">
+                        {f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block;margin-bottom:16px;"/>' if logo_url else ''}
+                        <h1 style="margin:0 0 12px 0;font-size:22px;color:#111827;text-align:center;">Cadeau confirmé</h1>
+                        <p style="margin:0 0 16px 0;color:#4b5563;font-size:15px;line-height:1.6;text-align:center;">
+                          Vous avez offert un {kind_label} <strong>{plan_name}</strong> à {recipient_line}.
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:0 24px 24px 24px;">
+                        <div style="background:linear-gradient(135deg,#eef2ff 0%,#e0e7ff 100%);border-radius:12px;padding:20px;margin-bottom:20px;">
+                          <p style="margin:0;color:#312e81;font-size:15px;line-height:1.6;">
+                            Votre cadeau est bien pris en compte et l'accès est activé pour le bénéficiaire.
+                          </p>
+                          {level_line}
+                        </div>
+                        <div style="text-align:center;">
+                          <a href="{frontend_url}/subscription" style="display:inline-block;background:#4f46e5;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 24px;border-radius:10px;font-size:15px;">
+                            Voir mes abonnements
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:16px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;">
+                        <p style="margin:0;color:#6b7280;font-size:13px;line-height:1.6;text-align:center;">
+                          Merci de faire confiance à OptiTAB.
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+            """
+
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[payer.email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+            logger.info("Email confirmation cadeau envoyé à %s", payer.email)
+            return True
+        except Exception as e:
+            logger.error("Erreur envoi email confirmation cadeau à %s: %s", getattr(payer, 'email', None), e)
+            return False
+
+    @staticmethod
     def send_quiz_grade_notification(user, quiz_title, note, commentaire='', notion_id=None):
         """Envoie une notification par email lorsqu'un quiz est noté"""
         from django.conf import settings

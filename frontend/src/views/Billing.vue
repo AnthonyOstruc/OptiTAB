@@ -160,7 +160,7 @@
               class="card-button"
               data-cta-name="subscribe"
               data-cta-location="billing"
-              :disabled="submitting || !card.priceId || levelAlreadyUnlocked || isCurrentPlan(card)"
+              :disabled="submitting || !card.priceId || isBlockedByLevel || isBlockedByCurrentPlan(card)"
               @click="handlePlanClick(card)"
             >
               {{ buttonLabel(card) }}
@@ -495,6 +495,8 @@ const levelAlreadyUnlocked = computed(() =>
     unlockedLevels.value.some(level => Number(level.id) === Number(selectedNiveauId.value))
   )
 )
+const isGiftMode = computed(() => subscribeForChild.value)
+const shouldBlockForSelf = computed(() => !isGiftMode.value)
 const activePlanPriceId = computed(() => subscriptionStore.status?.plan_stripe_price_id || '')
 const activePlanLabel = computed(() => {
   const name = subscriptionStore.status?.plan_name || ''
@@ -512,17 +514,19 @@ const isCurrentPrice = (priceId) => {
 }
 
 const isCurrentPlan = (card) => isCurrentPrice(card?.priceId)
+const isBlockedByLevel = computed(() => shouldBlockForSelf.value && levelAlreadyUnlocked.value)
+const isBlockedByCurrentPlan = (card) => shouldBlockForSelf.value && isCurrentPlan(card)
 
 const buttonLabel = (card) => {
-  if (levelAlreadyUnlocked.value) return 'Déjà souscrit'
-  if (isCurrentPlan(card)) return 'Déjà abonné'
+  if (shouldBlockForSelf.value && levelAlreadyUnlocked.value) return 'Déjà souscrit'
+  if (shouldBlockForSelf.value && isCurrentPlan(card)) return 'Déjà abonné'
   if (!levelReady.value) return 'Choisir un niveau'
   return submitting.value ? 'Redirection…' : card.cta
 }
 
 const handlePlanClick = (card) => {
   if (!card?.priceId) return
-  if (levelAlreadyUnlocked.value || isCurrentPlan(card) || submitting.value) return
+  if ((shouldBlockForSelf.value && (levelAlreadyUnlocked.value || isCurrentPlan(card))) || submitting.value) return
   subscribe(card.priceId)
 }
 
@@ -574,7 +578,7 @@ async function subscribe(priceId) {
       alert('Merci de sélectionner un niveau avant de continuer.')
       return
     }
-    if (levelAlreadyUnlocked.value) {
+    if (shouldBlockForSelf.value && levelAlreadyUnlocked.value) {
       alert('Ce niveau est déjà débloqué. Sélectionnez un autre niveau pour souscrire.')
       return
     }
@@ -593,7 +597,7 @@ async function subscribe(priceId) {
       payload.beneficiary_email = beneficiaryEmail.value.trim()
     }
 
-    if (isCurrentPrice(priceId)) {
+    if (shouldBlockForSelf.value && isCurrentPrice(priceId)) {
       alert('Vous disposez déjà de cet abonnement actif. Utilisez « Gérer mon abonnement » pour le modifier.')
       return
     }

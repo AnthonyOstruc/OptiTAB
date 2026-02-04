@@ -159,12 +159,9 @@ export function usePaysNiveauConfig() {
   }
 
   const selectRole = (role) => {
-    // Seuls les admins peuvent sélectionner le rôle "parent"
-    if (role === 'student' || (role === 'parent' && userStore.isAdmin)) {
+    // Permettre à tous les utilisateurs de sélectionner "student" ou "parent"
+    if (role === 'student' || role === 'parent') {
       selectedRole.value = role
-    } else if (role === 'parent' && !userStore.isAdmin) {
-      // Forcer le rôle "student" pour les utilisateurs normaux
-      selectedRole.value = 'student'
     }
   }
 

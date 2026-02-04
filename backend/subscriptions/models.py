@@ -222,6 +222,7 @@ class PaymentHistory(models.Model):
         related_name='payment_history_entries'
     )
     niveau_label = models.CharField(max_length=255, blank=True, default='')
+    email_sent = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

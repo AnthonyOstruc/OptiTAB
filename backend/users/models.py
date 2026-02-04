@@ -65,6 +65,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     pending_email = models.EmailField(null=True, blank=True, unique=False)
     pending_email_token = models.CharField(max_length=128, blank=True, null=True)
     pending_email_sent_at = models.DateTimeField(null=True, blank=True)
+
+    # Stripe
+    stripe_customer_id = models.CharField(max_length=100, null=True, blank=True)
     
     # Timestamps automatiques
     date_joined = models.DateTimeField(default=timezone.now)

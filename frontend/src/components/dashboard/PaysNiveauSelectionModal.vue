@@ -105,7 +105,6 @@
           <div class="role-options">
             <button type="button" class="role-btn" :class="{ active: selectedRole === 'student' }" @click="selectRole('student')">Élève</button>
             <button 
-              v-if="isAdmin" 
               type="button" 
               class="role-btn" 
               :class="{ active: selectedRole === 'parent' }" 

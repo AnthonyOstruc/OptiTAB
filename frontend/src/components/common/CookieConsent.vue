@@ -135,9 +135,14 @@ const safeJsonParse = (value) => {
 
 const getCookie = (name) => {
   if (typeof document === 'undefined') return null
-  const escaped = name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1')
-  const match = document.cookie.match(new RegExp('(?:^|; )' + escaped + '=([^;]*)'))
-  return match ? decodeURIComponent(match[1]) : null
+  const prefix = `${name}=`
+  const parts = document.cookie ? document.cookie.split('; ') : []
+  for (const part of parts) {
+    if (part.startsWith(prefix)) {
+      return decodeURIComponent(part.slice(prefix.length))
+    }
+  }
+  return null
 }
 
 const setCookie = (name, value, expiresAt) => {

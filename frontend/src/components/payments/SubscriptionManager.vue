@@ -213,6 +213,24 @@
               </div>
             </div>
           </div>
+
+          <div v-if="invoicesTotalPages > 1" class="invoice-pagination">
+            <button
+              class="pagination-btn"
+              :disabled="invoicesPage <= 1 || invoicesLoading"
+              @click="changeInvoicesPage(invoicesPage - 1)"
+            >
+              Précédent
+            </button>
+            <span class="pagination-info">Page {{ invoicesPage }} / {{ invoicesTotalPages }}</span>
+            <button
+              class="pagination-btn"
+              :disabled="invoicesPage >= invoicesTotalPages || invoicesLoading"
+              @click="changeInvoicesPage(invoicesPage + 1)"
+            >
+              Suivant
+            </button>
+          </div>
         </div>
       </div>
 
@@ -271,6 +289,37 @@
           Voir les offres
         </router-link>
       </div>
+
+      <div v-if="isParent && giftedSubscriptions.length" class="gifted-section">
+        <div class="gifted-header">
+          <h4>Abonnements de vos enfants</h4>
+          <p>Suivi des accès souscrits pour vos enfants.</p>
+        </div>
+        <div class="gifted-grid">
+          <div
+            v-for="gift in giftedSubscriptions"
+            :key="gift.stripe_subscription_id || gift.started_at"
+            class="gifted-card"
+          >
+            <div class="gifted-title">{{ giftPlanLabel(gift) }}</div>
+            <p class="gifted-meta">
+              <strong>Bénéficiaire :</strong> {{ giftBeneficiaryLabel(gift) }}
+            </p>
+            <p v-if="giftLevelLabel(gift)" class="gifted-meta">
+              <strong>Niveau :</strong> {{ giftLevelLabel(gift) }}
+            </p>
+            <p class="gifted-meta">
+              <strong>Statut :</strong> {{ giftStatusLabel(gift) }}
+            </p>
+            <p class="gifted-meta">
+              <strong>Accès jusqu'au :</strong> {{ giftAccessUntilLabel(gift) }}
+            </p>
+            <p class="gifted-meta">
+              <strong>Renouvellement :</strong> {{ giftRenewalDateLabel(gift) }}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -328,6 +377,9 @@ const invoices = ref([])
 const invoicesLoading = ref(false)
 const invoicesError = ref('')
 const sendingInvoiceId = ref(null)
+const invoicesPage = ref(1)
+const invoicesTotal = ref(0)
+const invoicesPageSize = 3
 const cancellingLevelKey = ref('')
 const viewSubscriptionKey = ref('')
 
@@ -515,6 +567,7 @@ const isCardLoading = computed(() => !initialLoadDone.value && (subscriptionStor
 const cancellationScheduled = computed(() => Boolean(subscription.value.cancel_at_period_end))
 const hasActiveAccess = computed(() => subscriptionStore.hasAccess)
 const hasActivePass = computed(() => Boolean(subscription.value.has_active_pass))
+const isParent = computed(() => (userStore.role || '').toLowerCase() === 'parent')
 const unlockedLevelsWithSubscriptions = computed(() => {
   const merged = new Map()
 
@@ -538,6 +591,13 @@ const unlockedLevelsWithSubscriptions = computed(() => {
   })
 
   return Array.from(merged.values())
+})
+const giftedSubscriptions = computed(() =>
+  (baseSubscription.value.gifted_subscriptions || []).filter(gift => gift?.is_active)
+)
+const invoicesTotalPages = computed(() => {
+  if (!invoicesTotal.value) return 1
+  return Math.max(1, Math.ceil(invoicesTotal.value / invoicesPageSize))
 })
 
 const resolveSubscriptionField = (field) => {
@@ -715,12 +775,14 @@ const cancelSubscriptionForLevel = async (subscriptionItem) => {
   }
 }
 
-const loadInvoices = async () => {
+const loadInvoices = async (page = invoicesPage.value) => {
   try {
     invoicesLoading.value = true
     invoicesError.value = ''
-    const { data } = await getInvoices({ all: 'true' })
+    const { data } = await getInvoices({ limit: invoicesPageSize, page })
     invoices.value = data?.invoices || []
+    invoicesTotal.value = Number(data?.total || invoicesTotal.value || 0)
+    invoicesPage.value = Number(data?.page || page || 1)
   } catch (error) {
     invoices.value = []
     invoicesError.value = 'Impossible de charger vos factures pour le moment.'
@@ -728,6 +790,15 @@ const loadInvoices = async () => {
   } finally {
     invoicesLoading.value = false
   }
+}
+
+const changeInvoicesPage = async (nextPage) => {
+  const target = Number(nextPage)
+  if (!target || Number.isNaN(target)) return
+  if (target < 1 || target > invoicesTotalPages.value) return
+  if (target === invoicesPage.value) return
+  invoicesPage.value = target
+  await loadInvoices(target)
 }
 
 const parseDateSafe = (value) => {
@@ -773,6 +844,60 @@ const formatDate = (dateInput) => {
     month: 'long',
     day: 'numeric'
   })
+}
+
+const giftBeneficiaryLabel = (gift) => {
+  if (!gift) return '—'
+  const beneficiary = gift.beneficiary || {}
+  const nameParts = [beneficiary.first_name, beneficiary.last_name].filter(Boolean)
+  const fullName = nameParts.join(' ').trim()
+  if (fullName) {
+    return fullName
+  }
+  if (beneficiary.display_name) {
+    return beneficiary.display_name
+  }
+  return 'Compte enfant'
+}
+
+const giftLevelLabel = (gift) => {
+  if (!gift) return ''
+  if (gift.niveau) return formatLevelDisplay(gift.niveau)
+  return gift.niveau_label || ''
+}
+
+const giftPlanLabel = (gift) => {
+  if (!gift) return 'Abonnement'
+  return gift.plan?.name || 'Abonnement'
+}
+
+const giftStatusLabel = (gift) => {
+  if (!gift) return '—'
+  if (gift.cancel_at_period_end && gift.current_period_end) {
+    return 'Annulation programmée'
+  }
+  const status = String(gift.status || '').toLowerCase()
+  if (status === 'active') return 'Actif'
+  if (status === 'trialing') return 'Essai'
+  if (status === 'past_due') return 'Paiement en retard'
+  if (status === 'canceled') return 'Annulé'
+  if (status === 'unpaid') return 'Impayé'
+  return status || '—'
+}
+
+const giftAccessUntilLabel = (gift) => {
+  if (!gift) return '—'
+  const dateValue = gift.current_period_end || gift.trial_end || ''
+  return dateValue ? formatDate(dateValue) : '—'
+}
+
+const giftRenewalDateLabel = (gift) => {
+  if (!gift) return '—'
+  if (gift.cancel_at_period_end) return 'Annulation programmée'
+  const status = String(gift.status || '').toLowerCase()
+  if (['canceled', 'unpaid'].includes(status)) return 'Annulé'
+  const dateValue = gift.current_period_end || gift.trial_end || ''
+  return dateValue ? formatDate(dateValue) : '—'
 }
 
 const levelSubscriptionStatus = (subscriptionItem) => {
@@ -1646,6 +1771,41 @@ onMounted(() => {
   gap: 0.75rem;
 }
 
+.invoice-pagination {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.pagination-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #0f172a;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pagination-btn:not(:disabled):hover {
+  background: #f8fafc;
+  border-color: #cbd5f5;
+}
+
+.pagination-info {
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
 .invoice-row {
   display: flex;
   justify-content: space-between;
@@ -1840,6 +2000,49 @@ onMounted(() => {
 .no-subscription p {
   color: #6b7280;
   margin-bottom: 2rem;
+}
+
+.gifted-section {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.gifted-header h4 {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+  color: #111827;
+}
+
+.gifted-header p {
+  margin: 0 0 1.25rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.gifted-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.gifted-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  background: #f9fafb;
+}
+
+.gifted-title {
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.6rem;
+}
+
+.gifted-meta {
+  margin: 0.25rem 0;
+  color: #4b5563;
+  font-size: 0.92rem;
 }
 
 .get-started-btn {

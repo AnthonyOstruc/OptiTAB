@@ -477,7 +477,218 @@ def _refresh_subscription_from_stripe(subscription):
     return subscription
 
 
+def _refresh_subscription_from_snapshot(subscription, stripe_snapshot):
+    """
+    Met à jour un abonnement local à partir d'un snapshot Stripe déjà chargé.
+    Utilisé pour refléter rapidement les annulations faites côté Stripe.
+    """
+    if not subscription or not stripe_snapshot:
+        return subscription
+
+    updated_fields = []
+    start_dt = _from_timestamp(stripe_snapshot.get('current_period_start'))
+    end_dt = _from_timestamp(stripe_snapshot.get('current_period_end'))
+    trial_dt = _from_timestamp(stripe_snapshot.get('trial_end'))
+    mapped_status = _map_stripe_status(stripe_snapshot.get('status'))
+    cancel_flag = bool(stripe_snapshot.get('cancel_at_period_end'))
+
+    if start_dt and start_dt != subscription.current_period_start:
+        subscription.current_period_start = start_dt
+        updated_fields.append('current_period_start')
+    if end_dt and end_dt != subscription.current_period_end:
+        subscription.current_period_end = end_dt
+        updated_fields.append('current_period_end')
+    if trial_dt and trial_dt != subscription.trial_end:
+        subscription.trial_end = trial_dt
+        updated_fields.append('trial_end')
+    if mapped_status and mapped_status != subscription.status:
+        subscription.status = mapped_status
+        updated_fields.append('status')
+    if cancel_flag != subscription.cancel_at_period_end:
+        subscription.cancel_at_period_end = cancel_flag
+        updated_fields.append('cancel_at_period_end')
+
+    if updated_fields:
+        if 'updated_at' not in updated_fields:
+            updated_fields.append('updated_at')
+        subscription.save(update_fields=updated_fields)
+
+    return subscription
+
+
+def _sync_level_subscriptions_from_stripe(user, niveau_obj):
+    """
+    Met à jour les abonnements d'un utilisateur pour un niveau donné
+    en se synchronisant avec Stripe (utilisé pour éviter les blocages
+    quand un abonnement a été annulé côté Stripe).
+    """
+    if not user or not niveau_obj:
+        return []
+
+    subs = list(
+        UserSubscription.objects.filter(user=user, niveau_pays=niveau_obj)
+    )
+    for sub in subs:
+        stripe_id = sub.stripe_subscription_id
+        if not stripe_id:
+            continue
+        try:
+            stripe_sub = stripe.Subscription.retrieve(stripe_id)
+            stripe_snapshot = _stripe_obj_to_dict(stripe_sub)
+            _refresh_subscription_from_snapshot(sub, stripe_snapshot)
+        except stripe_error.InvalidRequestError:
+            # Abonnement Stripe introuvable -> marquer comme annulé localement
+            updated_fields = []
+            if sub.status != 'canceled':
+                sub.status = 'canceled'
+                updated_fields.append('status')
+            if sub.cancel_at_period_end:
+                sub.cancel_at_period_end = False
+                updated_fields.append('cancel_at_period_end')
+            if not sub.current_period_end or sub.current_period_end > timezone.now():
+                sub.current_period_end = timezone.now()
+                updated_fields.append('current_period_end')
+            if updated_fields:
+                if 'updated_at' not in updated_fields:
+                    updated_fields.append('updated_at')
+                sub.save(update_fields=updated_fields)
+        except stripe_error.StripeError as exc:
+            logger.warning(
+                "Stripe sync failed for subscription %s (user=%s): %s",
+                stripe_id,
+                getattr(user, 'id', None),
+                exc
+            )
+            continue
+
+    return subs
+
+
+def _build_gifted_subscriptions_from_stripe(stripe_subscriptions, current_user):
+    """Construit la liste des abonnements offerts par l'utilisateur courant."""
+    if not stripe_subscriptions or not current_user:
+        return []
+
+    current_user_id = str(current_user.id)
+    gift_entries = []
+    beneficiary_ids = set()
+
+    for stripe_sub in stripe_subscriptions:
+        metadata = stripe_sub.get('metadata') or {}
+        payer_id = metadata.get('payer_user_id')
+        beneficiary_id = metadata.get('user_id')
+        if not payer_id or str(payer_id) != current_user_id:
+            continue
+        if beneficiary_id and str(beneficiary_id) == current_user_id:
+            continue
+        gift_entries.append((stripe_sub, metadata))
+        if beneficiary_id:
+            try:
+                beneficiary_ids.add(int(beneficiary_id))
+            except (TypeError, ValueError):
+                pass
+
+    beneficiary_lookup = {}
+    if beneficiary_ids:
+        try:
+            beneficiary_lookup = {
+                u.id: u for u in User.objects.filter(id__in=beneficiary_ids)
+            }
+        except Exception:
+            beneficiary_lookup = {}
+
+    gifted_payloads = []
+    for stripe_sub, metadata in gift_entries:
+        beneficiary_id = metadata.get('user_id')
+        beneficiary_obj = None
+        if beneficiary_id:
+            try:
+                beneficiary_obj = beneficiary_lookup.get(int(beneficiary_id))
+            except (TypeError, ValueError):
+                beneficiary_obj = None
+
+        beneficiary_email = (
+            metadata.get('beneficiary_email') or
+            getattr(beneficiary_obj, 'email', None)
+        )
+        beneficiary_first = getattr(beneficiary_obj, 'first_name', '') if beneficiary_obj else ''
+        beneficiary_last = getattr(beneficiary_obj, 'last_name', '') if beneficiary_obj else ''
+        beneficiary_display = ' '.join([p for p in [beneficiary_first, beneficiary_last] if p]).strip()
+
+        niveau_id = metadata.get('niveau_pays_id')
+        niveau_obj = _fetch_niveau_by_id(niveau_id) if niveau_id else None
+        niveau_payload = None
+        if niveau_obj:
+            niveau_payload = {
+                'id': niveau_obj.id,
+                'nom': niveau_obj.nom,
+                'pays': {
+                    'id': niveau_obj.pays.id,
+                    'nom': niveau_obj.pays.nom,
+                    'drapeau_emoji': getattr(niveau_obj.pays, 'drapeau_emoji', None)
+                } if getattr(niveau_obj, 'pays', None) else None
+            }
+
+        plan_obj = None
+        plan_id = metadata.get('plan_id')
+        if plan_id:
+            try:
+                plan_obj = SubscriptionPlan.objects.filter(id=int(plan_id)).first()
+            except (TypeError, ValueError):
+                plan_obj = None
+        if not plan_obj:
+            price_id = None
+            try:
+                items = stripe_sub.get('items', {}).get('data', [])
+                if items:
+                    price_id = items[0].get('price', {}).get('id')
+            except Exception:
+                price_id = None
+            if price_id:
+                plan_obj = SubscriptionPlan.objects.filter(stripe_price_id=price_id).first()
+
+        stripe_price = _extract_price_from_stripe_subscription(stripe_sub)
+        plan_payload = _build_plan_payload(plan_obj, stripe_price, stripe_sub)
+
+        status = _map_stripe_status(stripe_sub.get('status'))
+        start_dt = _from_timestamp(stripe_sub.get('current_period_start'))
+        end_dt = _from_timestamp(stripe_sub.get('current_period_end'))
+        trial_dt = _from_timestamp(stripe_sub.get('trial_end'))
+        started_dt = _from_timestamp(stripe_sub.get('start_date')) or start_dt
+
+        gifted_payloads.append({
+            'stripe_subscription_id': stripe_sub.get('id'),
+            'status': status,
+            'is_active': _is_stripe_subscription_active(stripe_sub),
+            'is_trial': status == 'trialing',
+            'current_period_start': start_dt.isoformat() if start_dt else None,
+            'current_period_end': end_dt.isoformat() if end_dt else None,
+            'trial_end': trial_dt.isoformat() if trial_dt else None,
+            'cancel_at_period_end': bool(stripe_sub.get('cancel_at_period_end')),
+            'started_at': started_dt.isoformat() if started_dt else None,
+            'plan': plan_payload,
+            'niveau': niveau_payload,
+            'niveau_label': _level_label_from_metadata(metadata),
+            'beneficiary': {
+                'id': beneficiary_obj.id if beneficiary_obj else None,
+                'email': beneficiary_email,
+                'first_name': beneficiary_first,
+                'last_name': beneficiary_last,
+                'display_name': beneficiary_display or beneficiary_email or ''
+            }
+        })
+
+    return gifted_payloads
+
+
 def _get_stripe_customer_id(user):
+    try:
+        customer_id = getattr(user, 'stripe_customer_id', None)
+        if customer_id:
+            return customer_id
+    except Exception:
+        pass
+
     try:
         subscription = user.subscription
         if subscription and subscription.stripe_customer_id:
@@ -499,7 +710,14 @@ def _create_stripe_customer(user):
         name=f"{user.first_name} {user.last_name}",
         metadata={'user_id': user.id}
     )
-    return customer.id
+    customer_id = customer.id
+    try:
+        if hasattr(user, 'stripe_customer_id') and user.stripe_customer_id != customer_id:
+            user.stripe_customer_id = customer_id
+            user.save(update_fields=['stripe_customer_id'])
+    except Exception:
+        pass
+    return customer_id
 
 
 def _list_stripe_subscriptions(user, limit=50):
@@ -579,6 +797,11 @@ class CreateCheckoutSessionView(APIView):
             existing_customer_id = _get_stripe_customer_id(payer_user)
             if existing_customer_id:
                 customer_id = existing_customer_id
+                # Mettre à jour l'email du customer Stripe si différent
+                try:
+                    stripe.Customer.modify(customer_id, email=payer_user.email)
+                except stripe_error.StripeError as e:
+                    logger.warning(f"Could not update Stripe customer email: {e}")
             else:
                 customer_id = _create_stripe_customer(payer_user)
             
@@ -588,13 +811,12 @@ class CreateCheckoutSessionView(APIView):
 
             # Vérifier si le BÉNÉFICIAIRE a déjà un abonnement pour ce niveau
             if plan_mode == 'subscription':
-                has_level_subscription = UserSubscription.objects.filter(
-                    user=beneficiary_user,
-                    niveau_pays=niveau_obj
-                ).filter(
-                    models.Q(status__in=['active', 'trialing']) |
-                    models.Q(cancel_at_period_end=True, current_period_end__gt=timezone.now())
-                ).exists()
+                synced_subs = _sync_level_subscriptions_from_stripe(beneficiary_user, niveau_obj)
+                if not synced_subs:
+                    synced_subs = list(
+                        UserSubscription.objects.filter(user=beneficiary_user, niveau_pays=niveau_obj)
+                    )
+                has_level_subscription = any(sub.is_active for sub in synced_subs)
                 if has_level_subscription:
                     if beneficiary_email:
                         return JsonResponse({
@@ -685,6 +907,18 @@ def build_subscription_status(user):
     primary_subscription = None
     processed_stripe_ids = set()
     stripe_subscriptions = _list_stripe_subscriptions(user)
+    gifted_subscriptions = _build_gifted_subscriptions_from_stripe(stripe_subscriptions, user)
+    if stripe_subscriptions:
+        filtered_subs = []
+        current_user_id = str(user.id)
+        for stripe_sub in stripe_subscriptions:
+            metadata = stripe_sub.get('metadata') or {}
+            meta_user_id = metadata.get('user_id')
+            # Si metadata.user_id est présent et ne correspond pas, ignorer (cadeaux)
+            if meta_user_id and str(meta_user_id) != current_user_id:
+                continue
+            filtered_subs.append(stripe_sub)
+        stripe_subscriptions = filtered_subs
     stripe_lookup = {
         stripe_sub.get('id'): stripe_sub
         for stripe_sub in stripe_subscriptions
@@ -702,7 +936,11 @@ def build_subscription_status(user):
             primary_subscription = payload
 
     for sub in subscriptions_qs:
-        sub = _refresh_subscription_from_stripe(sub)
+        stripe_snapshot = stripe_lookup.get(sub.stripe_subscription_id)
+        if stripe_snapshot:
+            sub = _refresh_subscription_from_snapshot(sub, stripe_snapshot)
+        else:
+            sub = _refresh_subscription_from_stripe(sub)
         plan = getattr(sub, 'plan', None)
         niveau_obj = getattr(sub, 'niveau_pays', None)
         niveau_payload = None
@@ -717,7 +955,6 @@ def build_subscription_status(user):
                 } if getattr(niveau_obj, 'pays', None) else None
             }
 
-        stripe_snapshot = stripe_lookup.get(sub.stripe_subscription_id)
         if stripe_snapshot and sub.stripe_subscription_id:
             processed_stripe_ids.add(sub.stripe_subscription_id)
         stripe_price = _extract_price_from_stripe_subscription(stripe_snapshot)
@@ -912,6 +1149,7 @@ def build_subscription_status(user):
         or response.get('has_active_pass')
         or response.get('has_manual_access')
     )
+    response['gifted_subscriptions'] = gifted_subscriptions
     response['can_subscribe'] = True
     return response
 
@@ -934,6 +1172,8 @@ def _sync_payment_history_from_stripe(user, limit=12):
         subscription = None
 
     customer_id = getattr(subscription, 'stripe_customer_id', None)
+    if not customer_id:
+        customer_id = getattr(user, 'stripe_customer_id', None)
     if not customer_id:
         return 0
 
@@ -1099,11 +1339,16 @@ class InvoiceListView(APIView):
     def get(self, request):
         all_param = (request.GET.get('all', 'false').lower() == 'true')
         try:
+            page = int(request.GET.get('page', 1))
+        except (TypeError, ValueError):
+            page = 1
+        page = max(1, page)
+        try:
             requested_limit = int(request.GET.get('limit', 50))
         except (TypeError, ValueError):
             requested_limit = 50
         requested_limit = max(1, min(requested_limit, 500))
-        sync_target = 200 if all_param else max(12, requested_limit)
+        sync_target = 200 if all_param else max(200, requested_limit * page)
 
         # Synchroniser les factures Stripe au cas où le webhook n'aurait pas été reçu
         try:
@@ -1114,14 +1359,17 @@ class InvoiceListView(APIView):
         invoices = []
         try:
             qs = PaymentHistory.objects.filter(user=request.user).order_by('-created_at')
+            total_count = qs.count()
             if not all_param:
-                qs = qs[:requested_limit]
+                offset = (page - 1) * requested_limit
+                qs = qs[offset:offset + requested_limit]
+            payments = list(qs)
         except DatabaseError as exc:
             logger.error(f"InvoiceList DB error: {exc}")
             return JsonResponse({
                 'detail': 'Factures indisponibles. Assurez-vous d\'avoir appliqué les dernières migrations backend.'
             }, status=503)
-        for payment in qs:
+        for payment in payments:
             pdf_url, hosted_url = _hydrate_payment_history_invoice(payment)
             plan_mode = _resolve_payment_plan_mode(payment)
             plan_name = _resolve_payment_plan_name(payment, plan_mode)
@@ -1142,7 +1390,14 @@ class InvoiceListView(APIView):
                 'period_end': payment.period_end.isoformat() if payment.period_end else None,
                 'niveau_id': payment.niveau_pays_id,
             })
-        return JsonResponse({'invoices': invoices})
+        payload = {'invoices': invoices}
+        if not all_param:
+            payload.update({
+                'page': page,
+                'page_size': requested_limit,
+                'total': total_count
+            })
+        return JsonResponse(payload)
 
 
 class InvoiceEmailView(APIView):
@@ -1194,6 +1449,9 @@ class CheckoutSessionStatusView(APIView):
         metadata = session.get('metadata') or {}
         session_user_id = metadata.get('user_id')
         payer_user_id = metadata.get('payer_user_id')  # Pour les achats parent → enfant
+        is_gift = metadata.get('is_gift') == 'true'
+        is_beneficiary = False
+        is_payer = False
         
         # Vérifier que la session appartient à l'utilisateur (soit comme bénéficiaire, soit comme payeur)
         if session_user_id or payer_user_id:
@@ -1220,9 +1478,27 @@ class CheckoutSessionStatusView(APIView):
 
         request.user.refresh_from_db()
         status_payload = build_subscription_status(request.user)
+        beneficiary_label = ''
+        beneficiary_email = metadata.get('beneficiary_email')
+        if beneficiary_email:
+            beneficiary_label = beneficiary_email
+        elif session_user_id:
+            try:
+                beneficiary_user = User.objects.filter(id=session_user_id).first()
+                if beneficiary_user:
+                    beneficiary_label = beneficiary_user.full_name or beneficiary_user.email or ''
+            except Exception:
+                beneficiary_label = ''
+
         return JsonResponse({
             'status': status_payload,
-            'has_access': status_payload.get('has_access', False)
+            'has_access': status_payload.get('has_access', False),
+            'session': {
+                'is_gift': is_gift,
+                'is_payer': is_payer,
+                'is_beneficiary': is_beneficiary,
+                'beneficiary_label': beneficiary_label
+            }
         })
 
 class CancelSubscriptionView(APIView):
@@ -1874,6 +2150,15 @@ def stripe_webhook(request):
 def handle_checkout_session_completed(session):
     """Gérer la completion d'une session de checkout"""
     try:
+        # Vérifier que la session est bien payée avant de continuer
+        session_status = session.get('status')
+        payment_status = session.get('payment_status')
+        
+        # Ne pas traiter si la session n'est pas complète ou le paiement pas confirmé
+        if session_status != 'complete' or payment_status not in ('paid', 'no_payment_required'):
+            logger.info(f"Session {session.get('id')} ignorée: status={session_status}, payment_status={payment_status}")
+            return
+        
         user_id = session['metadata']['user_id']
         plan_id = session['metadata']['plan_id']
         niveau_id = session['metadata'].get('niveau_pays_id')
@@ -1937,47 +2222,29 @@ def handle_checkout_session_completed(session):
                     updated_fields.append('pays')
             if updated_fields:
                 user.save(update_fields=updated_fields)
-        
-        # Envoyer un email de notification à l'élève si c'est un achat parent → enfant
-        metadata = session.get('metadata', {})
-        is_gift = metadata.get('is_gift') == 'true'
-        payer_user_id = metadata.get('payer_user_id')
-        payer = None
-        
-        if is_gift and payer_user_id:
+
+        # Envoyer les emails d'abonnement dès que possible.
+        # - Certains environnements n'écoutent pas (ou mal) invoice.payment_succeeded
+        # - Stripe peut livrer les webhooks dans un ordre différent (race condition)
+        # On tente donc de finaliser via la dernière facture de la souscription.
+        latest_invoice = subscription_data.get('latest_invoice')
+        latest_invoice_id = None
+        if isinstance(latest_invoice, str):
+            latest_invoice_id = latest_invoice
+        elif isinstance(latest_invoice, dict):
+            latest_invoice_id = latest_invoice.get('id')
+
+        if latest_invoice_id:
             try:
-                payer = User.objects.get(id=payer_user_id)
-                # Notifier l'élève qu'il a reçu un abonnement
-                EmailService.send_gift_subscription_notification(
-                    recipient=user,
-                    gifter=payer,
-                    plan=plan,
-                    niveau=niveau_obj
+                invoice = stripe.Invoice.retrieve(latest_invoice_id, expand=['lines'])
+                handle_payment_succeeded(invoice)
+            except Exception as exc:
+                logger.warning(
+                    "Impossible de finaliser l'abonnement via latest_invoice (session=%s, invoice=%s): %s",
+                    session.get('id'),
+                    latest_invoice_id,
+                    exc,
                 )
-                logger.info(f"Email de cadeau d'abonnement envoyé à {user.email} de la part de {payer.email}")
-            except User.DoesNotExist:
-                logger.warning(f"Payeur {payer_user_id} introuvable pour envoi email cadeau")
-            except Exception as email_exc:
-                logger.error(f"Erreur envoi email cadeau abonnement: {email_exc}")
-        
-        # Envoyer un email de confirmation à l'abonné (sauf si c'est un cadeau, l'email cadeau suffit)
-        if not is_gift:
-            try:
-                EmailService.send_subscription_confirmation(user, plan, niveau_obj)
-            except Exception as email_exc:
-                logger.error(f"Erreur envoi email confirmation abonnement: {email_exc}")
-        
-        # Notifier l'admin (contact@optitab.net) du nouvel abonnement
-        try:
-            EmailService.send_new_subscription_notification_to_admin(
-                user=user,
-                plan=plan,
-                niveau=niveau_obj,
-                is_gift=is_gift,
-                payer=payer
-            )
-        except Exception as email_exc:
-            logger.error(f"Erreur envoi notification admin nouvel abonnement: {email_exc}")
         
     except Exception as e:
         logger.error(f"Erreur dans handle_checkout_session_completed: {e}")
@@ -1985,6 +2252,15 @@ def handle_checkout_session_completed(session):
 def handle_checkout_session_payment_completed(session):
     """Gérer la completion d'une session de checkout en mode paiement unique"""
     try:
+        # Vérifier que la session est bien payée avant de continuer
+        session_status = session.get('status')
+        payment_status = session.get('payment_status')
+        
+        # Ne pas traiter si la session n'est pas complète ou le paiement pas confirmé
+        if session_status != 'complete' or payment_status not in ('paid', 'no_payment_required'):
+            logger.info(f"Session paiement {session.get('id')} ignorée: status={session_status}, payment_status={payment_status}")
+            return
+        
         metadata = session.get('metadata') or {}
         user_id = metadata.get('user_id')
         plan_id = metadata.get('plan_id')
@@ -2009,6 +2285,13 @@ def handle_checkout_session_payment_completed(session):
             except Niveau.DoesNotExist:
                 niveau_obj = None
 
+        # Éviter les doublons si la session a déjà été traitée
+        payment_intent = session.get('payment_intent') or ''
+        if payment_intent and AccessPass.objects.filter(stripe_payment_intent_id=payment_intent).exists():
+            return
+        if payment_intent and PaymentHistory.objects.filter(stripe_payment_intent_id=payment_intent).exists():
+            return
+
         # Déterminer la durée d'accès
         days = _resolve_access_days(plan, metadata)
         start = timezone.now()
@@ -2020,31 +2303,36 @@ def handle_checkout_session_payment_completed(session):
             plan=plan,
             starts_at=start,
             ends_at=ends,
-            stripe_payment_intent_id=session.get('payment_intent')
+            stripe_payment_intent_id=payment_intent or None
         )
 
         # Journaliser le paiement
         amount_total = session.get('amount_total')  # en cents
         currency = (session.get('currency') or 'eur').upper()
         level_label = _format_level_label_from_obj(niveau_obj)
+        payment_created = False
+        payment_history = None
         if amount_total:
-            PaymentHistory.objects.create(
+            payment_history, created = PaymentHistory.objects.get_or_create(
                 user=user,
-                stripe_payment_intent_id=session.get('payment_intent', ''),
-                stripe_invoice_id=session.get('invoice'),
-                hosted_invoice_url='',
-                invoice_pdf_url='',
-                amount=(amount_total / 100.0),
-                currency=currency,
-                status='succeeded',
-                description=_append_level_to_description(f"Pass {plan.name} ({days} jours)", level_label),
-                plan_name=plan.name,
-                plan_mode='one_time',
-                period_start=start,
-                period_end=ends,
-                niveau_pays=niveau_obj,
-                niveau_label=level_label
+                stripe_payment_intent_id=payment_intent or f"session_{session.get('id')}",
+                defaults={
+                    'stripe_invoice_id': session.get('invoice'),
+                    'hosted_invoice_url': '',
+                    'invoice_pdf_url': '',
+                    'amount': (amount_total / 100.0),
+                    'currency': currency,
+                    'status': 'succeeded',
+                    'description': _append_level_to_description(f"Pass {plan.name} ({days} jours)", level_label),
+                    'plan_name': plan.name,
+                    'plan_mode': 'one_time',
+                    'period_start': start,
+                    'period_end': ends,
+                    'niveau_pays': niveau_obj,
+                    'niveau_label': level_label
+                }
             )
+            payment_created = created
 
         if niveau_obj:
             updated_fields = []
@@ -2062,7 +2350,7 @@ def handle_checkout_session_payment_completed(session):
         payer_user_id = metadata.get('payer_user_id')
         payer = None
         
-        if is_gift and payer_user_id:
+        if is_gift and payer_user_id and payment_created:
             try:
                 payer = User.objects.get(id=payer_user_id)
                 # Notifier l'élève qu'il a reçu un pass
@@ -2072,6 +2360,13 @@ def handle_checkout_session_payment_completed(session):
                     plan=plan,
                     niveau=niveau_obj
                 )
+                EmailService.send_gift_purchase_confirmation(
+                    payer=payer,
+                    recipient=user,
+                    plan=plan,
+                    niveau=niveau_obj,
+                    is_pass=True
+                )
                 logger.info(f"Email de cadeau de pass envoyé à {user.email} de la part de {payer.email}")
             except User.DoesNotExist:
                 logger.warning(f"Payeur {payer_user_id} introuvable pour envoi email cadeau")
@@ -2079,23 +2374,30 @@ def handle_checkout_session_payment_completed(session):
                 logger.error(f"Erreur envoi email cadeau pass: {email_exc}")
         
         # Envoyer un email de confirmation à l'abonné (sauf si c'est un cadeau)
-        if not is_gift:
+        if not is_gift and payment_created:
             try:
                 EmailService.send_subscription_confirmation(user, plan, niveau_obj)
             except Exception as email_exc:
                 logger.error(f"Erreur envoi email confirmation pass: {email_exc}")
         
         # Notifier l'admin (contact@optitab.net) du nouvel achat
-        try:
-            EmailService.send_new_subscription_notification_to_admin(
-                user=user,
-                plan=plan,
-                niveau=niveau_obj,
-                is_gift=is_gift,
-                payer=payer
-            )
-        except Exception as email_exc:
-            logger.error(f"Erreur envoi notification admin nouveau pass: {email_exc}")
+        if payment_created:
+            try:
+                EmailService.send_new_subscription_notification_to_admin(
+                    user=user,
+                    plan=plan,
+                    niveau=niveau_obj,
+                    is_gift=is_gift,
+                    payer=payer
+                )
+            except Exception as email_exc:
+                logger.error(f"Erreur envoi notification admin nouveau pass: {email_exc}")
+            if payment_history:
+                try:
+                    payment_history.email_sent = True
+                    payment_history.save(update_fields=['email_sent'])
+                except Exception as email_exc:
+                    logger.error(f"Erreur mise à jour email_sent pass: {email_exc}")
             
     except Exception as e:
         logger.error(f"Erreur dans handle_checkout_session_payment_completed: {e}")
@@ -2111,34 +2413,188 @@ def handle_payment_succeeded(invoice):
         subscription = stripe.Subscription.retrieve(subscription_id)
         subscription_data = _stripe_obj_to_dict(subscription)
 
-        user_subscription = UserSubscription.objects.get(stripe_subscription_id=subscription_id)
-        user_subscription.status = 'active'
-        user_subscription.current_period_start = _from_timestamp(subscription_data.get('current_period_start'))
-        user_subscription.current_period_end = _from_timestamp(subscription_data.get('current_period_end'))
-        user_subscription.cancel_at_period_end = bool(subscription_data.get('cancel_at_period_end', user_subscription.cancel_at_period_end))
+        try:
+            user_subscription = UserSubscription.objects.get(stripe_subscription_id=subscription_id)
+        except UserSubscription.DoesNotExist:
+            # L'event invoice.payment_succeeded peut arriver avant checkout.session.completed.
+            # Fallback: recréer la souscription locale à partir des metadata Stripe.
+            logger.warning(
+                "Souscription locale introuvable pour %s lors de invoice.payment_succeeded (invoice=%s) - fallback via metadata",
+                subscription_id,
+                invoice_id,
+            )
+            metadata = subscription_data.get('metadata') or {}
+            invoice_meta = invoice.get('metadata') or {}
+            user_id = metadata.get('user_id') or invoice_meta.get('user_id')
+            plan_id = metadata.get('plan_id') or invoice_meta.get('plan_id')
+            niveau_id = metadata.get('niveau_pays_id') or invoice_meta.get('niveau_pays_id')
+
+            if not user_id or not plan_id:
+                logger.error(
+                    "Souscription locale introuvable et metadata manquante (subscription=%s, invoice=%s)",
+                    subscription_id,
+                    invoice_id,
+                )
+                return
+
+            user = User.objects.get(id=user_id)
+            plan = SubscriptionPlan.objects.get(id=plan_id)
+            niveau_obj = None
+            if niveau_id:
+                try:
+                    niveau_obj = Niveau.objects.get(id=niveau_id, est_actif=True)
+                except Niveau.DoesNotExist:
+                    niveau_obj = None
+
+            defaults = {
+                'user': user,
+                'plan': plan,
+                'stripe_customer_id': subscription_data.get('customer'),
+                'status': subscription_data.get('status', 'active'),
+                'current_period_start': _from_timestamp(subscription_data.get('current_period_start')),
+                'current_period_end': _from_timestamp(subscription_data.get('current_period_end')),
+                'trial_end': _from_timestamp(subscription_data.get('trial_end')),
+                'cancel_at_period_end': bool(subscription_data.get('cancel_at_period_end')),
+                'niveau_pays': niveau_obj,
+            }
+            user_subscription, _ = UserSubscription.objects.get_or_create(
+                stripe_subscription_id=subscription_id,
+                defaults=defaults,
+            )
+
+            if niveau_obj:
+                updated_fields = []
+                if user.niveau_pays_id != niveau_obj.id:
+                    user.niveau_pays = niveau_obj
+                    updated_fields.append('niveau_pays')
+                if user.pays_id != niveau_obj.pays_id:
+                    user.pays_id = niveau_obj.pays_id
+                    if 'pays' not in updated_fields:
+                        updated_fields.append('pays')
+                if updated_fields:
+                    user.save(update_fields=updated_fields)
+
+        stripe_status = subscription_data.get('status')
+        if stripe_status:
+            user_subscription.status = stripe_status
+        stripe_customer_id = subscription_data.get('customer')
+        if stripe_customer_id:
+            user_subscription.stripe_customer_id = stripe_customer_id
+
+        current_period_start = _from_timestamp(subscription_data.get('current_period_start'))
+        if current_period_start:
+            user_subscription.current_period_start = current_period_start
+        current_period_end = _from_timestamp(subscription_data.get('current_period_end'))
+        if current_period_end:
+            user_subscription.current_period_end = current_period_end
+        trial_end = _from_timestamp(subscription_data.get('trial_end'))
+        if trial_end:
+            user_subscription.trial_end = trial_end
+
+        user_subscription.cancel_at_period_end = bool(
+            subscription_data.get('cancel_at_period_end', user_subscription.cancel_at_period_end)
+        )
         user_subscription.save()
 
         # Enregistrer le paiement
         level_label = _format_level_label_from_obj(user_subscription.niveau_pays)
         period_start, period_end = _extract_invoice_period(invoice)
 
-        PaymentHistory.objects.create(
-            user=user_subscription.user,
-            stripe_payment_intent_id=invoice['payment_intent'],
-            stripe_invoice_id=invoice.get('id'),
-            hosted_invoice_url=invoice.get('hosted_invoice_url', '') or '',
-            invoice_pdf_url=invoice.get('invoice_pdf', '') or '',
-            amount=invoice['amount_paid'] / 100,  # Stripe utilise les centimes
-            currency=invoice['currency'].upper(),
-            status='succeeded',
-            description=_append_level_to_description(f"Paiement pour {user_subscription.plan.name}", level_label),
-            plan_name=user_subscription.plan.name,
-            plan_mode=user_subscription.plan.plan_mode or 'subscription',
-            period_start=period_start,
-            period_end=period_end,
-            niveau_pays=user_subscription.niveau_pays,
-            niveau_label=level_label
-        )
+        payment_intent = invoice.get('payment_intent') or (f"invoice_{invoice_id}" if invoice_id else None)
+        payment_history = None
+        payment_created = False
+        if payment_intent:
+            amount_paid = invoice.get('amount_paid')
+            if amount_paid is None:
+                amount_paid = invoice.get('total')
+            if amount_paid is None:
+                amount_paid = 0
+            currency = (invoice.get('currency') or 'eur').upper()
+            payment_history, payment_created = PaymentHistory.objects.get_or_create(
+                user=user_subscription.user,
+                stripe_invoice_id=invoice.get('id'),
+                defaults={
+                    'stripe_payment_intent_id': payment_intent,
+                    'hosted_invoice_url': invoice.get('hosted_invoice_url', '') or '',
+                    'invoice_pdf_url': invoice.get('invoice_pdf', '') or '',
+                    'amount': amount_paid / 100,
+                    'currency': currency,
+                    'status': 'succeeded',
+                    'description': _append_level_to_description(f"Paiement pour {user_subscription.plan.name}", level_label),
+                    'plan_name': user_subscription.plan.name,
+                    'plan_mode': user_subscription.plan.plan_mode or 'subscription',
+                    'period_start': period_start,
+                    'period_end': period_end,
+                    'niveau_pays': user_subscription.niveau_pays,
+                    'niveau_label': level_label
+                }
+            )
+
+        billing_reason = invoice.get('billing_reason')
+        # is_first_charge : true si c'est la première facture d'une nouvelle souscription
+        # billing_reason == 'subscription_create' est le signal officiel de Stripe
+        # payment_created indique que c'est un nouveau paiement (pas un doublon)
+        is_first_charge = billing_reason == 'subscription_create'
+        
+        # Fallback si billing_reason n'est pas disponible (appel manuel via CheckoutSessionStatusView)
+        if billing_reason is None and payment_created:
+            # C'est probablement une nouvelle souscription si le paiement vient d'être créé
+            is_first_charge = True
+
+        # Envoyer les emails uniquement après paiement confirmé
+        should_send_email = bool(payment_history) and not payment_history.email_sent and is_first_charge
+        if should_send_email:
+            metadata = subscription_data.get('metadata') or {}
+            is_gift = metadata.get('is_gift') == 'true'
+            payer_user_id = metadata.get('payer_user_id')
+            payer = None
+
+            if is_gift and payer_user_id:
+                try:
+                    payer = User.objects.get(id=payer_user_id)
+                    EmailService.send_gift_subscription_notification(
+                        recipient=user_subscription.user,
+                        gifter=payer,
+                        plan=user_subscription.plan,
+                        niveau=user_subscription.niveau_pays
+                    )
+                    EmailService.send_gift_purchase_confirmation(
+                        payer=payer,
+                        recipient=user_subscription.user,
+                        plan=user_subscription.plan,
+                        niveau=user_subscription.niveau_pays,
+                        is_pass=False
+                    )
+                except User.DoesNotExist:
+                    logger.warning("Payeur %s introuvable pour email cadeau", payer_user_id)
+                except Exception as email_exc:
+                    logger.error(f"Erreur envoi email cadeau abonnement: {email_exc}")
+
+            if not is_gift:
+                try:
+                    EmailService.send_subscription_confirmation(
+                        user_subscription.user,
+                        user_subscription.plan,
+                        user_subscription.niveau_pays
+                    )
+                except Exception as email_exc:
+                    logger.error(f"Erreur envoi email confirmation abonnement: {email_exc}")
+
+            try:
+                EmailService.send_new_subscription_notification_to_admin(
+                    user=user_subscription.user,
+                    plan=user_subscription.plan,
+                    niveau=user_subscription.niveau_pays,
+                    is_gift=is_gift,
+                    payer=payer
+                )
+            except Exception as email_exc:
+                logger.error(f"Erreur envoi notification admin nouvel abonnement: {email_exc}")
+            try:
+                payment_history.email_sent = True
+                payment_history.save(update_fields=['email_sent'])
+            except Exception as email_exc:
+                logger.error(f"Erreur mise à jour email_sent: {email_exc}")
         
     except Exception as e:
         logger.error(f"Erreur dans handle_payment_succeeded: {e}")

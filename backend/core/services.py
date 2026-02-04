@@ -345,7 +345,7 @@ class EmailService:
             return False
 
     @staticmethod
-    def send_gift_purchase_confirmation(payer, recipient, plan, niveau=None, is_pass=False):
+    def send_gift_purchase_confirmation(payer, recipient, plan, niveau=None, is_pass=False, invoice_link=None):
         """Envoie une confirmation au payeur lorsqu'il offre un abonnement ou un pass."""
         try:
             payer_name = (getattr(payer, 'first_name', '') or '').strip() or 'OptiTABien'
@@ -357,6 +357,7 @@ class EmailService:
 
             plan_name = getattr(plan, 'name', None) or getattr(plan, 'titre', None) or 'OptiTAB Premium'
             kind_label = 'pass' if is_pass else 'abonnement'
+            invoice_link = (invoice_link or '').strip() or None
 
             niveau_name = ''
             if niveau:
@@ -373,16 +374,42 @@ class EmailService:
             )
             if niveau_name:
                 text_body += f"Niveau : {niveau_name}\n"
+            text_body += "\n"
+
+            logo_url = EmailService._resolve_logo_url()
+            frontend_url = getattr(settings, 'FRONTEND_URL', '') or 'https://www.optitab.net'
+            frontend_base = frontend_url.rstrip('/')
+            subscription_url = f"{frontend_base}/subscription"
+            recipient_line = f"<strong>{recipient_name}</strong>" if recipient_name else "votre enfant"
+            level_line = f'<p style="margin:6px 0 0 0;color:#4338ca;font-size:14px;"><strong>Niveau :</strong> {niveau_name}</p>' if niveau_name else ''
+
+            if invoice_link:
+                text_body += (
+                    "\nVotre reçu / facture est disponible :\n"
+                    f"{invoice_link}\n"
+                )
             text_body += (
-                "\nVous pouvez retrouver les détails dans votre espace Abonnement.\n\n"
+                f"\nEspace Abonnement : {subscription_url}\n\n"
                 "Merci pour votre confiance,\n"
                 "L'équipe OptiTAB"
             )
 
-            logo_url = EmailService._resolve_logo_url()
-            frontend_url = getattr(settings, 'FRONTEND_URL', '') or 'https://www.optitab.net'
-            recipient_line = f"<strong>{recipient_name}</strong>" if recipient_name else "votre enfant"
-            level_line = f'<p style="margin:6px 0 0 0;color:#4338ca;font-size:14px;"><strong>Niveau :</strong> {niveau_name}</p>' if niveau_name else ''
+            receipt_block = ""
+            if invoice_link:
+                receipt_block = f"""
+                        <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:20px;text-align:center;">
+                          <p style="margin:0 0 12px 0;color:#111827;font-size:14px;line-height:1.6;">
+                            <strong>Télécharger votre reçu</strong>
+                          </p>
+                          <a href="{invoice_link}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 24px;border-radius:10px;font-size:15px;">
+                            Télécharger le reçu
+                          </a>
+                          <p style="margin:12px 0 0 0;color:#6b7280;font-size:12px;line-height:1.6;">
+                            Si le bouton ne fonctionne pas :<br/>
+                            <a href="{invoice_link}" style="color:#2563eb;text-decoration:none;word-break:break-all;">{invoice_link}</a>
+                          </p>
+                        </div>
+                """
 
             html_body = f"""
                 <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
@@ -404,8 +431,9 @@ class EmailService:
                           </p>
                           {level_line}
                         </div>
+                        {receipt_block}
                         <div style="text-align:center;">
-                          <a href="{frontend_url}/subscription" style="display:inline-block;background:#4f46e5;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 24px;border-radius:10px;font-size:15px;">
+                          <a href="{subscription_url}" style="display:inline-block;background:#4f46e5;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 24px;border-radius:10px;font-size:15px;">
                             Voir mes abonnements
                           </a>
                         </div>
@@ -973,13 +1001,17 @@ class EmailService:
         """
 
     @staticmethod
-    def send_subscription_confirmation(user, plan, niveau=None):
-        """Envoie un email de confirmation d'abonnement au nouvel abonné."""
+    def send_subscription_confirmation(user, plan, niveau=None, invoice_link=None):
+        """Envoie un email de confirmation d'abonnement au nouvel abonné.
+
+        invoice_link (optionnel) : URL Stripe (PDF ou page) permettant de télécharger le reçu/la facture.
+        """
         try:
             first_name = (user.first_name or '').strip() or 'OptiTABien'
             plan_name = getattr(plan, 'name', None) or 'OptiTAB Premium'
             billing_period = getattr(plan, 'billing_period', '')
             price = getattr(plan, 'price', None)
+            invoice_link = (invoice_link or '').strip() or None
             
             # Formater la période de facturation
             period_labels = {
@@ -1009,15 +1041,56 @@ class EmailService:
                 text_body += f"Montant : {price_str}\n"
             if niveau_name:
                 text_body += f"Niveau : {niveau_name}\n"
-            text_body += (
-                "\nVotre accès premium est maintenant activé. "
-                "Connectez-vous à votre compte pour profiter de tous les cours, exercices et fonctionnalités.\n\n"
-                "À très vite sur OptiTAB !\n"
-                "L'équipe OptiTAB"
-            )
             
             logo_url = EmailService._resolve_logo_url()
             frontend_url = getattr(settings, 'FRONTEND_URL', '') or 'https://www.optitab.net'
+            frontend_base = frontend_url.rstrip('/')
+            subscription_url = f"{frontend_base}/subscription"
+
+            text_body += (
+                "\nVotre accès premium est maintenant activé. "
+                "Connectez-vous à votre compte pour profiter de tous les cours, exercices et fonctionnalités.\n"
+            )
+            if invoice_link:
+                text_body += (
+                    "\nVotre reçu / facture est disponible :\n"
+                    f"{invoice_link}\n"
+                )
+            text_body += (
+                f"\nRetrouvez toutes vos factures dans votre espace Abonnement : {subscription_url}\n\n"
+                "À très vite sur OptiTAB !\n"
+                "L'équipe OptiTAB"
+            )
+
+            receipt_block = ""
+            if invoice_link:
+                receipt_block = f"""
+                        <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:20px;">
+                          <p style="margin:0 0 12px 0;color:#111827;font-size:15px;line-height:1.6;text-align:center;">
+                            <strong>Votre reçu est disponible</strong>
+                          </p>
+                          <div style="text-align:center;margin-bottom:10px;">
+                            <a href="{invoice_link}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 24px;border-radius:10px;font-size:15px;">
+                              Télécharger mon reçu
+                            </a>
+                          </div>
+                          <p style="margin:0;color:#6b7280;font-size:12px;line-height:1.6;text-align:center;">
+                            Si le bouton ne fonctionne pas, copiez ce lien :<br/>
+                            <a href="{invoice_link}" style="color:#2563eb;text-decoration:none;word-break:break-all;">{invoice_link}</a>
+                          </p>
+                        </div>
+                """
+            else:
+                receipt_block = f"""
+                        <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:20px;text-align:center;">
+                          <p style="margin:0;color:#111827;font-size:14px;line-height:1.6;">
+                            Vos factures seront disponibles dans votre espace Abonnement.
+                          </p>
+                          <p style="margin:10px 0 0 0;">
+                            <a href="{subscription_url}" style="color:#2563eb;text-decoration:none;font-weight:600;">Accéder à mes factures</a>
+                          </p>
+                        </div>
+                """
             
             html_body = f"""
                 <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
@@ -1044,11 +1117,15 @@ class EmailService:
                           {f'<p style="margin:12px 0 0 0;color:#15803d;font-size:14px;"><strong>Montant :</strong> {price_str}</p>' if price_str else ''}
                           {f'<p style="margin:8px 0 0 0;color:#15803d;font-size:14px;"><strong>Niveau :</strong> {niveau_name}</p>' if niveau_name else ''}
                         </div>
+                        {receipt_block}
                         <div style="text-align:center;">
-                          <a href="{frontend_url}/dashboard" style="display:inline-block;background:#22c55e;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:10px;font-size:15px;">
+                          <a href="{frontend_base}/dashboard" style="display:inline-block;background:#22c55e;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:10px;font-size:15px;">
                             Accéder à mon espace
                           </a>
                         </div>
+                        <p style="margin:14px 0 0 0;color:#6b7280;font-size:13px;line-height:1.6;text-align:center;">
+                          Vos factures : <a href="{subscription_url}" style="color:#2563eb;text-decoration:none;font-weight:600;">espace Abonnement</a>
+                        </p>
                       </td>
                     </tr>
                     <tr>

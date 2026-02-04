@@ -251,6 +251,119 @@ def _append_level_to_description(description, level_label, include_hint=False):
     return description
 
 
+STRIPE_INVOICE_CUSTOM_FIELDS_MAX = 4
+STRIPE_TEMP_CUSTOM_FIELD_NAMES = ('Niveau', 'Bénéficiaire')
+
+
+def _sanitize_stripe_custom_field_value(value: str, limit: int) -> str:
+    return (value or '').strip().replace('\n', ' ')[:limit]
+
+
+def _merge_stripe_custom_fields(existing_fields, requested_fields, max_fields=STRIPE_INVOICE_CUSTOM_FIELDS_MAX):
+    """Merge/upsert Stripe custom_fields while preserving order and constraints."""
+    if not isinstance(existing_fields, list):
+        existing_fields = []
+
+    normalized_existing = []
+    existing_by_name = {}
+    for field in existing_fields:
+        if not isinstance(field, dict):
+            continue
+        name = str(field.get('name') or '').strip()
+        value = str(field.get('value') or '').strip()
+        if not name:
+            continue
+        if name not in existing_by_name:
+            normalized_existing.append(name)
+        existing_by_name[name] = value
+
+    merged = []
+    used = set()
+
+    # Keep existing order first, upserting requested values when matching.
+    for name in normalized_existing:
+        if name in used:
+            continue
+        value = existing_by_name.get(name, '')
+        for req_name, req_value in requested_fields:
+            if req_name == name and req_value:
+                value = req_value
+        merged.append({
+            'name': _sanitize_stripe_custom_field_value(name, 40),
+            'value': _sanitize_stripe_custom_field_value(value, 140),
+        })
+        used.add(name)
+
+    # Append requested fields that are not present yet.
+    for name, value in requested_fields:
+        if not value or name in used:
+            continue
+        if len(merged) >= max_fields:
+            break
+        merged.append({
+            'name': _sanitize_stripe_custom_field_value(name, 40),
+            'value': _sanitize_stripe_custom_field_value(value, 140),
+        })
+        used.add(name)
+
+    return merged[:max_fields]
+
+
+def _prime_customer_invoice_custom_fields(customer_id, metadata):
+    """Set temporary customer-level invoice custom fields so the very first invoice includes them.
+
+    Stripe peut finaliser la 1ère facture d'une souscription immédiatement. Dans ce cas, `invoice.created`
+    arrive trop tard pour modifier `invoice.custom_fields`. En plaçant les champs au niveau `customer`,
+    la facture les hérite à la création.
+    """
+    if not customer_id:
+        return
+    try:
+        niveau_label = (_level_label_from_metadata(metadata) or '').strip()
+        is_gift = str((metadata or {}).get('is_gift') or '').lower() == 'true'
+        beneficiary_email = ((metadata or {}).get('beneficiary_email') or '').strip()
+
+        requested = []
+        if niveau_label:
+            requested.append(('Niveau', niveau_label))
+        if is_gift and beneficiary_email:
+            requested.append(('Bénéficiaire', beneficiary_email))
+        if not requested:
+            return
+
+        customer = stripe.Customer.retrieve(customer_id)
+        customer_data = _stripe_obj_to_dict(customer)
+        existing = ((customer_data.get('invoice_settings') or {}).get('custom_fields') or [])
+        merged = _merge_stripe_custom_fields(existing, requested)
+        if merged == existing:
+            return
+        stripe.Customer.modify(customer_id, invoice_settings={'custom_fields': merged})
+    except stripe_error.StripeError as exc:
+        logger.warning("Impossible de préparer les custom_fields client Stripe (%s): %s", customer_id, exc)
+
+
+def _clear_customer_temp_invoice_custom_fields(customer_id, names=STRIPE_TEMP_CUSTOM_FIELD_NAMES):
+    """Remove only OptiTAB temporary fields from customer.invoice_settings.custom_fields."""
+    if not customer_id:
+        return
+    try:
+        customer = stripe.Customer.retrieve(customer_id)
+        customer_data = _stripe_obj_to_dict(customer)
+        existing = ((customer_data.get('invoice_settings') or {}).get('custom_fields') or [])
+        if not isinstance(existing, list) or not existing:
+            return
+        names_set = set(names or [])
+        filtered = [
+            field for field in existing
+            if isinstance(field, dict) and str(field.get('name') or '').strip() not in names_set
+        ]
+        if filtered == existing:
+            return
+        stripe.Customer.modify(customer_id, invoice_settings={'custom_fields': filtered})
+    except stripe_error.StripeError as exc:
+        logger.warning("Impossible de nettoyer les custom_fields client Stripe (%s): %s", customer_id, exc)
+
+
 def _resolve_payment_plan_mode(payment):
     stored_mode = (getattr(payment, 'plan_mode', '') or '').lower()
     if stored_mode in ('subscription', 'one_time', 'payment'):
@@ -843,6 +956,12 @@ class CreateCheckoutSessionView(APIView):
                 metadata['is_gift'] = 'true'
                 metadata['beneficiary_email'] = beneficiary_user.email
 
+            # Important: certains comptes Stripe finalisent immédiatement la 1ère facture d'une souscription.
+            # Dans ce cas, invoice.created arrive trop tard pour modifier la facture. On prépare donc des
+            # custom_fields au niveau Customer afin qu'ils soient hérités à la création.
+            if is_subscription:
+                _prime_customer_invoice_custom_fields(customer_id, metadata)
+
             create_kwargs = dict(
                 customer=customer_id,
                 payment_method_types=['card'],
@@ -876,6 +995,8 @@ class CreateCheckoutSessionView(APIView):
                     )
                     existing_customer_id = new_customer_id
                     create_kwargs['customer'] = new_customer_id
+                    if is_subscription:
+                        _prime_customer_invoice_custom_fields(new_customer_id, metadata)
                     checkout_session = stripe.checkout.Session.create(**create_kwargs)
                 else:
                     raise
@@ -2132,6 +2253,9 @@ def stripe_webhook(request):
             handle_checkout_session_completed(session)
         else:
             handle_checkout_session_payment_completed(session)
+
+    elif event['type'] == 'invoice.created':
+        handle_invoice_created(event['data']['object'])
     
     elif event['type'] == 'invoice.payment_succeeded':
         handle_payment_succeeded(event['data']['object'])
@@ -2147,8 +2271,130 @@ def stripe_webhook(request):
     
     return HttpResponse(status=200)
 
+def handle_invoice_created(invoice):
+    """Ajoute des informations (classe/niveau, bénéficiaire) sur la facture Stripe.
+
+    Important : le libellé d'une ligne de facture Stripe (Product/Price) n'est pas dynamique.
+    Pour afficher "la classe" sur la facture sans multiplier les Prices, on utilise les custom_fields
+    (affichés sur le PDF et la facture hébergée Stripe).
+    """
+    try:
+        invoice_id = invoice.get('id')
+        if not invoice_id:
+            return
+
+        invoice_status = invoice.get('status')
+        # Les champs affichés sont généralement modifiables uniquement tant que la facture est en brouillon.
+        if invoice_status and invoice_status != 'draft':
+            logger.info(
+                "invoice.created reçu pour %s mais status=%s (facture déjà finalisée) → impossible d'ajouter le niveau",
+                invoice_id,
+                invoice_status,
+            )
+            return
+
+        subscription_id = invoice.get('subscription')
+        if isinstance(subscription_id, dict):
+            subscription_id = subscription_id.get('id')
+        if not subscription_id:
+            return
+
+        # Récupérer les metadata utiles (priorité: subscription_details -> invoice.metadata -> subscription.metadata)
+        metadata = {}
+        subscription_details = invoice.get('subscription_details') or {}
+        if isinstance(subscription_details, dict):
+            sub_meta = subscription_details.get('metadata') or {}
+            if isinstance(sub_meta, dict):
+                metadata.update(sub_meta)
+        inv_meta = invoice.get('metadata') or {}
+        if isinstance(inv_meta, dict):
+            metadata.update(inv_meta)
+
+        if not metadata:
+            subscription = stripe.Subscription.retrieve(subscription_id)
+            subscription_data = _stripe_obj_to_dict(subscription)
+            metadata = subscription_data.get('metadata') or {}
+
+        if not isinstance(metadata, dict):
+            metadata = {}
+
+        niveau_label = ''
+        try:
+            local_sub = (
+                UserSubscription.objects
+                .select_related('niveau_pays', 'niveau_pays__pays')
+                .filter(stripe_subscription_id=subscription_id)
+                .first()
+            )
+            if local_sub and local_sub.niveau_pays:
+                niveau_label = _format_level_label_from_obj(local_sub.niveau_pays)
+        except Exception:
+            niveau_label = ''
+
+        if not niveau_label:
+            niveau_label = (_level_label_from_metadata(metadata) or '').strip()
+
+        is_gift = str(metadata.get('is_gift') or '').lower() == 'true'
+        beneficiary_email = (metadata.get('beneficiary_email') or '').strip()
+
+        # Rien à faire si on n'a aucune info contextuelle.
+        if not niveau_label and not (is_gift and beneficiary_email):
+            return
+
+        # Préserver les champs existants (ex: configurés via Stripe Dashboard), et upsert les nôtres.
+        existing_fields = invoice.get('custom_fields') or []
+        if not isinstance(existing_fields, list):
+            existing_fields = []
+
+        requested_fields = []
+        if niveau_label:
+            requested_fields.append(('Niveau', niveau_label))
+        if is_gift and beneficiary_email:
+            requested_fields.append(('Bénéficiaire', beneficiary_email))
+
+        existing_names = set()
+        for field in existing_fields:
+            if not isinstance(field, dict):
+                continue
+            name = str(field.get('name') or '').strip()
+            if name:
+                existing_names.add(name)
+
+        requested_names = {name for name, _ in requested_fields}
+        has_any_requested = bool(existing_names & requested_names)
+
+        # Si déjà 4 champs et qu'aucun de nos champs n'existe, on ne peut pas ajouter → fallback footer.
+        if len(existing_names) >= STRIPE_INVOICE_CUSTOM_FIELDS_MAX and not has_any_requested:
+            footer_lines = []
+            if niveau_label:
+                footer_lines.append(f"Niveau : {niveau_label}")
+            if is_gift and beneficiary_email:
+                footer_lines.append(f"Bénéficiaire : {beneficiary_email}")
+
+            if not footer_lines:
+                return
+
+            current_footer = (invoice.get('footer') or '').strip()
+            new_footer = current_footer
+            appendix = "\n".join(footer_lines)
+            if appendix not in new_footer:
+                new_footer = (new_footer + "\n" if new_footer else "") + appendix
+
+            stripe.Invoice.modify(invoice_id, footer=new_footer[:500])
+            return
+
+        merged_fields = _merge_stripe_custom_fields(existing_fields, requested_fields)
+        if merged_fields != existing_fields:
+            stripe.Invoice.modify(invoice_id, custom_fields=merged_fields)
+        return
+
+    except Exception as exc:
+        logger.warning("handle_invoice_created: impossible de personnaliser la facture (%s): %s", invoice.get('id'), exc)
+
 def handle_checkout_session_completed(session):
     """Gérer la completion d'une session de checkout"""
+    customer_id = session.get('customer')
+    should_clear_customer_fields = False
     try:
         # Vérifier que la session est bien payée avant de continuer
         session_status = session.get('status')
@@ -2158,6 +2404,8 @@ def handle_checkout_session_completed(session):
         if session_status != 'complete' or payment_status not in ('paid', 'no_payment_required'):
             logger.info(f"Session {session.get('id')} ignorée: status={session_status}, payment_status={payment_status}")
             return
+
+        should_clear_customer_fields = True
         
         user_id = session['metadata']['user_id']
         plan_id = session['metadata']['plan_id']
@@ -2248,6 +2496,10 @@ def handle_checkout_session_completed(session):
         
     except Exception as e:
         logger.error(f"Erreur dans handle_checkout_session_completed: {e}")
+    finally:
+        # Nettoyer les custom_fields temporaires au niveau Customer afin de ne pas polluer les factures futures.
+        if should_clear_customer_fields:
+            _clear_customer_temp_invoice_custom_fields(customer_id)
 
 def handle_checkout_session_payment_completed(session):
     """Gérer la completion d'une session de checkout en mode paiement unique"""
@@ -2499,6 +2751,8 @@ def handle_payment_succeeded(invoice):
         # Enregistrer le paiement
         level_label = _format_level_label_from_obj(user_subscription.niveau_pays)
         period_start, period_end = _extract_invoice_period(invoice)
+        hosted_invoice_url = (invoice.get('hosted_invoice_url') or '').strip()
+        invoice_pdf_url = (invoice.get('invoice_pdf') or '').strip()
 
         payment_intent = invoice.get('payment_intent') or (f"invoice_{invoice_id}" if invoice_id else None)
         payment_history = None
@@ -2515,8 +2769,8 @@ def handle_payment_succeeded(invoice):
                 stripe_invoice_id=invoice.get('id'),
                 defaults={
                     'stripe_payment_intent_id': payment_intent,
-                    'hosted_invoice_url': invoice.get('hosted_invoice_url', '') or '',
-                    'invoice_pdf_url': invoice.get('invoice_pdf', '') or '',
+                    'hosted_invoice_url': hosted_invoice_url,
+                    'invoice_pdf_url': invoice_pdf_url,
                     'amount': amount_paid / 100,
                     'currency': currency,
                     'status': 'succeeded',
@@ -2529,6 +2783,18 @@ def handle_payment_succeeded(invoice):
                     'niveau_label': level_label
                 }
             )
+
+        # Mettre à jour les URLs de facture si Stripe les fournit après coup.
+        if payment_history:
+            invoice_updates = []
+            if hosted_invoice_url and payment_history.hosted_invoice_url != hosted_invoice_url:
+                payment_history.hosted_invoice_url = hosted_invoice_url
+                invoice_updates.append('hosted_invoice_url')
+            if invoice_pdf_url and payment_history.invoice_pdf_url != invoice_pdf_url:
+                payment_history.invoice_pdf_url = invoice_pdf_url
+                invoice_updates.append('invoice_pdf_url')
+            if invoice_updates:
+                payment_history.save(update_fields=invoice_updates)
 
         billing_reason = invoice.get('billing_reason')
         # is_first_charge : true si c'est la première facture d'une nouvelle souscription
@@ -2544,6 +2810,14 @@ def handle_payment_succeeded(invoice):
         # Envoyer les emails uniquement après paiement confirmé
         should_send_email = bool(payment_history) and not payment_history.email_sent and is_first_charge
         if should_send_email:
+            invoice_link = (invoice_pdf_url or hosted_invoice_url or '').strip()
+            if not invoice_link and payment_history:
+                invoice_link = (
+                    (payment_history.invoice_pdf_url or '').strip()
+                    or (payment_history.hosted_invoice_url or '').strip()
+                )
+            invoice_link = invoice_link or None
+
             metadata = subscription_data.get('metadata') or {}
             is_gift = metadata.get('is_gift') == 'true'
             payer_user_id = metadata.get('payer_user_id')
@@ -2563,7 +2837,8 @@ def handle_payment_succeeded(invoice):
                         recipient=user_subscription.user,
                         plan=user_subscription.plan,
                         niveau=user_subscription.niveau_pays,
-                        is_pass=False
+                        is_pass=False,
+                        invoice_link=invoice_link,
                     )
                 except User.DoesNotExist:
                     logger.warning("Payeur %s introuvable pour email cadeau", payer_user_id)
@@ -2575,7 +2850,8 @@ def handle_payment_succeeded(invoice):
                     EmailService.send_subscription_confirmation(
                         user_subscription.user,
                         user_subscription.plan,
-                        user_subscription.niveau_pays
+                        user_subscription.niveau_pays,
+                        invoice_link=invoice_link,
                     )
                 except Exception as email_exc:
                     logger.error(f"Erreur envoi email confirmation abonnement: {email_exc}")

@@ -24,7 +24,9 @@ def user_has_active_subscription_or_pass(user):
 
     try:
         subscription = user.subscription
-    except UserSubscription.DoesNotExist:  # pragma: no cover - handled by except
+    except (UserSubscription.DoesNotExist, AttributeError):  # pragma: no cover - handled by except
+        subscription = None
+    except Exception:  # pragma: no cover - defensive
         subscription = None
 
     if subscription and subscription.is_active:

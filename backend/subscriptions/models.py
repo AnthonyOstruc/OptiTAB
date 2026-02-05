@@ -2,16 +2,10 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 import logging
-from datetime import datetime
-import stripe
-try:
-    from stripe import error as stripe_error
-except ImportError:
-    from stripe import _error as stripe_error  # type: ignore[attr-defined]
-from stripe_config import STRIPE_SECRET_KEY
+from .stripe_client import stripe, stripe_error
+from .helpers import _from_timestamp
 from pays.models import Niveau
 
-stripe.api_key = STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
 
 
@@ -145,19 +139,6 @@ class UserSubscription(models.Model):
             return (self.trial_end - timezone.now()).days
         return 0
     
-    @staticmethod
-    def _from_timestamp(value):
-        if not value:
-            return None
-        try:
-            if isinstance(value, datetime):
-                return value if value.tzinfo else timezone.make_aware(value)
-            if isinstance(value, (int, float)):
-                return datetime.fromtimestamp(value, tz=timezone.utc)
-        except Exception:
-            return None
-        return None
-
     def cancel_subscription(self):
         """Planifie l'annulation à la fin de la période de facturation."""
         if self.cancel_at_period_end and self.current_period_end and self.current_period_end > timezone.now():
@@ -177,9 +158,9 @@ class UserSubscription(models.Model):
             if hasattr(updated, 'to_dict'):
                 updated = updated.to_dict()
             self.status = updated.get('status', self.status)
-            self.current_period_start = self._from_timestamp(updated.get('current_period_start')) or self.current_period_start
-            self.current_period_end = self._from_timestamp(updated.get('current_period_end')) or self.current_period_end
-            self.trial_end = self._from_timestamp(updated.get('trial_end')) or self.trial_end
+            self.current_period_start = _from_timestamp(updated.get('current_period_start')) or self.current_period_start
+            self.current_period_end = _from_timestamp(updated.get('current_period_end')) or self.current_period_end
+            self.trial_end = _from_timestamp(updated.get('trial_end')) or self.trial_end
             self.cancel_at_period_end = bool(updated.get('cancel_at_period_end', True))
             self.save(update_fields=['status', 'current_period_start', 'current_period_end', 'trial_end', 'cancel_at_period_end', 'updated_at'])
             return True

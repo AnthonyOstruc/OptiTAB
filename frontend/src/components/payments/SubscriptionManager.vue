@@ -322,11 +322,42 @@
       </div>
     </div>
 
+    <!-- Modal de confirmation de résiliation -->
+    <Teleport to="body">
+      <div v-if="showCancelModal" class="modal-overlay" @click.self="closeCancelModal">
+        <div class="modal-card" @click.stop>
+          <div class="modal-header">
+            <h3>Résilier l'abonnement</h3>
+            <button class="modal-close" @click="closeCancelModal">×</button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Êtes-vous sûr de vouloir résilier l'abonnement
+              <strong v-if="cancelTargetLevel?.nom">« {{ cancelTargetLevel.nom }} »</strong> ?
+            </p>
+            <p class="modal-hint">
+              Vous conserverez l'accès à ce niveau jusqu'à la fin de la période en cours.
+            </p>
+          </div>
+          <div class="modal-actions">
+            <button class="cancel-btn" @click="closeCancelModal">Annuler</button>
+            <button 
+              class="confirm-btn confirm-btn--danger" 
+              :disabled="isConfirmingCancel"
+              @click="confirmCancel"
+            >
+              {{ isConfirmingCancel ? 'Résiliation...' : 'Confirmer' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { 
   CheckIcon, 
   XMarkIcon, 
@@ -382,6 +413,11 @@ const invoicesTotal = ref(0)
 const invoicesPageSize = 3
 const cancellingLevelKey = ref('')
 const viewSubscriptionKey = ref('')
+
+// Modal de résiliation
+const showCancelModal = ref(false)
+const cancelTargetLevel = ref(null)
+const isConfirmingCancel = ref(false)
 
 const baseSubscription = computed(() => subscriptionStore.status || defaultSubscription)
 const subscriptionsList = computed(() => {
@@ -624,12 +660,36 @@ const isLevelCancelling = (subscriptionItem) => {
 
 const confirmLevelCancellation = (level) => {
   if (!level?.subscription) return
-  const levelLabel = level.nom ? ` « ${level.nom} »` : ''
-  const message = `Êtes-vous sûr de vouloir résilier l'abonnement${levelLabel} ?\n\nVous conserverez l'accès à ce niveau jusqu'à la fin de la période en cours.`
-  const hasWindow = typeof window !== 'undefined'
-  const confirmed = hasWindow ? window.confirm(message) : true
-  if (!confirmed) return
-  cancelSubscriptionForLevel(level.subscription)
+  cancelTargetLevel.value = level
+  showCancelModal.value = true
+}
+
+const closeCancelModal = () => {
+  showCancelModal.value = false
+  cancelTargetLevel.value = null
+  isConfirmingCancel.value = false
+}
+
+// Gestion de la touche Échap pour fermer le modal
+const handleEscapeKey = (e) => {
+  if (e.key === 'Escape' && showCancelModal.value) {
+    closeCancelModal()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('keydown', handleEscapeKey)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleEscapeKey)
+})
+
+const confirmCancel = async () => {
+  if (!cancelTargetLevel.value?.subscription) return
+  isConfirmingCancel.value = true
+  await cancelSubscriptionForLevel(cancelTargetLevel.value.subscription)
+  closeCancelModal()
 }
 
 const statusClass = computed(() => {
@@ -2713,6 +2773,175 @@ onMounted(() => {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* Modal de résiliation */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+  overflow-y: auto;
+  padding: 2rem 1rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: 20px;
+  width: min(90%, 420px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: #f3f4f6;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-body p {
+  margin: 0 0 0.75rem;
+  color: #374151;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+.modal-body strong {
+  color: #111827;
+}
+
+.modal-hint {
+  color: #6b7280 !important;
+  font-size: 0.875rem !important;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem 1.5rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.cancel-btn {
+  background: #ffffff;
+  color: #374151;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirm-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.confirm-btn--danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 1rem;
+    align-items: center;
+  }
+
+  .modal-card {
+    width: 100%;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .cancel-btn,
+  .confirm-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .confirm-btn {
+    order: -1;
   }
 }
 </style>

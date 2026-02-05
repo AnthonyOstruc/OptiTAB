@@ -264,11 +264,29 @@
 
       <Footer />
     </div>
+
+    <!-- Modal Message -->
+    <Teleport to="body">
+      <div v-if="showMessageModal" class="modal-overlay" @click.self="closeMessageModal">
+        <div class="modal-card">
+          <div class="modal-header">
+            <h3>{{ messageModalTitle }}</h3>
+            <button class="modal-close" @click="closeMessageModal">×</button>
+          </div>
+          <div class="modal-body">
+            <p>{{ messageModalText }}</p>
+          </div>
+          <div class="modal-actions">
+            <button class="confirm-btn" @click="closeMessageModal">OK</button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </DashboardLayout>
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue'
+import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
 import { getPlans, createCheckoutSession } from '@/api/subscriptions'
 import { DEFAULT_PLANS } from '@/config/subscriptions'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
@@ -290,6 +308,37 @@ const userStore = useUserStore()
 const subscribeForChild = ref(false)
 const beneficiaryEmail = ref('')
 const beneficiaryEmailError = ref('')
+
+// Variables pour le modal de message
+const showMessageModal = ref(false)
+const messageModalTitle = ref('Information')
+const messageModalText = ref('')
+
+const showMessage = (text, title = 'Information') => {
+  messageModalTitle.value = title
+  messageModalText.value = text
+  showMessageModal.value = true
+}
+
+const closeMessageModal = () => {
+  showMessageModal.value = false
+  messageModalText.value = ''
+}
+
+// Gestion de la touche Échap pour fermer le modal
+const handleEscapeKey = (e) => {
+  if (e.key === 'Escape' && showMessageModal.value) {
+    closeMessageModal()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('keydown', handleEscapeKey)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleEscapeKey)
+})
 
 // Validation de l'email bénéficiaire
 const validateBeneficiaryEmail = () => {
@@ -575,11 +624,11 @@ async function loadNiveauxOptions() {
 async function subscribe(priceId) {
   try {
     if (!levelReady.value) {
-      alert('Merci de sélectionner un niveau avant de continuer.')
+      showMessage('Merci de sélectionner un niveau avant de continuer.', 'Niveau requis')
       return
     }
     if (shouldBlockForSelf.value && levelAlreadyUnlocked.value) {
-      alert('Ce niveau est déjà débloqué. Sélectionnez un autre niveau pour souscrire.')
+      showMessage('Ce niveau est déjà débloqué. Sélectionnez un autre niveau pour souscrire.', 'Niveau déjà débloqué')
       return
     }
     
@@ -598,11 +647,11 @@ async function subscribe(priceId) {
     }
 
     if (shouldBlockForSelf.value && isCurrentPrice(priceId)) {
-      alert('Vous disposez déjà de cet abonnement actif. Utilisez « Gérer mon abonnement » pour le modifier.')
+      showMessage('Vous disposez déjà de cet abonnement actif. Utilisez « Gérer mon abonnement » pour le modifier.', 'Abonnement actif')
       return
     }
     if (!priceId) {
-      alert('Ce plan doit encore être configuré (Price ID manquant).')
+      showMessage('Ce plan doit encore être configuré (Price ID manquant).', 'Configuration requise')
       return
     }
     submitting.value = true
@@ -612,7 +661,7 @@ async function subscribe(priceId) {
     }
   } catch (e) {
     const msg = e?.response?.data?.error || 'Impossible de démarrer le paiement. Vérifiez la configuration Stripe.'
-    alert(msg)
+    showMessage(msg, 'Erreur')
   } finally {
     submitting.value = false
   }
@@ -2212,6 +2261,132 @@ async function subscribe(priceId) {
   .manage-link {
     padding: 0.8125rem 1.125rem;
     font-size: 0.8125rem;
+  }
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-card {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.25s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #9ca3af;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: #374151;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-body p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.confirm-btn {
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+}
+
+.confirm-btn:hover {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-card {
+    max-width: 100%;
+    margin: 0 0.5rem;
+  }
+  
+  .modal-header {
+    padding: 1rem 1.25rem;
+  }
+  
+  .modal-body {
+    padding: 1.25rem;
+  }
+  
+  .modal-actions {
+    padding: 0.875rem 1.25rem;
   }
 }
 </style>

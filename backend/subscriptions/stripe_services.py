@@ -436,12 +436,15 @@ def _build_gifted_subscriptions_from_stripe(stripe_subscriptions, current_user):
             'status': status,
             'is_active': _is_stripe_subscription_active(stripe_sub),
             'is_trial': status == 'trialing',
+            'cancel_at_period_end': bool(stripe_sub.get('cancel_at_period_end')),
             'current_period_start': start_dt.isoformat() if start_dt else None,
             'current_period_end': end_dt.isoformat() if end_dt else None,
             'trial_end': trial_dt.isoformat() if trial_dt else None,
             'started_at': started_dt.isoformat() if started_dt else None,
             'beneficiary': {
                 'id': getattr(beneficiary_obj, 'id', None),
+                'first_name': beneficiary_first or '',
+                'last_name': beneficiary_last or '',
                 'email': beneficiary_email,
                 'display_name': beneficiary_display or beneficiary_email or ''
             },

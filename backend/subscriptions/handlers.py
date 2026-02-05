@@ -351,6 +351,10 @@ def handle_checkout_session_payment_completed(session):
         user = User.objects.get(id=user_id)
         plan = SubscriptionPlan.objects.get(id=plan_id)
         
+        # Déterminer le payeur pour les cadeaux
+        is_gift, payer = _parse_gift_metadata(metadata)
+        invoice_owner = payer if is_gift and payer else user
+        
         # Vérifier que c'est bien un paiement unique
         if plan_mode != 'one_time':
             plan_mode = _resolve_plan_mode(plan)
@@ -367,7 +371,7 @@ def handle_checkout_session_payment_completed(session):
             if PaymentHistory.objects.filter(stripe_payment_intent_id=payment_intent).exists():
                 return
 
-        # Créer le pass d'accès
+        # Créer le pass d'accès (pour le bénéficiaire)
         days = _resolve_access_days(plan, metadata)
         start = timezone.now()
         ends = start + timedelta(days=days)
@@ -380,9 +384,9 @@ def handle_checkout_session_payment_completed(session):
             stripe_payment_intent_id=payment_intent or None
         )
 
-        # Créer l'historique de paiement
+        # Créer l'historique de paiement (pour le payeur/parent)
         payment_history, payment_created = _create_pass_payment_history(
-            user, plan, session, niveau_obj, payment_intent, start, ends, days
+            invoice_owner, user, plan, session, niveau_obj, payment_intent, start, ends, days, is_gift
         )
 
         if niveau_obj:
@@ -396,17 +400,26 @@ def handle_checkout_session_payment_completed(session):
         logger.error(f"Erreur dans handle_checkout_session_payment_completed: {e}")
 
 
-def _create_pass_payment_history(user, plan, session, niveau_obj, payment_intent, start, ends, days):
-    """Crée l'historique de paiement pour un pass."""
+def _create_pass_payment_history(invoice_owner, beneficiary, plan, session, niveau_obj, payment_intent, start, ends, days, is_gift=False):
+    """Crée l'historique de paiement pour un pass.
+    
+    Pour les cadeaux, la facture est associée au payeur (invoice_owner) et non au bénéficiaire.
+    """
     amount_total = session.get('amount_total')
     if not amount_total:
         return None, False
 
     currency = (session.get('currency') or 'eur').upper()
     level_label = _format_level_label_from_obj(niveau_obj)
+    
+    # Ajouter info bénéficiaire dans la description si c'est un cadeau
+    beneficiary_info = ""
+    if is_gift and beneficiary and invoice_owner != beneficiary:
+        beneficiary_name = f"{beneficiary.first_name} {beneficiary.last_name}".strip() or beneficiary.email
+        beneficiary_info = f" (pour {beneficiary_name})"
 
     return PaymentHistory.objects.get_or_create(
-        user=user,
+        user=invoice_owner,
         stripe_payment_intent_id=payment_intent or f"session_{session.get('id')}",
         defaults={
             'stripe_invoice_id': session.get('invoice'),
@@ -415,7 +428,7 @@ def _create_pass_payment_history(user, plan, session, niveau_obj, payment_intent
             'amount': amount_total / 100.0,
             'currency': currency,
             'status': 'succeeded',
-            'description': _append_level_to_description(f"Pass {plan.name} ({days} jours)", level_label),
+            'description': _append_level_to_description(f"Pass {plan.name} ({days} jours){beneficiary_info}", level_label),
             'plan_name': plan.name,
             'plan_mode': 'one_time',
             'period_start': start,
@@ -488,9 +501,12 @@ def handle_payment_succeeded(invoice):
         # Mettre à jour l'abonnement
         _update_subscription_status(user_subscription, subscription_data)
 
-        # Créer l'historique de paiement
+        # Récupérer les metadata pour déterminer le payeur
+        metadata = subscription_data.get('metadata') or {}
+
+        # Créer l'historique de paiement (associé au payeur si c'est un cadeau)
         payment_history, payment_created = _create_invoice_payment_history(
-            user_subscription, invoice, invoice_id
+            user_subscription, invoice, invoice_id, metadata
         )
 
         # Déterminer si c'est la première charge
@@ -498,7 +514,6 @@ def handle_payment_succeeded(invoice):
 
         # Programmer l'envoi des emails
         if payment_history and not payment_history.email_sent:
-            metadata = subscription_data.get('metadata') or {}
             if is_first_charge:
                 _schedule_subscription_emails(
                     payment_history_id=payment_history.id,
@@ -578,8 +593,23 @@ def _update_subscription_status(user_subscription, subscription_data):
     user_subscription.save()
 
 
-def _create_invoice_payment_history(user_subscription, invoice, invoice_id):
-    """Crée l'historique de paiement pour une facture."""
+def _create_invoice_payment_history(user_subscription, invoice, invoice_id, metadata=None):
+    """Crée l'historique de paiement pour une facture.
+    
+    Pour les abonnements offerts (cadeaux), la facture est associée au payeur (parent)
+    et non au bénéficiaire (enfant).
+    """
+    # Déterminer le propriétaire de la facture
+    is_gift, payer = _parse_gift_metadata(metadata or {})
+    invoice_owner = payer if is_gift and payer else user_subscription.user
+    
+    # Ajouter info bénéficiaire dans la description si c'est un cadeau
+    beneficiary_info = ""
+    if is_gift and payer:
+        beneficiary = user_subscription.user
+        beneficiary_name = f"{beneficiary.first_name} {beneficiary.last_name}".strip() or beneficiary.email
+        beneficiary_info = f" (pour {beneficiary_name})"
+
     level_label = _format_level_label_from_obj(user_subscription.niveau_pays)
     period_start, period_end = _extract_invoice_period(invoice)
     hosted_invoice_url = (invoice.get('hosted_invoice_url') or '').strip()
@@ -593,7 +623,7 @@ def _create_invoice_payment_history(user_subscription, invoice, invoice_id):
     currency = (invoice.get('currency') or 'eur').upper()
 
     payment_history, created = PaymentHistory.objects.get_or_create(
-        user=user_subscription.user,
+        user=invoice_owner,
         stripe_invoice_id=invoice.get('id'),
         defaults={
             'stripe_payment_intent_id': payment_intent,
@@ -603,7 +633,7 @@ def _create_invoice_payment_history(user_subscription, invoice, invoice_id):
             'currency': currency,
             'status': 'succeeded',
             'description': _append_level_to_description(
-                f"Paiement pour {user_subscription.plan.name}", level_label
+                f"Paiement pour {user_subscription.plan.name}{beneficiary_info}", level_label
             ),
             'plan_name': user_subscription.plan.name,
             'plan_mode': user_subscription.plan.plan_mode or 'subscription',

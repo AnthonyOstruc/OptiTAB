@@ -2,7 +2,7 @@
   <div class="subscription-manager">
     <div class="subscription-card">
       <div class="card-header">
-        <div class="status-badge" :class="statusClass">
+        <div v-if="!isParentWithOnlyGiftedSubs" class="status-badge" :class="statusClass">
           {{ statusText }}
         </div>
         <button class="refresh-btn" :disabled="isRefreshing || subscriptionStore.loading" @click="refreshSubscription">
@@ -13,6 +13,80 @@
       <div v-if="inlineMessage" class="inline-message" :class="inlineMessageType">
         <InformationCircleIcon class="inline-icon" />
         <span>{{ inlineMessage }}</span>
+      </div>
+
+      <!-- Section abonnements des enfants (en haut pour les parents) -->
+      <div v-if="isParent && giftedSubscriptions.length" class="gifted-section gifted-section--top">
+        <div class="gifted-header">
+          <h4>Abonnements de vos enfants</h4>
+          <p>Gérez les accès souscrits pour vos enfants.</p>
+        </div>
+        <div class="gifted-grid">
+          <div
+            v-for="gift in giftedSubscriptions"
+            :key="gift.stripe_subscription_id || gift.started_at"
+            class="gifted-card"
+          >
+            <!-- En-tête avec infos enfant -->
+            <div class="gifted-child-header">
+              <div class="gifted-child-avatar">
+                {{ giftBeneficiaryInitials(gift) }}
+              </div>
+              <div class="gifted-child-info">
+                <p class="gifted-child-name">{{ giftBeneficiaryFullName(gift) }}</p>
+                <p class="gifted-child-email">{{ gift.beneficiary?.email || '—' }}</p>
+              </div>
+            </div>
+
+            <!-- Détails de l'abonnement -->
+            <div class="gifted-details">
+              <div class="gifted-detail-row">
+                <span class="gifted-label">Plan</span>
+                <span class="gifted-value">{{ giftPlanLabel(gift) }}</span>
+              </div>
+              <div v-if="giftLevelLabel(gift)" class="gifted-detail-row">
+                <span class="gifted-label">Niveau</span>
+                <span class="gifted-value">{{ giftLevelLabel(gift) }}</span>
+              </div>
+              <div class="gifted-detail-row">
+                <span class="gifted-label">Statut</span>
+                <span class="gifted-value" :class="giftStatusClass(gift)">{{ giftStatusLabel(gift) }}</span>
+              </div>
+              <div class="gifted-detail-row">
+                <span class="gifted-label">Accès jusqu'au</span>
+                <span class="gifted-value">{{ giftAccessUntilLabel(gift) }}</span>
+              </div>
+              <div class="gifted-detail-row">
+                <span class="gifted-label">Renouvellement</span>
+                <span class="gifted-value">{{ giftRenewalDateLabel(gift) }}</span>
+              </div>
+            </div>
+
+            <!-- Actions de gestion -->
+            <div class="gifted-actions">
+              <template v-if="gift.cancel_at_period_end">
+                <button
+                  class="gifted-reactivate-btn"
+                  :disabled="isGiftReactivating(gift)"
+                  @click="reactivateGiftedSubscription(gift)"
+                >
+                  <ArrowPathIcon class="btn-icon" />
+                  {{ isGiftReactivating(gift) ? 'Réactivation…' : 'Réactiver' }}
+                </button>
+              </template>
+              <template v-else>
+                <button
+                  class="gifted-cancel-btn"
+                  :disabled="isGiftCancelling(gift)"
+                  @click="confirmGiftCancellation(gift)"
+                >
+                  <XMarkIcon class="btn-icon" />
+                  {{ isGiftCancelling(gift) ? 'Annulation…' : 'Résilier' }}
+                </button>
+              </template>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div v-if="isCardLoading" class="loading-state">
@@ -296,37 +370,6 @@
           Voir les offres
         </router-link>
       </div>
-
-      <div v-if="isParent && giftedSubscriptions.length" class="gifted-section">
-        <div class="gifted-header">
-          <h4>Abonnements de vos enfants</h4>
-          <p>Suivi des accès souscrits pour vos enfants.</p>
-        </div>
-        <div class="gifted-grid">
-          <div
-            v-for="gift in giftedSubscriptions"
-            :key="gift.stripe_subscription_id || gift.started_at"
-            class="gifted-card"
-          >
-            <div class="gifted-title">{{ giftPlanLabel(gift) }}</div>
-            <p class="gifted-meta">
-              <strong>Bénéficiaire :</strong> {{ giftBeneficiaryLabel(gift) }}
-            </p>
-            <p v-if="giftLevelLabel(gift)" class="gifted-meta">
-              <strong>Niveau :</strong> {{ giftLevelLabel(gift) }}
-            </p>
-            <p class="gifted-meta">
-              <strong>Statut :</strong> {{ giftStatusLabel(gift) }}
-            </p>
-            <p class="gifted-meta">
-              <strong>Accès jusqu'au :</strong> {{ giftAccessUntilLabel(gift) }}
-            </p>
-            <p class="gifted-meta">
-              <strong>Renouvellement :</strong> {{ giftRenewalDateLabel(gift) }}
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Modal de confirmation de résiliation -->
@@ -354,6 +397,37 @@
               @click="confirmCancel"
             >
               {{ isConfirmingCancel ? 'Résiliation...' : 'Confirmer' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
+    <!-- Modal de confirmation de résiliation pour enfant -->
+    <Teleport to="body">
+      <div v-if="showGiftCancelModal" class="modal-overlay" @click.self="closeGiftCancelModal">
+        <div class="modal-card" @click.stop>
+          <div class="modal-header">
+            <h3>Résilier l'abonnement</h3>
+            <button class="modal-close" @click="closeGiftCancelModal">×</button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Êtes-vous sûr de vouloir résilier l'abonnement de
+              <strong>{{ giftBeneficiaryFullName(cancelTargetGift) }}</strong> ?
+            </p>
+            <p class="modal-hint">
+              Votre enfant conservera l'accès jusqu'à la fin de la période en cours.
+            </p>
+          </div>
+          <div class="modal-actions">
+            <button class="cancel-btn" @click="closeGiftCancelModal">Annuler</button>
+            <button 
+              class="confirm-btn confirm-btn--danger" 
+              :disabled="isConfirmingGiftCancel"
+              @click="confirmGiftCancel"
+            >
+              {{ isConfirmingGiftCancel ? 'Résiliation...' : 'Confirmer' }}
             </button>
           </div>
         </div>
@@ -421,6 +495,13 @@ const invoicesPageSize = 3
 const cancellingLevelKey = ref('')
 const reactivatingLevelKey = ref('')
 const viewSubscriptionKey = ref('')
+
+// Pour la gestion des abonnements offerts (enfants)
+const cancellingGiftKey = ref('')
+const reactivatingGiftKey = ref('')
+const showGiftCancelModal = ref(false)
+const cancelTargetGift = ref(null)
+const isConfirmingGiftCancel = ref(false)
 
 // Modal de résiliation
 const showCancelModal = ref(false)
@@ -612,6 +693,10 @@ const cancellationScheduled = computed(() => Boolean(subscription.value.cancel_a
 const hasActiveAccess = computed(() => subscriptionStore.hasAccess)
 const hasActivePass = computed(() => Boolean(subscription.value.has_active_pass))
 const isParent = computed(() => (userStore.role || '').toLowerCase() === 'parent')
+const isParentWithOnlyGiftedSubs = computed(() => {
+  // Parent qui n'a pas d'abonnement propre mais a des abonnements pour ses enfants
+  return isParent.value && !hasSubscription.value && giftedSubscriptions.value.length > 0
+})
 const unlockedLevelsWithSubscriptions = computed(() => {
   const merged = new Map()
 
@@ -710,10 +795,15 @@ const closeCancelModal = () => {
   isConfirmingCancel.value = false
 }
 
-// Gestion de la touche Échap pour fermer le modal
+// Gestion de la touche Échap pour fermer les modaux
 const handleEscapeKey = (e) => {
-  if (e.key === 'Escape' && showCancelModal.value) {
-    closeCancelModal()
+  if (e.key === 'Escape') {
+    if (showCancelModal.value) {
+      closeCancelModal()
+    }
+    if (showGiftCancelModal.value) {
+      closeGiftCancelModal()
+    }
   }
 }
 
@@ -875,6 +965,87 @@ const cancelSubscriptionForLevel = async (subscriptionItem) => {
   }
 }
 
+// Fonctions pour gérer les abonnements offerts (enfants)
+const buildGiftIdentifier = (gift) => {
+  if (!gift) return null
+  const stripeId = gift.stripe_subscription_id
+  if (stripeId) {
+    return { key: stripeId, payload: { stripe_subscription_id: stripeId } }
+  }
+  return null
+}
+
+const isGiftCancelling = (gift) => {
+  const identifier = buildGiftIdentifier(gift)
+  if (!identifier) return false
+  return cancellingGiftKey.value === identifier.key
+}
+
+const isGiftReactivating = (gift) => {
+  const identifier = buildGiftIdentifier(gift)
+  if (!identifier) return false
+  return reactivatingGiftKey.value === identifier.key
+}
+
+const confirmGiftCancellation = (gift) => {
+  if (!gift) return
+  cancelTargetGift.value = gift
+  showGiftCancelModal.value = true
+}
+
+const closeGiftCancelModal = () => {
+  showGiftCancelModal.value = false
+  cancelTargetGift.value = null
+  isConfirmingGiftCancel.value = false
+}
+
+const confirmGiftCancel = async () => {
+  if (!cancelTargetGift.value) return
+  isConfirmingGiftCancel.value = true
+  await cancelGiftedSubscription(cancelTargetGift.value)
+  closeGiftCancelModal()
+}
+
+const cancelGiftedSubscription = async (gift) => {
+  const identifier = buildGiftIdentifier(gift)
+  if (!identifier) {
+    showToast('Impossible d\'identifier cet abonnement.', 'error')
+    return
+  }
+  try {
+    cancellingGiftKey.value = identifier.key
+    await cancelSubscriptionApi(identifier.payload)
+    await loadSubscription(true)
+    showToast('Résiliation programmée pour cet enfant', 'success')
+  } catch (error) {
+    console.error('Erreur lors de la résiliation:', error)
+    const serverMessage = error.response?.data?.message || error.response?.data?.error || 'Impossible de résilier cet abonnement.'
+    showToast(serverMessage, 'error')
+  } finally {
+    cancellingGiftKey.value = ''
+  }
+}
+
+const reactivateGiftedSubscription = async (gift) => {
+  const identifier = buildGiftIdentifier(gift)
+  if (!identifier) {
+    showToast('Impossible d\'identifier cet abonnement.', 'error')
+    return
+  }
+  try {
+    reactivatingGiftKey.value = identifier.key
+    await reactivateSubscriptionApi(identifier.payload)
+    await loadSubscription(true)
+    showToast('Abonnement réactivé pour cet enfant', 'success')
+  } catch (error) {
+    console.error('Erreur lors de la réactivation:', error)
+    const serverMessage = error.response?.data?.message || error.response?.data?.error || 'Impossible de réactiver cet abonnement.'
+    showToast(serverMessage, 'error')
+  } finally {
+    reactivatingGiftKey.value = ''
+  }
+}
+
 const loadInvoices = async (page = invoicesPage.value) => {
   try {
     invoicesLoading.value = true
@@ -960,6 +1131,25 @@ const giftBeneficiaryLabel = (gift) => {
   return 'Compte enfant'
 }
 
+const giftBeneficiaryFullName = (gift) => {
+  if (!gift) return 'Enfant'
+  const beneficiary = gift.beneficiary || {}
+  const nameParts = [beneficiary.first_name, beneficiary.last_name].filter(Boolean)
+  const fullName = nameParts.join(' ').trim()
+  return fullName || beneficiary.display_name || beneficiary.email || 'Enfant'
+}
+
+const giftBeneficiaryInitials = (gift) => {
+  if (!gift) return '?'
+  const beneficiary = gift.beneficiary || {}
+  const first = (beneficiary.first_name || '').charAt(0).toUpperCase()
+  const last = (beneficiary.last_name || '').charAt(0).toUpperCase()
+  if (first && last) return first + last
+  if (first) return first
+  if (beneficiary.email) return beneficiary.email.charAt(0).toUpperCase()
+  return '?'
+}
+
 const giftLevelLabel = (gift) => {
   if (!gift) return ''
   if (gift.niveau) return formatLevelDisplay(gift.niveau)
@@ -983,6 +1173,17 @@ const giftStatusLabel = (gift) => {
   if (status === 'canceled') return 'Annulé'
   if (status === 'unpaid') return 'Impayé'
   return status || '—'
+}
+
+const giftStatusClass = (gift) => {
+  if (!gift) return ''
+  if (gift.cancel_at_period_end) return 'status-warning'
+  const status = String(gift.status || '').toLowerCase()
+  if (status === 'active') return 'status-active'
+  if (status === 'trialing') return 'status-trial'
+  if (status === 'past_due' || status === 'unpaid') return 'status-danger'
+  if (status === 'canceled') return 'status-canceled'
+  return ''
 }
 
 const giftAccessUntilLabel = (gift) => {
@@ -2128,6 +2329,16 @@ onMounted(() => {
   border-top: 1px solid #e5e7eb;
 }
 
+.gifted-section--top {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-top: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #f9fafb;
+}
+
 .gifted-header h4 {
   margin: 0 0 0.35rem;
   font-size: 1.2rem;
@@ -2142,15 +2353,165 @@ onMounted(() => {
 
 .gifted-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
 }
 
 .gifted-card {
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1rem 1.1rem;
-  background: #f9fafb;
+  border-radius: 16px;
+  padding: 1.25rem;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease;
+}
+
+.gifted-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.gifted-child-header {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.gifted-child-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.gifted-child-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.gifted-child-name {
+  margin: 0;
+  font-weight: 600;
+  color: #111827;
+  font-size: 1rem;
+}
+
+.gifted-child-email {
+  margin: 0.2rem 0 0;
+  color: #6b7280;
+  font-size: 0.85rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gifted-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.gifted-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.gifted-label {
+  color: #6b7280;
+}
+
+.gifted-value {
+  color: #111827;
+  font-weight: 500;
+  text-align: right;
+}
+
+.gifted-value.status-active {
+  color: #059669;
+}
+
+.gifted-value.status-trial {
+  color: #3b82f6;
+}
+
+.gifted-value.status-warning {
+  color: #d97706;
+}
+
+.gifted-value.status-danger {
+  color: #dc2626;
+}
+
+.gifted-value.status-canceled {
+  color: #6b7280;
+}
+
+.gifted-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.gifted-cancel-btn,
+.gifted-reactivate-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gifted-cancel-btn {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+.gifted-cancel-btn:hover:not(:disabled) {
+  background: #fee2e2;
+}
+
+.gifted-cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.gifted-reactivate-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  color: white;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.gifted-reactivate-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.gifted-reactivate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .gifted-title {

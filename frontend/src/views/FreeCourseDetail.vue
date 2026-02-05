@@ -386,7 +386,7 @@ function getSiteUrl() {
   const fromEnv = String(import.meta?.env?.VITE_SITE_URL || '').trim()
   if (fromEnv) return fromEnv.replace(/\/+$/, '')
   if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin
-  return 'https://optitab.net'
+  return 'https://www.optitab.net'
 }
 
 function toAbsoluteUrl(maybeUrlOrPath) {
@@ -412,6 +412,48 @@ function seoPrefixForResourceType(type) {
   if (type === 'exercise') return 'Exercice corrigé gratuit'
   if (type === 'summary') return 'Fiche de révision gratuite'
   return 'Cours gratuit'
+}
+
+function buildCanonicalPath(value) {
+  if (!value) return route.path
+  if (props.resourceType === 'course') {
+    const params = buildCourseRouteParams({
+      paysNom: value?.pays_nom,
+      matiereNom: value?.matiere_nom,
+      niveauNom: value?.niveau_nom,
+      titre: value?.titre,
+      id: value?.id
+    })
+    if (params?.slug && params?.id) {
+      if (params.niveauGroup) {
+        return `/ressources-gratuites/cours/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
+      }
+      return `/ressources-gratuites/cours/${params.pays}/${params.matiere}/${params.slug}-${params.id}`
+    }
+  }
+
+  if (props.resourceType === 'summary') {
+    const params = buildSummaryRouteParams({
+      paysNom: value?.pays_nom,
+      matiereNom: value?.matiere_nom,
+      niveauNom: value?.niveau_nom,
+      titre: value?.titre,
+      id: value?.id
+    })
+    if (params?.slug && params?.id) {
+      if (params.niveauGroup) {
+        return `/ressources-gratuites/syntheses/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
+      }
+      return `/ressources-gratuites/syntheses/${params.pays}/${params.matiere}/${params.slug}-${params.id}`
+    }
+  }
+
+  if (props.resourceType === 'exercise') {
+    const slug = value?.slug ? String(value.slug).trim() : ''
+    if (slug) return `/ressources-gratuites/exercices/${slug}`
+  }
+
+  return route.path
 }
 
 watch(
@@ -442,7 +484,6 @@ watch(
           query: route.query,
           hash: route.hash
         }).catch(() => {})
-        return
       }
     }
     if (props.resourceType === 'summary') {
@@ -469,7 +510,6 @@ watch(
           query: route.query,
           hash: route.hash
         }).catch(() => {})
-        return
       }
     }
     const canonicalSlug = value?.slug ? String(value.slug) : ''
@@ -481,7 +521,6 @@ watch(
         query: route.query,
         hash: route.hash
       }).catch(() => {})
-      return
     }
     const prefix = seoPrefixForResourceType(props.resourceType)
     const matiere = value?.matiere_nom ? String(value.matiere_nom).trim() : ''
@@ -509,7 +548,8 @@ watch(
     }) || undefined
     const image = pickSeoImage(value) || undefined
     const imageAbs = image ? toAbsoluteUrl(image) : ''
-    const canonicalUrl = toAbsoluteUrl(route.path)
+    const canonicalPath = buildCanonicalPath(value)
+    const canonicalUrl = toAbsoluteUrl(canonicalPath)
     const siteUrl = getSiteUrl()
     const organizationId = `${siteUrl}/#organization`
     const websiteId = `${siteUrl}/#website`
@@ -550,7 +590,7 @@ watch(
     setPageSeo({
       title,
       description,
-      canonicalPath: route.path,
+      canonicalPath,
       robots: getRobotsForRoute({ route }),
       ogType: 'article',
       image,

@@ -19,7 +19,7 @@ function getSiteBaseUrl() {
   const fromEnv = normalizeSiteUrl(import.meta?.env?.VITE_SITE_URL)
   if (fromEnv) return fromEnv
   if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin
-  return 'https://optitab.net'
+  return 'https://www.optitab.net'
 }
 
 function removeTrailingSlash(value) {
@@ -119,7 +119,7 @@ function normalizeCanonicalUrl(rawUrl) {
 function canonicalizePath(pathLike) {
   if (!pathLike) return '/'
   try {
-    const base = (typeof window !== 'undefined' && window.location?.origin) ? window.location.origin : 'https://optitab.net'
+    const base = (typeof window !== 'undefined' && window.location?.origin) ? window.location.origin : 'https://www.optitab.net'
     const url = new URL(String(pathLike), base)
     let pathname = url.pathname || '/'
     if (pathname.length > 1) {

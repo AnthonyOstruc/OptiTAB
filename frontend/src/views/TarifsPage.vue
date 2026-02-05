@@ -83,7 +83,7 @@ function getSiteUrl() {
   if (typeof window !== 'undefined' && window.location && window.location.origin) {
     return window.location.origin
   }
-  return 'https://optitab.net'
+  return 'https://www.optitab.net'
 }
 
 function toAbsoluteUrl(path) {

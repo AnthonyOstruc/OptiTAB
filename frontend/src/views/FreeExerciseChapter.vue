@@ -143,7 +143,7 @@ function getSiteUrl() {
   const fromEnv = String(import.meta?.env?.VITE_SITE_URL || '').trim()
   if (fromEnv) return fromEnv.replace(/\/+$/, '')
   if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin
-  return 'https://optitab.net'
+  return 'https://www.optitab.net'
 }
 
 function toAbsoluteUrl(maybeUrlOrPath) {
@@ -152,6 +152,22 @@ function toAbsoluteUrl(maybeUrlOrPath) {
   if (/^https?:\/\//i.test(raw)) return raw
   const base = getSiteUrl()
   return `${base}${raw.startsWith('/') ? '' : '/'}${raw}`
+}
+
+function buildCanonicalPath(source) {
+  const canonicalParams = buildExerciseChapterRouteParams({
+    paysNom: source?.pays_nom,
+    matiereNom: source?.matiere_nom,
+    niveauNom: source?.niveau_nom,
+    niveauGroup: source?.niveau_nom,
+    name: source?.notion_nom || source?.name || source?.titre,
+    id: source?.notion || source?.id || notionId.value
+  })
+  if (!canonicalParams?.slug || !canonicalParams?.id) return route.path
+  if (canonicalParams.niveauGroup) {
+    return `/ressources-gratuites/exercices/${canonicalParams.pays}/${canonicalParams.niveauGroup}/${canonicalParams.matiere}/${canonicalParams.slug}-${canonicalParams.id}`
+  }
+  return `/ressources-gratuites/exercices/${canonicalParams.pays}/${canonicalParams.matiere}/${canonicalParams.slug}-${canonicalParams.id}`
 }
 
 function pickSeoImage(list) {
@@ -321,7 +337,8 @@ const updateSeo = () => {
     count: exercisesCount.value
   })
   const image = pickSeoImage(exercises.value) || undefined
-  const canonicalUrl = toAbsoluteUrl(route.path)
+  const canonicalPath = buildCanonicalPath(first)
+  const canonicalUrl = toAbsoluteUrl(canonicalPath)
   const jsonLdGraph = [
     {
       '@type': 'BreadcrumbList',
@@ -336,7 +353,7 @@ const updateSeo = () => {
   setPageSeo({
     title,
     description,
-    canonicalPath: route.path,
+    canonicalPath,
     robots: getRobotsForRoute({ route }),
     ogType: 'website',
     image,

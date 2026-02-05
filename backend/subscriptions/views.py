@@ -48,6 +48,7 @@ from .handlers import (
     handle_subscription_deleted,
     handle_subscription_updated,
 )
+from .email_jobs import _schedule_cancellation_emails
 
 logger = logging.getLogger(__name__)
 
@@ -719,15 +720,24 @@ class CancelSubscriptionView(APIView):
         if subscription:
             was_scheduled = bool(subscription.cancel_at_period_end)
             was_canceled = (subscription.status == 'canceled')
+            
+            # Si déjà résilié ou programmé, ne pas renvoyer d'email
+            if was_scheduled or was_canceled:
+                if subscription.cancel_at_period_end:
+                    message = 'Annulation déjà programmée à la fin de la période en cours.'
+                else:
+                    message = 'Abonnement déjà résilié.'
+                return JsonResponse({'success': True, 'message': message})
+            
             if subscription.cancel_subscription():
-                # Envoyer un email de confirmation de désabonnement (utilisateur + admin) une seule fois.
-                if (not was_canceled) and (not was_scheduled) and bool(subscription.cancel_at_period_end):
+                # Envoyer un email de confirmation de désabonnement (utilisateur + admin)
+                if bool(subscription.cancel_at_period_end):
                     _schedule_cancellation_emails(
                         user_subscription_id=subscription.id,
                         cancel_type='scheduled',
                         stripe_subscription_id=subscription.stripe_subscription_id,
                     )
-                elif (not was_canceled) and (not subscription.cancel_at_period_end) and subscription.status == 'canceled':
+                elif subscription.status == 'canceled':
                     _schedule_cancellation_emails(
                         user_subscription_id=subscription.id,
                         cancel_type='canceled',

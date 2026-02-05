@@ -264,45 +264,51 @@ def _send_cancellation_emails_job(user_subscription_id, cancel_type='scheduled',
     is_scheduled = cancel_type == 'scheduled'
 
     try:
-        with transaction.atomic():
-            user_subscription = (
-                UserSubscription.objects
-                .select_for_update()
-                .select_related('user', 'plan', 'niveau_pays', 'niveau_pays__pays')
-                .get(pk=user_subscription_id)
-            )
+        user_subscription = (
+            UserSubscription.objects
+            .select_related('user', 'plan', 'niveau_pays', 'niveau_pays__pays')
+            .get(pk=user_subscription_id)
+        )
 
-            # Protection: si l'état a changé depuis la programmation, ne pas envoyer
-            if is_scheduled and not user_subscription.cancel_at_period_end:
-                return
-            if (not is_scheduled) and user_subscription.status != 'canceled':
-                return
+        logger.info(
+            "Cancellation email job: envoi pour user_subscription_id=%s, cancel_type=%s, status=%s, cancel_at_period_end=%s",
+            user_subscription_id,
+            cancel_type,
+            user_subscription.status,
+            user_subscription.cancel_at_period_end,
+        )
 
-            is_gift, payer = _parse_gift_metadata(metadata)
-            
-            if is_gift and payer:
-                recipient = payer
-                beneficiary = user_subscription.user
-            else:
-                recipient = user_subscription.user
-                beneficiary = None
+        is_gift, payer = _parse_gift_metadata(metadata)
+        
+        if is_gift and payer:
+            recipient = payer
+            beneficiary = user_subscription.user
+        else:
+            recipient = user_subscription.user
+            beneficiary = None
 
-            EmailService.send_subscription_cancellation_confirmation(
-                user=recipient,
-                plan=user_subscription.plan,
-                niveau=user_subscription.niveau_pays,
-                effective_end=user_subscription.current_period_end,
-                is_scheduled=is_scheduled,
-                beneficiary=beneficiary,
-            )
-            EmailService.send_subscription_cancellation_notification_to_admin(
-                user=recipient,
-                plan=user_subscription.plan,
-                niveau=user_subscription.niveau_pays,
-                effective_end=user_subscription.current_period_end,
-                is_scheduled=is_scheduled,
-                beneficiary=beneficiary,
-            )
+        # Envoyer email à l'utilisateur
+        user_email_sent = EmailService.send_subscription_cancellation_confirmation(
+            user=recipient,
+            plan=user_subscription.plan,
+            niveau=user_subscription.niveau_pays,
+            effective_end=user_subscription.current_period_end,
+            is_scheduled=is_scheduled,
+            beneficiary=beneficiary,
+        )
+        logger.info("Cancellation email to user: %s (sent=%s)", recipient.email, user_email_sent)
+
+        # Envoyer email à l'admin
+        admin_email_sent = EmailService.send_subscription_cancellation_notification_to_admin(
+            user=recipient,
+            plan=user_subscription.plan,
+            niveau=user_subscription.niveau_pays,
+            effective_end=user_subscription.current_period_end,
+            is_scheduled=is_scheduled,
+            beneficiary=beneficiary,
+        )
+        logger.info("Cancellation email to admin: sent=%s", admin_email_sent)
+
     except UserSubscription.DoesNotExist:
         logger.warning(
             "Cancellation email job: abonnement introuvable (user_subscription_id=%s)",
@@ -313,6 +319,7 @@ def _send_cancellation_emails_job(user_subscription_id, cancel_type='scheduled',
             "Cancellation email job: erreur lors de l'envoi (user_subscription_id=%s): %s",
             user_subscription_id,
             exc,
+            exc_info=True,
         )
 
 

@@ -198,6 +198,10 @@ class CreateCheckoutSessionView(APIView):
                 metadata['is_gift'] = 'true'
                 metadata['beneficiary_email'] = beneficiary_user.email
                 metadata['beneficiary_name'] = beneficiary_full_name or beneficiary_user.email
+            else:
+                # S'assurer que le champ "Bénéficiaire" n'est PAS hérité d'un ancien achat cadeau
+                # Nettoyer les custom_fields temporaires du Customer
+                _clear_customer_temp_invoice_custom_fields(customer_id, names=['Bénéficiaire'])
 
             # Important: certains comptes Stripe finalisent immédiatement la 1ère facture d'une souscription.
             # Dans ce cas, invoice.created arrive trop tard pour modifier la facture. On prépare donc des
@@ -215,7 +219,15 @@ class CreateCheckoutSessionView(APIView):
                 mode='subscription' if is_subscription else 'payment',
                 success_url=SUCCESS_URL + '?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url=CANCEL_URL,
-                metadata=metadata
+                metadata=metadata,
+                # Personnalisation UI du checkout
+                custom_text={
+                    'submit': {
+                        'message': 'Accès instantané après paiement. Facture disponible par email.'
+                    }
+                },
+                locale='fr',  # Force la langue française
+                allow_promotion_codes=True,  # Permet les codes promo
             )
 
             if is_subscription:
@@ -225,6 +237,15 @@ class CreateCheckoutSessionView(APIView):
                 if FREE_TRIAL_DAYS > 0:
                     subscription_data['trial_period_days'] = FREE_TRIAL_DAYS
                 create_kwargs['subscription_data'] = subscription_data
+            else:
+                # Pour les paiements uniques (passes), activer la création automatique de facture
+                create_kwargs['invoice_creation'] = {
+                    'enabled': True,
+                    'invoice_data': {
+                        'metadata': metadata,
+                        'description': f"Pass {plan.name} - {_format_level_label_from_obj(niveau_obj)}",
+                    }
+                }
 
             try:
                 checkout_session = stripe.checkout.Session.create(**create_kwargs)
@@ -486,17 +507,27 @@ def build_subscription_status(user):
 
     response['unlocked_levels'] = list(unique_levels.values())
 
-    active_pass = (
+    # Récupérer TOUS les passes actifs de l'utilisateur
+    active_passes = list(
         AccessPass.objects.filter(user=user, ends_at__gt=timezone.now())
+        .select_related('plan')
         .order_by('-ends_at')
-        .first()
     )
-    if active_pass:
-        pass_plan = getattr(active_pass, 'plan', None)
-        niveau_obj = getattr(user, 'niveau_pays', None)
-        pass_level = None
-        if niveau_obj:
-            pass_level = {
+    
+    # Construire la liste des passes pour le frontend
+    passes_payload = []
+    for access_pass in active_passes:
+        pass_plan = access_pass.plan
+        # Le niveau est stocké dans PaymentHistory pour ce pass
+        pass_niveau = None
+        payment_history = PaymentHistory.objects.filter(
+            user=user,
+            stripe_payment_intent_id=access_pass.stripe_payment_intent_id
+        ).select_related('niveau_pays', 'niveau_pays__pays').first()
+        
+        if payment_history and payment_history.niveau_pays:
+            niveau_obj = payment_history.niveau_pays
+            pass_niveau = {
                 'id': niveau_obj.id,
                 'nom': niveau_obj.nom,
                 'pays': {
@@ -505,16 +536,90 @@ def build_subscription_status(user):
                     'drapeau_emoji': getattr(niveau_obj.pays, 'drapeau_emoji', None)
                 } if getattr(niveau_obj, 'pays', None) else None
             }
-            _push_level(pass_level)
-
-        response.update({
-            'has_active_pass': True,
-            'active_pass_plan': pass_plan.name if pass_plan else 'Pass actif',
-            'active_pass_ends_at': active_pass.ends_at.isoformat(),
-            'active_pass_price_id': getattr(pass_plan, 'stripe_price_id', None) if pass_plan else None,
-            'pass_niveau': pass_level
+            _push_level(pass_niveau)
+        
+        passes_payload.append({
+            'id': access_pass.id,
+            'plan_name': pass_plan.name if pass_plan else 'Pass',
+            'plan_price': float(pass_plan.price) if pass_plan and pass_plan.price else None,
+            'plan_billing_period': pass_plan.billing_period if pass_plan else None,
+            'stripe_price_id': pass_plan.stripe_price_id if pass_plan else None,
+            'starts_at': access_pass.starts_at.isoformat(),
+            'ends_at': access_pass.ends_at.isoformat(),
+            'is_active': access_pass.is_active,
+            'niveau': pass_niveau,
         })
-        response['unlocked_levels'] = list(unique_levels.values())
+    
+    response['active_passes'] = passes_payload
+    response['has_active_pass'] = len(passes_payload) > 0
+    
+    # Pour rétrocompatibilité, garder aussi le premier pass dans les anciens champs
+    if passes_payload:
+        first_pass = passes_payload[0]
+        response.update({
+            'active_pass_plan': first_pass['plan_name'],
+            'active_pass_ends_at': first_pass['ends_at'],
+            'active_pass_price_id': first_pass['stripe_price_id'],
+            'active_pass_price': first_pass['plan_price'],
+            'active_pass_billing_period': first_pass['plan_billing_period'],
+            'pass_niveau': first_pass['niveau']
+        })
+    
+    response['unlocked_levels'] = list(unique_levels.values())
+
+    # Récupérer les passes OFFERTS par ce parent à ses enfants
+    # On cherche les PaymentHistory où l'utilisateur est payeur (user=user) avec plan_mode='one_time'
+    # puis on vérifie si le bénéficiaire (via AccessPass) est différent
+    gifted_passes = []
+    parent_payments = PaymentHistory.objects.filter(
+        user=user,
+        plan_mode='one_time',
+        period_end__gt=timezone.now()
+    ).select_related('niveau_pays', 'niveau_pays__pays')
+    
+    for payment in parent_payments:
+        # Trouver le pass associé via stripe_payment_intent_id
+        access_pass = AccessPass.objects.filter(
+            stripe_payment_intent_id=payment.stripe_payment_intent_id
+        ).select_related('user', 'plan').first()
+        
+        if not access_pass:
+            continue
+        
+        # Si le bénéficiaire du pass est différent du payeur, c'est un pass offert
+        if access_pass.user_id != user.id:
+            beneficiary = access_pass.user
+            niveau_obj = payment.niveau_pays
+            niveau_payload = None
+            if niveau_obj:
+                niveau_payload = {
+                    'id': niveau_obj.id,
+                    'nom': niveau_obj.nom,
+                    'pays': {
+                        'id': getattr(niveau_obj.pays, 'id', None),
+                        'nom': getattr(niveau_obj.pays, 'nom', None),
+                        'drapeau_emoji': getattr(niveau_obj.pays, 'drapeau_emoji', None)
+                    } if getattr(niveau_obj, 'pays', None) else None
+                }
+            
+            gifted_passes.append({
+                'id': access_pass.id,
+                'plan_name': access_pass.plan.name if access_pass.plan else payment.plan_name,
+                'plan_price': float(access_pass.plan.price) if access_pass.plan and access_pass.plan.price else float(payment.amount),
+                'starts_at': access_pass.starts_at.isoformat(),
+                'ends_at': access_pass.ends_at.isoformat(),
+                'is_active': access_pass.is_active,
+                'niveau': niveau_payload,
+                'beneficiary': {
+                    'id': beneficiary.id,
+                    'email': beneficiary.email,
+                    'first_name': beneficiary.first_name,
+                    'last_name': beneficiary.last_name,
+                },
+                'cancel_at_period_end': False,  # Les passes ne se renouvellent pas
+            })
+    
+    response['gifted_passes'] = gifted_passes
 
     if response['has_manual_access'] and not response.get('has_subscription'):
         response.setdefault('plan_name', 'Accès manuel')

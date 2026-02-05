@@ -428,13 +428,27 @@ def _create_pass_payment_history(invoice_owner, beneficiary, plan, session, nive
         beneficiary_name = f"{beneficiary.first_name} {beneficiary.last_name}".strip() or beneficiary.email
         beneficiary_info = f" (pour {beneficiary_name})"
 
+    # Récupérer les URLs de facture depuis la session (invoice_creation)
+    invoice_id = session.get('invoice')
+    hosted_invoice_url = ''
+    invoice_pdf_url = ''
+    
+    if invoice_id:
+        try:
+            invoice = stripe.Invoice.retrieve(invoice_id)
+            invoice_data = _stripe_obj_to_dict(invoice)
+            hosted_invoice_url = invoice_data.get('hosted_invoice_url') or ''
+            invoice_pdf_url = invoice_data.get('invoice_pdf') or ''
+        except Exception as e:
+            logger.warning(f"Erreur récupération facture {invoice_id}: {e}")
+
     return PaymentHistory.objects.get_or_create(
         user=invoice_owner,
         stripe_payment_intent_id=payment_intent or f"session_{session.get('id')}",
         defaults={
-            'stripe_invoice_id': session.get('invoice'),
-            'hosted_invoice_url': '',
-            'invoice_pdf_url': '',
+            'stripe_invoice_id': invoice_id or '',
+            'hosted_invoice_url': hosted_invoice_url,
+            'invoice_pdf_url': invoice_pdf_url,
             'amount': amount_total / 100.0,
             'currency': currency,
             'status': 'succeeded',

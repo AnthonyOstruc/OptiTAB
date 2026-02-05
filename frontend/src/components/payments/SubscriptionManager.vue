@@ -89,6 +89,64 @@
         </div>
       </div>
 
+      <!-- Section passes offerts aux enfants (parents) -->
+      <div v-if="isParent && giftedPasses.length" class="gifted-section gifted-section--passes">
+        <div class="gifted-header">
+          <h4>Passes de vos enfants</h4>
+          <p>Passes ponctuels achetés pour vos enfants.</p>
+        </div>
+        <div class="gifted-grid">
+          <div
+            v-for="pass in giftedPasses"
+            :key="`pass-${pass.id}`"
+            class="gifted-card gifted-card--pass"
+          >
+            <!-- En-tête avec infos enfant -->
+            <div class="gifted-child-header">
+              <div class="gifted-child-avatar">
+                {{ giftPassBeneficiaryInitials(pass) }}
+              </div>
+              <div class="gifted-child-info">
+                <p class="gifted-child-name">{{ giftPassBeneficiaryFullName(pass) }}</p>
+                <p class="gifted-child-email">{{ pass.beneficiary?.email || '—' }}</p>
+              </div>
+            </div>
+
+            <!-- Détails du pass -->
+            <div class="gifted-details">
+              <div class="gifted-detail-row">
+                <span class="gifted-label">Pass</span>
+                <span class="gifted-value">{{ pass.plan_name }}</span>
+              </div>
+              <div v-if="giftPassLevelLabel(pass)" class="gifted-detail-row">
+                <span class="gifted-label">Niveau</span>
+                <span class="gifted-value">{{ giftPassLevelLabel(pass) }}</span>
+              </div>
+              <div class="gifted-detail-row">
+                <span class="gifted-label">Statut</span>
+                <span class="gifted-value" :class="pass.is_active ? 'status-active' : 'status-expired'">
+                  {{ pass.is_active ? 'Actif' : 'Expiré' }}
+                </span>
+              </div>
+              <div class="gifted-detail-row">
+                <span class="gifted-label">Expiration</span>
+                <span class="gifted-value">{{ formatDate(pass.ends_at) }}</span>
+              </div>
+              <div class="gifted-detail-row">
+                <span class="gifted-label">Type</span>
+                <span class="gifted-value">Paiement unique (sans renouvellement)</span>
+              </div>
+            </div>
+
+            <!-- Badge pass -->
+            <div class="gifted-pass-badge">
+              <span class="pass-badge-icon">🎫</span>
+              <span>Pass ponctuel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div v-if="isCardLoading" class="loading-state">
         <div class="loading-spinner"></div>
         <p>Mise à jour de votre abonnement…</p>
@@ -577,38 +635,110 @@ const formatLevelDisplay = (niveau) => {
 
 const subscriptionLevelOptions = computed(() => {
   const list = subscriptionsList.value || []
-  const basePlanName = baseSubscription.value?.plan_name || 'Abonnement OptiTAB'
-  if (!list.length) {
-    const base = baseSubscription.value
-    if (base?.has_subscription) {
-      const levelLabel = formatLevelDisplay(base.subscription_niveau)
-      return [{
-        key: 'base',
-        title: levelLabel || basePlanName,
-        subtitle: levelLabel ? basePlanName : '',
-        level: base.subscription_niveau || null,
-        subscription: null,
-        status: base.status || '',
-        isActive: Boolean(base.is_active)
-      }]
-    }
-    return []
-  }
-  return list.map((sub, index) => {
+  const base = baseSubscription.value
+  const basePlanName = base?.plan_name || 'Abonnement OptiTAB'
+  const options = []
+
+  // Ajouter les abonnements (subscriptions récurrentes)
+  list.forEach((sub, index) => {
     const identifier = buildSubscriptionIdentifier(sub)
     const key = identifier?.key || `sub-${index}`
     const levelLabel = formatLevelDisplay(sub.niveau)
     const planName = sub.plan?.name || basePlanName
-    return {
+    options.push({
       key,
       title: levelLabel || planName,
       subtitle: levelLabel ? planName : '',
       level: sub.niveau || null,
       subscription: sub,
       status: sub.status || '',
-      isActive: Boolean(sub.is_active)
+      isActive: Boolean(sub.is_active),
+      isPass: false
+    })
+  })
+
+  // Ajouter TOUS les passes actifs
+  const activePasses = base?.active_passes || []
+  activePasses.forEach((pass, index) => {
+    const passLevelId = pass.niveau?.id
+    const key = passLevelId ? `pass-${passLevelId}` : `pass-${index}`
+    // Vérifier si ce niveau n'est pas déjà couvert par un abonnement
+    const alreadyCovered = options.some(opt => opt.level?.id === passLevelId && !opt.isPass)
+    if (!alreadyCovered) {
+      const levelLabel = formatLevelDisplay(pass.niveau)
+      options.push({
+        key,
+        title: levelLabel || pass.plan_name || 'Pass',
+        subtitle: pass.plan_name || 'Pass actif',
+        level: pass.niveau,
+        subscription: {
+          is_active: pass.is_active,
+          status: 'active',
+          current_period_start: pass.starts_at,
+          current_period_end: pass.ends_at,
+          plan: {
+            name: pass.plan_name,
+            stripe_price_id: pass.stripe_price_id,
+            price: pass.plan_price,
+            billing_period: pass.plan_billing_period,
+            mode: 'one_time'
+          },
+          niveau: pass.niveau
+        },
+        status: 'active',
+        isActive: pass.is_active,
+        isPass: true
+      })
     }
   })
+
+  // Fallback pour ancien format (un seul pass)
+  if (!activePasses.length && base?.has_active_pass && base?.pass_niveau) {
+    const passLevelId = base.pass_niveau.id
+    const alreadyCovered = options.some(opt => opt.level?.id === passLevelId)
+    if (!alreadyCovered) {
+      const levelLabel = formatLevelDisplay(base.pass_niveau)
+      options.push({
+        key: `pass-${passLevelId}`,
+        title: levelLabel || base.active_pass_plan || 'Pass',
+        subtitle: base.active_pass_plan || 'Pass actif',
+        level: base.pass_niveau,
+        subscription: {
+          is_active: true,
+          status: 'active',
+          current_period_end: base.active_pass_ends_at,
+          plan: {
+            name: base.active_pass_plan,
+            stripe_price_id: base.active_pass_price_id,
+            price: base.active_pass_price,
+            billing_period: base.active_pass_billing_period,
+            mode: 'one_time'
+          },
+          niveau: base.pass_niveau
+        },
+        status: 'active',
+        isActive: true,
+        isPass: true
+      })
+    }
+  }
+
+  // Fallback si aucune option mais on a un abonnement de base
+  if (!options.length && base?.has_subscription) {
+    const levelLabel = formatLevelDisplay(base.subscription_niveau)
+    options.push({
+      key: 'base',
+      title: levelLabel || basePlanName,
+      subtitle: levelLabel ? basePlanName : '',
+      level: base.subscription_niveau || null,
+      subscription: null,
+      status: base.status || '',
+      isActive: Boolean(base.is_active),
+      isPass: false
+    })
+  }
+
+  return options
 })
 
 const hasMultipleSubscriptionOptions = computed(() => subscriptionLevelOptions.value.length > 1)
@@ -620,6 +750,15 @@ const currentViewOption = computed(() => {
     return options.find(option => option.key === viewSubscriptionKey.value) || options[0]
   }
   return options[0]
+})
+
+// Détermine si l'option affichée actuellement est un pass (non récurrent)
+const isCurrentViewPass = computed(() => {
+  const option = currentViewOption.value
+  if (!option) return false
+  if (option.isPass) return true
+  const planMode = option.subscription?.plan?.mode
+  return planMode === 'one_time'
 })
 
 watch(
@@ -692,7 +831,7 @@ const subscription = computed(() => {
   }
 })
 const features = computed(() => subscription.value.features?.length ? subscription.value.features : defaultFeatures)
-const hasSubscription = computed(() => Boolean(subscription.value.has_subscription))
+const hasSubscription = computed(() => Boolean(subscription.value.has_subscription || subscription.value.has_active_pass))
 const hasManualAccess = computed(() => Boolean(subscription.value.has_manual_access))
 const isCardLoading = computed(() => !initialLoadDone.value && (subscriptionStore.loading || !subscriptionStore.status))
 const cancellationScheduled = computed(() => Boolean(subscription.value.cancel_at_period_end))
@@ -730,6 +869,27 @@ const unlockedLevelsWithSubscriptions = computed(() => {
 const giftedSubscriptions = computed(() =>
   (baseSubscription.value.gifted_subscriptions || []).filter(gift => gift?.is_active)
 )
+const giftedPasses = computed(() =>
+  (baseSubscription.value.gifted_passes || []).filter(pass => pass?.is_active)
+)
+
+// Helpers pour les passes offerts
+const giftPassBeneficiaryInitials = (pass) => {
+  const first = (pass.beneficiary?.first_name || '').charAt(0).toUpperCase()
+  const last = (pass.beneficiary?.last_name || '').charAt(0).toUpperCase()
+  return first + last || '?'
+}
+const giftPassBeneficiaryFullName = (pass) => {
+  const first = pass.beneficiary?.first_name || ''
+  const last = pass.beneficiary?.last_name || ''
+  return `${first} ${last}`.trim() || pass.beneficiary?.email || 'Bénéficiaire'
+}
+const giftPassLevelLabel = (pass) => {
+  if (!pass.niveau) return ''
+  const paysName = pass.niveau.pays?.nom
+  return paysName ? `${pass.niveau.nom} · ${paysName}` : pass.niveau.nom
+}
+
 const invoicesTotalPages = computed(() => {
   if (!invoicesTotal.value) return 1
   return Math.max(1, Math.ceil(invoicesTotal.value / invoicesPageSize))
@@ -854,6 +1014,10 @@ const statusText = computed(() => {
 })
 
 const statusDescription = computed(() => {
+  // Pass actif : afficher un message spécifique
+  if (isCurrentViewPass.value && hasActiveAccess.value) {
+    return 'Pass actif, accès valide jusqu\'à expiration.'
+  }
   if (subscription.value.cancel_at_period_end && subscription.value.status !== 'canceled' && hasActiveAccess.value) {
     return 'Accès maintenu jusqu\'à la date de fin actuelle.'
   }
@@ -1402,12 +1566,18 @@ const planPriceLabel = computed(() => {
     subscription.value.plan_currency || 'EUR'
   )
   if (!formattedPrice) return ''
+  // Pour les passes (paiements uniques), pas de période
+  if (isCurrentViewPass.value) {
+    return `${formattedPrice} (paiement unique)`
+  }
   const billingPeriod = subscription.value.plan_billing_period || subscription.value.plan_period
   const meta = resolveBillingPeriodMeta(billingPeriod)
   return meta?.short ? `${formattedPrice} / ${meta.short}` : formattedPrice
 })
 
 const planBillingLabel = computed(() => {
+  // Pour les passes, pas de facturation récurrente
+  if (isCurrentViewPass.value) return ''
   const billingPeriod = subscription.value.plan_billing_period || subscription.value.plan_period
   const meta = resolveBillingPeriodMeta(billingPeriod)
   return meta?.adjective ? `Facturation ${meta.adjective}` : ''
@@ -1431,12 +1601,16 @@ const subscriptionLevelLabel = computed(() => formatLevelDisplay(subscription.va
 const passPlanLabel = computed(() => subscription.value.active_pass_plan || 'Pass actif')
 
 const renewalLabel = computed(() => {
+  if (isCurrentViewPass.value) return 'Expiration'
   if (!shouldShowAccessEndDate.value) return 'Accès terminé'
   if (cancellationScheduled.value) return 'Fin programmée'
   return subscription.value.is_active ? 'Renouvellement' : 'Fin de période'
 })
 const renewalDateLabel = computed(() => formatDate(displayRenewalDate.value))
 const renewalHint = computed(() => {
+  if (isCurrentViewPass.value) {
+    return 'Pass à usage unique, sans renouvellement automatique.'
+  }
   if (!displayRenewalDate.value) {
     return hasActiveAccess.value
       ? 'Dates en synchronisation avec Stripe.'
@@ -1455,6 +1629,9 @@ const renewalHint = computed(() => {
 })
 
 const periodEndHint = computed(() => {
+  if (isCurrentViewPass.value) {
+    return 'Pass à usage unique, l\'accès s\'arrête automatiquement à cette date.'
+  }
   if (!displayRenewalDate.value) {
     return hasActiveAccess.value
       ? 'Même après annulation, votre accès reste actif jusqu\'à la fin de la période en cours.'
@@ -1481,6 +1658,7 @@ const trialCountdownText = computed(() => {
 })
 
 const timelineSecondaryLabel = computed(() => {
+  if (isCurrentViewPass.value) return 'Expiration du pass'
   if (!hasActiveAccess.value) return 'Accès interrompu'
   if (cancellationScheduled.value) return 'Annulation programmée'
   return subscription.value.is_active ? 'Accès garanti' : 'Fin programmée'
@@ -2352,6 +2530,43 @@ onMounted(() => {
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   background: #f9fafb;
+}
+
+.gifted-section--passes {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-top: none;
+  border: 1px solid #e0e7ff;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f5f3ff 0%, #eff6ff 100%);
+}
+
+.gifted-card--pass {
+  border-color: #c7d2fe;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
+}
+
+.gifted-pass-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  border-radius: 8px;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.pass-badge-icon {
+  font-size: 1rem;
+}
+
+.gifted-value.status-expired {
+  color: #9ca3af;
 }
 
 .gifted-header h4 {

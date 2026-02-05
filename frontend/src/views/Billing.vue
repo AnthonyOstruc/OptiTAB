@@ -99,77 +99,16 @@
 
       <!-- Pricing Cards -->
       <div class="pricing-container">
-        <div v-if="loading" class="loading-state">
-          <div class="spinner"></div>
-          <p>Chargement des offres…</p>
-        </div>
-
-        <div v-else-if="cards.length === 0" class="empty-state">
-          <p>Aucune offre disponible pour le moment.</p>
-        </div>
-
-        <div v-else class="pricing-grid">
-          <div
-            v-for="card in cards"
-            :key="card.key"
-            class="pricing-card"
-            :class="{ 
-              'is-popular': card.recommended,
-              'is-current': isCurrentPlan(card)
-            }"
-          >
-            <!-- Badge -->
-            <div class="card-badge-area">
-              <span v-if="card.recommended" class="badge badge-popular">
-                Le plus populaire
-              </span>
-              <span v-if="card.savings" class="badge badge-savings">
-                Économise {{ card.savings }}%
-              </span>
-            </div>
-
-            <!-- Header -->
-            <div class="card-header">
-              <h3 class="card-title">{{ card.title }}</h3>
-              <p class="card-subtitle">{{ card.subtitle }}</p>
-            </div>
-
-            <!-- Price -->
-            <div class="card-price">
-              <div class="price-amount">{{ card.price.toFixed(2) }}€</div>
-              <div v-if="card.per" class="price-period">{{ card.per }}</div>
-            </div>
-
-            <!-- Features -->
-            <ul class="card-features">
-              <li v-for="(feature, idx) in card.features" :key="idx">
-                <svg class="feature-icon" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                </svg>
-                {{ feature }}
-              </li>
-            </ul>
-
-            <!-- Reviews -->
-            <div class="card-reviews">
-              <GoogleReviewsCompact />
-            </div>
-
-            <!-- CTA Button -->
-            <button
-              class="card-button"
-              data-cta-name="subscribe"
-              data-cta-location="billing"
-              :disabled="submitting || !card.priceId || isBlockedByLevel || isBlockedByCurrentPlan(card)"
-              @click="handlePlanClick(card)"
-            >
-              {{ buttonLabel(card) }}
-            </button>
-
-            <!-- Security Note -->
-            <p class="card-note">🔒 Paiement sécurisé • Annulable à tout moment</p>
-          </div>
-        </div>
+        <PricingCards 
+          :submitting="submitting"
+          :show-current-plan="shouldBlockForSelf"
+          :current-price-id="activePlanPriceId"
+          :level-already-unlocked="levelAlreadyUnlocked"
+          cta-location="billing"
+          :disabled-label="!levelReady ? 'Choisir un niveau' : 'Déjà souscrit'"
+          already-subscribed-label="Déjà souscrit"
+          @select="handlePlanClick"
+        />
       </div>
 
       <!-- Contact Section -->
@@ -345,19 +284,16 @@
 
 <script setup>
 import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
-import { getPlans, createCheckoutSession } from '@/api/subscriptions'
+import { createCheckoutSession } from '@/api/subscriptions'
 import { checkEmailExists, createChildAccount } from '@/api/users'
-import { DEFAULT_PLANS } from '@/config/subscriptions'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
-import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
+import PricingCards from '@/components/shared/PricingCards.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
 import Footer from '@/components/layout/Footer.vue'
-// FAQ spécifique à la page Billing (plus court et focalisé)
 import { useSubscriptionStore } from '@/stores/subscription'
 import { getNiveauxByPays } from '@/api/niveaux'
 import { useUserStore } from '@/stores/user'
 
-const plans = ref(DEFAULT_PLANS)
 const loading = ref(false)
 const submitting = ref(false)
 const subscriptionStore = useSubscriptionStore()
@@ -519,93 +455,6 @@ const humanPeriod = (p) => {
   return p
 }
 
-const planMode = (p) => (p?.mode || p?.plan_mode || '').toLowerCase()
-const isOneTime = (p) => planMode(p) === 'one_time' || (p?.access_days && Number(p.access_days) > 0)
-const isSubscription = (p) => planMode(p) === 'subscription' && !(p?.access_days && Number(p.access_days) > 0)
-
-const cards = computed(() => {
-  const subs = plans.value.filter(isSubscription)
-  const passes = plans.value.filter(isOneTime)
-
-  const monthly = subs.find(p => p.billing_period === 'monthly')
-  const weekly = subs.find(p => p.billing_period === 'weekly')
-  const yearly = subs.find(p => p.billing_period === 'yearly')
-  const passMonth = passes.find(p => (p.access_days || 0) >= 28)
-  const passDay = passes.find(p => Number(p.access_days) === 1 || p.billing_period === 'daily')
-
-  const baseFeatures = ['Accès complet à OptiTAB', 'Sans engagement', 'Annulable à tout moment']
-
-  const weeklyPrice = weekly ? Number(weekly.price || 0) : 0
-  const monthlyPrice = monthly ? Number(monthly.price || 0) : 0
-  const weeklyMonthlyEquivalent = weeklyPrice * 4
-  const savings = weeklyPrice > 0 && monthlyPrice > 0
-    ? Math.round(((weeklyMonthlyEquivalent - monthlyPrice) / weeklyMonthlyEquivalent) * 100)
-    : null
-
-  const out = []
-  if (monthly) out.push({
-    key: `m-${monthly.id}`,
-    title: 'Mensuel',
-    subtitle: 'Sans engagement',
-    price: Number(monthly.price || 0),
-    per: '/ mois',
-    features: monthly.features?.length ? monthly.features : baseFeatures,
-    priceId: monthly.stripe_price_id,
-    cta: "S'abonner",
-    recommended: true,
-    savings
-  })
-  if (weekly) out.push({
-    key: `w-${weekly.id}`,
-    title: 'Hebdomadaire',
-    subtitle: 'Flexibilité semaine par semaine',
-    price: Number(weekly.price || 0),
-    per: '/ semaine',
-    features: weekly.features?.length ? weekly.features : [
-      'Accès complet à OptiTAB',
-      'Idéal pour réviser un contrôle',
-      'Sans engagement'
-    ],
-    priceId: weekly.stripe_price_id,
-    cta: "S'abonner",
-    recommended: false
-  })
-  if (yearly) out.push({
-    key: `y-${yearly.id}`,
-    title: 'Annuel',
-    subtitle: 'Économique sur 12 mois',
-    price: Number(yearly.price || 0),
-    per: '/ an',
-    features: yearly.features?.length ? yearly.features : baseFeatures,
-    priceId: yearly.stripe_price_id,
-    cta: "S'abonner",
-    recommended: false
-  })
-  if (passMonth) out.push({
-    key: `pm-${passMonth.id}`,
-    title: 'Pass 1 mois',
-    subtitle: 'Paiement unique',
-    price: Number(passMonth.price || 0),
-    per: '',
-    features: passMonth.features?.length ? passMonth.features : ['Accès 30 jours', 'Idéal pour réviser'],
-    priceId: passMonth.stripe_price_id,
-    cta: 'Acheter le pass',
-    recommended: false
-  })
-  if (passDay) out.push({
-    key: `pd-${passDay.id}`,
-    title: 'Pass 24h',
-    subtitle: 'Accès rapide',
-    price: Number(passDay.price || 0),
-    per: '/ jour',
-    features: passDay.features?.length ? passDay.features : ['Accès 24 heures', 'Parfait pour un contrôle'],
-    priceId: passDay.stripe_price_id,
-    cta: 'Acheter le pass',
-    recommended: false
-  })
-  return out
-})
-
 const hasActiveSubscription = computed(() =>
   Boolean(subscriptionStore.status?.subscriptions?.some(sub => sub?.is_active))
 )
@@ -634,35 +483,18 @@ const isCurrentPrice = (priceId) => {
   return levelAlreadyUnlocked.value
 }
 
-const isCurrentPlan = (card) => isCurrentPrice(card?.priceId)
-const isBlockedByLevel = computed(() => shouldBlockForSelf.value && levelAlreadyUnlocked.value)
-const isBlockedByCurrentPlan = (card) => shouldBlockForSelf.value && isCurrentPlan(card)
-
-const buttonLabel = (card) => {
-  if (shouldBlockForSelf.value && levelAlreadyUnlocked.value) return 'Déjà souscrit'
-  if (shouldBlockForSelf.value && isCurrentPlan(card)) return 'Déjà abonné'
-  if (!levelReady.value) return 'Choisir un niveau'
-  return submitting.value ? 'Redirection…' : card.cta
-}
-
 const handlePlanClick = (card) => {
   if (!card?.priceId) return
-  if ((shouldBlockForSelf.value && (levelAlreadyUnlocked.value || isCurrentPlan(card))) || submitting.value) return
+  if ((shouldBlockForSelf.value && levelAlreadyUnlocked.value) || submitting.value) return
   subscribe(card.priceId)
 }
 
 onMounted(async () => {
   try {
     await subscriptionStore.fetchStatus({ force: true }).catch(() => {})
-    const { data } = await getPlans()
-    const remote = (data?.plans || [])
-    if (remote.length) {
-      plans.value = remote
-    }
     await loadNiveauxOptions()
   } catch (e) {
-  } finally {
-    loading.value = false
+    console.error('Erreur lors du chargement:', e)
   }
 })
 
@@ -1142,6 +974,54 @@ async function handleCreateBeneficiaryAccount() {
   margin: 0 auto 3rem; /* moins d'espace */
 }
 
+/* Pricing Tabs */
+.pricing-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 0.375rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pricing-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.pricing-tab:hover {
+  color: #334155;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.pricing-tab.active {
+  background: white;
+  color: #1e40af;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tab-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
 /* Loading & Empty States */
 .loading-state,
 .empty-state {
@@ -1170,6 +1050,20 @@ async function handleCreateBeneficiaryAccount() {
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.75rem; /* léger dézoom global */
   align-items: start;
+}
+
+/* Pricing Grid 2 colonnes */
+.pricing-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .pricing-grid-2 {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Pricing Card */

@@ -8,66 +8,12 @@
       <p class="pricing-desc">Plateforme de maths : cours, fiches de synthèse et exercices corrigés (sans engagement)</p>
     </div>
 
-    <!-- Loading State -->
-    <div v-if="loading" class="loading">
-      <div class="spinner"></div>
-      <p>Chargement des offres…</p>
-    </div>
-
-    <!-- Pricing Cards -->
-    <div v-else>
-      <div v-if="cards.length === 0" class="empty">Aucune offre disponible</div>
-
-      <div v-else class="pricing-grid">
-        <article v-for="c in cards" :key="c.key" class="pricing-card" :class="{ recommended: c.recommended }">
-          <!-- Badge Populaire -->
-          <div v-if="c.recommended" class="badge">
-            ⭐ Le plus populaire
-          </div>
-          
-          <!-- Économies -->
-          <div v-if="c.recommended && c.savings" class="savings-badge">
-            Économise {{ c.savings }}%
-          </div>
-          
-          <!-- En-tête -->
-          <div class="card-header">
-            <h3 class="plan-title">{{ c.title }}</h3>
-            <p class="plan-subtitle">{{ c.subtitle }}</p>
-          </div>
-          
-          <!-- Prix -->
-          <div class="price-section">
-            <div class="price">
-              <span class="amount">{{ c.price.toFixed(2) }}€</span>
-              <span v-if="c.per" class="period">{{ c.per }}</span>
-            </div>
-          </div>
-          
-          <!-- Fonctionnalités -->
-          <ul class="features">
-            <li v-for="(f, i) in c.features" :key="i">
-              <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-              <span>{{ f }}</span>
-            </li>
-          </ul>
-          
-          <!-- Avis Google -->
-          <div class="card-reviews">
-            <GoogleReviewsCompact />
-          </div>
-          
-          <!-- Bouton d'action -->
-          <button class="cta-btn" data-cta-name="subscribe" data-cta-location="pricing" :disabled="submitting || !c.priceId" @click="handleSubscribe(c)">
-            {{ submitting ? 'Redirection…' : c.cta }}
-          </button>
-          
-          <p class="security-note">🔒 Paiement sécurisé • Annulable à tout moment</p>
-        </article>
-      </div>
-    </div>
+    <!-- Pricing Cards Component -->
+    <PricingCards 
+      :submitting="submitting"
+      cta-location="pricing"
+      @select="handleSubscribe"
+    />
 
     <!-- Modal de sélection du niveau -->
     <div
@@ -158,18 +104,15 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue'
-import { getPlans, createCheckoutSession } from '@/api/subscriptions'
-import { DEFAULT_PLANS } from '@/config/subscriptions'
-import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
+import { ref, computed, watch } from 'vue'
+import { createCheckoutSession } from '@/api/subscriptions'
+import PricingCards from '@/components/shared/PricingCards.vue'
 import { useUserStore } from '@/stores/user'
 import { getNiveauxByPays } from '@/api/niveaux'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { useCheckoutIntentStore } from '@/stores/checkoutIntent'
 import { useToast } from '@/composables/useToast'
 
-const plans = ref([])
-const loading = ref(true)
 const submitting = ref(false)
 const userStore = useUserStore()
 const checkoutIntentStore = useCheckoutIntentStore()
@@ -184,10 +127,6 @@ const selectedNiveauId = ref(
 const showLevelModal = ref(false)
 const pendingPriceId = ref('')
 const pendingPlanName = ref('')
-
-const planMode = (p) => (p?.mode || p?.plan_mode || '').toLowerCase()
-const isOneTime = (p) => planMode(p) === 'one_time' || (p?.access_days && Number(p.access_days) > 0)
-const isSubscription = (p) => planMode(p) === 'subscription' && !(p?.access_days && Number(p.access_days) > 0)
 
 watch(
   () => userStore.niveau_pays?.id,
@@ -206,102 +145,6 @@ const selectedNiveauLabel = computed(() => {
   if (!selectedNiveau.value) return ''
   const pays = selectedNiveau.value.pays?.nom
   return pays ? `${selectedNiveau.value.nom} · ${pays}` : selectedNiveau.value.nom
-})
-
-const cards = computed(() => {
-  const subs = plans.value.filter(isSubscription)
-  const passes = plans.value.filter(isOneTime)
-
-  const monthly = subs.find(p => p.billing_period === 'monthly')
-  const weekly = subs.find(p => p.billing_period === 'weekly')
-  const yearly = subs.find(p => p.billing_period === 'yearly')
-  const passMonth = passes.find(p => (p.access_days || 0) >= 28)
-  const passDay = passes.find(p => Number(p.access_days) === 1 || p.billing_period === 'daily')
-
-  const baseFeatures = ['Accès à tous les cours', 'Exercices illimités', 'Suivi des progrès']
-
-  // Calculer l'économie pour le mensuel vs hebdomadaire
-  const weeklyPrice = weekly ? Number(weekly.price || 0) : 0
-  const monthlyPrice = monthly ? Number(monthly.price || 0) : 0
-  const weeklyMonthlyEquivalent = weeklyPrice * 4 // 4 semaines = 1 mois
-  const savings = weeklyPrice > 0 && monthlyPrice > 0 
-    ? Math.round(((weeklyMonthlyEquivalent - monthlyPrice) / weeklyMonthlyEquivalent) * 100)
-    : null
-
-  const out = []
-  if (monthly) out.push({
-    key: `m-${monthly.id}`,
-    title: 'Mensuel',
-    subtitle: 'Sans engagement',
-    price: Number(monthly.price || 0),
-    per: '/ mois',
-    features: monthly.features?.length ? monthly.features : baseFeatures,
-    priceId: monthly.stripe_price_id,
-    cta: "S'abonner",
-    recommended: true,
-    savings: savings,
-  })
-  if (weekly) out.push({
-    key: `w-${weekly.id}`,
-    title: 'Hebdomadaire',
-    subtitle: 'Flexibilité semaine par semaine',
-    price: Number(weekly.price || 0),
-    per: '/ semaine',
-    features: weekly.features?.length ? weekly.features : [
-      'Accès à tous les contenus',
-      'Renouvellement toutes les semaines',
-    ],
-    priceId: weekly.stripe_price_id,
-    cta: "S'abonner",
-    recommended: false,
-  })
-  if (yearly) out.push({
-    key: `y-${yearly.id}`,
-    title: 'Annuel',
-    subtitle: 'Économique sur 12 mois',
-    price: Number(yearly.price || 0),
-    per: '/ an',
-    features: yearly.features?.length ? yearly.features : baseFeatures,
-    priceId: yearly.stripe_price_id,
-    cta: "S'abonner",
-    recommended: false,
-  })
-  if (passMonth) out.push({
-    key: `pm-${passMonth.id}`,
-    title: 'Pass 1 mois',
-    subtitle: 'Paiement unique',
-    price: Number(passMonth.price || 0),
-    per: '',
-    features: passMonth.features?.length ? passMonth.features : ['Accès 30 jours', 'Idéal pour réviser'],
-    priceId: passMonth.stripe_price_id,
-    cta: 'Acheter le pass',
-    recommended: false,
-  })
-  if (passDay) out.push({
-    key: `pd-${passDay.id}`,
-    title: 'Pass 24h',
-    subtitle: 'Accès rapide',
-    price: Number(passDay.price || 0),
-    per: '/ jour',
-    features: passDay.features?.length ? passDay.features : ['Accès 24 heures', 'Parfait pour un contrôle'],
-    priceId: passDay.stripe_price_id,
-    cta: 'Acheter le pass',
-    recommended: false,
-  })
-  return out
-})
-
-onMounted(async () => {
-  try {
-    const { data } = await getPlans()
-    const remote = (data?.plans || [])
-    plans.value = remote.length ? remote : DEFAULT_PLANS
-  } catch (e) {
-    // Fallback to default plans if backend not ready
-    plans.value = DEFAULT_PLANS
-  } finally {
-    loading.value = false
-  }
 })
 
 async function loadLevels(force = false) {
@@ -390,11 +233,11 @@ async function confirmSubscription() {
     if (redirectUrl) {
       window.location.href = redirectUrl
     } else {
-      showErrorToast('Impossible d’ouvrir la page de paiement. Réessaie plus tard.')
+      showErrorToast("Impossible d'ouvrir la page de paiement. Réessaie plus tard.")
     }
   } catch (err) {
     console.error(err)
-    showErrorToast('Une erreur est survenue lors de la création du paiement.')
+    showErrorToast("Une erreur est survenue lors de la création du paiement.")
   } finally {
     submitting.value = false
     showLevelModal.value = false
@@ -440,9 +283,83 @@ async function confirmSubscription() {
   line-height: 1.6;
 }
 
-.loading {
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Modal styles */
+.level-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.level-modal {
+  background: #fff;
+  border-radius: 20px;
+  max-width: 520px;
+  width: 100%;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #64748b;
+  cursor: pointer;
+  
+  &:hover {
+    color: #0f172a;
+  }
+}
+
+.modal-header {
   text-align: center;
-  padding: 60px 20px;
+  margin-bottom: 1.5rem;
+  
+  h3 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    color: #0f172a;
+  }
+}
+
+.modal-eyebrow {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #6366f1;
+  margin: 0;
+}
+
+.modal-subtitle {
+  font-size: 0.95rem;
+  color: #475569;
+  margin: 0.5rem 0 0;
+}
+
+.modal-body {
+  margin-bottom: 1rem;
+}
+
+.modal-loading {
+  text-align: center;
+  padding: 2rem 0;
   
   .spinner {
     width: 48px;
@@ -460,293 +377,56 @@ async function confirmSubscription() {
   }
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: #64748b;
-  font-size: 1.1rem;
-}
-
-.pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2vw;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-}
-
-.pricing-card {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 32px 28px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-  position: relative;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-  }
-  
-  &.recommended {
-    border: 2px solid #2a38b7;
-    box-shadow: 0 8px 32px rgba(42, 56, 183, 0.2);
-    
-    &:hover {
-      box-shadow: 0 16px 48px rgba(42, 56, 183, 0.25);
-    }
-  }
-}
-
-.badge {
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
-  color: white;
-  padding: 6px 20px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(42, 56, 183, 0.3);
-}
-
-.savings-badge {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.card-header {
-  text-align: center;
-  margin-bottom: 24px;
-  margin-top: 8px;
-}
-
-.plan-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 8px;
-}
-
-.plan-subtitle {
-  font-size: 0.95rem;
-  color: #64748b;
-  margin: 0;
-}
-
-.price-section {
-  text-align: center;
-  margin-bottom: 28px;
-}
-
-.price {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 6px;
-}
-
-.amount {
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: #2a38b7;
-}
-
-.period {
-  font-size: 1rem;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 28px 0;
-  flex: 1;
-  
-  li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 10px 0;
-    color: #475569;
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
-}
-
-.check-icon {
-  width: 20px;
-  height: 20px;
-  color: #10b981;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.card-reviews {
-  margin-bottom: 20px;
-}
-
-.cta-btn {
-  width: 100%;
-  padding: 16px 32px;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: white;
-  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(42, 56, 183, 0.2);
-  
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(42, 56, 183, 0.3);
-  }
-  
-  &:active:not(:disabled) {
-    transform: translateY(0);
-  }
-  
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
-
-.security-note {
-  text-align: center;
-  font-size: 0.85rem;
-  color: #64748b;
-  margin: 16px 0 0 0;
-  line-height: 1.4;
-}
-
-/* Modal styles */
-.level-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  z-index: 60;
-}
-
-.level-modal {
-  width: min(520px, 100%);
-  background: #fff;
-  border-radius: 24px;
-  padding: 2rem;
-  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.25);
-  position: relative;
-}
-
-.modal-close {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  border: none;
-  background: transparent;
-  font-size: 1.6rem;
-  color: #94a3b8;
-  cursor: pointer;
-}
-
-.modal-header {
-  margin-bottom: 1.5rem;
-}
-
-.modal-eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #6366f1;
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-bottom: 0.35rem;
-}
-
-.modal-subtitle {
-  color: #475569;
-  line-height: 1.5;
-}
-
-.modal-body {
-  min-height: 120px;
-}
-
-.modal-loading {
-  text-align: center;
-  color: #475569;
-}
-
 .modal-error {
   text-align: center;
-  color: #b91c1c;
-  font-weight: 600;
+  color: #dc2626;
 }
 
 .modal-refresh {
   margin-top: 1rem;
-  background: #1d4ed8;
-  color: #fff;
+  background: #f1f5f9;
   border: none;
-  padding: 0.6rem 1.4rem;
-  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
 }
 
 .modal-select-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #0f172a;
+  }
 }
 
 .modal-select-wrapper select {
   width: 100%;
-  border-radius: 14px;
-  border: 1px solid #d4ddff;
-  padding: 0.75rem 1rem;
-  font-weight: 600;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
   font-size: 1rem;
   background: #f8fafc;
-  color: #0f172a;
+  
+  &:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
 }
 
 .modal-hint {
-  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
   color: #64748b;
-  margin: 0;
 }
 
 .modal-selection {
-  font-size: 0.95rem;
-  color: #1e3a8a;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #eef2ff;
+  color: #4338ca;
+  border-radius: 8px;
   font-weight: 600;
 }
 
@@ -811,24 +491,11 @@ async function confirmSubscription() {
   .pricing-desc {
     font-size: 1rem;
   }
-  
-  .pricing-card {
-    padding: 28px 24px;
-  }
-  
-  .amount {
-    font-size: 2rem;
-  }
 }
 
 @media (max-width: 480px) {
   .pricing-title {
     font-size: 1.75rem;
-  }
-  
-  .badge {
-    font-size: 0.75rem;
-    padding: 5px 16px;
   }
 }
 </style>

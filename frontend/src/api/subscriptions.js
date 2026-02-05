@@ -29,6 +29,19 @@ export const cancelSubscription = (identifier = null) => {
   return apiClient.post('/api/subscriptions/cancel/', {})
 }
 
+export const reactivateSubscription = (identifier = null) => {
+  if (identifier && typeof identifier === 'object') {
+    return apiClient.post('/api/subscriptions/reactivate/', identifier)
+  }
+  if (identifier && typeof identifier === 'string' && identifier.startsWith('sub_')) {
+    return apiClient.post('/api/subscriptions/reactivate/', { stripe_subscription_id: identifier })
+  }
+  if (identifier) {
+    return apiClient.post('/api/subscriptions/reactivate/', { subscription_id: identifier })
+  }
+  return apiClient.post('/api/subscriptions/reactivate/', {})
+}
+
 export const getInvoices = (params = {}) =>
   apiClient.get('/api/subscriptions/invoices/', { params })
 

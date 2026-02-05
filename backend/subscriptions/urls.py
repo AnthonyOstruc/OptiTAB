@@ -6,6 +6,7 @@ from .views import (
     InvoiceEmailView,
     CheckoutSessionStatusView,
     CancelSubscriptionView,
+    ReactivateSubscriptionView,
     PlansListView,
     stripe_webhook,
     AdminPlansView,
@@ -23,6 +24,7 @@ urlpatterns = [
     path('invoices/', InvoiceListView.as_view(), name='subscription-invoices'),
     path('invoices/<int:pk>/email/', InvoiceEmailView.as_view(), name='subscription-invoice-email'),
     path('cancel/', CancelSubscriptionView.as_view(), name='cancel-subscription'),
+    path('reactivate/', ReactivateSubscriptionView.as_view(), name='reactivate-subscription'),
     path('webhook/', stripe_webhook, name='stripe-webhook'),
     # Admin management endpoints
     path('admin/plans/', AdminPlansView.as_view(), name='admin-plans'),

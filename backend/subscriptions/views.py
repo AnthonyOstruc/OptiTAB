@@ -799,6 +799,89 @@ class CancelSubscriptionView(APIView):
 
         return JsonResponse({'error': 'Abonnement introuvable', 'message': 'Aucun abonnement correspondant trouvé.'}, status=404)
 
+
+class ReactivateSubscriptionView(APIView):
+    """Réactiver un abonnement programmé pour annulation (cancel_at_period_end=True)"""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        subscription_id = request.data.get('subscription_id')
+        stripe_subscription_id = request.data.get('stripe_subscription_id')
+        subscription = None
+
+        if subscription_id:
+            try:
+                subscription = UserSubscription.objects.get(id=subscription_id, user=request.user)
+            except (UserSubscription.DoesNotExist, ValueError):
+                subscription = UserSubscription.objects.filter(stripe_subscription_id=subscription_id, user=request.user).first()
+
+        if not subscription and stripe_subscription_id:
+            subscription = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id, user=request.user).first()
+
+        if subscription:
+            if not subscription.cancel_at_period_end:
+                return JsonResponse({'success': True, 'message': 'Abonnement déjà actif.'})
+            
+            if subscription.status == 'canceled':
+                return JsonResponse({'error': 'Abonnement déjà résilié', 'message': 'Cet abonnement est déjà résilié. Veuillez souscrire à un nouveau plan.'}, status=400)
+            
+            if not subscription.stripe_subscription_id:
+                # Abonnement sans Stripe, réactiver localement
+                subscription.cancel_at_period_end = False
+                subscription.save(update_fields=['cancel_at_period_end', 'updated_at'])
+                return JsonResponse({'success': True, 'message': 'Abonnement réactivé avec succès.'})
+
+            try:
+                stripe.Subscription.modify(
+                    subscription.stripe_subscription_id,
+                    cancel_at_period_end=False
+                )
+                updated = stripe.Subscription.retrieve(subscription.stripe_subscription_id)
+                if hasattr(updated, 'to_dict'):
+                    updated = updated.to_dict()
+                subscription.status = updated.get('status', subscription.status)
+                subscription.cancel_at_period_end = bool(updated.get('cancel_at_period_end', False))
+                subscription.save(update_fields=['status', 'cancel_at_period_end', 'updated_at'])
+                return JsonResponse({'success': True, 'message': 'Abonnement réactivé avec succès ! Votre abonnement continuera normalement.'})
+            except stripe_error.InvalidRequestError as exc:
+                logger.warning(f"Stripe reactivate error {subscription.stripe_subscription_id}: {exc}")
+                return JsonResponse({'error': 'Impossible de réactiver', 'message': 'Cet abonnement ne peut pas être réactivé.'}, status=400)
+            except stripe_error.StripeError as exc:
+                logger.error(f"Stripe reactivate error {subscription.stripe_subscription_id}: {exc}")
+                return JsonResponse({'error': 'Stripe indisponible', 'message': 'Impossible de contacter Stripe pour le moment.'}, status=400)
+
+        # Fallback: réactivation via stripe_subscription_id directement
+        if stripe_subscription_id:
+            try:
+                stripe_sub = stripe.Subscription.retrieve(stripe_subscription_id, expand=['customer'])
+            except stripe_error.InvalidRequestError:
+                return JsonResponse({'error': 'Abonnement introuvable', 'message': 'Aucun abonnement correspondant trouvé.'}, status=404)
+            except stripe_error.StripeError as exc:
+                logger.error(f"Stripe retrieve error {stripe_subscription_id}: {exc}")
+                return JsonResponse({'error': 'Stripe indisponible', 'message': 'Impossible de récupérer l\'abonnement Stripe.'}, status=400)
+
+            metadata = stripe_sub.get('metadata') or {}
+            meta_user_id = metadata.get('user_id')
+            meta_payer_id = metadata.get('payer_user_id')
+            current_user_id = str(request.user.id)
+            allowed_ids = {str(meta_user_id) if meta_user_id else None, str(meta_payer_id) if meta_payer_id else None}
+            allowed_ids.discard(None)
+            if allowed_ids and current_user_id not in allowed_ids:
+                return JsonResponse({'detail': 'Forbidden'}, status=403)
+
+            try:
+                stripe.Subscription.modify(
+                    stripe_subscription_id,
+                    cancel_at_period_end=False
+                )
+                return JsonResponse({'success': True, 'message': 'Abonnement réactivé avec succès !'})
+            except stripe_error.StripeError as exc:
+                logger.error(f"Stripe reactivate error {stripe_subscription_id}: {exc}")
+                return JsonResponse({'error': 'Stripe a refusé la réactivation', 'message': 'Stripe a refusé la réactivation.'}, status=400)
+
+        return JsonResponse({'error': 'Abonnement introuvable', 'message': 'Aucun abonnement correspondant trouvé.'}, status=404)
+
+
 class PlansListView(APIView):
     """Liste des plans disponibles"""
     permission_classes = [AllowAny]

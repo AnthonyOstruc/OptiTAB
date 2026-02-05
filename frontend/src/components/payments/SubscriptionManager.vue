@@ -111,12 +111,19 @@
               </div>
               <div class="level-actions">
                 <template v-if="level.subscription">
-                  <span
-                    v-if="level.subscription.cancel_at_period_end"
-                    class="level-status"
-                  >
-                    Résiliation le {{ formatDate(level.subscription.current_period_end) }}
-                  </span>
+                  <template v-if="level.subscription.cancel_at_period_end">
+                    <span class="level-status">
+                      Résiliation le {{ formatDate(level.subscription.current_period_end) }}
+                    </span>
+                    <button
+                      class="level-reactivate-btn"
+                      :disabled="isLevelReactivating(level.subscription)"
+                      @click="reactivateSubscriptionForLevel(level.subscription)"
+                    >
+                      <ArrowPathIcon class="btn-icon" />
+                      {{ isLevelReactivating(level.subscription) ? 'Réactivation…' : 'Se réabonner' }}
+                    </button>
+                  </template>
                   <button
                     v-else
                     class="level-cancel-btn"
@@ -368,7 +375,7 @@ import {
   DocumentArrowDownIcon,
   EnvelopeIcon
 } from '@heroicons/vue/24/outline'
-import { cancelSubscription as cancelSubscriptionApi, getInvoices, emailInvoice } from '@/api/subscriptions'
+import { cancelSubscription as cancelSubscriptionApi, reactivateSubscription as reactivateSubscriptionApi, getInvoices, emailInvoice } from '@/api/subscriptions'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { usePaysNiveauStore } from '@/stores/paysNiveau'
 import { useUserStore } from '@/stores/user'
@@ -412,6 +419,7 @@ const invoicesPage = ref(1)
 const invoicesTotal = ref(0)
 const invoicesPageSize = 3
 const cancellingLevelKey = ref('')
+const reactivatingLevelKey = ref('')
 const viewSubscriptionKey = ref('')
 
 // Modal de résiliation
@@ -656,6 +664,38 @@ const isLevelCancelling = (subscriptionItem) => {
   const identifier = buildSubscriptionIdentifier(subscriptionItem)
   if (!identifier) return false
   return cancellingLevelKey.value === identifier.key
+}
+
+const isLevelReactivating = (subscriptionItem) => {
+  const identifier = buildSubscriptionIdentifier(subscriptionItem)
+  if (!identifier) return false
+  return reactivatingLevelKey.value === identifier.key
+}
+
+const reactivateSubscriptionForLevel = async (subscriptionItem) => {
+  const identifier = buildSubscriptionIdentifier(subscriptionItem)
+  if (!identifier) {
+    const message = 'Impossible d\'identifier cet abonnement.'
+    setInlineMessage(message, 'error')
+    showToast(message, 'error')
+    return
+  }
+  try {
+    reactivatingLevelKey.value = identifier.key
+    await reactivateSubscriptionApi(identifier.payload)
+    await loadSubscription(true)
+    await loadInvoices()
+    const successMessage = 'Abonnement réactivé avec succès !'
+    setInlineMessage(successMessage, 'success')
+    showToast('Abonnement réactivé', 'success')
+  } catch (error) {
+    console.error('Erreur lors de la réactivation:', error)
+    const serverMessage = error.response?.data?.message || error.response?.data?.error || 'Impossible de réactiver cet abonnement.'
+    setInlineMessage(serverMessage, 'error')
+    showToast(serverMessage, 'error')
+  } finally {
+    reactivatingLevelKey.value = ''
+  }
 }
 
 const confirmLevelCancellation = (level) => {
@@ -1710,7 +1750,8 @@ onMounted(() => {
 }
 
 .level-cancel-btn,
-.level-upgrade-btn {
+.level-upgrade-btn,
+.level-reactivate-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -1731,6 +1772,25 @@ onMounted(() => {
 .level-cancel-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.level-reactivate-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  color: white;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.level-reactivate-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.level-reactivate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .level-upgrade-btn {
@@ -2121,7 +2181,7 @@ onMounted(() => {
   transform: translateY(-1px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1050px) {
   .subscription-manager {
     padding: 0.75rem;
     max-width: 100%;
@@ -2262,11 +2322,22 @@ onMounted(() => {
 
   .level-actions {
     width: 100%;
-    justify-content: stretch;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .level-status {
+    text-align: center;
+    padding: 0.5rem;
+    background: #fff7ed;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
   }
 
   .level-cancel-btn,
-  .level-upgrade-btn {
+  .level-upgrade-btn,
+  .level-reactivate-btn {
     flex: 1;
     justify-content: center;
     padding: 0.5rem 0.75rem;

@@ -91,12 +91,17 @@ def _prime_customer_invoice_custom_fields(customer_id, metadata):
         niveau_label = (_level_label_from_metadata(metadata) or '').strip()
         is_gift = str((metadata or {}).get('is_gift') or '').lower() == 'true'
         beneficiary_email = ((metadata or {}).get('beneficiary_email') or '').strip()
+        beneficiary_name = ((metadata or {}).get('beneficiary_name') or '').strip()
 
         requested = []
         if niveau_label:
             requested.append(('Niveau', niveau_label))
-        if is_gift and beneficiary_email:
-            requested.append(('Bénéficiaire', beneficiary_email))
+        if is_gift and (beneficiary_name or beneficiary_email):
+            # Format: "Nom Prénom" sur une ligne, email sur la ligne suivante
+            beneficiary_display = beneficiary_name or beneficiary_email
+            if beneficiary_name and beneficiary_email:
+                beneficiary_display = f"{beneficiary_name}\n{beneficiary_email}"[:140]
+            requested.append(('Bénéficiaire', beneficiary_display))
         if not requested:
             return
 

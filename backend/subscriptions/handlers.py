@@ -131,12 +131,13 @@ def handle_invoice_created(invoice):
         
         is_gift = str(metadata.get('is_gift') or '').lower() == 'true'
         beneficiary_email = (metadata.get('beneficiary_email') or '').strip()
+        beneficiary_name = (metadata.get('beneficiary_name') or '').strip()
 
         if not niveau_label and not (is_gift and beneficiary_email):
             return
 
         # Ajouter les champs personnalisés à la facture
-        _add_custom_fields_to_invoice(invoice, invoice_id, niveau_label, is_gift, beneficiary_email)
+        _add_custom_fields_to_invoice(invoice, invoice_id, niveau_label, is_gift, beneficiary_name, beneficiary_email)
 
     except Exception as exc:
         logger.warning("handle_invoice_created: erreur (%s): %s", invoice.get('id'), exc)
@@ -188,7 +189,7 @@ def _get_niveau_label_for_invoice(subscription_id, metadata):
     return niveau_label
 
 
-def _add_custom_fields_to_invoice(invoice, invoice_id, niveau_label, is_gift, beneficiary_email):
+def _add_custom_fields_to_invoice(invoice, invoice_id, niveau_label, is_gift, beneficiary_name, beneficiary_email):
     """Ajoute les champs personnalisés à la facture Stripe."""
     existing_fields = invoice.get('custom_fields') or []
     if not isinstance(existing_fields, list):
@@ -197,8 +198,13 @@ def _add_custom_fields_to_invoice(invoice, invoice_id, niveau_label, is_gift, be
     requested_fields = []
     if niveau_label:
         requested_fields.append(('Niveau', niveau_label))
-    if is_gift and beneficiary_email:
-        requested_fields.append(('Bénéficiaire', beneficiary_email))
+    if is_gift and (beneficiary_name or beneficiary_email):
+        # Format: "Nom Prénom" sur une ligne, email sur la ligne suivante
+        beneficiary_display = beneficiary_name or beneficiary_email
+        if beneficiary_name and beneficiary_email:
+            # Stripe custom field value est limité à 140 caractères
+            beneficiary_display = f"{beneficiary_name}\n{beneficiary_email}"[:140]
+        requested_fields.append(('Bénéficiaire', beneficiary_display))
 
     existing_names = {
         str(f.get('name') or '').strip()
@@ -212,8 +218,12 @@ def _add_custom_fields_to_invoice(invoice, invoice_id, niveau_label, is_gift, be
         footer_lines = []
         if niveau_label:
             footer_lines.append(f"Niveau : {niveau_label}")
-        if is_gift and beneficiary_email:
-            footer_lines.append(f"Bénéficiaire : {beneficiary_email}")
+        if is_gift and (beneficiary_name or beneficiary_email):
+            if beneficiary_name:
+                footer_lines.append(f"Bénéficiaire : {beneficiary_name}")
+                footer_lines.append(f"Email : {beneficiary_email}")
+            else:
+                footer_lines.append(f"Bénéficiaire : {beneficiary_email}")
 
         if footer_lines:
             current_footer = (invoice.get('footer') or '').strip()

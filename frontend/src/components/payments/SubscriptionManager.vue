@@ -190,6 +190,7 @@
                       Résiliation le {{ formatDate(level.subscription.current_period_end) }}
                     </span>
                     <button
+                      v-if="!level.subscription.is_gift_received"
                       class="level-reactivate-btn"
                       :disabled="isLevelReactivating(level.subscription)"
                       @click="reactivateSubscriptionForLevel(level.subscription)"
@@ -197,6 +198,11 @@
                       <ArrowPathIcon class="btn-icon" />
                       {{ isLevelReactivating(level.subscription) ? 'Réactivation…' : 'Se réabonner' }}
                     </button>
+                  </template>
+                  <template v-else-if="level.subscription.is_gift_received">
+                    <span class="level-gift-notice">
+                      Abonnement offert par un parent
+                    </span>
                   </template>
                   <button
                     v-else
@@ -1948,6 +1954,15 @@ onMounted(() => {
   font-size: 0.9rem;
   color: #b45309;
   font-weight: 600;
+}
+
+.level-gift-notice {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-style: italic;
+  padding: 0.4rem 0.75rem;
+  background: #f3f4f6;
+  border-radius: 0.5rem;
 }
 
 .level-cancel-btn,

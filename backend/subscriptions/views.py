@@ -194,8 +194,10 @@ class CreateCheckoutSessionView(APIView):
             
             # Ajouter l'info de souscription parent → enfant si applicable
             if beneficiary_email:
+                beneficiary_full_name = f"{beneficiary_user.first_name} {beneficiary_user.last_name}".strip()
                 metadata['is_gift'] = 'true'
                 metadata['beneficiary_email'] = beneficiary_user.email
+                metadata['beneficiary_name'] = beneficiary_full_name or beneficiary_user.email
 
             # Important: certains comptes Stripe finalisent immédiatement la 1ère facture d'une souscription.
             # Dans ce cas, invoice.created arrive trop tard pour modifier la facture. On prépare donc des
@@ -322,11 +324,17 @@ def build_subscription_status(user):
         stripe_price = _extract_price_from_stripe_subscription(stripe_snapshot)
         plan_payload = _build_plan_payload(plan, stripe_price, stripe_snapshot)
 
+        # Déterminer si c'est un abonnement cadeau reçu (payé par quelqu'un d'autre)
+        sub_metadata = (stripe_snapshot.get('metadata') or {}) if stripe_snapshot else {}
+        payer_id = sub_metadata.get('payer_user_id')
+        is_gift_received = bool(payer_id and str(payer_id) != str(user.id))
+
         sub_payload = {
             'id': sub.id,
             'status': sub.status,
             'is_active': sub.is_active,
             'is_trial': sub.is_trial,
+            'is_gift_received': is_gift_received,
             'days_remaining_trial': sub.days_remaining_trial,
             'current_period_start': sub.current_period_start.isoformat() if sub.current_period_start else None,
             'current_period_end': sub.current_period_end.isoformat() if sub.current_period_end else None,
@@ -388,11 +396,17 @@ def build_subscription_status(user):
         end_dt = _from_timestamp(stripe_sub.get('current_period_end'))
         trial_dt = _from_timestamp(stripe_sub.get('trial_end'))
         started_dt = _from_timestamp(stripe_sub.get('start_date')) or start_dt
+        
+        # Déterminer si c'est un abonnement cadeau reçu (payé par quelqu'un d'autre)
+        payer_id = metadata.get('payer_user_id')
+        is_gift_received = bool(payer_id and str(payer_id) != str(user.id))
+        
         sub_payload = {
             'id': None,
             'status': status,
             'is_active': _is_stripe_subscription_active(stripe_sub),
             'is_trial': status == 'trialing',
+            'is_gift_received': is_gift_received,
             'days_remaining_trial': 0,
             'current_period_start': start_dt.isoformat() if start_dt else None,
             'current_period_end': end_dt.isoformat() if end_dt else None,

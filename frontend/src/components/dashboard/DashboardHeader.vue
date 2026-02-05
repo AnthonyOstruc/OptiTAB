@@ -452,13 +452,15 @@ const handleLogout = () => {
     left: 0 !important;
     right: 0 !important;
     width: 100%;
-    z-index: 10000;
+    z-index: 12001; /* Cohérent avec desktop */
     pointer-events: auto;
-    /* Bloquer le scroll sur le header lui-même */
+    /* Bloquer complètement le scroll et le zoom sur le header */
     touch-action: none;
-    overscroll-behavior: contain;
-    /* Forcer le navigateur à garder le header fixe */
+    overscroll-behavior: none;
+    /* Forcer le navigateur à garder le header fixe (GPU layer) */
     will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
@@ -520,33 +522,10 @@ const handleLogout = () => {
   }
 }
 
-@media (max-width: 480px) {
-  .dashboard-header {
-    /* Garder la même hauteur pour éviter le changement */
-    padding: 0.6rem 0.7rem;
-    min-height: 56px;
-  }
-
-  .header-back-button {
-    font-size: 0.9rem; /* keep consistent with 640px rule */
-    padding: 0.4rem 0.9rem; /* reduced height, same width */
-    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18);
-    border-color: #1e40af;
-  }
-
-}
-
-@media (max-width: 360px) {
-  .dashboard-header {
-    /* Garder la même hauteur pour éviter le changement */
-    padding: 0.6rem 0.7rem;
-    min-height: 56px;
-  }
-}
+/* Styles 480px et 360px unifiés - héritent de 768px */
 
 @media (max-height: 500px) and (orientation: landscape) {
   .dashboard-header {
-    /* Garder la même hauteur pour éviter le changement */
     min-height: 56px;
     padding: 0.6rem 0.7rem;
   }

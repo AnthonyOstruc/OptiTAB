@@ -157,15 +157,17 @@ export default {
   display: flex;
   align-items: center;
   min-height: $header-height;
-  /* Empêcher le zoom et les gestes indésirables sur le header */
+  /* Empêcher le zoom et les gestes indésirables */
   touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
-  /* Empêcher le zoom automatique sur iOS */
   -webkit-user-select: none;
   user-select: none;
-  /* S'assurer que le header reste visible */
+  /* Forcer le header à rester fixe (GPU layer) */
+  will-change: transform;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .header--no-shadow {
@@ -284,16 +286,7 @@ export default {
 // Responsive breakpoints
 @media (max-width: #{$max-width-media}) {
   .header {
-    /* Forcer le header à rester fixé en haut sur mobile */
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    /* Empêcher tout mouvement du header */
-    will-change: transform;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    /* Bloquer le scroll sur le header lui-même */
+    /* Bloquer le scroll sur le header lui-même - empêche tout mouvement */
     touch-action: none;
     overscroll-behavior: contain;
   }
@@ -364,8 +357,11 @@ export default {
     display: flex;
   }
 }
-      /* iOS safe area at top */
-      @supports (padding: env(safe-area-inset-top)) {
-        .header { padding-top: env(safe-area-inset-top); }
-      }
+
+/* iOS safe area at top */
+@supports (padding: env(safe-area-inset-top)) {
+  .header {
+    padding-top: env(safe-area-inset-top);
+  }
+}
 </style> 

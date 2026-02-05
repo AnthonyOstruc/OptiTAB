@@ -282,12 +282,71 @@
         </div>
       </div>
     </Teleport>
+
+    <!-- Modal création de compte bénéficiaire -->
+    <Teleport to="body">
+      <div v-if="showCreateAccountModal" class="modal-overlay" @click.self="closeCreateAccountModal">
+        <div class="modal-card create-account-modal">
+          <div class="modal-header">
+            <h3>Créer un compte pour le bénéficiaire</h3>
+            <button class="modal-close" @click="closeCreateAccountModal">×</button>
+          </div>
+          <div class="modal-body">
+            <p class="create-account-intro">
+              L'email <strong>{{ beneficiaryEmail }}</strong> ne correspond à aucun compte OptiTAB.<br>
+              Créez un compte pour ce bénéficiaire afin de lui offrir l'abonnement.
+            </p>
+            <div class="create-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="create-first-name">Prénom</label>
+                  <input 
+                    id="create-first-name"
+                    type="text" 
+                    v-model="createAccountForm.first_name" 
+                    placeholder="Prénom"
+                    :class="{ 'input-error': createAccountErrors.first_name }"
+                  />
+                  <span v-if="createAccountErrors.first_name" class="field-error">{{ createAccountErrors.first_name }}</span>
+                </div>
+                <div class="form-group">
+                  <label for="create-last-name">Nom</label>
+                  <input 
+                    id="create-last-name"
+                    type="text" 
+                    v-model="createAccountForm.last_name" 
+                    placeholder="Nom"
+                    :class="{ 'input-error': createAccountErrors.last_name }"
+                  />
+                  <span v-if="createAccountErrors.last_name" class="field-error">{{ createAccountErrors.last_name }}</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" :value="beneficiaryEmail" disabled class="input-disabled" />
+              </div>
+              <p v-if="createAccountMessage" class="create-message" :class="{ success: createAccountSuccess, error: !createAccountSuccess }">
+                {{ createAccountMessage }}
+              </p>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="cancel-btn" @click="closeCreateAccountModal" :disabled="creatingAccount">Annuler</button>
+            <button class="confirm-btn" @click="handleCreateBeneficiaryAccount" :disabled="creatingAccount">
+              <span v-if="!creatingAccount">Créer le compte</span>
+              <span v-else>Création...</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </DashboardLayout>
 </template>
 
 <script setup>
 import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
 import { getPlans, createCheckoutSession } from '@/api/subscriptions'
+import { checkEmailExists, createChildAccount } from '@/api/users'
 import { DEFAULT_PLANS } from '@/config/subscriptions'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
@@ -309,6 +368,15 @@ const subscribeForChild = ref(false)
 const beneficiaryEmail = ref('')
 const beneficiaryEmailError = ref('')
 
+// Variables pour la modale de création de compte bénéficiaire
+const showCreateAccountModal = ref(false)
+const pendingPriceId = ref(null)
+const createAccountForm = ref({ first_name: '', last_name: '' })
+const createAccountErrors = ref({ first_name: '', last_name: '' })
+const createAccountMessage = ref('')
+const createAccountSuccess = ref(false)
+const creatingAccount = ref(false)
+
 // Variables pour le modal de message
 const showMessageModal = ref(false)
 const messageModalTitle = ref('Information')
@@ -327,8 +395,12 @@ const closeMessageModal = () => {
 
 // Gestion de la touche Échap pour fermer le modal
 const handleEscapeKey = (e) => {
-  if (e.key === 'Escape' && showMessageModal.value) {
-    closeMessageModal()
+  if (e.key === 'Escape') {
+    if (showCreateAccountModal.value) {
+      closeCreateAccountModal()
+    } else if (showMessageModal.value) {
+      closeMessageModal()
+    }
   }
 }
 
@@ -637,33 +709,117 @@ async function subscribe(priceId) {
       return
     }
     
-    const payload = selectedNiveauId.value
-      ? { niveau_pays_id: selectedNiveauId.value }
-      : {}
-    
-    // Ajouter l'email du bénéficiaire si le parent souscrit pour un enfant
+    // Vérifier si le bénéficiaire a un compte OptiTAB
     if (subscribeForChild.value && beneficiaryEmail.value.trim()) {
-      payload.beneficiary_email = beneficiaryEmail.value.trim()
+      submitting.value = true
+      try {
+        const res = await checkEmailExists(beneficiaryEmail.value.trim())
+        const emailData = res?.data?.data || res?.data || {}
+        if (!emailData.exists) {
+          // L'email n'existe pas, ouvrir la modale de création de compte
+          pendingPriceId.value = priceId
+          createAccountForm.value = { first_name: '', last_name: '' }
+          createAccountErrors.value = { first_name: '', last_name: '' }
+          createAccountMessage.value = ''
+          showCreateAccountModal.value = true
+          submitting.value = false
+          return
+        }
+      } catch (e) {
+        // En cas d'erreur de vérification, on continue avec le flux normal
+        console.warn('Erreur vérification email:', e)
+      }
     }
-
-    if (shouldBlockForSelf.value && isCurrentPrice(priceId)) {
-      showMessage('Vous disposez déjà de cet abonnement actif. Utilisez « Gérer mon abonnement » pour le modifier.', 'Abonnement actif')
-      return
-    }
-    if (!priceId) {
-      showMessage('Ce plan doit encore être configuré (Price ID manquant).', 'Configuration requise')
-      return
-    }
-    submitting.value = true
-    const { data } = await createCheckoutSession(priceId, payload)
-    if (data?.checkout_url) {
-      window.location.assign(data.checkout_url)
-    }
+    
+    await proceedWithCheckout(priceId)
   } catch (e) {
     const msg = e?.response?.data?.error || 'Impossible de démarrer le paiement. Vérifiez la configuration Stripe.'
     showMessage(msg, 'Erreur')
   } finally {
     submitting.value = false
+  }
+}
+
+async function proceedWithCheckout(priceId) {
+  const payload = selectedNiveauId.value
+    ? { niveau_pays_id: selectedNiveauId.value }
+    : {}
+  
+  // Ajouter l'email du bénéficiaire si le parent souscrit pour un enfant
+  if (subscribeForChild.value && beneficiaryEmail.value.trim()) {
+    payload.beneficiary_email = beneficiaryEmail.value.trim()
+  }
+
+  if (shouldBlockForSelf.value && isCurrentPrice(priceId)) {
+    showMessage('Vous disposez déjà de cet abonnement actif. Utilisez « Gérer mon abonnement » pour le modifier.', 'Abonnement actif')
+    return
+  }
+  if (!priceId) {
+    showMessage('Ce plan doit encore être configuré (Price ID manquant).', 'Configuration requise')
+    return
+  }
+  submitting.value = true
+  const { data } = await createCheckoutSession(priceId, payload)
+  if (data?.checkout_url) {
+    window.location.assign(data.checkout_url)
+  }
+}
+
+// Fonctions pour la modale de création de compte
+function closeCreateAccountModal() {
+  showCreateAccountModal.value = false
+  pendingPriceId.value = null
+  createAccountForm.value = { first_name: '', last_name: '' }
+  createAccountErrors.value = { first_name: '', last_name: '' }
+  createAccountMessage.value = ''
+}
+
+function validateCreateAccountForm() {
+  createAccountErrors.value = { first_name: '', last_name: '' }
+  let valid = true
+  
+  if (!createAccountForm.value.first_name.trim()) {
+    createAccountErrors.value.first_name = 'Le prénom est requis'
+    valid = false
+  }
+  if (!createAccountForm.value.last_name.trim()) {
+    createAccountErrors.value.last_name = 'Le nom est requis'
+    valid = false
+  }
+  
+  return valid
+}
+
+async function handleCreateBeneficiaryAccount() {
+  if (!validateCreateAccountForm()) return
+  
+  creatingAccount.value = true
+  createAccountMessage.value = ''
+  
+  try {
+    const payload = {
+      email: beneficiaryEmail.value.trim(),
+      first_name: createAccountForm.value.first_name.trim(),
+      last_name: createAccountForm.value.last_name.trim(),
+      niveau_pays_id: selectedNiveauId.value || null,
+    }
+    
+    await createChildAccount(payload)
+    createAccountSuccess.value = true
+    createAccountMessage.value = '✅ Compte créé ! Redirection vers le paiement...'
+    
+    // Attendre un peu puis procéder au checkout
+    setTimeout(async () => {
+      showCreateAccountModal.value = false
+      if (pendingPriceId.value) {
+        await proceedWithCheckout(pendingPriceId.value)
+      }
+    }, 1500)
+  } catch (e) {
+    createAccountSuccess.value = false
+    createAccountMessage.value = e?.response?.data?.message || 'Erreur lors de la création du compte'
+  } finally {
+    creatingAccount.value = false
   }
 }
 </script>
@@ -2387,6 +2543,127 @@ async function subscribe(priceId) {
   
   .modal-actions {
     padding: 0.875rem 1.25rem;
+  }
+}
+
+/* Modal création de compte */
+.create-account-modal {
+  max-width: 500px;
+}
+
+.create-account-intro {
+  margin-bottom: 1.25rem !important;
+  color: #374151 !important;
+}
+
+.create-account-intro strong {
+  color: #1e40af;
+}
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group input.input-error {
+  border-color: #ef4444;
+}
+
+.form-group input.input-disabled {
+  background: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.field-error {
+  font-size: 0.8rem;
+  color: #ef4444;
+}
+
+.create-message {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.create-message.success {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.create-message.error {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.cancel-btn {
+  padding: 0.625rem 1.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+  color: #374151;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.cancel-btn:disabled,
+.confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .create-account-modal {
+    max-width: 100%;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
   }
 }
 </style>

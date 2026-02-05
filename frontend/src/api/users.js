@@ -166,3 +166,15 @@ export const deleteAllNotifications = async () => {
 export const sendEmailVerificationLink = () => apiClient.post('/api/users/email/send-code/')
 export const verifyEmailCode = (code) => apiClient.post('/api/users/email/verify-code/', { code })
 export const requestEmailChange = (email) => apiClient.post('/api/users/email/change/', { email })
+
+/**
+ * Vérifie si un email correspond à un compte actif.
+ * Returns: { exists: boolean, first_name?: string, last_name?: string }
+ */
+export const checkEmailExists = (email) => apiClient.post('/api/users/check-email-exists/', { email })
+
+/**
+ * Crée un compte enfant (pour les parents)
+ * payload: { email, first_name, last_name, pays_id?, niveau_pays_id? }
+ */
+export const createChildAccount = (payload) => apiClient.post('/api/users/me/children/create/', payload)

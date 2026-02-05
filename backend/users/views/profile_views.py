@@ -1226,6 +1226,17 @@ class CreateChildAccountView(APIView):
                 link.responded_at = timezone.now()
                 link.save(update_fields=['status', 'responded_at'])
 
+            # Envoyer un email à l'enfant avec ses identifiants
+            try:
+                from core.services import EmailService
+                EmailService.send_child_account_created(
+                    child_user=child,
+                    temp_password=temp_password,
+                    parent_user=request.user
+                )
+            except Exception as email_exc:
+                logger.warning("Impossible d'envoyer l'email de création de compte enfant: %s", email_exc)
+
             data = {
                 'child': {
                     'id': child.id,
@@ -1647,3 +1658,35 @@ class UserListView(generics.ListAPIView):
             message="Utilisateurs récupérés avec succès",
             data={'results': serializer.data, 'count': len(serializer.data)}
         )
+
+
+class CheckEmailExistsView(APIView):
+    """Vérifie si un email correspond à un compte actif."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        email = (request.data.get('email') or '').strip().lower()
+        
+        if not email:
+            return ResponseService.error(
+                message="Email requis",
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Vérifier si le compte existe
+        try:
+            user = CustomUser.objects.get(email__iexact=email, is_active=True)
+            return ResponseService.success(
+                message="Compte trouvé",
+                data={
+                    'exists': True,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                }
+            )
+        except CustomUser.DoesNotExist:
+            return ResponseService.success(
+                message="Aucun compte trouvé",
+                data={'exists': False}
+            )
+

@@ -743,6 +743,15 @@ class CancelSubscriptionView(APIView):
                     message = 'Abonnement déjà résilié.'
                 return JsonResponse({'success': True, 'message': message})
             
+            # Récupérer les metadata depuis Stripe pour savoir si c'est un cadeau
+            cancellation_metadata = None
+            if subscription.stripe_subscription_id:
+                try:
+                    stripe_sub = stripe.Subscription.retrieve(subscription.stripe_subscription_id)
+                    cancellation_metadata = stripe_sub.get('metadata') or {}
+                except stripe_error.StripeError:
+                    cancellation_metadata = {}
+            
             if subscription.cancel_subscription():
                 # Envoyer un email de confirmation de désabonnement (utilisateur + admin)
                 if bool(subscription.cancel_at_period_end):
@@ -750,12 +759,14 @@ class CancelSubscriptionView(APIView):
                         user_subscription_id=subscription.id,
                         cancel_type='scheduled',
                         stripe_subscription_id=subscription.stripe_subscription_id,
+                        metadata=cancellation_metadata,
                     )
                 elif subscription.status == 'canceled':
                     _schedule_cancellation_emails(
                         user_subscription_id=subscription.id,
                         cancel_type='canceled',
                         stripe_subscription_id=subscription.stripe_subscription_id,
+                        metadata=cancellation_metadata,
                     )
                 if subscription.cancel_at_period_end:
                     message = 'Annulation programmée à la fin de la période en cours.'

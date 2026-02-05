@@ -30,6 +30,7 @@ from users.views.profile_views import (
     DailyLoginStreakView,
     ChangePasswordView,
     UserListView,
+    CheckEmailExistsView,
 )
 from users.views.social_auth_views import GoogleLoginView, GoogleOAuthCodeExchangeView, GoogleOAuthAccessTokenView
 from rest_framework.routers import DefaultRouter
@@ -83,6 +84,7 @@ urlpatterns = [
     path('me/parent-invitations/<int:invitation_id>/respond/', ParentInvitationRespondView.as_view(), name='parent_invitation_respond'),
     path('me/children/create/', CreateChildAccountView.as_view(), name='create_child_account'),
     path('me/children/<int:child_id>/remove/', RemoveChildView.as_view(), name='remove_child'),
+    path('check-email-exists/', CheckEmailExistsView.as_view(), name='check_email_exists'),
     path('children/<int:child_id>/overview/', ChildOverviewView.as_view(), name='child_overview'),
     path('me/update/', UpdateProfileView.as_view(), name='me_update'),  # pour modifier les coordonnées utilisateur
     path('me/change-password/', ChangePasswordView.as_view(), name='me_change_password'),

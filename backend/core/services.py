@@ -1434,10 +1434,20 @@ class EmailService:
     def send_subscription_cancellation_notification_to_admin(user, plan, niveau=None, effective_end=None, is_scheduled=True, beneficiary=None):
         """Envoie une notification à contact@optitab.net lorsqu'un abonnement est résilié/programmé."""
         try:
+            from subscriptions.models import UserSubscription
+            
             admin_email = 'contact@optitab.net'
             user_email = getattr(user, 'email', None) or 'Email inconnu'
             user_name = f"{getattr(user, 'first_name', '') or ''} {getattr(user, 'last_name', '') or ''}".strip() or 'Utilisateur'
             plan_name = getattr(plan, 'name', None) or 'Plan inconnu'
+
+            # Compter le nombre total d'abonnés actifs
+            try:
+                total_active_subscribers = UserSubscription.objects.filter(
+                    status__in=['active', 'trialing']
+                ).values('user_id').distinct().count()
+            except Exception:
+                total_active_subscribers = None
 
             niveau_name = ''
             if niveau:
@@ -1456,11 +1466,21 @@ class EmailService:
 
             beneficiary_label = ''
             if beneficiary:
-                beneficiary_label = getattr(beneficiary, 'full_name', '') or ''
-                beneficiary_label = beneficiary_label.strip() or getattr(beneficiary, 'email', '') or ''
+                beneficiary_name = f"{getattr(beneficiary, 'first_name', '') or ''} {getattr(beneficiary, 'last_name', '') or ''}".strip()
+                beneficiary_email = getattr(beneficiary, 'email', '') or ''
+                if beneficiary_name:
+                    beneficiary_label = f"{beneficiary_name} ({beneficiary_email})"
+                else:
+                    beneficiary_label = beneficiary_email
 
             type_label = 'Annulation programmée (fin de période)' if is_scheduled else 'Annulation immédiate'
-            subject = f"❌ Désabonnement : {user_name} - {plan_name}"
+            
+            # Indication si c'est un parent qui résilie pour son enfant
+            is_gift_cancellation = beneficiary is not None
+            if is_gift_cancellation:
+                subject = f"❌ Désabonnement (parent→enfant) : {user_name} - {plan_name}"
+            else:
+                subject = f"❌ Désabonnement : {user_name} - {plan_name}"
 
             text_body = (
                 "Un utilisateur vient de résilier son abonnement.\n\n"
@@ -1470,25 +1490,27 @@ class EmailService:
                 f"🧾 Type : {type_label}\n"
             )
             if beneficiary_label:
-                text_body += f"🎁 Bénéficiaire : {beneficiary_label}\n"
+                text_body += f"🎁 Bénéficiaire (enfant) : {beneficiary_label}\n"
             if niveau_name:
                 text_body += f"📚 Niveau : {niveau_name}\n"
             if end_label:
                 text_body += f"🗓 Fin d'accès : {end_label}\n"
+            if total_active_subscribers is not None:
+                text_body += f"\n📊 Nombre total d'abonnés actifs : {total_active_subscribers}\n"
 
             html_body = f"""
               <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
                   <tr>
                     <td style="padding:24px;background:linear-gradient(135deg,#ef4444 0%,#f97316 100%);">
-                      <h1 style="margin:0;font-size:20px;color:#ffffff;text-align:center;">❌ Désabonnement</h1>
+                      <h1 style="margin:0;font-size:20px;color:#ffffff;text-align:center;">❌ Désabonnement{' (parent→enfant)' if is_gift_cancellation else ''}</h1>
                     </td>
                   </tr>
                   <tr>
                     <td style="padding:24px;">
                       <table width="100%" cellspacing="0" cellpadding="8" style="font-size:14px;color:#374151;">
                         <tr>
-                          <td style="width:40%;font-weight:600;color:#6b7280;">👤 Utilisateur</td>
+                          <td style="width:40%;font-weight:600;color:#6b7280;">👤 Utilisateur (payeur)</td>
                           <td>{user_name}</td>
                         </tr>
                         <tr style="background:#f9fafb;">
@@ -1503,7 +1525,7 @@ class EmailService:
                           <td style="font-weight:600;color:#6b7280;">🧾 Type</td>
                           <td>{type_label}</td>
                         </tr>
-                        {f'<tr><td style="font-weight:600;color:#6b7280;">🎁 Bénéficiaire</td><td>{beneficiary_label}</td></tr>' if beneficiary_label else ''}
+                        {f'<tr><td style="font-weight:600;color:#6b7280;">🎁 Bénéficiaire (enfant)</td><td>{beneficiary_label}</td></tr>' if beneficiary_label else ''}
                         {f'<tr style="background:#f9fafb;"><td style="font-weight:600;color:#6b7280;">📚 Niveau</td><td>{niveau_name}</td></tr>' if niveau_name else ''}
                         {f"<tr><td style='font-weight:600;color:#6b7280;'>🗓 Fin d'accès</td><td>{end_label}</td></tr>" if end_label else ''}
                       </table>
@@ -1514,6 +1536,7 @@ class EmailService:
                       <p style="margin:0;color:#6b7280;font-size:12px;">
                         Notification automatique OptiTAB
                       </p>
+                      {f'<p style="margin:8px 0 0;color:#374151;font-size:14px;font-weight:600;">📊 Total abonnés actifs : {total_active_subscribers}</p>' if total_active_subscribers is not None else ''}
                     </td>
                   </tr>
                 </table>
@@ -1533,6 +1556,121 @@ class EmailService:
             return True
         except Exception as e:
             logger.error("Erreur envoi notification admin désabonnement: %s", e)
+            return False
+
+    @staticmethod
+    def send_child_account_created(child_user, temp_password, parent_user):
+        """Envoie un email à l'enfant avec ses identifiants de connexion."""
+        try:
+            child_email = getattr(child_user, 'email', None)
+            if not child_email:
+                logger.warning("send_child_account_created: pas d'email enfant")
+                return False
+
+            child_first_name = getattr(child_user, 'first_name', '') or 'là'
+            parent_name = f"{getattr(parent_user, 'first_name', '') or ''} {getattr(parent_user, 'last_name', '') or ''}".strip()
+            if not parent_name:
+                parent_name = getattr(parent_user, 'email', 'ton parent')
+
+            login_url = f"{settings.FRONTEND_URL}/login"
+            subject = "🎉 Ton compte OptiTAB a été créé !"
+            logo_url = EmailService._resolve_logo_url()
+
+            text_body = f"""
+Bonjour {child_first_name} !
+
+{parent_name} t'a créé un compte sur OptiTAB pour t'aider dans tes révisions.
+
+Voici tes identifiants de connexion :
+
+📧 Email : {child_email}
+🔑 Mot de passe : {temp_password}
+
+👉 Connecte-toi ici : {login_url}
+
+⚠️ Important : Nous te recommandons de changer ton mot de passe après ta première connexion pour plus de sécurité.
+
+À bientôt sur OptiTAB !
+L'équipe OptiTAB
+Contact : contact@optitab.net
+"""
+
+            html_body = f"""
+              <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                  <tr>
+                    <td style="padding:24px;text-align:center;">
+                      {f'<img src="{logo_url}" alt="OptiTAB" style="height:56px;width:auto;display:block;margin:0 auto 16px;"/>' if logo_url else ''}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0 24px 24px;">
+                      <div style="background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%);border-radius:12px;padding:20px;text-align:center;margin-bottom:24px;">
+                        <h1 style="margin:0;font-size:22px;color:#ffffff;">🎉 Bienvenue sur OptiTAB !</h1>
+                      </div>
+                      
+                      <p style="margin:0 0 16px;font-size:16px;color:#374151;">
+                        Bonjour <strong>{child_first_name}</strong> !
+                      </p>
+                      <p style="margin:0 0 20px;font-size:14px;color:#6b7280;">
+                        {parent_name} t'a créé un compte sur OptiTAB pour t'aider dans tes révisions.
+                      </p>
+                      
+                      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;margin:20px 0;">
+                        <h3 style="margin:0 0 12px;font-size:14px;color:#166534;">Tes identifiants de connexion :</h3>
+                        <table width="100%" cellspacing="0" cellpadding="8" style="font-size:14px;">
+                          <tr>
+                            <td style="color:#6b7280;width:100px;">📧 Email</td>
+                            <td style="color:#111827;font-weight:600;">{child_email}</td>
+                          </tr>
+                          <tr>
+                            <td style="color:#6b7280;">🔑 Mot de passe</td>
+                            <td style="color:#111827;font-weight:600;font-family:monospace;background:#fef3c7;padding:4px 8px;border-radius:4px;">{temp_password}</td>
+                          </tr>
+                        </table>
+                      </div>
+
+                      <div style="text-align:center;margin:24px 0;">
+                        <a href="{login_url}" style="display:inline-block;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:8px;font-weight:600;font-size:16px;">
+                          Se connecter
+                        </a>
+                      </div>
+
+                      <div style="background:#fef3c7;border-radius:8px;padding:12px;border-left:4px solid #f59e0b;">
+                        <p style="margin:0;color:#92400e;font-size:13px;">
+                          ⚠️ <strong>Recommandation :</strong> Change ton mot de passe après ta première connexion pour plus de sécurité.
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:20px 24px;background:#f3f4f6;text-align:center;border-top:1px solid #e5e7eb;">
+                      <p style="margin:0 0 8px;color:#374151;font-size:13px;font-weight:500;">
+                        L'équipe OptiTAB
+                      </p>
+                      <p style="margin:0;color:#6b7280;font-size:12px;">
+                        Une question ? Écrivez-nous à 
+                        <a href="mailto:contact@optitab.net" style="color:#3b82f6;text-decoration:none;">contact@optitab.net</a>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            """
+
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[child_email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+
+            logger.info("Email de création de compte enfant envoyé à %s", child_email)
+            return True
+        except Exception as e:
+            logger.error("Erreur envoi email création compte enfant: %s", e)
             return False
 
 

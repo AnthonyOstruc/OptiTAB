@@ -191,7 +191,7 @@ def _schedule_subscription_emails(payment_history_id, stripe_subscription_id, me
 # =============================================================================
 
 def _send_invoice_email_job(payment_history_id, stripe_subscription_id, metadata=None, retry_count=0):
-    """Envoie (une seule fois) l'email de facture pour une échéance d'abonnement payée."""
+    """Envoie (une seule fois) l'email de renouvellement d'abonnement avec facture."""
     close_old_connections()
 
     # Vérification préalable (hors transaction)
@@ -213,12 +213,22 @@ def _send_invoice_email_job(payment_history_id, stripe_subscription_id, metadata
             )
         )
 
+    # Récupérer l'abonnement pour avoir le plan et niveau
+    user_subscription = None
+    if stripe_subscription_id:
+        user_subscription = (
+            UserSubscription.objects
+            .select_related('user', 'plan', 'niveau_pays', 'niveau_pays__pays')
+            .filter(stripe_subscription_id=stripe_subscription_id)
+            .first()
+        )
+
     try:
         with transaction.atomic():
             payment_history = (
                 PaymentHistory.objects
                 .select_for_update()
-                .select_related('user')
+                .select_related('user', 'niveau_pays', 'niveau_pays__pays')
                 .get(pk=payment_history_id)
             )
             if payment_history.email_sent:
@@ -227,7 +237,18 @@ def _send_invoice_email_job(payment_history_id, stripe_subscription_id, metadata
             is_gift, payer = _parse_gift_metadata(metadata)
             recipient = payer if (is_gift and payer) else payment_history.user
 
-            EmailService.send_invoice_receipt(recipient, payment_history, invoice_link)
+            # Utiliser send_subscription_renewal_notification pour les renouvellements
+            if user_subscription:
+                EmailService.send_subscription_renewal_notification(
+                    user=recipient,
+                    plan=user_subscription.plan,
+                    niveau=user_subscription.niveau_pays or payment_history.niveau_pays,
+                    invoice_link=invoice_link,
+                    payment_history=payment_history,
+                )
+            else:
+                # Fallback: envoyer juste le reçu si pas d'abonnement trouvé
+                EmailService.send_invoice_receipt(recipient, payment_history, invoice_link)
 
             payment_history.email_sent = True
             payment_history.save(update_fields=['email_sent'])

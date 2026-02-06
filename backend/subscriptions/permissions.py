@@ -33,7 +33,7 @@ def user_has_active_subscription_or_pass(user):
         has_access = True
     else:
         now = timezone.now()
-        has_access = AccessPass.objects.filter(user=user, ends_at__gt=now).exists()
+        has_access = AccessPass.objects.filter(user=user, ends_at__gt=now, is_revoked=False).exists()
 
     setattr(user, '_has_subscription_access_cache', has_access)
     return has_access

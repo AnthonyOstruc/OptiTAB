@@ -66,6 +66,9 @@ class AccessPass(models.Model):
     ends_at = models.DateTimeField()
     stripe_payment_intent_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    expiration_email_sent = models.BooleanField(default=False)
+    is_revoked = models.BooleanField(default=False, help_text="Pass révoqué suite à un remboursement")
+    revoked_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         indexes = [
@@ -77,7 +80,16 @@ class AccessPass(models.Model):
 
     @property
     def is_active(self):
+        """Le pass est actif s'il n'est pas expiré et n'a pas été révoqué."""
+        if self.is_revoked:
+            return False
         return timezone.now() < self.ends_at
+    
+    def revoke(self):
+        """Révoque le pass (utilisé lors d'un remboursement)."""
+        self.is_revoked = True
+        self.revoked_at = timezone.now()
+        self.save(update_fields=['is_revoked', 'revoked_at'])
 
 class UserSubscription(models.Model):
     """Abonnement d'un utilisateur"""

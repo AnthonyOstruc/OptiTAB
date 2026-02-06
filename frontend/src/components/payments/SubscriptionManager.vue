@@ -130,7 +130,7 @@
               </div>
               <div class="gifted-detail-row">
                 <span class="gifted-label">Expiration</span>
-                <span class="gifted-value">{{ formatDate(pass.ends_at) }}</span>
+                <span class="gifted-value">{{ formatPassExpiration(pass) }}</span>
               </div>
               <div class="gifted-detail-row">
                 <span class="gifted-label">Type</span>
@@ -1285,6 +1285,28 @@ const formatDate = (dateInput) => {
     month: 'long',
     day: 'numeric'
   })
+}
+
+const formatDateWithTime = (dateInput) => {
+  const date = parseDateSafe(dateInput)
+  if (!date) return '—'
+  return date.toLocaleDateString('fr-FR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+const formatPassExpiration = (pass) => {
+  if (!pass || !pass.ends_at) return '—'
+  // Pour les pass 1 jour, afficher aussi l'heure
+  const planName = (pass.plan_name || '').toLowerCase()
+  if (planName.includes('1 jour') || planName.includes('1jour')) {
+    return formatDateWithTime(pass.ends_at)
+  }
+  return formatDate(pass.ends_at)
 }
 
 const giftBeneficiaryLabel = (gift) => {

@@ -843,6 +843,64 @@ def handle_subscription_deleted(subscription):
         logger.error(f"Erreur dans handle_subscription_deleted: {e}")
 
 
+# =============================================================================
+# Handler: charge.refunded (remboursement de pass one-time)
+# =============================================================================
+
+def handle_charge_refunded(charge):
+    """Gère le remboursement d'un paiement - révoque le pass associé."""
+    try:
+        payment_intent_id = charge.get('payment_intent')
+        if not payment_intent_id:
+            logger.info("handle_charge_refunded: pas de payment_intent, ignoré")
+            return
+
+        # Vérifier si c'est un remboursement (partiel ou total)
+        refunded = charge.get('refunded', False)
+        amount_refunded = charge.get('amount_refunded', 0)
+        
+        if not refunded and amount_refunded == 0:
+            logger.info("handle_charge_refunded: pas de remboursement effectif, ignoré")
+            return
+        
+        # Chercher le pass associé à ce payment_intent
+        try:
+            access_pass = AccessPass.objects.select_related('user', 'plan').get(
+                stripe_payment_intent_id=payment_intent_id
+            )
+        except AccessPass.DoesNotExist:
+            logger.info(
+                "handle_charge_refunded: pas de pass trouvé pour payment_intent=%s (peut-être un abonnement)",
+                payment_intent_id
+            )
+            return
+        
+        if access_pass.is_revoked:
+            logger.info(
+                "handle_charge_refunded: pass déjà révoqué (id=%s, payment_intent=%s)",
+                access_pass.id,
+                payment_intent_id
+            )
+            return
+        
+        # Révoquer le pass
+        access_pass.revoke()
+        
+        logger.info(
+            "handle_charge_refunded: pass révoqué (id=%s, user=%s, plan=%s, amount_refunded=%s)",
+            access_pass.id,
+            access_pass.user.email,
+            access_pass.plan.name,
+            amount_refunded,
+        )
+        
+        # Optionnel: envoyer un email de notification
+        # EmailService.send_pass_revoked_notification(access_pass.user, access_pass)
+        
+    except Exception as e:
+        logger.error(f"Erreur dans handle_charge_refunded: {e}", exc_info=True)
+
+
 __all__ = [
     'handle_invoice_created',
     'handle_checkout_session_completed',
@@ -851,4 +909,5 @@ __all__ = [
     'handle_payment_failed',
     'handle_subscription_updated',
     'handle_subscription_deleted',
+    'handle_charge_refunded',
 ]

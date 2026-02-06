@@ -256,24 +256,31 @@ def _refresh_subscription_from_stripe(subscription):
     """
     Garantit que les dates clés (début/fin de période, fin d'essai, statut)
     sont renseignées pour un abonnement persisté localement.
+    Force également la mise à jour du statut depuis Stripe pour éviter les incohérences.
     """
     if not subscription or not subscription.stripe_subscription_id:
-        return subscription
-
-    needs_period = not subscription.current_period_start or not subscription.current_period_end
-    needs_trial = subscription.status == 'trialing' and not subscription.trial_end
-    if not needs_period and not needs_trial:
         return subscription
 
     try:
         stripe_sub = stripe.Subscription.retrieve(subscription.stripe_subscription_id)
         _apply_stripe_subscription_updates(subscription, stripe_sub)
     except stripe_error.InvalidRequestError as exc:
+        # Abonnement Stripe introuvable -> marquer comme annulé localement
         logger.warning(
-            "Stripe subscription %s introuvable pour hydratation: %s",
+            "Stripe subscription %s introuvable - marquage comme annulé: %s",
             subscription.stripe_subscription_id,
             exc,
         )
+        updated_fields = []
+        if subscription.status != 'canceled':
+            subscription.status = 'canceled'
+            updated_fields.append('status')
+        if subscription.cancel_at_period_end:
+            subscription.cancel_at_period_end = False
+            updated_fields.append('cancel_at_period_end')
+        if updated_fields:
+            updated_fields.append('updated_at')
+            subscription.save(update_fields=updated_fields)
     except stripe_error.StripeError as exc:
         logger.warning(
             "Impossible de rafraîchir l'abonnement Stripe %s: %s",

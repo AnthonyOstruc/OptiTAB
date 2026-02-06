@@ -40,6 +40,7 @@ from .stripe_services import (
     _sync_payment_history_from_stripe,
 )
 from .handlers import (
+    handle_charge_refunded,
     handle_checkout_session_completed,
     handle_checkout_session_payment_completed,
     handle_invoice_created,
@@ -49,6 +50,7 @@ from .handlers import (
     handle_subscription_updated,
 )
 from .email_jobs import _schedule_cancellation_emails
+from .subscription_status import build_subscription_status
 
 logger = logging.getLogger(__name__)
 
@@ -154,19 +156,10 @@ class CreateCheckoutSessionView(APIView):
                         elif meta_user_id and str(meta_user_id) != beneficiary_id:
                             continue
                         meta_niveau_id = metadata.get('niveau_pays_id')
-                        meta_plan_id = metadata.get('plan_id')
+                        # Vérifier uniquement si le niveau correspond - un abonnement
+                        # pour un autre niveau avec le même plan n'est PAS un doublon
                         niveau_match = (meta_niveau_id and str(meta_niveau_id) == niveau_id)
-                        plan_match = (meta_plan_id and str(meta_plan_id) == str(plan.id))
-                        price_match = False
-                        try:
-                            items = stripe_sub.get('items', {}).get('data', [])
-                            if items:
-                                stripe_price_id = items[0].get('price', {}).get('id')
-                                if stripe_price_id and stripe_price_id == price_id:
-                                    price_match = True
-                        except Exception:
-                            price_match = False
-                        if not (niveau_match or plan_match or price_match):
+                        if not niveau_match:
                             continue
                         if _is_stripe_subscription_active(stripe_sub):
                             has_level_subscription = True
@@ -271,368 +264,8 @@ class CreateCheckoutSessionView(APIView):
             return JsonResponse({'error': str(e)}, status=400)
 
 
-def build_subscription_status(user):
-    """Structure commune pour exposer l'état d'accès d'un utilisateur."""
-    response = {
-        'has_subscription': False,
-        'status': 'none',
-        'is_active': False,
-        'has_active_pass': False,
-        'has_manual_access': bool(getattr(user, 'has_complimentary_access', False)),
-    }
+# build_subscription_status a été déplacé vers subscription_status.py
 
-    subscriptions_qs = UserSubscription.objects.filter(user=user).select_related(
-        'plan',
-        'niveau_pays',
-        'niveau_pays__pays'
-    ).order_by('-created_at')
-
-    subscriptions_payload = []
-    unlocked_levels = []
-    primary_subscription = None
-    processed_stripe_ids = set()
-    stripe_subscriptions = _list_stripe_subscriptions(user)
-    gifted_subscriptions = _build_gifted_subscriptions_from_stripe(stripe_subscriptions, user)
-    if stripe_subscriptions:
-        filtered_subs = []
-        current_user_id = str(user.id)
-        for stripe_sub in stripe_subscriptions:
-            metadata = stripe_sub.get('metadata') or {}
-            meta_user_id = metadata.get('user_id')
-            # Si metadata.user_id est présent et ne correspond pas, ignorer (cadeaux)
-            if meta_user_id and str(meta_user_id) != current_user_id:
-                continue
-            filtered_subs.append(stripe_sub)
-        stripe_subscriptions = filtered_subs
-    stripe_lookup = {
-        stripe_sub.get('id'): stripe_sub
-        for stripe_sub in stripe_subscriptions
-        if stripe_sub.get('id')
-    }
-
-    def add_subscription_payload(payload):
-        nonlocal primary_subscription
-        subscriptions_payload.append(payload)
-        if payload.get('is_active') and payload.get('niveau'):
-            unlocked_levels.append(payload['niveau'])
-        if primary_subscription is None:
-            primary_subscription = payload
-        elif not primary_subscription.get('is_active') and payload.get('is_active'):
-            primary_subscription = payload
-
-    for sub in subscriptions_qs:
-        stripe_snapshot = stripe_lookup.get(sub.stripe_subscription_id)
-        if stripe_snapshot:
-            sub = _refresh_subscription_from_snapshot(sub, stripe_snapshot)
-        else:
-            sub = _refresh_subscription_from_stripe(sub)
-        plan = getattr(sub, 'plan', None)
-        niveau_obj = getattr(sub, 'niveau_pays', None)
-        niveau_payload = None
-        if niveau_obj:
-            niveau_payload = {
-                'id': niveau_obj.id,
-                'nom': niveau_obj.nom,
-                'pays': {
-                    'id': niveau_obj.pays.id,
-                    'nom': niveau_obj.pays.nom,
-                    'drapeau_emoji': getattr(niveau_obj.pays, 'drapeau_emoji', None)
-                } if getattr(niveau_obj, 'pays', None) else None
-            }
-
-        if stripe_snapshot and sub.stripe_subscription_id:
-            processed_stripe_ids.add(sub.stripe_subscription_id)
-        stripe_price = _extract_price_from_stripe_subscription(stripe_snapshot)
-        plan_payload = _build_plan_payload(plan, stripe_price, stripe_snapshot)
-
-        # Déterminer si c'est un abonnement cadeau reçu (payé par quelqu'un d'autre)
-        sub_metadata = (stripe_snapshot.get('metadata') or {}) if stripe_snapshot else {}
-        payer_id = sub_metadata.get('payer_user_id')
-        is_gift_received = bool(payer_id and str(payer_id) != str(user.id))
-
-        sub_payload = {
-            'id': sub.id,
-            'status': sub.status,
-            'is_active': sub.is_active,
-            'is_trial': sub.is_trial,
-            'is_gift_received': is_gift_received,
-            'days_remaining_trial': sub.days_remaining_trial,
-            'current_period_start': sub.current_period_start.isoformat() if sub.current_period_start else None,
-            'current_period_end': sub.current_period_end.isoformat() if sub.current_period_end else None,
-            'trial_end': sub.trial_end.isoformat() if sub.trial_end else None,
-            'cancel_at_period_end': bool(sub.cancel_at_period_end),
-            'stripe_subscription_id': sub.stripe_subscription_id,
-            'plan': plan_payload,
-            'niveau': niveau_payload,
-            'started_at': sub.created_at.isoformat() if sub.created_at else None,
-        }
-        processed_stripe_ids.add(sub.stripe_subscription_id)
-        add_subscription_payload(sub_payload)
-
-    for stripe_sub in stripe_subscriptions:
-        stripe_id = stripe_sub.get('id')
-        if not stripe_id or stripe_id in processed_stripe_ids:
-            continue
-        metadata = stripe_sub.get('metadata') or {}
-        niveau_id = metadata.get('niveau_pays_id')
-        niveau_payload = None
-        if niveau_id:
-            try:
-                niveau_obj = Niveau.objects.select_related('pays').get(id=int(niveau_id))
-                niveau_payload = {
-                    'id': niveau_obj.id,
-                    'nom': niveau_obj.nom,
-                    'pays': {
-                        'id': niveau_obj.pays.id,
-                        'nom': niveau_obj.pays.nom,
-                        'drapeau_emoji': getattr(niveau_obj.pays, 'drapeau_emoji', None)
-                    } if niveau_obj.pays else None
-                }
-            except Niveau.DoesNotExist:
-                niveau_payload = None
-
-        plan_obj = None
-        plan_id = metadata.get('plan_id')
-        if plan_id:
-            try:
-                plan_obj = SubscriptionPlan.objects.filter(id=int(plan_id)).first()
-            except (TypeError, ValueError):
-                plan_obj = None
-        if not plan_obj:
-            price_id = None
-            try:
-                items = stripe_sub.get('items', {}).get('data', [])
-                if items:
-                    price_id = items[0].get('price', {}).get('id')
-            except Exception:
-                price_id = None
-            if price_id:
-                plan_obj = SubscriptionPlan.objects.filter(stripe_price_id=price_id).first()
-
-        stripe_price = _extract_price_from_stripe_subscription(stripe_sub)
-        plan_payload = _build_plan_payload(plan_obj, stripe_price, stripe_sub)
-
-        status = _map_stripe_status(stripe_sub.get('status'))
-        start_dt = _from_timestamp(stripe_sub.get('current_period_start'))
-        end_dt = _from_timestamp(stripe_sub.get('current_period_end'))
-        trial_dt = _from_timestamp(stripe_sub.get('trial_end'))
-        started_dt = _from_timestamp(stripe_sub.get('start_date')) or start_dt
-        
-        # Déterminer si c'est un abonnement cadeau reçu (payé par quelqu'un d'autre)
-        payer_id = metadata.get('payer_user_id')
-        is_gift_received = bool(payer_id and str(payer_id) != str(user.id))
-        
-        sub_payload = {
-            'id': None,
-            'status': status,
-            'is_active': _is_stripe_subscription_active(stripe_sub),
-            'is_trial': status == 'trialing',
-            'is_gift_received': is_gift_received,
-            'days_remaining_trial': 0,
-            'current_period_start': start_dt.isoformat() if start_dt else None,
-            'current_period_end': end_dt.isoformat() if end_dt else None,
-            'trial_end': trial_dt.isoformat() if trial_dt else None,
-            'cancel_at_period_end': bool(stripe_sub.get('cancel_at_period_end')),
-            'stripe_subscription_id': stripe_id,
-            'plan': plan_payload,
-            'niveau': niveau_payload,
-            'started_at': started_dt.isoformat() if started_dt else None,
-        }
-        add_subscription_payload(sub_payload)
-
-    if subscriptions_payload and not response['has_subscription']:
-        response['has_subscription'] = True
-
-    if primary_subscription:
-        primary_plan = primary_subscription.get('plan') or {}
-        response.update({
-            'has_subscription': True,
-            'plan_name': primary_plan.get('name', 'Plan actuel'),
-            'plan_id': primary_plan.get('id'),
-            'plan_type': primary_plan.get('plan_type'),
-            'plan_mode': primary_plan.get('mode'),
-            'plan_billing_period': primary_plan.get('billing_period'),
-            'plan_price': primary_plan.get('price'),
-            'plan_stripe_price_id': primary_plan.get('stripe_price_id'),
-            'plan_currency': primary_plan.get('currency', 'EUR'),
-            'status': primary_subscription['status'],
-            'is_active': primary_subscription['is_active'],
-            'is_trial': primary_subscription['is_trial'],
-            'days_remaining_trial': primary_subscription['days_remaining_trial'],
-            'current_period_start': primary_subscription['current_period_start'],
-            'current_period_end': primary_subscription['current_period_end'],
-            'trial_end': primary_subscription['trial_end'],
-            'cancel_at_period_end': primary_subscription['cancel_at_period_end'],
-            'subscription_niveau': primary_subscription['niveau'],
-            'started_at': primary_subscription.get('started_at'),
-            'features': primary_plan.get('features', []),
-        })
-    elif subscriptions_payload:
-        # Utiliser la première subscription même inactif pour afficher les infos de plan
-        fallback = subscriptions_payload[0]
-        fallback_plan = fallback.get('plan') or {}
-        response.update({
-            'has_subscription': True,
-            'status': fallback['status'],
-            'is_active': False,
-            'is_trial': fallback['is_trial'],
-            'plan_name': fallback_plan.get('name', 'Plan actuel'),
-            'plan_id': fallback_plan.get('id'),
-            'plan_type': fallback_plan.get('plan_type'),
-            'plan_mode': fallback_plan.get('mode'),
-            'plan_billing_period': fallback_plan.get('billing_period'),
-            'plan_price': fallback_plan.get('price'),
-            'plan_stripe_price_id': fallback_plan.get('stripe_price_id'),
-            'plan_currency': fallback_plan.get('currency', 'EUR'),
-            'subscription_niveau': fallback['niveau'],
-            'started_at': fallback.get('started_at'),
-            'features': fallback_plan.get('features', []),
-        })
-
-    response['subscriptions'] = subscriptions_payload
-    unique_levels = {}
-
-    def _push_level(level_payload):
-        if not level_payload:
-            return
-        level_id = level_payload.get('id')
-        if level_id is None:
-            return
-        unique_levels[level_id] = level_payload
-
-    for level in unlocked_levels:
-        if not isinstance(level, dict):
-            continue
-        _push_level(level)
-
-    response['unlocked_levels'] = list(unique_levels.values())
-
-    # Récupérer TOUS les passes actifs de l'utilisateur
-    active_passes = list(
-        AccessPass.objects.filter(user=user, ends_at__gt=timezone.now())
-        .select_related('plan')
-        .order_by('-ends_at')
-    )
-    
-    # Construire la liste des passes pour le frontend
-    passes_payload = []
-    for access_pass in active_passes:
-        pass_plan = access_pass.plan
-        # Le niveau est stocké dans PaymentHistory pour ce pass
-        pass_niveau = None
-        payment_history = PaymentHistory.objects.filter(
-            user=user,
-            stripe_payment_intent_id=access_pass.stripe_payment_intent_id
-        ).select_related('niveau_pays', 'niveau_pays__pays').first()
-        
-        if payment_history and payment_history.niveau_pays:
-            niveau_obj = payment_history.niveau_pays
-            pass_niveau = {
-                'id': niveau_obj.id,
-                'nom': niveau_obj.nom,
-                'pays': {
-                    'id': getattr(niveau_obj.pays, 'id', None),
-                    'nom': getattr(niveau_obj.pays, 'nom', None),
-                    'drapeau_emoji': getattr(niveau_obj.pays, 'drapeau_emoji', None)
-                } if getattr(niveau_obj, 'pays', None) else None
-            }
-            _push_level(pass_niveau)
-        
-        passes_payload.append({
-            'id': access_pass.id,
-            'plan_name': pass_plan.name if pass_plan else 'Pass',
-            'plan_price': float(pass_plan.price) if pass_plan and pass_plan.price else None,
-            'plan_billing_period': pass_plan.billing_period if pass_plan else None,
-            'stripe_price_id': pass_plan.stripe_price_id if pass_plan else None,
-            'starts_at': access_pass.starts_at.isoformat(),
-            'ends_at': access_pass.ends_at.isoformat(),
-            'is_active': access_pass.is_active,
-            'niveau': pass_niveau,
-        })
-    
-    response['active_passes'] = passes_payload
-    response['has_active_pass'] = len(passes_payload) > 0
-    
-    # Pour rétrocompatibilité, garder aussi le premier pass dans les anciens champs
-    if passes_payload:
-        first_pass = passes_payload[0]
-        response.update({
-            'active_pass_plan': first_pass['plan_name'],
-            'active_pass_ends_at': first_pass['ends_at'],
-            'active_pass_price_id': first_pass['stripe_price_id'],
-            'active_pass_price': first_pass['plan_price'],
-            'active_pass_billing_period': first_pass['plan_billing_period'],
-            'pass_niveau': first_pass['niveau']
-        })
-    
-    response['unlocked_levels'] = list(unique_levels.values())
-
-    # Récupérer les passes OFFERTS par ce parent à ses enfants
-    # On cherche les PaymentHistory où l'utilisateur est payeur (user=user) avec plan_mode='one_time'
-    # puis on vérifie si le bénéficiaire (via AccessPass) est différent
-    gifted_passes = []
-    parent_payments = PaymentHistory.objects.filter(
-        user=user,
-        plan_mode='one_time',
-        period_end__gt=timezone.now()
-    ).select_related('niveau_pays', 'niveau_pays__pays')
-    
-    for payment in parent_payments:
-        # Trouver le pass associé via stripe_payment_intent_id
-        access_pass = AccessPass.objects.filter(
-            stripe_payment_intent_id=payment.stripe_payment_intent_id
-        ).select_related('user', 'plan').first()
-        
-        if not access_pass:
-            continue
-        
-        # Si le bénéficiaire du pass est différent du payeur, c'est un pass offert
-        if access_pass.user_id != user.id:
-            beneficiary = access_pass.user
-            niveau_obj = payment.niveau_pays
-            niveau_payload = None
-            if niveau_obj:
-                niveau_payload = {
-                    'id': niveau_obj.id,
-                    'nom': niveau_obj.nom,
-                    'pays': {
-                        'id': getattr(niveau_obj.pays, 'id', None),
-                        'nom': getattr(niveau_obj.pays, 'nom', None),
-                        'drapeau_emoji': getattr(niveau_obj.pays, 'drapeau_emoji', None)
-                    } if getattr(niveau_obj, 'pays', None) else None
-                }
-            
-            gifted_passes.append({
-                'id': access_pass.id,
-                'plan_name': access_pass.plan.name if access_pass.plan else payment.plan_name,
-                'plan_price': float(access_pass.plan.price) if access_pass.plan and access_pass.plan.price else float(payment.amount),
-                'starts_at': access_pass.starts_at.isoformat(),
-                'ends_at': access_pass.ends_at.isoformat(),
-                'is_active': access_pass.is_active,
-                'niveau': niveau_payload,
-                'beneficiary': {
-                    'id': beneficiary.id,
-                    'email': beneficiary.email,
-                    'first_name': beneficiary.first_name,
-                    'last_name': beneficiary.last_name,
-                },
-                'cancel_at_period_end': False,  # Les passes ne se renouvellent pas
-            })
-    
-    response['gifted_passes'] = gifted_passes
-
-    if response['has_manual_access'] and not response.get('has_subscription'):
-        response.setdefault('plan_name', 'Accès manuel')
-        response['status'] = 'manual'
-
-    response['has_access'] = bool(
-        response.get('is_active')
-        or response.get('has_active_pass')
-        or response.get('has_manual_access')
-    )
-    response['gifted_subscriptions'] = gifted_subscriptions
-    response['can_subscribe'] = True
-    return response
 
 class SubscriptionStatusView(APIView):
     """Récupérer le statut d'abonnement de l'utilisateur"""
@@ -640,7 +273,6 @@ class SubscriptionStatusView(APIView):
 
     def get(self, request):
         return JsonResponse(build_subscription_status(request.user))
-
 
 
 class InvoiceListView(APIView):
@@ -959,6 +591,8 @@ class ReactivateSubscriptionView(APIView):
                 # Abonnement sans Stripe, réactiver localement
                 subscription.cancel_at_period_end = False
                 subscription.save(update_fields=['cancel_at_period_end', 'updated_at'])
+                # Envoyer notification admin
+                EmailService.send_reactivation_notification_to_admin(request.user, subscription)
                 return JsonResponse({'success': True, 'message': 'Abonnement réactivé avec succès.'})
 
             try:
@@ -972,6 +606,8 @@ class ReactivateSubscriptionView(APIView):
                 subscription.status = updated.get('status', subscription.status)
                 subscription.cancel_at_period_end = bool(updated.get('cancel_at_period_end', False))
                 subscription.save(update_fields=['status', 'cancel_at_period_end', 'updated_at'])
+                # Envoyer notification admin
+                EmailService.send_reactivation_notification_to_admin(request.user, subscription)
                 return JsonResponse({'success': True, 'message': 'Abonnement réactivé avec succès ! Votre abonnement continuera normalement.'})
             except stripe_error.InvalidRequestError as exc:
                 logger.warning(f"Stripe reactivate error {subscription.stripe_subscription_id}: {exc}")
@@ -1004,6 +640,9 @@ class ReactivateSubscriptionView(APIView):
                     stripe_subscription_id,
                     cancel_at_period_end=False
                 )
+                # Chercher l'abonnement local pour la notification
+                local_sub = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id).first()
+                EmailService.send_reactivation_notification_to_admin(request.user, local_sub)
                 return JsonResponse({'success': True, 'message': 'Abonnement réactivé avec succès !'})
             except stripe_error.StripeError as exc:
                 logger.error(f"Stripe reactivate error {stripe_subscription_id}: {exc}")
@@ -1246,7 +885,7 @@ class AdminSubscribersView(APIView):
                         plan_name = getattr(plan, 'name', '—') if plan else '—'
                         plan_mode = _resolve_plan_mode(plan) if plan else 'one_time'
                         access_days = getattr(plan, 'access_days', None) if plan else None
-                        is_active = bool(p.ends_at and (p.ends_at > now))
+                        is_active = p.is_active  # Prend en compte is_revoked
                         if active_only and not is_active:
                             continue
                         pass_entry = {
@@ -1262,6 +901,7 @@ class AdminSubscribersView(APIView):
                             'starts_at': iso_or_none(getattr(p, 'starts_at', None)),
                             'ends_at': iso_or_none(getattr(p, 'ends_at', None)),
                             'is_active': is_active,
+                            'is_revoked': getattr(p, 'is_revoked', False),
                         }
                         if plan and getattr(plan, 'price', None) is not None:
                             pass_entry['amount_paid'] = float(plan.price)
@@ -1625,6 +1265,9 @@ def stripe_webhook(request):
     
     elif event['type'] == 'customer.subscription.deleted':
         handle_subscription_deleted(event['data']['object'])
+    
+    elif event['type'] == 'charge.refunded':
+        handle_charge_refunded(event['data']['object'])
     
     return HttpResponse(status=200)
 

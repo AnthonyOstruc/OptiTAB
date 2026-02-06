@@ -204,6 +204,7 @@ const routes = [
       { path: 'newsletter', name: 'AdminNewsletter', component: () => import('@/views/admin/NewsletterAdmin.vue') },
       { path: 'subscriptions', name: 'AdminSubscriptions', component: () => import('@/views/admin/AdminSubscriptions.vue') },
       { path: 'subscribers', name: 'AdminSubscribers', component: () => import('@/views/admin/AdminSubscribers.vue') },
+      { path: 'passes', name: 'AdminPasses', component: () => import('@/views/admin/AdminPasses.vue') },
       { path: 'matieres', name: 'AdminMatieres', component: () => import('@/views/admin/AdminMatieres.vue') },
       { path: 'themes', name: 'AdminThemes', component: () => import('@/views/admin/AdminThemes.vue') },
       { path: 'notions', name: 'AdminNotions', component: () => import('@/views/admin/AdminNotions.vue') },

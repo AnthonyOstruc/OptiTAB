@@ -9,6 +9,7 @@ from .models import SubscriptionPlan, UserSubscription, PaymentHistory, AccessPa
 from pays.models import Niveau
 from core.services import EmailService
 from .stripe_client import stripe, stripe_error
+from .pass_access import revoke_pass_for_payment_intent
 from .helpers import (
     _append_level_to_description,
     _extract_invoice_period,
@@ -545,6 +546,7 @@ def handle_payment_succeeded(invoice):
                     metadata=metadata,
                 )
             else:
+                # Renouvellement - envoyer email de facture à l'utilisateur
                 _schedule_invoice_email(
                     payment_history_id=payment_history.id,
                     stripe_subscription_id=subscription_id,
@@ -844,13 +846,65 @@ def handle_subscription_deleted(subscription):
 
 
 # =============================================================================
+# Refund helpers (pass one-time)
+# =============================================================================
+
+def _normalize_stripe_id(value):
+    """Normalise un ID Stripe (string ou dict Stripe)."""
+    if isinstance(value, dict):
+        return value.get('id') or value.get('payment_intent') or value.get('charge')
+    return value
+
+
+def _resolve_payment_intent_from_charge(charge):
+    """Extrait l'ID PaymentIntent depuis un objet Charge."""
+    if not charge:
+        return None
+    payment_intent = charge.get('payment_intent')
+    return _normalize_stripe_id(payment_intent)
+
+
+def _resolve_payment_intent_from_refund(refund):
+    """Extrait l'ID PaymentIntent depuis un objet Refund. Retourne (payment_intent_id, charge_data)."""
+    if not refund:
+        return None, None
+
+    payment_intent = _normalize_stripe_id(refund.get('payment_intent'))
+    if payment_intent:
+        return payment_intent, None
+
+    charge = refund.get('charge')
+    charge_data = None
+    if isinstance(charge, dict):
+        payment_intent = _normalize_stripe_id(charge.get('payment_intent'))
+        if payment_intent:
+            return payment_intent, charge
+        charge_id = charge.get('id')
+    else:
+        charge_id = charge
+
+    if not charge_id:
+        return None, None
+
+    try:
+        charge_obj = stripe.Charge.retrieve(charge_id)
+        charge_data = _stripe_obj_to_dict(charge_obj)
+        payment_intent = _normalize_stripe_id(charge_data.get('payment_intent'))
+        return payment_intent, charge_data
+    except stripe_error.StripeError as exc:
+        logger.warning("Refund: impossible de récupérer la charge %s: %s", charge_id, exc)
+        return None, None
+
+
+# =============================================================================
 # Handler: charge.refunded (remboursement de pass one-time)
 # =============================================================================
 
 def handle_charge_refunded(charge):
-    """Gère le remboursement d'un paiement - révoque le pass associé."""
+    """Gère le remboursement d'un paiement (charge.refunded) - révoque le pass associé."""
     try:
-        payment_intent_id = charge.get('payment_intent')
+        charge = _stripe_obj_to_dict(charge)
+        payment_intent_id = _resolve_payment_intent_from_charge(charge)
         if not payment_intent_id:
             logger.info("handle_charge_refunded: pas de payment_intent, ignoré")
             return
@@ -858,47 +912,55 @@ def handle_charge_refunded(charge):
         # Vérifier si c'est un remboursement (partiel ou total)
         refunded = charge.get('refunded', False)
         amount_refunded = charge.get('amount_refunded', 0)
-        
+
         if not refunded and amount_refunded == 0:
             logger.info("handle_charge_refunded: pas de remboursement effectif, ignoré")
             return
-        
-        # Chercher le pass associé à ce payment_intent
-        try:
-            access_pass = AccessPass.objects.select_related('user', 'plan').get(
-                stripe_payment_intent_id=payment_intent_id
-            )
-        except AccessPass.DoesNotExist:
-            logger.info(
-                "handle_charge_refunded: pas de pass trouvé pour payment_intent=%s (peut-être un abonnement)",
-                payment_intent_id
-            )
-            return
-        
-        if access_pass.is_revoked:
-            logger.info(
-                "handle_charge_refunded: pass déjà révoqué (id=%s, payment_intent=%s)",
-                access_pass.id,
-                payment_intent_id
-            )
-            return
-        
-        # Révoquer le pass
-        access_pass.revoke()
-        
-        logger.info(
-            "handle_charge_refunded: pass révoqué (id=%s, user=%s, plan=%s, amount_refunded=%s)",
-            access_pass.id,
-            access_pass.user.email,
-            access_pass.plan.name,
-            amount_refunded,
+
+        amount_total = charge.get('amount')
+        revoke_pass_for_payment_intent(
+            payment_intent_id,
+            amount_refunded=amount_refunded,
+            amount_total=amount_total,
         )
-        
-        # Optionnel: envoyer un email de notification
-        # EmailService.send_pass_revoked_notification(access_pass.user, access_pass)
-        
+
     except Exception as e:
         logger.error(f"Erreur dans handle_charge_refunded: {e}", exc_info=True)
+
+
+def handle_refund_event(refund):
+    """Gère un remboursement (refund.created/refund.updated/charge.refund.*)."""
+    try:
+        refund = _stripe_obj_to_dict(refund)
+        status = (refund.get('status') or '').lower()
+        if status in ('failed', 'canceled'):
+            logger.info("handle_refund_event: remboursement échoué/annulé (%s)", refund.get('id'))
+            return
+
+        payment_intent_id, charge_data = _resolve_payment_intent_from_refund(refund)
+        if not payment_intent_id:
+            logger.info("handle_refund_event: payment_intent introuvable (%s)", refund.get('id'))
+            return
+
+        amount_refunded = refund.get('amount')
+        amount_total = None
+
+        if charge_data:
+            amount_total = charge_data.get('amount')
+            amount_refunded = charge_data.get('amount_refunded', amount_refunded)
+        elif isinstance(refund.get('charge'), dict):
+            charge = refund.get('charge')
+            amount_total = charge.get('amount')
+            amount_refunded = charge.get('amount_refunded', amount_refunded)
+
+        revoke_pass_for_payment_intent(
+            payment_intent_id,
+            amount_refunded=amount_refunded,
+            amount_total=amount_total,
+        )
+
+    except Exception as e:
+        logger.error(f"Erreur dans handle_refund_event: {e}", exc_info=True)
 
 
 __all__ = [
@@ -910,4 +972,5 @@ __all__ = [
     'handle_subscription_updated',
     'handle_subscription_deleted',
     'handle_charge_refunded',
+    'handle_refund_event',
 ]

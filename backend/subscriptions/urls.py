@@ -12,6 +12,8 @@ from .views import (
     AdminPlansView,
     AdminPlanDetailView,
     AdminSubscribersView,
+    AdminPassesView,
+    AdminPassDetailView,
     AdminStripeSyncView,
     AdminSubscriptionCancelView,
 )
@@ -30,6 +32,8 @@ urlpatterns = [
     path('admin/plans/', AdminPlansView.as_view(), name='admin-plans'),
     path('admin/plans/<int:pk>/', AdminPlanDetailView.as_view(), name='admin-plan-detail'),
     path('admin/subscribers/', AdminSubscribersView.as_view(), name='admin-subscribers'),
+    path('admin/passes/', AdminPassesView.as_view(), name='admin-passes'),
+    path('admin/passes/<int:pk>/', AdminPassDetailView.as_view(), name='admin-pass-detail'),
     path('admin/sync-from-stripe/', AdminStripeSyncView.as_view(), name='admin-sync-from-stripe'),
     path('admin/subscribers/cancel/', AdminSubscriptionCancelView.as_view(), name='admin-cancel-subscription'),
 ]

@@ -53,3 +53,5 @@ export const adminListPlans = () => apiClient.get('/api/subscriptions/admin/plan
 export const adminCreatePlan = (payload) => apiClient.post('/api/subscriptions/admin/plans/', payload)
 export const adminUpdatePlan = (id, payload) => apiClient.patch(`/api/subscriptions/admin/plans/${id}/`, payload)
 export const adminDeletePlan = (id) => apiClient.delete(`/api/subscriptions/admin/plans/${id}/`)
+export const adminListPasses = (params = {}) => apiClient.get('/api/subscriptions/admin/passes/', { params })
+export const adminUpdatePass = (id, payload) => apiClient.patch(`/api/subscriptions/admin/passes/${id}/`, payload)

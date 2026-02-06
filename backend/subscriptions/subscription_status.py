@@ -4,6 +4,7 @@ Refactorisé pour être DRY, simple et maintenable.
 """
 import logging
 from datetime import datetime
+
 from django.utils import timezone
 
 from .models import AccessPass, PaymentHistory, SubscriptionPlan, UserSubscription
@@ -20,6 +21,7 @@ from .stripe_services import (
     _refresh_subscription_from_snapshot,
     _refresh_subscription_from_stripe,
 )
+from .pass_access import REFUNDED_STATUSES, get_valid_active_passes_for_user
 from pays.models import Niveau
 
 logger = logging.getLogger(__name__)
@@ -81,6 +83,7 @@ def is_period_expired(period_end):
 # =============================================================================
 # Collecteur de niveaux débloqués
 # =============================================================================
+
 
 class UnlockedLevelsCollector:
     """Collecte les niveaux débloqués de manière unique."""
@@ -409,10 +412,8 @@ def build_subscription_status(user):
     response['subscriptions'] = subscriptions_payload
     
     # --- 5. Traiter les passes actifs ---
-    active_passes = AccessPass.objects.filter(
-        user=user, ends_at__gt=now, is_revoked=False
-    ).select_related('plan').order_by('-ends_at')
-    
+    active_passes = get_valid_active_passes_for_user(user, now=now)
+
     passes_payload = []
     for access_pass in active_passes:
         payload = build_pass_payload(access_pass, user)
@@ -438,6 +439,8 @@ def build_subscription_status(user):
     gifted_passes = []
     parent_payments = PaymentHistory.objects.filter(
         user=user, plan_mode='one_time', period_end__gt=now
+    ).exclude(
+        status__in=REFUNDED_STATUSES
     ).select_related('niveau_pays', 'niveau_pays__pays')
     
     for payment in parent_payments:

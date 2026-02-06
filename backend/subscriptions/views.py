@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, time as dt_time
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -6,12 +7,14 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime, parse_date
 from decimal import Decimal
 import logging
 
 from .models import SubscriptionPlan, UserSubscription, PaymentHistory, AccessPass
 from pays.models import Niveau
 from django.db import DatabaseError
+from django.db.models import Q
 from stripe_config import STRIPE_WEBHOOK_SECRET, SUCCESS_URL, CANCEL_URL, FREE_TRIAL_DAYS
 from core.services import EmailService
 from .stripe_client import stripe, stripe_error
@@ -46,6 +49,7 @@ from .handlers import (
     handle_invoice_created,
     handle_payment_failed,
     handle_payment_succeeded,
+    handle_refund_event,
     handle_subscription_deleted,
     handle_subscription_updated,
 )
@@ -672,6 +676,57 @@ def _is_admin(user):
     except Exception:
         return False
 
+def _iso_or_none(value):
+    if not value:
+        return None
+    try:
+        return value.isoformat()
+    except Exception:
+        return None
+
+def _parse_bool_param(value):
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return value
+    raw = str(value).strip().lower()
+    if raw in {'1', 'true', 'yes', 'y', 'on'}:
+        return True
+    if raw in {'0', 'false', 'no', 'n', 'off'}:
+        return False
+    return None
+
+def _parse_datetime_value(value):
+    if value in (None, ''):
+        return None
+    if isinstance(value, datetime):
+        dt = value
+    elif isinstance(value, (int, float)):
+        try:
+            dt = datetime.fromtimestamp(value)
+        except Exception:
+            return None
+    else:
+        try:
+            dt = parse_datetime(str(value))
+        except Exception:
+            dt = None
+        if not dt:
+            try:
+                parsed_date = parse_date(str(value))
+            except Exception:
+                parsed_date = None
+            if parsed_date:
+                dt = datetime.combine(parsed_date, dt_time.min)
+    if not dt:
+        return None
+    try:
+        if timezone.is_naive(dt):
+            dt = timezone.make_aware(dt, timezone.get_current_timezone())
+    except Exception:
+        pass
+    return dt
+
 def _plan_to_dict(plan, include_admin=False):
     payload = {
         'id': plan.id,
@@ -689,6 +744,37 @@ def _plan_to_dict(plan, include_admin=False):
             'is_active': plan.is_active,
             'created_at': plan.created_at.isoformat() if plan.created_at else None,
         })
+    return payload
+
+def _access_pass_to_dict(pass_obj, payment=None):
+    plan = getattr(pass_obj, 'plan', None)
+    plan_mode = _resolve_plan_mode(plan) if plan else 'one_time'
+    payload = {
+        'id': pass_obj.id,
+        'user_id': pass_obj.user_id,
+        'email': getattr(pass_obj.user, 'email', ''),
+        'first_name': getattr(pass_obj.user, 'first_name', ''),
+        'last_name': getattr(pass_obj.user, 'last_name', ''),
+        'plan_id': getattr(pass_obj, 'plan_id', None),
+        'plan_name': getattr(plan, 'name', None) if plan else None,
+        'plan_mode': plan_mode,
+        'access_days': getattr(plan, 'access_days', None) if plan else None,
+        'starts_at': _iso_or_none(getattr(pass_obj, 'starts_at', None)),
+        'ends_at': _iso_or_none(getattr(pass_obj, 'ends_at', None)),
+        'created_at': _iso_or_none(getattr(pass_obj, 'created_at', None)),
+        'stripe_payment_intent_id': getattr(pass_obj, 'stripe_payment_intent_id', None),
+        'is_active': pass_obj.is_active,
+        'is_revoked': getattr(pass_obj, 'is_revoked', False),
+        'revoked_at': _iso_or_none(getattr(pass_obj, 'revoked_at', None)),
+    }
+    if payment is not None:
+        try:
+            payload['amount_paid'] = float(payment.amount)
+        except Exception:
+            payload['amount_paid'] = None
+        payload['currency'] = getattr(payment, 'currency', None)
+        payload['payment_status'] = getattr(payment, 'status', None)
+        payload['payment_description'] = getattr(payment, 'description', None)
     return payload
 
 class AdminPlansView(APIView):
@@ -795,12 +881,6 @@ class AdminSubscribersView(APIView):
             q = (request.GET.get('q') or '').strip().lower()
             active_only = (request.GET.get('active', 'false').lower() == 'true')
 
-            def iso_or_none(dt):
-                try:
-                    return dt.isoformat() if dt else None
-                except Exception:
-                    return None
-
             items = []
             covered_user_ids = set()
 
@@ -849,8 +929,8 @@ class AdminSubscribersView(APIView):
                         'is_active': bool(getattr(s, 'is_active', False)),
                         'is_trial': bool(getattr(s, 'is_trial', False)),
                         'days_remaining_trial': int(getattr(s, 'days_remaining_trial', 0)),
-                        'current_period_start': iso_or_none(getattr(s, 'current_period_start', None)),
-                        'current_period_end': iso_or_none(getattr(s, 'current_period_end', None)),
+                        'current_period_start': _iso_or_none(getattr(s, 'current_period_start', None)),
+                        'current_period_end': _iso_or_none(getattr(s, 'current_period_end', None)),
                         'cancel_at_period_end': bool(getattr(s, 'cancel_at_period_end', False)),
                     }
                     payment_info = latest_payment_map.get(s.user_id)
@@ -898,8 +978,8 @@ class AdminSubscribersView(APIView):
                             'plan_name': plan_name,
                             'plan_mode': plan_mode,
                             'access_days': access_days,
-                            'starts_at': iso_or_none(getattr(p, 'starts_at', None)),
-                            'ends_at': iso_or_none(getattr(p, 'ends_at', None)),
+                            'starts_at': _iso_or_none(getattr(p, 'starts_at', None)),
+                            'ends_at': _iso_or_none(getattr(p, 'ends_at', None)),
                             'is_active': is_active,
                             'is_revoked': getattr(p, 'is_revoked', False),
                         }
@@ -939,7 +1019,7 @@ class AdminSubscribersView(APIView):
                             'is_active': True,
                             'is_trial': False,
                             'days_remaining_trial': 0,
-                            'current_period_start': iso_or_none(getattr(user, 'date_joined', None)),
+                            'current_period_start': _iso_or_none(getattr(user, 'date_joined', None)),
                             'current_period_end': None,
                             'amount_paid': None,
                             'currency': None,
@@ -965,6 +1045,109 @@ class AdminSubscribersView(APIView):
             logger.error(f"AdminSubscribersView.get error: {e}")
             # Ne pas bloquer l'UI admin: retourner une liste vide avec le message d'erreur
             return JsonResponse({'items': [], 'total': 0, 'error': str(e)}, status=200)
+
+
+class AdminPassesView(APIView):
+    """Liste des passes (one-time) pour l'admin"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if not _is_admin(request.user):
+            return JsonResponse({'detail': 'Forbidden'}, status=403)
+
+        q = (request.GET.get('q') or '').strip().lower()
+        active_param = _parse_bool_param(request.GET.get('active'))
+        revoked_param = _parse_bool_param(request.GET.get('revoked'))
+
+        qs = AccessPass.objects.select_related('user', 'plan').order_by('-starts_at')
+
+        if q:
+            qs = qs.filter(
+                Q(user__email__icontains=q)
+                | Q(user__first_name__icontains=q)
+                | Q(user__last_name__icontains=q)
+                | Q(stripe_payment_intent_id__icontains=q)
+            )
+
+        if revoked_param is True:
+            qs = qs.filter(is_revoked=True)
+        elif revoked_param is False:
+            qs = qs.filter(is_revoked=False)
+
+        if active_param is True:
+            qs = qs.filter(is_revoked=False, ends_at__gt=timezone.now())
+        elif active_param is False:
+            qs = qs.filter(Q(is_revoked=True) | Q(ends_at__lte=timezone.now()))
+
+        pass_list = list(qs)
+        payment_map = {}
+        try:
+            pi_ids = [p.stripe_payment_intent_id for p in pass_list if p.stripe_payment_intent_id]
+            if pi_ids:
+                for payment in PaymentHistory.objects.filter(stripe_payment_intent_id__in=pi_ids):
+                    payment_map[payment.stripe_payment_intent_id] = payment
+        except Exception as payment_err:
+            logger.warning(f"AdminPassesView payment lookup failed: {payment_err}")
+
+        payload = [_access_pass_to_dict(p, payment_map.get(p.stripe_payment_intent_id)) for p in pass_list]
+        return JsonResponse({'passes': payload, 'total': len(payload)})
+
+
+class AdminPassDetailView(APIView):
+    """Mise Ã  jour rapide d'un pass (rÃ©vocation, dates)"""
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, pk):
+        if not _is_admin(request.user):
+            return JsonResponse({'detail': 'Forbidden'}, status=403)
+
+        try:
+            access_pass = AccessPass.objects.select_related('user', 'plan').get(pk=pk)
+        except AccessPass.DoesNotExist:
+            return JsonResponse({'detail': 'Not found'}, status=404)
+
+        data = request.data if hasattr(request, 'data') else json.loads(request.body or '{}')
+        updates = []
+
+        if 'starts_at' in data:
+            parsed = _parse_datetime_value(data.get('starts_at'))
+            if not parsed:
+                return JsonResponse({'detail': 'starts_at invalide'}, status=400)
+            access_pass.starts_at = parsed
+            updates.append('starts_at')
+
+        if 'ends_at' in data:
+            parsed = _parse_datetime_value(data.get('ends_at'))
+            if not parsed:
+                return JsonResponse({'detail': 'ends_at invalide'}, status=400)
+            access_pass.ends_at = parsed
+            updates.append('ends_at')
+
+        if 'is_revoked' in data:
+            is_revoked = _parse_bool_param(data.get('is_revoked'))
+            if is_revoked is None:
+                return JsonResponse({'detail': 'is_revoked invalide'}, status=400)
+            access_pass.is_revoked = is_revoked
+            access_pass.revoked_at = timezone.now() if is_revoked else None
+            updates.extend(['is_revoked', 'revoked_at'])
+
+        if 'starts_at' in data and 'ends_at' in data:
+            if access_pass.ends_at and access_pass.starts_at and access_pass.ends_at < access_pass.starts_at:
+                return JsonResponse({'detail': 'ends_at doit Ãªtre aprÃ¨s starts_at'}, status=400)
+
+        if updates:
+            access_pass.save(update_fields=list(dict.fromkeys(updates)))
+
+        payment = None
+        try:
+            if access_pass.stripe_payment_intent_id:
+                payment = PaymentHistory.objects.filter(
+                    stripe_payment_intent_id=access_pass.stripe_payment_intent_id
+                ).first()
+        except Exception:
+            payment = None
+
+        return JsonResponse({'pass': _access_pass_to_dict(access_pass, payment)})
 
 
 class AdminStripeSyncView(APIView):
@@ -1268,6 +1451,13 @@ def stripe_webhook(request):
     
     elif event['type'] == 'charge.refunded':
         handle_charge_refunded(event['data']['object'])
+    elif event['type'] in (
+        'refund.created',
+        'refund.updated',
+        'charge.refund.created',
+        'charge.refund.updated',
+    ):
+        handle_refund_event(event['data']['object'])
     
     return HttpResponse(status=200)
 

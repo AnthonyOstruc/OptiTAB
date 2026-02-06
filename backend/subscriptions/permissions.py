@@ -1,7 +1,8 @@
 from django.utils import timezone
 from rest_framework.permissions import BasePermission
 
-from .models import AccessPass, UserSubscription
+from .models import UserSubscription
+from .pass_access import has_valid_active_pass
 
 
 def user_has_active_subscription_or_pass(user):
@@ -33,7 +34,7 @@ def user_has_active_subscription_or_pass(user):
         has_access = True
     else:
         now = timezone.now()
-        has_access = AccessPass.objects.filter(user=user, ends_at__gt=now, is_revoked=False).exists()
+        has_access = has_valid_active_pass(user, now=now)
 
     setattr(user, '_has_subscription_access_cache', has_access)
     return has_access

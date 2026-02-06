@@ -111,6 +111,19 @@
               <button
                 type="button"
                 class="sidebar-item"
+                :class="{ active: route.path.startsWith('/admin/passes') }"
+                :title="collapsed ? 'Passes' : ''"
+                @click="router.push('/admin/passes')"
+              >
+                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h10M4 17h7"/><rect x="14" y="10" width="6" height="6" rx="1"/></svg></span>
+                <span v-if="!collapsed" class="sidebar-label">Passes</span>
+              </button>
+            </li>
+
+            <li>
+              <button
+                type="button"
+                class="sidebar-item"
                 :class="{ active: route.path.startsWith('/admin/quiz-submissions') }"
                 :title="collapsed ? 'Notation des Quiz' : ''"
                 @click="router.push('/admin/quiz-submissions')"
@@ -240,7 +253,7 @@ const isActiveRoute = (menuKey) => {
 // Fonction pour déterminer si l'onglet Admin doit être actif
 const isAdminActive = computed(() => { 
   const p = route.path || ''; 
-  return p.startsWith('/admin') && !p.startsWith('/admin/newsletter') && !p.startsWith('/admin/subscriptions') && !p.startsWith('/admin/subscribers') && !p.startsWith('/admin/quiz-submissions')
+  return p.startsWith('/admin') && !p.startsWith('/admin/newsletter') && !p.startsWith('/admin/subscriptions') && !p.startsWith('/admin/subscribers') && !p.startsWith('/admin/passes') && !p.startsWith('/admin/quiz-submissions')
 })
 
 // Prefetch au survol (hover) - déclenché 150ms après le survol

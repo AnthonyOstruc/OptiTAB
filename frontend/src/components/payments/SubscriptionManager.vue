@@ -16,7 +16,7 @@
       </div>
 
       <!-- Section abonnements des enfants (en haut pour les parents) -->
-      <div v-if="isParent && giftedSubscriptions.length" class="gifted-section gifted-section--top">
+      <div v-if="giftedSubscriptions.length" class="gifted-section gifted-section--top">
         <div class="gifted-header">
           <h4>Abonnements de vos enfants</h4>
           <p>Gérez les accès souscrits pour vos enfants.</p>
@@ -90,7 +90,7 @@
       </div>
 
       <!-- Section passes offerts aux enfants (parents) -->
-      <div v-if="isParent && giftedPasses.length" class="gifted-section gifted-section--passes">
+      <div v-if="giftedPasses.length" class="gifted-section gifted-section--passes">
         <div class="gifted-header">
           <h4>Passes de vos enfants</h4>
           <p>Passes ponctuels achetés pour vos enfants.</p>
@@ -837,10 +837,9 @@ const isCardLoading = computed(() => !initialLoadDone.value && (subscriptionStor
 const cancellationScheduled = computed(() => Boolean(subscription.value.cancel_at_period_end))
 const hasActiveAccess = computed(() => subscriptionStore.hasAccess)
 const hasActivePass = computed(() => Boolean(subscription.value.has_active_pass))
-const isParent = computed(() => (userStore.role || '').toLowerCase() === 'parent')
 const isParentWithOnlyGiftedSubs = computed(() => {
-  // Parent qui n'a pas d'abonnement propre mais a des abonnements pour ses enfants
-  return isParent.value && !hasSubscription.value && giftedSubscriptions.value.length > 0
+  // Utilisateur payeur qui n'a pas d'abonnement propre mais gère des abonnements enfants
+  return !hasSubscription.value && giftedSubscriptions.value.length > 0
 })
 const unlockedLevelsWithSubscriptions = computed(() => {
   const merged = new Map()
@@ -870,7 +869,7 @@ const giftedSubscriptions = computed(() =>
   (baseSubscription.value.gifted_subscriptions || []).filter(gift => gift?.is_active)
 )
 const giftedPasses = computed(() =>
-  (baseSubscription.value.gifted_passes || []).filter(pass => pass?.is_active)
+  (baseSubscription.value.gifted_passes || []).filter(pass => pass?.is_active && !pass?.is_revoked)
 )
 
 // Helpers pour les passes offerts
@@ -1290,7 +1289,7 @@ const formatDate = (dateInput) => {
 const formatDateWithTime = (dateInput) => {
   const date = parseDateSafe(dateInput)
   if (!date) return '—'
-  return date.toLocaleDateString('fr-FR', {
+  return date.toLocaleString('fr-FR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -1299,11 +1298,15 @@ const formatDateWithTime = (dateInput) => {
   })
 }
 
+const isOneDayPassName = (planName) => {
+  const normalized = String(planName || '').toLowerCase()
+  return normalized.includes('1 jour') || normalized.includes('1jour')
+}
+
 const formatPassExpiration = (pass) => {
   if (!pass || !pass.ends_at) return '—'
   // Pour les pass 1 jour, afficher aussi l'heure
-  const planName = (pass.plan_name || '').toLowerCase()
-  if (planName.includes('1 jour') || planName.includes('1jour')) {
+  if (isOneDayPassName(pass.plan_name)) {
     return formatDateWithTime(pass.ends_at)
   }
   return formatDate(pass.ends_at)
@@ -1581,6 +1584,25 @@ const displayRenewalDate = computed(() => {
   if (!shouldShowAccessEndDate.value) return null
   return renewalDateValue.value || fallbackRenewalDate.value
 })
+const shouldIncludeTimeForAccessEndDate = computed(() => {
+  if (!isCurrentViewPass.value) return false
+  if (isOneDayPassName(subscription.value.plan_name || subscription.value.active_pass_plan)) {
+    return true
+  }
+
+  const billingPeriod = String(
+    subscription.value.plan_billing_period || subscription.value.plan_period || ''
+  ).toLowerCase()
+  if (billingPeriod === 'daily') {
+    return true
+  }
+
+  const startDate = parseDateSafe(subscriptionStart.value)
+  const endDate = parseDateSafe(displayRenewalDate.value)
+  if (!startDate || !endDate) return false
+  const durationMs = endDate.getTime() - startDate.getTime()
+  return durationMs > 0 && durationMs <= 36 * 3_600_000
+})
 
 const planPriceLabel = computed(() => {
   const formattedPrice = formatPlanPriceValue(
@@ -1604,7 +1626,18 @@ const planBillingLabel = computed(() => {
   const meta = resolveBillingPeriodMeta(billingPeriod)
   return meta?.adjective ? `Facturation ${meta.adjective}` : ''
 })
-const passEndDateLabel = computed(() => formatDate(subscription.value.active_pass_ends_at))
+const passEndDateLabel = computed(() => {
+  if (isOneDayPassName(subscription.value.active_pass_plan || subscription.value.plan_name)) {
+    return formatDateWithTime(subscription.value.active_pass_ends_at)
+  }
+  const billingPeriod = String(
+    subscription.value.active_pass_billing_period || subscription.value.plan_billing_period || ''
+  ).toLowerCase()
+  if (billingPeriod === 'daily') {
+    return formatDateWithTime(subscription.value.active_pass_ends_at)
+  }
+  return formatDate(subscription.value.active_pass_ends_at)
+})
 const passEndHint = computed(() => {
   const target = parseDateSafe(subscription.value.active_pass_ends_at)
   if (!target) return 'Le pass expirera automatiquement sans renouvellement.'
@@ -1628,7 +1661,12 @@ const renewalLabel = computed(() => {
   if (cancellationScheduled.value) return 'Fin programmée'
   return subscription.value.is_active ? 'Renouvellement' : 'Fin de période'
 })
-const renewalDateLabel = computed(() => formatDate(displayRenewalDate.value))
+const renewalDateLabel = computed(() => {
+  if (shouldIncludeTimeForAccessEndDate.value) {
+    return formatDateWithTime(displayRenewalDate.value)
+  }
+  return formatDate(displayRenewalDate.value)
+})
 const renewalHint = computed(() => {
   if (isCurrentViewPass.value) {
     return 'Pass à usage unique, sans renouvellement automatique.'

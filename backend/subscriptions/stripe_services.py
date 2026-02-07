@@ -364,7 +364,19 @@ def _build_gifted_subscriptions_from_stripe(stripe_subscriptions, current_user):
         metadata = stripe_sub.get('metadata') or {}
         payer_id = metadata.get('payer_user_id')
         beneficiary_id = metadata.get('user_id')
-        if not payer_id or str(payer_id) != current_user_id:
+        is_gift = str(metadata.get('is_gift') or '').lower() == 'true'
+        beneficiary_email = (metadata.get('beneficiary_email') or '').strip()
+        beneficiary_name = (metadata.get('beneficiary_name') or '').strip()
+
+        payer_matches = bool(payer_id and str(payer_id) == current_user_id)
+        legacy_gift_matches = bool(
+            (not payer_id)
+            and is_gift
+            and (beneficiary_email or beneficiary_name or beneficiary_id)
+            and (not beneficiary_id or str(beneficiary_id) != current_user_id)
+        )
+
+        if not payer_matches and not legacy_gift_matches:
             continue
         if beneficiary_id and str(beneficiary_id) == current_user_id:
             continue

@@ -96,6 +96,13 @@ def _parse_gift_metadata(metadata):
     return is_gift, payer
 
 
+def _get_active_user_by_email(email):
+    normalized_email = (email or '').strip()
+    if not normalized_email:
+        return None
+    return User.objects.filter(email__iexact=normalized_email, is_active=True).first()
+
+
 # =============================================================================
 # Handler: invoice.created
 # =============================================================================
@@ -354,17 +361,40 @@ def handle_checkout_session_payment_completed(session):
         plan_id = metadata.get('plan_id')
         plan_mode = metadata.get('plan_mode')
         niveau_id = metadata.get('niveau_pays_id')
+        beneficiary_email = (metadata.get('beneficiary_email') or '').strip()
 
-        if not user_id or not plan_id:
+        if not plan_id:
             logger.error("Session checkout paiement sans user/plan (%s)", session.get('id'))
             return
 
-        user = User.objects.get(id=user_id)
+        user = None
+        if user_id:
+            try:
+                user = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                user = None
+        if not user and beneficiary_email:
+            user = _get_active_user_by_email(beneficiary_email)
+        if not user:
+            logger.error(
+                "Session checkout paiement sans bénéficiaire valide (%s, user_id=%s, beneficiary_email=%s)",
+                session.get('id'),
+                user_id,
+                beneficiary_email,
+            )
+            return
+
         plan = SubscriptionPlan.objects.get(id=plan_id)
         
         # Déterminer le payeur pour les cadeaux
         is_gift, payer = _parse_gift_metadata(metadata)
+        if is_gift and beneficiary_email:
+            beneficiary_user = _get_active_user_by_email(beneficiary_email) or user
+        else:
+            beneficiary_user = user
         invoice_owner = payer if is_gift and payer else user
+        if beneficiary_user:
+            user = beneficiary_user
         
         # Vérifier que c'est bien un paiement unique
         if plan_mode != 'one_time':
@@ -377,9 +407,17 @@ def handle_checkout_session_payment_completed(session):
         # Éviter les doublons
         payment_intent = session.get('payment_intent') or ''
         if payment_intent:
-            if AccessPass.objects.filter(stripe_payment_intent_id=payment_intent).exists():
-                return
-            if PaymentHistory.objects.filter(stripe_payment_intent_id=payment_intent).exists():
+            existing_pass = AccessPass.objects.filter(stripe_payment_intent_id=payment_intent).first()
+            if existing_pass:
+                if is_gift and existing_pass.user_id != user.id:
+                    logger.warning(
+                        "Pass cadeau réassigné au bénéficiaire (payment_intent=%s, from_user=%s, to_user=%s)",
+                        payment_intent,
+                        existing_pass.user_id,
+                        user.id,
+                    )
+                    existing_pass.user = user
+                    existing_pass.save(update_fields=['user'])
                 return
 
         # Créer le pass d'accès (pour le bénéficiaire)
@@ -906,7 +944,10 @@ def handle_charge_refunded(charge):
         charge = _stripe_obj_to_dict(charge)
         payment_intent_id = _resolve_payment_intent_from_charge(charge)
         if not payment_intent_id:
-            logger.info("handle_charge_refunded: pas de payment_intent, ignoré")
+            logger.info(
+                "handle_charge_refunded: payment_intent introuvable (charge=%s), ignoré",
+                charge.get('id'),
+            )
             return
 
         # Vérifier si c'est un remboursement (partiel ou total)

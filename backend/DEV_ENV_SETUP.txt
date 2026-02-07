@@ -48,3 +48,31 @@ SECRET_KEY=dev_secret_key_change_in_production
 3. Créez un client OAuth séparé pour le développement dans Google Cloud Console
 4. Configurez les origines autorisées : http://localhost:3000 et http://127.0.0.1:3000
 
+# ==========================================
+# TESTER L'EXPIRATION D'UN PASS (EMAIL "PASS EXPIRÉ")
+# ==========================================
+
+OptiTAB envoie l'email "Votre pass a expiré" via un job périodique :
+- Command: `python3 backend/manage.py send_pass_expiration_emails --hours-ago 72`
+- En dev, un scheduler in-process démarre automatiquement au boot du backend.
+  Tu dois voir dans le terminal backend une ligne du type :
+  `[pass-expiration] scheduler started: interval=60s hours_ago=72`
+
+## Important (dev)
+Par défaut, `EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend` :
+les emails NE partent pas dans ta boîte mail, ils s'affichent dans le terminal backend.
+Pour recevoir des emails réels en dev, configure un SMTP et mets
+`EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend` + EMAIL_HOST/USER/PASSWORD.
+
+## Étapes rapides (dev)
+1) Démarre le backend.
+2) Dans l'admin Django, prends un `AccessPass` et mets :
+   - `ends_at = maintenant - 5 minutes`
+   - `expiration_email_sent = False`
+   - `is_revoked = False`
+3) Attends au maximum 1 minute (scheduler) OU force à la main :
+   - Dry-run (voir les candidats) :
+     `python3 backend/manage.py send_pass_expiration_emails --dry-run --hours-ago 72`
+   - Envoi réel :
+     `python3 backend/manage.py send_pass_expiration_emails --hours-ago 72`
+

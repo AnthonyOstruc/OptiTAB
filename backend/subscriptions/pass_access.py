@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 
+from django.conf import settings
 from django.core.cache import cache
 from django.utils import timezone
 
@@ -23,6 +24,12 @@ PASS_REFUND_CACHE_TTL_REFUNDED_SECONDS = 24 * 60 * 60
 
 def _refund_cache_key(payment_intent_id: str) -> str:
     return f"pass_refund_status:{payment_intent_id}"
+
+def _should_skip_not_refunded_cache() -> bool:
+    # In local dev, Stripe webhooks are often not forwarded; skipping checks for 10 minutes can
+    # make refunds look "not applied". We therefore re-check Stripe even if we recently cached
+    # "not_refunded" while DEBUG is on.
+    return not bool(getattr(settings, "DEBUG", False))
 
 
 def _refund_status_label(amount_refunded=None, amount_total=None) -> str:
@@ -119,6 +126,11 @@ def revoke_pass_for_payment_intent(
         .first()
     )
     if not access_pass:
+        logger.info(
+            "No AccessPass found for refunded payment_intent=%s (refund_status=%s)",
+            payment_intent_id,
+            status,
+        )
         return False
 
     if access_pass.is_revoked:
@@ -187,7 +199,7 @@ def sync_refunded_passes(active_passes, *, max_stripe_checks: int = 3):
             access_pass.revoke()
             continue
 
-        if cached == "not_refunded":
+        if cached == "not_refunded" and _should_skip_not_refunded_cache():
             continue
 
         if stripe_checks >= max_stripe_checks:

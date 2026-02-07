@@ -21,7 +21,11 @@ from .stripe_services import (
     _refresh_subscription_from_snapshot,
     _refresh_subscription_from_stripe,
 )
-from .pass_access import REFUNDED_STATUSES, get_valid_active_passes_for_user
+from .pass_access import (
+    REFUNDED_STATUSES,
+    get_valid_active_passes_for_user,
+    sync_refunded_passes,
+)
 from pays.models import Niveau
 
 logger = logging.getLogger(__name__)
@@ -224,13 +228,28 @@ def build_pass_payload(access_pass, user):
     
     # Récupérer le niveau depuis PaymentHistory
     niveau_payload = None
-    payment = PaymentHistory.objects.filter(
-        user=user,
-        stripe_payment_intent_id=access_pass.stripe_payment_intent_id
-    ).select_related('niveau_pays', 'niveau_pays__pays').first()
-    
+    payment_intent_id = access_pass.stripe_payment_intent_id
+    payment = None
+    if payment_intent_id:
+        payment = (
+            PaymentHistory.objects.filter(
+                stripe_payment_intent_id=payment_intent_id,
+                plan_mode='one_time',
+            )
+            .select_related('niveau_pays', 'niveau_pays__pays')
+            .first()
+        )
+
     if payment and payment.niveau_pays:
         niveau_payload = serialize_niveau(payment.niveau_pays)
+    elif payment_intent_id:
+        logger.warning(
+            "Pass level unresolved (pass_id=%s, payment_intent=%s, payment_found=%s, has_niveau=%s)",
+            access_pass.id,
+            payment_intent_id,
+            bool(payment),
+            bool(getattr(payment, 'niveau_pays_id', None)),
+        )
     
     return {
         'id': access_pass.id,
@@ -442,14 +461,31 @@ def build_subscription_status(user):
     ).exclude(
         status__in=REFUNDED_STATUSES
     ).select_related('niveau_pays', 'niveau_pays__pays')
-    
+
+    payment_intent_ids = [
+        payment.stripe_payment_intent_id
+        for payment in parent_payments
+        if payment.stripe_payment_intent_id
+    ]
+    candidate_passes = list(
+        AccessPass.objects.filter(
+            stripe_payment_intent_id__in=payment_intent_ids,
+            is_revoked=False,
+            ends_at__gt=now,
+        )
+        .exclude(user=user)
+        .select_related('user', 'plan')
+    )
+    valid_passes = sync_refunded_passes(candidate_passes, max_stripe_checks=3)
+    valid_pass_by_intent = {
+        access_pass.stripe_payment_intent_id: access_pass
+        for access_pass in valid_passes
+        if access_pass.stripe_payment_intent_id
+    }
+
     for payment in parent_payments:
-        access_pass = AccessPass.objects.filter(
-            stripe_payment_intent_id=payment.stripe_payment_intent_id,
-            is_revoked=False  # Exclure les passes révoqués (remboursés)
-        ).select_related('user', 'plan').first()
-        
-        if access_pass and access_pass.user_id != user_id:
+        access_pass = valid_pass_by_intent.get(payment.stripe_payment_intent_id)
+        if access_pass:
             gifted_passes.append(build_gifted_pass_payload(access_pass, payment))
     
     response['gifted_passes'] = gifted_passes

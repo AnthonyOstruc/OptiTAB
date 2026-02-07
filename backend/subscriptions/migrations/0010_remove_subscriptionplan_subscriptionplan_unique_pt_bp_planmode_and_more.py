@@ -15,10 +15,43 @@ class Migration(migrations.Migration):
             model_name='subscriptionplan',
             name='subscriptionplan_unique_pt_bp_planmode',
         ),
-        migrations.RenameIndex(
-            model_name='accesspass',
-            new_name='subscriptio_user_id_0cd826_idx',
-            old_name='subscriptions_user_end_idx',
+        migrations.SeparateDatabaseAndState(
+            database_operations=[
+                migrations.RunSQL(
+                    # Some DBs have already renamed this index via earlier safe SQL migrations.
+                    sql=(
+                        """
+                        DO $$
+                        BEGIN
+                            IF EXISTS (
+                                SELECT 1 FROM pg_class WHERE relname = 'subscriptions_user_end_idx'
+                            ) THEN
+                                ALTER INDEX subscriptions_user_end_idx RENAME TO subscriptio_user_id_0cd826_idx;
+                            END IF;
+                        END$$;
+                        """
+                    ),
+                    reverse_sql=(
+                        """
+                        DO $$
+                        BEGIN
+                            IF EXISTS (
+                                SELECT 1 FROM pg_class WHERE relname = 'subscriptio_user_id_0cd826_idx'
+                            ) THEN
+                                ALTER INDEX subscriptio_user_id_0cd826_idx RENAME TO subscriptions_user_end_idx;
+                            END IF;
+                        END$$;
+                        """
+                    ),
+                ),
+            ],
+            state_operations=[
+                migrations.RenameIndex(
+                    model_name='accesspass',
+                    old_name='subscriptions_user_end_idx',
+                    new_name='subscriptio_user_id_0cd826_idx',
+                ),
+            ],
         ),
         migrations.AlterField(
             model_name='accesspass',

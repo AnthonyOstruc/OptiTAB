@@ -42,6 +42,64 @@ class EmailService:
         if isinstance(frontend, str) and frontend.lower().startswith('https://') and ('localhost' not in frontend and '127.0.0.1' not in frontend):
             return _append_version(frontend.rstrip('/') + '/Logo_bg.png')
         return _append_version('https://www.optitab.net/Logo_bg.png')
+
+    @staticmethod
+    def _get_stripe_mode_label():
+        secret_key = (os.getenv('STRIPE_SECRET_KEY') or '').strip().lower()
+        if secret_key.startswith('sk_live_'):
+            return 'LIVE'
+        if secret_key.startswith('sk_test_'):
+            return 'TEST'
+        return 'UNKNOWN'
+
+    @staticmethod
+    def _count_active_subscriptions_on_stripe():
+        mode_label = EmailService._get_stripe_mode_label()
+        try:
+            import stripe
+
+            stripe.api_key = os.environ.get('STRIPE_SECRET_KEY')
+            count = 0
+
+            for status_key in ('active', 'trialing'):
+                subscription_page = stripe.Subscription.list(status=status_key, limit=100)
+                if hasattr(subscription_page, 'auto_paging_iter'):
+                    iterator = subscription_page.auto_paging_iter()
+                else:
+                    iterator = getattr(subscription_page, 'data', []) or []
+
+                for subscription in iterator:
+                    if isinstance(subscription, dict):
+                        cancel_at_period_end = bool(subscription.get('cancel_at_period_end', False))
+                    else:
+                        cancel_at_period_end = bool(getattr(subscription, 'cancel_at_period_end', False))
+                    if not cancel_at_period_end:
+                        count += 1
+
+            return {
+                'count': count,
+                'mode_label': mode_label,
+                'error_message': None,
+            }
+        except Exception as exc:
+            error_message = str(exc) or exc.__class__.__name__
+            logger.warning(
+                "Stripe count unavailable for admin emails (mode=%s): %s",
+                mode_label,
+                error_message,
+            )
+            return {
+                'count': None,
+                'mode_label': mode_label,
+                'error_message': error_message,
+            }
+
+    @staticmethod
+    def _format_active_subscribers_for_email(stats):
+        count = (stats or {}).get('count')
+        if count is None:
+            return 'Indisponible'
+        return str(count)
     
     @staticmethod
     def send_verification_code(user, code):
@@ -1307,10 +1365,7 @@ class EmailService:
     def send_new_subscription_notification_to_admin(user, plan, niveau=None, is_gift=False, payer=None):
         """Envoie une notification à contact@optitab.net lorsqu'un nouvel abonnement est souscrit."""
         try:
-            import stripe
-            import os
             from subscriptions.models import UserSubscription, AccessPass
-            from django.utils import timezone
             
             admin_email = 'contact@optitab.net'
             user_email = user.email or 'Email inconnu'
@@ -1329,27 +1384,16 @@ class EmailService:
                     status='canceled'
                 ).exists()
             
-            # Compter les abonnements actifs sur Stripe (exclure ceux programmés pour résiliation)
-            stripe.api_key = os.environ.get('STRIPE_SECRET_KEY')
-            stripe_active_subscriptions = 0
-            try:
-                # Récupérer tous les abonnements Stripe actifs et compter ceux sans cancel_at_period_end
-                stripe_subs = stripe.Subscription.list(status='active', limit=100)
-                for sub in stripe_subs.data:
-                    if not sub.get('cancel_at_period_end', False):
-                        stripe_active_subscriptions += 1
-                # Ajouter les trialing (sans cancel_at_period_end)
-                stripe_trialing = stripe.Subscription.list(status='trialing', limit=100)
-                for sub in stripe_trialing.data:
-                    if not sub.get('cancel_at_period_end', False):
-                        stripe_active_subscriptions += 1
-            except Exception as stripe_err:
-                logger.warning(f"Erreur récupération abonnements Stripe: {stripe_err}")
-                # Fallback sur la base locale
-                stripe_active_subscriptions = UserSubscription.objects.filter(
-                    status__in=['active', 'trialing'],
-                    cancel_at_period_end=False
-                ).count()
+            stripe_stats = EmailService._count_active_subscriptions_on_stripe()
+            stripe_active_subscribers_label = EmailService._format_active_subscribers_for_email(stripe_stats)
+            stripe_mode_label = stripe_stats.get('mode_label', 'UNKNOWN')
+            stripe_error_message = stripe_stats.get('error_message')
+            if stripe_error_message:
+                logger.warning(
+                    "send_new_subscription_notification_to_admin: Stripe stats unavailable (mode=%s): %s",
+                    stripe_mode_label,
+                    stripe_error_message,
+                )
             
             # Compter les passes actifs (pas sur Stripe, juste local)
             now = timezone.now()
@@ -1408,7 +1452,10 @@ class EmailService:
             )
             if niveau_name:
                 text_body += f"📚 Niveau : {niveau_name}\n"
-            text_body += f"\n📊 Abonnements actifs Stripe : {stripe_active_subscriptions}\n"
+            text_body += f"\n📊 Abonnements actifs Stripe : {stripe_active_subscribers_label}\n"
+            text_body += f"🔌 Mode Stripe : {stripe_mode_label}\n"
+            if stripe_error_message:
+                text_body += f"⚠️ Erreur Stripe : {stripe_error_message}\n"
             text_body += f"🎫 Passes actifs : {active_passes}\n"
             if gift_info:
                 text_body += gift_info
@@ -1452,14 +1499,20 @@ class EmailService:
                             <td>{type_label}</td>
                           </tr>
                           {f'<tr><td style="font-weight:600;color:#6b7280;">📚 Niveau</td><td>{niveau_name}</td></tr>' if niveau_name else ''}
+                          <tr style="background:#f9fafb;">
+                            <td style="font-weight:600;color:#6b7280;">📊 Abonnements actifs Stripe</td>
+                            <td><strong>{stripe_active_subscribers_label}</strong></td>
+                          </tr>
+                          <tr>
+                            <td style="font-weight:600;color:#6b7280;">🔌 Mode Stripe</td>
+                            <td><strong>{stripe_mode_label}</strong></td>
+                          </tr>
+                          <tr style="background:#f9fafb;">
+                            <td style="font-weight:600;color:#6b7280;">🎫 Passes actifs</td>
+                            <td><strong>{active_passes}</strong></td>
+                          </tr>
+                          {f'<tr><td style="font-weight:600;color:#9a3412;">⚠️ Erreur Stripe</td><td style="color:#9a3412;">{stripe_error_message}</td></tr>' if stripe_error_message else ''}
                         </table>
-                        <div style="margin-top:16px;padding:16px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;">
-                          <p style="margin:0 0 8px 0;font-weight:700;color:#166534;font-size:15px;">📊 Statistiques Stripe</p>
-                          <p style="margin:0;color:#166534;font-size:14px;">
-                            Abonnements actifs : <strong>{stripe_active_subscriptions}</strong><br/>
-                            Passes actifs : <strong>{active_passes}</strong>
-                          </p>
-                        </div>
                         {f'''<div style="margin-top:16px;padding:12px;background:#fef3c7;border-radius:8px;border-left:4px solid #f59e0b;">
                           <p style="margin:0;color:#92400e;font-size:14px;">
                             <strong>🎁 Cadeau</strong><br/>
@@ -1498,9 +1551,7 @@ class EmailService:
     def send_reactivation_notification_to_admin(user, subscription=None):
         """Envoie une notification à contact@optitab.net lorsqu'un abonnement est réactivé."""
         try:
-            import stripe
-            import os
-            from subscriptions.models import UserSubscription
+            from subscriptions.models import AccessPass
             
             admin_email = 'contact@optitab.net'
             user_email = user.email or 'Email inconnu'
@@ -1533,24 +1584,20 @@ class EmailService:
                         if pays_name:
                             niveau_name = f"{niveau_name} ({pays_name})"
             
-            # Compter les abonnements actifs sur Stripe (exclure ceux programmés pour résiliation)
-            stripe.api_key = os.environ.get('STRIPE_SECRET_KEY')
-            stripe_active_subscriptions = 0
-            try:
-                stripe_subs = stripe.Subscription.list(status='active', limit=100)
-                for sub in stripe_subs.data:
-                    if not sub.get('cancel_at_period_end', False):
-                        stripe_active_subscriptions += 1
-                stripe_trialing = stripe.Subscription.list(status='trialing', limit=100)
-                for sub in stripe_trialing.data:
-                    if not sub.get('cancel_at_period_end', False):
-                        stripe_active_subscriptions += 1
-            except Exception as stripe_err:
-                logger.warning(f"Erreur récupération abonnements Stripe: {stripe_err}")
-                stripe_active_subscriptions = UserSubscription.objects.filter(
-                    status__in=['active', 'trialing'],
-                    cancel_at_period_end=False
-                ).count()
+            stripe_stats = EmailService._count_active_subscriptions_on_stripe()
+            stripe_active_subscribers_label = EmailService._format_active_subscribers_for_email(stripe_stats)
+            stripe_mode_label = stripe_stats.get('mode_label', 'UNKNOWN')
+            stripe_error_message = stripe_stats.get('error_message')
+            if stripe_error_message:
+                logger.warning(
+                    "send_reactivation_notification_to_admin: Stripe stats unavailable (mode=%s): %s",
+                    stripe_mode_label,
+                    stripe_error_message,
+                )
+
+            # Compter les passes actifs (local uniquement)
+            now = timezone.now()
+            active_passes = AccessPass.objects.filter(ends_at__gt=now, is_revoked=False).count()
             
             subject = f"🔄 Réactivation : {user_name} - {plan_name}"
             
@@ -1564,7 +1611,11 @@ class EmailService:
             )
             if niveau_name:
                 text_body += f"📚 Niveau : {niveau_name}\n"
-            text_body += f"\n📊 Abonnements actifs Stripe : {stripe_active_subscriptions}\n"
+            text_body += f"\n📊 Abonnements actifs Stripe : {stripe_active_subscribers_label}\n"
+            text_body += f"🔌 Mode Stripe : {stripe_mode_label}\n"
+            if stripe_error_message:
+                text_body += f"⚠️ Erreur Stripe : {stripe_error_message}\n"
+            text_body += f"🎫 Passes actifs : {active_passes}\n"
             
             html_body = f"""
                 <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
@@ -1602,8 +1653,11 @@ class EmailService:
                         <div style="margin-top:16px;padding:16px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;">
                           <p style="margin:0;font-weight:700;color:#166534;font-size:15px;">📊 Statistiques Stripe</p>
                           <p style="margin:8px 0 0 0;color:#166534;font-size:14px;">
-                            Abonnements actifs : <strong>{stripe_active_subscriptions}</strong>
+                            Abonnements actifs : <strong>{stripe_active_subscribers_label}</strong><br/>
+                            Mode Stripe : <strong>{stripe_mode_label}</strong><br/>
+                            Passes actifs : <strong>{active_passes}</strong>
                           </p>
+                          {f'<p style="margin:10px 0 0 0;color:#9a3412;font-size:13px;">Erreur Stripe : {stripe_error_message}</p>' if stripe_error_message else ''}
                         </div>
                       </td>
                     </tr>
@@ -1637,38 +1691,27 @@ class EmailService:
     def send_subscription_cancellation_notification_to_admin(user, plan, niveau=None, effective_end=None, is_scheduled=True, beneficiary=None):
         """Envoie une notification à contact@optitab.net lorsqu'un abonnement est résilié/programmé."""
         try:
-            import stripe
-            import os
-            from subscriptions.models import UserSubscription
+            from subscriptions.models import AccessPass
             
             admin_email = 'contact@optitab.net'
             user_email = getattr(user, 'email', None) or 'Email inconnu'
             user_name = f"{getattr(user, 'first_name', '') or ''} {getattr(user, 'last_name', '') or ''}".strip() or 'Utilisateur'
             plan_name = getattr(plan, 'name', None) or 'Plan inconnu'
 
-            # Compter les abonnements actifs sur Stripe (exclure ceux programmés pour résiliation)
-            stripe.api_key = os.environ.get('STRIPE_SECRET_KEY')
-            total_active_subscribers = None
-            try:
-                stripe_subs = stripe.Subscription.list(status='active', limit=100)
-                total_active_subscribers = 0
-                for sub in stripe_subs.data:
-                    if not sub.get('cancel_at_period_end', False):
-                        total_active_subscribers += 1
-                stripe_trialing = stripe.Subscription.list(status='trialing', limit=100)
-                for sub in stripe_trialing.data:
-                    if not sub.get('cancel_at_period_end', False):
-                        total_active_subscribers += 1
-            except Exception as stripe_err:
-                logger.warning(f"Erreur récupération abonnements Stripe: {stripe_err}")
-                # Fallback sur la base locale
-                try:
-                    total_active_subscribers = UserSubscription.objects.filter(
-                        status__in=['active', 'trialing'],
-                        cancel_at_period_end=False
-                    ).count()
-                except Exception:
-                    total_active_subscribers = None
+            stripe_stats = EmailService._count_active_subscriptions_on_stripe()
+            stripe_active_subscribers_label = EmailService._format_active_subscribers_for_email(stripe_stats)
+            stripe_mode_label = stripe_stats.get('mode_label', 'UNKNOWN')
+            stripe_error_message = stripe_stats.get('error_message')
+            if stripe_error_message:
+                logger.warning(
+                    "send_subscription_cancellation_notification_to_admin: Stripe stats unavailable (mode=%s): %s",
+                    stripe_mode_label,
+                    stripe_error_message,
+                )
+
+            # Compter les passes actifs (local uniquement)
+            now = timezone.now()
+            active_passes = AccessPass.objects.filter(ends_at__gt=now, is_revoked=False).count()
 
             niveau_name = ''
             if niveau:
@@ -1716,8 +1759,12 @@ class EmailService:
                 text_body += f"📚 Niveau : {niveau_name}\n"
             if end_label:
                 text_body += f"🗓 Fin d'accès : {end_label}\n"
-            if total_active_subscribers is not None:
-                text_body += f"\n📊 Nombre total d'abonnés actifs : {total_active_subscribers}\n"
+
+            text_body += f"\n📊 Abonnements actifs Stripe : {stripe_active_subscribers_label}\n"
+            text_body += f"🔌 Mode Stripe : {stripe_mode_label}\n"
+            if stripe_error_message:
+                text_body += f"⚠️ Erreur Stripe : {stripe_error_message}\n"
+            text_body += f"🎫 Passes actifs : {active_passes}\n"
 
             html_body = f"""
               <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
@@ -1757,7 +1804,16 @@ class EmailService:
                       <p style="margin:0;color:#6b7280;font-size:12px;">
                         Notification automatique OptiTAB
                       </p>
-                      {f'<p style="margin:8px 0 0;color:#374151;font-size:14px;font-weight:600;">📊 Total abonnés actifs : {total_active_subscribers}</p>' if total_active_subscribers is not None else ''}
+                      <p style="margin:8px 0 0;color:#374151;font-size:14px;font-weight:600;">
+                        📊 Abonnements actifs Stripe : {stripe_active_subscribers_label}
+                      </p>
+                      <p style="margin:4px 0 0;color:#374151;font-size:14px;font-weight:600;">
+                        🔌 Mode Stripe : {stripe_mode_label}
+                      </p>
+                      <p style="margin:4px 0 0;color:#374151;font-size:14px;font-weight:600;">
+                        🎫 Passes actifs : {active_passes}
+                      </p>
+                      {f'<p style="margin:6px 0 0;color:#9a3412;font-size:12px;">⚠️ Erreur Stripe : {stripe_error_message}</p>' if stripe_error_message else ''}
                     </td>
                   </tr>
                 </table>
@@ -1989,6 +2045,132 @@ Contact : contact@optitab.net
             return True
         except Exception as e:
             logger.error("Erreur envoi email expiration pass: %s", e)
+            return False
+
+    @staticmethod
+    def send_pass_expiration_notification_to_admin(user, access_pass, niveau=None):
+        """Envoie une notification admin lorsqu'un pass expire (suivi business)."""
+        try:
+            from subscriptions.models import AccessPass
+
+            admin_email = 'contact@optitab.net'
+            user_email = getattr(user, 'email', None) or 'Email inconnu'
+            user_name = f"{getattr(user, 'first_name', '') or ''} {getattr(user, 'last_name', '') or ''}".strip() or 'Utilisateur'
+
+            plan_name = getattr(getattr(access_pass, 'plan', None), 'name', None) or 'Pass OptiTAB'
+            payment_intent = getattr(access_pass, 'stripe_payment_intent_id', None) or ''
+
+            ends_at = getattr(access_pass, 'ends_at', None)
+            try:
+                ends_at_label = timezone.localtime(ends_at).strftime('%d %B %Y à %H:%M') if ends_at else '—'
+            except Exception:
+                ends_at_label = str(ends_at) if ends_at else '—'
+
+            niveau_name = ''
+            if niveau:
+                niveau_name = getattr(niveau, 'nom', '') or ''
+                if hasattr(niveau, 'pays') and niveau.pays:
+                    pays_name = getattr(niveau.pays, 'nom', '')
+                    if pays_name:
+                        niveau_name = f"{niveau_name} ({pays_name})"
+
+            now = timezone.now()
+            active_passes = AccessPass.objects.filter(ends_at__gt=now, is_revoked=False).count()
+            stripe_stats = EmailService._count_active_subscriptions_on_stripe()
+            stripe_active_subscribers_label = EmailService._format_active_subscribers_for_email(stripe_stats)
+            stripe_mode_label = stripe_stats.get('mode_label', 'UNKNOWN')
+            stripe_error_message = stripe_stats.get('error_message')
+            if stripe_error_message:
+                logger.warning(
+                    "send_pass_expiration_notification_to_admin: Stripe stats unavailable (mode=%s): %s",
+                    stripe_mode_label,
+                    stripe_error_message,
+                )
+
+            subject = f"⏰ Pass expiré : {user_name} - {plan_name}"
+
+            text_body = (
+                "Un pass vient d'expirer sur OptiTAB.\n\n"
+                f"👤 Utilisateur : {user_name}\n"
+                f"📧 Email : {user_email}\n"
+                f"🎫 Pass : {plan_name}\n"
+                f"🗓 Expiré le : {ends_at_label}\n"
+            )
+            if niveau_name:
+                text_body += f"📚 Niveau : {niveau_name}\n"
+            if payment_intent:
+                text_body += f"🧾 PaymentIntent : {payment_intent}\n"
+            text_body += (
+                f"\n📊 Abonnements actifs Stripe : {stripe_active_subscribers_label}\n"
+                f"🔌 Mode Stripe : {stripe_mode_label}\n"
+                f"🎫 Nombre de passes actifs : {active_passes}\n"
+            )
+            if stripe_error_message:
+                text_body += f"⚠️ Erreur Stripe : {stripe_error_message}\n"
+
+            html_body = f"""
+              <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+                  <tr>
+                    <td style="padding:24px;background:linear-gradient(135deg,#ef4444 0%,#f59e0b 100%);">
+                      <h1 style="margin:0;font-size:20px;color:#ffffff;text-align:center;">⏰ Pass expiré</h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:24px;">
+                      <table width="100%" cellspacing="0" cellpadding="8" style="font-size:14px;color:#374151;">
+                        <tr>
+                          <td style="width:40%;font-weight:600;color:#6b7280;">👤 Utilisateur</td>
+                          <td>{user_name}</td>
+                        </tr>
+                        <tr style="background:#f9fafb;">
+                          <td style="font-weight:600;color:#6b7280;">📧 Email</td>
+                          <td><a href="mailto:{user_email}" style="color:#4f46e5;">{user_email}</a></td>
+                        </tr>
+                        <tr>
+                          <td style="font-weight:600;color:#6b7280;">🎫 Pass</td>
+                          <td><strong>{plan_name}</strong></td>
+                        </tr>
+                        <tr style="background:#f9fafb;">
+                          <td style="font-weight:600;color:#6b7280;">🗓 Expiré le</td>
+                          <td>{ends_at_label}</td>
+                        </tr>
+                        {f'<tr><td style="font-weight:600;color:#6b7280;">📚 Niveau</td><td>{niveau_name}</td></tr>' if niveau_name else ''}
+                        {f'<tr style="background:#f9fafb;"><td style="font-weight:600;color:#6b7280;">🧾 PaymentIntent</td><td style="font-family:monospace;">{payment_intent}</td></tr>' if payment_intent else ''}
+                      </table>
+                      <div style="margin-top:16px;padding:16px;background:#f3f4f6;border-radius:10px;border:1px solid #e5e7eb;">
+                        <p style="margin:0 0 8px 0;color:#111827;font-weight:700;">📊 Accès actifs</p>
+                        <p style="margin:0;color:#374151;">
+                          Abonnements actifs Stripe : <strong>{stripe_active_subscribers_label}</strong><br/>
+                          Mode Stripe : <strong>{stripe_mode_label}</strong><br/>
+                          Passes actifs : <strong>{active_passes}</strong>
+                        </p>
+                        {f'<p style="margin:8px 0 0 0;color:#9a3412;font-size:12px;">Erreur Stripe : {stripe_error_message}</p>' if stripe_error_message else ''}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:16px 24px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
+                      <p style="margin:0;color:#6b7280;font-size:12px;">Notification automatique OptiTAB</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            """
+
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=text_body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[admin_email],
+            )
+            email.attach_alternative(html_body, "text/html")
+            email.send(fail_silently=False)
+
+            logger.info("Notification admin expiration pass envoyée à %s", admin_email)
+            return True
+        except Exception as e:
+            logger.error("Erreur envoi notification admin expiration pass: %s", e)
             return False
 
     @staticmethod

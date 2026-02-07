@@ -3,22 +3,6 @@
 from django.db import migrations, models
 
 
-def sync_share_history_field(apps, schema_editor):
-    """
-    Sync the share_history_with_parents field.
-    The column already exists in the database, so we just need to ensure
-    any NULL values are set to False.
-    """
-    db_alias = schema_editor.connection.alias
-    with schema_editor.connection.cursor() as cursor:
-        # Update any NULL values to False
-        cursor.execute("""
-            UPDATE users_customuser 
-            SET share_history_with_parents = FALSE 
-            WHERE share_history_with_parents IS NULL
-        """)
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -26,12 +10,43 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # First, sync any existing data
-        migrations.RunPython(sync_share_history_field, migrations.RunPython.noop),
-        # Then add the field (will be a no-op if column already exists in DB)
-        migrations.AddField(
-            model_name='customuser',
-            name='share_history_with_parents',
-            field=models.BooleanField(default=False, help_text="Autoriser les parents à voir l'historique d'apprentissage", verbose_name="Partager l'historique avec les parents"),
+        migrations.SeparateDatabaseAndState(
+            database_operations=[
+                migrations.RunSQL(
+                    sql=(
+                        """
+                        ALTER TABLE users_customuser
+                        ADD COLUMN IF NOT EXISTS share_history_with_parents boolean;
+
+                        UPDATE users_customuser
+                        SET share_history_with_parents = FALSE
+                        WHERE share_history_with_parents IS NULL;
+
+                        ALTER TABLE users_customuser
+                        ALTER COLUMN share_history_with_parents SET DEFAULT FALSE;
+
+                        ALTER TABLE users_customuser
+                        ALTER COLUMN share_history_with_parents SET NOT NULL;
+                        """
+                    ),
+                    reverse_sql=(
+                        """
+                        ALTER TABLE users_customuser
+                        DROP COLUMN IF EXISTS share_history_with_parents;
+                        """
+                    ),
+                ),
+            ],
+            state_operations=[
+                migrations.AddField(
+                    model_name='customuser',
+                    name='share_history_with_parents',
+                    field=models.BooleanField(
+                        default=False,
+                        help_text="Autoriser les parents à voir l'historique d'apprentissage",
+                        verbose_name="Partager l'historique avec les parents",
+                    ),
+                ),
+            ],
         ),
     ]

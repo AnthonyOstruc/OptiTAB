@@ -454,6 +454,73 @@ class CheckoutSessionStatusView(APIView):
             }
         })
 
+
+def _normalize_metadata_user_id(value):
+    if value in (None, ''):
+        return None
+    try:
+        return str(int(value))
+    except (TypeError, ValueError):
+        return str(value)
+
+
+def _stripe_subscription_customer_email(stripe_sub):
+    customer = stripe_sub.get('customer')
+    if isinstance(customer, dict):
+        return customer.get('email')
+    if not customer:
+        return None
+    try:
+        stripe_customer = stripe.Customer.retrieve(customer)
+        if isinstance(stripe_customer, dict):
+            return stripe_customer.get('email')
+        return getattr(stripe_customer, 'email', None)
+    except stripe_error.StripeError:
+        return None
+
+
+def _can_user_manage_subscription_from_stripe(user, stripe_sub):
+    metadata = stripe_sub.get('metadata') or {}
+    current_user_id = str(user.id)
+    user_id = _normalize_metadata_user_id(metadata.get('user_id'))
+    payer_id = _normalize_metadata_user_id(metadata.get('payer_user_id'))
+    is_gift = str(metadata.get('is_gift') or '').lower() == 'true'
+    has_beneficiary = bool(
+        (metadata.get('beneficiary_email') or '').strip()
+        or (metadata.get('beneficiary_name') or '').strip()
+    )
+
+    if is_gift or has_beneficiary:
+        if payer_id:
+            return current_user_id == payer_id
+        customer_email = (_stripe_subscription_customer_email(stripe_sub) or '').lower()
+        return bool(customer_email and customer_email == (user.email or '').lower())
+
+    allowed_ids = {user_id, payer_id}
+    allowed_ids.discard(None)
+    if allowed_ids:
+        return current_user_id in allowed_ids
+
+    customer_email = (_stripe_subscription_customer_email(stripe_sub) or '').lower()
+    return bool(customer_email and customer_email == (user.email or '').lower())
+
+
+def _retrieve_stripe_subscription_for_management(stripe_subscription_id):
+    try:
+        stripe_sub = stripe.Subscription.retrieve(stripe_subscription_id, expand=['customer'])
+        return stripe_sub, None
+    except stripe_error.InvalidRequestError:
+        return None, JsonResponse(
+            {'error': 'Abonnement introuvable', 'message': 'Aucun abonnement correspondant trouvé.'},
+            status=404
+        )
+    except stripe_error.StripeError as exc:
+        logger.error(f"Stripe retrieve error {stripe_subscription_id}: {exc}")
+        return None, JsonResponse(
+            {'error': 'Stripe indisponible', 'message': 'Impossible de récupérer l\'abonnement Stripe.'},
+            status=400
+        )
+
 class CancelSubscriptionView(APIView):
     """Annuler l'abonnement"""
     permission_classes = [IsAuthenticated]
@@ -463,6 +530,8 @@ class CancelSubscriptionView(APIView):
         stripe_subscription_id = request.data.get('stripe_subscription_id')
         subscription = None
 
+        stripe_sub_for_access = None
+
         if subscription_id:
             try:
                 subscription = UserSubscription.objects.get(id=subscription_id, user=request.user)
@@ -471,6 +540,20 @@ class CancelSubscriptionView(APIView):
 
         if not subscription and stripe_subscription_id:
             subscription = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id, user=request.user).first()
+
+        if not subscription and stripe_subscription_id:
+            subscription = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id).first()
+
+        if subscription and subscription.user_id != request.user.id:
+            if not subscription.stripe_subscription_id:
+                return JsonResponse({'detail': 'Forbidden'}, status=403)
+            stripe_sub_for_access, error_response = _retrieve_stripe_subscription_for_management(
+                subscription.stripe_subscription_id
+            )
+            if error_response:
+                return error_response
+            if not _can_user_manage_subscription_from_stripe(request.user, stripe_sub_for_access):
+                return JsonResponse({'detail': 'Forbidden'}, status=403)
 
         if subscription:
             was_scheduled = bool(subscription.cancel_at_period_end)
@@ -488,7 +571,7 @@ class CancelSubscriptionView(APIView):
             cancellation_metadata = None
             if subscription.stripe_subscription_id:
                 try:
-                    stripe_sub = stripe.Subscription.retrieve(subscription.stripe_subscription_id)
+                    stripe_sub = stripe_sub_for_access or stripe.Subscription.retrieve(subscription.stripe_subscription_id)
                     cancellation_metadata = stripe_sub.get('metadata') or {}
                 except stripe_error.StripeError:
                     cancellation_metadata = {}
@@ -518,39 +601,11 @@ class CancelSubscriptionView(APIView):
 
         # Fallback sécurisé: annulation Stripe si l'abonnement n'est pas en base locale
         if stripe_subscription_id:
-            try:
-                stripe_sub = stripe.Subscription.retrieve(stripe_subscription_id, expand=['customer'])
-            except stripe_error.InvalidRequestError:
-                return JsonResponse({'error': 'Abonnement introuvable', 'message': 'Aucun abonnement correspondant trouvé.'}, status=404)
-            except stripe_error.StripeError as exc:
-                logger.error(f"Stripe retrieve error {stripe_subscription_id}: {exc}")
-                return JsonResponse({'error': 'Stripe indisponible', 'message': 'Impossible de récupérer l\'abonnement Stripe.'}, status=400)
-
-            metadata = stripe_sub.get('metadata') or {}
-            meta_user_id = metadata.get('user_id')
-            meta_payer_id = metadata.get('payer_user_id')
-            current_user_id = str(request.user.id)
-            allowed_ids = {
-                str(meta_user_id) if meta_user_id else None,
-                str(meta_payer_id) if meta_payer_id else None,
-            }
-            allowed_ids.discard(None)
-            if allowed_ids and current_user_id not in allowed_ids:
+            stripe_sub, error_response = _retrieve_stripe_subscription_for_management(stripe_subscription_id)
+            if error_response:
+                return error_response
+            if not _can_user_manage_subscription_from_stripe(request.user, stripe_sub):
                 return JsonResponse({'detail': 'Forbidden'}, status=403)
-
-            if not allowed_ids:
-                customer = stripe_sub.get('customer')
-                customer_email = None
-                if isinstance(customer, dict):
-                    customer_email = customer.get('email')
-                elif customer:
-                    try:
-                        cust = stripe.Customer.retrieve(customer)
-                        customer_email = cust.get('email') if isinstance(cust, dict) else getattr(cust, 'email', None)
-                    except stripe_error.StripeError:
-                        customer_email = None
-                if not customer_email or customer_email.lower() != (request.user.email or '').lower():
-                    return JsonResponse({'detail': 'Forbidden'}, status=403)
 
             try:
                 stripe.Subscription.modify(
@@ -575,6 +630,8 @@ class ReactivateSubscriptionView(APIView):
         stripe_subscription_id = request.data.get('stripe_subscription_id')
         subscription = None
 
+        stripe_sub_for_access = None
+
         if subscription_id:
             try:
                 subscription = UserSubscription.objects.get(id=subscription_id, user=request.user)
@@ -583,6 +640,20 @@ class ReactivateSubscriptionView(APIView):
 
         if not subscription and stripe_subscription_id:
             subscription = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id, user=request.user).first()
+
+        if not subscription and stripe_subscription_id:
+            subscription = UserSubscription.objects.filter(stripe_subscription_id=stripe_subscription_id).first()
+
+        if subscription and subscription.user_id != request.user.id:
+            if not subscription.stripe_subscription_id:
+                return JsonResponse({'detail': 'Forbidden'}, status=403)
+            stripe_sub_for_access, error_response = _retrieve_stripe_subscription_for_management(
+                subscription.stripe_subscription_id
+            )
+            if error_response:
+                return error_response
+            if not _can_user_manage_subscription_from_stripe(request.user, stripe_sub_for_access):
+                return JsonResponse({'detail': 'Forbidden'}, status=403)
 
         if subscription:
             if not subscription.cancel_at_period_end:
@@ -622,21 +693,10 @@ class ReactivateSubscriptionView(APIView):
 
         # Fallback: réactivation via stripe_subscription_id directement
         if stripe_subscription_id:
-            try:
-                stripe_sub = stripe.Subscription.retrieve(stripe_subscription_id, expand=['customer'])
-            except stripe_error.InvalidRequestError:
-                return JsonResponse({'error': 'Abonnement introuvable', 'message': 'Aucun abonnement correspondant trouvé.'}, status=404)
-            except stripe_error.StripeError as exc:
-                logger.error(f"Stripe retrieve error {stripe_subscription_id}: {exc}")
-                return JsonResponse({'error': 'Stripe indisponible', 'message': 'Impossible de récupérer l\'abonnement Stripe.'}, status=400)
-
-            metadata = stripe_sub.get('metadata') or {}
-            meta_user_id = metadata.get('user_id')
-            meta_payer_id = metadata.get('payer_user_id')
-            current_user_id = str(request.user.id)
-            allowed_ids = {str(meta_user_id) if meta_user_id else None, str(meta_payer_id) if meta_payer_id else None}
-            allowed_ids.discard(None)
-            if allowed_ids and current_user_id not in allowed_ids:
+            stripe_sub, error_response = _retrieve_stripe_subscription_for_management(stripe_subscription_id)
+            if error_response:
+                return error_response
+            if not _can_user_manage_subscription_from_stripe(request.user, stripe_sub):
                 return JsonResponse({'detail': 'Forbidden'}, status=403)
 
             try:
@@ -1419,44 +1479,59 @@ def stripe_webhook(request):
     except stripe_error.SignatureVerificationError as exc:
         logger.warning("Stripe webhook: signature invalide (path=%s): %s", request.path, exc)
         return HttpResponse(status=400)
+
+    try:
+        event_type = event.get('type')
+        event_id = event.get('id')
+    except Exception:
+        try:
+            event_type = event['type']
+        except Exception:
+            event_type = None
+        try:
+            event_id = event['id']
+        except Exception:
+            event_id = None
     
     # Gérer les différents types d'événements
-    if event['type'] == 'checkout.session.completed':
+    if event_type == 'checkout.session.completed':
         session = event['data']['object']
         # Si la session est un abonnement
         if session.get('subscription'):
             handle_checkout_session_completed(session)
         else:
             handle_checkout_session_payment_completed(session)
-    elif event['type'] == 'checkout.session.expired':
+    elif event_type == 'checkout.session.expired':
         session = event['data']['object']
         customer_id = session.get('customer')
         if customer_id:
             _clear_customer_temp_invoice_custom_fields(customer_id)
 
-    elif event['type'] == 'invoice.created':
+    elif event_type == 'invoice.created':
         handle_invoice_created(event['data']['object'])
     
-    elif event['type'] == 'invoice.payment_succeeded':
+    elif event_type == 'invoice.payment_succeeded':
         handle_payment_succeeded(event['data']['object'])
     
-    elif event['type'] == 'invoice.payment_failed':
+    elif event_type == 'invoice.payment_failed':
         handle_payment_failed(event['data']['object'])
     
-    elif event['type'] == 'customer.subscription.updated':
+    elif event_type == 'customer.subscription.updated':
         handle_subscription_updated(event['data']['object'])
     
-    elif event['type'] == 'customer.subscription.deleted':
+    elif event_type == 'customer.subscription.deleted':
         handle_subscription_deleted(event['data']['object'])
     
-    elif event['type'] == 'charge.refunded':
+    elif event_type == 'charge.refunded':
+        logger.info("Stripe webhook: refund event received (type=%s, id=%s)", event_type, event_id)
         handle_charge_refunded(event['data']['object'])
-    elif event['type'] in (
+    elif event_type in (
         'refund.created',
         'refund.updated',
         'charge.refund.created',
         'charge.refund.updated',
     ):
+        logger.info("Stripe webhook: refund event received (type=%s, id=%s)", event_type, event_id)
         handle_refund_event(event['data']['object'])
     
     return HttpResponse(status=200)

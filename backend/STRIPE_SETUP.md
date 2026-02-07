@@ -31,8 +31,20 @@ Mirror in Django admin → Subscription plans:
 
 5) Expose a webhook endpoint in Stripe
 - Endpoint: https://<your-backend-domain>/api/subscriptions/webhook/
-- Events: checkout.session.completed, invoice.payment_succeeded, invoice.payment_failed, customer.subscription.updated, customer.subscription.deleted
-- Use the displayed Signing secret as STRIPE_WEBHOOK_SECRET.
+- Events:
+  - checkout.session.completed
+  - invoice.created
+  - invoice.payment_succeeded
+  - invoice.payment_failed
+  - customer.subscription.updated
+  - customer.subscription.deleted
+  - charge.refunded
+  - refund.created
+  - refund.updated
+  - charge.refund.created
+  - charge.refund.updated
+- Configure this webhook in BOTH Stripe Test mode and Live mode.
+- Use the displayed Signing secret as STRIPE_WEBHOOK_SECRET (different for Test vs Live).
 
 6) Frontend flow
 

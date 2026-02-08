@@ -1065,11 +1065,25 @@ class EmailService:
         invoice_link (optionnel) : URL Stripe (PDF ou page) permettant de télécharger le reçu/la facture.
         """
         try:
+            from subscriptions.models import AccessPass
+
             first_name = (user.first_name or '').strip() or 'OptiTABien'
             plan_name = getattr(plan, 'name', None) or 'OptiTAB Premium'
             billing_period = getattr(plan, 'billing_period', '')
             price = getattr(plan, 'price', None)
             invoice_link = (invoice_link or '').strip() or None
+
+            stripe_stats = EmailService._count_active_subscriptions_on_stripe()
+            stripe_active_subscribers_label = EmailService._format_active_subscribers_for_email(stripe_stats)
+            stripe_error_message = stripe_stats.get('error_message')
+            if stripe_error_message:
+                logger.warning(
+                    "send_subscription_confirmation: Stripe stats unavailable (mode=%s): %s",
+                    stripe_stats.get('mode_label', 'UNKNOWN'),
+                    stripe_error_message,
+                )
+            now = timezone.now()
+            active_passes = AccessPass.objects.filter(ends_at__gt=now, is_revoked=False).count()
             
             # Formater la période de facturation
             period_labels = {
@@ -1109,6 +1123,12 @@ class EmailService:
                 "\nVotre accès premium est maintenant activé. "
                 "Connectez-vous à votre compte pour profiter de tous les cours, exercices et fonctionnalités.\n"
             )
+            text_body += (
+                f"\n📊 Abonnements actifs Stripe : {stripe_active_subscribers_label}\n"
+                f"🎫 Passes actifs : {active_passes}\n"
+            )
+            if stripe_error_message:
+                text_body += f"⚠️ Erreur Stripe : {stripe_error_message}\n"
             if invoice_link:
                 text_body += (
                     "\nVotre reçu / facture est disponible :\n"
@@ -1149,7 +1169,17 @@ class EmailService:
                           </p>
                         </div>
                 """
-            
+
+            stats_block = f"""
+                        <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:20px;">
+                          <p style="margin:0;color:#111827;font-size:14px;line-height:1.6;">
+                            <strong>📊 Abonnements actifs Stripe :</strong> {stripe_active_subscribers_label}<br/>
+                            <strong>🎫 Passes actifs :</strong> {active_passes}
+                          </p>
+                          {f'<p style="margin:10px 0 0 0;color:#9a3412;font-size:13px;">Erreur Stripe : {stripe_error_message}</p>' if stripe_error_message else ''}
+                        </div>
+            """
+
             html_body = f"""
                 <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
                   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
@@ -1175,6 +1205,7 @@ class EmailService:
                           {f'<p style="margin:12px 0 0 0;color:#15803d;font-size:14px;"><strong>Montant :</strong> {price_str}</p>' if price_str else ''}
                           {f'<p style="margin:8px 0 0 0;color:#15803d;font-size:14px;"><strong>Niveau :</strong> {niveau_name}</p>' if niveau_name else ''}
                         </div>
+                        {stats_block}
                         {receipt_block}
                         <div style="text-align:center;">
                           <a href="{frontend_base}/dashboard" style="display:inline-block;background:#22c55e;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:10px;font-size:15px;">
@@ -1375,11 +1406,11 @@ class EmailService:
             price = getattr(plan, 'price', None)
             plan_mode = getattr(plan, 'plan_mode', 'subscription')
             
-            # Détecter si c'est un réabonnement (l'utilisateur avait un abonnement annulé pour ce niveau)
+            # Détecter si c'est un réabonnement (uniquement pour les abonnements récurrents).
             is_resubscription = False
-            if niveau:
+            if plan_mode != 'one_time' and niveau:
                 is_resubscription = UserSubscription.objects.filter(
-                    user=user, 
+                    user=user,
                     niveau_pays=niveau,
                     status='canceled'
                 ).exists()
@@ -1429,8 +1460,13 @@ class EmailService:
                 payer_email = payer.email or 'Email inconnu'
                 gift_info = f"\n🎁 CADEAU offert par : {payer_name} ({payer_email})"
             
-            # Sujet et titre selon nouveau/réabonnement
-            if is_resubscription:
+            # Sujet et titre selon type d'achat
+            if plan_mode == 'one_time':
+                subject = f"🎫 Achat pass : {user_name} - {plan_name}"
+                title_emoji = "🎫"
+                title_text = "Achat pass"
+                intro_text = "Nouveau pass acheté sur OptiTAB !"
+            elif is_resubscription:
                 subject = f"🔄 Réabonnement : {user_name} - {plan_name}"
                 title_emoji = "🔄"
                 title_text = "Réabonnement"
@@ -2177,11 +2213,25 @@ Contact : contact@optitab.net
     def send_subscription_renewal_notification(user, plan, niveau=None, invoice_link=None, payment_history=None):
         """Envoie un email de notification lorsqu'un abonnement est renouvelé avec le lien vers la facture."""
         try:
+            from subscriptions.models import AccessPass
+
             first_name = (user.first_name or '').strip() or 'OptiTABien'
             plan_name = getattr(plan, 'name', None) or 'OptiTAB Premium'
             billing_period = getattr(plan, 'billing_period', '')
             price = getattr(plan, 'price', None)
             invoice_link = (invoice_link or '').strip() or None
+
+            stripe_stats = EmailService._count_active_subscriptions_on_stripe()
+            stripe_active_subscribers_label = EmailService._format_active_subscribers_for_email(stripe_stats)
+            stripe_error_message = stripe_stats.get('error_message')
+            if stripe_error_message:
+                logger.warning(
+                    "send_subscription_renewal_notification: Stripe stats unavailable (mode=%s): %s",
+                    stripe_stats.get('mode_label', 'UNKNOWN'),
+                    stripe_error_message,
+                )
+            now = timezone.now()
+            active_passes = AccessPass.objects.filter(ends_at__gt=now, is_revoked=False).count()
             
             # Formater la période de facturation
             period_labels = {
@@ -2227,6 +2277,12 @@ Contact : contact@optitab.net
                 text_body += f"Niveau : {niveau_name}\n"
             
             text_body += "\nVotre accès premium reste activé. Continuez à profiter de tous les cours et exercices.\n"
+            text_body += (
+                f"\n📊 Abonnements actifs Stripe : {stripe_active_subscribers_label}\n"
+                f"🎫 Passes actifs : {active_passes}\n"
+            )
+            if stripe_error_message:
+                text_body += f"⚠️ Erreur Stripe : {stripe_error_message}\n"
             
             if invoice_link:
                 text_body += (
@@ -2269,6 +2325,16 @@ Contact : contact@optitab.net
                         </div>
                 """
 
+            stats_block = f"""
+                        <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:20px;">
+                          <p style="margin:0;color:#111827;font-size:14px;line-height:1.6;">
+                            <strong>📊 Abonnements actifs Stripe :</strong> {stripe_active_subscribers_label}<br/>
+                            <strong>🎫 Passes actifs :</strong> {active_passes}
+                          </p>
+                          {f'<p style="margin:10px 0 0 0;color:#9a3412;font-size:13px;">Erreur Stripe : {stripe_error_message}</p>' if stripe_error_message else ''}
+                        </div>
+            """
+
             html_body = f"""
                 <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
                   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
@@ -2294,6 +2360,7 @@ Contact : contact@optitab.net
                           {f'<p style="margin:12px 0 0 0;color:#15803d;font-size:14px;"><strong>Montant prélevé :</strong> {amount_str}</p>' if amount_str else ''}
                           {f'<p style="margin:8px 0 0 0;color:#15803d;font-size:14px;"><strong>Niveau :</strong> {niveau_name}</p>' if niveau_name else ''}
                         </div>
+                        {stats_block}
                         {receipt_block}
                         <div style="text-align:center;">
                           <a href="{frontend_base}/dashboard" style="display:inline-block;background:#22c55e;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 28px;border-radius:10px;font-size:15px;">

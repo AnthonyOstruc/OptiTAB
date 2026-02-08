@@ -12,6 +12,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 from core.services import EmailService
+from pays.models import Niveau, Pays
 from subscriptions.models import AccessPass, SubscriptionPlan, UserSubscription
 
 
@@ -71,6 +72,20 @@ class AdminEmailStripeCountTests(TestCase):
             features=[],
             access_days=1,
             is_active=True,
+        )
+
+    def _create_level(self, *, tag: str):
+        pays = Pays.objects.create(
+            nom=f"France {tag}",
+            code_iso=f"FR{tag[:1].upper()}",
+            ordre=1,
+            est_actif=True,
+        )
+        return Niveau.objects.create(
+            nom=f"Terminale {tag}",
+            pays=pays,
+            ordre=1,
+            est_actif=True,
         )
 
     def _fake_stripe_module(self, *, active=None, trialing=None, error=None):
@@ -194,6 +209,39 @@ class AdminEmailStripeCountTests(TestCase):
         self.assertIn("Mode Stripe", html_body)
         self.assertIn("Cadeau", html_body)
 
+    def test_new_subscription_admin_email_uses_achat_pass_title_for_one_time(self):
+        user = self._create_user(tag="admin-mail-pass-title")
+        pass_plan = self._create_pass_plan(tag="admin-mail-pass-title")
+        old_sub_plan = self._create_subscription_plan(tag="admin-mail-pass-title-old-sub")
+        niveau = self._create_level(tag="admin-mail-pass-title")
+        UserSubscription.objects.create(
+            user=user,
+            plan=old_sub_plan,
+            niveau_pays=niveau,
+            status="canceled",
+            current_period_end=timezone.now() - timedelta(days=1),
+        )
+
+        with patch.object(
+            EmailService,
+            "_count_active_subscriptions_on_stripe",
+            return_value={"count": 0, "mode_label": "TEST", "error_message": None},
+        ), patch("core.services.EmailMultiAlternatives") as email_cls:
+            email_instance = email_cls.return_value
+            email_instance.send.return_value = 1
+
+            success = EmailService.send_new_subscription_notification_to_admin(
+                user=user,
+                plan=pass_plan,
+                niveau=niveau,
+            )
+
+        self.assertTrue(success)
+        self.assertIn("🎫 Achat pass", email_cls.call_args.kwargs["subject"])
+        self.assertNotIn("Réabonnement", email_cls.call_args.kwargs["subject"])
+        html_body = email_instance.attach_alternative.call_args.args[0]
+        self.assertIn("Achat pass", html_body)
+
     def test_pass_expiration_admin_email_contains_stripe_count_and_mode(self):
         user = self._create_user(tag="admin-mail-pass")
         pass_plan = self._create_pass_plan(tag="admin-mail-pass")
@@ -268,3 +316,71 @@ class AdminEmailStripeCountTests(TestCase):
         self.assertIn("Mode Stripe : TEST", body)
         self.assertIn("Erreur Stripe : stripe down", body)
         self.assertNotIn("Abonnements actifs Stripe : 1", body)
+
+    def test_subscription_confirmation_email_contains_counts(self):
+        user = self._create_user(tag="sub-confirm-counts")
+        subscription_plan = self._create_subscription_plan(tag="sub-confirm-counts")
+        pass_plan = self._create_pass_plan(tag="sub-confirm-counts")
+        AccessPass.objects.create(
+            user=user,
+            plan=pass_plan,
+            starts_at=timezone.now() - timedelta(hours=1),
+            ends_at=timezone.now() + timedelta(hours=6),
+            stripe_payment_intent_id="pi_sub_confirm_counts",
+            is_revoked=False,
+        )
+
+        with patch.object(
+            EmailService,
+            "_count_active_subscriptions_on_stripe",
+            return_value={"count": 5, "mode_label": "TEST", "error_message": None},
+        ), patch("core.services.EmailMultiAlternatives") as email_cls:
+            email_instance = email_cls.return_value
+            email_instance.send.return_value = 1
+
+            success = EmailService.send_subscription_confirmation(
+                user=user,
+                plan=subscription_plan,
+            )
+
+        self.assertTrue(success)
+        body = email_cls.call_args.kwargs["body"]
+        self.assertIn("Abonnements actifs Stripe : 5", body)
+        self.assertIn("Passes actifs : 1", body)
+        html_body = email_instance.attach_alternative.call_args.args[0]
+        self.assertIn("Abonnements actifs Stripe", html_body)
+        self.assertIn("Passes actifs", html_body)
+
+    def test_subscription_renewal_email_contains_counts(self):
+        user = self._create_user(tag="sub-renew-counts")
+        subscription_plan = self._create_subscription_plan(tag="sub-renew-counts")
+        pass_plan = self._create_pass_plan(tag="sub-renew-counts")
+        AccessPass.objects.create(
+            user=user,
+            plan=pass_plan,
+            starts_at=timezone.now() - timedelta(hours=1),
+            ends_at=timezone.now() + timedelta(hours=6),
+            stripe_payment_intent_id="pi_sub_renew_counts",
+            is_revoked=False,
+        )
+
+        with patch.object(
+            EmailService,
+            "_count_active_subscriptions_on_stripe",
+            return_value={"count": 3, "mode_label": "LIVE", "error_message": None},
+        ), patch("core.services.EmailMultiAlternatives") as email_cls:
+            email_instance = email_cls.return_value
+            email_instance.send.return_value = 1
+
+            success = EmailService.send_subscription_renewal_notification(
+                user=user,
+                plan=subscription_plan,
+            )
+
+        self.assertTrue(success)
+        body = email_cls.call_args.kwargs["body"]
+        self.assertIn("Abonnements actifs Stripe : 3", body)
+        self.assertIn("Passes actifs : 1", body)
+        html_body = email_instance.attach_alternative.call_args.args[0]
+        self.assertIn("Abonnements actifs Stripe", html_body)
+        self.assertIn("Passes actifs", html_body)

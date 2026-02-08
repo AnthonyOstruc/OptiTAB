@@ -38,7 +38,7 @@
         </div>
         <ul class="leaderboard-list">
           <!-- Toujours afficher les 5 premiers -->
-          <li v-for="u in allLeaderboard.slice(0, 5)" :key="u.id" class="leaderboard-item">
+          <li v-for="u in primaryUsers" :key="u.id" class="leaderboard-item">
             <div class="rank">
               <span v-if="u.rank === 1" class="trophy gold">🥇</span>
               <span v-else-if="u.rank === 2" class="trophy silver">🥈</span>
@@ -60,17 +60,15 @@
           </li>
         </ul>
 
-        <!-- Liste déroulante pour les autres utilisateurs -->
-        <div v-if="isExpanded && allLeaderboard.length > 5" class="expanded-section">
+        <!-- Liste déroulante pour les autres utilisateurs (jusqu'au top 10) -->
+        <div v-if="isExpanded && expandedUsers.length" class="expanded-section">
           <div class="expanded-header">
             <span class="expanded-title">Autres classés</span>
-            <span class="expanded-count">{{ Math.min(allLeaderboard.length - 5, 45) }} utilisateurs</span>
+            <span class="expanded-count">{{ expandedUsers.length }} utilisateur<span v-if="expandedUsers.length > 1">s</span></span>
           </div>
           <ul class="leaderboard-list">
-            <li v-for="u in allLeaderboard.slice(5, 50)" :key="u.id" class="leaderboard-item expanded-item">
-              <div class="rank">
-                #{{ u.rank }}
-              </div>
+            <li v-for="u in expandedUsers" :key="u.id" class="leaderboard-item expanded-item">
+              <div class="rank">#{{ u.rank }}</div>
               <div class="user">
                 <div class="avatar">{{ initials(u.display_name) }}</div>
                 <div class="info">
@@ -89,25 +87,25 @@
       </div>
 
       <!-- Bouton Voir plus toujours visible (désactivé si rien à étendre) -->
-      <div class="leaderboard-actions" v-if="allLeaderboard.length > 0">
-        <button 
-          v-if="!isExpanded" 
-          @click="loadMore" 
+      <div class="leaderboard-actions" v-if="primaryUsers.length && canExpand">
+        <button
+          v-if="!isExpanded"
+          @click="loadMore"
           class="btn-see-more"
-          :disabled="loading || allLeaderboard.length <= 5"
+          :disabled="loadingMore"
         >
-          <span class="btn-text">Voir plus</span>
+          <span class="btn-text">{{ loadingMore ? 'Chargement...' : 'Voir plus' }}</span>
         </button>
-        <button 
-          v-else 
-          @click="loadLess" 
+        <button
+          v-else
+          @click="loadLess"
           class="btn-see-less"
         >
           <span class="btn-text">Voir moins</span>
         </button>
       </div>
 
-      <div v-if="!allLeaderboard.length" class="empty-state">
+      <div v-if="!primaryUsers.length" class="empty-state">
         <div>Pas encore de classement pour ce filtre.</div>
       </div>
     </div>
@@ -126,12 +124,20 @@ import { fetchLeaderboard } from '@/api/users'
 
 const userStore = useUserStore()
 
+const INITIAL_LIMIT = 5
+const DISPLAY_LIMIT = 10
+
 const scope = ref('global')
 const loading = ref(true)
-const leaderboard = ref([])
 const me = ref(null)
+const allLeaderboard = ref([])
+const totalUsers = ref(0)
 const isExpanded = ref(false)
-const allLeaderboard = ref([]) // Stocke tous les utilisateurs
+const loadingMore = ref(false)
+
+const primaryUsers = computed(() => allLeaderboard.value.slice(0, INITIAL_LIMIT))
+const expandedUsers = computed(() => allLeaderboard.value.slice(INITIAL_LIMIT, DISPLAY_LIMIT))
+const canExpand = computed(() => (totalUsers.value || allLeaderboard.value.length) > INITIAL_LIMIT)
 const isAuthenticated = computed(() => userStore.isAuthenticated)
 
 const canScopePays = computed(() => !!userStore?.pays?.id)
@@ -144,6 +150,7 @@ function setScope(s) {
 
 const resetLeaderboard = () => {
   allLeaderboard.value = []
+  totalUsers.value = 0
   me.value = null
   isExpanded.value = false
 }
@@ -173,15 +180,14 @@ async function load() {
   }
   loading.value = true
   try {
-    // Chargement initial léger (20)
-    const res = await fetchLeaderboard({ scope: scope.value, limit: 20 })
+    const res = await fetchLeaderboard({ scope: scope.value, limit: INITIAL_LIMIT })
     const data = res?.data?.data || {}
-    const leaderboard = data.leaderboard || []
-    
-    // S'assurer qu'on ne dépasse jamais 50 utilisateurs
-    allLeaderboard.value = leaderboard.slice(0, 50)
+    const leaderboardList = data.leaderboard || []
+
+    allLeaderboard.value = leaderboardList.slice(0, INITIAL_LIMIT)
     me.value = data.me || null
-    isExpanded.value = false // Reset à l'état normal
+    totalUsers.value = Number(data.total ?? data?.me?.total ?? 0) || 0
+    isExpanded.value = false
   } catch (e) {
     resetLeaderboard()
   } finally {
@@ -190,21 +196,27 @@ async function load() {
 }
 
 async function loadMore() {
-  if (!isAuthenticated.value) {
-    return
-  }
+  if (!isAuthenticated.value) return
+  if (loadingMore.value) return
+  loadingMore.value = true
+  let loadedExtra = false
   try {
-    // Si on n'a que 20 entrées, récupérer jusqu'à 50 de façon paresseuse
-    if (allLeaderboard.value.length < 50) {
-      const res = await fetchLeaderboard({ scope: scope.value, limit: 50 })
-      const data = res?.data?.data || {}
-      const leaderboard = data.leaderboard || []
-      allLeaderboard.value = leaderboard.slice(0, 50)
-      me.value = data.me || me.value
+    const res = await fetchLeaderboard({ scope: scope.value, limit: DISPLAY_LIMIT })
+    const data = res?.data?.data || {}
+    const leaderboardList = data.leaderboard || []
+
+    allLeaderboard.value = leaderboardList.slice(0, DISPLAY_LIMIT)
+    me.value = data.me || me.value
+    totalUsers.value = Number(data.total ?? data?.me?.total ?? totalUsers.value) || totalUsers.value
+    loadedExtra = allLeaderboard.value.length > INITIAL_LIMIT
+  } catch (_) {
+    // silent: keep current list
+  } finally {
+    loadingMore.value = false
+    if (loadedExtra) {
+      isExpanded.value = true
     }
-  } catch (e) {}
-  // Afficher la section étendue quoi qu'il arrive
-  isExpanded.value = true
+  }
 }
 
 function loadLess() {
@@ -367,9 +379,9 @@ onMounted(() => {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   font-size: 0.9rem;
 }
 
@@ -380,8 +392,8 @@ onMounted(() => {
 }
 
 .btn-see-more:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
 }
 
 .btn-see-more:disabled {
@@ -401,16 +413,12 @@ onMounted(() => {
   transform: translateY(-1px);
 }
 
-.btn-text {
-  font-size: 0.9rem;
-}
-
 /* Section étendue */
 .expanded-section {
   margin-top: 1rem;
   border-top: 1px solid #e5e7eb;
   padding-top: 1rem;
-  animation: slideDown 0.3s ease-out;
+  animation: slideDown 0.25s ease-out;
 }
 
 .expanded-header {
@@ -425,7 +433,7 @@ onMounted(() => {
 }
 
 .expanded-title {
-  font-weight: 600;
+  font-weight: 700;
   color: #475569;
   font-size: 0.9rem;
 }
@@ -436,7 +444,7 @@ onMounted(() => {
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .expanded-item {
@@ -450,16 +458,13 @@ onMounted(() => {
   background: #f1f5f9;
 }
 
-/* Animation de déroulement */
 @keyframes slideDown {
   from {
     opacity: 0;
-    max-height: 0;
-    transform: translateY(-10px);
+    transform: translateY(-6px);
   }
   to {
     opacity: 1;
-    max-height: 400px;
     transform: translateY(0);
   }
 }

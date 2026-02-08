@@ -19,6 +19,7 @@ from stripe_config import STRIPE_WEBHOOK_SECRET, SUCCESS_URL, CANCEL_URL, FREE_T
 from core.services import EmailService
 from .stripe_client import stripe, stripe_error
 from .helpers import (
+    _build_pass_description,
     _build_plan_payload,
     _extract_price_from_stripe_subscription,
     _format_level_label_from_obj,
@@ -55,11 +56,52 @@ from .handlers import (
 )
 from .email_jobs import _schedule_cancellation_emails
 from .subscription_status import build_subscription_status
+from .pass_access import REFUNDED_STATUSES
 
 logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
+
+
+def _beneficiary_already_has_level_access(beneficiary_user, niveau_obj, *, now=None):
+    """Retourne True si le bénéficiaire a déjà accès au niveau ciblé."""
+    if not beneficiary_user or not niveau_obj:
+        return False
+
+    if getattr(beneficiary_user, 'has_complimentary_access', False):
+        return True
+
+    now = now or timezone.now()
+
+    local_subscriptions = UserSubscription.objects.filter(
+        user=beneficiary_user,
+        niveau_pays=niveau_obj,
+    ).only('status', 'cancel_at_period_end', 'current_period_end')
+    if any(sub.is_active for sub in local_subscriptions):
+        return True
+
+    payment_intent_ids = list(
+        PaymentHistory.objects.filter(
+            plan_mode='one_time',
+            niveau_pays=niveau_obj,
+        )
+        .exclude(status__in=REFUNDED_STATUSES)
+        .exclude(stripe_payment_intent_id__isnull=True)
+        .exclude(stripe_payment_intent_id='')
+        .values_list('stripe_payment_intent_id', flat=True)
+    )
+
+    if payment_intent_ids and AccessPass.objects.filter(
+        user=beneficiary_user,
+        stripe_payment_intent_id__in=payment_intent_ids,
+        ends_at__gt=now,
+        is_revoked=False,
+    ).exists():
+        return True
+
+    synced_subs = _sync_level_subscriptions_from_stripe(beneficiary_user, niveau_obj) or []
+    return any(sub.is_active for sub in synced_subs)
 
 
 class CreateCheckoutSessionView(APIView):
@@ -119,6 +161,20 @@ class CreateCheckoutSessionView(APIView):
                     'error': "Sélectionnez votre niveau scolaire pour finaliser l'abonnement."
                 }, status=400)
 
+            # Créer la session de checkout (abonnement récurrent ou pass unique)
+            plan_mode = _resolve_plan_mode(plan)
+            is_subscription = (plan_mode == 'subscription')
+
+            # Cas parent -> enfant : éviter le doublon si le niveau est déjà débloqué.
+            if beneficiary_email and _beneficiary_already_has_level_access(
+                beneficiary_user,
+                niveau_obj,
+                now=timezone.now(),
+            ):
+                return JsonResponse({
+                    'error': f"L'élève {beneficiary_user.email} a déjà ce niveau débloqué (abonnement ou pass actif)."
+                }, status=400)
+
             # Créer ou récupérer le client Stripe (basé sur le payeur, pas le bénéficiaire)
             existing_customer_id = _get_stripe_customer_id(payer_user)
             if existing_customer_id:
@@ -130,10 +186,6 @@ class CreateCheckoutSessionView(APIView):
                     logger.warning(f"Could not update Stripe customer email: {e}")
             else:
                 customer_id = _create_stripe_customer(payer_user)
-            
-            # Créer la session de checkout (abonnement récurrent ou pass unique)
-            plan_mode = _resolve_plan_mode(plan)
-            is_subscription = (plan_mode == 'subscription')
 
             # Vérifier si le BÉNÉFICIAIRE a déjà un abonnement pour ce niveau
             if plan_mode == 'subscription':
@@ -240,7 +292,10 @@ class CreateCheckoutSessionView(APIView):
                     'enabled': True,
                     'invoice_data': {
                         'metadata': metadata,
-                        'description': f"Pass {plan.name} - {_format_level_label_from_obj(niveau_obj)}",
+                        'description': _build_pass_description(
+                            plan.name,
+                            level_label=_format_level_label_from_obj(niveau_obj),
+                        ),
                     }
                 }
 

@@ -4,6 +4,21 @@
   </div>
 </template>
 
+<script setup>
+import { onBeforeUnmount, onMounted } from 'vue'
+import { lockBodyScroll, unlockBodyScroll } from '@/utils/bodyScrollLock'
+
+const lockKey = `fullpage-spinner:${Math.random().toString(36).slice(2)}:${Date.now()}`
+
+onMounted(() => {
+  lockBodyScroll(lockKey, { mode: 'fixed' })
+})
+
+onBeforeUnmount(() => {
+  unlockBodyScroll(lockKey)
+})
+</script>
+
 <style scoped>
 .fullpage-spinner {
   position: fixed;
@@ -13,6 +28,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: none;
+  overscroll-behavior: contain;
 }
 .spinner {
   width: 48px;

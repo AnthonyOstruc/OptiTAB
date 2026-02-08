@@ -122,7 +122,7 @@ const routes = [
     component: () => import('@/views/FreeCourseDetail.vue'),
     props: { resourceType: 'summary' }
   },
-  { path: '/dashboard', name: 'Dashboard', component: () => import('@/views/Dashboard.vue') },
+  { path: '/dashboard', name: 'Dashboard', component: () => import('@/views/Dashboard.vue'), meta: { requiresAuth: true } },
   { path: '/child/:childId', name: 'ChildOverview', component: () => import('@/views/ChildOverview.vue'), meta: { requiresAuth: true } },
 
   { path: '/account', name: 'Account', component: () => import('@/views/Account.vue'), meta: { requiresAuth: true } },
@@ -251,6 +251,27 @@ const router = createRouter({
     } catch (_) {
       return { top: 0, left: 0, behavior: 'instant' }
     }
+  }
+})
+
+// Normalize trailing slashes (fallback if edge redirects aren't configured yet)
+router.beforeEach((to) => {
+  try {
+    const path = String(to?.path || '')
+    if (path.length > 1 && /\/+$/.test(path)) {
+      const normalizedPath = path.replace(/\/+$/, '')
+      if (normalizedPath && normalizedPath !== path) {
+        return {
+          path: normalizedPath,
+          query: to.query,
+          hash: to.hash,
+          replace: true
+        }
+      }
+    }
+    return true
+  } catch (_) {
+    return true
   }
 })
 

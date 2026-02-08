@@ -9,6 +9,7 @@ from pays.models import Niveau
 from .stripe_client import stripe, stripe_error
 from .helpers import (
     _append_level_to_description,
+    _build_pass_description,
     _build_plan_payload,
     _extract_invoice_period,
     _extract_level_from_invoice,
@@ -649,7 +650,7 @@ def _sync_payment_history_from_stripe(user, limit=12):
                 getattr(subscription, 'niveau_pays', None)
             )
             if plan_mode == 'one_time':
-                base_description = invoice.get('description') or f"Pass {plan_name}"
+                base_description = invoice.get('description') or _build_pass_description(plan_name)
             else:
                 base_description = invoice.get('description') or f"Paiement pour {plan_name}"
             period_start, period_end = _extract_invoice_period(invoice)

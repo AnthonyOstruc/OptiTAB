@@ -1836,24 +1836,67 @@ const onLockedExercise = (chapter) => {
 
 @media (max-width: 640px) {
   .free-course-page {
-    padding: 28px 14px 56px;
+    padding: 24px 12px 52px;
   }
 
   .header-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 10px;
   }
 
   .resource-count-badge {
-    font-size: 13px;
-    padding: 6px 14px;
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+
+  .badge-separator {
+    margin: 0 5px;
+  }
+
+  .page-intro {
+    margin: 0 0 10px 0;
+  }
+
+  .page-title {
+    margin: 0 0 5px 0;
+    font-size: 17px;
+    line-height: 1.13;
+  }
+
+  .page-subtitle {
+    font-size: 12px;
+    line-height: 1.35;
   }
 
   .free-resource-cta {
     width: 100%;
     max-width: 100%;
+    padding: 8px 10px;
+    border-radius: 12px;
+    gap: 8px;
+    margin: 0 0 12px 0;
+  }
+
+  .free-resource-cta__title {
+    font-size: 12px;
+  }
+
+  .free-resource-cta__subtitle {
+    margin-top: 1px;
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .free-resource-cta__actions {
+    gap: 6px;
+  }
+
+  .free-resource-cta__btn {
+    min-height: 34px;
+    padding: 7px 10px;
+    font-size: 11px;
   }
 
   .filter-bar {
@@ -1902,7 +1945,30 @@ const onLockedExercise = (chapter) => {
 
 @media (max-width: 420px) {
   .free-course-page {
-    padding: 24px 12px 48px;
+    padding: 22px 10px 44px;
+  }
+
+  .page-title {
+    font-size: 16px;
+  }
+
+  .page-subtitle {
+    font-size: 11.5px;
+  }
+
+  .resource-count-badge {
+    font-size: 10px;
+    padding: 4px 9px;
+  }
+
+  .free-resource-cta {
+    padding: 7px 9px;
+    border-radius: 11px;
+  }
+
+  .free-resource-cta__btn {
+    min-height: 32px;
+    font-size: 10.5px;
   }
 }
 

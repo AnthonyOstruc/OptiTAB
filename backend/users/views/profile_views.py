@@ -1152,7 +1152,7 @@ class ParentInvitationRespondView(APIView):
 
 
 class CreateChildAccountView(APIView):
-    """Permet à un parent de créer un compte élève et de le lier automatiquement."""
+    """Permet de créer un compte élève et de le lier automatiquement."""
     permission_classes = [IsAuthenticated]
 
     @staticmethod
@@ -1162,11 +1162,11 @@ class CreateChildAccountView(APIView):
 
     def post(self, request):
         try:
+            # Le flux Billing peut être initié par un compte "student".
+            # Dès qu'un utilisateur crée un compte enfant, on le bascule en rôle parent.
             if getattr(request.user, 'role', 'student') != 'parent':
-                return ResponseService.error(
-                    message="Accès réservé aux parents",
-                    status_code=status.HTTP_403_FORBIDDEN
-                )
+                request.user.role = 'parent'
+                request.user.save(update_fields=['role'])
 
             email = (request.data.get('email') or '').strip().lower()
             first_name = (request.data.get('first_name') or '').strip()

@@ -12,6 +12,7 @@ from .stripe_client import stripe, stripe_error
 from .pass_access import revoke_pass_for_payment_intent
 from .helpers import (
     _append_level_to_description,
+    _build_pass_description,
     _extract_invoice_period,
     _format_level_label_from_obj,
     _from_timestamp,
@@ -491,7 +492,10 @@ def _create_pass_payment_history(invoice_owner, beneficiary, plan, session, nive
             'amount': amount_total / 100.0,
             'currency': currency,
             'status': 'succeeded',
-            'description': _append_level_to_description(f"Pass {plan.name} ({days} jours){beneficiary_info}", level_label),
+            'description': _append_level_to_description(
+                f"{_build_pass_description(plan.name)} ({days} jours){beneficiary_info}",
+                level_label,
+            ),
             'plan_name': plan.name,
             'plan_mode': 'one_time',
             'period_start': start,

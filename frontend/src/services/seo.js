@@ -9,6 +9,18 @@ const DEFAULT_ROBOTS_INDEX =
   'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1'
 const DEFAULT_ROBOTS_NOINDEX = 'noindex,follow'
 
+const TRACKING_QUERY_KEYS = new Set([
+  'gclid',
+  'dclid',
+  'gbraid',
+  'wbraid',
+  'fbclid',
+  'msclkid',
+  'igshid',
+  '_gl',
+  '_ga'
+])
+
 function normalizeSiteUrl(raw) {
   const value = String(raw || '').trim()
   if (!value) return ''
@@ -28,14 +40,42 @@ function removeTrailingSlash(value) {
   return value.replace(/\/+$/, '')
 }
 
-function hasQueryParams(query) {
-  if (!query || typeof query !== 'object') return false
-  return Object.keys(query).length > 0
+function isTrackingQueryKey(key) {
+  const k = String(key || '').trim().toLowerCase()
+  if (!k) return false
+  if (k.startsWith('utm_')) return true
+  return TRACKING_QUERY_KEYS.has(k)
+}
+
+function analyzeQuery(query) {
+  if (!query || typeof query !== 'object') {
+    return { hasAny: false, hasTracking: false, hasNonTracking: false }
+  }
+
+  const keys = Object.keys(query).filter(Boolean)
+  const hasAny = keys.length > 0
+  if (!hasAny) {
+    return { hasAny: false, hasTracking: false, hasNonTracking: false }
+  }
+
+  let hasTracking = false
+  let hasNonTracking = false
+  for (const key of keys) {
+    if (isTrackingQueryKey(key)) {
+      hasTracking = true
+    } else {
+      hasNonTracking = true
+    }
+    if (hasTracking && hasNonTracking) break
+  }
+
+  return { hasAny, hasTracking, hasNonTracking }
 }
 
 export function getRobotsForRoute({ route, noindex = false } = {}) {
-  const hasQuery = hasQueryParams(route?.query)
-  if (noindex || hasQuery) return DEFAULT_ROBOTS_NOINDEX
+  if (noindex) return DEFAULT_ROBOTS_NOINDEX
+  const { hasNonTracking } = analyzeQuery(route?.query)
+  if (hasNonTracking) return DEFAULT_ROBOTS_NOINDEX
   return DEFAULT_ROBOTS_INDEX
 }
 
@@ -402,7 +442,9 @@ const ROUTE_SEO = {
 
 const NOINDEX_ROUTE_NAMES = new Set([
   'PasswordReset',
-  'NotFound'
+  'NotFound',
+  'Calculator',
+  'TestFiltrageStrict'
 ])
 
 export function applyRouteSeo(route) {

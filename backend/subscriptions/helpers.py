@@ -305,6 +305,19 @@ def _append_level_to_description(description, level_label, include_hint=False):
     return description
 
 
+def _build_pass_description(plan_name, level_label=''):
+    clean_plan_name = (plan_name or '').strip()
+    if clean_plan_name and clean_plan_name.casefold().startswith('pass'):
+        base = clean_plan_name
+    elif clean_plan_name:
+        base = f"Pass {clean_plan_name}"
+    else:
+        base = "Pass"
+    if level_label:
+        return f"{base} - {level_label}"
+    return base
+
+
 def _resolve_payment_plan_mode(payment):
     stored_mode = (getattr(payment, 'plan_mode', '') or '').lower()
     if stored_mode in ('subscription', 'one_time', 'payment'):
@@ -428,6 +441,7 @@ __all__ = [
     '_sync_user_niveau',
     '_level_label_from_metadata',
     '_append_level_to_description',
+    '_build_pass_description',
     '_resolve_payment_plan_mode',
     '_resolve_payment_plan_name',
     '_extract_level_from_invoice',

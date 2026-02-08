@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, watch } from 'vue'
+import { computed, ref, onMounted, watch, nextTick } from 'vue'
 import { onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
@@ -243,9 +243,20 @@ const handleRegister = async (registerData) => {
   if (registerData.provider === 'google') {
     // Google registration
   } else {
-    // Inscription classique: fermer la modale et aller au dashboard
-    closeRegisterModal()
-    router.push('/dashboard')
+    // Inscription classique: spinner global + redirection (mobile: écran figé)
+    const wasLoading = userStore.isLoading
+    try {
+      if (!wasLoading) {
+        userStore.isLoading = true
+      }
+      closeRegisterModal()
+      await router.replace('/dashboard')
+      await nextTick()
+    } finally {
+      if (!wasLoading) {
+        userStore.isLoading = false
+      }
+    }
   }
 }
 const handleSwitchToLogin = () => {

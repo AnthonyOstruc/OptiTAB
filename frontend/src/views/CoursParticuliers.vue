@@ -775,6 +775,12 @@ function scrollToProfesseur(e) {
 }
 
 onMounted(async () => {
+  try {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  } catch (_) {
+    try { window.scrollTo(0, 0) } catch (_) {}
+  }
+
   detectMobileAndZoomSupport()
   setupViewportListener()
 

@@ -1,6 +1,8 @@
 <template>
   <DashboardLayout>
-    <div class="billing-page">
+    <div class="billing-zoom-clip">
+      <div class="billing-content-outer" :style="billingZoomStyle">
+        <div class="billing-page" ref="billingContentRef">
       <!-- Header -->
       <div class="page-header">
         <div class="header-badge">
@@ -202,6 +204,8 @@
       
 
       <Footer />
+        </div>
+      </div>
     </div>
 
     <!-- Modal Message -->
@@ -283,7 +287,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
+import { onMounted, onUnmounted, ref, computed, watch, nextTick } from 'vue'
 import { createCheckoutSession } from '@/api/subscriptions'
 import { checkEmailExists, createChildAccount } from '@/api/users'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
@@ -293,11 +297,114 @@ import Footer from '@/components/layout/Footer.vue'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { getNiveauxByPays } from '@/api/niveaux'
 import { useUserStore } from '@/stores/user'
+import { useZoom } from '@/composables/useZoom'
 
 const loading = ref(false)
 const submitting = ref(false)
 const subscriptionStore = useSubscriptionStore()
 const userStore = useUserStore()
+
+// --- Zoom mobile ("dézoom") ---
+const billingContentRef = ref(null)
+
+function computeBillingZoom(width) {
+  if (width >= 1400) return 1
+  if (width >= 1200) return 0.95
+  if (width >= 1024) return 0.9
+  if (width >= 900) return 0.85
+  if (width >= 768) return 0.8
+  if (width >= 640) return 0.72
+  if (width >= 520) return 0.68
+  if (width >= 420) return 0.64
+  if (width >= 360) return 0.6
+  return 0.55
+}
+
+const {
+  contentHeight,
+  zoomLevel,
+  supportsNativeZoom,
+  detectMobileAndZoomSupport,
+  createZoomStyle,
+  updateViewportWidth,
+  measureContentHeight,
+  setupViewportListener,
+  cleanupViewportListener
+} = useZoom({ computeAutoZoom: computeBillingZoom })
+
+const baseBillingZoomStyle = createZoomStyle({
+  cssVar: '--billing-zoom',
+  heightVar: '--billing-content-height',
+  mobileZoomAdjustment: (z) => z
+})
+
+// En mode mobile (transform: scale), certains navigateurs peuvent sous-estimer la hauteur et bloquer le scroll.
+// On laisse la hauteur "auto" et on compense l'espace vide avec une marge négative.
+const billingZoomStyle = computed(() => {
+  const style = baseBillingZoomStyle.value
+  if (supportsNativeZoom.value) return style
+
+  const z = Number(zoomLevel.value || 1)
+  if (!contentHeight.value || !Number.isFinite(z) || z >= 1) {
+    return { ...style, height: 'auto', minHeight: 'auto', marginBottom: '' }
+  }
+
+  const marginBottom = -Math.round(contentHeight.value * (1 - z))
+  return { ...style, height: 'auto', minHeight: 'auto', marginBottom: `${marginBottom}px` }
+})
+
+let billingResizeObserver = null
+const measureBillingHeight = () => {
+  measureContentHeight(billingContentRef)
+}
+
+const handleViewportChange = async () => {
+  updateViewportWidth()
+  await nextTick()
+  measureBillingHeight()
+}
+
+const handleResize = () => {
+  void handleViewportChange()
+}
+
+const handleOrientationChange = () => {
+  setTimeout(() => {
+    void handleViewportChange()
+  }, 200)
+}
+
+onMounted(async () => {
+  detectMobileAndZoomSupport()
+  setupViewportListener()
+
+  await nextTick()
+  measureBillingHeight()
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', handleResize, { passive: true })
+    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
+
+    setTimeout(measureBillingHeight, 250)
+
+    if (window.ResizeObserver && billingContentRef.value) {
+      billingResizeObserver = new ResizeObserver(() => {
+        measureBillingHeight()
+      })
+      billingResizeObserver.observe(billingContentRef.value)
+    }
+  }
+})
+
+onUnmounted(() => {
+  cleanupViewportListener()
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', handleResize)
+    window.removeEventListener('orientationchange', handleOrientationChange)
+  }
+  billingResizeObserver?.disconnect?.()
+  billingResizeObserver = null
+})
 
 // Variables pour offrir un abonnement à quelqu'un d'autre
 const subscribeForChild = ref(false)
@@ -658,6 +765,20 @@ async function handleCreateBeneficiaryAccount() {
 
 <style scoped lang="scss">
 /* Base Layout */
+.billing-zoom-clip {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.billing-content-outer {
+  width: 100%;
+  transform-origin: top left;
+  transition: transform 0.2s ease, zoom 0.2s ease;
+  overflow: visible;
+  /* Les styles (zoom ou transform) sont appliqués dynamiquement via JS selon le support navigateur */
+}
+
 .billing-page {
   min-height: 100vh;
   padding: 2.25rem 1rem; /* dézoom global */

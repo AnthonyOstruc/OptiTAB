@@ -310,6 +310,7 @@ async function buildSitemap() {
 
   // Static public pages (SEO)
   addUrl('/', '')
+  addUrl('/tarifs', '')
   addUrl('/cours-particuliers', '')
   addUrl('/about', '')
   addUrl('/contact', '')
@@ -326,13 +327,15 @@ async function buildSitemap() {
     // 1) Custom FreeLearningResource items (curated content)
     const generic = await fetchAllPages(`${baseEndpoint}?page_size=500`)
     for (const item of generic) {
+      const type = String(item?.resource_type || item?.type || item?.resourceType || '').toLowerCase()
+      if (type === 'exercise') continue
       const path = routeForResource(item)
       if (!path) continue
       addUrl(path, toLastMod(item?.date_modification))
     }
 
     // 2) Courses/Exercises/Summaries from existing models (filter locked)
-    for (const type of ['course', 'exercise', 'summary']) {
+    for (const type of ['course', 'summary']) {
       const items = await fetchAllPages(`${baseEndpoint}?type=${encodeURIComponent(type)}&page_size=500`)
       for (const item of items) {
         if (item?.is_locked === true) continue

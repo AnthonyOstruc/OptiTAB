@@ -1,10 +1,18 @@
 <template>
+  <!-- Spinner global pour la création de compte (mobile: écran figé) -->
+  <Teleport to="body">
+    <FullPageSpinner v-if="isSubmitting || isGoogleLoading" />
+  </Teleport>
+
   <Modal
     :is-open="isOpen"
     title="Créer un compte"
     size="medium"
     @close="handleClose"
   >
+    <div class="register-zoom-clip">
+      <div class="register-zoom-outer" :style="registerZoomStyle">
+        <div ref="registerContentRef">
     <!-- Login Link -->
     <div class="login-link login-link-top">
       <p>
@@ -107,11 +115,14 @@
         </button>
       </div>
     </div>
+        </div>
+      </div>
+    </div>
   </Modal>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useAuthForm } from '@/composables/useAuthForms'
 import { registerUser, mapRegisterFormToPayload } from '@/api'
 import Modal from '@/components/common/Modal.vue'
@@ -121,6 +132,8 @@ import { socialProviders } from '@/config/socialProviders'
 import PasswordStrength from '@/components/forms/PasswordStrength.vue'
 import { useUserStore } from '@/stores/user'
 import { useGoogleAuth } from '@/composables/useGoogleAuth'
+import FullPageSpinner from '@/components/common/FullPageSpinner.vue'
+import { useZoom } from '@/composables/useZoom'
 
 export default {
   name: 'RegisterModal',
@@ -129,6 +142,7 @@ export default {
     DynamicForm,
     FormField,
     PasswordStrength,
+    FullPageSpinner
   },
   props: {
     isOpen: {
@@ -153,6 +167,90 @@ export default {
     const userStore = useUserStore()
     const { setupGoogleSignIn, signInWithGoogle, isGoogleLoading } = useGoogleAuth()
 
+    // --- Dézoom mobile (modal) ---
+    const registerContentRef = ref(null)
+
+    function computeRegisterModalZoom(width) {
+      if (width >= 768) return 1
+      if (width >= 520) return 0.96
+      if (width >= 420) return 0.94
+      if (width >= 360) return 0.92
+      return 0.9
+    }
+
+    const {
+      detectMobileAndZoomSupport,
+      createZoomStyle,
+      updateViewportWidth,
+      measureContentHeight,
+      setupViewportListener,
+      cleanupViewportListener
+    } = useZoom({ computeAutoZoom: computeRegisterModalZoom })
+
+    const registerZoomStyle = createZoomStyle({
+      cssVar: '--register-modal-zoom',
+      heightVar: '--register-modal-content-height',
+      mobileZoomAdjustment: (z) => z
+    })
+
+    let registerResizeObserver = null
+    let registerZoomSession = 0
+    const measureRegisterHeight = () => {
+      measureContentHeight(registerContentRef)
+    }
+
+    const handleViewportChange = async () => {
+      updateViewportWidth()
+      await nextTick()
+      measureRegisterHeight()
+    }
+
+    const handleResize = () => {
+      void handleViewportChange()
+    }
+
+    const handleOrientationChange = () => {
+      setTimeout(() => {
+        void handleViewportChange()
+      }, 200)
+    }
+
+    const startRegisterZoomTracking = async (sessionId) => {
+      detectMobileAndZoomSupport()
+      setupViewportListener()
+
+      await nextTick()
+      if (sessionId !== registerZoomSession || !props.isOpen) {
+        stopRegisterZoomTracking()
+        return
+      }
+      measureRegisterHeight()
+
+      if (typeof window !== 'undefined') {
+        window.addEventListener('resize', handleResize, { passive: true })
+        window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
+
+        setTimeout(measureRegisterHeight, 250)
+
+        if (window.ResizeObserver && registerContentRef.value) {
+          registerResizeObserver = new ResizeObserver(() => {
+            measureRegisterHeight()
+          })
+          registerResizeObserver.observe(registerContentRef.value)
+        }
+      }
+    }
+
+    const stopRegisterZoomTracking = () => {
+      cleanupViewportListener()
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize)
+        window.removeEventListener('orientationchange', handleOrientationChange)
+      }
+      registerResizeObserver?.disconnect?.()
+      registerResizeObserver = null
+    }
+
     // Name fields for the top section
     const nameFields = ['firstName', 'lastName']
     // Main fields for DynamicForm (excluding custom layout fields)
@@ -167,6 +265,24 @@ export default {
     // Initialiser Google Sign-In
     onMounted(async () => {
       await setupGoogleSignIn()
+    })
+
+    watch(
+      () => props.isOpen,
+      async (isOpen) => {
+        registerZoomSession += 1
+        const sessionId = registerZoomSession
+        if (isOpen) {
+          await startRegisterZoomTracking(sessionId)
+        } else {
+          stopRegisterZoomTracking()
+        }
+      },
+      { immediate: true }
+    )
+
+    onBeforeUnmount(() => {
+      stopRegisterZoomTracking()
     })
 
     // Méthode pour afficher un message
@@ -293,6 +409,8 @@ export default {
       feedbackMessage,
       feedbackType,
       showFeedback,
+      registerContentRef,
+      registerZoomStyle
     }
   }
 }
@@ -300,6 +418,18 @@ export default {
 
 <style scoped lang="scss">
 @use '@/assets/variables.scss' as *;
+
+.register-zoom-clip {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.register-zoom-outer {
+  width: 100%;
+  transform-origin: top left;
+  transition: transform 0.2s ease, zoom 0.2s ease;
+}
 
 .top-fields {
   display: flex;

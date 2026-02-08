@@ -135,7 +135,9 @@ function buildSeoDescription({ chapterTitle, subjectPhrase, niveauNom, count }) 
   const subject = String(subjectPhrase || 'maths').trim()
   const intro = `Exercices corriges gratuits de ${subject}${levelPart}.`
   const detail = chapterTitle ? `Chapitre ${chapterTitle}.` : ''
-  const countPart = count ? `${count} exercice${count > 1 ? 's' : ''} avec correction.` : 'Corrections detaillees et methode.'
+  const countPart = count
+    ? `${count} exercice${count > 1 ? 's' : ''} gratuit${count > 1 ? 's' : ''} avec correction.`
+    : 'Corrections detaillees et methode.'
   return clampMetaDescription([intro, detail, countPart, 'Acces gratuit sur OptiTAB.'].filter(Boolean).join(' '))
 }
 
@@ -211,8 +213,10 @@ const exercisesCount = computed(() => displayedExercises.value.length)
 
 const introText = computed(() => {
   if (!notionTitle.value) return ''
-  const count = exercisesCount.value
-  const countText = count ? `${count} exercice${count > 1 ? 's' : ''}` : 'des exercices corriges'
+  const count = freeExercisesCount.value
+  const countText = count
+    ? `${count} exercice${count > 1 ? 's' : ''} gratuit${count > 1 ? 's' : ''}`
+    : 'des exercices corriges gratuits'
   const source = exercises.value[0] || {}
   const matiere = formatMatiereLabel(source.matiere_nom || '') || 'Maths'
   const niveau = formatNiveauLabel(source.niveau_nom || '')
@@ -238,13 +242,34 @@ const orderedExercises = computed(() => {
   return [...unlocked, ...locked]
 })
 
+const freeExercises = computed(() => orderedExercises.value.filter((ex) => !ex._locked))
+const lockedExercises = computed(() => orderedExercises.value.filter((ex) => ex._locked))
+const freeExercisesCount = computed(() => freeExercises.value.length)
+const lockedExercisesCount = computed(() => lockedExercises.value.length)
+
+const exercisesCountLabel = computed(() => {
+  const freeCount = freeExercisesCount.value
+  const lockedCount = lockedExercisesCount.value
+  const parts = []
+
+  if (freeCount) {
+    parts.push(`${freeCount} exercice${freeCount > 1 ? 's' : ''} gratuit${freeCount > 1 ? 's' : ''}`)
+  }
+
+  if (lockedCount) {
+    parts.push(`${lockedCount} exercice${lockedCount > 1 ? 's' : ''} premium`)
+  }
+
+  return parts.join(' • ')
+})
+
 const totalPages = computed(() =>
-  Math.max(1, Math.ceil((orderedExercises.value.length || 0) / itemsPerPage))
+  Math.max(1, Math.ceil((lockedExercises.value.length || 0) / itemsPerPage))
 )
 
-const paginatedExercises = computed(() => {
+const paginatedLockedExercises = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
-  return orderedExercises.value.slice(start, start + itemsPerPage)
+  return lockedExercises.value.slice(start, start + itemsPerPage)
 })
 
 const fetchExercises = async () => {
@@ -334,11 +359,18 @@ const updateSeo = () => {
     chapterTitle,
     subjectPhrase: subject.phrase,
     niveauNom: niveau,
-    count: exercisesCount.value
+    count: freeExercisesCount.value
   })
   const image = pickSeoImage(exercises.value) || undefined
   const canonicalPath = buildCanonicalPath(first)
   const canonicalUrl = toAbsoluteUrl(canonicalPath)
+  const itemListElements = freeExercises.value
+    .slice(0, 50)
+    .map((exercise, index) => {
+      const anchorId = getExerciseAnchorId(exercise, index)
+      const url = anchorId ? `${canonicalUrl}#${anchorId}` : canonicalUrl
+      return { '@type': 'ListItem', position: index + 1, name: exercise.titre, url }
+    })
   const jsonLdGraph = [
     {
       '@type': 'BreadcrumbList',
@@ -347,7 +379,16 @@ const updateSeo = () => {
         { '@type': 'ListItem', position: 2, name: 'Exercices gratuits', item: toAbsoluteUrl('/ressources-gratuites/exercices') },
         { '@type': 'ListItem', position: 3, name: chapterTitle, item: canonicalUrl }
       ]
-    }
+    },
+    itemListElements.length
+      ? {
+          '@type': 'ItemList',
+          name: `Exercices gratuits : ${chapterTitle}`,
+          numberOfItems: itemListElements.length,
+          itemListOrder: 'https://schema.org/ItemListOrderAscending',
+          itemListElement: itemListElements
+        }
+      : null
   ]
 
   setPageSeo({
@@ -427,6 +468,7 @@ const goToPage = (page) => {
   currentPage.value = page
   nextTick(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
+    safeRenderMath()
     measureContentHeightForFreeExercises()
   })
 }
@@ -480,6 +522,20 @@ const buildInstruction = (exercise) => {
   const raw = exercise.instruction || ''
   return `<span class="locked-blur">${raw}</span>`
 }
+
+function normalizeAnchorId(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+function getExerciseAnchorId(exercise, index = 0) {
+  const raw = exercise?.slug || exercise?.id || index
+  const normalized = normalizeAnchorId(raw)
+  if (!normalized) return `exercise-${index}`
+  return `exercise-${normalized}`
+}
 </script>
 
 <template>
@@ -492,7 +548,7 @@ const buildInstruction = (exercise) => {
         <p v-if="chapterMetaLabel" class="free-exercise-meta">{{ chapterMetaLabel }}</p>
         <h1 id="free-exercise-title" class="free-exercise-title">{{ notionTitle || 'Exercices' }}</h1>
         <p v-if="introText" class="free-exercise-intro-text">{{ introText }}</p>
-        <p v-if="exercisesCount" class="free-exercise-count">{{ formatCount(exercisesCount) }}</p>
+        <p v-if="exercisesCountLabel" class="free-exercise-count">{{ exercisesCountLabel }}</p>
       </header>
 
       <section class="free-resource-cta" aria-label="Accès professeur ou plateforme">
@@ -534,14 +590,43 @@ const buildInstruction = (exercise) => {
         Aucun exercice gratuit n'est disponible pour ce chapitre pour le moment.
       </div>
       <div v-else class="content-wrapper" :style="zoomStyle" ref="contentRef">
-        <div class="exercise-stack" v-if="displayedExercises.length > 0">
+        <div class="exercise-stack" v-if="freeExercises.length > 0">
+          <div class="exercise-section-header">
+            <h2 class="exercise-section-title">Exercices gratuits</h2>
+          </div>
           <div
-            v-for="(exercise, index) in paginatedExercises"
+            v-for="(exercise, index) in freeExercises"
             :key="exercise.id || exercise.slug || index"
             class="exercise-card-wrapper"
-            :class="{ 'locked-tabs': exercise._locked }"
+            :id="getExerciseAnchorId(exercise, index)"
           >
-            <div v-if="exercise._locked" class="locked-pill">Exercice premium</div>
+            <ExerciceQCM
+              :eid="exercise.id || exercise.slug || index"
+              :titre="exercise.titre"
+              :instruction="buildInstruction(exercise)"
+              :solution="exercise.solution"
+              :etapes="exercise.etapes"
+              :difficulty="exercise.difficulty"
+              :preview-images="exercise.previewImages"
+              readonly
+            />
+          </div>
+        </div>
+
+        <div v-if="lockedExercises.length > 0" class="exercise-stack premium-exercise-stack">
+          <div class="exercise-section-header">
+            <h2 class="exercise-section-title premium-title">Exercices premium</h2>
+            <p class="exercise-section-subtitle">
+              Débloquez l’accès complet pour voir les exercices premium et progresser plus vite.
+            </p>
+          </div>
+          <div
+            v-for="(exercise, index) in paginatedLockedExercises"
+            :key="exercise.id || exercise.slug || index"
+            class="exercise-card-wrapper locked-tabs"
+            :id="getExerciseAnchorId(exercise, index + freeExercises.length)"
+          >
+            <div class="locked-pill">Exercice premium</div>
             <ExerciceQCM
               :eid="exercise.id || exercise.slug || index"
               :titre="exercise.titre"
@@ -579,9 +664,6 @@ const buildInstruction = (exercise) => {
               &rarr;
             </button>
           </div>
-        </div>
-        <div v-else class="state-card">
-          Aucun exercice gratuit n'est disponible pour ce chapitre pour le moment.
         </div>
       </div>
 
@@ -810,8 +892,38 @@ const buildInstruction = (exercise) => {
 .exercise-stack {
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 36px;
   width: 100%;
+}
+
+.exercise-section-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.exercise-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exercise-section-subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: #475569;
+  max-width: 780px;
+  line-height: 1.5;
+}
+
+.premium-exercise-stack {
+  margin-top: 56px;
+}
+
+.premium-title {
+  color: #111827;
 }
 
 .related-resources {

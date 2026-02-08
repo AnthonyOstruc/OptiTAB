@@ -10,6 +10,7 @@ import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
 import { buildCourseRouteParams } from '@/utils/freeCourseSlug'
 import { buildSummaryRouteParams } from '@/utils/freeSummarySlug'
+import { buildExerciseChapterRouteParams } from '@/utils/freeExerciseSlug'
 import { setPageSeo, getRobotsForRoute } from '@/services/seo'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
@@ -140,11 +141,40 @@ const introText = computed(() => {
   return cleaned.length > 180 ? `${cleaned.slice(0, 177).trimEnd()}...` : cleaned
 })
 
-const breadcrumbItems = computed(() => [
-  { label: 'Accueil', to: '/' },
-  { label: categoryInfo.value.label, to: categoryInfo.value.path },
-  { label: resource.value?.titre || 'Ressource gratuite' }
-])
+const exerciseChapterPath = computed(() => {
+  if (props.resourceType !== 'exercise') return ''
+  const source = resource.value
+  if (!source) return ''
+
+  const params = buildExerciseChapterRouteParams({
+    paysNom: source?.pays_nom,
+    matiereNom: source?.matiere_nom || source?.matiere,
+    niveauNom: source?.niveau_nom,
+    niveauGroup: source?.niveau_nom,
+    name: source?.notion_nom,
+    id: source?.notion
+  })
+  if (!params?.slug || !params?.id) return ''
+
+  if (params.niveauGroup) {
+    return `/ressources-gratuites/exercices/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
+  }
+  return `/ressources-gratuites/exercices/${params.pays}/${params.matiere}/${params.slug}-${params.id}`
+})
+
+const breadcrumbItems = computed(() => {
+  const crumbs = [
+    { label: 'Accueil', to: '/' },
+    { label: categoryInfo.value.label, to: categoryInfo.value.path }
+  ]
+
+  if (props.resourceType === 'exercise' && resource.value?.notion_nom && exerciseChapterPath.value) {
+    crumbs.push({ label: resource.value.notion_nom, to: exerciseChapterPath.value })
+  }
+
+  crumbs.push({ label: resource.value?.titre || 'Ressource gratuite' })
+  return crumbs
+})
 
 const relatedLinks = computed(() => [
   { label: 'Cours gratuits de maths', to: '/ressources-gratuites/cours' },
@@ -587,11 +617,15 @@ watch(
       }
     ]
 
+    const robots = props.resourceType === 'exercise'
+      ? 'noindex,follow'
+      : getRobotsForRoute({ route })
+
     setPageSeo({
       title,
       description,
       canonicalPath,
-      robots: getRobotsForRoute({ route }),
+      robots,
       ogType: 'article',
       image,
       jsonLdGraph

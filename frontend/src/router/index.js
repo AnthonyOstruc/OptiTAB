@@ -232,7 +232,7 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     try {
       if (ALWAYS_SCROLL_TO_TOP_ROUTES.includes(to.name)) {
-        return { top: 0, behavior: 'instant' }
+        return { top: 0, left: 0, behavior: 'auto' }
       }
 
       // 1) Gestion des ancres (hash)
@@ -247,9 +247,9 @@ const router = createRouter({
       }
 
       // 3) Comportement par défaut: remonter en haut
-      return { top: 0, left: 0, behavior: 'instant' }
+      return { top: 0, left: 0, behavior: 'auto' }
     } catch (_) {
-      return { top: 0, left: 0, behavior: 'instant' }
+      return { top: 0, left: 0, behavior: 'auto' }
     }
   }
 })

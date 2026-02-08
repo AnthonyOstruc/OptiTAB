@@ -1,5 +1,5 @@
 <template>
-  <div class="fullpage-spinner">
+  <div class="fullpage-spinner" @wheel.prevent @touchmove.prevent>
     <span class="spinner"></span>
   </div>
 </template>

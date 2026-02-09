@@ -1,0 +1,434 @@
+=== Dérivation - Programme Base
+Difficulté: medium
+Ordre: 10
+
+Titre: La Dérivation : Définitions, Calculs et Applications
+Description: Cours complet sur la dérivation : nombre dérivé, fonction dérivée, formules de dérivation usuelles, dérivées de fonctions composées et applications à l'étude de fonctions.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à VII sont <strong>exigibles</strong> à ce niveau. Ils couvrent les fondamentaux de la dérivation nécessaires pour l'étude des fonctions en première année.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Nombre dérivé et interprétation géométrique</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition du nombre dérivé</h3>
+        <p style="font-size:1em;">Soit $\displaystyle f$ une fonction définie sur un intervalle $\displaystyle I$ et $\displaystyle a$ un point de $\displaystyle I$. Le <strong>nombre dérivé</strong> de $\displaystyle f$ en $\displaystyle a$, noté $\displaystyle f'(a)$, est la limite (si elle existe) :</p>
+        <div style="text-align:center; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            $\displaystyle f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}$
+        </div>
+        <p style="font-size:1em;"><strong>Formule équivalente :</strong></p>
+        <div style="text-align:center; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            $\displaystyle f'(a) = \lim_{x \to a} \frac{f(x) - f(a)}{x - a}$
+        </div>
+        <p style="font-size:1em;"><strong>💡 À retenir :</strong> Le nombre dérivé représente le <strong>taux de variation instantané</strong> de la fonction au point $\displaystyle a$.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Interprétation géométrique</h3>
+        <p style="font-size:1em;">Le nombre dérivé $\displaystyle f'(a)$ représente le <strong>coefficient directeur (ou pente) de la tangente</strong> à la courbe représentative de $\displaystyle f$ au point d'abscisse $\displaystyle a$.</p>
+        
+        <div style="text-align:center; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            <p style="margin:0;"><strong>Équation de la tangente au point $\displaystyle A(a, f(a))$ :</strong></p>
+            <div style="text-align:center; margin:10px 0;">
+                $\displaystyle y = f'(a)(x - a) + f(a)$
+            </div>
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation physique :</strong> Si $\displaystyle f(t)$ représente la position à l'instant $\displaystyle t$, alors $\displaystyle f'(t)$ représente la <strong>vitesse instantanée</strong> à cet instant.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Fonction dérivée</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <p style="font-size:1em;">Une fonction $\displaystyle f$ est dite <strong>dérivable sur un intervalle</strong> $\displaystyle I$ si elle admet un nombre dérivé en tout point de $\displaystyle I$.</p>
+        <p style="font-size:1em;">La <strong>fonction dérivée</strong> de $\displaystyle f$, notée $\displaystyle f'$, est la fonction qui à chaque $\displaystyle x$ de $\displaystyle I$ associe le nombre dérivé $\displaystyle f'(x)$.</p>
+        <div style="text-align:center; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            $\displaystyle f' : I \to \mathbb{R}, \quad x \mapsto f'(x)$
+        </div>
+        
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> Si $\displaystyle f$ est dérivable sur $\displaystyle I$, alors $\displaystyle f$ est <strong>continue</strong> sur $\displaystyle I$. Mais la réciproque est fausse : une fonction peut être continue sans être dérivable.
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Dérivées des fonctions usuelles</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Tableau des dérivées fondamentales</h3>
+        
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Fonction $f(x)$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Dérivée $f'(x)$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Domaine</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle k$ (constante)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 0$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle x$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 1$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle x^n$ avec $\displaystyle n \in \mathbb{N}$, $\displaystyle n \geq 1$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle nx^{n-1}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{1}{x}$ ou $\displaystyle x^{-1}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle -\frac{1}{x^2}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}^*$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \sqrt{x}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{1}{2\sqrt{x}}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle ]0, +\infty[$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle e^x$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle e^x$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \ln(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{1}{x}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle ]0, +\infty[$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \sin(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \cos(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \cos(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle -\sin(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \tan(x)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle 1 + \tan^2(x) = \frac{1}{\cos^2(x)}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \mathbb{R} \setminus \{\frac{\pi}{2} + k\pi\}$</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 À retenir absolument :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle(e^x)' = e^x$ : l'exponentielle est sa propre dérivée !</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle(\ln x)' = \frac{1}{x}$ : le logarithme népérien a pour dérivée l'inverse</li>
+                <li style="margin:0; text-align:left;">$\displaystyle(\sin x)' = \cos x$ et $\displaystyle(\cos x)' = -\sin x$ : attention au signe négatif pour le cosinus !</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Opérations sur les dérivées</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Règles de calcul</h3>
+        <p style="font-size:1em;">Soient $\displaystyle u$ et $\displaystyle v$ deux fonctions dérivables sur un intervalle $\displaystyle I$, et $\displaystyle k$ une constante réelle.</p>
+        
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Fonction</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Dérivée</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle k \times u$ (constante)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle k \times u'$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle u + v$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle u' + v'$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle u - v$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle u' - v'$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle u \times v$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle u' \times v + u \times v'$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{1}{v}$ (si $\displaystyle v \neq 0$)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle -\frac{v'}{v^2}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{u}{v}$ (si $\displaystyle v \neq 0$)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{u' \times v - u \times v'}{v^2}$</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong> Pour la dérivée d'un <strong>produit</strong>, ce n'est PAS $\displaystyle (u \times v)' = u' \times v'$ !
+            <p style="margin:8px 0;">C'est : $\displaystyle (u \times v)' = u' \times v + u \times v'$ (formule de Leibniz)</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Dérivée d'une fonction composée</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formule générale</h3>
+        <p style="font-size:1em;">Si $\displaystyle u$ est une fonction dérivable sur $\displaystyle I$ et $\displaystyle f$ est une fonction dérivable sur $\displaystyle u(I)$, alors la fonction composée $\displaystyle f \circ u$ est dérivable sur $\displaystyle I$ et :</p>
+        <div style="text-align:center; margin:15px 0; padding:12px; background:#e8f4fd; border-radius:4px; border-left:6px solid #3498db;">
+            $\displaystyle (f(u(x)))' = u'(x) \times f'(u(x))$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules de dérivation composées essentielles</h3>
+        
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Fonction composée</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Dérivée</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle u^n$ avec $\displaystyle n \geq 1$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle n \times u' \times u^{n-1}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{1}{u}$ (si $\displaystyle u \neq 0$)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle -\frac{u'}{u^2}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \sqrt{u}$ (si $\displaystyle u > 0$)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{u'}{2\sqrt{u}}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle e^{u}$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle u' \times e^{u}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \ln(u)$ (si $\displaystyle u > 0$)</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \frac{u'}{u}$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \sin(u)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle u' \times \cos(u)$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \cos(u)$</td>
+                    <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle -u' \times \sin(u)$</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode pratique :</strong> Pour dériver $\displaystyle f(u(x))$ :
+            <ol style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">On dérive la fonction extérieure $\displaystyle f$ en laissant $\displaystyle u$ tel quel</li>
+                <li style="margin:0; text-align:left;">On multiplie par la dérivée de $\displaystyle u$</li>
+            </ol>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Exemples détaillés de calculs</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Dérivée d'un polynôme</h3>
+        <p style="font-size:1em;"><strong>Énoncé :</strong> Calculer la dérivée de $\displaystyle f(x) = 3x^4 - 2x^3 + 5x - 7$</p>
+        
+        <p style="font-size:1em;"><strong>Solution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            On dérive terme par terme :
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f'(x) = 3 \times 4x^3 - 2 \times 3x^2 + 5 - 0$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f'(x) = 12x^3 - 6x^2 + 5$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Dérivée d'un produit</h3>
+        <p style="font-size:1em;"><strong>Énoncé :</strong> Calculer la dérivée de $\displaystyle f(x) = (2x + 1)(x^2 - 3)$</p>
+        
+        <p style="font-size:1em;"><strong>Solution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            On pose $\displaystyle u(x) = 2x + 1$ et $\displaystyle v(x) = x^2 - 3$
+            <div style="margin:10px 0; text-align:left;">
+                $\displaystyle u'(x) = 2 \quad \text{et} \quad v'(x) = 2x$
+            </div>
+            On applique $\displaystyle (uv)' = u'v + uv'$ :
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f'(x) = 2(x^2 - 3) + (2x + 1)(2x)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f'(x) = 2x^2 - 6 + 4x^2 + 2x$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f'(x) = 6x^2 + 2x - 6$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 3 : Dérivée d'un quotient</h3>
+        <p style="font-size:1em;"><strong>Énoncé :</strong> Calculer la dérivée de $\displaystyle f(x) = \frac{x^2 + 1}{x - 2}$</p>
+        
+        <p style="font-size:1em;"><strong>Solution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            On pose $\displaystyle u(x) = x^2 + 1$ et $\displaystyle v(x) = x - 2$
+            <div style="margin:10px 0; text-align:left;">
+                $\displaystyle u'(x) = 2x \quad \text{et} \quad v'(x) = 1$
+            </div>
+            On applique $\displaystyle \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$ :
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f'(x) = \frac{2x(x-2) - (x^2+1) \times 1}{(x-2)^2}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f'(x) = \frac{2x^2 - 4x - x^2 - 1}{(x-2)^2}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f'(x) = \frac{x^2 - 4x - 1}{(x-2)^2}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 4 : Dérivée d'une fonction composée</h3>
+        <p style="font-size:1em;"><strong>Énoncé :</strong> Calculer la dérivée de $\displaystyle f(x) = (3x + 1)^5$</p>
+        
+        <p style="font-size:1em;"><strong>Solution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            On reconnaît une fonction composée $\displaystyle u^n$ avec $\displaystyle u(x) = 3x + 1$ et $\displaystyle n = 5$
+            <div style="margin:10px 0; text-align:left;">
+                $\displaystyle u'(x) = 3$
+            </div>
+            On applique $\displaystyle (u^n)' = n \times u' \times u^{n-1}$ :
+            <div style="margin:10px 0; text-align:left;">
+                $\displaystyle f'(x) = 5 \times 3 \times (3x+1)^4 = 15(3x+1)^4$
+            </div>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 5 : Dérivée d'une exponentielle composée</h3>
+        <p style="font-size:1em;"><strong>Énoncé :</strong> Calculer la dérivée de $\displaystyle f(x) = e^{2x^2 + 3x}$</p>
+        
+        <p style="font-size:1em;"><strong>Solution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            On reconnaît $\displaystyle f(x) = e^{u(x)}$ avec $\displaystyle u(x) = 2x^2 + 3x$
+            <div style="margin:10px 0; text-align:left;">
+                $\displaystyle u'(x) = 4x + 3$
+            </div>
+            On applique $\displaystyle (e^u)' = u' \times e^u$ :
+            <div style="margin:10px 0; text-align:left;">
+                $\displaystyle f'(x) = (4x + 3) \times e^{2x^2 + 3x} = (4x + 3)e^{2x^2 + 3x}$
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Applications : Sens de variation et extremums</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Signe de la dérivée et sens de variation</h3>
+        <p style="font-size:1em;">Soit $\displaystyle f$ une fonction dérivable sur un intervalle $\displaystyle I$.</p>
+        
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Signe de $f'(x)$</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Variation de $f$</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle f'(x) > 0$ sur $\displaystyle I$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle f$ est <strong>strictement croissante</strong> sur $\displaystyle I$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle f'(x) < 0$ sur $\displaystyle I$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle f$ est <strong>strictement décroissante</strong> sur $\displaystyle I$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle f'(x) = 0$ sur $\displaystyle I$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle f$ est <strong>constante</strong> sur $\displaystyle I$</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode pour étudier les variations :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">Calculer $\displaystyle f'(x)$</li>
+                <li style="margin:0; text-align:left;">Étudier le signe de $\displaystyle f'(x)$ (tableau de signes)</li>
+                <li style="margin:0; text-align:left;">En déduire le tableau de variations de $\displaystyle f$</li>
+            </ol>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Extremums locaux</h3>
+        <p style="font-size:1em;">Soit $\displaystyle f$ une fonction dérivable sur un intervalle $\displaystyle I$ contenant $\displaystyle a$.</p>
+        
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>Cas 1 : Maximum local en $a$</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">$\displaystyle f'(a) = 0$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f'$ change de signe en $\displaystyle a$ : <strong>positif avant</strong>, <strong>négatif après</strong></li>
+            </ul>
+        </div>
+        
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>Cas 2 : Minimum local en $a$</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">$\displaystyle f'(a) = 0$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f'$ change de signe en $\displaystyle a$ : <strong>négatif avant</strong>, <strong>positif après</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Erreurs fréquentes à éviter</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#ef4444; color:white;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">❌ Erreur fréquente</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">✓ Correction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (uv)' = u'v'$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (uv)' = u'v + uv'$</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (u + v)' = u' \times v'$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (u + v)' = u' + v'$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (\cos x)' = \sin x$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle (\cos x)' = -\sin x$ (attention au signe !)</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:10px;">Oublier d'appliquer la chaîne : $(u^2)' = 2$ quand $\displaystyle u = 3x$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$(u^2)' = 2u \times u' = 2(3x) \times 3 = 18x$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \left(\frac{1}{u}\right)' = \frac{1}{u'}$</td>
+                    <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \left(\frac{1}{u}\right)' = -\frac{u'}{u^2}$</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Ce cours couvre les bases essentielles de la dérivation au niveau base (lycée 1ère). Pour une compréhension plus approfondie et des applications avancées (dérivées partielles, résolution d'équations différentielles, applications en physique), consultez le cours terminal ou les ressources universitaires. Les dérivées sont un outil fondamental en mathématiques qui s'étendent bien au-delà de l'étude des variations de fonctions.</p>
+    </div>
+
+</div>

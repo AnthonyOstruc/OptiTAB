@@ -1,0 +1,379 @@
+=== Loi Binomiale - Cours Complet
+Difficulté: medium
+Ordre: 3
+
+Titre: La Loi Binomiale : Définition, Propriétés et Applications
+Description: Cours complet sur la loi binomiale : schéma de Bernoulli, définition, propriétés, calculs de probabilités, espérance et variance, et applications pratiques.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Schéma de Bernoulli</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p>Un <strong>schéma de Bernoulli</strong> est une expérience aléatoire qui ne peut avoir que <strong>deux issues</strong> :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;"><strong>Succès</strong> (S) avec une probabilité $p$</li>
+                <li style="margin:0; text-align:left;"><strong>Échec</strong> (É) avec une probabilité $q = 1 - p$</li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:0;"><strong>Exemples de schémas de Bernoulli :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">Lancer une pièce de monnaie : Pile (succès) ou Face (échec)</li>
+                <li style="margin:0; text-align:left;">Interroger un élève : Réponse correcte (succès) ou incorrecte (échec)</li>
+                <li style="margin:0; text-align:left;">Test d'un produit : Défectueux (succès) ou conforme (échec)</li>
+            </ul>
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 À retenir :</strong> Dans un schéma de Bernoulli, $p + q = 1$ (probabilités complémentaires).
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Loi binomiale</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <p>On répète $n$ fois de manière <strong>indépendante</strong> un schéma de Bernoulli de paramètre $p$.</p>
+        <p>La variable aléatoire $X$ qui compte le <strong>nombre de succès</strong> suit une <strong>loi binomiale</strong> de paramètres $n$ et $p$, notée $\mathcal{B}(n, p)$.</p>
+        
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0; text-align:center;">
+            $\displaystyle X \sim \mathcal{B}(n, p)$
+        </div>
+        
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Conditions importantes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">Les $n$ répétitions doivent être <strong>indépendantes</strong></li>
+                <li style="margin:0; text-align:left;">La probabilité $p$ doit être <strong>identique</strong> à chaque répétition</li>
+                <li style="margin:0; text-align:left;">Chaque répétition ne peut avoir que deux issues</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Valeurs possibles</h3>
+        <p>Si $X \sim \mathcal{B}(n, p)$, alors $X$ peut prendre toutes les valeurs entières de $0$ à $n$ :</p>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0; text-align:center;">
+            $\displaystyle X \in \{0, 1, 2, \ldots, n\}$
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">$X = 0$ : aucun succès sur les $n$ répétitions</li>
+                <li style="margin:0; text-align:left;">$X = 1$ : exactement un succès sur les $n$ répétitions</li>
+                <li style="margin:0; text-align:left;">$X = n$ : tous les $n$ essais sont des succès</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Calcul des probabilités</h2>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formule de la loi binomiale</h3>
+        <p>Pour $X \sim \mathcal{B}(n, p)$ et $k \in \{0, 1, 2, \ldots, n\}$ :</p>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0; text-align:center;">
+            $\displaystyle P(X = k) = \binom{n}{k} \times p^k \times (1-p)^{n-k}$
+        </div>
+        
+        <p><strong>Notation alternative :</strong></p>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0; text-align:center;">
+            $\displaystyle P(X = k) = \binom{n}{k} \times p^k \times q^{n-k}$
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Explication de la formule :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">$\displaystyle \binom{n}{k}$ : nombre de façons d'obtenir $\displaystyle k$ succès parmi $\displaystyle n$ essais</li>
+                <li style="margin:0; text-align:left;">$\displaystyle p^k$ : probabilité d'avoir $\displaystyle k$ succès</li>
+                <li style="margin:0; text-align:left;">$\displaystyle (1-p)^{n-k}$ : probabilité d'avoir $\displaystyle (n-k)$ échecs</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Coefficient binomial</h3>
+        <p>Le coefficient binomial $\binom{n}{k}$ se calcule avec :</p>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0; text-align:center;">
+            $\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$
+        </div>
+        
+        <div style="background:#f3e8ff; border-radius:6px; border-left:6px solid #9333ea; padding:15px; margin:12px 0;">
+            <strong>💡 Propriétés utiles :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \binom{n}{0} = 1$ et $\displaystyle \binom{n}{n} = 1$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \binom{n}{k} = \binom{n}{n-k}$ (symétrie)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \binom{n}{1} = n$ et $\displaystyle \binom{n}{n-1} = n$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Exemples de calculs</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Lancer de pièce</h3>
+        <p><strong>Énoncé :</strong> On lance une pièce équilibrée 5 fois. Quelle est la probabilité d'obtenir exactement 3 piles ?</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:8px 0;">On a un schéma de Bernoulli avec $p = \frac{1}{2}$ (pièce équilibrée)</p>
+            <p style="margin:8px 0;">$X$ = nombre de piles suit $\mathcal{B}(5, \frac{1}{2})$</p>
+            <p style="margin:8px 0;">On cherche $P(X = 3)$</p>
+            
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle P(X = 3) = \binom{5}{3} \times \left(\dfrac{1}{2}\right)^3 \times \left(\dfrac{1}{2}\right)^{2}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle P(X = 3) = 10 \times \dfrac{1}{8} \times \dfrac{1}{4} = \dfrac{10}{32} = \dfrac{5}{16}$</li>
+            </ul>
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Réponse :</strong> $P(X = 3) = \frac{5}{16} = 0,3125$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : QCM</h3>
+        <p><strong>Énoncé :</strong> Un élève répond au hasard à un QCM de 10 questions avec 4 choix par question. Quelle est la probabilité qu'il ait exactement 6 bonnes réponses ?</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:8px 0;">Pour chaque question : $p = \frac{1}{4}$ (une seule bonne réponse sur 4)</p>
+            <p style="margin:8px 0;">$X$ = nombre de bonnes réponses suit $\mathcal{B}(10, \frac{1}{4})$</p>
+            <p style="margin:8px 0;">On cherche $P(X = 6)$</p>
+            
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle P(X = 6) = \binom{10}{6} \times \left(\dfrac{1}{4}\right)^6 \times \left(\dfrac{3}{4}\right)^{4}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle P(X = 6) = 210 \times \dfrac{1}{4096} \times \dfrac{81}{256} = \dfrac{210 \times 81}{4096 \times 256}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle P(X = 6) = \dfrac{17010}{1048576} \approx 0,0162$</li>
+            </ul>
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Réponse :</strong> $P(X = 6) \approx 0,0162$ (environ 1,62%)
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Probabilités cumulées</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Probabilités "au plus" et "au moins"</h3>
+        
+        <p>Pour $X \sim \mathcal{B}(n, p)$ :</p>
+        
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>Probabilité "au plus $k$" :</strong>
+            <div style="text-align:left; margin:10px 0;">
+                $\displaystyle P(X \leq k) = P(X = 0) + P(X = 1) + \ldots + P(X = k)$
+            </div>
+        </div>
+        
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>Probabilité "au moins $k$" :</strong>
+            <div style="text-align:left; margin:10px 0;">
+                $\displaystyle P(X \geq k) = P(X = k) + P(X = k+1) + \ldots + P(X = n)$
+            </div>
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Relation utile :</strong> $P(X \geq k) = 1 - P(X \leq k-1)$
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple : Probabilités cumulées</h3>
+        <p><strong>Énoncé :</strong> Avec $X \sim \mathcal{B}(8, 0,3)$, calculer $P(X \leq 2)$ et $P(X \geq 6)$</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Calcul de $P(X \leq 2)$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle P(X \leq 2) = P(X = 0) + P(X = 1) + P(X = 2)$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle P(X = 0) = \binom{8}{0} \times 0,3^0 \times 0,7^8 = 1 \times 1 \times 0,7^8 \approx 0,0576$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle P(X = 1) = \binom{8}{1} \times 0,3^1 \times 0,7^7 = 8 \times 0,3 \times 0,7^7 \approx 0,1977$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle P(X = 2) = \binom{8}{2} \times 0,3^2 \times 0,7^6 = 28 \times 0,09 \times 0,7^6 \approx 0,2965$</li>
+            </ul>
+            <p style="margin:8px 0;">Donc $P(X \leq 2) \approx 0,0576 + 0,1977 + 0,2965 = 0,5518$</p>
+        </div>
+        
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Calcul de $P(X \geq 6)$ :</strong>
+            <p style="margin:8px 0;">$P(X \geq 6) = 1 - P(X \leq 5)$</p>
+            <p style="margin:8px 0;">(Calcul plus simple que de calculer $P(X = 6) + P(X = 7) + P(X = 8)$)</p>
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Réponse :</strong> $P(X \leq 2) \approx 0,552$ et $P(X \geq 6) = 1 - P(X \leq 5)$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Espérance et variance</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules</h3>
+        <p>Pour $X \sim \mathcal{B}(n, p)$ :</p>
+        
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Paramètre</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Formule</th>
+                    <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Interprétation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Espérance</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$E(X) = np$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Nombre moyen de succès</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Variance</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$V(X) = np(1-p)$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Dispersion des résultats</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700;">Écart-type</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">$\sigma(X) = \sqrt{np(1-p)}$</td>
+                    <td style="border:1px solid #ddd; padding:12px; text-align:center;">Écart-type des résultats</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation de l'espérance :</strong> Si on répète l'expérience un grand nombre de fois, le nombre moyen de succès sera proche de $np$.
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple de calcul</h3>
+        <p><strong>Énoncé :</strong> Calculer l'espérance et l'écart-type de $X \sim \mathcal{B}(20, 0,4)$</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle E(X) = np = 20 \times 0,4 = 8$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle V(X) = np(1-p) = 20 \times 0,4 \times 0,6 = 4,8$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \sigma(X) = \sqrt{V(X)} = \sqrt{4,8} \approx 2,19$</li>
+            </ul>
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Réponse :</strong> $E(X) = 8$ et $\sigma(X) \approx 2,19$
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Applications pratiques</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 1 : Contrôle qualité</h3>
+        <p><strong>Énoncé :</strong> Une usine produit des pièces avec 5% de défauts. On prélève 50 pièces au hasard. Quelle est la probabilité d'avoir au plus 3 pièces défectueuses ?</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:8px 0;">$X$ = nombre de pièces défectueuses suit $\mathcal{B}(50, 0,05)$</p>
+            <p style="margin:8px 0;">On cherche $P(X \leq 3) = P(X = 0) + P(X = 1) + P(X = 2) + P(X = 3)$</p>
+            
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle P(X = 0) = \binom{50}{0} \times 0,05^0 \times 0,95^{50} \approx 0,077$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle P(X = 1) = \binom{50}{1} \times 0,05^1 \times 0,95^{49} \approx 0,202$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle P(X = 2) = \binom{50}{2} \times 0,05^2 \times 0,95^{48} \approx 0,261$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle P(X = 3) = \binom{50}{3} \times 0,05^3 \times 0,95^{47} \approx 0,220$</li>
+            </ul>
+            <p style="margin:8px 0;">$P(X \leq 3) \approx 0,077 + 0,202 + 0,261 + 0,220 = 0,760$</p>
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Réponse :</strong> $P(X \leq 3) \approx 0,760$ (76% de chances)
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple 2 : Sondage</h3>
+        <p><strong>Énoncé :</strong> Un candidat a 45% d'intentions de vote. On interroge 100 personnes. Quelle est la probabilité qu'il obtienne la majorité (plus de 50 votes) ?</p>
+        
+        <p><strong>Résolution :</strong></p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:8px 0;">$X$ = nombre de votes favorables suit $\mathcal{B}(100, 0,45)$</p>
+            <p style="margin:8px 0;">On cherche $P(X \geq 51) = 1 - P(X \leq 50)$</p>
+            <p style="margin:8px 0;">Espérance : $E(X) = 100 \times 0,45 = 45$</p>
+            <p style="margin:8px 0;">Écart-type : $\sigma(X) = \sqrt{100 \times 0,45 \times 0,55} = \sqrt{24,75} \approx 4,97$</p>
+        </div>
+        
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Réponse :</strong> $P(X \geq 51) = 1 - P(X \leq 50) \approx 0,16$ (16% de chances)
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Utilisation de la calculatrice</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Calculatrices Casio</h3>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Pour calculer $P(X = k)$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">Menu STAT → DIST → BINOMIAL</li>
+                <li style="margin:0; text-align:left;">Bpd (Binomial Probability Distribution)</li>
+                <li style="margin:0; text-align:left;">Data : Variable, x = k, Numtrial = n, p = p</li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Pour calculer $P(X \leq k)$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">Menu STAT → DIST → BINOMIAL</li>
+                <li style="margin:0; text-align:left;">Bcd (Binomial Cumulative Distribution)</li>
+                <li style="margin:0; text-align:left;">Data : Variable, x = k, Numtrial = n, p = p</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Calculatrices TI</h3>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Pour calculer $P(X = k)$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">2nd → DISTR → binompdf(n, p, k)</li>
+            </ul>
+        </div>
+        
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Pour calculer $P(X \leq k)$ :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">2nd → DISTR → binomcdf(n, p, k)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Erreurs fréquentes et conseils</h2>
+    
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fef2f2; border-radius:6px; border-left:6px solid #ef4444; padding:15px; margin:12px 0;">
+            <strong>❌ Pièges à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">Confondre "exactement k" et "au plus k" : $P(X = k) \neq P(X \leq k)$</li>
+                <li style="margin:0; text-align:left;">Oublier que les répétitions doivent être indépendantes</li>
+                <li style="margin:0; text-align:left;">Se tromper dans l'identification du paramètre $p$ (succès vs échec)</li>
+                <li style="margin:0; text-align:left;">Négliger les conditions d'approximation par la loi normale</li>
+                <li style="margin:0; text-align:left;">Confondre $\displaystyle \binom{n}{k}$ et $\displaystyle \binom{k}{n}$</li>
+                <li style="margin:0; text-align:left;">Oublier de vérifier que $0 \leq k \leq n$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2;">
+                <li style="margin:0; text-align:left;">Bien identifier ce qui constitue un "succès" dans l'énoncé</li>
+                <li style="margin:0; text-align:left;">Vérifier que les conditions d'indépendance sont respectées</li>
+                <li style="margin:0; text-align:left;">Utiliser la calculatrice pour les calculs complexes</li>
+                <li style="margin:0; text-align:left;">Pour les probabilités "au moins", utiliser $P(X \geq k) = 1 - P(X \leq k-1)$</li>
+                <li style="margin:0; text-align:left;">Vérifier la cohérence des résultats (probabilités entre 0 et 1)</li>
+                <li style="margin:0; text-align:left;">Interpréter les résultats dans le contexte de l'exercice</li>
+            </ul>
+        </div>
+    </div>
+
+
+</div>
+
+===

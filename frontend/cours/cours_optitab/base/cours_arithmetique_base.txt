@@ -1,0 +1,822 @@
+=== Arithmétique
+Difficulté: medium
+Ordre: 6
+Images: division_euclidienne.png, algorithme_euclide.png
+
+Titre: Arithmétique : Divisibilité, Congruences, PGCD et Nombres Premiers
+Description: Cours complet sur l'arithmétique : divisibilité, division euclidienne, congruences, PGCD, algorithme d'Euclide, théorèmes de Bézout et Gauss, nombres premiers, décomposition en facteurs premiers, petit théorème de Fermat et applications.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Sections principales :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à VIII couvrent les concepts fondamentaux de l'arithmétique. Les parties marquées <strong>"🌟 Bonus"</strong> sont des approfondissements utiles pour enrichir votre compréhension.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Divisibilité dans ℤ</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition de la divisibilité</h3>
+        
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Divisibilité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$ et $\displaystyle b$ deux entiers relatifs. On dit que $\displaystyle b$ <strong>divise</strong> $\displaystyle a$ (ou que $\displaystyle a$ est <strong>divisible</strong> par $\displaystyle b$) s'il existe un entier relatif $\displaystyle k$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a = b \times k$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note : $\displaystyle b \mid a$ (lire "$\displaystyle b$ divise $\displaystyle a$").</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Propriétés de la divisibilité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous entiers relatifs $\displaystyle a$, $\displaystyle b$, $\displaystyle c$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle b \mid a$ et $\displaystyle c \mid b$, alors $\displaystyle c \mid a$ (transitivité)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle b \mid a$ et $\displaystyle b \mid c$, alors $\displaystyle b \mid (a + c)$ et $\displaystyle b \mid (a - c)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle b \mid a$, alors $\displaystyle b \mid (a \times k)$ pour tout entier $\displaystyle k$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle 1$ et $\displaystyle -1$ divisent tout entier</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 3 \mid 12$ car $\displaystyle 12 = 3 \times 4$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle -5 \mid 15$ car $\displaystyle 15 = (-5) \times (-3)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Les diviseurs de $\displaystyle 12$ sont : $\displaystyle \pm 1, \pm 2, \pm 3, \pm 4, \pm 6, \pm 12$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Capacité attendue : Déterminer les diviseurs d'un entier</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour déterminer tous les diviseurs d'un entier positif $\displaystyle n$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Tester tous les entiers de $\displaystyle 1$ à $\displaystyle \sqrt{n}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle d$ divise $\displaystyle n$, alors $\displaystyle \frac{n}{d}$ divise aussi $\displaystyle n$</li>
+                <li style="margin:0; text-align:left;">N'oublier pas les diviseurs négatifs si on travaille dans $\displaystyle \mathbb{Z}$</li>
+            </ol>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Division euclidienne</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème de la division euclidienne</h3>
+        
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Division euclidienne</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a \in \mathbb{Z}$ et $\displaystyle b \in \mathbb{N}^{\ast}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il existe un unique couple d'entiers $\displaystyle (q, r)$ tel que :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a = bq + r$ avec $\displaystyle 0 \leq r < b$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les entiers $\displaystyle q$ et $\displaystyle r$ sont respectivement appelés <strong>quotient</strong> et <strong>reste</strong> de la division euclidienne de $\displaystyle a$ par $\displaystyle b$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Division de $\displaystyle 23$ par $\displaystyle 5$ : $\displaystyle 23 = 5 \times 4 + 3$ (quotient $\displaystyle 4$, reste $\displaystyle 3$)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Division de $\displaystyle -17$ par $\displaystyle 4$ : $\displaystyle -17 = 4 \times (-5) + 3$ (quotient $\displaystyle -5$, reste $\displaystyle 3$)</li>
+                <li style="margin:0; text-align:left;">Division de $\displaystyle 742$ par $\displaystyle 16$ : $\displaystyle 742 = 16 \times 46 + 6$ (quotient $\displaystyle 46$, reste $\displaystyle 6$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le reste $\displaystyle r$ est toujours positif ou nul et strictement inférieur au diviseur $\displaystyle b$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle b \mid a$ si et seulement si le reste de la division euclidienne de $\displaystyle a$ par $\displaystyle b$ est nul.</p>
+        </div>
+
+        [IMAGE_1]
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Congruences dans ℤ</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition de la congruence</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Congruence modulo n</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$, $\displaystyle b$ et $\displaystyle n$ des entiers, avec $\displaystyle n \geq 2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle a$ est <strong>congru à $\displaystyle b$ modulo $\displaystyle n$</strong> si $\displaystyle n$ divise $\displaystyle a - b$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a \equiv b \pmod{n}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Caractérisation de la congruence</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les assertions suivantes sont équivalentes :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a \equiv b \pmod{n}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle n \mid (a - b)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a$ et $\displaystyle b$ ont le même reste dans la division euclidienne par $\displaystyle n$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 17 \equiv 2 \pmod{5}$ car $\displaystyle 17 - 2 = 15$ est divisible par $\displaystyle 5$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle -3 \equiv 2 \pmod{5}$ car $\displaystyle -3 - 2 = -5$ est divisible par $\displaystyle 5$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle 23 \equiv 3 \pmod{10}$ car $\displaystyle 23 = 10 \times 2 + 3$ et $\displaystyle 3 = 10 \times 0 + 3$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Compatibilité des congruences avec les opérations</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Compatibilité avec les opérations</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$, $\displaystyle b$, $\displaystyle c$, $\displaystyle d$ et $\displaystyle n$ des entiers avec $\displaystyle n \geq 2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a \equiv b \pmod{n}$ et $\displaystyle c \equiv d \pmod{n}$, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a + c \equiv b + d \pmod{n}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a - c \equiv b - d \pmod{n}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a \times c \equiv b \times d \pmod{n}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a^k \equiv b^k \pmod{n}$ pour tout entier naturel $\displaystyle k$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Comme $\displaystyle 7 \equiv 2 \pmod{5}$ et $\displaystyle 9 \equiv 4 \pmod{5}$, on a : $\displaystyle 7 + 9 = 16 \equiv 2 + 4 = 6 \equiv 1 \pmod{5}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 7 \times 9 = 63 \equiv 2 \times 4 = 8 \equiv 3 \pmod{5}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle 7^3 = 343 \equiv 2^3 = 8 \equiv 3 \pmod{5}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. PGCD de deux entiers</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition du PGCD</h3>
+        
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Plus Grand Commun Diviseur (PGCD)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$ et $\displaystyle b$ deux entiers relatifs non tous deux nuls.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>Plus Grand Commun Diviseur</strong> (PGCD) de $\displaystyle a$ et $\displaystyle b$ est le plus grand entier positif qui divise à la fois $\displaystyle a$ et $\displaystyle b$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note : $\displaystyle \mathrm{PGCD}(a, b)$ ou $\displaystyle a \wedge b$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Propriétés du PGCD</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous entiers $\displaystyle a$, $\displaystyle b$, $\displaystyle c$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \mathrm{PGCD}(a, b) = \mathrm{PGCD}(b, a)$ (commutativité)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \mathrm{PGCD}(a, b) = \mathrm{PGCD}(|a|, |b|)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \mathrm{PGCD}(a, 0) = |a|$ si $\displaystyle a \neq 0$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \mathrm{PGCD}(a, b) = \mathrm{PGCD}(a, b + ka)$ pour tout entier $\displaystyle k$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \mathrm{PGCD}(12, 18)$ : $\displaystyle 18 = 12 \times 1 + 6$, $\displaystyle 12 = 6 \times 2 + 0$, donc $\displaystyle \mathrm{PGCD}(12, 18) = 6$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \mathrm{PGCD}(15, 7)$ : $\displaystyle 15 = 7 \times 2 + 1$, $\displaystyle 7 = 1 \times 7 + 0$, donc $\displaystyle \mathrm{PGCD}(15, 7) = 1$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \mathrm{PGCD}(-24, 36) = \mathrm{PGCD}(24, 36)$ : $\displaystyle 36 = 24 \times 1 + 12$, $\displaystyle 24 = 12 \times 2 + 0$, donc $\displaystyle \mathrm{PGCD}(-24, 36) = 12$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Capacité attendue : Déterminer le PGCD de deux entiers</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut déterminer le PGCD par :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">La liste des diviseurs communs (méthode longue)</li>
+                <li style="margin:0; text-align:left;">L'algorithme d'Euclide (méthode efficace)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Algorithme d'Euclide</h3>
+        
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Algorithme d'Euclide</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour calculer $\displaystyle \mathrm{PGCD}(a, b)$ avec $\displaystyle a \geq b > 0$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On effectue des divisions euclidiennes successives jusqu'à obtenir un reste nul :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle a = bq_1 + r_1$ avec $\displaystyle 0 \leq r_1 < b$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle b = r_1q_2 + r_2$ avec $\displaystyle 0 \leq r_2 < r_1$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle r_1 = r_2q_3 + r_3$ avec $\displaystyle 0 \leq r_3 < r_2$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">... et ainsi de suite jusqu'à $\displaystyle r_n = 0$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle \mathrm{PGCD}(a, b) = r_{n-1}$ (le dernier reste non nul).</p>
+        </div>
+       [IMAGE_2]
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple : Calculer $\displaystyle \mathrm{PGCD}(252, 198)$</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Étape 1 :</strong> Division euclidienne de $\displaystyle 252$ par $\displaystyle 198$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 252 = 198 \times 1 + 54$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Quotient : $\displaystyle 1$, Reste : $\displaystyle 54$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 2 :</strong> Division euclidienne de $\displaystyle 198$ par $\displaystyle 54$ (le reste précédent)</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 198 = 54 \times 3 + 36$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Quotient : $\displaystyle 3$, Reste : $\displaystyle 36$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 3 :</strong> Division euclidienne de $\displaystyle 54$ par $\displaystyle 36$ (le reste précédent)</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 54 = 36 \times 1 + 18$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Quotient : $\displaystyle 1$, Reste : $\displaystyle 18$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 4 :</strong> Division euclidienne de $\displaystyle 36$ par $\displaystyle 18$ (le reste précédent)</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 36 = 18 \times 2 + 0$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Quotient : $\displaystyle 2$, Reste : $\displaystyle 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 5 :</strong> Conclusion</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Le dernier reste non nul est $\displaystyle 18$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Donc $\displaystyle \mathrm{PGCD}(252, 198) = 18$</p>
+            </div>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">def</span> pgcd_euclide(a, b):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">while</span> b != <span style="color:#bd93f9;">0</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a, b = b, a % b<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#bd93f9;">abs</span>(a)
+        </div>
+
+ 
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Couples d'entiers premiers entre eux</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Entiers premiers entre eux</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux entiers relatifs $\displaystyle a$ et $\displaystyle b$ sont dits <strong>premiers entre eux</strong> si leur PGCD est égal à $\displaystyle 1$ :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \mathrm{PGCD}(a, b) = 1$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 15$ et $\displaystyle 7$ sont premiers entre eux car $\displaystyle \mathrm{PGCD}(15, 7) = 1$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 12$ et $\displaystyle 18$ ne sont pas premiers entre eux car $\displaystyle \mathrm{PGCD}(12, 18) = 6 \neq 1$</li>
+                <li style="margin:0; text-align:left;">Deux nombres premiers distincts sont toujours premiers entre eux</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Théorème de Bézout</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème de Bézout</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème de Bézout</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$ et $\displaystyle b$ deux entiers relatifs non tous deux nuls.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il existe des entiers relatifs $\displaystyle x$ et $\displaystyle y$ tels que :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:350px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle ax + by = \mathrm{PGCD}(a, b)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un tel couple $\displaystyle (x, y)$ est appelé <strong>couple de Bézout</strong>.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise l'algorithme d'Euclide étendu :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En remontant les divisions euclidiennes de l'algorithme d'Euclide, on exprime chaque reste comme combinaison linéaire de $\displaystyle a$ et $\displaystyle b$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le dernier reste non nul (qui est le PGCD) s'exprime donc comme combinaison linéaire de $\displaystyle a$ et $\displaystyle b$. ✓</p>
+        </div>
+
+        <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+            <h3 style="color:#34495e; margin-top:0;">Algorithme d'Euclide étendu</h3>
+
+            <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+                <strong>📐 Méthode - Algorithme d'Euclide étendu</strong>
+                <p style="margin:8px 0; text-align:left; font-size:1em;">Pour trouver un couple de Bézout $\displaystyle (x, y)$ tel que $\displaystyle ax + by = \mathrm{PGCD}(a, b)$ :</p>
+                <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                    <li style="margin:0 0 12px 0; text-align:left;"><strong>Étape 1 :</strong> Appliquer l'algorithme d'Euclide pour calculer $\displaystyle \mathrm{PGCD}(a, b)$</li>
+                    <li style="margin:0 0 12px 0; text-align:left;"><strong>Étape 2 :</strong> Remonter les divisions euclidiennes en exprimant chaque reste comme combinaison linéaire de $\displaystyle a$ et $\displaystyle b$</li>
+                    <li style="margin:0 0 12px 0; text-align:left;"><strong>Étape 3 :</strong> Le dernier reste non nul (le PGCD) s'exprime finalement comme $\displaystyle ax + by$</li>
+                </ol>
+            </div>
+
+            <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+                <strong>Exemple détaillé : Trouver un couple de Bézout pour $\displaystyle \mathrm{PGCD}(252, 198) = 18$</strong>
+                <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Étape 1 :</strong> Algorithme d'Euclide</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 252 = 198 \times 1 + 54$</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 198 = 54 \times 3 + 36$</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 54 = 36 \times 1 + 18$</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 36 = 18 \times 2 + 0$</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Donc $\displaystyle \mathrm{PGCD}(252, 198) = 18$</p>
+                <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Étape 2 :</strong> Remontée (on exprime chaque reste en fonction de $\displaystyle 252$ et $\displaystyle 198$)</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">De $\displaystyle 54 = 36 \times 1 + 18$, on a : $\displaystyle 18 = 54 - 36 \times 1$</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">On remplace $\displaystyle 36$ par $\displaystyle 198 - 54 \times 3$ :</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 18 = 54 - (198 - 54 \times 3) \times 1 = 54 \times 4 - 198$</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">On remplace $\displaystyle 54$ par $\displaystyle 252 - 198$ :</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 18 = (252 - 198) \times 4 - 198 = 252 \times 4 - 198 \times 5$</p>
+                <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Étape 3 :</strong> Conclusion</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 18 = 252 \times 4 + 198 \times (-5)$</p>
+                <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Un couple de Bézout est $\displaystyle (4, -5)$.</p>
+            </div>
+        </div>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">def</span> bezout(a, b):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> b == <span style="color:#bd93f9;">0</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> a, <span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">0</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;pgcd, x1, y1 = bezout(b, a % b)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;x = y1<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;y = x1 - (a // b) * y1<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> pgcd, x, y
+            </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Caractérisation des entiers premiers entre eux</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux entiers $\displaystyle a$ et $\displaystyle b$ sont premiers entre eux si et seulement s'il existe des entiers $\displaystyle x$ et $\displaystyle y$ tels que :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle ax + by = 1$</p>
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Capacité attendue : Déterminer un inverse de $\displaystyle a$ modulo $\displaystyle n$ lorsque $\displaystyle a$ et $\displaystyle n$ sont premiers entre eux</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \mathrm{PGCD}(a, n) = 1$, alors il existe un entier $\displaystyle x$ tel que $\displaystyle ax \equiv 1 \pmod{n}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour trouver cet inverse, on utilise l'algorithme d'Euclide étendu pour obtenir un couple de Bézout $\displaystyle (x, y)$ tel que $\displaystyle ax + ny = 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle ax \equiv 1 \pmod{n}$, donc $\displaystyle x$ est un inverse de $\displaystyle a$ modulo $\displaystyle n$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple détaillé : Trouver l'inverse de $\displaystyle 3$ modulo $\displaystyle 7$</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Étape 1 :</strong> Vérifier que l'inverse existe</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">On calcule $\displaystyle \mathrm{PGCD}(3, 7)$ : $\displaystyle 7 = 3 \times 2 + 1$ et $\displaystyle 3 = 1 \times 3 + 0$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Donc $\displaystyle \mathrm{PGCD}(3, 7) = 1$ ✓</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Comme $\displaystyle \mathrm{PGCD}(3, 7) = 1$, l'inverse de $\displaystyle 3$ modulo $\displaystyle 7$ existe.</p>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Étape 2 :</strong> Appliquer l'algorithme d'Euclide étendu</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">On cherche $\displaystyle x$ et $\displaystyle y$ tels que $\displaystyle 3x + 7y = 1$.</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">On remonte l'algorithme d'Euclide :</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">De $\displaystyle 7 = 3 \times 2 + 1$, on a : $\displaystyle 1 = 7 - 3 \times 2$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Donc $\displaystyle 1 = 3 \times (-2) + 7 \times 1$</p>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Étape 3 :</strong> Identifier l'inverse</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">De $\displaystyle 1 = 3 \times (-2) + 7 \times 1$, on a : $\displaystyle 3 \times (-2) = 1 - 7 \times 1$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Donc $\displaystyle 3 \times (-2) \equiv 1 \pmod{7}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Comme $\displaystyle -2 \equiv 5 \pmod{7}$, on a aussi : $\displaystyle 3 \times 5 \equiv 1 \pmod{7}$</p>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Étape 4 :</strong> Vérification</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 3 \times 5 = 15 = 7 \times 2 + 1 \equiv 1 \pmod{7}$ ✓</p>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Conclusion :</strong> L'inverse de $\displaystyle 3$ modulo $\displaystyle 7$ est $\displaystyle 5$ (on note $\displaystyle 3^{-1} \equiv 5 \pmod{7}$).</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Résolution d'une congruence linéaire</h3>
+        
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Capacité attendue : Résoudre une congruence $\displaystyle ax \equiv b \pmod{n}$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle ax \equiv b \pmod{n}$, on suit cette méthode rigoureuse :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Poser $\displaystyle d = \mathrm{PGCD}(a, n)$</strong></li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Si $\displaystyle d \nmid b$ :</strong> la congruence n'a <strong>aucune solution</strong>.</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Si $\displaystyle d = 1$ :</strong>
+                    <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+                        <li style="margin:0 0 8px 0; text-align:left;">$\displaystyle a$ est inversible modulo $\displaystyle n$</li>
+                        <li style="margin:0 0 8px 0; text-align:left;">On trouve l'inverse de $\displaystyle a$ modulo $\displaystyle n$ avec l'algorithme d'Euclide étendu</li>
+                        <li style="margin:0; text-align:left;">On en déduit la <strong>solution unique</strong> modulo $\displaystyle n$</li>
+                    </ul>
+                </li>
+                <li style="margin:0; text-align:left;"><strong>Si $\displaystyle d > 1$ et $\displaystyle d \mid b$ :</strong>
+                    <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+                        <li style="margin:0 0 8px 0; text-align:left;">On simplifie en divisant par $\displaystyle d$ : $\displaystyle a' = \frac{a}{d}$, $\displaystyle b' = \frac{b}{d}$, $\displaystyle n' = \frac{n}{d}$</li>
+                        <li style="margin:0 0 8px 0; text-align:left;">On résout $\displaystyle a' x \equiv b' \pmod{n'}$, où $\displaystyle \mathrm{PGCD}(a', n') = 1$</li>
+                        <li style="margin:0; text-align:left;">On trouve une solution modulo $\displaystyle n'$, puis on en déduit les <strong>$\displaystyle d$ solutions</strong> modulo $\displaystyle n$</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 : Cas $\displaystyle \mathrm{PGCD}(a, n) = 1$ (solution unique)</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Résoudre $\displaystyle 3x \equiv 2 \pmod{7}$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 1 :</strong> Calculer $\displaystyle d = \mathrm{PGCD}(3, 7)$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 7 = 3 \times 2 + 1$ et $\displaystyle 3 = 1 \times 3 + 0$, donc $\displaystyle \mathrm{PGCD}(3, 7) = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 2 :</strong> Comme $\displaystyle d = 1$, $\displaystyle 3$ est inversible modulo $\displaystyle 7$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 3 :</strong> Trouver l'inverse de $\displaystyle 3$ modulo $\displaystyle 7$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">On cherche $\displaystyle u$ tel que $\displaystyle 3u \equiv 1 \pmod{7}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">En testant : $\displaystyle 3 \times 1 = 3 \not\equiv 1$, $\displaystyle 3 \times 2 = 6 \not\equiv 1$, $\displaystyle 3 \times 3 = 9 \equiv 2 \not\equiv 1$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 3 \times 5 = 15 = 7 \times 2 + 1 \equiv 1 \pmod{7}$ ✓</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Donc $\displaystyle 5$ est l'inverse de $\displaystyle 3$ modulo $\displaystyle 7$ (on note $\displaystyle 3^{-1} \equiv 5 \pmod{7}$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 4 :</strong> Multiplier les deux membres de la congruence par cet inverse</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 3x \equiv 2 \pmod{7}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 5 \times 3x \equiv 5 \times 2 \pmod{7}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle (5 \times 3)x \equiv 10 \pmod{7}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 1 \times x \equiv 3 \pmod{7}$ (car $\displaystyle 10 = 7 + 3$)</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle x \equiv 3 \pmod{7}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 5 :</strong> Vérification</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Pour $\displaystyle x = 3$ : $\displaystyle 3 \times 3 = 9 = 7 + 2 \equiv 2 \pmod{7}$ ✓</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Conclusion :</strong> Les solutions sont les entiers de la forme $\displaystyle x = 7k + 3$ avec $\displaystyle k \in \mathbb{Z}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>Par exemple : $\displaystyle x = 3, 10, 17, -4, -11, \ldots$</em></p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 : Cas $\displaystyle \mathrm{PGCD}(a, n) = d > 1$ avec $\displaystyle d \mid b$ (plusieurs solutions)</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Résoudre $\displaystyle 6x \equiv 4 \pmod{10}$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 1 :</strong> Calculer $\displaystyle d = \mathrm{PGCD}(6, 10)$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 10 = 6 \times 1 + 4$, $\displaystyle 6 = 4 \times 1 + 2$, $\displaystyle 4 = 2 \times 2 + 0$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Donc $\displaystyle \mathrm{PGCD}(6, 10) = 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 2 :</strong> Vérifier si $\displaystyle d \mid b$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle d = 2$ et $\displaystyle b = 4$, donc $\displaystyle 2 \mid 4$ ✓</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Il y aura exactement $\displaystyle d = 2$ solutions modulo $\displaystyle 10$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 3 :</strong> Simplifier la congruence en divisant par $\displaystyle d = 2$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 6x \equiv 4 \pmod{10}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">On divise par $\displaystyle 2$ : $\displaystyle \frac{6}{2}x \equiv \frac{4}{2} \pmod{\frac{10}{2}}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 3x \equiv 2 \pmod{5}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">On vérifie : $\displaystyle \mathrm{PGCD}(3, 5) = 1$ ✓ (la nouvelle congruence est bien inversible)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 4 :</strong> Résoudre $\displaystyle 3x \equiv 2 \pmod{5}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">L'inverse de $\displaystyle 3$ modulo $\displaystyle 5$ : $\displaystyle 3 \times 2 = 6 \equiv 1 \pmod{5}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Donc $\displaystyle 3^{-1} \equiv 2 \pmod{5}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 3x \equiv 2 \pmod{5}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle 2 \times 3x \equiv 2 \times 2 \pmod{5}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">$\displaystyle x \equiv 4 \pmod{5}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 5 :</strong> Remonter aux solutions modulo $\displaystyle 10$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">On a $\displaystyle x \equiv 4 \pmod{5}$, donc $\displaystyle x = 5k + 4$ avec $\displaystyle k \in \mathbb{Z}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">On cherche les valeurs de $\displaystyle x$ modulo $\displaystyle 10$ :</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Pour $\displaystyle k = 0$ : $\displaystyle x = 4 \Rightarrow x \equiv 4 \pmod{10}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Pour $\displaystyle k = 1$ : $\displaystyle x = 9 \Rightarrow x \equiv 9 \pmod{10}$</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Pour $\displaystyle k = 2$ : $\displaystyle x = 14 \equiv 4 \pmod{10}$ (déjà trouvé)</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Les solutions se répètent par cycle de $\displaystyle 2$ (car $\displaystyle d = 2$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 6 :</strong> Vérification</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Pour $\displaystyle x = 4$ : $\displaystyle 6 \times 4 = 24 = 10 \times 2 + 4 \equiv 4 \pmod{10}$ ✓</p>
+            <p style="margin:8px 0; padding-left:20px; text-align:left; font-size:1em;">Pour $\displaystyle x = 9$ : $\displaystyle 6 \times 9 = 54 = 10 \times 5 + 4 \equiv 4 \pmod{10}$ ✓</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Conclusion :</strong> Les solutions modulo $\displaystyle 10$ sont : $\displaystyle x \equiv 4 \pmod{10}$ et $\displaystyle x \equiv 9 \pmod{10}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>On a bien $\displaystyle d = 2$ solutions distinctes modulo $\displaystyle 10$.</em></p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Théorème de Gauss</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème de Gauss</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème de Gauss</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle a$, $\displaystyle b$ et $\displaystyle c$ des entiers relatifs.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a$ divise le produit $\displaystyle bc$ et si $\displaystyle a$ et $\displaystyle b$ sont premiers entre eux, alors $\displaystyle a$ divise $\displaystyle c$.</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (a \mid bc \text{ et } \mathrm{PGCD}(a, b) = 1) \Rightarrow a \mid c$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle \mathrm{PGCD}(a, b) = 1$, d'après le théorème de Bézout, il existe des entiers $\displaystyle x$ et $\displaystyle y$ tels que $\displaystyle ax + by = 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En multipliant par $\displaystyle c$ : $\displaystyle acx + bcy = c$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle a \mid bc$, il existe un entier $\displaystyle k$ tel que $\displaystyle bc = ak$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle c = acx + aky = a(cx + ky)$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">Ainsi $\displaystyle a \mid c$. ✓</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Corollaire du théorème de Gauss</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si un nombre premier $\displaystyle p$ divise le produit $\displaystyle ab$, alors $\displaystyle p$ divise $\displaystyle a$ ou $\displaystyle p$ divise $\displaystyle b$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Si $\displaystyle 7 \mid 15n$ et $\displaystyle \mathrm{PGCD}(7, 15) = 1$, alors $\displaystyle 7 \mid n$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Nombres premiers</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Nombre premier</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>nombre premier</strong> est un entier naturel supérieur ou égal à $\displaystyle 2$ qui n'admet que deux diviseurs positifs : $\displaystyle 1$ et lui-même.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un entier qui n'est pas premier est dit <strong>composé</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Nombres premiers : $\displaystyle 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, \ldots$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Nombres composés : $\displaystyle 4 = 2^2$, $\displaystyle 6 = 2 \times 3$, $\displaystyle 8 = 2^3$, $\displaystyle 9 = 3^2$, $\displaystyle 10 = 2 \times 5$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle 1$ n'est ni premier ni composé</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - L'ensemble des nombres premiers est infini</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il existe une infinité de nombres premiers.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Supposons par l'absurde qu'il n'existe qu'un nombre fini de nombres premiers : $\displaystyle p_1, p_2, \ldots, p_n$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Considérons le nombre $\displaystyle N = p_1 \times p_2 \times \cdots \times p_n + 1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce nombre $\displaystyle N$ est strictement supérieur à $\displaystyle 1$, donc il admet au moins un diviseur premier $\displaystyle p$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Mais $\displaystyle p$ ne peut être égal à aucun des $\displaystyle p_i$ (sinon $\displaystyle p$ diviserait $\displaystyle N - p_1 \times \cdots \times p_n = 1$, ce qui est impossible).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Contradiction ! Donc il existe une infinité de nombres premiers. ✓</p>
+            </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Capacité attendue : Étudier la primalité de certains nombres</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tester si un entier $\displaystyle n \geq 2$ est premier :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Tester la divisibilité par tous les entiers de $\displaystyle 2$ à $\displaystyle \sqrt{n}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si aucun ne divise $\displaystyle n$, alors $\displaystyle n$ est premier</li>
+                <li style="margin:0; text-align:left;">Sinon, $\displaystyle n$ est composé</li>
+            </ol>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Décomposition en facteurs premiers</h3>
+        
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Existence et unicité de la décomposition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Tout entier naturel $\displaystyle n \geq 2$ peut s'écrire de manière unique (à l'ordre près) comme produit de nombres premiers :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle p_1 < p_2 < \cdots < p_k$ sont des nombres premiers et $\displaystyle \alpha_1, \alpha_2, \ldots, \alpha_k$ sont des entiers naturels non nuls.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 12 = 2^2 \times 3$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 60 = 2^2 \times 3 \times 5$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 100 = 2^2 \times 5^2$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle 231 = 3 \times 7 \times 11$</li>
+            </ul>
+        </div>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">def</span> decomposition_facteurs_premiers(n):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;facteurs = {}<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;d = <span style="color:#bd93f9;">2</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">while</span> d * d <= n:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">while</span> n % d == <span style="color:#bd93f9;">0</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facteurs[d] = facteurs.get(d, <span style="color:#bd93f9;">0</span>) + <span style="color:#bd93f9;">1</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n //= d<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d += <span style="color:#bd93f9;">1</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> n > <span style="color:#bd93f9;">1</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facteurs[n] = facteurs.get(n, <span style="color:#bd93f9;">0</span>) + <span style="color:#bd93f9;">1</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> facteurs
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. 🌟 Approfondissement - Petit théorème de Fermat</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement :</strong> Cette section est un approfondissement utile pour comprendre certaines applications (cryptographie, tests de primalité) et enrichit votre culture mathématique.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème</h3>
+        
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Petit théorème de Fermat</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle p$ un nombre premier et $\displaystyle a$ un entier non divisible par $\displaystyle p$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a^{p-1} \equiv 1 \pmod{p}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ou de manière équivalente, pour tout entier $\displaystyle a$ :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle a^p \equiv a \pmod{p}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Pour $\displaystyle p = 5$ et $\displaystyle a = 2$ : $\displaystyle 2^4 = 16 \equiv 1 \pmod{5}$ ✓</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Pour $\displaystyle p = 7$ et $\displaystyle a = 3$ : $\displaystyle 3^6 = 729 \equiv 1 \pmod{7}$ (car $\displaystyle 729 = 7 \times 104 + 1$)</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle p = 3$ : $\displaystyle 4^3 = 64 \equiv 4 \pmod{3}$ (car $\displaystyle 64 = 3 \times 21 + 1$ et $\displaystyle 4 \equiv 1 \pmod{3}$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Application :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le petit théorème de Fermat est utilisé dans les tests de primalité et dans certains systèmes de cryptographie (comme RSA).</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Équations diophantiennes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et résolution</h3>
+        
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Équation diophantienne</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>équation diophantienne</strong> est une équation dont on cherche les solutions en nombres entiers.</p>
+            </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Capacité attendue : Résoudre des équations diophantiennes simples</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre une équation diophantienne linéaire $\displaystyle ax + by = c$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Vérifier que $\displaystyle \mathrm{PGCD}(a, b) \mid c$ (condition nécessaire d'existence)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Trouver une solution particulière $\displaystyle (x_0, y_0)$ en utilisant l'algorithme d'Euclide étendu</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Exprimer toutes les solutions en fonction de cette solution particulière</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Résoudre dans $\displaystyle \mathbb{Z}^2$ : $\displaystyle 3x + 5y = 7$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle \mathrm{PGCD}(3, 5) = 1$ et $\displaystyle 1 \mid 7$, il existe des solutions.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une solution particulière : $\displaystyle 3 \times (-1) + 5 \times 2 = 7$, donc $\displaystyle (x_0, y_0) = (-1, 2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Toutes les solutions sont de la forme :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \begin{cases} x = -1 + 5k \\ y = 2 - 3k \end{cases}$ avec $\displaystyle k \in \mathbb{Z}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. 🌟 Bonus - Algorithmes et approfondissements</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement :</strong> Les sections suivantes enrichissent votre culture mathématique et votre compréhension approfondie de l'arithmétique.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Crible d'Ératosthène</h3>
+        
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Algorithme - Crible d'Ératosthène</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour trouver tous les nombres premiers inférieurs à $\displaystyle n$ :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Écrire tous les entiers de $\displaystyle 2$ à $\displaystyle n$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Barrer tous les multiples de $\displaystyle 2$ (sauf $\displaystyle 2$)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Prendre le premier nombre non barré (c'est un nombre premier)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Barrer tous ses multiples</li>
+                <li style="margin:0; text-align:left;">Répéter jusqu'à avoir traité tous les nombres jusqu'à $\displaystyle \sqrt{n}$</li>
+            </ol>
+        </div>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">def</span> crible_eratosthene(n):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;premiers = [<span style="color:#bd93f9;">True</span>] * (n + <span style="color:#bd93f9;">1</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;premiers[<span style="color:#bd93f9;">0</span>] = premiers[<span style="color:#bd93f9;">1</span>] = <span style="color:#bd93f9;">False</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#bd93f9;">range</span>(<span style="color:#bd93f9;">2</span>, <span style="color:#bd93f9;">int</span>(n**<span style="color:#bd93f9;">0.5</span>) + <span style="color:#bd93f9;">1</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> premiers[i]:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> j <span style="color:#ff79c6;">in</span> <span style="color:#bd93f9;">range</span>(i*i, n + <span style="color:#bd93f9;">1</span>, i):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;premiers[j] = <span style="color:#bd93f9;">False</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> [i <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#bd93f9;">range</span>(n + <span style="color:#bd93f9;">1</span>) <span style="color:#ff79c6;">if</span> premiers[i]]
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Tests de divisibilité</h3>
+        
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Tests de divisibilité classiques</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En utilisant les congruences, on peut établir des tests de divisibilité :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Divisibilité par 2 :</strong> Un nombre est divisible par $\displaystyle 2$ si son chiffre des unités est pair</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Divisibilité par 3 :</strong> Un nombre est divisible par $\displaystyle 3$ si la somme de ses chiffres est divisible par $\displaystyle 3$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Divisibilité par 4 :</strong> Un nombre est divisible par $\displaystyle 4$ si le nombre formé par ses deux derniers chiffres est divisible par $\displaystyle 4$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Divisibilité par 5 :</strong> Un nombre est divisible par $\displaystyle 5$ si son chiffre des unités est $\displaystyle 0$ ou $\displaystyle 5$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Divisibilité par 9 :</strong> Un nombre est divisible par $\displaystyle 9$ si la somme de ses chiffres est divisible par $\displaystyle 9$</li>
+                <li style="margin:0; text-align:left;"><strong>Divisibilité par 11 :</strong> Un nombre est divisible par $\displaystyle 11$ si la différence entre la somme des chiffres de rang impair et la somme des chiffres de rang pair est divisible par $\displaystyle 11$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Test de divisibilité par 3 :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un nombre s'écrit $\displaystyle n = a_k \times 10^k + a_{k-1} \times 10^{k-1} + \cdots + a_1 \times 10 + a_0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle 10 \equiv 1 \pmod{3}$, on a $\displaystyle 10^m \equiv 1 \pmod{3}$ pour tout $\displaystyle m$.</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">Donc $\displaystyle n \equiv a_k + a_{k-1} + \cdots + a_1 + a_0 \pmod{3}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ainsi $\displaystyle n$ est divisible par $\displaystyle 3$ si et seulement si la somme de ses chiffres l'est.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Applications au chiffrement</h3>
+        
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Applications pratiques</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'arithmétique est utilisée dans de nombreux systèmes de codage et chiffrement :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Codes barres, code ISBN, clé RIB :</strong> Utilisation de congruences pour détecter les erreurs</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Chiffrement affine :</strong> Utilise des inverses modulo $\displaystyle n$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Chiffrement RSA :</strong> Basé sur le petit théorème de Fermat et la difficulté de factoriser de grands nombres</li>
+                <li style="margin:0; text-align:left;"><strong>Codes correcteurs :</strong> Utilisation de l'arithmétique modulaire pour détecter et corriger des erreurs</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Racines rationnelles d'un polynôme</h3>
+        
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Racines rationnelles</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle P(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$ un polynôme à coefficients entiers.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \frac{p}{q}$ (avec $\displaystyle \mathrm{PGCD}(p, q) = 1$) est une racine rationnelle de $\displaystyle P$, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle p$ divise $\displaystyle a_0$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle q$ divise $\displaystyle a_n$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Trouver les racines rationnelles de $\displaystyle P(x) = 2x^3 - 5x^2 + x + 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les diviseurs de $\displaystyle a_0 = 2$ sont : $\displaystyle \pm 1, \pm 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les diviseurs de $\displaystyle a_3 = 2$ sont : $\displaystyle \pm 1, \pm 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les candidats sont : $\displaystyle \pm 1, \pm 2, \pm \frac{1}{2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On teste : $\displaystyle P(2) = 0$, donc $\displaystyle 2$ est racine.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XII. Erreurs fréquentes et conseils</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Confondre "divise" et "est divisible par"</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Oublier que le reste dans la division euclidienne doit être positif</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Confondre $\displaystyle a \equiv b \pmod{n}$ et $\displaystyle a = b$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Oublier de vérifier que $\displaystyle \mathrm{PGCD}(a, n) = 1$ avant de chercher un inverse modulo $\displaystyle n$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Penser que deux nombres premiers sont toujours premiers entre eux (vrai, mais attention à la formulation)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Oublier que $\displaystyle 1$ n'est pas un nombre premier</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Ne pas vérifier la condition d'existence pour les équations diophantiennes</li>
+                <li style="margin:0; text-align:left;">Confondre le petit théorème de Fermat avec le grand théorème de Fermat</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Toujours vérifier les conditions d'existence avant de résoudre une équation</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser l'algorithme d'Euclide pour calculer efficacement le PGCD</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Pour les congruences, bien utiliser les propriétés de compatibilité</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Pour les équations diophantiennes, toujours donner la forme générale des solutions</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Vérifier systématiquement les résultats obtenus</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Mémoriser les petits nombres premiers : $\displaystyle 2, 3, 5, 7, 11, 13, 17, 19, 23, 29$</li>
+                <li style="margin:0; text-align:left;">Penser à utiliser la décomposition en facteurs premiers pour simplifier les calculs</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XIII. Tableau récapitulatif</h2>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Formules et définitions à retenir</strong>
+            <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                <thead>
+                    <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:35%;">Notion</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Définition / Formule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Divisibilité</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle b \mid a$ si $\displaystyle \exists k \in \mathbb{Z}, a = b \times k$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Division euclidienne</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle a = bq + r$ avec $\displaystyle 0 \leq r < b$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Congruence</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle a \equiv b \pmod{n} \Leftrightarrow n \mid (a - b)$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>PGCD</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Plus grand diviseur commun positif de $\displaystyle a$ et $\displaystyle b$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Nombres premiers entre eux</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle \mathrm{PGCD}(a, b) = 1$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Théorème de Bézout</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle \exists (x, y) \in \mathbb{Z}^2, ax + by = \mathrm{PGCD}(a, b)$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Théorème de Gauss</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle (a \mid bc \text{ et } \mathrm{PGCD}(a, b) = 1) \Rightarrow a \mid c$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Nombre premier</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Entier $\displaystyle \geq 2$ ayant exactement deux diviseurs positifs</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Décomposition en facteurs premiers</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$ (unique)</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Petit théorème de Fermat</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Si $\displaystyle p$ premier et $\displaystyle p \nmid a$, alors $\displaystyle a^{p-1} \equiv 1 \pmod{p}$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+===
+
+

@@ -1,0 +1,501 @@
+=== Continuité des Fonctions
+Difficulté: medium
+Ordre: 4
+Images: continuite_vs_discontinuite.png, discontinuite_evitable.png, discontinuite_saut.png, discontinuite_infinie.png
+
+Titre: Continuité des Fonctions : Définition, Propriétés et Applications
+Description: Cours complet sur la continuité des fonctions : définition par les limites, continuité sur un intervalle, lien avec la dérivabilité, image d'une suite convergente, théorème des valeurs intermédiaires et applications.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>✅ Sections principales :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à V couvrent les concepts fondamentaux de la continuité. La section VI (Algorithmes) et les encadrés marqués <strong>"🌟 Bonus"</strong> sont des approfondissements utiles qui enrichissent votre compréhension.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition de la continuité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Continuité en un point</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Continuité en un point</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction $\displaystyle f$ est <strong>continue en un point $\displaystyle a$</strong> si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \lim_{x \to a} f(x) = f(a)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette définition utilise la notion de limite vue dans le chapitre précédent.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation intuitive :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">La limite existe et égale $\displaystyle f(a)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">La fonction ne présente pas de "trou" ou de "saut" en $\displaystyle a$</li>
+                <li style="margin:0; text-align:left;">La courbe peut être tracée sans lever le crayon en $\displaystyle a$</li>
+            </ul>
+        </div>
+
+        <div style="text-align:center; margin:20px 0;">
+            [IMAGE_1]
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = x^2$ est continue en $\displaystyle 2$ car $\displaystyle \lim_{x \to 2} x^2 = 4 = f(2)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = \frac{1}{x}$ n'est pas continue en $\displaystyle 0$ car $\displaystyle f(0)$ n'est pas définie</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f(x) = \begin{cases} x+1 & \text{si } x \neq 1 \\ 3 & \text{si } x = 1 \end{cases}$ n'est pas continue en $\displaystyle 1$ car $\displaystyle \lim_{x \to 1} f(x) = 2 \neq f(1) = 3$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Continuité sur un intervalle</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Continuité sur un intervalle</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Sur un intervalle ouvert $\displaystyle ]a, b[$ :</strong> $\displaystyle f$ est continue sur $\displaystyle ]a, b[$ si elle est continue en tout point de $\displaystyle ]a, b[$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Sur un intervalle fermé $\displaystyle [a, b]$ :</strong> $\displaystyle f$ est continue sur $\displaystyle [a, b]$ si elle est continue sur $\displaystyle ]a, b[$ et si $\displaystyle \lim_{x \to a^+} f(x) = f(a)$ et $\displaystyle \lim_{x \to b^-} f(x) = f(b)$</li>
+                <li style="margin:0; text-align:left;"><strong>Sur un intervalle semi-ouvert :</strong> $\displaystyle f$ est continue sur $\displaystyle [a, b[$ si elle est continue sur $\displaystyle ]a, b[$ et si $\displaystyle \lim_{x \to a^+} f(x) = f(a)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = x^2$ est continue sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = \frac{1}{x}$ est continue sur $\displaystyle ]0, +\infty[$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f(x) = \sqrt{x}$ est continue sur $\displaystyle [0, +\infty[$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérations sur les fonctions continues</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Opérations sur les fonctions continues</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ et $\displaystyle g$ sont continues en $\displaystyle a$, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f + g$ est continue en $\displaystyle a$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f \times g$ est continue en $\displaystyle a$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle g(a) \neq 0$, alors $\displaystyle \frac{f}{g}$ est continue en $\displaystyle a$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle g$ est continue en $\displaystyle a$ et $\displaystyle f$ est continue en $\displaystyle g(a)$, alors $\displaystyle f \circ g$ est continue en $\displaystyle a$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'application :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = x^2 + e^x$ est continue sur $\displaystyle \mathbb{R}$ (somme de fonctions continues)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = x \times \ln(x)$ est continue sur $\displaystyle ]0, +\infty[$ (produit de fonctions continues)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = \frac{x^2 + 1}{x - 1}$ est continue sur $\displaystyle \mathbb{R} \setminus \{1\}$ (quotient de fonctions continues)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f(x) = e^{x^2}$ est continue sur $\displaystyle \mathbb{R}$ (composition de fonctions continues)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Fonctions usuelles continues</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Tableau récapitulatif - Fonctions continues sur leur domaine de définition</strong></p>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:40%;">Fonction</th>
+                        <th style="border:1px solid #ddd; padding:12px;">Domaine de continuité</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;">Polynômes : $\displaystyle x \mapsto ax^n + \cdots + b$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;">Fonctions rationnelles : $\displaystyle \frac{P(x)}{Q(x)}$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \{x \mid Q(x) \neq 0\}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \mapsto \sqrt{x}$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle [0, +\infty[$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \mapsto e^x$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \mapsto \ln(x)$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle ]0, +\infty[$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x \mapsto \sin(x)$ et $\displaystyle x \mapsto \cos(x)$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \mathbb{R}$</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>Règle générale : Les fonctions de référence sont continues sur leur domaine de définition.</em></p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Prolongement par continuité</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Prolongement par continuité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \lim_{x \to a} f(x)$ existe et si $\displaystyle f(a)$ n'est pas définie (ou différente de cette limite), on peut définir une nouvelle fonction :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle g(x) = \begin{cases} f(x) & \text{si } x \neq a \\ \lim_{x \to a} f(x) & \text{si } x = a \end{cases}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle g$ est continue en $\displaystyle a$ : on dit que $\displaystyle g$ est un <strong>prolongement par continuité</strong> de $\displaystyle f$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple classique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle f(x) = \frac{\sin(x)}{x}$ n'est pas définie en $\displaystyle 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x} = 1$, on peut définir :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle g(x) = \begin{cases} \frac{\sin(x)}{x} & \text{si } x \neq 0 \\ 1 & \text{si } x = 0 \end{cases}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle g$ est alors continue sur $\displaystyle \mathbb{R}$ : c'est le prolongement par continuité de $\displaystyle f$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Lien entre continuité et dérivabilité</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème fondamental</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Toute fonction dérivable est continue</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si une fonction $\displaystyle f$ est <strong>dérivable en un point $\displaystyle a$</strong>, alors elle est <strong>continue en $\displaystyle a$</strong>.</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f$ dérivable en $\displaystyle a \quad \Rightarrow \quad f$ continue en $\displaystyle a$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>Note : La réciproque est fausse. Une fonction peut être continue sans être dérivable (exemple : $\displaystyle f(x) = |x|$ en $\displaystyle 0$).</em></p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = x^2$ est dérivable sur $\displaystyle \mathbb{R}$, donc continue sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(x) = e^x$ est dérivable sur $\displaystyle \mathbb{R}$, donc continue sur $\displaystyle \mathbb{R}$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f(x) = |x|$ est continue en $\displaystyle 0$ mais n'est pas dérivable en $\displaystyle 0$</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Image d'une suite convergente par une fonction continue</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Image d'une suite convergente</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle (u_n)$ est une suite convergente vers $\displaystyle \ell$ et si $\displaystyle f$ est une fonction continue en $\displaystyle \ell$, alors :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \lim_{n \to +\infty} f(u_n) = f(\ell) = f\left(\lim_{n \to +\infty} u_n\right)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : <strong>on peut "passer la limite à l'intérieur" d'une fonction continue</strong>.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Application importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce théorème est particulièrement utile pour étudier les suites définies par récurrence $\displaystyle u_{n+1} = f(u_n)$ où $\displaystyle f$ est continue.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle (u_n)$ une suite convergente vers $\displaystyle 2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle f(x) = x^2 + 1$ est continue en $\displaystyle 2$, on a :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \lim_{n \to +\infty} (u_n^2 + 1) = \left(\lim_{n \to +\infty} u_n\right)^2 + 1 = 2^2 + 1 = 5$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Théorème des valeurs intermédiaires</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Énoncé du théorème</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème des valeurs intermédiaires (TVI)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction continue sur un intervalle $\displaystyle [a, b]$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout réel $\displaystyle k$ compris entre $\displaystyle f(a)$ et $\displaystyle f(b)$ (c'est-à-dire $\displaystyle f(a) \leq k \leq f(b)$ ou $\displaystyle f(b) \leq k \leq f(a)$), il existe au moins un réel $\displaystyle c \in [a, b]$ tel que :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f(c) = k$</p>
+            </div>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation intuitive :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction continue sur un intervalle fermé prend <strong>toutes les valeurs intermédiaires</strong> entre $\displaystyle f(a)$ et $\displaystyle f(b)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La courbe représentative de $\displaystyle f$ "ne peut pas sauter" de $\displaystyle f(a)$ à $\displaystyle f(b)$ sans passer par toutes les valeurs entre les deux.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f(x) = x^2$ sur $\displaystyle [-2, 3]$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle f(-2) = 4$ et $\displaystyle f(3) = 9$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle k \in [4, 9]$, il existe $\displaystyle c \in [-2, 3]$ tel que $\displaystyle c^2 = k$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par exemple, pour $\displaystyle k = 6$, on peut trouver $\displaystyle c = \sqrt{6}$ ou $\displaystyle c = -\sqrt{6}$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Cas particulier : fonctions strictement monotones</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - TVI avec unicité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est <strong>continue et strictement monotone</strong> sur un intervalle $\displaystyle [a, b]$, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Pour tout réel $\displaystyle k$ compris entre $\displaystyle f(a)$ et $\displaystyle f(b)$, il existe <strong>un unique</strong> réel $\displaystyle c \in [a, b]$ tel que $\displaystyle f(c) = k$</li>
+                <li style="margin:0; text-align:left;">L'équation $\displaystyle f(x) = k$ admet donc <strong>une unique solution</strong> dans $\displaystyle [a, b]$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f(x) = x^3 + x$ sur $\displaystyle [0, 2]$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f$ est continue et strictement croissante (car $\displaystyle f'(x) = 3x^2 + 1 > 0$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle f(0) = 0$ et $\displaystyle f(2) = 10$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout $\displaystyle k \in [0, 10]$, l'équation $\displaystyle x^3 + x = k$ admet une <strong>unique solution</strong> dans $\displaystyle [0, 2]$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Fonction continue sur un segment : bornée et bornes atteintes</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Bornée et bornes atteintes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ est continue sur un segment $\displaystyle [a, b]$, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f$ est <strong>bornée</strong> sur $\displaystyle [a, b]$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f$ atteint un <strong>minimum</strong> et un <strong>maximum</strong> sur $\displaystyle [a, b]$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>Autrement dit : il existe $\displaystyle m, M \in \mathbb{R}$ et $\displaystyle x_m, x_M \in [a, b]$ tels que $\displaystyle f(x_m) = m = \min_{x \in [a,b]} f(x)$ et $\displaystyle f(x_M) = M = \max_{x \in [a,b]} f(x)$.</em></p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation graphique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur un segment, la courbe d'une fonction continue reste dans une <strong>bande verticale</strong> (la fonction est bornée) et touche au moins une fois la <strong>borne inférieure</strong> et une fois la <strong>borne supérieure</strong> (les bornes sont atteintes).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f(x) = x^2 - 2x + 1$ sur $\displaystyle [0, 3]$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f$ est continue sur $\displaystyle [0, 3]$ (polynôme).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a $\displaystyle f(0) = 1$, $\displaystyle f(1) = 0$ et $\displaystyle f(3) = 4$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le minimum est $\displaystyle 0$ (atteint en $\displaystyle x = 1$) et le maximum est $\displaystyle 4$ (atteint en $\displaystyle x = 3$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction est donc bornée : $\displaystyle 0 \leq f(x) \leq 4$ pour tout $\displaystyle x \in [0, 3]$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Applications : étude des solutions d'une équation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode pour étudier l'équation $\displaystyle f(x) = k$</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode - Existence, unicité, encadrement :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Vérifier la continuité</strong> de $\displaystyle f$ sur l'intervalle considéré</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Calculer les valeurs</strong> de $\displaystyle f$ aux bornes de l'intervalle</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Vérifier que $\displaystyle k$ est entre ces valeurs</strong> pour appliquer le TVI</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Étudier la monotonie</strong> de $\displaystyle f$ pour obtenir l'unicité</li>
+                <li style="margin:0; text-align:left;"><strong>Encadrer la solution</strong> si nécessaire (par dichotomie ou autre méthode)</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple détaillé :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Étudier l'équation $\displaystyle x^3 - 3x + 1 = 0$ sur $\displaystyle [0, 2]$.</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 1 - Continuité :</strong> $\displaystyle f(x) = x^3 - 3x + 1$ est continue sur $\displaystyle [0, 2]$ (polynôme).</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 2 - Valeurs aux bornes :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle f(0) = 1 > 0$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle f(2) = 8 - 6 + 1 = 3 > 0$</li>
+            </ul>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 3 - Recherche d'un changement de signe :</strong></p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle f(1) = 1 - 3 + 1 = -1 < 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a donc $\displaystyle f(0) > 0$, $\displaystyle f(1) < 0$ et $\displaystyle f(2) > 0$.</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 4 - Application du TVI :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle [0, 1]$ : $\displaystyle f(0) > 0$ et $\displaystyle f(1) < 0$, donc il existe $\displaystyle c_1 \in ]0, 1[$ tel que $\displaystyle f(c_1) = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle [1, 2]$ : $\displaystyle f(1) < 0$ et $\displaystyle f(2) > 0$, donc il existe $\displaystyle c_2 \in ]1, 2[$ tel que $\displaystyle f(c_2) = 0$.</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 5 - Unicité :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f'(x) = 3x^2 - 3 = 3(x^2 - 1)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle [0, 1]$ : $\displaystyle f'(x) < 0$ donc $\displaystyle f$ est strictement décroissante → solution unique $\displaystyle c_1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle [1, 2]$ : $\displaystyle f'(x) > 0$ donc $\displaystyle f$ est strictement croissante → solution unique $\displaystyle c_2$.</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Conclusion :</strong> L'équation $\displaystyle x^3 - 3x + 1 = 0$ admet exactement <strong>deux solutions</strong> dans $\displaystyle [0, 2]$.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Suites définies par récurrence $\displaystyle u_{n+1} = f(u_n)$</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Application du théorème de l'image d'une suite convergente</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour une fonction continue $\displaystyle f$ d'un intervalle $\displaystyle I$ dans lui-même, on peut étudier une suite définie par :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle u_{n+1} = f(u_n)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si la suite $\displaystyle (u_n)$ converge vers $\displaystyle \ell$ et si $\displaystyle f$ est continue en $\displaystyle \ell$, alors :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \ell = \lim_{n \to +\infty} u_{n+1} = \lim_{n \to +\infty} f(u_n) = f\left(\lim_{n \to +\infty} u_n\right) = f(\ell)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \ell$ est un <strong>point fixe</strong> de $\displaystyle f$ : $\displaystyle f(\ell) = \ell$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle (u_n)$ définie par $\displaystyle u_0 = 1$ et $\displaystyle u_{n+1} = \sqrt{u_n + 2}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On montre que la suite est croissante et majorée par $\displaystyle 2$, donc elle converge vers $\displaystyle \ell$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle f(x) = \sqrt{x + 2}$ est continue, on a :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \ell = f(\ell) = \sqrt{\ell + 2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En résolvant : $\displaystyle \ell^2 = \ell + 2$, soit $\displaystyle \ell^2 - \ell - 2 = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On trouve $\displaystyle \ell = 2$ ou $\displaystyle \ell = -1$. Comme $\displaystyle u_n \geq 0$ pour tout $\displaystyle n$, on a $\displaystyle \ell = 2$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Algorithmes de recherche de solutions - <span style="color:#f59e0b;">🌟 Approfondissement</span></h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement :</strong> Les algorithmes de recherche de solutions offrent une perspective précieuse sur les applications pratiques. Ils enrichissent votre culture mathématique et vous permettent d'explorer des implémentations numériques.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode de dichotomie</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Principe de la dichotomie</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle f(x) = 0$ sur $\displaystyle [a, b]$ où $\displaystyle f(a)$ et $\displaystyle f(b)$ sont de signes opposés :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Calculer $\displaystyle m = \frac{a + b}{2}$ (milieu de l'intervalle)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Évaluer $\displaystyle f(m)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle f(m)$ a le même signe que $\displaystyle f(a)$, remplacer $\displaystyle a$ par $\displaystyle m$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Sinon, remplacer $\displaystyle b$ par $\displaystyle m$</li>
+                <li style="margin:0; text-align:left;">Répéter jusqu'à obtenir la précision souhaitée</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple en Python :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> dichotomie(f, a, b, epsilon):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">while</span> b - a > epsilon:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m = (a + b) / <span style="color:#bd93f9;">2</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> f(a) <span style="color:#ff79c6;">*</span> f(m) < <span style="color:#bd93f9;">0</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b = m<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a = m<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> (a + b) / <span style="color:#bd93f9;">2</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Méthode de Newton</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Principe de la méthode de Newton</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle f(x) = 0$, on utilise la récurrence :</p>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>Cette méthode nécessite que $\displaystyle f$ soit dérivable et converge généralement plus vite que la dichotomie.</em></p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Méthode de la sécante</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Principe de la méthode de la sécante</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour résoudre $\displaystyle f(x) = 0$, on utilise la récurrence :</p>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle x_{n+1} = x_n - f(x_n) \times \frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#666;"><em>Cette méthode ne nécessite pas le calcul de la dérivée, mais nécessite deux valeurs initiales.</em></p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Points de discontinuité - <span style="color:#f59e0b;">🌟 Approfondissement</span></h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement :</strong> La classification des discontinuités enrichit votre culture mathématique et vous offre une vision plus complète de la continuité.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Classification des discontinuités</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Types de discontinuités :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Discontinuité évitable :</strong> $\displaystyle \lim_{x \to a} f(x)$ existe mais $\displaystyle f(a) \neq \lim_{x \to a} f(x)$ ou $\displaystyle f(a)$ n'est pas définie</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Saut fini :</strong> $\displaystyle \lim_{x \to a^-} f(x)$ et $\displaystyle \lim_{x \to a^+} f(x)$ existent mais sont différents</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Saut infini :</strong> Une des limites latérales est infinie (asymptote verticale)</li>
+                <li style="margin:0; text-align:left;"><strong>Discontinuité essentielle :</strong> Aucune limite n'existe en $\displaystyle a$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Discontinuité évitable :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = \frac{\sin(x)}{x}$ en $\displaystyle x = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \lim_{x \to 0} \frac{\sin(x)}{x} = 1$ existe, mais $\displaystyle f(0)$ n'est pas définie.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut "réparer" en définissant $\displaystyle f(0) = 1$.</p>
+            <div style="text-align:center; margin:15px 0;">
+                [IMAGE_2]
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Saut fini :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = \begin{cases} x & \text{si } x < 1 \\ x+1 & \text{si } x \geq 1 \end{cases}$ en $\displaystyle x = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \lim_{x \to 1^-} f(x) = 1$ et $\displaystyle \lim_{x \to 1^+} f(x) = 2$ (saut d'amplitude 1).</p>
+            <div style="text-align:center; margin:15px 0;">
+                [IMAGE_3]
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 3 - Saut infini (asymptote verticale) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = \frac{1}{x-1}$ en $\displaystyle x = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \lim_{x \to 1^-} f(x) = -\infty$ et $\displaystyle \lim_{x \to 1^+} f(x) = +\infty$.</p>
+            <div style="text-align:center; margin:15px 0;">
+                [IMAGE_4]
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Confondre continuité et dérivabilité :</strong> Une fonction continue n'est pas forcément dérivable</li>
+                <li style="margin:0; text-align:left;"><strong>Oublier de vérifier la continuité aux bornes</strong> d'un intervalle fermé</li>
+                <li style="margin:0; text-align:left;"><strong>Penser qu'une fonction définie par morceaux est discontinue</strong> (elle peut être continue si les morceaux se "rejoignent" bien)</li>
+                <li style="margin:0; text-align:left;"><strong>Oublier les hypothèses du TVI :</strong> La fonction doit être continue sur un intervalle fermé</li>
+                <li style="margin:0; text-align:left;"><strong>Confondre existence et unicité :</strong> Le TVI donne l'existence, la monotonie donne l'unicité</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Pour vérifier la continuité en un point :</strong> Calculer la limite et vérifier qu'elle égale la valeur de la fonction</li>
+                <li style="margin:0; text-align:left;"><strong>Pour appliquer le TVI :</strong> Vérifier la continuité sur un intervalle fermé et que $\displaystyle k$ est entre les valeurs aux bornes</li>
+                <li style="margin:0; text-align:left;"><strong>Pour obtenir l'unicité :</strong> Étudier la monotonie de la fonction (via le signe de la dérivée)</li>
+                <li style="margin:0; text-align:left;"><strong>Pour les suites récurrentes :</strong> Utiliser le théorème de l'image d'une suite convergente pour trouver le point fixe</li>
+                <li style="margin:0; text-align:left;"><strong>Pour encadrer une solution :</strong> Utiliser la méthode de dichotomie ou des valeurs de test</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+===

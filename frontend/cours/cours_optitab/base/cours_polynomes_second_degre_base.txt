@@ -1,0 +1,659 @@
+=== Équations et Fonctions Polynômes du Second Degré
+Difficulté: medium
+Ordre: 2
+Images: sommet_parabole_second_degre.png 
+
+Titre: Équations et Fonctions Polynômes du Second Degré
+Description: Cours complet sur les fonctions polynômes du second degré : formes (développée, canonique, factorisée), discriminant, racines, résolution d'équations, signe, factorisation avec diverses stratégies, et choix de la forme adaptée.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Sections principales :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à VIII ainsi que la démonstration de la résolution de l'équation du second degré couvrent les concepts fondamentaux. Ces connaissances permettent de résoudre les problèmes courants.</p>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">La section IX (polynôme du troisième degré, factorisations particulières) propose des approfondissements. Elle enrichit votre culture mathématique et votre compréhension globale.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définitions et formes d'un polynôme du second degré</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Qu'est-ce qu'une fonction polynôme du second degré ?</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>fonction polynôme du second degré</strong> (ou <strong>fonction trinôme</strong>) est une fonction définie sur $\displaystyle \mathbb{R}$ par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = ax^2 + bx + c$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle a$, $\displaystyle b$ et $\displaystyle c$ sont des nombres réels avec $\displaystyle a \neq 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les nombres $\displaystyle a$, $\displaystyle b$ et $\displaystyle c$ sont appelés respectivement <strong>coefficient dominant</strong>, <strong>coefficient de degré 1</strong> et <strong>terme constant</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f(x) = 2x^2 - 3x + 1$ : $\displaystyle a = 2$, $\displaystyle b = -3$, $\displaystyle c = 1$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle g(x) = -x^2 + 5x - 2$ : $\displaystyle a = -1$, $\displaystyle b = 5$, $\displaystyle c = -2$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle h(x) = x^2 - 4$ : $\displaystyle a = 1$, $\displaystyle b = 0$, $\displaystyle c = -4$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle k(x) = 3x^2$ : $\displaystyle a = 3$, $\displaystyle b = 0$, $\displaystyle c = 0$</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque importante :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a = 0$, alors $\displaystyle f(x) = bx + c$ est une fonction affine (polynôme du premier degré), pas du second degré !</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Les trois formes d'un polynôme du second degré :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un polynôme du second degré peut s'écrire sous <strong>trois formes</strong> différentes :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Forme développée réduite</strong> : $\displaystyle f(x) = ax^2 + bx + c$ (la plus courante pour définir la fonction)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Forme canonique</strong> : $\displaystyle f(x) = a(x - \alpha)^2 + \beta$ où $\displaystyle \alpha$ et $\displaystyle \beta$ sont des réels</li>
+                <li style="margin:0; text-align:left;"><strong>Forme factorisée</strong> : $\displaystyle f(x) = a(x - x_1)(x - x_2)$ si le polynôme admet deux racines distinctes, ou $\displaystyle f(x) = a(x - x_0)^2$ si une racine double</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Chaque forme est adaptée à un type de problème spécifique.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Forme factorisée et racines</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Racines d'un polynôme</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition d'une racine</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un nombre réel $\displaystyle x_0$ est une <strong>racine</strong> (ou un <strong>zéro</strong>) d'un polynôme $\displaystyle f$ si $\displaystyle f(x_0) = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Résoudre l'équation $\displaystyle f(x) = 0$ revient à trouver toutes les racines de $\displaystyle f$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle f(x) = (x-2)(x+1)$ : $\displaystyle f(2) = 0$ et $\displaystyle f(-1) = 0$, donc les racines sont $\displaystyle x_1 = 2$ et $\displaystyle x_2 = -1$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle g(x) = 2(x-3)^2$ : $\displaystyle g(3) = 0$, donc $\displaystyle x_0 = 3$ est une racine (double)</li>
+                <li style="margin:0; text-align:left;">Pour $\displaystyle h(x) = x^2 + 1$ : $\displaystyle h(x) = 0 \Leftrightarrow x^2 = -1$, donc aucune racine réelle</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Forme factorisée</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Forme factorisée d'un polynôme</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si un polynôme $\displaystyle f(x) = ax^2 + bx + c$ admet deux racines distinctes $\displaystyle x_1$ et $\displaystyle x_2$, alors il peut s'écrire sous la forme :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = a(x - x_1)(x - x_2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f$ admet une racine double $\displaystyle x_0$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = a(x - x_0)^2$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f(x) = 2(x-1)(x+3)$ : racines $\displaystyle x_1 = 1$ et $\displaystyle x_2 = -3$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">En développant : $\displaystyle f(x) = 2(x^2 + 2x - 3) = 2x^2 + 4x - 6$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle g(x) = -3(x-2)^2 = -3(x^2 - 4x + 4) = -3x^2 + 12x - 12$ : racine double $\displaystyle x_0 = 2$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle h(x) = (x-5)(x+5) = x^2 - 25$ : racines $\displaystyle x_1 = 5$ et $\displaystyle x_2 = -5$ (identité remarquable)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Somme et produit des racines</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Relations entre coefficients et racines</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si un polynôme $\displaystyle f(x) = ax^2 + bx + c$ admet deux racines distinctes $\displaystyle x_1$ et $\displaystyle x_2$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x_1 + x_2 = -\frac{b}{a}$ (somme des racines)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x_1 \times x_2 = \frac{c}{a}$ (produit des racines)</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle f(x) = ax^2 + bx + c$ admet deux racines $\displaystyle x_1$ et $\displaystyle x_2$, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = a(x - x_1)(x - x_2) = a[x^2 - (x_1 + x_2)x + x_1x_2] = ax^2 - a(x_1 + x_2)x + ax_1x_2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par identification avec $\displaystyle f(x) = ax^2 + bx + c$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle -a(x_1 + x_2) = b$ donc $\displaystyle x_1 + x_2 = -\frac{b}{a}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle ax_1x_2 = c$ donc $\displaystyle x_1 \times x_2 = \frac{c}{a}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle f(x) = x^2 - 5x + 6$ : $\displaystyle x_1 + x_2 = 5$ et $\displaystyle x_1 \times x_2 = 6$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">On trouve facilement : $\displaystyle x_1 = 2$ et $\displaystyle x_2 = 3$ (car $\displaystyle 2 + 3 = 5$ et $\displaystyle 2 \times 3 = 6$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Pour $\displaystyle g(x) = 2x^2 + 4x - 6$ : $\displaystyle x_1 + x_2 = -2$ et $\displaystyle x_1 \times x_2 = -3$</li>
+                <li style="margin:0; text-align:left;">On trouve : $\displaystyle x_1 = 1$ et $\displaystyle x_2 = -3$ (car $\displaystyle 1 + (-3) = -2$ et $\displaystyle 1 \times (-3) = -3$)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Forme canonique et discriminant</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Forme canonique</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Forme canonique</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Tout polynôme du second degré $\displaystyle f(x) = ax^2 + bx + c$ peut s'écrire sous la forme canonique :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = a\left(x + \frac{b}{2a}\right)^2 - \frac{b^2 - 4ac}{4a}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On pose :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \alpha = -\frac{b}{2a}$ (abscisse du sommet de la parabole)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \beta = f(\alpha) = -\frac{b^2 - 4ac}{4a}$ (ordonnée du sommet)</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On écrit alors : $\displaystyle f(x) = a(x - \alpha)^2 + \beta$</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration - Méthode de complétion du carré :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On part de : $\displaystyle f(x) = ax^2 + bx + c$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On met $\displaystyle a$ en facteur : $\displaystyle f(x) = a\left(x^2 + \frac{b}{a}x\right) + c$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On complète le carré : $\displaystyle f(x) = a\left(x^2 + \frac{b}{a}x + \frac{b^2}{4a^2} - \frac{b^2}{4a^2}\right) + c$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = a\left(x + \frac{b}{2a}\right)^2 - \frac{b^2}{4a} + c = a\left(x + \frac{b}{2a}\right)^2 - \frac{b^2 - 4ac}{4a}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle f(x) = 2x^2 - 4x + 1$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \alpha = -\frac{-4}{2 \times 2} = \frac{4}{4} = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \beta = f(1) = 2 \times 1^2 - 4 \times 1 + 1 = 2 - 4 + 1 = -1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Forme canonique : $\displaystyle f(x) = 2(x - 1)^2 - 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le sommet de la parabole est le point $\displaystyle S(\alpha, \beta) = (1, -1)$.</p>
+        </div>
+        [IMAGE_1]
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Discriminant</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition du discriminant</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour un polynôme $\displaystyle f(x) = ax^2 + bx + c$, on appelle <strong>discriminant</strong> le nombre réel :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Delta = b^2 - 4ac$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le discriminant permet de déterminer le nombre de racines réelles du polynôme.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Propriété - Nombre de racines selon le discriminant :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \Delta > 0$ : le polynôme admet <strong>deux racines distinctes</strong> $\displaystyle x_1$ et $\displaystyle x_2$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \Delta = 0$ : le polynôme admet <strong>une racine double</strong> $\displaystyle x_0 = -\frac{b}{2a}$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle \Delta < 0$ : le polynôme n'admet <strong>aucune racine réelle</strong></li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f(x) = x^2 - 5x + 6$ : $\displaystyle \Delta = (-5)^2 - 4 \times 1 \times 6 = 25 - 24 = 1 > 0$ → deux racines distinctes</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle g(x) = x^2 - 4x + 4$ : $\displaystyle \Delta = (-4)^2 - 4 \times 1 \times 4 = 16 - 16 = 0$ → une racine double</li>
+                <li style="margin:0; text-align:left;">$\displaystyle h(x) = x^2 + x + 1$ : $\displaystyle \Delta = 1^2 - 4 \times 1 \times 1 = 1 - 4 = -3 < 0$ → aucune racine réelle</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Résolution d'une équation du second degré</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formule générale</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Résolution de l'équation $\displaystyle ax^2 + bx + c = 0$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit l'équation $\displaystyle ax^2 + bx + c = 0$ avec $\displaystyle a \neq 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On calcule le discriminant : $\displaystyle \Delta = b^2 - 4ac$</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Si $\displaystyle \Delta > 0$</strong> : l'équation admet deux solutions distinctes :</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle x_1 = \frac{-b - \sqrt{\Delta}}{2a}$ et $\displaystyle x_2 = \frac{-b + \sqrt{\Delta}}{2a}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Si $\displaystyle \Delta = 0$</strong> : l'équation admet une solution double :</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle x_0 = -\frac{b}{2a}$</li>
+                <li style="margin:0; text-align:left;"><strong>Si $\displaystyle \Delta < 0$</strong> : l'équation n'admet aucune solution réelle.</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise la forme canonique : $\displaystyle f(x) = a\left(x + \frac{b}{2a}\right)^2 - \frac{\Delta}{4a}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Résoudre $\displaystyle f(x) = 0$ équivaut à : $\displaystyle a\left(x + \frac{b}{2a}\right)^2 = \frac{\Delta}{4a}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit : $\displaystyle \left(x + \frac{b}{2a}\right)^2 = \frac{\Delta}{4a^2}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas 1 : $\displaystyle \Delta > 0$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x + \frac{b}{2a} = \pm \frac{\sqrt{\Delta}}{2a}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">D'où : $\displaystyle x = -\frac{b}{2a} \pm \frac{\sqrt{\Delta}}{2a} = \frac{-b \pm \sqrt{\Delta}}{2a}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas 2 : $\displaystyle \Delta = 0$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \left(x + \frac{b}{2a}\right)^2 = 0$, donc $\displaystyle x = -\frac{b}{2a}$ (racine double)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Cas 3 : $\displaystyle \Delta < 0$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'équation $\displaystyle \left(x + \frac{b}{2a}\right)^2 = \frac{\Delta}{4a^2} < 0$ est impossible dans $\displaystyle \mathbb{R}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples de résolution :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> $\displaystyle x^2 - 5x + 6 = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Delta = (-5)^2 - 4 \times 1 \times 6 = 25 - 24 = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x_1 = \frac{5 - 1}{2} = 2$ et $\displaystyle x_2 = \frac{5 + 1}{2} = 3$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> $\displaystyle 2x^2 - 4x + 2 = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Delta = (-4)^2 - 4 \times 2 \times 2 = 16 - 16 = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x_0 = \frac{4}{4} = 1$ (racine double)</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 3 :</strong> $\displaystyle x^2 + x + 1 = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Delta = 1 - 4 = -3 < 0$ → aucune solution réelle</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Signe d'une fonction polynôme du second degré</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Étude du signe</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Signe d'un polynôme du second degré</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f(x) = ax^2 + bx + c$ avec $\displaystyle a \neq 0$ et $\displaystyle \Delta = b^2 - 4ac$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le signe de $\displaystyle f(x)$ dépend du signe de $\displaystyle a$ et du discriminant $\displaystyle \Delta$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 1 : $\displaystyle \Delta > 0$ (deux racines distinctes $\displaystyle x_1 < x_2$)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le polynôme s'annule en $\displaystyle x_1$ et $\displaystyle x_2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a > 0$ : $\displaystyle f(x) > 0$ pour $\displaystyle x < x_1$ ou $\displaystyle x > x_2$, et $\displaystyle f(x) < 0$ pour $\displaystyle x_1 < x < x_2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle a < 0$ : $\displaystyle f(x) < 0$ pour $\displaystyle x < x_1$ ou $\displaystyle x > x_2$, et $\displaystyle f(x) > 0$ pour $\displaystyle x_1 < x < x_2$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 2 : $\displaystyle \Delta = 0$ (racine double $\displaystyle x_0$)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x_0) = 0$ et $\displaystyle f(x)$ a le même signe que $\displaystyle a$ pour tout $\displaystyle x \neq x_0$</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>Cas 3 : $\displaystyle \Delta < 0$ (aucune racine réelle)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x)$ a le même signe que $\displaystyle a$ pour tout $\displaystyle x \in \mathbb{R}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Signe avec forme factorisée :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Étudier le signe de $\displaystyle f(x) = 2(x-1)(x+3)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Racines : $\displaystyle x_1 = -3$ et $\displaystyle x_2 = 1$ (avec $\displaystyle x_1 < x_2$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Coefficient dominant : $\displaystyle a = 2 > 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Tableau de signes :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) > 0$ sur $\displaystyle ]-\infty, -3[ \cup ]1, +\infty[$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) < 0$ sur $\displaystyle ]-3, 1[$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = 0$ en $\displaystyle x = -3$ et $\displaystyle x = 1$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Signe avec racine double :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Étudier le signe de $\displaystyle f(x) = -3(x-2)^2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Racine double : $\displaystyle x_0 = 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Coefficient dominant : $\displaystyle a = -3 < 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(2) = 0$ et $\displaystyle f(x) < 0$ pour tout $\displaystyle x \neq 2$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 3 - Signe sans racine réelle :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Étudier le signe de $\displaystyle f(x) = x^2 + x + 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Delta = 1 - 4 = -3 < 0$ → aucune racine réelle</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Coefficient dominant : $\displaystyle a = 1 > 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) > 0$ pour tout $\displaystyle x \in \mathbb{R}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Factorisation avec diverses stratégies</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Stratégies de factorisation</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Stratégie 1 : Racine évidente</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On teste des valeurs simples ($\displaystyle 0, 1, -1, 2, -2, \ldots$) pour trouver une racine évidente.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Factoriser $\displaystyle f(x) = x^2 - 5x + 6$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On teste $\displaystyle f(2) = 4 - 10 + 6 = 0$ → $\displaystyle 2$ est une racine</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On teste $\displaystyle f(3) = 9 - 15 + 6 = 0$ → $\displaystyle 3$ est une racine</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle f(x) = (x-2)(x-3)$</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Stratégie 2 : Détection des racines par somme et produit</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle x_1 + x_2 = s$ et $\displaystyle x_1 \times x_2 = p$, alors $\displaystyle x_1$ et $\displaystyle x_2$ sont les racines de $\displaystyle x^2 - sx + p = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Factoriser $\displaystyle f(x) = x^2 - 5x + 6$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Somme : $\displaystyle 5$, Produit : $\displaystyle 6$ → on cherche deux nombres dont la somme est $\displaystyle 5$ et le produit $\displaystyle 6$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On trouve : $\displaystyle 2 + 3 = 5$ et $\displaystyle 2 \times 3 = 6$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle f(x) = (x-2)(x-3)$</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Stratégie 3 : Identité remarquable</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Reconnaître une identité remarquable permet de factoriser directement.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle a^2 - b^2 = (a-b)(a+b)$ (différence de deux carrés)</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle a^2 + 2ab + b^2 = (a+b)^2$ (carré d'une somme)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle a^2 - 2ab + b^2 = (a-b)^2$ (carré d'une différence)</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemples :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^2 - 25 = (x-5)(x+5)$ (différence de carrés)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^2 - 4x + 4 = (x-2)^2$ (carré d'une différence)</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Stratégie 4 : Application des formules générales</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On calcule le discriminant $\displaystyle \Delta = b^2 - 4ac$ et on utilise les formules :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \Delta > 0$ : $\displaystyle f(x) = a(x-x_1)(x-x_2)$ avec $\displaystyle x_1 = \frac{-b-\sqrt{\Delta}}{2a}$ et $\displaystyle x_2 = \frac{-b+\sqrt{\Delta}}{2a}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \Delta = 0$ : $\displaystyle f(x) = a(x-x_0)^2$ avec $\displaystyle x_0 = -\frac{b}{2a}$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle \Delta < 0$ : le polynôme ne se factorise pas dans $\displaystyle \mathbb{R}$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Factoriser $\displaystyle f(x) = 2x^2 - 4x - 6$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Delta = (-4)^2 - 4 \times 2 \times (-6) = 16 + 48 = 64$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x_1 = \frac{4-8}{4} = -1$ et $\displaystyle x_2 = \frac{4+8}{4} = 3$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle f(x) = 2(x+1)(x-3)$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Choix de la forme adaptée</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Quand utiliser quelle forme ?</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Guide de choix de la forme :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Forme développée réduite</strong> $\displaystyle f(x) = ax^2 + bx + c$ :</li>
+                <li style="margin:0 0 18px 0; text-align:left;">→ Pour calculer l'image d'une valeur, pour additionner ou soustraire des polynômes</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Forme canonique</strong> $\displaystyle f(x) = a(x-\alpha)^2 + \beta$ :</li>
+                <li style="margin:0 0 18px 0; text-align:left;">→ Pour déterminer les variations, le minimum/maximum (sommet de la parabole en $\displaystyle (\alpha, \beta)$)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Forme factorisée</strong> $\displaystyle f(x) = a(x-x_1)(x-x_2)$ :</li>
+                <li style="margin:0; text-align:left;">→ Pour résoudre une équation $\displaystyle f(x) = 0$, pour étudier le signe, pour déterminer les racines</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Résoudre une équation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Résoudre $\displaystyle 2x^2 - 8x + 6 = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Méthode :</strong> On factorise (forme factorisée) ou on utilise le discriminant</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 2x^2 - 8x + 6 = 2(x^2 - 4x + 3) = 2(x-1)(x-3)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Solutions : $\displaystyle x = 1$ ou $\displaystyle x = 3$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Résoudre une inéquation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Résoudre $\displaystyle x^2 - 5x + 6 \geq 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Méthode :</strong> On utilise la forme factorisée pour étudier le signe</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^2 - 5x + 6 = (x-2)(x-3)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Tableau de signes : $\displaystyle f(x) \geq 0$ sur $\displaystyle ]-\infty, 2] \cup [3, +\infty[$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 3 - Optimisation (minimum/maximum) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Trouver le minimum de $\displaystyle f(x) = 2x^2 - 4x + 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Méthode :</strong> On utilise la forme canonique</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = 2(x-1)^2 - 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le minimum est atteint en $\displaystyle x = 1$ et vaut $\displaystyle f(1) = -1$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Représentation graphique et transformations de paraboles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">La parabole : courbe représentative d'une fonction du second degré</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La courbe représentative d'une fonction polynôme du second degré est une <strong>parabole</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle a > 0$ : la parabole est tournée vers le haut (forme de « U »)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle a < 0$ : la parabole est tournée vers le bas (forme de « ∩ »)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le point le plus bas (si $\displaystyle a > 0$) ou le plus haut (si $\displaystyle a < 0$) est appelé le <strong>sommet</strong> de la parabole.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Lien avec la forme canonique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La forme canonique $\displaystyle f(x) = a(x - \alpha)^2 + \beta$ permet de lire directement les coordonnées du sommet :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Le sommet de la parabole a pour coordonnées $\displaystyle S(\alpha, \beta)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• La parabole admet un axe de symétrie : la droite d'équation $\displaystyle x = \alpha$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle a > 0$ : $\displaystyle \beta$ est la valeur minimale de $\displaystyle f$, atteinte en $\displaystyle x = \alpha$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle a < 0$ : $\displaystyle \beta$ est la valeur maximale de $\displaystyle f$, atteinte en $\displaystyle x = \alpha$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Transformations de paraboles : translations</h3>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Parabole de référence :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle f(x) = x^2$ est la <strong>parabole de référence</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Son sommet est à l'origine : $\displaystyle S(0, 0)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Elle passe par les points $\displaystyle (-2, 4)$, $\displaystyle (-1, 1)$, $\displaystyle (0, 0)$, $\displaystyle (1, 1)$, $\displaystyle (2, 4)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Elle est symétrique par rapport à l'axe des ordonnées (droite $\displaystyle x = 0$)</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Translation horizontale</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle g(x) = (x - h)^2$ correspond à une <strong>translation horizontale</strong> de la parabole de référence.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle h > 0$ : translation de $\displaystyle h$ unités vers la <strong>droite</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle h < 0$ : translation de $\displaystyle |h|$ unités vers la <strong>gauche</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Le sommet se déplace de $\displaystyle (0, 0)$ à $\displaystyle (h, 0)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• L'axe de symétrie devient la droite $\displaystyle x = h$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> $\displaystyle g(x) = (x - 3)^2$ est la parabole de référence translatée de 3 unités vers la droite. Son sommet est en $\displaystyle (3, 0)$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Translation verticale</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle h(x) = x^2 + k$ correspond à une <strong>translation verticale</strong> de la parabole de référence.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle k > 0$ : translation de $\displaystyle k$ unités vers le <strong>haut</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Si $\displaystyle k < 0$ : translation de $\displaystyle |k|$ unités vers le <strong>bas</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Le sommet se déplace de $\displaystyle (0, 0)$ à $\displaystyle (0, k)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• L'axe de symétrie reste la droite $\displaystyle x = 0$ (axe des ordonnées)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> $\displaystyle h(x) = x^2 + 2$ est la parabole de référence translatée de 2 unités vers le haut. Son sommet est en $\displaystyle (0, 2)$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Translation double (horizontale et verticale)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle p(x) = (x - h)^2 + k$ correspond à une <strong>translation du sommet</strong> de la parabole de référence.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Le sommet se déplace de $\displaystyle (0, 0)$ à $\displaystyle (h, k)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• C'est la combinaison d'une translation horizontale de $\displaystyle h$ et d'une translation verticale de $\displaystyle k$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• L'axe de symétrie devient la droite $\displaystyle x = h$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> $\displaystyle p(x) = (x + 2)^2 - 3 = (x - (-2))^2 + (-3)$ est la parabole de référence translatée de 2 unités vers la gauche et de 3 unités vers le bas. Son sommet est en $\displaystyle (-2, -3)$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode pour identifier une parabole sur un graphique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 1 :</strong> Repérer le sommet $\displaystyle S(\alpha, \beta)$ de la parabole</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 2 :</strong> Déterminer le sens d'ouverture (vers le haut → $\displaystyle a > 0$, vers le bas → $\displaystyle a < 0$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 3 :</strong> Si nécessaire, utiliser un point connu pour déterminer la valeur de $\displaystyle a$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Étape 4 :</strong> Écrire la forme canonique : $\displaystyle f(x) = a(x - \alpha)^2 + \beta$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple complet :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur un graphique, on observe quatre paraboles :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Parabole A :</strong> sommet en $\displaystyle (0, 0)$ → $\displaystyle f(x) = x^2$ (parabole de référence)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Parabole B :</strong> sommet en $\displaystyle (0, 3)$ → $\displaystyle g(x) = x^2 + 3$ (translation verticale de 3 unités vers le haut)</li>
+                <li style="margin:0 0 18px 0; text-align:left;"><strong>Parabole C :</strong> sommet en $\displaystyle (2, 0)$ → $\displaystyle h(x) = (x - 2)^2$ (translation horizontale de 2 unités vers la droite)</li>
+                <li style="margin:0; text-align:left;"><strong>Parabole D :</strong> sommet en $\displaystyle (-1, 2)$ → $\displaystyle p(x) = (x + 1)^2 + 2$ (translation de 1 unité vers la gauche et 2 unités vers le haut)</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut vérifier ces expressions en calculant l'ordonnée à l'origine (valeur en $\displaystyle x = 0$) :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle f(0) = 0$ ✓</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle g(0) = 3$ ✓</li>
+                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle h(0) = (0-2)^2 = 4$ ✓</li>
+                <li style="margin:0; text-align:left;">$\displaystyle p(0) = (0+1)^2 + 2 = 3$ ✓</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Applications et problèmes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Problèmes types</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Problème 1 - Déterminer un polynôme connaissant ses racines :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Déterminer les fonctions polynômes du second degré s'annulant en $\displaystyle 2$ et $\displaystyle -3$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> Toute fonction polynôme du second degré s'annulant en $\displaystyle 2$ et $\displaystyle -3$ s'écrit :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(x) = a(x-2)(x+3)$ où $\displaystyle a \in \mathbb{R}^*$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En développant : $\displaystyle f(x) = ax^2 + ax - 6a$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il existe une infinité de polynômes (un pour chaque valeur de $\displaystyle a \neq 0$)</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Problème 2 - Optimisation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un projectile est lancé. Sa hauteur (en mètres) au temps $\displaystyle t$ (en secondes) est donnée par :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle h(t) = -5t^2 + 20t + 10$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Quelle est la hauteur maximale atteinte et à quel instant ?</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> On met sous forme canonique</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle h(t) = -5(t^2 - 4t) + 10 = -5[(t-2)^2 - 4] + 10 = -5(t-2)^2 + 30$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le maximum est atteint en $\displaystyle t = 2$ s et vaut $\displaystyle h(2) = 30$ m</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Problème 3 - Inéquation avec paramètre :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour quelles valeurs de $\displaystyle m$ l'équation $\displaystyle x^2 - mx + 1 = 0$ admet-elle deux solutions distinctes ?</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong> On calcule le discriminant : $\displaystyle \Delta = m^2 - 4$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'équation admet deux solutions distinctes si $\displaystyle \Delta > 0$, soit $\displaystyle m^2 - 4 > 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela équivaut à $\displaystyle m^2 > 4$, donc $\displaystyle m < -2$ ou $\displaystyle m > 2$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Approfondissements possibles</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements (bonus) :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Cette section présente des approfondissements intéressants. Ces sujets enrichissent votre culture mathématique et votre compréhension approfondie.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">1. Factorisation d'un polynôme du troisième degré</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si un polynôme du troisième degré $\displaystyle P(x) = ax^3 + bx^2 + cx + d$ admet une racine $\displaystyle x_0$, alors on peut le factoriser sous la forme :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(x) = (x - x_0)(ax^2 + Bx + C)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle ax^2 + Bx + C$ est un polynôme du second degré que l'on peut factoriser par identification ou division polynomiale.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Factoriser $\displaystyle P(x) = x^3 - 6x^2 + 11x - 6$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On teste $\displaystyle P(1) = 1 - 6 + 11 - 6 = 0$ → $\displaystyle 1$ est une racine</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par identification : $\displaystyle P(x) = (x-1)(x^2 - 5x + 6) = (x-1)(x-2)(x-3)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les racines sont : $\displaystyle 1, 2, 3$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">2. Factorisations particulières</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Factorisation de $\displaystyle x^n - 1$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout entier naturel $\displaystyle n \geq 1$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^n - 1 = (x-1)(x^{n-1} + x^{n-2} + \cdots + x + 1)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemples :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^2 - 1 = (x-1)(x+1)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^3 - 1 = (x-1)(x^2 + x + 1)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^4 - 1 = (x-1)(x^3 + x^2 + x + 1) = (x-1)(x+1)(x^2+1)$</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Factorisation de $\displaystyle x^n - a^n$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout entier naturel $\displaystyle n \geq 1$ et tout réel $\displaystyle a$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^n - a^n = (x-a)(x^{n-1} + ax^{n-2} + a^2x^{n-3} + \cdots + a^{n-2}x + a^{n-1})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemples :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^2 - a^2 = (x-a)(x+a)$ (identité remarquable connue)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^3 - a^3 = (x-a)(x^2 + ax + a^2)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x^4 - 16 = (x-2)(x^3 + 2x^2 + 4x + 8)$ (avec $\displaystyle a = 2$, donc $\displaystyle a^4 = 16$)</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">3. Déterminer deux nombres connaissant leur somme et leur produit</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Problème :</strong> Déterminer deux nombres réels $\displaystyle x_1$ et $\displaystyle x_2$ connaissant leur somme $\displaystyle s$ et leur produit $\displaystyle p$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Méthode :</strong> Les nombres $\displaystyle x_1$ et $\displaystyle x_2$ sont les racines du polynôme :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(x) = x^2 - sx + p$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En effet, d'après les relations coefficients-racines : $\displaystyle x_1 + x_2 = s$ et $\displaystyle x_1 \times x_2 = p$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On résout alors $\displaystyle x^2 - sx + p = 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le discriminant est : $\displaystyle \Delta = s^2 - 4p$</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.2; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \Delta > 0$ : deux solutions distinctes $\displaystyle x_1 = \frac{s-\sqrt{\Delta}}{2}$ et $\displaystyle x_2 = \frac{s+\sqrt{\Delta}}{2}$</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle \Delta = 0$ : une solution double $\displaystyle x_1 = x_2 = \frac{s}{2}$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle \Delta < 0$ : aucune solution réelle (il n'existe pas de couple de réels ayant cette somme et ce produit)</li>
+            </ul>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Trouver deux nombres dont la somme est $\displaystyle 5$ et le produit est $\displaystyle 6$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On résout $\displaystyle x^2 - 5x + 6 = 0$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Delta = 25 - 24 = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle x_1 = \frac{5-1}{2} = 2$ et $\displaystyle x_2 = \frac{5+1}{2} = 3$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les deux nombres sont $\displaystyle 2$ et $\displaystyle 3$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Choisir la bonne forme :</strong> Développée pour calculer, canonique pour variations/extrema, factorisée pour équations/signe</li>
+                <li style="margin:0; text-align:left;"><strong>Vérifier le discriminant :</strong> Toujours calculer $\displaystyle \Delta = b^2 - 4ac$ avant de chercher les racines</li>
+                <li style="margin:0; text-align:left;"><strong>Racine évidente :</strong> Toujours tester $\displaystyle 0, 1, -1, 2, -2$ pour trouver une racine rapidement</li>
+                <li style="margin:0; text-align:left;"><strong>Somme et produit :</strong> Utiliser $\displaystyle x_1 + x_2 = -\frac{b}{a}$ et $\displaystyle x_1 \times x_2 = \frac{c}{a}$ pour vérifier les racines</li>
+                <li style="margin:0; text-align:left;"><strong>Identités remarquables :</strong> Reconnaître $\displaystyle a^2 - b^2$, $\displaystyle (a+b)^2$, $\displaystyle (a-b)^2$ pour factoriser directement</li>
+                <li style="margin:0; text-align:left;"><strong>Signe :</strong> Utiliser la forme factorisée et faire un tableau de signes, attention au signe de $\displaystyle a$</li>
+                <li style="margin:0; text-align:left;"><strong>Vérification :</strong> Toujours vérifier les racines en remplaçant dans l'équation initiale</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Oublier le coefficient $\displaystyle a$</strong> dans la forme factorisée : $\displaystyle f(x) = a(x-x_1)(x-x_2)$, pas $\displaystyle (x-x_1)(x-x_2)$</li>
+                <li style="margin:0; text-align:left;"><strong>Erreur de signe dans le discriminant :</strong> $\displaystyle \Delta = b^2 - 4ac$ (attention au signe moins)</li>
+                <li style="margin:0; text-align:left;"><strong>Confondre $\displaystyle x_1$ et $\displaystyle x_2$ :</strong> Par convention, $\displaystyle x_1 = \frac{-b-\sqrt{\Delta}}{2a}$ et $\displaystyle x_2 = \frac{-b+\sqrt{\Delta}}{2a}$ (donc $\displaystyle x_1 < x_2$)</li>
+                <li style="margin:0; text-align:left;"><strong>Oublier le cas $\displaystyle \Delta = 0$</strong> : Il y a une racine double, pas "aucune racine"</li>
+                <li style="margin:0; text-align:left;"><strong>Signe incorrect :</strong> Pour $\displaystyle a > 0$, le polynôme est négatif entre les racines, positif à l'extérieur</li>
+                <li style="margin:0; text-align:left;"><strong>Forme canonique :</strong> Ne pas oublier le signe moins : $\displaystyle \alpha = -\frac{b}{2a}$</li>
+                <li style="margin:0; text-align:left;"><strong>Division par zéro :</strong> Vérifier que $\displaystyle a \neq 0$ avant d'appliquer les formules</li>
+            </ul>
+        </div>
+
+        <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Formules à retenir</strong>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:25%;">Objet</th>
+                        <th style="border:1px solid #ddd; padding:12px; width:75%;">Formule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Discriminant</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \Delta = b^2 - 4ac$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Racines<br/>($\displaystyle \Delta > 0$)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x_1 = \frac{-b-\sqrt{\Delta}}{2a}$ et $\displaystyle x_2 = \frac{-b+\sqrt{\Delta}}{2a}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Racine double<br/>($\displaystyle \Delta = 0$)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x_0 = -\frac{b}{2a}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Somme des racines</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x_1 + x_2 = -\frac{b}{a}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Produit des racines</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle x_1 \times x_2 = \frac{c}{a}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Forme canonique</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f(x) = a\left(x + \frac{b}{2a}\right)^2 - \frac{\Delta}{4a}$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+===
+

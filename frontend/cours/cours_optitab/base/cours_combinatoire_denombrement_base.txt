@@ -1,0 +1,668 @@
+=== Combinatoire et dénombrement
+Difficulté: medium
+Ordre: 4
+
+Titre: Combinatoire et dénombrement
+Description: Cours complet sur la combinatoire et le dénombrement : principes additif et multiplicatif, permutations, arrangements, combinaisons, coefficients binomiaux, triangle de Pascal.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>✅ Sections principales :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à VII couvrent les concepts fondamentaux de la combinatoire et du dénombrement. Les parties marquées <strong>"🌟 Bonus"</strong> sont des approfondissements utiles qui vous permettent d'explorer des thèmes avancés.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Produit cartésien et k-uplets</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Couple, triplet, k-uplet</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Couple, triplet, k-uplet</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle A$ et $\displaystyle B$ deux ensembles.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Un <strong>couple</strong> est un élément de la forme $\displaystyle (a, b)$ où $\displaystyle a \in A$ et $\displaystyle b \in B$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Un <strong>triplet</strong> est un élément de la forme $\displaystyle (a, b, c)$ où $\displaystyle a \in A$, $\displaystyle b \in B$, $\displaystyle c \in C$</li>
+                <li style="margin:0; text-align:left;">Un <strong>k-uplet</strong> (ou <strong>k-liste</strong>) est un élément de la forme $\displaystyle (a_1, a_2, \ldots, a_k)$ où chaque $\displaystyle a_i$ appartient à un ensemble donné</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Produit cartésien</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>produit cartésien</strong> de deux ensembles $\displaystyle A$ et $\displaystyle B$ est l'ensemble de tous les couples :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle A \times B = \{(a, b) \mid a \in A, b \in B\}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Plus généralement, pour $\displaystyle k$ ensembles $\displaystyle A_1, A_2, \ldots, A_k$ :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle A_1 \times A_2 \times \cdots \times A_k = \{(a_1, a_2, \ldots, a_k) \mid a_i \in A_i\}$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Ensemble $\displaystyle A^k$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour un ensemble $\displaystyle A$ et un entier $\displaystyle k \geq 1$, on note $\displaystyle A^k$ l'ensemble des k-uplets d'éléments de $\displaystyle A$ :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle A^k = \underbrace{A \times A \times \cdots \times A}_{k \text{ fois}}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Produit cartésien :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Soit $\displaystyle A = \{Rouge, Vert\}$ et $\displaystyle B = \{Petit, Grand\}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A \times B = \{(Rouge, Petit), (Rouge, Grand), (Vert, Petit), (Vert, Grand)\}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il y a $\displaystyle 2 \times 2 = 4$ couples possibles.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - k-uplets :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Soit $\displaystyle A = \{1, 2, 3\}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A^2 = \{(1,1), (1,2), (1,3), (2,1), (2,2), (2,3), (3,1), (3,2), (3,3)\}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il y a $\displaystyle 3^2 = 9$ éléments dans $\displaystyle A^2$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle A^3$, il y aurait $\displaystyle 3^3 = 27$ triplets possibles.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Principe additif</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème du principe additif</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Principe additif</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle A_1, A_2, \ldots, A_k$ sont des ensembles <strong>deux à deux disjoints</strong> (c'est-à-dire $\displaystyle A_i \cap A_j = \emptyset$ pour $\displaystyle i \neq j$), alors :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle |A_1 \cup A_2 \cup \cdots \cup A_k| = |A_1| + |A_2| + \cdots + |A_k|$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle |A|$ désigne le nombre d'éléments de l'ensemble $\displaystyle A$.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Important :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le principe additif ne s'applique que si les ensembles sont <strong>deux à deux disjoints</strong>. Sinon, il faut utiliser la formule du crible (approche avancée).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Principe additif :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Dans une classe, il y a 12 élèves qui font du sport et 8 élèves qui font de la musique, et aucun élève ne fait les deux.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre d'élèves qui font du sport ou de la musique est : $\displaystyle 12 + 8 = 20$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Principe additif (plusieurs ensembles) :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Un restaurant propose 3 entrées, 5 plats et 4 desserts. Un client choisit soit une entrée, soit un plat, soit un dessert (mais pas plusieurs).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre de choix possibles est : $\displaystyle 3 + 5 + 4 = 12$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Principe multiplicatif</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème du principe multiplicatif</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Principe multiplicatif</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre d'éléments du produit cartésien $\displaystyle A_1 \times A_2 \times \cdots \times A_k$ est :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle |A_1 \times A_2 \times \cdots \times A_k| = |A_1| \times |A_2| \times \cdots \times |A_k|$</p>
+            </div>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Nombre de k-uplets</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour un ensemble $\displaystyle A$ à $\displaystyle n$ éléments, le nombre de k-uplets d'éléments de $\displaystyle A$ est :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle |A^k| = n^k$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Principe multiplicatif (produit cartésien) :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">On lance deux dés équilibrés. Le nombre de résultats possibles est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 6 \times 6 = 36$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Plus généralement, pour $\displaystyle k$ lancers, il y a $\displaystyle 6^k$ résultats possibles.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Principe multiplicatif (k-uplets) :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">On forme un code à 4 chiffres (de 0 à 9). Chaque chiffre peut être choisi indépendamment.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre de codes possibles est : $\displaystyle 10^4 = 10000$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour un code à 6 caractères (lettres majuscules de A à Z), il y aurait $\displaystyle 26^6 = 308915776$ codes possibles.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Nombre de parties d'un ensemble</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Théorème</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Nombre de parties</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un ensemble à $\displaystyle n$ éléments possède exactement $\displaystyle 2^n$ parties (sous-ensembles).</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle |\mathcal{P}(A)| = 2^n$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle \mathcal{P}(A)$ désigne l'ensemble des parties de $\displaystyle A$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Liens avec d'autres objets</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre de parties d'un ensemble à $\displaystyle n$ éléments est égal à :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Le nombre de n-uplets de $\displaystyle \{0, 1\}$ (chaque élément est soit dans la partie, soit pas)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Le nombre de mots de longueur $\displaystyle n$ sur un alphabet à deux éléments</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Le nombre de chemins dans un arbre binaire de profondeur $\displaystyle n$</li>
+                <li style="margin:0; text-align:left;">Le nombre d'issues dans une succession de $\displaystyle n$ épreuves de Bernoulli</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Nombre de parties :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">L'ensemble $\displaystyle A = \{a, b, c\}$ a $\displaystyle 2^3 = 8$ parties :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \emptyset, \{a\}, \{b\}, \{c\}, \{a,b\}, \{a,c\}, \{b,c\}, \{a,b,c\}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Lien avec les n-uplets de {0,1} :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Pour $\displaystyle A = \{a, b, c\}$, chaque partie correspond à un triplet de $\displaystyle \{0, 1\}$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle (0,0,0) \leftrightarrow \emptyset$, $\displaystyle (1,0,0) \leftrightarrow \{a\}$, $\displaystyle (1,1,0) \leftrightarrow \{a,b\}$, etc.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il y a bien $\displaystyle 2^3 = 8$ triplets possibles, donc 8 parties.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Permutations</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Permutation</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>permutation</strong> d'un ensemble fini $\displaystyle A$ est un <strong>arrangement de tous les éléments</strong> de $\displaystyle A$ dans un certain ordre.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est un n-uplet d'éléments <strong>distincts</strong> de $\displaystyle A$, où $\displaystyle n = |A|$.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Factorielle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour un entier naturel $\displaystyle n$, on définit la <strong>factorielle</strong> de $\displaystyle n$, notée $\displaystyle n!$, par :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 0! = 1$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle n! = n \times (n-1) \times (n-2) \times \cdots \times 2 \times 1$ pour $\displaystyle n \geq 1$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Nombre de permutations</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre de permutations d'un ensemble à $\displaystyle n$ éléments est :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:200px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle n!$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Permutations :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Le nombre de façons d'arranger 5 personnes en ligne est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par exemple, pour les personnes A, B, C, D, E, on peut avoir : (A,B,C,D,E), (A,B,C,E,D), (B,A,C,D,E), etc.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Factorielle :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Calculons quelques factorielles :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 0! = 1$ (par convention)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 1! = 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 3! = 3 \times 2 \times 1 = 6$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 4! = 4 \times 3 \times 2 \times 1 = 24$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Arrangements (k-uplets d'éléments distincts)</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Arrangement</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>arrangement</strong> de $\displaystyle k$ éléments d'un ensemble à $\displaystyle n$ éléments est un k-uplet d'éléments <strong>distincts</strong>.</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Nombre d'arrangements</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre d'arrangements de $\displaystyle k$ éléments parmi $\displaystyle n$ est :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:550px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle A_n^k = n \times (n-1) \times \cdots \times (n-k+1) = \frac{n!}{(n-k)!}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Arrangements :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Le nombre de façons de choisir et d'ordonner 3 personnes parmi 10 pour former un podium (1er, 2ème, 3ème) est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A_{10}^3 = 10 \times 9 \times 8 = 720$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut aussi calculer : $\displaystyle A_{10}^3 = \frac{10!}{(10-3)!} = \frac{10!}{7!} = \frac{10 \times 9 \times 8 \times 7!}{7!} = 720$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Arrangements (autre situation) :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">On veut former un mot de 4 lettres distinctes à partir de l'alphabet {A, B, C, D, E, F} (26 lettres).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre de mots possibles est : $\displaystyle A_{26}^4 = 26 \times 25 \times 24 \times 23 = 358800$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par exemple : ABCD, ABDC, ACBD, etc. (l'ordre des lettres compte).</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Combinaisons et coefficients binomiaux</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Combinaison</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>combinaison</strong> de $\displaystyle k$ éléments d'un ensemble à $\displaystyle n$ éléments est une <strong>partie à $\displaystyle k$ éléments</strong> de cet ensemble.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'ordre n'a pas d'importance dans une combinaison (contrairement à un arrangement).</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Coefficient binomial</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>coefficient binomial</strong> $\displaystyle \binom{n}{k}$ (lire "k parmi n") est le nombre de combinaisons de $\displaystyle k$ éléments parmi $\displaystyle n$.</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">pour $\displaystyle 0 \leq k \leq n$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Relation avec les arrangements</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre d'arrangements de $\displaystyle k$ éléments parmi $\displaystyle n$ est égal au nombre de combinaisons multiplié par le nombre de permutations de $\displaystyle k$ éléments :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle A_n^k = \binom{n}{k} \times k!$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Combinaisons :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Le nombre de façons de choisir 3 personnes parmi 10 pour former une équipe (l'ordre n'a pas d'importance) est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \binom{10}{3} = \frac{10!}{3! \times 7!} = \frac{10 \times 9 \times 8}{3 \times 2 \times 1} = 120$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les équipes {A, B, C}, {A, C, B} et {B, A, C} sont identiques (même combinaison).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Relation avec les arrangements :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Pour former un podium (ordre important) avec 3 personnes parmi 10, on a $\displaystyle A_{10}^3 = 720$ façons.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour former une équipe (ordre non important) avec 3 personnes parmi 10, on a $\displaystyle \binom{10}{3} = 120$ façons.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On vérifie : $\displaystyle A_{10}^3 = \binom{10}{3} \times 3! = 120 \times 6 = 720$ ✓</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formules et propriétés</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Formule alternative</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle 0 \leq k \leq n$ :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \binom{n}{k} = \frac{n \times (n-1) \times \cdots \times (n-k+1)}{k!}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Cas particuliers</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \binom{n}{0} = 1$ (une seule partie vide)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \binom{n}{1} = n$ (n singletons)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \binom{n}{2} = \frac{n(n-1)}{2}$ (nombre de paires)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \binom{n}{n} = 1$ (une seule partie : l'ensemble lui-même)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \binom{n}{n-1} = n$ (n parties à n-1 éléments)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Symétrie</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle 0 \leq k \leq n$ :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \binom{n}{k} = \binom{n}{n-k}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Symétrie :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">$\displaystyle \binom{10}{3} = \binom{10}{7} = 120$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Choisir 3 éléments parmi 10 revient à choisir les 7 éléments qu'on ne prend pas.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Cas particuliers :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Pour un ensemble à 8 éléments :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \binom{8}{0} = 1$ (une seule partie vide : $\displaystyle \emptyset$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \binom{8}{1} = 8$ (8 singletons : $\displaystyle \{a\}, \{b\}, \ldots, \{h\}$)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \binom{8}{2} = \frac{8 \times 7}{2} = 28$ (28 paires possibles)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \binom{8}{8} = 1$ (une seule partie : l'ensemble complet)</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Quel outil utiliser ?</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Méthode : Choisir l'outil de dénombrement adapté</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour déterminer quel outil utiliser, posez-vous deux questions :</p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>L'ordre est-il important ?</strong> (Est-ce que (a,b) est différent de (b,a) ?)</li>
+                <li style="margin:0; text-align:left;"><strong>Les répétitions sont-elles autorisées ?</strong> (Peut-on choisir le même élément plusieurs fois ?)</li>
+            </ol>
+            <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                <thead>
+                    <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">Ordre</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">Répétitions</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">Outil</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">Formule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Important</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Non</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Arrangement</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle A_n^k = \frac{n!}{(n-k)!}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Important</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Oui</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>k-uplet</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle n^k$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Non important</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Non</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Combinaison</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Non important</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>Oui</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;"><strong>🌟 Combinaison avec répétitions</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle \binom{n+k-1}{k}$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Arrangement (ordre important, sans répétition) :</strong> Choisir et ordonner 3 personnes parmi 10 pour former un podium (1er, 2ème, 3ème). $\displaystyle A_{10}^3 = 720$ façons.</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>k-uplet (ordre important, avec répétition) :</strong> Former un code à 4 chiffres (de 0 à 9). $\displaystyle 10^4 = 10000$ codes possibles.</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Combinaison (ordre non important, sans répétition) :</strong> Choisir 3 personnes parmi 10 pour former une équipe (l'ordre n'a pas d'importance). $\displaystyle \binom{10}{3} = 120$ façons.</li>
+                <li style="margin:0; text-align:left;"><strong>🌟 Combinaison avec répétitions (ordre non important, avec répétition) :</strong> Choisir 3 fruits parmi 4 types (pomme, banane, orange, kiwi) en autorisant les répétitions. $\displaystyle \binom{4+3-1}{3} = \binom{6}{3} = 20$ façons.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Triangle de Pascal et relation de Pascal</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Relation de Pascal</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Relation de Pascal</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle 1 \leq k \leq n-1$ :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:350px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Méthode combinatoire :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour choisir $\displaystyle k$ éléments parmi $\displaystyle n$, on peut :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Soit prendre un élément fixé (par exemple le premier) : $\displaystyle \binom{n-1}{k-1}$ façons</li>
+                <li style="margin:0; text-align:left;">Soit ne pas le prendre : $\displaystyle \binom{n-1}{k}$ façons</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">D'où : $\displaystyle \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ ✓</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Méthode par le calcul :</strong></p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \binom{n-1}{k-1} + \binom{n-1}{k} = \frac{(n-1)!}{(k-1)!(n-k)!} + \frac{(n-1)!}{k!(n-k-1)!}$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle = \frac{(n-1)!}{k!(n-k)!}[k + (n-k)] = \frac{(n-1)! \times n}{k!(n-k)!} = \binom{n}{k}$ ✓</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Triangle de Pascal</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>triangle de Pascal</strong> est un tableau triangulaire où chaque ligne $\displaystyle n$ contient les coefficients $\displaystyle \binom{n}{0}, \binom{n}{1}, \ldots, \binom{n}{n}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Chaque coefficient (sauf ceux des bords qui valent 1) est la somme des deux coefficients situés au-dessus.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Triangle de Pascal (premières lignes) :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Ligne 0 : $\displaystyle 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ligne 1 : $\displaystyle 1 \quad 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ligne 2 : $\displaystyle 1 \quad 2 \quad 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ligne 3 : $\displaystyle 1 \quad 3 \quad 3 \quad 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ligne 4 : $\displaystyle 1 \quad 4 \quad 6 \quad 4 \quad 1$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par exemple : $\displaystyle \binom{4}{2} = 6 = 3 + 3 = \binom{3}{1} + \binom{3}{2}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Application de la relation de Pascal :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Pour calculer $\displaystyle \binom{5}{3}$ en utilisant la relation de Pascal :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \binom{5}{3} = \binom{4}{2} + \binom{4}{3} = 6 + 4 = 10$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Vérification : $\displaystyle \binom{5}{3} = \frac{5!}{3! \times 2!} = \frac{5 \times 4}{2} = 10$ ✓</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formule du binôme</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Somme des coefficients binomiaux</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout entier naturel $\displaystyle n$ :</p>
+            <div style="background:#fee2e2; border:3px solid #dc2626; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre total de parties d'un ensemble à $\displaystyle n$ éléments est $\displaystyle 2^n$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Or, ce nombre est aussi la somme du nombre de parties à 0 élément, 1 élément, ..., n éléments :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle 2^n = \binom{n}{0} + \binom{n}{1} + \cdots + \binom{n}{n} = \sum_{k=0}^{n} \binom{n}{k}$ ✓</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Somme des coefficients binomiaux :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Pour $\displaystyle n = 4$ :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \binom{4}{0} + \binom{4}{1} + \binom{4}{2} + \binom{4}{3} + \binom{4}{4} = 1 + 4 + 6 + 4 + 1 = 16 = 2^4$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela correspond bien au nombre total de parties d'un ensemble à 4 éléments.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Interprétation combinatoire :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Pour un ensemble à 5 éléments, le nombre total de parties est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sum_{k=0}^{5} \binom{5}{k} = \binom{5}{0} + \binom{5}{1} + \binom{5}{2} + \binom{5}{3} + \binom{5}{4} + \binom{5}{5}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = 1 + 5 + 10 + 10 + 5 + 1 = 32 = 2^5$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. 🌟 Bonus - Algorithmes</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement :</strong> Les algorithmes suivants illustrent des applications de la combinatoire. Cette section est un approfondissement utile qui vous permet d'explorer des implémentations pratiques.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Génération des coefficients binomiaux</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Algorithme :</strong> Pour un entier $\displaystyle n$ donné, générer la liste des coefficients $\displaystyle \binom{n}{k}$ à l'aide de la relation de Pascal.</p>
+        </div>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">def</span> coefficients_binomiaux(n):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;ligne = [<span style="color:#bd93f9;">1</span>]  <span style="color:#6272a4;"># Ligne 0</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#bd93f9;">range</span>(<span style="color:#bd93f9;">1</span>, n+<span style="color:#bd93f9;">1</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nouvelle_ligne = [<span style="color:#bd93f9;">1</span>]<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> j <span style="color:#ff79c6;">in</span> <span style="color:#bd93f9;">range</span>(<span style="color:#bd93f9;">1</span>, i):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nouvelle_ligne.append(ligne[j-<span style="color:#bd93f9;">1</span>] + ligne[j])<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nouvelle_ligne.append(<span style="color:#bd93f9;">1</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ligne = nouvelle_ligne<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> ligne
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Génération des permutations</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Algorithme :</strong> Générer toutes les permutations d'un ensemble fini, ou tirer aléatoirement une permutation.</p>
+        </div>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">from</span> random <span style="color:#ff79c6;">import</span> shuffle<br>
+            <br>
+            <span style="color:#ff79c6;">def</span> permutation_aleatoire(ensemble):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;liste = <span style="color:#bd93f9;">list</span>(ensemble)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;shuffle(liste)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> liste
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Génération des parties</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Algorithme :</strong> Générer les parties à 2, 3 éléments d'un ensemble fini.</p>
+        </div>
+
+        <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <span style="color:#ff79c6;">from</span> itertools <span style="color:#ff79c6;">import</span> combinations<br>
+            <br>
+            <span style="color:#ff79c6;">def</span> parties_k_elements(ensemble, k):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#bd93f9;">list</span>(combinations(ensemble, k))
+        </div>
+    </div>
+
+    <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+        <strong>Note :</strong>
+        <p style="margin:8px 0; text-align:left; font-size:1em;">En évaluation, l'algorithme pourra être donné en pseudo-code ou en français ; ici il est illustré en Python.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. 🌟 Bonus - Approfondissements possibles</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement :</strong> Les sections suivantes enrichissent votre culture mathématique et vous offrent une vision plus profonde de la combinatoire.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">🌟 Bonus - Combinaisons avec répétitions</h3>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Combinaisons avec répétitions</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>combinaison avec répétitions</strong> de $\displaystyle k$ éléments parmi $\displaystyle n$ est un k-uplet où l'ordre n'a pas d'importance et où les répétitions sont autorisées.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le nombre de combinaisons avec répétitions de $\displaystyle k$ éléments parmi $\displaystyle n$ est :</p>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \binom{n+k-1}{k}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Le nombre de façons de choisir 3 fruits parmi 4 types (pomme, banane, orange, kiwi) en autorisant les répétitions est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \binom{4+3-1}{3} = \binom{6}{3} = 20$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Erreurs fréquentes et conseils</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Confondre arrangement et combinaison (l'ordre compte-t-il ?)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Oublier que le principe additif nécessite des ensembles disjoints</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Confondre $\displaystyle \binom{n}{k}$ et $\displaystyle \binom{k}{n}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Oublier que $\displaystyle 0! = 1$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Ne pas vérifier que $\displaystyle 0 \leq k \leq n$ avant de calculer $\displaystyle \binom{n}{k}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Confondre k-uplets (avec répétitions possibles) et arrangements (sans répétitions)</li>
+                <li style="margin:0; text-align:left;">Oublier de représenter la situation (arbre, tableau) avant de dénombrer</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils méthodologiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Toujours se demander si l'ordre compte (arrangement) ou non (combinaison)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Vérifier si les répétitions sont autorisées</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser une représentation adaptée (arbre, tableau, diagramme)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Vérifier que $\displaystyle 0 \leq k \leq n$ avant d'utiliser $\displaystyle \binom{n}{k}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Utiliser la symétrie $\displaystyle \binom{n}{k} = \binom{n}{n-k}$ pour simplifier les calculs</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Pour les grands nombres, utiliser la formule $\displaystyle \binom{n}{k} = \frac{n \times (n-1) \times \cdots \times (n-k+1)}{k!}$</li>
+                <li style="margin:0; text-align:left;">Interpréter les résultats dans le contexte de l'exercice</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Tableau récapitulatif</h2>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Formules et définitions à retenir</strong>
+            <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                <thead>
+                    <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:35%;">Notion</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Formule / Définition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Principe additif</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Si $\displaystyle A_1, \ldots, A_k$ sont deux à deux disjoints :<br/>$\displaystyle |A_1 \cup \cdots \cup A_k| = |A_1| + \cdots + |A_k|$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Principe multiplicatif</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle |A_1 \times \cdots \times A_k| = |A_1| \times \cdots \times |A_k|$<br/>$\displaystyle |A^k| = n^k$ (si $\displaystyle |A| = n$)</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Nombre de parties</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Un ensemble à $\displaystyle n$ éléments a $\displaystyle 2^n$ parties</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Factorielle</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle 0! = 1$<br/>$\displaystyle n! = n \times (n-1) \times \cdots \times 2 \times 1$ pour $\displaystyle n \geq 1$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Permutations</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Nombre de permutations d'un ensemble à $\displaystyle n$ éléments : $\displaystyle n!$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Arrangements</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Nombre d'arrangements de $\displaystyle k$ éléments parmi $\displaystyle n$ :<br/>$\displaystyle A_n^k = \frac{n!}{(n-k)!} = n \times (n-1) \times \cdots \times (n-k+1)$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Combinaisons</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">Nombre de combinaisons de $\displaystyle k$ éléments parmi $\displaystyle n$ :<br/>$\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n \times (n-1) \times \cdots \times (n-k+1)}{k!}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Cas particuliers</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle \binom{n}{0} = 1$, $\displaystyle \binom{n}{1} = n$, $\displaystyle \binom{n}{2} = \frac{n(n-1)}{2}$<br/>$\displaystyle \binom{n}{n} = 1$, $\displaystyle \binom{n}{n-1} = n$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Symétrie</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle \binom{n}{k} = \binom{n}{n-k}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Relation de Pascal</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ (pour $\displaystyle 1 \leq k \leq n-1$)</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Somme des coefficients</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle \sum_{k=0}^{n} \binom{n}{k} = 2^n$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;"><strong>Relation arrangements / combinaisons</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:left;">$\displaystyle A_n^k = \binom{n}{k} \times k!$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+===
+

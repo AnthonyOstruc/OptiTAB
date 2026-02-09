@@ -1,0 +1,822 @@
+=== Probabilités conditionnelles et indépendance
+Difficulté: medium
+Ordre: 8
+Images: arbre_pondere_urne.png, regle_de_la_somme_arbre.png, probabilites_totales_usine.png
+
+Titre: Probabilités conditionnelles et indépendance
+Description: Cours complet sur les probabilités conditionnelles : probabilité conditionnelle PA(B), arbres pondérés, indépendance, formule des probabilités totales, succession d'épreuves indépendantes, algorithmes de Monte-Carlo.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Sections principales :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections I à V couvrent les concepts fondamentaux des probabilités conditionnelles et de l'indépendance. Les encadrés marqués « <strong>Bonus / Approfondissement (facultatif)</strong> » sont des approfondissements utiles qui vous permettent d'explorer des thèmes avancés (démonstrations complètes, culture scientifique supplémentaire).</p>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">La section VI sur les algorithmes de Monte-Carlo enrichit votre culture mathématique. Les exemples de marches aléatoires et de successions de plusieurs épreuves sont des approfondissements possibles.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Probabilité conditionnelle</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Situation et motivation</h3>
+
+        <div style="background:#fff4e6; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>Situation introductive :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans une classe de 30 élèves, 18 sont des filles et 12 sont des garçons. Parmi les élèves, 10 pratiquent un sport : 7 filles et 3 garçons.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On choisit un élève au hasard.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Question 1 :</strong> Quelle est la probabilité que cet élève pratique un sport ? Réponse : $\displaystyle P(\text{Sport}) = \frac{10}{30} = \frac{1}{3}$</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Question 2 :</strong> Si on sait que l'élève choisi est une fille, quelle est la probabilité qu'elle pratique un sport ? Réponse : $\displaystyle \frac{7}{18}$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette dernière probabilité est une <strong>probabilité conditionnelle</strong> : on calcule la probabilité d'un événement sachant qu'un autre événement est réalisé.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Probabilité conditionnelle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle (\Omega, P)$ un espace probabilisé et $\displaystyle A$ et $\displaystyle B$ deux événements avec $\displaystyle P(A) \neq 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>probabilité conditionnelle de $\displaystyle B$ sachant $\displaystyle A$</strong>, notée $\displaystyle P_A(B)$ ou $\displaystyle P(B|A)$, est définie par :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette probabilité représente la probabilité que $\displaystyle B$ se réalise <strong>sachant que</strong> $\displaystyle A$ s'est réalisé.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Lorsqu'on sait que $\displaystyle A$ s'est réalisé, l'univers se <strong>restreint</strong> à $\displaystyle A$. La probabilité conditionnelle $\displaystyle P_A(B)$ est alors la proportion de $\displaystyle A \cap B$ dans $\displaystyle A$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On divise par $\displaystyle P(A)$ pour "renormaliser" les probabilités dans ce nouvel univers.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Reprise de l'exemple introductif :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notons $\displaystyle F$ l'événement "l'élève est une fille" et $\displaystyle S$ l'événement "l'élève pratique un sport".</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle P(F) = \frac{18}{30} = \frac{3}{5}$ et $\displaystyle P(F \cap S) = \frac{7}{30}$ (7 filles sportives sur 30 élèves)</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">Donc : $\displaystyle P_F(S) = \frac{P(F \cap S)}{P(F)} = \frac{\frac{7}{30}}{\frac{18}{30}} = \frac{7}{18}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On retrouve bien le résultat intuitif : parmi les 18 filles, 7 pratiquent un sport.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Tirage de cartes :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On tire une carte au hasard dans un jeu de 52 cartes.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle A$ l'événement "la carte est un cœur" et $\displaystyle B$ l'événement "la carte est un as".</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle P(A) = \frac{13}{52} = \frac{1}{4}$ et $\displaystyle P(A \cap B) = \frac{1}{52}$ (un seul as de cœur)</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">Calculons $\displaystyle P_A(B)$ : $\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)} = \frac{\frac{1}{52}}{\frac{13}{52}} = \frac{1}{13}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Interprétation : sachant que la carte est un cœur, la probabilité que ce soit un as est $\displaystyle \frac{1}{13}$ (il y a 1 as parmi les 13 cœurs).</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Propriétés des probabilités conditionnelles</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Propriétés</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle A$ un événement tel que $\displaystyle P(A) > 0$. On définit $\displaystyle P_A$ sur l'ensemble des événements par $\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle P_A$ est une <strong>probabilité</strong> sur $\displaystyle \Omega$, c'est-à-dire qu'elle vérifie :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 0 \leq P_A(B) \leq 1$ pour tout événement $\displaystyle B$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P_A(\Omega) = 1$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P_A(A) = 1$ (car si $\displaystyle A$ est réalisé, alors $\displaystyle A$ est certain)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P_A(\overline{B}) = 1 - P_A(B)$</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle B$ et $\displaystyle C$ sont incompatibles : $\displaystyle P_A(B \cup C) = P_A(B) + P_A(C)$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention - Distinguer $\displaystyle P_A(B)$ et $\displaystyle P_B(A)$ :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P_A(B)$ et $\displaystyle P_B(A)$ sont <strong>différents</strong> en général !</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P_A(B)$ : probabilité de $\displaystyle B$ sachant $\displaystyle A$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P_B(A)$ : probabilité de $\displaystyle A$ sachant $\displaystyle B$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cependant, on a toujours : $\displaystyle P(A \cap B) = P(A) \times P_A(B) = P(B) \times P_B(A)$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Tableaux croisés d'effectifs</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong style="color:#c62828;">Méthode - Calcul avec un tableau croisé :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em; color:#c62828;">Lorsque les données sont présentées sous forme de <strong style="color:#c62828;">tableau croisé d'effectifs</strong>, on peut calculer directement les probabilités conditionnelles en situation d'équiprobabilité.</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple :</strong> Étude sur 200 personnes</p>
+            <table style="width:auto; border-collapse:collapse; margin:15px auto; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center;"></th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center;">Pratique un sport</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center;">Ne pratique pas</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:bold;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; font-weight:bold;">Femme</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">50</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">70</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center; font-weight:bold;">120</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; font-weight:bold;">Homme</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">30</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">50</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center; font-weight:bold;">80</td>
+                    </tr>
+                    <tr style="background:#e8f4f8; font-weight:bold;">
+                        <td style="border:1px solid #ddd; padding:10px;">Total</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">80</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">120</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">200</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On choisit une personne au hasard (équiprobabilité).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notons $\displaystyle F$ = "la personne est une femme" et $\displaystyle S$ = "la personne pratique un sport".</p>
+            
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P(F) = \frac{120}{200} = 0.6$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P(F \cap S) = \frac{50}{200} = 0.25$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P_F(S) = \frac{50}{120} = \frac{5}{12} \approx 0.417$ (proportion de sportives parmi les femmes)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P_S(F) = \frac{50}{80} = \frac{5}{8} = 0.625$ (proportion de femmes parmi les sportifs)</li>
+            </ul>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On observe bien que $\displaystyle P_F(S) \neq P_S(F)$.</p>
+        </div>
+
+    </div>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Arbres pondérés et calcul de probabilités</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Construction d'un arbre pondéré</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Arbre pondéré</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>arbre pondéré</strong> (ou arbre de probabilités) est une représentation graphique permettant de visualiser les différentes étapes d'une expérience aléatoire.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur chaque branche, on indique :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Les <strong>probabilités</strong> des événements si c'est la première étape</li>
+                <li style="margin:0; text-align:left;">Les <strong>probabilités conditionnelles</strong> si c'est une étape ultérieure</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Construction d'un arbre :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans une urne, il y a 3 boules rouges et 2 boules bleues. On tire une boule, on note sa couleur, puis on tire une deuxième boule (sans remise).</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Première étape :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P(R_1) = \frac{3}{5}$ (probabilité de tirer rouge)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle P(B_1) = \frac{2}{5}$ (probabilité de tirer bleu)</li>
+            </ul>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Deuxième étape :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si on a tiré rouge : $\displaystyle P_{R_1}(R_2) = \frac{2}{4} = \frac{1}{2}$ et $\displaystyle P_{R_1}(B_2) = \frac{2}{4} = \frac{1}{2}$</li>
+                <li style="margin:0; text-align:left;">Si on a tiré bleu : $\displaystyle P_{B_1}(R_2) = \frac{3}{4}$ et $\displaystyle P_{B_1}(B_2) = \frac{1}{4}$</li>
+            </ul>
+            
+        </div>
+
+        <div style="background:#ffffff; border:1px dashed #c1c1c1; border-radius:6px; padding:15px; margin:12px 0; text-align:center;">
+            [IMAGE_1]
+        </div>
+
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode pour construire un arbre :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Identifier les différentes <strong>étapes</strong> de l'expérience aléatoire</li>
+                <li style="margin:0 0 12px 0; text-align:left;">À chaque nœud, faire partir autant de branches qu'il y a d'<strong>issues possibles</strong></li>
+                <li style="margin:0 0 12px 0; text-align:left;">Sur chaque branche de la <strong>première étape</strong>, noter la probabilité de l'événement</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Sur chaque branche des <strong>étapes suivantes</strong>, noter les probabilités conditionnelles</li>
+                <li style="margin:0; text-align:left;">Vérifier que la <strong>somme des probabilités</strong> partant d'un même nœud vaut 1</li>
+            </ol>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Règles de calcul dans un arbre pondéré</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Règle du produit (des chemins)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La probabilité d'un événement correspondant à un <strong>chemin</strong> dans l'arbre est égale au <strong>produit des probabilités</strong> le long de ce chemin.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si un chemin passe par les événements $\displaystyle A$ puis $\displaystyle B$, alors :</p>
+            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(A \cap B) = P(A) \times P_A(B)$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Bonus / Approfondissement (facultatif) - Démonstration - Règle du produit :</strong>
+            <p style="margin:8px 0 4px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Pour les élèves curieux qui veulent comprendre la formule, cette démonstration complète peut être relue après avoir maîtrisé les calculs principaux.</em></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Par définition de la probabilité conditionnelle, on a :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En multipliant les deux membres par $\displaystyle P(A)$, on obtient :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(A \cap B) = P(A) \times P_A(B)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Application de la règle du produit :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Reprenons l'exemple des boules (3 rouges, 2 bleues, tirage sans remise).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Calculons la probabilité de tirer deux boules rouges : $\displaystyle P(R_1 \cap R_2)$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(R_1 \cap R_2) = P(R_1) \times P_{R_1}(R_2)$</p>
+            <p style="margin:8px 0; padding-left:80px; text-align:left; font-size:1em;">$\displaystyle = \frac{3}{5} \times \frac{2}{4}$</p>
+            <p style="margin:8px 0; padding-left:80px; text-align:left; font-size:1em;">$\displaystyle = \frac{6}{20} = \frac{3}{10}$</p>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Règle de la somme (des chemins disjoints)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si un événement $\displaystyle E$ peut se réaliser selon <strong>plusieurs chemins disjoints</strong> dans l'arbre, alors la probabilité de $\displaystyle E$ est la <strong>somme des probabilités</strong> de chacun de ces chemins.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle E = (A \cap B) \cup (C \cap D)$ avec les événements disjoints :</p>
+            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(E) = P(A \cap B) + P(C \cap D)$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Application de la règle de la somme :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Calculons la probabilité de tirer deux boules de couleurs <strong>différentes</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cet événement se réalise selon deux chemins : $\displaystyle (R_1 \cap B_2)$ ou $\displaystyle (B_1 \cap R_2)$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(R_1 \cap B_2) = P(R_1) \times P_{R_1}(B_2) = \frac{3}{5} \times \frac{2}{4} = \frac{6}{20} = \frac{3}{10}$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(B_1 \cap R_2) = P(B_1) \times P_{B_1}(R_2) = \frac{2}{5} \times \frac{3}{4} = \frac{6}{20} = \frac{3}{10}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle P(\text{couleurs différentes}) = \frac{3}{10} + \frac{3}{10} = \frac{6}{10} = \frac{3}{5}$</p>
+        </div>
+
+        <div style="background:#ffffff; border:1px dashed #c1c1c1; border-radius:6px; padding:15px; margin:12px 0; text-align:center;">
+            [IMAGE_2]
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Du langage naturel au registre symbolique</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Traduction langage naturel ↔ symbolique :</strong>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #10b981;">
+                <thead>
+                    <tr style="background:#10b981; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:50%;">Langage naturel</th>
+                        <th style="border:1px solid #ddd; padding:12px; width:50%;">Notation symbolique</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle A$ et $\displaystyle B$ se réalisent</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle A \cap B$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle A$ ou $\displaystyle B$ se réalise</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle A \cup B$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle A$ ne se réalise pas</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \overline{A}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;">Probabilité de $\displaystyle B$ sachant $\displaystyle A$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P_A(B)$ ou $\displaystyle P(B|A)$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;">Sachant $\displaystyle A$, probabilité de non-$\displaystyle B$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P_A(\overline{B})$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Traduction :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Énoncé :</strong> "Sachant qu'un test médical est positif, quelle est la probabilité que la personne soit malade ?"</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Traduction :</strong> Notons $\displaystyle M$ = "la personne est malade" et $\displaystyle T$ = "le test est positif".</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On cherche : $\displaystyle P_T(M)$ (probabilité d'être malade sachant que le test est positif)</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Indépendance de deux événements</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition de l'indépendance</h3>
+
+        <div style="background:#fff4e6; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>Situation introductive :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance un dé équilibré à 6 faces deux fois de suite.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle A$ = "obtenir 6 au premier lancer" et $\displaystyle B$ = "obtenir 6 au deuxième lancer".</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle P(A) = \frac{1}{6}$ et $\displaystyle P(B) = \frac{1}{6}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Intuitivement, le résultat du premier lancer <strong>n'influence pas</strong> le résultat du deuxième lancer.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On s'attend donc à ce que $\displaystyle P_A(B) = P(B) = \frac{1}{6}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela signifie que $\displaystyle A$ et $\displaystyle B$ sont <strong>indépendants</strong>.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Indépendance de deux événements</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux événements $\displaystyle A$ et $\displaystyle B$ (avec $\displaystyle P(A) > 0$ et $\displaystyle P(B) > 0$) sont dits <strong>indépendants</strong> si et seulement si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(A \cap B) = P(A) \times P(B)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Équivalences :</strong> Les conditions suivantes sont équivalentes :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P(A \cap B) = P(A) \times P(B)$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P_A(B) = P(B)$ (la probabilité de $\displaystyle B$ ne dépend pas de $\displaystyle A$)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle P_B(A) = P(A)$ (la probabilité de $\displaystyle A$ ne dépend pas de $\displaystyle B$)</li>
+            </ul>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Interprétation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux événements sont <strong>indépendants</strong> si la réalisation de l'un <strong>n'influence pas</strong> la probabilité de réalisation de l'autre.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, savoir que $\displaystyle A$ s'est réalisé ne change pas la probabilité que $\displaystyle B$ se réalise.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Bonus / Approfondissement (facultatif) - Démonstration de l'équivalence :</strong>
+            <p style="margin:8px 0 4px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>La démonstration complète est proposée pour les élèves qui veulent approfondir la logique des équivalences ; elle n'a pas à être apprise par cœur.</em></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Montrons que $\displaystyle P(A \cap B) = P(A) \times P(B)$ équivaut à $\displaystyle P_A(B) = P(B)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>$\displaystyle \Rightarrow$ :</strong> Si $\displaystyle P(A \cap B) = P(A) \times P(B)$, alors :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)} = \frac{P(A) \times P(B)}{P(A)} = P(B)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>$\displaystyle \Leftarrow$ :</strong> Si $\displaystyle P_A(B) = P(B)$, alors :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle \frac{P(A \cap B)}{P(A)} = P(B)$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(A \cap B) = P(A) \times P(B)$</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention - Incompatibilité ≠ Indépendance :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ne pas confondre <strong>incompatibilité</strong> et <strong>indépendance</strong> !</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Incompatibles :</strong> $\displaystyle A \cap B = \emptyset$, donc $\displaystyle P(A \cap B) = 0$. Si $\displaystyle A$ se réalise, $\displaystyle B$ ne peut pas se réaliser.</li>
+                <li style="margin:0; text-align:left;"><strong>Indépendants :</strong> $\displaystyle P(A \cap B) = P(A) \times P(B)$. La réalisation de $\displaystyle A$ n'influence pas celle de $\displaystyle B$.</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle A$ et $\displaystyle B$ sont incompatibles et ont des probabilités non nulles, alors ils ne sont <strong>pas indépendants</strong> !</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemples d'événements indépendants et dépendants</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 - Événements indépendants :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance deux dés équilibrés.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle A$ = "le premier dé donne 6" et $\displaystyle B$ = "le deuxième dé donne un nombre pair".</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle P(A) = \frac{1}{6}$ et $\displaystyle P(B) = \frac{3}{6} = \frac{1}{2}$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(A \cap B) = \frac{1}{6} \times \frac{1}{2} = \frac{1}{12}$ (le premier donne 6 ET le deuxième donne un nombre pair)</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On vérifie : $\displaystyle P(A) \times P(B) = \frac{1}{6} \times \frac{1}{2} = \frac{1}{12} = P(A \cap B)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle A$ et $\displaystyle B$ sont <strong>indépendants</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 - Événements dépendants :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans une urne, il y a 3 boules rouges et 2 boules bleues. On tire deux boules sans remise.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle R_1$ = "la première boule est rouge" et $\displaystyle R_2$ = "la deuxième boule est rouge".</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle P(R_1) = \frac{3}{5}$ et $\displaystyle P(R_2) = \frac{3}{5}$ (par symétrie)</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(R_1 \cap R_2) = P(R_1) \times P_{R_1}(R_2) = \frac{3}{5} \times \frac{2}{4} = \frac{3}{10}$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(R_1) \times P(R_2) = \frac{3}{5} \times \frac{3}{5} = \frac{9}{25} \neq \frac{3}{10}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle R_1$ et $\displaystyle R_2$ ne sont <strong>pas indépendants</strong> (le tirage est sans remise).</p>
+        </div>
+
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Propriétés de l'indépendance</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Propriétés</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle A$ et $\displaystyle B$ sont deux événements indépendants, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle A$ et $\displaystyle \overline{B}$ sont indépendants</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \overline{A}$ et $\displaystyle B$ sont indépendants</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \overline{A}$ et $\displaystyle \overline{B}$ sont indépendants</li>
+            </ul>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Bonus / Approfondissement (facultatif) - Démonstration - $\displaystyle A$ et $\displaystyle \overline{B}$ sont indépendants :</strong>
+            <p style="margin:8px 0 4px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Ce passage prolonge les propriétés et peut être consulté une fois la notion principale maîtrisée.</em></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On doit montrer que $\displaystyle P(A \cap \overline{B}) = P(A) \times P(\overline{B})$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle A = (A \cap B) \cup (A \cap \overline{B})$ avec les événements disjoints</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">Donc : $\displaystyle P(A) = P(A \cap B) + P(A \cap \overline{B})$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(A \cap \overline{B}) = P(A) - P(A \cap B)$</p>
+            <p style="margin:8px 0; padding-left:80px; text-align:left; font-size:1em;">$\displaystyle = P(A) - P(A) \times P(B)$ (car $\displaystyle A$ et $\displaystyle B$ indépendants)</p>
+            <p style="margin:8px 0; padding-left:80px; text-align:left; font-size:1em;">$\displaystyle = P(A) \times (1 - P(B))$</p>
+            <p style="margin:8px 0; padding-left:80px; text-align:left; font-size:1em;">$\displaystyle = P(A) \times P(\overline{B})$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle A$ et $\displaystyle \overline{B}$ sont indépendants.</p>
+        </div>
+    </div>
+
+    <div style="background:#fff4e6; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+        <strong>Bonus / Approfondissement (facultatif) - Formule de Bayes :</strong>
+        <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un test médical, on note $\displaystyle M$ : "la personne est malade" et $\displaystyle T$ : "le test est positif". On connaît $\displaystyle P(M)$, la sensibilité $\displaystyle P_M(T)$ et la probabilité de faux positif $\displaystyle P_{\overline{M}}(T)$.</p>
+        <p style="margin:8px 0; text-align:left; font-size:1em;">La formule de Bayes permet de retrouver la valeur prédictive positive :</p>
+        <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+            <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P_T(M) = \frac{P(M) \times P_M(T)}{P(M) \times P_M(T) + P(\overline{M}) \times P_{\overline{M}}(T)}$</p>
+        </div>
+        <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Très utile pour interpréter les tests médicaux, cette formule est un bonus sensible à garder en tête et enrichit grandement votre compréhension des probabilités.</em></p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Formule des probabilités totales</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Partition de l'univers</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Partition de l'univers (système complet d'événements)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Des événements $\displaystyle A_1, A_2, \ldots, A_n$ forment une <strong>partition de l'univers</strong> $\displaystyle \Omega$ (ou un <strong>système complet d'événements</strong>) si :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Ils sont <strong>deux à deux incompatibles</strong> : $\displaystyle A_i \cap A_j = \emptyset$ pour $\displaystyle i \neq j$</li>
+                <li style="margin:0; text-align:left;">Leur <strong>réunion est l'univers</strong> : $\displaystyle A_1 \cup A_2 \cup \cdots \cup A_n = \Omega$</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, <strong>un et un seul</strong> des événements $\displaystyle A_i$ se réalise à chaque fois.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples de partitions :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Pour tout événement $\displaystyle A$ : $\displaystyle \{A, \overline{A}\}$ forme une partition de $\displaystyle \Omega$</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Pour un dé : $\displaystyle \{1\}, \{2\}, \{3\}, \{4\}, \{5\}, \{6\}$ forme une partition</li>
+                <li style="margin:0; text-align:left;">Dans une population : $\displaystyle \{\text{Enfant}, \text{Adulte}, \text{Senior}\}$ peut former une partition</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Formule des probabilités totales</h3>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Formule des probabilités totales</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle A_1, A_2, \ldots, A_n$ une partition de l'univers $\displaystyle \Omega$ avec $\displaystyle P(A_i) > 0$ pour tout $\displaystyle i$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tout événement $\displaystyle B$, on a :</p>
+            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:600px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(B) = P(A_1) \times P_{A_1}(B) + P(A_2) \times P_{A_2}(B) + \cdots + P(A_n) \times P_{A_n}(B)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cas particulier avec $\displaystyle A$ et $\displaystyle \overline{A}$ :</p>
+            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(B) = P(A) \times P_A(B) + P(\overline{A}) \times P_{\overline{A}}(B)$</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Bonus / Approfondissement (facultatif) - Démonstration :</strong>
+            <p style="margin:8px 0 4px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Une démonstration complète pour les élèves curieux : à relire si vous voulez connecter les partitions à la formule.</em></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle A_1, \ldots, A_n$ forment une partition, on peut écrire :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle B = B \cap \Omega = B \cap (A_1 \cup A_2 \cup \cdots \cup A_n)$</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle = (B \cap A_1) \cup (B \cap A_2) \cup \cdots \cup (B \cap A_n)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les événements $\displaystyle B \cap A_i$ sont deux à deux incompatibles (car les $\displaystyle A_i$ le sont), donc :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(B) = P(B \cap A_1) + P(B \cap A_2) + \cdots + P(B \cap A_n)$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En utilisant $\displaystyle P(B \cap A_i) = P(A_i) \times P_{A_i}(B)$ :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(B) = P(A_1) \times P_{A_1}(B) + P(A_2) \times P_{A_2}(B) + \cdots + P(A_n) \times P_{A_n}(B)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Application de la formule :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une usine produit des pièces sur deux machines : $\displaystyle M_1$ (60% de la production) et $\displaystyle M_2$ (40% de la production).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La machine $\displaystyle M_1$ produit 2% de pièces défectueuses, la machine $\displaystyle M_2$ en produit 5%.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On prend une pièce au hasard. Quelle est la probabilité qu'elle soit défectueuse ?</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Solution :</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Notons $\displaystyle M_1$ = "la pièce vient de $\displaystyle M_1$", $\displaystyle M_2$ = "la pièce vient de $\displaystyle M_2$" et $\displaystyle D$ = "la pièce est défectueuse".</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On a : $\displaystyle P(M_1) = 0.6$, $\displaystyle P(M_2) = 0.4$, $\displaystyle P_{M_1}(D) = 0.02$, $\displaystyle P_{M_2}(D) = 0.05$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \{M_1, M_2\}$ forme une partition, donc :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(D) = P(M_1) \times P_{M_1}(D) + P(M_2) \times P_{M_2}(D)$</p>
+            <p style="margin:8px 0; padding-left:80px; text-align:left; font-size:1em;">$\displaystyle = 0.6 \times 0.02 + 0.4 \times 0.05$</p>
+            <p style="margin:8px 0; padding-left:80px; text-align:left; font-size:1em;">$\displaystyle = 0.012 + 0.02 = 0.032$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La probabilité qu'une pièce soit défectueuse est de 3,2%.</p>
+        </div>
+
+        <div style="background:#ffffff; border:1px dashed #c1c1c1; border-radius:6px; padding:15px; margin:12px 0; text-align:center;">
+            [IMAGE_3]
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Succession de deux épreuves indépendantes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Répétition d'épreuves indépendantes</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Épreuves indépendantes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que deux <strong>épreuves sont indépendantes</strong> si le résultat de la première n'influence pas le résultat de la seconde.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si on note $\displaystyle A_1$ un événement de la première épreuve et $\displaystyle A_2$ un événement de la deuxième épreuve, alors :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(A_1 \cap A_2) = P(A_1) \times P(A_2)$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'épreuves indépendantes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Lancer deux dés</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Lancer deux pièces de monnaie</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Tirer une carte, la remettre, puis tirer une autre carte (<strong>tirage avec remise</strong>)</li>
+                <li style="margin:0; text-align:left;">Choisir deux personnes au hasard dans une grande population</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples d'épreuves dépendantes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Tirer deux cartes d'un jeu <strong>sans remise</strong></li>
+                <li style="margin:0; text-align:left;">Tirer deux boules d'une urne sans remise</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Représentation par un arbre</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Arbre pour deux épreuves indépendantes :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Lorsque deux épreuves sont indépendantes, les probabilités sur les branches de la <strong>deuxième étape</strong> sont les <strong>mêmes</strong> quelle que soit l'issue de la première épreuve.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Lancer d'une pièce (deux fois) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance une pièce équilibrée deux fois de suite.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle P$ = "obtenir pile" et $\displaystyle F$ = "obtenir face".</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les deux lancers sont indépendants, donc :</p>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On remarque que les probabilités de la deuxième étape sont toujours $\displaystyle \frac{1}{2}$, indépendamment du résultat du premier lancer.</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Calculs de probabilités :</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P(P_1 \cap P_2) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$ (deux piles)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P(P_1 \cap F_2) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$ (pile puis face)</li>
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle P(F_1 \cap P_2) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$ (face puis pile)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle P(F_1 \cap F_2) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$ (deux faces)</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Vérification : $\displaystyle \frac{1}{4} + \frac{1}{4} + \frac{1}{4} + \frac{1}{4} = 1$ ✓</p>
+        </div>
+
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Représentation par un tableau</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Tableau à double entrée :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour deux épreuves indépendantes, on peut également utiliser un <strong>tableau à double entrée</strong> pour visualiser toutes les issues possibles et leurs probabilités.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Deux lancers de dé :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance un dé équilibré deux fois. On s'intéresse aux issues "pair" (P) ou "impair" (I).</p>
+            
+            <table style="width:auto; border-collapse:collapse; margin:15px auto; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center;">Dé 1 \ Dé 2</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \text{Pair }\left(\frac{1}{2}\right)$</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center;">$\displaystyle \text{Impair }\left(\frac{1}{2}\right)$</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; font-weight:bold;">$\displaystyle \text{Pair }\left(\frac{1}{2}\right)$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle P(P_1 \cap P_2)=\frac{1}{4}$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle P(P_1 \cap F_2)=\frac{1}{4}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; font-weight:bold;">$\displaystyle \text{Impair }\left(\frac{1}{2}\right)$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle P(F_1 \cap P_2)=\frac{1}{4}$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle P(F_1 \cap F_2)=\frac{1}{4}$</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Chaque case du tableau donne la probabilité d'une issue, calculée par le produit des probabilités.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Exemple : $\displaystyle P(\text{Pair au 1er ET Impair au 2e}) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Calcul d'une probabilité composée :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Quelle est la probabilité d'obtenir <strong>exactement un nombre pair</strong> ?</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela correspond aux issues : (Pair, Impair) ou (Impair, Pair)</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(\text{exactement un pair}) = P(P \cap I) + P(I \cap P)$</p>
+            <p style="margin:8px 0; padding-left:80px; text-align:left; font-size:1em;">$\displaystyle = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Schéma de Bernoulli</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Schéma de Bernoulli</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On appelle <strong>schéma de Bernoulli</strong> une expérience aléatoire répétée $\displaystyle n$ fois de manière indépendante, où chaque épreuve n'a que <strong>deux issues possibles</strong> :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Succès</strong> (noté $\displaystyle S$) avec probabilité $\displaystyle p$</li>
+                <li style="margin:0; text-align:left;"><strong>Échec</strong> (noté $\displaystyle \overline{S}$) avec probabilité $\displaystyle 1-p$</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Lancer de pièce (n=2) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance une pièce équilibrée 2 fois. On considère "pile" comme un succès.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ici : $\displaystyle p = \frac{1}{2}$ et $\displaystyle n = 2$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Probabilité d'obtenir exactement 1 pile (1 succès) :</p>
+            <p style="margin:8px 0; padding-left:0; text-align:left; font-size:1em;">$\displaystyle P(\text{1 pile}) = P(SF) + P(FS)$</p>
+            <p style="margin:8px 0; padding-left:80px; text-align:left; font-size:1em;">$\displaystyle = p(1-p) + (1-p)p$</p>
+            <p style="margin:8px 0; padding-left:80px; text-align:left; font-size:1em;">$\displaystyle = 2p(1-p) = 2 \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{2}$</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Algorithmes et simulations</h2>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🔷 Bonus / Approfondissement :</strong> Les activités qui suivent sont très utiles pour aller plus loin (Monte-Carlo, marches aléatoires, simulations) et enrichissent votre compréhension des probabilités appliquées.</p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Vous pouvez les utiliser pour enrichir votre culture scientifique ou vos projets, sans devoir les maîtriser pour un contrôle standard.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode de Monte-Carlo (Bonus / Approfondissement)</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Principe de la méthode</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>méthode de Monte-Carlo</strong> est une technique qui utilise le <strong>hasard</strong> et la <strong>répétition</strong> pour estimer des valeurs difficiles à calculer directement.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Principe :</strong></p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">On simule une expérience aléatoire un grand nombre de fois</li>
+                <li style="margin:0 0 12px 0; text-align:left;">On compte le nombre de fois où un événement se produit</li>
+                <li style="margin:0; text-align:left;">On estime la probabilité par la fréquence observée</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Bonus / Approfondissement - Exemple 1 - Estimation de π :</strong>
+            <p style="margin:8px 0 4px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Cette application montre comment simuler la valeur de π et enrichit votre culture algorithmique.</em></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Principe :</strong> On tire des points au hasard dans un carré de côté 2. On compte combien tombent dans le cercle de rayon 1 inscrit dans ce carré.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Aire du carré : $\displaystyle 2 \times 2 = 4$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Aire du cercle : $\displaystyle \pi \times 1^2 = \pi$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Probabilité qu'un point tombe dans le cercle : $\displaystyle \frac{\pi}{4}$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \pi \approx 4 \times \frac{\text{nombre de points dans le cercle}}{\text{nombre total de points}}$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> random<br>
+                <br>
+                <span style="color:#ff79c6;">def</span> estimer_pi(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;dans_cercle = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = random.uniform(<span style="color:#bd93f9;">-1</span>, <span style="color:#bd93f9;">1</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y = random.uniform(<span style="color:#bd93f9;">-1</span>, <span style="color:#bd93f9;">1</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> x**<span style="color:#bd93f9;">2</span> + y**<span style="color:#bd93f9;">2</span> <= <span style="color:#bd93f9;">1</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dans_cercle += <span style="color:#bd93f9;">1</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#bd93f9;">4</span> * dans_cercle / n<br>
+                <br>
+                <span style="color:#6272a4;"># Test avec 100000 points</span><br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Estimation de π : {estimer_pi(100000)}"</span>)
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Résultat typique : π ≈ 3.14...</em></p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Bonus / Approfondissement - Exemple 2 - Estimation de l'aire sous une courbe :</strong>
+            <p style="margin:8px 0 4px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Une autre façon de comprendre les probabilités via l'aire sous une fonction : utile pour les binômes de type projet de seconde partie.</em></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Objectif :</strong> Estimer l'aire sous la parabole $\displaystyle y = x^2$ entre 0 et 1.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Principe :</strong> On tire des points au hasard dans le rectangle $\displaystyle [0,1] \times [0,1]$. On compte combien de points sont sous la courbe (c'est-à-dire vérifient $\displaystyle y \leq x^2$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'aire cherchée est environ : $\displaystyle \text{Aire} \approx 1 \times 1 \times \frac{\text{points sous la courbe}}{\text{total de points}}$</p>
+            
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Code Python :</strong></p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> random<br>
+                <br>
+                <span style="color:#ff79c6;">def</span> aire_sous_parabole(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;sous_courbe = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = random.uniform(<span style="color:#bd93f9;">0</span>, <span style="color:#bd93f9;">1</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y = random.uniform(<span style="color:#bd93f9;">0</span>, <span style="color:#bd93f9;">1</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> y <= x**<span style="color:#bd93f9;">2</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sous_courbe += <span style="color:#bd93f9;">1</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> sous_courbe / n<br>
+                <br>
+                <span style="color:#6272a4;"># Test avec 50000 points</span><br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Aire estimée : {aire_sous_parabole(50000)}"</span>)
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Résultat typique : environ 0.33... (valeur exacte : 1/3)</em></p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Simulation d'expériences aléatoires</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Bonus / Approfondissement - Exemple - Simulation de lancers de dés :</strong>
+            <p style="margin:8px 0 4px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Une simulation rapide pour voir la loi des grands nombres en action : facultative pour la section bonus.</em></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Simuler 1000 lancers d'un dé et estimer la probabilité d'obtenir un 6.</p>
+            
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> random<br>
+                <br>
+                n = <span style="color:#bd93f9;">1000</span><br>
+                compte_six = <span style="color:#bd93f9;">0</span><br>
+                <br>
+                <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;resultat = random.randint(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> resultat == <span style="color:#bd93f9;">6</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compte_six += <span style="color:#bd93f9;">1</span><br>
+                <br>
+                frequence = compte_six / n<br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Fréquence observée : {frequence}"</span>)<br>
+                <span style="color:#50fa7b;">print</span>(<span style="color:#f1fa8c;">f"Probabilité théorique : {1/6:.4f}"</span>)
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Plus le nombre de simulations est grand, plus la fréquence se rapproche de 1/6.</em></p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Bonus / Approfondissement - Exemple - Marche aléatoire simple :</strong>
+            <p style="margin:8px 0 4px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Ce graphique Python montre comment les marches aléatoires expliquent les phénomènes de fluctuation et enrichit votre compréhension des probabilités.</em></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une personne part de la position 0. À chaque étape, elle fait un pas de +1 ou -1 avec probabilité 1/2 chacun.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On simule 100 pas et on trace la position au fil du temps.</p>
+            
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> random<br>
+                <span style="color:#ff79c6;">import</span> matplotlib.pyplot <span style="color:#ff79c6;">as</span> plt<br>
+                <br>
+                position = <span style="color:#bd93f9;">0</span><br>
+                positions = [position]<br>
+                <br>
+                <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">100</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;pas = random.choice([<span style="color:#bd93f9;">-1</span>, <span style="color:#bd93f9;">1</span>])<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;position += pas<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;positions.append(position)<br>
+                <br>
+                plt.plot(positions)<br>
+                plt.xlabel(<span style="color:#f1fa8c;">"Nombre de pas"</span>)<br>
+                plt.ylabel(<span style="color:#f1fa8c;">"Position"</span>)<br>
+                plt.title(<span style="color:#f1fa8c;">"Marche aléatoire"</span>)<br>
+                plt.show()
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Les marches aléatoires modélisent de nombreux phénomènes : cours de bourse, mouvement brownien, etc.</em></p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Conseils méthodologiques</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Conseils pratiques :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Probabilité conditionnelle :</strong> Toujours utiliser $\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$ avec $\displaystyle P(A) \neq 0$</li>
+                <li style="margin:0; text-align:left;"><strong>Arbre pondéré :</strong> Vérifier que la somme des probabilités partant d'un nœud vaut 1</li>
+                <li style="margin:0; text-align:left;"><strong>Règle du produit :</strong> Pour calculer la probabilité d'un chemin, multiplier les probabilités le long du chemin</li>
+                <li style="margin:0; text-align:left;"><strong>Règle de la somme :</strong> Pour des chemins disjoints, additionner les probabilités de chaque chemin</li>
+                <li style="margin:0; text-align:left;"><strong>Indépendance :</strong> $\displaystyle A$ et $\displaystyle B$ indépendants ⇔ $\displaystyle P(A \cap B) = P(A) \times P(B)$</li>
+                <li style="margin:0; text-align:left;"><strong>Formule des probabilités totales :</strong> Utiliser une partition de l'univers pour calculer $\displaystyle P(B)$</li>
+                <li style="margin:0; text-align:left;"><strong>Tableau croisé :</strong> En équiprobabilité, diviser par l'effectif total pour obtenir les probabilités</li>
+            </ul>
+        </div>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
+                <li style="margin:0; text-align:left;"><strong>Confondre $\displaystyle P_A(B)$ et $\displaystyle P_B(A)$ :</strong> Ce sont des probabilités différentes !</li>
+                <li style="margin:0; text-align:left;"><strong>Incompatibilité ≠ Indépendance :</strong> Deux événements incompatibles de probabilité non nulle ne sont PAS indépendants</li>
+                <li style="margin:0; text-align:left;"><strong>Oublier de vérifier l'indépendance :</strong> Ne pas supposer l'indépendance sans vérification</li>
+                <li style="margin:0; text-align:left;"><strong>Somme des probabilités :</strong> Sur un arbre, la somme des probabilités partant d'un nœud doit toujours valoir 1</li>
+                <li style="margin:0; text-align:left;"><strong>Formule du produit mal appliquée :</strong> $\displaystyle P(A \cap B) = P(A) \times P_A(B)$, pas $\displaystyle P(A) \times P(B)$ si non indépendants</li>
+                <li style="margin:0; text-align:left;"><strong>Faux positifs :</strong> Dans un test médical, distinguer $\displaystyle P_M(T)$ (sensibilité) de $\displaystyle P_T(M)$ (valeur prédictive positive)</li>
+            </ul>
+        </div>
+
+        <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>📐 Récapitulatif - Formules à retenir</strong>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
+                <thead>
+                    <tr style="background:#3498db; color:white;">
+                        <th style="border:1px solid #ddd; padding:12px; width:40%;">Concept</th>
+                        <th style="border:1px solid #ddd; padding:12px;">Formule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Probabilité conditionnelle</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Règle du produit</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(A \cap B) = P(A) \times P_A(B)$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Indépendance</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(A \cap B) = P(A) \times P(B)$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Probabilités totales</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P(B) = P(A) \times P_A(B) + P(\overline{A}) \times P_{\overline{A}}(B)$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Événement contraire</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle P_A(\overline{B}) = 1 - P_A(B)$</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="background:#eef2ff; border-radius:6px; border-left:6px solid #4d6df3; padding:15px; margin:12px 0;">
+        <p style="margin:0 0 8px 0; text-align:left; font-size:1em;"><strong>À suivre dans le chapitre suivant :</strong> les variables aléatoires utilisent les schémas de Bernoulli vus ici pour modéliser le nombre de succès dans une succession d'épreuves indépendantes.</p>
+        <p style="margin:0; text-align:left; font-size:0.95em;">Lorsque vous lirez ce chapitre, rappelez-vous que les partitions, probabilités conditionnelles et indépendances étudiées ici constituent la base des lois, espérances et variances à venir.</p>
+    </div>
+
+</div>
+
+===

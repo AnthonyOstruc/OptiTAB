@@ -105,15 +105,15 @@ function getComponentKey(route) {
   
   // Pour les vues qui doivent être mises en cache par notion
   // IMPORTANT : utiliser route.name (pas de variation) pour maintenir le même composant
-  if (name === 'ExercicesByNotion' || name === 'CourseByNotion' || name === 'SynthesisByNotion') {
+  if (name === 'ExercicesByNotion' || name === 'CourseByNotion' || name === 'SynthesisByNotion' || name === 'TablesByNotion') {
     // Utiliser le name uniquement pour garder l'instance active
     // Le composant gère lui-même le changement de notionId via watch
     return name
   }
   
-  if (name === 'Themes' || name === 'CourseNotions' || name === 'QuizNotions' || name === 'SynthesisNotions') {
-    // Pour ces vues, utiliser matiereId
-    return `${name}-${route.params.matiereId || 'default'}`
+  if (name === 'Themes' || name === 'CourseNotions' || name === 'QuizNotions' || name === 'Sheets' || name === 'TablesFormules') {
+    // Pour ces vues, utiliser matiereId (param ou query selon la route)
+    return `${name}-${route.params.matiereId || route.query.matiereId || 'default'}`
   }
   
   // Pour les autres vues, utiliser le path complet

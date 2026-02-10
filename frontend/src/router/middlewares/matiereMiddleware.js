@@ -15,7 +15,7 @@ import { useSubjectsStore } from '@/stores/subjects/index'
 /**
  * Configuration des routes nécessitant une matière
  */
-const MATIERE_DEPENDENT_ROUTES = ['Exercises', 'Quiz', 'Sheets', 'OnlineCourses']
+const MATIERE_DEPENDENT_ROUTES = ['Exercises', 'Quiz', 'Sheets', 'TablesFormules', 'OnlineCourses']
 
 /**
  * Mapping des routes vers leurs équivalents avec matière
@@ -32,6 +32,10 @@ const ROUTE_REDIRECTIONS = {
   'Sheets': (matiereId) => ({ 
     name: 'Sheets', 
     query: { matiereId: String(matiereId) } 
+  }),
+  'TablesFormules': (matiereId) => ({
+    name: 'TablesFormules',
+    query: { matiereId: String(matiereId) }
   }),
   'OnlineCourses': (matiereId) => ({ 
     name: 'CourseNotions', 

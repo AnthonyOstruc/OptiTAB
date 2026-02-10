@@ -18,6 +18,7 @@
             :notion-route-name="'ExercicesByNotion'"
             :show-search="false"
             :deep-search-in-exercises="true"
+            :exclude-notions-by-sheet-type="'table'"
           />
         </div>
       </div>

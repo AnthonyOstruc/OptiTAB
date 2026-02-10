@@ -148,6 +148,7 @@ import { getInitials } from '@/utils'
 import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
 import { apiUtils } from '@/api/client'
 import { useDataPrefetch } from '@/composables/useDataPrefetch'
+import { getSynthesisSheets } from '@/api/synthesis'
 import * as analytics from '@/services/analytics'
 
 import { AcademicCapIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
@@ -208,10 +209,76 @@ const clearGlobalQuery = () => {
   globalQuery.value = ''
 }
 
+const showTablesFormules = ref(false)
+let tablesVisibilityRequestId = 0
+
+const currentMatiereId = computed(() => {
+  const routeMatiereIdRaw = route.query?.matiereId
+  const routeMatiereId = Array.isArray(routeMatiereIdRaw) ? routeMatiereIdRaw[0] : routeMatiereIdRaw
+  const activeId = subjectsStore.activeMatiereId || subjectsStore.selectedMatieresIds?.[0] || routeMatiereId
+
+  if (activeId === undefined || activeId === null || activeId === '') {
+    return null
+  }
+
+  return String(activeId)
+})
+
+const extractSheetCount = (payload) => {
+  if (Array.isArray(payload)) return payload.length
+  if (Array.isArray(payload?.results)) return payload.results.length
+  if (typeof payload?.count === 'number') return payload.count
+  return 0
+}
+
+const refreshTablesFormulesVisibility = async () => {
+  if (!userStore.isAuthenticated) {
+    showTablesFormules.value = false
+    return
+  }
+
+  if (userStore.isAdmin) {
+    showTablesFormules.value = true
+    return
+  }
+
+  const matiereId = currentMatiereId.value
+  if (!matiereId) {
+    showTablesFormules.value = false
+    return
+  }
+
+  const requestId = ++tablesVisibilityRequestId
+  try {
+    const response = await getSynthesisSheets({
+      matiere: matiereId,
+      sheet_type: 'table',
+      limit: 1
+    })
+    if (requestId !== tablesVisibilityRequestId) return
+    showTablesFormules.value = extractSheetCount(response?.data) > 0
+  } catch (_) {
+    if (requestId !== tablesVisibilityRequestId) return
+    showTablesFormules.value = false
+  }
+}
+
+watch(
+  [() => userStore.isAuthenticated, () => userStore.isAdmin, currentMatiereId],
+  () => {
+    refreshTablesFormulesVisibility()
+  },
+  { immediate: true }
+)
+
 
 // Tous les éléments du menu dans l'ordre défini
 const otherMenuItems = computed(() => {
-  return menu.filter(item => item.key !== 'dashboard')
+  return menu.filter(item => {
+    if (item.key === 'dashboard') return false
+    if (item.key === 'tables-formules') return showTablesFormules.value
+    return true
+  })
 })
 
 // Fonction pour déterminer si une route est active
@@ -224,6 +291,7 @@ const isActiveRoute = (menuKey) => {
     'cours': ['/online-courses', '/course-notions', '/course-notion'],
     'exercices': ['/exercises', '/notions', '/exercicies', '/theme-notions', '/exercices-notion', '/exercices', '/chapter-exercises'],
     'fiches': ['/sheets'],
+    'tables-formules': ['/tables-formules', '/tables-formules-notion'],
     'quiz': ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
     'progress': '/progress',
     'calculator': '/calculator',
@@ -264,7 +332,7 @@ function handleSidebarHover(item) {
   }
   
   // Seulement pour les routes qui utilisent des matières
-  if (!['exercices', 'fiches', 'quiz', 'cours'].includes(item.key)) {
+  if (!['exercices', 'fiches', 'tables-formules', 'quiz', 'cours'].includes(item.key)) {
     return
   }
   
@@ -281,6 +349,8 @@ function handleSidebarHover(item) {
       if (item.key === 'exercices') {
         import('@/views/Themes.vue')
       } else if (item.key === 'fiches') {
+        import('@/views/SynthesisNotions.vue')
+      } else if (item.key === 'tables-formules') {
         import('@/views/SynthesisNotions.vue')
       } else if (item.key === 'quiz') {
         import('@/views/QuizNotions.vue')
@@ -309,7 +379,7 @@ async function handleSidebarClick(item) {
     router.push('/cours-particuliers')
   } 
   // Routes intelligentes avec matière
-  else if (['exercices', 'fiches', 'quiz', 'cours'].includes(item.key)) {
+  else if (['exercices', 'fiches', 'tables-formules', 'quiz', 'cours'].includes(item.key)) {
     // Déterminer la matière active si possible
     const activeId = subjectsStore.activeMatiereId || subjectsStore.selectedMatieresIds?.[0] || null
     if (item.key === 'exercices') {
@@ -325,6 +395,12 @@ async function handleSidebarClick(item) {
         router.push({ name: 'Sheets', query: { matiereId: String(activeId) } })
       } else {
         router.push({ name: 'Sheets' })
+      }
+    } else if (item.key === 'tables-formules') {
+      if (activeId) {
+        router.push({ name: 'TablesFormules', query: { matiereId: String(activeId) } })
+      } else {
+        router.push({ name: 'TablesFormules' })
       }
     } else if (item.key === 'quiz') {
       if (activeId) {

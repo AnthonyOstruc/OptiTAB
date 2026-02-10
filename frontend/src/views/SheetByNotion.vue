@@ -2,7 +2,7 @@
   <DashboardLayout>
     <div class="sheet-by-notion-page">
       <div class="nav-header-base">
-        <BackButton text="Retour aux chapitres" :customAction="goBack" position="top-left-dashboard" />
+        <BackButton :text="backButtonLabel" :customAction="goBack" position="top-left-dashboard" />
       </div>
 
       <div class="sheet-content-wrapper" :class="{ 'sheet-loading': loading }">
@@ -14,13 +14,13 @@
         <div v-else>
           <div v-if="!sheet" class="empty-coming">
             <div class="empty-card">
-            <div class="empty-icon">📘</div>
-            <h2 class="empty-title">Fiche de synthèse — bientôt disponible</h2>
+            <div class="empty-icon">{{ emptyIcon }}</div>
+            <h2 class="empty-title">{{ emptyTitle }}</h2>
             <p class="empty-text">
-              Cette fiche n'est pas encore publiée pour cette notion. Elle arrive très prochainement.
+              {{ emptyText }}
             </p>
             <div class="empty-actions">
-              <button class="empty-btn" @click="goBack">Retour aux chapitres</button>
+              <button class="empty-btn" @click="goBack">{{ backButtonLabel }}</button>
             </div>
           </div>
           </div>
@@ -123,11 +123,43 @@ import { useSubjectsStore } from '@/stores/subjects/index'
 import { renderContentWithImages } from '@/utils/scientificRenderer'
 import { useZoom } from '@/composables/useZoom'
 
+const props = defineProps({
+  sheetType: {
+    type: String,
+    default: 'summary'
+  },
+  backRouteName: {
+    type: String,
+    default: 'Sheets'
+  }
+})
+
 const route = useRoute()
 const router = useRouter()
 const subjectsStore = useSubjectsStore()
 
 defineOptions({ name: 'SynthesisByNotion' })
+
+const normalizedSheetType = computed(() => (
+  String(props.sheetType || '').toLowerCase() === 'table' ? 'table' : 'summary'
+))
+const backRoute = computed(() => (
+  props.backRouteName || (normalizedSheetType.value === 'table' ? 'TablesFormules' : 'Sheets')
+))
+const backButtonLabel = computed(() => (
+  normalizedSheetType.value === 'table' ? 'Retour aux tableaux' : 'Retour aux chapitres'
+))
+const emptyIcon = computed(() => (normalizedSheetType.value === 'table' ? '[T]' : '[S]'))
+const emptyTitle = computed(() => (
+  normalizedSheetType.value === 'table'
+    ? 'Tableau & formules - bientot disponible'
+    : 'Fiche de synthese - bientot disponible'
+))
+const emptyText = computed(() => (
+  normalizedSheetType.value === 'table'
+    ? "Ce tableau n'est pas encore publie pour cette notion. Il arrive tres prochainement."
+    : "Cette fiche n'est pas encore publiee pour cette notion. Elle arrive tres prochainement."
+))
 
 const notionId = computed(() => Number(route.params.notionId))
 const loading = ref(true)
@@ -268,27 +300,29 @@ function prepareTablesForScroll() {
 }
 
 function goBack() {
-  // Rediriger vers sheets?matiereId=id (liste des notions de synthèse)
-  const matiereId = route.params.matiereId || subjectsStore.activeMatiereId
+  const matiereId = route.query?.matiereId || route.params?.matiereId || subjectsStore.activeMatiereId
   if (matiereId) {
-    router.push({ 
-      name: 'Sheets', 
-      query: { 
-        matiereId: matiereId
-      } 
+    router.push({
+      name: backRoute.value,
+      query: {
+        matiereId: String(matiereId)
+      }
     })
   } else {
-    router.back()
+    router.push({ name: backRoute.value }).catch(() => {
+      router.back()
+    })
   }
 }
 
 async function fetchSheet(nId) {
   loading.value = true
+  const cacheKey = `${normalizedSheetType.value}:${nId}`
   try {
-    if (sheetCache.has(nId)) {
-      sheet.value = sheetCache.get(nId)
+    if (sheetCache.has(cacheKey)) {
+      sheet.value = sheetCache.get(cacheKey)
     } else {
-      const { data } = await getSynthesisSheets({ notion: nId })
+      const { data } = await getSynthesisSheets({ notion: nId, sheet_type: normalizedSheetType.value })
       const result = Array.isArray(data) ? data[0] : (Array.isArray(data?.results) ? data.results[0] : null)
       let full = result
       if (result?.id) {
@@ -300,7 +334,7 @@ async function fetchSheet(nId) {
         }
       }
       sheet.value = full
-      sheetCache.set(nId, full)
+      sheetCache.set(cacheKey, full)
     }
   } finally {
     loading.value = false
@@ -490,6 +524,11 @@ watch(() => route.params.notionId, (newId, oldId) => {
   }
 })
 
+watch(normalizedSheetType, () => {
+  if (notionId.value) {
+    fetchSheet(notionId.value)
+  }
+})
 watch(rendered, () => {
   nextTick(() => {
     prepareTablesForScroll()
@@ -1043,3 +1082,4 @@ watch(() => route.query.q, (val) => {
 }
 .empty-btn:hover { filter: brightness(1.05); }
 </style>
+

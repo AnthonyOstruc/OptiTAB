@@ -75,7 +75,7 @@ import { ref, onMounted, computed, watch, onBeforeUnmount } from 'vue'
 import { useRouter, onBeforeRouteLeave } from 'vue-router'
 import { lockBodyScroll, unlockBodyScroll } from '@/utils/bodyScrollLock'
 import { useSubjectsStore } from '@/stores/subjects/index'
-import { getStatuses, getExercices, getMatieres } from '@/api'
+import { getStatuses, getMatieres } from '@/api'
 import {
   fetchUserGamification,
   fetchMyOverview,
@@ -107,10 +107,6 @@ const stats = ref({ done: 0, acquired: 0, not_acquired: 0 })
 // Supprimé: indicateur de chargement bas de page devenu inutile
 const statuses = ref([])
 
-const exercices = ref([])
-const chapitres = ref([])
-const exercicesIndex = ref({})
-const chapitresIndex = ref({})
 const matieres = ref([])
 const overview = ref(null)
 // Verification disabled: no code-handling functions
@@ -144,13 +140,6 @@ function humanizeDate(iso) {
   if (days < 7) return `il y a ${days} j`
   return d.toLocaleDateString()
 }
-
-function buildIndexes() {
-  exercicesIndex.value = Object.fromEntries(exercices.value.map(e => [e.id, e]))
-  chapitresIndex.value = Object.fromEntries(chapitres.value.map(c => [c.id, c]))
-}
-
-
 
 function goToLastChapter() {
   if (!lastActivity.value || !lastActivity.value.chapitreId) return
@@ -234,8 +223,7 @@ const runDashboardLoad = async () => {
     return
   }
   try {
-    const [ex, stResponse, mResponse, gam, ov, invitationsResponse] = await Promise.all([
-      getExercices({}),
+    const [stResponse, mResponse, gam, ov, invitationsResponse] = await Promise.all([
       getStatuses(),
       getMatieres(),
       fetchUserGamification().catch(() => null),
@@ -243,8 +231,6 @@ const runDashboardLoad = async () => {
       fetchParentInvitations().catch(() => null)
     ])
 
-    exercices.value = normalizeList(ex)
-    chapitres.value = []
     statuses.value = normalizeList(stResponse?.data)
     matieres.value = normalizeList(mResponse?.data ?? mResponse)
     overview.value = ov?.data?.data || null
@@ -256,8 +242,6 @@ const runDashboardLoad = async () => {
       userStore.level = gamData.level ?? userStore.level
       userStore.xp_to_next = gamData.xp_to_next ?? (gamData.next_level_xp - gamData.xp)
     }
-
-    buildIndexes()
 
     // Stats fiables basées sur est_correct
     stats.value.done = statuses.value.length
@@ -286,10 +270,6 @@ watch(isAuthenticated, (authed) => {
     // Nettoyer les données affichées lorsque l'utilisateur se déconnecte
     stats.value = { done: 0, acquired: 0, not_acquired: 0 }
     statuses.value = []
-    exercices.value = []
-    chapitres.value = []
-    exercicesIndex.value = {}
-    chapitresIndex.value = {}
     matieres.value = []
     overview.value = null
     invitations.value = []

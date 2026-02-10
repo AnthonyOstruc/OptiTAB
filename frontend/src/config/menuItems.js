@@ -13,7 +13,8 @@ import {
   InformationCircleIcon, // <- icône about
   UserGroupIcon, // <- icône cours particuliers
   SparklesIcon, // <- icône ressources gratuites
-  CreditCardIcon // <- icône abonnement
+  CreditCardIcon, // <- icône abonnement
+  TableCellsIcon // <- icône tableaux & formules
 } from '@heroicons/vue/24/outline'
 const DashboardIcon = Squares2X2Icon;
 // Centralized menu configuration for OptiTAB
@@ -53,6 +54,13 @@ export const menuItems = [
     icon: DocumentTextIcon,
     href: '/sheets',
     description: 'Résumés et fiches de révision'
+  },
+  {
+    key: 'tables-formules',
+    text: 'Tables & Formules',
+    icon: TableCellsIcon,
+    href: '/tables-formules',
+    description: 'Tables et formules clés'
   },
   {
     key: 'exercices',

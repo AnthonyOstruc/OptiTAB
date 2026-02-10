@@ -17,7 +17,9 @@
         <div v-else class="notions-container">
           <ThemeNotionsView
             :matiere-id="currentMatiereId"
-            :notion-route-name="'SynthesisByNotion'"
+            :notion-route-name="props.notionRouteName"
+            :synthesis-sheet-type="props.sheetType"
+            :filter-notions-by-sheets="true"
             :show-search="false"
             :deep-search-in-sheets="true"
           />
@@ -38,6 +40,21 @@ import { useSubjectsStore } from '@/stores/subjects/index'
 // Nom explicite pour KeepAlive
 defineOptions({ name: 'SynthesisNotions' })
 
+const props = defineProps({
+  sheetType: {
+    type: String,
+    default: 'summary'
+  },
+  notionRouteName: {
+    type: String,
+    default: 'SynthesisByNotion'
+  },
+  pageTitle: {
+    type: String,
+    default: 'Fiches de Synthèse'
+  }
+})
+
 const route = useRoute()
 const router = useRouter()
 const subjectsStore = useSubjectsStore()
@@ -47,7 +64,7 @@ function goBackToMatieres() {
 }
 
 const currentMatiereId = computed(() => {
-  const id = subjectsStore.activeMatiereId || route.params.matiereId
+  const id = subjectsStore.activeMatiereId || route.params.matiereId || route.query.matiereId
   return id ? Number(id) : null
 })
 

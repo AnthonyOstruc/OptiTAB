@@ -167,7 +167,23 @@ const routes = [
     meta: { requiresAuth: true }, 
     beforeEnter: matiereMiddleware 
   },
+  {
+    path: '/tables-formules',
+    name: 'TablesFormules',
+    component: () => import('@/views/SynthesisNotions.vue'),
+    props: { sheetType: 'table', notionRouteName: 'TablesByNotion', pageTitle: 'Tables & Formules' },
+    meta: { requiresAuth: true },
+    beforeEnter: matiereMiddleware
+  },
 { path: '/sheets-notion/:notionId', name: 'SynthesisByNotion', component: () => import('@/views/SheetByNotion.vue'), meta: { requiresAuth: true, requiresSubscription: true }, beforeEnter: matiereMiddleware },
+  {
+    path: '/tables-formules-notion/:notionId',
+    name: 'TablesByNotion',
+    component: () => import('@/views/SheetByNotion.vue'),
+    props: { sheetType: 'table', backRouteName: 'TablesFormules' },
+    meta: { requiresAuth: true, requiresSubscription: true },
+    beforeEnter: matiereMiddleware
+  },
   { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
   { path: '/contact', name: 'Contact', component: () => import('@/views/Contact.vue') },
   { path: '/cours-particuliers', name: 'CoursParticuliers', component: () => import('@/views/CoursParticuliers.vue') },

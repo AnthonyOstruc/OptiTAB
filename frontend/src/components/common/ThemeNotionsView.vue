@@ -25,19 +25,26 @@
     <div v-else class="tnv-content">
       <!-- No active subject -->
       <div v-if="!matiereId" class="tnv-state">
-        <div class="tnv-error-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-            <path d="M12 7v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="12" cy="16.5" r="1" fill="currentColor"/>
-          </svg>
-        </div>
-        <p>Aucune matière active</p>
-        <p style="color:#6b7280;margin-top:4px">Sélectionnez une matière dans la barre latérale pour afficher les concepts.</p>
-        <div class="tnv-left-hint">
-          <span class="arrow">←</span>
-          <span>Dans la colonne de gauche, cliquez sur <strong>+ New Matière</strong> pour en choisir une.</span>
-        </div>
+        <template v-if="isTablesFormulesMode">
+          <div class="tnv-coming-soon-badge">Nouveau</div>
+          <p class="tnv-coming-soon-title">Arrive bientôt</p>
+          <p class="tnv-coming-soon-text">Les premiers tableaux et formules essentiels seront disponibles très bientôt.</p>
+        </template>
+        <template v-else>
+          <div class="tnv-error-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 7v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="12" cy="16.5" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <p>Aucune matière active</p>
+          <p style="color:#6b7280;margin-top:4px">Sélectionnez une matière dans la barre latérale pour afficher les concepts.</p>
+          <div class="tnv-left-hint">
+            <span class="arrow">←</span>
+            <span>Dans la colonne de gauche, cliquez sur <strong>+ New Matière</strong> pour en choisir une.</span>
+          </div>
+        </template>
       </div>
       <template v-else>
         <div v-if="notionsLocked" class="tnv-lock-banner">
@@ -130,14 +137,23 @@
       <!-- Fallback: show notions directly or CTA if empty -->
       <div v-else class="tnv-fallback">
         <template v-if="(filteredDirectNotions || []).length === 0">
-          <div class="tnv-fallback-header">
-            <h3>Aucune matière active</h3>
-            <p>Sélectionnez une matière dans la barre latérale pour afficher les concepts.</p>
-          </div>
-          <div class="tnv-left-hint">
-            <span class="arrow">←</span>
-            <span>Regardez à gauche et cliquez sur <strong>+ New Matière</strong> pour sélectionner une matière.</span>
-          </div>
+          <template v-if="isTablesFormulesMode">
+            <div class="tnv-fallback-header">
+              <div class="tnv-coming-soon-badge">Nouveau</div>
+              <h3>Arrive bientôt</h3>
+              <p>Les tableaux et formules de ce niveau sont en préparation.</p>
+            </div>
+          </template>
+          <template v-else>
+            <div class="tnv-fallback-header">
+              <h3>Aucune matière active</h3>
+              <p>Sélectionnez une matière dans la barre latérale pour afficher les concepts.</p>
+            </div>
+            <div class="tnv-left-hint">
+              <span class="arrow">←</span>
+              <span>Regardez à gauche et cliquez sur <strong>+ New Matière</strong> pour sélectionner une matière.</span>
+            </div>
+          </template>
         </template>
         <template v-else>
           <div class="tnv-fallback-header">
@@ -185,6 +201,9 @@ const props = defineProps({
   searchPlaceholder: { type: String, default: 'Rechercher un concept, un mot-clé…' },
   deepSearchInCourses: { type: Boolean, default: false },
   deepSearchInSheets: { type: Boolean, default: false },
+  synthesisSheetType: { type: String, default: 'summary' },
+  filterNotionsBySheets: { type: Boolean, default: false },
+  excludeNotionsBySheetType: { type: String, default: '' },
   deepSearchInExercises: { type: Boolean, default: false },
   showInlineResults: { type: Boolean, default: true }
 })
@@ -207,6 +226,11 @@ const query = ref('')
 const deepIndex = ref(new Map())
 let deepAbortToken = 0
 const deepIndexingNotions = new Set()
+
+const isTablesFormulesMode = computed(() => {
+  const type = String(props.synthesisSheetType || '').toLowerCase()
+  return props.filterNotionsBySheets && type === 'table'
+})
 
 // Accès pratique à toutes les notions (ordre stable)
 const allNotions = computed(() => {
@@ -343,7 +367,11 @@ function writeToStorage(matiereId, value) {
 function cacheKey(matiereId) {
   const niveauId = userStore.niveau_pays?.id || 'n'
   const paysId = userStore.pays?.id || 'p'
-  return `${matiereId}|${niveauId}|${paysId}`
+  const excludedType = (props.excludeNotionsBySheetType || '').trim().toLowerCase()
+  const notionsScope = props.filterNotionsBySheets
+    ? `sheets:${props.synthesisSheetType || 'summary'}`
+    : (excludedType ? `exclude-sheets:${excludedType}` : 'all-notions')
+  return `${matiereId}|${niveauId}|${paysId}|${notionsScope}`
 }
 
 let currentAbortController = null
@@ -370,11 +398,43 @@ async function load(matiereId) {
       try { currentAbortController.abort() } catch (_) {}
     }
     currentAbortController = new AbortController()
-    const { data } = await getThemesWithNotionsForUser({ matiere: matiereId, signal: currentAbortController.signal })
+    const requestParams = { matiere: matiereId, signal: currentAbortController.signal }
+    const excludedType = (props.excludeNotionsBySheetType || '').trim().toLowerCase()
+    if (excludedType) requestParams.exclude_sheet_type = excludedType
+    const { data } = await getThemesWithNotionsForUser(requestParams)
     
     // Les données sont déjà triées par le backend - pas besoin de re-trier
-    const themesList = Array.isArray(data?.themes) ? data.themes : []
-    const notions = Array.isArray(data?.notions) ? data.notions : []
+    let themesList = Array.isArray(data?.themes) ? data.themes : []
+    let notions = Array.isArray(data?.notions) ? data.notions : []
+
+    if (props.filterNotionsBySheets) {
+      const sheetType = props.synthesisSheetType || 'summary'
+      const sheetsResp = await getSynthesisSheets({
+        matiere: matiereId,
+        sheet_type: sheetType
+      })
+      const sheetsRaw = sheetsResp?.data
+      const sheetsList = Array.isArray(sheetsRaw)
+        ? sheetsRaw
+        : (Array.isArray(sheetsRaw?.results) ? sheetsRaw.results : [])
+
+      const allowedNotionIds = new Set(
+        sheetsList
+          .map(sheet => Number(sheet?.notion))
+          .filter(notionId => Number.isFinite(notionId))
+      )
+
+      notions = notions.filter(n => allowedNotionIds.has(Number(n.id)))
+
+      if (themesList.length > 0) {
+        const themeIdsWithNotions = new Set(
+          notions
+            .map(n => Number(n.theme))
+            .filter(themeId => Number.isFinite(themeId))
+        )
+        themesList = themesList.filter(theme => themeIdsWithNotions.has(Number(theme.id)))
+      }
+    }
 
     // Grouper les notions par thème (notions déjà triées par theme_id, ordre, titre)
     const grouped = {}
@@ -583,7 +643,10 @@ async function buildDeepIndexForNotion(notionId) {
       }
     }
     if (props.deepSearchInSheets) {
-      const resp = await getSynthesisSheets({ notion: notionId })
+      const resp = await getSynthesisSheets({
+        notion: notionId,
+        sheet_type: props.synthesisSheetType || 'summary'
+      })
       const raw = resp?.data
       const list = Array.isArray(raw) ? raw : (Array.isArray(raw?.results) ? raw.results : [])
       for (const s of list) {
@@ -604,7 +667,7 @@ async function buildDeepIndexForNotion(notionId) {
     }
     if (props.deepSearchInExercises) {
       try {
-        const resp = await getExercices(notionId)
+        const resp = await getExercices({ notion: notionId, limit: 200 })
         const exoList = Array.isArray(resp?.data) ? resp.data : (resp?.data?.results || [])
         for (const e of exoList) {
           if (e?.titre) parts.push(String(e.titre))
@@ -1248,6 +1311,33 @@ function highlightQuery(text) {
   font-size: 1.4rem;
   color: #3b82f6;
   animation: nudge-left 1.2s ease-in-out infinite;
+}
+
+.tnv-coming-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin: 0 auto 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.tnv-coming-soon-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.tnv-coming-soon-text {
+  margin: 0.45rem 0 0;
+  color: #6b7280;
+  font-size: 0.95rem;
 }
 @keyframes nudge-left {
   0% { transform: translateX(0); }

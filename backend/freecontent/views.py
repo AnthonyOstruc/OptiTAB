@@ -318,6 +318,7 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 SynthesisSheet.objects.filter(
                     pk=sheet_id,
                     est_actif=True,
+                    sheet_type=SynthesisSheet.SHEET_TYPE_SUMMARY,
                     access_scope__in=[SynthesisSheet.ACCESS_SCOPE_FREE, SynthesisSheet.ACCESS_SCOPE_BOTH]
                 )
                 .select_related(
@@ -562,7 +563,10 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
 
     def _get_free_summaries_queryset(self, request, include_inactive=False):
         qs = (
-            SynthesisSheet.objects.filter(est_actif=True)
+            SynthesisSheet.objects.filter(
+                est_actif=True,
+                sheet_type=SynthesisSheet.SHEET_TYPE_SUMMARY
+            )
         )
         if not include_inactive:
             qs = qs.filter(Q(notion__isnull=True) | Q(notion__est_actif=True))

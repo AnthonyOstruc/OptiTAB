@@ -62,6 +62,8 @@ def duplicate_theme_deep(original: Theme, target_contexte: MatiereContexte, new_
                 ordre=sheet.ordre,
                 est_actif=sheet.est_actif,
                 reading_time_minutes=sheet.reading_time_minutes,
+                access_scope=sheet.access_scope,
+                sheet_type=sheet.sheet_type,
             )
 
         # Cours (one-to-one)
@@ -174,6 +176,8 @@ def duplicate_notion_deep(original: Notion, target_theme: Theme, new_title: str 
             ordre=sheet.ordre,
             est_actif=sheet.est_actif,
             reading_time_minutes=sheet.reading_time_minutes,
+            access_scope=sheet.access_scope,
+            sheet_type=sheet.sheet_type,
         )
 
     # Cours (one-to-one)

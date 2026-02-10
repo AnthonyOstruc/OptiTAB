@@ -224,8 +224,8 @@ const tabs = computed(() => {
     ]
   }
 
-  // Cas 6: On est dans une notion de synthèse (fiches)
-  if (notionId && currentPath.includes('/sheets-notion/')) {
+  // Cas 6: On est dans une notion de synthèse (fiches) ou tableaux/formules
+  if (notionId && (currentPath.includes('/sheets-notion/') || currentPath.includes('/tables-formules-notion/'))) {
     let exHash = ''
     try {
       const lastId = sessionStorage.getItem(`optitab_last_exercice_${notionId}`)
@@ -377,7 +377,7 @@ function updateActiveTab() {
       activeTab.value = 'cours'
     } else if (currentPath.includes('/exercices-notion/') || currentPath.includes('/notions/')) {
       activeTab.value = 'exercices'
-    } else if (currentPath.includes('/sheets-notion/') || currentPath.includes('/sheets')) {
+    } else if (currentPath.includes('/sheets-notion/') || currentPath.includes('/tables-formules-notion/') || currentPath.includes('/sheets')) {
       activeTab.value = 'sheets'
     } else if (currentPath.includes('/quiz-notion/') || 
                (currentPath.includes('/quiz/') && route.params.matiereId)) {
@@ -437,6 +437,7 @@ function handleTabClick(tabKey) {
         route.path.includes('/exercices-notion/') ? 'exercices' :
         route.path.includes('/course-notion/') ? 'cours' :
         route.path.includes('/quiz-notion/') ? 'quiz' :
+        route.path.includes('/tables-formules-notion/') ? 'sheets' :
         route.path.includes('/sheets-notion/') ? 'sheets' : null
       if (pageType && notionId) {
         const key = `optitab_scroll_${pageType}_${notionId}`

@@ -12,7 +12,7 @@ class SynthesisSheetSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'titre', 'notion', 'notion_info', 'summary',
             'key_points', 'formulas', 'examples',
-            'reading_time_minutes', 'access_scope',
+            'reading_time_minutes', 'access_scope', 'sheet_type',
             'est_actif', 'date_creation', 'date_modification', 'images'
         ]
         read_only_fields = ['date_creation', 'date_modification']
@@ -48,13 +48,13 @@ class SynthesisSheetSerializer(serializers.ModelSerializer):
 
 
 class SynthesisSheetCreateSerializer(serializers.ModelSerializer):
-    """SÃ©rialiseur simplifiÃ© pour la crÃ©ation"""
+    """Serialiseur simplifie pour la creation."""
     
     class Meta:
         model = SynthesisSheet
         fields = [
             'titre', 'notion', 'summary', 'key_points', 
-            'formulas', 'examples', 'reading_time_minutes', 'access_scope'
+            'formulas', 'examples', 'reading_time_minutes', 'access_scope', 'sheet_type'
         ]
 
 
@@ -79,7 +79,7 @@ class SynthesisImageSerializer(serializers.ModelSerializer):
 
 
 class SynthesisSheetListSerializer(serializers.ModelSerializer):
-    """SÃ©rialiseur pour la liste (plus lÃ©ger)"""
+    """Serialiseur pour la liste (plus leger)."""
     notion_nom = serializers.CharField(source='notion.titre', read_only=True)
     theme_nom = serializers.CharField(source='notion.theme.titre', read_only=True)
     matiere_nom = serializers.CharField(source='notion.theme.matiere.titre', read_only=True)
@@ -89,5 +89,5 @@ class SynthesisSheetListSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'titre', 'notion', 'notion_nom', 
             'theme_nom', 'matiere_nom', 'reading_time_minutes',
-            'access_scope', 'est_actif', 'date_creation', 'summary'
+            'access_scope', 'sheet_type', 'est_actif', 'date_creation', 'summary'
         ]

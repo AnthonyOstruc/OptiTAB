@@ -16,6 +16,7 @@
             :notion-route-name="'CourseByNotion'"
             :show-search="false"
             :deep-search-in-courses="true"
+            :exclude-notions-by-sheet-type="'table'"
           />
         </div>
       </div>

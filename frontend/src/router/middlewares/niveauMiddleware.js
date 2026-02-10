@@ -30,6 +30,7 @@ export const routesRequiringNiveau = [
   'Exercises', 
   'Quiz',
   'Sheets',
+  'TablesFormules',
   'Themes',
   'Notions',
   'ExercicesByNotion',
@@ -40,6 +41,7 @@ export const routesRequiringNiveau = [
   'CourseNotions',
   'QuizByNotion',
   'QuizNotions',
+  'TablesByNotion',
   'Progress',
   'Calculator'
 ]

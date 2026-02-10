@@ -32,7 +32,7 @@ const props = defineProps({
   },
   matierePages: {
     type: Array,
-    default: () => ['Dashboard', 'Themes', 'Notions', 'Exercises', 'OnlineCourses', 'CourseNotions', 'Quiz', 'QuizNotions', 'Sheets']
+    default: () => ['Dashboard', 'Themes', 'Notions', 'Exercises', 'OnlineCourses', 'CourseNotions', 'Quiz', 'QuizNotions', 'Sheets', 'TablesFormules']
   },
   subjectProps: {
     type: Object,

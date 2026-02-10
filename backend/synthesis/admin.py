@@ -4,14 +4,14 @@ from .models import SynthesisSheet
 
 @admin.register(SynthesisSheet)
 class SynthesisSheetAdmin(admin.ModelAdmin):
-    list_display = ('titre', 'notion', 'get_matiere', 'reading_time_minutes', 'access_scope', 'est_actif', 'date_creation')
-    list_filter = ('difficulty', 'access_scope', 'est_actif', 'notion__theme__matiere', 'date_creation')
+    list_display = ('titre', 'notion', 'get_matiere', 'sheet_type', 'reading_time_minutes', 'access_scope', 'est_actif', 'date_creation')
+    list_filter = ('difficulty', 'sheet_type', 'access_scope', 'est_actif', 'notion__theme__matiere', 'date_creation')
     search_fields = ('titre', 'notion__titre', 'summary')
     ordering = ('notion', 'ordre', 'titre')
     
     fieldsets = (
         (None, {
-            'fields': ('titre', 'notion', 'ordre', 'difficulty', 'access_scope', 'est_actif')
+            'fields': ('titre', 'notion', 'ordre', 'difficulty', 'sheet_type', 'access_scope', 'est_actif')
         }),
         ('Contenu', {
             'fields': ('summary', 'reading_time_minutes'),

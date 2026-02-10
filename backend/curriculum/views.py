@@ -393,6 +393,9 @@ class ThemeViewSet(viewsets.ModelViewSet):
         """GET /api/themes/notions-pour-utilisateur/
         Retourne en une seule réponse les thèmes et les notions accessibles
         à l'utilisateur courant, optionnellement filtrés par matière via ?matiere=<id>.
+        Paramètre optionnel:
+          - exclude_sheet_type: exclut les notions ayant au moins une fiche de ce type
+            (valeurs supportées: "summary", "table")
 
         Optimisé avec select_related/prefetch et un cache court (120s) par utilisateur/contexte.
         """
@@ -403,9 +406,20 @@ class ThemeViewSet(viewsets.ModelViewSet):
         user_pays = getattr(user, 'pays', None)
         user_niveau = getattr(user, 'niveau_pays', None)
         matiere_id = request.query_params.get('matiere')
+        exclude_sheet_type = (request.query_params.get('exclude_sheet_type') or '').strip().lower()
+        allowed_sheet_types = {
+            SynthesisSheet.SHEET_TYPE_SUMMARY,
+            SynthesisSheet.SHEET_TYPE_TABLE,
+        }
+        if exclude_sheet_type not in allowed_sheet_types:
+            exclude_sheet_type = ''
 
         # Clé de cache par utilisateur + contexte
-        cache_key = f"themes_notions:{user.id}:{matiere_id or 'all'}:{getattr(user_pays, 'id', 'np')}:{getattr(user_niveau, 'id', 'nn')}"
+        cache_key = (
+            f"themes_notions:{user.id}:{matiere_id or 'all'}:"
+            f"{getattr(user_pays, 'id', 'np')}:{getattr(user_niveau, 'id', 'nn')}:"
+            f"{exclude_sheet_type or 'none'}"
+        )
         cached = cache.get(cache_key)
         if cached is not None:
             return Response(cached)
@@ -423,6 +437,13 @@ class ThemeViewSet(viewsets.ModelViewSet):
 
         if matiere_id:
             notions_base_qs = notions_base_qs.filter(theme__matiere_id=matiere_id)
+
+        if exclude_sheet_type:
+            excluded_notion_ids_qs = SynthesisSheet.objects.filter(
+                est_actif=True,
+                sheet_type=exclude_sheet_type
+            ).values_list('notion_id', flat=True)
+            notions_base_qs = notions_base_qs.exclude(id__in=excluded_notion_ids_qs)
 
         # Récupérer les IDs des thèmes qui ont des notions actives (une seule requête)
         theme_ids_with_notions = list(notions_base_qs.values_list('theme_id', flat=True).distinct())

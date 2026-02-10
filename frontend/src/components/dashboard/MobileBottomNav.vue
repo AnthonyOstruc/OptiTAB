@@ -17,34 +17,100 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import dashboardMenu from '@/config/dashboardMenu'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useUserStore } from '@/stores/user'
 import { useDataPrefetch } from '@/composables/useDataPrefetch'
+import { getSynthesisSheets } from '@/api/synthesis'
 
 const router = useRouter()
 const route = useRoute()
 
-const navItems = computed(() =>
-  dashboardMenu.map(item => ({
-    key: item.key,
-    text: item.text,
-    href: item.href,
-    icon: item.icon
-  }))
-)
-
 const subjectsStore = useSubjectsStore()
 const userStore = useUserStore()
 const { prefetchThemesNotions } = useDataPrefetch()
+
+const showTablesFormules = ref(false)
+let tablesVisibilityRequestId = 0
+
+const currentMatiereId = computed(() => {
+  const routeMatiereIdRaw = route.query?.matiereId
+  const routeMatiereId = Array.isArray(routeMatiereIdRaw) ? routeMatiereIdRaw[0] : routeMatiereIdRaw
+  const activeId = subjectsStore.activeMatiereId || subjectsStore.selectedMatieresIds?.[0] || routeMatiereId
+
+  if (activeId === undefined || activeId === null || activeId === '') {
+    return null
+  }
+
+  return String(activeId)
+})
+
+const extractSheetCount = (payload) => {
+  if (Array.isArray(payload)) return payload.length
+  if (Array.isArray(payload?.results)) return payload.results.length
+  if (typeof payload?.count === 'number') return payload.count
+  return 0
+}
+
+const refreshTablesFormulesVisibility = async () => {
+  if (!userStore.isAuthenticated) {
+    showTablesFormules.value = false
+    return
+  }
+
+  if (userStore.isAdmin) {
+    showTablesFormules.value = true
+    return
+  }
+
+  const matiereId = currentMatiereId.value
+  if (!matiereId) {
+    showTablesFormules.value = false
+    return
+  }
+
+  const requestId = ++tablesVisibilityRequestId
+  try {
+    const response = await getSynthesisSheets({
+      matiere: matiereId,
+      sheet_type: 'table',
+      limit: 1
+    })
+    if (requestId !== tablesVisibilityRequestId) return
+    showTablesFormules.value = extractSheetCount(response?.data) > 0
+  } catch (_) {
+    if (requestId !== tablesVisibilityRequestId) return
+    showTablesFormules.value = false
+  }
+}
+
+watch(
+  [() => userStore.isAuthenticated, () => userStore.isAdmin, currentMatiereId],
+  () => {
+    refreshTablesFormulesVisibility()
+  },
+  { immediate: true }
+)
+
+const navItems = computed(() =>
+  dashboardMenu
+    .filter(item => item.key !== 'tables-formules' || showTablesFormules.value)
+    .map(item => ({
+      key: item.key,
+      text: item.text,
+      href: item.href,
+      icon: item.icon
+    }))
+)
 
 const routeMapping = {
   dashboard: '/dashboard',
   cours: ['/online-courses', '/course-notions', '/course-notion', '/cours'],
   exercices: ['/exercises', '/notions', '/exercicies', '/theme-notions', '/exercices-notion', '/exercices', '/chapter-exercises'],
   fiches: ['/sheets', '/sheets-notion'],
+  'tables-formules': ['/tables-formules', '/tables-formules-notion'],
   quiz: ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
   calculator: '/calculator',
   abonnement: ['/billing']
@@ -76,7 +142,7 @@ const handleClick = async (item) => {
   }
 
   // Contextual routes with subject
-  if (['exercices', 'fiches', 'quiz', 'cours'].includes(item.key)) {
+  if (['exercices', 'fiches', 'tables-formules', 'quiz', 'cours'].includes(item.key)) {
     const activeId = subjectsStore.activeMatiereId || subjectsStore.selectedMatieresIds?.[0] || null
 
     if (item.key === 'exercices') {
@@ -94,6 +160,15 @@ const handleClick = async (item) => {
         router.push({ name: 'Sheets', query: { matiereId: String(activeId) } }).catch(() => {})
       } else {
         router.push({ name: 'Sheets' }).catch(() => {})
+      }
+      return
+    }
+
+    if (item.key === 'tables-formules') {
+      if (activeId) {
+        router.push({ name: 'TablesFormules', query: { matiereId: String(activeId) } }).catch(() => {})
+      } else {
+        router.push({ name: 'TablesFormules' }).catch(() => {})
       }
       return
     }

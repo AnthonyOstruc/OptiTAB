@@ -44,7 +44,8 @@
 import { ref, onMounted, computed } from 'vue'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import Tabs from '@/components/common/Tabs.vue'
-import { getExercices, getStatuses } from '@/api'
+import { getStatuses } from '@/api'
+import { getExercicesPourUtilisateur } from '@/api/exercices'
 
 const exercices = ref([])
 const chapitres = ref([])
@@ -58,12 +59,16 @@ const diffFilter = ref('all')
 const statusFilter = ref('all')
 
 onMounted(async () => {
-  const [{ data: ex }, { data: st }] = await Promise.all([
-    getExercices(''),
-    getStatuses()
+  const [exResponse, stResponse] = await Promise.all([
+    getExercicesPourUtilisateur().catch(() => []),
+    getStatuses().catch(() => ({ data: [] }))
   ])
+  const ex = Array.isArray(exResponse) ? exResponse : []
+  const stRaw = stResponse?.data
+  const st = Array.isArray(stRaw) ? stRaw : (Array.isArray(stRaw?.results) ? stRaw.results : [])
+
   exercices.value = ex
-  chapitres.value = ch
+  chapitres.value = []
   statusMap.value = Object.fromEntries(st.map(s=>[s.exercice, s.status]))
 })
 

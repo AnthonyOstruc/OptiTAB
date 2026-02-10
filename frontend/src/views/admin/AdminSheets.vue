@@ -11,6 +11,7 @@
           <li>Ordre des images : selon la déclaration (1 = [IMAGE_1], 2 = [IMAGE_2], ...)</li>
           <li>MathJax supporté : <code>$formule$</code> (inline), <code>$$formule$$</code> (bloc)</li>
           <li>Markdown supporté : <code>**gras**</code>, <code>*italique*</code></li>
+          <li>Type de fiche : ajoutez <code>Type: summary|table</code> (sinon utilisez le sélecteur ci-dessous)</li>
           <li>Accès gratuit/premium : ajoutez <code>Access: free|paid|both</code> (sinon utilisez le sélecteur ci-dessous)</li>
         </ul>
       </template>
@@ -26,6 +27,13 @@
       <label class="scope-label" for="access-scope-select">Accès</label>
       <select id="access-scope-select" v-model="selectedAccessScope" class="scope-select">
         <option v-for="opt in ACCESS_SCOPE_OPTIONS" :key="opt.value" :value="opt.value">
+          {{ opt.label }}
+        </option>
+      </select>
+
+      <label class="scope-label" for="sheet-type-select">Type</label>
+      <select id="sheet-type-select" v-model="selectedSheetType" class="scope-select">
+        <option v-for="opt in SHEET_TYPE_OPTIONS" :key="opt.value" :value="opt.value">
           {{ opt.label }}
         </option>
       </select>
@@ -63,7 +71,7 @@
           title="Annuler l'édition et revenir en mode création"
           @click="cancelEdit"
         >
-          Nouveau résumé
+          Nouvelle fiche
         </button>
       </div>
     </div>
@@ -169,6 +177,15 @@
           </option>
         </select>
       </div>
+      <div class="filter-group">
+        <label>Filtrer par type:</label>
+        <select v-model="filters.sheet_type">
+          <option value="all">Tous les types</option>
+          <option v-for="opt in SHEET_TYPE_OPTIONS" :key="`filter-${opt.value}`" :value="opt.value">
+            {{ opt.label }}
+          </option>
+        </select>
+      </div>
     </div>
 
     <!-- Tableau des fiches de synthèse -->
@@ -177,6 +194,7 @@
         <tr>
           <th>ID</th>
           <th>Titre</th>
+          <th>Type</th>
           <th>Notion</th>
           <th>Contexte</th>
           <th>Accès</th>
@@ -185,12 +203,24 @@
       </thead>
       <tbody>
         <tr v-if="isLoadingSheets">
-          <td colspan="6" class="loading-row">Chargement des fiches...</td>
+          <td colspan="7" class="loading-row">Chargement des fiches...</td>
         </tr>
         <template v-else>
           <tr v-for="s in paginatedSheets" :key="s.id">
             <td>{{ s.id }}</td>
             <td>{{ s.titre }}</td>
+            <td>
+              <select
+                class="scope-select-inline"
+                :value="normalizeSheetType(s.sheet_type)"
+                :disabled="isLoadingSheets || isUpdatingSheetType(s.id) || isUpdatingAccessScope(s.id)"
+                @change="handleChangeSheetType(s, $event)"
+              >
+                <option v-for="opt in SHEET_TYPE_OPTIONS" :key="`table-row-${opt.value}`" :value="opt.value">
+                  {{ opt.label }}
+                </option>
+              </select>
+            </td>
             <td>{{ getNotionName(s.notion) }}</td>
              <td class="ctx-cell">{{ getNotionContextLabel(s.notion) }}</td>
              <td>
@@ -198,7 +228,7 @@
                   class="scope-select-inline"
                   :class="accessScopeBadgeClass(s.access_scope)"
                   :value="normalizeAccessScope(s.access_scope)"
-                  :disabled="isLoadingSheets || isUpdatingAccessScope(s.id)"
+                  :disabled="isLoadingSheets || isUpdatingAccessScope(s.id) || isUpdatingSheetType(s.id)"
                   @change="handleChangeAccessScope(s, $event)"
                 >
                   <option v-for="opt in ACCESS_SCOPE_OPTIONS" :key="opt.value" :value="opt.value">
@@ -220,7 +250,7 @@
             </td>
           </tr>
           <tr v-if="paginatedSheets.length === 0">
-            <td colspan="6" style="text-align:center; font-style: italic;">Aucune fiche trouvée.</td>
+            <td colspan="7" style="text-align:center; font-style: italic;">Aucune fiche trouvée.</td>
           </tr>
         </template>
       </tbody>
@@ -297,7 +327,7 @@ const imageManageLoading = ref(false)
 const currentEditSheetId = ref(null)
 
 // Filtres et pagination pour le tableau (mêmes patterns que AdminCours)
-const filters = ref({ notion: 'all' })
+const filters = ref({ notion: 'all', sheet_type: 'all' })
 const notionTableFilter = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 5
@@ -309,6 +339,11 @@ const ACCESS_SCOPE_OPTIONS = [
   { value: 'both', label: 'Gratuit + Premium' }
 ]
 const selectedAccessScope = ref('paid')
+const SHEET_TYPE_OPTIONS = [
+  { value: 'summary', label: 'Synthèse' },
+  { value: 'table', label: 'Tables & Formules' }
+]
+const selectedSheetType = ref('summary')
 
 // ============================================================================
 // FORMAT D'ENTRÉE (exemple copiable)
@@ -316,6 +351,7 @@ const selectedAccessScope = ref('paid')
 
 const FORMAT_TEMPLATE = `=== [NOM DE LA FICHE - SOUS-TITRE]
 Images: [image1.png,image2.jpg]
+Type: summary
 Access: free
 
 Titre: [Titre de la fiche]
@@ -358,8 +394,8 @@ const lastDeclaredImagesByKey = (typeof window !== 'undefined')
   ? (window.__lastDeclaredSheetImages ||= new Map())
   : new Map()
 
-function getSheetKey(notionId, title) {
-  return `${String(notionId || '')}::${String((title || '').toLowerCase())}`
+function getSheetKey(notionId, title, sheetType = 'summary') {
+  return `${String(notionId || '')}::${String((title || '').toLowerCase())}::${normalizeSheetType(sheetType)}`
 }
 
 // ============================================================================
@@ -469,7 +505,7 @@ function handleImagesSelect(event) {
   })
 }
 
-// V�rifie si une image est disponible soit localement (s�lectionn�e) soit c�t� serveur (d�j� enregistr�e)
+// Verifie si une image est disponible soit localement (selectionnee) soit cote serveur (deja enregistree)
 function imageExists(filename) {
   if (!filename) return false
   const file = getImageFile(filename)
@@ -483,7 +519,9 @@ function imageExists(filename) {
   } catch (_) {
     return false
   }
-}function removeSelectedImage(index) {
+}
+
+function removeSelectedImage(index) {
   const file = selectedImages.value[index]
   imageManager.removeImage(file.name)
   selectedImages.value.splice(index, 1)
@@ -498,9 +536,15 @@ const ACCESS_SCOPE_LABELS = {
   free: 'Gratuit',
   both: 'Gratuit + Premium'
 }
+const SHEET_TYPE_LABELS = {
+  summary: 'Synthèse',
+  table: 'Tables & Formules'
+}
 
 const DEFAULT_ACCESS_SCOPE = 'paid'
+const DEFAULT_SHEET_TYPE = 'summary'
 const accessScopeUpdatingIds = ref(new Set())
+const sheetTypeUpdatingIds = ref(new Set())
 
 function normalizeAccessScope(value) {
   const v = String(value || '').trim()
@@ -508,7 +552,33 @@ function normalizeAccessScope(value) {
   return DEFAULT_ACCESS_SCOPE
 }
 
-const normalizeString = (value = '') => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+const normalizeString = (value = '') => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+
+function normalizeSheetType(value) {
+  const v = String(value || '').trim().toLowerCase()
+  if (v === 'table') return 'table'
+  return DEFAULT_SHEET_TYPE
+}
+
+function parseSheetTypeToken(rawValue = '') {
+  const cleanValue = normalizeString(String(rawValue || '').trim())
+  if (!cleanValue) return null
+  if (cleanValue === 'table') return 'table'
+  if (cleanValue === 'summary') return 'summary'
+  if (cleanValue.includes('summary') || cleanValue.includes('synthese') || cleanValue.includes('synth')) return 'summary'
+  if (cleanValue.includes('tableau') || cleanValue.includes('tableaux')) return 'table'
+  if (cleanValue.includes('formule') || cleanValue.includes('formules')) return 'table'
+  return null
+}
+
+function sheetTypeLabel(value) {
+  const normalized = normalizeSheetType(value)
+  return SHEET_TYPE_LABELS[normalized] || 'Synthèse'
+}
+
+function getSheetIdentityKey(title, sheetType) {
+  return `${String(title || '').toLowerCase()}::${normalizeSheetType(sheetType)}`
+}
 
 function parseAccessScopeToken(rawValue = '') {
   const cleanValue = normalizeString(String(rawValue || '').trim())
@@ -533,6 +603,10 @@ function accessScopeBadgeClass(value) {
 
 function isUpdatingAccessScope(id) {
   return accessScopeUpdatingIds.value.has(Number(id))
+}
+
+function isUpdatingSheetType(id) {
+  return sheetTypeUpdatingIds.value.has(Number(id))
 }
 
 async function handleChangeAccessScope(targetSheet, event) {
@@ -570,6 +644,44 @@ async function handleChangeAccessScope(targetSheet, event) {
   }
 }
 
+async function handleChangeSheetType(targetSheet, event) {
+  if (!targetSheet?.id) return
+  const nextValue = normalizeSheetType(event?.target?.value)
+  const currentValue = normalizeSheetType(targetSheet.sheet_type)
+  if (nextValue === currentValue) return
+
+  const previousValue = targetSheet.sheet_type
+  targetSheet.sheet_type = nextValue
+  sheetTypeUpdatingIds.value.add(Number(targetSheet.id))
+
+  try {
+    // Le serializer backend exige "summary" (meme en PATCH), donc on l'envoie inchange.
+    let summaryValue = targetSheet.summary
+    if (!summaryValue) {
+      try {
+        const res = await getSynthesisSheet(targetSheet.id)
+        summaryValue = res?.data?.summary ?? res?.summary ?? ''
+      } catch (_) {
+        summaryValue = ''
+      }
+    }
+
+    await apiClient.patch(`/api/sheets/${targetSheet.id}/`, {
+      sheet_type: nextValue,
+      summary: summaryValue
+    })
+  } catch (e) {
+    console.error('[AdminSheets] Erreur update sheet_type:', e)
+    targetSheet.sheet_type = previousValue
+    const backendMessage = e?.response?.data?.non_field_errors?.[0]
+      || e?.response?.data?.sheet_type?.[0]
+      || e?.response?.data?.detail
+    alert(backendMessage || 'Erreur lors de la mise a jour du type')
+  } finally {
+    sheetTypeUpdatingIds.value.delete(Number(targetSheet.id))
+  }
+}
+
 // ============================================================================
 // PARSING
 // ============================================================================
@@ -592,7 +704,8 @@ function parseSheetBlock(block) {
     summary: '',
     image: '',
     notion: null,
-    access_scope: null
+    access_scope: null,
+    sheet_type: normalizeSheetType(selectedSheetType.value || DEFAULT_SHEET_TYPE)
   }
 
   if (selectedNotion.value) sheet.notion = Number(selectedNotion.value)
@@ -621,6 +734,11 @@ function parseSheetBlock(block) {
         continue
       }
 
+      if (normalizedLine.startsWith('type:') || normalizedLine.startsWith('type :')) {
+        sheet.sheet_type = parseSheetTypeToken(afterColonTrim(rawLine)) || sheet.sheet_type
+        continue
+      }
+
       if (line.toLowerCase().startsWith('image:') || line.toLowerCase().startsWith('images:')) {
         sheet.image = afterColonTrim(rawLine)
       } else if (line.startsWith('Titre:')) {
@@ -646,6 +764,7 @@ function parseSheetBlock(block) {
   }
 
   sheet.summary = contentLines.join('\n')
+  sheet.sheet_type = normalizeSheetType(sheet.sheet_type || selectedSheetType.value || DEFAULT_SHEET_TYPE)
 
   // Si aucune ligne Images n'a été fournie, utiliser par défaut les noms
   // des images actuellement sélectionnées (pour éviter toute perte au submit)
@@ -655,7 +774,7 @@ function parseSheetBlock(block) {
 
   // Mémo: enregistrer les noms déclarés pour cette fiche (utilisé en fallback en édition)
   if (sheet.notion && sheet.titre && sheet.image) {
-    lastDeclaredImagesByKey.set(getSheetKey(sheet.notion, sheet.titre), sheet.image)
+    lastDeclaredImagesByKey.set(getSheetKey(sheet.notion, sheet.titre, sheet.sheet_type), sheet.image)
   }
 
   // Pour la prévisualisation, ne pas exiger la notion.
@@ -697,7 +816,7 @@ async function handleCreate() {
       const res = await getSynthesisSheets({ notion: Number(selectedNotion.value) })
       existing = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : [])
     } catch (_) {}
-        const byTitle = new Map(existing.map(s => [String((s.titre || '').toLowerCase()), s.id]))
+    const byTitleAndType = new Map(existing.map(s => [getSheetIdentityKey(s.titre, s.sheet_type), s.id]))
 
     let createdCount = 0
     let updatedCount = 0
@@ -712,10 +831,11 @@ async function handleCreate() {
           titre: sheetData.titre,
           summary: sheetData.summary,
           reading_time_minutes: Math.max(1, Math.round(sheetData.summary.split(/\s+/).length / 200)),
-          access_scope: sheetData.access_scope || selectedAccessScope.value || DEFAULT_ACCESS_SCOPE
+          access_scope: sheetData.access_scope || selectedAccessScope.value || DEFAULT_ACCESS_SCOPE,
+          sheet_type: normalizeSheetType(sheetData.sheet_type || selectedSheetType.value || DEFAULT_SHEET_TYPE)
         }
 
-        const existingId = byTitle.get((sheetData.titre || '').toLowerCase())
+        const existingId = byTitleAndType.get(getSheetIdentityKey(payload.titre, payload.sheet_type))
         let sheetId
         if (isSingleEdit) {
           // Forcer la mise à jour par ID quand en mode édition
@@ -730,7 +850,7 @@ async function handleCreate() {
           const created = await createSynthesisSheet(payload)
           sheetId = created?.id || created?.data?.id
           createdCount++
-          if (sheetId) byTitle.set((sheetData.titre || '').toLowerCase(), sheetId)
+          if (sheetId) byTitleAndType.set(getSheetIdentityKey(payload.titre, payload.sheet_type), sheetId)
         }
 
         // Ajouter images si présentes (déclarées ou via fichiers sélectionnés)
@@ -759,7 +879,7 @@ async function handleCreate() {
             }
           }
           // Mémoriser les images déclarées pour cette fiche
-          const key = getSheetKey(payload.notion, payload.titre)
+          const key = getSheetKey(payload.notion, payload.titre, payload.sheet_type)
           if (declared) lastDeclaredImagesByKey.set(key, declared)
         }
       } catch (e) {
@@ -778,6 +898,7 @@ async function handleCreate() {
       if (isSingleEdit) {
         serverImages.value = []
         currentEditSheetId.value = null
+        selectedSheetType.value = DEFAULT_SHEET_TYPE
         // En mode édition, vider la zone de saisie après mise à jour
         rawInput.value = ''
       }
@@ -808,6 +929,7 @@ function cancelEdit() {
   serverImages.value = []
   previewList.value = []
   hasValidSheets.value = false
+  selectedSheetType.value = DEFAULT_SHEET_TYPE
   // On vide le contenu pour repartir d'une fiche vierge
   rawInput.value = ''
   try { window.scrollTo({ top: 0, behavior: 'smooth' }) } catch (_) {}
@@ -836,6 +958,7 @@ async function editSheet(s) {
   selectedNotion.value = s.notion
   currentEditSheetId.value = s.id
   selectedAccessScope.value = s.access_scope || DEFAULT_ACCESS_SCOPE
+  selectedSheetType.value = normalizeSheetType(s.sheet_type || DEFAULT_SHEET_TYPE)
 
   // Récupérer les images existantes pour préremplir la ligne "Images:"
   let imageNames = ''
@@ -871,7 +994,7 @@ async function editSheet(s) {
   // Fallback: si aucune image retournée par le serveur, utiliser la dernière
   // déclaration locale pour cette fiche (même session)
   if (!imageNames) {
-    const key = getSheetKey(s.notion, s.titre)
+    const key = getSheetKey(s.notion, s.titre, s.sheet_type)
     const memo = lastDeclaredImagesByKey.get(key)
     if (memo) imageNames = memo
     else if (selectedImages.value && selectedImages.value.length) {
@@ -882,6 +1005,7 @@ async function editSheet(s) {
   const header = [
     '=== ' + (s.titre || ''),
     'Images: ' + imageNames,
+    'Type: ' + normalizeSheetType(s.sheet_type || DEFAULT_SHEET_TYPE),
     'Access: ' + (s.access_scope || DEFAULT_ACCESS_SCOPE)
   ].join('\n')
 
@@ -939,7 +1063,7 @@ const displayedPages = computed(() => {
   return pages
 })
 
-watch(() => filters.value.notion, () => {
+watch(() => [filters.value.notion, filters.value.sheet_type], () => {
   currentPage.value = 1
   loadTable()
 })
@@ -972,10 +1096,14 @@ async function loadTable() {
     isLoadingSheets.value = true
     const page = Math.max(currentPage.value || 1, 1)
     const notionParam = (filters.value.notion && filters.value.notion !== 'all') ? filters.value.notion : undefined
+    const sheetTypeParam = (filters.value.sheet_type && filters.value.sheet_type !== 'all')
+      ? normalizeSheetType(filters.value.sheet_type)
+      : undefined
     const res = await getSynthesisSheets({
       limit: itemsPerPage,
       offset: (page - 1) * itemsPerPage,
-      notion: notionParam
+      notion: notionParam,
+      sheet_type: sheetTypeParam
     })
     const data = res?.data ?? res
     const results = Array.isArray(data?.results) ? data.results : (Array.isArray(data) ? data : [])

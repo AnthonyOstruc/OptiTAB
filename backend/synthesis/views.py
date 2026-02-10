@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+﻿from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
@@ -16,17 +16,20 @@ from .serializers import (
 
 class SynthesisSheetViewSet(viewsets.ModelViewSet):
     """
-    ViewSet pour la gestion des fiches de synthèse.
-    - Lecture (list/retrieve) accessible aux utilisateurs authentifiés
-    - Écriture (create/update/delete/duplicate/preview_data) réservée aux administrateurs
+    ViewSet pour la gestion des fiches de synthese.
+    - Lecture (list/retrieve) accessible aux utilisateurs authentifies
+    - Ecriture (create/update/delete/duplicate/preview_data) reservee aux administrateurs
     """
     queryset = SynthesisSheet.objects.all()
 
     def get_permissions(self):
-        # Autoriser tous les utilisateurs authentifiés à lire
-        if self.action in ["list", "retrieve"]:
+        # Autoriser tous les utilisateurs authentifies a lister
+        if self.action == "list":
+            return [IsAuthenticated()]
+        # La lecture detail reste reservee aux utilisateurs avec acces actif
+        if self.action == "retrieve":
             return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
-        # Toutes les autres actions (écriture) sont réservées aux admins
+        # Toutes les autres actions (ecriture) sont reservees aux admins
         if self.action in [
             "create",
             "update",
@@ -57,12 +60,12 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
         if notion_id:
             queryset = queryset.filter(notion_id=notion_id)
         
-        # Filtrage par matière
+        # Filtrage par matiere
         matiere_id = self.request.query_params.get('matiere', None)
         if matiere_id:
             queryset = queryset.filter(notion__theme__matiere_id=matiere_id)
         
-        # Filtrage par contexte utilisateur (pays/niveau) si l'utilisateur est connecté
+        # Filtrage par contexte utilisateur (pays/niveau) si l'utilisateur est connecte
         user = self.request.user
         if user.is_authenticated and not (user.is_staff or user.is_superuser):
             if hasattr(user, 'pays') and hasattr(user, 'niveau_pays'):
@@ -73,10 +76,15 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
                         notion__theme__contexte__niveau=user.niveau_pays
                     )
 
-        # Filtrage par scope d'accès (utile côté admin)
+        # Filtrage par scope d'acces (utile cote admin)
         access_scope = self.request.query_params.get('access_scope')
         if access_scope:
             queryset = queryset.filter(access_scope=access_scope)
+
+        # Filtrage par type de fiche (summary|table)
+        sheet_type = self.request.query_params.get('sheet_type')
+        if sheet_type:
+            queryset = queryset.filter(sheet_type=sheet_type)
         
         # Recherche textuelle
         search = self.request.query_params.get('search', None)
@@ -103,7 +111,7 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
                 if limit_value <= 0 or offset_value < 0:
                     raise ValueError
             except ValueError:
-                return Response({'detail': 'Paramètres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'detail': 'Parametres de pagination invalides'}, status=status.HTTP_400_BAD_REQUEST)
 
             total = queryset.count()
             page_qs = queryset[offset_value:offset_value + limit_value]
@@ -120,7 +128,7 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def add_image(self, request, pk=None):
-        """Uploader une image pour une fiche de synthèse"""
+        """Uploader une image pour une fiche de synthese."""
         sheet = self.get_object()
         image_file = request.FILES.get('image')
         image_type = request.data.get('image_type', 'illustration')
@@ -142,10 +150,10 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['post'])
     def duplicate(self, request, pk=None):
-        """Dupliquer une fiche de synthèse"""
+        """Dupliquer une fiche de synthese."""
         original = self.get_object()
         
-        # Créer une copie
+        # Creer une copie
         duplicate_data = {
             'titre': f"{original.titre} (Copie)",
             'notion': original.notion.id,
@@ -155,6 +163,7 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             'examples': original.examples,
             'reading_time_minutes': original.reading_time_minutes,
             'access_scope': original.access_scope,
+            'sheet_type': original.sheet_type,
         }
         
         serializer = SynthesisSheetCreateSerializer(data=duplicate_data)
@@ -168,12 +177,12 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'])
     def preview_data(self, request):
-        """Données pour la prévisualisation sans sauvegarder"""
-        # Récupère les données du query string pour la prévisualisation
+        """Donnees pour la previsualisation sans sauvegarder."""
+        # Recupere les donnees du query string pour la previsualisation
         titre = request.query_params.get('titre', '')
         summary = request.query_params.get('summary', '')
         
-        # Simule le rendu markdown (ici on retourne juste les données)
+        # Simule le rendu markdown (ici on retourne juste les donnees)
         return Response({
             'titre': titre,
             'summary': summary,
@@ -183,20 +192,20 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
 
 
 class SynthesisImageViewSet(viewsets.ModelViewSet):
-    """CRUD pour les images des fiches de synthèse.
+    """CRUD pour les images des fiches de synthese.
 
     Endpoint attendu par le frontend: /api/sheet-images/?sheet=<id>
-    Autorise lecture publique; écriture pour utilisateurs authentifiés.
+    Autorise lecture publique; ecriture pour utilisateurs authentifies.
     """
     queryset = SynthesisImage.objects.all()
     serializer_class = SynthesisImageSerializer
     permission_classes = [IsAuthenticated]
 
     def get_permissions(self):
-        # Lecture: utilisateurs authentifiés
+        # Lecture: utilisateurs authentifies
         if self.action in ["list", "retrieve"]:
             return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
-        # Écriture réservée aux admins
+        # Ecriture reservee aux admins
         return [IsAdminUser()]
 
     def get_serializer_context(self):
@@ -210,3 +219,4 @@ class SynthesisImageViewSet(viewsets.ModelViewSet):
         if sheet_id:
             queryset = queryset.filter(sheet_id=sheet_id)
         return queryset.order_by('position', 'id')
+

@@ -1,7 +1,9 @@
-﻿from rest_framework import viewsets, status
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
+from django.core.files.base import ContentFile
+import os
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from subscriptions.permissions import HasActiveSubscriptionOrPass
@@ -169,10 +171,34 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
         serializer = SynthesisSheetCreateSerializer(data=duplicate_data)
         if serializer.is_valid():
             duplicate = serializer.save()
-            return Response(
-                SynthesisSheetSerializer(duplicate).data,
-                status=status.HTTP_201_CREATED
-            )
+            duplicated_images = 0
+
+            for img in original.images.all().order_by('position', 'id'):
+                if not img.image:
+                    continue
+
+                new_image = SynthesisImage(
+                    sheet=duplicate,
+                    image_type=img.image_type,
+                    position=img.position,
+                    caption=img.caption,
+                )
+                try:
+                    with img.image.open('rb') as original_file:
+                        filename = os.path.basename(img.image.name or f'sheet-image-{img.id}')
+                        new_image.image.save(filename, ContentFile(original_file.read()), save=False)
+                    new_image.save()
+                    duplicated_images += 1
+                except Exception:
+                    # Une erreur sur une image ne doit pas annuler la duplication de la fiche.
+                    continue
+
+            response_data = SynthesisSheetSerializer(
+                duplicate,
+                context=self.get_serializer_context()
+            ).data
+            response_data['duplicated_images'] = duplicated_images
+            return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @action(detail=False, methods=['get'])

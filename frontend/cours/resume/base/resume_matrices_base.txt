@@ -1,0 +1,576 @@
+===Résumé Matrices
+
+Images: graphe_oriente.png, graphe_non_oriente.png, graphe_pondere.png, graphe_connexe_vs_non_connexe.png, graphe_fortement_connexe.png
+
+Titre: Résumé : Matrices
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+<div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>📚 Objectif pédagogique :</strong> Maîtriser les matrices : définitions, opérations, déterminants, inverse, systèmes linéaires, transformations géométriques et applications aux graphes. Ce résumé couvre les notions fondamentales et leurs applications.</p>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définitions et notations</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> Une <strong>matrice</strong> de taille $m \times n$ est un tableau rectangulaire de nombres réels comportant $m$ lignes et $n$ colonnes.</p>
+<p style="margin:5px 0 0 0;">On note $a_{ij}$ le coefficient situé à la ligne $i$ et à la colonne $j$.</p>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple :</strong> Matrice $2 \times 3$ : $A = \begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix}$</p>
+</div>
+
+<div style="background:#f3e8ff; border-left:4px solid #9333ea; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Notation :</strong> $\mathcal{M}_{m,n}(\mathbb{R})$ désigne l'ensemble des matrices de taille $m \times n$ à coefficients réels.</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Type de matrice</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Caractéristique</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Matrice carrée</strong></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$m = n$<br><em>Ex. :</em> $\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Matrice nulle</strong> $0_n$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Tous les coefficients sont nuls<br><em>Ex. :</em> $0_2 = \begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix}$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Matrice identité</strong> $I_n$</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$a_{ij} = 1$ si $i = j$, $0$ sinon<br><em>Ex. :</em> $I_2 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;"><strong>Matrice diagonale</strong></td>
+<td style="border:none; padding:12px 16px;">Coefficients nuls en dehors de la diagonale<br><em>Ex. :</em> $\begin{pmatrix} 3 & 0 \\ 0 & -2 \end{pmatrix}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Opérations sur les matrices</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Addition :</strong> Pour $A$ et $B$ de même taille $m \times n$ :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (A + B)_{ij} = a_{ij} + b_{ij}$</p>
+</div>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple :</strong> $\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} + \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix} = \begin{pmatrix} 6 & 8 \\ 10 & 12 \end{pmatrix}$</p>
+</div>
+
+<div style="background:#fff8dc; border-left:4px solid #ffa500; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>⚠️ Attention :</strong> On ne peut additionner que des matrices de <strong>même taille</strong> !</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Commutativité</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$A + B = B + A$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Associativité</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$(A + B) + C = A + (B + C)$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; padding:12px 16px;">Élément neutre</td>
+<td style="border:none; padding:12px 16px;">$A + 0 = A$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Multiplication par un scalaire :</strong> Pour $\lambda \in \mathbb{R}$ et $A$ de taille $m \times n$ :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle (\lambda A)_{ij} = \lambda \cdot a_{ij}$</p>
+</div>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple :</strong> $3 \times \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} = \begin{pmatrix} 3 & 6 \\ 9 & 12 \end{pmatrix}$</p>
+</div>
+
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Produit matriciel :</strong> Pour $A$ de taille $m \times n$ et $B$ de taille $n \times p$, le produit $C = AB$ est de taille $m \times p$ :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle c_{ij} = \sum_{k=1}^{n} a_{ik} \cdot b_{kj}$</p>
+</div>
+<p style="margin:5px 0 0 0;"><em>Condition :</em> Le nombre de colonnes de $A$ doit égaler le nombre de lignes de $B$.</p>
+<p style="margin:5px 0 0 0;"><em>Méthode :</em> Le coefficient $c_{ij}$ est le produit scalaire de la ligne $i$ de $A$ par la colonne $j$ de $B$.</p>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0 0 12px 0;"><strong>Exemple :</strong></p>
+<p style="margin:10px 0;">$A = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}$</p>
+<p style="margin:10px 0;">$B = \begin{pmatrix} b_{11} & b_{12} \\ b_{21} & b_{22} \end{pmatrix}$</p>
+<p style="margin:12px 0 0 0;">$C = AB = \begin{pmatrix} a_{11}b_{11} + a_{12}b_{21} & a_{11}b_{12} + a_{12}b_{22} \\ a_{21}b_{11} + a_{22}b_{21} & a_{21}b_{12} + a_{22}b_{22} \end{pmatrix}$</p>
+</div>
+
+<div style="background:#fef2f2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>❌ Erreur fréquente :</strong> Le produit matriciel n'est <strong>PAS commutatif</strong> ! En général : $AB \neq BA$</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Associativité</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$(AB)C = A(BC)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Distributivité à gauche</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$A(B + C) = AB + AC$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Distributivité à droite</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$(A + B)C = AC + BC$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">Élément neutre</td>
+<td style="border:none; padding:12px 16px;">$AI_n = I_m A = A$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Matrice inverse</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> Une matrice carrée $A$ d'ordre $n$ est dite <strong>inversible</strong> s'il existe une matrice $B$ d'ordre $n$ telle que :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:200px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle AB = BA = I_n$</p>
+</div>
+<p style="margin:5px 0 0 0;">On note $B = A^{-1}$ la <strong>matrice inverse</strong> de $A$.</p>
+</div>
+
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème :</strong> Pour une matrice $A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$, si $\det(A) = ad - bc \neq 0$, alors :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:350px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle A^{-1} = \dfrac{1}{ad - bc} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$</p>
+</div>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple :</strong> Pour $A = \begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix}$, on a $\det(A) = 5 \neq 0$, donc :</p>
+<p style="margin:5px 0; text-align:center;">$\displaystyle A^{-1} = \dfrac{1}{5} \begin{pmatrix} 4 & -3 \\ -1 & 2 \end{pmatrix}$</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Inverse de l'inverse</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$(A^{-1})^{-1} = A$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Inverse d'un produit</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$(AB)^{-1} = B^{-1}A^{-1}$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; padding:12px 16px;">Inverse d'un scalaire</td>
+<td style="border:none; padding:12px 16px;">$\displaystyle (\lambda A)^{-1} = \dfrac{1}{\lambda} A^{-1}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Déterminants</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Déterminant 2×2 :</strong> Pour $A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$ :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \det(A) = ad - bc$</p>
+</div>
+<p style="margin:5px 0 0 0;"><em>Méthode visuelle :</em> Produit des diagonales principales moins produit des diagonales secondaires.</p>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple :</strong> $\det\begin{pmatrix} 3 & 5 \\ 2 & 4 \end{pmatrix} = 3 \times 4 - 5 \times 2 = 2$</p>
+</div>
+
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Déterminant 3×3 (règle de Sarrus) :</strong> Pour $A = \begin{pmatrix} a & b & c \\ d & e & f \\ g & h & i \end{pmatrix}$ :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \det(A) = aei + bfg + cdh - ceg - afh - bdi$</p>
+</div>
+<div style="background:#f0f8ff; border:2px solid #87ceeb; border-radius:6px; padding:12px; margin:10px 0;">
+<p style="margin:0; font-weight:600; color:#2c3e50;">📐 Méthode détaillée :</p>
+<p style="margin:5px 0 0 0;"><strong>Étape 1 :</strong> Recopier les deux premières colonnes à droite de la matrice.</p>
+<div style="margin:8px 0; padding:12px; background:#ffffff; border-radius:4px; text-align:center;">
+<div style="display:inline-block; font-size:1.1em; font-family:'Courier New', monospace;">
+<div style="display:flex; justify-content:center; gap:2px;">
+<div style="background:#e3f2fd; padding:4px 8px; border:2px solid #3498db; border-radius:4px; font-weight:bold; color:#1976d2;">a</div>
+<div style="background:#e8f5e9; padding:4px 8px; border:2px solid #2ecc71; border-radius:4px; font-weight:bold; color:#2e7d32;">b</div>
+<div style="background:#ffebee; padding:4px 8px; border:2px solid #e74c3c; border-radius:4px; font-weight:bold; color:#c62828;">c</div>
+<div style="padding:4px 8px;">|</div>
+<div style="background:#e3f2fd; padding:4px 8px; border:2px solid #3498db; border-radius:4px; font-weight:bold; color:#1976d2;">a</div>
+<div style="background:#e8f5e9; padding:4px 8px; border:2px solid #2ecc71; border-radius:4px; font-weight:bold; color:#2e7d32;">b</div>
+</div>
+<div style="display:flex; justify-content:center; gap:2px; margin-top:4px;">
+<div style="background:#e3f2fd; padding:4px 8px; border:2px solid #3498db; border-radius:4px; font-weight:bold; color:#1976d2;">d</div>
+<div style="background:#e8f5e9; padding:4px 8px; border:2px solid #2ecc71; border-radius:4px; font-weight:bold; color:#2e7d32;">e</div>
+<div style="background:#ffebee; padding:4px 8px; border:2px solid #e74c3c; border-radius:4px; font-weight:bold; color:#c62828;">f</div>
+<div style="padding:4px 8px;">|</div>
+<div style="background:#e3f2fd; padding:4px 8px; border:2px solid #3498db; border-radius:4px; font-weight:bold; color:#1976d2;">d</div>
+<div style="background:#e8f5e9; padding:4px 8px; border:2px solid #2ecc71; border-radius:4px; font-weight:bold; color:#2e7d32;">e</div>
+</div>
+<div style="display:flex; justify-content:center; gap:2px; margin-top:4px;">
+<div style="background:#e3f2fd; padding:4px 8px; border:2px solid #3498db; border-radius:4px; font-weight:bold; color:#1976d2;">g</div>
+<div style="background:#e8f5e9; padding:4px 8px; border:2px solid #2ecc71; border-radius:4px; font-weight:bold; color:#2e7d32;">h</div>
+<div style="background:#ffebee; padding:4px 8px; border:2px solid #e74c3c; border-radius:4px; font-weight:bold; color:#c62828;">i</div>
+<div style="padding:4px 8px;">|</div>
+<div style="background:#e3f2fd; padding:4px 8px; border:2px solid #3498db; border-radius:4px; font-weight:bold; color:#1976d2;">g</div>
+<div style="background:#e8f5e9; padding:4px 8px; border:2px solid #2ecc71; border-radius:4px; font-weight:bold; color:#2e7d32;">h</div>
+</div>
+</div>
+<p style="margin:8px 0 0 0; font-size:0.85em; color:#555;"><span style="color:#3498db; font-weight:bold;">●</span> Colonne 1 (bleu) | <span style="color:#2ecc71; font-weight:bold;">●</span> Colonne 2 (vert) | <span style="color:#e74c3c; font-weight:bold;">●</span> Colonne 3 (rouge)</p>
+</div>
+<p style="margin:5px 0 0 0;"><strong>Étape 2 :</strong> Additionner les produits des 3 diagonales descendantes (de gauche à droite) :</p>
+<p style="margin:5px 0; font-size:0.95em;"><span style="color:#3498db; font-weight:bold;">a</span><span style="color:#2ecc71; font-weight:bold;">e</span><span style="color:#e74c3c; font-weight:bold;">i</span> + <span style="color:#2ecc71; font-weight:bold;">b</span><span style="color:#e74c3c; font-weight:bold;">f</span><span style="color:#3498db; font-weight:bold;">g</span> + <span style="color:#e74c3c; font-weight:bold;">c</span><span style="color:#3498db; font-weight:bold;">d</span><span style="color:#2ecc71; font-weight:bold;">h</span></p>
+<p style="margin:5px 0 0 0;"><strong>Étape 3 :</strong> Soustraire les produits des 3 diagonales montantes (de droite à gauche) :</p>
+<p style="margin:5px 0; font-size:0.95em;">- (<span style="color:#e74c3c; font-weight:bold;">c</span><span style="color:#2ecc71; font-weight:bold;">e</span><span style="color:#3498db; font-weight:bold;">g</span> + <span style="color:#3498db; font-weight:bold;">a</span><span style="color:#e74c3c; font-weight:bold;">f</span><span style="color:#2ecc71; font-weight:bold;">h</span> + <span style="color:#2ecc71; font-weight:bold;">b</span><span style="color:#3498db; font-weight:bold;">d</span><span style="color:#e74c3c; font-weight:bold;">i</span>)</p>
+<p style="margin:5px 0 0 0; font-size:0.9em; color:#555;"><em>💡 Astuce :</em> Les diagonales descendantes partent du haut, les diagonales montantes partent du bas.</p>
+</div>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple :</strong> Calculer $\det\begin{pmatrix} 1 & 2 & 3 \\ 0 & 1 & 4 \\ 5 & 6 & 0 \end{pmatrix}$</p>
+<p style="margin:5px 0 0 0;"><strong>Application :</strong></p>
+<p style="margin:5px 0; font-size:0.95em;">Diagonales descendantes : $1 \times 1 \times 0 + 2 \times 4 \times 5 + 3 \times 0 \times 6 = 0 + 40 + 0 = 40$</p>
+<p style="margin:5px 0; font-size:0.95em;">Diagonales montantes : $3 \times 1 \times 5 + 1 \times 4 \times 6 + 2 \times 0 \times 0 = 15 + 24 + 0 = 39$</p>
+<p style="margin:5px 0; font-size:0.95em;"><strong>Résultat :</strong> $\det = 40 - 39 = 1$</p>
+</div>
+
+<div style="background:#fff8dc; border-left:4px solid #ffa500; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>⚠️ Attention :</strong> La règle de Sarrus ne fonctionne <strong>que pour les matrices 3×3</strong> !</p>
+</div>
+
+<div style="background:#ecfdf5; border-left:4px solid #10b981; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>💡 Critère d'inversibilité :</strong> Une matrice carrée $A$ est inversible si et seulement si $\det(A) \neq 0$.</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Déterminant d'un produit</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$\displaystyle \det(AB) = \det(A) \times \det(B)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Déterminant d'un scalaire</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle \det(\lambda A) = \lambda^n \det(A)$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Déterminant de l'inverse</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$\displaystyle \det(A^{-1}) = \dfrac{1}{\det(A)}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">Déterminant de la transposée</td>
+<td style="border:none; padding:12px 16px;">$\displaystyle \det(A^T) = \det(A)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Systèmes linéaires</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Écriture matricielle :</strong> Un système de $n$ équations à $n$ inconnues s'écrit :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:200px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle AX = B$</p>
+</div>
+<p style="margin:5px 0 0 0;">où $A$ est la matrice des coefficients, $X$ la matrice colonne des inconnues et $B$ la matrice colonne des seconds membres.</p>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple :</strong> Le système $\begin{cases} 2x + 3y = 5 \\ x + 4y = 6 \end{cases}$ s'écrit :</p>
+<p style="margin:5px 0; text-align:center;">$\begin{pmatrix} 2 & 3 \\ 1 & 4 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 5 \\ 6 \end{pmatrix}$</p>
+</div>
+
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème :</strong> Si la matrice $A$ est inversible (c'est-à-dire $\det(A) \neq 0$), alors le système $AX = B$ admet une unique solution :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:200px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle X = A^{-1}B$</p>
+</div>
+</div>
+
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Puissances de matrices</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> Pour une matrice carrée $A$ et un entier $n \geq 1$ :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle A^n = \underbrace{A \times A \times \cdots \times A}_{n \text{ fois}}$</p>
+</div>
+<p style="margin:5px 0 0 0;">Par convention : $A^0 = I_n$ et $A^{-n} = (A^{-1})^n$ si $A$ est inversible.</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Produit de puissances</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$\displaystyle A^m \times A^n = A^{m+n}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Puissance d'une puissance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle (A^m)^n = A^{mn}$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; padding:12px 16px;">Déterminant d'une puissance</td>
+<td style="border:none; padding:12px 16px;">$\displaystyle \det(A^n) = (\det(A))^n$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#ecfdf5; border-left:4px solid #10b981; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>💡 Propriété :</strong> Pour une matrice diagonale $D = \begin{pmatrix} d_1 & 0 \\ 0 & d_2 \end{pmatrix}$, on a :</p>
+<div style="background:#ecfdf5; border:3px solid #10b981; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle D^n = \begin{pmatrix} d_1^n & 0 \\ 0 & d_2^n \end{pmatrix}$</p>
+</div>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple :</strong> Pour $D = \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix}$, on a $D^n = \begin{pmatrix} 2^n & 0 \\ 0 & 3^n \end{pmatrix}$</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Transformations géométriques</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Principe :</strong> Une transformation linéaire du plan peut être représentée par une matrice $2 \times 2$.</p>
+<p style="margin:5px 0 0 0;">Si $M(x, y)$ est transformé en $M'(x', y')$, alors :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \begin{pmatrix} x' \\ y' \end{pmatrix} = A \begin{pmatrix} x \\ y \end{pmatrix}$</p>
+</div>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Transformation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Matrice</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">Rotation d'angle $\theta$</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Symétrie axe Ox</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">Symétrie axe Oy</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\begin{pmatrix} -1 & 0 \\ 0 & 1 \end{pmatrix}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Homothétie rapport $k$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\begin{pmatrix} k & 0 \\ 0 & k \end{pmatrix}$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; padding:12px 16px;">Projection sur Ox</td>
+<td style="border:none; padding:12px 16px;">$\begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Graphes et matrices</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> Un <strong>graphe</strong> est un ensemble de <strong>sommets</strong> reliés par des <strong>arêtes</strong> (ou arcs pour un graphe orienté).</p>
+</div>
+
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Matrice d'adjacence :</strong> La matrice d'adjacence d'un graphe à $n$ sommets est une matrice carrée $A \in \mathcal{M}_n(\mathbb{R})$ définie par :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; max-width:450px; overflow-x:auto;">
+<p style="margin:0; font-size:1.1em; font-weight:bold; text-align:center;">$\displaystyle a_{ij} = \begin{cases} 1 & \text{s'il existe une arête de} \quad s_i \, \text{ vers } \, s_j \\ 0 & \text{sinon} \end{cases}$</p>
+</div>
+</div>
+
+<div style="text-align:center; margin:20px 0;">
+[IMAGE_1]
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple - Graphe orienté :</strong> Graphe à 5 sommets (A, B, C, D, E) avec les arcs : $A \to B$, $C \to B$, $C \to D$, $C \to E$, $D \to A$, $D \to B$, $D \to C$, $D \to E$</p>
+<p style="margin:5px 0 0 0;"><strong>Matrice d'adjacence :</strong></p>
+<p style="margin:5px 0; text-align:center;">$A = \begin{pmatrix} 0 & 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 \\ 0 & 1 & 0 & 1 & 1 \\ 1 & 1 & 1 & 0 & 1 \\ 0 & 0 & 0 & 0 & 0 \end{pmatrix}$</p>
+</div>
+
+<div style="text-align:center; margin:20px 0;">
+[IMAGE_2]
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple - Graphe non orienté :</strong> Graphe à 5 sommets (A, B, C, D, E) avec les arêtes : $\{A, B\}$, $\{A, D\}$, $\{B, C\}$, $\{B, D\}$, $\{C, D\}$, $\{C, E\}$, $\{D, E\}$</p>
+<p style="margin:5px 0 0 0;"><strong>Matrice d'adjacence :</strong></p>
+<p style="margin:5px 0; text-align:center;">$A = \begin{pmatrix} 0 & 1 & 0 & 1 & 0 \\ 1 & 0 & 1 & 1 & 0 \\ 0 & 1 & 0 & 1 & 1 \\ 1 & 1 & 1 & 0 & 1 \\ 0 & 0 & 1 & 1 & 0 \end{pmatrix}$</p>
+<p style="margin:5px 0 0 0;"><em>Note :</em> Matrice <strong>symétrique</strong> ($a_{ij} = a_{ji}$) car le graphe est non orienté.</p>
+</div>
+
+<div style="text-align:center; margin:20px 0;">
+[IMAGE_3]
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple - Graphe pondéré :</strong> Graphe à 5 sommets avec arêtes pondérées : $\{A, B\}$ (poids 3), $\{A, D\}$ (poids 7), $\{B, C\}$ (poids 10), $\{B, D\}$ (poids 9), $\{C, D\}$ (poids 15), $\{C, E\}$ (poids 5), $\{D, E\}$ (poids 12)</p>
+<p style="margin:5px 0 0 0;"><strong>Matrice d'adjacence pondérée :</strong></p>
+<p style="margin:5px 0; text-align:center;">$A = \begin{pmatrix} 0 & 3 & 0 & 7 & 0 \\ 3 & 0 & 10 & 9 & 0 \\ 0 & 10 & 0 & 15 & 5 \\ 7 & 9 & 15 & 0 & 12 \\ 0 & 0 & 5 & 12 & 0 \end{pmatrix}$</p>
+</div>
+
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème fondamental :</strong> Si $A$ est la matrice d'adjacence d'un graphe, alors le coefficient $(A^k)_{ij}$ compte le <strong>nombre de chemins de longueur $k$</strong> du sommet $s_i$ au sommet $s_j$.</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Puissance</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Interprétation</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$A^1 = A$</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Chemins directs (longueur 1)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$A^2$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Chemins de longueur 2 (1 sommet intermédiaire)</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; padding:12px 16px;">$A^k$</td>
+<td style="border:none; padding:12px 16px;">Chemins de longueur $k$ ($k-1$ sommets intermédiaires)</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Graphe connexe :</strong> Il existe un chemin entre toute paire de sommets.</p>
+</div>
+
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Graphe fortement connexe (orienté) :</strong> Il existe un chemin orienté entre toute paire de sommets dans les deux sens.</p>
+</div>
+
+<div style="text-align:center; margin:20px 0;">
+[IMAGE_4]
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple - Graphe connexe vs non connexe :</strong></p>
+<p style="margin:5px 0 0 0;"><strong>Graphe connexe :</strong> Tous les sommets sont reliés entre eux par au moins un chemin.</p>
+<p style="margin:5px 0 0 0;"><strong>Graphe non connexe :</strong> Il existe au moins deux sommets sans chemin les reliant.</p>
+</div>
+
+<div style="text-align:center; margin:20px 0;">
+[IMAGE_5]
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple - Graphe fortement connexe :</strong></p>
+<p style="margin:5px 0 0 0;"><strong>Critère :</strong> Un graphe orienté est fortement connexe si pour toute paire de sommets $(i, j)$, il existe un chemin orienté de $i$ vers $j$ ET un chemin orienté de $j$ vers $i$.</p>
+</div>
+
+<div style="background:#fff9e6; border-left:4px solid #f59e0b; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>📐 Critère matriciel :</strong> Un graphe à $n$ sommets est fortement connexe si et seulement si :</p>
+<div style="background:#fff9e6; border:3px solid #f59e0b; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:350px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle A + A^2 + A^3 + \cdots + A^{n-1}$</p>
+</div>
+<p style="margin:5px 0 0 0;">ne contient aucun coefficient nul.</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Erreurs fréquentes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Piège fréquent</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Correction</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Penser que $AB = BA$</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Le produit matriciel n'est pas commutatif : $AB \neq BA$ en général</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Oublier de vérifier les tailles</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Toujours vérifier la compatibilité des tailles avant de multiplier</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Confondre $A^{-1}$ et $\dfrac{1}{A}$</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">$A^{-1}$ est la matrice inverse, $\dfrac{1}{A}$ n'a pas de sens</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Oublier que $\det(\lambda A) = \lambda^n \det(A)$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Ne pas oublier la puissance $n$ (ordre de la matrice)</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Inverser l'ordre dans $(AB)^{-1}$</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">$(AB)^{-1} = B^{-1}A^{-1}$ (inversion de l'ordre)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">Appliquer Sarrus aux matrices $\geq 4$</td>
+<td style="border:none; padding:12px 16px;">La règle de Sarrus ne fonctionne que pour les matrices $3 \times 3$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#ecfdf5; border-left:4px solid #10b981; padding:12px; margin:15px 0;">
+<p style="margin:0; font-size:0.95em;"><strong>💡 Conseils méthodologiques :</strong> Toujours vérifier les tailles avant une opération, calculer le déterminant d'abord pour l'inversibilité, chercher une formule générale pour les puissances, utiliser la récurrence pour démontrer, toujours vérifier le résultat en calculant $AA^{-1}$.</p>
+</div>
+</div>
+
+</div>
+
+===
+

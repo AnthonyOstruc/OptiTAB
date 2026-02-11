@@ -307,8 +307,90 @@ import { AdminActionsButtons } from '@/components/admin'
 // CONSTANTES ET ÉTAT
 // ============================================================================
 
-const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml']
-const MAX_IMAGE_SIZE = 10 * 1024 * 1024 // 10MB
+const SUPPORTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/gif',
+  'image/webp',
+  'image/svg+xml',
+  'image/heic',
+  'image/heif',
+  'image/avif',
+  'image/bmp',
+  'image/tiff'
+]
+const SUPPORTED_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.heic', '.heif', '.avif', '.bmp', '.tif', '.tiff']
+const MAX_IMAGE_SIZE = 20 * 1024 * 1024 // 20MB
+const MAX_IMAGE_SIZE_MB = Math.round(MAX_IMAGE_SIZE / (1024 * 1024))
+
+function getFileExtension(fileName = '') {
+  const cleanName = String(fileName || '').trim().toLowerCase()
+  const dotIndex = cleanName.lastIndexOf('.')
+  if (dotIndex < 0) return ''
+  return cleanName.slice(dotIndex)
+}
+
+function getFileFingerprint(file) {
+  return `${String(file?.name || '').toLowerCase()}::${Number(file?.size || 0)}::${Number(file?.lastModified || 0)}`
+}
+
+function validateImageFile(file) {
+  if (!file) return { ok: false, reason: 'Fichier image manquant.' }
+
+  const mimeType = String(file.type || '').trim().toLowerCase()
+  const extension = getFileExtension(file.name)
+  const isMimeSupported = Boolean(mimeType) && SUPPORTED_IMAGE_TYPES.includes(mimeType)
+  const isExtensionSupported = !mimeType && SUPPORTED_IMAGE_EXTENSIONS.includes(extension)
+
+  if (!isMimeSupported && !isExtensionSupported) {
+    return {
+      ok: false,
+      reason: `Type non supporte pour "${file.name}". Formats acceptes: JPG, PNG, GIF, WebP, SVG, HEIC, HEIF, AVIF, BMP, TIFF.`
+    }
+  }
+
+  if (Number(file.size || 0) > MAX_IMAGE_SIZE) {
+    return {
+      ok: false,
+      reason: `"${file.name}" depasse la taille maximale autorisee (${MAX_IMAGE_SIZE_MB} MB).`
+    }
+  }
+
+  return { ok: true }
+}
+
+function extractApiErrorMessage(error, fallback = 'Erreur inconnue') {
+  const data = error?.response?.data
+  if (!data) return fallback
+
+  if (typeof data === 'string' && data.trim()) return data.trim()
+
+  const direct = data?.detail || data?.message || data?.error
+  if (typeof direct === 'string' && direct.trim()) return direct.trim()
+  if (Array.isArray(direct) && direct.length) return String(direct[0])
+
+  const preferredKeys = ['image', 'sheet', 'non_field_errors']
+  for (const key of preferredKeys) {
+    const value = data?.[key]
+    if (typeof value === 'string' && value.trim()) return value.trim()
+    if (Array.isArray(value) && value.length) return String(value[0])
+  }
+
+  for (const value of Object.values(data || {})) {
+    if (typeof value === 'string' && value.trim()) return value.trim()
+    if (Array.isArray(value) && value.length) return String(value[0])
+  }
+
+  return fallback
+}
+
+function summarizeFailures(items = [], maxItems = 4) {
+  if (!Array.isArray(items) || items.length === 0) return ''
+  const list = items.slice(0, maxItems).join(' | ')
+  const remaining = items.length - Math.min(items.length, maxItems)
+  return remaining > 0 ? `${list} (+${remaining} autre(s))` : list
+}
 
 const notions = ref([])
 const sheets = ref([])
@@ -380,14 +462,20 @@ class ImageManager {
     this.images = new Map()
   }
   addImage(file) {
-    if (!SUPPORTED_IMAGE_TYPES.includes(file.type)) throw new Error('Type non supporté')
-    if (file.size > MAX_IMAGE_SIZE) throw new Error('Fichier trop volumineux')
+    const validation = validateImageFile(file)
+    if (!validation.ok) throw new Error(validation.reason)
+
+    const existing = this.images.get(file.name)
+    if (existing && getFileFingerprint(existing) !== getFileFingerprint(file)) {
+      throw new Error(`Un fichier nommé "${file.name}" existe déjà. Renommez le fichier avant import.`)
+    }
     this.images.set(file.name, file)
   }
   removeImage(filename) { this.images.delete(filename) }
   getImage(filename) { return this.images.get(filename) }
   clear() { this.images.clear() }
 }
+
 const imageManager = new ImageManager()
 // Mémoire locale des noms déclarés dans "Images:" par fiche (clé: notionId::titre)
 const lastDeclaredImagesByKey = (typeof window !== 'undefined')
@@ -494,15 +582,44 @@ function renderPreviewContent(sheet) {
 // ============================================================================
 
 function handleImagesSelect(event) {
-  const files = Array.from(event.target.files || [])
+  const input = event?.target
+  const files = Array.from(input?.files || [])
+  if (files.length === 0) return
+
+  const existingFingerprints = new Set((selectedImages.value || []).map(getFileFingerprint))
+  const rejected = []
+
   files.forEach(file => {
+    const validation = validateImageFile(file)
+    if (!validation.ok) {
+      rejected.push(validation.reason)
+      return
+    }
+
+    const fingerprint = getFileFingerprint(file)
+    if (existingFingerprints.has(fingerprint)) {
+      rejected.push(`"${file.name}" est deja selectionne.`)
+      return
+    }
+
     try {
       imageManager.addImage(file)
       selectedImages.value.push(file)
+      existingFingerprints.add(fingerprint)
     } catch (e) {
       console.error('Image invalide:', e)
+      rejected.push(e?.message || `Impossible d'ajouter "${file.name}".`)
     }
   })
+
+  if (input) input.value = ''
+  if (imagesInput.value) imagesInput.value.value = ''
+
+  if (rejected.length > 0) {
+    errorMsg.value = `Certaines images n'ont pas ete ajoutees: ${summarizeFailures(rejected, 5)}`
+  } else {
+    errorMsg.value = ''
+  }
 }
 
 // Verifie si une image est disponible soit localement (selectionnee) soit cote serveur (deja enregistree)
@@ -803,6 +920,9 @@ async function handleCreate() {
     return
   }
 
+  successMsg.value = ''
+  errorMsg.value = ''
+
   try {
     const list = parseSheets(rawInput.value)
     if (list.length === 0) {
@@ -820,23 +940,26 @@ async function handleCreate() {
 
     let createdCount = 0
     let updatedCount = 0
-    let errorCount = 0
+    let sheetErrorCount = 0
+    let uploadedImagesCount = 0
+    const sheetFailures = []
+    const imageUploadFailures = []
 
     const isSingleEdit = !!currentEditSheetId.value && list.length === 1
 
     for (const sheetData of list) {
-      try {
-        const payload = {
-          notion: Number(sheetData.notion || selectedNotion.value),
-          titre: sheetData.titre,
-          summary: sheetData.summary,
-          reading_time_minutes: Math.max(1, Math.round(sheetData.summary.split(/\s+/).length / 200)),
-          access_scope: sheetData.access_scope || selectedAccessScope.value || DEFAULT_ACCESS_SCOPE,
-          sheet_type: normalizeSheetType(sheetData.sheet_type || selectedSheetType.value || DEFAULT_SHEET_TYPE)
-        }
+      const payload = {
+        notion: Number(sheetData.notion || selectedNotion.value),
+        titre: sheetData.titre,
+        summary: sheetData.summary,
+        reading_time_minutes: Math.max(1, Math.round(sheetData.summary.split(/\s+/).length / 200)),
+        access_scope: sheetData.access_scope || selectedAccessScope.value || DEFAULT_ACCESS_SCOPE,
+        sheet_type: normalizeSheetType(sheetData.sheet_type || selectedSheetType.value || DEFAULT_SHEET_TYPE)
+      }
 
+      let sheetId
+      try {
         const existingId = byTitleAndType.get(getSheetIdentityKey(payload.titre, payload.sheet_type))
-        let sheetId
         if (isSingleEdit) {
           // Forcer la mise à jour par ID quand en mode édition
           const updated = await updateSynthesisSheet(currentEditSheetId.value, payload)
@@ -852,44 +975,77 @@ async function handleCreate() {
           createdCount++
           if (sheetId) byTitleAndType.set(getSheetIdentityKey(payload.titre, payload.sheet_type), sheetId)
         }
-
-        // Ajouter images si présentes (déclarées ou via fichiers sélectionnés)
-        if (sheetId) {
-          const uploadedNames = new Set()
-          const declared = (sheetData.image && sheetData.image.trim())
-            ? sheetData.image
-            : (selectedImages.value || []).map(f => f.name).join(',')
-          const imageNames = (declared || '').split(',').map(n => n.trim()).filter(Boolean)
-          for (let i = 0; i < imageNames.length; i++) {
-            const file = imageManager.getImage(imageNames[i])
-            if (file) {
-              await createSynthesisImage({ sheet: sheetId, image: file, image_type: 'illustration', position: i + 1 })
-              uploadedNames.add(imageNames[i])
-            }
-          }
-          // Fallback: si des fichiers ont été sélectionnés mais pas déclarés (ou noms différents),
-          // les envoyer quand même dans l'ordre sélectionné.
-          if (selectedImages.value && selectedImages.value.length) {
-            let position = imageNames.length + 1
-            for (const file of selectedImages.value) {
-              const key = file.name || ''
-              if (key && uploadedNames.has(key)) continue
-              await createSynthesisImage({ sheet: sheetId, image: file, image_type: 'illustration', position })
-              position += 1
-            }
-          }
-          // Mémoriser les images déclarées pour cette fiche
-          const key = getSheetKey(payload.notion, payload.titre, payload.sheet_type)
-          if (declared) lastDeclaredImagesByKey.set(key, declared)
-        }
       } catch (e) {
-        console.error('Erreur création/mise à jour fiche:', e)
-        errorCount++
+        console.error('Erreur creation/mise a jour fiche:', e)
+        sheetErrorCount++
+        sheetFailures.push(`${payload.titre || 'Sans titre'}: ${extractApiErrorMessage(e, 'Enregistrement impossible')}`)
+        continue
       }
+
+      if (!sheetId) {
+        sheetErrorCount++
+        sheetFailures.push(`${payload.titre || 'Sans titre'}: ID de fiche introuvable apres sauvegarde`)
+        continue
+      }
+
+      // Ajouter images si presentes (declarees ou via fichiers selectionnes)
+      const uploadedNames = new Set()
+      const declared = (sheetData.image && sheetData.image.trim())
+        ? sheetData.image
+        : (selectedImages.value || []).map(f => f.name).join(',')
+      const imageNames = (declared || '').split(',').map(n => n.trim()).filter(Boolean)
+
+      for (let i = 0; i < imageNames.length; i++) {
+        const imageName = imageNames[i]
+        const file = imageManager.getImage(imageName)
+        if (!file) continue
+        try {
+          await createSynthesisImage({ sheet: sheetId, image: file, image_type: 'illustration', position: i + 1 })
+          uploadedNames.add(imageName)
+          uploadedImagesCount++
+        } catch (e) {
+          console.error('Erreur upload image declaree:', e)
+          imageUploadFailures.push(`${imageName} (${payload.titre}): ${extractApiErrorMessage(e, 'Upload impossible')}`)
+        }
+      }
+
+      // Fallback: si des fichiers ont ete selectionnes mais pas declares (ou noms differents),
+      // les envoyer quand meme dans l'ordre selectionne.
+      if (selectedImages.value && selectedImages.value.length) {
+        let position = imageNames.length + 1
+        for (const file of selectedImages.value) {
+          const key = file.name || ''
+          if (key && uploadedNames.has(key)) continue
+          try {
+            await createSynthesisImage({ sheet: sheetId, image: file, image_type: 'illustration', position })
+            uploadedImagesCount++
+          } catch (e) {
+            console.error('Erreur upload image fallback:', e)
+            imageUploadFailures.push(`${file.name || `image-${position}`} (${payload.titre}): ${extractApiErrorMessage(e, 'Upload impossible')}`)
+          }
+          position += 1
+        }
+      }
+
+      // Memoiser les images declarees pour cette fiche
+      const key = getSheetKey(payload.notion, payload.titre, payload.sheet_type)
+      if (declared) lastDeclaredImagesByKey.set(key, declared)
     }
 
-    if (createdCount > 0 || updatedCount > 0) {
-      successMsg.value = `${createdCount} créé(es)${updatedCount ? `, ${updatedCount} mis à jour` : ''}${errorCount ? `, ${errorCount} erreur(s)` : ''}`
+    const hasSavedSheets = createdCount > 0 || updatedCount > 0
+    if (hasSavedSheets) {
+      const successParts = []
+      if (createdCount > 0) successParts.push(`${createdCount} cree(s)`)
+      if (updatedCount > 0) successParts.push(`${updatedCount} mise(s) a jour`)
+      if (uploadedImagesCount > 0) successParts.push(`${uploadedImagesCount} image(s) envoyee(s)`)
+      if (sheetErrorCount > 0) successParts.push(`${sheetErrorCount} erreur(s) fiche`)
+      if (imageUploadFailures.length > 0) successParts.push(`${imageUploadFailures.length} image(s) en echec`)
+      successMsg.value = successParts.join(', ')
+
+      const errorParts = []
+      if (sheetFailures.length > 0) errorParts.push(`Fiches en echec: ${summarizeFailures(sheetFailures)}`)
+      if (imageUploadFailures.length > 0) errorParts.push(`Images en echec: ${summarizeFailures(imageUploadFailures, 6)}`)
+      errorMsg.value = errorParts.join(' || ')
 
       // Garder le contenu dans la zone de saisie pour éviter la sensation de perte (UX)
       // Ne pas vider les images sélectionnées; l'utilisateur peut ré-appuyer pour mettre à jour.
@@ -915,11 +1071,14 @@ async function handleCreate() {
       // Auto-hide messages après 4s
       setTimeout(() => { successMsg.value = '' }, 4000)
     } else {
-      errorMsg.value = 'Aucune fiche enregistrée'
+      const errorParts = []
+      if (sheetFailures.length > 0) errorParts.push(`Fiches en echec: ${summarizeFailures(sheetFailures)}`)
+      if (imageUploadFailures.length > 0) errorParts.push(`Images en echec: ${summarizeFailures(imageUploadFailures, 6)}`)
+      errorMsg.value = errorParts.length > 0 ? errorParts.join(' || ') : 'Aucune fiche enregistree'
     }
   } catch (e) {
-    console.error('Erreur globale:', e)
-    errorMsg.value = 'Erreur lors de la création des fiches'
+    console.error('Erreur globale handleCreate:', e)
+    errorMsg.value = `Erreur lors de la creation des fiches: ${extractApiErrorMessage(e, 'erreur technique')}`
   }
 }
 
@@ -1142,10 +1301,23 @@ async function loadServerImages(sheetId) {
 }
 
 function onSelectReplaceFile(index, event) {
-  const f = (event.target.files || [])[0]
+  const input = event?.target
+  const f = (input?.files || [])[0]
   if (!f) return
+
+  const validation = validateImageFile(f)
+  if (!validation.ok) {
+    const rowInvalid = serverImages.value[index]
+    if (rowInvalid) rowInvalid._file = null
+    errorMsg.value = validation.reason
+    if (input) input.value = ''
+    return
+  }
+
   const row = serverImages.value[index]
   if (row) row._file = f
+  errorMsg.value = ''
+  if (input) input.value = ''
 }
 
 async function replaceImageRow(sheetId, row, index) {
@@ -1183,8 +1355,24 @@ async function deleteImageRow(sheetId, row, index) {
 
 const newImage = ref({ file: null, image_type: 'illustration', position: 0, caption: '' })
 function onSelectNewImage(event) {
-  const f = (event.target.files || [])[0]
-  newImage.value.file = f || null
+  const input = event?.target
+  const f = (input?.files || [])[0]
+  if (!f) {
+    newImage.value.file = null
+    return
+  }
+
+  const validation = validateImageFile(f)
+  if (!validation.ok) {
+    newImage.value.file = null
+    errorMsg.value = validation.reason
+    if (input) input.value = ''
+    return
+  }
+
+  newImage.value.file = f
+  errorMsg.value = ''
+  if (input) input.value = ''
 }
 
 async function addNewImage(sheetId) {

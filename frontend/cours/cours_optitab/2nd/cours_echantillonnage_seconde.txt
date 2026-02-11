@@ -1,0 +1,178 @@
+=== Échantillonnage et Simulation - Programme Seconde
+Difficulté: medium
+Ordre: 8
+Images: fluctuation_frequences.png, loi_grands_nombres_convergence.png
+
+Titre: Échantillonnage et Simulation
+Description: Cours sur l'échantillonnage en Seconde : notion d'échantillon, fluctuation d'échantillonnage, loi des grands nombres, estimation et simulation numérique avec Python.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Comprendre la notion d'échantillon aléatoire de taille $n$. Savoir que la fréquence observée fluctue mais se rapproche de la probabilité théorique quand $n$ augmente (Loi des grands nombres). Savoir estimer une probabilité par une fréquence. Lire et comprendre des fonctions Python de simulation.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Notion d'échantillon et de fréquence</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Expérience à deux issues</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Échantillon de taille $n$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On considère une expérience aléatoire ayant deux issues possibles :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Succès</strong> (avec probabilité $p$)</li>
+                <li style="margin:0; text-align:left;"><strong>Échec</strong> (avec probabilité $1-p$)</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>échantillon de taille $n$</strong> est constitué des résultats obtenus en répétant cette expérience $n$ fois, de manière indépendante.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fréquence observée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si, dans un échantillon de taille $n$, on observe $k$ succès, la <strong>fréquence observée</strong> du succès est :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f = \frac{k}{n}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance une pièce équilibrée ($p=0,5$) 10 fois de suite. C'est un échantillon de taille $n=10$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si on obtient 6 fois "Pile" (Succès), la fréquence observée est $\displaystyle f = \frac{6}{10} = 0,6$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Fluctuation d'échantillonnage</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Observation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si on réalise plusieurs échantillons de même taille $n$, la fréquence observée $f$ varie d'un échantillon à l'autre. C'est ce qu'on appelle la <strong>fluctuation d'échantillonnage</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance 100 fois une pièce. On obtient $f_1 = 0,48$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On recommence 100 lancers. On obtient $f_2 = 0,53$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les fréquences ne sont pas identiques et ne sont pas exactement égales à la probabilité théorique $p=0,5$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété - Influence de la taille $n$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Plus la taille $n$ de l'échantillon est grande, plus l'ampleur des fluctuations diminue. Les fréquences observées ont tendance à se resserrer autour de la probabilité théorique $p$.</p>
+        </div>
+        
+        [IMAGE_1]
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Loi des grands nombres</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Théorème - Loi des grands nombres (version vulgarisée)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Lorsque la taille $n$ de l'échantillon devient grande, sauf exception, la fréquence observée $f$ devient très proche de la probabilité théorique $p$.</p>
+            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f \approx p \quad \text{pour } n \text{ grand}$</p>
+            </div>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Principe de l'estimation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si la probabilité $p$ est inconnue (par exemple, la proportion d'une population ayant une certaine caractéristique), on peut l'<strong>estimer</strong> à l'aide de la fréquence observée $f$ sur un échantillon de taille $n$ suffisamment grande.</p>
+        </div>
+        
+        [IMAGE_2]
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Algorithmique et Simulation</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Simuler une expérience aléatoire</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
+            <strong>💻 En Python :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise le module <code>random</code>. La fonction <code>random()</code> renvoie un nombre décimal aléatoire dans $[0, 1[$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour simuler une expérience avec probabilité de succès $p$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si <code>random() < p</code>, c'est un succès.</li>
+                <li style="margin:0; text-align:left;">Sinon, c'est un échec.</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Fonction Python - Fréquence de succès dans un échantillon :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">from</span> random <span style="color:#ff79c6;">import</span> random<br><br>
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">frequence_echantillon</span>(n, p):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;succes = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Si le tirage est un succès</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> random() < p:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;succes = succes + <span style="color:#bd93f9;">1</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> succes / n
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Cette fonction simule $n$ expériences et renvoie la fréquence observée.</em></p>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:20px;">Observer la loi des grands nombres</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Simulation de N échantillons :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut simuler $N$ échantillons de taille $n$ pour observer la répartition des fréquences.</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">simulation_fluctuation</span>(N, n, p):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;compteur = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;seuil = <span style="color:#bd93f9;">1</span> / (n**<span style="color:#bd93f9;">0.5</span>) <span style="color:#6272a4;"># Seuil 1/sqrt(n)</span><br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(N):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f = frequence_echantillon(n, p)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># On regarde si l'écart est faible</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> <span style="color:#50fa7b;">abs</span>(f - p) <= seuil:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compteur = compteur + <span style="color:#bd93f9;">1</span><br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> compteur / N
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Cette fonction calcule la proportion d'échantillons pour lesquels l'écart entre la fréquence observée et la probabilité est inférieur à $\displaystyle \frac{1}{\sqrt{n}}$. Pour $n \geq 25$ et $0,2 \leq p \leq 0,8$, cette proportion est généralement supérieure à 95%.</em></p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Synthèse et Méthodes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+            <thead>
+                <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notion</th>
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">À retenir</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Échantillon</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">Répétition de $n$ expériences identiques et indépendantes.</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Fluctuation</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">La fréquence $f$ varie d'un échantillon à l'autre.</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Loi des grands nombres</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">Quand $n$ est grand, $f$ se stabilise autour de $p$.</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; padding:12px 16px;"><strong>Estimation</strong></td>
+                    <td style="border:none; padding:12px 16px;">On utilise $f$ pour estimer $p$ inconnu.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La loi des grands nombres ne dit pas que $f$ sera <em>exactement</em> égal à $p$, mais que l'écart devient très petit avec une très grande probabilité lorsque $n$ augmente.</p>
+        </div>
+    </div>
+
+</div>
+
+===

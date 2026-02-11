@@ -1,0 +1,392 @@
+===Résumé Limites et Convergence des Suites
+
+Images: 
+
+Titre: Résumé : Limites et Convergence des Suites
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+<div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>📚 Objectif pédagogique :</strong> Maîtriser les limites de suites : convergence, divergence, théorème des gendarmes, opérations sur les limites, suites géométriques et théorème de convergence des suites monotones.</p>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Rappels : suites arithmétiques et géométriques</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<h3 style="color:#34495e; margin-top:0; margin-bottom:15px;">Suite arithmétique</h3>
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> $(u_n)$ est arithmétique s'il existe $r$ tel que $\displaystyle u_{n+1} = u_n + r$.</p>
+<p style="margin:5px 0 0 0;">Le nombre $r$ est appelé la <strong>raison</strong> de la suite.</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;"><strong>Terme général<br>À partir du premier terme</strong></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle u_n = u_0 + n r$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;"><strong>Terme général<br>À partir d'un rang $p$ quelconque</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle u_n = u_p + (n-p)r$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;"><strong>Somme des $n+1$ premiers termes</strong></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle S_n = u_0 + u_1 + \cdots + u_n$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;"><strong>Formule simplifiée</strong></td>
+<td style="border:none; padding:18px 16px;">$\displaystyle S_n = (n+1) \times \frac{u_0 + u_n}{2}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<h3 style="color:#34495e; margin-top:0; margin-bottom:15px;">Suite géométrique</h3>
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> $(u_n)$ est géométrique s'il existe $q$ tel que $\displaystyle u_{n+1} = q \cdot u_n$.</p>
+<p style="margin:5px 0 0 0;">Le nombre $q$ est appelé la <strong>raison</strong> de la suite.</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Expression</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:18px 16px;"><strong>Terme général<br>À partir du premier terme</strong></td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:18px 16px;">$\displaystyle u_n = u_0 \cdot q^n$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;"><strong>Terme général<br>À partir d'un rang $p$ quelconque</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle u_n = u_p \cdot q^{n-p}$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:18px 16px;"><strong>Somme des $n+1$ premiers termes</strong><br><em style="font-size:0.9em;">(si $\displaystyle q \neq 1$)</em></td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:18px 16px;">$\displaystyle S_n = u_0 + u_1 + \cdots + u_n$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;"><strong>Formule simplifiée</strong><br><em style="font-size:0.9em;">(si $\displaystyle q \neq 1$)</em></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle S_n = u_0 \times \frac{1 - q^{n+1}}{1 - q}$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:18px 16px;"><strong>Somme des $n+1$ premiers termes</strong><br><em style="font-size:0.9em;">(si $\displaystyle q = 1$)</em></td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:18px 16px;">$\displaystyle S_n = (n+1) \times u_0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;"><strong>Limite de la somme</strong><br><em style="font-size:0.9em;">(si $\displaystyle 0 < q < 1$)</em></td>
+<td style="border:none; padding:18px 16px;">$\displaystyle \lim_{n \to +\infty} S_n = \frac{u_0}{1 - q}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Raisonnement par récurrence</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Principe :</strong> Pour montrer qu'une propriété $P(n)$ est vraie pour tout $\displaystyle n \geq n_0$ :</p>
+<p style="margin:5px 0 0 0;"><strong>1. Initialisation :</strong> Montrer que $P(n_0)$ est vraie.</p>
+<p style="margin:5px 0 0 0;"><strong>2. Hérédité :</strong> Supposer $P(k)$ vraie (hypothèse de récurrence) et montrer $P(k+1)$.</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Définitions des limites</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Suite tendant vers $+\infty$ :</strong> À partir d'un certain rang, tous les termes deviennent aussi grands qu'on veut.</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \lim_{n \to +\infty} u_n = +\infty$</p>
+</div>
+</div>
+
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Suite convergente :</strong> La suite $(u_n)$ converge vers $\ell$ si, à partir d'un certain rang, tous les termes sont aussi proches qu'on veut de $\ell$.</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \lim_{n \to +\infty} u_n = \ell$</p>
+</div>
+</div>
+
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Unicité de la limite :</strong> Si une suite converge, sa limite est unique.</p>
+</div>
+
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Convergence implique bornée :</strong> Toute suite convergente est bornée.</p>
+<p style="margin:5px 0 0 0;"><em>Conséquence :</em> Si une suite n'est pas bornée, elle ne peut pas converger.</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Limites usuelles</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Expression</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Limite</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle \frac{1}{n^k}$ avec $\displaystyle k > 0$</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle \lim_{n \to +\infty} \frac{1}{n^k} = 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle n^k$ avec $\displaystyle k > 0$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle \lim_{n \to +\infty} n^k = +\infty$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle \sqrt{n}$</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle \lim_{n \to +\infty} \sqrt{n} = +\infty$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">$\displaystyle q^n$</td>
+<td style="border:none; padding:12px 16px;">Voir section VII</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Théorème des gendarmes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème des gendarmes :</strong> Soient $(u_n)$, $(v_n)$ et $(w_n)$ trois suites telles que, à partir d'un certain rang :</p>
+<p style="margin:5px 0 0 0;">$\displaystyle u_n \leq v_n \leq w_n$</p>
+<p style="margin:5px 0 0 0;">Si $\displaystyle \lim_{n \to +\infty} u_n = \lim_{n \to +\infty} w_n = \ell$ (où $\ell \in \mathbb{R}$), alors :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \lim_{n \to +\infty} v_n = \ell$</p>
+</div>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple :</strong> Déterminer la limite de $\displaystyle v_n = \frac{\sin(n)}{n}$</p>
+<p style="margin:5px 0 0 0;">On a : $\displaystyle -1 \leq \sin(n) \leq 1$ pour tout $n$</p>
+<p style="margin:5px 0 0 0;">Donc : $\displaystyle -\frac{1}{n} \leq \frac{\sin(n)}{n} \leq \frac{1}{n}$</p>
+<p style="margin:5px 0 0 0;">Comme $\displaystyle \lim_{n \to +\infty} \left(-\frac{1}{n}\right) = 0$ et $\displaystyle \lim_{n \to +\infty} \frac{1}{n} = 0$,</p>
+<p style="margin:5px 0 0 0;">par le théorème des gendarmes : $\displaystyle \lim_{n \to +\infty} \frac{\sin(n)}{n} = 0$</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Opérations sur les limites</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Opération</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:20px 16px;"><strong>Somme</strong></td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:20px 16px;">$\displaystyle \lim_{n \to +\infty} (u_n + v_n) = \displaystyle\lim_{n \to +\infty} u_n + \displaystyle\lim_{n \to +\infty} v_n$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:20px 16px;"><strong>Somme<br>Exception</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:20px 16px;"><em style="color:#e74c3c;">Forme indéterminée :</em> $\displaystyle +\infty - \infty$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:20px 16px;"><strong>Produit</strong></td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:20px 16px;">$\displaystyle \lim_{n \to +\infty} (u_n \times v_n) = \displaystyle\lim_{n \to +\infty} u_n \times \displaystyle\lim_{n \to +\infty} v_n$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:20px 16px;"><strong>Produit<br>Exception</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:20px 16px;"><em style="color:#e74c3c;">Forme indéterminée :</em> $\displaystyle 0 \times (+\infty)$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:20px 16px;"><strong>Quotient</strong></td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:20px 16px;">$\displaystyle \lim_{n \to +\infty} \frac{u_n}{v_n} = \frac{\displaystyle\lim_{n \to +\infty} u_n}{\displaystyle\lim_{n \to +\infty} v_n}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:20px 16px;"><strong>Quotient<br>Exception</strong></td>
+<td style="border:none; padding:20px 16px;"><em style="color:#e74c3c;">Formes indéterminées :</em> $\displaystyle \frac{0}{0}$ ou $\displaystyle \frac{\infty}{\infty}$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#fff8dc; border-left:4px solid #ffa500; padding:18px; margin:20px 0; border-radius:6px;">
+<p style="margin:0 0 12px 0; font-size:1.1em;"><strong>⚠️ Formes indéterminées (FI) :</strong></p>
+<p style="margin:0 0 15px 0; line-height:1.6;">"Forme indéterminée" signifie qu'on ne peut pas conclure directement, il faut <strong>transformer</strong> l'expression avant d'appliquer les règles.</p>
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:10px 0;">
+<tbody>
+<tr>
+<td style="padding:10px 0; border-bottom:1px solid #fde68a;"><strong>$\displaystyle +\infty - \infty$</strong></td>
+<td style="padding:10px 0; border-bottom:1px solid #fde68a;">→ <strong>Factoriser</strong> par le terme dominant</td>
+</tr>
+<tr>
+<td style="padding:10px 0; border-bottom:1px solid #fde68a;"><strong>$\displaystyle 0 \times \infty$</strong></td>
+<td style="padding:10px 0; border-bottom:1px solid #fde68a;">→ <strong>Transformer</strong> en quotient ou <strong>simplifier</strong></td>
+</tr>
+<tr>
+<td style="padding:10px 0; border-bottom:1px solid #fde68a;"><strong>$\displaystyle \frac{0}{0}$</strong></td>
+<td style="padding:10px 0; border-bottom:1px solid #fde68a;">→ <strong>Factoriser</strong> ou <strong>simplifier</strong></td>
+</tr>
+<tr>
+<td style="padding:10px 0;"><strong>$\displaystyle \frac{\infty}{\infty}$</strong></td>
+<td style="padding:10px 0;">→ <strong>Factoriser</strong> par le terme de plus haut degré</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Limite de $(q^n)$</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Valeur de $q$</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Limite de $(q^n)$</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$\displaystyle q > 1$</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$\displaystyle \lim_{n \to +\infty} q^n = +\infty$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle q = 1$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle \lim_{n \to +\infty} q^n = 1$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$\displaystyle -1 < q < 1$ et $\displaystyle q \neq 0$</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$\displaystyle \lim_{n \to +\infty} q^n = 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">$\displaystyle q = 0$</td>
+<td style="border:none; padding:12px 16px;">$\displaystyle \lim_{n \to +\infty} q^n = 0$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Somme d'une suite géométrique :</strong> Pour une suite géométrique de premier terme $u_0$ et de raison $\displaystyle q \neq 1$ :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle S_n = u_0 \times \frac{1 - q^{n+1}}{1 - q}$</p>
+</div>
+<p style="margin:5px 0 0 0;">Si $\displaystyle 0 < q < 1$, alors :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \lim_{n \to +\infty} S_n = \frac{u_0}{1 - q}$</p>
+</div>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Théorème de convergence des suites monotones</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Convergence des suites monotones :</strong></p>
+<p style="margin:5px 0 0 0;">Toute suite <strong>croissante majorée</strong> converge.</p>
+<p style="margin:5px 0 0 0;">Toute suite <strong>décroissante minorée</strong> converge.</p>
+<p style="margin:5px 0 0 0;"><em>Ce théorème est admis.</em></p>
+</div>
+
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Suite croissante non majorée :</strong></p>
+<p style="margin:5px 0 0 0;">Toute suite <strong>croissante non majorée</strong> tend vers $\displaystyle +\infty$.</p>
+</div>
+
+<div style="background:#f8f9fa; border-left:4px solid #6c757d; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Exemple :</strong> Soit $(u_n)$ définie par $u_0 = 1$ et $\displaystyle u_{n+1} = \sqrt{u_n + 2}$</p>
+<p style="margin:5px 0 0 0;">On montre que cette suite est croissante et majorée par $2$.</p>
+<p style="margin:5px 0 0 0;">Par le théorème, elle converge vers une limite $\ell$ qui vérifie $\displaystyle \ell = \sqrt{\ell + 2}$.</p>
+<p style="margin:5px 0 0 0;">En résolvant : $\displaystyle \ell^2 = \ell + 2$, on trouve $\ell = 2$ (car $\displaystyle \ell \geq 0$).</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Algorithmes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Recherche de seuil :</strong> Déterminer le plus petit entier $n$ tel que $u_n \geq S$ (où $S$ est un seuil donné).</p>
+</div>
+
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Approximation d'un nombre :</strong> Utiliser une suite convergente pour obtenir des valeurs approchées d'un nombre réel.</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Méthodes pour déterminer une limite</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Méthode</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Quand l'utiliser</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Opérations directes</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Limites connues, pas de forme indéterminée</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Factorisation</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Formes $\displaystyle \frac{\infty}{\infty}$ ou $\displaystyle +\infty - \infty$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Théorème des gendarmes</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Suites avec $\sin$, $\cos$, etc.</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Théorème de convergence</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Suite monotone et bornée</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; padding:12px 16px;">Limite de $(q^n)$</td>
+<td style="border:none; padding:12px 16px;">Suites géométriques</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Erreurs fréquentes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Piège fréquent</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Correction</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Appliquer directement les règles sur les FI</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Transformer d'abord (factoriser, simplifier)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Croire qu'une suite croissante converge</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Elle doit aussi être majorée pour converger</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Confondre "tend vers $+\infty$" et "converge"</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Une suite qui tend vers $+\infty$ diverge</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">Oublier l'hypothèse de récurrence</td>
+<td style="border:none; padding:12px 16px;">Utiliser explicitement $P(k)$ dans l'hérédité</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+===
+

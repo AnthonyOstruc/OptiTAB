@@ -1,12 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction
-from django.test import TestCase
+from django.test import TestCase, override_settings
+from django.core.files.uploadedfile import SimpleUploadedFile
+import tempfile
+import shutil
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from curriculum.models import Matiere, MatiereContexte, Notion, Theme
 from pays.models import Niveau, Pays
-from synthesis.models import SynthesisSheet
+from synthesis.models import SynthesisSheet, SynthesisImage
 
 
 def _build_notion_tree():
@@ -121,6 +124,46 @@ class SynthesisSheetTypeTests(TestCase):
         duplicate = SynthesisSheet.objects.get(pk=response.data['id'])
         self.assertEqual(duplicate.sheet_type, SynthesisSheet.SHEET_TYPE_TABLE)
         self.assertNotEqual(duplicate.id, original.id)
+
+    def test_duplicate_copies_images(self):
+        temp_media = tempfile.mkdtemp(prefix='synthesis-test-media-')
+        self.addCleanup(lambda: shutil.rmtree(temp_media, ignore_errors=True))
+
+        with override_settings(MEDIA_ROOT=temp_media):
+            original = SynthesisSheet.objects.create(
+                notion=self.notion,
+                titre='Matrices',
+                summary='Contenu test',
+                sheet_type=SynthesisSheet.SHEET_TYPE_SUMMARY,
+            )
+            original_image = SynthesisImage.objects.create(
+                sheet=original,
+                image=SimpleUploadedFile('graphe.png', b'fake-image-content', content_type='image/png'),
+                image_type='illustration',
+                position=2,
+                caption='Schema',
+            )
+
+            response = self.client.post(f'/api/sheets/{original.id}/duplicate/')
+
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(response.data.get('duplicated_images'), 1)
+
+            duplicate = SynthesisSheet.objects.get(pk=response.data['id'])
+            duplicate_images = list(duplicate.images.order_by('position', 'id'))
+            self.assertEqual(len(duplicate_images), 1)
+
+            duplicated_image = duplicate_images[0]
+            self.assertEqual(duplicated_image.image_type, original_image.image_type)
+            self.assertEqual(duplicated_image.position, original_image.position)
+            self.assertEqual(duplicated_image.caption, original_image.caption)
+            self.assertNotEqual(duplicated_image.image.name, original_image.image.name)
+
+            with original_image.image.open('rb') as original_file:
+                original_bytes = original_file.read()
+            with duplicated_image.image.open('rb') as duplicated_file:
+                duplicated_bytes = duplicated_file.read()
+            self.assertEqual(duplicated_bytes, original_bytes)
 
 
 class SynthesisSheetAccessTests(TestCase):

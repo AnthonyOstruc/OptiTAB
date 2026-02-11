@@ -1,0 +1,473 @@
+===Résumé Arithmétique Terminal
+
+Images: division_euclidienne.png, algorithme_euclide.png
+
+Titre: Résumé : Arithmétique
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+<div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>📚 Objectif pédagogique :</strong> Maîtriser l'arithmétique : divisibilité, congruences, PGCD, théorèmes de Bézout et Gauss, nombres premiers. Ce résumé couvre les notions exigibles au programme de Terminale.</p>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Divisibilité dans ℤ</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> Soient $a$ et $b$ deux entiers relatifs. On dit que $b$ <strong>divise</strong> $a$ s'il existe un entier $k$ tel que $a = b \times k$.</p>
+<p style="margin:5px 0 0 0;"><em>Notation :</em> $b \mid a$ (lire "$b$ divise $a$")</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">Transitivité</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">Si $b \mid a$ et $c \mid b$, alors $c \mid a$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Linéarité</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Si $b \mid a$ et $b \mid c$, alors $b \mid (a + c)$ et $b \mid (a - c)$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; padding:12px 16px;">Multiplication</td>
+<td style="border:none; padding:12px 16px;">Si $b \mid a$, alors $b \mid (a \times k)$ pour tout entier $k$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#fff9e6; border-left:4px solid #f59e0b; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Méthode :</strong> Pour déterminer tous les diviseurs d'un entier positif $n$, tester tous les entiers de $1$ à $\sqrt{n}$. Si $d$ divise $n$, alors $\frac{n}{d}$ divise aussi $n$.</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Division euclidienne</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème :</strong> Soient $a \in \mathbb{Z}$ et $b \in \mathbb{N}^{\ast}$.</p>
+<p style="margin:5px 0 0 0;">Il existe un unique couple d'entiers $(q, r)$ tel que :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$a = bq + r$ avec $0 \leq r < b$</p>
+</div>
+<p style="margin:5px 0 0 0;"><em>Termes :</em> $q$ est le <strong>quotient</strong>, $r$ est le <strong>reste</strong></p>
+</div>
+
+<div style="background:#ecfdf5; border-left:4px solid #10b981; padding:12px; margin:15px 0;">
+<p style="margin:0; font-size:0.95em;"><strong>💡 Remarque :</strong> $b \mid a$ si et seulement si le reste de la division euclidienne de $a$ par $b$ est nul.</p>
+</div>
+
+[IMAGE_1]
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Congruences dans ℤ</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> Soient $a$, $b$ et $n$ des entiers, avec $n \geq 2$.</p>
+<p style="margin:5px 0 0 0;">On dit que $a$ est <strong>congru à $b$ modulo $n$</strong> si $n$ divise $a - b$.</p>
+<p style="margin:5px 0 0 0;"><em>Notation :</em> $a \equiv b \pmod{n}$</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Caractérisation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Équivalence</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Par divisibilité</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$a \equiv b \pmod{n} \Leftrightarrow n \mid (a - b)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">Par reste</td>
+<td style="border:none; padding:12px 16px;">$a$ et $b$ ont le même reste dans la division euclidienne par $n$</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Opération</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Compatibilité</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Addition</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$a + c \equiv b + d \pmod{n}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Soustraction</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$a - c \equiv b - d \pmod{n}$</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">Multiplication</td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:12px 16px;">$a \times c \equiv b \times d \pmod{n}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">Puissance</td>
+<td style="border:none; padding:12px 16px;">$a^k \equiv b^k \pmod{n}$ pour tout entier naturel $k$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. PGCD de deux entiers</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> Le <strong>Plus Grand Commun Diviseur</strong> (PGCD) de $a$ et $b$ est le plus grand entier positif qui divise à la fois $a$ et $b$.</p>
+<p style="margin:5px 0 0 0;"><em>Notation :</em> $\mathrm{PGCD}(a, b)$ ou $a \wedge b$</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">Commutativité</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\mathrm{PGCD}(a, b) = \mathrm{PGCD}(b, a)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Valeur absolue</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\mathrm{PGCD}(a, b) = \mathrm{PGCD}(|a|, |b|)$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">Cas particulier</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\mathrm{PGCD}(a, 0) = |a|$ si $a \neq 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">Invariance</td>
+<td style="border:none; padding:12px 16px;">$\mathrm{PGCD}(a, b) = \mathrm{PGCD}(a, b + ka)$ pour tout entier $k$</td>
+</tr>
+</tbody>
+</table>
+
+<div style="background:#fff9e6; border-left:4px solid #f59e0b; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Algorithme d'Euclide :</strong> Pour calculer $\mathrm{PGCD}(a, b)$ avec $a \geq b > 0$, on effectue des divisions euclidiennes successives jusqu'à obtenir un reste nul. Le dernier reste non nul est le PGCD.</p>
+</div>
+
+[IMAGE_2]
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Entiers premiers entre eux</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> Deux entiers relatifs $a$ et $b$ sont dits <strong>premiers entre eux</strong> si leur PGCD est égal à $1$.</p>
+<p style="margin:5px 0 0 0;"><em>Condition :</em> $\mathrm{PGCD}(a, b) = 1$</p>
+</div>
+
+<div style="background:#ecfdf5; border-left:4px solid #10b981; padding:12px; margin:15px 0;">
+<p style="margin:0; font-size:0.95em;"><strong>💡 Propriété :</strong> Deux nombres premiers distincts sont toujours premiers entre eux.</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Théorème de Bézout</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème de Bézout :</strong> Soient $a$ et $b$ deux entiers relatifs non tous deux nuls.</p>
+<p style="margin:5px 0 0 0;">Il existe des entiers relatifs $x$ et $y$ tels que :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:350px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$ax + by = \mathrm{PGCD}(a, b)$</p>
+</div>
+<p style="margin:5px 0 0 0;"><em>Terme :</em> Un tel couple $(x, y)$ est appelé <strong>couple de Bézout</strong></p>
+</div>
+
+<div style="background:#f3e8ff; border-left:4px solid #9333ea; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Caractérisation :</strong> Deux entiers $a$ et $b$ sont premiers entre eux si et seulement s'il existe des entiers $x$ et $y$ tels que :</p>
+<div style="background:#f3e8ff; border:3px solid #9333ea; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$ax + by = 1$</p>
+</div>
+</div>
+
+<div style="background:#fff9e6; border-left:4px solid #f59e0b; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Algorithme d'Euclide étendu :</strong> Pour trouver un couple de Bézout, on remonte les divisions euclidiennes de l'algorithme d'Euclide en exprimant chaque reste comme combinaison linéaire de $a$ et $b$.</p>
+</div>
+
+<div style="background:#f3e8ff; border-left:4px solid #9333ea; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Inverse modulo $n$ :</strong> Si $\mathrm{PGCD}(a, n) = 1$, alors il existe un entier $x$ tel que $ax \equiv 1 \pmod{n}$. On trouve cet inverse avec l'algorithme d'Euclide étendu.</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Résolution de congruences linéaires</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #f59e0b; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(245,158,11,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Cas</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Méthode</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fff9e6;">
+<td style="border:none; border-bottom:1px solid #fde68a; padding:12px 16px;"><strong>Si $d = \mathrm{PGCD}(a, n) = 1$</strong></td>
+<td style="border:none; border-bottom:1px solid #fde68a; padding:12px 16px;">Solution unique modulo $n$. Trouver l'inverse de $a$ modulo $n$.</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Si $d > 1$ et $d \nmid b$</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Aucune solution</td>
+</tr>
+<tr style="background:#fff9e6;">
+<td style="border:none; padding:12px 16px;"><strong>Si $d > 1$ et $d \mid b$</strong></td>
+<td style="border:none; padding:12px 16px;">$d$ solutions modulo $n$. Simplifier en divisant par $d$.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Théorème de Gauss</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème de Gauss :</strong> Soient $a$, $b$ et $c$ des entiers relatifs.</p>
+<p style="margin:5px 0 0 0;">Si $a$ divise le produit $bc$ et si $a$ et $b$ sont premiers entre eux, alors $a$ divise $c$.</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:500px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$(a \mid bc \text{ et } \mathrm{PGCD}(a, b) = 1) \Rightarrow a \mid c$</p>
+</div>
+</div>
+
+<div style="background:#f3e8ff; border-left:4px solid #9333ea; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Corollaire :</strong> Si un nombre premier $p$ divise le produit $ab$, alors $p$ divise $a$ ou $p$ divise $b$.</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Nombres premiers</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> Un <strong>nombre premier</strong> est un entier naturel $\geq 2$ qui n'admet que deux diviseurs positifs : $1$ et lui-même.</p>
+<p style="margin:5px 0 0 0;"><em>Remarque :</em> $1$ n'est ni premier ni composé</p>
+</div>
+
+<div style="background:#fff9e6; border-left:4px solid #f59e0b; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Méthode :</strong> Pour tester si un entier $n \geq 2$ est premier, tester la divisibilité par tous les entiers de $2$ à $\sqrt{n}$.</p>
+</div>
+
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème :</strong> L'ensemble des nombres premiers est infini.</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Décomposition en facteurs premiers</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème :</strong> Tout entier naturel $n \geq 2$ peut s'écrire de manière unique (à l'ordre près) comme produit de nombres premiers :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$</p>
+</div>
+<p style="margin:5px 0 0 0;">où $p_1 < p_2 < \cdots < p_k$ sont des nombres premiers et $\alpha_1, \alpha_2, \ldots, \alpha_k$ sont des entiers naturels non nuls.</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Équations diophantiennes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition :</strong> Une <strong>équation diophantienne</strong> est une équation dont on cherche les solutions en nombres entiers.</p>
+</div>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #f59e0b; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(245,158,11,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Étape</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Méthode</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fff9e6;">
+<td style="border:none; border-bottom:1px solid #fde68a; padding:12px 16px;"><strong>1. Condition d'existence</strong></td>
+<td style="border:none; border-bottom:1px solid #fde68a; padding:12px 16px;">Vérifier que $\mathrm{PGCD}(a, b) \mid c$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>2. Solution particulière</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Trouver $(x_0, y_0)$ avec l'algorithme d'Euclide étendu</td>
+</tr>
+<tr style="background:#fff9e6;">
+<td style="border:none; padding:12px 16px;"><strong>3. Solutions générales</strong></td>
+<td style="border:none; padding:12px 16px;">Exprimer toutes les solutions en fonction de $(x_0, y_0)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XII. Petit théorème de Fermat</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fff9e6; border-left:4px solid #f59e0b; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>🌟 Approfondissement :</strong> Cette section est un approfondissement utile mais n'est pas strictement exigible au Bac.</p>
+</div>
+
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème :</strong> Soit $p$ un nombre premier et $a$ un entier non divisible par $p$.</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$a^{p-1} \equiv 1 \pmod{p}$</p>
+</div>
+<p style="margin:5px 0 0 0;"><em>Équivalent :</em></p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:250px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$a^p \equiv a \pmod{p}$</p>
+</div>
+<p style="margin:5px 0 0 0;">pour tout entier $a$</p>
+</div>
+
+<div style="background:#ecfdf5; border-left:4px solid #10b981; padding:12px; margin:15px 0;">
+<p style="margin:0; font-size:0.95em;"><strong>💡 Application :</strong> Utilisé dans les tests de primalité et dans certains systèmes de cryptographie (comme RSA).</p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XIII. Erreurs fréquentes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Piège fréquent</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Correction</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Confondre "divise" et "est divisible par"</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">$b \mid a$ signifie "$b$ divise $a$" (ou "$a$ est divisible par $b$")</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Oublier que le reste doit être positif</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Dans la division euclidienne, $0 \leq r < b$ (reste toujours positif ou nul)</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Confondre $\equiv$ et $=$</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">$a \equiv b \pmod{n}$ signifie "$a$ et $b$ ont le même reste modulo $n$", pas "$a = b$"</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Oublier de vérifier $\mathrm{PGCD}(a, n) = 1$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Avant de chercher un inverse modulo $n$, vérifier que $\mathrm{PGCD}(a, n) = 1$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Oublier que $1$ n'est pas premier</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">$1$ n'est ni premier ni composé. Un nombre premier est $\geq 2$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">Ne pas vérifier la condition d'existence</td>
+<td style="border:none; padding:12px 16px;">Pour les équations diophantiennes, toujours vérifier que $\mathrm{PGCD}(a, b) \mid c$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XIV. Formules essentielles — mémo rapide</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notion</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule essentielle</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Divisibilité</strong></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$b \mid a$ si $\exists k \in \mathbb{Z}, a = b \times k$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Division euclidienne</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$a = bq + r$ avec $0 \leq r < b$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Congruence</strong></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$a \equiv b \pmod{n} \Leftrightarrow n \mid (a - b)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>PGCD</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Plus grand diviseur commun positif de $a$ et $b$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Nombres premiers entre eux</strong></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\mathrm{PGCD}(a, b) = 1$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Théorème de Bézout</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\exists (x, y) \in \mathbb{Z}^2, ax + by = \mathrm{PGCD}(a, b)$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Théorème de Gauss</strong></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$(a \mid bc \text{ et } \mathrm{PGCD}(a, b) = 1) \Rightarrow a \mid c$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Nombre premier</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Entier $\geq 2$ ayant exactement deux diviseurs positifs</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Décomposition en facteurs premiers</strong></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$n = p_1^{\alpha_1} \times p_2^{\alpha_2} \times \cdots \times p_k^{\alpha_k}$ (unique)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Petit théorème de Fermat</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Si $p$ premier et $p \nmid a$, alors $a^{p-1} \equiv 1 \pmod{p}$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; padding:12px 16px;"><strong>Inverse modulo $n$</strong></td>
+<td style="border:none; padding:12px 16px;">Si $\mathrm{PGCD}(a, n) = 1$, alors $\exists x, ax \equiv 1 \pmod{n}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XV. Méthodologie — stratégie de résolution</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #f59e0b; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(245,158,11,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Type de problème</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Méthode recommandée</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fff9e6;">
+<td style="border:none; border-bottom:1px solid #fde68a; padding:12px 16px;"><strong>Calculer le PGCD</strong></td>
+<td style="border:none; border-bottom:1px solid #fde68a; padding:12px 16px;">Algorithme d'Euclide (divisions euclidiennes successives)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Trouver un couple de Bézout</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Algorithme d'Euclide étendu (remonter les divisions)</td>
+</tr>
+<tr style="background:#fff9e6;">
+<td style="border:none; border-bottom:1px solid #fde68a; padding:12px 16px;"><strong>Résoudre $ax \equiv b \pmod{n}$</strong></td>
+<td style="border:none; border-bottom:1px solid #fde68a; padding:12px 16px;">Calculer $d = \mathrm{PGCD}(a, n)$, puis selon $d$ : solution unique ou $d$ solutions</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Trouver l'inverse modulo $n$</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Vérifier $\mathrm{PGCD}(a, n) = 1$, puis algorithme d'Euclide étendu</td>
+</tr>
+<tr style="background:#fff9e6;">
+<td style="border:none; border-bottom:1px solid #fde68a; padding:12px 16px;"><strong>Résoudre une équation diophantienne</strong></td>
+<td style="border:none; border-bottom:1px solid #fde68a; padding:12px 16px;">Vérifier condition d'existence, trouver solution particulière, exprimer solutions générales</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;"><strong>Tester la primalité</strong></td>
+<td style="border:none; padding:12px 16px;">Tester la divisibilité par tous les entiers de $2$ à $\sqrt{n}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+===
+

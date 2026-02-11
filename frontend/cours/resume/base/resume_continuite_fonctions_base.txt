@@ -1,0 +1,313 @@
+===Résumé Continuité des Fonctions
+
+Images: continuite_vs_discontinuite.png, discontinuite_evitable.png, discontinuite_saut.png, discontinuite_infinie.png
+
+Titre: Résumé : Continuité des Fonctions
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+<div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>📚 Objectif pédagogique :</strong> Maîtriser la continuité des fonctions : définition, lien avec la dérivabilité, théorème des valeurs intermédiaires et applications.</p>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définition de la continuité</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notion</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;"><strong>Continuité en un point</strong><br><em style="font-size:0.9em;">Pas de "trou" ni de "saut"</em></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle \lim_{x \to a} f(x) = f(a)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;"><strong>Continuité sur un intervalle</strong><br><em style="font-size:0.9em;">Continue en tout point</em></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Sur $\displaystyle ]a,b[$ : continue en tout point<br>Sur $\displaystyle [a,b]$ : aussi $\displaystyle \lim_{x \to a^+} f(x) = f(a)$ et $\displaystyle \lim_{x \to b^-} f(x) = f(b)$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; padding:18px 16px;"><strong>Prolongement par continuité</strong><br><em style="font-size:0.9em;">"Réparer" une discontinuité</em></td>
+<td style="border:none; padding:18px 16px;">Si $\displaystyle \lim_{x \to a} f(x) = L$ existe, définir $\displaystyle g(x) = \begin{cases} f(x) & \text{si } x \neq a \\ L & \text{si } x = a \end{cases}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="text-align:center; margin:20px 0;">
+[IMAGE_1]
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Opérations sur les fonctions continues</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin-bottom:15px;">
+<p style="margin:0;"><strong>Théorème :</strong> Si $\displaystyle f$ et $\displaystyle g$ sont continues en $\displaystyle a$, alors les opérations suivantes sont aussi continues en $\displaystyle a$ :</p>
+</div>
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Opération</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">$\displaystyle f + g$</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Continue en $\displaystyle a$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle f \times g$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Continue en $\displaystyle a$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">$\displaystyle \frac{f}{g}$ (si $\displaystyle g(a) \neq 0$)</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Continue en $\displaystyle a$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">$\displaystyle f \circ g$</td>
+<td style="border:none; padding:18px 16px;">Continue en $\displaystyle a$ si $\displaystyle g$ continue en $\displaystyle a$ et $\displaystyle f$ continue en $\displaystyle g(a)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Lien continuité et dérivabilité</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Théorème</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;"><strong>Dérivable $\Rightarrow$ continue</strong><br><em style="font-size:0.9em;">Toute fonction dérivable est continue</em></td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">$\displaystyle f$ dérivable en $\displaystyle a \quad \Rightarrow \quad f$ continue en $\displaystyle a$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;"><strong>⚠️ Réciproque fausse</strong><br><em style="font-size:0.9em;">Une fonction continue n'est pas forcément dérivable</em></td>
+<td style="border:none; padding:18px 16px;">Exemple : $\displaystyle f(x) = |x|$ continue en $\displaystyle 0$ mais non dérivable en $\displaystyle 0$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Image d'une suite convergente</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Théorème</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; padding:18px 16px;"><strong>Image d'une suite convergente</strong><br><em style="font-size:0.9em;">On peut "passer la limite à l'intérieur"</em></td>
+<td style="border:none; padding:18px 16px;">Si $\displaystyle (u_n)$ converge vers $\displaystyle \ell$ et $\displaystyle f$ continue en $\displaystyle \ell$ :<br><br>$\displaystyle \lim_{n \to +\infty} f(u_n) = f(\ell) = f\left(\lim_{n \to +\infty} u_n\right)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Théorème des valeurs intermédiaires</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Théorème</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Énoncé</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;"><strong>TVI</strong><br><em style="font-size:0.9em;">Existence d'une solution</em></td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Si $\displaystyle f$ continue sur $\displaystyle [a, b]$ et $\displaystyle k$ entre $\displaystyle f(a)$ et $\displaystyle f(b)$, alors il existe $\displaystyle c \in [a, b]$ tel que $\displaystyle f(c) = k$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;"><strong>TVI avec unicité</strong><br><em style="font-size:0.9em;">Si $\displaystyle f$ strictement monotone</em></td>
+<td style="border:none; padding:18px 16px;">Si $\displaystyle f$ continue et strictement monotone sur $\displaystyle [a, b]$, alors il existe <strong>un unique</strong> $\displaystyle c \in [a, b]$ tel que $\displaystyle f(c) = k$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Applications</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ffa500; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(255,165,0,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ffa500 0%, #ff8c00 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Application</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Méthode</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fff8dc;">
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;"><strong>Étudier l'équation</strong><br>$\displaystyle f(x) = k$</td>
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">
+<strong>1.</strong> Vérifier la continuité de $\displaystyle f$ sur $\displaystyle [a,b]$<br>
+<strong>2.</strong> Calculer $\displaystyle f(a)$ et $\displaystyle f(b)$<br>
+<strong>3.</strong> Vérifier que $\displaystyle k$ est entre $\displaystyle f(a)$ et $\displaystyle f(b)$<br>
+<strong>4.</strong> Étudier la monotonie de $\displaystyle f$ pour unicité
+</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;"><strong>Suites récurrentes</strong><br><em style="font-size:0.9em;">$\displaystyle u_{n+1} = f(u_n)$</em></td>
+<td style="border:none; padding:18px 16px;">
+Si $\displaystyle (u_n)$ converge vers $\displaystyle \ell$ et $\displaystyle f$ est continue, alors :<br>
+<strong>$\displaystyle \ell = f(\ell)$</strong><br>
+<em style="font-size:0.9em;">$\displaystyle \ell$ est un point fixe de $\displaystyle f$</em>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Fonctions usuelles continues</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Fonction</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Domaine de continuité</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Polynômes</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle \mathbb{R}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Fonctions rationnelles</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle \{x \mid Q(x) \neq 0\}$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle \sqrt{x}$</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle [0, +\infty[$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle e^x$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle \mathbb{R}$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle \ln(x)$</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle ]0, +\infty[$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">$\sin(x)$, $\cos(x)$</td>
+<td style="border:none; padding:18px 16px;">$\displaystyle \mathbb{R}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Erreurs fréquentes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Piège fréquent</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Correction</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Confondre continuité et dérivabilité</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Une fonction continue n'est pas forcément dérivable (ex: $\displaystyle |x|$ en $\displaystyle 0$)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Oublier de vérifier la continuité aux bornes</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Sur $\displaystyle [a,b]$, vérifier aussi $\displaystyle \lim_{x \to a^+} f(x) = f(a)$ et $\displaystyle \lim_{x \to b^-} f(x) = f(b)$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Oublier les hypothèses du TVI</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">La fonction doit être continue sur un intervalle <strong>fermé</strong> $\displaystyle [a,b]$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">Confondre existence et unicité</td>
+<td style="border:none; padding:18px 16px;">Le TVI donne l'existence, la monotonie donne l'unicité</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Formules essentielles — mémo rapide</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notion</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule essentielle</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Continuité en un point</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle \lim_{x \to a} f(x) = f(a)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Dérivable $\Rightarrow$ continue</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle f$ dérivable en $\displaystyle a \Rightarrow f$ continue en $\displaystyle a$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Image d'une suite convergente</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle \lim_{n \to +\infty} f(u_n) = f\left(\lim_{n \to +\infty} u_n\right)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">Théorème des valeurs intermédiaires</td>
+<td style="border:none; padding:18px 16px;">$\displaystyle f$ continue sur $\displaystyle [a,b]$ et $\displaystyle k$ entre $\displaystyle f(a)$ et $\displaystyle f(b)$ $\Rightarrow$ $\exists c \in [a,b]$ tel que $\displaystyle f(c) = k$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Méthodologie — stratégie de résolution</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ffa500; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(255,165,0,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ffa500 0%, #ff8c00 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Type de problème</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Méthode recommandée</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fff8dc;">
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Vérifier la continuité en un point</td>
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Calculer $\displaystyle \lim_{x \to a} f(x)$ et vérifier qu'elle égale $\displaystyle f(a)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Appliquer le TVI</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Vérifier continuité sur $\displaystyle [a,b]$ et que $\displaystyle k$ est entre $\displaystyle f(a)$ et $\displaystyle f(b)$</td>
+</tr>
+<tr style="background:#fff8dc;">
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Obtenir l'unicité d'une solution</td>
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Étudier la monotonie de $\displaystyle f$ (via le signe de $\displaystyle f'$)</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Étudier une suite récurrente</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Si $\displaystyle (u_n)$ converge vers $\displaystyle \ell$ et $\displaystyle f$ continue, alors $\displaystyle \ell = f(\ell)$</td>
+</tr>
+<tr style="background:#fff8dc;">
+<td style="border:none; padding:18px 16px;">Encadrer une solution</td>
+<td style="border:none; padding:18px 16px;">Utiliser la méthode de dichotomie ou des valeurs de test</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+===

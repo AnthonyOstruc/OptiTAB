@@ -1,0 +1,397 @@
+===Résumé Probabilités Conditionnelles
+
+Images: arbre_pondere.png
+
+Titre: Résumé : Probabilités Conditionnelles et Indépendance
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
+
+<div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
+<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>📚 Objectif pédagogique :</strong> Maîtriser les probabilités conditionnelles : définition, arbres pondérés, indépendance, formule des probabilités totales.</p>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Probabilité conditionnelle</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition - Probabilité conditionnelle</strong></p>
+<p style="margin:5px 0 0 0;">Soit $\displaystyle A$ et $\displaystyle B$ deux événements avec $\displaystyle P(A) \neq 0$.</p>
+<p style="margin:5px 0 0 0;">La <strong>probabilité conditionnelle de $\displaystyle B$ sachant $\displaystyle A$</strong>, notée $\displaystyle P_A(B)$ ou $\displaystyle P(B|A)$, est :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:300px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$</p>
+</div>
+<p style="margin:5px 0 0 0;"><em style="font-size:0.9em;">Représente la probabilité que $\displaystyle B$ se réalise sachant que $\displaystyle A$ s'est réalisé</em></p>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Propriétés</strong></p>
+<p style="margin:5px 0 0 0;">Soit $\displaystyle A$ un événement tel que $\displaystyle P(A) > 0$. Alors $\displaystyle P_A$ est une probabilité qui vérifie :</p>
+</div>
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Propriété</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formulation</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Bornes</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">$\displaystyle 0 \leq P_A(B) \leq 1$ pour tout événement $\displaystyle B$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Probabilité certaine</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle P_A(\Omega) = 1$<br/>$\displaystyle P_A(A) = 1$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Événement contraire</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">$\displaystyle P_A(\overline{B}) = 1 - P_A(B)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">Additivité</td>
+<td style="border:none; padding:18px 16px;">Si $\displaystyle B$ et $\displaystyle C$ incompatibles : $\displaystyle P_A(B \cup C) = P_A(B) + P_A(C)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle P_A(B)$</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Probabilité de $\displaystyle B$ sachant $\displaystyle A$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle P_B(A)$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Probabilité de $\displaystyle A$ sachant $\displaystyle B$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; padding:18px 16px;">Relation</td>
+<td style="border:none; padding:18px 16px;">$\displaystyle P(A \cap B) = P(A) \times P_A(B)$<br/>$\displaystyle P(A \cap B) = P(B) \times P_B(A)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Arbres pondérés</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition - Arbre pondéré</strong></p>
+<p style="margin:5px 0 0 0;">Un <strong>arbre pondéré</strong> est une représentation graphique des étapes d'une expérience aléatoire.</p>
+<p style="margin:5px 0 0 0;">Sur chaque branche, on indique :</p>
+<ul style="margin:5px 0 0 0; padding-left:20px;">
+<li style="margin:5px 0;">Les <strong>probabilités</strong> si c'est la première étape</li>
+<li style="margin:5px 0;">Les <strong>probabilités conditionnelles</strong> si c'est une étape ultérieure</li>
+</ul>
+</div>
+</div>
+
+<div style="text-align:center; margin:20px 0;">
+[IMAGE_1]
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Règle du produit (des chemins)</strong></p>
+<p style="margin:5px 0 0 0;">La probabilité d'un événement correspondant à un <strong>chemin</strong> dans l'arbre est égale au <strong>produit des probabilités</strong> le long de ce chemin :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(A \cap B) = P(A) \times P_A(B)$</p>
+</div>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Règle de la somme (des chemins disjoints)</strong></p>
+<p style="margin:5px 0 0 0;">Si un événement $\displaystyle E$ peut se réaliser selon <strong>plusieurs chemins disjoints</strong>, alors :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:500px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(E) = P(A \cap B) + P(C \cap D)$</p>
+</div>
+</div>
+</div>
+
+<div style="text-align:center; margin:20px 0;">
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Indépendance de deux événements</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition - Indépendance</strong></p>
+<p style="margin:5px 0 0 0;">Deux événements $\displaystyle A$ et $\displaystyle B$ (avec $\displaystyle P(A) > 0$ et $\displaystyle P(B) > 0$) sont <strong>indépendants</strong> si et seulement si :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(A \cap B) = P(A) \times P(B)$</p>
+</div>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Condition équivalente</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formulation</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Produit</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle P(A \cap B) = P(A) \times P(B)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Conditionnelle</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle P_A(B) = P(B)$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; padding:18px 16px;">Conditionnelle inverse</td>
+<td style="border:none; padding:18px 16px;">$\displaystyle P_B(A) = P(A)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Propriétés de l'indépendance</strong></p>
+<p style="margin:5px 0 0 0;">Si $\displaystyle A$ et $\displaystyle B$ sont indépendants, alors :</p>
+<ul style="margin:5px 0 0 0; padding-left:20px;">
+<li style="margin:5px 0;">$\displaystyle A$ et $\displaystyle \overline{B}$ sont indépendants</li>
+<li style="margin:5px 0;">$\displaystyle \overline{A}$ et $\displaystyle B$ sont indépendants</li>
+<li style="margin:5px 0;">$\displaystyle \overline{A}$ et $\displaystyle \overline{B}$ sont indépendants</li>
+</ul>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ffa500; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(255,165,0,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ffa500 0%, #ff8c00 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Situation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Indépendance</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fff8dc;">
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Lancer deux dés</td>
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Épreuves indépendantes</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Tirage avec remise</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Épreuves indépendantes</td>
+</tr>
+<tr style="background:#fff8dc;">
+<td style="border:none; padding:18px 16px;">Tirage sans remise</td>
+<td style="border:none; padding:18px 16px;">Épreuves dépendantes</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fff8dc; border-left:4px solid #ffa500; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Formule de Bayes</strong></p>
+<p style="margin:5px 0 0 0;">Dans un test médical, on note $\displaystyle M$ : "la personne est malade" et $\displaystyle T$ : "le test est positif".</p>
+<p style="margin:5px 0 0 0;">La formule de Bayes permet de calculer la valeur prédictive positive :</p>
+<div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:520px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P_T(M) = \frac{P(M) \times P_M(T)}{P(M) \times P_M(T) + P(\overline{M}) \times P_{\overline{M}}(T)}$</p>
+</div>
+<p style="margin:5px 0 0 0;"><em style="font-size:0.9em;">Utile pour interpréter les tests médicaux</em></p>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Formule des probabilités totales</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition - Partition de l'univers</strong></p>
+<p style="margin:5px 0 0 0;">Des événements $\displaystyle A_1, A_2, \ldots, A_n$ forment une <strong>partition</strong> de $\displaystyle \Omega$ si :</p>
+<ul style="margin:5px 0 0 0; padding-left:20px;">
+<li style="margin:5px 0;">Ils sont <strong>deux à deux incompatibles</strong> : $\displaystyle A_i \cap A_j = \emptyset$ pour $\displaystyle i \neq j$</li>
+<li style="margin:5px 0;">Leur <strong>réunion est l'univers</strong> : $\displaystyle A_1 \cup A_2 \cup \cdots \cup A_n = \Omega$</li>
+</ul>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#fee2e2; border-left:4px solid #ef4444; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Théorème - Formule des probabilités totales</strong></p>
+<p style="margin:5px 0 0 0;">Soit $\displaystyle A_1, A_2, \ldots, A_n$ une partition de $\displaystyle \Omega$ avec $\displaystyle P(A_i) > 0$ pour tout $\displaystyle i$.</p>
+<p style="margin:5px 0 0 0;">Pour tout événement $\displaystyle B$ :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:600px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(B) = P(A_1) \times P_{A_1}(B) + P(A_2) \times P_{A_2}(B) + \cdots + P(A_n) \times P_{A_n}(B)$</p>
+</div>
+<p style="margin:5px 0 0 0;">Cas particulier avec $\displaystyle A$ et $\displaystyle \overline{A}$ :</p>
+<div style="background:#fee2e2; border:3px solid #ef4444; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:500px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(B) = P(A) \times P_A(B) + P(\overline{A}) \times P_{\overline{A}}(B)$</p>
+</div>
+</div>
+</div>
+
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Succession d'épreuves indépendantes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition - Épreuves indépendantes</strong></p>
+<p style="margin:5px 0 0 0;">Deux <strong>épreuves sont indépendantes</strong> si le résultat de la première n'influence pas le résultat de la seconde.</p>
+<p style="margin:5px 0 0 0;">Si $\displaystyle A_1$ est un événement de la première épreuve et $\displaystyle A_2$ de la deuxième :</p>
+<div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:12px auto; text-align:center; max-width:400px;">
+<p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(A_1 \cap A_2) = P(A_1) \times P(A_2)$</p>
+</div>
+</div>
+</div>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<div style="background:#e8f4fd; border-left:4px solid #3498db; padding:12px; margin:10px 0;">
+<p style="margin:0;"><strong>Définition - Schéma de Bernoulli</strong></p>
+<p style="margin:5px 0 0 0;">Un <strong>schéma de Bernoulli</strong> est une expérience répétée $\displaystyle n$ fois de manière indépendante, où chaque épreuve a <strong>deux issues</strong> :</p>
+<ul style="margin:5px 0 0 0; padding-left:20px;">
+<li style="margin:5px 0;"><strong>Succès</strong> (S) avec probabilité $\displaystyle p$</li>
+<li style="margin:5px 0;"><strong>Échec</strong> ($\displaystyle \overline{S}$) avec probabilité $\displaystyle 1-p$</li>
+</ul>
+</div>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Erreurs fréquentes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ef4444; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(239,68,68,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Piège fréquent</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Correction</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Confondre $\displaystyle P_A(B)$ et $\displaystyle P_B(A)$</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Ce sont des probabilités différentes ! $\displaystyle P_A(B) \neq P_B(A)$ en général</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Confondre incompatibilité et indépendance</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Incompatibles : $\displaystyle A \cap B = \emptyset$. Indépendants : $\displaystyle P(A \cap B) = P(A) \times P(B)$</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Oublier de vérifier l'indépendance</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Ne pas supposer l'indépendance sans vérification</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Somme des probabilités sur un arbre</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">La somme des probabilités partant d'un nœud doit toujours valoir 1</td>
+</tr>
+<tr style="background:#fee2e2;">
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">Règle du produit mal appliquée</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:18px 16px;">$\displaystyle P(A \cap B) = P(A) \times P_A(B)$, pas $\displaystyle P(A) \times P(B)$ si non indépendants</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">Oublier la condition $\displaystyle P(A) \neq 0$</td>
+<td style="border:none; padding:18px 16px;">La probabilité conditionnelle $\displaystyle P_A(B)$ n'existe que si $\displaystyle P(A) > 0$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Formules essentielles — mémo rapide</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Concept</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule essentielle</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Probabilité conditionnelle</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Règle du produit</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle P(A \cap B) = P(A) \times P_A(B)$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Indépendance</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle P(A \cap B) = P(A) \times P(B)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Probabilités totales (cas général)</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle P(B) = \sum_{i=1}^{n} P(A_i) \times P_{A_i}(B)$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Probabilités totales (cas particulier)</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle P(B) = P(A) \times P_A(B) + P(\overline{A}) \times P_{\overline{A}}(B)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Événement contraire</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">$\displaystyle P_A(\overline{B}) = 1 - P_A(B)$</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">Formule de Bayes</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:18px 16px;">$\displaystyle P_T(M) = \frac{P(M) \times P_M(T)}{P(M) \times P_M(T) + P(\overline{M}) \times P_{\overline{M}}(T)}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:18px 16px;">Relation symétrique</td>
+<td style="border:none; padding:18px 16px;">$\displaystyle P(A \cap B) = P(A) \times P_A(B) = P(B) \times P_B(A)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Méthodologie — stratégie de résolution</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #ffa500; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(255,165,0,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #ffa500 0%, #ff8c00 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Type de problème</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Méthode recommandée</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fff8dc;">
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Calculer $\displaystyle P_A(B)$</td>
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Utiliser : $\displaystyle P_A(B) = \frac{P(A \cap B)}{P(A)}$ avec $\displaystyle P(A) \neq 0$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Construire un arbre pondéré</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Identifier les étapes, placer les probabilités (première étape) et probabilités conditionnelles (étapes suivantes)</td>
+</tr>
+<tr style="background:#fff8dc;">
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Calculer la probabilité d'un chemin</td>
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Utiliser la règle du produit : multiplier les probabilités le long du chemin</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Calculer la probabilité de plusieurs chemins</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Utiliser la règle de la somme : additionner les probabilités de chaque chemin disjoint</td>
+</tr>
+<tr style="background:#fff8dc;">
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Vérifier l'indépendance</td>
+<td style="border:none; border-bottom:1px solid #ffe4b5; padding:18px 16px;">Vérifier : $\displaystyle P(A \cap B) = P(A) \times P(B)$ ou $\displaystyle P_A(B) = P(B)$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Calculer $\displaystyle P(B)$ avec une partition</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:18px 16px;">Utiliser la formule des probabilités totales : $\displaystyle P(B) = \sum P(A_i) \times P_{A_i}(B)$</td>
+</tr>
+<tr style="background:#fff8dc;">
+<td style="border:none; padding:18px 16px;">Traiter des épreuves successives</td>
+<td style="border:none; padding:18px 16px;">Construire un arbre, vérifier l'indépendance (avec ou sans remise), appliquer les règles du produit et de la somme</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+===
+

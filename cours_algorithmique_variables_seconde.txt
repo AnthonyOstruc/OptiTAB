@@ -1,0 +1,179 @@
+=== Algorithmique : Variables et Instructions Élémentaires - Programme Seconde
+Difficulté: easy
+Ordre: 10
+
+
+Titre: Algorithmique : Variables et Instructions Élémentaires
+Description: Cours complet pour la classe de Seconde sur les variables, l'affectation, les instructions conditionnelles et les boucles (for, while) en Python.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Objectifs du chapitre :</strong></p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:0.95em;">
+            <li>Manipuler des variables de différents types (entier, flottant, booléen, chaîne).</li>
+            <li>Comprendre l'affectation et les séquences d'instructions.</li>
+            <li>Utiliser des instructions conditionnelles (si... alors...).</li>
+            <li>Programmer des boucles bornées (for) et non bornées (while).</li>
+        </ul>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Variables et types</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Notion de variable</h3>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>variable</strong> est une zone mémoire nommée qui permet de stocker une valeur au cours de l'exécution d'un programme.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Elle possède :</p>
+            <ul style="margin:8px 0; padding-left:20px;">
+                <li>Un <strong>nom</strong> (ex: <code>score</code>, <code>x</code>).</li>
+                <li>Une <strong>valeur</strong> (ex: <code>10</code>, <code>3.5</code>).</li>
+                <li>Un <strong>type</strong> (ex: entier, flottant).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Les types de base</h3>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <table style="width:100%; border-collapse:collapse;">
+                <tr style="background:#3498db; color:white;">
+                    <th style="padding:10px; border:1px solid #ddd;">Type</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Description</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Exemple Python</th>
+                </tr>
+                <tr>
+                    <td style="padding:10px; border:1px solid #ddd;"><strong>Entier</strong> (<code>int</code>)</td>
+                    <td style="padding:10px; border:1px solid #ddd;">Nombre sans virgule</td>
+                    <td style="padding:10px; border:1px solid #ddd;"><code>n = 5</code></td>
+                </tr>
+                <tr style="background:#f1f1f1;">
+                    <td style="padding:10px; border:1px solid #ddd;"><strong>Flottant</strong> (<code>float</code>)</td>
+                    <td style="padding:10px; border:1px solid #ddd;">Nombre à virgule</td>
+                    <td style="padding:10px; border:1px solid #ddd;"><code>x = 3.14</code></td>
+                </tr>
+                <tr>
+                    <td style="padding:10px; border:1px solid #ddd;"><strong>Booléen</strong> (<code>bool</code>)</td>
+                    <td style="padding:10px; border:1px solid #ddd;">Vrai ou Faux</td>
+                    <td style="padding:10px; border:1px solid #ddd;"><code>test = True</code></td>
+                </tr>
+                <tr style="background:#f1f1f1;">
+                    <td style="padding:10px; border:1px solid #ddd;"><strong>Chaîne</strong> (<code>str</code>)</td>
+                    <td style="padding:10px; border:1px solid #ddd;">Texte</td>
+                    <td style="padding:10px; border:1px solid #ddd;"><code>nom = "Alice"</code></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Affectation et Séquence</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">L'affectation</h3>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>affectation</strong> consiste à donner une valeur à une variable.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En langage naturel (algorithme), on la note souvent avec une flèche : <code>variable ← valeur</code>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En Python, on utilise le signe égal <code>=</code>.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-left:4px solid #ffa500; padding:12px; margin:15px 0;">
+            <p style="margin:0; font-size:0.95em;"><strong>⚠️ Attention :</strong> En programmation, <code>a = a + 1</code> n'est pas une équation mathématique impossible, mais une instruction qui signifie "prendre la valeur actuelle de a, ajouter 1, et stocker le résultat dans a".</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple : Échange de valeurs</strong>
+            <pre style="background:#2d2d2d; color:#f8f8f2; padding:15px; border-radius:8px; margin:10px 0;">a = 5
+b = 10
+temp = a    # On sauvegarde a
+a = b       # a prend la valeur de b (10)
+b = temp    # b prend l'ancienne valeur de a (5)</pre>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Séquence d'instructions</h3>
+        <p style="margin:8px 0; text-align:left; font-size:1em;">Un programme est une suite (séquence) d'instructions exécutées les unes après les autres, de haut en bas.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Instructions conditionnelles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Structure Si ... Alors ... Sinon</h3>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Permet d'exécuter des instructions seulement si une condition est vraie.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Syntaxe Python :</strong></p>
+            <pre style="background:#2d2d2d; color:#f8f8f2; padding:15px; border-radius:8px; margin:10px 0;">if condition:
+    # Instructions si vrai
+else:
+    # Instructions si faux</pre>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <pre style="background:#2d2d2d; color:#f8f8f2; padding:15px; border-radius:8px; margin:10px 0;">age = 16
+if age >= 18:
+    print("Majeur")
+else:
+    print("Mineur")</pre>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Les Boucles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Boucle bornée (for)</h3>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Utilisée quand on connaît à l'avance le nombre de répétitions.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Syntaxe Python :</strong></p>
+            <pre style="background:#2d2d2d; color:#f8f8f2; padding:15px; border-radius:8px; margin:10px 0;">for i in range(n):
+    # Instructions répétées n fois (i va de 0 à n-1)</pre>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple : Somme des entiers de 1 à 10</strong>
+            <pre style="background:#2d2d2d; color:#f8f8f2; padding:15px; border-radius:8px; margin:10px 0;">somme = 0
+for i in range(1, 11):  # i prend les valeurs 1, 2, ..., 10
+    somme = somme + i
+print(somme)</pre>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Boucle non bornée (while)</h3>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Utilisée quand on répète tant qu'une condition est vraie (on ne connaît pas forcément le nombre de tours).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Syntaxe Python :</strong></p>
+            <pre style="background:#2d2d2d; color:#f8f8f2; padding:15px; border-radius:8px; margin:10px 0;">while condition:
+    # Instructions répétées</pre>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple : Seuil</strong>
+            <pre style="background:#2d2d2d; color:#f8f8f2; padding:15px; border-radius:8px; margin:10px 0;">n = 0
+u = 1
+while u < 100:
+    u = u * 2
+    n = n + 1
+print(n)  # Affiche le nombre d'étapes pour dépasser 100</pre>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Comprendre et modifier un algorithme</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthodologie</h3>
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li><strong>Identifier les variables :</strong> Quel est leur rôle ? (compteur, accumulateur, stockage...)</li>
+                <li><strong>Simuler à la main :</strong> Faire un tableau de trace ("tourner à la main") pour voir l'évolution des variables.</li>
+                <li><strong>Repérer la structure :</strong> Où sont les boucles ? Les conditions ?</li>
+                <li><strong>Modifier :</strong> Changer une condition ou une valeur initiale pour répondre à un nouveau problème.</li>
+            </ol>
+        </div>
+    </div>
+
+</div>
+
+===

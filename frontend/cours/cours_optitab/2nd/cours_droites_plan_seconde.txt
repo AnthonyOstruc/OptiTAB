@@ -1,0 +1,323 @@
+=== Représenter et caractériser les droites du plan - Programme Seconde
+Difficulté: medium
+Ordre: 2
+Images: droites_vecteur_directeur.png, droites_pente.png, droites_equations.png, droites_paralleles_secantes.png, droites_intersection_systeme.png, droites_alignement.png
+
+Titre: Représenter et caractériser les droites du plan
+Description: Cours de Seconde : vecteur directeur, équations cartésienne/réduite, pente (coefficient directeur), tracer une droite, alignement, parallélisme/sécantes, intersection via un système ; démonstration par déterminant ; exemples d’algorithmes et bonus (lieux géométriques, inégalités).
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+            <li style="margin:0 0 10px 0; text-align:left;">Utiliser un <strong>vecteur directeur</strong> pour caractériser une droite.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Passer entre <strong>équation cartésienne</strong> $\displaystyle ax+by+c=0$ et <strong>équation réduite</strong> $\displaystyle y=mx+p$ (quand c’est possible).</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Déterminer une équation de droite à partir de <strong>deux points</strong>, d’un <strong>point + vecteur directeur</strong> ou d’un <strong>point + pente</strong>.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Déterminer la <strong>pente</strong> $\displaystyle m$ (ou un vecteur directeur) à partir d’une équation ou d’un graphique.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Tracer une droite connaissant son équation ; tester <strong>alignement</strong>, <strong>parallélisme</strong>, <strong>intersection</strong>.</li>
+            <li style="margin:0; text-align:left;">Résoudre un <strong>système</strong> de deux équations linéaires et trouver le point d’intersection de deux droites sécantes.</li>
+        </ul>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Idée générale :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Au cycle 4, tu as vu la droite $\displaystyle y=mx+p$ surtout pour les fonctions affines. En Seconde, on élargit : une droite peut aussi être décrite par une <strong>équation cartésienne</strong> $\displaystyle ax+by+c=0$. L’objectif est de savoir passer d’une représentation à l’autre et d’utiliser ces outils pour <strong>prouver</strong> (alignement, parallélisme, intersection).</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Vecteur directeur et pente (coefficient directeur)</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Vecteur directeur</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>vecteur directeur</strong> d’une droite est un vecteur non nul, de coordonnées $\displaystyle (a\,;\,b)$, qui donne sa direction. Tous ses multiples non nuls $\displaystyle (ka\,;\,kb)$ avec $\displaystyle k\neq 0$ sont aussi des vecteurs directeurs.</p>
+        </div>
+
+        [IMAGE_1]
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Pente / coefficient directeur</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour une droite non parallèle à l’axe des ordonnées, la <strong>pente</strong> $\displaystyle m$ mesure « combien on monte quand on avance de 1 ».</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:560px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle m=\frac{\Delta y}{\Delta x}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si la droite passe par $\displaystyle A(x_A\,;\,y_A)$ et $\displaystyle B(x_B\,;\,y_B)$ avec $\displaystyle x_A\neq x_B$, alors :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:560px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle m=\frac{y_B-y_A}{x_B-x_A}$</p>
+            </div>
+        </div>
+
+        [IMAGE_2]
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Cas particulier (droite verticale)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle x_A=x_B$, la droite est <strong>verticale</strong> : elle est parallèle à l’axe des ordonnées, sa pente n’est pas définie et elle n’a pas d’équation réduite $\displaystyle y=mx+p$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Lien entre vecteur directeur et pente</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si un vecteur directeur a pour coordonnées $\displaystyle (a\,;\,b)$ avec $\displaystyle a\neq 0$, alors la pente vaut :</p>
+            <div style="background:#ecfdf5; border:3px solid #10b981; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:460px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle m=\frac{b}{a}$</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Équations d’une droite : cartésienne et réduite</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Équation cartésienne (forme générale)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une droite du plan peut être décrite par une équation :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle ax+by+c=0$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">avec $\displaystyle (a\,;\,b)\neq (0\,;\,0)$. Multiplier par un réel non nul ne change pas la droite.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Équation réduite</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si la droite n’est pas verticale, on peut l’écrire :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle y=mx+p$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">où $\displaystyle m$ est la pente et $\displaystyle p$ l’ordonnée à l’origine (valeur de $\displaystyle y$ quand $\displaystyle x=0$).</p>
+        </div>
+
+        [IMAGE_3]
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Passer de cartésienne à réduite</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle ax+by+c=0$ avec $\displaystyle b\neq 0$, on isole $\displaystyle y$ :</p>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:640px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle y=-\frac{a}{b}x-\frac{c}{b}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle m=-\frac{a}{b}$ et $\displaystyle p=-\frac{c}{b}$.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Cas $\displaystyle b=0$</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle ax+c=0$ (avec $\displaystyle a\neq 0$), alors :</p>
+            <div style="background:#fff8dc; border:3px solid #ffa500; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:420px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle x=-\frac{c}{a}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C’est une droite verticale.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Déterminer une équation de droite (méthodes)</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+
+        <h3 style="color:#34495e; margin-top:0;">1) Avec deux points $\displaystyle A$ et $\displaystyle B$</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Méthode</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle x_A=x_B$, la droite est $\displaystyle x=x_A$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Sinon, calculer $\displaystyle m=\frac{y_B-y_A}{x_B-x_A}$.</li>
+                <li style="margin:0; text-align:left;">Utiliser $\displaystyle y=mx+p$ avec le point $\displaystyle A$ pour trouver $\displaystyle p$.</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A(1\,;\,2)$ et $\displaystyle B(5\,;\,6)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle m=\frac{6-2}{5-1}=1$. Donc $\displaystyle y=x+p$. Avec $\displaystyle A$ : $\displaystyle 2=1+p$ donc $\displaystyle p=1$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Équation : $\displaystyle y=x+1$.</p>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:18px;">2) Avec un point $\displaystyle A$ et un vecteur directeur $\displaystyle (a\,;\,b)$</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Condition “être sur la droite”</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un point $\displaystyle M(x\,;\,y)$ est sur la droite passant par $\displaystyle A(x_A\,;\,y_A)$ et de direction $\displaystyle (a\,;\,b)$ si et seulement si les vecteurs $\displaystyle (a\,;\,b)$ et $\displaystyle (x-x_A\,;\,y-y_A)$ sont colinéaires, donc :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:620px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \det\big((a\,;\,b),(x-x_A\,;\,y-y_A)\big)=0$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En développant :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:620px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle a(y-y_A)-b(x-x_A)=0$</p>
+            </div>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:18px;">3) Avec un point $\displaystyle A$ et la pente $\displaystyle m$</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Forme point-pente</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si la droite passe par $\displaystyle A(x_A\,;\,y_A)$ et a pour pente $\displaystyle m$, alors :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle y-y_A=m(x-x_A)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut ensuite développer pour obtenir $\displaystyle y=mx+p$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Alignement, parallélisme, intersection</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Alignement de trois points</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les points $\displaystyle A(x_A\,;\,y_A)$, $\displaystyle B(x_B\,;\,y_B)$, $\displaystyle C(x_C\,;\,y_C)$ sont alignés si et seulement si :</p>
+            <div style="background:#fef3c7; border:3px solid #f59e0b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:720px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \det\big((x_B-x_A\,;\,y_B-y_A),(x_C-x_A\,;\,y_C-y_A)\big)=0$</p>
+            </div>
+        </div>
+
+        [IMAGE_6]
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Parallélisme et sécantes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux droites sont <strong>parallèles</strong> si elles ont la même direction.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Si elles sont données par $\displaystyle y=m_1x+p_1$ et $\displaystyle y=m_2x+p_2$ (non verticales), alors elles sont parallèles si $\displaystyle m_1=m_2$.</li>
+                <li style="margin:0; text-align:left;">Si elles sont données par $\displaystyle a_1x+b_1y+c_1=0$ et $\displaystyle a_2x+b_2y+c_2=0$, alors elles sont parallèles si $\displaystyle a_1b_2-a_2b_1=0$.</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si elles ne sont pas parallèles, elles sont <strong>sécantes</strong> (elles se coupent en un point).</p>
+        </div>
+
+        [IMAGE_4]
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Intersection de deux droites : système</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le point d’intersection (s’il existe) est la solution du système formé par les deux équations.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \begin{cases}a_1x+b_1y+c_1=0\\a_2x+b_2y+c_2=0\end{cases}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">on pose $\displaystyle D=a_1b_2-a_2b_1$.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle D\neq 0$, il y a une intersection unique.</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle D=0$, les droites sont parallèles (ou confondues).</li>
+            </ul>
+        </div>
+
+        [IMAGE_5]
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Démonstration : obtenir $\displaystyle ax+by+c=0$ avec un déterminant</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration attendue (niveau Seconde)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit une droite passant par $\displaystyle A(x_A\,;\,y_A)$ et de vecteur directeur $\displaystyle (a\,;\,b)$ avec $\displaystyle (a\,;\,b)\neq (0\,;\,0)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un point $\displaystyle M(x\,;\,y)$ appartient à la droite si et seulement si $\displaystyle (a\,;\,b)$ et $\displaystyle (x-x_A\,;\,y-y_A)$ sont colinéaires, donc :</p>
+            <div style="background:#e0f2f1; border:3px solid #00897b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:720px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \det\big((a\,;\,b),(x-x_A\,;\,y-y_A)\big)=0$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En développant :</p>
+            <div style="background:#e0f2f1; border:3px solid #00897b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:720px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle a(y-y_A)-b(x-x_A)=0$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On regroupe :</p>
+            <div style="background:#e0f2f1; border:3px solid #00897b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:720px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle (-b)x+(a)y+(bx_A-ay_A)=0$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C’est bien une équation de la forme $\displaystyle ax+by+c=0$ (avec de nouveaux coefficients).</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Exemples d’algorithmes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Algorithme 1 : tester l’alignement</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace; line-height:1.5;">
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">alignes</span>(A, B, C):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># A=(xA,yA), B=(xB,yB), C=(xC,yC)</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;xA, yA = A<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;xB, yB = B<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;xC, yC = C<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;det = (xB - xA) * (yC - yA) - (yB - yA) * (xC - xA)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> det == <span style="color:#bd93f9;">0</span>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Algorithme 2 : équation d’une droite passant par deux points</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace; line-height:1.5;">
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">equation_droite</span>(A, B):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;xA, yA = A<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;xB, yB = B<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> xA == xB:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Droite verticale : x = xA</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> (<span style="color:#f1fa8c;">"verticale"</span>, xA)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;m = (yB - yA) / (xB - xA)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;p = yA - m * xA<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> (<span style="color:#f1fa8c;">"reduite"</span>, m, p)
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Approfondissements (facultatif)</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>⭐ Lieu géométrique : points équidistants d’un point et de l’axe des abscisses</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On cherche l’ensemble des points $\displaystyle M(x\,;\,y)$ tels que la distance à un point fixe $\displaystyle F(a\,;\,b)$ soit égale à la distance à l’axe des abscisses (qui vaut $\displaystyle |y|$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#7f8c8d;"><em>Sur des exemples, cela conduit à une courbe (une parabole). C’est surtout une ouverture culturelle.</em></p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>⭐ Décrire des régions par des inégalités</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle y\ge mx+p$ décrit un <strong>demi-plan</strong> (au-dessus de la droite).</li>
+                <li style="margin:0; text-align:left;">$\displaystyle ax+by+c\le 0$ décrit aussi un <strong>demi-plan</strong> (le signe dépend du côté de la droite).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Synthèse : formules clés et erreurs fréquentes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+            <thead>
+                <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:45%;">Notion</th>
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:55%;">Formule / idée</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Pente</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle m=\frac{y_B-y_A}{x_B-x_A}$ (si $\displaystyle x_A\neq x_B$)</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Réduite</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle y=mx+p$ (pas de forme réduite si droite verticale)</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Cartésienne</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle ax+by+c=0$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Alignement</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle \det((x_B-x_A\,;\,y_B-y_A),(x_C-x_A\,;\,y_C-y_A))=0$</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; padding:12px 16px;"><strong>Parallèles</strong></td>
+                    <td style="border:none; padding:12px 16px;">Même pente ou $\displaystyle a_1b_2-a_2b_1=0$</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>❌ Erreurs fréquentes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Oublier le cas $\displaystyle x_A=x_B$ (droite verticale) quand on calcule une pente.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Croire qu’une équation cartésienne est unique : multiplier par $\displaystyle 2$ donne la même droite.</li>
+                <li style="margin:0; text-align:left;">Tracer à partir de $\displaystyle ax+by+c=0$ sans choisir deux points (par exemple deux valeurs de $\displaystyle x$).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#eef2ff; border-radius:6px; border-left:6px solid #4d6df3; padding:15px; margin:12px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>À suivre :</strong> ces outils servent en géométrie (alignement, parallélisme, intersection) et en fonctions (lecture de pente, résolution de problèmes).</p>
+    </div>
+
+</div>
+
+===

@@ -1,0 +1,332 @@
+=== Utiliser les variables et les instructions élémentaires - Programme Seconde
+Difficulté: easy
+Ordre: 11
+
+Titre: Variables et instructions élémentaires (Python)
+Description: Cours de Seconde sur les bases de l’algorithmique en Python : variables (int, float, bool, str), affectation, séquences d’instructions, conditions, boucles for/while, et lecture/modification d’algorithmes simples.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+            <li style="margin:0 0 10px 0; text-align:left;">Choisir ou déterminer le <strong>type</strong> d’une variable : entier, flottant, booléen, chaîne.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Concevoir et écrire : une <strong>affectation</strong>, une <strong>séquence</strong> d’instructions, une <strong>instruction conditionnelle</strong>.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Écrire une <strong>formule</strong> (expression) combinant des variables pour effectuer un calcul.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Programmer, dans des cas simples : une boucle <strong>bornée</strong> (<code>for</code>) et une boucle <strong>non bornée</strong> (<code>while</code>).</li>
+            <li style="margin:0; text-align:left;">Dans des cas plus complexes : <strong>lire</strong>, <strong>comprendre</strong>, <strong>modifier</strong> ou <strong>compléter</strong> un algorithme / programme.</li>
+        </ul>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">En programmation, un même calcul peut s’écrire de plusieurs manières. Le plus important est d’écrire un code <strong>lisible</strong> (noms de variables clairs, indentation correcte) et <strong>testable</strong> (essayer plusieurs valeurs pour vérifier).</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Variables et types (int, float, bool, str)</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Notion de variable</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>variable</strong> est une zone mémoire identifiée par un <strong>nom</strong> qui contient une <strong>valeur</strong>. Cette valeur peut changer au cours du programme.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Choisir un type :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>int</strong> : compter (nombre d’élèves, nombre de tours)</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>float</strong> : mesurer / calculer avec une virgule (temps, moyenne)</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>bool</strong> : vrai/faux (un test, une condition)</li>
+                <li style="margin:0; text-align:left;"><strong>str</strong> : texte (prénom, message)</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                n = <span style="color:#bd93f9;">32</span>  <span style="color:#6272a4;"># int</span><br>
+                t = <span style="color:#bd93f9;">12.5</span>  <span style="color:#6272a4;"># float</span><br>
+                est_inscrit = <span style="color:#bd93f9;">True</span>  <span style="color:#6272a4;"># bool</span><br>
+                prenom = <span style="color:#f1fa8c;">"Lina"</span>  <span style="color:#6272a4;"># str</span>
+            </div>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En Python, <code>True</code> et <code>False</code> prennent une majuscule. Et <code>3</code> (int) n’est pas la même chose que <code>3.0</code> (float).</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Affectation et séquence d’instructions</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Affecter une valeur</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Affectation</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L’<strong>affectation</strong> consiste à donner une valeur à une variable.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">En langage naturel (pseudo-code) : $\displaystyle x \leftarrow 5$</li>
+                <li style="margin:0; text-align:left;">En Python : <code>x = 5</code></li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Méthode - Mettre à jour une variable :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si on veut « ajouter 1 » à une variable <code>n</code>, on écrit :</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                n = n + <span style="color:#bd93f9;">1</span>
+            </div>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention : <code>=</code> n’est pas « égal »</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En Python, <code>x = 5</code> est une affectation. Pour tester l’égalité, on utilise <code>==</code> (ex: <code>x == 5</code>).</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Séquence d’instructions</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>séquence d’instructions</strong> est une suite de lignes exécutées <strong>dans l’ordre</strong>, de haut en bas.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Calculer un périmètre :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On veut $\displaystyle P = 2(L+l)$.</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                L = <span style="color:#bd93f9;">8</span><br>
+                l = <span style="color:#bd93f9;">3</span><br>
+                P = <span style="color:#bd93f9;">2</span> $\ast$ (L + l)<br>
+                <span style="color:#50fa7b;">print</span>(P)
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Écrire une formule (expression) combinant des variables</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Opérateurs et priorités</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 À retenir :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Multiplication et division avant addition et soustraction.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Les parenthèses <code>(...)</code> permettent de forcer l’ordre.</li>
+                <li style="margin:0; text-align:left;">La puissance s’écrit <code>**</code> (ex: <code>r**2</code>).</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Vitesse moyenne :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle v = \frac{d}{t}$</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                d = <span style="color:#bd93f9;">150</span>  <span style="color:#6272a4;"># km</span><br>
+                t = <span style="color:#bd93f9;">2.5</span>  <span style="color:#6272a4;"># h</span><br>
+                v = d / t<br>
+                <span style="color:#50fa7b;">print</span>(v)
+            </div>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une chaîne <code>str</code> ne se mélange pas directement avec un nombre : <code>"Bonjour" + 3</code> provoque une erreur. On peut transformer en chaîne avec <code>str(3)</code>.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Instruction conditionnelle</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Tester une condition</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>condition</strong> est une expression qui vaut <code>True</code> ou <code>False</code>. Elle permet de choisir entre plusieurs blocs d’instructions.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Méthode - <code>if / elif / else</code> :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">if</span> condition_1:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+                <span style="color:#ff79c6;">elif</span> condition_2:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;...
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les blocs sont définis par l’<strong>indentation</strong> (souvent 4 espaces).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Valeur absolue :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle |x| = \begin{cases} x & \text{si } x \ge 0 \\ -x & \text{si } x < 0 \end{cases}$</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                x = <span style="color:#bd93f9;">-7</span><br>
+                <span style="color:#ff79c6;">if</span> x &gt;= <span style="color:#bd93f9;">0</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;abs_x = x<br>
+                <span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;abs_x = -x<br>
+                <span style="color:#50fa7b;">print</span>(abs_x)
+            </div>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Opérateurs utiles :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code> et les opérateurs logiques <code>and</code>, <code>or</code>, <code>not</code>.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Boucle bornée : <code>for</code></h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Répéter un nombre connu de fois</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise une boucle <code>for</code> quand on connaît le nombre de répétitions.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Méthode - <code>range</code> :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><code>range(n)</code> : valeurs <code>0, 1, ..., n-1</code></li>
+                <li style="margin:0 0 10px 0; text-align:left;"><code>range(a, b)</code> : valeurs <code>a, a+1, ..., b-1</code></li>
+                <li style="margin:0; text-align:left;"><code>range(a, b, pas)</code> : valeurs espacées de <code>pas</code></li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Somme de 1 à n :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                n = <span style="color:#bd93f9;">10</span><br>
+                s = <span style="color:#bd93f9;">0</span><br>
+                <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">1</span>, n + <span style="color:#bd93f9;">1</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;s = s + i<br>
+                <span style="color:#50fa7b;">print</span>(s)
+            </div>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Vocabulaire :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Compteur</strong> : variable qui compte (ex: <code>i</code>). <strong>Accumulateur</strong> : variable qui additionne (ex: <code>s</code>).</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Boucle non bornée : <code>while</code></h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Répéter tant qu’une condition est vraie</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise une boucle <code>while</code> quand on ne connaît pas à l’avance le nombre de tours : on s’arrête quand la condition devient fausse.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans une boucle <code>while</code>, il faut que quelque chose <strong>change</strong> pour que la condition devienne fausse, sinon on obtient une <strong>boucle infinie</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple - Dépasser un seuil :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On part de <code>u=1</code> et on double tant que <code>u ≤ 1000</code>. On veut le nombre de doublages.</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                n = <span style="color:#bd93f9;">0</span><br>
+                u = <span style="color:#bd93f9;">1</span><br>
+                <span style="color:#ff79c6;">while</span> u &lt;= <span style="color:#bd93f9;">1000</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;u = u $\ast$ <span style="color:#bd93f9;">2</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;n = n + <span style="color:#bd93f9;">1</span><br>
+                <span style="color:#50fa7b;">print</span>(n)
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Lire, comprendre, modifier, compléter un programme</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode de lecture</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Démarche :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Repérer les <strong>entrées</strong> (valeurs initiales) et la <strong>sortie</strong> (ce que le programme affiche ou renvoie).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Identifier les <strong>variables</strong> et leur rôle (compteur, accumulateur, valeur testée...).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Trouver les <strong>structures</strong> : séquence, condition, boucle.</li>
+                <li style="margin:0; text-align:left;">Faire une <strong>trace</strong> : noter les valeurs des variables à chaque étape.</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exercice type - Comprendre :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Que vaut <code>s</code> à la fin ?</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                s = <span style="color:#bd93f9;">0</span><br>
+                <span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;s = s + i $\ast$ i
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ici, on additionne $\displaystyle 1^2 + 2^2 + 3^2 + 4^2 + 5^2 = 55$ donc <code>s</code> vaut <strong>55</strong>.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Exercice type - Modifier :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Modifier le programme précédent pour calculer $\displaystyle 1^3 + 2^3 + 3^3 + 4^3 + 5^3$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Il suffit de remplacer <code>i $\ast$ i</code> par <code>i $\ast$ i $\ast$ i</code>.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Synthèse</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+            <thead>
+                <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:40%;">Notion</th>
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:60%;">Python</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Type</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px; font-family:monospace;">int, float, bool, str</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Affectation</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px; font-family:monospace;">x = valeur</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Condition</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px; font-family:monospace;">if ... elif ... else ...</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Boucle bornée</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px; font-family:monospace;">for i in range(n):</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; padding:12px 16px;"><strong>Boucle non bornée</strong></td>
+                    <td style="border:none; padding:12px 16px; font-family:monospace;">while condition:</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>❌ Erreurs fréquentes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Confondre <code>=</code> (affectation) et <code>==</code> (test d’égalité).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Oublier les deux-points <code>:</code> après <code>if</code>, <code>for</code>, <code>while</code>.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Indentation incorrecte (bloc mal défini).</li>
+                <li style="margin:0; text-align:left;">Boucle <code>while</code> infinie (variable jamais modifiée).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#eef2ff; border-radius:6px; border-left:6px solid #4d6df3; padding:15px; margin:12px 0;">
+        <p style="margin:0 0 8px 0; text-align:left; font-size:1em;"><strong>À suivre :</strong> dans le chapitre suivant, on utilisera ces instructions pour écrire des <strong>fonctions</strong> (définir, appeler, simuler).</p>
+    </div>
+
+</div>
+
+===

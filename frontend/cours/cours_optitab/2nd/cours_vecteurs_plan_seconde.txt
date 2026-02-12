@@ -1,609 +1,427 @@
-=== Vecteurs du Plan - Programme Seconde
+﻿=== Manipuler les vecteurs du plan - Programme Seconde
 Difficulté: medium
-Ordre: 7
-Images: translation_vecteur_definition.png, somme_vecteurs_parallelogramme.png, vecteur_coordonnees_repere.png, colinearite_vecteurs.png, homothetie_exemple.png
+Ordre: 6
+Images: vecteurs_translation.png, vecteurs_addition_triangle.png, vecteurs_coordonnees.png, vecteurs_addition_parallelogramme.png, vecteurs_relation_chasles.png, distance_2_point.png, milieu_segment.png
 
-Titre: Manipuler les Vecteurs du Plan
-Description: Cours complet sur les vecteurs du plan en seconde : translation et vecteur associé, égalité de vecteurs, somme et relation de Chasles, coordonnées dans une base orthonormée, norme, produit par un scalaire, colinéarité, déterminant, alignement et parallélisme.
+Titre: Manipuler les vecteurs du plan
+Description: Cours de Seconde : vecteur comme translation, égalité et vecteur nul, somme (Chasles), coordonnées dans une base orthonormée, norme, calculs (AB, distance, milieu), colinéarité et déterminant (alignement, parallélisme).
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
 
     <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
         <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
-        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections <strong>I à VI</strong> ainsi que la démonstration (colinéarité et déterminant) sont <strong>exigibles</strong> au programme de Seconde. Ces connaissances sont nécessaires pour les évaluations.</p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+            <li style="margin:0 0 10px 0; text-align:left;">Représenter géométriquement des <strong>vecteurs</strong> et reconnaître direction, sens et norme.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Construire géométriquement la <strong>somme</strong> de deux vecteurs (enchaînement de translations) et utiliser la <strong>relation de Chasles</strong> comme illustration.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Lire et utiliser les <strong>coordonnées</strong> d’un vecteur dans une <strong>base orthonormée</strong> ; représenter un vecteur connaissant ses coordonnées.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Calculer les coordonnées d’une <strong>somme</strong> de vecteurs et d’un <strong>produit</strong> d’un vecteur par un réel.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Calculer la <strong>distance</strong> entre deux points et les coordonnées du <strong>milieu</strong> d’un segment.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Caractériser <strong>alignement</strong> et <strong>parallélisme</strong> par la <strong>colinéarité</strong> de vecteurs (critère par déterminant).</li>
+            <li style="margin:0; text-align:left;">Connaître la démonstration : « deux vecteurs sont colinéaires <strong>ssi</strong> leur déterminant est nul ».</li>
+        </ul>
     </div>
 
     <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
         <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
-        <p style="margin:8px 0; text-align:left; font-size:0.95em;">La section <strong>VII</strong> propose un approfondissement sur la <strong>définition vectorielle des homothéties</strong>. Ce contenu est marqué comme <strong>bonus</strong> : il enrichit votre culture mathématique mais n'est pas strictement exigible pour les évaluations.</p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Au cycle 4, tu as déjà rencontré la <strong>translation</strong> (déplacer une figure sans la tourner). En Seconde, on s’appuie sur cette idée pour définir les <strong>vecteurs</strong>. On les retrouve ensuite en physique (vitesse, force) et en géométrie (alignement, parallélisme).</p>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Translation et vecteur associé</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. De la translation au vecteur</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Translation</h3>
+        <h3 style="color:#34495e; margin-top:0;">Vecteur $\displaystyle \overrightarrow{MM'}$, direction, sens et norme</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Translation</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle A$ et $\displaystyle B$ deux points du plan. La <strong>translation</strong> qui transforme $\displaystyle A$ en $\displaystyle B$ est la transformation qui, à tout point $\displaystyle M$ du plan, associe l'unique point $\displaystyle M'$ tel que $\displaystyle [ABM'M]$ soit un parallélogramme (éventuellement aplati).</p>
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Vecteur associé à une translation</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La translation qui transforme un point $\displaystyle M$ en un point $\displaystyle M'$ est représentée par le vecteur :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:320px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \overrightarrow{MM'}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut le dessiner par une <strong>flèche</strong> allant de $\displaystyle M$ vers $\displaystyle M'$.</p>
+        </div>
+        
+   
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Caractéristiques d’un vecteur</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Direction</strong> : la direction de la droite $\displaystyle (MM')$ (toutes les droites parallèles ont la même direction).</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Sens</strong> : de $\displaystyle M$ vers $\displaystyle M'$.</li>
+                <li style="margin:0; text-align:left;"><strong>Norme</strong> (longueur) : $\displaystyle \|\overrightarrow{MM'}\| = MM'$.</li>
+            </ul>
+        </div>
+     [IMAGE_1]
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention aux notations :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle \overrightarrow{AB}$ est un <strong>vecteur</strong> (une flèche).</li>
+                <li style="margin:0; text-align:left;">$\displaystyle AB$ est une <strong>distance</strong> (un nombre, la longueur du segment).</li>
+            </ul>
         </div>
 
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>💡 Interprétation :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Une translation est un <strong>glissement</strong> : tous les points du plan sont déplacés dans la <strong>même direction</strong>, le <strong>même sens</strong> et la <strong>même distance</strong>. Aucun point n'est tourné ou déformé.</p>
+        <h3 style="color:#34495e; margin-top:18px;">Égalité, vecteur nul, opposé</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Égalité de deux vecteurs</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux vecteurs sont égaux s’ils ont <strong>même direction</strong>, <strong>même sens</strong> et <strong>même norme</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note souvent un vecteur par une lettre : $\displaystyle \vec{u}$, $\displaystyle \vec{v}$…</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemples :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Le <strong>vecteur nul</strong> est $\displaystyle \vec{0}=\overrightarrow{AA}$ (flèche « de longueur 0 »).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">L’<strong>opposé</strong> de $\displaystyle \vec{u}$ est $\displaystyle -\vec{u}$ : même direction, même norme, sens contraire.</li>
+                <li style="margin:0; text-align:left;">On peut « déplacer » une flèche parallèlement : le vecteur ne dépend pas de l’endroit où on le dessine, seulement de direction/sens/norme.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Somme de vecteurs et relation de Chasles</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Addition = enchaînement de translations</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Somme de deux vecteurs</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La somme $\displaystyle \vec{u}+\vec{v}$ correspond à l’<strong>enchaînement</strong> des translations : on applique d’abord la translation de vecteur $\displaystyle \vec{u}$, puis celle de vecteur $\displaystyle \vec{v}$.</p>
+        </div>
+
+	        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+	            <strong>🎯 Construction géométrique (règle du triangle)</strong>
+	            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+	                <li style="margin:0 0 10px 0; text-align:left;">À partir d’un point $\displaystyle A$, tracer une flèche représentant $\displaystyle \vec{u}$ : on arrive en $\displaystyle B$.</li>
+	                <li style="margin:0 0 10px 0; text-align:left;">À partir de $\displaystyle B$, tracer une flèche représentant $\displaystyle \vec{v}$ : on arrive en $\displaystyle C$.</li>
+	                <li style="margin:0; text-align:left;">Alors $\displaystyle \vec{u}+\vec{v}$ est représenté par la flèche $\displaystyle \overrightarrow{AC}$.</li>
+	            </ol>
+	        </div>
+	        
+	        [IMAGE_2]
+	
+	        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+	            <strong>🎯 Construction géométrique (règle du parallélogramme)</strong>
+	            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+	                <li style="margin:0 0 10px 0; text-align:left;">Tracer deux flèches représentant $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ en partant du même point $\displaystyle A$.</li>
+	                <li style="margin:0 0 10px 0; text-align:left;">Compléter le parallélogramme (parallèles) en utilisant les directions de $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$.</li>
+	                <li style="margin:0; text-align:left;">La diagonale issue de $\displaystyle A$ représente $\displaystyle \vec{u}+\vec{v}$.</li>
+	            </ol>
+	        </div>
+	
+	        [IMAGE_4]
+
+	        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+	            <p style="text-align:left; font-size:1em;"><strong>Relation de Chasles (à connaître)</strong></p>
+	            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous points $\displaystyle A$, $\displaystyle B$, $\displaystyle C$ :</p>
+	            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+	                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \overrightarrow{AB}+\overrightarrow{BC}=\overrightarrow{AC}$</p>
+	            </div>
+	            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#7f8c8d;"><em>Au programme : elle sert surtout à illustrer l’addition ; on l’utilise comme outil, sans travail spécifique long.</em></p>
+	        </div>
+	
+	        [IMAGE_5]
+
+	        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+	            <strong>Exemple :</strong>
+	            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \overrightarrow{AB}$ représente un déplacement « 3 cases à droite », puis $\displaystyle \overrightarrow{BC}$ représente « 2 cases vers le haut », alors $\displaystyle \overrightarrow{AC}$ représente le déplacement global : « 3 à droite et 2 en haut ».</p>
+	        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Bonus utile :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soustraire un vecteur, c’est ajouter son opposé : $\displaystyle \vec{u}-\vec{v}=\vec{u}+(-\vec{v})$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Coordonnées d’un vecteur et norme</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Base orthonormée et écriture $\displaystyle \vec{u}=x\vec{i}+y\vec{j}$</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Repère et base orthonormée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un repère orthonormé $\displaystyle (O;\vec{i},\vec{j})$ :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle \vec{i}$ est le vecteur « 1 unité » sur l’axe des abscisses,</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \vec{j}$ est le vecteur « 1 unité » sur l’axe des ordonnées.</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Coordonnées d’un vecteur</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \vec{u}$ « avance » de $\displaystyle x$ unités horizontalement et $\displaystyle y$ unités verticalement, alors :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \vec{u} = x\vec{i}+y\vec{j}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que les coordonnées de $\displaystyle \vec{u}$ sont $\displaystyle (x\,;\,y)$, et on note : $\displaystyle \vec{u}(x\,;\,y)$.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Représenter un vecteur connaissant ses coordonnées</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Choisir un point de départ $\displaystyle A$ (souvent l’origine $\displaystyle O$).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Se déplacer de $\displaystyle x$ unités horizontalement, puis de $\displaystyle y$ unités verticalement pour atteindre un point $\displaystyle B$.</li>
+                <li style="margin:0; text-align:left;">Tracer la flèche $\displaystyle \overrightarrow{AB}$ : elle représente $\displaystyle \vec{u}(x\,;\,y)$.</li>
+            </ol>
+        </div>
+        
+        [IMAGE_3]
+
+        <h3 style="color:#34495e; margin-top:18px;">Norme d’un vecteur (dans un repère orthonormé)</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Formule de la norme</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \vec{u}(x\,;\,y)$, alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:420px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \|\vec{u}\|=\sqrt{x^2+y^2}$</p>
+            </div>
         </div>
 
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
             <strong>Exemple :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La translation qui transforme $\displaystyle A(1, 2)$ en $\displaystyle B(4, 5)$ déplace chaque point de $\displaystyle 3$ unités vers la droite et de $\displaystyle 3$ unités vers le haut. Si $\displaystyle M(0, 0)$, alors son image est $\displaystyle M'(3, 3)$.</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Vecteur associé à une translation</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Vecteur</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle M$ et $\displaystyle M'$ deux points du plan. Le <strong>vecteur</strong> $\displaystyle \vec{MM'}$ est l'objet mathématique associé à la translation qui transforme $\displaystyle M$ en $\displaystyle M'$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Un vecteur est caractérisé par trois éléments :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;"><strong>Direction :</strong> celle de la droite $\displaystyle (MM')$</li>
-                <li style="margin:0 0 12px 0; text-align:left;"><strong>Sens :</strong> de $\displaystyle M$ vers $\displaystyle M'$</li>
-                <li style="margin:0; text-align:left;"><strong>Norme (longueur) :</strong> la distance $\displaystyle MM'$</li>
-            </ul>
-        </div>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Vecteur nul</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>vecteur nul</strong>, noté $\displaystyle \vec{0}$, est le vecteur $\displaystyle \vec{AA}$ pour tout point $\displaystyle A$. Il n'a ni direction, ni sens, et sa norme est $\displaystyle 0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u}(3\,;\,4)$ alors $\displaystyle \|\vec{u}\|=\sqrt{3^2+4^2}=5$.</p>
         </div>
 
         <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
             <strong>⚠️ Attention :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Un vecteur n'est <strong>pas</strong> un segment : il a un sens (une flèche). $\displaystyle \vec{AB}$ et $\displaystyle \vec{BA}$ ont la même direction et la même norme, mais des <strong>sens opposés</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La norme $\displaystyle \|\vec{u}\|$ est un <strong>nombre</strong> (une longueur). Le vecteur $\displaystyle \vec{u}$ est une flèche.</p>
         </div>
-
-        [IMAGE_1]
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Égalité de vecteurs</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Coordonnées de $\displaystyle \overrightarrow{AB}$, distance et milieu</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Définition et notation</h3>
+        <h3 style="color:#34495e; margin-top:0;">Coordonnées du vecteur $\displaystyle \overrightarrow{AB}$</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Égalité de deux vecteurs</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux vecteurs $\displaystyle \vec{AB}$ et $\displaystyle \vec{CD}$ sont <strong>égaux</strong> si et seulement si ils ont la <strong>même direction</strong>, le <strong>même sens</strong> et la <strong>même norme</strong>.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit : $\displaystyle \vec{AB} = \vec{CD}$ si et seulement si $\displaystyle ABDC$ est un parallélogramme (éventuellement aplati).</p>
-        </div>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété - Caractérisation par le parallélogramme</strong></p>
-            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:500px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \vec{AB} = \vec{CD} \iff ABDC \text{ est un parallélogramme}$</p>
+            <p style="text-align:left; font-size:1em;"><strong>Formule</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle A(x_A\,;\,y_A)$ et $\displaystyle B(x_B\,;\,y_B)$, alors :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \overrightarrow{AB}\,(x_B-x_A\,;\,y_B-y_A)$</p>
             </div>
-        </div>
-
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>💡 Notation $\displaystyle \vec{u}$ :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Lorsque plusieurs vecteurs sont égaux (même translation), on les note par une seule lettre avec une flèche : $\displaystyle \vec{u}$, $\displaystyle \vec{v}$, $\displaystyle \vec{w}$, etc. Par exemple, si $\displaystyle \vec{AB} = \vec{CD} = \vec{EF}$, on peut noter $\displaystyle \vec{u} = \vec{AB} = \vec{CD} = \vec{EF}$.</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Dans un parallélogramme $\displaystyle ABCD$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{AB} = \vec{DC}$ et $\displaystyle \vec{AD} = \vec{BC}$</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Si $\displaystyle A(1, 3)$, $\displaystyle B(4, 7)$, $\displaystyle C(2, 1)$ et $\displaystyle D(5, 5)$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{AB}$ a pour coordonnées $\displaystyle (4-1\,;\, 7-3) = (3\,;\, 4)$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{CD}$ a pour coordonnées $\displaystyle (5-2\,;\, 5-1) = (3\,;\, 4)$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \vec{AB} = \vec{CD}$ et $\displaystyle ABDC$ est un parallélogramme.</p>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Somme de deux vecteurs et relation de Chasles</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Somme de deux vecteurs</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Somme de deux vecteurs</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>somme</strong> de deux vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ est le vecteur associé à l'<strong>enchaînement des translations</strong> de vecteurs $\displaystyle \vec{u}$ puis $\displaystyle \vec{v}$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \vec{u} = \vec{AB}$ et $\displaystyle \vec{v} = \vec{BC}$, alors :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \vec{u} + \vec{v} = \vec{AB} + \vec{BC} = \vec{AC}$</p>
-            </div>
-        </div>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété - Relation de Chasles</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous points $\displaystyle A$, $\displaystyle B$ et $\displaystyle C$ du plan :</p>
-            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \vec{AB} + \vec{BC} = \vec{AC}$</p>
-            </div>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette relation traduit le fait que l'enchaînement de la translation de $\displaystyle A$ vers $\displaystyle B$ puis de $\displaystyle B$ vers $\displaystyle C$ revient à la translation de $\displaystyle A$ vers $\displaystyle C$.</p>
-        </div>
-
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>💡 Astuce pour retenir la relation de Chasles :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On « simplifie » comme si les lettres du milieu disparaissaient :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{A\cancel{B}} + \vec{\cancel{B}C} = \vec{AC}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">De même : $\displaystyle \vec{AB} + \vec{BC} + \vec{CD} = \vec{AD}$</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Construction géométrique de la somme</h3>
-
-        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>📐 Méthode 1 - Bout à bout :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Placer les vecteurs bout à bout (le début du deuxième à la fin du premier).</p>
-            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">Choisir un point $\displaystyle A$ quelconque et tracer le vecteur $\displaystyle \vec{AB} = \vec{u}$</li>
-                <li style="margin:0 0 12px 0; text-align:left;">À partir du point $\displaystyle B$, tracer le vecteur $\displaystyle \vec{BC} = \vec{v}$</li>
-                <li style="margin:0; text-align:left;">Le vecteur $\displaystyle \vec{AC}$ est la somme $\displaystyle \vec{u} + \vec{v}$</li>
-            </ol>
         </div>
 
         <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>📐 Méthode 2 - Règle du parallélogramme :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Placer les deux vecteurs à partir du même point et compléter le parallélogramme.</p>
-            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">Choisir un point $\displaystyle A$ et tracer $\displaystyle \vec{AB} = \vec{u}$ et $\displaystyle \vec{AC} = \vec{v}$ depuis $\displaystyle A$</li>
-                <li style="margin:0 0 12px 0; text-align:left;">Construire le point $\displaystyle D$ tel que $\displaystyle ABDC$ soit un parallélogramme</li>
-                <li style="margin:0; text-align:left;">Le vecteur $\displaystyle \vec{AD}$ est la somme $\displaystyle \vec{u} + \vec{v}$</li>
-            </ol>
-        </div>
-
-        [IMAGE_2]
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples d'application de la relation de Chasles :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Simplifier $\displaystyle \vec{MA} + \vec{AB}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Par la relation de Chasles : $\displaystyle \vec{MA} + \vec{AB} = \vec{MB}$</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Simplifier $\displaystyle \vec{AB} + \vec{BC} + \vec{CD}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{AB} + \vec{BC} + \vec{CD} = \vec{AC} + \vec{CD} = \vec{AD}$</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 3 :</strong> Montrer que $\displaystyle \vec{AB} + \vec{BA} = \vec{0}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Par la relation de Chasles : $\displaystyle \vec{AB} + \vec{BA} = \vec{AA} = \vec{0}$</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 4 :</strong> Simplifier $\displaystyle \vec{AB} + \vec{CD} + \vec{BA} + \vec{DC}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On regroupe : $\displaystyle (\vec{AB} + \vec{BA}) + (\vec{CD} + \vec{DC}) = \vec{0} + \vec{0} = \vec{0}$</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Vecteur opposé et différence</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Vecteur opposé</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le vecteur <strong>opposé</strong> de $\displaystyle \vec{AB}$ est le vecteur $\displaystyle \vec{BA}$, noté $\displaystyle -\vec{AB}$.</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:250px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle -\vec{AB} = \vec{BA}$</p>
-            </div>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>différence</strong> de deux vecteurs est : $\displaystyle \vec{u} - \vec{v} = \vec{u} + (-\vec{v})$</p>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Coordonnées d'un vecteur dans une base orthonormée</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Base orthonormée et coordonnées</h3>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Base orthonormée</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On se place dans un repère orthonormé $\displaystyle (O\,;\, \vec{\imath}\,,\, \vec{\jmath})$ du plan.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les vecteurs $\displaystyle \vec{\imath}$ et $\displaystyle \vec{\jmath}$ forment une <strong>base orthonormée</strong> :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \vec{\imath}$ est le vecteur unitaire de l'axe des abscisses (horizontal)</li>
-                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \vec{\jmath}$ est le vecteur unitaire de l'axe des ordonnées (vertical)</li>
-                <li style="margin:0; text-align:left;">$\displaystyle \vec{\imath}$ et $\displaystyle \vec{\jmath}$ sont orthogonaux et de norme $\displaystyle 1$</li>
-            </ul>
-        </div>
-
-        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Coordonnées d'un vecteur</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Tout vecteur $\displaystyle \vec{u}$ du plan peut s'écrire de manière unique sous la forme :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \vec{u} = x\,\vec{\imath} + y\,\vec{\jmath}$</p>
-            </div>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les nombres $\displaystyle x$ et $\displaystyle y$ sont les <strong>coordonnées</strong> (ou <strong>composantes</strong>) du vecteur $\displaystyle \vec{u}$. On note $\displaystyle \vec{u}\begin{pmatrix} x \\ y \end{pmatrix}$.</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \vec{\imath}\begin{pmatrix} 1 \\ 0 \end{pmatrix}$ et $\displaystyle \vec{\jmath}\begin{pmatrix} 0 \\ 1 \end{pmatrix}$</li>
-                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \vec{u} = 3\,\vec{\imath} + 2\,\vec{\jmath}$ a pour coordonnées $\displaystyle \begin{pmatrix} 3 \\ 2 \end{pmatrix}$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle \vec{v} = -\vec{\imath} + 4\,\vec{\jmath}$ a pour coordonnées $\displaystyle \begin{pmatrix} -1 \\ 4 \end{pmatrix}$</li>
-            </ul>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Coordonnées du vecteur $\displaystyle \vec{AB}$</h3>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété - Coordonnées de $\displaystyle \vec{AB}$</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle A(x_A\,;\, y_A)$ et $\displaystyle B(x_B\,;\, y_B)$ deux points du plan. Les coordonnées du vecteur $\displaystyle \vec{AB}$ sont :</p>
-            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \vec{AB}\begin{pmatrix} x_B - x_A \\ y_B - y_A \end{pmatrix}$</p>
-            </div>
-        </div>
-
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>💡 Moyen mnémotechnique :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle \vec{AB}$ : <strong>arrivée moins départ</strong>. On fait les coordonnées de $\displaystyle B$ (arrivée) moins les coordonnées de $\displaystyle A$ (départ).</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> $\displaystyle A(2, 3)$ et $\displaystyle B(5, 7)$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{AB}\begin{pmatrix} 5 - 2 \\ 7 - 3 \end{pmatrix} = \begin{pmatrix} 3 \\ 4 \end{pmatrix}$</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> $\displaystyle C(-1, 4)$ et $\displaystyle D(3, -2)$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{CD}\begin{pmatrix} 3 - (-1) \\ -2 - 4 \end{pmatrix} = \begin{pmatrix} 4 \\ -6 \end{pmatrix}$</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Opérations sur les coordonnées</h3>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété - Somme et produit en coordonnées</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle \vec{u}\begin{pmatrix} x \\ y \end{pmatrix}$ et $\displaystyle \vec{v}\begin{pmatrix} x' \\ y' \end{pmatrix}$ deux vecteurs, et $\displaystyle k$ un nombre réel.</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \vec{u} + \vec{v}\begin{pmatrix} x + x' \\ y + y' \end{pmatrix}$ (on additionne composante par composante)</li>
-                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle k\,\vec{u}\begin{pmatrix} kx \\ ky \end{pmatrix}$ (on multiplie chaque composante par $\displaystyle k$)</li>
-                <li style="margin:0; text-align:left;">$\displaystyle \vec{u} = \vec{v} \iff x = x' \text{ et } y = y'$ (égalité composante par composante)</li>
+            <strong>🎯 Méthode</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On fait « <strong>arrivée - départ</strong> » :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">abscisse : $\displaystyle x_B-x_A$</li>
+                <li style="margin:0; text-align:left;">ordonnée : $\displaystyle y_B-y_A$</li>
             </ul>
         </div>
 
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> $\displaystyle \vec{u}\begin{pmatrix} 3 \\ -1 \end{pmatrix}$ et $\displaystyle \vec{v}\begin{pmatrix} 2 \\ 5 \end{pmatrix}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u} + \vec{v}\begin{pmatrix} 3 + 2 \\ -1 + 5 \end{pmatrix} = \begin{pmatrix} 5 \\ 4 \end{pmatrix}$</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> $\displaystyle 3\,\vec{u}\begin{pmatrix} 3 \times 3 \\ 3 \times (-1) \end{pmatrix} = \begin{pmatrix} 9 \\ -3 \end{pmatrix}$</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 3 :</strong> $\displaystyle 2\,\vec{u} - 3\,\vec{v}\begin{pmatrix} 2 \times 3 - 3 \times 2 \\ 2 \times (-1) - 3 \times 5 \end{pmatrix} = \begin{pmatrix} 0 \\ -17 \end{pmatrix}$</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Norme d'un vecteur et distance entre deux points</h3>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété - Norme d'un vecteur</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>norme</strong> (longueur) du vecteur $\displaystyle \vec{u}\begin{pmatrix} x \\ y \end{pmatrix}$ est :</p>
-            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \|\vec{u}\| = \sqrt{x^2 + y^2}$</p>
-            </div>
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A(2\,;\,-1)$ et $\displaystyle B(5\,;\,3)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overrightarrow{AB}=(5-2\,;\,3-(-1))=(3\,;\,4)$.</p>
         </div>
 
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété - Distance entre deux points</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>distance</strong> entre $\displaystyle A(x_A\,;\, y_A)$ et $\displaystyle B(x_B\,;\, y_B)$ est :</p>
-            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:450px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle AB = \|\vec{AB}\| = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$</p>
-            </div>
-        </div>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété - Coordonnées du milieu d'un segment</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>milieu</strong> $\displaystyle I$ du segment $\displaystyle [AB]$ avec $\displaystyle A(x_A\,;\, y_A)$ et $\displaystyle B(x_B\,;\, y_B)$ a pour coordonnées :</p>
-            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle I\left(\frac{x_A + x_B}{2}\,;\, \frac{y_A + y_B}{2}\right)$</p>
-            </div>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Norme de $\displaystyle \vec{u}\begin{pmatrix} 3 \\ 4 \end{pmatrix}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \|\vec{u}\| = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5$</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Distance entre $\displaystyle A(1, 2)$ et $\displaystyle B(4, 6)$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle AB = \sqrt{(4-1)^2 + (6-2)^2} = \sqrt{9 + 16} = \sqrt{25} = 5$</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 3 :</strong> Milieu de $\displaystyle [AB]$ avec $\displaystyle A(2, 3)$ et $\displaystyle B(6, 7)$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle I\left(\frac{2 + 6}{2}\,;\, \frac{3 + 7}{2}\right) = I(4\,;\, 5)$</p>
-        </div>
-
-        [IMAGE_3]
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Produit d'un vecteur par un nombre réel et colinéarité</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Produit d'un vecteur par un réel</h3>
+        <h3 style="color:#34495e; margin-top:18px;">Distance entre deux points</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Produit par un scalaire</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle \vec{u}$ un vecteur non nul et $\displaystyle k$ un nombre réel. Le vecteur $\displaystyle k\,\vec{u}$ est le vecteur :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">De <strong>même direction</strong> que $\displaystyle \vec{u}$</li>
-                <li style="margin:0 0 12px 0; text-align:left;">De <strong>même sens</strong> si $\displaystyle k > 0$, de <strong>sens contraire</strong> si $\displaystyle k < 0$</li>
-                <li style="margin:0; text-align:left;">De <strong>norme</strong> $\displaystyle |k| \times \|\vec{u}\|$</li>
-            </ul>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle k = 0$ ou $\displaystyle \vec{u} = \vec{0}$, alors $\displaystyle k\,\vec{u} = \vec{0}$.</p>
+            <p style="text-align:left; font-size:1em;"><strong>Formule (Pythagore)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un repère orthonormé :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:620px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle AB=\sqrt{(x_B-x_A)^2+(y_B-y_A)^2}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C’est exactement $\displaystyle AB=\|\overrightarrow{AB}\|$.</p>
         </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \vec{u}\begin{pmatrix} 2 \\ -1 \end{pmatrix}$ :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle 3\,\vec{u}\begin{pmatrix} 6 \\ -3 \end{pmatrix}$ : même direction, même sens, norme triplée</li>
-                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle -2\,\vec{u}\begin{pmatrix} -4 \\ 2 \end{pmatrix}$ : même direction, sens contraire, norme doublée</li>
-                <li style="margin:0; text-align:left;">$\displaystyle \frac{1}{2}\,\vec{u}\begin{pmatrix} 1 \\ -\frac{1}{2} \end{pmatrix}$ : même direction, même sens, norme divisée par $\displaystyle 2$</li>
-            </ul>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Colinéarité de deux vecteurs</h3>
+    [IMAGE_6]
+        <h3 style="color:#34495e; margin-top:18px;">Milieu d’un segment</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Vecteurs colinéaires</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ sont <strong>colinéaires</strong> s'il existe un nombre réel $\displaystyle k$ tel que $\displaystyle \vec{v} = k\,\vec{u}$ (ou $\displaystyle \vec{u} = k'\,\vec{v}$).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Autrement dit, deux vecteurs sont colinéaires s'ils ont la <strong>même direction</strong> (ou si l'un d'eux est le vecteur nul).</p>
+            <p style="text-align:left; font-size:1em;"><strong>Formule</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le milieu $\displaystyle M$ du segment $\displaystyle [AB]$ a pour coordonnées :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:620px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle M\left(\frac{x_A+x_B}{2}\,;\,\frac{y_A+y_B}{2}\right)$</p>
+            </div>
         </div>
+        [IMAGE_7]
+    </div>
 
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>💡 Interprétation géométrique :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux vecteurs colinéaires sont « parallèles » : ils ont la même direction. Les droites qui les portent sont parallèles (ou confondues).</p>
-        </div>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Calculs sur les vecteurs : somme, produit par un réel, colinéarité</h2>
 
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \vec{u}\begin{pmatrix} 2 \\ 3 \end{pmatrix}$ et $\displaystyle \vec{v}\begin{pmatrix} 4 \\ 6 \end{pmatrix}$ sont colinéaires car $\displaystyle \vec{v} = 2\,\vec{u}$</li>
-                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle \vec{u}\begin{pmatrix} 1 \\ -2 \end{pmatrix}$ et $\displaystyle \vec{v}\begin{pmatrix} -3 \\ 6 \end{pmatrix}$ sont colinéaires car $\displaystyle \vec{v} = -3\,\vec{u}$</li>
-                <li style="margin:0; text-align:left;">$\displaystyle \vec{u}\begin{pmatrix} 1 \\ 2 \end{pmatrix}$ et $\displaystyle \vec{v}\begin{pmatrix} 3 \\ 5 \end{pmatrix}$ ne sont <strong>pas</strong> colinéaires</li>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Coordonnées d’une somme et d’un produit par un réel</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriétés (dans un repère)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \vec{u}(x\,;\,y)$ et $\displaystyle \vec{v}(x'\,;\,y')$, alors :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle \vec{u}+\vec{v}\,(x+x'\,;\,y+y')$</li>
+                <li style="margin:0; text-align:left;">$\displaystyle k\vec{u}\,(kx\,;\,ky)$ pour tout réel $\displaystyle k$</li>
             </ul>
         </div>
 
-        [IMAGE_4]
-    </div>
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Sens géométrique :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle k&gt;1$, $\displaystyle k\vec{u}$ est « plus long » que $\displaystyle \vec{u}$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle 0\lt k\lt 1$, $\displaystyle k\vec{u}$ est « plus court ».</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle k\lt 0$, le sens est inversé (opposé).</li>
+            </ul>
+        </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Déterminant et applications</h2>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u}(2\,;\,-3)$ et $\displaystyle \vec{v}(-1\,;\,5)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{u}+\vec{v}=(1\,;\,2)$ et $\displaystyle 3\vec{u}=(6\,;\,-9)$.</p>
+        </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Déterminant de deux vecteurs</h3>
+        <h3 style="color:#34495e; margin-top:18px;">Colinéarité</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Déterminant</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle \vec{u}\begin{pmatrix} x \\ y \end{pmatrix}$ et $\displaystyle \vec{v}\begin{pmatrix} x' \\ y' \end{pmatrix}$ deux vecteurs dans une base orthonormée.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>déterminant</strong> de $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ est le nombre réel :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:350px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \det(\vec{u}, \vec{v}) = xy' - yx'$</p>
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ sont <strong>colinéaires</strong> s’il existe un réel $\displaystyle k$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \vec{u}=k\vec{v}$</p>
             </div>
-        </div>
-
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>💡 Moyen mnémotechnique :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On fait le produit « en diagonale descendante » moins le produit « en diagonale montante » :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \det(\vec{u}, \vec{v}) = \underbrace{x \times y'}_{\text{diag. }\searrow} - \underbrace{y \times x'}_{\text{diag. }\nearrow}$</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> $\displaystyle \vec{u}\begin{pmatrix} 3 \\ 2 \end{pmatrix}$ et $\displaystyle \vec{v}\begin{pmatrix} 1 \\ 4 \end{pmatrix}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \det(\vec{u}, \vec{v}) = 3 \times 4 - 2 \times 1 = 12 - 2 = 10 \neq 0$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les vecteurs ne sont <strong>pas</strong> colinéaires.</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> $\displaystyle \vec{u}\begin{pmatrix} 2 \\ 3 \end{pmatrix}$ et $\displaystyle \vec{v}\begin{pmatrix} 4 \\ 6 \end{pmatrix}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \det(\vec{u}, \vec{v}) = 2 \times 6 - 3 \times 4 = 12 - 12 = 0$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les vecteurs sont <strong>colinéaires</strong>.</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Critère de colinéarité par le déterminant</h3>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Théorème - Critère de colinéarité</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux vecteurs $\displaystyle \vec{u}\begin{pmatrix} x \\ y \end{pmatrix}$ et $\displaystyle \vec{v}\begin{pmatrix} x' \\ y' \end{pmatrix}$ sont <strong>colinéaires</strong> si et seulement si :</p>
-            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \det(\vec{u}, \vec{v}) = xy' - yx' = 0$</p>
-            </div>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Démonstration (exigible au programme) :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Sens 1 :</strong> Supposons que $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ sont colinéaires.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><em>Cas 1 :</em> Si $\displaystyle \vec{u} = \vec{0}$, alors $\displaystyle x = 0$ et $\displaystyle y = 0$, donc $\displaystyle xy' - yx' = 0 \times y' - 0 \times x' = 0$. ✓</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><em>Cas 2 :</em> Si $\displaystyle \vec{u} \neq \vec{0}$, il existe $\displaystyle k \in \mathbb{R}$ tel que $\displaystyle \vec{v} = k\,\vec{u}$, c'est-à-dire $\displaystyle x' = kx$ et $\displaystyle y' = ky$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle xy' - yx' = x(ky) - y(kx) = kxy - kxy = 0$. ✓</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Sens 2 :</strong> Supposons que $\displaystyle xy' - yx' = 0$, c'est-à-dire $\displaystyle xy' = yx'$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><em>Cas 1 :</em> Si $\displaystyle \vec{u} = \vec{0}$, alors les vecteurs sont trivialement colinéaires. ✓</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><em>Cas 2 :</em> Si $\displaystyle x \neq 0$, on a $\displaystyle y' = \frac{yx'}{x}$, donc $\displaystyle \vec{v} = \begin{pmatrix} x' \\ \frac{yx'}{x} \end{pmatrix} = \frac{x'}{x}\begin{pmatrix} x \\ y \end{pmatrix} = \frac{x'}{x}\,\vec{u}$. Les vecteurs sont colinéaires. ✓</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><em>Cas 3 :</em> Si $\displaystyle x = 0$ et $\displaystyle y \neq 0$, on a $\displaystyle x' = \frac{xy'}{y} = 0$, donc $\displaystyle \vec{v} = \begin{pmatrix} 0 \\ y' \end{pmatrix} = \frac{y'}{y}\begin{pmatrix} 0 \\ y \end{pmatrix} = \frac{y'}{y}\,\vec{u}$. Les vecteurs sont colinéaires. ✓</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Applications : alignement et parallélisme</h3>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété - Alignement de trois points</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Trois points $\displaystyle A$, $\displaystyle B$ et $\displaystyle C$ sont <strong>alignés</strong> si et seulement si les vecteurs $\displaystyle \vec{AB}$ et $\displaystyle \vec{AC}$ sont <strong>colinéaires</strong>, c'est-à-dire :</p>
-            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \det(\vec{AB}, \vec{AC}) = 0$</p>
-            </div>
-        </div>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété - Parallélisme de deux droites</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux droites $\displaystyle (AB)$ et $\displaystyle (CD)$ sont <strong>parallèles</strong> si et seulement si les vecteurs $\displaystyle \vec{AB}$ et $\displaystyle \vec{CD}$ sont <strong>colinéaires</strong>, c'est-à-dire :</p>
-            <div style="background:#fff1f2; border:3px solid #e11d48; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \det(\vec{AB}, \vec{CD}) = 0$</p>
-            </div>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 - Alignement :</strong> $\displaystyle A(1, 2)$, $\displaystyle B(3, 5)$ et $\displaystyle C(7, 11)$ sont-ils alignés ?</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{AB}\begin{pmatrix} 2 \\ 3 \end{pmatrix}$ et $\displaystyle \vec{AC}\begin{pmatrix} 6 \\ 9 \end{pmatrix}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \det(\vec{AB}, \vec{AC}) = 2 \times 9 - 3 \times 6 = 18 - 18 = 0$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle A$, $\displaystyle B$ et $\displaystyle C$ sont <strong>alignés</strong>.</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 - Parallélisme :</strong> $(AB)$ et $(CD)$ sont-elles parallèles avec $\displaystyle A(0, 1)$, $\displaystyle B(2, 4)$, $\displaystyle C(3, 0)$ et $\displaystyle D(7, 6)$ ?</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{AB}\begin{pmatrix} 2 \\ 3 \end{pmatrix}$ et $\displaystyle \vec{CD}\begin{pmatrix} 4 \\ 6 \end{pmatrix}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \det(\vec{AB}, \vec{CD}) = 2 \times 6 - 3 \times 4 = 12 - 12 = 0$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc les droites $\displaystyle (AB)$ et $\displaystyle (CD)$ sont <strong>parallèles</strong>.</p>
-
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 3 - Non alignement :</strong> $\displaystyle A(0, 0)$, $\displaystyle B(1, 2)$ et $\displaystyle C(2, 3)$ sont-ils alignés ?</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{AB}\begin{pmatrix} 1 \\ 2 \end{pmatrix}$ et $\displaystyle \vec{AC}\begin{pmatrix} 2 \\ 3 \end{pmatrix}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \det(\vec{AB}, \vec{AC}) = 1 \times 3 - 2 \times 2 = 3 - 4 = -1 \neq 0$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle A$, $\displaystyle B$ et $\displaystyle C$ ne sont <strong>pas alignés</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Intuition : ils ont la <strong>même direction</strong> (ils sont parallèles).</p>
         </div>
 
         <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>📐 Méthode - Montrer un alignement ou un parallélisme :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On utilise le critère de colinéarité via le déterminant.</p>
-            <ol style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">Calculer les coordonnées des vecteurs concernés</li>
-                <li style="margin:0 0 12px 0; text-align:left;">Calculer le déterminant $\displaystyle xy' - yx'$</li>
-                <li style="margin:0; text-align:left;">Conclure : si $\displaystyle \det = 0$, les vecteurs sont colinéaires (alignement ou parallélisme) ; sinon, ils ne le sont pas</li>
-            </ol>
+            <strong>🎯 Méthode rapide (si possible)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \vec{u}(x\,;\,y)$ et $\displaystyle \vec{v}(x'\,;\,y')$, on cherche $\displaystyle k$ tel que $\displaystyle x=kx'$ et $\displaystyle y=ky'$ (même $\displaystyle k$).</p>
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Approfondissement : homothéties (bonus)</h2>
-
-    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
-        <p style="margin:0; text-align:left; font-size:1em;"><strong>🔸 Bonus / Approfondissement :</strong></p>
-        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Cette section est un approfondissement possible du programme. Elle enrichit votre culture mathématique mais n'est pas strictement exigible pour les évaluations.</p>
-    </div>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Déterminant et critère de colinéarité (alignement / parallélisme)</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Définition vectorielle des homothéties</h3>
+        <h3 style="color:#34495e; margin-top:0;">Définition du déterminant</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Déterminant de deux vecteurs</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle \vec{u}(x\,;\,y)$ et $\displaystyle \vec{v}(x'\,;\,y')$, on définit :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \det(\vec{u},\vec{v})=xy'-yx'$</p>
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Critère de colinéarité</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Deux vecteurs $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ sont colinéaires <strong>si et seulement si</strong> :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:420px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \det(\vec{u},\vec{v})=0$</p>
+            </div>
+        </div>
+        
+      
 
         <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Bonus / Approfondissement (facultatif) - Homothétie :</strong>
-            <p style="margin:8px 0 4px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Ce contenu enrichit votre culture géométrique et prépare les notions de Première.</em></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle \Omega$ un point du plan et $\displaystyle k$ un nombre réel non nul. L'<strong>homothétie</strong> de centre $\displaystyle \Omega$ et de rapport $\displaystyle k$ est la transformation qui, à tout point $\displaystyle M$, associe le point $\displaystyle M'$ tel que :</p>
-            <div style="background:#e0f2f1; border:3px solid #00897b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px;">
-                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \vec{\Omega M'} = k\,\vec{\Omega M}$</p>
+            <strong>Démonstration (niveau Seconde) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle \vec{u}(x\,;\,y)$ et $\displaystyle \vec{v}(x'\,;\,y')$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Sens 1 :</strong> si $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ sont colinéaires, il existe $\displaystyle k$ tel que $\displaystyle \vec{u}=k\vec{v}$. Donc $\displaystyle x=kx'$ et $\displaystyle y=ky'$, d’où :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \det(\vec{u},\vec{v})=xy'-yx'=(kx')y'-(ky')x'=k(x'y'-y'x')=0$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Sens 2 :</strong> si $\displaystyle \det(\vec{u},\vec{v})=0$, alors $\displaystyle xy'=yx'$.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle x'=0$ et $\displaystyle y'=0$, alors $\displaystyle \vec{v}=\vec{0}$ et tous les vecteurs sont colinéaires à $\displaystyle \vec{0}$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Sinon, si $\displaystyle x'\neq 0$, on pose $\displaystyle k=\frac{x}{x'}$. L’égalité $\displaystyle xy'=yx'$ donne $\displaystyle y=k y'$, donc $\displaystyle \vec{u}=k\vec{v}$.</li>
+                <li style="margin:0; text-align:left;">Sinon (si $\displaystyle x'=0$ mais $\displaystyle y'\neq 0$), on pose $\displaystyle k=\frac{y}{y'}$ et on obtient aussi $\displaystyle \vec{u}=k\vec{v}$.</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ sont colinéaires. ✓</p>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:18px;">Applications : alignement et parallélisme</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Alignement de trois points</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les points $\displaystyle A$, $\displaystyle B$, $\displaystyle C$ sont alignés si et seulement si $\displaystyle \overrightarrow{AB}$ et $\displaystyle \overrightarrow{AC}$ sont colinéaires, c’est-à-dire :</p>
+            <div style="background:#fef3c7; border:3px solid #f59e0b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \det(\overrightarrow{AB},\overrightarrow{AC})=0$</p>
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Parallélisme de deux droites</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les droites $\displaystyle (AB)$ et $\displaystyle (CD)$ sont parallèles si et seulement si $\displaystyle \overrightarrow{AB}$ et $\displaystyle \overrightarrow{CD}$ sont colinéaires :</p>
+            <div style="background:#fef3c7; border:3px solid #f59e0b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \det(\overrightarrow{AB},\overrightarrow{CD})=0$</p>
             </div>
         </div>
 
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle k = 2$ : chaque point est « éloigné » du centre $\displaystyle \Omega$, la figure est agrandie d'un facteur $\displaystyle 2$</li>
-                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle k = \frac{1}{2}$ : chaque point est « rapproché » du centre, la figure est réduite de moitié</li>
-                <li style="margin:0 0 12px 0; text-align:left;">Si $\displaystyle k = -1$ : c'est la <strong>symétrie centrale</strong> de centre $\displaystyle \Omega$</li>
-                <li style="margin:0; text-align:left;">Si $\displaystyle k = 1$ : c'est l'identité (chaque point reste à sa place)</li>
-            </ul>
+            <strong>Exemple (alignement) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A(1\,;\,2)$, $\displaystyle B(3\,;\,6)$ et $\displaystyle C(4\,;\,8)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \overrightarrow{AB}=(2\,;\,4)$ et $\displaystyle \overrightarrow{AC}=(3\,;\,6)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \det(\overrightarrow{AB},\overrightarrow{AC})=2\times 6-4\times 3=12-12=0$ donc $\displaystyle A$, $\displaystyle B$, $\displaystyle C$ sont alignés.</p>
         </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Propriétés de l'homothétie :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.8; font-size:1em;">
-                <li style="margin:0 0 12px 0; text-align:left;">L'image d'un segment est un segment <strong>parallèle</strong> au segment initial</li>
-                <li style="margin:0 0 12px 0; text-align:left;">L'image d'une droite est une droite <strong>parallèle</strong> à la droite initiale (ou confondue si elle passe par $\displaystyle \Omega$)</li>
-                <li style="margin:0 0 12px 0; text-align:left;">Les distances sont multipliées par $\displaystyle |k|$</li>
-                <li style="margin:0; text-align:left;">Les aires sont multipliées par $\displaystyle k^2$</li>
-            </ul>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple avec coordonnées :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit l'homothétie de centre $\displaystyle \Omega(1, 2)$ et de rapport $\displaystyle k = 3$. Trouver l'image de $\displaystyle M(3, 4)$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{\Omega M}\begin{pmatrix} 3 - 1 \\ 4 - 2 \end{pmatrix} = \begin{pmatrix} 2 \\ 2 \end{pmatrix}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \vec{\Omega M'} = 3\,\vec{\Omega M} = \begin{pmatrix} 6 \\ 6 \end{pmatrix}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle M'(1 + 6\,;\, 2 + 6) = M'(7, 8)$.</p>
-        </div>
-
-        [IMAGE_5]
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Conseils méthodologiques et récapitulatif</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Synthèse : formules clés et erreurs fréquentes</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
-
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>✅ Conseils pratiques :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
-                <li style="margin:0; text-align:left;"><strong>Coordonnées de $\displaystyle \vec{AB}$ :</strong> Toujours faire arrivée moins départ : $\displaystyle (x_B - x_A\,;\, y_B - y_A)$</li>
-                <li style="margin:0; text-align:left;"><strong>Relation de Chasles :</strong> vérifier que le point « central » disparaît : $\displaystyle \vec{AB} + \vec{BC} = \vec{AC}$</li>
-                <li style="margin:0; text-align:left;"><strong>Colinéarité :</strong> utiliser le déterminant $\displaystyle xy' - yx'$ et vérifier s'il est nul</li>
-                <li style="margin:0; text-align:left;"><strong>Distance :</strong> ne pas oublier la racine carrée dans $\displaystyle AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$</li>
-                <li style="margin:0; text-align:left;"><strong>Milieu :</strong> faire la moyenne des coordonnées $\displaystyle \left(\frac{x_A + x_B}{2}\,;\, \frac{y_A + y_B}{2}\right)$</li>
-                <li style="margin:0; text-align:left;"><strong>Parallélogramme :</strong> vérifier que $\displaystyle \vec{AB} = \vec{DC}$ (mêmes coordonnées)</li>
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Quelle représentation choisir ?</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Géométrique</strong> : pour construire $\displaystyle \vec{u}+\vec{v}$, comprendre une translation, utiliser Chasles.</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Coordonnées</strong> : pour calculer (distance, milieu, déterminant) et conclure sur alignement / parallélisme.</li>
+                <li style="margin:0; text-align:left;">Dans un exercice, choisir la méthode qui rend le calcul le plus simple.</li>
             </ul>
         </div>
+
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+            <thead>
+                <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:45%;">Notion</th>
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:55%;">Formule / idée</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Coordonnées</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle \vec{u}(x\,;\,y)\ \text{correspond à}\ \vec{u}=x\vec{i}+y\vec{j}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Norme</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle \|\vec{u}\|=\sqrt{x^2+y^2}$</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Vecteur $\displaystyle \overrightarrow{AB}$</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle (x_B-x_A\,;\,y_B-y_A)$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Somme / multiple</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle (x+x'\,;\,y+y')$ ; $\displaystyle (kx\,;\,ky)$</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Distance</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle AB=\sqrt{(x_B-x_A)^2+(y_B-y_A)^2}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Milieu</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle M\left(\frac{x_A+x_B}{2}\,;\,\frac{y_A+y_B}{2}\right)$</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; padding:12px 16px;"><strong>Déterminant</strong></td>
+                    <td style="border:none; padding:12px 16px;">$\displaystyle \det(\vec{u},\vec{v})=xy'-yx' \quad;\quad \vec{u}\ \text{et}\ \vec{v}\ \text{sont colinéaires ssi}\ \det(\vec{u},\vec{v})=0$</td>
+                </tr>
+            </tbody>
+        </table>
 
         <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
-                <li style="margin:0; text-align:left;"><strong>Sens du vecteur :</strong> $\displaystyle \vec{AB} \neq \vec{BA}$ ! Le sens compte</li>
-                <li style="margin:0; text-align:left;"><strong>Coordonnées :</strong> ne pas confondre $\displaystyle \vec{AB}(x_B - x_A)$ avec $\displaystyle \vec{AB}(x_A - x_B)$</li>
-                <li style="margin:0; text-align:left;"><strong>Norme :</strong> c'est $\displaystyle \sqrt{x^2 + y^2}$, pas $\displaystyle x^2 + y^2$ ni $\displaystyle \sqrt{x + y}$</li>
-                <li style="margin:0; text-align:left;"><strong>Déterminant :</strong> bien mettre $\displaystyle xy' - yx'$ et non $\displaystyle xx' - yy'$</li>
-                <li style="margin:0; text-align:left;"><strong>Parallélogramme :</strong> dans $\displaystyle ABCD$, vérifier $\displaystyle \vec{AB} = \vec{DC}$ (pas $\displaystyle \vec{CD}$ !)</li>
-                <li style="margin:0; text-align:left;"><strong>Colinéarité :</strong> le vecteur nul est colinéaire à tout vecteur</li>
+            <strong>❌ Erreurs fréquentes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Confondre $\displaystyle \overrightarrow{AB}$ (vecteur) et $\displaystyle AB$ (distance).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Se tromper dans « arrivée - départ » : écrire $\displaystyle (x_A-x_B\,;\,y_A-y_B)$ au lieu de $\displaystyle (x_B-x_A\,;\,y_B-y_A)$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Sur un déterminant : oublier l’ordre et le signe : $\displaystyle \det(\vec{u},\vec{v})=xy'-yx'$.</li>
+                <li style="margin:0; text-align:left;">Conclure « alignés » sans vérifier $\displaystyle \det(\overrightarrow{AB},\overrightarrow{AC})=0$ (ou colinéarité).</li>
             </ul>
         </div>
 
-        <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>📐 Récapitulatif des formules à retenir</strong>
-            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-                <thead>
-                    <tr style="background:#3498db; color:white;">
-                        <th style="border:1px solid #ddd; padding:12px; width:40%;">Notion</th>
-                        <th style="border:1px solid #ddd; padding:12px;">Formule</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Coordonnées de $\displaystyle \vec{AB}$</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \begin{pmatrix} x_B - x_A \\ y_B - y_A \end{pmatrix}$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Relation de Chasles</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \vec{AB} + \vec{BC} = \vec{AC}$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Somme en coordonnées</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \vec{u} + \vec{v} = \begin{pmatrix} x + x' \\ y + y' \end{pmatrix}$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Produit par un scalaire</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle k\,\vec{u} = \begin{pmatrix} kx \\ ky \end{pmatrix}$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Norme</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \|\vec{u}\| = \sqrt{x^2 + y^2}$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Distance $\displaystyle AB$</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Milieu de $\displaystyle [AB]$</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle I\left(\frac{x_A + x_B}{2}\,;\, \frac{y_A + y_B}{2}\right)$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Déterminant</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \det(\vec{u}, \vec{v}) = xy' - yx'$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Colinéarité</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \vec{u}$ et $\displaystyle \vec{v}$ colinéaires $\displaystyle \iff xy' - yx' = 0$</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>⭐ Approfondissement possible : définition vectorielle d’une homothétie</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une homothétie de centre $\displaystyle O$ et de rapport $\displaystyle k$ envoie un point $\displaystyle M$ sur un point $\displaystyle M'$ tel que :</p>
+            <div style="background:#fef3c7; border:3px solid #f59e0b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:420px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \overrightarrow{OM'}=k\,\overrightarrow{OM}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#7f8c8d;"><em>On retrouve l’idée « multiplier un vecteur par un réel » pour agrandir/réduire une figure.</em></p>
         </div>
     </div>
 
     <div style="background:#eef2ff; border-radius:6px; border-left:6px solid #4d6df3; padding:15px; margin:12px 0;">
-        <p style="margin:0 0 8px 0; text-align:left; font-size:1em;"><strong>À suivre dans le chapitre suivant :</strong> Les vecteurs seront réutilisés tout au long du lycée, notamment en géométrie analytique (équations de droites), en physique (forces, vitesses) et en Première pour le produit scalaire.</p>
+        <p style="margin:0 0 8px 0; text-align:left; font-size:1em;"><strong>À suivre :</strong> les vecteurs servent à étudier les <strong>droites</strong> (parallélisme), à résoudre des problèmes de géométrie et à passer vers la géométrie analytique.</p>
     </div>
 
 </div>
 
 ===
+

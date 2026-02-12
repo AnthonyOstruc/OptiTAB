@@ -1,0 +1,317 @@
+=== Notion de fonction (Python) : définir, appeler, simuler - Programme Seconde
+Difficulté: easy
+Ordre: 12
+
+Titre: Notion de fonction en Python
+Description: Cours de Seconde sur la notion de fonction en Python : fonctions à un ou plusieurs arguments, écriture et appel, lecture/modification de fonctions, fonctions aléatoires et simulation ; lecture d'une fonction renvoyant une moyenne et un écart type (sans utiliser de listes).
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+            <li style="margin:0 0 10px 0; text-align:left;">Écrire des <strong>fonctions simples</strong> ; <strong>lire</strong>, <strong>comprendre</strong>, <strong>modifier</strong>, <strong>compléter</strong> des fonctions plus complexes ; <strong>appeler</strong> une fonction.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Utiliser des fonctions à <strong>un</strong> ou <strong>plusieurs arguments</strong>.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Écrire/Utiliser une fonction renvoyant un <strong>nombre aléatoire</strong> et obtenir une <strong>série statistique</strong> par répétition des appels.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Lire et comprendre une fonction renvoyant une <strong>moyenne</strong> et un <strong>écart type</strong> (aucune connaissance sur les listes n’est exigée).</li>
+            <li style="margin:0; text-align:left;">Écrire des fonctions renvoyant le résultat numérique d’une <strong>expérience aléatoire</strong> et d’une <strong>répétition</strong> d’expériences aléatoires indépendantes.</li>
+        </ul>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">On utilise le module <code>random</code> de Python : il produit des nombres <em>pseudo</em>-aléatoires (calculés par l’ordinateur). On peut fixer une « graine » (<code>random.seed(...)</code>) pour retrouver exactement la même simulation (utile pour tester).</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Qu’est-ce qu’une fonction (en programmation) ?</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définition et vocabulaire</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fonction Python</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>fonction</strong> est un bloc de code <strong>nommé</strong> qui :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">prend des <strong>arguments</strong> (des « entrées »),</li>
+                <li style="margin:0 0 10px 0; text-align:left;">effectue des calculs,</li>
+                <li style="margin:0; text-align:left;">et <strong>renvoie</strong> un résultat grâce à <code>return</code>.</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Vocabulaire :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Définir</strong> une fonction : écrire <code>def nom(...):</code></li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Appeler</strong> une fonction : écrire <code>nom(valeur)</code></li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Paramètres</strong> : noms dans la définition (ex: <code>x</code>)</li>
+                <li style="margin:0; text-align:left;"><strong>Arguments</strong> : valeurs données à l’appel (ex: <code>5</code>)</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention : <code>return</code> ≠ <code>print</code></strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><code>print</code> <strong>affiche</strong> quelque chose à l’écran. <code>return</code> <strong>renvoie</strong> une valeur, que l’on peut ensuite utiliser dans un calcul.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Écrire et appeler une fonction simple (1 argument)</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple : la fonction carré</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple (définition + appel) :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">carre</span>(x):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> x $\ast$ x<br>
+                <br>
+                <span style="color:#50fa7b;">print</span>(carre(<span style="color:#bd93f9;">7</span>))
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ici, l’appel <code>carre(7)</code> renvoie <strong>49</strong>.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Méthode - Écrire une fonction :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Choisir un <strong>nom clair</strong> (ex: <code>carre</code>, <code>lancer_de</code>...).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Indiquer les <strong>paramètres</strong> dans les parenthèses.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Écrire les calculs (variables <strong>locales</strong> dans la fonction).</li>
+                <li style="margin:0; text-align:left;">Finir par <code>return</code> pour renvoyer le résultat.</li>
+            </ol>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Fonctions à plusieurs arguments</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple : image d’une fonction affine</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fonction à 3 arguments</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On veut calculer $\displaystyle f(x) = ax + b$. En Python, on peut écrire une fonction qui reçoit <strong>a</strong>, <strong>b</strong> et <strong>x</strong>.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">image_affine</span>(a, b, x):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> a $\ast$ x + b<br>
+                <br>
+                <span style="color:#6272a4;"># Exemple : f(x)=2x-3, calculer f(5)</span><br>
+                <span style="color:#50fa7b;">print</span>(image_affine(<span style="color:#bd93f9;">2</span>, <span style="color:#bd93f9;">-3</span>, <span style="color:#bd93f9;">5</span>))
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Le résultat attendu est $\displaystyle 2\times 5 - 3 = 7$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Remarque :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L’ordre des arguments compte : <code>image_affine(2, -3, 5)</code> n’est pas la même chose que <code>image_affine(5, 2, -3)</code>.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Lire, comprendre, modifier, compléter</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple : comprendre une fonction donnée</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Fonction donnée :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">mystere</span>(x):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;y = x + <span style="color:#bd93f9;">3</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;y = y $\ast$ <span style="color:#bd93f9;">2</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> y
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Question :</strong> que renvoie <code>mystere(5)</code> ?</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Réponse :</strong> on calcule $5+3=8$, puis $8\times 2=16$. La fonction renvoie <strong>16</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Formule correspondante : $\displaystyle f(x)=2(x+3)=2x+6$.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Exercice (compléter une fonction) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On veut une fonction qui renvoie le périmètre d’un rectangle de longueur <code>L</code> et largeur <code>l</code>.</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">perimetre_rectangle</span>(L, l):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># compléter ici</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#bd93f9;">2</span> $\ast$ (L + l)
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On doit obtenir $\displaystyle P = 2(L+l)$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Fonctions aléatoires : simuler une expérience</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple : lancer un dé</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fonction aléatoire</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une <strong>fonction aléatoire</strong> renvoie un résultat qui peut changer à chaque appel, même avec les mêmes arguments (voire sans argument).</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> random<br>
+                <br>
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">lancer_de</span>():<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> random.<span style="color:#50fa7b;">randint</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>)<br>
+                <br>
+                <span style="color:#50fa7b;">print</span>(lancer_de())<br>
+                <span style="color:#50fa7b;">print</span>(lancer_de())<br>
+                <span style="color:#50fa7b;">print</span>(lancer_de())
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Chaque appel à <code>lancer_de()</code> renvoie un entier entre 1 et 6.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Série statistique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si l’on répète <code>lancer_de()</code> un grand nombre de fois, on obtient une <strong>série de valeurs</strong> (une série statistique) sur laquelle on peut calculer une fréquence, une moyenne, etc.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Répéter des expériences indépendantes : fréquence et nombre de succès</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Exemple : pièce (0/1) et nombre de piles</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Fonctions :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> random<br>
+                <br>
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">piece</span>():<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># 0 = Face, 1 = Pile</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> random.<span style="color:#50fa7b;">randint</span>(<span style="color:#bd93f9;">0</span>, <span style="color:#bd93f9;">1</span>)<br>
+                <br>
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">nombre_piles </span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;compteur = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> piece() == <span style="color:#bd93f9;">1</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compteur = compteur + <span style="color:#bd93f9;">1</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> compteur
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Exploitation :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fréquence de « Pile » sur <code>n</code> lancers est :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:360px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f = \frac{\text{nombre_piles (n)}}{n}$</p>
+            </div>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Indépendance (idée) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On suppose que chaque appel à <code>piece()</code> représente un lancer « nouveau », sans influence du lancer précédent : on parle d’expériences <strong>indépendantes</strong>.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Lire et comprendre une fonction qui renvoie une moyenne et un écart type (sans listes)</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Statistiques d’une série simulée</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Objectif</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On simule <code>n</code> lancers de dé et on renvoie :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">la <strong>moyenne</strong> $\displaystyle m$ des valeurs obtenues,</li>
+                <li style="margin:0; text-align:left;">l’<strong>écart type</strong> $\displaystyle s$.</li>
+            </ul>
+        </div>
+
+        <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center;">
+            <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle m = \frac{\sum x_i}{n}\qquad V = \frac{\sum x_i^2}{n} - m^2\qquad s = \sqrt{V}$</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Fonction Python :</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> random<br>
+                <br>
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">stats_lancers_de</span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;somme = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;somme_carres = <span style="color:#bd93f9;">0</span><br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = random.<span style="color:#50fa7b;">randint</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;somme = somme + x<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;somme_carres = somme_carres + x $\ast$ x<br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;m = somme / n<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;variance = somme_carres / n - m $\ast$ m<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> variance &lt; <span style="color:#bd93f9;">0</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variance = <span style="color:#bd93f9;">0</span> <span style="color:#6272a4;"># protection contre les arrondis</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;s = variance ** <span style="color:#bd93f9;">0.5</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> (m, s)
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction renvoie un <strong>couple</strong> <code>(m, s)</code>. Exemple : <code>m, s = stats_lancers_de(1000)</code>.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>✅ Lecture guidée :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">La boucle répète l’expérience <code>n</code> fois : à chaque tour on crée une nouvelle valeur <code>x</code>.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">On ne stocke pas la série dans une liste : on garde seulement <code>somme</code> et <code>somme_carres</code>.</li>
+                <li style="margin:0; text-align:left;">À la fin, on calcule <code>m</code> puis <code>s</code> et on renvoie <code>(m, s)</code>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Synthèse : les indispensables</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+            <thead>
+                <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:45%;">Notion</th>
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:55%;">À retenir</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Définir</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px; font-family:monospace;">def nom(param): ... return ...</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Appeler</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px; font-family:monospace;">nom(valeur)</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Plusieurs arguments</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px; font-family:monospace;">nom(a, b, x)</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Aléatoire</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px; font-family:monospace;">random.randint(a, b)</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Répéter</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px; font-family:monospace;">for i in range(n): ...</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; padding:12px 16px;"><strong>Renvoyer plusieurs valeurs</strong></td>
+                    <td style="border:none; padding:12px 16px; font-family:monospace;">return (m, s)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>❌ Erreurs fréquentes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Oublier <code>return</code> (la fonction renvoie alors <code>None</code>).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Oublier les <strong>deux-points</strong> <code>:</code> après <code>def</code>.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Se tromper d’<strong>indentation</strong> (Python utilise l’indentation pour définir les blocs).</li>
+                <li style="margin:0; text-align:left;">Écrire <code>nom</code> au lieu de <code>nom(...)</code> : sans parenthèses, on n’appelle pas la fonction.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#eef2ff; border-radius:6px; border-left:6px solid #4d6df3; padding:15px; margin:12px 0;">
+        <p style="margin:0 0 8px 0; text-align:left; font-size:1em;"><strong>À suivre :</strong> ces outils sont réutilisés dans les chapitres <strong>Échantillonnage et simulation</strong> (fréquences) et <strong>Statistique descriptive</strong> (moyenne, écart type).</p>
+    </div>
+
+</div>
+
+===

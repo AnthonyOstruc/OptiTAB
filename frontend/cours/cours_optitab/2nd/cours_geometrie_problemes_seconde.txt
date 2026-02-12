@@ -1,530 +1,294 @@
-=== Résoudre des Problèmes de Géométrie - Programme Seconde
+﻿=== Résoudre des problèmes de géométrie - Programme Seconde
 Difficulté: medium
 Ordre: 5
+Images: projete_orthogonal.png, triangle_rectangle_trigo.png, optimisation_rectangle.png, loi_cosinus.png, formulaire_aires.png, formulaire_volumes.png, droites_remarquables_triangle.png
 
-Titre: Résoudre des Problèmes de Géométrie : Projeté Orthogonal, Calculs et Optimisation
-Description: Cours complet sur la résolution de problèmes de géométrie en seconde : projeté orthogonal, calculs de longueurs/angles/aires/volumes, problèmes d'optimisation, démonstrations (projeté orthogonal, relation trigonométrique), approfondissements (hauteurs, aire triangle, Al-Kashi, médiatrices).
+Titre: Résoudre des problèmes de géométrie
+Description: Cours de Seconde : projeté orthogonal (distance point-droite), méthodes de résolution sur triangles/quadrilatères/cercles, calculs de longueurs/angles/aires/volumes, optimisation simple ; démonstrations (projeté = point le plus proche, cos²+sin²=1) ; bonus (hauteurs concourantes, aire avec sin, Al-Kashi, centre du cercle circonscrit).
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
 
     <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
         <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
-        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections <strong>I à V</strong> ainsi que les démonstrations sont <strong>exigibles</strong> au programme de Seconde. Ces connaissances sont nécessaires pour les évaluations.</p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+            <li style="margin:0 0 10px 0; text-align:left;">Construire / utiliser le <strong>projeté orthogonal</strong> d’un point sur une droite ; interpréter la <strong>distance point-droite</strong>.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Résoudre des problèmes de géométrie plane (figures simples ou complexes) sur <strong>triangles</strong>, <strong>quadrilatères</strong>, <strong>cercles</strong>.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Calculer des <strong>longueurs</strong>, <strong>angles</strong>, <strong>aires</strong> et <strong>volumes</strong> avec des méthodes adaptées.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Traiter des problèmes d’<strong>optimisation</strong> (maximiser / minimiser une grandeur) dans des situations simples.</li>
+            <li style="margin:0; text-align:left;">Connaître les démonstrations : (1) le projeté orthogonal est le point le plus proche ; (2) $\displaystyle \cos^2(\alpha)+\sin^2(\alpha)=1$ dans un triangle rectangle.</li>
+        </ul>
     </div>
 
     <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
         <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
-        <p style="margin:8px 0; text-align:left; font-size:0.95em;">La section <strong>VI (approfondissements)</strong> est marquée comme <strong>bonus</strong> ou <strong>approfondissement</strong>. Elle enrichit votre culture mathématique mais n'est pas strictement exigible pour les évaluations.</p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Ce chapitre est un <strong>atelier d’outils</strong> : on apprend à choisir une stratégie (tracé auxiliaire, théorème) et à justifier. Les bonus (Al-Kashi, aire avec $\displaystyle \sin$, hauteurs concourantes, cercle circonscrit) enrichissent la culture et reviennent souvent dans des problèmes plus complets.</p>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Projeté orthogonal d'un point sur une droite</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Projeté orthogonal d’un point sur une droite</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Définition</h3>
+        <h3 style="color:#34495e; margin-top:0;">Définition et idée de distance</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
             <p style="text-align:left; font-size:1em;"><strong>Définition - Projeté orthogonal</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle M$ un point du plan et $\displaystyle \Delta$ une droite.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le <strong>projeté orthogonal</strong> du point $\displaystyle M$ sur la droite $\displaystyle \Delta$ est le point $\displaystyle H$ de $\displaystyle \Delta$ tel que la droite $\displaystyle (MH)$ est perpendiculaire à $\displaystyle \Delta$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On note : $\displaystyle H$ est le projeté orthogonal de $\displaystyle M$ sur $\displaystyle \Delta$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle M$ un point du plan et $\displaystyle \Delta$ une droite. Le <strong>projeté orthogonal</strong> de $\displaystyle M$ sur $\displaystyle \Delta$ est le point $\displaystyle H$ de $\displaystyle \Delta$ tel que :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle H\in\Delta \quad \text{et} \quad (MH)\perp\Delta$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>distance</strong> du point $\displaystyle M$ à la droite $\displaystyle \Delta$ est la longueur $\displaystyle MH$.</p>
         </div>
 
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Propriétés :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Le projeté orthogonal $\displaystyle H$ est l'unique point de $\displaystyle \Delta$ tel que $\displaystyle (MH) \perp \Delta$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">La distance de $\displaystyle M$ à $\displaystyle \Delta$ est la longueur $\displaystyle MH$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Si $\displaystyle M \in \Delta$, alors le projeté orthogonal de $\displaystyle M$ sur $\displaystyle \Delta$ est $\displaystyle M$ lui-même</li>
-                <li style="margin:0; text-align:left;">La distance de $\displaystyle M$ à $\displaystyle \Delta$ est la plus petite distance entre $\displaystyle M$ et un point de $\displaystyle \Delta$</li>
+        [IMAGE_1]
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>À retenir</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Le projeté orthogonal est <strong>unique</strong> (il n’y a qu’une perpendiculaire à une droite passant par un point donné).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle M\in\Delta$, alors son projeté orthogonal sur $\displaystyle \Delta$ est <strong>$\displaystyle M$</strong>.</li>
+                <li style="margin:0; text-align:left;">Une <strong>hauteur</strong> d’un triangle est un projeté orthogonal : c’est la perpendiculaire à un côté passant par le sommet.</li>
             </ul>
         </div>
-    </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Démonstration : Le projeté orthogonal est le point le plus proche</h3>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Théorème</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le projeté orthogonal $\displaystyle H$ du point $\displaystyle M$ sur une droite $\displaystyle \Delta$ est le point de $\displaystyle \Delta$ le plus proche du point $\displaystyle M$.</p>
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Construction (à la règle/équerre)</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Tracer la droite $\displaystyle \Delta$ et placer le point $\displaystyle M$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Tracer la droite passant par $\displaystyle M$ et <strong>perpendiculaire</strong> à $\displaystyle \Delta$.</li>
+                <li style="margin:0; text-align:left;">Le point d’intersection avec $\displaystyle \Delta$ est le projeté $\displaystyle H$.</li>
+            </ol>
         </div>
 
         <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Démonstration :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle M$ un point du plan, $\displaystyle \Delta$ une droite, et $\displaystyle H$ le projeté orthogonal de $\displaystyle M$ sur $\displaystyle \Delta$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle P$ un autre point de $\displaystyle \Delta$ (différent de $\displaystyle H$).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le triangle $\displaystyle MHP$ est rectangle en $\displaystyle H$ (car $\displaystyle (MH) \perp \Delta$).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">D'après le théorème de Pythagore : $\displaystyle MP^2 = MH^2 + HP^2$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle HP > 0$ (car $\displaystyle P \neq H$), on a : $\displaystyle MP^2 > MH^2$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle MP > MH$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Ainsi, pour tout point $\displaystyle P$ de $\displaystyle \Delta$ différent de $\displaystyle H$, on a $\displaystyle MP > MH$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle H$ est bien le point de $\displaystyle \Delta$ le plus proche de $\displaystyle M$. ✓</p>
+            <strong>Démonstration exigible :</strong> le projeté orthogonal est le point le plus proche
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle H$ le projeté orthogonal de $\displaystyle M$ sur $\displaystyle \Delta$. Pour tout point $\displaystyle P\in\Delta$, le triangle $\displaystyle MHP$ est rectangle en $\displaystyle H$, donc par Pythagore :</p>
+            <div style="background:#e0f2f1; border:3px solid #00897b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:560px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle MP^2 = MH^2 + HP^2 \ge MH^2$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle MP\ge MH$ : le point $\displaystyle H$ est bien le point de $\displaystyle \Delta$ <strong>le plus proche</strong> de $\displaystyle M$.</p>
         </div>
     </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Construction du projeté orthogonal</h3>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Trigonométrie (triangle rectangle) et identité</h2>
 
-        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
-            <strong>💡 Méthode pratique - Construction :</strong>
-            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Tracer la droite $\displaystyle \Delta$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Placer le point $\displaystyle M$</li>
-                <li style="margin:0 0 18px 0; text-align:left;">Tracer la perpendiculaire à $\displaystyle \Delta$ passant par $\displaystyle M$</li>
-                <li style="margin:0; text-align:left;">Le point d'intersection $\displaystyle H$ de cette perpendiculaire avec $\displaystyle \Delta$ est le projeté orthogonal</li>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définitions : $\displaystyle \sin$, $\displaystyle \cos$, $\displaystyle \tan$</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Triangle rectangle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle rectangle, pour un angle aigu $\displaystyle \alpha$ :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:620px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \sin(\alpha)=\frac{\text{opposé}}{\text{hypoténuse}}\quad;\quad \cos(\alpha)=\frac{\text{adjacent}}{\text{hypoténuse}}\quad;\quad \tan(\alpha)=\frac{\text{opposé}}{\text{adjacent}}$</p>
+            </div>
+        </div>
+
+        [IMAGE_2]
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle rectangle, si $\displaystyle \alpha=30^\circ$ et l’hypoténuse vaut 10, alors le côté opposé vaut $\displaystyle 10\sin(30^\circ)=5$.</p>
+        </div>
+
+        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
+            <strong>Démonstration exigible :</strong> $\displaystyle \cos^2(\alpha)+\sin^2(\alpha)=1$
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle rectangle, notons $\displaystyle a$ le côté adjacent à $\displaystyle \alpha$, $\displaystyle b$ le côté opposé, $\displaystyle c$ l’hypoténuse. Alors $\displaystyle \cos(\alpha)=\frac{a}{c}$ et $\displaystyle \sin(\alpha)=\frac{b}{c}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc :</p>
+            <div style="background:#e0f2f1; border:3px solid #00897b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:600px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \cos^2(\alpha)+\sin^2(\alpha)=\frac{a^2}{c^2}+\frac{b^2}{c^2}=\frac{a^2+b^2}{c^2}=1$ (par Pythagore)</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Calculer longueurs, angles, aires, volumes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Longueurs et angles : choisir l’outil</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Réflexe</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Repérer un <strong>triangle rectangle</strong> (ou le créer avec un projeté orthogonal).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Si tu as 2 longueurs : pense <strong>Pythagore</strong>.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Si tu as un angle + une longueur : pense <strong>sin/cos/tan</strong>.</li>
+                <li style="margin:0; text-align:left;">Si tu as des parallèles : pense <strong>Thalès</strong> (outil de collège, souvent utile).</li>
             </ol>
         </div>
 
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un repère orthonormé, si $\displaystyle \Delta$ a pour équation $\displaystyle y = 2x + 1$ et $\displaystyle M(3; 5)$, on peut calculer les coordonnées de $\displaystyle H$ en utilisant :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">Le coefficient directeur de la perpendiculaire à $\displaystyle \Delta$ est $\displaystyle -\frac{1}{2}$ (opposé de l'inverse de $\displaystyle 2$)</li>
-                <li style="margin:0 0 18px 0; text-align:left;">L'équation de la perpendiculaire passant par $\displaystyle M$ : $\displaystyle y - 5 = -\frac{1}{2}(x - 3)$</li>
-                <li style="margin:0; text-align:left;">Les coordonnées de $\displaystyle H$ sont obtenues en résolvant le système formé par les deux équations</li>
-            </ul>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Calculs de longueurs, angles, aires et volumes</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Calculs de longueurs</h3>
-
-        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
-            <strong>💡 Méthode pratique - Calculer des longueurs :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Théorème de Pythagore :</strong> Dans un triangle rectangle, $\displaystyle a^2 + b^2 = c^2$ où $\displaystyle c$ est l'hypoténuse</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Coordonnées :</strong> $\displaystyle AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$ dans un repère orthonormé</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Relations trigonométriques :</strong> Dans un triangle rectangle, $\displaystyle \sin(\alpha) = \frac{\text{opposé}}{\text{hypoténuse}}$, $\displaystyle \cos(\alpha) = \frac{\text{adjacent}}{\text{hypoténuse}}$, $\displaystyle \tan(\alpha) = \frac{\text{opposé}}{\text{adjacent}}$</li>
-                <li style="margin:0; text-align:left;"><strong>Théorème de Thalès :</strong> Pour calculer des longueurs dans des configurations de droites parallèles</li>
+            <strong>Boîte à outils (triangles / quadrilatères / cercles)</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Triangles</strong> : somme des angles = $\displaystyle 180^\circ$ ; hauteur = perpendiculaire (projection) ; Pythagore / trigonométrie si triangle rectangle.</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Quadrilatères</strong> : parallélogramme $\displaystyle \Rightarrow$ côtés opposés parallèles et égaux ; rectangle $\displaystyle \Rightarrow$ angles droits ; losange $\displaystyle \Rightarrow$ côtés égaux (souvent utile avec diagonales).</li>
+                <li style="margin:0; text-align:left;"><strong>Cercles</strong> : un rayon est perpendiculaire à la tangente au point de contact ; un angle qui intercepte un diamètre est droit (Thalès dans le cercle).</li>
             </ul>
         </div>
 
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Triangle rectangle</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle rectangle en $\displaystyle A$ avec $\displaystyle AB = 3$ cm et $\displaystyle AC = 4$ cm :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle BC^2 = AB^2 + AC^2 = 3^2 + 4^2 = 9 + 16 = 25$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle BC = \sqrt{25} = 5$ cm</p>
-            
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Avec les coordonnées</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle A(1; 2)$ et $\displaystyle B(4; 6)$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle AB = \sqrt{(4 - 1)^2 + (6 - 2)^2} = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5$</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Calculs d'angles</h3>
-
-        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
-            <strong>💡 Méthode pratique - Calculer des angles :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Triangle rectangle :</strong> Utiliser les fonctions trigonométriques inverses (arcsin, arccos, arctan)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Somme des angles :</strong> Dans un triangle, la somme des angles est égale à $\displaystyle 180°$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Angles complémentaires :</strong> Dans un triangle rectangle, les deux angles aigus sont complémentaires (somme = $\displaystyle 90°$)</li>
-                <li style="margin:0; text-align:left;"><strong>Angles opposés par le sommet :</strong> Ils sont égaux</li>
-            </ul>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle rectangle en $\displaystyle A$ avec $\displaystyle AB = 3$ cm et $\displaystyle BC = 5$ cm :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \sin(\widehat{ACB}) = \frac{AB}{BC} = \frac{3}{5} = 0,6$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \widehat{ACB} = \arcsin(0,6) \approx 36,87°$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Et $\displaystyle \widehat{ABC} = 90° - 36,87° = 53,13°$ (angles complémentaires)</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Calculs d'aires</h3>
+        <h3 style="color:#34495e; margin-top:18px;">Droites remarquables d’un triangle</h3>
 
         <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
-            <strong>💡 Propriétés - Formules d'aires</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Rectangle :</strong> $\displaystyle A = L \times l$ (longueur $\displaystyle \times$ largeur)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Triangle :</strong> $\displaystyle A = \frac{1}{2} \times \text{base} \times \text{hauteur}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Parallélogramme :</strong> $\displaystyle A = \text{base} \times \text{hauteur}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Trapèze :</strong> $\displaystyle A = \frac{1}{2} \times (\text{petite base} + \text{grande base}) \times \text{hauteur}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Cercle :</strong> $\displaystyle A = \pi r^2$ où $\displaystyle r$ est le rayon</li>
-                <li style="margin:0; text-align:left;"><strong>Disque :</strong> Même formule que le cercle</li>
-            </ul>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Triangle rectangle</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Triangle rectangle en $\displaystyle A$ avec $\displaystyle AB = 3$ cm et $\displaystyle AC = 4$ cm :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A = \frac{1}{2} \times AB \times AC = \frac{1}{2} \times 3 \times 4 = 6$ cm²</p>
-            
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Cercle</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Cercle de rayon $\displaystyle r = 5$ cm :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A = \pi \times 5^2 = 25\pi \approx 78,54$ cm²</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Calculs de volumes</h3>
-
-        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
-            <strong>💡 Propriétés - Formules de volumes</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Pavé droit (parallélépipède rectangle) :</strong> $\displaystyle V = L \times l \times h$ (longueur $\displaystyle \times$ largeur $\displaystyle \times$ hauteur)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Prisme droit :</strong> $\displaystyle V = \text{aire de la base} \times \text{hauteur}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Cylindre :</strong> $\displaystyle V = \pi r^2 h$ où $\displaystyle r$ est le rayon de la base et $\displaystyle h$ la hauteur</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Pyramide :</strong> $\displaystyle V = \frac{1}{3} \times \text{aire de la base} \times \text{hauteur}$</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Cône :</strong> $\displaystyle V = \frac{1}{3} \pi r^2 h$</li>
-                <li style="margin:0; text-align:left;"><strong>Sphère :</strong> $\displaystyle V = \frac{4}{3} \pi r^3$</li>
-            </ul>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Pavé droit</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Pavé de dimensions $\displaystyle 5$ cm $\displaystyle \times 3$ cm $\displaystyle \times 2$ cm :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle V = 5 \times 3 \times 2 = 30$ cm³</p>
-            
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Cylindre</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Cylindre de rayon $\displaystyle r = 3$ cm et de hauteur $\displaystyle h = 5$ cm :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle V = \pi \times 3^2 \times 5 = 45\pi \approx 141,37$ cm³</p>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Résoudre des problèmes de géométrie plane</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Méthode générale</h3>
-
-        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
-            <strong>💡 Méthode pratique - Résoudre un problème de géométrie :</strong>
-            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Lire attentivement</strong> l'énoncé et identifier les données</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Faire une figure</strong> claire et codée (marquer les angles droits, les longueurs égales, etc.)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Identifier</strong> les théorèmes et propriétés à utiliser (Pythagore, Thalès, trigonométrie, etc.)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Choisir</strong> la méthode adaptée (géométrie pure, coordonnées, vecteurs)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Rédiger</strong> la solution de manière claire et justifiée</li>
-                <li style="margin:0; text-align:left;"><strong>Vérifier</strong> la cohérence du résultat</li>
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>À connaître : 4 familles de droites</strong></p>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Hauteurs</strong> : droite passant par un sommet et <strong>perpendiculaire</strong> au côté opposé (ou à sa droite). Leur point de concours est l’<strong>orthocentre</strong> $\displaystyle H$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Médianes</strong> : droite passant par un sommet et le <strong>milieu</strong> du côté opposé. Leur point de concours est le <strong>centre de gravité</strong> $\displaystyle G$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Médiatrices</strong> : droite <strong>perpendiculaire</strong> à un côté et passant par son <strong>milieu</strong>. Leur point de concours est le <strong>centre du cercle circonscrit</strong> $\displaystyle O$.</li>
+                <li style="margin:0; text-align:left;"><strong>Bissectrices</strong> : droite qui partage un angle en deux angles égaux. Leur point de concours est le <strong>centre du cercle inscrit</strong> (incentre) $\displaystyle I$.</li>
             </ol>
+            <p style="margin:8px 0 0 0; text-align:left; font-size:0.95em; color:#7f8c8d;"><em>Remarque : une hauteur se construit avec une perpendiculaire, donc c’est lié au projeté orthogonal (section I).</em></p>
         </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Propriétés très pratiques</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Sur une médiane</strong> : $\displaystyle G$ partage la médiane dans le rapport $\displaystyle 2:1$ (du sommet vers le milieu). Par exemple, si $\displaystyle M$ est le milieu de $\displaystyle [BC]$, alors $\displaystyle \frac{AG}{GM}=2$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Sur une médiatrice</strong> : un point $\displaystyle X$ est sur la médiatrice de $\displaystyle [AB]$ <strong>ssi</strong> $\displaystyle XA=XB$ (et alors $\displaystyle X$ peut être le centre d’un cercle passant par $\displaystyle A$ et $\displaystyle B$).</li>
+                <li style="margin:0; text-align:left;"><strong>Sur une bissectrice</strong> : un point $\displaystyle X$ est sur la bissectrice d’un angle <strong>ssi</strong> il est à la même distance des deux côtés de l’angle (utile pour construire l’incentre).</li>
+            </ul>
+        </div>
+
+        [IMAGE_7]
+
+        <h3 style="color:#34495e; margin-top:18px;">Aires (plan)</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Aire d’un triangle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si une base vaut $\displaystyle b$ et la hauteur correspondante vaut $\displaystyle h$ :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:420px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \mathcal{A}=\frac{b\times h}{2}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Souvent, $\displaystyle h$ se trouve avec un <strong>projeté orthogonal</strong> (hauteur).</p>
+        </div>
+
+        [IMAGE_5]
+
+        <h3 style="color:#34495e; margin-top:18px;">Volumes (rappels utiles)</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Principe commun</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour un prisme ou un cylindre :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle V=\text{aire de la base}\times\text{hauteur}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour une pyramide ou un cône : $\displaystyle V=\frac{1}{3}\times\text{aire de la base}\times\text{hauteur}$.</p>
+        </div>
+
+        [IMAGE_6]
     </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Problèmes avec des triangles</h3>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Calculer la hauteur d'un triangle équilatéral</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit un triangle équilatéral $\displaystyle ABC$ de côté $\displaystyle a = 6$ cm.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La hauteur $\displaystyle h$ issue de $\displaystyle A$ partage le côté $\displaystyle [BC]$ en deux segments égaux.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans le triangle rectangle $\displaystyle ABH$ (avec $\displaystyle H$ milieu de $\displaystyle [BC]$) :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle h^2 = AB^2 - BH^2 = a^2 - \left(\frac{a}{2}\right)^2 = a^2 - \frac{a^2}{4} = \frac{3a^2}{4}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle h = a\frac{\sqrt{3}}{2} = 6 \times \frac{\sqrt{3}}{2} = 3\sqrt{3}$ cm</p>
-            
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Calculer l'aire d'un triangle quelconque</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Triangle $\displaystyle ABC$ avec $\displaystyle AB = 5$ cm, $\displaystyle AC = 7$ cm et $\displaystyle \widehat{BAC} = 60°$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On trace la hauteur $\displaystyle [AH]$ issue de $\displaystyle A$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans le triangle rectangle $\displaystyle ABH$ : $\displaystyle AH = AB \times \sin(60°) = 5 \times \frac{\sqrt{3}}{2} = \frac{5\sqrt{3}}{2}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Aire : $\displaystyle A = \frac{1}{2} \times AC \times AH = \frac{1}{2} \times 7 \times \frac{5\sqrt{3}}{2} = \frac{35\sqrt{3}}{4}$ cm²</p>
-        </div>
-    </div>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Problèmes d’optimisation (niveau Seconde)</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Problèmes avec des quadrilatères</h3>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Calculer l'aire d'un parallélogramme</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Parallélogramme $\displaystyle ABCD$ avec $\displaystyle AB = 8$ cm et la hauteur relative à $\displaystyle [AB]$ égale à $\displaystyle 5$ cm.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Aire : $\displaystyle A = AB \times h = 8 \times 5 = 40$ cm²</p>
-            
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Calculer les diagonales d'un rectangle</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Rectangle de longueur $\displaystyle L = 12$ cm et de largeur $\displaystyle l = 5$ cm.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les diagonales sont égales. Par Pythagore : $\displaystyle d^2 = L^2 + l^2 = 12^2 + 5^2 = 144 + 25 = 169$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle d = \sqrt{169} = 13$ cm</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Problèmes avec des cercles</h3>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemples :</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 1 :</strong> Calculer le périmètre et l'aire d'un cercle</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Cercle de rayon $\displaystyle r = 4$ cm :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Périmètre : $\displaystyle P = 2\pi r = 2\pi \times 4 = 8\pi \approx 25,13$ cm</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Aire : $\displaystyle A = \pi r^2 = \pi \times 4^2 = 16\pi \approx 50,27$ cm²</p>
-            
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Exemple 2 :</strong> Calculer l'aire d'un secteur circulaire</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Secteur d'angle $\displaystyle \alpha = 60°$ dans un cercle de rayon $\displaystyle r = 5$ cm :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Aire : $\displaystyle A = \frac{\alpha}{360} \times \pi r^2 = \frac{60}{360} \times \pi \times 5^2 = \frac{1}{6} \times 25\pi = \frac{25\pi}{6}$ cm²</p>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Problèmes d'optimisation</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Méthode générale</h3>
-
-        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
-            <strong>💡 Méthode pratique - Résoudre un problème d'optimisation :</strong>
-            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Identifier</strong> la grandeur à optimiser (maximiser ou minimiser)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Exprimer</strong> cette grandeur en fonction d'une variable (souvent notée $\displaystyle x$)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Déterminer</strong> l'intervalle de variation de la variable (contraintes du problème)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Étudier</strong> la fonction obtenue (variations, extremums)</li>
-                <li style="margin:0 0 18px 0; text-align:left;"><strong>Conclure</strong> en donnant la valeur optimale et les conditions correspondantes</li>
-                <li style="margin:0; text-align:left;"><strong>Vérifier</strong> que la solution respecte toutes les contraintes</li>
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Méthode</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Choisir une variable $\displaystyle x$ (ce qui peut varier).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Exprimer la grandeur à optimiser (aire, distance, volume) sous forme d’une <strong>fonction</strong> $\displaystyle f(x)$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Donner l’<strong>intervalle</strong> des valeurs possibles de $\displaystyle x$.</li>
+                <li style="margin:0; text-align:left;">Étudier $\displaystyle f$ (parabole, variations, tableau) et conclure.</li>
             </ol>
         </div>
 
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On veut construire un rectangle d'aire maximale avec un périmètre fixe de $\displaystyle 20$ cm.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Modélisation :</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle x$ la longueur du rectangle (en cm). Le périmètre est $\displaystyle 20$, donc la largeur est $\displaystyle \frac{20 - 2x}{2} = 10 - x$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">L'aire est : $\displaystyle A(x) = x(10 - x) = 10x - x^2$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Contraintes : $\displaystyle 0 < x < 10$ (car longueur et largeur positives)</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction $\displaystyle A(x) = -x^2 + 10x$ est une fonction du second degré qui atteint son maximum en $\displaystyle x = \frac{-10}{2 \times (-1)} = 5$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle x = 5$ cm et la largeur est $\displaystyle 10 - 5 = 5$ cm.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">L'aire maximale est $\displaystyle A(5) = 5 \times 5 = 25$ cm². Le rectangle optimal est un carré. ✓</p>
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Exemple classique : aire maximale d’un rectangle de périmètre fixé</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si le périmètre vaut $\displaystyle P$, et si les côtés valent $\displaystyle x$ et $\displaystyle y$, alors $\displaystyle 2(x+y)=P$, donc $\displaystyle y=\frac{P}{2}-x$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L’aire vaut :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:560px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \mathcal{A}(x)=x\left(\frac{P}{2}-x\right)=-x^2+\frac{P}{2}x$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C’est une parabole « vers le bas » : le maximum est atteint au sommet, pour $\displaystyle x=\frac{P}{4}$, donc $\displaystyle x=y$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Conclusion : à périmètre fixé, l’aire maximale est obtenue pour un <strong>carré</strong>.</p>
+        </div>
+
+        [IMAGE_3]
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Erreur classique :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Oublier les contraintes sur $\displaystyle x$ (ex : $\displaystyle x&gt;0$ et $\displaystyle y&gt;0$ donc $\displaystyle 0&lt;x&lt;\frac{P}{2}$).</p>
         </div>
     </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Exemples d'optimisation</h3>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 1 : Optimisation d'une aire</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">On veut découper un carré de côté $\displaystyle 10$ cm pour former une boîte sans couvercle. On découpe des carrés de côté $\displaystyle x$ aux quatre coins.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les dimensions de la base sont : $\displaystyle (10 - 2x)$ cm $\displaystyle \times (10 - 2x)$ cm</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La hauteur est : $\displaystyle x$ cm</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le volume est : $\displaystyle V(x) = x(10 - 2x)^2 = x(100 - 40x + 4x^2) = 100x - 40x^2 + 4x^3$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Contraintes : $\displaystyle 0 < x < 5$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On étudie la fonction $\displaystyle V$ pour trouver le maximum (dérivée, tableau de variations).</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple 2 : Optimisation d'une distance</strong>
-            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Un point $\displaystyle M$ se déplace sur le segment $\displaystyle [AB]$ de longueur $\displaystyle 10$ cm. On cherche la position de $\displaystyle M$ qui minimise la somme des distances $\displaystyle AM + MB$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle M$ est sur $\displaystyle [AB]$, alors $\displaystyle AM + MB = AB = 10$ cm (constante).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Toute position de $\displaystyle M$ sur $\displaystyle [AB]$ donne la même somme minimale.</p>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Démonstration : Relation trigonométrique fondamentale</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Synthèse : formules clés et pièges</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Relation cos²(α) + sin²(α) = 1</h3>
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+            <thead>
+                <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:45%;">Notion</th>
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:55%;">Formule / idée</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Projeté orthogonal</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle H\in\Delta$ et $\displaystyle (MH)\perp\Delta$ ; distance point-droite = $\displaystyle MH$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Point le plus proche</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle MP^2=MH^2+HP^2\ge MH^2$ donc $\displaystyle MP\ge MH$</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Trigonométrie</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle \sin=\frac{\text{opp}}{\text{hyp}}$, $\displaystyle \cos=\frac{\text{adj}}{\text{hyp}}$, $\displaystyle \tan=\frac{\text{opp}}{\text{adj}}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Identité</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle \cos^2(\alpha)+\sin^2(\alpha)=1$</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Aire triangle</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle \mathcal{A}=\frac{bh}{2}$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; padding:12px 16px;"><strong>Optimisation</strong></td>
+                    <td style="border:none; padding:12px 16px;">Choisir $\displaystyle x$, écrire $\displaystyle f(x)$, donner le domaine, étudier et conclure</td>
+                </tr>
+            </tbody>
+        </table>
 
         <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Théorème - Relation trigonométrique fondamentale</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle rectangle, pour tout angle aigu $\displaystyle \alpha$ :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
-                $\displaystyle \cos^2(\alpha) + \sin^2(\alpha) = 1$
+            <strong>❌ Erreurs fréquentes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Confondre <strong>distance</strong> à une droite et une longueur quelconque sur la figure : la distance est <strong>perpendiculaire</strong>.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Prendre $\displaystyle \sin$ et $\displaystyle \cos$ à l’envers (toujours repérer <strong>opposé / adjacent / hypoténuse</strong> par rapport à l’angle).</li>
+                <li style="margin:0; text-align:left;">En optimisation : oublier le <strong>domaine</strong> des valeurs possibles.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Bonus : résultats utiles (approfondissements)</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>⭐ Aire avec un angle</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle, si deux côtés valent $\displaystyle a$ et $\displaystyle b$ et l’angle compris vaut $\displaystyle C$ :</p>
+            <div style="background:#fef3c7; border:3px solid #f59e0b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \mathcal{A}=\frac{ab\sin(C)}{2}$</p>
             </div>
         </div>
 
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Démonstration :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit un triangle rectangle $\displaystyle ABC$ rectangle en $\displaystyle A$, et soit $\displaystyle \alpha = \widehat{ABC}$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans ce triangle :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \sin(\alpha) = \frac{AC}{BC}$ (côté opposé sur hypoténuse)</li>
-                <li style="margin:0 0 18px 0; text-align:left;">$\displaystyle \cos(\alpha) = \frac{AB}{BC}$ (côté adjacent sur hypoténuse)</li>
-            </ul>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On a donc :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos^2(\alpha) + \sin^2(\alpha) = \left(\frac{AB}{BC}\right)^2 + \left(\frac{AC}{BC}\right)^2 = \frac{AB^2}{BC^2} + \frac{AC^2}{BC^2} = \frac{AB^2 + AC^2}{BC^2}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">D'après le théorème de Pythagore dans le triangle rectangle $\displaystyle ABC$ :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle AB^2 + AC^2 = BC^2$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc : $\displaystyle \cos^2(\alpha) + \sin^2(\alpha) = \frac{BC^2}{BC^2} = 1$ ✓</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple numérique :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour $\displaystyle \alpha = 30°$ :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos(30°) = \frac{\sqrt{3}}{2}$ et $\displaystyle \sin(30°) = \frac{1}{2}$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \cos^2(30°) + \sin^2(30°) = \left(\frac{\sqrt{3}}{2}\right)^2 + \left(\frac{1}{2}\right)^2 = \frac{3}{4} + \frac{1}{4} = 1$ ✓</p>
-        </div>
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #f59e0b; padding-bottom:8px;">🌟 VI. Approfondissements (bonus)</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Hauteurs d'un triangle concourantes</h3>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Théorème</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les trois hauteurs d'un triangle sont concourantes (se coupent en un même point).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Ce point de concours est appelé <strong>orthocentre</strong> du triangle.</p>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Démonstration (idée) :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit un triangle $\displaystyle ABC$ et ses trois hauteurs $\displaystyle (AA')$, $\displaystyle (BB')$ et $\displaystyle (CC')$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut montrer que les trois hauteurs se coupent en un même point en utilisant les propriétés des triangles et les relations d'orthogonalité.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Une méthode consiste à construire le triangle formé par les trois droites parallèles aux côtés passant par les sommets opposés, et à utiliser les propriétés de ce triangle auxiliaire.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">L'orthocentre $\displaystyle H$ vérifie : $\displaystyle H$ est le point d'intersection des trois hauteurs.</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Remarque :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle rectangle, l'orthocentre est le sommet de l'angle droit.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle obtusangle, l'orthocentre est à l'extérieur du triangle.</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Expression de l'aire d'un triangle : $\frac{1}{2}ab\sin(C)$</h3>
-
-        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
-            <strong>💡 Propriété - Aire d'un triangle avec sinus</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle $\displaystyle ABC$, si on note $\displaystyle a = BC$, $\displaystyle b = AC$ et $\displaystyle C = \widehat{ACB}$, alors l'aire du triangle est :</p>
-            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:300px; font-weight:bold;">
-                $\displaystyle A = \frac{1}{2}ab\sin(C)$
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>⭐ Formule d’Al-Kashi (loi des cosinus)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle $\displaystyle ABC$ ($\displaystyle a=BC$, $\displaystyle b=AC$, $\displaystyle c=AB$) :</p>
+            <div style="background:#fef3c7; border:3px solid #f59e0b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:620px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle c^2=a^2+b^2-2ab\cos(C)$</p>
             </div>
         </div>
 
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Justification :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle H$ le pied de la hauteur issue de $\displaystyle A$ sur $\displaystyle [BC]$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans le triangle rectangle $\displaystyle AHC$ : $\displaystyle AH = AC \times \sin(C) = b\sin(C)$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">L'aire du triangle est : $\displaystyle A = \frac{1}{2} \times BC \times AH = \frac{1}{2} \times a \times b\sin(C) = \frac{1}{2}ab\sin(C)$ ✓</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Triangle $\displaystyle ABC$ avec $\displaystyle AB = 5$ cm, $\displaystyle AC = 7$ cm et $\displaystyle \widehat{BAC} = 60°$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Aire : $\displaystyle A = \frac{1}{2} \times 5 \times 7 \times \sin(60°) = \frac{1}{2} \times 35 \times \frac{\sqrt{3}}{2} = \frac{35\sqrt{3}}{4}$ cm²</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Formule d'Al-Kashi</h3>
+        [IMAGE_4]
 
         <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
-            <strong>💡 Propriété - Formule d'Al-Kashi (théorème de Pythagore généralisé)</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle $\displaystyle ABC$, si on note $\displaystyle a = BC$, $\displaystyle b = AC$, $\displaystyle c = AB$ et $\displaystyle C = \widehat{ACB}$, alors :</p>
-            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px; font-weight:bold;">
-                $\displaystyle c^2 = a^2 + b^2 - 2ab\cos(C)$
-            </div>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Cette formule généralise le théorème de Pythagore : si $\displaystyle C = 90°$, alors $\displaystyle \cos(90°) = 0$ et on retrouve $\displaystyle c^2 = a^2 + b^2$.</p>
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>⭐ Cercle circonscrit et médiatrices</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les <strong>médiatrices</strong> des côtés d’un triangle sont concourantes. Leur point d’intersection est le <strong>centre du cercle circonscrit</strong> (il est à égale distance des 3 sommets).</p>
         </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Triangle $\displaystyle ABC$ avec $\displaystyle AC = 5$ cm, $\displaystyle BC = 7$ cm et $\displaystyle \widehat{ACB} = 60°$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Calculer $\displaystyle AB$ :</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle AB^2 = 5^2 + 7^2 - 2 \times 5 \times 7 \times \cos(60°)$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle = 25 + 49 - 70 \times \frac{1}{2} = 74 - 35 = 39$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle AB = \sqrt{39} \approx 6,24$ cm</p>
-        </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Point de concours des médiatrices</h3>
 
         <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
-            <strong>💡 Propriété - Centre du cercle circonscrit</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Les trois médiatrices d'un triangle sont concourantes.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le point de concours des médiatrices est le <strong>centre du cercle circonscrit</strong> au triangle (cercle passant par les trois sommets).</p>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Justification :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle O$ le point d'intersection des médiatrices de $\displaystyle [AB]$ et $\displaystyle [AC]$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle O$ est sur la médiatrice de $\displaystyle [AB]$, on a $\displaystyle OA = OB$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle O$ est sur la médiatrice de $\displaystyle [AC]$, on a $\displaystyle OA = OC$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle OA = OB = OC$, ce qui signifie que $\displaystyle O$ est équidistant des trois sommets.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le cercle de centre $\displaystyle O$ et de rayon $\displaystyle OA$ passe donc par $\displaystyle A$, $\displaystyle B$ et $\displaystyle C$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">De plus, $\displaystyle O$ appartient aussi à la médiatrice de $\displaystyle [BC]$ (car $\displaystyle OB = OC$), donc les trois médiatrices sont concourantes en $\displaystyle O$. ✓</p>
-        </div>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <strong>Exemple :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle rectangle, le centre du cercle circonscrit est le milieu de l'hypoténuse.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dans un triangle équilatéral, le centre du cercle circonscrit coïncide avec le centre de gravité, l'orthocentre et le centre du cercle inscrit.</p>
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>⭐ Hauteurs concourantes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les 3 hauteurs d’un triangle sont concourantes en un point appelé <strong>orthocentre</strong>. (Résultat classique, souvent prouvé en géométrie.)</p>
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Conseils méthodologiques</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
-
-        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>✅ Conseils pratiques :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
-                <li style="margin:0; text-align:left;"><strong>Figure :</strong> Toujours faire une figure claire, codée et à l'échelle si possible</li>
-                <li style="margin:0; text-align:left;"><strong>Projeté orthogonal :</strong> C'est le point de la droite le plus proche, utiliser Pythagore pour calculer la distance</li>
-                <li style="margin:0; text-align:left;"><strong>Théorèmes :</strong> Identifier rapidement quel théorème utiliser (Pythagore, Thalès, trigonométrie)</li>
-                <li style="margin:0; text-align:left;"><strong>Coordonnées :</strong> Utiliser un repère orthonormé pour faciliter les calculs de distances et d'aires</li>
-                <li style="margin:0; text-align:left;"><strong>Optimisation :</strong> Modéliser le problème par une fonction, déterminer son domaine de définition, étudier ses variations</li>
-                <li style="margin:0; text-align:left;"><strong>Vérification :</strong> Toujours vérifier que les résultats sont cohérents (longueurs positives, angles entre 0° et 180°, etc.)</li>
-                <li style="margin:0; text-align:left;"><strong>Unités :</strong> Attention aux unités (cm, m, cm², m², cm³, m³) et aux conversions</li>
-            </ul>
-        </div>
-
-        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
-                <li style="margin:0; text-align:left;"><strong>Pythagore :</strong> Ne s'applique que dans un triangle rectangle, vérifier l'angle droit avant d'utiliser</li>
-                <li style="margin:0; text-align:left;"><strong>Trigonométrie :</strong> Vérifier que la calculatrice est en mode degrés (et non radians) pour les angles</li>
-                <li style="margin:0; text-align:left;"><strong>Projeté orthogonal :</strong> Ne pas confondre avec la projection parallèle</li>
-                <li style="margin:0; text-align:left;"><strong>Aires :</strong> Ne pas oublier le facteur $\displaystyle \frac{1}{2}$ dans la formule de l'aire d'un triangle</li>
-                <li style="margin:0; text-align:left;"><strong>Volumes :</strong> Ne pas oublier le facteur $\displaystyle \frac{1}{3}$ pour les pyramides et cônes</li>
-                <li style="margin:0; text-align:left;"><strong>Optimisation :</strong> Vérifier que la solution trouvée respecte toutes les contraintes du problème</li>
-                <li style="margin:0; text-align:left;"><strong>Relation trigonométrique :</strong> $\displaystyle \cos^2(\alpha) + \sin^2(\alpha) = 1$ est valable pour tout angle, pas seulement dans un triangle rectangle</li>
-                <li style="margin:0; text-align:left;"><strong>Hauteur d'un triangle :</strong> Ne pas confondre avec la médiane ou la bissectrice</li>
-            </ul>
-        </div>
-
-        <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>📐 Récapitulatif - Formules essentielles à retenir</strong>
-            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-                <thead>
-                    <tr style="background:#3498db; color:white;">
-                        <th style="border:1px solid #ddd; padding:12px; width:40%;">Notion</th>
-                        <th style="border:1px solid #ddd; padding:12px;">Formule ou Propriété</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Pythagore</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">Dans un triangle rectangle : $\displaystyle a^2 + b^2 = c^2$ (c = hypoténuse)</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Distance</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle AB = \sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Aire triangle</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle A = \frac{1}{2} \times \text{base} \times \text{hauteur}$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Aire cercle</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle A = \pi r^2$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Volume cylindre</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V = \pi r^2 h$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Volume sphère</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V = \frac{4}{3}\pi r^3$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Relation trigonométrique</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \cos^2(\alpha) + \sin^2(\alpha) = 1$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Projeté orthogonal</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">Point de la droite le plus proche du point donné</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div style="background:#eef2ff; border-radius:6px; border-left:6px solid #4d6df3; padding:15px; margin:12px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>À suivre :</strong> ces outils servent dans les chapitres sur les <strong>vecteurs</strong> (hauteurs, distances) et sur les <strong>fonctions</strong> (optimisation).</p>
     </div>
 
 </div>
 
 ===
-

@@ -1,0 +1,409 @@
+=== Modéliser le hasard, calculer des probabilités - Programme Seconde
+Difficulté: medium
+Ordre: 14
+
+Titre: Modéliser le hasard, calculer des probabilités
+Description: Cours de Seconde sur les probabilités dans un univers fini : issues, événements, union/intersection/complémentaire, loi de probabilité, inclusion-exclusion, dénombrement par tableaux/arbres, et distinction modèle théorique vs fréquences observées.
+
+<div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
+    <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+            <li style="margin:0 0 10px 0; text-align:left;">Décrire une expérience aléatoire dans un <strong>univers fini</strong> $\displaystyle \Omega$.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Définir des <strong>événements</strong> et utiliser les opérations : $\displaystyle \cup$, $\displaystyle \cap$, $\displaystyle A^c$.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Utiliser une <strong>loi de probabilité</strong> et calculer $\displaystyle P(A)$ comme <strong>somme</strong> des probabilités des issues de $A$.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Appliquer la relation $\displaystyle P(A\cup B) + P(A\cap B) = P(A)+P(B)$.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Calculer des probabilités dans des cas simples (2 ou 3 épreuves) en s’aidant d’un <strong>tableau</strong> ou d’un <strong>arbre</strong>.</li>
+            <li style="margin:0; text-align:left;">Comprendre la différence entre <strong>modèle théorique</strong> (a priori) et <strong>fréquences observées</strong> (a posteriori).</li>
+        </ul>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Une probabilité n’est pas « la réalité » : c’est un <strong>modèle</strong> (une manière de représenter le hasard). Dans la vie, on estime souvent des probabilités à partir de <strong>fréquences</strong> (données, sondages, essais). En informatique, on simule le hasard avec des générateurs <em>pseudo</em>-aléatoires.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Expérience aléatoire, univers $\Omega$, issues et événements</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Vocabulaire de base</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définitions</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Expérience aléatoire</strong> : expérience dont on ne peut pas prévoir à coup sûr le résultat.</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Issue</strong> : résultat possible de l’expérience.</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Univers</strong> (ou ensemble des issues) : ensemble $\displaystyle \Omega$ qui contient <strong>toutes</strong> les issues possibles.</li>
+                <li style="margin:0; text-align:left;"><strong>Événement</strong> : sous-ensemble de $\Omega$ (un « groupe d’issues »).</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Événements particuliers</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Événement certain</strong> : $\Omega$ (il se réalise toujours).</li>
+                <li style="margin:0; text-align:left;"><strong>Événement impossible</strong> : $\varnothing$ (il ne se réalise jamais).</li>
+            </ul>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 1 (dé équilibré à 6 faces) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance un dé équilibré à 6 faces :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle \Omega=\{1,2,3,4,5,6\}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Événement $\displaystyle A$ : « obtenir un nombre pair » $\Rightarrow \displaystyle A=\{2,4,6\}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple 2 (tirage au sort dans une population) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On choisit au hasard un élève dans un lycée. Chaque élève a la même chance d’être choisi : on parle d’<strong>équiprobabilité</strong> (dans le modèle).</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Réunion, intersection, complémentaire</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Traduire « ou », « et », « pas »</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définitions</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Réunion</strong> $\displaystyle A\cup B$ : « <strong>A ou B</strong> » (au moins l’un des deux).</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Intersection</strong> $\displaystyle A\cap B$ : « <strong>A et B</strong> » (les deux en même temps).</li>
+                <li style="margin:0; text-align:left;"><strong>Complémentaire</strong> $\displaystyle A^c$ : « <strong>non A</strong> » (tout ce qui n’est pas dans $A$).</li>
+            </ul>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En probabilités, « <strong>ou</strong> » est <strong>inclusif</strong> : « A ou B » signifie « A, ou B, ou les deux ».</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple (dé) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A=\{2,4,6\}$ (pair) et $\displaystyle B=\{4,5,6\}$ (au moins 4).</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle A\cap B=\{4,6\}$ (pair <em>et</em> au moins 4)</li>
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle A\cup B=\{2,4,5,6\}$ (pair <em>ou</em> au moins 4)</li>
+                <li style="margin:0; text-align:left;">$\displaystyle A^c=\{1,3,5\}$ (non pair)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Loi de probabilité et probabilité d’un événement</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Définir une probabilité sur un univers fini</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Loi de probabilité (univers fini)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donner une loi de probabilité sur $\Omega$, c’est associer à chaque issue $\displaystyle \omega$ un nombre $\displaystyle P(\{\omega\})$ tel que :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(\{\omega\})\ge 0 \quad \text{et} \quad \sum_{\omega\in\Omega} P(\{\omega\}) = 1$</p>
+            </div>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Probabilité d’un événement</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $A$ est un événement, alors :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(A)=\sum_{\omega\in A} P(\{\omega\})$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En particulier : $\displaystyle P(\Omega)=1$ et $\displaystyle P(\varnothing)=0$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété (complémentaire)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$A$ et $A^c$ se partagent l’univers :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(A^c)=1-P(A)$</p>
+            </div>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Cas très fréquent : l’équiprobabilité</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si toutes les issues ont la même probabilité (dé équilibré à 6 faces, pièce équilibrée, tirage au sort dans une population…), alors :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(A)=\frac{|A|}{|\Omega|}$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple (dé équilibré à 6 faces) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A=\{2,4,6\}$ donc $|A|=3$ et $|\Omega|=6$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(A)=\frac{3}{6}=\frac{1}{2}$.</p>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple (loi non équiprobable) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une urne contient 1 boule rouge, 2 boules bleues et 1 boule verte. On tire une boule au hasard.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Version 1 (issues = couleurs) :</strong> On définit $\Omega=\{\text{R},\text{B},\text{V}\}$. Les trois issues ne sont <strong>pas équiprobables</strong> car il y a 2 boules bleues sur 4 au total. La loi de probabilité est :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(\{\text{R}\})=\frac{1}{4}$, $\displaystyle P(\{\text{B}\})=\frac{2}{4}$, $\displaystyle P(\{\text{V}\})=\frac{1}{4}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle P(\text{« pas rouge »}) = P(\{\text{B}\}) + P(\{\text{V}\}) = \frac{2}{4}+\frac{1}{4}=\frac{3}{4}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Version 2 (issues = boules) :</strong> On peut aussi noter $\Omega=\{\text{R},\text{B}_1,\text{B}_2,\text{V}\}$ (4 boules équiprobables). L'événement « bleu » est $\{\text{B}_1,\text{B}_2\}$ donc $\displaystyle P(\text{bleu})=\frac{2}{4}$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. La formule $P(A\cup B)+P(A\cap B)=P(A)+P(B)$</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Inclusion-exclusion (cas de deux événements)</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Propriété</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour deux événements $A$ et $B$ :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:620px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(A\cup B)=P(A)+P(B)-P(A\cap B)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C’est équivalent à : $\displaystyle P(A\cup B)+P(A\cap B)=P(A)+P(B)$.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Cas particulier : événements incompatibles</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle A\cap B=\varnothing$ (ils ne peuvent pas arriver en même temps), alors :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle P(A\cup B)=P(A)+P(B)$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple (dé équilibré à 6 faces) :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$A$ : « nombre pair » $\Rightarrow \displaystyle P(A)=\frac{3}{6}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$B$ : « multiple de 3 » (3 ou 6) $\Rightarrow \displaystyle P(B)=\frac{2}{6}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle A\cap B=\{6\}$ donc $\displaystyle P(A\cap B)=\frac{1}{6}$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Alors $\displaystyle P(A\cup B)=\frac{3}{6}+\frac{2}{6}-\frac{1}{6}=\frac{4}{6}=\frac{2}{3}$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Dénombrement avec tableaux et arbres</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Méthode en cas d’équiprobabilité : compter</h3>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Méthode (univers fini équiprobable)</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Lister (ou compter) toutes les issues de $\Omega$ $\Rightarrow$ trouver $\displaystyle |\Omega|$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Compter les issues favorables à l’événement $A$ $\Rightarrow$ trouver $\displaystyle |A|$.</li>
+                <li style="margin:0; text-align:left;">Calculer $\displaystyle P(A)=\frac{|A|}{|\Omega|}$.</li>
+            </ol>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:18px;">1) Tableau à double entrée (ex : deux dés)</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple : somme de deux dés</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On lance deux dés équilibrés : un « rouge » et un « bleu ». Une issue est un couple $(r,b)$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Univers : $\displaystyle |\Omega|=6\times 6=36$ issues équiprobables.</p>
+
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;"><strong>Tableau des sommes</strong> (cellules vertes : somme 7)</p>
+            <div style="overflow-x:auto; background:#ffffff; border:1px solid #e1e8ed; border-radius:8px; padding:10px;">
+                <table style="border-collapse:collapse; width:100%; min-width:520px; font-size:0.95em;">
+                    <thead>
+                        <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+                            <th style="padding:10px; text-align:center; border:1px solid #ffffff;">Rouge \\ Bleu</th>
+                            <th style="padding:10px; text-align:center; border:1px solid #ffffff;">1</th>
+                            <th style="padding:10px; text-align:center; border:1px solid #ffffff;">2</th>
+                            <th style="padding:10px; text-align:center; border:1px solid #ffffff;">3</th>
+                            <th style="padding:10px; text-align:center; border:1px solid #ffffff;">4</th>
+                            <th style="padding:10px; text-align:center; border:1px solid #ffffff;">5</th>
+                            <th style="padding:10px; text-align:center; border:1px solid #ffffff;">6</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background:#f8f9fa;">
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; font-weight:600;">1</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">2</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">3</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">4</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">5</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">6</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; background:#ecfdf5; font-weight:600;">7</td>
+                        </tr>
+                        <tr style="background:#ffffff;">
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; font-weight:600;">2</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">3</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">4</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">5</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">6</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; background:#ecfdf5; font-weight:600;">7</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">8</td>
+                        </tr>
+                        <tr style="background:#f8f9fa;">
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; font-weight:600;">3</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">4</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">5</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">6</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; background:#ecfdf5; font-weight:600;">7</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">8</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">9</td>
+                        </tr>
+                        <tr style="background:#ffffff;">
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; font-weight:600;">4</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">5</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">6</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; background:#ecfdf5; font-weight:600;">7</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">8</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">9</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">10</td>
+                        </tr>
+                        <tr style="background:#f8f9fa;">
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; font-weight:600;">5</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">6</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; background:#ecfdf5; font-weight:600;">7</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">8</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">9</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">10</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">11</td>
+                        </tr>
+                        <tr style="background:#ffffff;">
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; font-weight:600;">6</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef; background:#ecfdf5; font-weight:600;">7</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">8</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">9</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">10</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">11</td>
+                            <td style="padding:8px; text-align:center; border:1px solid #e9ecef;">12</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p style="margin:12px 0 8px 0; text-align:left; font-size:1em;">Événement $S$ : « somme = 7 ». Il y a 6 cases vertes, donc $|S|=6$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle P(S)=\frac{6}{36}=\frac{1}{6}$.</p>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:18px;">2) Arbre pondéré (ex : trois lancers de pièce)</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple : 3 lancers d’une pièce équilibrée</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Chaque lancer : Pile avec $\displaystyle \frac{1}{2}$, Face avec $\displaystyle \frac{1}{2}$.</p>
+
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace; line-height:1.5;">
+                Départ<br>
+                ├── P (1/2)<br>
+                │   ├── P (1/2)<br>
+                │   │   ├── P (1/2) → PPP<br>
+                │   │   └── F (1/2) → PPF<br>
+                │   └── F (1/2)<br>
+                │       ├── P (1/2) → PFP<br>
+                │       └── F (1/2) → PFF<br>
+                └── F (1/2)<br>
+                    ├── P (1/2)<br>
+                    │   ├── P (1/2) → FPP<br>
+                    │   └── F (1/2) → FPF<br>
+                    └── F (1/2)<br>
+                        ├── P (1/2) → FFP<br>
+                        └── F (1/2) → FFF
+            </div>
+
+            <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+                <strong>🎯 Méthode (arbre pondéré)</strong>
+                <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                    <li style="margin:0 0 10px 0; text-align:left;">On <strong>multiplie</strong> les probabilités le long d’un chemin.</li>
+                    <li style="margin:0; text-align:left;">On <strong>additionne</strong> les probabilités des chemins favorables à l’événement.</li>
+                </ol>
+            </div>
+
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Événement $E$ : « obtenir exactement 2 Piles » $\Rightarrow$ PPF, PFP et FPP.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Chaque chemin a probabilité $\displaystyle \left(\frac{1}{2}\right)^3=\frac{1}{8}$, et il y a 3 chemins favorables.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle P(E)=3\times\frac{1}{8}=\frac{3}{8}$.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Modèle théorique vs fréquences observées</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Construire un modèle : attention à la différence modèle / réalité</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Modèle théorique (a priori)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On choisit un modèle de référence (dé équilibré à 6 faces, pièce équilibrée, tirage au sort avec équiprobabilité) : les probabilités sont <strong>définies avant</strong> l'expérience.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Modèle à partir des fréquences (a posteriori)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On répète l’expérience, on observe une <strong>fréquence</strong> et on peut s’en servir pour <strong>estimer</strong> une probabilité.</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:420px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f=\frac{\text{nombre de succès}}{\text{nombre d’essais}}$</p>
+            </div>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Point important :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fréquence varie d’un échantillon à l’autre. Le modèle (et donc la probabilité $\displaystyle p$) est une <strong>hypothèse</strong> pour représenter la réalité.</p>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:18px;">Lire/écrire un petit programme de simulation (Python)</h3>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple : estimer la probabilité d’obtenir Pile</strong>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> <span style="color:#50fa7b;">random</span><br>
+                <br>
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">frequence_pile</span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;">"""Renvoie la fréquence de 'Pile' sur n lancers."""</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;piles = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> _ <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> random.<span style="color:#50fa7b;">randint</span>(<span style="color:#bd93f9;">0</span>, <span style="color:#bd93f9;">1</span>) == <span style="color:#bd93f9;">1</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;piles = piles + <span style="color:#bd93f9;">1</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> piles / n<br>
+                <br>
+                <span style="color:#6272a4;"># Exemple d'utilisation :</span><br>
+                <span style="color:#6272a4;"># print(frequence_pile(1000))</span>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em; color:#7f8c8d;"><em>On peut comparer la fréquence obtenue à la valeur théorique $\displaystyle 0,5$ si la pièce est équilibrée.</em></p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Synthèse : formules clés et erreurs fréquentes</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
+            <thead>
+                <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:45%;">Notion</th>
+                    <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:55%;">Formule / idée</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Univers</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle P(\Omega)=1$ ; $\displaystyle P(\varnothing)=0$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Équiprobabilité</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle P(A)=\frac{|A|}{|\Omega|}$</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Complémentaire</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle P(A^c)=1-P(A)$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Union / Intersection</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle P(A\cup B)=P(A)+P(B)-P(A\cap B)$</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
+                    <td style="border:none; padding:12px 16px;"><strong>Arbre pondéré</strong></td>
+                    <td style="border:none; padding:12px 16px;">Multiplier sur un chemin, additionner les chemins favorables</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
+            <strong>❌ Erreurs fréquentes :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Écrire $\displaystyle P(A\cup B)=P(A)+P(B)$ même si $A$ et $B$ se recoupent.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Confondre une <strong>issue</strong> (ex: « 6 ») et un <strong>événement</strong> (ex: « pair »).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Oublier que « <strong>ou</strong> » est inclusif en probabilités.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Sur un arbre : <strong>additionner</strong> au lieu de <strong>multiplier</strong> le long d’un chemin.</li>
+                <li style="margin:0; text-align:left;">Mélanger <strong>fréquence</strong> (observée) et <strong>probabilité</strong> (du modèle).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#eef2ff; border-radius:6px; border-left:6px solid #4d6df3; padding:15px; margin:12px 0;">
+        <p style="margin:0 0 8px 0; text-align:left; font-size:1em;"><strong>À suivre :</strong> ces outils servent ensuite à <strong>estimer</strong> des probabilités par simulation (échantillonnage) et à modéliser des expériences à plusieurs étapes.</p>
+    </div>
+</div>
+
+===

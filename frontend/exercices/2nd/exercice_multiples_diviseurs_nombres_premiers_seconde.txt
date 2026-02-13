@@ -2,7 +2,14 @@
 Difficulté: easy
 
 Énoncé: Pour chaque question, dire si le nombre appartient à $\displaystyle \mathbb{N}$ (entiers naturels) et/ou à $\displaystyle \mathbb{Z}$ (entiers relatifs).
+$\\$
+**Rappels de notation :**
+$\\$
+• "$\displaystyle x\in A$" signifie "$\displaystyle x$ appartient à $\displaystyle A$"
+• "$\displaystyle x\notin A$" signifie "$\displaystyle x$ n'appartient pas à $\displaystyle A$"
 
+• Dans ce cours, on prend $\displaystyle 0\in\mathbb{N}$ (convention usuelle en France)
+$\\$
 **Question 1 :** $\displaystyle -5$ appartient-il à $\displaystyle \mathbb{N}$ ? à $\displaystyle \mathbb{Z}$ ?
 $\\$
 **Question 2 :** $\displaystyle 0$ appartient-il à $\displaystyle \mathbb{N}$ ? à $\displaystyle \mathbb{Z}$ ?
@@ -89,7 +96,9 @@ $\\$
 === Découverte - Multiples et diviseurs - Reconnaître et écrire
 Difficulté: easy
 
-Énoncé: Utiliser la définition : $\displaystyle a$ est un multiple de $\displaystyle b$ si $\displaystyle a=b\times k$ avec $\displaystyle k\in\mathbb{Z}$. On note aussi $\displaystyle b\mid a$.
+Énoncé: Utiliser la définition : $\displaystyle a$ est un multiple de $\displaystyle b$ si $\displaystyle a=b\times k$ avec $\displaystyle k\in\mathbb{Z}$.
+$\\$
+**Notation :** On note aussi $\displaystyle b\mid a$ et on lit "$\displaystyle b$ divise $\displaystyle a$".
 
 **Question 1 :** Montrer que $\displaystyle 72$ est un multiple de $\displaystyle 9$
 $\\$
@@ -220,6 +229,9 @@ $\\$
     
     ● **Étape 2 :** Calculer le reste
         $\qquad$• $\displaystyle r=125-119=6$
+    $\\$
+    
+    ● **Vérification :** $\displaystyle 0\le 6<7$ : la condition $\displaystyle 0\le r<b$ est bien respectée
     $\\$
     
     ● **Résultat :** $\displaystyle 125=7\times 17+6$
@@ -408,7 +420,23 @@ $\\$
 Difficulté: easy
 
 Énoncé: Utiliser les critères de divisibilité par $\displaystyle 2,3,4,5,6,9,10$ pour répondre rapidement.
+$\\$
+**Rappel des critères :**
+$\\$
+• Par $\displaystyle 2$ : dernier chiffre pair
 
+• Par $\displaystyle 3$ : somme des chiffres divisible par $\displaystyle 3$
+
+• Par $\displaystyle 4$ : deux derniers chiffres forment un nombre divisible par $\displaystyle 4$
+
+• Par $\displaystyle 5$ : dernier chiffre $\displaystyle 0$ ou $\displaystyle 5$
+
+• Par $\displaystyle 6$ : divisible par $\displaystyle 2$ ET par $\displaystyle 3$
+
+• Par $\displaystyle 9$ : somme des chiffres divisible par $\displaystyle 9$
+
+• Par $\displaystyle 10$ : dernier chiffre $\displaystyle 0$
+$\\$
 **Question 1 :** Parmi $\displaystyle 2,3,4,5,6,9,10$, par lesquels $\displaystyle 7290$ est-il divisible ?
 $\\$
 **Question 2 :** Dire si $\displaystyle 1428$ est divisible par $\displaystyle 4$, par $\displaystyle 6$ et par $\displaystyle 9$
@@ -1053,104 +1081,275 @@ $\\$
 === Algorithmique - Tester un multiple et un nombre premier (modulo)
 Difficulté: medium
 
-Énoncé: On considère les deux fonctions suivantes (pseudo-code) :
+Énoncé: On considère les deux fonctions Python suivantes :
 $\\$
-- <code>fonction est_multiple(a, b):</code>
-- $\quad$ <code>r = a mod b</code>
-- $\quad$ <code>si r = 0 alors renvoyer Vrai sinon renvoyer Faux</code>
+**Fonction 1 : Tester si <code>a</code> est un multiple de <code>b</code>**
 $\\$
-- <code>fonction est_premier(n):</code>
-- $\quad$ <code>si n &lt; 2 alors renvoyer Faux</code>
-- $\quad$ <code>pour i de 2 à ⌊sqrt(n)⌋ :</code>
-- $\quad\quad$ <code>si n mod i = 0 alors renvoyer Faux</code>
-- $\quad$ <code>renvoyer Vrai</code>
+**Remarque importante :** On suppose $\displaystyle b\neq 0$ (sinon l'opérateur <code>%</code> n'a pas de sens).
+$\\$
+<table style="border-collapse: collapse; margin:10px 0;">
+    <tr>
+        <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+    <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">est_multiple</span><span style="color:#f8f8f2;">(</span><span style="color:#ffb86c;">a</span><span style="color:#f8f8f2;">,</span> <span style="color:#ffb86c;">b</span><span style="color:#f8f8f2;">):</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">r</span> <span style="color:#ff79c6;">=</span> <span style="color:#f8f8f2;">a</span> <span style="color:#ff79c6;">%</span> <span style="color:#f8f8f2;">b</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> <span style="color:#f8f8f2;">r</span> <span style="color:#ff79c6;">==</span> <span style="color:#bd93f9;">0</span><span style="color:#f8f8f2;">:</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#bd93f9;">True</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span><span style="color:#f8f8f2;">:</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#bd93f9;">False</span>
+        </td>
+    </tr>
+</table>
+$\\$
+**Fonction 2 : Tester si <code>n</code> est un nombre premier**
+$\\$
+<table style="border-collapse: collapse; margin:10px 0;">
+    <tr>
+        <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+    <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">est_premier</span><span style="color:#f8f8f2;">(</span><span style="color:#ffb86c;">n</span><span style="color:#f8f8f2;">):</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> <span style="color:#f8f8f2;">n</span> <span style="color:#ff79c6;">&lt;</span> <span style="color:#bd93f9;">2</span><span style="color:#f8f8f2;">:</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#bd93f9;">False</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> <span style="color:#f8f8f2;">i</span> <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span><span style="color:#f8f8f2;">(</span><span style="color:#bd93f9;">2</span><span style="color:#f8f8f2;">,</span> <span style="color:#50fa7b;">int</span><span style="color:#f8f8f2;">(</span><span style="color:#f8f8f2;">n</span> <span style="color:#ff79c6;">**</span> <span style="color:#bd93f9;">0.5</span><span style="color:#f8f8f2;">)</span> <span style="color:#ff79c6;">+</span> <span style="color:#bd93f9;">1</span><span style="color:#f8f8f2;">):</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> <span style="color:#f8f8f2;">n</span> <span style="color:#ff79c6;">%</span> <span style="color:#f8f8f2;">i</span> <span style="color:#ff79c6;">==</span> <span style="color:#bd93f9;">0</span><span style="color:#f8f8f2;">:</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#bd93f9;">False</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#bd93f9;">True</span>
+        </td>
+    </tr>
+</table>
 
-**Question 1 :** Que renvoie <code>est_multiple(84, 7)</code> ?
+<b>Question 1 :</b> Que renvoie <code>est_multiple(84, 7)</code> ?
 $\\$
-**Question 2 :** Que renvoie <code>est_multiple(85, 7)</code> ?
+<b>Question 2 :</b> Que renvoie <code>est_multiple(85, 7)</code> ?
 $\\$
-**Question 3 :** Que renvoie <code>est_multiple(0, 5)</code> ?
+<b>Question 3 :</b> Que renvoie <code>est_multiple(0, 5)</code> ?
 $\\$
-**Question 4 :** Que renvoie <code>est_premier(49)</code> ?
+<b>Question 4 :</b> Que renvoie <code>est_premier(49)</code> ?
 $\\$
-**Question 5 :** Pour <code>est_premier(97)</code>, quelles valeurs de <code>i</code> sont testées ?
+<b>Question 5 :</b> Pour <code>est_premier(97)</code>, quelles valeurs de <code>i</code> sont testées ?
 
 Étapes:
 
-**Question 1 : <code>est_multiple(84, 7)</code>**
+<b>Question 1 : <code>est_multiple(84, 7)</code></b>
 
-    ● **Méthode :** Calculer le reste $\displaystyle r$ de $\displaystyle 84$ dans la division par $\displaystyle 7$
+    ● **Méthode :** Calculer le reste $\displaystyle r$ de $\displaystyle 84$ dans la division par $\displaystyle 7$ avec l'opérateur <code>%</code>
     $\\$
     
-    ● **Étape 1 :** Reste
-        $\qquad$• $\displaystyle 84=7\times 12$ donc reste $\displaystyle r=0$
+    ● **Étape 1 :** Calculer le reste
+        $\qquad$• <code>84 % 7</code> $\displaystyle = 0$ car $\displaystyle 84 = 7 \times 12$
     $\\$
     
-    ● **Résultat :** <code>Vrai</code>
-    $\\$
-
-**Question 2 : <code>est_multiple(85, 7)</code>**
-
-    ● **Méthode :** Reste de la division par $\displaystyle 7$
+    ● **Étape 2 :** Test de la condition
+        $\qquad$• <code>r == 0</code> est <code>True</code>, donc la fonction renvoie <code>True</code>
     $\\$
     
-    ● **Étape 1 :** Calculer
-        $\qquad$• $\displaystyle 85=7\times 12+1$ donc $\displaystyle r=1\neq 0$
-    $\\$
-    
-    ● **Résultat :** <code>Faux</code>
+    ● **Résultat :** <code>True</code>
     $\\$
 
-**Question 3 : <code>est_multiple(0, 5)</code>**
+<b>Question 2 : <code>est_multiple(85, 7)</code></b>
 
-    ● **Méthode :** $\displaystyle 0$ est un multiple de tout entier non nul car $\displaystyle 0=5\times 0$
+    ● **Méthode :** Calculer le reste de la division par $\displaystyle 7$
     $\\$
     
-    ● **Étape 1 :** Reste
-        $\qquad$• $\displaystyle 0=5\times 0$ donc $\displaystyle r=0$
+    ● **Étape 1 :** Calculer le reste
+        $\qquad$• <code>85 % 7</code> $\displaystyle = 1$ car $\displaystyle 85 = 7\times 12 + 1$
     $\\$
     
-    ● **Résultat :** <code>Vrai</code>
-    $\\$
-
-**Question 4 : <code>est_premier(49)</code>**
-
-    ● **Méthode :** Tester les diviseurs jusqu'à $\displaystyle \lfloor \sqrt{49}\rfloor$
+    ● **Étape 2 :** Test de la condition
+        $\qquad$• <code>r == 0</code> est <code>False</code> (car $\displaystyle r = 1$), donc la fonction renvoie <code>False</code>
     $\\$
     
-    ● **Étape 1 :** Calculer $\displaystyle \sqrt{49}$
-        $\qquad$• $\displaystyle \sqrt{49}=7$
-    $\\$
-    
-    ● **Étape 2 :** Tester la divisibilité par $\displaystyle 7$
-        $\qquad$• $\displaystyle 49=7\times 7$ donc le reste vaut $\displaystyle 0$
-    $\\$
-    
-    ● **Résultat :** <code>Faux</code> (49 n'est pas premier)
+    ● **Résultat :** <code>False</code>
     $\\$
 
-**Question 5 : Valeurs testées pour <code>est_premier(97)</code>**
+<b>Question 3 : <code>est_multiple(0, 5)</code></b>
 
-    ● **Méthode :** La boucle va de $\displaystyle 2$ à $\displaystyle \lfloor \sqrt{97}\rfloor$
+    ● **Méthode :** $\displaystyle 0$ est un multiple de tout entier non nul car $\displaystyle 0 = 5\times 0$
     $\\$
     
-    ● **Étape 1 :** Encadrer $\displaystyle \sqrt{97}$
-        $\qquad$• $\displaystyle \sqrt{97}\approx 9{,}8$ donc $\displaystyle \lfloor \sqrt{97}\rfloor=9$
+    ● **Étape 1 :** Calculer le reste
+        $\qquad$• <code>0 % 5</code> $\displaystyle = 0$
     $\\$
     
-    ● **Résultat :** Les valeurs testées sont $\displaystyle i=2,3,4,5,6,7,8,9$
+    ● **Étape 2 :** Test
+        $\qquad$• <code>r == 0</code> est <code>True</code>, donc la fonction renvoie <code>True</code>
+    $\\$
+    
+    ● **Résultat :** <code>True</code>
+    $\\$
+
+<b>Question 4 : <code>est_premier(49)</code></b>
+
+    ● **Méthode :** La boucle <code>for</code> teste les diviseurs de $\displaystyle 2$ à <code>int(49 ** 0.5) + 1</code>
+    $\\$
+    
+    ● **Étape 1 :** Calculer la limite de la boucle
+        $\qquad$• <code>int(49 ** 0.5)</code> $\displaystyle = 7$ donc <code>range(2, 8)</code> teste $\displaystyle i = 2, 3, 4, 5, 6, 7$
+    $\\$
+    
+    ● **Étape 2 :** Test de divisibilité
+        $\qquad$• Pour $\displaystyle i = 7$ : <code>49 % 7</code> $\displaystyle = 0$, donc la fonction renvoie <code>False</code>
+    $\\$
+    
+    ● **Résultat :** <code>False</code> ($\displaystyle 49$ n'est pas premier)
+    $\\$
+
+<b>Question 5 : Valeurs testées pour <code>est_premier(97)</code></b>
+
+    ● **Méthode :** La boucle <code>for i in range(2, int(97 ** 0.5) + 1)</code> détermine les valeurs testées
+    $\\$
+    
+    ● **Étape 1 :** Calculer la limite
+        $\qquad$• <code>int(97 ** 0.5)</code> $\displaystyle = 9$ (car $\displaystyle \sqrt{97}\approx 9{,}85$)
+        $\\$
+        $\qquad$• Donc <code>range(2, 10)</code> génère $\displaystyle i = 2, 3, 4, 5, 6, 7, 8, 9$
+    $\\$
+    
+    ● **Étape 2 :** Aucun diviseur trouvé
+        $\qquad$• Aucun <code>97 % i</code> ne vaut $\displaystyle 0$, donc la fonction renvoie <code>True</code>
+    $\\$
+    
+    ● **Résultat :** Les valeurs testées sont $\displaystyle i = 2, 3, 4, 5, 6, 7, 8, 9$ et $\displaystyle 97$ est premier
     $\\$
 
 Solution:
-1. <code>Vrai</code>
+1. <code>True</code>
 $\\$
-2. <code>Faux</code>
+2. <code>False</code>
 $\\$
-3. <code>Vrai</code>
+3. <code>True</code>
 $\\$
-4. <code>Faux</code>
+4. <code>False</code>
 $\\$
-5. $\displaystyle i=2,3,4,5,6,7,8,9$
+5. $\displaystyle i = 2, 3, 4, 5, 6, 7, 8, 9$ (97 est premier)
+
+===
+
+=== Entraînement - Divisibilité - Preuves et chiffres
+Difficulté: medium
+
+Énoncé: Justifier des propriétés de divisibilité en utilisant des écritures du type $\displaystyle n=ak$ (avec $\displaystyle k\in\mathbb{Z}$) et des critères (par $\displaystyle 3$, $\displaystyle 4$, $\displaystyle 12$).
+
+**Question 1 :** Montrer que le produit d’un multiple de $\displaystyle 3$ et d’un multiple de $\displaystyle 4$ est un multiple de $\displaystyle 12$.
+$\\$
+**Question 2 :** Un nombre est dit parfait s’il est égal à la somme de ses diviseurs positifs strictement inférieurs à lui-même. Montrer que $\displaystyle 6$ est un nombre parfait.
+$\\$
+**Question 3 :** On considère le nombre dont l’écriture décimale est $\displaystyle 7a2b$ (avec $\displaystyle a$ et $\displaystyle b$ des chiffres). Déterminer les valeurs possibles de $\displaystyle a$ et $\displaystyle b$ pour qu’il soit divisible par $\displaystyle 12$.
+$\\$
+**Question 4 :** On considère un entier naturel $\displaystyle n$ tel que $\displaystyle n-1$ soit divisible par $\displaystyle 4$. Montrer que $\displaystyle n^2-1$ est divisible par $\displaystyle 8$.
+$\\$
+**Question 5 :** Montrer que si $\displaystyle n$ est divisible par $\displaystyle 3$, alors $\displaystyle n^2$ est divisible par $\displaystyle 9$.
+
+Étapes:
+
+**Question 1 : Produit d’un multiple de $\displaystyle 3$ et d’un multiple de $\displaystyle 4$**
+
+    ● **Méthode :** Utiliser les définitions de « multiple »
+    $\\$
+    
+    ● **Étape 1 :** Écrire les deux nombres
+        $\qquad$• Si $\displaystyle a$ est multiple de $\displaystyle 3$, alors $\displaystyle a=3m$ avec $\displaystyle m\in\mathbb{Z}$
+        $\\$
+        $\qquad$• Si $\displaystyle b$ est multiple de $\displaystyle 4$, alors $\displaystyle b=4n$ avec $\displaystyle n\in\mathbb{Z}$
+    $\\$
+    
+    ● **Étape 2 :** Calculer le produit
+        $\qquad$• $\displaystyle ab=(3m)(4n)=12mn$
+    $\\$
+    
+    ● **Résultat :** Comme $\displaystyle mn\in\mathbb{Z}$, $\displaystyle ab$ est un multiple de $\displaystyle 12$
+    $\\$
+
+**Question 2 : Montrer que $\displaystyle 6$ est un nombre parfait**
+
+    ● **Méthode :** Lister les diviseurs positifs (autres que lui-même) puis additionner
+    $\\$
+    
+    ● **Étape 1 :** Diviseurs positifs de $\displaystyle 6$
+        $\qquad$• $\displaystyle 1,\ 2,\ 3,\ 6$
+    $\\$
+    
+    ● **Étape 2 :** Somme des diviseurs strictement inférieurs à $\displaystyle 6$
+        $\qquad$• $\displaystyle 1+2+3=6$
+    $\\$
+    
+    ● **Résultat :** $\displaystyle 6$ est un nombre parfait
+    $\\$
+
+**Question 3 : Divisibilité de $\displaystyle 7a2b$ par $\displaystyle 12$**
+
+    ● **Méthode :** $\displaystyle 12=3\times 4$ donc divisible par $\displaystyle 12 \iff$ divisible par $\displaystyle 3$ et par $\displaystyle 4$
+    $\\$
+    
+    ● **Étape 1 :** Condition « divisible par $\displaystyle 4$ »
+        $\qquad$• Les deux derniers chiffres sont $\displaystyle 2b$
+        $\\$
+        $\qquad$• $\displaystyle 20,\ 24,\ 28$ sont divisibles par $\displaystyle 4$ donc $\displaystyle b\in\{0,4,8\}$
+    $\\$
+    
+    ● **Étape 2 :** Condition « divisible par $\displaystyle 3$ »
+        $\qquad$• Somme des chiffres : $\displaystyle 7+a+2+b=9+a+b$
+        $\\$
+        $\qquad$• Il faut $\displaystyle 9+a+b$ divisible par $\displaystyle 3 \iff a+b$ divisible par $\displaystyle 3$
+    $\\$
+    
+    ● **Étape 3 :** Lister les possibilités
+        $\qquad$• Si $\displaystyle b=0$ alors $\displaystyle a\in\{0,3,6,9\}$
+        $\\$
+        $\qquad$• Si $\displaystyle b=4$ alors $\displaystyle a\in\{2,5,8\}$
+        $\\$
+        $\qquad$• Si $\displaystyle b=8$ alors $\displaystyle a\in\{1,4,7\}$
+    $\\$
+    
+    ● **Résultat :** $\displaystyle (a,b)\in\{(0,0),(3,0),(6,0),(9,0),(2,4),(5,4),(8,4),(1,8),(4,8),(7,8)\}$
+    $\\$
+
+**Question 4 : Si $\displaystyle 4\mid(n-1)$, montrer que $\displaystyle 8\mid(n^2-1)$**
+
+    ● **Méthode :** Factoriser $\displaystyle n^2-1$ et utiliser l’écriture $\displaystyle n-1=4k$
+    $\\$
+    
+    ● **Étape 1 :** Écrire $\displaystyle n-1$ comme un multiple de $\displaystyle 4$
+        $\qquad$• $\displaystyle n-1=4k$ avec $\displaystyle k\in\mathbb{Z}$
+    $\\$
+    
+    ● **Étape 2 :** Factoriser
+        $\qquad$• $\displaystyle n^2-1=(n-1)(n+1)$
+    $\\$
+    
+    ● **Étape 3 :** Montrer que le produit est un multiple de $\displaystyle 8$
+        $\qquad$• $\displaystyle n+1=(n-1)+2=4k+2=2(2k+1)$
+        $\\$
+        $\qquad$• Donc $\displaystyle n^2-1=(n-1)(n+1)=4k\times 2(2k+1)=8k(2k+1)$
+    $\\$
+    
+    ● **Résultat :** $\displaystyle n^2-1$ est divisible par $\displaystyle 8$
+    $\\$
+
+**Question 5 : Si $\displaystyle 3\mid n$, montrer que $\displaystyle 9\mid n^2$**
+
+    ● **Méthode :** Écrire $\displaystyle n=3k$ puis élever au carré
+    $\\$
+    
+    ● **Étape 1 :** Écriture
+        $\qquad$• $\displaystyle n=3k$ avec $\displaystyle k\in\mathbb{Z}$
+    $\\$
+    
+    ● **Étape 2 :** Carré
+        $\qquad$• $\displaystyle n^2=(3k)^2=9k^2$
+    $\\$
+    
+    ● **Résultat :** $\displaystyle n^2$ est divisible par $\displaystyle 9$
+    $\\$
+
+Solution:
+1. Si $\displaystyle a=3m$ et $\displaystyle b=4n$, alors $\displaystyle ab=12mn$ donc multiple de $\displaystyle 12$
+$\\$
+2. $\displaystyle 1+2+3=6$ donc $\displaystyle 6$ est parfait
+$\\$
+3. $\displaystyle (a,b)\in\{(0,0),(3,0),(6,0),(9,0),(2,4),(5,4),(8,4),(1,8),(4,8),(7,8)\}$
+$\\$
+4. $\displaystyle n^2-1=(n-1)(n+1)=8k(2k+1)$ donc divisible par $\displaystyle 8$
+$\\$
+5. $\displaystyle n=3k \Rightarrow n^2=9k^2$ donc divisible par $\displaystyle 9$
 
 ===
 
@@ -1158,13 +1357,13 @@ $\\$
 Difficulté: hard
 
 Énoncé: Pour une kermesse, on prépare des sachets et on organise des animations.
-$\\$
-• On dispose de $\displaystyle 84$ biscuits et de $\displaystyle 126$ jus.
-$\\$
-• Deux guirlandes lumineuses clignotent : la première toutes les $\displaystyle 12$ s, la seconde toutes les $\displaystyle 18$ s (elles démarrent ensemble).
-$\\$
-• On veut fabriquer un code de ticket (nombre à 3 chiffres) divisible à la fois par $\displaystyle 9$ et par $\displaystyle 10$.
 
+• On dispose de $\displaystyle 84$ biscuits et de $\displaystyle 126$ jus.
+
+• Deux guirlandes lumineuses clignotent : la première toutes les $\displaystyle 12$ s, la seconde toutes les $\displaystyle 18$ s (elles démarrent ensemble).
+
+• On veut fabriquer un code de ticket (nombre à 3 chiffres) divisible à la fois par $\displaystyle 9$ et par $\displaystyle 10$.
+$\\$
 **Question 1 :** Quel est le nombre maximum de sachets identiques que l'on peut préparer sans reste ?
 $\\$
 **Question 2 :** Combien y a-t-il de biscuits et de jus dans chaque sachet ?

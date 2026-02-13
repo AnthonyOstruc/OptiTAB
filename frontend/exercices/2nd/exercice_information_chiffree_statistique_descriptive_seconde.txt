@@ -219,7 +219,7 @@ $\\$
 • Taux d'évolution : $\displaystyle t=\dfrac{V_1-V_0}{V_0}$
 $\\$
 • Coefficient multiplicateur : $\displaystyle C=1+t$ et $\displaystyle V_1=CV_0$
-
+$\\$
 **Question 1 :** Un prix passe de $\displaystyle 80$ à $\displaystyle 92$. Calculer la variation absolue, le taux $\displaystyle t$ et le coefficient $\displaystyle C$
 $\\$
 **Question 2 :** Une population passe de $\displaystyle 1500$ à $\displaystyle 1350$. Calculer la variation absolue, le taux $\displaystyle t$ et le coefficient $\displaystyle C$
@@ -327,7 +327,7 @@ $\\$
 Difficulté: medium
 
 Énoncé: Pour des évolutions successives de taux $\displaystyle t_1,t_2,\ldots$ on multiplie les coefficients : $\displaystyle C_{\mathrm{global}}=(1+t_1)(1+t_2)\cdots$. Puis $\displaystyle t_{\mathrm{global}}=C_{\mathrm{global}}-1$.
-
+$\\$
 **Question 1 :** Hausse de $\displaystyle 20\,\%$ puis baisse de $\displaystyle 15\,\%$ : calculer $\displaystyle C_{\mathrm{global}}$ puis $\displaystyle t_{\mathrm{global}}$
 $\\$
 **Question 2 :** Baisse de $\displaystyle 10\,\%$ puis hausse de $\displaystyle 10\,\%$ : calculer $\displaystyle t_{\mathrm{global}}$
@@ -432,7 +432,7 @@ $\\$
 Difficulté: medium
 
 Énoncé: Si une évolution a pour coefficient $\displaystyle C$, l'évolution réciproque a pour coefficient $\displaystyle \dfrac{1}{C}$, et son taux vaut $\displaystyle t_{\mathrm{rec}}=\dfrac{1}{C}-1$.
-
+$\\$
 **Question 1 :** Après une hausse de $\displaystyle 25\,\%$, quel taux faut-il appliquer pour revenir à la valeur initiale ?
 $\\$
 **Question 2 :** Après une baisse de $\displaystyle 30\,\%$, quel taux faut-il appliquer pour revenir à la valeur initiale ?
@@ -544,9 +544,9 @@ $\\$
 Difficulté: medium
 
 Énoncé: Calculer des moyennes pondérées.
-$\\$
-Rappel : si la valeur $\displaystyle x_i$ apparaît $\displaystyle n_i$ fois, alors $\displaystyle \bar{x}=\dfrac{\sum n_i x_i}{\sum n_i}$.
 
+Rappel : si la valeur $\displaystyle x_i$ apparaît $\displaystyle n_i$ fois, alors $\displaystyle \bar{x}=\dfrac{\sum n_i x_i}{\sum n_i}$.
+$\\$
 **Question 1 :** Notes : $\displaystyle 8$ (2 élèves), $\displaystyle 10$ (6 élèves), $\displaystyle 12$ (7 élèves), $\displaystyle 15$ (5 élèves). Calculer la moyenne
 $\\$
 **Question 2 :** On achète $\displaystyle 3$ kg à 2 €/kg, $\displaystyle 5$ kg à 1,5 €/kg et $\displaystyle 2$ kg à 3 €/kg. Calculer le prix moyen au kg
@@ -682,7 +682,7 @@ $\\$
 Difficulté: easy
 
 Énoncé: Si une série est transformée par $\displaystyle y=ax+b$, alors la moyenne se transforme de la même façon : $\displaystyle \bar{y}=a\bar{x}+b$.
-
+ $\\$
 **Question 1 :** Une classe a une moyenne $\displaystyle \bar{x}=11{,}8$. On ajoute $\displaystyle 1{,}5$ à toutes les notes. Quelle est la nouvelle moyenne ?
 $\\$
 **Question 2 :** Une série a une moyenne $\displaystyle \bar{x}=6$. On multiplie toutes les valeurs par $\displaystyle 3$. Quelle est la nouvelle moyenne ?
@@ -767,13 +767,13 @@ $\\$
 Difficulté: medium
 
 Énoncé: On range une série dans l'ordre croissant. On prend :
-$\\$
+
 • $\displaystyle Q_1$ : valeur de rang $\displaystyle \left\lceil \dfrac{n}{4}\right\rceil$
 $\\$
 • $\displaystyle Q_3$ : valeur de rang $\displaystyle \left\lceil \dfrac{3n}{4}\right\rceil$
 $\\$
 Puis $\displaystyle \mathrm{EIQ}=Q_3-Q_1$.
-
+$\\$
 **Question 1 :** Série (déjà rangée) : 5 ; 7 ; 8 ; 9 ; 10 ; 10 ; 11 ; 12 ; 14 ; 15 ; 18 ; 20. Calculer $\displaystyle Q_1$, $\displaystyle Q_3$ et $\displaystyle \mathrm{EIQ}$
 $\\$
 **Question 2 :** Série (déjà rangée) : 2 ; 3 ; 3 ; 4 ; 5 ; 6 ; 7 ; 8 ; 8 ; 9. Calculer $\displaystyle Q_1$, $\displaystyle Q_3$ et $\displaystyle \mathrm{EIQ}$
@@ -1020,19 +1020,27 @@ $\\$
 === Algorithmique - Lire une fonction Python (moyenne, écart type, proportion)
 Difficulté: medium
 
-Énoncé: On considère une fonction (pseudo-code) qui renvoie $\displaystyle (m,s,\mathrm{prop})$ :
+Énoncé: On considère la fonction Python suivante qui renvoie $\displaystyle (m,s,\mathrm{prop})$ :
 $\\$
-- <code>n = len(donnees)</code>
-- <code>m = somme(donnees) / n</code>
-- <code>V = somme( (x - m)^2 ) / n</code>
-- <code>s = sqrt(V)</code>
-- <code>borne_inf = m - 2*s</code>
-- <code>borne_sup = m + 2*s</code>
-- <code>compteur = 0</code>
-- <code>pour chaque x dans donnees :</code>
-- $\quad$ <code>si borne_inf &lt;= x &lt;= borne_sup alors compteur = compteur + 1</code>
-- <code>prop = compteur / n</code>
-- <code>renvoyer (m, s, prop)</code>
+<table style="border-collapse: collapse; margin:10px 0;">
+    <tr>
+        <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
+    <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">statistiques</span><span style="color:#f8f8f2;">(</span><span style="color:#ffb86c;">donnees</span><span style="color:#f8f8f2;">):</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">n</span> <span style="color:#ff79c6;">=</span> <span style="color:#50fa7b;">len</span><span style="color:#f8f8f2;">(</span><span style="color:#f8f8f2;">donnees</span><span style="color:#f8f8f2;">)</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">m</span> <span style="color:#ff79c6;">=</span> <span style="color:#50fa7b;">sum</span><span style="color:#f8f8f2;">(</span><span style="color:#f8f8f2;">donnees</span><span style="color:#f8f8f2;">)</span> <span style="color:#ff79c6;">/</span> <span style="color:#f8f8f2;">n</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">V</span> <span style="color:#ff79c6;">=</span> <span style="color:#50fa7b;">sum</span><span style="color:#f8f8f2;">((</span><span style="color:#f8f8f2;">x</span> <span style="color:#ff79c6;">-</span> <span style="color:#f8f8f2;">m</span><span style="color:#f8f8f2;">)</span> <span style="color:#ff79c6;">&#42;&#42;</span> <span style="color:#bd93f9;">2</span> <span style="color:#ff79c6;">for</span> <span style="color:#f8f8f2;">x</span> <span style="color:#ff79c6;">in</span> <span style="color:#f8f8f2;">donnees</span><span style="color:#f8f8f2;">)</span> <span style="color:#ff79c6;">/</span> <span style="color:#f8f8f2;">n</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">s</span> <span style="color:#ff79c6;">=</span> <span style="color:#f8f8f2;">V</span> <span style="color:#ff79c6;">&#42;&#42;</span> <span style="color:#bd93f9;">0.5</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">borne_inf</span> <span style="color:#ff79c6;">=</span> <span style="color:#f8f8f2;">m</span> <span style="color:#ff79c6;">-</span> <span style="color:#bd93f9;">2</span> <span style="color:#ff79c6;">&#42;</span> <span style="color:#f8f8f2;">s</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">borne_sup</span> <span style="color:#ff79c6;">=</span> <span style="color:#f8f8f2;">m</span> <span style="color:#ff79c6;">+</span> <span style="color:#bd93f9;">2</span> <span style="color:#ff79c6;">&#42;</span> <span style="color:#f8f8f2;">s</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">compteur</span> <span style="color:#ff79c6;">=</span> <span style="color:#bd93f9;">0</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> <span style="color:#f8f8f2;">x</span> <span style="color:#ff79c6;">in</span> <span style="color:#f8f8f2;">donnees</span><span style="color:#f8f8f2;">:</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> <span style="color:#f8f8f2;">borne_inf</span> <span style="color:#ff79c6;">&lt;=</span> <span style="color:#f8f8f2;">x</span> <span style="color:#ff79c6;">&lt;=</span> <span style="color:#f8f8f2;">borne_sup</span><span style="color:#f8f8f2;">:</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">compteur</span> <span style="color:#ff79c6;">=</span> <span style="color:#f8f8f2;">compteur</span> <span style="color:#ff79c6;">+</span> <span style="color:#bd93f9;">1</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#f8f8f2;">prop</span> <span style="color:#ff79c6;">=</span> <span style="color:#f8f8f2;">compteur</span> <span style="color:#ff79c6;">/</span> <span style="color:#f8f8f2;">n</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> <span style="color:#f8f8f2;">(</span><span style="color:#f8f8f2;">m</span><span style="color:#f8f8f2;">,</span> <span style="color:#f8f8f2;">s</span><span style="color:#f8f8f2;">,</span> <span style="color:#f8f8f2;">prop</span><span style="color:#f8f8f2;">)</span>
+        </td>
+    </tr>
+</table>
 
 **Question 1 :** Que représente la variable <code>n</code> ?
 $\\$
@@ -1056,7 +1064,7 @@ $\\$
 
 **Question 2 : Interpréter <code>V</code>**
 
-    ● **Méthode :** Lire la ligne <code>V = somme( (x - m)^2 ) / n</code>
+    ● **Méthode :** Lire la ligne <code>V = sum((x - m) &#42;&#42; 2 for x in donnees) / n</code>
     $\\$
     
     ● **Résultat :** <code>V</code> est la variance de la série
@@ -1129,17 +1137,17 @@ $\\$
 Difficulté: hard
 
 Énoncé: Un cinéma vend $\displaystyle 800$ tickets sur une journée.
-$\\$
-• $\displaystyle 35\,\%$ des tickets sont des tickets « étudiant » (prix normal : 6 euros)
-$\\$
-• Les autres tickets sont « plein tarif » (prix normal : 9 euros)
-$\\$
-• Parmi les étudiants, $\displaystyle 40\,\%$ achètent en ligne
-$\\$
-• Parmi les plein tarif, $\displaystyle 60\,\%$ achètent en ligne
-$\\$
-• L'achat en ligne donne une remise de $\displaystyle 10\,\%$ (coefficient $\displaystyle 0{,}9$)
 
+• $\displaystyle 35\,\%$ des tickets sont des tickets « étudiant » (prix normal : 6 euros)
+
+• Les autres tickets sont « plein tarif » (prix normal : 9 euros)
+
+• Parmi les étudiants, $\displaystyle 40\,\%$ achètent en ligne
+
+• Parmi les plein tarif, $\displaystyle 60\,\%$ achètent en ligne
+
+• L'achat en ligne donne une remise de $\displaystyle 10\,\%$ (coefficient $\displaystyle 0{,}9$)
+$\\$
 **Question 1 :** Calculer le nombre de tickets étudiants et le nombre de tickets plein tarif
 $\\$
 **Question 2 :** Calculer le nombre de tickets achetés en ligne dans chaque catégorie, puis le pourcentage total de tickets achetés en ligne

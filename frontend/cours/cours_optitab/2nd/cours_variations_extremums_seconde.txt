@@ -1,238 +1,585 @@
-=== Étudier les Variations et les Extremums d'une Fonction - Programme Seconde
+=== Étudier les variations et les extremums d’une fonction - Programme Seconde
 Difficulté: medium
 Ordre: 4
-Images: variations_croissante_decroissante.png, extremums_locaux_globaux.png, variations_affine.png, variations_fonctions_reference.png
+Images: variations_croissance_decroissance.png, extremums_sur_intervalle.png, variations_fonction_affine.png, courbe_fonction_carre.png, courbe_fonction_inverse.png, courbe_fonction_racine_carree.png, courbe_fonction_cube.png
 
-Titre: Étudier les Variations et les Extremums d'une Fonction
-Description: Cours complet sur les variations de fonctions en Seconde : croissance, décroissance, extremums, fonctions affines, fonctions de référence et algorithmes d'optimisation.
+Titre: Étudier les variations et les extremums d’une fonction
+Description: Cours de Seconde : croissance/décroissance (monotonie), tableau de variations, maximum/minimum sur un intervalle, lien entre courbe et tableau, variations des fonctions de référence (carré, inverse, racine carrée, cube) et interprétation du coefficient directeur d’une fonction affine comme taux d’accroissement ; utilisation de la calculatrice/logiciel/Python pour décrire les variations.
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
 
     <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
-        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
-        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Connaître les définitions de fonction croissante, décroissante, monotone. Savoir dresser un tableau de variations. Identifier maximum et minimum. Connaître les variations des fonctions affines et des fonctions de référence (carré, inverse, racine carrée, cube). Savoir démontrer les variations des fonctions carré, inverse et racine carrée.</p>
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est au programme (contenus) :</strong></p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+            <li style="margin:0 0 10px 0; text-align:left;">Croissance, décroissance, monotonie d’une fonction définie sur un intervalle. <strong>Tableau de variations</strong>.</li>
+            <li style="margin:0 0 10px 0; text-align:left;"><strong>Maximum</strong>, <strong>minimum</strong> d’une fonction sur un intervalle.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Pour une <strong>fonction affine</strong> : coefficient directeur = <strong>taux d’accroissement</strong> ; variations selon son signe.</li>
+            <li style="margin:0; text-align:left;">Variations des fonctions de référence : <strong>carré</strong>, <strong>inverse</strong>, <strong>racine carrée</strong>, <strong>cube</strong>.</li>
+        </ul>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Sens de variation d'une fonction</h2>
+    <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🎯 Capacités attendues :</strong></p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+            <li style="margin:0 0 10px 0; text-align:left;">Relier <strong>représentation graphique</strong> et <strong>tableau de variations</strong>.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Déterminer <strong>graphiquement</strong> les extremums d’une fonction sur un intervalle.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Utiliser la calculatrice, un logiciel (table de valeurs, graphique) ou <strong>Python</strong> pour décrire les variations.</li>
+            <li style="margin:0; text-align:left;">Relier sens de variation, signe et droite représentative d’une <strong>fonction affine</strong>.</li>
+        </ul>
+    </div>
+
+    <div style="background:#f3e5f5; border:2px solid #9c27b0; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🧠 Démonstrations au programme :</strong></p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+            <li style="margin:0 0 10px 0; text-align:left;">Variations des fonctions <strong>carré</strong>, <strong>inverse</strong>, <strong>racine carrée</strong>.</li>
+            <li style="margin:0; text-align:left;"><em>On montre l’idée (comparer des images) sans utiliser la dérivation.</em></li>
+        </ul>
+    </div>
+
+    <div style="background:#eef2ff; border:2px solid #4d6df3; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🤖 Exemples d’algorithmes :</strong></p>
+        <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
+            <li style="margin:0 0 10px 0; text-align:left;">Approximation numérique d’un extremum : <strong>balayage</strong> (scan) et <strong>dichotomie</strong> (si la fonction a un seul extremum sur l’intervalle).</li>
+            <li style="margin:0; text-align:left;">Calcul approché de la <strong>longueur</strong> d’une portion de courbe par une ligne brisée.</li>
+        </ul>
+    </div>
+
+    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissement possible :</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Relier les courbes de $\displaystyle x^2$ et $\displaystyle \sqrt{x}$ sur $\displaystyle \mathbb{R}_+$ (fonctions réciproques).</p>
+    </div>
+
+    <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+        <p style="margin:0; text-align:left; font-size:1em;"><strong>Idée générale</strong></p>
+        <p style="margin:8px 0; text-align:left; font-size:1em;">Étudier les <strong>variations</strong> d’une fonction, c’est répondre à la question : « quand $\displaystyle x$ augmente, est-ce que $\displaystyle f(x)$ augmente ou diminue ? ».</p>
+        <p style="margin:8px 0; text-align:left; font-size:1em;">Les <strong>extremums</strong> (maximum/minimum) sont les valeurs <strong>les plus grandes</strong> ou <strong>les plus petites</strong> prises par la fonction sur un intervalle.</p>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Croissance, décroissance, monotonie</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Définitions</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Fonction croissante</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dire qu'une fonction $\displaystyle f$ est <strong>croissante</strong> sur un intervalle $\displaystyle I$ signifie que pour tous réels $\displaystyle u$ et $\displaystyle v$ de $\displaystyle I$ :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px; font-weight:bold;">
-                Si $\displaystyle u \leq v$, alors $\displaystyle f(u) \leq f(v)$
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fonction croissante sur un intervalle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ définie sur un intervalle $\displaystyle I$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle f$ est <strong>croissante</strong> sur $\displaystyle I$ si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:780px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \forall x_1, x_2\in I,\ x_1 \le x_2 \Longrightarrow f(x_1) \le f(x_2)$</p>
             </div>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que la fonction <strong>conserve l'ordre</strong>.</p>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em;"><em>Si on remplace $\displaystyle \le$ par $\displaystyle \lt$, on obtient la définition de <strong>strictement croissante</strong>.</em></p>
         </div>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Fonction décroissante</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dire qu'une fonction $\displaystyle f$ est <strong>décroissante</strong> sur un intervalle $\displaystyle I$ signifie que pour tous réels $\displaystyle u$ et $\displaystyle v$ de $\displaystyle I$ :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:400px; font-weight:bold;">
-                Si $\displaystyle u \leq v$, alors $\displaystyle f(u) \geq f(v)$
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fonction décroissante sur un intervalle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle f$ est <strong>décroissante</strong> sur $\displaystyle I$ si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:780px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \forall x_1, x_2\in I,\ x_1 \le x_2 \Longrightarrow f(x_1) \ge f(x_2)$</p>
             </div>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que la fonction <strong>change l'ordre</strong>.</p>
         </div>
 
-        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
-            <strong>💡 Vocabulaire :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 10px 0; text-align:left;">Une fonction est <strong>monotone</strong> sur un intervalle si elle y est soit croissante, soit décroissante.</li>
-                <li style="margin:0; text-align:left;">Une fonction est <strong>constante</strong> sur $\displaystyle I$ si pour tous $\displaystyle u, v \in I$, $\displaystyle f(u) = f(v)$.</li>
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Vocabulaire</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Une fonction est <strong>monotone</strong> sur $\displaystyle I$ si elle est <strong>croissante</strong> ou <strong>décroissante</strong> sur $\displaystyle I$.</li>
+                <li style="margin:0; text-align:left;">Une fonction est <strong>constante</strong> sur $\displaystyle I$ si $\displaystyle \forall x\in I,\ f(x)=c$ (même valeur partout).</li>
+            </ul>
+        </div>
+    </div>
+
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Lire les variations sur une courbe</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode - Lecture graphique</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur un graphique, on lit les variations en se déplaçant de <strong>gauche à droite</strong> (donc quand $\displaystyle x$ augmente) :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Si la courbe <strong>monte</strong> : $\displaystyle f$ est <strong>croissante</strong> sur l’intervalle considéré.</li>
+                <li style="margin:0; text-align:left;">Si la courbe <strong>descend</strong> : $\displaystyle f$ est <strong>décroissante</strong> sur l’intervalle considéré.</li>
             </ul>
         </div>
 
+        <div style="background:#fff3cd; border-radius:6px; border-left:6px solid #ffc107; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">On doit bien préciser l’<strong>intervalle</strong> sur lequel on étudie les variations.</li>
+                <li style="margin:0; text-align:left;">Un changement de sens de variation correspond souvent à un « sommet » (maximum) ou un « creux » (minimum).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Illustration : lire les variations sur une courbe</h3>
         [IMAGE_1]
     </div>
 
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Tableau de variations</h3>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Tableau de variations</h2>
 
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>tableau de variations</strong> résume les variations de la fonction à l'aide de flèches.</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 10px 0; text-align:left;">Une flèche vers le haut $\displaystyle \nearrow$ indique que la fonction est croissante.</li>
-                <li style="margin:0; text-align:left;">Une flèche vers le bas $\displaystyle \searrow$ indique que la fonction est décroissante.</li>
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">À quoi ça sert ?</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Définition - Tableau de variations</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un <strong>tableau de variations</strong> résume :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">les intervalles où $\displaystyle f$ est <strong>croissante</strong> / <strong>décroissante</strong> ;</li>
+                <li style="margin:0; text-align:left;">les <strong>valeurs</strong> prises par $\displaystyle f$ aux points importants (bornes, extremums).</li>
             </ul>
         </div>
 
-        <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px auto; max-width:650px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
-            <tr style="background:#e8f4f8;">
-                <td style="border-bottom:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:20%;">$\displaystyle x$</td>
-                <td style="border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50;">$\displaystyle -2$</td>
-                <td style="border-bottom:1px solid #ddd; padding:12px; text-align:center; color:#2c3e50;"></td>
-                <td style="border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50;">$\displaystyle 1$</td>
-                <td style="border-bottom:1px solid #ddd; padding:12px; text-align:center; color:#2c3e50;"></td>
-                <td style="border-bottom:1px solid #ddd; padding:8px; text-align:center; color:#2c3e50;">$\displaystyle 4$</td>
-            </tr>
-            <tr style="background:#ffffff; height:100px;">
-                <td style="border-right:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50; vertical-align:middle;">Variations<br>de $\displaystyle f$</td>
-                <td style="padding:8px; text-align:center; vertical-align:top;">$\displaystyle 5$</td>
-                <td style="padding:8px; text-align:center; vertical-align:middle; font-size:2.5em; color:#2c3e50; line-height:0.8;">$\searrow$</td>
-                <td style="padding:8px; text-align:center; vertical-align:bottom;">$\displaystyle -1$</td>
-                <td style="padding:8px; text-align:center; vertical-align:middle; font-size:2.5em; color:#2c3e50; line-height:0.8;">$\nearrow$</td>
-                <td style="padding:8px; text-align:center; vertical-align:top;">$\displaystyle 3$</td>
-            </tr>
-        </table>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple de tableau :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur l’intervalle $\displaystyle [-2;3]$, on suppose que :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle f$ décroît de $\displaystyle 1$ à $\displaystyle -3$ entre $\displaystyle -2$ et $\displaystyle 0$ ;</li>
+                <li style="margin:0 0 10px 0; text-align:left;">puis $\displaystyle f$ croît de $\displaystyle -3$ à $\displaystyle 5$ entre $\displaystyle 0$ et $\displaystyle 2$ ;</li>
+                <li style="margin:0; text-align:left;">puis $\displaystyle f$ décroît de $\displaystyle 5$ à $\displaystyle 4$ entre $\displaystyle 2$ et $\displaystyle 3$.</li>
+            </ul>
+
+            <div style="overflow-x:auto; margin:10px 0;">
+                <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px auto; max-width:650px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                    <tr style="background:#e8f4f8;">
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:18%;">$\displaystyle x$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:10%;">$\displaystyle -2$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:14%;"></td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:8%;">$\displaystyle 0$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:14%;"></td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:8%;">$\displaystyle 2$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:14%;"></td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:10%;">$\displaystyle 3$</td>
+                    </tr>
+                    <tr style="background:#ffffff; height:90px;">
+                        <td style="border:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; vertical-align:middle; font-size:18px;">Variation de $\displaystyle f$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle 1$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.2em; line-height:0.8;">↘</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:bottom; font-weight:700; color:#c62828; font-size:1.1em;">$\displaystyle -3$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.2em; line-height:0.8;">↗</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-weight:700; color:#2e7d32; font-size:1.1em;">$\displaystyle 5$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.2em; line-height:0.8;">↘</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:bottom; font-size:0.95em;">$\displaystyle 4$</td>
+                    </tr>
+                </table>
+            </div>
+
+            <p style="margin:8px 0; text-align:left; font-size:0.95em;"><em>Lecture rapide : minimum $\displaystyle -3$ (atteint en $\displaystyle x=0$) ; maximum $\displaystyle 5$ (atteint en $\displaystyle x=2$).</em></p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>💡 Exploiter un tableau de variations</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Comparer</strong> $\displaystyle f(a)$ et $\displaystyle f(b)$ : repérer le sens de variation entre $\displaystyle a$ et $\displaystyle b$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Encadrer</strong> $\displaystyle f(x)$ : sur un intervalle où $\displaystyle f$ est croissante, $\displaystyle f(x)$ reste entre la valeur au début et la valeur à la fin.</li>
+                <li style="margin:0; text-align:left;"><strong>Trouver des extremums</strong> : ils apparaissent là où la flèche change de sens (ou aux bornes).</li>
+            </ul>
+        </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Extremums d'une fonction</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Maximum et minimum sur un intervalle</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Maximum et Minimum</h3>
+        <h3 style="color:#34495e; margin-top:0;">Définitions</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Maximum</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction définie sur $\displaystyle I$ et $\displaystyle a \in I$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dire que $\displaystyle f(a)$ est le <strong>maximum</strong> de $\displaystyle f$ sur $\displaystyle I$ signifie que pour tout $\displaystyle x \in I$ :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:200px; font-weight:bold;">
-                $\displaystyle f(x) \leq f(a)$
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Maximum sur un intervalle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle M$ est un <strong>maximum</strong> de $\displaystyle f$ sur $\displaystyle I$ si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:780px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \forall x\in I,\ f(x)\le M$ <span style="font-weight:normal;">et</span> $\displaystyle \exists x_0\in I\ \text{tel que}\ f(x_0)=M$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em;"><em>Le maximum est une <strong>valeur</strong> (ordonnée). Le point où il est atteint est $\displaystyle (x_0;M)$ sur le graphique.</em></p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Minimum sur un intervalle</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On dit que $\displaystyle m$ est un <strong>minimum</strong> de $\displaystyle f$ sur $\displaystyle I$ si :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:780px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \forall x\in I,\ f(x)\ge m$ <span style="font-weight:normal;">et</span> $\displaystyle \exists x_0\in I\ \text{tel que}\ f(x_0)=m$</p>
             </div>
         </div>
 
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Cas très fréquent : fonction monotone</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle f$ est <strong>croissante</strong> sur $\displaystyle [a;b]$ : minimum = $\displaystyle f(a)$, maximum = $\displaystyle f(b)$.</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle f$ est <strong>décroissante</strong> sur $\displaystyle [a;b]$ : maximum = $\displaystyle f(a)$, minimum = $\displaystyle f(b)$.</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode - Trouver graphiquement un extremum sur $\displaystyle [a;b]$</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Tracer (ou repérer) la portion de courbe entre $\displaystyle x=a$ et $\displaystyle x=b$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Repérer le point le plus <strong>haut</strong> (maximum) ou le plus <strong>bas</strong> (minimum).</li>
+                <li style="margin:0; text-align:left;">Lire son ordonnée (valeur du max/min) et son abscisse (où il est atteint).</li>
+            </ol>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Illustration : maximum et minimum sur un intervalle</h3>
+        [IMAGE_2]
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Fonction affine : taux d’accroissement et variations</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Coefficient directeur = taux d’accroissement</h3>
+
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Définition - Minimum</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Dire que $\displaystyle f(a)$ est le <strong>minimum</strong> de $\displaystyle f$ sur $\displaystyle I$ signifie que pour tout $\displaystyle x \in I$ :</p>
-            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:200px; font-weight:bold;">
-                $\displaystyle f(x) \geq f(a)$
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Rappel - Fonction affine</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Une fonction affine est définie sur $\displaystyle \mathbb{R}$ par :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:280px; font-weight:bold;">
+                $\displaystyle f(x)=ax+b$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle a$ est le <strong>coefficient directeur</strong> (pente), $\displaystyle b$ l’ordonnée à l’origine.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Propriété - Taux d’accroissement constant</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour tous réels $\displaystyle x_1\ne x_2$ :</p>
+            <div style="background:#f3e5f5; border:3px solid #9c27b0; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:720px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \frac{f(x_2)-f(x_1)}{x_2-x_1}=a$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.95em;"><em>C’est pour cela qu’on dit que $\displaystyle a$ est un <strong>taux d’accroissement</strong> : « quand $\displaystyle x$ augmente de 1, $\displaystyle f(x)$ augmente de $\displaystyle a$ » (si $\displaystyle a\gt 0$).</em></p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>💡 Variations selon le signe de $\displaystyle a$</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle a\gt 0$ : $\displaystyle f$ est <strong>croissante</strong> sur $\displaystyle \mathbb{R}$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle a\lt 0$ : $\displaystyle f$ est <strong>décroissante</strong> sur $\displaystyle \mathbb{R}$.</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle a=0$ : $\displaystyle f$ est <strong>constante</strong> : $\displaystyle f(x)=b$.</li>
+            </ul>
+        </div>
+
+        <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+            <strong>Tableau récapitulatif :</strong>
+            <div style="overflow-x:auto; margin:10px 0;">
+                <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px auto; max-width:700px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                    <tr style="background:#e8f4f8; border-bottom:2px solid #3498db;">
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Signe de $\displaystyle a$</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Variation de $\displaystyle ax+b$</th>
+                        <th style="border:1px solid #ddd; padding:12px; text-align:center; font-weight:700; color:#2c3e50;">Lecture graphique</th>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle a\gt 0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center; color:#2e7d32; font-weight:700;">Croissante ↗</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">La droite <strong>monte</strong> de gauche à droite</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle a\lt 0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center; color:#c62828; font-weight:700;">Décroissante ↘</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">La droite <strong>descend</strong> de gauche à droite</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">$\displaystyle a=0$</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center; font-weight:700;">Constante</td>
+                        <td style="border:1px solid #ddd; padding:10px; text-align:center;">La droite est <strong>horizontale</strong></td>
+                    </tr>
+                </table>
             </div>
         </div>
 
-        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
-            <strong>💡 Remarque :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le maximum et le minimum sont appelés les <strong>extremums</strong> de la fonction sur l'intervalle.</p>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f(x)= -2x + 5$.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle a=-2\lt 0$, donc $\displaystyle f$ est <strong>décroissante</strong>.</li>
+                <li style="margin:0; text-align:left;">Quand $\displaystyle x$ augmente de 1, $\displaystyle f(x)$ diminue de 2.</li>
+            </ul>
         </div>
+    </div>
 
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Illustration : variations d’une fonction affine</h3>
         [IMAGE_3]
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Fonctions affines</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Variations des fonctions de référence</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Variations selon le coefficient directeur</h3>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>📌 À connaître</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Ces fonctions servent de « repères » : on doit connaître leur <strong>ensemble de définition</strong> et leurs <strong>variations</strong>.</p>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:10px;">1) Fonction carré : $\displaystyle x \mapsto x^2$</h3>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <ul style="margin:0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Domaine : $\displaystyle \mathbb{R}$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle x^2$ est <strong>décroissante</strong> sur $\displaystyle ]-\infty;0]$ puis <strong>croissante</strong> sur $\displaystyle [0;+\infty[$.</li>
+                <li style="margin:0; text-align:left;">Minimum : $\displaystyle 0$ atteint en $\displaystyle x=0$ (pas de maximum sur $\displaystyle \mathbb{R}$).</li>
+            </ul>
+
+            <div style="overflow-x:auto; margin:10px 0;">
+                <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px auto; max-width:650px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                    <tr style="background:#e8f4f8;">
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:18%;">$\displaystyle x$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:12%;">$\displaystyle -\infty$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:23%;"></td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:12%;">$\displaystyle 0$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:23%;"></td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:12%;">$\displaystyle +\infty$</td>
+                    </tr>
+                    <tr style="background:#ffffff; height:90px;">
+                        <td style="border:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; vertical-align:middle; font-size:18px;">Variation de $\displaystyle x^2$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle +\infty$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.2em; line-height:0.8;">↘</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:bottom; font-weight:700; color:#c62828; font-size:1.1em;">$\displaystyle 0$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.2em; line-height:0.8;">↗</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle +\infty$</td>
+                    </tr>
+                </table>
+            </div>
+
+ 
+        </div>
+                   [IMAGE_4]
+
+        <h3 style="color:#34495e; margin-top:10px;">2) Fonction inverse : $\displaystyle x \mapsto \frac{1}{x}$</h3>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <ul style="margin:0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Domaine : $\displaystyle \mathbb{R}\setminus\{0\}$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle \frac{1}{x}$ est <strong>décroissante</strong> sur $\displaystyle ]-\infty;0[$ et aussi sur $\displaystyle ]0;+\infty[$.</li>
+                <li style="margin:0; text-align:left;">Pas de maximum/minimum sur ces intervalles (la fonction devient très grande en valeur absolue près de 0).</li>
+            </ul>
+
+            <div style="overflow-x:auto; margin:10px 0;">
+                <p style="margin:0 0 8px 0; text-align:left; font-size:1em;"><strong>Sur $\displaystyle ]-\infty;0[$ :</strong></p>
+                <table style="width:100%; border-collapse:separate; border-spacing:0; margin:10px auto 15px auto; max-width:500px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                    <tr style="background:#e8f4f8;">
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">$\displaystyle x$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:25%;">$\displaystyle -\infty$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:25%;"></td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:25%;">$\displaystyle 0^-$</td>
+                    </tr>
+                    <tr style="background:#ffffff; height:80px;">
+                        <td style="border:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; vertical-align:middle; font-size:16px;">Variation de $\displaystyle \frac{1}{x}$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle 0^-$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.2em; line-height:0.8;">↘</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:bottom; font-size:0.95em;">$\displaystyle -\infty$</td>
+                    </tr>
+                </table>
+
+                <p style="margin:0 0 8px 0; text-align:left; font-size:1em;"><strong>Sur $\displaystyle ]0;+\infty[$ :</strong></p>
+                <table style="width:100%; border-collapse:separate; border-spacing:0; margin:10px auto; max-width:500px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                    <tr style="background:#e8f4f8;">
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">$\displaystyle x$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:25%;">$\displaystyle 0^+$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:25%;"></td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:25%;">$\displaystyle +\infty$</td>
+                    </tr>
+                    <tr style="background:#ffffff; height:80px;">
+                        <td style="border:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; vertical-align:middle; font-size:16px;">Variation de $\displaystyle \frac{1}{x}$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle +\infty$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.2em; line-height:0.8;">↘</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:bottom; font-size:0.95em;">$\displaystyle 0^+$</td>
+                    </tr>
+                </table>
+            </div>
+
+      
+        </div>
+      [IMAGE_5]
+        <h3 style="color:#34495e; margin-top:10px;">3) Fonction racine carrée : $\displaystyle x \mapsto \sqrt{x}$</h3>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <ul style="margin:0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Domaine : $\displaystyle [0;+\infty[$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle \sqrt{x}$ est <strong>croissante</strong> sur $\displaystyle [0;+\infty[$.</li>
+                <li style="margin:0; text-align:left;">Minimum : $\displaystyle 0$ atteint en $\displaystyle x=0$.</li>
+            </ul>
+
+            <div style="overflow-x:auto; margin:10px 0;">
+                <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px auto; max-width:500px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                    <tr style="background:#e8f4f8;">
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">$\displaystyle x$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:25%;">$\displaystyle 0$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:25%;"></td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:25%;">$\displaystyle +\infty$</td>
+                    </tr>
+                    <tr style="background:#ffffff; height:80px;">
+                        <td style="border:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; vertical-align:middle; font-size:16px;">Variation de $\displaystyle \sqrt{x}$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:bottom; font-weight:700; color:#c62828; font-size:1.05em;">$\displaystyle 0$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.2em; line-height:0.8;">↗</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle +\infty$</td>
+                    </tr>
+                </table>
+            </div>
+
+       
+        </div>
+     [IMAGE_6]
+        <h3 style="color:#34495e; margin-top:10px;">4) Fonction cube : $\displaystyle x \mapsto x^3$</h3>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <ul style="margin:0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Domaine : $\displaystyle \mathbb{R}$.</li>
+                <li style="margin:0; text-align:left;">$\displaystyle x^3$ est <strong>croissante</strong> sur $\displaystyle \mathbb{R}$ (pas de maximum/minimum).</li>
+            </ul>
+
+            <div style="overflow-x:auto; margin:10px 0;">
+                <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px auto; max-width:500px; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                    <tr style="background:#e8f4f8;">
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; width:25%;">$\displaystyle x$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:25%;">$\displaystyle -\infty$</td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:12px; text-align:center; color:#2c3e50; width:25%;"></td>
+                        <td style="border-top:0; border-left:0; border-bottom:1px solid #ddd; border-right:0; padding:8px; text-align:center; color:#2c3e50; width:25%;">$\displaystyle +\infty$</td>
+                    </tr>
+                    <tr style="background:#ffffff; height:80px;">
+                        <td style="border:0; padding:12px; text-align:center; font-weight:700; color:#2c3e50; vertical-align:middle; font-size:16px;">Variation de $\displaystyle x^3$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:bottom; font-size:0.95em;">$\displaystyle -\infty$</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:middle; font-size:3.2em; line-height:0.8;">↗</td>
+                        <td style="border:0; padding:8px; text-align:center; vertical-align:top; font-size:0.95em;">$\displaystyle +\infty$</td>
+                    </tr>
+                </table>
+            </div>
+
+        
+        </div>
+            [IMAGE_7]
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Démonstrations (au programme) : carré, inverse, racine carrée</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Principe commun</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour prouver qu’une fonction est croissante/décroissante, on compare $\displaystyle f(x_1)$ et $\displaystyle f(x_2)$ quand $\displaystyle x_1\lt x_2$.</p>
+        </div>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
-            <p style="text-align:left; font-size:1em;"><strong>Propriété</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soit $\displaystyle f$ une fonction affine définie sur $\displaystyle \mathbb{R}$ par $\displaystyle f(x) = ax + b$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Le taux d'accroissement de $\displaystyle f$ est constant et égal à $\displaystyle a$.</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle a > 0$, la fonction $\displaystyle f$ est <strong>strictement croissante</strong> sur $\displaystyle \mathbb{R}$.</li>
-                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle a < 0$, la fonction $\displaystyle f$ est <strong>strictement décroissante</strong> sur $\displaystyle \mathbb{R}$.</li>
-                <li style="margin:0; text-align:left;">Si $\displaystyle a = 0$, la fonction $\displaystyle f$ est <strong>constante</strong> sur $\displaystyle \mathbb{R}$.</li>
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>1) Variations de $\displaystyle x^2$</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Sur $\displaystyle [0;+\infty[$ : si $\displaystyle 0\le x_1\lt x_2$, alors $\displaystyle x_2=x_1+h$ avec $\displaystyle h\gt 0$ donc $\displaystyle x_2^2=x_1^2+2hx_1+h^2\gt x_1^2$. Donc $\displaystyle x^2$ est <strong>croissante</strong>.</li>
+                <li style="margin:0; text-align:left;">Sur $\displaystyle ]-\infty;0]$ : si $\displaystyle x_1\lt x_2\le 0$, alors $\displaystyle -x_2\lt -x_1$ et $\displaystyle (-x)^2=x^2$. Comme la fonction carré est croissante sur $\displaystyle [0;+\infty[$, on obtient $\displaystyle x_2^2\lt x_1^2$. Donc $\displaystyle x^2$ est <strong>décroissante</strong> sur $\displaystyle ]-\infty;0]$.</li>
             </ul>
         </div>
 
-        [IMAGE_4]
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Variations des fonctions de référence</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Fonction Carré</h3>
-
-        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
-            <strong>Propriété :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction carré $\displaystyle f(x) = x^2$ est :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 10px 0; text-align:left;"><strong>Décroissante</strong> sur $\displaystyle ]-\infty; 0]$</li>
-                <li style="margin:0; text-align:left;"><strong>Croissante</strong> sur $\displaystyle [0; +\infty[$</li>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>2) Variations de $\displaystyle \frac{1}{x}$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On traite séparément $\displaystyle ]0;+\infty[$ et $\displaystyle ]-\infty;0[$.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle 0\lt x_1\lt x_2$, alors $\displaystyle x_1x_2\gt 0$ et :</li>
             </ul>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Démonstration (Exigible) :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle u$ et $\displaystyle v$ deux réels.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On calcule $\displaystyle f(u) - f(v) = u^2 - v^2 = (u-v)(u+v)$.</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 10px 0; text-align:left;">Sur $\displaystyle [0; +\infty[$ : Si $\displaystyle 0 \leq u < v$, alors $\displaystyle u-v < 0$ et $\displaystyle u+v > 0$. Donc $\displaystyle f(u) - f(v) < 0$, soit $\displaystyle f(u) < f(v)$. La fonction conserve l'ordre, elle est <strong>croissante</strong>.</li>
-                <li style="margin:0; text-align:left;">Sur $\displaystyle ]-\infty; 0]$ : Si $\displaystyle u < v \leq 0$, alors $\displaystyle u-v < 0$ et $\displaystyle u+v < 0$. Donc $\displaystyle f(u) - f(v) > 0$, soit $\displaystyle f(u) > f(v)$. La fonction inverse l'ordre, elle est <strong>décroissante</strong>.</li>
-            </ul>
-        </div>
-
-        <h3 style="color:#34495e; margin-top:20px;">Fonction Inverse</h3>
-
-        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
-            <strong>Propriété :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction inverse $\displaystyle f(x) = \frac{1}{x}$ est :</p>
-            <ul style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
-                <li style="margin:0 0 10px 0; text-align:left;"><strong>Décroissante</strong> sur $\displaystyle ]-\infty; 0[$</li>
-                <li style="margin:0; text-align:left;"><strong>Décroissante</strong> sur $\displaystyle ]0; +\infty[$</li>
-            </ul>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Démonstration (Exigible) :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle u$ et $\displaystyle v$ deux réels non nuls de même signe tels que $\displaystyle u < v$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(u) - f(v) = \frac{1}{u} - \frac{1}{v} = \frac{v - u}{uv}$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle u < v$, $\displaystyle v - u > 0$. Comme $\displaystyle u$ et $\displaystyle v$ ont le même signe, $\displaystyle uv > 0$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle f(u) - f(v) > 0$, soit $\displaystyle f(u) > f(v)$. L'ordre est inversé, la fonction est <strong>décroissante</strong> sur chaque intervalle.</p>
-        </div>
-
-        <h3 style="color:#34495e; margin-top:20px;">Fonction Racine Carrée</h3>
-
-        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
-            <strong>Propriété :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction racine carrée $\displaystyle f(x) = \sqrt{x}$ est <strong>croissante</strong> sur $\displaystyle [0; +\infty[$.</p>
-        </div>
-
-        <div style="background:#e0f2f1; border-radius:6px; border-left:6px solid #00897b; padding:15px; margin:12px 0;">
-            <strong>Démonstration (Exigible) :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Soient $\displaystyle u$ et $\displaystyle v$ deux réels positifs tels que $\displaystyle 0 \leq u < v$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle f(u) - f(v) = \sqrt{u} - \sqrt{v} = \frac{(\sqrt{u} - \sqrt{v})(\sqrt{u} + \sqrt{v})}{\sqrt{u} + \sqrt{v}} = \frac{u - v}{\sqrt{u} + \sqrt{v}}$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Comme $\displaystyle u < v$, $\displaystyle u - v < 0$. Le dénominateur est positif.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle f(u) - f(v) < 0$, soit $\displaystyle f(u) < f(v)$. L'ordre est conservé, la fonction est <strong>croissante</strong>.</p>
-        </div>
-
-        <h3 style="color:#34495e; margin-top:20px;">Fonction Cube</h3>
-
-        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
-            <strong>Propriété :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La fonction cube $\displaystyle f(x) = x^3$ est <strong>croissante</strong> sur $\displaystyle \mathbb{R}$.</p>
-        </div>
-
-        [IMAGE_5]
-    </div>
-
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Algorithmique et Outils numériques</h2>
-
-    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Recherche d'un extremum par balayage</h3>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On souhaite approcher le maximum d'une fonction $\displaystyle f$ sur $\displaystyle [a, b]$.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Principe :</strong> On parcourt l'intervalle avec un pas $\displaystyle p$ et on mémorise la plus grande valeur trouvée.</p>
-            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
-                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">maximum_balayage</span>(f, a, b, pas):<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;x = a<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;max_val = f(a)<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">while</span> x <= b:<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> f(x) > max_val:<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_val = f(x)<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = x + pas<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> max_val
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:10px auto; text-align:center; max-width:820px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \frac{1}{x_1}-\frac{1}{x_2}=\frac{x_2-x_1}{x_1x_2}\gt 0$</p>
             </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc $\displaystyle \frac{1}{x_1}\gt\frac{1}{x_2}$ : la fonction inverse est <strong>décroissante</strong> sur $\displaystyle ]0;+\infty[$. Le même raisonnement fonctionne sur $\displaystyle ]-\infty;0[$ : on a encore $\displaystyle x_2-x_1\gt 0$ et $\displaystyle x_1x_2\gt 0$ (produit de deux nombres négatifs), donc le quotient est positif.</p>
         </div>
 
-        <h3 style="color:#34495e; margin-top:20px;">Calcul approché de longueur de courbe</h3>
-
-        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On approche la courbe par une ligne brisée reliant des points de la courbe.</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">La longueur d'un segment entre $\displaystyle M_i(x_i, f(x_i))$ et $\displaystyle M_{i+1}(x_{i+1}, f(x_{i+1}))$ est $\displaystyle \sqrt{(x_{i+1}-x_i)^2 + (f(x_{i+1})-f(x_i))^2}$.</p>
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>3) Variations de $\displaystyle \sqrt{x}$</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si $\displaystyle 0\le x_1\lt x_2$, supposons que $\displaystyle \sqrt{x_1}\ge \sqrt{x_2}$. En élevant au carré (fonction carré croissante sur $\displaystyle \mathbb{R}_+$), on obtient $\displaystyle x_1\ge x_2$, contradiction. Donc :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:10px auto; text-align:center; max-width:520px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle \sqrt{x_1}\lt\sqrt{x_2}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Donc la fonction racine carrée est <strong>croissante</strong> sur $\displaystyle [0;+\infty[$.</p>
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Approfondissements</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Outils numériques et algorithmique (Python)</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Lien entre fonction carré et racine carrée</h3>
 
-        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
-            <strong>🌟 Symétrie :</strong>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle [0; +\infty[$, les courbes représentatives des fonctions $\displaystyle f(x) = x^2$ et $\displaystyle g(x) = \sqrt{x}$ sont <strong>symétriques par rapport à la droite d'équation $\displaystyle y = x$</strong> (première bissectrice).</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">Cela illustre le fait que ces fonctions sont réciproques l'une de l'autre sur cet intervalle.</p>
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>💻 Avec la calculatrice / un logiciel</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Faire une <strong>table de valeurs</strong> (par pas régulier) pour voir si les images montent ou descendent.</li>
+                <li style="margin:0; text-align:left;">Tracer la courbe et zoomer sur un sommet/creux pour lire un <strong>maximum</strong> ou un <strong>minimum</strong>.</li>
+            </ul>
         </div>
+
+        <h3 style="color:#34495e; margin-top:18px;">1) Balayage : approximer maximum et minimum</h3>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Idée :</strong> on calcule $\displaystyle f(x)$ sur beaucoup de points, et on garde la plus grande et la plus petite valeur.</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">extremums_balai</span>(a, b, n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Exemple : f(x) = -(x-2)^2 + 3</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">def</span> f(x):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> -(x-<span style="color:#bd93f9;">2</span>)**<span style="color:#bd93f9;">2</span> + <span style="color:#bd93f9;">3</span><br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;x_min = a<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;x_max = a<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;y_min = f(a)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;y_max = f(a)<br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n+<span style="color:#bd93f9;">1</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = a + i*(b-a)/n<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y = f(x)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> y &lt; y_min:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y_min = y<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x_min = x<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> y &gt; y_max:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y_max = y<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x_max = x<br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> (x_min, y_min), (x_max, y_max)
+            </div>
+            <p style="margin:8px 0 0 0; text-align:left; font-size:0.95em;"><em>Plus $\displaystyle n$ est grand, plus l’approximation est précise (mais plus c’est long à calculer).</em></p>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:18px;">2) Dichotomie (fonction avec un seul extremum sur l’intervalle)</h3>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Quand ça marche ?</strong> Quand la fonction est <strong>d’abord croissante puis décroissante</strong> (un seul maximum) ou <strong>d’abord décroissante puis croissante</strong> (un seul minimum).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On compare deux valeurs proches du milieu et on garde la moitié qui contient l’extremum.</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">maximum_dichotomie</span>(a, b, eps):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Exemple : f(x) = -(x-2)^2 + 3 (maximum vers x=2)</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">def</span> f(x):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> -(x-<span style="color:#bd93f9;">2</span>)**<span style="color:#bd93f9;">2</span> + <span style="color:#bd93f9;">3</span><br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">while</span> (b-a) &gt; eps:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m = (a+b)/<span style="color:#bd93f9;">2</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d = (b-a)/<span style="color:#bd93f9;">100</span> <span style="color:#6272a4;"># petit décalage</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> f(m-d) &lt; f(m+d):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a = m<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b = m<br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;x = (a+b)/<span style="color:#bd93f9;">2</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> x, f(x)
+            </div>
+            <p style="margin:8px 0 0 0; text-align:left; font-size:0.95em;"><em>On obtient une valeur approchée de l’abscisse du maximum, puis la valeur du maximum.</em></p>
+        </div>
+
+        <h3 style="color:#34495e; margin-top:18px;">3) Longueur approchée d’une portion de courbe</h3>
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Idée :</strong> on remplace la courbe par une ligne brisée passant par des points $(x_i, f(x_i))$, puis on additionne les distances.</p>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+                <span style="color:#ff79c6;">import</span> math<br><br>
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">longueur_courbe</span>(a, b, n):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Exemple : f(x) = x^2</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">def</span> f(x):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> x**<span style="color:#bd93f9;">2</span><br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;L = <span style="color:#bd93f9;">0.0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;h = (b-a)/n<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;x0 = a<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;y0 = f(x0)<br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(<span style="color:#bd93f9;">1</span>, n+<span style="color:#bd93f9;">1</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x1 = a + i*h<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y1 = f(x1)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L = L + math.sqrt((x1-x0)**<span style="color:#bd93f9;">2</span> + (y1-y0)**<span style="color:#bd93f9;">2</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x0, y0 = x1, y1<br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> L
+            </div>
+            <p style="margin:8px 0 0 0; text-align:left; font-size:0.95em;"><em>Plus $\displaystyle n$ est grand, plus la ligne brisée suit la courbe (meilleure approximation).</em></p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Approfondissement (bonus) : lien entre $\displaystyle x^2$ et $\displaystyle \sqrt{x}$</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <p style="margin:0; text-align:left; font-size:1em;"><strong>Idée</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Sur $\displaystyle \mathbb{R}_+$, la fonction carré $\displaystyle x\mapsto x^2$ est <strong>croissante</strong> et « annule » la racine carrée :</p>
+            <div style="background:#fef3c7; border:3px solid #f59e0b; border-radius:8px; padding:15px; margin:10px auto; text-align:center; max-width:700px;">
+                <p style="margin:0; font-size:1.05em; font-weight:bold;">$\displaystyle (\sqrt{x})^2=x \quad \text{et} \quad \sqrt{x^2}=x \quad (x\ge 0)$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Les courbes de $\displaystyle y=x^2$ et $\displaystyle y=\sqrt{x}$ sur $\displaystyle x\ge 0$ sont <strong>symétriques</strong> par rapport à la droite $\displaystyle y=x$ (car ce sont des fonctions réciproques).</p>
+        </div>
+    </div>
+
+    <div style="background:#eef2ff; border-radius:6px; border-left:6px solid #4d6df3; padding:15px; margin:12px 0;">
+        <p style="margin:0 0 8px 0; text-align:left; font-size:1em;"><strong>Mini-formulaire (à réviser) :</strong></p>
+        <p style="margin:6px 0; text-align:left; font-size:0.95em;">Croissante sur $\displaystyle I$ : $\displaystyle x_1\le x_2 \Rightarrow f(x_1)\le f(x_2)$ ; décroissante : $\displaystyle x_1\le x_2 \Rightarrow f(x_1)\ge f(x_2)$.</p>
+        <p style="margin:6px 0; text-align:left; font-size:0.95em;">Sur $\displaystyle [a;b]$ : si $\displaystyle f$ est croissante, min = $\displaystyle f(a)$, max = $\displaystyle f(b)$ (inverse si décroissante).</p>
+        <p style="margin:6px 0; text-align:left; font-size:0.95em;">Affine $\displaystyle f(x)=ax+b$ : $\displaystyle a\gt 0$ croissante ; $\displaystyle a\lt 0$ décroissante ; $\displaystyle a=0$ constante.</p>
+        <p style="margin:6px 0; text-align:left; font-size:0.95em;">Références : $\displaystyle x^2$ (↓ puis ↑) ; $\displaystyle 1/x$ (↓ sur $\displaystyle ]0;+\infty[$ et $\displaystyle ]-\infty;0[$) ; $\displaystyle \sqrt{x}$ (↑ sur $\displaystyle [0;+\infty[$) ; $\displaystyle x^3$ (↑ sur $\displaystyle \mathbb{R}$).</p>
     </div>
 
 </div>

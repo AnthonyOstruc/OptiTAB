@@ -1,94 +1,58 @@
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
+import numpy as np
 
-# --- Configuration des données ---
-# Coordonnées du point M (départ)
-Mx, My = 2, 3
-# Coordonnées du point M' (arrivée)
-Mpx, Mpy = 7, 6
+# Création des données
+x = np.linspace(-2.2, 2.2, 400)
+# Fonction f(x) = x^3 - 3x. Cette fonction est idéale car elle a un max clair et un min clair.
+y = x**3 - 3*x
 
-# Calcul des composantes du vecteur (pour les pointillés)
-dx = Mpx - Mx
-dy = Mpy - My
+# Configuration du graphique
+fig, ax = plt.subplots(figsize=(10, 6))
 
-# --- Création de la figure et des axes ---
-fig, ax = plt.subplots(figsize=(10, 7))
+# Tracer la courbe
+ax.plot(x, y, label='Courbe de f', color='#1f77b4', linewidth=3)
 
-# --- Configuration du repère (style mathématique) ---
-# Activer la grille
-ax.grid(True, which='both', linestyle='--', linewidth=0.5, color='gray')
+# 1. Annotation : La courbe monte (Croissante)
+# Flèche et texte pour la première partie montante
+ax.annotate('', xy=(-1.2, 0), xytext=(-1.8, -4),
+            arrowprops=dict(facecolor='green', shrink=0.05, alpha=0.6))
+ax.text(-1.8, -1.5, 'La courbe MONTE\n($f$ croissante)', color='green', fontsize=11, fontweight='bold', ha='center')
 
-# Configurer les axes pour qu'ils passent par (0,0)
-ax.spines['left'].set_position('zero')
-ax.spines['bottom'].set_position('zero')
-ax.spines['right'].set_color('none')
-ax.spines['top'].set_color('none')
+# 2. Annotation : Sommet (Maximum)
+# Point rouge au sommet (-1, 2)
+ax.plot(-1, 2, 'ro', markersize=10)
+ax.annotate('SOMMET\n(Maximum)', xy=(-1, 2.2), xytext=(-1, 3.5),
+            arrowprops=dict(facecolor='black', arrowstyle='->'),
+            fontsize=12, fontweight='bold', ha='center', color='darkred')
 
-# Ajouter des flèches au bout des axes (un peu une astuce en matplotlib)
-ax.plot(1, 0, ">k", transform=ax.get_yaxis_transform(), clip_on=False)
-ax.plot(0, 1, "^k", transform=ax.get_xaxis_transform(), clip_on=False)
+# 3. Annotation : La courbe descend (Décroissante)
+# Flèche et texte pour la partie descendante
+ax.annotate('', xy=(0.8, -1), xytext=(-0.5, 1.5),
+            arrowprops=dict(facecolor='red', shrink=0.05, alpha=0.6))
+ax.text(0.2, 0.5, 'La courbe DESCEND\n($f$ décroissante)', color='red', fontsize=11, fontweight='bold', ha='center')
 
-# Labels des axes
-ax.set_xlabel('$x$', loc='right', fontsize=14)
-ax.set_ylabel('$y$', loc='top', fontsize=14, rotation=0)
-ax.text(-0.5, -0.5, '$O$', fontsize=14) # Origine
+# 4. Annotation : Creux (Minimum)
+# Point rouge au creux (1, -2)
+ax.plot(1, -2, 'ro', markersize=10)
+ax.annotate('CREUX\n(Minimum)', xy=(1, -2.2), xytext=(1, -4),
+            arrowprops=dict(facecolor='black', arrowstyle='->'),
+            fontsize=12, fontweight='bold', ha='center', color='darkred')
 
-# Définir les limites du graphique
-ax.set_xlim(-1, 10)
-ax.set_ylim(-1, 9)
-ax.set_aspect('equal') # Important pour que le vecteur ne soit pas déformé
+# 5. Annotation : La courbe remonte
+ax.annotate('', xy=(1.8, 2), xytext=(1.2, -1),
+            arrowprops=dict(facecolor='green', shrink=0.05, alpha=0.6))
 
-# --- Dessin des éléments mathématiques ---
+# Mise en forme du repère
+ax.axhline(0, color='black', linewidth=1) # Axe x
+ax.axvline(0, color='black', linewidth=1) # Axe y
+ax.grid(True, linestyle='--', alpha=0.7)
+ax.set_title("Illustration : Variations d'une fonction", fontsize=16, pad=20)
+ax.set_xlabel("x (lecture de gauche à droite)", fontsize=12)
+ax.set_ylabel("f(x)", fontsize=12)
 
-# 1. Les pointillés (triangle rectangle pour les composantes)
-plt.plot([Mx, Mpx], [My, My], 'k--', linewidth=1) # Ligne horizontale
-plt.plot([Mpx, Mpx], [My, Mpy], 'k--', linewidth=1) # Ligne verticale
-# Petit carré pour l'angle droit
-rect = patches.Rectangle((Mpx, My), -0.4, 0.4, linewidth=1, edgecolor='k', facecolor='none')
-ax.add_patch(rect)
+# Limites pour que tout soit bien visible
+ax.set_ylim(-5, 5)
 
-# 2. Les points M et M'
-ax.scatter([Mx, Mpx], [My, Mpy], color='black', s=50, zorder=5)
-
-# 3. Le Vecteur MM' (Grosse flèche rouge)
-# On utilise annotate pour une belle flèche
-ax.annotate('', xy=(Mpx, Mpy), xytext=(Mx, My),
-            arrowprops=dict(arrowstyle='->', color='red', linewidth=3, mutation_scale=25))
-
-# --- Ajout des textes et labels ---
-
-# Labels des points
-ax.text(Mx - 0.5, My + 0.3, '$M(x, y)$', fontsize=14, ha='right')
-ax.text(Mpx + 0.3, Mpy + 0.3, "$M'(x', y')$", fontsize=14)
-
-# Nom du vecteur au-dessus de la flèche
-mid_x = (Mx + Mpx) / 2
-mid_y = (My + Mpy) / 2
-ax.text(mid_x - 0.5, mid_y + 0.8, r'$\vec{MM}$ ou $\vec{u}$', fontsize=16, color='red')
-
-# Labels des composantes sur les pointillés
-ax.text(mid_x, My - 0.5, r"$x' - x$", fontsize=12, ha='center')
-ax.text(Mpx + 0.3, mid_y, r"$y' - y$", fontsize=12, va='center')
-
-# --- Ajout de la boîte de définition en haut ---
-definition_text = (
-    "Définition mathématique :\n"
-    r"Le vecteur $\vec{u} = \vec{MM'}$ est associé à la translation"
-    "\nqui transforme le point M en M'."
-)
-
-# Création d'une boîte de texte stylisée
-props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-ax.text(0.5, 8.5, definition_text, fontsize=14,
-        verticalalignment='top', bbox=props)
-
-# --- (Optionnel) Un deuxième vecteur équivalent pour montrer le concept ---
-Mx2, My2 = 4, 0.5
-Mpx2, Mpy2 = Mx2 + dx, My2 + dy
-ax.annotate('', xy=(Mpx2, Mpy2), xytext=(Mx2, My2),
-            arrowprops=dict(arrowstyle='->', color='red', linewidth=2, mutation_scale=20, alpha=0.6))
-ax.text((Mx2+Mpx2)/2, (My2+Mpy2)/2 + 0.3, r'$\vec{v}$', fontsize=14, color='red', alpha=0.6)
-
-
-plt.title("Schéma Mathématique de la Définition d'un Vecteur", pad=20)
+# Sauvegarder et afficher
+plt.tight_layout()
 plt.show()

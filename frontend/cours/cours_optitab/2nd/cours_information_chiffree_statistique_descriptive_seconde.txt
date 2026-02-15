@@ -3,7 +3,7 @@ Difficulté: medium
 Ordre: 13
 
 Titre: Utiliser l'information chiffrée et statistique descriptive
-Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pourcentages, évolutions (taux, coefficients multiplicateurs), moyenne pondérée, linéarité, écart interquartile et écart type ; lecture d'une fonction Python renvoyant (m, s, proportion dans [m-2s ; m+2s]).
+Description: Cours de Seconde sur proportions/pourcentages, tableaux statistiques (fréquences, effectifs cumulés, fréquences cumulées), représentations graphiques (diagramme en bâtons, ogive), pourcentages de pourcentages, évolutions (taux, coefficients multiplicateurs), moyenne pondérée, linéarité, médiane, quartiles (Q1/Q3 par le rang), écart interquartile et écart type ; lecture d'une fonction Python renvoyant (m, s, proportion dans [m-2s ; m+2s]).
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
 
@@ -11,10 +11,12 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
         <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
         <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:0.95em;">
             <li style="margin:0 0 10px 0; text-align:left;">Exploiter la relation entre <strong>effectifs</strong>, <strong>proportions</strong> et <strong>pourcentages</strong>.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Compléter un <strong>tableau statistique</strong> : effectifs, fréquences, effectifs cumulés, fréquences cumulées croissantes et décroissantes.</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Lire et interpréter un <strong>diagramme en bâtons</strong>, un <strong>nuage de points</strong> des effectifs, ou une <strong>courbe des fréquences cumulées</strong> (ogive).</li>
             <li style="margin:0 0 10px 0; text-align:left;">Traiter des situations simples de <strong>pourcentages de pourcentages</strong> (ensembles inclus les uns dans les autres).</li>
             <li style="margin:0 0 10px 0; text-align:left;">Exploiter la relation entre deux valeurs successives et leur <strong>taux d'évolution</strong> (variation absolue, variation relative).</li>
             <li style="margin:0 0 10px 0; text-align:left;">Calculer un taux global à partir d'<strong>évolutions successives</strong> et déterminer un <strong>taux d'évolution réciproque</strong> (produit / inverse des coefficients multiplicateurs).</li>
-            <li style="margin:0 0 10px 0; text-align:left;">Décrire verbalement les différences entre deux séries statistiques à l'aide d'indicateurs : <strong>moyenne pondérée</strong>, <strong>écart interquartile</strong>, <strong>écart type</strong> (et/ou un graphique fourni).</li>
+            <li style="margin:0 0 10px 0; text-align:left;">Décrire verbalement les différences entre deux séries statistiques à l'aide d'indicateurs : <strong>moyenne pondérée</strong>, <strong>médiane</strong>, <strong>quartiles</strong>, <strong>écart interquartile</strong>, <strong>écart type</strong> (et/ou un graphique fourni).</li>
             <li style="margin:0; text-align:left;">Lire et comprendre une fonction Python renvoyant la moyenne $\displaystyle m$, l'écart type $\displaystyle s$, et la proportion d'éléments appartenant à $\displaystyle [m-2s\,;\,m+2s]$.</li>
         </ul>
     </div>
@@ -61,7 +63,161 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Pourcentage de pourcentage (ensembles inclus)</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Tableau statistique : fréquences et cumulées</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Effectif total et fréquence</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Effectif total</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'effectif total d'une série statistique est la somme de tous les effectifs :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:320px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle N = \sum n_i$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fréquence</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fréquence d'une valeur $\displaystyle x_i$ est le rapport de son effectif $\displaystyle n_i$ par l'effectif total $\displaystyle N$ :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:320px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle f_i = \frac{n_i}{N}$</p>
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">En pourcentage : $\displaystyle f_i\% = 100 \times f_i$.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Propriété fondamentale :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La somme de toutes les fréquences vaut toujours $\displaystyle 1$ (ou $\displaystyle 100\%$) :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:320px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \sum f_i = 1$</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Effectifs cumulés et fréquences cumulées</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fréquence cumulée croissante</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fréquence cumulée croissante de la valeur $\displaystyle x_i$ est la somme de toutes les fréquences des valeurs <strong>inférieures ou égales</strong> à $\displaystyle x_i$ :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:420px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle F_i = f_1 + f_2 + \cdots + f_i$</p>
+            </div>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Fréquence cumulée décroissante</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La fréquence cumulée décroissante de la valeur $\displaystyle x_i$ est la somme de toutes les fréquences des valeurs <strong>supérieures ou égales</strong> à $\displaystyle x_i$ :</p>
+            <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:420px;">
+                <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle G_i = f_i + f_{i+1} + \cdots + f_k$</p>
+            </div>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple complet :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Nombre de frères/sœurs dans une classe de 20 élèves :</p>
+            <table style="width:100%; border-collapse:separate; border-spacing:0; margin:10px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden;">
+                <thead>
+                    <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
+                        <th style="border:none; padding:10px; text-align:center;">Valeur $\displaystyle x_i$</th>
+                        <th style="border:none; padding:10px; text-align:center;">0</th>
+                        <th style="border:none; padding:10px; text-align:center;">1</th>
+                        <th style="border:none; padding:10px; text-align:center;">2</th>
+                        <th style="border:none; padding:10px; text-align:center;">3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#e8f4fd;">
+                        <td style="border:none; border-bottom:1px solid #d1e7f0; padding:10px; text-align:center;"><strong>Effectif $\displaystyle n_i$</strong></td>
+                        <td style="border:none; border-bottom:1px solid #d1e7f0; padding:10px; text-align:center;">3</td>
+                        <td style="border:none; border-bottom:1px solid #d1e7f0; padding:10px; text-align:center;">8</td>
+                        <td style="border:none; border-bottom:1px solid #d1e7f0; padding:10px; text-align:center;">6</td>
+                        <td style="border:none; border-bottom:1px solid #d1e7f0; padding:10px; text-align:center;">3</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:none; border-bottom:1px solid #e9ecef; padding:10px; text-align:center;"><strong>Fréquence $\displaystyle f_i$</strong></td>
+                        <td style="border:none; border-bottom:1px solid #e9ecef; padding:10px; text-align:center;">$\displaystyle \frac{3}{20}=0{,}15$</td>
+                        <td style="border:none; border-bottom:1px solid #e9ecef; padding:10px; text-align:center;">$\displaystyle \frac{8}{20}=0{,}40$</td>
+                        <td style="border:none; border-bottom:1px solid #e9ecef; padding:10px; text-align:center;">$\displaystyle \frac{6}{20}=0{,}30$</td>
+                        <td style="border:none; border-bottom:1px solid #e9ecef; padding:10px; text-align:center;">$\displaystyle \frac{3}{20}=0{,}15$</td>
+                    </tr>
+                    <tr style="background:#e8f4fd;">
+                        <td style="border:none; border-bottom:1px solid #d1e7f0; padding:10px; text-align:center;"><strong>Eff. cum. croiss.</strong></td>
+                        <td style="border:none; border-bottom:1px solid #d1e7f0; padding:10px; text-align:center;">3</td>
+                        <td style="border:none; border-bottom:1px solid #d1e7f0; padding:10px; text-align:center;">11</td>
+                        <td style="border:none; border-bottom:1px solid #d1e7f0; padding:10px; text-align:center;">17</td>
+                        <td style="border:none; border-bottom:1px solid #d1e7f0; padding:10px; text-align:center;">20</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:none; border-bottom:1px solid #e9ecef; padding:10px; text-align:center;"><strong>Fréq. cum. croiss. $\displaystyle F_i$</strong></td>
+                        <td style="border:none; border-bottom:1px solid #e9ecef; padding:10px; text-align:center;">0,15</td>
+                        <td style="border:none; border-bottom:1px solid #e9ecef; padding:10px; text-align:center;">0,55</td>
+                        <td style="border:none; border-bottom:1px solid #e9ecef; padding:10px; text-align:center;">0,85</td>
+                        <td style="border:none; border-bottom:1px solid #e9ecef; padding:10px; text-align:center;">1,00</td>
+                    </tr>
+                    <tr style="background:#e8f4fd;">
+                        <td style="border:none; padding:10px; text-align:center;"><strong>Fréq. cum. décroiss. $\displaystyle G_i$</strong></td>
+                        <td style="border:none; padding:10px; text-align:center;">1,00</td>
+                        <td style="border:none; padding:10px; text-align:center;">0,85</td>
+                        <td style="border:none; padding:10px; text-align:center;">0,45</td>
+                        <td style="border:none; padding:10px; text-align:center;">0,15</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Vérification : la dernière fréquence cumulée croissante vaut $\displaystyle 1$ et la première fréquence cumulée décroissante vaut $\displaystyle 1$.</p>
+        </div>
+
+        <div style="background:#fff8dc; border-radius:6px; border-left:6px solid #ffa500; padding:15px; margin:12px 0;">
+            <strong>⚠️ Attention :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'effectif cumulé croissant est la somme des effectifs ; la fréquence cumulée croissante est la somme des fréquences. Ne pas confondre les deux (l'un se divise par $\displaystyle N$ pour obtenir l'autre).</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Représentations graphiques d'une série statistique</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Diagramme en bâtons et nuage de points</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Diagramme en bâtons</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On place en abscisse les valeurs $\displaystyle x_i$ et on trace un <strong>bâton vertical</strong> de hauteur $\displaystyle n_i$ (effectif) ou $\displaystyle f_i$ (fréquence).</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Nuage de points des effectifs :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On peut aussi représenter la série par un nuage de points $\displaystyle (x_i\,;\,n_i)$. Chaque point a pour abscisse une valeur du caractère et pour ordonnée son effectif.</p>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Courbe des fréquences cumulées (ogive)</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Ogive</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La courbe des fréquences cumulées croissantes est obtenue en plaçant les points $\displaystyle (x_i\,;\,F_i)$ et en les reliant. Elle est <strong>croissante</strong> et part de $\displaystyle 0$ pour arriver à $\displaystyle 1$.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Méthode - Lire la médiane sur une ogive :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Tracer la droite horizontale $\displaystyle y = 0{,}5$ (ou $\displaystyle 50\%$).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Lire l'abscisse du point d'intersection avec la courbe.</li>
+                <li style="margin:0; text-align:left;">Cette abscisse est la <strong>médiane</strong>.</li>
+            </ol>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">De même, on peut lire $\displaystyle Q_1$ en $\displaystyle y = 0{,}25$ et $\displaystyle Q_3$ en $\displaystyle y = 0{,}75$.</p>
+        </div>
+
+        <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
+            <strong>💡 À retenir :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Diagramme en bâtons</strong> : visualiser la forme de la distribution (valeurs fréquentes, symétrie).</li>
+                <li style="margin:0 0 10px 0; text-align:left;"><strong>Ogive</strong> : lire médiane, quartiles, et la proportion de valeurs inférieures à un seuil.</li>
+                <li style="margin:0; text-align:left;">Un graphique ne remplace pas un calcul, mais permet de <strong>vérifier</strong> et d'<strong>interpréter</strong>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Pourcentage de pourcentage (ensembles inclus)</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Idée</h3>
@@ -90,7 +246,7 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Évolutions : variations et taux d'évolution</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Évolutions : variations et taux d'évolution</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Variation absolue / variation relative</h3>
@@ -132,7 +288,7 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Évolutions successives et évolution réciproque</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Évolutions successives et évolution réciproque</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Évolutions successives</h3>
@@ -180,7 +336,7 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Moyenne pondérée et linéarité</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Moyenne pondérée et linéarité</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Moyenne pondérée</h3>
@@ -217,14 +373,66 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Indicateurs de dispersion : écart interquartile et écart type</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Médiane, quartiles et écart interquartile</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Médiane</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Médiane</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>médiane</strong> $\displaystyle M_e$ d'une série statistique ordonnée est la valeur qui partage la série en deux groupes de même effectif :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Au moins 50% des valeurs sont $\displaystyle \leq M_e$</li>
+                <li style="margin:0; text-align:left;">Au moins 50% des valeurs sont $\displaystyle \geq M_e$</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Méthode - Trouver la médiane :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Ordonner la série par ordre croissant.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Si $\displaystyle n$ est impair : la médiane est la valeur de rang $\displaystyle \dfrac{n+1}{2}$.</li>
+                <li style="margin:0; text-align:left;">Si $\displaystyle n$ est pair : la médiane est la moyenne des valeurs de rang $\displaystyle \dfrac{n}{2}$ et $\displaystyle \dfrac{n}{2}+1$.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Quartiles $\displaystyle Q_1$ et $\displaystyle Q_3$</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On note $\displaystyle Q_1$ le <strong>premier quartile</strong> et $\displaystyle Q_3$ le <strong>troisième quartile</strong>.</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">$\displaystyle Q_1$ est la plus petite valeur telle qu'<strong>au moins 25%</strong> des données sont $\displaystyle \leq Q_1$.</li>
+                <li style="margin:0; text-align:left;">$\displaystyle Q_3$ est la plus petite valeur telle qu'<strong>au moins 75%</strong> des données sont $\displaystyle \leq Q_3$.</li>
+            </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
+            <strong>🎯 Méthode - Trouver $\displaystyle Q_1$ et $\displaystyle Q_3$ par le rang :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Ordonner la série par ordre croissant ($\displaystyle n$ valeurs au total).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Le rang de $\displaystyle Q_1$ est $\displaystyle \left\lceil \dfrac{n}{4} \right\rceil$ (arrondi à l'entier supérieur).</li>
+                <li style="margin:0; text-align:left;">Le rang de $\displaystyle Q_3$ est $\displaystyle \left\lceil \dfrac{3n}{4} \right\rceil$ (arrondi à l'entier supérieur).</li>
+            </ol>
+        </div>
+
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
+            <strong>Exemple :</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Série ordonnée de $\displaystyle n = 12$ valeurs :</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle 2\;; 3\;; 5\;; 7\;; 8\;; 9\;; 10\;; 11\;; 12\;; 14\;; 15\;; 18$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Rang de $\displaystyle Q_1$ : $\displaystyle \left\lceil \dfrac{12}{4} \right\rceil = \lceil 3 \rceil = 3$ → la 3e valeur est $\displaystyle Q_1 = 5$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• Rang de $\displaystyle Q_3$ : $\displaystyle \left\lceil \dfrac{36}{4} \right\rceil = \lceil 9 \rceil = 9$ → la 9e valeur est $\displaystyle Q_3 = 12$.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">• $\displaystyle \text{EIQ} = Q_3 - Q_1 = 12 - 5 = 7$.</p>
+        </div>
+    </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Écart interquartile</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
             <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">On note $\displaystyle Q_1$ le 1er quartile et $\displaystyle Q_3$ le 3e quartile.</p>
             <p style="margin:8px 0; text-align:left; font-size:1em;">L'écart interquartile est :</p>
             <div style="background:#eef2ff; border:3px solid #4f46e5; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:320px;">
                 <p style="margin:0; font-size:1.1em; font-weight:bold;">$\displaystyle \text{EIQ} = Q_3 - Q_1$</p>
@@ -234,11 +442,14 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
         <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
             <strong>💡 Interprétation :</strong>
             <p style="margin:8px 0; text-align:left; font-size:1em;">L'EIQ mesure la dispersion des <strong>50%</strong> de valeurs centrales. Il est peu sensible aux valeurs extrêmes.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Un EIQ <strong>petit</strong> → valeurs concentrées autour de la médiane. Un EIQ <strong>grand</strong> → valeurs étalées.</p>
         </div>
     </div>
 
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Écart type</h2>
+
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Écart type</h3>
+        <h3 style="color:#34495e; margin-top:0;">Variance et écart type</h3>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
             <p style="text-align:left; font-size:1em;"><strong>Définition</strong></p>
@@ -255,7 +466,7 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Comparer deux séries (décrire verbalement)</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">X. Comparer deux séries (décrire verbalement)</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Savoir conclure</h3>
@@ -275,7 +486,7 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Lire une fonction Python renvoyant (m, s, proportion dans [m-2s ; m+2s])</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XI. Lire une fonction Python renvoyant (m, s, proportion dans [m-2s ; m+2s])</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Fonction et lecture guidée</h3>
@@ -329,7 +540,7 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IX. Synthèse : formules et pièges</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">XII. Synthèse : formules et pièges</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
@@ -357,10 +568,22 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
                     <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle C=1+t$</td>
                 </tr>
                 <tr style="background:#e8f4fd;">
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Fréquence</strong></td>
+                    <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle f_i=\frac{n_i}{N}$ ; $\displaystyle \sum f_i=1$</td>
+                </tr>
+                <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Fréq. cum. croiss.</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle F_i=f_1+f_2+\cdots+f_i$</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
                     <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;"><strong>Moyenne pondérée</strong></td>
                     <td style="border:none; border-bottom:1px solid #d1e7f0; padding:12px 16px;">$\displaystyle \bar{x}=\frac{\sum n_ix_i}{\sum n_i}$</td>
                 </tr>
                 <tr style="background:#f8f9fa;">
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><strong>Quartiles</strong></td>
+                    <td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">$\displaystyle Q_1$ : rang $\displaystyle \lceil n/4 \rceil$ ; $\displaystyle Q_3$ : rang $\displaystyle \lceil 3n/4 \rceil$</td>
+                </tr>
+                <tr style="background:#e8f4fd;">
                     <td style="border:none; padding:12px 16px;"><strong>Dispersion</strong></td>
                     <td style="border:none; padding:12px 16px;">$\displaystyle \text{EIQ}=Q_3-Q_1$ ; $\displaystyle s=\sqrt{V}$</td>
                 </tr>
@@ -372,7 +595,9 @@ Description: Cours de Seconde sur proportions/pourcentages, pourcentages de pour
             <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
                 <li style="margin:0 0 10px 0; text-align:left;">Confondre variation absolue (différence) et variation relative (taux).</li>
                 <li style="margin:0 0 10px 0; text-align:left;">Additionner des taux successifs au lieu de multiplier les coefficients.</li>
-                <li style="margin:0; text-align:left;">Oublier que 30% = 0,30 (division par 100) avant de multiplier.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Oublier que 30% = 0,30 (division par 100) avant de multiplier.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Ne pas ordonner la série avant de chercher médiane et quartiles.</li>
+                <li style="margin:0; text-align:left;">Confondre effectif cumulé et fréquence cumulée.</li>
             </ul>
         </div>
     </div>

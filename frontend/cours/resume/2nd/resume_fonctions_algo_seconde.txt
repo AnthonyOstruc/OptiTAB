@@ -1,11 +1,11 @@
-===Résumé Fonctions (Python)
+===Résumé Fonctions Python (Seconde)
 
-Titre: Résumé : Notion de fonction en Python — définir, appeler, simuler (Seconde)
+Titre: Résumé : Notion de fonction en Python — définir, appeler, simuler, moyenne et écart type (Seconde)
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6;">
 
 <div style="background:#e8f4fd; border:2px solid #3498db; border-radius:8px; padding:15px; margin-bottom:20px;">
-<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>📚 Objectif pédagogique :</strong> Savoir <strong>définir</strong> et <strong>appeler</strong> une fonction, utiliser 1 ou plusieurs <strong>arguments</strong>, renvoyer une ou plusieurs valeurs, et faire des <strong>simulations aléatoires</strong> (module <code>random</code>).</p>
+<p style="margin:0; font-size:1.05em; color:#2c3e50;"><strong>📚 Objectif pédagogique :</strong> Savoir <strong>définir</strong> et <strong>appeler</strong> une fonction Python, utiliser des fonctions à <strong>un ou plusieurs arguments</strong>, écrire des fonctions <strong>aléatoires</strong>, répéter des expériences <strong>indépendantes</strong>, et lire une fonction renvoyant une <strong>moyenne</strong> et un <strong>écart type</strong>.</p>
 </div>
 
 <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Définir et appeler une fonction</h2>
@@ -15,26 +15,30 @@ Titre: Résumé : Notion de fonction en Python — définir, appeler, simuler (S
 <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
 <thead>
 <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
-<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Vocabulaire</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notion / vocabulaire</th>
 <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">À retenir</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#e8f4fd;">
-<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;"><strong>Définir</strong></td>
-<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;"><code>def nom(param):</code> … <code>return</code> …</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;"><strong>Fonction</strong> Python</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;">Bloc de code nommé qui reçoit des arguments, fait des calculs et <strong>renvoie</strong> un résultat via <code>return</code>.</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><strong>Paramètres / arguments</strong></td>
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;">Paramètres = noms dans la définition ; arguments = valeurs à l’appel.</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><strong>Définir</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><code>def nom(paramètres):</code> suivi du corps indenté + <code>return</code>.</td>
 </tr>
 <tr style="background:#e8f4fd;">
 <td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;"><strong>Appeler</strong></td>
-<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;"><code>nom(valeur)</code> (les parenthèses sont indispensables).</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;"><code>nom(valeur)</code> — les parenthèses sont <strong>obligatoires</strong>.</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:none; padding:14px 16px;"><strong><code>return</code> ≠ <code>print</code></strong></td>
-<td style="border:none; padding:14px 16px;"><code>print</code> affiche ; <code>return</code> renvoie une valeur utilisable dans un calcul.</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><strong>Paramètre</strong> vs <strong>argument</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;">Paramètre = nom dans la définition (<code>x</code>) ; argument = valeur à l'appel (<code>5</code>).</td>
+</tr>
+<tr style="background:#e8f4fd;">
+<td style="border:none; padding:14px 16px;"><code>return</code> ≠ <code>print</code></td>
+<td style="border:none; padding:14px 16px;"><code>print</code> <strong>affiche</strong> à l'écran ; <code>return</code> <strong>renvoie</strong> une valeur réutilisable dans un calcul.</td>
 </tr>
 </tbody>
 </table>
@@ -42,76 +46,43 @@ Titre: Résumé : Notion de fonction en Python — définir, appeler, simuler (S
 <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0 0 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
 <thead>
 <tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
-<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Exemple (fonction carré)</th>
-<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Utilisation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Exemple</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Résultat</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#ecfdf5;">
-<td style="border:none; padding:14px 16px; font-family:monospace;">def carre(x):<br/>&nbsp;&nbsp;return x &ast; x</td>
-<td style="border:none; padding:14px 16px;"><code>carre(5)</code> renvoie <strong>25</strong> (et on peut ensuite faire <code>2&ast;carre(5)</code>, etc.).</td>
+<td style="border:none; padding:14px 16px;"><div style="background:#2c3e50; color:#ffffff; padding:12px; border-radius:6px; font-family:monospace; font-size:0.95em;"><span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">carre</span>(x):<br/>&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> x &ast; x<br/><br/><span style="color:#50fa7b;">print</span>(carre(<span style="color:#bd93f9;">7</span>))</div></td>
+<td style="border:none; padding:14px 16px;">Affiche <strong>49</strong>. La fonction <code>carre</code> renvoie $x^2$.</td>
 </tr>
 </tbody>
 </table>
 
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Plusieurs arguments et plusieurs valeurs</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">II. Fonctions à plusieurs arguments</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
 
 <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
 <thead>
 <tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
-<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Cas</th>
-<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Écriture</th>
-</tr>
-</thead>
-<tbody>
-<tr style="background:#f3e8ff;">
-<td style="border:none; border-bottom:1px solid #e9d5ff; padding:14px 16px;"><strong>Plusieurs arguments</strong></td>
-<td style="border:none; border-bottom:1px solid #e9d5ff; padding:14px 16px;"><code>def f(a, b, x):</code> … puis <code>f(2, 3, 10)</code></td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><strong>Renvoyer 2 valeurs</strong></td>
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><code>return (m, s)</code> (un couple / tuple)</td>
-</tr>
-<tr style="background:#f3e8ff;">
-<td style="border:none; padding:14px 16px;"><strong>Récupérer</strong> les valeurs</td>
-<td style="border:none; padding:14px 16px;"><code>m, s = stats(...)</code></td>
-</tr>
-</tbody>
-</table>
-
-</div>
-
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Aléatoire et simulation</h2>
-
-<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-
-<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #f59e0b; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(245,158,11,0.15); table-layout:fixed;">
-<thead>
-<tr style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color:white;">
-<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Outil</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notion</th>
 <th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">À retenir</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background:#fff9e6;">
-<td style="border:none; border-bottom:1px solid #fde68a; padding:14px 16px;"><strong>Module</strong></td>
-<td style="border:none; border-bottom:1px solid #fde68a; padding:14px 16px;"><code>import random</code></td>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:14px 16px;"><strong>Plusieurs paramètres</strong></td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:14px 16px;">On les sépare par des virgules : <code>def f(a, b, x):</code></td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><strong>Entier aléatoire</strong></td>
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><code>random.randint(a, b)</code> renvoie un entier entre <code>a</code> et <code>b</code> (bornes incluses).</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><strong>Ordre des arguments</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;">L'ordre compte ! <code>f(2, -3, 5)</code> ≠ <code>f(5, 2, -3)</code>.</td>
 </tr>
-<tr style="background:#fff9e6;">
-<td style="border:none; border-bottom:1px solid #fde68a; padding:14px 16px;"><strong>Répéter</strong> une expérience</td>
-<td style="border:none; border-bottom:1px solid #fde68a; padding:14px 16px;"><code>for i in range(n):</code> … (on peut compter des succès).</td>
-</tr>
-<tr style="background:#f8f9fa;">
-<td style="border:none; padding:14px 16px;"><strong>Reproduire</strong> une simulation</td>
-<td style="border:none; padding:14px 16px;"><code>random.seed(...)</code> fixe une « graine » (utile pour tester).</td>
+<tr style="background:#f3e8ff;">
+<td style="border:none; padding:14px 16px;"><strong>Renvoyer plusieurs valeurs</strong></td>
+<td style="border:none; padding:14px 16px;"><code>return (m, s)</code> renvoie un <strong>couple</strong>. On récupère par : <code>m, s = f(n)</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -119,50 +90,205 @@ Titre: Résumé : Notion de fonction en Python — définir, appeler, simuler (S
 <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0 0 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
 <thead>
 <tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
-<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Exemple (dé)</th>
-<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Exploitation</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Exemple</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Résultat</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#ecfdf5;">
-<td style="border:none; padding:14px 16px; font-family:monospace;">import random<br/><br/>def lancer_de():<br/>&nbsp;&nbsp;return random.randint(1, 6)</td>
-<td style="border:none; padding:14px 16px;">En répétant <code>lancer_de()</code> un grand nombre de fois, on obtient une série (fréquences, moyenne…).</td>
+<td style="border:none; padding:14px 16px;"><div style="background:#2c3e50; color:#ffffff; padding:12px; border-radius:6px; font-family:monospace; font-size:0.95em;"><span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">image_affine</span>(a, b, x):<br/>&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> a &ast; x + b<br/><br/><span style="color:#6272a4;"># f(x)=2x-3, calculer f(5)</span><br/><span style="color:#50fa7b;">print</span>(image_affine(<span style="color:#bd93f9;">2</span>, <span style="color:#bd93f9;">-3</span>, <span style="color:#bd93f9;">5</span>))</div></td>
+<td style="border:none; padding:14px 16px;">Affiche <strong>7</strong> car $2\times 5 - 3 = 7$.</td>
 </tr>
 </tbody>
 </table>
 
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Lire une fonction “moyenne / écart type” (sans listes)</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Lire, comprendre, modifier une fonction</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #f59e0b; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(245,158,11,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Démarche</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">But</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fff9e6;">
+<td style="border:none; border-bottom:1px solid #fde68a; padding:14px 16px;"><strong>Repérer</strong> paramètres et <code>return</code></td>
+<td style="border:none; border-bottom:1px solid #fde68a; padding:14px 16px;">Comprendre ce que la fonction <strong>reçoit</strong> et ce qu'elle <strong>renvoie</strong>.</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><strong>Faire une trace</strong> manuelle</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;">Choisir une valeur simple et exécuter ligne par ligne (noter chaque variable).</td>
+</tr>
+<tr style="background:#fff9e6;">
+<td style="border:none; padding:14px 16px;"><strong>Trouver la formule</strong></td>
+<td style="border:none; padding:14px 16px;">Traduire le code en expression mathématique si possible.</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0 0 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Exemple : que fait <code>mystere(5)</code> ?</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Trace</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#ecfdf5;">
+<td style="border:none; padding:14px 16px;"><div style="background:#2c3e50; color:#ffffff; padding:12px; border-radius:6px; font-family:monospace; font-size:0.95em;"><span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">mystere</span>(x):<br/>&nbsp;&nbsp;y = x + <span style="color:#bd93f9;">3</span><br/>&nbsp;&nbsp;y = y &ast; <span style="color:#bd93f9;">2</span><br/>&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> y</div></td>
+<td style="border:none; padding:14px 16px;">$x=5$ → $y=5+3=8$ → $y=8\times 2=16$. Renvoie <strong>16</strong>.<br/>Formule : $f(x)=2(x+3)$.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Fonctions aléatoires et simulation</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
 
 <table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #3498db; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(52,152,219,0.15); table-layout:fixed;">
 <thead>
 <tr style="background:linear-gradient(135deg, #3498db 0%, #2980b9 100%); color:white;">
-<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Idée</th>
-<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Calculs</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notion</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">À retenir</th>
 </tr>
 </thead>
 <tbody>
 <tr style="background:#e8f4fd;">
-<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;">On ne stocke pas toute la série : on garde des <strong>sommes</strong>.</td>
-<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;">Si <code>somme</code> = $\displaystyle \sum x$ et <code>somme_carres</code> = $\displaystyle \sum x^2$ :</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;"><strong>Fonction aléatoire</strong></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;">Renvoie un résultat <strong>différent</strong> à chaque appel (même sans argument).</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><strong>Moyenne</strong></td>
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;">$\displaystyle m = \frac{\text{somme}}{n}$</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><code>import random</code></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;">Module indispensable pour utiliser les fonctions aléatoires de Python.</td>
 </tr>
 <tr style="background:#e8f4fd;">
-<td style="border:none; padding:14px 16px;"><strong>Écart type</strong> (via variance)</td>
-<td style="border:none; padding:14px 16px;">$\displaystyle \text{variance} = \frac{\text{somme\_carres}}{n} - m^2$ puis $\displaystyle s = \sqrt{\text{variance}}$.</td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;"><code>random.randint(a, b)</code></td>
+<td style="border:none; border-bottom:1px solid #d1e7f0; padding:14px 16px;">Renvoie un entier aléatoire entre <code>a</code> et <code>b</code> <strong>inclus</strong>.</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:14px 16px;"><strong>Série statistique</strong></td>
+<td style="border:none; padding:14px 16px;">On répète les appels un grand nombre de fois → on obtient une série de valeurs.</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0 0 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Exemple : lancer un dé</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Idée</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#ecfdf5;">
+<td style="border:none; padding:14px 16px;"><div style="background:#2c3e50; color:#ffffff; padding:12px; border-radius:6px; font-family:monospace; font-size:0.95em;"><span style="color:#ff79c6;">import</span> random<br/><br/><span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">lancer_de</span>():<br/>&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> random.<span style="color:#50fa7b;">randint</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>)</div></td>
+<td style="border:none; padding:14px 16px;">Chaque appel renvoie un entier entre 1 et 6 (simulation d'un dé).</td>
 </tr>
 </tbody>
 </table>
 
 </div>
 
-<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Erreurs à éviter</h2>
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Répéter des expériences indépendantes</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #9333ea; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(147,51,234,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #9333ea 0%, #7c3aed 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Notion</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">À retenir</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#f3e8ff;">
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:14px 16px;"><strong>Compteur de succès</strong></td>
+<td style="border:none; border-bottom:1px solid #e9d5ff; padding:14px 16px;">Initialiser à 0, incrémenter dans une boucle <code>for</code> quand la condition est remplie.</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><strong>Fréquence</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;">$\displaystyle f = \frac{\text{compteur}}{n}$ où $n$ est le nombre total de répétitions.</td>
+</tr>
+<tr style="background:#f3e8ff;">
+<td style="border:none; padding:14px 16px;"><strong>Indépendance</strong></td>
+<td style="border:none; padding:14px 16px;">Chaque appel représente une expérience <strong>nouvelle</strong>, sans influence des précédentes.</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0 0 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Exemple : compter les « Pile »</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#ecfdf5;">
+<td style="border:none; padding:14px 16px;"><div style="background:#2c3e50; color:#ffffff; padding:12px; border-radius:6px; font-family:monospace; font-size:0.95em;"><span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">nombre_piles</span>(n):<br/>&nbsp;&nbsp;compteur = <span style="color:#bd93f9;">0</span><br/>&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n):<br/>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> piece() == <span style="color:#bd93f9;">1</span>:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compteur = compteur + <span style="color:#bd93f9;">1</span><br/>&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> compteur</div></td>
+<td style="border:none; padding:14px 16px;">Renvoie le nombre de « Pile » sur <code>n</code> lancers.<br/><br/>Fréquence : $\displaystyle f = \frac{\text{nombre_piles(n)}}{n}$.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Moyenne et écart type (sans listes)</h2>
+
+<div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0; border:2px solid #f59e0b; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(245,158,11,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Formule</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Écriture</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#fff9e6;">
+<td style="border:none; border-bottom:1px solid #fde68a; padding:14px 16px;"><strong>Moyenne</strong></td>
+<td style="border:none; border-bottom:1px solid #fde68a; padding:14px 16px;">$\displaystyle m = \frac{\sum x_i}{n}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;"><strong>Variance</strong></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:14px 16px;">$\displaystyle V = \frac{\sum x_i^2}{n} - m^2$</td>
+</tr>
+<tr style="background:#fff9e6;">
+<td style="border:none; border-bottom:1px solid #fde68a; padding:14px 16px;"><strong>Écart type</strong></td>
+<td style="border:none; border-bottom:1px solid #fde68a; padding:14px 16px;">$\displaystyle s = \sqrt{V}$</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:14px 16px;"><strong>Astuce (pas de liste)</strong></td>
+<td style="border:none; padding:14px 16px;">On cumule <code>somme</code> et <code>somme_carres</code> dans la boucle, puis on calcule $m$ et $s$ à la fin.</td>
+</tr>
+</tbody>
+</table>
+
+<table style="width:100%; border-collapse:separate; border-spacing:0; margin:15px 0 0 0; border:2px solid #10b981; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(16,185,129,0.15); table-layout:fixed;">
+<thead>
+<tr style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white;">
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Exemple : stats de lancers de dé</th>
+<th style="border:none; padding:14px 16px; text-align:left; font-weight:600; font-size:1.05em; width:50%;">Lecture</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background:#ecfdf5;">
+<td style="border:none; padding:14px 16px;"><div style="background:#2c3e50; color:#ffffff; padding:12px; border-radius:6px; font-family:monospace; font-size:0.95em;"><span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">stats_lancers_de</span>(n):<br/>&nbsp;&nbsp;somme = <span style="color:#bd93f9;">0</span><br/>&nbsp;&nbsp;somme_carres = <span style="color:#bd93f9;">0</span><br/>&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> i <span style="color:#ff79c6;">in</span> <span style="color:#50fa7b;">range</span>(n):<br/>&nbsp;&nbsp;&nbsp;&nbsp;x = random.<span style="color:#50fa7b;">randint</span>(<span style="color:#bd93f9;">1</span>, <span style="color:#bd93f9;">6</span>)<br/>&nbsp;&nbsp;&nbsp;&nbsp;somme = somme + x<br/>&nbsp;&nbsp;&nbsp;&nbsp;somme_carres = somme_carres + x &ast; x<br/>&nbsp;&nbsp;m = somme / n<br/>&nbsp;&nbsp;variance = somme_carres / n - m &ast; m<br/>&nbsp;&nbsp;s = variance ** <span style="color:#bd93f9;">0.5</span><br/>&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> (m, s)</div></td>
+<td style="border:none; padding:14px 16px;">• Boucle sur $n$ lancers (pas de liste).<br/>• On garde <code>somme</code> et <code>somme_carres</code>.<br/>• Renvoie un couple <code>(m, s)</code>.<br/>• Appel : <code>m, s = stats_lancers_de(1000)</code>.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+<h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Erreurs à éviter</h2>
 
 <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
 
@@ -176,23 +302,27 @@ Titre: Résumé : Notion de fonction en Python — définir, appeler, simuler (S
 <tbody>
 <tr style="background:#fee2e2;">
 <td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Oublier <code>return</code></td>
-<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Sans <code>return</code>, la fonction renvoie <code>None</code>.</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">La fonction renvoie <code>None</code> si on oublie <code>return</code>.</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Confondre <code>print</code> et <code>return</code></td>
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;"><code>print</code> affiche ; <code>return</code> renvoie (et on peut réutiliser la valeur).</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Oublier les <code>:</code> après <code>def</code></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Toujours écrire <code>def nom(...):</code> avec les deux-points.</td>
 </tr>
 <tr style="background:#fee2e2;">
-<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Écrire <code>f</code> au lieu de <code>f(...)</code></td>
-<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Sans parenthèses, on <strong>n’appelle pas</strong> la fonction.</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Mauvaise <strong>indentation</strong></td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Le corps de la fonction doit être indenté (4 espaces).</td>
 </tr>
 <tr style="background:#f8f9fa;">
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Oublier le <code>:</code> ou l’indentation</td>
-<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Après <code>def</code> (et dans les blocs), indentation correcte.</td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Écrire <code>nom</code> au lieu de <code>nom()</code></td>
+<td style="border:none; border-bottom:1px solid #e9ecef; padding:12px 16px;">Sans parenthèses, on n'<strong>appelle</strong> pas la fonction.</td>
 </tr>
 <tr style="background:#fee2e2;">
-<td style="border:none; padding:12px 16px;">Oublier <code>import random</code></td>
-<td style="border:none; padding:12px 16px;">Importer avant d’utiliser <code>random.randint</code>.</td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;">Confondre <code>print</code> et <code>return</code></td>
+<td style="border:none; border-bottom:1px solid #fecaca; padding:12px 16px;"><code>print</code> affiche ; <code>return</code> renvoie (réutilisable).</td>
+</tr>
+<tr style="background:#f8f9fa;">
+<td style="border:none; padding:12px 16px;">Se tromper dans l'<strong>ordre des arguments</strong></td>
+<td style="border:none; padding:12px 16px;">Vérifier la définition : <code>def f(a, b, x)</code> → appel dans le même ordre.</td>
 </tr>
 </tbody>
 </table>

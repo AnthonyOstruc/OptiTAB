@@ -3,18 +3,18 @@ Difficulté: medium
 Ordre: 10
 
 Titre: Utiliser l'Information Chiffrée et Statistique Descriptive : Proportions, Pourcentages, Évolutions, Indicateurs Statistiques
-Description: Cours complet sur les statistiques descriptives en seconde : proportions, pourcentages, évolutions (variation absolue, relative, successives, réciproque), moyenne pondérée, linéarité de la moyenne, écart interquartile, écart type, et exploitation de fonctions Python.
+Description: Cours complet (Seconde) : effectifs, fréquences, pourcentages et effectifs cumulés (y compris en classes), moyenne (simple/pondérée) et moyenne de sous-groupes, médiane et quartiles, étendue et écart interquartile, évolutions (variation, taux, coefficients, successives, réciproque) et fonctions Python.
 
 <div style="background:#f9f9f9; padding:20px; border-radius:12px; font-family:Arial, sans-serif; line-height:1.6; font-size:1em;">
 
     <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:6px; padding:15px; margin:15px 0;">
         <p style="margin:0; text-align:left; font-size:1em;"><strong>📚 Ce qui est exigible au programme :</strong></p>
-        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections <strong>I à VI</strong> sont <strong>exigibles</strong> au programme de Seconde. Ces connaissances sont nécessaires pour les évaluations.</p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">Les sections <strong>I à VII</strong> sont <strong>exigibles</strong> au programme de Seconde. Ces connaissances sont nécessaires pour les évaluations.</p>
     </div>
 
     <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:6px; padding:15px; margin:15px 0;">
         <p style="margin:0; text-align:left; font-size:1em;"><strong>🌟 Approfondissements et culture :</strong></p>
-        <p style="margin:8px 0; text-align:left; font-size:0.95em;">La section <strong>VII (approfondissements)</strong> est marquée comme <strong>bonus</strong> ou <strong>approfondissement</strong>. Elle enrichit votre culture mathématique mais n'est pas strictement exigible pour les évaluations.</p>
+        <p style="margin:8px 0; text-align:left; font-size:0.95em;">La section <strong>VIII (conseils)</strong> est marquée comme <strong>bonus</strong>. Elle aide à réussir mais n'est pas strictement exigible pour les évaluations.</p>
     </div>
 
     <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">I. Proportion et pourcentage</h2>
@@ -197,7 +197,97 @@ Description: Cours complet sur les statistiques descriptives en seconde : propor
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Moyenne pondérée et linéarité</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">III. Statistique descriptive : effectifs, fréquences, cumulés</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Vocabulaire et tableau statistique</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définitions</strong></p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Série statistique</strong> : ensemble des valeurs observées d'un <strong>caractère</strong> (ex : notes, tailles, durées).</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Effectif</strong> $n_i$ d'une valeur $x_i$ : nombre de fois où $x_i$ apparaît.</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Effectif total</strong> : $\displaystyle N = \sum n_i$ (nombre total de données).</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Fréquence</strong> : $\displaystyle f_i = \frac{n_i}{N}$ (entre 0 et 1).</li>
+                <li style="margin:0; text-align:left;"><strong>Pourcentage</strong> : $\displaystyle f_i \times 100$.</li>
+            </ul>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Remarque :</strong> une <strong>proportion</strong> est une fréquence (exprimée sous forme décimale) ; un <strong>pourcentage</strong> est la même information, en %.</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode - Lire une information dans un tableau</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Entre</strong> $a$ et $b$ (bornes incluses) : additionner les effectifs des valeurs $x$ telles que $a \le x \le b$.</li>
+                <li style="margin:0 0 12px 0; text-align:left;"><strong>Strictement inférieur</strong> à $b$ : prendre $x &lt; b$ (ne pas inclure $b$).</li>
+                <li style="margin:0; text-align:left;"><strong>Pourcentage</strong> : $\displaystyle \frac{\text{effectif}}{N}\times 100$.</li>
+            </ul>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Séries regroupées en classes (valeur continue)</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Quand un caractère est <strong>continu</strong> (durée, taille, longueur...), on regroupe souvent les données en <strong>intervalles</strong> appelés <strong>classes</strong> (ex : $\displaystyle [200;400[$).</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">$\displaystyle [a;b[$ signifie <strong>$a \le x &lt; b$</strong>.</li>
+                <li style="margin:0; text-align:left;">Les classes sont choisies pour couvrir toutes les valeurs, sans chevauchement.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Effectifs cumulés et fréquences cumulées</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définitions</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour des valeurs rangées dans l'ordre croissant $x_1 &lt; x_2 &lt; \cdots &lt; x_k$ :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:520px; font-weight:bold;">
+                $\displaystyle N_i = n_1 + n_2 + \cdots + n_i \quad\text{(effectif cumulé croissant)}$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">La <strong>fréquence cumulée</strong> est : $\displaystyle F_i = \frac{N_i}{N}$ (ou $F_i \times 100$ en %).</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode - Compléter une colonne "effectifs cumulés"</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Le premier cumulé vaut $\displaystyle N_1=n_1$.</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Puis $\displaystyle N_2=N_1+n_2$, etc. : on <strong>ajoute</strong> l'effectif de la nouvelle valeur (ou de la nouvelle classe).</li>
+                <li style="margin:0; text-align:left;">Vérification : le dernier cumulé doit être $\displaystyle N$ (l'effectif total).</li>
+            </ol>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
+            <strong>💡 À quoi ça sert ?</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Répondre rapidement à des questions du type <strong>"au plus"</strong>, <strong>"au moins"</strong>, <strong>"strictement inférieur"</strong>…</li>
+                <li style="margin:0 0 12px 0; text-align:left;">Déterminer <strong>médiane</strong> et <strong>quartiles</strong> dans un tableau d'effectifs.</li>
+                <li style="margin:0; text-align:left;">Tracer une <strong>courbe des effectifs cumulés</strong> (ogive), surtout pour des classes.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Représentations usuelles</h3>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Diagramme en bâtons (valeurs discrètes)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">On représente chaque valeur par un bâton dont la hauteur est proportionnelle à l'<strong>effectif</strong> ou à la <strong>fréquence</strong>.</p>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Histogramme (classes)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour une série regroupée en classes, on utilise un <strong>histogramme</strong> (rectangles qui se touchent).</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Si les classes ont la même largeur, on peut prendre la hauteur proportionnelle aux effectifs.</li>
+                <li style="margin:0; text-align:left;">Si les classes ont des largeurs différentes, on compare des <strong>aires</strong> (hauteur = effectif ÷ largeur : densité).</li>
+            </ul>
+        </div>
+
+        <div style="background:#f3e5f5; border-radius:6px; border-left:6px solid #9c27b0; padding:15px; margin:12px 0;">
+            <strong>💡 Courbe des effectifs cumulés (ogive)</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Pour des classes $\displaystyle [a_0;a_1[, [a_1;a_2[, \ldots$ on place les points $\displaystyle (a_0,0), (a_1, N_1), (a_2, N_2), \ldots$ (bornes / effectifs cumulés) puis on relie.</p>
+        </div>
+    </div>
+
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Moyenne pondérée et linéarité</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Moyenne pondérée</h3>
@@ -222,6 +312,24 @@ Description: Cours complet sur les statistiques descriptives en seconde : propor
             <strong>Exemple :</strong>
             <p style="margin:8px 0; text-align:left; font-size:1em;">Notes d'un élève : 12 (coefficient 2), 15 (coefficient 3), 10 (coefficient 1)</p>
             <p style="margin:8px 0; text-align:left; font-size:1em;">Moyenne pondérée : $\displaystyle \bar{x} = \frac{2 \times 12 + 3 \times 15 + 1 \times 10}{2 + 3 + 1} = \frac{24 + 45 + 10}{6} = \frac{79}{6} \approx 13,17$</p>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
+            <strong>💡 Application - Moyenne d'une classe à partir de sous-groupes</strong>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si une classe est composée de deux sous-groupes de tailles $n_1$ et $n_2$, de moyennes $m_1$ et $m_2$, alors la moyenne globale vaut :</p>
+            <div style="background:#fef3c7; border:3px solid #f59e0b; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:420px; font-weight:bold;">
+                $\displaystyle m = \frac{n_1 m_1 + n_2 m_2}{n_1 + n_2}$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">C'est une moyenne <strong>pondérée</strong> : chaque moyenne est pondérée par l'effectif du groupe.</p>
+        </div>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Moyenne approchée d'une série en classes</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Si les données sont regroupées par classes, on ne connaît pas chaque valeur exacte. On <strong>approche</strong> la moyenne en remplaçant chaque classe par son <strong>centre</strong> :</p>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.6; font-size:1em;">
+                <li style="margin:0 0 12px 0; text-align:left;">Centre d'une classe $\displaystyle [a;b[$ : $\displaystyle c=\frac{a+b}{2}$.</li>
+                <li style="margin:0; text-align:left;">$\displaystyle \bar{x}\approx \frac{\sum n_i c_i}{N}$.</li>
+            </ul>
         </div>
     </div>
 
@@ -252,7 +360,20 @@ Description: Cours complet sur les statistiques descriptives en seconde : propor
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">IV. Indicateurs de dispersion</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Indicateurs de dispersion</h2>
+
+    <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
+        <h3 style="color:#34495e; margin-top:0;">Étendue</h3>
+
+        <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
+            <p style="text-align:left; font-size:1em;"><strong>Définition - Étendue</strong></p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">L'<strong>étendue</strong> mesure l'écart entre la valeur la plus grande et la valeur la plus petite :</p>
+            <div style="background:#e8f4fd; border:3px solid #3498db; border-radius:8px; padding:15px; margin:15px auto; text-align:center; max-width:320px; font-weight:bold;">
+                $\displaystyle E = x_{\max} - x_{\min}$
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Attention : l'étendue dépend beaucoup des <strong>valeurs extrêmes</strong>.</p>
+        </div>
+    </div>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Écart interquartile</h3>
@@ -265,6 +386,16 @@ Description: Cours complet sur les statistiques descriptives en seconde : propor
                 <li style="margin:0 0 18px 0; text-align:left;">La <strong>médiane</strong> $\displaystyle Q_2$ (ou deuxième quartile) est la valeur qui sépare la série en deux parties égales</li>
                 <li style="margin:0; text-align:left;">Le <strong>troisième quartile</strong> $\displaystyle Q_3$ est la valeur qui sépare les 75% des valeurs les plus petites des 25% restantes</li>
             </ul>
+        </div>
+
+        <div style="background:#fef3c7; border-radius:6px; padding:15px; margin:12px 0;">
+            <strong>💡 Méthode - Trouver médiane et quartiles (liste ou tableau)</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.5; font-size:1em;">
+                <li style="margin:0 0 18px 0; text-align:left;">Ordonner la série (ou compléter les <strong>effectifs cumulés</strong>).</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Quartiles : $\displaystyle r_1=\left\lceil\frac{N}{4}\right\rceil$ pour $Q_1$ et $\displaystyle r_3=\left\lceil\frac{3N}{4}\right\rceil$ pour $Q_3$.</li>
+                <li style="margin:0 0 18px 0; text-align:left;">Médiane : si $N$ est impair, rang $\displaystyle \frac{N+1}{2}$ ; si $N$ est pair, moyenne des valeurs de rangs $\displaystyle \frac{N}{2}$ et $\displaystyle \frac{N}{2}+1$.</li>
+                <li style="margin:0; text-align:left;">Dans un tableau, on cherche la <strong>première</strong> valeur dont l'effectif cumulé est ≥ au rang demandé.</li>
+            </ol>
         </div>
 
         <div style="background:#e8f4fd; border-radius:6px; border-left:6px solid #3498db; padding:15px; margin:12px 0;">
@@ -289,10 +420,13 @@ Description: Cours complet sur les statistiques descriptives en seconde : propor
             <strong>Exemple :</strong>
             <p style="margin:8px 0; text-align:left; font-size:1em;">Série de notes : 8, 10, 12, 13, 14, 15, 16, 18</p>
             <p style="margin:8px 0; text-align:left; font-size:1em;">Effectif total : 8</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle Q_1$ : valeur à la position $\displaystyle \frac{8+1}{4} = 2,25$ → entre la 2ème et 3ème valeur : $\displaystyle Q_1 = 10$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle Q_2$ (médiane) : valeur à la position $\displaystyle \frac{8+1}{2} = 4,5$ → entre la 4ème et 5ème valeur : $\displaystyle Q_2 = \frac{13+14}{2} = 13,5$</p>
-            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle Q_3$ : valeur à la position $\displaystyle 3 \times \frac{8+1}{4} = 6,75$ → entre la 6ème et 7ème valeur : $\displaystyle Q_3 = 15$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle Q_1$ : rang $\displaystyle r_1=\left\lceil\frac{8}{4}\right\rceil=2$ → $\displaystyle Q_1 = 10$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle Q_2$ (médiane) : $N$ pair → moyenne des valeurs de rangs $\displaystyle 4$ et $\displaystyle 5$ : $\displaystyle Q_2 = \frac{13+14}{2} = 13,5$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle Q_3$ : rang $\displaystyle r_3=\left\lceil\frac{3\times 8}{4}\right\rceil=6$ → $\displaystyle Q_3 = 15$</p>
             <p style="margin:8px 0; text-align:left; font-size:1em;">Écart interquartile : $\displaystyle \text{EIQ} = 15 - 10 = 5$</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;"><strong>Exemple (tableau d'effectifs) :</strong> Valeurs 1, 2, 3, 4, 5 avec effectifs 12, 27, 33, 18, 10 (donc $N=100$).</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">Effectifs cumulés : 12, 39, 72, 90, 100.</p>
+            <p style="margin:8px 0; text-align:left; font-size:1em;">$\displaystyle r_1=\left\lceil\frac{100}{4}\right\rceil=25$ → $Q_1=2$ ; médiane (rangs 50 et 51) → $Q_2=3$ ; $\displaystyle r_3=\left\lceil\frac{3\times 100}{4}\right\rceil=75$ → $Q_3=4$.</p>
         </div>
     </div>
 
@@ -336,7 +470,7 @@ Description: Cours complet sur les statistiques descriptives en seconde : propor
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">V. Décrire les différences entre deux séries statistiques</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Décrire les différences entre deux séries statistiques</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Méthode</h3>
@@ -387,7 +521,7 @@ Description: Cours complet sur les statistiques descriptives en seconde : propor
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VI. Fonctions Python pour les statistiques</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Fonctions Python pour les statistiques</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Fonction renvoyant moyenne, écart type et proportion</h3>
@@ -463,7 +597,7 @@ print(f"Intervalle [m - 2s, m + 2s] = [{m - 2*s:.2f}, {m + 2*s:.2f}]")
         </div>
     </div>
 
-    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VII. Conseils méthodologiques</h2>
+    <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Conseils méthodologiques</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
@@ -497,6 +631,8 @@ print(f"Intervalle [m - 2s, m + 2s] = [{m - 2*s:.2f}, {m + 2*s:.2f}]")
                 <li style="margin:0; text-align:left;"><strong>Variance :</strong> Calculer d'abord la moyenne, puis les écarts au carré, puis la moyenne de ces carrés</li>
                 <li style="margin:0; text-align:left;"><strong>Écart type :</strong> C'est la racine carrée de la variance (et non la variance elle-même)</li>
                 <li style="margin:0; text-align:left;"><strong>Quartiles :</strong> Attention à bien ordonner la série avant de calculer les quartiles</li>
+                <li style="margin:0; text-align:left;"><strong>Effectifs cumulés :</strong> Ne pas confondre <em>effectif cumulé</em> et <em>fréquence cumulée</em> ; cumuler dans l'ordre croissant</li>
+                <li style="margin:0; text-align:left;"><strong>Histogramme :</strong> Ne pas confondre diagramme en bâtons et histogramme (rectangles qui se touchent) ; si les classes n'ont pas la même largeur, comparer les <strong>aires</strong></li>
                 <li style="margin:0; text-align:left;"><strong>Comparaison :</strong> Utiliser plusieurs indicateurs (moyenne ET dispersion) pour une analyse complète</li>
                 <li style="margin:0; text-align:left;"><strong>Fonction Python :</strong> Vérifier que l'intervalle $\displaystyle [m - 2s, m + 2s]$ est bien calculé avec des bornes incluses</li>
             </ul>
@@ -513,12 +649,28 @@ print(f"Intervalle [m - 2s, m + 2s] = [{m - 2*s:.2f}, {m + 2*s:.2f}]")
                 </thead>
                 <tbody>
                     <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Proportion</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle p = \frac{n}{N}$</td>
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Effectif total</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle N = \sum n_i$</td>
                     </tr>
                     <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Fréquence (ou proportion)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f_i = \frac{n_i}{N}$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
                         <td style="border:1px solid #ddd; padding:10px;"><strong>Pourcentage</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \% = p \times 100$</td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \% = f_i \times 100$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Effectif cumulé</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle N_i = n_1 + n_2 + \cdots + n_i$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Fréquence cumulée</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle F_i = \frac{N_i}{N}$</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Étendue</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E = x_{\max} - x_{\min}$</td>
                     </tr>
                     <tr style="background:#f8f9fa;">
                         <td style="border:1px solid #ddd; padding:10px;"><strong>Variation absolue</strong></td>
@@ -545,8 +697,16 @@ print(f"Intervalle [m - 2s, m + 2s] = [{m - 2*s:.2f}, {m + 2*s:.2f}]")
                         <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \bar{x} = \frac{\sum n_i x_i}{\sum n_i}$</td>
                     </tr>
                     <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Moyenne en classes (approchée)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \bar{x}\approx \frac{\sum n_i c_i}{N}$ où $\displaystyle c_i$ est le centre de la classe</td>
+                    </tr>
+                    <tr style="background:#ffffff;">
                         <td style="border:1px solid #ddd; padding:10px;"><strong>Linéarité de la moyenne</strong></td>
                         <td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle y_i = ax_i + b$, alors $\displaystyle \bar{y} = a\bar{x} + b$</td>
+                    </tr>
+                    <tr style="background:#f8f9fa;">
+                        <td style="border:1px solid #ddd; padding:10px;"><strong>Médiane et quartiles (rangs)</strong></td>
+                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle r_1=\left\lceil\frac{N}{4}\right\rceil$, $\displaystyle r_3=\left\lceil\frac{3N}{4}\right\rceil$ ; médiane : rang $\displaystyle \frac{N+1}{2}$ si $N$ impair, sinon moyenne des rangs $\displaystyle \frac{N}{2}$ et $\displaystyle \frac{N}{2}+1$</td>
                     </tr>
                     <tr style="background:#ffffff;">
                         <td style="border:1px solid #ddd; padding:10px;"><strong>Écart interquartile</strong></td>

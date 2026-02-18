@@ -526,48 +526,37 @@ Description: Cours complet (Seconde) : effectifs, fréquences, pourcentages et e
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
         <h3 style="color:#34495e; margin-top:0;">Fonction renvoyant moyenne, écart type et proportion</h3>
 
-        <div style="background:#f0f0f0; border-radius:6px; padding:15px; margin:12px 0; font-family:monospace; font-size:0.9em;">
+        <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
             <strong>Fonction Python - Statistiques descriptives :</strong>
-            <pre style="background:#ffffff; padding:12px; border-radius:4px; overflow-x:auto; margin:8px 0; border:1px solid #ddd;">
-def statistiques_descriptives(donnees):
-    """
-    Calcule la moyenne m, l'écart type s, et la proportion
-    d'éléments appartenant à [m - 2s, m + 2s].
-    
-    Paramètres:
-    donnees : liste de nombres
-    
-    Retourne:
-    (m, s, proportion) : tuple contenant moyenne, écart type, proportion
-    """
-    n = len(donnees)
-    
-    # Calcul de la moyenne
-    m = sum(donnees) / n
-    
-    # Calcul de la variance
-    variance = sum((x - m)**2 for x in donnees) / n
-    
-    # Calcul de l'écart type
-    s = variance ** 0.5
-    
-    # Calcul de la proportion d'éléments dans [m - 2s, m + 2s]
-    borne_inf = m - 2 * s
-    borne_sup = m + 2 * s
-    compteur = sum(1 for x in donnees if borne_inf <= x <= borne_sup)
-    proportion = compteur / n
-    
-    return (m, s, proportion)
-
-# Exemple d'utilisation
-notes = [10, 12, 14, 15, 16, 18, 20, 12, 14, 16]
-m, s, prop = statistiques_descriptives(notes)
-
-print(f"Moyenne m = {m:.2f}")
-print(f"Écart type s = {s:.2f}")
-print(f"Proportion dans [m - 2s, m + 2s] = {prop:.2%}")
-print(f"Intervalle [m - 2s, m + 2s] = [{m - 2*s:.2f}, {m + 2*s:.2f}]")
-</pre>
+            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace; overflow-x:auto; line-height:1.5;">
+                <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">statistiques_descriptives</span>(donnees):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;n = <span style="color:#50fa7b;">len</span>(donnees)<br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># 1) moyenne</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;somme = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> x <span style="color:#ff79c6;">in</span> donnees:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;somme = somme + x<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;m = somme / n<br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># 2) variance puis écart type</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;somme_carres = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> x <span style="color:#ff79c6;">in</span> donnees:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;somme_carres = somme_carres + (x - m) * (x - m)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;variance = somme_carres / n<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;s = variance ** <span style="color:#bd93f9;">0.5</span><br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># 3) proportion dans [m-2s ; m+2s]</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;borne_inf = m - <span style="color:#bd93f9;">2</span> * s<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;borne_sup = m + <span style="color:#bd93f9;">2</span> * s<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;compteur = <span style="color:#bd93f9;">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">for</span> x <span style="color:#ff79c6;">in</span> donnees:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">if</span> borne_inf &lt;= x &lt;= borne_sup:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compteur = compteur + <span style="color:#bd93f9;">1</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;proportion = compteur / n<br>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> (m, s, proportion)
+            </div>
+            <p style="margin:8px 0; text-align:left; font-size:0.9em; color:#7f8c8d;"><em>Exemple : <code>m, s, prop = statistiques_descriptives(notes)</code>.</em></p>
         </div>
 
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
@@ -600,128 +589,39 @@ print(f"Intervalle [m - 2s, m + 2s] = [{m - 2*s:.2f}, {m + 2*s:.2f}]")
     <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:8px;">VIII. Conseils méthodologiques</h2>
 
     <div style="background:#ffffff; border:1px solid #e1e8ed; padding:15px; margin:15px 0; border-radius:6px;">
-        <h3 style="color:#34495e; margin-top:0;">Méthodes générales</h3>
+        <h3 style="color:#34495e; margin-top:0;">Méthode type (exercice)</h3>
 
         <div style="background:#ecfdf5; border-radius:6px; border-left:6px solid #10b981; padding:15px; margin:12px 0;">
-            <strong>✅ Conseils pratiques :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
-                <li style="margin:0; text-align:left;"><strong>Proportion et pourcentage :</strong> $\displaystyle p = \frac{n}{N}$ et $\displaystyle \% = p \times 100$</li>
-                <li style="margin:0; text-align:left;"><strong>Pourcentage de pourcentage :</strong> Multiplier les proportions (diviser les pourcentages par 100, multiplier, puis multiplier par 100)</li>
-                <li style="margin:0; text-align:left;"><strong>Variation absolue :</strong> $\displaystyle \Delta V = V_1 - V_0$</li>
-                <li style="margin:0; text-align:left;"><strong>Taux d'évolution :</strong> $\displaystyle t = \frac{V_1 - V_0}{V_0}$ et $\displaystyle V_1 = V_0(1 + t)$</li>
-                <li style="margin:0; text-align:left;"><strong>Coefficient multiplicateur :</strong> $\displaystyle C = 1 + t$</li>
-                <li style="margin:0; text-align:left;"><strong>Évolutions successives :</strong> Coefficient global = produit des coefficients</li>
-                <li style="margin:0; text-align:left;"><strong>Évolution réciproque :</strong> Coefficient réciproque = $\displaystyle \frac{1}{C}$</li>
-                <li style="margin:0; text-align:left;"><strong>Moyenne pondérée :</strong> $\displaystyle \bar{x} = \frac{\sum n_i x_i}{\sum n_i}$</li>
-                <li style="margin:0; text-align:left;"><strong>Linéarité de la moyenne :</strong> Si $\displaystyle y_i = ax_i + b$, alors $\displaystyle \bar{y} = a\bar{x} + b$</li>
-                <li style="margin:0; text-align:left;"><strong>Écart interquartile :</strong> $\displaystyle \text{EIQ} = Q_3 - Q_1$</li>
-                <li style="margin:0; text-align:left;"><strong>Écart type :</strong> $\displaystyle \sigma = \sqrt{V}$ où $\displaystyle V = \frac{\sum n_i (x_i - \bar{x})^2}{\sum n_i}$</li>
-                <li style="margin:0; text-align:left;"><strong>Comparaison de séries :</strong> Utiliser moyenne, médiane, écart type, écart interquartile</li>
-            </ul>
+            <strong>✅ En exercice, fais toujours :</strong>
+            <ol style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Construire le <strong>tableau</strong> (effectifs, fréquences / %, cumulés) et noter $\displaystyle N$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Si c'est une <strong>proportion / %</strong> : utiliser $\displaystyle p=\frac{n}{N}$, $\displaystyle n=pN$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Si c'est une <strong>évolution</strong> : calculer $\displaystyle t$ puis $\displaystyle C=1+t$ (successives → on <strong>multiplie</strong> les $\displaystyle C$).</li>
+                <li style="margin:0; text-align:left;">Terminer par les indicateurs : moyenne / médiane / quartiles puis dispersion (étendue, EIQ, écart type) et une <strong>phrase de conclusion</strong>.</li>
+            </ol>
         </div>
 
         <div style="background:#fee2e2; border-radius:6px; border-left:6px solid #dc2626; padding:15px; margin:12px 0;">
-            <strong>⚠️ Erreurs fréquentes à éviter :</strong>
-            <ul style="margin:8px 0; padding-left:20px; line-height:2.2; font-size:1em;">
-                <li style="margin:0; text-align:left;"><strong>Pourcentage de pourcentage :</strong> Ne pas multiplier directement les pourcentages (il faut d'abord les convertir en proportions)</li>
-                <li style="margin:0; text-align:left;"><strong>Évolution réciproque :</strong> Une hausse de $\displaystyle t\%$ suivie d'une baisse de $\displaystyle t\%$ ne revient pas au prix initial</li>
-                <li style="margin:0; text-align:left;"><strong>Coefficient multiplicateur :</strong> Pour une baisse de 20%, le coefficient est $\displaystyle 0,8$ (et non $\displaystyle -0,2$)</li>
-                <li style="margin:0; text-align:left;"><strong>Évolutions successives :</strong> Ne pas additionner les taux d'évolution, multiplier les coefficients</li>
-                <li style="margin:0; text-align:left;"><strong>Moyenne pondérée :</strong> Ne pas oublier de diviser par la somme des effectifs</li>
-                <li style="margin:0; text-align:left;"><strong>Variance :</strong> Calculer d'abord la moyenne, puis les écarts au carré, puis la moyenne de ces carrés</li>
-                <li style="margin:0; text-align:left;"><strong>Écart type :</strong> C'est la racine carrée de la variance (et non la variance elle-même)</li>
-                <li style="margin:0; text-align:left;"><strong>Quartiles :</strong> Attention à bien ordonner la série avant de calculer les quartiles</li>
-                <li style="margin:0; text-align:left;"><strong>Effectifs cumulés :</strong> Ne pas confondre <em>effectif cumulé</em> et <em>fréquence cumulée</em> ; cumuler dans l'ordre croissant</li>
-                <li style="margin:0; text-align:left;"><strong>Histogramme :</strong> Ne pas confondre diagramme en bâtons et histogramme (rectangles qui se touchent) ; si les classes n'ont pas la même largeur, comparer les <strong>aires</strong></li>
-                <li style="margin:0; text-align:left;"><strong>Comparaison :</strong> Utiliser plusieurs indicateurs (moyenne ET dispersion) pour une analyse complète</li>
-                <li style="margin:0; text-align:left;"><strong>Fonction Python :</strong> Vérifier que l'intervalle $\displaystyle [m - 2s, m + 2s]$ est bien calculé avec des bornes incluses</li>
+            <strong>⚠️ Erreurs à éviter :</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Confondre <strong>effectif</strong>, <strong>fréquence</strong> et <strong>pourcentage</strong>.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Pour une baisse de 20% : $\displaystyle C=0,8$ (pas $\displaystyle -0,2$).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Évolutions successives : on <strong>multiplie</strong> les coefficients (on n'additionne pas les taux).</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Histogramme : si les classes n'ont pas la même largeur, comparer les <strong>aires</strong> (densités).</li>
+                <li style="margin:0; text-align:left;">Quartiles : série <strong>ordonnée</strong>, puis rangs.</li>
             </ul>
         </div>
 
         <div style="background:#ffffff; border-radius:6px; border-left:6px solid #f59e0b; padding:15px; margin:12px 0;">
-            <strong>📐 Récapitulatif - Formules essentielles à retenir</strong>
-            <table style="width:100%; border-collapse:collapse; margin:15px 0; border:2px solid #3498db;">
-                <thead>
-                    <tr style="background:#3498db; color:white;">
-                        <th style="border:1px solid #ddd; padding:12px; width:40%;">Notion</th>
-                        <th style="border:1px solid #ddd; padding:12px;">Formule</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Effectif total</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle N = \sum n_i$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Fréquence (ou proportion)</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle f_i = \frac{n_i}{N}$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Pourcentage</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \% = f_i \times 100$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Effectif cumulé</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle N_i = n_1 + n_2 + \cdots + n_i$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Fréquence cumulée</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle F_i = \frac{N_i}{N}$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Étendue</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle E = x_{\max} - x_{\min}$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Variation absolue</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \Delta V = V_1 - V_0$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Taux d'évolution</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle t = \frac{V_1 - V_0}{V_0}$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Coefficient multiplicateur</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle C = 1 + t$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Évolutions successives</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle C_{\text{global}} = C_1 \times C_2 \times \cdots \times C_n$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Évolution réciproque</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle C_{\text{réciproque}} = \frac{1}{C}$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Moyenne pondérée</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \bar{x} = \frac{\sum n_i x_i}{\sum n_i}$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Moyenne en classes (approchée)</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \bar{x}\approx \frac{\sum n_i c_i}{N}$ où $\displaystyle c_i$ est le centre de la classe</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Linéarité de la moyenne</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">Si $\displaystyle y_i = ax_i + b$, alors $\displaystyle \bar{y} = a\bar{x} + b$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Médiane et quartiles (rangs)</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle r_1=\left\lceil\frac{N}{4}\right\rceil$, $\displaystyle r_3=\left\lceil\frac{3N}{4}\right\rceil$ ; médiane : rang $\displaystyle \frac{N+1}{2}$ si $N$ impair, sinon moyenne des rangs $\displaystyle \frac{N}{2}$ et $\displaystyle \frac{N}{2}+1$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Écart interquartile</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \text{EIQ} = Q_3 - Q_1$</td>
-                    </tr>
-                    <tr style="background:#f8f9fa;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Variance</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle V = \frac{\sum n_i (x_i - \bar{x})^2}{\sum n_i}$</td>
-                    </tr>
-                    <tr style="background:#ffffff;">
-                        <td style="border:1px solid #ddd; padding:10px;"><strong>Écart type</strong></td>
-                        <td style="border:1px solid #ddd; padding:10px;">$\displaystyle \sigma = \sqrt{V}$</td>
-                    </tr>
-                </tbody>
-            </table>
+            <strong>📌 Formules essentielles</strong>
+            <ul style="margin:8px 0; padding-left:20px; line-height:1.7; font-size:1em;">
+                <li style="margin:0 0 10px 0; text-align:left;">Proportion : $\displaystyle p=\frac{n}{N}$ ; pourcentage : $\displaystyle p\times 100$ ; effectif : $\displaystyle n=pN$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Évolution : $\displaystyle \Delta V=V_1-V_0$ ; $\displaystyle t=\frac{V_1-V_0}{V_0}$ ; $\displaystyle C=1+t$ ; $\displaystyle V_1=V_0C$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Successives : $\displaystyle C_{\text{global}}=C_1C_2\cdots$ ; réciproque : $\displaystyle \frac{1}{C}$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Fréquence : $\displaystyle f_i=\frac{n_i}{N}$ ; cumulés : $\displaystyle N_i$ et $\displaystyle F_i=\frac{N_i}{N}$.</li>
+                <li style="margin:0 0 10px 0; text-align:left;">Moyenne pondérée : $\displaystyle \bar{x}=\frac{\sum n_ix_i}{\sum n_i}$ ; en classes : $\displaystyle \bar{x}\approx\frac{\sum n_ic_i}{N}$.</li>
+                <li style="margin:0; text-align:left;">Quartiles : $\displaystyle r_1=\left\lceil\frac{N}{4}\right\rceil$, $\displaystyle r_3=\left\lceil\frac{3N}{4}\right\rceil$ ; $\displaystyle \text{EIQ}=Q_3-Q_1$ ; $\displaystyle \sigma=\sqrt{V}$.</li>
+            </ul>
         </div>
     </div>
 

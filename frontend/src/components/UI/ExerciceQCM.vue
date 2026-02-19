@@ -519,6 +519,11 @@ function unescapeLatex(text) {
     .replace(/&amp;/g, '&')
     .replace(/\\/g, '\\')
 
+  // Éviter que `<` / `>` dans le LaTeX soient interprétés comme HTML (v-html)
+  // On n'échappe que dans les zones math `$...$` pour préserver le HTML volontaire (tables, spans, etc.).
+  const escapeAngles = (s) => s.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  base = base.replace(/\$(?!\$)([^$\n]*?)\$/g, (m, inner) => `$${escapeAngles(inner)}$`)
+
   // Séparer en segments pour préserver les blocs math (que MathJax doit traiter)
   const mathRegex = /(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\))/g
   const segments = []
@@ -553,6 +558,9 @@ function unescapeLatex(text) {
         const cleanedInner = inner.replace(/\$/g, '')
         return full.replace(inner, cleanedInner)
       })
+
+      // Sécuriser les comparaisons (`<` / `>`) dans le LaTeX des blocs math
+      mathBlock = escapeAngles(mathBlock)
 
       return `<div class=\"mathjax-block\">${mathBlock}</div>`
     }

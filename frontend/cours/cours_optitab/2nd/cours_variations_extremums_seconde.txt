@@ -492,7 +492,9 @@ Description: Cours de Seconde : croissance/décroissance (monotonie), tableau de
         <h3 style="color:#34495e; margin-top:18px;">1) Balayage : approximer maximum et minimum</h3>
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
             <p style="margin:0; text-align:left; font-size:1em;"><strong>Idée :</strong> on calcule $\displaystyle f(x)$ sur beaucoup de points, et on garde la plus grande et la plus petite valeur.</p>
-            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <table style="border-collapse: collapse; margin:10px 0;">
+                <tr>
+                    <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
                 <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">extremums_balai</span>(a, b, n):<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Exemple : f(x) = -(x-2)^2 + 3</span><br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">def</span> f(x):<br>
@@ -511,7 +513,9 @@ Description: Cours de Seconde : croissance/décroissance (monotonie), tableau de
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y_max = y<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x_max = x<br><br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> (x_min, y_min), (x_max, y_max)
-            </div>
+                    </td>
+                </tr>
+            </table>
             <p style="margin:8px 0 0 0; text-align:left; font-size:0.95em;"><em>Plus $\displaystyle n$ est grand, plus l’approximation est précise (mais plus c’est long à calculer).</em></p>
         </div>
 
@@ -519,7 +523,9 @@ Description: Cours de Seconde : croissance/décroissance (monotonie), tableau de
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
             <p style="margin:0; text-align:left; font-size:1em;"><strong>Quand ça marche ?</strong> Quand la fonction est <strong>d’abord croissante puis décroissante</strong> (un seul maximum) ou <strong>d’abord décroissante puis croissante</strong> (un seul minimum).</p>
             <p style="margin:8px 0; text-align:left; font-size:1em;">On compare deux valeurs proches du milieu et on garde la moitié qui contient l’extremum.</p>
-            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <table style="border-collapse: collapse; margin:10px 0;">
+                <tr>
+                    <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
                 <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">maximum_dichotomie</span>(a, b, eps):<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Exemple : f(x) = -(x-2)^2 + 3 (maximum vers x=2)</span><br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">def</span> f(x):<br>
@@ -533,14 +539,18 @@ Description: Cours de Seconde : croissance/décroissance (monotonie), tableau de
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b = m<br><br>
                 &nbsp;&nbsp;&nbsp;&nbsp;x = (a+b)/<span style="color:#bd93f9;">2</span><br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> x, f(x)
-            </div>
+                    </td>
+                </tr>
+            </table>
             <p style="margin:8px 0 0 0; text-align:left; font-size:0.95em;"><em>On obtient une valeur approchée de l’abscisse du maximum, puis la valeur du maximum.</em></p>
         </div>
 
         <h3 style="color:#34495e; margin-top:18px;">3) Longueur approchée d’une portion de courbe</h3>
         <div style="background:#f8f9fa; border-radius:6px; border-left:6px solid #6c757d; padding:15px; margin:12px 0;">
             <p style="margin:0; text-align:left; font-size:1em;"><strong>Idée :</strong> on remplace la courbe par une ligne brisée passant par des points $(x_i, f(x_i))$, puis on additionne les distances.</p>
-            <div style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; margin:10px 0; font-family:monospace;">
+            <table style="border-collapse: collapse; margin:10px 0;">
+                <tr>
+                    <td style="background:#2c3e50; color:#ffffff; padding:15px; border-radius:6px; font-family:monospace; border:none;">
                 <span style="color:#ff79c6;">import</span> math<br><br>
                 <span style="color:#ff79c6;">def</span> <span style="color:#50fa7b;">longueur_courbe</span>(a, b, n):<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6272a4;"># Exemple : f(x) = x^2</span><br>
@@ -556,7 +566,9 @@ Description: Cours de Seconde : croissance/décroissance (monotonie), tableau de
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L = L + math.sqrt((x1-x0)**<span style="color:#bd93f9;">2</span> + (y1-y0)**<span style="color:#bd93f9;">2</span>)<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x0, y0 = x1, y1<br><br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff79c6;">return</span> L
-            </div>
+                    </td>
+                </tr>
+            </table>
             <p style="margin:8px 0 0 0; text-align:left; font-size:0.95em;"><em>Plus $\displaystyle n$ est grand, plus la ligne brisée suit la courbe (meilleure approximation).</em></p>
         </div>
     </div>

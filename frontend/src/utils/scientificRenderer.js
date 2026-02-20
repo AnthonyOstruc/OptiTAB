@@ -8,13 +8,30 @@
 export function unescapeLatex(text) {
   if (!text) return ''
   
-  return text
+  let base = text
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&amp;(?!nbsp;)/g, '&')  // Ne pas toucher aux &nbsp;
     .replace(/\\/g, '\\')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+
+  // Éviter que `<` / `>` dans le LaTeX soient interprétés comme du HTML (v-html)
+  // On n'échappe que dans les zones math (MathJax) pour préserver le HTML volontaire.
+  const escapeAngles = (s) => s.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+  // Blocs math
+  base = base
+    .replace(/\$\$([\s\S]*?)\$\$/g, (m, inner) => `$$${escapeAngles(inner)}$$`)
+    .replace(/\\\[([\s\S]*?)\\\]/g, (m, inner) => `\\[${escapeAngles(inner)}\\]`)
+    .replace(/\\\(([\s\S]*?)\\\)/g, (m, inner) => `\\(${escapeAngles(inner)}\\)`)
+
+  // Inline math `$...$` (sans capturer `$$...$$`)
+  base = base.replace(/(^|[^$])\$(?!\$)([^$\n]*?)\$(?!\$)/g, (m, prefix, inner) => {
+    return `${prefix}$${escapeAngles(inner)}$`
+  })
+
+  return base
 }
 
 /**
@@ -158,7 +175,7 @@ export function renderContentWithImages(content, images = [], options = {}) {
 }
 
 /**
- * Construit l'URL compl�te d'une image
+ * Construit l'URL complète d'une image
  */
 export function getImageUrl(imagePath, type = 'cours') {
   // Si imagePath est déjà une URL (blob: ou data:)
@@ -196,7 +213,7 @@ export function getImageUrl(imagePath, type = 'cours') {
     return `${baseUrl}/${imagePath}`
   }
 
-  // Si imagePath est un chemin relatif, construire l'URL compl�te
+  // Si imagePath est un chemin relatif, construire l'URL complète
   if (imagePath && imagePath.includes('/')) {
     return `${baseUrl}/media/${imagePath}`
   }

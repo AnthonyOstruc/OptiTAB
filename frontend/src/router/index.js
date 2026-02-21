@@ -19,7 +19,8 @@ const ALWAYS_SCROLL_TO_TOP_ROUTES = [
   'CoursParticuliers',
   'FreeCourses',
   'FreeExercises',
-  'FreeSummaries'
+  'FreeSummaries',
+  'HelpGraphe'
 ]
 
 const routes = [
@@ -211,6 +212,7 @@ const routes = [
   { path: '/historique-quiz', name: 'QuizzesHistory', component: () => import('@/views/QuizzesHistory.vue'), meta: { requiresAuth: true } },
   { path: '/mes-quiz-rendus', name: 'QuizSubmissionsStudent', component: () => import('@/views/QuizSubmissionsStudent.vue'), meta: { requiresAuth: true } },
   { path: '/calculator', name: 'Calculator', component: () => import('@/views/Calculator.vue') },
+  { path: '/aide-grapheur', name: 'HelpGraphe', component: () => import('@/views/HelpGraphe.vue') },
   { path: '/test-filtrage-strict', name: 'TestFiltrageStrict', component: () => import('@/views/TestFiltrageStrict.vue') },
   {
     path: '/admin',

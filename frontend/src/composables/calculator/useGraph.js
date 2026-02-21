@@ -5,7 +5,7 @@ import { ref, nextTick, watch } from 'vue'
 import Plotly from 'plotly.js-dist-min'
 import katex from 'katex'
 import { GRAPH_COLORS, createGraphLayout, PLOTLY_CONFIG } from './graphConfig'
-import { convertLatexToJS, evaluateFunction, generateFunctionData } from './mathUtils'
+import { generateFunctionData } from './mathUtils'
 
 export function useGraph() {
   // Références
@@ -25,6 +25,44 @@ export function useGraph() {
   
   // Fonctions tracées
   const graphFunctions = ref([])
+
+  const MAX_FUNCTION_NAME_LENGTH = 10
+
+  function sanitizeFunctionName(value) {
+    const raw = (value ?? '').toString().trim()
+    if (!raw) return ''
+
+    let cleaned = raw.replace(/[^a-zA-Z0-9]/g, '')
+    cleaned = cleaned.replace(/^[0-9]+/, '')
+    cleaned = cleaned.slice(0, MAX_FUNCTION_NAME_LENGTH)
+
+    if (!cleaned || !/^[a-zA-Z]/.test(cleaned)) return ''
+    return cleaned
+  }
+
+  function getFunctionDisplayName(func, index) {
+    const custom = sanitizeFunctionName(func?.name)
+    return custom || `f${index + 1}`
+  }
+
+  function splitFunctionNameParts(name) {
+    const match = name.match(/^([a-zA-Z]+)([0-9]+)$/)
+    if (match) return { base: match[1], sub: match[2] }
+    return { base: name, sub: '' }
+  }
+
+  function getFunctionNameHtml(func, index) {
+    const display = getFunctionDisplayName(func, index)
+    const parts = splitFunctionNameParts(display)
+    return `${parts.base}${parts.sub ? `<sub>${parts.sub}</sub>` : ''}`
+  }
+
+  function getFunctionLatexLabel(func, index) {
+    const display = getFunctionDisplayName(func, index)
+    const match = display.match(/^([a-zA-Z]+)([0-9]+)$/)
+    if (match) return `${match[1]}_{${match[2]}}`
+    return display
+  }
   
   // Compteur de couleurs
   let colorIndex = 0
@@ -87,6 +125,7 @@ export function useGraph() {
     }
     
     graphFunctions.value.push({
+      name: '',
       expression: expression,
       color: color,
       latex: expression,
@@ -128,6 +167,7 @@ export function useGraph() {
     
     graphFunctions.value.forEach((func, index) => {
       try {
+        const funcNameHtml = getFunctionNameHtml(func, index)
         if (func.type === 'vertical') {
           // Droite verticale x = constante
           traces.push({
@@ -136,7 +176,7 @@ export function useGraph() {
             type: 'scatter',
             mode: 'lines',
             line: { color: func.color, width: 2 },
-            name: `f<sub>${index + 1}</sub>(x) = x = ${func.value}`,
+            name: `${funcNameHtml}(x) = x = ${func.value}`,
             showlegend: true
           })
         } else if (func.type === 'horizontal') {
@@ -147,7 +187,7 @@ export function useGraph() {
             type: 'scatter',
             mode: 'lines',
             line: { color: func.color, width: 2 },
-            name: `f<sub>${index + 1}</sub>(x) = y = ${func.value}`,
+            name: `${funcNameHtml}(x) = y = ${func.value}`,
             showlegend: true
           })
         } else {
@@ -159,10 +199,10 @@ export function useGraph() {
             type: 'scatter',
             mode: 'lines',
             line: { color: func.color, width: 2 },
-            name: `f<sub>${index + 1}</sub>(x) = ${func.expression}`,
+            name: `${funcNameHtml}(x) = ${func.expression}`,
             showlegend: true,
             connectgaps: false,
-            hovertemplate: `<b>f<sub>${index + 1}</sub></b><br>x: %{x:.3f}<br>y: %{y:.3f}<extra></extra>`
+            hovertemplate: `<b>${funcNameHtml}</b><br>x: %{x:.3f}<br>y: %{y:.3f}<extra></extra>`
           })
         }
       } catch (error) {
@@ -241,12 +281,12 @@ export function useGraph() {
       const el = functionExpressionRefs.value[index]
       if (el) {
         try {
-          katex.render(`f_{${index + 1}}(x) = ${func.latex}`, el, {
+          katex.render(`${getFunctionLatexLabel(func, index)}(x) = ${func.latex}`, el, {
             throwOnError: false,
             displayMode: false
           })
         } catch (e) {
-          el.textContent = `f${index + 1}(x) = ${func.expression}`
+          el.textContent = `${getFunctionDisplayName(func, index)}(x) = ${func.expression}`
         }
       }
     })

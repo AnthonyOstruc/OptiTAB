@@ -20,19 +20,33 @@ export function convertLatexToJS(latex) {
     js = '(0' + js + ')'
   }
   
-  // 1) Fractions
-  js = js.replace(/\\frac{([^}]*)}{([^}]*)}/g, '(($1)/($2))')
+  // 1) Fractions (boucle pour gérer les imbrications)
+  let prev = ''
+  while (prev !== js) {
+    prev = js
+    js = js.replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, '(($1)/($2))')
+  }
   
-  // 2) Racines
-  js = js.replace(/\\sqrt\[([^\]]+)\]{([^}]+)}/g, 'Math.pow($2, 1/($1))')
-  js = js.replace(/\\sqrt{([^}]+)}/g, 'Math.sqrt($1)')
+  // 2) Racines (boucle pour gérer les imbrications)
+  prev = ''
+  while (prev !== js) {
+    prev = js
+    js = js.replace(/\\sqrt\[([^\]]+)\]\{([^{}]*)\}/g, 'Math.pow($2, 1/($1))')
+    js = js.replace(/\\sqrt\{([^{}]*)\}/g, 'Math.sqrt($1)')
+  }
   
   // 3) Constantes
   js = js.replace(/\\pi\b/g, 'Math.PI')
   js = js.replace(/\\e\b/g, 'Math.E')
   
-  // 4) Exponentielles / Logs
-  js = js.replace(/\\exp\(([^)]+)\)/g, 'Math.exp($1)')
+  // 4) Exponentielles / Logs — gérer les accolades aussi
+  // \exp{...} et \exp(...) 
+  prev = ''
+  while (prev !== js) {
+    prev = js
+    js = js.replace(/\\exp\{([^{}]*)\}/g, 'Math.exp($1)')
+    js = js.replace(/\\exp\(([^)]+)\)/g, 'Math.exp($1)')
+  }
   js = js.replace(/\\ln\(([^)]+)\)/g, 'Math.log($1)')
   js = js.replace(/\\log\(([^)]+)\)/g, 'Math.log10($1)')
   js = js.replace(/\\log_\{([^}]+)\}\(([^)]+)\)/g, '(Math.log($2)/Math.log($1))')
@@ -70,8 +84,12 @@ export function convertLatexToJS(latex) {
   // Nettoyer les doubles parenthèses
   js = js.replace(/Math\.abs\(([^)]+)\)\)/g, 'Math.abs($1))')
   
-  // 7) Puissances
-  js = js.replace(/\^\{([^}]+)\}/g, '**($1)')
+  // 7) Puissances — boucle pour gérer les exposants imbriqués (e^{-x^{2}} etc.)
+  prev = ''
+  while (prev !== js) {
+    prev = js
+    js = js.replace(/\^\{([^{}]+)\}/g, '**($1)')
+  }
   js = js.replace(/\^([a-zA-Z0-9]+)/g, '**$1')
   
   // 8) e isolé
@@ -84,6 +102,9 @@ export function convertLatexToJS(latex) {
   js = js.replace(/(\d|x)\s*(Math\.)/g, '$1*$2')
   js = js.replace(/(\d)(x)/g, '$1*$2')
   js = js.replace(/(x)(\d)/g, '$1*$2')
+  
+  // Nettoyer les accolades restantes
+  js = js.replace(/[{}]/g, '')
   
   return js
 }

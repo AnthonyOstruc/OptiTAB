@@ -13,17 +13,31 @@ export function useGraphShapes() {
   // Champs de saisie pour les points
   const pointX = ref(0)
   const pointY = ref(0)
+  const pointName = ref('')
+  const pointsInput = ref('')
+  
+  // Compteur pour auto-nommage des points
+  let pointAutoIndex = 0
   
   // Champs de saisie pour les segments
   const segmentX1 = ref(0)
   const segmentY1 = ref(0)
   const segmentX2 = ref(1)
   const segmentY2 = ref(1)
+  const segmentIsVector = ref(false)
+  const segmentName = ref('')
+  
+  // Compteur pour auto-nommage des segments
+  let segmentAutoIndex = 0
   
   // Champs de saisie pour les cercles
   const circleH = ref(0)
   const circleK = ref(0)
   const circleR = ref(1)
+  const circleName = ref('')
+  
+  // Compteur pour auto-nommage des cercles
+  let circleAutoIndex = 0
   
   // Compteur pour les couleurs
   let colorIndex = 0
@@ -41,17 +55,61 @@ export function useGraphShapes() {
   // === POINTS ===
   function addPoint(onUpdate) {
     const color = getNextColor()
+    pointAutoIndex++
+    const name = pointName.value.trim() || `P${pointAutoIndex}`
     points.value.push({
       x: pointX.value,
       y: pointY.value,
-      color: color
+      color: color,
+      name: name,
+      showName: true,
+      showCoords: true
     })
     
     // Réinitialiser les champs
     pointX.value = 0
     pointY.value = 0
+    pointName.value = ''
     
     if (onUpdate) onUpdate()
+  }
+  
+  function addMultiplePoints(onUpdate) {
+    const input = pointsInput.value.trim()
+    if (!input) return
+    
+    // Regex pour matcher A(1,2) ou A(1;2) ou A(1.5,-2.3) etc.
+    const pointRegex = /([A-Za-zÀ-ÿ_]\w*)\s*\(\s*(-?[\d]*\.?[\d]+)\s*[,;]\s*(-?[\d]*\.?[\d]+)\s*\)/g
+    let match
+    let count = 0
+    
+    while ((match = pointRegex.exec(input)) !== null) {
+      const name = match[1]
+      const x = parseFloat(match[2])
+      const y = parseFloat(match[3])
+      const color = getNextColor()
+      pointAutoIndex++
+      
+      points.value.push({
+        x: x,
+        y: y,
+        color: color,
+        name: name,
+        showName: true,
+        showCoords: true
+      })
+      count++
+    }
+    
+    if (count > 0) {
+      pointsInput.value = ''
+      if (onUpdate) onUpdate()
+    }
+  }
+  
+  function getPointDisplayName(index) {
+    const point = points.value[index]
+    return point ? point.name : `P${index + 1}`
   }
   
   function removePoint(index, onUpdate) {
@@ -61,6 +119,7 @@ export function useGraphShapes() {
   
   function drawPoints(traces) {
     points.value.forEach((point, index) => {
+      const displayName = point.name || `P${index + 1}`
       traces.push({
         x: [point.x],
         y: [point.y],
@@ -75,9 +134,9 @@ export function useGraphShapes() {
             width: 2
           }
         },
-        name: `Point ${index + 1}: (${point.x}, ${point.y})`,
+        name: `${displayName} (${point.x}, ${point.y})`,
         showlegend: true,
-        hovertemplate: `<b>Point ${index + 1}</b><br>(${point.x}, ${point.y})<extra></extra>`
+        hovertemplate: `<b>${displayName}</b><br>(${point.x}, ${point.y})<extra></extra>`
       })
     })
   }
@@ -85,12 +144,18 @@ export function useGraphShapes() {
   // === SEGMENTS ===
   function addSegment(onUpdate) {
     const color = getNextColor()
+    segmentAutoIndex++
+    const isVec = segmentIsVector.value
+    const defaultPrefix = isVec ? 'V' : 'S'
+    const name = segmentName.value.trim() || `${defaultPrefix}${segmentAutoIndex}`
     segments.value.push({
       x1: segmentX1.value,
       y1: segmentY1.value,
       x2: segmentX2.value,
       y2: segmentY2.value,
-      color: color
+      color: color,
+      isVector: isVec,
+      name: name
     })
     
     // Réinitialiser les champs
@@ -98,6 +163,7 @@ export function useGraphShapes() {
     segmentY1.value = 0
     segmentX2.value = 1
     segmentY2.value = 1
+    segmentName.value = ''
     
     if (onUpdate) onUpdate()
   }
@@ -109,7 +175,9 @@ export function useGraphShapes() {
   
   function drawSegments(traces) {
     segments.value.forEach((segment, index) => {
-      // Dessiner le segment
+      const label = segment.name || (segment.isVector ? `V${index + 1}` : `S${index + 1}`)
+      const notation = segment.isVector ? `→` : `[AB]`
+      // Dessiner le segment/vecteur
       traces.push({
         x: [segment.x1, segment.x2],
         y: [segment.y1, segment.y2],
@@ -119,9 +187,9 @@ export function useGraphShapes() {
           color: segment.color,
           width: 3
         },
-        name: `Segment ${index + 1}: [AB]`,
+        name: `${label}: ${notation}`,
         showlegend: true,
-        hovertemplate: `<b>Segment ${index + 1}</b><br>De (${segment.x1}, ${segment.y1}) à (${segment.x2}, ${segment.y2})<extra></extra>`
+        hovertemplate: `<b>${label}</b><br>De (${segment.x1}, ${segment.y1}) à (${segment.x2}, ${segment.y2})<extra></extra>`
       })
       
       // Ajouter les points d'extrémité
@@ -145,6 +213,31 @@ export function useGraphShapes() {
     })
   }
   
+  // Génère les annotations flèches pour les vecteurs
+  function getVectorAnnotations() {
+    const annotations = []
+    segments.value.forEach((segment) => {
+      if (!segment.isVector) return
+      annotations.push({
+        x: segment.x2,
+        y: segment.y2,
+        xref: 'x',
+        yref: 'y',
+        text: '',
+        showarrow: true,
+        axref: 'x',
+        ayref: 'y',
+        ax: segment.x1,
+        ay: segment.y1,
+        arrowhead: 2,
+        arrowsize: 1,
+        arrowwidth: 2.5,
+        arrowcolor: segment.color
+      })
+    })
+    return annotations
+  }
+  
   // === CERCLES ===
   function addCircle(onUpdate) {
     if (circleR.value <= 0) {
@@ -153,17 +246,21 @@ export function useGraphShapes() {
     }
     
     const color = getNextColor()
+    circleAutoIndex++
+    const name = circleName.value.trim() || `C${circleAutoIndex}`
     circles.value.push({
       h: circleH.value,
       k: circleK.value,
       r: circleR.value,
-      color: color
+      color: color,
+      name: name
     })
     
     // Réinitialiser les champs
     circleH.value = 0
     circleK.value = 0
     circleR.value = 1
+    circleName.value = ''
     
     if (onUpdate) onUpdate()
   }
@@ -197,9 +294,9 @@ export function useGraphShapes() {
           color: circle.color,
           width: 2
         },
-        name: `Cercle ${index + 1}: centre(${circle.h}, ${circle.k}), r=${circle.r}`,
+        name: `${circle.name || 'C' + (index + 1)}: centre(${circle.h}, ${circle.k}), r=${circle.r}`,
         showlegend: true,
-        hovertemplate: `<b>Cercle ${index + 1}</b><br>x: %{x:.3f}<br>y: %{y:.3f}<extra></extra>`
+        hovertemplate: `<b>${circle.name || 'C' + (index + 1)}</b><br>x: %{x:.3f}<br>y: %{y:.3f}<extra></extra>`
       })
       
       // Ajouter un point au centre du cercle
@@ -215,7 +312,7 @@ export function useGraphShapes() {
         },
         name: `Centre (${circle.h}, ${circle.k})`,
         showlegend: false,
-        hovertemplate: `<b>Centre du cercle ${index + 1}</b><br>(${circle.h}, ${circle.k})<extra></extra>`
+        hovertemplate: `<b>Centre de ${circle.name || 'C' + (index + 1)}</b><br>(${circle.h}, ${circle.k})<extra></extra>`
       })
     })
   }
@@ -225,6 +322,9 @@ export function useGraphShapes() {
     points.value = []
     segments.value = []
     circles.value = []
+    pointAutoIndex = 0
+    segmentAutoIndex = 0
+    circleAutoIndex = 0
   }
   
   function hasShapes() {
@@ -246,17 +346,24 @@ export function useGraphShapes() {
     // Champs de saisie
     pointX,
     pointY,
+    pointName,
+    pointsInput,
     segmentX1,
     segmentY1,
     segmentX2,
     segmentY2,
+    segmentIsVector,
+    segmentName,
     circleH,
     circleK,
     circleR,
+    circleName,
     
     // Actions
     addPoint,
+    addMultiplePoints,
     removePoint,
+    getPointDisplayName,
     addSegment,
     removeSegment,
     addCircle,
@@ -267,6 +374,7 @@ export function useGraphShapes() {
     drawSegments,
     drawCircles,
     drawAllShapes,
+    getVectorAnnotations,
     
     // Utilitaires
     clearAllShapes,

@@ -1,10 +1,9 @@
 /**
  * Composable pour l'analyse graphique (intersections, racines, tangentes, aires)
  */
-import { ref, nextTick } from 'vue'
+import { ref } from 'vue'
 import { convertLatexToJS, evaluateFunction, findZero, bisectionMethod, numericalIntegral, numericalDerivative } from './mathUtils'
 import { SPECIAL_COLORS } from './graphConfig'
-import katex from 'katex'
 
 export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
   // Intersections entre courbes
@@ -12,6 +11,10 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
   const intersectionPoints = ref([])
   const hiddenIntersections = ref([])
   const intersectionRefs = ref([])
+  
+  // Noms personnalisés persistants pour les intersections (clé = coordonnées arrondies)
+  const intersectionCustomNames = ref({})
+  const axisIntersectionCustomNames = ref({})
   
   // Intersections avec les axes
   const showAxisIntersections = ref(false)
@@ -47,6 +50,34 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
   // Racines
   const showRoots = ref(false)
   const rootsPoints = ref([])
+
+  const MAX_FUNCTION_NAME_LENGTH = 10
+
+  function sanitizeFunctionName(value) {
+    const raw = (value ?? '').toString().trim()
+    if (!raw) return ''
+
+    let cleaned = raw.replace(/[^a-zA-Z0-9]/g, '')
+    cleaned = cleaned.replace(/^[0-9]+/, '')
+    cleaned = cleaned.slice(0, MAX_FUNCTION_NAME_LENGTH)
+
+    if (!cleaned || !/^[a-zA-Z]/.test(cleaned)) return ''
+    return cleaned
+  }
+
+  function getFunctionDisplayName(func, index) {
+    const custom = sanitizeFunctionName(func?.name)
+    return custom || `f${index + 1}`
+  }
+
+  // Génère une clé unique pour un point d'intersection
+  function getIntersectionKey(func1Index, func2Index, x, y) {
+    return `${func1Index}-${func2Index}-${x.toFixed(3)}-${y.toFixed(3)}`
+  }
+
+  function getAxisIntersectionKey(funcIndex, axis, x, y) {
+    return `${funcIndex}-${axis}-${x.toFixed(3)}-${y.toFixed(3)}`
+  }
 
   // === ASYMPTOTES ===
   function addManualAsymptotes(traces) {
@@ -225,6 +256,14 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
           )
           
           if (!isHidden) {
+            const key = getIntersectionKey(i + 1, j + 1, point.x, point.y)
+            const customName = intersectionCustomNames.value[key] || ''
+            const xCoord = Math.abs(point.x) < 0.01 ? 0 : Number(point.x.toFixed(2))
+            const yCoord = Math.abs(point.y) < 0.01 ? 0 : Number(point.y.toFixed(2))
+            const name1 = getFunctionDisplayName(func1, i)
+            const name2 = getFunctionDisplayName(func2, j)
+            const defaultName = `${name1} ∩ ${name2}`
+            
             intersectionPoints.value.push({
               x: point.x,
               y: point.y,
@@ -233,18 +272,26 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
               func1Index: i + 1,
               func2Index: j + 1,
               color1: func1.color,
-              color2: func2.color
+              color2: func2.color,
+              name: customName || defaultName,
+              key: key,
+              defaultName: defaultName
             })
             
-            const xCoord = Math.abs(point.x) < 0.01 ? 0 : Number(point.x.toFixed(2))
-            const yCoord = Math.abs(point.y) < 0.01 ? 0 : Number(point.y.toFixed(2))
+            const displayName = customName || defaultName
             
             traces.push({
               x: [point.x],
               y: [point.y],
               type: 'scatter',
-              mode: 'markers',
-              name: `f${i + 1} ∩ f${j + 1}: (${xCoord}, ${yCoord})`,
+              mode: 'markers+text',
+              name: `${displayName}: (${xCoord}, ${yCoord})`,
+              text: [customName || ''],
+              textposition: 'top right',
+              textfont: {
+                size: 11,
+                color: SPECIAL_COLORS.intersection
+              },
               marker: {
                 color: SPECIAL_COLORS.intersection,
                 size: 10,
@@ -253,7 +300,7 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
               },
               showlegend: true,
               legendgroup: 'intersections',
-              hovertemplate: `<b>Intersection</b><br>(${point.x.toFixed(3)}, ${point.y.toFixed(3)})<extra></extra>`
+              hovertemplate: `<b>${displayName}</b><br>(${point.x.toFixed(3)}, ${point.y.toFixed(3)})<extra></extra>`
             })
           }
         })
@@ -279,20 +326,29 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
         
         if (!isHidden) {
           const xCoord = Math.abs(x) < 0.01 ? 0 : Number(x.toFixed(3))
+          const axisKey = getAxisIntersectionKey(funcIndex + 1, 'x', x, 0)
+          const axisCustomName = axisIntersectionCustomNames.value[axisKey] || ''
+          const defaultAxisName = `${getFunctionDisplayName(func, funcIndex)} ∩ Ox`
+          
           axisIntersectionPoints.value.push({
             x: x,
             y: 0,
             funcIndex: funcIndex + 1,
             axis: 'x',
-            expression: func.expression
+            expression: func.expression,
+            name: axisCustomName || defaultAxisName,
+            key: axisKey,
+            defaultName: defaultAxisName
           })
+          
+          const axisDisplayName = axisCustomName || defaultAxisName
           
           traces.push({
             x: [x],
             y: [0],
             type: 'scatter',
             mode: 'markers',
-            name: `f${funcIndex + 1} ∩ Ox: (${xCoord}, 0)`,
+            name: `${axisDisplayName}: (${xCoord}, 0)`,
             marker: {
               color: SPECIAL_COLORS.axisIntersection,
               size: 8,
@@ -314,20 +370,29 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
         
         if (!isHidden) {
           const yCoord = Math.abs(yValue) < 0.01 ? 0 : Number(yValue.toFixed(3))
+          const axisKeyY = getAxisIntersectionKey(funcIndex + 1, 'y', 0, yValue)
+          const axisCustomNameY = axisIntersectionCustomNames.value[axisKeyY] || ''
+          const defaultAxisNameY = `${getFunctionDisplayName(func, funcIndex)} ∩ Oy`
+          
           axisIntersectionPoints.value.push({
             x: 0,
             y: yValue,
             funcIndex: funcIndex + 1,
             axis: 'y',
-            expression: func.expression
+            expression: func.expression,
+            name: axisCustomNameY || defaultAxisNameY,
+            key: axisKeyY,
+            defaultName: defaultAxisNameY
           })
+          
+          const axisDisplayNameY = axisCustomNameY || defaultAxisNameY
           
           traces.push({
             x: [0],
             y: [yValue],
             type: 'scatter',
             mode: 'markers',
-            name: `f${funcIndex + 1} ∩ Oy: (0, ${yCoord})`,
+            name: `${axisDisplayNameY}: (0, ${yCoord})`,
             marker: {
               color: SPECIAL_COLORS.axisIntersection,
               size: 8,
@@ -388,7 +453,7 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
           y: [0],
           type: 'scatter',
           mode: 'markers',
-          name: `Racine f${funcIndex + 1}: x = ${root.toFixed(3)}`,
+          name: `Racine ${getFunctionDisplayName(func, funcIndex)}: x = ${root.toFixed(3)}`,
           marker: {
             color: '#f97316',
             size: 10,
@@ -493,7 +558,7 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
       fill: 'toself',
       fillcolor: SPECIAL_COLORS.integralArea,
       line: { color: 'transparent' },
-      name: `∫[${a},${b}] f${funcIndex + 1}(x)dx`,
+      name: `∫[${a},${b}] ${getFunctionDisplayName(func, funcIndex)}(x)dx`,
       showlegend: true
     })
   }
@@ -648,11 +713,38 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
     }
   }
 
+  // Renommer un point d'intersection
+  function renameIntersection(index, newName) {
+    const point = intersectionPoints.value[index]
+    if (point) {
+      point.name = newName || point.defaultName
+      if (newName && newName !== point.defaultName) {
+        intersectionCustomNames.value[point.key] = newName
+      } else {
+        delete intersectionCustomNames.value[point.key]
+      }
+    }
+  }
+
+  function renameAxisIntersection(index, newName) {
+    const point = axisIntersectionPoints.value[index]
+    if (point) {
+      point.name = newName || point.defaultName
+      if (newName && newName !== point.defaultName) {
+        axisIntersectionCustomNames.value[point.key] = newName
+      } else {
+        delete axisIntersectionCustomNames.value[point.key]
+      }
+    }
+  }
+
   function clearAnalysis() {
     intersectionPoints.value = []
     axisIntersectionPoints.value = []
     hiddenIntersections.value = []
     hiddenAxisIntersections.value = []
+    intersectionCustomNames.value = {}
+    axisIntersectionCustomNames.value = {}
     rootsPoints.value = []
     integralResult.value = null
     areaBetweenResult.value = null
@@ -667,6 +759,7 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
     intersectionRefs,
     calculateIntersections,
     removeIntersection,
+    renameIntersection,
     
     // Axes
     showAxisIntersections,
@@ -674,6 +767,7 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
     hiddenAxisIntersections,
     calculateAxisIntersections,
     removeAxisIntersection,
+    renameAxisIntersection,
     
     // Asymptotes
     verticalAsymptotes,

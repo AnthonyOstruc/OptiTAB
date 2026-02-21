@@ -3,8 +3,8 @@
     <section class="calc">
       <h2 class="title"><CalculatorIcon class="title-icon"/> Outil de Calcul Scientifique</h2>
 
-      <!-- Système d'onglets pour le graphique -->
-      <div v-if="selectedOperation === 'graph'" class="graph-tabs-wrapper">
+      <!-- Système d'onglets pour le graphique (mobile uniquement, affiché au-dessus) -->
+      <div v-if="selectedOperation === 'graph'" class="graph-tabs-wrapper mobile-only-tabs">
         <div class="graph-tabs-container top-tabs">
           <button 
             class="tabs-nav-btn tabs-nav-prev" 
@@ -37,11 +37,8 @@
         <div class="graph-tab-content-top">
             <!-- Onglet Fonctions tracées -->
             <div v-show="activeGraphTab === 'functions'" class="tab-panel">
-              <h4 class="panel-title">Fonctions tracées</h4>
-              <div v-if="graphFunctions.length === 0" class="no-content">
-                Aucune fonction tracée. Saisissez une fonction et cliquez sur "Tracer".
-              </div>
-              <div v-else class="functions-list">
+              <h4 class="panel-title">Éléments tracés</h4>
+              <div v-if="graphFunctions.length > 0" class="functions-list">
                 <div v-for="(func, index) in graphFunctions" :key="index" class="function-item">
                   <input 
                     type="color" 
@@ -50,10 +47,140 @@
                     class="function-color-picker"
                     title="Changer la couleur"
                   />
-                  <span class="function-name">f<sub>{{ index + 1 }}</sub>(x) =</span>
+                  <span class="function-name">
+                    <template v-if="editingFunctionNameIndex === index">
+                      <input
+                        :ref="el => functionNameInputRefs[index] = el"
+                        v-model="func.name"
+                        type="text"
+                        inputmode="text"
+                        class="function-name-input"
+                        maxlength="10"
+                        placeholder="f"
+                        title="Nom de la fonction (ex: f, g, h...)"
+                        @blur="finishFunctionNameEdit(index)"
+                        @keydown.enter.prevent="finishFunctionNameEdit(index)"
+                        @keydown.esc.prevent="cancelFunctionNameEdit"
+                      />
+                      <span class="function-name-suffix">(x) =</span>
+                    </template>
+                    <template v-else>
+                      <span class="function-name-label" @click="startFunctionNameEdit(index)" title="Cliquer pour renommer">
+                        {{ functionNameParts[index]?.base }}
+                        <sub v-if="functionNameParts[index]?.sub">{{ functionNameParts[index]?.sub }}</sub>
+                      </span>
+                      <span class="function-name-suffix">(x) =</span>
+                    </template>
+                  </span>
                   <span class="function-expression" :ref="el => functionExpressionRefs[index] = el" @click="editFunction(index)" style="cursor: pointer;" title="Cliquer pour modifier"></span>
                   <button @click="removeFunction(index)" class="remove-function-btn">×</button>
                 </div>
+              </div>
+
+              <!-- Liste des points créés -->
+              <div v-if="points.length > 0" class="traced-shapes-section">
+                <h5 class="traced-shapes-title">Points</h5>
+                <div class="shapes-list">
+                  <div v-for="(point, index) in points" :key="'mob-fpt-' + index" class="shape-item shape-item-with-toggles">
+                    <div class="shape-item-main">
+                      <input type="color" :value="point.color" @input="changeShapeColor('point', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                      <template v-if="isEditingShape('point', index)">
+                        <input v-model="point.name" type="text" :class="'shape-name-input shape-name-editing-point-' + index" maxlength="10" placeholder="P" @blur="finishShapeNameEdit('point', index)" @keydown.enter.prevent="finishShapeNameEdit('point', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                      </template>
+                      <template v-else>
+                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('point', index)" title="Cliquer pour renommer">{{ point.name }}</span>
+                      </template>
+                      <span class="shape-item-coords">({{ point.x }}, {{ point.y }})</span>
+                      <button @click="removePoint(index)" class="remove-function-btn">×</button>
+                    </div>
+                    <div class="shape-item-toggles">
+                      <button @click="point.showName = !point.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showName !== false }]" :title="point.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                      <button @click="point.showCoords = !point.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showCoords !== false }]" :title="point.showCoords !== false ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="points.length >= 2" class="connect-points-row">
+                  <label class="connect-points-toggle">
+                    <input type="checkbox" v-model="connectPoints" />
+                    <span>Relier les points</span>
+                  </label>
+                  <input v-if="connectPoints" type="color" v-model="connectPointsColor" class="function-color-picker" title="Couleur de la liaison" />
+                </div>
+              </div>
+
+              <!-- Liste des segments/vecteurs créés -->
+              <div v-if="segments.length > 0" class="traced-shapes-section">
+                <h5 class="traced-shapes-title">Segments / Vecteurs</h5>
+                <div class="shapes-list">
+                  <div v-for="(segment, index) in segments" :key="'mob-fseg-' + index" class="shape-item">
+                    <input type="color" :value="segment.color" @input="changeShapeColor('segment', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                    <template v-if="isEditingShape('segment', index)">
+                      <input v-model="segment.name" type="text" :class="'shape-name-input shape-name-editing-segment-' + index" maxlength="10" placeholder="S" @blur="finishShapeNameEdit('segment', index)" @keydown.enter.prevent="finishShapeNameEdit('segment', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                    </template>
+                    <template v-else>
+                      <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('segment', index)" title="Cliquer pour renommer">{{ segment.name || (segment.isVector ? 'V' : 'S') + (index + 1) }}</span>
+                    </template>
+                    <span class="shape-item-coords">{{ segment.isVector ? '→' : '—' }} ({{ segment.x1 }},{{ segment.y1 }})→({{ segment.x2 }},{{ segment.y2 }})</span>
+                    <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Liste des cercles créés -->
+              <div v-if="circles.length > 0" class="traced-shapes-section">
+                <h5 class="traced-shapes-title">Cercles</h5>
+                <div class="shapes-list">
+                  <div v-for="(circle, index) in circles" :key="'mob-fcir-' + index" class="shape-item">
+                    <input type="color" :value="circle.color" @input="changeShapeColor('circle', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                    <template v-if="isEditingShape('circle', index)">
+                      <input v-model="circle.name" type="text" :class="'shape-name-input shape-name-editing-circle-' + index" maxlength="10" placeholder="C" @blur="finishShapeNameEdit('circle', index)" @keydown.enter.prevent="finishShapeNameEdit('circle', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                    </template>
+                    <template v-else>
+                      <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('circle', index)" title="Cliquer pour renommer">{{ circle.name || 'C' + (index + 1) }}</span>
+                    </template>
+                    <span class="shape-item-coords">({{ circle.h }}, {{ circle.k }}) r={{ circle.r }}</span>
+                    <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Liste des textes créés -->
+              <div v-if="textAnnotations.length > 0" class="traced-shapes-section">
+                <h5 class="traced-shapes-title">Textes</h5>
+                <div class="shapes-list">
+                  <div v-for="(ta, index) in textAnnotations" :key="'mob-ftxt-' + index" class="shape-item">
+                    <input type="color" :value="ta.color" @input="changeShapeColor('text', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                    <template v-if="isEditingShape('text', index)">
+                      <input v-model="ta.content" type="text" :class="'shape-name-input shape-name-editing-text-' + index" maxlength="50" placeholder="Texte" @blur="finishShapeNameEdit('text', index)" @keydown.enter.prevent="finishShapeNameEdit('text', index)" @keydown.esc.prevent="cancelShapeNameEdit" style="flex: 1;" />
+                    </template>
+                    <template v-else>
+                      <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('text', index)" title="Cliquer pour modifier" style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ ta.content }}</span>
+                    </template>
+                    <button @click="removeTextAnnotation(index)" class="remove-function-btn">×</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Liste des intersections -->
+              <div v-if="intersectionPoints.length > 0" class="traced-shapes-section">
+                <h5 class="traced-shapes-title">Intersections</h5>
+                <div class="shapes-list">
+                  <div v-for="(ipt, index) in intersectionPoints" :key="'mob-fint-' + index" class="shape-item">
+                    <input type="color" :value="ipt.color || '#dc2626'" @input="changeShapeColor('intersection', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                    <template v-if="isEditingShape('intersection', index)">
+                      <input v-model="ipt.name" type="text" :class="'shape-name-input shape-name-editing-intersection-' + index" maxlength="20" :placeholder="ipt.defaultName" @blur="finishShapeNameEdit('intersection', index)" @keydown.enter.prevent="finishShapeNameEdit('intersection', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                    </template>
+                    <template v-else>
+                      <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('intersection', index)" title="Cliquer pour renommer">{{ ipt.name || ipt.defaultName }}</span>
+                    </template>
+                    <span class="shape-item-coords">({{ ipt.x.toFixed(2) }}, {{ ipt.y.toFixed(2) }})</span>
+                    <button @click="removeIntersection(index)" class="remove-function-btn">×</button>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="graphFunctions.length === 0 && points.length === 0 && segments.length === 0 && circles.length === 0 && textAnnotations.length === 0 && intersectionPoints.length === 0" class="no-content">
+                Aucun élément tracé.
               </div>
             </div>
             
@@ -76,6 +203,30 @@
                 <label class="checkbox-label">
                   <input type="checkbox" v-model="snapToGrid" />
                   Accrocher aux intersections de la grille
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="showCurveLabels" />
+                  Afficher les noms des courbes
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="showPointLabels" />
+                  Afficher les labels des points
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="showLabelArrows" />
+                  Flèches sur les labels
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="showLabelBorders" />
+                  Encadrement des labels
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="showLegend" />
+                  Afficher la légende
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="allowPan" />
+                  Déplacer le graphique (clic + glisser)
                 </label>
               </div>
               <div class="bounds-row">
@@ -146,22 +297,94 @@
               <!-- Résultats d'analyse -->
               <div v-if="showIntersections && intersectionPoints.length > 0" class="results-section">
                 <h5 class="results-title">Points d'intersection entre courbes :</h5>
-                <div v-for="(point, index) in intersectionPoints" :key="index" class="result-item">
-                  <span>f<sub>{{ point.func1Index }}</sub> ∩ f<sub>{{ point.func2Index }}</sub> : ({{ point.x.toFixed(3) }}, {{ point.y.toFixed(3) }})</span>
+                <div v-for="(point, index) in intersectionPoints" :key="index" class="result-item" style="display: flex; align-items: center; gap: 6px;">
+                  <input 
+                    v-model="point.name" 
+                    type="text" 
+                    maxlength="15" 
+                    @change="renameIntersection(index, point.name); plotAllFunctions()"
+                    style="width: 80px; padding: 2px 4px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.85rem;"
+                    :placeholder="point.defaultName"
+                  />
+                  <span>: ({{ point.x.toFixed(3) }}, {{ point.y.toFixed(3) }})</span>
                 </div>
               </div>
               
               <div v-if="showRoots && rootsPoints.length > 0" class="results-section">
                 <h5 class="results-title">Racines :</h5>
-                <div v-for="(point, index) in rootsPoints" :key="index" class="result-item">
-                  <span>f<sub>{{ point.funcIndex }}</sub> : x = {{ point.x.toFixed(3) }}</span>
+                <div v-for="(point, index) in rootsPoints" :key="index" class="result-item" style="display: flex; align-items: center; gap: 6px;">
+                  <span>{{ getFunctionDisplayNameByOneBasedIndex(point.funcIndex) }} : x = {{ point.x.toFixed(3) }}</span>
                 </div>
               </div>
               
               <div v-if="showAxisIntersections && axisIntersectionPoints.length > 0" class="results-section">
                 <h5 class="results-title">Intersections avec les axes :</h5>
-                <div v-for="(point, index) in axisIntersectionPoints" :key="index" class="result-item">
-                  <span>f<sub>{{ point.funcIndex }}</sub> : ({{ point.x.toFixed(3) }}, {{ point.y.toFixed(3) }})</span>
+                <div v-for="(point, index) in axisIntersectionPoints" :key="index" class="result-item" style="display: flex; align-items: center; gap: 6px;">
+                  <input 
+                    v-model="point.name" 
+                    type="text" 
+                    maxlength="15" 
+                    @change="renameAxisIntersection(index, point.name); plotAllFunctions()"
+                    style="width: 80px; padding: 2px 4px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.85rem;"
+                    :placeholder="point.defaultName"
+                  />
+                  <span>: ({{ point.x.toFixed(3) }}, {{ point.y.toFixed(3) }})</span>
+                </div>
+              </div>
+              
+              <!-- Résolution d'inéquations -->
+              <div class="calc-section" style="margin-top: 0.75rem;">
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="showInequality" />
+                  Résoudre des inéquations
+                </label>
+                <div v-if="showInequality && inequalityItems.length >= 2" class="calc-controls">
+                  <div v-for="(ineq, ineqIdx) in inequalities" :key="'mob-ineq-' + ineqIdx" style="margin-bottom: 0.75rem; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 8px; position: relative;" :style="{ borderLeftColor: ineq.color.replace('0.15', '0.6'), borderLeftWidth: '3px' }">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                      <div style="display: flex; align-items: center; gap: 0.4rem;">
+                        <input type="color" :value="rgbaToHex(ineq.color)" @input="updateInequalityColor(ineqIdx, $event.target.value)" style="width: 22px; height: 22px; border: none; padding: 0; cursor: pointer; border-radius: 4px; background: transparent;" title="Couleur de la zone" />
+                        <span style="font-size: 0.8rem; font-weight: 600; color: #374151;">Inéquation {{ ineqIdx + 1 }}</span>
+                      </div>
+                      <button v-if="inequalities.length > 1" @click="removeInequality(ineqIdx)" class="remove-function-btn" title="Supprimer cette inéquation" style="font-size: 0.9rem;">×</button>
+                    </div>
+                    <div class="bounds-row">
+                      <div class="bound-input">
+                        <label>Él. 1 :</label>
+                        <select v-model.number="ineq.func1Index" class="bound-field">
+                          <option v-for="(item, index) in inequalityItems" :key="'mob-iq1-' + ineqIdx + '-' + item.key" :value="index">
+                            {{ item.label }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>Signe :</label>
+                        <select v-model="ineq.operator" class="bound-field">
+                          <option value="<">&lt;</option>
+                          <option value=">">&gt;</option>
+                          <option value="<=">≤</option>
+                          <option value=">=">≥</option>
+                          <option value="=">=</option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>Él. 2 :</label>
+                        <select v-model.number="ineq.func2Index" class="bound-field">
+                          <option v-for="(item, index) in inequalityItems" :key="'mob-iq2-' + ineqIdx + '-' + item.key" :value="index">
+                            {{ item.label }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div v-if="ineq.result" class="result-info inequality-result" style="margin-top: 0.3rem;">
+                      <strong>Solution :</strong> <span v-html="ineq.result.display"></span>
+                    </div>
+                  </div>
+                  <button @click="addInequality()" class="btn-secondary" style="width: 100%; padding: 0.4rem; font-size: 0.85rem; border-radius: 6px; border: 1px dashed #94a3b8; background: transparent; color: #64748b; cursor: pointer;">
+                    + Ajouter une inéquation
+                  </button>
+                </div>
+                <div v-if="showInequality && inequalityItems.length < 2" class="result-info" style="color: #ef4444;">
+                  Il faut au moins 2 éléments tracés (fonctions ou segments).
                 </div>
               </div>
             </div>
@@ -182,7 +405,7 @@
                       <label>Fonction :</label>
                       <select v-model.number="integralFunc1Index" class="bound-field">
                         <option v-for="(func, index) in graphFunctions" :key="index" :value="index">
-                          f{{ index + 1 }}
+                          {{ functionDisplayNames[index] }}
                         </option>
                       </select>
                     </div>
@@ -210,7 +433,7 @@
                       <label>Fonction 1 :</label>
                       <select v-model.number="areaCurve1Index" class="bound-field">
                         <option v-for="(func, index) in graphFunctions" :key="index" :value="index">
-                          f{{ index + 1 }}
+                          {{ functionDisplayNames[index] }}
                         </option>
                       </select>
                     </div>
@@ -218,7 +441,7 @@
                       <label>Fonction 2 :</label>
                       <select v-model.number="areaCurve2Index" class="bound-field">
                         <option v-for="(func, index) in graphFunctions" :key="index" :value="index">
-                          f{{ index + 1 }}
+                          {{ functionDisplayNames[index] }}
                         </option>
                       </select>
                     </div>
@@ -251,7 +474,7 @@
                       <label>Fonction :</label>
                       <select v-model.number="tangentFuncIndex" class="bound-field">
                         <option v-for="(func, index) in graphFunctions" :key="index" :value="index">
-                          f{{ index + 1 }}
+                          {{ functionDisplayNames[index] }}
                         </option>
                       </select>
                     </div>
@@ -276,6 +499,10 @@
                 <h5 class="shape-title">Ajouter un point</h5>
                 <div class="bounds-row">
                   <div class="bound-input">
+                    <label>Nom :</label>
+                    <input v-model="pointName" type="text" class="bound-field" placeholder="A" maxlength="10" style="width: 60px;" />
+                  </div>
+                  <div class="bound-input">
                     <label>x :</label>
                     <input v-model.number="pointX" type="number" step="0.5" class="bound-field" />
                   </div>
@@ -286,10 +513,24 @@
                 </div>
                 <button @click="addPoint" class="action-btn">Ajouter le point</button>
                 
+                <div style="margin-top: 8px;">
+                  <label style="font-size: 0.8rem; color: #94a3b8;">Plusieurs points :</label>
+                  <input v-model="pointsInput" type="text" class="bound-field" placeholder="A(1,2),B(3,4),C(5,6)" style="width: 100%; margin-top: 4px;" @keyup.enter="addMultiplePoints" />
+                  <button @click="addMultiplePoints" class="action-btn" style="margin-top: 4px;">Ajouter les points</button>
+                </div>
+                
                 <div v-if="points.length > 0" class="shapes-list">
                   <div v-for="(point, index) in points" :key="'point-' + index" class="shape-item">
                     <span class="function-color" :style="{ backgroundColor: point.color }"></span>
-                    <span>P{{ index + 1 }} ({{ point.x }}, {{ point.y }})</span>
+                    <input 
+                      v-model="point.name" 
+                      type="text" 
+                      class="point-name-input" 
+                      maxlength="10" 
+                      @change="plotAllFunctions()"
+                      style="width: 50px; padding: 2px 4px; border: 1px solid #555; border-radius: 4px; background: #2a2a3e; color: white; font-size: 0.85rem;"
+                    />
+                    <span>({{ point.x }}, {{ point.y }})</span>
                     <button @click="removePoint(index)" class="remove-function-btn">×</button>
                   </div>
                 </div>
@@ -307,7 +548,7 @@
                       <label>Point 1 :</label>
                       <select v-model.number="segmentPoint1Index" class="bound-field">
                         <option v-for="(point, index) in points" :key="index" :value="index">
-                          P{{ index + 1 }} ({{ point.x }}, {{ point.y }})
+                          {{ point.name }} ({{ point.x }}, {{ point.y }})
                         </option>
                       </select>
                     </div>
@@ -315,7 +556,7 @@
                       <label>Point 2 :</label>
                       <select v-model.number="segmentPoint2Index" class="bound-field">
                         <option v-for="(point, index) in points" :key="index" :value="index">
-                          P{{ index + 1 }} ({{ point.x }}, {{ point.y }})
+                          {{ point.name }} ({{ point.x }}, {{ point.y }})
                         </option>
                       </select>
                     </div>
@@ -346,12 +587,16 @@
                     <input v-model.number="segmentY2" type="number" step="0.5" class="bound-field" />
                   </div>
                 </div>
-                <button @click="addSegment" class="action-btn">Ajouter le segment</button>
+                <button @click="addSegment" class="action-btn">Ajouter le {{ segmentIsVector ? 'vecteur' : 'segment' }}</button>
+                <label class="checkbox-label" style="margin-top: 0.5rem;">
+                  <input type="checkbox" v-model="segmentIsVector" />
+                  Dessiner un vecteur (avec flèche)
+                </label>
                 
                 <div v-if="segments.length > 0" class="shapes-list">
                   <div v-for="(segment, index) in segments" :key="'segment-' + index" class="shape-item">
                     <span class="function-color" :style="{ backgroundColor: segment.color }"></span>
-                    <span>S{{ index + 1 }} [({{ segment.x1 }}, {{ segment.y1 }}) → ({{ segment.x2 }}, {{ segment.y2 }})]</span>
+                    <span>{{ segment.isVector ? 'V' : 'S' }}{{ index + 1 }} [({{ segment.x1 }}, {{ segment.y1 }}) → ({{ segment.x2 }}, {{ segment.y2 }})]</span>
                     <button @click="removeSegment(index)" class="remove-function-btn">×</button>
                   </div>
                 </div>
@@ -381,6 +626,46 @@
                     <span class="function-color" :style="{ backgroundColor: circle.color }"></span>
                     <span>C{{ index + 1 }} (h={{ circle.h }}, k={{ circle.k }}, r={{ circle.r }})</span>
                     <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Textes personnalisés -->
+              <div class="shape-section">
+                <h5 class="shape-title">✏️ Ajouter un texte</h5>
+                <p class="helper-text">Utilisez <code>$...$</code> pour du LaTeX. Ex : <code>$\frac{a}{b}$</code>, <code>$\int_0^1 x\,dx$</code></p>
+                <div class="bounds-row">
+                  <div class="bound-input" style="flex: 2;">
+                    <label>Texte :</label>
+                    <input v-model="newTextContent" type="text" class="bound-field" placeholder="$\alpha + \beta = \gamma$" />
+                  </div>
+                </div>
+                <div class="bounds-row">
+                  <div class="bound-input">
+                    <label>x :</label>
+                    <input v-model.number="newTextX" type="number" step="0.5" class="bound-field" />
+                  </div>
+                  <div class="bound-input">
+                    <label>y :</label>
+                    <input v-model.number="newTextY" type="number" step="0.5" class="bound-field" />
+                  </div>
+                  <div class="bound-input">
+                    <label>Taille :</label>
+                    <input v-model.number="newTextSize" type="number" min="8" max="36" step="1" class="bound-field" style="width: 55px;" />
+                  </div>
+                  <div class="bound-input">
+                    <label>Couleur :</label>
+                    <input v-model="newTextColor" type="color" class="bound-field" style="width: 40px; padding: 2px; height: 32px;" />
+                  </div>
+                </div>
+                <button @click="addTextAnnotation" class="action-btn">Ajouter le texte</button>
+                
+                <div v-if="textAnnotations.length > 0" class="shapes-list">
+                  <div v-for="(ta, index) in textAnnotations" :key="'text-' + index" class="shape-item">
+                    <span class="function-color" :style="{ backgroundColor: ta.color }"></span>
+                    <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ ta.content }}</span>
+                    <span style="opacity: 0.6; font-size: 0.8rem;">({{ ta.x }}, {{ ta.y }})</span>
+                    <button @click="removeTextAnnotation(index)" class="remove-function-btn">×</button>
                   </div>
                 </div>
               </div>
@@ -566,6 +851,30 @@
                   <input type="checkbox" v-model="snapToGrid" />
                   Accrocher aux intersections de la grille
                 </label>
+                <label class="integral-type-label">
+                  <input type="checkbox" v-model="showCurveLabels" />
+                  Afficher les noms des courbes
+                </label>
+                <label class="integral-type-label">
+                  <input type="checkbox" v-model="showPointLabels" />
+                  Afficher les labels des points
+                </label>
+                <label class="integral-type-label">
+                  <input type="checkbox" v-model="showLabelArrows" />
+                  Flèches sur les labels
+                </label>
+                <label class="integral-type-label">
+                  <input type="checkbox" v-model="showLabelBorders" />
+                  Encadrement des labels
+                </label>
+                <label class="integral-type-label">
+                  <input type="checkbox" v-model="showLegend" />
+                  Afficher la légende
+                </label>
+                <label class="integral-type-label">
+                  <input type="checkbox" v-model="allowPan" />
+                  Déplacer le graphique (clic + glisser)
+                </label>
               </div>
               <div class="bounds-row">
                 <div class="bound-input">
@@ -730,7 +1039,7 @@
                     <select id="integral-func1" v-model="integralFunc1Index" class="bound-field">
                       <option value="-1">Aucune (axe X)</option>
                       <option v-for="(func, index) in graphFunctions" :key="index" :value="index">
-                        f{{ index + 1 }} - {{ func.expression }}
+                        {{ functionDisplayNames[index] }} - {{ func.expression }}
                       </option>
                     </select>
                   </div>
@@ -740,7 +1049,7 @@
                     <select id="integral-func2" v-model="integralFunc2Index" class="bound-field">
                       <option value="-1">Aucune (axe X)</option>
                       <option v-for="(func, index) in graphFunctions" :key="index" :value="index">
-                        f{{ index + 1 }} - {{ func.expression }}
+                        {{ functionDisplayNames[index] }} - {{ func.expression }}
                       </option>
                     </select>
                   </div>
@@ -769,7 +1078,7 @@
                     <label for="tangent-func">Fonction :</label>
                     <select id="tangent-func" v-model="tangentFuncIndex" class="bound-field">
                       <option v-for="(func, index) in graphFunctions.filter(f => f.type === 'function')" :key="index" :value="graphFunctions.indexOf(func)">
-                        f{{ graphFunctions.indexOf(func) + 1 }} - {{ func.expression }}
+                        {{ functionDisplayNames[graphFunctions.indexOf(func)] }} - {{ func.expression }}
                       </option>
                     </select>
                   </div>
@@ -806,6 +1115,18 @@
                 <div class="point-controls">
                   <div class="bounds-row">
                     <div class="bound-input">
+                      <label for="point-name">Nom :</label>
+                      <input 
+                        id="point-name"
+                        v-model="pointName" 
+                        type="text" 
+                        class="bound-field"
+                        placeholder="A"
+                        maxlength="10"
+                        style="width: 60px;"
+                      />
+                    </div>
+                    <div class="bound-input">
                       <label for="point-x">x :</label>
                       <input 
                         id="point-x"
@@ -832,16 +1153,38 @@
                   <button @click="addPoint" class="calculate-integral-btn" style="background: #10b981;">
                     Ajouter le point
                   </button>
+                  
+                  <div style="margin-top: 8px;">
+                    <label style="font-size: 0.8rem; color: #94a3b8;">Plusieurs points :</label>
+                    <input v-model="pointsInput" type="text" class="bound-field" placeholder="A(1,2),B(3,4),C(5,6)" style="width: 100%; margin-top: 4px;" @keyup.enter="addMultiplePoints" />
+                    <button @click="addMultiplePoints" class="calculate-integral-btn" style="background: #10b981; margin-top: 4px;">
+                      Ajouter les points
+                    </button>
+                  </div>
                 </div>
                 
                 <div v-if="points.length > 0" class="points-list">
                   <h5 class="functions-title">Points tracés :</h5>
-                  <div v-for="(point, index) in points" :key="'point-' + index" class="function-item">
-                    <span class="function-color" :style="{ backgroundColor: point.color }"></span>
-                    <span class="circle-label">
-                      P{{ index + 1 }} ({{ point.x }}, {{ point.y }})
-                    </span>
-                    <button @click="removePoint(index)" class="remove-function-btn">×</button>
+                  <div v-for="(point, index) in points" :key="'point-' + index" class="function-item function-item-with-toggles">
+                    <div class="shape-item-main">
+                      <span class="function-color" :style="{ backgroundColor: point.color }"></span>
+                      <input 
+                        v-model="point.name" 
+                        type="text" 
+                        class="point-name-input" 
+                        maxlength="10" 
+                        @change="plotAllFunctions()"
+                        style="width: 50px; padding: 2px 4px; border: 1px solid #555; border-radius: 4px; background: #2a2a3e; color: white; font-size: 0.85rem;"
+                      />
+                      <span class="circle-label">
+                        ({{ point.x }}, {{ point.y }})
+                      </span>
+                      <button @click="removePoint(index)" class="remove-function-btn">×</button>
+                    </div>
+                    <div class="shape-item-toggles">
+                      <button @click="point.showName = !point.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showName !== false }]" :title="point.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                      <button @click="point.showCoords = !point.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showCoords !== false }]" :title="point.showCoords !== false ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -858,7 +1201,7 @@
                       <label>Point 1 :</label>
                       <select v-model.number="segmentPoint1Index" class="bound-field">
                         <option v-for="(point, index) in points" :key="index" :value="index">
-                          P{{ index + 1 }} ({{ point.x }}, {{ point.y }})
+                          {{ point.name }} ({{ point.x }}, {{ point.y }})
                         </option>
                       </select>
                     </div>
@@ -866,7 +1209,7 @@
                       <label>Point 2 :</label>
                       <select v-model.number="segmentPoint2Index" class="bound-field">
                         <option v-for="(point, index) in points" :key="index" :value="index">
-                          P{{ index + 1 }} ({{ point.x }}, {{ point.y }})
+                          {{ point.name }} ({{ point.x }}, {{ point.y }})
                         </option>
                       </select>
                     </div>
@@ -931,8 +1274,12 @@
                   </div>
                   
                   <button @click="addSegment" class="calculate-integral-btn" style="background: #f59e0b;">
-                    Ajouter le segment
+                    Ajouter le {{ segmentIsVector ? 'vecteur' : 'segment' }}
                   </button>
+                  <label class="integral-type-label" style="margin-top: 0.5rem;">
+                    <input type="checkbox" v-model="segmentIsVector" />
+                    Dessiner un vecteur (avec flèche)
+                  </label>
                 </div>
                 
                 <div v-if="segments.length > 0" class="segments-list">
@@ -940,7 +1287,7 @@
                   <div v-for="(segment, index) in segments" :key="'segment-' + index" class="function-item">
                     <span class="function-color" :style="{ backgroundColor: segment.color }"></span>
                     <span class="circle-label">
-                      [AB]{{ index + 1 }} : A({{ segment.x1 }}, {{ segment.y1 }}) → B({{ segment.x2 }}, {{ segment.y2 }})
+                      {{ segment.isVector ? '→' : '[AB]' }}{{ index + 1 }} : A({{ segment.x1 }}, {{ segment.y1 }}) → B({{ segment.x2 }}, {{ segment.y2 }})
                     </span>
                     <button @click="removeSegment(index)" class="remove-function-btn">×</button>
                   </div>
@@ -1016,6 +1363,57 @@
               </div>
             </details>
             
+            <!-- Textes personnalisés (mobile) -->
+            <details v-if="activeSection === 'textAnnotations'" class="graph-controls-collapsible floating-panel" open>
+              <summary class="graph-controls-summary">
+                <span class="summary-icon">▼</span>
+                <span class="summary-text">✏️ Ajouter du texte</span>
+              </summary>
+              <div class="graph-controls">
+              <div class="text-annotation-section">
+                <h5 class="functions-title">Ajouter un texte</h5>
+                <p class="help-text">Utilisez <code>$...$</code> pour du LaTeX. Ex : <code>$\frac{a}{b}$</code></p>
+                <div class="bound-input" style="margin-bottom: 0.5rem;">
+                  <label>Texte :</label>
+                  <input v-model="newTextContent" type="text" class="bound-field" placeholder="$\alpha + \beta$" />
+                </div>
+                <div class="bounds-row">
+                  <div class="bound-input">
+                    <label>x :</label>
+                    <input v-model.number="newTextX" type="number" step="0.5" class="bound-field" />
+                  </div>
+                  <div class="bound-input">
+                    <label>y :</label>
+                    <input v-model.number="newTextY" type="number" step="0.5" class="bound-field" />
+                  </div>
+                </div>
+                <div class="bounds-row">
+                  <div class="bound-input">
+                    <label>Taille :</label>
+                    <input v-model.number="newTextSize" type="number" min="8" max="36" step="1" class="bound-field" style="width: 65px;" />
+                  </div>
+                  <div class="bound-input">
+                    <label>Couleur :</label>
+                    <input v-model="newTextColor" type="color" class="bound-field" style="width: 50px; padding: 2px; height: 36px;" />
+                  </div>
+                </div>
+                <button @click="addTextAnnotation" class="calculate-integral-btn" style="background: #1e3a8a; margin-top: 0.5rem;">
+                  Ajouter le texte
+                </button>
+                
+                <div v-if="textAnnotations.length > 0" class="circles-list" style="margin-top: 0.75rem;">
+                  <h5 class="functions-title">Textes ajoutés :</h5>
+                  <div v-for="(ta, index) in textAnnotations" :key="'text-' + index" class="function-item">
+                    <span class="function-color" :style="{ backgroundColor: ta.color }"></span>
+                    <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.85rem;">{{ ta.content }}</span>
+                    <span style="opacity: 0.6; font-size: 0.75rem;">({{ ta.x }}, {{ ta.y }})</span>
+                    <button @click="removeTextAnnotation(index)" class="remove-function-btn">×</button>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </details>
+            
             <!-- Fonctions tracées -->
             <details v-if="activeSection === 'functions'" class="graph-controls-collapsible floating-panel" open>
               <summary class="graph-controls-summary">
@@ -1048,9 +1446,15 @@
                 <h5 class="functions-title">Points d'intersection entre courbes :</h5>
                 <div v-for="(point, index) in intersectionPoints" :key="index" class="intersection-item">
                   <div class="intersection-content">
-                    <span class="intersection-label">
-                      f<sub>{{ point.func1Index }}</sub> ∩ f<sub>{{ point.func2Index }}</sub> :
-                    </span>
+                    <input 
+                      v-model="point.name" 
+                      type="text" 
+                      maxlength="15" 
+                      @change="renameIntersection(index, point.name); plotAllFunctions()"
+                      class="intersection-name-input"
+                      :placeholder="point.defaultName"
+                      style="width: 80px; padding: 2px 4px; border: 1px solid #555; border-radius: 4px; background: #2a2a3e; color: white; font-size: 0.82rem;"
+                    />
                     <span class="intersection-point">
                       ({{ point.x.toFixed(3) }}, {{ point.y.toFixed(3) }})
                     </span>
@@ -1066,7 +1470,7 @@
                 <div v-for="(point, index) in rootsPoints" :key="'root-' + index" class="intersection-item">
                   <div class="intersection-content">
                     <span class="intersection-label">
-                      f<sub>{{ point.funcIndex }}</sub>({{ point.x.toFixed(3) }}) = 0
+                      {{ getFunctionDisplayNameByOneBasedIndex(point.funcIndex) }}({{ point.x.toFixed(3) }}) = 0
                     </span>
                     <span class="intersection-point">
                       x = {{ point.x.toFixed(3) }}
@@ -1080,9 +1484,15 @@
                 <h5 class="functions-title">Intersections avec les axes :</h5>
                 <div v-for="(point, index) in axisIntersectionPoints" :key="'axis-' + index" class="intersection-item">
                   <div class="intersection-content">
-                    <span class="intersection-label">
-                      f<sub>{{ point.funcIndex }}</sub> ∩ {{ point.axis === 'x' ? 'axe X' : 'axe Y' }} :
-                    </span>
+                    <input 
+                      v-model="point.name" 
+                      type="text" 
+                      maxlength="15" 
+                      @change="renameAxisIntersection(index, point.name); plotAllFunctions()"
+                      class="intersection-name-input"
+                      :placeholder="point.defaultName"
+                      style="width: 80px; padding: 2px 4px; border: 1px solid #555; border-radius: 4px; background: #2a2a3e; color: white; font-size: 0.82rem;"
+                    />
                     <span class="intersection-point">
                       ({{ point.x.toFixed(3) }}, {{ point.y.toFixed(3) }})
                     </span>
@@ -1137,11 +1547,11 @@
                   <div class="card-description">Ajouter des points</div>
                 </div>
                 
-                <!-- Carte Segments -->
+                <!-- Carte Segments / Vecteurs -->
                 <div class="option-card" @click="toggleSection('segments')">
                   <div class="card-icon">📍</div>
                   <div class="card-title">Segments</div>
-                  <div class="card-description">Tracer des segments</div>
+                  <div class="card-description">Segments et vecteurs</div>
                 </div>
                 
                 <!-- Carte Cercles -->
@@ -1149,6 +1559,13 @@
                   <div class="card-icon">⚫</div>
                   <div class="card-title">Cercles</div>
                   <div class="card-description">Dessiner des cercles</div>
+                </div>
+                
+                <!-- Carte Textes -->
+                <div class="option-card" @click="toggleSection('textAnnotations')">
+                  <div class="card-icon">✏️</div>
+                  <div class="card-title">Textes</div>
+                  <div class="card-description">Ajouter du texte / LaTeX</div>
                 </div>
                 
                 <!-- Carte Fonctions -->
@@ -1164,25 +1581,743 @@
         </div> <!-- Fermeture de expr-box -->
       </div> <!-- Fermeture de expr-row -->
 
-      <!-- Conteneur du graphique -->
+      <!-- Conteneur du graphique avec layout desktop side-by-side -->
       <div v-if="selectedOperation === 'graph'" class="graph-section">
-        <div class="graph-header">
-          <h3 class="graph-title">Graphique Interactif</h3>
-          <div class="graph-actions">
-            <button @click="clearGraph" class="clear-graph-btn">Effacer tout</button>
-            <button @click="resetZoom" class="reset-zoom-btn">Réinitialiser zoom</button>
+        <div class="graph-layout">
+          <!-- Zone principale du graphique (gauche sur desktop) -->
+          <div class="graph-main-area">
+            <div class="graph-header">
+              <h3 class="graph-title">Graphique Interactif</h3>
+              <div class="graph-actions">
+                <button @click="clearGraph" class="clear-graph-btn">Effacer tout</button>
+                <button @click="zoomIn" class="zoom-btn" title="Zoom avant">🔍+</button>
+                <button @click="zoomOut" class="zoom-btn" title="Zoom arrière">🔍−</button>
+                <button @click="resetZoom" class="reset-zoom-btn">Réinitialiser zoom</button>
+                <button @click="showSidePanel = !showSidePanel" class="toggle-panel-btn desktop-only-panel" :title="showSidePanel ? 'Masquer le panneau' : 'Afficher le panneau'">
+                  <span v-if="showSidePanel">◀ Masquer options</span>
+                  <span v-else>▶ Afficher options</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Barre d'outils de dessin -->
+            <div class="drawing-toolbar">
+              <span class="drawing-toolbar-label">Dessiner :</span>
+              <button 
+                :class="['drawing-tool-btn', { active: drawingMode === 'point' }]"
+                @click="setDrawingMode('point')"
+                title="Cliquer sur le graphe pour ajouter un point"
+              >
+                🟢 Point
+              </button>
+              <button 
+                :class="['drawing-tool-btn', { active: drawingMode === 'segment' }]"
+                @click="setDrawingMode('segment')"
+                title="2 clics pour tracer un segment"
+              >
+                📏 Segment
+              </button>
+              <button 
+                :class="['drawing-tool-btn', { active: drawingMode === 'vector' }]"
+                @click="setDrawingMode('vector')"
+                title="2 clics pour tracer un vecteur"
+              >
+                ➡️ Vecteur
+              </button>
+              <button 
+                :class="['drawing-tool-btn', { active: drawingMode === 'circle' }]"
+                @click="setDrawingMode('circle')"
+                title="1er clic = centre, 2ème clic = rayon"
+              >
+                ⭕ Cercle
+              </button>
+              <button 
+                v-if="drawingMode !== 'none'"
+                class="drawing-tool-btn cancel-btn"
+                @click="setDrawingMode('none')"
+                title="Désactiver le mode dessin"
+              >
+                ✖ Annuler
+              </button>
+              <span v-if="drawingMode === 'segment' || drawingMode === 'vector'" class="drawing-hint">
+                {{ drawingTempPoint ? 'Cliquez le 2ème point' : 'Cliquez le 1er point' }}
+              </span>
+              <span v-else-if="drawingMode === 'circle'" class="drawing-hint">
+                {{ drawingTempPoint ? 'Cliquez pour définir le rayon' : 'Cliquez le centre' }}
+              </span>
+              <span v-else-if="drawingMode === 'point'" class="drawing-hint">
+                Cliquez sur le graphe
+              </span>
+            </div>
+
+            <div class="graph-container-wrapper">
+              <!-- Indicateur de chargement de Plotly -->
+              <div v-if="isPlotlyLoading" class="plotly-loading-overlay">
+                <div class="plotly-loading-spinner"></div>
+                <span>Chargement du graphique...</span>
+              </div>
+              <div ref="graphContainer" class="graph-container"></div>
+            </div>
+          </div>
+
+          <!-- Panneau latéral avec grille de cartes (desktop uniquement) -->
+          <div v-show="showSidePanel" class="graph-side-panel desktop-only-panel">
+            <div class="side-panel-header">
+              <h4 class="side-panel-title">Options du graphique</h4>
+            </div>
+            <div class="side-panel-cards">
+              <button 
+                v-for="tab in allGraphTabs"
+                :key="'card-' + tab"
+                class="side-card" 
+                :class="{ active: activeGraphTab === tab }"
+                @click="activeGraphTab = (activeGraphTab === tab ? '' : tab)"
+              >
+                <span class="side-card-icon">{{ getTabIcon(tab) }}</span>
+                <span class="side-card-label">{{ getTabShortLabel(tab) }}</span>
+              </button>
+            </div>
+            <div v-if="activeGraphTab" class="side-panel-content">
+              <!-- Onglet Fonctions tracées -->
+              <div v-show="activeGraphTab === 'functions'" class="tab-panel">
+                <h4 class="panel-title">Éléments tracés</h4>
+                <div v-if="graphFunctions.length > 0" class="functions-list">
+                  <div v-for="(func, index) in graphFunctions" :key="'side-f-' + index" class="function-item">
+                    <input 
+                      type="color" 
+                      :value="func.color" 
+                      @input="changeColor(index, $event.target.value)"
+                      class="function-color-picker"
+                      title="Changer la couleur"
+                    />
+                    <span class="function-name">
+                      <template v-if="editingFunctionNameIndex === index">
+                        <input
+                          :ref="el => functionNameInputRefs[index] = el"
+                          v-model="func.name"
+                          type="text"
+                          inputmode="text"
+                          class="function-name-input"
+                          maxlength="10"
+                          placeholder="f"
+                          title="Nom de la fonction (ex: f, g, h...)"
+                          @blur="finishFunctionNameEdit(index)"
+                          @keydown.enter.prevent="finishFunctionNameEdit(index)"
+                          @keydown.esc.prevent="cancelFunctionNameEdit"
+                        />
+                        <span class="function-name-suffix">(x) =</span>
+                      </template>
+                      <template v-else>
+                        <span class="function-name-label" @click="startFunctionNameEdit(index)" title="Cliquer pour renommer">
+                          {{ functionNameParts[index]?.base }}
+                          <sub v-if="functionNameParts[index]?.sub">{{ functionNameParts[index]?.sub }}</sub>
+                        </span>
+                        <span class="function-name-suffix">(x) =</span>
+                      </template>
+                    </span>
+                    <span class="function-expression" :ref="el => functionExpressionRefs[index] = el" @click="editFunction(index)" style="cursor: pointer;" title="Cliquer pour modifier"></span>
+                    <button @click="removeFunction(index)" class="remove-function-btn">×</button>
+                  </div>
+                </div>
+
+                <!-- Liste des points créés -->
+                <div v-if="points.length > 0" class="traced-shapes-section">
+                  <h5 class="traced-shapes-title">Points</h5>
+                  <div class="shapes-list">
+                    <div v-for="(point, index) in points" :key="'side-fpt-' + index" class="shape-item shape-item-with-toggles">
+                      <div class="shape-item-main">
+                        <input type="color" :value="point.color" @input="changeShapeColor('point', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                        <template v-if="isEditingShape('point', index)">
+                          <input v-model="point.name" type="text" :class="'shape-name-input shape-name-editing-point-' + index" maxlength="10" placeholder="P" @blur="finishShapeNameEdit('point', index)" @keydown.enter.prevent="finishShapeNameEdit('point', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                        </template>
+                        <template v-else>
+                          <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('point', index)" title="Cliquer pour renommer">{{ point.name }}</span>
+                        </template>
+                        <span class="shape-item-coords">({{ point.x }}, {{ point.y }})</span>
+                        <button @click="removePoint(index)" class="remove-function-btn">×</button>
+                      </div>
+                      <div class="shape-item-toggles">
+                        <button @click="point.showName = !point.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showName !== false }]" :title="point.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                        <button @click="point.showCoords = !point.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showCoords !== false }]" :title="point.showCoords !== false ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-if="points.length >= 2" class="connect-points-row">
+                    <label class="connect-points-toggle">
+                      <input type="checkbox" v-model="connectPoints" />
+                      <span>Relier les points</span>
+                    </label>
+                    <input v-if="connectPoints" type="color" v-model="connectPointsColor" class="function-color-picker" title="Couleur de la liaison" />
+                  </div>
+                </div>
+
+                <!-- Liste des segments/vecteurs créés -->
+                <div v-if="segments.length > 0" class="traced-shapes-section">
+                  <h5 class="traced-shapes-title">Segments / Vecteurs</h5>
+                  <div class="shapes-list">
+                    <div v-for="(segment, index) in segments" :key="'side-fseg-' + index" class="shape-item">
+                      <input type="color" :value="segment.color" @input="changeShapeColor('segment', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                      <template v-if="isEditingShape('segment', index)">
+                        <input v-model="segment.name" type="text" :class="'shape-name-input shape-name-editing-segment-' + index" maxlength="10" placeholder="S" @blur="finishShapeNameEdit('segment', index)" @keydown.enter.prevent="finishShapeNameEdit('segment', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                      </template>
+                      <template v-else>
+                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('segment', index)" title="Cliquer pour renommer">{{ segment.name || (segment.isVector ? 'V' : 'S') + (index + 1) }}</span>
+                      </template>
+                      <span class="shape-item-coords">{{ segment.isVector ? '→' : '—' }} ({{ segment.x1 }},{{ segment.y1 }})→({{ segment.x2 }},{{ segment.y2 }})</span>
+                      <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Liste des cercles créés -->
+                <div v-if="circles.length > 0" class="traced-shapes-section">
+                  <h5 class="traced-shapes-title">Cercles</h5>
+                  <div class="shapes-list">
+                    <div v-for="(circle, index) in circles" :key="'side-fcir-' + index" class="shape-item">
+                      <input type="color" :value="circle.color" @input="changeShapeColor('circle', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                      <template v-if="isEditingShape('circle', index)">
+                        <input v-model="circle.name" type="text" :class="'shape-name-input shape-name-editing-circle-' + index" maxlength="10" placeholder="C" @blur="finishShapeNameEdit('circle', index)" @keydown.enter.prevent="finishShapeNameEdit('circle', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                      </template>
+                      <template v-else>
+                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('circle', index)" title="Cliquer pour renommer">{{ circle.name || 'C' + (index + 1) }}</span>
+                      </template>
+                      <span class="shape-item-coords">({{ circle.h }}, {{ circle.k }}) r={{ circle.r }}</span>
+                      <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Liste des textes créés -->
+                <div v-if="textAnnotations.length > 0" class="traced-shapes-section">
+                  <h5 class="traced-shapes-title">Textes</h5>
+                  <div class="shapes-list">
+                    <div v-for="(ta, index) in textAnnotations" :key="'side-ftxt-' + index" class="shape-item">
+                      <input type="color" :value="ta.color" @input="changeShapeColor('text', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                      <template v-if="isEditingShape('text', index)">
+                        <input v-model="ta.content" type="text" :class="'shape-name-input shape-name-editing-text-' + index" maxlength="50" placeholder="Texte" @blur="finishShapeNameEdit('text', index)" @keydown.enter.prevent="finishShapeNameEdit('text', index)" @keydown.esc.prevent="cancelShapeNameEdit" style="flex: 1;" />
+                      </template>
+                      <template v-else>
+                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('text', index)" title="Cliquer pour modifier" style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ ta.content }}</span>
+                      </template>
+                      <button @click="removeTextAnnotation(index)" class="remove-function-btn">×</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Liste des intersections -->
+                <div v-if="intersectionPoints.length > 0" class="traced-shapes-section">
+                  <h5 class="traced-shapes-title">Intersections</h5>
+                  <div class="shapes-list">
+                    <div v-for="(ipt, index) in intersectionPoints" :key="'side-fint-' + index" class="shape-item">
+                      <input type="color" :value="ipt.color || '#dc2626'" @input="changeShapeColor('intersection', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                      <template v-if="isEditingShape('intersection', index)">
+                        <input v-model="ipt.name" type="text" :class="'shape-name-input shape-name-editing-intersection-' + index" maxlength="20" :placeholder="ipt.defaultName" @blur="finishShapeNameEdit('intersection', index)" @keydown.enter.prevent="finishShapeNameEdit('intersection', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                      </template>
+                      <template v-else>
+                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('intersection', index)" title="Cliquer pour renommer">{{ ipt.name || ipt.defaultName }}</span>
+                      </template>
+                      <span class="shape-item-coords">({{ ipt.x.toFixed(2) }}, {{ ipt.y.toFixed(2) }})</span>
+                      <button @click="removeIntersection(index)" class="remove-function-btn">×</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div v-if="graphFunctions.length === 0 && points.length === 0 && segments.length === 0 && circles.length === 0 && textAnnotations.length === 0 && intersectionPoints.length === 0" class="no-content">
+                  Aucun élément tracé.
+                </div>
+              </div>
+              
+              <!-- Onglet Axes et fenêtre -->
+              <div v-show="activeGraphTab === 'axes'" class="tab-panel">
+                <h4 class="panel-title">Axes et fenêtre</h4>
+                <div class="display-options">
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showGrid" />
+                    Afficher la grille
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showAxes" />
+                    Afficher les axes
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showTicks" />
+                    Afficher les graduations
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="snapToGrid" />
+                    Accrocher aux intersections de la grille
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showCurveLabels" />
+                    Afficher les noms des courbes
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showPointLabels" />
+                    Afficher les labels des points
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showLabelArrows" />
+                    Flèches sur les labels
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showLabelBorders" />
+                    Flèches sur les labels
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showLegend" />
+                    Afficher la légende
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="allowPan" />
+                    Déplacer le graphique (clic + glisser)
+                  </label>
+                </div>
+                <div class="bounds-row">
+                  <div class="bound-input">
+                    <label>X min :</label>
+                    <input v-model.number="xMin" type="number" class="bound-field" />
+                  </div>
+                  <div class="bound-input">
+                    <label>X max :</label>
+                    <input v-model.number="xMax" type="number" class="bound-field" />
+                  </div>
+                </div>
+                <div class="bounds-row">
+                  <div class="bound-input">
+                    <label>Y min :</label>
+                    <input v-model.number="yMin" type="number" class="bound-field" />
+                  </div>
+                  <div class="bound-input">
+                    <label>Y max :</label>
+                    <input v-model.number="yMax" type="number" class="bound-field" />
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Onglet Asymptotes -->
+              <div v-show="activeGraphTab === 'asymptotes'" class="tab-panel">
+                <h4 class="panel-title">Asymptotes</h4>
+                <div class="bound-input">
+                  <label>Asymptotes verticales (séparées par des virgules) :</label>
+                  <input 
+                    v-model="verticalAsymptotes" 
+                    type="text" 
+                    class="bound-field"
+                    placeholder="Exemple : -2, 3"
+                  />
+                </div>
+                <div class="bound-input">
+                  <label>Asymptotes horizontales (séparées par des virgules) :</label>
+                  <input 
+                    v-model="horizontalAsymptotes" 
+                    type="text" 
+                    class="bound-field"
+                    placeholder="Exemple : 0, 5"
+                  />
+                </div>
+              </div>
+              
+              <!-- Onglet Analyse -->
+              <div v-show="activeGraphTab === 'analysis'" class="tab-panel">
+                <h4 class="panel-title">Analyse de fonctions</h4>
+                <div class="display-options">
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showIntersections" />
+                    Afficher les intersections entre courbes
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showAxisIntersections" />
+                    Afficher les intersections avec les axes
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showRoots" />
+                    Afficher les racines
+                  </label>
+                </div>
+                
+                <!-- Résultats d'analyse -->
+                <div v-if="showIntersections && intersectionPoints.length > 0" class="results-section">
+                  <h5 class="results-title">Points d'intersection entre courbes :</h5>
+                  <div v-for="(point, index) in intersectionPoints" :key="'side-int-' + index" class="result-item" style="display: flex; align-items: center; gap: 6px;">
+                    <input 
+                      v-model="point.name" 
+                      type="text" 
+                      maxlength="15" 
+                      @change="renameIntersection(index, point.name); plotAllFunctions()"
+                      style="width: 80px; padding: 2px 4px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.85rem;"
+                      :placeholder="point.defaultName"
+                    />
+                    <span>: ({{ point.x.toFixed(3) }}, {{ point.y.toFixed(3) }})</span>
+                  </div>
+                </div>
+                
+                <div v-if="showRoots && rootsPoints.length > 0" class="results-section">
+                  <h5 class="results-title">Racines :</h5>
+                  <div v-for="(point, index) in rootsPoints" :key="'side-root-' + index" class="result-item" style="display: flex; align-items: center; gap: 6px;">
+                    <span>{{ getFunctionDisplayNameByOneBasedIndex(point.funcIndex) }} : x = {{ point.x.toFixed(3) }}</span>
+                  </div>
+                </div>
+                
+                <div v-if="showAxisIntersections && axisIntersectionPoints.length > 0" class="results-section">
+                  <h5 class="results-title">Intersections avec les axes :</h5>
+                  <div v-for="(point, index) in axisIntersectionPoints" :key="'side-axis-' + index" class="result-item" style="display: flex; align-items: center; gap: 6px;">
+                    <input 
+                      v-model="point.name" 
+                      type="text" 
+                      maxlength="15" 
+                      @change="renameAxisIntersection(index, point.name); plotAllFunctions()"
+                      style="width: 80px; padding: 2px 4px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.85rem;"
+                      :placeholder="point.defaultName"
+                    />
+                    <span>: ({{ point.x.toFixed(3) }}, {{ point.y.toFixed(3) }})</span>
+                  </div>
+                </div>
+                
+                <!-- Résolution d'inéquations -->
+                <div class="calc-section" style="margin-top: 0.75rem;">
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showInequality" />
+                    Résoudre des inéquations
+                  </label>
+                  <div v-if="showInequality && inequalityItems.length >= 2" class="calc-controls">
+                    <div v-for="(ineq, ineqIdx) in inequalities" :key="'side-ineq-' + ineqIdx" style="margin-bottom: 0.75rem; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 8px; position: relative;" :style="{ borderLeftColor: ineq.color.replace('0.15', '0.6'), borderLeftWidth: '3px' }">
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                        <div style="display: flex; align-items: center; gap: 0.4rem;">
+                          <input type="color" :value="rgbaToHex(ineq.color)" @input="updateInequalityColor(ineqIdx, $event.target.value)" style="width: 22px; height: 22px; border: none; padding: 0; cursor: pointer; border-radius: 4px; background: transparent;" title="Couleur de la zone" />
+                          <span style="font-size: 0.8rem; font-weight: 600; color: #374151;">Inéquation {{ ineqIdx + 1 }}</span>
+                        </div>
+                        <button v-if="inequalities.length > 1" @click="removeInequality(ineqIdx)" class="remove-function-btn" title="Supprimer cette inéquation" style="font-size: 0.9rem;">×</button>
+                      </div>
+                      <div class="bounds-row">
+                        <div class="bound-input">
+                          <label>Él. 1 :</label>
+                          <select v-model.number="ineq.func1Index" class="bound-field">
+                            <option v-for="(item, index) in inequalityItems" :key="'side-iq1-' + ineqIdx + '-' + item.key" :value="index">
+                              {{ item.label }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="bound-input">
+                          <label>Signe :</label>
+                          <select v-model="ineq.operator" class="bound-field">
+                            <option value="<">&lt;</option>
+                            <option value=">">&gt;</option>
+                            <option value="<=">≤</option>
+                            <option value=">=">≥</option>
+                            <option value="=">=</option>
+                          </select>
+                        </div>
+                        <div class="bound-input">
+                          <label>Él. 2 :</label>
+                          <select v-model.number="ineq.func2Index" class="bound-field">
+                            <option v-for="(item, index) in inequalityItems" :key="'side-iq2-' + ineqIdx + '-' + item.key" :value="index">
+                              {{ item.label }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div v-if="ineq.result" class="result-info inequality-result" style="margin-top: 0.3rem;">
+                        <strong>Solution :</strong> <span v-html="ineq.result.display"></span>
+                      </div>
+                    </div>
+                    <button @click="addInequality()" class="btn-secondary" style="width: 100%; padding: 0.4rem; font-size: 0.85rem; border-radius: 6px; border: 1px dashed #94a3b8; background: transparent; color: #64748b; cursor: pointer;">
+                      + Ajouter une inéquation
+                    </button>
+                  </div>
+                  <div v-if="showInequality && inequalityItems.length < 2" class="result-info" style="color: #ef4444;">
+                    Il faut au moins 2 éléments tracés (fonctions ou segments).
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Onglet Calcul -->
+              <div v-show="activeGraphTab === 'calculus'" class="tab-panel">
+                <h4 class="panel-title">Calculs sur le graphique</h4>
+                
+                <!-- Aire sous la courbe -->
+                <div class="calc-section">
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showIntegralArea" />
+                    Afficher l'aire sous la courbe
+                  </label>
+                  <div v-if="showIntegralArea" class="calc-controls">
+                    <div class="bounds-row">
+                      <div class="bound-input">
+                        <label>Fonction :</label>
+                        <select v-model.number="integralFunc1Index" class="bound-field">
+                          <option v-for="(func, index) in graphFunctions" :key="'side-if-' + index" :value="index">
+                            {{ functionDisplayNames[index] }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>De a :</label>
+                        <input v-model.number="integralA" type="number" step="0.5" class="bound-field" />
+                      </div>
+                      <div class="bound-input">
+                        <label>À b :</label>
+                        <input v-model.number="integralB" type="number" step="0.5" class="bound-field" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Aire entre deux courbes -->
+                <div class="calc-section">
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showAreaBetweenCurves" />
+                    Afficher l'aire entre deux courbes
+                  </label>
+                  <div v-if="showAreaBetweenCurves" class="calc-controls">
+                    <div class="bounds-row">
+                      <div class="bound-input">
+                        <label>Fonction 1 :</label>
+                        <select v-model.number="areaCurve1Index" class="bound-field">
+                          <option v-for="(func, index) in graphFunctions" :key="'side-ac1-' + index" :value="index">
+                            {{ functionDisplayNames[index] }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>Fonction 2 :</label>
+                        <select v-model.number="areaCurve2Index" class="bound-field">
+                          <option v-for="(func, index) in graphFunctions" :key="'side-ac2-' + index" :value="index">
+                            {{ functionDisplayNames[index] }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="bounds-row">
+                      <div class="bound-input">
+                        <label>De a :</label>
+                        <input v-model.number="areaA" type="number" step="0.5" class="bound-field" placeholder="auto" />
+                      </div>
+                      <div class="bound-input">
+                        <label>À b :</label>
+                        <input v-model.number="areaB" type="number" step="0.5" class="bound-field" placeholder="auto" />
+                      </div>
+                    </div>
+                    <div v-if="areaBetweenResult !== null" class="result-info">
+                      <strong>Aire :</strong> {{ areaBetweenResult.toFixed(3) }}
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Tangente -->
+                <div class="calc-section">
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showTangent" />
+                    Afficher la tangente
+                  </label>
+                  <div v-if="showTangent" class="calc-controls">
+                    <div class="bounds-row">
+                      <div class="bound-input">
+                        <label>Fonction :</label>
+                        <select v-model.number="tangentFuncIndex" class="bound-field">
+                          <option v-for="(func, index) in graphFunctions" :key="'side-tf-' + index" :value="index">
+                            {{ functionDisplayNames[index] }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>Point x₀ :</label>
+                        <input v-model.number="tangentX" type="number" step="0.1" class="bound-field" />
+                      </div>
+                    </div>
+                    <div v-if="tangentEquation" class="result-info">
+                      <strong>Équation :</strong> {{ tangentEquation }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Onglet Formes -->
+              <div v-show="activeGraphTab === 'shapes'" class="tab-panel">
+                <h4 class="panel-title">Ajouter des formes</h4>
+                
+                <!-- Points -->
+                <div class="shape-section">
+                  <h5 class="shape-title">Ajouter un point</h5>
+                  <div class="bounds-row">
+                    <div class="bound-input">
+                      <label>Nom :</label>
+                      <input v-model="pointName" type="text" class="bound-field" placeholder="A" maxlength="10" style="width: 60px;" />
+                    </div>
+                    <div class="bound-input">
+                      <label>x :</label>
+                      <input v-model.number="pointX" type="number" step="0.5" class="bound-field" />
+                    </div>
+                    <div class="bound-input">
+                      <label>y :</label>
+                      <input v-model.number="pointY" type="number" step="0.5" class="bound-field" />
+                    </div>
+                  </div>
+                  <button @click="addPoint" class="action-btn">Ajouter le point</button>
+                  
+                  <div style="margin-top: 8px;">
+                    <label style="font-size: 0.8rem; color: #94a3b8;">Plusieurs points :</label>
+                    <input v-model="pointsInput" type="text" class="bound-field" placeholder="A(1,2),B(3,4),C(5,6)" style="width: 100%; margin-top: 4px;" @keyup.enter="addMultiplePoints" />
+                    <button @click="addMultiplePoints" class="action-btn" style="margin-top: 4px;">Ajouter les points</button>
+                  </div>
+                  
+                  <div v-if="points.length > 0" class="shapes-list">
+                    <div v-for="(point, index) in points" :key="'side-pt-' + index" class="shape-item">
+                      <span class="function-color" :style="{ backgroundColor: point.color }"></span>
+                      <input 
+                        v-model="point.name" 
+                        type="text" 
+                        class="point-name-input" 
+                        maxlength="10" 
+                        @change="plotAllFunctions()"
+                        style="width: 50px; padding: 2px 4px; border: 1px solid #555; border-radius: 4px; background: #2a2a3e; color: white; font-size: 0.85rem;"
+                      />
+                      <span>({{ point.x }}, {{ point.y }})</span>
+                      <button @click="removePoint(index)" class="remove-function-btn">×</button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Segments -->
+                <div class="shape-section">
+                  <h5 class="shape-title">Ajouter un segment</h5>
+                  
+                  <div v-if="points.length >= 2" class="segment-from-points">
+                    <p class="helper-text">Relier deux points :</p>
+                    <div class="bounds-row">
+                      <div class="bound-input">
+                        <label>Point 1 :</label>
+                        <select v-model.number="segmentPoint1Index" class="bound-field">
+                          <option v-for="(point, index) in points" :key="'side-sp1-' + index" :value="index">
+                            {{ point.name }} ({{ point.x }}, {{ point.y }})
+                          </option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>Point 2 :</label>
+                        <select v-model.number="segmentPoint2Index" class="bound-field">
+                          <option v-for="(point, index) in points" :key="'side-sp2-' + index" :value="index">
+                            {{ point.name }} ({{ point.x }}, {{ point.y }})
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <button @click="addSegmentFromPoints" class="action-btn">Relier les points</button>
+                    <div class="divider-text">ou</div>
+                  </div>
+                  
+                  <p class="helper-text">Saisir les coordonnées :</p>
+                  <div class="bounds-row">
+                    <div class="bound-input">
+                      <label>x₁ :</label>
+                      <input v-model.number="segmentX1" type="number" step="0.5" class="bound-field" />
+                    </div>
+                    <div class="bound-input">
+                      <label>y₁ :</label>
+                      <input v-model.number="segmentY1" type="number" step="0.5" class="bound-field" />
+                    </div>
+                  </div>
+                  <div class="bounds-row">
+                    <div class="bound-input">
+                      <label>x₂ :</label>
+                      <input v-model.number="segmentX2" type="number" step="0.5" class="bound-field" />
+                    </div>
+                    <div class="bound-input">
+                      <label>y₂ :</label>
+                      <input v-model.number="segmentY2" type="number" step="0.5" class="bound-field" />
+                    </div>
+                  </div>
+                  <button @click="addSegment" class="action-btn">Ajouter le {{ segmentIsVector ? 'vecteur' : 'segment' }}</button>
+                  <label class="checkbox-label" style="margin-top: 0.5rem;">
+                    <input type="checkbox" v-model="segmentIsVector" />
+                    Dessiner un vecteur (avec flèche)
+                  </label>
+                  
+                  <div v-if="segments.length > 0" class="shapes-list">
+                    <div v-for="(segment, index) in segments" :key="'side-seg-' + index" class="shape-item">
+                      <span class="function-color" :style="{ backgroundColor: segment.color }"></span>
+                      <span>{{ segment.isVector ? 'V' : 'S' }}{{ index + 1 }} [({{ segment.x1 }}, {{ segment.y1 }}) → ({{ segment.x2 }}, {{ segment.y2 }})]</span>
+                      <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Cercles -->
+                <div class="shape-section">
+                  <h5 class="shape-title">Ajouter un cercle</h5>
+                  <div class="bounds-row">
+                    <div class="bound-input">
+                      <label>Centre h :</label>
+                      <input v-model.number="circleH" type="number" step="0.5" class="bound-field" />
+                    </div>
+                    <div class="bound-input">
+                      <label>Centre k :</label>
+                      <input v-model.number="circleK" type="number" step="0.5" class="bound-field" />
+                    </div>
+                    <div class="bound-input">
+                      <label>Rayon r :</label>
+                      <input v-model.number="circleR" type="number" step="0.5" class="bound-field" />
+                    </div>
+                  </div>
+                  <button @click="addCircle" class="action-btn">Ajouter le cercle</button>
+                  
+                  <div v-if="circles.length > 0" class="shapes-list">
+                    <div v-for="(circle, index) in circles" :key="'side-cir-' + index" class="shape-item">
+                      <span class="function-color" :style="{ backgroundColor: circle.color }"></span>
+                      <span>C{{ index + 1 }} (h={{ circle.h }}, k={{ circle.k }}, r={{ circle.r }})</span>
+                      <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Textes personnalisés -->
+                <div class="shape-section">
+                  <h5 class="shape-title">✏️ Ajouter un texte</h5>
+                  <p class="helper-text">Utilisez <code>$...$</code> pour du LaTeX.</p>
+                  <div class="bounds-row">
+                    <div class="bound-input" style="flex: 2;">
+                      <label>Texte :</label>
+                      <input v-model="newTextContent" type="text" class="bound-field" placeholder="$\alpha + \beta = \gamma$" />
+                    </div>
+                  </div>
+                  <div class="bounds-row">
+                    <div class="bound-input">
+                      <label>x :</label>
+                      <input v-model.number="newTextX" type="number" step="0.5" class="bound-field" />
+                    </div>
+                    <div class="bound-input">
+                      <label>y :</label>
+                      <input v-model.number="newTextY" type="number" step="0.5" class="bound-field" />
+                    </div>
+                    <div class="bound-input">
+                      <label>Taille :</label>
+                      <input v-model.number="newTextSize" type="number" min="8" max="36" step="1" class="bound-field" style="width: 55px;" />
+                    </div>
+                    <div class="bound-input">
+                      <label>Couleur :</label>
+                      <input v-model="newTextColor" type="color" class="bound-field" style="width: 40px; padding: 2px; height: 32px;" />
+                    </div>
+                  </div>
+                  <button @click="addTextAnnotation" class="action-btn">Ajouter le texte</button>
+                  
+                  <div v-if="textAnnotations.length > 0" class="shapes-list">
+                    <div v-for="(ta, index) in textAnnotations" :key="'side-txt-' + index" class="shape-item">
+                      <span class="function-color" :style="{ backgroundColor: ta.color }"></span>
+                      <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ ta.content }}</span>
+                      <span style="opacity: 0.6; font-size: 0.8rem;">({{ ta.x }}, {{ ta.y }})</span>
+                      <button @click="removeTextAnnotation(index)" class="remove-function-btn">×</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         
-
-        
-        <div class="graph-container-wrapper">
-          <!-- Indicateur de chargement de Plotly -->
-          <div v-if="isPlotlyLoading" class="plotly-loading-overlay">
-            <div class="plotly-loading-spinner"></div>
-            <span>Chargement du graphique...</span>
-          </div>
-          <div ref="graphContainer" class="graph-container"></div>
+        <!-- Lien vers page d'aide -->
+        <div class="graph-help-link-row">
+          <router-link to="/aide-grapheur" target="_blank" class="graph-help-link">
+            ❓ Aide — Comment utiliser le grapheur
+          </router-link>
         </div>
       </div>
     </section>
@@ -1252,9 +2387,9 @@ const {
 // Destructuration du composable shapes
 const {
   points, segments, circles,
-  pointX, pointY,
-  segmentX1, segmentY1, segmentX2, segmentY2,
-  circleH, circleK, circleR
+  pointX, pointY, pointName, pointsInput,
+  segmentX1, segmentY1, segmentX2, segmentY2, segmentIsVector, segmentName,
+  circleH, circleK, circleR, circleName
 } = shapes
 
 // Initialisation du composable analysis avec les refs du graph
@@ -1284,6 +2419,179 @@ const isCalculating = ref(false)
 const selectedOperation = computed(() => route.query.operation || 'graph')
 const hasCalculated = ref(false)
 const errorMessage = ref(null)
+
+// === Nommage des fonctions (ex: f, g, h...) ===
+const editingFunctionNameIndex = ref(-1)
+const originalEditingFunctionName = ref('')
+const functionNameInputRefs = ref([])
+
+const MAX_FUNCTION_NAME_LENGTH = 10
+
+function sanitizeFunctionName(value) {
+  const raw = (value ?? '').toString().trim()
+  if (!raw) return ''
+
+  // Autoriser uniquement lettres/chiffres (évite les caractères spéciaux dans Plotly/MathJax)
+  let cleaned = raw.replace(/[^a-zA-Z0-9]/g, '')
+  cleaned = cleaned.replace(/^[0-9]+/, '')
+  cleaned = cleaned.slice(0, MAX_FUNCTION_NAME_LENGTH)
+
+  if (!cleaned || !/^[a-zA-Z]/.test(cleaned)) return ''
+  return cleaned
+}
+
+function getFunctionDisplayName(func, index) {
+  const custom = sanitizeFunctionName(func?.name)
+  return custom || `f${index + 1}`
+}
+
+function splitFunctionNameParts(name) {
+  const match = name.match(/^([a-zA-Z]+)([0-9]+)$/)
+  if (match) return { base: match[1], sub: match[2] }
+  return { base: name, sub: '' }
+}
+
+function getFunctionLatexLabel(func, index) {
+  const name = getFunctionDisplayName(func, index)
+  const match = name.match(/^([a-zA-Z]+)([0-9]+)$/)
+  if (match) return `${match[1]}_{${match[2]}}`
+  return name
+}
+
+const functionDisplayNames = computed(() =>
+  graphFunctions.value.map((func, index) => getFunctionDisplayName(func, index))
+)
+
+const functionNameParts = computed(() =>
+  functionDisplayNames.value.map(splitFunctionNameParts)
+)
+
+function getFunctionDisplayNameByOneBasedIndex(oneBasedIndex) {
+  const index = Number(oneBasedIndex) - 1
+  if (Number.isNaN(index) || index < 0) return `f${oneBasedIndex}`
+  return functionDisplayNames.value[index] || `f${oneBasedIndex}`
+}
+
+function startFunctionNameEdit(index) {
+  const func = graphFunctions.value[index]
+  if (!func) return
+
+  originalEditingFunctionName.value = func.name ?? ''
+  if (!sanitizeFunctionName(func.name)) {
+    // Pré-remplir avec le nom affiché (ex: f1) pour faciliter la modification
+    func.name = getFunctionDisplayName(func, index)
+  }
+  editingFunctionNameIndex.value = index
+
+  nextTick(() => {
+    const input = functionNameInputRefs.value[index]
+    if (input) {
+      input.focus()
+      if (typeof input.select === 'function') input.select()
+    }
+  })
+}
+
+function finishFunctionNameEdit(index) {
+  const func = graphFunctions.value[index]
+  if (!func) return
+
+  const sanitized = sanitizeFunctionName(func.name)
+  const defaultName = `f${index + 1}`
+  func.name = sanitized && sanitized !== defaultName ? sanitized : ''
+  editingFunctionNameIndex.value = -1
+  plotAllFunctions()
+}
+
+function cancelFunctionNameEdit() {
+  const index = editingFunctionNameIndex.value
+  if (index < 0) return
+
+  const func = graphFunctions.value[index]
+  if (func) func.name = originalEditingFunctionName.value
+  editingFunctionNameIndex.value = -1
+}
+
+// === Édition des formes (points, segments, cercles, textes) ===
+// Type: 'point' | 'segment' | 'circle' | 'text'
+const editingShapeType = ref('')
+const editingShapeIndex = ref(-1)
+const editingShapeOriginalName = ref('')
+
+function startShapeNameEdit(type, index) {
+  editingShapeType.value = type
+  editingShapeIndex.value = index
+  const item = getShapeItem(type, index)
+  if (!item) return
+  editingShapeOriginalName.value = item.name || item.content || ''
+  nextTick(() => {
+    // Focus the input that just appeared
+    const input = document.querySelector(`.shape-name-editing-${type}-${index}`)
+    if (input) {
+      input.focus()
+      input.select()
+    }
+  })
+}
+
+function finishShapeNameEdit(type, index) {
+  if (editingShapeType.value !== type || editingShapeIndex.value !== index) return
+  if (type === 'intersection') {
+    const pt = intersectionPoints.value[index]
+    if (pt) {
+      renameIntersection(index, pt.name)
+    }
+  }
+  editingShapeType.value = ''
+  editingShapeIndex.value = -1
+  plotAllFunctions()
+}
+
+function cancelShapeNameEdit() {
+  if (editingShapeIndex.value < 0) return
+  const item = getShapeItem(editingShapeType.value, editingShapeIndex.value)
+  if (item) {
+    if (editingShapeType.value === 'text') {
+      item.content = editingShapeOriginalName.value
+    } else {
+      item.name = editingShapeOriginalName.value
+    }
+  }
+  editingShapeType.value = ''
+  editingShapeIndex.value = -1
+}
+
+function isEditingShape(type, index) {
+  return editingShapeType.value === type && editingShapeIndex.value === index
+}
+
+function getShapeItem(type, index) {
+  switch (type) {
+    case 'point': return points.value[index]
+    case 'segment': return segments.value[index]
+    case 'circle': return circles.value[index]
+    case 'text': return textAnnotations.value[index]
+    case 'intersection': return intersectionPoints.value[index]
+    default: return null
+  }
+}
+
+function changeShapeColor(type, index, color) {
+  if (type === 'intersection') {
+    const pt = intersectionPoints.value[index]
+    if (pt) {
+      pt.color = color
+      intersectionCustomColors.value[pt.key] = color
+      plotAllFunctions()
+    }
+    return
+  }
+  const item = getShapeItem(type, index)
+  if (item) {
+    item.color = color
+    plotAllFunctions()
+  }
+}
 
 // Plotly est chargé dynamiquement pour optimiser le temps de chargement initial
 let Plotly = null
@@ -1335,6 +2643,7 @@ const limitDirection = ref('')
 const showGraphOptions = ref(false)
 const activeSection = ref('')
 const activeGraphTab = ref('functions')
+const showSidePanel = ref(true)
 
 // Navigation des onglets sur mobile (carousel de 4 onglets)
 const allGraphTabs = ['functions', 'axes', 'asymptotes', 'analysis', 'calculus', 'shapes']
@@ -1372,12 +2681,519 @@ const getTabLabel = (tab) => {
   return labels[tab] || tab
 }
 
+const getTabIcon = (tab) => {
+  const icons = {
+    functions: '📈',
+    axes: '⚙️',
+    asymptotes: '📐',
+    analysis: '🔍',
+    calculus: '📊',
+    shapes: '🟢'
+  }
+  return icons[tab] || '📁'
+}
+
+const getTabShortLabel = (tab) => {
+  const labels = {
+    functions: 'Fonctions',
+    axes: 'Axes',
+    asymptotes: 'Asymptotes',
+    analysis: 'Analyse',
+    calculus: 'Calculs',
+    shapes: 'Formes'
+  }
+  return labels[tab] || tab
+}
+
 // Mode snap to grid pour les points
 const snapToGrid = ref(true)
+
+// === MODE DESSIN INTERACTIF ===
+// 'none' = clic ajoute un point (comportement actuel)
+// 'point' = clic ajoute un point
+// 'segment' = 2 clics pour un segment
+// 'vector' = 2 clics pour un vecteur
+const drawingMode = ref('none')
+const drawingTempPoint = ref(null) // Premier point en attente pour segment/vecteur
+
+function setDrawingMode(mode) {
+  if (drawingMode.value === mode) {
+    // Désactiver si on reclique
+    drawingMode.value = 'none'
+  } else {
+    drawingMode.value = mode
+  }
+  drawingTempPoint.value = null
+}
 
 // Sélection de points pour créer des segments
 const segmentPoint1Index = ref(0)
 const segmentPoint2Index = ref(1)
+
+// Noms personnalisés persistants pour les intersections
+const intersectionCustomNames = ref({})
+const intersectionCustomColors = ref({})
+const axisIntersectionCustomNames = ref({})
+
+function getIntersectionKey(func1Index, func2Index, x, y) {
+  return `${func1Index}-${func2Index}-${x.toFixed(3)}-${y.toFixed(3)}`
+}
+
+function getAxisIntersectionKey(funcIndex, axis, x, y) {
+  return `${funcIndex}-${axis}-${x.toFixed(3)}-${y.toFixed(3)}`
+}
+
+function renameIntersection(index, newName) {
+  const point = intersectionPoints.value[index]
+  if (point) {
+    point.name = newName || point.defaultName
+    if (newName && newName !== point.defaultName) {
+      intersectionCustomNames.value[point.key] = newName
+    } else {
+      delete intersectionCustomNames.value[point.key]
+    }
+  }
+}
+
+function renameAxisIntersection(index, newName) {
+  const point = axisIntersectionPoints.value[index]
+  if (point) {
+    point.name = newName || point.defaultName
+    if (newName && newName !== point.defaultName) {
+      axisIntersectionCustomNames.value[point.key] = newName
+    } else {
+      delete axisIntersectionCustomNames.value[point.key]
+    }
+  }
+}
+
+// === ANNOTATIONS INTERACTIVES (labels déplaçables) ===
+// Stocke les positions personnalisées des annotations (clé → {ax, ay})
+const annotationPositions = ref({})
+// Toggle pour afficher/masquer les annotations
+const showCurveLabels = ref(true)
+const showPointLabels = ref(true)
+// Style des labels : flèches et encadrement
+const showLabelArrows = ref(false)
+const showLabelBorders = ref(false)
+const showLegend = ref(true)
+
+// Autoriser le déplacement (pan) du graphique
+const allowPan = ref(false)
+
+// Toggle pour relier les points entre eux (polyline)
+const connectPoints = ref(false)
+const connectPointsColor = ref('#1e3a8a')
+
+// === RÉSOLUTION D'INÉQUATIONS ===
+const showInequality = ref(false)
+const inequalityFunc1Index = ref(0)
+const inequalityFunc2Index = ref(1)
+const inequalityOperator = ref('<')  // '<', '>', '<=', '>=', '='
+const inequalityResult = ref(null)  // { intervals: [...], intersections: [...] }
+const inequalityShadingColor = ref('rgba(59, 130, 246, 0.15)')
+
+// Support pour plusieurs inéquations
+const inequalities = ref([
+  { func1Index: 0, func2Index: 1, operator: '<', result: null, color: 'rgba(59, 130, 246, 0.15)' }
+])
+
+const INEQUALITY_COLORS = [
+  'rgba(59, 130, 246, 0.15)',   // bleu
+  'rgba(239, 68, 68, 0.15)',    // rouge
+  'rgba(34, 197, 94, 0.15)',    // vert
+  'rgba(168, 85, 247, 0.15)',   // violet
+  'rgba(245, 158, 11, 0.15)',   // orange
+  'rgba(6, 182, 212, 0.15)',    // cyan
+]
+
+// Conversion rgba(r, g, b, a) → #rrggbb pour le color picker
+function rgbaToHex(rgba) {
+  const m = rgba.match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/)
+  if (!m) return '#3b82f6'
+  const r = parseInt(m[1]).toString(16).padStart(2, '0')
+  const g = parseInt(m[2]).toString(16).padStart(2, '0')
+  const b = parseInt(m[3]).toString(16).padStart(2, '0')
+  return `#${r}${g}${b}`
+}
+
+// Conversion #rrggbb → rgba(r, g, b, 0.15) pour le shading
+function hexToRgba(hex) {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `rgba(${r}, ${g}, ${b}, 0.15)`
+}
+
+function updateInequalityColor(ineqIdx, hexColor) {
+  inequalities.value[ineqIdx].color = hexToRgba(hexColor)
+}
+
+function addInequality() {
+  inequalities.value.push({
+    func1Index: 0,
+    func2Index: Math.min(1, inequalityItems.value.length - 1),
+    operator: '<',
+    result: null,
+    color: INEQUALITY_COLORS[inequalities.value.length % INEQUALITY_COLORS.length]
+  })
+}
+
+function removeInequality(index) {
+  inequalities.value.splice(index, 1)
+  if (inequalities.value.length === 0) {
+    inequalities.value.push({ func1Index: 0, func2Index: 1, operator: '<', result: null, color: INEQUALITY_COLORS[0] })
+  }
+  // Le watcher deep déclenche automatiquement solveAllInequalities + plotAllFunctions
+}
+
+// Liste unifiée des éléments sélectionnables pour l'inéquation (fonctions + segments)
+const inequalityItems = computed(() => {
+  const items = []
+  graphFunctions.value.forEach((func, index) => {
+    items.push({
+      type: 'function',
+      index,
+      label: getFunctionDisplayName(func, index),
+      key: `f-${index}`
+    })
+  })
+  segments.value.forEach((seg, index) => {
+    if (!seg.isVector) {
+      const name = seg.name || `S${index + 1}`
+      items.push({
+        type: 'segment',
+        index,
+        label: name,
+        key: `s-${index}`
+      })
+    }
+  })
+  return items
+})
+
+// === TEXTES PERSONNALISÉS ===
+const textAnnotations = ref([])
+const newTextContent = ref('')
+const newTextX = ref(0)
+const newTextY = ref(0)
+const newTextColor = ref('#1e3a8a')
+const newTextSize = ref(16)
+
+function addTextAnnotation() {
+  if (!newTextContent.value.trim()) return
+  textAnnotations.value.push({
+    content: newTextContent.value.trim(),
+    x: newTextX.value,
+    y: newTextY.value,
+    color: newTextColor.value,
+    size: newTextSize.value
+  })
+  newTextContent.value = ''
+  newTextX.value = 0
+  newTextY.value = 0
+  plotAllFunctions()
+}
+
+function removeTextAnnotation(index) {
+  // Supprimer la position sauvegardée
+  delete annotationPositions.value[`text-${index}`]
+  textAnnotations.value.splice(index, 1)
+  // Réindexer les positions
+  const newPositions = {}
+  Object.keys(annotationPositions.value).forEach(key => {
+    if (key.startsWith('text-')) {
+      const oldIdx = parseInt(key.split('-')[1])
+      if (oldIdx > index) {
+        newPositions[`text-${oldIdx - 1}`] = annotationPositions.value[key]
+      } else {
+        newPositions[key] = annotationPositions.value[key]
+      }
+    } else {
+      newPositions[key] = annotationPositions.value[key]
+    }
+  })
+  annotationPositions.value = newPositions
+  plotAllFunctions()
+}
+
+// Convertit le texte utilisateur en format Plotly (supporte LaTeX avec $...$)
+function formatTextForPlotly(text) {
+  // Si le texte contient des délimiteurs LaTeX $...$, on les garde tels quels
+  // Plotly/MathJax les interprète nativement
+  // Sinon on retourne le texte brut
+  return text
+}
+
+// Génère les annotations pour les courbes, points, et intersections
+function buildInteractiveAnnotations() {
+  const annotations = []
+  
+  // --- Annotations pour les courbes ---
+  if (showCurveLabels.value) {
+    graphFunctions.value.forEach((func, index) => {
+      if (func.type === 'vertical' || func.type === 'horizontal') return
+      
+      const funcName = getFunctionDisplayName(func, index)
+      const key = `curve-${index}`
+      const saved = annotationPositions.value[key]
+      
+      // Position par défaut : ~30% de la plage x visible
+      const labelX = xMin.value + (xMax.value - xMin.value) * (0.25 + index * 0.15)
+      const js = convertLatexToJS(func.latex)
+      const labelY = evaluateFunction(js, labelX)
+      
+      if (isFinite(labelY) && labelY >= yMin.value && labelY <= yMax.value) {
+        annotations.push({
+          x: labelX,
+          y: labelY,
+          xref: 'x',
+          yref: 'y',
+          text: `<b>${funcName}</b>`,
+          showarrow: true,
+          arrowhead: showLabelArrows.value ? 0 : 0,
+          arrowsize: 1,
+          arrowwidth: showLabelArrows.value ? 1.5 : 0,
+          arrowcolor: showLabelArrows.value ? func.color : 'rgba(0,0,0,0)',
+          ax: saved?.ax ?? 0,
+          ay: saved?.ay ?? -30,
+          font: {
+            size: 16,
+            color: func.color,
+            family: 'Arial, sans-serif'
+          },
+          bgcolor: showLabelBorders.value ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0)',
+          bordercolor: showLabelBorders.value ? func.color : 'rgba(0,0,0,0)',
+          borderwidth: showLabelBorders.value ? 1 : 0,
+          borderpad: showLabelBorders.value ? 3 : 0,
+          captureevents: true,
+          _key: key
+        })
+      }
+    })
+  }
+  
+  // --- Annotations pour les points utilisateur ---
+  if (showPointLabels.value) {
+    points.value.forEach((point, index) => {
+      const key = `point-${index}`
+      const saved = annotationPositions.value[key]
+      const displayName = point.name || `P${index + 1}`
+      const showName = point.showName !== false
+      const showCoords = point.showCoords !== false
+      
+      // Build annotation text based on visibility flags
+      let annotText = ''
+      if (showName && showCoords) annotText = `<b>${displayName}</b>(${point.x}, ${point.y})`
+      else if (showName) annotText = `<b>${displayName}</b>`
+      else if (showCoords) annotText = `(${point.x}, ${point.y})`
+      
+      // Skip annotation entirely if both hidden
+      if (!showName && !showCoords) return
+      
+      annotations.push({
+        x: point.x,
+        y: point.y,
+        xref: 'x',
+        yref: 'y',
+        text: annotText,
+        showarrow: true,
+        arrowhead: 0,
+        arrowsize: 1,
+        arrowwidth: showLabelArrows.value ? 1.5 : 0,
+        arrowcolor: showLabelArrows.value ? point.color : 'rgba(0,0,0,0)',
+        ax: saved?.ax ?? 20,
+        ay: saved?.ay ?? -25,
+        font: {
+          size: 14,
+          color: point.color,
+          family: 'Arial, sans-serif'
+        },
+        bgcolor: showLabelBorders.value ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0)',
+        bordercolor: showLabelBorders.value ? point.color : 'rgba(0,0,0,0)',
+        borderwidth: showLabelBorders.value ? 1 : 0,
+        borderpad: showLabelBorders.value ? 3 : 0,
+        captureevents: true,
+        _key: key
+      })
+    })
+  }
+  
+  // --- Annotations pour les segments et vecteurs ---
+  if (showPointLabels.value) {
+    segments.value.forEach((segment, index) => {
+      const key = `segment-${index}`
+      const saved = annotationPositions.value[key]
+      const displayName = segment.name || (segment.isVector ? `V${index + 1}` : `S${index + 1}`)
+      const midX = (segment.x1 + segment.x2) / 2
+      const midY = (segment.y1 + segment.y2) / 2
+      
+      annotations.push({
+        x: midX,
+        y: midY,
+        xref: 'x',
+        yref: 'y',
+        text: `<b>${displayName}</b>`,
+        showarrow: true,
+        arrowhead: 0,
+        arrowsize: 1,
+        arrowwidth: showLabelArrows.value ? 1.5 : 0,
+        arrowcolor: showLabelArrows.value ? segment.color : 'rgba(0,0,0,0)',
+        ax: saved?.ax ?? 0,
+        ay: saved?.ay ?? -20,
+        font: {
+          size: 14,
+          color: segment.color,
+          family: 'Arial, sans-serif'
+        },
+        bgcolor: showLabelBorders.value ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0)',
+        bordercolor: showLabelBorders.value ? segment.color : 'rgba(0,0,0,0)',
+        borderwidth: showLabelBorders.value ? 1 : 0,
+        borderpad: showLabelBorders.value ? 3 : 0,
+        captureevents: true,
+        _key: key
+      })
+    })
+  }
+  
+  // --- Annotations pour les cercles ---
+  if (showPointLabels.value) {
+    circles.value.forEach((circle, index) => {
+      const key = `circle-${index}`
+      const saved = annotationPositions.value[key]
+      const displayName = circle.name || `C${index + 1}`
+      
+      annotations.push({
+        x: circle.h,
+        y: circle.k,
+        xref: 'x',
+        yref: 'y',
+        text: `<b>${displayName}</b>`,
+        showarrow: true,
+        arrowhead: 0,
+        arrowsize: 1,
+        arrowwidth: showLabelArrows.value ? 1.5 : 0,
+        arrowcolor: showLabelArrows.value ? circle.color : 'rgba(0,0,0,0)',
+        ax: saved?.ax ?? 0,
+        ay: saved?.ay ?? -20,
+        font: {
+          size: 14,
+          color: circle.color,
+          family: 'Arial, sans-serif'
+        },
+        bgcolor: showLabelBorders.value ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0)',
+        bordercolor: showLabelBorders.value ? circle.color : 'rgba(0,0,0,0)',
+        borderwidth: showLabelBorders.value ? 1 : 0,
+        borderpad: showLabelBorders.value ? 3 : 0,
+        captureevents: true,
+        _key: key
+      })
+    })
+  }
+  
+  // --- Annotations pour les intersections ---
+  if (showPointLabels.value) {
+    intersectionPoints.value.forEach((point, index) => {
+      const key = `inter-${index}`
+      const saved = annotationPositions.value[key]
+      const displayName = point.name || point.defaultName
+      const xCoord = Math.abs(point.x) < 0.01 ? 0 : Number(point.x.toFixed(2))
+      const yCoord = Math.abs(point.y) < 0.01 ? 0 : Number(point.y.toFixed(2))
+      
+      annotations.push({
+        x: point.x,
+        y: point.y,
+        xref: 'x',
+        yref: 'y',
+        text: `<b>${displayName}</b>(${xCoord}, ${yCoord})`,
+        showarrow: true,
+        arrowhead: 0,
+        arrowsize: 1,
+        arrowwidth: showLabelArrows.value ? 1.5 : 0,
+        arrowcolor: showLabelArrows.value ? '#dc2626' : 'rgba(0,0,0,0)',
+        ax: saved?.ax ?? 25,
+        ay: saved?.ay ?? -20,
+        font: {
+          size: 13,
+          color: '#dc2626',
+          family: 'Arial, sans-serif'
+        },
+        bgcolor: showLabelBorders.value ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0)',
+        bordercolor: showLabelBorders.value ? '#dc2626' : 'rgba(0,0,0,0)',
+        borderwidth: showLabelBorders.value ? 1 : 0,
+        borderpad: showLabelBorders.value ? 2 : 0,
+        captureevents: true,
+        _key: key
+      })
+    })
+  }
+  
+  // --- Annotations pour les textes personnalisés (jamais de flèche ni encadré) ---
+  textAnnotations.value.forEach((ta, index) => {
+    const key = `text-${index}`
+    const saved = annotationPositions.value[key]
+    
+    annotations.push({
+      x: ta.x,
+      y: ta.y,
+      xref: 'x',
+      yref: 'y',
+      text: formatTextForPlotly(ta.content),
+      showarrow: false,
+      ax: saved?.ax ?? 0,
+      ay: saved?.ay ?? 0,
+      font: {
+        size: ta.size || 16,
+        color: ta.color,
+        family: 'Arial, sans-serif'
+      },
+      bgcolor: 'rgba(0,0,0,0)',
+      bordercolor: 'rgba(0,0,0,0)',
+      borderwidth: 0,
+      borderpad: 0,
+      captureevents: true,
+      _key: key
+    })
+  })
+  
+  return annotations
+}
+
+// Gestion du déplacement des annotations  
+function handleAnnotationDrag(eventData) {
+  if (!eventData) return
+  
+  // Plotly envoie les positions modifiées sous forme annotations[i].ax, annotations[i].ay
+  const keys = Object.keys(eventData)
+  
+  // Récupérer la liste actuelle des annotations
+  const currentAnnotations = graphContainer.value?.layout?.annotations || []
+  
+  keys.forEach(key => {
+    const match = key.match(/^annotations\[(\d+)\]\.(ax|ay)$/)
+    if (match) {
+      const annotIdx = parseInt(match[1])
+      const prop = match[2]
+      const value = eventData[key]
+      
+      // Retrouver la clé de l'annotation
+      // On doit chercher parmi les annotations existantes (les 4 premières sont les axes)
+      const axisAnnotationCount = showAxes.value ? 4 : 0
+      const interactiveIdx = annotIdx - axisAnnotationCount
+      
+      if (interactiveIdx >= 0) {
+        const interactiveAnnotations = buildInteractiveAnnotations()
+        const annotation = interactiveAnnotations[interactiveIdx]
+        if (annotation && annotation._key) {
+          if (!annotationPositions.value[annotation._key]) {
+            annotationPositions.value[annotation._key] = { ax: 0, ay: -30 }
+          }
+          annotationPositions.value[annotation._key][prop] = value
+        }
+      }
+    }
+  })
+}
 
 // Outils pour le clavier personnalisé (depuis la config)
 const algebraTools = KEYBOARD_TOOLS.algebra
@@ -1494,7 +3310,7 @@ function getPlaceholderData() {
     case 'factor':
       return { text: 'Expression à factoriser (ex: ', latex: 'x^{2}-1' }
     case 'graph':
-      return { text: 'Fonction à tracer (ex: ', latex: 'x^{2}, \\sin(x)' }
+      return { text: 'ex: ', latex: 'x^{2},\\, A(1{,}2),\\, [AB],\\, \\vec{AB}', closeParen: false }
     default:
       return { text: 'Expression (ex: ', latex: '(x+1)^{2}' }
   }
@@ -1518,7 +3334,7 @@ function renderPlaceholder() {
       mathSpan.style.color = '#9ca3af'
       
       const closeSpan = document.createElement('span')
-      closeSpan.textContent = ')'
+      closeSpan.textContent = data.closeParen === false ? '' : ')'
       closeSpan.style.color = '#9ca3af'
       
       placeholderRef.value.innerHTML = ''
@@ -1721,10 +3537,51 @@ watch([xMin, xMax, yMin, yMax], () => {
 
 // Watcher pour l'option d'affichage des intersections
 watch(showIntersections, () => {
-  if (selectedOperation.value === 'graph' && graphFunctions.value.length >= 2) {
+  if (selectedOperation.value === 'graph' && (graphFunctions.value.length >= 2 || segments.value.length > 0 || circles.value.length > 0)) {
     plotAllFunctions()
   }
 })
+
+// Watchers pour les toggles de labels
+watch([showCurveLabels, showPointLabels, showLabelArrows, showLabelBorders, showLegend, allowPan], () => {
+  if (selectedOperation.value === 'graph') {
+    plotAllFunctions()
+  }
+})
+
+// Watcher pour relier les points
+watch([connectPoints, connectPointsColor], () => {
+  if (selectedOperation.value === 'graph') {
+    plotAllFunctions()
+  }
+})
+
+// Watcher pour les inéquations (multiples)
+// Le résultat textuel se met à jour instantanément, le re-plot du graphique est debounced
+let inequalityPlotTimeout = null
+let inequalitySolving = false
+watch([showInequality, inequalities], () => {
+  if (inequalitySolving) return // Éviter la boucle infinie (solveAll écrit dans inequalities)
+  
+  // Résoudre immédiatement pour afficher le résultat textuel sans délai
+  if (selectedOperation.value === 'graph' && showInequality.value && inequalityItems.value.length >= 2) {
+    inequalitySolving = true
+    solveAllInequalities()
+    inequalitySolving = false
+  } else if (!showInequality.value) {
+    inequalitySolving = true
+    inequalities.value.forEach(ineq => { ineq.result = null })
+    inequalityResult.value = null
+    inequalitySolving = false
+  }
+  // Debouncer le re-plot (shading) car c'est coûteux
+  if (inequalityPlotTimeout) clearTimeout(inequalityPlotTimeout)
+  inequalityPlotTimeout = setTimeout(() => {
+    if (selectedOperation.value === 'graph') {
+      plotAllFunctions()
+    }
+  }, 200)
+}, { deep: true })
 
 // Watcher pour l'option d'affichage des intersections avec les axes
 watch(showAxisIntersections, () => {
@@ -1793,6 +3650,22 @@ watch(() => graphFunctions.value.length, () => {
 
 // Watchers pour l'affichage de la grille, des axes et des graduations
 watch([showGrid, showAxes, showTicks], () => {
+  if (selectedOperation.value === 'graph') {
+    plotAllFunctions()
+  }
+})
+
+// Re-render quand le panneau latéral est togglé (le graphe change de taille)
+watch(showSidePanel, () => {
+  if (selectedOperation.value === 'graph') {
+    nextTick(() => {
+      plotAllFunctions()
+    })
+  }
+})
+
+// Re-render quand le mode dessin change (pan vs dessin)
+watch(drawingMode, () => {
   if (selectedOperation.value === 'graph') {
     plotAllFunctions()
   }
@@ -2154,6 +4027,212 @@ function solveForY(leftSide, rightSide) {
   }
 }
 
+// === Parser intelligent : détecte les points, segments, vecteurs, cercles dans l'input ===
+function parseSmartInput(rawLatex) {
+  // Normaliser : retirer \left \right, espaces, accolades MathLive, \operatorname
+  const cleaned = rawLatex
+    .replace(/\\left/g, '')
+    .replace(/\\right/g, '')
+    .replace(/\\operatorname\{([^}]*)\}/g, '$1')
+    .replace(/\\,/g, ',')
+    .replace(/\\lbrack/g, '[')
+    .replace(/\\rbrack/g, ']')
+    .replace(/\{/g, '')
+    .replace(/\}/g, '')
+    .replace(/\s+/g, '')
+
+  // Pattern pour un nombre (entier ou décimal, positif ou négatif)
+  const num = '-?\\d+(?:\\.\\d+)?'
+  // Pattern pour un nom de point (lettre majuscule + optionnel alphanum)
+  const ptName = '[A-Z][a-zA-Z0-9]*'
+
+  // 1. Plusieurs points : A(1,2),B(3,4),C(5,6) ou A(1;2),B(3;4)
+  const multiPointRe = new RegExp(`(${ptName})\\((${num})[,;](${num})\\)`, 'g')
+  const multiPoints = []
+  let mpMatch
+  while ((mpMatch = multiPointRe.exec(cleaned)) !== null) {
+    multiPoints.push({
+      name: mpMatch[1],
+      x: parseFloat(mpMatch[2]),
+      y: parseFloat(mpMatch[3])
+    })
+  }
+  if (multiPoints.length >= 2) {
+    return { type: 'multipoints', points: multiPoints }
+  }
+
+  // 1b. Point unique : A(1,2) ou A(-3.5, 2)
+  if (multiPoints.length === 1) {
+    return {
+      type: 'point',
+      name: multiPoints[0].name,
+      x: multiPoints[0].x,
+      y: multiPoints[0].y
+    }
+  }
+
+  // 2. Cercle : C(0,0,3) — nom + centre + rayon (3 arguments)
+  const circleRe = new RegExp(`^(${ptName})\\((${num}),(${num}),(${num})\\)$`)
+  const circleMatch = cleaned.match(circleRe)
+  if (circleMatch) {
+    return {
+      type: 'circle',
+      name: circleMatch[1],
+      h: parseFloat(circleMatch[2]),
+      k: parseFloat(circleMatch[3]),
+      r: parseFloat(circleMatch[4])
+    }
+  }
+
+  // 3. Segment : [AB] — entre deux points existants
+  const segmentRe = new RegExp(`^\\[(${ptName})(${ptName})\\]$`)
+  const segmentMatch = cleaned.match(segmentRe)
+  if (segmentMatch) {
+    return {
+      type: 'segment',
+      point1Name: segmentMatch[1],
+      point2Name: segmentMatch[2]
+    }
+  }
+
+  // 4. Vecteur : \vec{AB} ou \overrightarrow{AB}
+  const vecRe = new RegExp(`^\\\\vec(${ptName})(${ptName})$`)
+  const vecMatch = cleaned.match(vecRe)
+    || cleaned.match(new RegExp(`^\\\\overrightarrow(${ptName})(${ptName})$`))
+  if (vecMatch) {
+    return {
+      type: 'vector',
+      point1Name: vecMatch[1],
+      point2Name: vecMatch[2]
+    }
+  }
+
+  // 5. Droite : (AB) — droite passant par deux points
+  const lineRe = new RegExp(`^\\((${ptName})(${ptName})\\)$`)
+  const lineMatch = cleaned.match(lineRe)
+  if (lineMatch) {
+    return {
+      type: 'line',
+      point1Name: lineMatch[1],
+      point2Name: lineMatch[2]
+    }
+  }
+
+  return null // Pas un pattern reconnu → traiter comme une fonction
+}
+
+function findPointByName(name) {
+  return points.value.find(p => p.name === name)
+}
+
+function handleSmartInput(parsed) {
+  const color = shapes.getNextColor()
+
+  if (parsed.type === 'multipoints') {
+    const names = []
+    for (const pt of parsed.points) {
+      const c = shapes.getNextColor()
+      points.value.push({
+        x: pt.x,
+        y: pt.y,
+        color: c,
+        name: pt.name,
+        showName: true,
+        showCoords: true
+      })
+      names.push(`${pt.name}(${pt.x}, ${pt.y})`)
+    }
+    plotAllFunctions()
+    return { success: true, message: `${parsed.points.length} points ajoutés : ${names.join(', ')}` }
+  }
+
+  if (parsed.type === 'point') {
+    points.value.push({
+      x: parsed.x,
+      y: parsed.y,
+      color: color,
+      name: parsed.name,
+      showName: true,
+      showCoords: true
+    })
+    plotAllFunctions()
+    return { success: true, message: `Point ${parsed.name}(${parsed.x}, ${parsed.y}) ajouté` }
+  }
+
+  if (parsed.type === 'circle') {
+    if (parsed.r <= 0) {
+      return { success: false, message: 'Le rayon doit être supérieur à 0' }
+    }
+    circles.value.push({
+      h: parsed.h,
+      k: parsed.k,
+      r: parsed.r,
+      color: color,
+      name: parsed.name
+    })
+    plotAllFunctions()
+    return { success: true, message: `Cercle ${parsed.name} centre(${parsed.h}, ${parsed.k}) r=${parsed.r} ajouté` }
+  }
+
+  if (parsed.type === 'segment' || parsed.type === 'vector') {
+    const p1 = findPointByName(parsed.point1Name)
+    const p2 = findPointByName(parsed.point2Name)
+    if (!p1) return { success: false, message: `Point "${parsed.point1Name}" non trouvé. Créez-le d'abord (ex: ${parsed.point1Name}(1,2))` }
+    if (!p2) return { success: false, message: `Point "${parsed.point2Name}" non trouvé. Créez-le d'abord (ex: ${parsed.point2Name}(3,4))` }
+
+    const isVector = parsed.type === 'vector'
+    const name = isVector ? `\\vec{${parsed.point1Name}${parsed.point2Name}}` : `[${parsed.point1Name}${parsed.point2Name}]`
+    segments.value.push({
+      x1: p1.x, y1: p1.y,
+      x2: p2.x, y2: p2.y,
+      color: color,
+      isVector: isVector,
+      name: name
+    })
+    plotAllFunctions()
+    const label = isVector ? 'Vecteur' : 'Segment'
+    return { success: true, message: `${label} ${parsed.point1Name}${parsed.point2Name} ajouté` }
+  }
+
+  if (parsed.type === 'line') {
+    const p1 = findPointByName(parsed.point1Name)
+    const p2 = findPointByName(parsed.point2Name)
+    if (!p1) return { success: false, message: `Point "${parsed.point1Name}" non trouvé. Créez-le d'abord (ex: ${parsed.point1Name}(1,2))` }
+    if (!p2) return { success: false, message: `Point "${parsed.point2Name}" non trouvé. Créez-le d'abord (ex: ${parsed.point2Name}(3,4))` }
+
+    // Calculer l'équation de la droite y = ax + b
+    if (p1.x === p2.x) {
+      // Droite verticale x = constante
+      graphFunctions.value.push({
+        name: `(${parsed.point1Name}${parsed.point2Name})`,
+        expression: `x = ${p1.x}`,
+        color: color,
+        latex: `x = ${p1.x}`,
+        type: 'vertical',
+        value: p1.x
+      })
+    } else {
+      const a = (p2.y - p1.y) / (p2.x - p1.x)
+      const b = p1.y - a * p1.x
+      const expr = b >= 0 ? `${a}*x+${b}` : `${a}*x${b}`
+      const displayExpr = b >= 0 ? `${a}x + ${b}` : `${a}x - ${Math.abs(b)}`
+      graphFunctions.value.push({
+        name: `(${parsed.point1Name}${parsed.point2Name})`,
+        expression: displayExpr,
+        color: color,
+        latex: expr,
+        type: 'function',
+        value: null
+      })
+    }
+    plotAllFunctions()
+    nextTick(() => renderFunctionExpressions())
+    return { success: true, message: `Droite (${parsed.point1Name}${parsed.point2Name}) ajoutée` }
+  }
+
+  return { success: false, message: 'Type non reconnu' }
+}
+
 async function plotFunction() {
   if (!mf.value?.value || !mf.value.value.trim()) {
     if (preview.value) {
@@ -2164,6 +4243,24 @@ async function plotFunction() {
 
   try {
     let rawExpression = mf.value.value.trim()
+
+    // === Essayer le parser intelligent (points, segments, vecteurs, cercles) ===
+    const parsed = parseSmartInput(rawExpression)
+    if (parsed) {
+      const result = handleSmartInput(parsed)
+      if (preview.value) {
+        if (result.success) {
+          preview.value.innerHTML = `<span style='color:#10b981;font-size:0.9rem;'>${result.message}</span>`
+          mf.value.value = ''
+          expressionValue.value = ''
+        } else {
+          preview.value.innerHTML = `<span style='color:#ef4444;font-size:0.9rem;'>${result.message}</span>`
+        }
+      }
+      return
+    }
+
+    // === Sinon, traiter comme une fonction normale ===
     const color = getNextColor()
     
     // Nettoyer l'expression : remplacer les espaces multiples
@@ -2252,6 +4349,7 @@ async function plotFunction() {
     
     // Ajouter la fonction à la liste
     graphFunctions.value.push({
+      name: '',
       expression: displayExpression,
       color: color,
       latex: processedExpression,
@@ -2314,7 +4412,7 @@ function handleGraphClick(event) {
   
   // Calculer la position relative dans la zone de tracé (0 à 1)
   const xRel = (xInPx - plotLeft) / plotWidth
-  const yRel = 1 - ((yInPx - plotBottom) / plotHeight) // Inverser Y car les pixels commencent en haut
+  const yRel = 1 - ((yInPx - plotBottom) / plotHeight)
   
   // Convertir en coordonnées du graphique
   const xRange = xaxis.range[1] - xaxis.range[0]
@@ -2326,46 +4424,124 @@ function handleGraphClick(event) {
   // Vérifier que les coordonnées sont valides
   if (x === undefined || y === undefined || isNaN(x) || isNaN(y)) return
   
-  // Si le mode snap to grid est activé, forcer l'accrochage à la grille
+  // Snap to grid
   if (snapToGrid.value) {
     x = Math.round(x)
     y = Math.round(y)
   } else {
-    // Sinon, arrondir aux intersections de la grille si proche
     const gridX = Math.round(x)
     const gridY = Math.round(y)
-    const snapThreshold = 0.15 // Seuil pour accrocher à la grille
-    
+    const snapThreshold = 0.15
     if (Math.abs(x - gridX) < snapThreshold) x = gridX
     if (Math.abs(y - gridY) < snapThreshold) y = gridY
-    
-    // Arrondir à 2 décimales pour éviter les valeurs trop longues
     x = Math.round(x * 100) / 100
     y = Math.round(y * 100) / 100
   }
+  
+  // === MODE CERCLE ===
+  if (drawingMode.value === 'circle') {
+    if (!drawingTempPoint.value) {
+      // Premier clic : stocker le centre
+      drawingTempPoint.value = { x, y }
+      // Ajouter un marqueur temporaire pour le centre
+      const colorIndex = circles.value.length % GRAPH_COLORS.length
+      const tempColor = GRAPH_COLORS[colorIndex]
+      points.value.push({
+        x, y,
+        color: tempColor,
+        name: `✘`,
+        _temp: true
+      })
+      plotAllFunctions()
+    } else {
+      // Deuxième clic : créer le cercle (rayon = distance centre → ce point)
+      const center = drawingTempPoint.value
+      const r = Math.sqrt(Math.pow(x - center.x, 2) + Math.pow(y - center.y, 2))
+      
+      if (r > 0) {
+        const colorIndex = circles.value.length % GRAPH_COLORS.length
+        const circleColor = GRAPH_COLORS[colorIndex]
+        circles.value.push({
+          h: center.x,
+          k: center.y,
+          r: Math.round(r * 100) / 100,
+          color: circleColor,
+          name: `C${circles.value.length + 1}`
+        })
+      }
+      
+      // Supprimer le point temporaire
+      const tempIdx = points.value.findIndex(p => p._temp)
+      if (tempIdx !== -1) points.value.splice(tempIdx, 1)
+      
+      drawingTempPoint.value = null
+      plotAllFunctions()
+    }
+    return
+  }
+  
+  // === MODE SEGMENT ou VECTEUR ===
+  if (drawingMode.value === 'segment' || drawingMode.value === 'vector') {
+    if (!drawingTempPoint.value) {
+      // Premier clic : stocker le point de départ
+      drawingTempPoint.value = { x, y }
+      // Ajouter un marqueur temporaire
+      const colorIndex = segments.value.length % GRAPH_COLORS.length
+      const tempColor = GRAPH_COLORS[colorIndex]
+      // Ajouter le point de départ comme point temporaire visible
+      points.value.push({
+        x, y,
+        color: tempColor,
+        name: `✘`,
+        _temp: true
+      })
+      plotAllFunctions()
+    } else {
+      // Deuxième clic : créer le segment/vecteur
+      const start = drawingTempPoint.value
+      const colorIndex = segments.value.length % GRAPH_COLORS.length
+      const segColor = GRAPH_COLORS[colorIndex]
+      const isVector = drawingMode.value === 'vector'
+      
+      segments.value.push({
+        x1: start.x,
+        y1: start.y,
+        x2: x,
+        y2: y,
+        color: segColor,
+        isVector: isVector
+      })
+      
+      // Supprimer le point temporaire
+      const tempIdx = points.value.findIndex(p => p._temp)
+      if (tempIdx !== -1) points.value.splice(tempIdx, 1)
+      
+      drawingTempPoint.value = null
+      plotAllFunctions()
+    }
+    return
+  }
+  
+  // === MODE POINT (uniquement si activé) ===
+  if (drawingMode.value !== 'point') return
   
   // Vérifier si ce point existe déjà
   const existingPoint = points.value.find(
     p => Math.abs(p.x - x) < 0.01 && Math.abs(p.y - y) < 0.01
   )
+  if (existingPoint) return
   
-  if (existingPoint) {
-    // Si le point existe déjà, on ne l'ajoute pas
-    return
-  }
-  
-  // Choisir une couleur différente pour chaque point (rotation dans GRAPH_COLORS)
   const colorIndex = points.value.length % GRAPH_COLORS.length
   const pointColor = GRAPH_COLORS[colorIndex]
-  
-  // Ajouter le point au tableau (utilise le tableau points du composable shapes)
+  const autoIndex = points.value.length + 1
   points.value.push({
     x: x,
     y: y,
-    color: pointColor
+    color: pointColor,
+    name: `P${autoIndex}`,
+    showName: true,
+    showCoords: true
   })
-  
-  // Redessiner le graphique avec le nouveau point
   plotAllFunctions()
 }
 
@@ -2428,8 +4604,9 @@ async function plotAllFunctions() {
         const { x, y } = generateFunctionData(func.latex, xMin.value, xMax.value, yMin.value, yMax.value, 3000)
         
         // Convertir l'expression LaTeX pour l'affichage dans la légende avec MathJax
-        const functionLabel = `f_${index + 1}`
+        const functionLabel = getFunctionLatexLabel(func, index)
         const displayName = `$${functionLabel}(x) = ${func.expression}$`
+        const hoverName = `${getFunctionDisplayName(func, index)}(x)`
         
         traces.push({
           x: x,
@@ -2443,7 +4620,7 @@ async function plotAllFunctions() {
           },
           legendgroup: `func${index}`,
           showlegend: true,
-          hovertemplate: `<b>f<sub>${index + 1}</sub>(x)</b><br>x: %{x:.3f}<br>y: %{y:.3f}<extra></extra>`
+          hovertemplate: `<b>${hoverName}</b><br>x: %{x:.3f}<br>y: %{y:.3f}<extra></extra>`
         })
       }
     } catch (error) {
@@ -2455,13 +4632,21 @@ async function plotAllFunctions() {
   addManualAsymptotes(traces)
   
   // Calculer et afficher les points d'intersection si l'option est activée
-  if (showIntersections.value && graphFunctions.value.length >= 2) {
+  const hasEnoughForIntersections = graphFunctions.value.length >= 2 
+    || (segments.value.length > 0 && graphFunctions.value.length >= 1) 
+    || segments.value.length >= 2
+    || (circles.value.length > 0 && (graphFunctions.value.length >= 1 || segments.value.length >= 1))
+  if (showIntersections.value && hasEnoughForIntersections) {
     calculateIntersections(traces)
+  } else {
+    intersectionPoints.value = []
   }
   
   // Calculer et afficher les intersections avec les axes si l'option est activée
   if (showAxisIntersections.value && graphFunctions.value.length > 0) {
     calculateAxisIntersections(traces)
+  } else {
+    axisIntersectionPoints.value = []
   }
   
   // Afficher la zone d'intégration si l'option est activée
@@ -2498,6 +4683,104 @@ async function plotAllFunctions() {
   if (circles.value.length > 0) {
     drawCircles(traces)
   }
+  
+  // Relier les points entre eux (polyline fermée)
+  if (connectPoints.value && points.value.length >= 2) {
+    const nonTempPoints = points.value.filter(p => !p._temp)
+    if (nonTempPoints.length >= 2) {
+      // Fermer la forme en ajoutant le premier point à la fin
+      const xs = nonTempPoints.map(p => p.x)
+      const ys = nonTempPoints.map(p => p.y)
+      xs.push(nonTempPoints[0].x)
+      ys.push(nonTempPoints[0].y)
+      traces.push({
+        x: xs,
+        y: ys,
+        type: 'scatter',
+        mode: 'lines',
+        line: {
+          color: connectPointsColor.value,
+          width: 2.5,
+          dash: 'solid'
+        },
+        name: 'Liaison points',
+        showlegend: true,
+        hoverinfo: 'skip'
+      })
+    }
+  }
+
+  // === Shading pour les inéquations (supporte fonctions, segments, et combinaisons) ===
+  if (showInequality.value && inequalityItems.value.length >= 2) {
+    // Cache des conversions LaTeX -> JS pour le shading
+    const shadingJsCache = {}
+    function evalShadingItem(item, x) {
+      if (item.type === 'function') {
+        const func = graphFunctions.value[item.index]
+        if (!func) return NaN
+        if (func.type === 'horizontal') return func.value
+        if (func.type === 'vertical') return NaN
+        if (!shadingJsCache[func.latex]) {
+          shadingJsCache[func.latex] = convertLatexToJS(func.latex)
+        }
+        return evaluateFunction(shadingJsCache[func.latex], x)
+      } else if (item.type === 'segment') {
+        const seg = segments.value[item.index]
+        if (!seg) return NaN
+        const minX = Math.min(seg.x1, seg.x2)
+        const maxX = Math.max(seg.x1, seg.x2)
+        if (x < minX - 1e-9 || x > maxX + 1e-9) return NaN
+        if (Math.abs(seg.x2 - seg.x1) < 1e-10) return NaN
+        const t = (x - seg.x1) / (seg.x2 - seg.x1)
+        return seg.y1 + t * (seg.y2 - seg.y1)
+      }
+      return NaN
+    }
+
+    inequalities.value.forEach((ineq, ineqGlobalIdx) => {
+      if (!ineq.result || !ineq.result.intervals || ineq.result.intervals.length === 0) return
+      const result = ineq.result
+      const item1 = result.item1 || inequalityItems.value[ineq.func1Index]
+      const item2 = result.item2 || inequalityItems.value[ineq.func2Index]
+      if (!item1 || !item2) return
+
+      result.intervals.forEach((iv, ivIdx) => {
+        const left = iv.left === '-∞' ? xMin.value : Number(iv.left)
+        const right = iv.right === '+∞' ? xMax.value : Number(iv.right)
+        const numPts = 150
+        const step = (right - left) / numPts
+        
+        const xVals = []
+        const y1Vals = []
+        const y2Vals = []
+        
+        for (let k = 0; k <= numPts; k++) {
+          const xv = left + k * step
+          const yv1 = evalShadingItem(item1, xv)
+          const yv2 = evalShadingItem(item2, xv)
+          if (isFinite(yv1) && isFinite(yv2)) {
+            xVals.push(xv)
+            y1Vals.push(yv1)
+            y2Vals.push(yv2)
+          }
+        }
+        
+        if (xVals.length > 0) {
+          traces.push({
+            x: xVals.concat([...xVals].reverse()),
+            y: y1Vals.concat([...y2Vals].reverse()),
+            type: 'scatter',
+            fill: 'toself',
+            fillcolor: ineq.color,
+            line: { color: 'rgba(0,0,0,0)', width: 0 },
+            name: ivIdx === 0 ? `Zone solution ${ineqGlobalIdx + 1}` : '',
+            showlegend: ivIdx === 0,
+            hoverinfo: 'skip'
+          })
+        }
+      })
+    })
+  }
 
   const layout = {
     xaxis: {
@@ -2512,7 +4795,7 @@ async function plotAllFunctions() {
       zerolinecolor: '#374151',
       zerolinewidth: showAxes.value ? 2 : 0,
       zeroline: showAxes.value,
-      fixedrange: true,
+      fixedrange: !allowPan.value || drawingMode.value !== 'none',
       showline: showAxes.value,
       linecolor: '#374151',
       linewidth: 2,
@@ -2541,7 +4824,7 @@ async function plotAllFunctions() {
       zerolinecolor: '#374151',
       zerolinewidth: showAxes.value ? 2 : 0,
       zeroline: showAxes.value,
-      fixedrange: true,
+      fixedrange: !allowPan.value || drawingMode.value !== 'none',
       showline: showAxes.value,
       linecolor: '#374151',
       linewidth: 2,
@@ -2556,6 +4839,7 @@ async function plotAllFunctions() {
       constrain: 'domain',
       constraintoward: 'center'
     },
+    dragmode: (allowPan.value && drawingMode.value === 'none') ? 'pan' : false,
     annotations: showAxes.value ? [
       // Flèche pour l'axe X
       {
@@ -2644,17 +4928,27 @@ async function plotAllFunctions() {
       orientation: 'v',
       itemsizing: 'constant',
       itemwidth: 30,
-      tracegroupgap: 5
+      tracegroupgap: 5,
+      visible: showLegend.value
     }
   }
+  
+  // Ajouter les annotations interactives (labels déplaçables)
+  const interactiveAnnotations = buildInteractiveAnnotations()
+  const vectorAnnotations = shapes.getVectorAnnotations()
+  layout.annotations = [...(layout.annotations || []), ...interactiveAnnotations, ...vectorAnnotations]
 
   const config = {
     responsive: true,
     displayModeBar: true,
     displaylogo: false,
-    scrollZoom: false,
+    scrollZoom: allowPan.value,
     staticPlot: false,
     editable: false,
+    edits: {
+      annotationPosition: true,
+      annotationTail: true
+    },
     modeBarButtonsToRemove: [
       'zoomIn2d','zoomOut2d','autoScale2d','zoom2d',
       'pan2d','select2d','lasso2d','resetScale2d'
@@ -2662,9 +4956,7 @@ async function plotAllFunctions() {
     toImageButtonOptions: {
       format: 'png',
       filename: 'graphique_optitab',
-      width: 1400,
-      height: 1000,
-      scale: 2
+      scale: 5
     }
   }
 
@@ -2681,6 +4973,9 @@ async function plotAllFunctions() {
       // Ajouter l'écouteur de clic pour ajouter des points
       graphContainer.value._clickListener = handleGraphClick
       graphContainer.value.addEventListener('click', handleGraphClick)
+      
+      // Écouter les événements de déplacement des annotations
+      graphContainer.value.on('plotly_relayout', handleAnnotationDrag)
     })
     .catch((err) => {
       console.error('Erreur Plotly (plotAllFunctions):', err)
@@ -2736,6 +5031,239 @@ function addManualAsymptotes(traces) {
   }
 }
 
+// === RÉSOLUTION D'INÉQUATIONS ===
+function solveInequalityAt(ineqIndex) {
+  const items = inequalityItems.value
+  const ineq = inequalities.value[ineqIndex]
+  if (!ineq) return
+  
+  if (items.length < 2) {
+    ineq.result = null
+    return
+  }
+  
+  const item1 = items[ineq.func1Index]
+  const item2 = items[ineq.func2Index]
+  
+  if (!item1 || !item2) {
+    ineq.result = null
+    return
+  }
+  
+  const op = ineq.operator
+  const name1 = item1.label
+  const name2 = item2.label
+  
+  // Cache des conversions LaTeX -> JS pour éviter de re-parser à chaque évaluation
+  const jsCache = {}
+  function getCachedJS(func) {
+    if (!func.latex) return null
+    if (!jsCache[func.latex]) {
+      jsCache[func.latex] = convertLatexToJS(func.latex)
+    }
+    return jsCache[func.latex]
+  }
+  
+  // Helper: évaluer un item (fonction ou segment) en x
+  function evalItem(item, x) {
+    if (item.type === 'function') {
+      const func = graphFunctions.value[item.index]
+      if (!func) return NaN
+      if (func.type === 'horizontal') return func.value
+      if (func.type === 'vertical') return NaN
+      return evaluateFunction(getCachedJS(func), x)
+    } else if (item.type === 'segment') {
+      const seg = segments.value[item.index]
+      if (!seg) return NaN
+      const minX = Math.min(seg.x1, seg.x2)
+      const maxX = Math.max(seg.x1, seg.x2)
+      if (x < minX - 1e-9 || x > maxX + 1e-9) return NaN
+      if (Math.abs(seg.x2 - seg.x1) < 1e-10) return NaN
+      const t = (x - seg.x1) / (seg.x2 - seg.x1)
+      return seg.y1 + t * (seg.y2 - seg.y1)
+    }
+    return NaN
+  }
+  
+  // Déterminer le domaine d'étude
+  function getItemDomain(item) {
+    if (item.type === 'function') {
+      const func = graphFunctions.value[item.index]
+      if (!func) return { left: xMin.value, right: xMax.value }
+      if (func.type === 'horizontal') return { left: xMin.value, right: xMax.value }
+      if (func.type === 'vertical') return { left: func.value, right: func.value }
+      return { left: xMin.value, right: xMax.value }
+    } else if (item.type === 'segment') {
+      const seg = segments.value[item.index]
+      if (!seg) return { left: xMin.value, right: xMax.value }
+      return { left: Math.min(seg.x1, seg.x2), right: Math.max(seg.x1, seg.x2) }
+    }
+    return { left: xMin.value, right: xMax.value }
+  }
+  
+  const domain1 = getItemDomain(item1)
+  const domain2 = getItemDomain(item2)
+  const domainLeft = Math.max(domain1.left, domain2.left)
+  const domainRight = Math.min(domain1.right, domain2.right)
+  const domainIsFinite = item1.type === 'segment' || item2.type === 'segment'
+  
+  if (domainLeft >= domainRight) {
+    ineq.result = { display: '∅ (domaines disjoints)', intervals: [], item1, item2 }
+    return
+  }
+  
+  // Trouver les intersections
+  const intersections = []
+  
+  if (item1.type === 'function' && item2.type === 'function') {
+    const func1 = graphFunctions.value[item1.index]
+    const func2 = graphFunctions.value[item2.index]
+    const ints = findIntersections(func1, func2)
+    intersections.push(...ints)
+  } else if (item1.type === 'segment' && item2.type === 'segment') {
+    const seg1 = segments.value[item1.index]
+    const seg2 = segments.value[item2.index]
+    const pt = findSegmentSegmentIntersection(seg1, seg2)
+    if (pt) intersections.push(pt)
+  } else {
+    const segItem = item1.type === 'segment' ? item1 : item2
+    const funcItem = item1.type === 'function' ? item1 : item2
+    const seg = segments.value[segItem.index]
+    const func = graphFunctions.value[funcItem.index]
+    if (seg && func) {
+      const ints = findSegmentFunctionIntersections(seg, func)
+      intersections.push(...ints)
+    }
+  }
+  
+  const filteredIntersections = intersections.filter(p => 
+    p.x >= domainLeft - 0.01 && p.x <= domainRight + 0.01
+  )
+  filteredIntersections.sort((a, b) => a.x - b.x)
+  
+  if (op === '=') {
+    if (filteredIntersections.length === 0) {
+      ineq.result = { display: '∅ (aucune solution)', intervals: [], item1, item2 }
+    } else {
+      const pts = filteredIntersections.map(p => {
+        const xv = Math.abs(p.x) < 0.005 ? 0 : Number(p.x.toFixed(2))
+        return `x = ${xv}`
+      })
+      ineq.result = { display: `S = { ${pts.join(' ; ')} }`, intervals: [], item1, item2 }
+    }
+    return
+  }
+  
+  const breakpoints = filteredIntersections.map(p => p.x)
+  const testPoints = []
+  
+  if (breakpoints.length > 0) {
+    testPoints.push(Math.max(domainLeft, breakpoints[0] - 0.5))
+  } else {
+    testPoints.push((domainLeft + domainRight) / 2)
+  }
+  
+  for (let i = 0; i < breakpoints.length - 1; i++) {
+    testPoints.push((breakpoints[i] + breakpoints[i + 1]) / 2)
+  }
+  
+  if (breakpoints.length > 0) {
+    testPoints.push(Math.min(domainRight, breakpoints[breakpoints.length - 1] + 0.5))
+  }
+  
+  const satisfiedIntervals = []
+  const strict = (op === '<' || op === '>')
+  const wantLess = (op === '<' || op === '<=')
+  
+  testPoints.forEach((testX, i) => {
+    const y1 = evalItem(item1, testX)
+    const y2 = evalItem(item2, testX)
+    if (!isFinite(y1) || !isFinite(y2)) return
+    
+    const diff = y1 - y2
+    let satisfied = false
+    if (wantLess) {
+      satisfied = diff < -1e-9
+    } else {
+      satisfied = diff > 1e-9
+    }
+    
+    if (satisfied) {
+      let left, right, leftBracket, rightBracket
+      
+      if (i === 0 && breakpoints.length > 0) {
+        if (domainIsFinite) {
+          left = Number(domainLeft.toFixed(2))
+          leftBracket = '['
+        } else {
+          left = '-∞'
+          leftBracket = ']'
+        }
+        right = Number(breakpoints[0].toFixed(2))
+        rightBracket = strict ? '[' : ']'
+      } else if (i === 0 && breakpoints.length === 0) {
+        if (domainIsFinite) {
+          left = Number(domainLeft.toFixed(2))
+          leftBracket = '['
+          right = Number(domainRight.toFixed(2))
+          rightBracket = ']'
+        } else {
+          left = '-∞'
+          leftBracket = ']'
+          right = '+∞'
+          rightBracket = '['
+        }
+      } else if (i === testPoints.length - 1) {
+        left = Number(breakpoints[breakpoints.length - 1].toFixed(2))
+        leftBracket = strict ? ']' : '['
+        if (domainIsFinite) {
+          right = Number(domainRight.toFixed(2))
+          rightBracket = ']'
+        } else {
+          right = '+∞'
+          rightBracket = '['
+        }
+      } else {
+        left = Number(breakpoints[i - 1].toFixed(2))
+        leftBracket = strict ? ']' : '['
+        right = Number(breakpoints[i].toFixed(2))
+        rightBracket = strict ? '[' : ']'
+      }
+      
+      satisfiedIntervals.push({ left, right, leftBracket, rightBracket })
+    }
+  })
+  
+  if (satisfiedIntervals.length === 0) {
+    ineq.result = { display: '∅ (aucune solution)', intervals: satisfiedIntervals, item1, item2 }
+  } else {
+    const parts = satisfiedIntervals.map(iv => {
+      return `${iv.leftBracket}${iv.left} ; ${iv.right}${iv.rightBracket}`
+    })
+    const opSymbol = op === '<' ? '&lt;' : op === '>' ? '&gt;' : op === '<=' ? '≤' : op === '>=' ? '≥' : '='
+    ineq.result = {
+      display: `${name1}(x) ${opSymbol} ${name2}(x) &nbsp;⟹&nbsp; S = ${parts.join(' ∪ ')}`,
+      intervals: satisfiedIntervals,
+      item1,
+      item2
+    }
+  }
+}
+
+function solveAllInequalities() {
+  inequalities.value.forEach((ineq, idx) => {
+    solveInequalityAt(idx)
+  })
+  // Synchroniser avec l'ancien ref pour compatibilité
+  if (inequalities.value.length > 0) {
+    inequalityResult.value = inequalities.value[0].result
+  }
+}
+
+function solveInequality() {
+  solveAllInequalities()
+}
+
 function calculateIntersections(traces) {
   intersectionPoints.value = []
   
@@ -2758,6 +5286,16 @@ function calculateIntersections(traces) {
         )
         
         if (!isHidden) {
+          const key = getIntersectionKey(i + 1, j + 1, point.x, point.y)
+          const customName = intersectionCustomNames.value[key] || ''
+          const xCoord = Math.abs(point.x) < 0.01 ? 0 : Number(point.x.toFixed(2))
+          const yCoord = Math.abs(point.y) < 0.01 ? 0 : Number(point.y.toFixed(2))
+          const name1 = getFunctionDisplayName(func1, i)
+          const name2 = getFunctionDisplayName(func2, j)
+          const defaultName = `${name1} ∩ ${name2}`
+          const displayName = customName || defaultName
+          const ptColor = intersectionCustomColors.value[key] || '#dc2626'
+          
           intersectionPoints.value.push({
             x: point.x,
             y: point.y,
@@ -2766,22 +5304,21 @@ function calculateIntersections(traces) {
             func1Index: i + 1,
             func2Index: j + 1,
             color1: func1.color,
-            color2: func2.color
+            color2: func2.color,
+            color: ptColor,
+            name: displayName,
+            key: key,
+            defaultName: defaultName
           })
-          
-          // Ajouter un point sur le graphique avec le label des fonctions
-          const xCoord = Math.abs(point.x) < 0.01 ? 0 : Number(point.x.toFixed(2))
-          const yCoord = Math.abs(point.y) < 0.01 ? 0 : Number(point.y.toFixed(2))
-          const intersectionLabel = `f${i + 1} ∩ f${j + 1}: (${xCoord}, ${yCoord})`
           
           traces.push({
             x: [point.x],
             y: [point.y],
             type: 'scatter',
             mode: 'markers',
-            name: intersectionLabel,
+            name: `${displayName}: (${xCoord}, ${yCoord})`,
             marker: {
-              color: '#dc2626',
+              color: ptColor,
               size: 10,
               symbol: 'circle',
               line: {
@@ -2791,7 +5328,7 @@ function calculateIntersections(traces) {
             },
             showlegend: true,
             legendgroup: 'intersections',
-            hovertemplate: `<b>Intersection f<sub>${i + 1}</sub> ∩ f<sub>${j + 1}</sub></b><br>Point: (${point.x.toFixed(3)}, ${point.y.toFixed(3)})<extra></extra>`
+            hovertemplate: `<b>${displayName}</b><br>(${point.x.toFixed(3)}, ${point.y.toFixed(3)})<extra></extra>`
           })
         }
       })
@@ -2800,6 +5337,169 @@ function calculateIntersections(traces) {
   
   // Rendre les expressions LaTeX des intersections
   nextTick(() => renderIntersectionExpressions())
+  
+  // === Intersections SEGMENTS × FONCTIONS ===
+  if (segments.value.length > 0) {
+    segments.value.forEach((seg, sIdx) => {
+      // Paramétrer le segment : S(t) = (x1 + t*(x2-x1), y1 + t*(y2-y1)), t ∈ [0,1]
+      const dx = seg.x2 - seg.x1
+      const dy = seg.y2 - seg.y1
+      const segMinX = Math.min(seg.x1, seg.x2)
+      const segMaxX = Math.max(seg.x1, seg.x2)
+      const segMinY = Math.min(seg.y1, seg.y2)
+      const segMaxY = Math.max(seg.y1, seg.y2)
+      
+      // Segment vs each graphFunction
+      graphFunctions.value.forEach((func, fIdx) => {
+        const pts = findSegmentFunctionIntersections(seg, func)
+        pts.forEach(pt => {
+          const isHidden = hiddenIntersections.value.some(h =>
+            Math.abs(h.x - pt.x) < 0.01 && Math.abs(h.y - pt.y) < 0.01
+          )
+          if (!isHidden) {
+            const segName = seg.name || (seg.isVector ? `V${sIdx+1}` : `S${sIdx+1}`)
+            const funcName = getFunctionDisplayName(func, fIdx)
+            const defaultName = `${segName} ∩ ${funcName}`
+            const xCoord = Math.abs(pt.x) < 0.01 ? 0 : Number(pt.x.toFixed(2))
+            const yCoord = Math.abs(pt.y) < 0.01 ? 0 : Number(pt.y.toFixed(2))
+            
+            const sfKey = `seg${sIdx}-func${fIdx}-${xCoord}`
+            const sfColor = intersectionCustomColors.value[sfKey] || '#dc2626'
+            const sfCustomName = intersectionCustomNames.value[sfKey] || ''
+            const sfDisplayName = sfCustomName || defaultName
+            intersectionPoints.value.push({
+              x: pt.x, y: pt.y,
+              func1: segName, func2: func.expression,
+              func1Index: -1, func2Index: fIdx + 1,
+              color1: seg.color, color2: func.color,
+              color: sfColor,
+              name: sfDisplayName, key: sfKey, defaultName
+            })
+            traces.push({
+              x: [pt.x], y: [pt.y], type: 'scatter', mode: 'markers',
+              name: `${sfDisplayName}: (${xCoord}, ${yCoord})`,
+              marker: { color: sfColor, size: 10, symbol: 'circle', line: { color: 'white', width: 2 } },
+              showlegend: true, legendgroup: 'intersections',
+              hovertemplate: `<b>${defaultName}</b><br>(${pt.x.toFixed(3)}, ${pt.y.toFixed(3)})<extra></extra>`
+            })
+          }
+        })
+      })
+      
+      // Segment vs other segments
+      for (let sIdx2 = sIdx + 1; sIdx2 < segments.value.length; sIdx2++) {
+        const seg2 = segments.value[sIdx2]
+        const pt = findSegmentSegmentIntersection(seg, seg2)
+        if (pt) {
+          const isHidden = hiddenIntersections.value.some(h =>
+            Math.abs(h.x - pt.x) < 0.01 && Math.abs(h.y - pt.y) < 0.01
+          )
+          if (!isHidden) {
+            const name1 = seg.name || (seg.isVector ? `V${sIdx+1}` : `S${sIdx+1}`)
+            const name2 = seg2.name || (seg2.isVector ? `V${sIdx2+1}` : `S${sIdx2+1}`)
+            const defaultName = `${name1} ∩ ${name2}`
+            const xCoord = Math.abs(pt.x) < 0.01 ? 0 : Number(pt.x.toFixed(2))
+            const yCoord = Math.abs(pt.y) < 0.01 ? 0 : Number(pt.y.toFixed(2))
+            const ssKey = `seg${sIdx}-seg${sIdx2}`
+            const ssColor = intersectionCustomColors.value[ssKey] || '#dc2626'
+            const ssCustomName = intersectionCustomNames.value[ssKey] || ''
+            const ssDisplayName = ssCustomName || defaultName
+            intersectionPoints.value.push({
+              x: pt.x, y: pt.y,
+              func1: name1, func2: name2,
+              func1Index: -1, func2Index: -1,
+              color1: seg.color, color2: seg2.color,
+              color: ssColor,
+              name: ssDisplayName, key: ssKey, defaultName
+            })
+            traces.push({
+              x: [pt.x], y: [pt.y], type: 'scatter', mode: 'markers',
+              name: `${ssDisplayName}: (${xCoord}, ${yCoord})`,
+              marker: { color: ssColor, size: 10, symbol: 'circle', line: { color: 'white', width: 2 } },
+              showlegend: true, legendgroup: 'intersections',
+              hovertemplate: `<b>${defaultName}</b><br>(${pt.x.toFixed(3)}, ${pt.y.toFixed(3)})<extra></extra>`
+            })
+          }
+        }
+      }
+    })
+  }
+  
+  // === Intersections CERCLES × FONCTIONS ===
+  if (circles.value.length > 0) {
+    circles.value.forEach((circ, cIdx) => {
+      graphFunctions.value.forEach((func, fIdx) => {
+        const pts = findCircleFunctionIntersections(circ, func)
+        pts.forEach(pt => {
+          const isHidden = hiddenIntersections.value.some(h =>
+            Math.abs(h.x - pt.x) < 0.01 && Math.abs(h.y - pt.y) < 0.01
+          )
+          if (!isHidden) {
+            const circName = circ.name || `C${cIdx+1}`
+            const funcName = getFunctionDisplayName(func, fIdx)
+            const defaultName = `${circName} ∩ ${funcName}`
+            const xCoord = Math.abs(pt.x) < 0.01 ? 0 : Number(pt.x.toFixed(2))
+            const yCoord = Math.abs(pt.y) < 0.01 ? 0 : Number(pt.y.toFixed(2))
+            const cfKey = `circ${cIdx}-func${fIdx}-${xCoord}`
+            const cfColor = intersectionCustomColors.value[cfKey] || '#dc2626'
+            const cfCustomName = intersectionCustomNames.value[cfKey] || ''
+            const cfDisplayName = cfCustomName || defaultName
+            intersectionPoints.value.push({
+              x: pt.x, y: pt.y,
+              func1: circName, func2: func.expression,
+              func1Index: -1, func2Index: fIdx + 1,
+              color1: circ.color, color2: func.color,
+              color: cfColor,
+              name: cfDisplayName, key: cfKey, defaultName
+            })
+            traces.push({
+              x: [pt.x], y: [pt.y], type: 'scatter', mode: 'markers',
+              name: `${cfDisplayName}: (${xCoord}, ${yCoord})`,
+              marker: { color: cfColor, size: 10, symbol: 'circle', line: { color: 'white', width: 2 } },
+              showlegend: true, legendgroup: 'intersections',
+              hovertemplate: `<b>${defaultName}</b><br>(${pt.x.toFixed(3)}, ${pt.y.toFixed(3)})<extra></extra>`
+            })
+          }
+        })
+      })
+      
+      // Cercle vs segments
+      segments.value.forEach((seg, sIdx) => {
+        const pts = findCircleSegmentIntersections(circ, seg)
+        pts.forEach(pt => {
+          const isHidden = hiddenIntersections.value.some(h =>
+            Math.abs(h.x - pt.x) < 0.01 && Math.abs(h.y - pt.y) < 0.01
+          )
+          if (!isHidden) {
+            const circName = circ.name || `C${cIdx+1}`
+            const segName = seg.name || (seg.isVector ? `V${sIdx+1}` : `S${sIdx+1}`)
+            const defaultName = `${circName} ∩ ${segName}`
+            const xCoord = Math.abs(pt.x) < 0.01 ? 0 : Number(pt.x.toFixed(2))
+            const yCoord = Math.abs(pt.y) < 0.01 ? 0 : Number(pt.y.toFixed(2))
+            const csKey = `circ${cIdx}-seg${sIdx}-${xCoord}`
+            const csColor = intersectionCustomColors.value[csKey] || '#dc2626'
+            const csCustomName = intersectionCustomNames.value[csKey] || ''
+            const csDisplayName = csCustomName || defaultName
+            intersectionPoints.value.push({
+              x: pt.x, y: pt.y,
+              func1: circName, func2: segName,
+              func1Index: -1, func2Index: -1,
+              color1: circ.color, color2: seg.color,
+              color: csColor,
+              name: csDisplayName, key: csKey, defaultName
+            })
+            traces.push({
+              x: [pt.x], y: [pt.y], type: 'scatter', mode: 'markers',
+              name: `${csDisplayName}: (${xCoord}, ${yCoord})`,
+              marker: { color: csColor, size: 10, symbol: 'circle', line: { color: 'white', width: 2 } },
+              showlegend: true, legendgroup: 'intersections',
+              hovertemplate: `<b>${defaultName}</b><br>(${pt.x.toFixed(3)}, ${pt.y.toFixed(3)})<extra></extra>`
+            })
+          }
+        })
+      })
+    })
+  }
 }
 
 function findIntersections(func1, func2) {
@@ -2970,6 +5670,256 @@ function findZeroForHorizontal(jsFunc, yTarget, xStart, xEnd) {
   return (x1 + x2) / 2
 }
 
+// === INTERSECTIONS: Segment × Fonction ===
+function findSegmentFunctionIntersections(seg, func) {
+  const intersections = []
+  const segMinX = Math.min(seg.x1, seg.x2)
+  const segMaxX = Math.max(seg.x1, seg.x2)
+  const segMinY = Math.min(seg.y1, seg.y2)
+  const segMaxY = Math.max(seg.y1, seg.y2)
+  const dx = seg.x2 - seg.x1
+  const dy = seg.y2 - seg.y1
+  
+  // Segment vertical (x constant)
+  if (Math.abs(dx) < 1e-10) {
+    const xSeg = seg.x1
+    if (func.type === 'function') {
+      const js = convertLatexToJS(func.latex)
+      const yVal = evaluateFunction(js, xSeg)
+      if (isFinite(yVal) && yVal >= segMinY && yVal <= segMaxY) {
+        intersections.push({ x: xSeg, y: yVal })
+      }
+    } else if (func.type === 'horizontal') {
+      if (func.value >= segMinY && func.value <= segMaxY) {
+        intersections.push({ x: xSeg, y: func.value })
+      }
+    }
+    // vertical segment vs vertical line => infinite or none, skip
+    return intersections
+  }
+  
+  // Segment horizontal
+  if (Math.abs(dy) < 1e-10) {
+    const ySeg = seg.y1
+    if (func.type === 'function') {
+      // Find where f(x) = ySeg within [segMinX, segMaxX]
+      const js = convertLatexToJS(func.latex)
+      const numSamples = 200
+      const step = (segMaxX - segMinX) / numSamples
+      for (let i = 0; i < numSamples; i++) {
+        const x1 = segMinX + i * step
+        const x2 = segMinX + (i + 1) * step
+        const d1 = evaluateFunction(js, x1) - ySeg
+        const d2 = evaluateFunction(js, x2) - ySeg
+        if (isFinite(d1) && isFinite(d2) && d1 * d2 <= 0 && Math.abs(d1) < 100 && Math.abs(d2) < 100) {
+          const xInt = findZeroForHorizontal(js, ySeg, x1, x2)
+          if (xInt !== null && xInt >= segMinX && xInt <= segMaxX) {
+            const isDup = intersections.some(p => Math.abs(p.x - xInt) < 0.05)
+            if (!isDup) intersections.push({ x: xInt, y: ySeg })
+          }
+        }
+      }
+    } else if (func.type === 'horizontal') {
+      // Two horizontal lines — parallel or same
+      if (Math.abs(func.value - ySeg) < 1e-6) {
+        // Same line — infinite intersections, skip
+      }
+    } else if (func.type === 'vertical') {
+      if (func.value >= segMinX && func.value <= segMaxX) {
+        intersections.push({ x: func.value, y: ySeg })
+      }
+    }
+    return intersections
+  }
+  
+  // General segment (oblique) — parametric: segY(x) = y1 + (x - x1) * dy / dx for x in [segMinX, segMaxX]
+  if (func.type === 'vertical') {
+    const xV = func.value
+    if (xV >= segMinX && xV <= segMaxX) {
+      const t = (xV - seg.x1) / dx
+      if (t >= -0.001 && t <= 1.001) {
+        const yV = seg.y1 + t * dy
+        intersections.push({ x: xV, y: yV })
+      }
+    }
+    return intersections
+  }
+  
+  if (func.type === 'horizontal') {
+    const yH = func.value
+    const t = (yH - seg.y1) / dy
+    if (t >= -0.001 && t <= 1.001) {
+      const xH = seg.x1 + t * dx
+      if (xH >= segMinX - 0.001 && xH <= segMaxX + 0.001) {
+        intersections.push({ x: xH, y: yH })
+      }
+    }
+    return intersections
+  }
+  
+  // func.type === 'function'
+  const js = convertLatexToJS(func.latex)
+  const numSamples = 200
+  const step = (segMaxX - segMinX) / numSamples
+  if (step <= 0) return intersections
+  
+  for (let i = 0; i < numSamples; i++) {
+    const x1 = segMinX + i * step
+    const x2 = segMinX + (i + 1) * step
+    // segY at x
+    const segY1 = seg.y1 + ((x1 - seg.x1) / dx) * dy
+    const segY2 = seg.y1 + ((x2 - seg.x1) / dx) * dy
+    const fY1 = evaluateFunction(js, x1)
+    const fY2 = evaluateFunction(js, x2)
+    
+    if (isFinite(segY1) && isFinite(segY2) && isFinite(fY1) && isFinite(fY2)) {
+      const d1 = segY1 - fY1
+      const d2 = segY2 - fY2
+      if (d1 * d2 <= 0 && Math.abs(d1) < 100 && Math.abs(d2) < 100) {
+        // Bisect to find precise x
+        let lo = x1, hi = x2
+        for (let iter = 0; iter < 30; iter++) {
+          const mid = (lo + hi) / 2
+          const segYm = seg.y1 + ((mid - seg.x1) / dx) * dy
+          const fYm = evaluateFunction(js, mid)
+          if (!isFinite(fYm)) break
+          const dm = segYm - fYm
+          if (Math.abs(dm) < 1e-8) { lo = hi = mid; break }
+          if (d1 * dm < 0) hi = mid; else lo = mid
+        }
+        const xInt = (lo + hi) / 2
+        const yInt = evaluateFunction(js, xInt)
+        if (isFinite(yInt)) {
+          const isDup = intersections.some(p => Math.abs(p.x - xInt) < 0.05)
+          if (!isDup) intersections.push({ x: xInt, y: yInt })
+        }
+      }
+    }
+  }
+  return intersections
+}
+
+// === INTERSECTIONS: Segment × Segment ===
+function findSegmentSegmentIntersection(seg1, seg2) {
+  const x1 = seg1.x1, y1 = seg1.y1, x2 = seg1.x2, y2 = seg1.y2
+  const x3 = seg2.x1, y3 = seg2.y1, x4 = seg2.x2, y4 = seg2.y2
+  
+  const denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+  if (Math.abs(denom) < 1e-10) return null // parallel
+  
+  const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom
+  const u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom
+  
+  if (t >= -0.001 && t <= 1.001 && u >= -0.001 && u <= 1.001) {
+    return { x: x1 + t * (x2 - x1), y: y1 + t * (y2 - y1) }
+  }
+  return null
+}
+
+// === INTERSECTIONS: Cercle × Fonction ===
+function findCircleFunctionIntersections(circ, func) {
+  const intersections = []
+  const { h, k, r } = circ
+  
+  if (func.type === 'vertical') {
+    const xV = func.value
+    const dx = xV - h
+    if (Math.abs(dx) <= r) {
+      const dy = Math.sqrt(r * r - dx * dx)
+      intersections.push({ x: xV, y: k + dy })
+      if (dy > 1e-8) intersections.push({ x: xV, y: k - dy })
+    }
+    return intersections
+  }
+  
+  if (func.type === 'horizontal') {
+    const yH = func.value
+    const dy = yH - k
+    if (Math.abs(dy) <= r) {
+      const dx = Math.sqrt(r * r - dy * dy)
+      intersections.push({ x: h + dx, y: yH })
+      if (dx > 1e-8) intersections.push({ x: h - dx, y: yH })
+    }
+    return intersections
+  }
+  
+  // func.type === 'function': sample x in [h-r, h+r], compare f(x) with circle top/bottom
+  const js = convertLatexToJS(func.latex)
+  const numSamples = 500
+  const xStart = h - r - 0.5
+  const xEnd = h + r + 0.5
+  const step = (xEnd - xStart) / numSamples
+  
+  for (let i = 0; i < numSamples; i++) {
+    const x1 = xStart + i * step
+    const x2 = xStart + (i + 1) * step
+    const fY1 = evaluateFunction(js, x1)
+    const fY2 = evaluateFunction(js, x2)
+    if (!isFinite(fY1) || !isFinite(fY2)) continue
+    
+    // Circle: (x-h)^2 + (y-k)^2 = r^2 → distance from (x, f(x)) to center
+    const distSq1 = (x1 - h) * (x1 - h) + (fY1 - k) * (fY1 - k)
+    const distSq2 = (x2 - h) * (x2 - h) + (fY2 - k) * (fY2 - k)
+    const r2 = r * r
+    const d1 = distSq1 - r2
+    const d2 = distSq2 - r2
+    
+    if (d1 * d2 <= 0) {
+      // Bisect for precise crossing
+      let lo = x1, hi = x2
+      for (let iter = 0; iter < 50; iter++) {
+        const mid = (lo + hi) / 2
+        const fYm = evaluateFunction(js, mid)
+        if (!isFinite(fYm)) break
+        const distSqM = (mid - h) * (mid - h) + (fYm - k) * (fYm - k)
+        const dm = distSqM - r2
+        if (Math.abs(dm) < 1e-10) { lo = hi = mid; break }
+        if (d1 * dm < 0) hi = mid; else lo = mid
+      }
+      const xInt = (lo + hi) / 2
+      const yInt = evaluateFunction(js, xInt)
+      if (isFinite(yInt)) {
+        const isDup = intersections.some(p => Math.abs(p.x - xInt) < 0.05 && Math.abs(p.y - yInt) < 0.05)
+        if (!isDup) intersections.push({ x: xInt, y: yInt })
+      }
+    }
+  }
+  return intersections
+}
+
+// === INTERSECTIONS: Cercle × Segment ===
+function findCircleSegmentIntersections(circ, seg) {
+  const intersections = []
+  const { h, k, r } = circ
+  const dx = seg.x2 - seg.x1
+  const dy = seg.y2 - seg.y1
+  
+  // Parametric: P(t) = (x1 + t*dx, y1 + t*dy), t ∈ [0,1]
+  // (x1 + t*dx - h)^2 + (y1 + t*dy - k)^2 = r^2
+  const fx = seg.x1 - h
+  const fy = seg.y1 - k
+  const a = dx * dx + dy * dy
+  const b = 2 * (fx * dx + fy * dy)
+  const c = fx * fx + fy * fy - r * r
+  
+  let discriminant = b * b - 4 * a * c
+  if (discriminant < 0) return intersections
+  
+  discriminant = Math.sqrt(discriminant)
+  const t1 = (-b - discriminant) / (2 * a)
+  const t2 = (-b + discriminant) / (2 * a)
+  
+  for (const t of [t1, t2]) {
+    if (t >= -0.001 && t <= 1.001) {
+      const x = seg.x1 + t * dx
+      const y = seg.y1 + t * dy
+      const isDup = intersections.some(p => Math.abs(p.x - x) < 0.01 && Math.abs(p.y - y) < 0.01)
+      if (!isDup) intersections.push({ x, y })
+    }
+  }
+  return intersections
+}
+
 function calculateAxisIntersections(traces) {
   axisIntersectionPoints.value = []
   
@@ -2988,33 +5938,42 @@ function calculateAxisIntersections(traces) {
       )
       
       if (!isHidden) {
+        const axisKey = getAxisIntersectionKey(index + 1, 'x', xValue, 0)
+        const axisCustomName = axisIntersectionCustomNames.value[axisKey] || ''
+        const funcName = getFunctionDisplayName(func, index)
+        const defaultAxisName = `${funcName} ∩ axe X`
+        const axisDisplayName = axisCustomName || defaultAxisName
+        
         axisIntersectionPoints.value.push({
           x: xValue,
           y: 0,
           funcIndex: index + 1,
-          axis: 'x'
+          axis: 'x',
+          name: axisDisplayName,
+          key: axisKey,
+          defaultName: defaultAxisName
         })
         
         // Ajouter un marqueur sur le graphique
         const xCoord = Math.abs(xValue) < 0.01 ? 0 : Number(xValue.toFixed(2))
         traces.push({
-        x: [xValue],
-        y: [0],
-        type: 'scatter',
-        mode: 'markers',
-        name: `f${index + 1} ∩ axe X: (${xCoord}, 0)`,
-        marker: {
-          color: '#059669',
-          size: 8,
-          symbol: 'x',
-          line: {
-            color: 'white',
-            width: 1
-          }
-        },
-        showlegend: true,
-        legendgroup: 'axis-intersections',
-        hovertemplate: `<b>f<sub>${index + 1}</sub> ∩ axe X</b><br>Point: (${xValue.toFixed(3)}, 0)<extra></extra>`
+          x: [xValue],
+          y: [0],
+          type: 'scatter',
+          mode: 'markers',
+          name: `${axisDisplayName}: (${xCoord}, 0)`,
+          marker: {
+            color: '#059669',
+            size: 8,
+            symbol: 'x',
+            line: {
+              color: 'white',
+              width: 1
+            }
+          },
+          showlegend: true,
+          legendgroup: 'axis-intersections',
+          hovertemplate: `<b>${axisDisplayName}</b><br>(${xValue.toFixed(3)}, 0)<extra></extra>`
         })
       }
     })
@@ -3030,11 +5989,20 @@ function calculateAxisIntersections(traces) {
       )
       
       if (!isHidden) {
+        const axisKeyY = getAxisIntersectionKey(index + 1, 'y', 0, yValue)
+        const axisCustomNameY = axisIntersectionCustomNames.value[axisKeyY] || ''
+        const funcName = getFunctionDisplayName(func, index)
+        const defaultAxisNameY = `${funcName} ∩ axe Y`
+        const axisDisplayNameY = axisCustomNameY || defaultAxisNameY
+        
         axisIntersectionPoints.value.push({
           x: 0,
           y: yValue,
           funcIndex: index + 1,
-          axis: 'y'
+          axis: 'y',
+          name: axisDisplayNameY,
+          key: axisKeyY,
+          defaultName: defaultAxisNameY
         })
         
         // Ajouter un marqueur sur le graphique
@@ -3044,7 +6012,7 @@ function calculateAxisIntersections(traces) {
           y: [yValue],
           type: 'scatter',
           mode: 'markers',
-          name: `f${index + 1} ∩ axe Y: (0, ${yCoord})`,
+          name: `${axisDisplayNameY}: (0, ${yCoord})`,
           marker: {
             color: '#7c3aed',
             size: 8,
@@ -3056,7 +6024,7 @@ function calculateAxisIntersections(traces) {
           },
           showlegend: true,
           legendgroup: 'axis-intersections',
-          hovertemplate: `<b>f<sub>${index + 1}</sub> ∩ axe Y</b><br>Point: (0, ${yValue.toFixed(3)})<extra></extra>`
+          hovertemplate: `<b>${axisDisplayNameY}</b><br>(0, ${yValue.toFixed(3)})<extra></extra>`
         })
       }
     }
@@ -3202,6 +6170,10 @@ function addPoint() {
   shapes.addPoint(plotAllFunctions)
 }
 
+function addMultiplePoints() {
+  shapes.addMultiplePoints(plotAllFunctions)
+}
+
 function removePoint(index) {
   shapes.removePoint(index, plotAllFunctions)
 }
@@ -3273,14 +6245,8 @@ function editFunction(index) {
 
 function removeFunction(index) {
   graphFunctions.value.splice(index, 1)
-  if (graphFunctions.value.length > 0) {
-    plotAllFunctions()
-    // Rerendre les expressions après suppression
-    nextTick(() => renderFunctionExpressions())
-  } else {
-    clearGraph()
-    nextTick(() => initializeGraph())
-  }
+  plotAllFunctions()
+  nextTick(() => renderFunctionExpressions())
 }
 
 function changeColor(index, newColor) {
@@ -3316,6 +6282,26 @@ function removeAxisIntersection(index) {
     })
     plotAllFunctions()
   }
+}
+
+// Ajouter un point d'intersection comme point utilisateur
+function addIntersectionAsPoint(x, y, suggestedName) {
+  const roundedX = Math.round(x * 1000) / 1000
+  const roundedY = Math.round(y * 1000) / 1000
+  // Vérifier si un point existe déjà à ces coordonnées
+  const exists = points.value.find(p => Math.abs(p.x - roundedX) < 0.001 && Math.abs(p.y - roundedY) < 0.001)
+  if (exists) return
+  const color = shapes.getNextColor()
+  const name = suggestedName || `P${points.value.length + 1}`
+  points.value.push({
+    x: roundedX,
+    y: roundedY,
+    color: color,
+    name: name,
+    showName: true,
+    showCoords: true
+  })
+  plotAllFunctions()
 }
 
 // Fonction pour calculer l'intégrale numérique (méthode des trapèzes)
@@ -3868,12 +6854,13 @@ function calculateRoots(traces) {
       
       // Ajouter un marqueur sur le graphique
       const xCoord = Math.abs(xRoot) < 0.01 ? 0 : Number(xRoot.toFixed(3))
+      const funcName = getFunctionDisplayName(func, index)
       traces.push({
         x: [xRoot],
         y: [0],
         type: 'scatter',
         mode: 'markers',
-        name: `Racine f${index + 1}: x = ${xCoord}`,
+        name: `Racine ${funcName}: x = ${xCoord}`,
         marker: {
           color: '#f97316',
           size: 10,
@@ -3885,7 +6872,7 @@ function calculateRoots(traces) {
         },
         showlegend: true,
         legendgroup: 'roots',
-        hovertemplate: `<b>Racine de f<sub>${index + 1}</sub></b><br>x = ${xRoot.toFixed(3)}<br>f(x) = 0<extra></extra>`
+        hovertemplate: `<b>Racine de ${funcName}</b><br>x = ${xRoot.toFixed(3)}<br>${funcName}(x) = 0<extra></extra>`
       })
     })
   })
@@ -3942,21 +6929,64 @@ function renderFunctionExpressions() {
 
 async function clearGraph() {
   graphFunctions.value = []
-  if (graphContainer.value && Plotly) {
-    Plotly.purge(graphContainer.value)
-  }
+  textAnnotations.value = []
+  annotationPositions.value = {}
+  intersectionCustomNames.value = {}
+  intersectionCustomColors.value = {}
+  axisIntersectionCustomNames.value = {}
+  hiddenIntersections.value = []
+  hiddenAxisIntersections.value = []
+  // Reset inéquations
+  inequalities.value = [{ func1Index: 0, func2Index: 1, operator: '<', result: null, color: INEQUALITY_COLORS[0] }]
+  inequalityResult.value = null
+  showInequality.value = false
+  shapes.clearAllShapes()
   if (preview.value) {
     preview.value.innerHTML = ''
   }
+  // Retracer un graphique vide
+  await plotAllFunctions()
 }
 
 async function resetZoom() {
-  if (graphContainer.value && graphFunctions.value.length > 0 && Plotly) {
+  if (graphContainer.value && Plotly) {
     Plotly.relayout(graphContainer.value, {
       'xaxis.range': [xMin.value, xMax.value],
       'yaxis.range': [yMin.value, yMax.value]
     })
   }
+}
+
+function zoomIn() {
+  if (!graphContainer.value || !Plotly) return
+  const layout = graphContainer.value._fullLayout
+  if (!layout) return
+  const xRange = layout.xaxis.range
+  const yRange = layout.yaxis.range
+  const xCenter = (xRange[0] + xRange[1]) / 2
+  const yCenter = (yRange[0] + yRange[1]) / 2
+  const xHalf = (xRange[1] - xRange[0]) / 2 * 0.7
+  const yHalf = (yRange[1] - yRange[0]) / 2 * 0.7
+  Plotly.relayout(graphContainer.value, {
+    'xaxis.range': [xCenter - xHalf, xCenter + xHalf],
+    'yaxis.range': [yCenter - yHalf, yCenter + yHalf]
+  })
+}
+
+function zoomOut() {
+  if (!graphContainer.value || !Plotly) return
+  const layout = graphContainer.value._fullLayout
+  if (!layout) return
+  const xRange = layout.xaxis.range
+  const yRange = layout.yaxis.range
+  const xCenter = (xRange[0] + xRange[1]) / 2
+  const yCenter = (yRange[0] + yRange[1]) / 2
+  const xHalf = (xRange[1] - xRange[0]) / 2 * 1.4
+  const yHalf = (yRange[1] - yRange[0]) / 2 * 1.4
+  Plotly.relayout(graphContainer.value, {
+    'xaxis.range': [xCenter - xHalf, xCenter + xHalf],
+    'yaxis.range': [yCenter - yHalf, yCenter + yHalf]
+  })
 }
 
 // Initialiser le graphique quand l'onglet graphique est sélectionné
@@ -4365,6 +7395,29 @@ async function initializeGraph() {
 
 .remove-intersection-btn:hover {
   background: #dc2626;
+  transform: scale(1.1);
+}
+
+.add-point-from-intersection-btn {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background: #10b981;
+  color: white;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.add-point-from-intersection-btn:hover {
+  background: #059669;
   transform: scale(1.1);
 }
 
@@ -4886,6 +7939,207 @@ async function initializeGraph() {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* === DESKTOP SIDE-BY-SIDE LAYOUT === */
+/* Layout flex : graphique à gauche, onglets à droite */
+.graph-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.graph-main-area {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Panneau latéral desktop */
+.graph-side-panel.desktop-only-panel {
+  width: 380px;
+  min-width: 320px;
+  max-width: 420px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #fafbfc;
+  overflow: hidden;
+  max-height: 80vh;
+}
+
+/* En-tête du panneau latéral */
+.side-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.side-panel-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+}
+
+/* Grille de cartes dans le panneau latéral */
+.side-panel-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.side-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.6rem 0.4rem;
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.side-card:hover {
+  border-color: #93c5fd;
+  background: #f0f7ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+}
+
+.side-card.active {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.side-card-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.side-card-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #475569;
+  line-height: 1.1;
+}
+
+.side-card.active .side-card-label {
+  color: #1e3a8a;
+}
+
+/* Bouton masquer/afficher le panneau */
+.toggle-panel-btn {
+  padding: 0.5rem 0.85rem;
+  background: #f0f7ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.375rem;
+  color: #1e3a8a;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.toggle-panel-btn:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.side-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  background: white;
+}
+
+.side-panel-content .tab-panel {
+  padding: 1rem;
+}
+
+.side-panel-content .panel-title {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.side-panel-content .bounds-row {
+  gap: 0.5rem;
+}
+
+.side-panel-content .bound-field {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.5rem;
+}
+
+.side-panel-content .checkbox-label {
+  font-size: 0.85rem;
+}
+
+.side-panel-content .shape-section {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+}
+
+.side-panel-content .shape-title {
+  font-size: 0.9rem;
+}
+
+.side-panel-content .action-btn {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+/* Masquer les onglets du haut sur desktop (garder uniquement le panneau latéral) */
+.mobile-only-tabs {
+  display: none;
+}
+
+/* Tablettes : panneau latéral plus compact */
+@media (min-width: 769px) and (max-width: 1100px) {
+  .graph-side-panel.desktop-only-panel {
+    width: 300px;
+    min-width: 260px;
+    max-width: 320px;
+  }
+  
+  .side-panel-cards {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+    padding: 0.5rem;
+  }
+  
+  .side-card {
+    padding: 0.45rem 0.3rem;
+  }
+  
+  .side-card-icon {
+    font-size: 1.1rem;
+  }
+  
+  .side-card-label {
+    font-size: 0.65rem;
+  }
+  
+  .side-panel-content .tab-panel {
+    padding: 0.75rem;
+  }
+  
+  .graph-layout {
+    gap: 1rem;
+  }
+}
+
 .graph-header {
   display: flex;
   justify-content: space-between;
@@ -4908,7 +8162,8 @@ async function initializeGraph() {
 }
 
 .clear-graph-btn,
-.reset-zoom-btn {
+.reset-zoom-btn,
+.zoom-btn {
   padding: 0.5rem 1rem;
   background: white;
   border: 1px solid #e5e7eb;
@@ -4918,6 +8173,12 @@ async function initializeGraph() {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.zoom-btn:hover {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #16a34a;
 }
 
 .clear-graph-btn:hover {
@@ -4937,10 +8198,72 @@ async function initializeGraph() {
   width: 100%;
 }
 
+/* Barre d'outils de dessin */
+.drawing-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.drawing-toolbar-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  margin-right: 0.25rem;
+}
+
+.drawing-tool-btn {
+  padding: 0.35rem 0.75rem;
+  background: white;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 0.375rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.drawing-tool-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.drawing-tool-btn.active {
+  background: #1e3a8a;
+  border-color: #1e3a8a;
+  color: white;
+  box-shadow: 0 1px 3px rgba(30, 58, 138, 0.3);
+}
+
+.drawing-tool-btn.cancel-btn {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.drawing-tool-btn.cancel-btn:hover {
+  background: #fee2e2;
+  border-color: #f87171;
+}
+
+.drawing-hint {
+  font-size: 0.8rem;
+  color: #1e3a8a;
+  font-style: italic;
+  margin-left: 0.5rem;
+}
+
 .graph-container {
   width: 100%;
   aspect-ratio: 4 / 3;
-  min-height: 500px;
+  min-height: 450px;
   max-height: 85vh;
   border: none;
   border-radius: 0;
@@ -5221,6 +8544,13 @@ async function initializeGraph() {
   border: 1px solid #bfdbfe;
   border-radius: 0.375rem;
   font-size: 0.9rem;
+}
+
+.inequality-result {
+  background: #f0fdf4;
+  border-color: #86efac;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 .action-btn {
@@ -5597,6 +8927,31 @@ async function initializeGraph() {
   flex-shrink: 0;
 }
 
+.function-name-label {
+  cursor: pointer;
+}
+
+.function-name-input {
+  width: 6ch;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1e3a8a;
+  background: #ffffff;
+}
+
+.function-name-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.function-name-suffix {
+  margin-left: 0.15rem;
+}
+
 .function-name sub {
   font-size: 0.75rem;
 }
@@ -5630,8 +8985,147 @@ async function initializeGraph() {
   transform: scale(1.1);
 }
 
+/* Traced shapes in Fonctions tab */
+.traced-shapes-section {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.traced-shapes-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.4rem 0;
+}
+
+.shape-item-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #1e3a8a;
+}
+
+.shape-name-clickable {
+  cursor: pointer;
+  border-bottom: 1px dashed transparent;
+  transition: all 0.2s ease;
+}
+
+.shape-name-clickable:hover {
+  border-bottom-color: #3b82f6;
+  color: #2563eb;
+}
+
+.shape-name-input {
+  width: 8ch;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #1e3a8a;
+  background: #ffffff;
+}
+
+.shape-name-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.shape-item-coords {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-left: 0.25rem;
+}
+
+/* Point with toggle buttons layout */
+.shape-item-with-toggles,
+.function-item-with-toggles {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 4px !important;
+}
+.shape-item-main {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.shape-item-toggles {
+  display: flex;
+  gap: 6px;
+  padding-left: 28px;
+}
+.point-toggle-btn {
+  padding: 2px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+.point-toggle-btn.active {
+  background: #dbeafe;
+  color: #1e40af;
+  border-color: #93c5fd;
+}
+.point-toggle-btn:hover {
+  background: #e0e7ff;
+}
+
+.connect-points-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  background: #f0f4ff;
+  border-radius: 0.375rem;
+}
+
+.connect-points-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #1e3a8a;
+  cursor: pointer;
+  user-select: none;
+}
+
+.connect-points-toggle input[type="checkbox"] {
+  accent-color: #3b82f6;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
 /* Responsive pour le graphique */
 @media (max-width: 768px) {
+  /* === MOBILE: afficher les onglets du haut, masquer le panneau latéral === */
+  .mobile-only-tabs {
+    display: block !important;
+  }
+  
+  .graph-side-panel.desktop-only-panel {
+    display: none !important;
+  }
+  
+  .toggle-panel-btn.desktop-only-panel {
+    display: none !important;
+  }
+  
+  .graph-layout {
+    flex-direction: column;
+  }
+  
   .graph-header {
     flex-direction: column;
     align-items: flex-start;
@@ -5831,5 +9325,31 @@ async function initializeGraph() {
 .keyboard-slide-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+/* ═══ Lien aide ═══ */
+.graph-help-link-row {
+  text-align: center;
+  padding: 16px 0;
+}
+.graph-help-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  color: #3b82f6;
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.graph-help-link:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
 }
 </style> 

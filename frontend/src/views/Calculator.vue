@@ -39,41 +39,58 @@
             <div v-show="activeGraphTab === 'functions'" class="tab-panel">
               <h4 class="panel-title">Éléments tracés</h4>
               <div v-if="graphFunctions.length > 0" class="functions-list">
-                <div v-for="(func, index) in graphFunctions" :key="index" class="function-item">
-                  <input 
-                    type="color" 
-                    :value="func.color" 
-                    @input="changeColor(index, $event.target.value)"
-                    class="function-color-picker"
-                    title="Changer la couleur"
-                  />
-                  <span class="function-name">
-                    <template v-if="editingFunctionNameIndex === index">
-                      <input
-                        :ref="el => functionNameInputRefs[index] = el"
-                        v-model="func.name"
-                        type="text"
-                        inputmode="text"
-                        class="function-name-input"
-                        maxlength="10"
-                        placeholder="f"
-                        title="Nom de la fonction (ex: f, g, h...)"
-                        @blur="finishFunctionNameEdit(index)"
-                        @keydown.enter.prevent="finishFunctionNameEdit(index)"
-                        @keydown.esc.prevent="cancelFunctionNameEdit"
-                      />
-                      <span class="function-name-suffix">(x) =</span>
-                    </template>
-                    <template v-else>
-                      <span class="function-name-label" @click="startFunctionNameEdit(index)" title="Cliquer pour renommer">
-                        {{ functionNameParts[index]?.base }}
-                        <sub v-if="functionNameParts[index]?.sub">{{ functionNameParts[index]?.sub }}</sub>
-                      </span>
-                      <span class="function-name-suffix">(x) =</span>
-                    </template>
-                  </span>
-                  <span class="function-expression" :ref="el => functionExpressionRefs[index] = el" @click="editFunction(index)" style="cursor: pointer;" title="Cliquer pour modifier"></span>
-                  <button @click="removeFunction(index)" class="remove-function-btn">×</button>
+                <div v-for="(func, index) in graphFunctions" :key="index" class="function-item function-item-2rows">
+                  <div class="function-item-main">
+                    <input 
+                      type="color" 
+                      :value="func.color" 
+                      @input="changeColor(index, $event.target.value)"
+                      class="function-color-picker"
+                      title="Changer la couleur"
+                    />
+                    <span class="function-name">
+                      <template v-if="editingFunctionNameIndex === index">
+                        <input
+                          :ref="el => functionNameInputRefs[index] = el"
+                          v-model="func.name"
+                          type="text"
+                          inputmode="text"
+                          class="function-name-input"
+                          maxlength="30"
+                          placeholder="f, f', C_f, \alpha..."
+                          title="Nom (LaTeX supporté : f', C_f, \\alpha...)"
+                          @blur="finishFunctionNameEdit(index)"
+                          @keydown.enter.prevent="finishFunctionNameEdit(index)"
+                          @keydown.esc.prevent="cancelFunctionNameEdit"
+                        />
+                        <span class="function-name-suffix">(x) =</span>
+                      </template>
+                      <template v-else>
+                        <span class="function-name-label" :ref="el => functionNameLabelRefs[index] = el" @click="startFunctionNameEdit(index)" title="Cliquer pour renommer"></span>
+                        <span class="function-name-suffix">(x) =</span>
+                      </template>
+                    </span>
+                    <span class="function-expression" :ref="el => functionExpressionRefs[index] = el" @click="editFunction(index)" style="cursor: pointer;" title="Cliquer pour modifier"></span>
+                    <button @click="removeFunction(index)" class="remove-function-btn">×</button>
+                  </div>
+                  <div class="function-item-toggles">
+                    <select :value="func.lineDash || 'solid'" @change="func.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                      <option value="solid">───</option>
+                      <option value="dot">·····</option>
+                      <option value="dash">- - -</option>
+                      <option value="dashdot">-·-·</option>
+                      <option value="longdash">— —</option>
+                    </select>
+                    <select :value="func.lineWidth || 2" @change="func.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                    <button @click="func.showInLegend = func.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: func.showInLegend !== false }]" :title="func.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                    <button @click="func.showName = func.showName === false ? true : false; plotAllFunctions()" :class="['point-toggle-btn', { active: func.showName !== false }]" :title="func.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                  </div>
                 </div>
               </div>
 
@@ -85,7 +102,7 @@
                     <div class="shape-item-main">
                       <input type="color" :value="point.color" @input="changeShapeColor('point', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
                       <template v-if="isEditingShape('point', index)">
-                        <input v-model="point.name" type="text" :class="'shape-name-input shape-name-editing-point-' + index" maxlength="10" placeholder="P" @blur="finishShapeNameEdit('point', index)" @keydown.enter.prevent="finishShapeNameEdit('point', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                        <input v-model="point.name" type="text" :class="'shape-name-input shape-name-editing-point-' + index" maxlength="50" placeholder="P" @blur="finishShapeNameEdit('point', index)" @keydown.enter.prevent="finishShapeNameEdit('point', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
                       </template>
                       <template v-else>
                         <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('point', index)" title="Cliquer pour renommer">{{ point.name }}</span>
@@ -96,6 +113,7 @@
                     <div class="shape-item-toggles">
                       <button @click="point.showName = !point.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showName !== false }]" :title="point.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
                       <button @click="point.showCoords = !point.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showCoords !== false }]" :title="point.showCoords !== false ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                      <button @click="point.showInLegend = point.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: point.showInLegend !== false }]" :title="point.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
                     </div>
                   </div>
                 </div>
@@ -112,16 +130,37 @@
               <div v-if="segments.length > 0" class="traced-shapes-section">
                 <h5 class="traced-shapes-title">Segments / Vecteurs</h5>
                 <div class="shapes-list">
-                  <div v-for="(segment, index) in segments" :key="'mob-fseg-' + index" class="shape-item">
-                    <input type="color" :value="segment.color" @input="changeShapeColor('segment', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
-                    <template v-if="isEditingShape('segment', index)">
-                      <input v-model="segment.name" type="text" :class="'shape-name-input shape-name-editing-segment-' + index" maxlength="10" placeholder="S" @blur="finishShapeNameEdit('segment', index)" @keydown.enter.prevent="finishShapeNameEdit('segment', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
-                    </template>
-                    <template v-else>
-                      <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('segment', index)" title="Cliquer pour renommer">{{ segment.name || (segment.isVector ? 'V' : 'S') + (index + 1) }}</span>
-                    </template>
-                    <span class="shape-item-coords">{{ segment.isVector ? '→' : '—' }} ({{ segment.x1 }},{{ segment.y1 }})→({{ segment.x2 }},{{ segment.y2 }})</span>
-                    <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                  <div v-for="(segment, index) in segments" :key="'mob-fseg-' + index" class="shape-item shape-item-with-toggles">
+                    <div class="shape-item-main">
+                      <input type="color" :value="segment.color" @input="changeShapeColor('segment', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                      <template v-if="isEditingShape('segment', index)">
+                        <input v-model="segment.name" type="text" :class="'shape-name-input shape-name-editing-segment-' + index" maxlength="50" placeholder="S" @blur="finishShapeNameEdit('segment', index)" @keydown.enter.prevent="finishShapeNameEdit('segment', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                      </template>
+                      <template v-else>
+                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('segment', index)" title="Cliquer pour renommer">{{ segment.name || (segment.isVector ? 'V' : 'S') + (index + 1) }}</span>
+                      </template>
+                      <span class="shape-item-coords">{{ segment.isVector ? '→' : '—' }} ({{ segment.x1 }},{{ segment.y1 }})→({{ segment.x2 }},{{ segment.y2 }})</span>
+                      <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                    </div>
+                    <div class="shape-item-toggles">
+                      <button @click="segment.showName = !segment.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: segment.showName === true }]" :title="segment.showName === true ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                      <button @click="segment.showCoords = !segment.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: segment.showCoords === true }]" :title="segment.showCoords === true ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                      <button @click="segment.showInLegend = segment.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: segment.showInLegend !== false }]" :title="segment.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                      <select :value="segment.lineDash || 'solid'" @change="segment.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                        <option value="solid">───</option>
+                        <option value="dot">·····</option>
+                        <option value="dash">- - -</option>
+                        <option value="dashdot">-·-·</option>
+                        <option value="longdash">— —</option>
+                      </select>
+                      <select :value="segment.lineWidth || 3" @change="segment.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -130,16 +169,36 @@
               <div v-if="circles.length > 0" class="traced-shapes-section">
                 <h5 class="traced-shapes-title">Cercles</h5>
                 <div class="shapes-list">
-                  <div v-for="(circle, index) in circles" :key="'mob-fcir-' + index" class="shape-item">
-                    <input type="color" :value="circle.color" @input="changeShapeColor('circle', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
-                    <template v-if="isEditingShape('circle', index)">
-                      <input v-model="circle.name" type="text" :class="'shape-name-input shape-name-editing-circle-' + index" maxlength="10" placeholder="C" @blur="finishShapeNameEdit('circle', index)" @keydown.enter.prevent="finishShapeNameEdit('circle', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
-                    </template>
-                    <template v-else>
-                      <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('circle', index)" title="Cliquer pour renommer">{{ circle.name || 'C' + (index + 1) }}</span>
-                    </template>
-                    <span class="shape-item-coords">({{ circle.h }}, {{ circle.k }}) r={{ circle.r }}</span>
-                    <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                  <div v-for="(circle, index) in circles" :key="'mob-fcir-' + index" class="shape-item shape-item-with-toggles">
+                    <div class="shape-item-main">
+                      <input type="color" :value="circle.color" @input="changeShapeColor('circle', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                      <template v-if="isEditingShape('circle', index)">
+                        <input v-model="circle.name" type="text" :class="'shape-name-input shape-name-editing-circle-' + index" maxlength="50" placeholder="C" @blur="finishShapeNameEdit('circle', index)" @keydown.enter.prevent="finishShapeNameEdit('circle', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                      </template>
+                      <template v-else>
+                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('circle', index)" title="Cliquer pour renommer">{{ circle.name || 'C' + (index + 1) }}</span>
+                      </template>
+                      <span class="shape-item-coords">({{ circle.h }}, {{ circle.k }}) r={{ circle.r }}</span>
+                      <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                    </div>
+                    <div class="shape-item-toggles">
+                      <button @click="circle.showName = !circle.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: circle.showName !== false }]" :title="circle.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                      <button @click="circle.showInLegend = circle.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: circle.showInLegend !== false }]" :title="circle.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                      <select :value="circle.lineDash || 'solid'" @change="circle.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                        <option value="solid">───</option>
+                        <option value="dot">·····</option>
+                        <option value="dash">- - -</option>
+                        <option value="dashdot">-·-·</option>
+                        <option value="longdash">— —</option>
+                      </select>
+                      <select :value="circle.lineWidth || 2" @change="circle.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -387,6 +446,56 @@
                   Il faut au moins 2 éléments tracés (fonctions ou segments).
                 </div>
               </div>
+
+              <!-- Angles entre segments -->
+              <div class="calc-section" style="margin-top: 0.75rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem;">
+                  <strong style="font-size: 0.9rem;">📐 Angles</strong>
+                  <button v-if="segments.length >= 2" @click="addAngleMeasure" class="add-function-btn" style="font-size: 0.8rem; padding: 2px 8px;">+ Angle</button>
+                </div>
+                <div v-if="segments.length < 2" class="result-info" style="color: #ef4444; font-size: 0.85rem;">
+                  Il faut au moins 2 segments tracés.
+                </div>
+                <div v-for="(angle, aIdx) in angleMeasures" :key="'angle-' + aIdx" style="border-left: 3px solid; padding-left: 0.5rem; margin-bottom: 0.5rem; border-color: currentColor;" :style="{ color: angle.color }">
+                  <div style="display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.25rem;">
+                    <input type="color" :value="angle.color" @input="angle.color = $event.target.value; plotAllFunctions()" class="function-color-picker" title="Couleur" />
+                    <span style="font-size: 0.85rem; color: var(--text); flex: 1;">Angle {{ aIdx + 1 }}</span>
+                    <button @click="removeAngleMeasure(aIdx)" class="remove-function-btn" title="Supprimer">×</button>
+                  </div>
+                  <div class="bounds-row" style="color: var(--text);">
+                    <div class="bound-input">
+                      <label>Seg 1 :</label>
+                      <select v-model.number="angle.seg1Index" class="bound-field">
+                        <option v-for="(seg, si) in segments" :key="'a'+aIdx+'-s1-'+si" :value="si">{{ seg.name || (seg.isVector ? 'V' : 'S') + (si+1) }}</option>
+                      </select>
+                    </div>
+                    <div class="bound-input">
+                      <label>Seg 2 :</label>
+                      <select v-model.number="angle.seg2Index" class="bound-field">
+                        <option v-for="(seg, si) in segments" :key="'a'+aIdx+'-s2-'+si" :value="si">{{ seg.name || (seg.isVector ? 'V' : 'S') + (si+1) }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.4rem; margin-top: 0.25rem; flex-wrap: wrap; color: var(--text);">
+                    <label class="checkbox-label" style="margin: 0; font-size: 0.8rem;">
+                      <input type="checkbox" v-model="angle.showArc" /> Arc
+                    </label>
+                    <div class="bound-input" style="flex: 0 0 auto;">
+                      <label style="font-size: 0.8rem;">Texte :</label>
+                      <input v-model="angle.customText" class="bound-field" placeholder="auto" maxlength="30" style="max-width: 80px; font-size: 0.8rem;" />
+                    </div>
+                    <div class="bound-input" style="flex: 0 0 auto;">
+                      <label style="font-size: 0.8rem;">Manuel ° :</label>
+                      <input v-model="angle.manualDegrees" class="bound-field" type="number" step="0.1" placeholder="auto" style="max-width: 70px; font-size: 0.8rem;" />
+                    </div>
+                  </div>
+                  <div v-if="angle.result" class="result-info" style="margin-top: 0.3rem; color: var(--text);">
+                    <strong>{{ angle.manualDegrees !== '' && !isNaN(parseFloat(angle.manualDegrees)) ? parseFloat(angle.manualDegrees) : angle.result.degrees }}°</strong> ({{ angle.result.radians }} rad)
+                    <span v-if="!angle.result.hasCommonVertex" style="display: block; font-size: 0.8rem; color: #f59e0b;">⚠ Pas de sommet commun</span>
+                  </div>
+                  <div v-else-if="angle.seg1Index === angle.seg2Index" class="result-info" style="color: #ef4444; font-size: 0.8rem;">Choisissez 2 segments différents.</div>
+                </div>
+              </div>
             </div>
             
             <!-- Onglet Calcul -->
@@ -594,12 +703,114 @@
                 </label>
                 
                 <div v-if="segments.length > 0" class="shapes-list">
-                  <div v-for="(segment, index) in segments" :key="'segment-' + index" class="shape-item">
-                    <span class="function-color" :style="{ backgroundColor: segment.color }"></span>
-                    <span>{{ segment.isVector ? 'V' : 'S' }}{{ index + 1 }} [({{ segment.x1 }}, {{ segment.y1 }}) → ({{ segment.x2 }}, {{ segment.y2 }})]</span>
-                    <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                  <div v-for="(segment, index) in segments" :key="'segment-' + index" class="shape-item shape-item-with-toggles">
+                    <div class="shape-item-main">
+                      <span class="function-color" :style="{ backgroundColor: segment.color }"></span>
+                      <template v-if="isEditingShape('segment', index)">
+                        <input v-model="segment.name" type="text" :class="'shape-name-input shape-name-editing-segment-' + index" maxlength="50" placeholder="S" @blur="finishShapeNameEdit('segment', index)" @keydown.enter.prevent="finishShapeNameEdit('segment', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                      </template>
+                      <template v-else>
+                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('segment', index)" title="Cliquer pour renommer">{{ segment.name || (segment.isVector ? 'V' : 'S') + (index + 1) }}</span>
+                      </template>
+                      <span class="shape-item-coords">{{ segment.isVector ? '→' : '—' }} ({{ segment.x1 }},{{ segment.y1 }})→({{ segment.x2 }},{{ segment.y2 }})</span>
+                      <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                    </div>
+                    <div class="shape-item-toggles">
+                      <button @click="segment.showName = !segment.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: segment.showName === true }]" :title="segment.showName === true ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                      <button @click="segment.showCoords = !segment.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: segment.showCoords === true }]" :title="segment.showCoords === true ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                      <button @click="segment.showInLegend = segment.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: segment.showInLegend !== false }]" :title="segment.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                      <select :value="segment.lineDash || 'solid'" @change="segment.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                        <option value="solid">───</option>
+                        <option value="dot">·····</option>
+                        <option value="dash">- - -</option>
+                        <option value="dashdot">-·-·</option>
+                        <option value="longdash">— —</option>
+                      </select>
+                      <select :value="segment.lineWidth || 3" @change="segment.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
+              </div>
+              
+              <!-- Droites -->
+              <div class="shape-section">
+                <h5 class="shape-title">Tracer une droite</h5>
+                <div class="bounds-row">
+                  <label class="radio-label"><input type="radio" v-model="droiteMode" value="2points" /> 2 points</label>
+                  <label class="radio-label"><input type="radio" v-model="droiteMode" value="pointSlope" /> Point + pente</label>
+                  <label class="radio-label"><input type="radio" v-model="droiteMode" value="pointVector" /> Point + vecteur</label>
+                </div>
+
+                <template v-if="droiteMode === '2points'">
+                  <div v-if="points.length >= 2" class="bounds-row">
+                    <div class="bound-input">
+                      <label>Point 1 :</label>
+                      <select v-model.number="droitePoint1Index" class="bound-field">
+                        <option v-for="(point, index) in points" :key="'fl-dp1-' + index" :value="index">
+                          {{ point.name }} ({{ point.x }}, {{ point.y }})
+                        </option>
+                      </select>
+                    </div>
+                    <div class="bound-input">
+                      <label>Point 2 :</label>
+                      <select v-model.number="droitePoint2Index" class="bound-field">
+                        <option v-for="(point, index) in points" :key="'fl-dp2-' + index" :value="index">
+                          {{ point.name }} ({{ point.x }}, {{ point.y }})
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <p v-else class="helper-text">Créez au moins 2 points d'abord.</p>
+                </template>
+
+                <template v-if="droiteMode === 'pointSlope'">
+                  <div v-if="points.length >= 1" class="bounds-row">
+                    <div class="bound-input">
+                      <label>Point :</label>
+                      <select v-model.number="droitePointIndex" class="bound-field">
+                        <option v-for="(point, index) in points" :key="'fl-dps-' + index" :value="index">
+                          {{ point.name }} ({{ point.x }}, {{ point.y }})
+                        </option>
+                      </select>
+                    </div>
+                    <div class="bound-input">
+                      <label>Pente m :</label>
+                      <input v-model.number="droiteSlope" type="number" step="0.5" class="bound-field" />
+                    </div>
+                  </div>
+                  <p v-else class="helper-text">Créez au moins 1 point d'abord.</p>
+                </template>
+
+                <template v-if="droiteMode === 'pointVector'">
+                  <div v-if="points.length >= 1" class="bounds-row">
+                    <div class="bound-input">
+                      <label>Point :</label>
+                      <select v-model.number="droitePointIndex" class="bound-field">
+                        <option v-for="(point, index) in points" :key="'fl-dpv-' + index" :value="index">
+                          {{ point.name }} ({{ point.x }}, {{ point.y }})
+                        </option>
+                      </select>
+                    </div>
+                    <div class="bound-input">
+                      <label>Vec x :</label>
+                      <input v-model.number="droiteVecX" type="number" step="0.5" class="bound-field" />
+                    </div>
+                    <div class="bound-input">
+                      <label>Vec y :</label>
+                      <input v-model.number="droiteVecY" type="number" step="0.5" class="bound-field" />
+                    </div>
+                  </div>
+                  <p v-else class="helper-text">Créez au moins 1 point d'abord.</p>
+                </template>
+
+                <button @click="addDroite" class="action-btn" :disabled="(droiteMode === '2points' && points.length < 2) || ((droiteMode === 'pointSlope' || droiteMode === 'pointVector') && points.length < 1)">Tracer la droite</button>
+                <p class="helper-text" style="margin-top: 4px;">Ou saisissez : <code>(AB)</code>, <code>d(A,m=2)</code>, <code>d(A,u(1,2))</code></p>
               </div>
               
               <!-- Cercles -->
@@ -622,10 +833,36 @@
                 <button @click="addCircle" class="action-btn">Ajouter le cercle</button>
                 
                 <div v-if="circles.length > 0" class="shapes-list">
-                  <div v-for="(circle, index) in circles" :key="'circle-' + index" class="shape-item">
-                    <span class="function-color" :style="{ backgroundColor: circle.color }"></span>
-                    <span>C{{ index + 1 }} (h={{ circle.h }}, k={{ circle.k }}, r={{ circle.r }})</span>
-                    <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                  <div v-for="(circle, index) in circles" :key="'circle-' + index" class="shape-item shape-item-with-toggles">
+                    <div class="shape-item-main">
+                      <span class="function-color" :style="{ backgroundColor: circle.color }"></span>
+                      <template v-if="isEditingShape('circle', index)">
+                        <input v-model="circle.name" type="text" :class="'shape-name-input shape-name-editing-circle-' + index" maxlength="50" placeholder="C" @blur="finishShapeNameEdit('circle', index)" @keydown.enter.prevent="finishShapeNameEdit('circle', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                      </template>
+                      <template v-else>
+                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('circle', index)" title="Cliquer pour renommer">{{ circle.name || 'C' + (index + 1) }}</span>
+                      </template>
+                      <span class="shape-item-coords">(h={{ circle.h }}, k={{ circle.k }}, r={{ circle.r }})</span>
+                      <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                    </div>
+                    <div class="shape-item-toggles">
+                      <button @click="circle.showName = !circle.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: circle.showName !== false }]" :title="circle.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                      <button @click="circle.showInLegend = circle.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: circle.showInLegend !== false }]" :title="circle.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                      <select :value="circle.lineDash || 'solid'" @change="circle.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                        <option value="solid">───</option>
+                        <option value="dot">·····</option>
+                        <option value="dash">- - -</option>
+                        <option value="dashdot">-·-·</option>
+                        <option value="longdash">— —</option>
+                      </select>
+                      <select :value="circle.lineWidth || 2" @change="circle.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -990,6 +1227,52 @@
                   />
                   Afficher les racines (zéros) des fonctions
                 </label>
+                <!-- Angles entre segments -->
+                <div style="margin-top: 0.5rem;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem;">
+                    <strong style="font-size: 0.85rem;">📐 Angles</strong>
+                    <button v-if="segments.length >= 2" @click="addAngleMeasure" class="add-function-btn" style="font-size: 0.75rem; padding: 1px 6px;">+ Angle</button>
+                  </div>
+                  <div v-if="segments.length < 2" style="color: #ef4444; font-size: 0.8rem; padding-left: 0.3rem;">Il faut au moins 2 segments.</div>
+                  <div v-for="(angle, aIdx) in angleMeasures" :key="'flt-angle-' + aIdx" style="border-left: 3px solid; padding-left: 0.4rem; margin-bottom: 0.4rem;" :style="{ borderColor: angle.color }">
+                    <div style="display: flex; align-items: center; gap: 0.2rem; margin-bottom: 0.2rem;">
+                      <input type="color" :value="angle.color" @input="angle.color = $event.target.value; plotAllFunctions()" class="function-color-picker" title="Couleur" />
+                      <span style="font-size: 0.8rem; flex: 1;">Angle {{ aIdx + 1 }}</span>
+                      <button @click="removeAngleMeasure(aIdx)" class="remove-function-btn" title="Supprimer">×</button>
+                    </div>
+                    <div class="bounds-row">
+                      <div class="bound-input">
+                        <label>Seg 1 :</label>
+                        <select v-model.number="angle.seg1Index" class="bound-field">
+                          <option v-for="(seg, si) in segments" :key="'flt-a'+aIdx+'-s1-'+si" :value="si">{{ seg.name || (seg.isVector ? 'V' : 'S') + (si+1) }}</option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>Seg 2 :</label>
+                        <select v-model.number="angle.seg2Index" class="bound-field">
+                          <option v-for="(seg, si) in segments" :key="'flt-a'+aIdx+'-s2-'+si" :value="si">{{ seg.name || (seg.isVector ? 'V' : 'S') + (si+1) }}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.3rem; margin-top: 0.2rem; flex-wrap: wrap;">
+                      <label class="intersection-checkbox-label" style="margin: 0; font-size: 0.8rem;">
+                        <input type="checkbox" v-model="angle.showArc" /> Arc
+                      </label>
+                      <div class="bound-input" style="flex: 0 0 auto;">
+                        <label style="font-size: 0.75rem;">Texte :</label>
+                        <input v-model="angle.customText" class="bound-field" placeholder="auto" maxlength="30" style="max-width: 70px; font-size: 0.75rem;" />
+                      </div>
+                      <div class="bound-input" style="flex: 0 0 auto;">
+                        <label style="font-size: 0.75rem;">Manuel ° :</label>
+                        <input v-model="angle.manualDegrees" class="bound-field" type="number" step="0.1" placeholder="auto" style="max-width: 60px; font-size: 0.75rem;" />
+                      </div>
+                    </div>
+                    <div v-if="angle.result" class="integral-result" style="margin-top: 0.2rem;">
+                      <strong>{{ angle.manualDegrees !== '' && !isNaN(parseFloat(angle.manualDegrees)) ? parseFloat(angle.manualDegrees) : angle.result.degrees }}°</strong> ({{ angle.result.radians }} rad)
+                      <span v-if="!angle.result.hasCommonVertex" style="display: block; font-size: 0.7rem; color: #f59e0b;">⚠ Pas de sommet commun</span>
+                    </div>
+                  </div>
+                </div>
               </div>
               </div>
             </details>
@@ -1184,6 +1467,7 @@
                     <div class="shape-item-toggles">
                       <button @click="point.showName = !point.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showName !== false }]" :title="point.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
                       <button @click="point.showCoords = !point.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showCoords !== false }]" :title="point.showCoords !== false ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                      <button @click="point.showInLegend = point.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: point.showInLegend !== false }]" :title="point.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
                     </div>
                   </div>
                 </div>
@@ -1292,6 +1576,67 @@
                     <button @click="removeSegment(index)" class="remove-function-btn">×</button>
                   </div>
                 </div>
+
+                <!-- Droite dans section points mobile -->
+                <h5 class="functions-title" style="margin-top: 1rem;">Tracer une droite</h5>
+                <div class="bounds-row">
+                  <label class="radio-label"><input type="radio" v-model="droiteMode" value="2points" /> 2 pts</label>
+                  <label class="radio-label"><input type="radio" v-model="droiteMode" value="pointSlope" /> Pt+pente</label>
+                  <label class="radio-label"><input type="radio" v-model="droiteMode" value="pointVector" /> Pt+vec</label>
+                </div>
+                <template v-if="droiteMode === '2points'">
+                  <div v-if="points.length >= 2" class="bounds-row">
+                    <div class="bound-input">
+                      <label>Pt 1 :</label>
+                      <select v-model.number="droitePoint1Index" class="bound-field">
+                        <option v-for="(point, index) in points" :key="'mob-dp1-' + index" :value="index">{{ point.name }} ({{ point.x }}, {{ point.y }})</option>
+                      </select>
+                    </div>
+                    <div class="bound-input">
+                      <label>Pt 2 :</label>
+                      <select v-model.number="droitePoint2Index" class="bound-field">
+                        <option v-for="(point, index) in points" :key="'mob-dp2-' + index" :value="index">{{ point.name }} ({{ point.x }}, {{ point.y }})</option>
+                      </select>
+                    </div>
+                  </div>
+                  <p v-else class="helper-text">Créez au moins 2 points.</p>
+                </template>
+                <template v-if="droiteMode === 'pointSlope'">
+                  <div v-if="points.length >= 1" class="bounds-row">
+                    <div class="bound-input">
+                      <label>Point :</label>
+                      <select v-model.number="droitePointIndex" class="bound-field">
+                        <option v-for="(point, index) in points" :key="'mob-dps-' + index" :value="index">{{ point.name }} ({{ point.x }}, {{ point.y }})</option>
+                      </select>
+                    </div>
+                    <div class="bound-input">
+                      <label>Pente :</label>
+                      <input v-model.number="droiteSlope" type="number" step="0.5" class="bound-field" />
+                    </div>
+                  </div>
+                  <p v-else class="helper-text">Créez au moins 1 point.</p>
+                </template>
+                <template v-if="droiteMode === 'pointVector'">
+                  <div v-if="points.length >= 1" class="bounds-row">
+                    <div class="bound-input">
+                      <label>Point :</label>
+                      <select v-model.number="droitePointIndex" class="bound-field">
+                        <option v-for="(point, index) in points" :key="'mob-dpv-' + index" :value="index">{{ point.name }} ({{ point.x }}, {{ point.y }})</option>
+                      </select>
+                    </div>
+                    <div class="bound-input">
+                      <label>dx :</label>
+                      <input v-model.number="droiteVecX" type="number" step="0.5" class="bound-field" />
+                    </div>
+                    <div class="bound-input">
+                      <label>dy :</label>
+                      <input v-model.number="droiteVecY" type="number" step="0.5" class="bound-field" />
+                    </div>
+                  </div>
+                  <p v-else class="helper-text">Créez au moins 1 point.</p>
+                </template>
+                <button @click="addDroite" class="action-btn" :disabled="(droiteMode === '2points' && points.length < 2) || ((droiteMode === 'pointSlope' || droiteMode === 'pointVector') && points.length < 1)">Tracer la droite</button>
+
               </div>
               </div>
             </details>
@@ -1426,10 +1771,30 @@
                 <div v-if="graphFunctions.length === 0" class="no-functions">
                   Aucune fonction tracée. Saisissez une fonction et cliquez sur "Tracer".
                 </div>
-                <div v-for="(func, index) in graphFunctions" :key="index" class="function-item">
-                  <span class="function-color" :style="{ backgroundColor: func.color }"></span>
-                  <span class="function-expression" :ref="el => functionExpressionRefs[index] = el"></span>
-                  <button @click="removeFunction(index)" class="remove-function-btn">×</button>
+                <div v-for="(func, index) in graphFunctions" :key="index" class="function-item function-item-2rows">
+                  <div class="function-item-main">
+                    <span class="function-color" :style="{ backgroundColor: func.color }"></span>
+                    <span class="function-expression" :ref="el => functionExpressionRefs[index] = el"></span>
+                    <button @click="removeFunction(index)" class="remove-function-btn">×</button>
+                  </div>
+                  <div class="function-item-toggles">
+                    <select :value="func.lineDash || 'solid'" @change="func.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                      <option value="solid">───</option>
+                      <option value="dot">·····</option>
+                      <option value="dash">- - -</option>
+                      <option value="dashdot">-·-·</option>
+                      <option value="longdash">— —</option>
+                    </select>
+                    <select :value="func.lineWidth || 2" @change="func.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                    <button @click="func.showInLegend = func.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: func.showInLegend !== false }]" :title="func.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                    <button @click="func.showName = func.showName === false ? true : false; plotAllFunctions()" :class="['point-toggle-btn', { active: func.showName !== false }]" :title="func.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                  </div>
                 </div>
               </div>
               </div>
@@ -1552,6 +1917,13 @@
                   <div class="card-icon">📍</div>
                   <div class="card-title">Segments</div>
                   <div class="card-description">Segments et vecteurs</div>
+                </div>
+                
+                <!-- Carte Droites -->
+                <div class="option-card" @click="toggleSection('droites')">
+                  <div class="card-icon">📏</div>
+                  <div class="card-title">Droites</div>
+                  <div class="card-description">Tracer une droite</div>
                 </div>
                 
                 <!-- Carte Cercles -->
@@ -1682,41 +2054,58 @@
               <div v-show="activeGraphTab === 'functions'" class="tab-panel">
                 <h4 class="panel-title">Éléments tracés</h4>
                 <div v-if="graphFunctions.length > 0" class="functions-list">
-                  <div v-for="(func, index) in graphFunctions" :key="'side-f-' + index" class="function-item">
-                    <input 
-                      type="color" 
-                      :value="func.color" 
-                      @input="changeColor(index, $event.target.value)"
-                      class="function-color-picker"
-                      title="Changer la couleur"
-                    />
-                    <span class="function-name">
-                      <template v-if="editingFunctionNameIndex === index">
-                        <input
-                          :ref="el => functionNameInputRefs[index] = el"
-                          v-model="func.name"
-                          type="text"
-                          inputmode="text"
-                          class="function-name-input"
-                          maxlength="10"
-                          placeholder="f"
-                          title="Nom de la fonction (ex: f, g, h...)"
-                          @blur="finishFunctionNameEdit(index)"
-                          @keydown.enter.prevent="finishFunctionNameEdit(index)"
-                          @keydown.esc.prevent="cancelFunctionNameEdit"
-                        />
-                        <span class="function-name-suffix">(x) =</span>
-                      </template>
-                      <template v-else>
-                        <span class="function-name-label" @click="startFunctionNameEdit(index)" title="Cliquer pour renommer">
-                          {{ functionNameParts[index]?.base }}
-                          <sub v-if="functionNameParts[index]?.sub">{{ functionNameParts[index]?.sub }}</sub>
-                        </span>
-                        <span class="function-name-suffix">(x) =</span>
-                      </template>
-                    </span>
-                    <span class="function-expression" :ref="el => functionExpressionRefs[index] = el" @click="editFunction(index)" style="cursor: pointer;" title="Cliquer pour modifier"></span>
-                    <button @click="removeFunction(index)" class="remove-function-btn">×</button>
+                  <div v-for="(func, index) in graphFunctions" :key="'side-f-' + index" class="function-item function-item-2rows">
+                    <div class="function-item-main">
+                      <input 
+                        type="color" 
+                        :value="func.color" 
+                        @input="changeColor(index, $event.target.value)"
+                        class="function-color-picker"
+                        title="Changer la couleur"
+                      />
+                      <span class="function-name">
+                        <template v-if="editingFunctionNameIndex === index">
+                          <input
+                            :ref="el => functionNameInputRefs[index] = el"
+                            v-model="func.name"
+                            type="text"
+                            inputmode="text"
+                            class="function-name-input"
+                            maxlength="30"
+                            placeholder="f, f', C_f, \alpha..."
+                            title="Nom (LaTeX supporté : f', C_f, \\alpha...)"
+                            @blur="finishFunctionNameEdit(index)"
+                            @keydown.enter.prevent="finishFunctionNameEdit(index)"
+                            @keydown.esc.prevent="cancelFunctionNameEdit"
+                          />
+                          <span class="function-name-suffix">(x) =</span>
+                        </template>
+                        <template v-else>
+                          <span class="function-name-label" :ref="el => functionNameLabelRefs[index] = el" @click="startFunctionNameEdit(index)" title="Cliquer pour renommer"></span>
+                          <span class="function-name-suffix">(x) =</span>
+                        </template>
+                      </span>
+                      <span class="function-expression" :ref="el => functionExpressionRefs[index] = el" @click="editFunction(index)" style="cursor: pointer;" title="Cliquer pour modifier"></span>
+                      <button @click="removeFunction(index)" class="remove-function-btn">×</button>
+                    </div>
+                    <div class="function-item-toggles">
+                      <select :value="func.lineDash || 'solid'" @change="func.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                        <option value="solid">───</option>
+                        <option value="dot">·····</option>
+                        <option value="dash">- - -</option>
+                        <option value="dashdot">-·-·</option>
+                        <option value="longdash">— —</option>
+                      </select>
+                      <select :value="func.lineWidth || 2" @change="func.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
+                      <button @click="func.showInLegend = func.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: func.showInLegend !== false }]" :title="func.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                      <button @click="func.showName = func.showName === false ? true : false; plotAllFunctions()" :class="['point-toggle-btn', { active: func.showName !== false }]" :title="func.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                    </div>
                   </div>
                 </div>
 
@@ -1728,7 +2117,7 @@
                       <div class="shape-item-main">
                         <input type="color" :value="point.color" @input="changeShapeColor('point', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
                         <template v-if="isEditingShape('point', index)">
-                          <input v-model="point.name" type="text" :class="'shape-name-input shape-name-editing-point-' + index" maxlength="10" placeholder="P" @blur="finishShapeNameEdit('point', index)" @keydown.enter.prevent="finishShapeNameEdit('point', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                          <input v-model="point.name" type="text" :class="'shape-name-input shape-name-editing-point-' + index" maxlength="50" placeholder="P" @blur="finishShapeNameEdit('point', index)" @keydown.enter.prevent="finishShapeNameEdit('point', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
                         </template>
                         <template v-else>
                           <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('point', index)" title="Cliquer pour renommer">{{ point.name }}</span>
@@ -1739,6 +2128,7 @@
                       <div class="shape-item-toggles">
                         <button @click="point.showName = !point.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showName !== false }]" :title="point.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
                         <button @click="point.showCoords = !point.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showCoords !== false }]" :title="point.showCoords !== false ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                        <button @click="point.showInLegend = point.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: point.showInLegend !== false }]" :title="point.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
                       </div>
                     </div>
                   </div>
@@ -1755,16 +2145,37 @@
                 <div v-if="segments.length > 0" class="traced-shapes-section">
                   <h5 class="traced-shapes-title">Segments / Vecteurs</h5>
                   <div class="shapes-list">
-                    <div v-for="(segment, index) in segments" :key="'side-fseg-' + index" class="shape-item">
-                      <input type="color" :value="segment.color" @input="changeShapeColor('segment', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
-                      <template v-if="isEditingShape('segment', index)">
-                        <input v-model="segment.name" type="text" :class="'shape-name-input shape-name-editing-segment-' + index" maxlength="10" placeholder="S" @blur="finishShapeNameEdit('segment', index)" @keydown.enter.prevent="finishShapeNameEdit('segment', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
-                      </template>
-                      <template v-else>
-                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('segment', index)" title="Cliquer pour renommer">{{ segment.name || (segment.isVector ? 'V' : 'S') + (index + 1) }}</span>
-                      </template>
-                      <span class="shape-item-coords">{{ segment.isVector ? '→' : '—' }} ({{ segment.x1 }},{{ segment.y1 }})→({{ segment.x2 }},{{ segment.y2 }})</span>
-                      <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                    <div v-for="(segment, index) in segments" :key="'side-fseg-' + index" class="shape-item shape-item-with-toggles">
+                      <div class="shape-item-main">
+                        <input type="color" :value="segment.color" @input="changeShapeColor('segment', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                        <template v-if="isEditingShape('segment', index)">
+                          <input v-model="segment.name" type="text" :class="'shape-name-input shape-name-editing-segment-' + index" maxlength="50" placeholder="S" @blur="finishShapeNameEdit('segment', index)" @keydown.enter.prevent="finishShapeNameEdit('segment', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                        </template>
+                        <template v-else>
+                          <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('segment', index)" title="Cliquer pour renommer">{{ segment.name || (segment.isVector ? 'V' : 'S') + (index + 1) }}</span>
+                        </template>
+                        <span class="shape-item-coords">{{ segment.isVector ? '→' : '—' }} ({{ segment.x1 }},{{ segment.y1 }})→({{ segment.x2 }},{{ segment.y2 }})</span>
+                        <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                      </div>
+                      <div class="shape-item-toggles">
+                        <button @click="segment.showName = !segment.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: segment.showName === true }]" :title="segment.showName === true ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                        <button @click="segment.showCoords = !segment.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: segment.showCoords === true }]" :title="segment.showCoords === true ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                        <button @click="segment.showInLegend = segment.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: segment.showInLegend !== false }]" :title="segment.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                        <select :value="segment.lineDash || 'solid'" @change="segment.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                          <option value="solid">───</option>
+                          <option value="dot">·····</option>
+                          <option value="dash">- - -</option>
+                          <option value="dashdot">-·-·</option>
+                          <option value="longdash">— —</option>
+                        </select>
+                        <select :value="segment.lineWidth || 3" @change="segment.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1773,16 +2184,36 @@
                 <div v-if="circles.length > 0" class="traced-shapes-section">
                   <h5 class="traced-shapes-title">Cercles</h5>
                   <div class="shapes-list">
-                    <div v-for="(circle, index) in circles" :key="'side-fcir-' + index" class="shape-item">
-                      <input type="color" :value="circle.color" @input="changeShapeColor('circle', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
-                      <template v-if="isEditingShape('circle', index)">
-                        <input v-model="circle.name" type="text" :class="'shape-name-input shape-name-editing-circle-' + index" maxlength="10" placeholder="C" @blur="finishShapeNameEdit('circle', index)" @keydown.enter.prevent="finishShapeNameEdit('circle', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
-                      </template>
-                      <template v-else>
-                        <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('circle', index)" title="Cliquer pour renommer">{{ circle.name || 'C' + (index + 1) }}</span>
-                      </template>
-                      <span class="shape-item-coords">({{ circle.h }}, {{ circle.k }}) r={{ circle.r }}</span>
-                      <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                    <div v-for="(circle, index) in circles" :key="'side-fcir-' + index" class="shape-item shape-item-with-toggles">
+                      <div class="shape-item-main">
+                        <input type="color" :value="circle.color" @input="changeShapeColor('circle', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                        <template v-if="isEditingShape('circle', index)">
+                          <input v-model="circle.name" type="text" :class="'shape-name-input shape-name-editing-circle-' + index" maxlength="50" placeholder="C" @blur="finishShapeNameEdit('circle', index)" @keydown.enter.prevent="finishShapeNameEdit('circle', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                        </template>
+                        <template v-else>
+                          <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('circle', index)" title="Cliquer pour renommer">{{ circle.name || 'C' + (index + 1) }}</span>
+                        </template>
+                        <span class="shape-item-coords">({{ circle.h }}, {{ circle.k }}) r={{ circle.r }}</span>
+                        <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                      </div>
+                      <div class="shape-item-toggles">
+                        <button @click="circle.showName = !circle.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: circle.showName !== false }]" :title="circle.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                        <button @click="circle.showInLegend = circle.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: circle.showInLegend !== false }]" :title="circle.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                        <select :value="circle.lineDash || 'solid'" @change="circle.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                          <option value="solid">───</option>
+                          <option value="dot">·····</option>
+                          <option value="dash">- - -</option>
+                          <option value="dashdot">-·-·</option>
+                          <option value="longdash">— —</option>
+                        </select>
+                        <select :value="circle.lineWidth || 2" @change="circle.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2028,6 +2459,54 @@
                     Il faut au moins 2 éléments tracés (fonctions ou segments).
                   </div>
                 </div>
+
+                <!-- Angles entre segments -->
+                <div class="calc-section" style="margin-top: 0.75rem;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem;">
+                    <strong style="font-size: 0.9rem;">📐 Angles</strong>
+                    <button v-if="segments.length >= 2" @click="addAngleMeasure" class="add-function-btn" style="font-size: 0.8rem; padding: 2px 8px;">+ Angle</button>
+                  </div>
+                  <div v-if="segments.length < 2" class="result-info" style="color: #ef4444; font-size: 0.85rem;">Il faut au moins 2 segments tracés.</div>
+                  <div v-for="(angle, aIdx) in angleMeasures" :key="'mob-angle-' + aIdx" style="border-left: 3px solid; padding-left: 0.5rem; margin-bottom: 0.5rem;" :style="{ borderColor: angle.color }">
+                    <div style="display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.25rem;">
+                      <input type="color" :value="angle.color" @input="angle.color = $event.target.value; plotAllFunctions()" class="function-color-picker" title="Couleur" />
+                      <span style="font-size: 0.85rem; flex: 1;">Angle {{ aIdx + 1 }}</span>
+                      <button @click="removeAngleMeasure(aIdx)" class="remove-function-btn" title="Supprimer">×</button>
+                    </div>
+                    <div class="bounds-row">
+                      <div class="bound-input">
+                        <label>Seg 1 :</label>
+                        <select v-model.number="angle.seg1Index" class="bound-field">
+                          <option v-for="(seg, si) in segments" :key="'mob-a'+aIdx+'-s1-'+si" :value="si">{{ seg.name || (seg.isVector ? 'V' : 'S') + (si+1) }}</option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>Seg 2 :</label>
+                        <select v-model.number="angle.seg2Index" class="bound-field">
+                          <option v-for="(seg, si) in segments" :key="'mob-a'+aIdx+'-s2-'+si" :value="si">{{ seg.name || (seg.isVector ? 'V' : 'S') + (si+1) }}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.4rem; margin-top: 0.25rem; flex-wrap: wrap;">
+                      <label class="checkbox-label" style="margin: 0; font-size: 0.8rem;">
+                        <input type="checkbox" v-model="angle.showArc" /> Arc
+                      </label>
+                      <div class="bound-input" style="flex: 0 0 auto;">
+                        <label style="font-size: 0.8rem;">Texte :</label>
+                        <input v-model="angle.customText" class="bound-field" placeholder="auto" maxlength="30" style="max-width: 80px; font-size: 0.8rem;" />
+                      </div>
+                      <div class="bound-input" style="flex: 0 0 auto;">
+                        <label style="font-size: 0.8rem;">Manuel ° :</label>
+                        <input v-model="angle.manualDegrees" class="bound-field" type="number" step="0.1" placeholder="auto" style="max-width: 70px; font-size: 0.8rem;" />
+                      </div>
+                    </div>
+                    <div v-if="angle.result" class="result-info" style="margin-top: 0.3rem;">
+                      <strong>{{ angle.manualDegrees !== '' && !isNaN(parseFloat(angle.manualDegrees)) ? parseFloat(angle.manualDegrees) : angle.result.degrees }}°</strong> ({{ angle.result.radians }} rad)
+                      <span v-if="!angle.result.hasCommonVertex" style="display: block; font-size: 0.8rem; color: #f59e0b;">⚠ Pas de sommet commun</span>
+                    </div>
+                    <div v-else-if="angle.seg1Index === angle.seg2Index" class="result-info" style="color: #ef4444; font-size: 0.8rem;">Choisissez 2 segments différents.</div>
+                  </div>
+                </div>
               </div>
               
               <!-- Onglet Calcul -->
@@ -2233,12 +2712,114 @@
                   </label>
                   
                   <div v-if="segments.length > 0" class="shapes-list">
-                    <div v-for="(segment, index) in segments" :key="'side-seg-' + index" class="shape-item">
-                      <span class="function-color" :style="{ backgroundColor: segment.color }"></span>
-                      <span>{{ segment.isVector ? 'V' : 'S' }}{{ index + 1 }} [({{ segment.x1 }}, {{ segment.y1 }}) → ({{ segment.x2 }}, {{ segment.y2 }})]</span>
-                      <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                    <div v-for="(segment, index) in segments" :key="'side-seg-' + index" class="shape-item shape-item-with-toggles">
+                      <div class="shape-item-main">
+                        <input type="color" :value="segment.color" @input="changeShapeColor('segment', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                        <template v-if="isEditingShape('segment', index)">
+                          <input v-model="segment.name" type="text" :class="'shape-name-input shape-name-editing-segment-' + index" maxlength="50" placeholder="S" @blur="finishShapeNameEdit('segment', index)" @keydown.enter.prevent="finishShapeNameEdit('segment', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                        </template>
+                        <template v-else>
+                          <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('segment', index)" title="Cliquer pour renommer">{{ segment.name || (segment.isVector ? 'V' : 'S') + (index + 1) }}</span>
+                        </template>
+                        <span class="shape-item-coords">{{ segment.isVector ? '→' : '—' }} ({{ segment.x1 }},{{ segment.y1 }})→({{ segment.x2 }},{{ segment.y2 }})</span>
+                        <button @click="removeSegment(index)" class="remove-function-btn">×</button>
+                      </div>
+                      <div class="shape-item-toggles">
+                        <button @click="segment.showName = !segment.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: segment.showName === true }]" :title="segment.showName === true ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                        <button @click="segment.showCoords = !segment.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: segment.showCoords === true }]" :title="segment.showCoords === true ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                        <button @click="segment.showInLegend = segment.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: segment.showInLegend !== false }]" :title="segment.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                        <select :value="segment.lineDash || 'solid'" @change="segment.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                          <option value="solid">───</option>
+                          <option value="dot">·····</option>
+                          <option value="dash">- - -</option>
+                          <option value="dashdot">-·-·</option>
+                          <option value="longdash">— —</option>
+                        </select>
+                        <select :value="segment.lineWidth || 3" @change="segment.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
+                </div>
+                
+                <!-- Droites -->
+                <div class="shape-section">
+                  <h5 class="shape-title">Tracer une droite</h5>
+                  <div class="bounds-row">
+                    <label class="radio-label"><input type="radio" v-model="droiteMode" value="2points" /> 2 points</label>
+                    <label class="radio-label"><input type="radio" v-model="droiteMode" value="pointSlope" /> Point + pente</label>
+                    <label class="radio-label"><input type="radio" v-model="droiteMode" value="pointVector" /> Point + vecteur</label>
+                  </div>
+
+                  <template v-if="droiteMode === '2points'">
+                    <div v-if="points.length >= 2" class="bounds-row">
+                      <div class="bound-input">
+                        <label>Point 1 :</label>
+                        <select v-model.number="droitePoint1Index" class="bound-field">
+                          <option v-for="(point, index) in points" :key="'side-dp1-' + index" :value="index">
+                            {{ point.name }} ({{ point.x }}, {{ point.y }})
+                          </option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>Point 2 :</label>
+                        <select v-model.number="droitePoint2Index" class="bound-field">
+                          <option v-for="(point, index) in points" :key="'side-dp2-' + index" :value="index">
+                            {{ point.name }} ({{ point.x }}, {{ point.y }})
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <p v-else class="helper-text">Créez au moins 2 points d'abord.</p>
+                  </template>
+
+                  <template v-if="droiteMode === 'pointSlope'">
+                    <div v-if="points.length >= 1" class="bounds-row">
+                      <div class="bound-input">
+                        <label>Point :</label>
+                        <select v-model.number="droitePointIndex" class="bound-field">
+                          <option v-for="(point, index) in points" :key="'side-dps-' + index" :value="index">
+                            {{ point.name }} ({{ point.x }}, {{ point.y }})
+                          </option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>Pente m :</label>
+                        <input v-model.number="droiteSlope" type="number" step="0.5" class="bound-field" />
+                      </div>
+                    </div>
+                    <p v-else class="helper-text">Créez au moins 1 point d'abord.</p>
+                  </template>
+
+                  <template v-if="droiteMode === 'pointVector'">
+                    <div v-if="points.length >= 1" class="bounds-row">
+                      <div class="bound-input">
+                        <label>Point :</label>
+                        <select v-model.number="droitePointIndex" class="bound-field">
+                          <option v-for="(point, index) in points" :key="'side-dpv-' + index" :value="index">
+                            {{ point.name }} ({{ point.x }}, {{ point.y }})
+                          </option>
+                        </select>
+                      </div>
+                      <div class="bound-input">
+                        <label>Vec x :</label>
+                        <input v-model.number="droiteVecX" type="number" step="0.5" class="bound-field" />
+                      </div>
+                      <div class="bound-input">
+                        <label>Vec y :</label>
+                        <input v-model.number="droiteVecY" type="number" step="0.5" class="bound-field" />
+                      </div>
+                    </div>
+                    <p v-else class="helper-text">Créez au moins 1 point d'abord.</p>
+                  </template>
+
+                  <button @click="addDroite" class="action-btn" :disabled="(droiteMode === '2points' && points.length < 2) || ((droiteMode === 'pointSlope' || droiteMode === 'pointVector') && points.length < 1)">Tracer la droite</button>
+                  <p class="helper-text" style="margin-top: 4px;">Ou saisissez : <code>(AB)</code>, <code>d(A,m=2)</code>, <code>d(A,u(1,2))</code></p>
                 </div>
                 
                 <!-- Cercles -->
@@ -2261,10 +2842,36 @@
                   <button @click="addCircle" class="action-btn">Ajouter le cercle</button>
                   
                   <div v-if="circles.length > 0" class="shapes-list">
-                    <div v-for="(circle, index) in circles" :key="'side-cir-' + index" class="shape-item">
-                      <span class="function-color" :style="{ backgroundColor: circle.color }"></span>
-                      <span>C{{ index + 1 }} (h={{ circle.h }}, k={{ circle.k }}, r={{ circle.r }})</span>
-                      <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                    <div v-for="(circle, index) in circles" :key="'side-cir-' + index" class="shape-item shape-item-with-toggles">
+                      <div class="shape-item-main">
+                        <input type="color" :value="circle.color" @input="changeShapeColor('circle', index, $event.target.value)" class="function-color-picker" title="Changer la couleur" />
+                        <template v-if="isEditingShape('circle', index)">
+                          <input v-model="circle.name" type="text" :class="'shape-name-input shape-name-editing-circle-' + index" maxlength="50" placeholder="C" @blur="finishShapeNameEdit('circle', index)" @keydown.enter.prevent="finishShapeNameEdit('circle', index)" @keydown.esc.prevent="cancelShapeNameEdit" />
+                        </template>
+                        <template v-else>
+                          <span class="shape-item-name shape-name-clickable" @click="startShapeNameEdit('circle', index)" title="Cliquer pour renommer">{{ circle.name || 'C' + (index + 1) }}</span>
+                        </template>
+                        <span class="shape-item-coords">(h={{ circle.h }}, k={{ circle.k }}, r={{ circle.r }})</span>
+                        <button @click="removeCircle(index)" class="remove-function-btn">×</button>
+                      </div>
+                      <div class="shape-item-toggles">
+                        <button @click="circle.showName = !circle.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: circle.showName !== false }]" :title="circle.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
+                        <button @click="circle.showInLegend = circle.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: circle.showInLegend !== false }]" :title="circle.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
+                        <select :value="circle.lineDash || 'solid'" @change="circle.lineDash = $event.target.value; plotAllFunctions()" class="line-style-select" title="Style de trait">
+                          <option value="solid">───</option>
+                          <option value="dot">·····</option>
+                          <option value="dash">- - -</option>
+                          <option value="dashdot">-·-·</option>
+                          <option value="longdash">— —</option>
+                        </select>
+                        <select :value="circle.lineWidth || 2" @change="circle.lineWidth = Number($event.target.value); plotAllFunctions()" class="line-width-select" title="Épaisseur du trait">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2425,19 +3032,17 @@ const editingFunctionNameIndex = ref(-1)
 const originalEditingFunctionName = ref('')
 const functionNameInputRefs = ref([])
 
-const MAX_FUNCTION_NAME_LENGTH = 10
+const MAX_FUNCTION_NAME_LENGTH = 30
 
 function sanitizeFunctionName(value) {
   const raw = (value ?? '').toString().trim()
   if (!raw) return ''
+  return raw.slice(0, MAX_FUNCTION_NAME_LENGTH)
+}
 
-  // Autoriser uniquement lettres/chiffres (évite les caractères spéciaux dans Plotly/MathJax)
-  let cleaned = raw.replace(/[^a-zA-Z0-9]/g, '')
-  cleaned = cleaned.replace(/^[0-9]+/, '')
-  cleaned = cleaned.slice(0, MAX_FUNCTION_NAME_LENGTH)
-
-  if (!cleaned || !/^[a-zA-Z]/.test(cleaned)) return ''
-  return cleaned
+// Détecte si un nom contient du LaTeX (backslash, underscore, caret, prime)
+function isLatexName(name) {
+  return /[\\_{^']/.test(name)
 }
 
 function getFunctionDisplayName(func, index) {
@@ -2453,6 +3058,9 @@ function splitFunctionNameParts(name) {
 
 function getFunctionLatexLabel(func, index) {
   const name = getFunctionDisplayName(func, index)
+  // Si le nom contient du LaTeX, le retourner tel quel
+  if (isLatexName(name)) return name
+  // Sinon, transformer f1 → f_{1}
   const match = name.match(/^([a-zA-Z]+)([0-9]+)$/)
   if (match) return `${match[1]}_{${match[2]}}`
   return name
@@ -2465,6 +3073,23 @@ const functionDisplayNames = computed(() =>
 const functionNameParts = computed(() =>
   functionDisplayNames.value.map(splitFunctionNameParts)
 )
+
+const functionNameLabelRefs = ref([])
+
+function renderFunctionNameLabels() {
+  nextTick(() => {
+    graphFunctions.value.forEach((func, index) => {
+      const el = functionNameLabelRefs.value[index]
+      if (!el) return
+      const name = getFunctionDisplayName(func, index)
+      try {
+        katex.render(name, el, { throwOnError: false, displayMode: false })
+      } catch (e) {
+        el.textContent = name
+      }
+    })
+  })
+}
 
 function getFunctionDisplayNameByOneBasedIndex(oneBasedIndex) {
   const index = Number(oneBasedIndex) - 1
@@ -2501,6 +3126,7 @@ function finishFunctionNameEdit(index) {
   func.name = sanitized && sanitized !== defaultName ? sanitized : ''
   editingFunctionNameIndex.value = -1
   plotAllFunctions()
+  nextTick(() => renderFunctionNameLabels())
 }
 
 function cancelFunctionNameEdit() {
@@ -2730,6 +3356,15 @@ function setDrawingMode(mode) {
 const segmentPoint1Index = ref(0)
 const segmentPoint2Index = ref(1)
 
+// Création de droites
+const droiteMode = ref('2points')  // '2points' | 'pointSlope' | 'pointVector'
+const droitePoint1Index = ref(0)
+const droitePoint2Index = ref(1)
+const droiteSlope = ref(1)
+const droiteVecX = ref(1)
+const droiteVecY = ref(1)
+const droitePointIndex = ref(0)
+
 // Noms personnalisés persistants pour les intersections
 const intersectionCustomNames = ref({})
 const intersectionCustomColors = ref({})
@@ -2787,6 +3422,49 @@ const connectPointsColor = ref('#1e3a8a')
 
 // === RÉSOLUTION D'INÉQUATIONS ===
 const showInequality = ref(false)
+
+// === ANGLES ENTRE SEGMENTS ===
+const ANGLE_COLORS = ["#f59e0b", "#ef4444", "#3b82f6", "#10b981", "#8b5cf6", "#ec4899"]
+const angleMeasures = ref([])
+let angleUpdating = false
+// Chaque entrée : { seg1Index, seg2Index, showArc, customText, color, result, manualDegrees }
+function addAngleMeasure() {
+  const colorIdx = angleMeasures.value.length % ANGLE_COLORS.length
+  angleUpdating = true
+  angleMeasures.value.push({
+    seg1Index: 0,
+    seg2Index: Math.min(1, segments.value.length - 1),
+    showArc: true,
+    customText: '',
+    color: ANGLE_COLORS[colorIdx],
+    result: null,
+    manualDegrees: ''
+  })
+  computeAllAngles()
+  angleUpdating = false
+  plotAllFunctions()
+}
+function removeAngleMeasure(idx) {
+  // Nettoyer les positions d'annotation sauvegardées
+  delete annotationPositions.value[`angle-label-${idx}`]
+  angleUpdating = true
+  angleMeasures.value.splice(idx, 1)
+  // Renuméroter les positions
+  const newPositions = {}
+  for (const [k, v] of Object.entries(annotationPositions.value)) {
+    const m = k.match(/^angle-label-(\d+)$/)
+    if (m) {
+      const oldIdx = parseInt(m[1])
+      if (oldIdx > idx) newPositions[`angle-label-${oldIdx - 1}`] = v
+      else newPositions[k] = v
+    } else {
+      newPositions[k] = v
+    }
+  }
+  annotationPositions.value = newPositions
+  angleUpdating = false
+  plotAllFunctions()
+}
 const inequalityFunc1Index = ref(0)
 const inequalityFunc2Index = ref(1)
 const inequalityOperator = ref('<')  // '<', '>', '<=', '>=', '='
@@ -2925,6 +3603,135 @@ function formatTextForPlotly(text) {
   return text
 }
 
+// === CALCUL D'ANGLE ===
+function computeSingleAngle(angle) {
+  if (segments.value.length < 2) { angle.result = null; return }
+  const i1 = angle.seg1Index
+  const i2 = angle.seg2Index
+  if (i1 === i2 || !segments.value[i1] || !segments.value[i2]) { angle.result = null; return }
+  const s1 = segments.value[i1]
+  const s2 = segments.value[i2]
+
+  let vertex = null, angle1Start, angle2Start
+  // Vecteurs partant du sommet commun vers les extrémités opposées
+  let vx1, vy1, vx2, vy2
+  const eps = 0.01
+  if (Math.abs(s1.x2 - s2.x1) < eps && Math.abs(s1.y2 - s2.y1) < eps) {
+    vertex = { x: s1.x2, y: s1.y2 }
+    vx1 = s1.x1 - vertex.x; vy1 = s1.y1 - vertex.y
+    vx2 = s2.x2 - vertex.x; vy2 = s2.y2 - vertex.y
+  } else if (Math.abs(s1.x1 - s2.x1) < eps && Math.abs(s1.y1 - s2.y1) < eps) {
+    vertex = { x: s1.x1, y: s1.y1 }
+    vx1 = s1.x2 - vertex.x; vy1 = s1.y2 - vertex.y
+    vx2 = s2.x2 - vertex.x; vy2 = s2.y2 - vertex.y
+  } else if (Math.abs(s1.x2 - s2.x2) < eps && Math.abs(s1.y2 - s2.y2) < eps) {
+    vertex = { x: s1.x2, y: s1.y2 }
+    vx1 = s1.x1 - vertex.x; vy1 = s1.y1 - vertex.y
+    vx2 = s2.x1 - vertex.x; vy2 = s2.y1 - vertex.y
+  } else if (Math.abs(s1.x1 - s2.x2) < eps && Math.abs(s1.y1 - s2.y2) < eps) {
+    vertex = { x: s1.x1, y: s1.y1 }
+    vx1 = s1.x2 - vertex.x; vy1 = s1.y2 - vertex.y
+    vx2 = s2.x1 - vertex.x; vy2 = s2.y1 - vertex.y
+  } else {
+    // Pas de sommet commun — utiliser les directions brutes
+    vx1 = s1.x2 - s1.x1; vy1 = s1.y2 - s1.y1
+    vx2 = s2.x2 - s2.x1; vy2 = s2.y2 - s2.y1
+  }
+
+  const norm1 = Math.sqrt(vx1*vx1 + vy1*vy1)
+  const norm2 = Math.sqrt(vx2*vx2 + vy2*vy2)
+  if (norm1 === 0 || norm2 === 0) { angle.result = null; return }
+
+  const dot = vx1*vx2 + vy1*vy2
+  let cosAngle = Math.max(-1, Math.min(1, dot / (norm1*norm2)))
+  const radians = Math.acos(cosAngle)
+  const degrees = radians * 180 / Math.PI
+
+  if (vertex) {
+    angle1Start = Math.atan2(vy1, vx1)
+    angle2Start = Math.atan2(vy2, vx2)
+  }
+
+  angle.result = {
+    degrees: Math.round(degrees * 100) / 100,
+    radians: Math.round(radians * 10000) / 10000,
+    vertex,
+    angle1Start: angle1Start ?? null,
+    angle2Start: angle2Start ?? null,
+    hasCommonVertex: vertex !== null
+  }
+}
+function computeAllAngles() {
+  angleMeasures.value.forEach(a => computeSingleAngle(a))
+}
+
+// Dessine les arcs d'angle (ou carrés d'angle droit) pour tous les angles
+function drawAllAngleArcs(traces) {
+  const windowSize = Math.min(xMax.value - xMin.value, yMax.value - yMin.value)
+  const baseRadius = windowSize * 0.06
+
+  angleMeasures.value.forEach((angle, idx) => {
+    if (!angle.showArc || !angle.result) return
+    const res = angle.result
+    if (!res.hasCommonVertex || !res.vertex) return
+    const color = angle.color || '#f59e0b'
+    const arcRadius = baseRadius * (1 + idx * 0.25) // décaler les arcs pour éviter superposition
+
+    let a1 = res.angle1Start
+    let a2 = res.angle2Start
+    let startAngle = a1, diff = a2 - a1
+    while (diff > Math.PI) diff -= 2 * Math.PI
+    while (diff < -Math.PI) diff += 2 * Math.PI
+    if (diff < 0) { startAngle = a2; diff = -diff }
+
+    // Valeur affichée (manuelle ou calculée)
+    const displayDeg = angle.manualDegrees !== '' && !isNaN(parseFloat(angle.manualDegrees))
+      ? parseFloat(angle.manualDegrees) : res.degrees
+    const isRightAngle = Math.abs(displayDeg - 90) < 0.5
+
+    if (isRightAngle) {
+      const sqSize = arcRadius * 0.8
+      const u1x = Math.cos(startAngle), u1y = Math.sin(startAngle)
+      const u2x = Math.cos(startAngle + diff), u2y = Math.sin(startAngle + diff)
+      const p1x = res.vertex.x + sqSize * u1x, p1y = res.vertex.y + sqSize * u1y
+      const pmx = res.vertex.x + sqSize * u1x + sqSize * u2x
+      const pmy = res.vertex.y + sqSize * u1y + sqSize * u2y
+      const p2x = res.vertex.x + sqSize * u2x, p2y = res.vertex.y + sqSize * u2y
+      traces.push({
+        x: [p1x, pmx, p2x], y: [p1y, pmy, p2y],
+        type: 'scatter', mode: 'lines',
+        line: { color, width: 2, dash: 'solid' },
+        name: '∟ 90°', showlegend: false,
+        hovertemplate: '<b>Angle droit</b><br>90°<extra></extra>'
+      })
+    } else {
+      const numPoints = 40, arcX = [], arcY = []
+      for (let i = 0; i <= numPoints; i++) {
+        const t = startAngle + (diff * i) / numPoints
+        arcX.push(res.vertex.x + arcRadius * Math.cos(t))
+        arcY.push(res.vertex.y + arcRadius * Math.sin(t))
+      }
+      traces.push({
+        x: arcX, y: arcY,
+        type: 'scatter', mode: 'lines',
+        line: { color, width: 2, dash: 'solid' },
+        name: `∠ ${displayDeg}°`, showlegend: false,
+        hovertemplate: `<b>Angle</b><br>${displayDeg}°<extra></extra>`
+      })
+    }
+  })
+}
+
+// Texte affiché pour le label d'un angle
+function getAngleLabelText(angle) {
+  if (angle.customText && angle.customText.trim()) return angle.customText.trim()
+  if (!angle.result) return ''
+  const displayDeg = angle.manualDegrees !== '' && !isNaN(parseFloat(angle.manualDegrees))
+    ? parseFloat(angle.manualDegrees) : angle.result.degrees
+  if (Math.abs(displayDeg - 90) < 0.5) return '' // Le carré suffit
+  return `${displayDeg}°`
+}
+
 // Génère les annotations pour les courbes, points, et intersections
 function buildInteractiveAnnotations() {
   const annotations = []
@@ -2933,8 +3740,10 @@ function buildInteractiveAnnotations() {
   if (showCurveLabels.value) {
     graphFunctions.value.forEach((func, index) => {
       if (func.type === 'vertical' || func.type === 'horizontal') return
+      if (func.showName === false) return
       
       const funcName = getFunctionDisplayName(func, index)
+      const funcLatex = getFunctionLatexLabel(func, index)
       const key = `curve-${index}`
       const saved = annotationPositions.value[key]
       
@@ -2949,7 +3758,7 @@ function buildInteractiveAnnotations() {
           y: labelY,
           xref: 'x',
           yref: 'y',
-          text: `<b>${funcName}</b>`,
+          text: isLatexName(funcName) ? `$${funcLatex}$` : `<b>${funcName}</b>`,
           showarrow: true,
           arrowhead: showLabelArrows.value ? 0 : 0,
           arrowsize: 1,
@@ -3027,13 +3836,22 @@ function buildInteractiveAnnotations() {
       const displayName = segment.name || (segment.isVector ? `V${index + 1}` : `S${index + 1}`)
       const midX = (segment.x1 + segment.x2) / 2
       const midY = (segment.y1 + segment.y2) / 2
+      const segShowName = segment.showName === true
+      const segShowCoords = segment.showCoords === true
+      
+      let segAnnotText = ''
+      if (segShowName && segShowCoords) segAnnotText = `<b>${displayName}</b> (${segment.x1},${segment.y1})→(${segment.x2},${segment.y2})`
+      else if (segShowName) segAnnotText = `<b>${displayName}</b>`
+      else if (segShowCoords) segAnnotText = `(${segment.x1},${segment.y1})→(${segment.x2},${segment.y2})`
+      
+      if (!segShowName && !segShowCoords) return
       
       annotations.push({
         x: midX,
         y: midY,
         xref: 'x',
         yref: 'y',
-        text: `<b>${displayName}</b>`,
+        text: segAnnotText,
         showarrow: true,
         arrowhead: 0,
         arrowsize: 1,
@@ -3062,6 +3880,8 @@ function buildInteractiveAnnotations() {
       const key = `circle-${index}`
       const saved = annotationPositions.value[key]
       const displayName = circle.name || `C${index + 1}`
+      
+      if (circle.showName === false) return
       
       annotations.push({
         x: circle.h,
@@ -3145,6 +3965,54 @@ function buildInteractiveAnnotations() {
       font: {
         size: ta.size || 16,
         color: ta.color,
+        family: 'Arial, sans-serif'
+      },
+      bgcolor: 'rgba(0,0,0,0)',
+      bordercolor: 'rgba(0,0,0,0)',
+      borderwidth: 0,
+      borderpad: 0,
+      captureevents: true,
+      _key: key
+    })
+  })
+  
+  // --- Annotations pour les labels d'angle ---
+  const windowSize = Math.min(xMax.value - xMin.value, yMax.value - yMin.value)
+  const baseRadius = windowSize * 0.06
+  angleMeasures.value.forEach((angle, idx) => {
+    if (!angle.showArc || !angle.result || !angle.result.hasCommonVertex) return
+    const labelText = getAngleLabelText(angle)
+    if (!labelText) return
+    const res = angle.result
+    const arcRadius = baseRadius * (1 + idx * 0.25)
+    
+    let a1 = res.angle1Start, a2 = res.angle2Start
+    let startAngle = a1, diff = a2 - a1
+    while (diff > Math.PI) diff -= 2 * Math.PI
+    while (diff < -Math.PI) diff += 2 * Math.PI
+    if (diff < 0) { startAngle = a2; diff = -diff }
+    
+    const midAngle = startAngle + diff / 2
+    const labelR = arcRadius * 1.5
+    const labelX = res.vertex.x + labelR * Math.cos(midAngle)
+    const labelY = res.vertex.y + labelR * Math.sin(midAngle)
+    
+    const key = `angle-label-${idx}`
+    const saved = annotationPositions.value[key]
+    const color = angle.color || '#f59e0b'
+    
+    annotations.push({
+      x: labelX,
+      y: labelY,
+      xref: 'x',
+      yref: 'y',
+      text: `<b>${labelText}</b>`,
+      showarrow: false,
+      ax: saved?.ax ?? 0,
+      ay: saved?.ay ?? 0,
+      font: {
+        size: 14,
+        color: color,
         family: 'Arial, sans-serif'
       },
       bgcolor: 'rgba(0,0,0,0)',
@@ -3581,6 +4449,19 @@ watch([showInequality, inequalities], () => {
       plotAllFunctions()
     }
   }, 200)
+}, { deep: true })
+
+// Watcher pour l'angle entre segments (debounced)
+let anglePlotTimeout = null
+watch([angleMeasures, () => segments.value.length], () => {
+  if (angleUpdating) return
+  // Calculer immédiatement les résultats (léger)
+  computeAllAngles()
+  // Debouncer le re-plot (coûteux)
+  if (anglePlotTimeout) clearTimeout(anglePlotTimeout)
+  anglePlotTimeout = setTimeout(() => {
+    plotAllFunctions()
+  }, 250)
 }, { deep: true })
 
 // Watcher pour l'option d'affichage des intersections avec les axes
@@ -4118,6 +4999,91 @@ function parseSmartInput(rawLatex) {
     }
   }
 
+  // 6. Droite avec pente : d(A,m=2) ou D(A,m=-0.5)
+  const lineSlopeRe = new RegExp(`^[dD]\\((${ptName}),m=(${num})\\)$`)
+  const lineSlopeMatch = cleaned.match(lineSlopeRe)
+  if (lineSlopeMatch) {
+    return {
+      type: 'lineSlope',
+      pointName: lineSlopeMatch[1],
+      slope: parseFloat(lineSlopeMatch[2])
+    }
+  }
+
+  // 7. Droite avec vecteur directeur : d(A,u(1,2)) ou D(A,u(-1,3))
+  const lineVecRe = new RegExp(`^[dD]\\((${ptName}),[uv]\\((${num}),(${num})\\)\\)$`)
+  const lineVecMatch = cleaned.match(lineVecRe)
+  if (lineVecMatch) {
+    return {
+      type: 'lineVector',
+      pointName: lineVecMatch[1],
+      dx: parseFloat(lineVecMatch[2]),
+      dy: parseFloat(lineVecMatch[3])
+    }
+  }
+
+  // 8. Équation de droite : ax+by+c=0 ou ax+by=c ou y=mx+p
+  // Accepte des formes comme : 2y+4x+2=0, 3x-y+1=0, y=2x+1, x=3, y=-3x, 2x+3y=6, -x+2y-4=0
+  {
+    // Normaliser l'équation : tout ramener à gauche (gauche - droite = 0)
+    const eqParts = cleaned.split('=')
+    if (eqParts.length === 2) {
+      const lhs = eqParts[0]
+      const rhs = eqParts[1]
+
+      // Fonction pour extraire les coefficients a, b, c d'une expression linéaire en x et y
+      function parseLinearExpr(expr) {
+        let a = 0, b = 0, c = 0
+        let s = expr.replace(/\s/g, '').replace(/\*/g, '')
+        if (!s) return { a, b, c }
+
+        // Regex qui capture chaque terme : signe + coefficient optionnel + variable optionnelle
+        // Deux alternatives : (1) terme avec variable x/y (2) constante seule
+        const termRe = /([+-]?)(\d+(?:\.\d+)?)?([xy])|([+-]?\d+(?:\.\d+)?)/g
+        let match
+        while ((match = termRe.exec(s)) !== null) {
+          if (match[0] === '') { termRe.lastIndex++; continue }
+          if (match[3]) {
+            // Terme avec variable (x ou y)
+            const sign = match[1] === '-' ? -1 : 1
+            const coeff = match[2] ? parseFloat(match[2]) : 1
+            if (match[3] === 'x') a += sign * coeff
+            else b += sign * coeff
+          } else if (match[4] !== undefined) {
+            // Terme constant
+            c += parseFloat(match[4])
+          }
+        }
+        return { a, b, c }
+      }
+
+      // Tester si ça ressemble à une équation linéaire (contient x et/ou y, pas de x² ni fonctions)
+      const combined = lhs + rhs
+      const hasXorY = /[xy]/.test(combined)
+      const hasHigherOrder = /[xy]\^|[xy][xy]|sin|cos|tan|log|ln|sqrt|\\/.test(combined)
+      
+      if (hasXorY && !hasHigherOrder) {
+        const left = parseLinearExpr(lhs)
+        const right = parseLinearExpr(rhs)
+        
+        // ax + by + c = 0  →  (left.a - right.a)x + (left.b - right.b)y + (left.c - right.c) = 0
+        const A = left.a - right.a
+        const B = left.b - right.b
+        const C = left.c - right.c
+        
+        if (A !== 0 || B !== 0) {
+          return {
+            type: 'lineEquation',
+            a: A,
+            b: B,
+            c: C,
+            rawEquation: rawLatex
+          }
+        }
+      }
+    }
+  }
+
   return null // Pas un pattern reconnu → traiter comme une fonction
 }
 
@@ -4138,7 +5104,8 @@ function handleSmartInput(parsed) {
         color: c,
         name: pt.name,
         showName: true,
-        showCoords: true
+        showCoords: true,
+        showInLegend: true
       })
       names.push(`${pt.name}(${pt.x}, ${pt.y})`)
     }
@@ -4153,7 +5120,8 @@ function handleSmartInput(parsed) {
       color: color,
       name: parsed.name,
       showName: true,
-      showCoords: true
+      showCoords: true,
+      showInLegend: true
     })
     plotAllFunctions()
     return { success: true, message: `Point ${parsed.name}(${parsed.x}, ${parsed.y}) ajouté` }
@@ -4168,7 +5136,10 @@ function handleSmartInput(parsed) {
       k: parsed.k,
       r: parsed.r,
       color: color,
-      name: parsed.name
+      name: parsed.name,
+      showInLegend: true,
+      lineDash: 'solid',
+      lineWidth: 2
     })
     plotAllFunctions()
     return { success: true, message: `Cercle ${parsed.name} centre(${parsed.h}, ${parsed.k}) r=${parsed.r} ajouté` }
@@ -4187,7 +5158,12 @@ function handleSmartInput(parsed) {
       x2: p2.x, y2: p2.y,
       color: color,
       isVector: isVector,
-      name: name
+      name: name,
+      showName: false,
+      showCoords: false,
+      showInLegend: true,
+      lineDash: 'solid',
+      lineWidth: 3
     })
     plotAllFunctions()
     const label = isVector ? 'Vecteur' : 'Segment'
@@ -4209,7 +5185,10 @@ function handleSmartInput(parsed) {
         color: color,
         latex: `x = ${p1.x}`,
         type: 'vertical',
-        value: p1.x
+        value: p1.x,
+        showInLegend: true,
+        lineDash: 'solid',
+        lineWidth: 2
       })
     } else {
       const a = (p2.y - p1.y) / (p2.x - p1.x)
@@ -4222,12 +5201,151 @@ function handleSmartInput(parsed) {
         color: color,
         latex: expr,
         type: 'function',
-        value: null
+        value: null,
+        showInLegend: true,
+        lineDash: 'solid',
+        lineWidth: 2
       })
     }
     plotAllFunctions()
     nextTick(() => renderFunctionExpressions())
     return { success: true, message: `Droite (${parsed.point1Name}${parsed.point2Name}) ajoutée` }
+  }
+
+  // Droite avec pente : d(A,m=2)
+  if (parsed.type === 'lineSlope') {
+    const p = findPointByName(parsed.pointName)
+    if (!p) return { success: false, message: `Point "${parsed.pointName}" non trouvé. Créez-le d'abord (ex: ${parsed.pointName}(1,2))` }
+
+    const m = parsed.slope
+    const b = p.y - m * p.x
+    const mR = Math.round(m * 10000) / 10000
+    const bR = Math.round(b * 10000) / 10000
+
+    const expr = bR >= 0 ? `${mR}*x+${bR}` : `${mR}*x${bR}`
+    const displayExpr = bR >= 0 ? `${mR}x + ${bR}` : `${mR}x - ${Math.abs(bR)}`
+
+    graphFunctions.value.push({
+      name: `d(${p.name})`,
+      expression: displayExpr,
+      color: color,
+      latex: expr,
+      type: 'function',
+      value: null,
+      showInLegend: true,
+      lineDash: 'solid',
+      lineWidth: 2
+    })
+    plotAllFunctions()
+    nextTick(() => renderFunctionExpressions())
+    return { success: true, message: `Droite passant par ${p.name} avec pente m=${m} ajoutée` }
+  }
+
+  // Droite avec vecteur directeur : d(A,u(1,2))
+  if (parsed.type === 'lineVector') {
+    const p = findPointByName(parsed.pointName)
+    if (!p) return { success: false, message: `Point "${parsed.pointName}" non trouvé. Créez-le d'abord (ex: ${parsed.pointName}(1,2))` }
+
+    const dx = parsed.dx
+    const dy = parsed.dy
+    if (dx === 0 && dy === 0) return { success: false, message: 'Le vecteur directeur ne peut pas être nul' }
+
+    if (dx === 0) {
+      // Droite verticale
+      graphFunctions.value.push({
+        name: `d(${p.name})`,
+        expression: `x = ${p.x}`,
+        color: color,
+        latex: `x = ${p.x}`,
+        type: 'vertical',
+        value: p.x,
+        showInLegend: true,
+        lineDash: 'solid',
+        lineWidth: 2
+      })
+      plotAllFunctions()
+      nextTick(() => renderFunctionExpressions())
+      return { success: true, message: `Droite verticale x = ${p.x} ajoutée` }
+    }
+
+    const m = dy / dx
+    const b = p.y - m * p.x
+    const mR = Math.round(m * 10000) / 10000
+    const bR = Math.round(b * 10000) / 10000
+
+    const expr = bR >= 0 ? `${mR}*x+${bR}` : `${mR}*x${bR}`
+    const displayExpr = bR >= 0 ? `${mR}x + ${bR}` : `${mR}x - ${Math.abs(bR)}`
+
+    graphFunctions.value.push({
+      name: `d(${p.name})`,
+      expression: displayExpr,
+      color: color,
+      latex: expr,
+      type: 'function',
+      value: null,
+      showInLegend: true,
+      lineDash: 'solid',
+      lineWidth: 2
+    })
+    plotAllFunctions()
+    nextTick(() => renderFunctionExpressions())
+    return { success: true, message: `Droite passant par ${p.name} avec vecteur (${dx}, ${dy}) ajoutée` }
+  }
+
+  // Gérer les équations de droite ax + by + c = 0
+  if (parsed.type === 'lineEquation') {
+    const { a, b, c, rawEquation } = parsed
+    const color = getNextColor()
+
+    if (b === 0 && a !== 0) {
+      // Droite verticale x = -c/a
+      const xVal = Math.round((-c / a) * 10000) / 10000
+      graphFunctions.value.push({
+        name: `d${graphFunctions.value.length + 1}`,
+        expression: `x = ${xVal}`,
+        color: color,
+        latex: `x = ${xVal}`,
+        type: 'vertical',
+        value: xVal,
+        showInLegend: true,
+        lineDash: 'solid',
+        lineWidth: 2
+      })
+      plotAllFunctions()
+      nextTick(() => renderFunctionExpressions())
+      return { success: true, message: `Droite verticale x = ${xVal} ajoutée` }
+    }
+
+    // y = -(a/b)x - c/b
+    const slope = Math.round((-a / b) * 10000) / 10000
+    const intercept = Math.round((-c / b) * 10000) / 10000
+
+    const expr = intercept >= 0 ? `${slope}*x+${intercept}` : `${slope}*x${intercept}`
+    let displayExpr = ''
+    if (slope === 0) {
+      displayExpr = `${intercept}`
+    } else if (slope === 1) {
+      displayExpr = intercept === 0 ? 'x' : (intercept > 0 ? `x + ${intercept}` : `x - ${Math.abs(intercept)}`)
+    } else if (slope === -1) {
+      displayExpr = intercept === 0 ? '-x' : (intercept > 0 ? `-x + ${intercept}` : `-x - ${Math.abs(intercept)}`)
+    } else {
+      displayExpr = intercept === 0 ? `${slope}x` : (intercept > 0 ? `${slope}x + ${intercept}` : `${slope}x - ${Math.abs(intercept)}`)
+    }
+
+    graphFunctions.value.push({
+      name: `d${graphFunctions.value.length + 1}`,
+      expression: displayExpr,
+      color: color,
+      latex: expr,
+      type: 'function',
+      value: null,
+      showInLegend: true,
+      lineDash: 'solid',
+      lineWidth: 2
+    })
+    plotAllFunctions()
+    nextTick(() => renderFunctionExpressions())
+    return { success: true, message: `Droite ${displayExpr} ajoutée` }
   }
 
   return { success: false, message: 'Type non reconnu' }
@@ -4354,7 +5472,10 @@ async function plotFunction() {
       color: color,
       latex: processedExpression,
       type: type,
-      value: value
+      value: value,
+      showInLegend: true,
+      lineDash: 'solid',
+      lineWidth: 2
     })
 
     // Tracer toutes les fonctions
@@ -4509,7 +5630,9 @@ function handleGraphClick(event) {
         x2: x,
         y2: y,
         color: segColor,
-        isVector: isVector
+        isVector: isVector,
+        showName: false,
+        showCoords: false
       })
       
       // Supprimer le point temporaire
@@ -4540,7 +5663,8 @@ function handleGraphClick(event) {
     color: pointColor,
     name: `P${autoIndex}`,
     showName: true,
-    showCoords: true
+    showCoords: true,
+    showInLegend: true
   })
   plotAllFunctions()
 }
@@ -4574,13 +5698,14 @@ async function plotAllFunctions() {
           y: [yMin.value, yMax.value],
           type: 'scatter',
           mode: 'lines',
-          name: `$${func.expression}$`,
+          name: func.showName !== false ? `$${func.expression}$` : '',
           line: {
             color: func.color,
-            width: 2
+            width: func.lineWidth || 2,
+            dash: func.lineDash || 'solid'
           },
           legendgroup: `func${index}`,
-          showlegend: true,
+          showlegend: func.showInLegend !== false,
           hovertemplate: `<b>${func.expression}</b><br>x: ${func.value}<extra></extra>`
         })
       } else if (func.type === 'horizontal') {
@@ -4590,13 +5715,14 @@ async function plotAllFunctions() {
           y: [func.value, func.value],
           type: 'scatter',
           mode: 'lines',
-          name: `$${func.expression}$`,
+          name: func.showName !== false ? `$${func.expression}$` : '',
           line: {
             color: func.color,
-            width: 2
+            width: func.lineWidth || 2,
+            dash: func.lineDash || 'solid'
           },
           legendgroup: `func${index}`,
-          showlegend: true,
+          showlegend: func.showInLegend !== false,
           hovertemplate: `<b>${func.expression}</b><br>y: ${func.value}<extra></extra>`
         })
       } else {
@@ -4605,8 +5731,8 @@ async function plotAllFunctions() {
         
         // Convertir l'expression LaTeX pour l'affichage dans la légende avec MathJax
         const functionLabel = getFunctionLatexLabel(func, index)
-        const displayName = `$${functionLabel}(x) = ${func.expression}$`
-        const hoverName = `${getFunctionDisplayName(func, index)}(x)`
+        const displayName = func.showName !== false ? `$${functionLabel}(x) = ${func.expression}$` : `$${func.expression}$`
+        const hoverName = func.showName !== false ? `${getFunctionDisplayName(func, index)}(x)` : func.expression
         
         traces.push({
           x: x,
@@ -4616,10 +5742,11 @@ async function plotAllFunctions() {
           name: displayName,
           line: {
             color: func.color,
-            width: 2
+            width: func.lineWidth || 2,
+            dash: func.lineDash || 'solid'
           },
           legendgroup: `func${index}`,
-          showlegend: true,
+          showlegend: func.showInLegend !== false,
           hovertemplate: `<b>${hoverName}</b><br>x: %{x:.3f}<br>y: %{y:.3f}<extra></extra>`
         })
       }
@@ -4683,6 +5810,9 @@ async function plotAllFunctions() {
   if (circles.value.length > 0) {
     drawCircles(traces)
   }
+  
+  // Dessiner l'arc d'angle entre segments
+  drawAllAngleArcs(traces)
   
   // Relier les points entre eux (polyline fermée)
   if (connectPoints.value && points.value.length >= 2) {
@@ -5154,21 +6284,79 @@ function solveInequalityAt(ineqIndex) {
     return
   }
   
-  const breakpoints = filteredIntersections.map(p => p.x)
+  // --- Détecter les discontinuités (asymptotes, points non définis) ---
+  const discontinuityXs = []
+  {
+    const scanN = 500
+    const dx = (domainRight - domainLeft) / scanN
+    let prevDiff = null
+    let prevFinite = null
+    
+    for (let i = 0; i <= scanN; i++) {
+      const x = domainLeft + i * dx
+      const y1 = evalItem(item1, x)
+      const y2 = evalItem(item2, x)
+      const diff = y1 - y2
+      const fin = isFinite(diff)
+      
+      if (i > 0) {
+        const prevX = domainLeft + (i - 1) * dx
+        const needRefine =
+          (prevFinite && !fin) ||
+          (!prevFinite && fin) ||
+          (prevFinite && fin && prevDiff * diff < 0 && (Math.abs(prevDiff) + Math.abs(diff)) > 100)
+        
+        if (needRefine) {
+          let lo = prevX, hi = x
+          for (let j = 0; j < 40; j++) {
+            const mid = (lo + hi) / 2
+            const my1 = evalItem(item1, mid)
+            const my2 = evalItem(item2, mid)
+            const md = my1 - my2
+            const mFin = isFinite(md) && Math.abs(md) < 1e12
+            if (prevFinite && Math.abs(prevDiff) < 1e12) {
+              if (mFin) lo = mid; else hi = mid
+            } else {
+              if (mFin) hi = mid; else lo = mid
+            }
+          }
+          const discX = (lo + hi) / 2
+          const tooClose = filteredIntersections.some(p => Math.abs(p.x - discX) < 0.1)
+          if (!tooClose && discX > domainLeft + 0.001 && discX < domainRight - 0.001) {
+            discontinuityXs.push(discX)
+          }
+        }
+      }
+      
+      prevDiff = diff
+      prevFinite = fin
+    }
+  }
+  
+  // Fusionner intersections et discontinuités en breakpoints tagués
+  const allBreakpoints = filteredIntersections.map(p => ({ x: p.x, type: 'intersection' }))
+  for (const dx of discontinuityXs) {
+    if (!allBreakpoints.some(b => Math.abs(b.x - dx) < 0.05)) {
+      allBreakpoints.push({ x: dx, type: 'discontinuity' })
+    }
+  }
+  allBreakpoints.sort((a, b) => a.x - b.x)
+  
+  const bpXs = allBreakpoints.map(b => b.x)
   const testPoints = []
   
-  if (breakpoints.length > 0) {
-    testPoints.push(Math.max(domainLeft, breakpoints[0] - 0.5))
+  if (bpXs.length > 0) {
+    testPoints.push(Math.max(domainLeft, bpXs[0] - 0.5))
   } else {
     testPoints.push((domainLeft + domainRight) / 2)
   }
   
-  for (let i = 0; i < breakpoints.length - 1; i++) {
-    testPoints.push((breakpoints[i] + breakpoints[i + 1]) / 2)
+  for (let i = 0; i < bpXs.length - 1; i++) {
+    testPoints.push((bpXs[i] + bpXs[i + 1]) / 2)
   }
   
-  if (breakpoints.length > 0) {
-    testPoints.push(Math.min(domainRight, breakpoints[breakpoints.length - 1] + 0.5))
+  if (bpXs.length > 0) {
+    testPoints.push(Math.min(domainRight, bpXs[bpXs.length - 1] + 0.5))
   }
   
   const satisfiedIntervals = []
@@ -5191,7 +6379,7 @@ function solveInequalityAt(ineqIndex) {
     if (satisfied) {
       let left, right, leftBracket, rightBracket
       
-      if (i === 0 && breakpoints.length > 0) {
+      if (i === 0 && bpXs.length > 0) {
         if (domainIsFinite) {
           left = Number(domainLeft.toFixed(2))
           leftBracket = '['
@@ -5199,9 +6387,9 @@ function solveInequalityAt(ineqIndex) {
           left = '-∞'
           leftBracket = ']'
         }
-        right = Number(breakpoints[0].toFixed(2))
-        rightBracket = strict ? '[' : ']'
-      } else if (i === 0 && breakpoints.length === 0) {
+        right = Number(bpXs[0].toFixed(2))
+        rightBracket = (strict || allBreakpoints[0].type === 'discontinuity') ? '[' : ']'
+      } else if (i === 0 && bpXs.length === 0) {
         if (domainIsFinite) {
           left = Number(domainLeft.toFixed(2))
           leftBracket = '['
@@ -5214,8 +6402,8 @@ function solveInequalityAt(ineqIndex) {
           rightBracket = '['
         }
       } else if (i === testPoints.length - 1) {
-        left = Number(breakpoints[breakpoints.length - 1].toFixed(2))
-        leftBracket = strict ? ']' : '['
+        left = Number(bpXs[bpXs.length - 1].toFixed(2))
+        leftBracket = (strict || allBreakpoints[allBreakpoints.length - 1].type === 'discontinuity') ? ']' : '['
         if (domainIsFinite) {
           right = Number(domainRight.toFixed(2))
           rightBracket = ']'
@@ -5224,10 +6412,12 @@ function solveInequalityAt(ineqIndex) {
           rightBracket = '['
         }
       } else {
-        left = Number(breakpoints[i - 1].toFixed(2))
-        leftBracket = strict ? ']' : '['
-        right = Number(breakpoints[i].toFixed(2))
-        rightBracket = strict ? '[' : ']'
+        const leftBp = allBreakpoints[i - 1]
+        const rightBp = allBreakpoints[i]
+        left = Number(leftBp.x.toFixed(2))
+        leftBracket = (strict || leftBp.type === 'discontinuity') ? ']' : '['
+        right = Number(rightBp.x.toFixed(2))
+        rightBracket = (strict || rightBp.type === 'discontinuity') ? '[' : ']'
       }
       
       satisfiedIntervals.push({ left, right, leftBracket, rightBracket })
@@ -6207,6 +7397,95 @@ function removeSegment(index) {
   shapes.removeSegment(index, plotAllFunctions)
 }
 
+function addDroite() {
+  const color = shapes.getNextColor()
+  let m, b, px, py, name
+
+  if (droiteMode.value === '2points') {
+    if (points.value.length < 2) return
+    const p1 = points.value[droitePoint1Index.value]
+    const p2 = points.value[droitePoint2Index.value]
+    if (!p1 || !p2 || droitePoint1Index.value === droitePoint2Index.value) return
+
+    if (p1.x === p2.x) {
+      // Droite verticale
+      graphFunctions.value.push({
+        name: `(${p1.name}${p2.name})`,
+        expression: `x = ${p1.x}`,
+        color: color,
+        latex: `x = ${p1.x}`,
+        type: 'vertical',
+        value: p1.x,
+        showInLegend: true,
+        lineDash: 'solid',
+        lineWidth: 2
+      })
+      plotAllFunctions()
+      nextTick(() => renderFunctionExpressions())
+      return
+    }
+    m = (p2.y - p1.y) / (p2.x - p1.x)
+    b = p1.y - m * p1.x
+    name = `(${p1.name}${p2.name})`
+  } else if (droiteMode.value === 'pointSlope') {
+    if (points.value.length < 1) return
+    const p = points.value[droitePointIndex.value]
+    if (!p) return
+    m = droiteSlope.value
+    b = p.y - m * p.x
+    name = `d(${p.name})`
+  } else if (droiteMode.value === 'pointVector') {
+    if (points.value.length < 1) return
+    const p = points.value[droitePointIndex.value]
+    if (!p) return
+    const dx = droiteVecX.value
+    const dy = droiteVecY.value
+    if (dx === 0 && dy === 0) return
+
+    if (dx === 0) {
+      // Vecteur vertical → droite verticale
+      graphFunctions.value.push({
+        name: `d(${p.name})`,
+        expression: `x = ${p.x}`,
+        color: color,
+        latex: `x = ${p.x}`,
+        type: 'vertical',
+        value: p.x,
+        showInLegend: true,
+        lineDash: 'solid',
+        lineWidth: 2
+      })
+      plotAllFunctions()
+      nextTick(() => renderFunctionExpressions())
+      return
+    }
+    m = dy / dx
+    b = p.y - m * p.x
+    name = `d(${p.name})`
+  }
+
+  // Arrondir pour éviter les flottants trop longs
+  const mRound = Math.round(m * 10000) / 10000
+  const bRound = Math.round(b * 10000) / 10000
+
+  const expr = bRound >= 0 ? `${mRound}*x+${bRound}` : `${mRound}*x${bRound}`
+  const displayExpr = bRound >= 0 ? `${mRound}x + ${bRound}` : `${mRound}x - ${Math.abs(bRound)}`
+
+  graphFunctions.value.push({
+    name: name,
+    expression: displayExpr,
+    color: color,
+    latex: expr,
+    type: 'function',
+    value: null,
+    showInLegend: true,
+    lineDash: 'solid',
+    lineWidth: 2
+  })
+  plotAllFunctions()
+  nextTick(() => renderFunctionExpressions())
+}
+
 // Fonctions de dessin - délègue au composable shapes
 function drawPoints(traces) {
   shapes.drawPoints(traces)
@@ -6924,6 +8203,8 @@ function renderFunctionExpressions() {
         }
       }
     })
+    // Rendre les noms de fonctions avec KaTeX
+    renderFunctionNameLabels()
   })
 }
 
@@ -8450,6 +9731,22 @@ async function initializeGraph() {
   cursor: pointer;
 }
 
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.radio-label input[type="radio"] {
+  width: 0.9rem;
+  height: 0.9rem;
+  cursor: pointer;
+}
+
 .calc-section, .shape-section {
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
@@ -8876,6 +10173,25 @@ async function initializeGraph() {
   margin-bottom: 0.5rem;
 }
 
+.function-item-2rows {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+}
+
+.function-item-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.function-item-toggles {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding-left: 0.25rem;
+}
+
 .function-item:last-child {
   margin-bottom: 0;
 }
@@ -9077,6 +10393,52 @@ async function initializeGraph() {
 }
 .point-toggle-btn:hover {
   background: #e0e7ff;
+}
+.legend-toggle-btn {
+  padding: 2px 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: #f1f5f9;
+  color: #94a3b8;
+  flex-shrink: 0;
+  margin-left: 2px;
+}
+.legend-toggle-btn.active {
+  background: #dbeafe;
+  color: #1e40af;
+  border-color: #93c5fd;
+}
+.legend-toggle-btn:hover {
+  background: #e0e7ff;
+}
+
+.line-style-select,
+.line-width-select {
+  padding: 1px 2px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  cursor: pointer;
+  background: #f8fafc;
+  color: #475569;
+  flex-shrink: 0;
+  margin-left: 2px;
+  height: 22px;
+}
+.line-style-select {
+  width: 52px;
+}
+.line-width-select {
+  width: 36px;
+}
+.line-style-select:hover,
+.line-width-select:hover {
+  border-color: #93c5fd;
+  background: #eff6ff;
 }
 
 .connect-points-row {

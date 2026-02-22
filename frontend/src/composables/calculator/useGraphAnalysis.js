@@ -51,18 +51,12 @@ export function useGraphAnalysis(graphFunctions, xMin, xMax, yMin, yMax) {
   const showRoots = ref(false)
   const rootsPoints = ref([])
 
-  const MAX_FUNCTION_NAME_LENGTH = 10
+  const MAX_FUNCTION_NAME_LENGTH = 30
 
   function sanitizeFunctionName(value) {
     const raw = (value ?? '').toString().trim()
     if (!raw) return ''
-
-    let cleaned = raw.replace(/[^a-zA-Z0-9]/g, '')
-    cleaned = cleaned.replace(/^[0-9]+/, '')
-    cleaned = cleaned.slice(0, MAX_FUNCTION_NAME_LENGTH)
-
-    if (!cleaned || !/^[a-zA-Z]/.test(cleaned)) return ''
-    return cleaned
+    return raw.slice(0, MAX_FUNCTION_NAME_LENGTH)
   }
 
   function getFunctionDisplayName(func, index) {

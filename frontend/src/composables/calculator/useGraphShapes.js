@@ -63,7 +63,8 @@ export function useGraphShapes() {
       color: color,
       name: name,
       showName: true,
-      showCoords: true
+      showCoords: true,
+      showInLegend: true
     })
     
     // Réinitialiser les champs
@@ -96,7 +97,8 @@ export function useGraphShapes() {
         color: color,
         name: name,
         showName: true,
-        showCoords: true
+        showCoords: true,
+        showInLegend: true
       })
       count++
     }
@@ -135,7 +137,7 @@ export function useGraphShapes() {
           }
         },
         name: `${displayName} (${point.x}, ${point.y})`,
-        showlegend: true,
+        showlegend: point.showInLegend !== false,
         hovertemplate: `<b>${displayName}</b><br>(${point.x}, ${point.y})<extra></extra>`
       })
     })
@@ -155,7 +157,12 @@ export function useGraphShapes() {
       y2: segmentY2.value,
       color: color,
       isVector: isVec,
-      name: name
+      name: name,
+      showName: false,
+      showCoords: false,
+      showInLegend: true,
+      lineDash: 'solid',
+      lineWidth: 3
     })
     
     // Réinitialiser les champs
@@ -185,10 +192,11 @@ export function useGraphShapes() {
         mode: 'lines',
         line: {
           color: segment.color,
-          width: 3
+          width: segment.lineWidth || 3,
+          dash: segment.lineDash || 'solid'
         },
         name: `${label}: ${notation}`,
-        showlegend: true,
+        showlegend: segment.showInLegend !== false,
         hovertemplate: `<b>${label}</b><br>De (${segment.x1}, ${segment.y1}) à (${segment.x2}, ${segment.y2})<extra></extra>`
       })
       
@@ -253,7 +261,11 @@ export function useGraphShapes() {
       k: circleK.value,
       r: circleR.value,
       color: color,
-      name: name
+      name: name,
+      showName: true,
+      showInLegend: true,
+      lineDash: 'solid',
+      lineWidth: 2
     })
     
     // Réinitialiser les champs
@@ -292,10 +304,11 @@ export function useGraphShapes() {
         mode: 'lines',
         line: {
           color: circle.color,
-          width: 2
+          width: circle.lineWidth || 2,
+          dash: circle.lineDash || 'solid'
         },
         name: `${circle.name || 'C' + (index + 1)}: centre(${circle.h}, ${circle.k}), r=${circle.r}`,
-        showlegend: true,
+        showlegend: circle.showInLegend !== false,
         hovertemplate: `<b>${circle.name || 'C' + (index + 1)}</b><br>x: %{x:.3f}<br>y: %{y:.3f}<extra></extra>`
       })
       

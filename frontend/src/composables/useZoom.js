@@ -25,26 +25,24 @@ export function useZoom(options = {}) {
     // Test plus robuste du support du zoom natif
     let zoomSupported = false
     try {
-      // Créer un élément de test
+      // Créer un élément de test avec des dimensions connues
       const testEl = document.createElement('div')
-      testEl.style.cssText = 'position:absolute;left:-9999px;top:-9999px;zoom:1.5;'
+      testEl.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:100px;height:100px;zoom:2;'
       document.body.appendChild(testEl)
       
-      // Vérifier si le zoom fonctionne réellement
+      // Si zoom est supporté, getBoundingClientRect retourne 200x200
       const rect = testEl.getBoundingClientRect()
-      testEl.style.zoom = '2'
-      const newRect = testEl.getBoundingClientRect()
-      
-      // Le zoom fonctionne si les dimensions changent proportionnellement
-      zoomSupported = Math.abs(newRect.width - rect.width * (2/1.5)) < 1
+      zoomSupported = rect.width >= 190 // ~200px si zoom fonctionne, ~100px sinon
       
       document.body.removeChild(testEl)
     } catch (e) {
       zoomSupported = false
     }
     
-    // Sur mobile, toujours utiliser transform même si zoom est "supporté"
-    supportsNativeZoom.value = zoomSupported && !isMobileDevice.value
+    // En 2025+, le CSS zoom est supporté nativement par tous les navigateurs
+    // (Safari, Chrome, Firefox 126+). On l'utilise aussi sur mobile pour éviter
+    // les problèmes de hauteur causés par transform: scale().
+    supportsNativeZoom.value = zoomSupported
     
     console.log('[Zoom Detection]', {
       isMobile: isMobileDevice.value,

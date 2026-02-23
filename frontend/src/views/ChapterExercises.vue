@@ -914,6 +914,7 @@ watch(viewportWidth, () => {
       }
     }
     measureContentHeightForExercices()
+    clampScrollToContentEnd()
   })
 }, { immediate: true })
 
@@ -931,6 +932,7 @@ watch(paginated, () => {
       }
     }
     measureContentHeightForExercices()
+    clampScrollToContentEnd()
   })
 }, { deep: true })
 
@@ -938,6 +940,9 @@ watch(
   () => filteredExercices.value.length,
   () => {
     ensureCurrentPageValid()
+    nextTick(() => {
+      clampScrollToContentEnd()
+    })
   }
 )
 
@@ -1028,8 +1033,9 @@ function getScrollContainer(el) {
   while (parent) {
     const style = window.getComputedStyle(parent)
     const overflowY = style.overflowY
-    const canScroll = (overflowY === 'auto' || overflowY === 'scroll') && parent.scrollHeight > parent.clientHeight
-    if (canScroll) return parent
+    if (overflowY === 'auto' || overflowY === 'scroll' || overflowY === 'overlay') {
+      return parent
+    }
     parent = parent.parentElement
   }
   return document.scrollingElement || document.documentElement
@@ -1062,6 +1068,28 @@ function scrollToTop(options = {}) {
   scrollToPosition({ ...options, top: 0 })
 }
 
+function getMaxScrollTop(container) {
+  if (typeof document === 'undefined' || !container) return 0
+  if (container === document.documentElement || container === document.body) {
+    const doc = document.documentElement
+    const body = document.body
+    const scrollHeight = Math.max(doc?.scrollHeight || 0, body?.scrollHeight || 0)
+    const clientHeight = (typeof window !== 'undefined' ? window.innerHeight : doc?.clientHeight) || 0
+    return Math.max(0, scrollHeight - clientHeight)
+  }
+  return Math.max(0, (container.scrollHeight || 0) - (container.clientHeight || 0))
+}
+
+function clampScrollToContentEnd() {
+  const container = getScrollContainer(exPageRef.value)
+  if (!container) return
+  const maxTop = getMaxScrollTop(container)
+  const currentTop = readScrollTop(container)
+  if (currentTop > maxTop) {
+    scrollToPosition({ top: maxTop, behavior: 'auto' })
+  }
+}
+
 function restoreScrollPositionAfterLoad() {
   nextTick(() => {
     setTimeout(() => {
@@ -1082,6 +1110,9 @@ function restoreScrollPositionAfterLoad() {
       } else {
         scrollToTop({ behavior: 'auto' })
       }
+      setTimeout(() => {
+        clampScrollToContentEnd()
+      }, 0)
     }, 200)
   })
 }
@@ -1450,7 +1481,7 @@ function initFirstVisitFlag() {
 <style scoped>
 .exercices-section {
   background: #fff;
-  min-height: 100vh;
+  min-height: 0;
   padding: 0;
   position: relative;
 }
@@ -1577,13 +1608,13 @@ function initFirstVisitFlag() {
   margin: 0 auto;
   align-items: stretch;
   transition: max-width 0.3s ease;
-  padding-bottom: 100px; /* Espace pour la barre d'outils mobile */
+  padding-bottom: 1rem; /* Eviter un grand vide après la pagination */
 }
 
-/* Sur mobile, augmenter le padding pour les barres d'outils */
+/* Sur mobile, conserver un léger espace sécurisé en bas pour le footer */
 @media (max-width: 768px) {
   .exercices-list {
-    padding-bottom: 120px;
+    padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px));
   }
 }
 

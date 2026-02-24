@@ -5,6 +5,12 @@ import FreeCourseDetail from '@/views/FreeCourseDetail.vue'
 import FreeExerciseChapter from '@/views/FreeExerciseChapter.vue'
 import { getFreeResources } from '@/api/free-content'
 import { buildExerciseChapterSlug, formatPaysSlug, formatMatiereSlug, formatNiveauGroupSlug, DEFAULT_PAYS_SLUG, DEFAULT_MATIERE_SLUG } from '@/utils/freeExerciseSlug'
+import { setPageSeo } from '@/services/seo'
+import {
+  buildDynamicSeo,
+  DYNAMIC_SEO_PAGE_TYPES,
+  topicFromSlug
+} from '@/composables/useDynamicSeo'
 
 const route = useRoute()
 const router = useRouter()
@@ -15,6 +21,47 @@ const niveauGroup = computed(() => String(route.params.niveauGroup || ''))
 const matiere = computed(() => String(route.params.matiere || ''))
 const slugIdParam = computed(() => String(route.params.id || ''))
 const isExerciseDetail = computed(() => slug.value.startsWith('exercice-gratuit-'))
+
+const normalizePathname = (pathname) => {
+  const raw = String(pathname || '').trim()
+  if (!raw) return '/'
+  const withSlash = raw.startsWith('/') ? raw : `/${raw}`
+  if (withSlash.length === 1) return withSlash
+  return withSlash.replace(/\/+$/, '')
+}
+
+const routePathMatches = (currentPath, canonicalPath) => {
+  return normalizePathname(currentPath) === normalizePathname(canonicalPath)
+}
+
+const buildCanonicalPathFromRoute = (routeName, params) => {
+  try {
+    const resolved = router.resolve({ name: routeName, params })
+    return normalizePathname(resolved?.path || '')
+  } catch (_) {
+    return ''
+  }
+}
+
+const applyNonCanonicalSeo = ({ canonicalPath, pageType, topic, level, sourceText }) => {
+  const normalizedCanonicalPath = normalizePathname(canonicalPath)
+  const currentPath = normalizePathname(route.path)
+  if (!normalizedCanonicalPath || !currentPath) return
+  const seoPayload = buildDynamicSeo({
+    pageType: pageType || DYNAMIC_SEO_PAGE_TYPES.EXERCISE_CHAPTER,
+    topic: topic || topicFromSlug(slug.value),
+    level,
+    sourceText
+  })
+  setPageSeo({
+    title: seoPayload.title,
+    description: seoPayload.description,
+    canonicalPath: currentPath,
+    canonicalUrl: normalizedCanonicalPath,
+    robots: 'noindex,follow',
+    ogType: seoPayload.ogType
+  })
+}
 
 const parseSlugWithId = (value) => {
   const match = String(value || '').match(/^(.*?)-(\d+)$/)
@@ -90,9 +137,19 @@ const resolveNotionBySlug = async () => {
             canonicalSlug !== rawSlug ||
             String(targetId) !== String(slugIdParam.value || parsed.id)
           ) {
+            const canonicalPath = buildCanonicalPathFromRoute(routeName, params)
+            applyNonCanonicalSeo({
+              canonicalPath,
+              pageType: DYNAMIC_SEO_PAGE_TYPES.EXERCISE_CHAPTER,
+              topic: resolvedTitle.value || first?.notion_nom || topicFromSlug(canonicalSlug),
+              level: first?.niveau_nom || canonicalGroup,
+              sourceText: first?.accroche || first?.question || first?.contenu || first?.excerpt || ''
+            })
             router.replace({
               name: routeName,
-              params
+              params,
+              query: route.query,
+              hash: route.hash
             }).catch(() => {})
           }
         }
@@ -159,9 +216,19 @@ const resolveNotionBySlug = async () => {
             canonicalSlug !== rawSlug ||
             String(resolvedId) !== String(targetId)
           ) {
+            const canonicalPath = buildCanonicalPathFromRoute(routeName, params)
+            applyNonCanonicalSeo({
+              canonicalPath,
+              pageType: DYNAMIC_SEO_PAGE_TYPES.EXERCISE_CHAPTER,
+              topic: resolvedTitle.value || match?.notion_nom || topicFromSlug(canonicalSlug),
+              level: match?.niveau_nom || canonicalGroup,
+              sourceText: match?.accroche || match?.question || match?.contenu || match?.excerpt || ''
+            })
             router.replace({
               name: routeName,
-              params
+              params,
+              query: route.query,
+              hash: route.hash
             }).catch(() => {})
           }
         }
@@ -185,6 +252,30 @@ const goBack = () => {
 
 watch([slug, pays, niveauGroup, matiere, slugIdParam], () => {
   resolveNotionBySlug()
+}, { immediate: true })
+
+watch([isExerciseDetail, slug, () => route.path], ([detailMode, currentSlug]) => {
+  if (!detailMode) return
+  const safeSlug = String(currentSlug || '').trim()
+  if (!safeSlug) return
+
+  const canonicalPath = normalizePathname(`/ressources-gratuites/exercices/${safeSlug}`)
+  if (routePathMatches(route.path, canonicalPath)) return
+
+  applyNonCanonicalSeo({
+    canonicalPath,
+    pageType: DYNAMIC_SEO_PAGE_TYPES.EXERCISE_DETAIL,
+    topic: topicFromSlug(safeSlug),
+    level: niveauGroup.value,
+    sourceText: safeSlug
+  })
+
+  router.replace({
+    name: 'FreeExerciseDetail',
+    params: { slug: safeSlug },
+    query: route.query,
+    hash: route.hash
+  }).catch(() => {})
 }, { immediate: true })
 </script>
 

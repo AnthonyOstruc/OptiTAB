@@ -6,6 +6,7 @@ import NotionCard from '@/components/UI/NotionCard.vue'
 import BackButton from '@/components/common/BackButton.vue'
 import Breadcrumbs from '@/components/common/Breadcrumbs.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
+import FaqSection from '@/components/home/FaqSection.vue'
 import { getFreeResources } from '@/api/free-content'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
@@ -14,6 +15,7 @@ import { useZoom } from '@/composables/useZoom'
 import { buildExerciseChapterRouteParams } from '@/utils/freeExerciseSlug'
 import { buildCourseRouteParams } from '@/utils/freeCourseSlug'
 import { buildSummaryRouteParams } from '@/utils/freeSummarySlug'
+import { FREE_RESOURCES_AUTHORITY_CONTENT, isKnownBrokenPopularLink } from '@/config/freeResourcesAuthority'
 
 const props = defineProps({
   resourceType: {
@@ -139,6 +141,16 @@ const typeConfig = computed(() => {
 const isExerciseMode = computed(() => props.resourceType === 'exercise')
 const isSummaryMode = computed(() => props.resourceType === 'summary')
 const isCourseMode = computed(() => props.resourceType === 'course')
+
+const authorityContent = computed(() => {
+  if (isExerciseMode.value) return FREE_RESOURCES_AUTHORITY_CONTENT.exercise
+  if (isSummaryMode.value) return FREE_RESOURCES_AUTHORITY_CONTENT.summary
+  return FREE_RESOURCES_AUTHORITY_CONTENT.course
+})
+
+const filteredPopularLinks = computed(() =>
+  (authorityContent.value?.popularLinks || []).filter((link) => !isKnownBrokenPopularLink(link?.href))
+)
 
 const pageIntro = computed(() => {
   if (isExerciseMode.value) {
@@ -938,6 +950,32 @@ const onLockedExercise = (chapter) => {
         <p class="page-subtitle">{{ pageIntro.subtitle }}</p>
       </header>
 
+      <section class="authority-intro-block" aria-label="Introduction pédagogique">
+        <h2 class="authority-intro-block__title">Comment exploiter ces ressources efficacement</h2>
+        <p
+          v-for="paragraph in authorityContent.introParagraphs"
+          :key="paragraph"
+          class="authority-intro-block__text"
+        >
+          {{ paragraph }}
+        </p>
+      </section>
+
+      <section class="popular-links-panel" aria-label="Liens populaires">
+        <h2 class="popular-links-panel__title">Liens populaires</h2>
+        <ul class="popular-links-panel__list">
+          <li
+            v-for="link in filteredPopularLinks"
+            :key="link.href"
+            class="popular-links-panel__item"
+          >
+            <router-link :to="link.href" class="popular-links-panel__anchor">
+              {{ link.label }}
+            </router-link>
+          </li>
+        </ul>
+      </section>
+
       <section class="free-resource-cta" :style="ctaWidthStyle" aria-label="Accès professeur ou plateforme">
         <div class="free-resource-cta__copy">
           <p class="free-resource-cta__title">Besoin d’un professeur ou d’un accès complet&nbsp;?</p>
@@ -1195,6 +1233,10 @@ const onLockedExercise = (chapter) => {
         </div>
         </div>
       </template>
+
+      <section class="list-faq-section" aria-label="Questions fréquentes">
+        <FaqSection :faq="authorityContent.faq" />
+      </section>
     </div>
 
     <WhatsappChatButton
@@ -1256,6 +1298,76 @@ const onLockedExercise = (chapter) => {
   font-weight: 600;
   color: #475569;
   line-height: 1.6;
+}
+
+.authority-intro-block {
+  max-width: 980px;
+  margin: 0 0 18px 0;
+}
+
+.authority-intro-block__title {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.35;
+}
+
+.authority-intro-block__text {
+  margin: 0 0 14px 0;
+  font-size: 15px;
+  line-height: 1.72;
+  color: #334155;
+}
+
+.authority-intro-block__text:last-child {
+  margin-bottom: 0;
+}
+
+.popular-links-panel {
+  max-width: 980px;
+  margin: 0 0 18px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #f8fafc;
+  padding: 18px 20px;
+}
+
+.popular-links-panel__title {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.popular-links-panel__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+}
+
+.popular-links-panel__anchor {
+  color: #1d4ed8;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.45;
+}
+
+.popular-links-panel__anchor:hover {
+  text-decoration: underline;
+}
+
+.list-faq-section {
+  margin-top: 18px;
+}
+
+@media (max-width: 900px) {
+  .popular-links-panel__list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .free-resource-cta {

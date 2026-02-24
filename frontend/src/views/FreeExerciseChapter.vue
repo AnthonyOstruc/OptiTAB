@@ -13,6 +13,13 @@ import { renderMath } from '@/utils/scientificRenderer'
 import { setPageSeo, getRobotsForRoute } from '@/services/seo'
 import { buildExerciseChapterRouteParams } from '@/utils/freeExerciseSlug'
 import { useZoom } from '@/composables/useZoom'
+import {
+  buildDynamicSeo,
+  buildCanonicalSeoFields,
+  DYNAMIC_SEO_PAGE_TYPES,
+  normalizePathname,
+  stripHtmlForSeo
+} from '@/composables/useDynamicSeo'
 
 const props = defineProps({
   notionIdOverride: {
@@ -94,51 +101,15 @@ const formatMatiereLabel = (value) => {
   return value
 }
 
-function stripHtml(input) {
-  return String(input || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
-}
-
-function clampMetaDescription(text) {
-  const cleaned = String(text || '').replace(/\s+/g, ' ').trim()
-  if (!cleaned) return ''
-  return cleaned.length > 160 ? `${cleaned.slice(0, 157).trimEnd()}...` : cleaned
-}
-
-function clampTitle(text, maxLength = 70) {
-  const cleaned = String(text || '').replace(/\s+/g, ' ').trim()
-  if (!cleaned) return ''
-  if (cleaned.length <= maxLength) return cleaned
-  const truncated = cleaned.slice(0, maxLength - 1)
-  const cut = truncated.lastIndexOf(' ')
-  return `${(cut > 20 ? truncated.slice(0, cut) : truncated).trimEnd()}...`
-}
-
-function normalizeSubject(matiereNom) {
-  const raw = String(matiereNom || '').replace(/\s+/g, ' ').trim()
-  if (!raw) return { display: 'Maths', phrase: 'maths' }
-  if (/math/i.test(raw)) return { display: 'Maths', phrase: 'maths' }
-  return { display: raw, phrase: raw }
-}
-
-function buildSeoTitle({ chapterTitle, subjectDisplay, niveauNom }) {
-  const level = String(niveauNom || '').replace(/\s+/g, ' ').trim()
-  const levelPart = level ? ` (${level})` : ''
-  const subject = String(subjectDisplay || 'Maths').trim()
-  const prefix = `Exercices corriges gratuits de ${subject}${levelPart}`
-  const full = chapterTitle ? `${prefix} : ${chapterTitle}` : prefix
-  return clampTitle(full, 70)
-}
-
-function buildSeoDescription({ chapterTitle, subjectPhrase, niveauNom, count }) {
-  const level = String(niveauNom || '').replace(/\s+/g, ' ').trim()
-  const levelPart = level ? ` (${level})` : ''
-  const subject = String(subjectPhrase || 'maths').trim()
-  const intro = `Exercices corriges gratuits de ${subject}${levelPart}.`
-  const detail = chapterTitle ? `Chapitre ${chapterTitle}.` : ''
-  const countPart = count
-    ? `${count} exercice${count > 1 ? 's' : ''} gratuit${count > 1 ? 's' : ''} avec correction.`
-    : 'Corrections detaillees et methode.'
-  return clampMetaDescription([intro, detail, countPart, 'Acces gratuit sur OptiTAB.'].filter(Boolean).join(' '))
+function pickChapterSeoSourceText(source) {
+  return stripHtmlForSeo(
+    source?.accroche ||
+    source?.excerpt ||
+    source?.question ||
+    source?.contenu ||
+    source?.contenu_html ||
+    ''
+  )
 }
 
 function getSiteUrl() {
@@ -170,6 +141,10 @@ function buildCanonicalPath(source) {
     return `/ressources-gratuites/exercices/${canonicalParams.pays}/${canonicalParams.niveauGroup}/${canonicalParams.matiere}/${canonicalParams.slug}-${canonicalParams.id}`
   }
   return `/ressources-gratuites/exercices/${canonicalParams.pays}/${canonicalParams.matiere}/${canonicalParams.slug}-${canonicalParams.id}`
+}
+
+function isCanonicalRoutePath(currentPath, canonicalPath) {
+  return normalizePathname(currentPath) === normalizePathname(canonicalPath)
 }
 
 function pickSeoImage(list) {
@@ -346,29 +321,31 @@ const syncCanonicalRoute = (source) => {
 const updateSeo = () => {
   if (!notionTitle.value && exercises.value.length === 0) return
   const first = exercises.value[0] || {}
-  const matiere = formatMatiereLabel(first.matiere_nom || '')
   const niveau = formatNiveauLabel(first.niveau_nom || '')
-  const subject = normalizeSubject(matiere)
   const chapterTitle = notionTitle.value || first.notion_nom || 'Chapitre'
-  const title = buildSeoTitle({
-    chapterTitle,
-    subjectDisplay: subject.display,
-    niveauNom: niveau
+  const seoPayload = buildDynamicSeo({
+    pageType: DYNAMIC_SEO_PAGE_TYPES.EXERCISE_CHAPTER,
+    topic: chapterTitle,
+    level: niveau,
+    sourceText: pickChapterSeoSourceText(first)
   })
-  const description = buildSeoDescription({
-    chapterTitle,
-    subjectPhrase: subject.phrase,
-    niveauNom: niveau,
-    count: freeExercisesCount.value
-  })
+  const title = seoPayload.title
+  const description = seoPayload.description
   const image = pickSeoImage(exercises.value) || undefined
-  const canonicalPath = buildCanonicalPath(first)
-  const canonicalUrl = toAbsoluteUrl(canonicalPath)
+  const canonicalResourcePath = buildCanonicalPath(first)
+  const canonicalResourceUrl = toAbsoluteUrl(canonicalResourcePath)
+  const isCanonicalRoute = isCanonicalRoutePath(route.path, canonicalResourcePath)
+  const canonicalSeo = buildCanonicalSeoFields({
+    routePath: route.path,
+    canonicalPath: canonicalResourcePath,
+    isCanonicalRoute,
+    robotsWhenCanonical: getRobotsForRoute({ route })
+  })
   const itemListElements = freeExercises.value
     .slice(0, 50)
     .map((exercise, index) => {
       const anchorId = getExerciseAnchorId(exercise, index)
-      const url = anchorId ? `${canonicalUrl}#${anchorId}` : canonicalUrl
+      const url = anchorId ? `${canonicalResourceUrl}#${anchorId}` : canonicalResourceUrl
       return { '@type': 'ListItem', position: index + 1, name: exercise.titre, url }
     })
   const jsonLdGraph = [
@@ -377,7 +354,7 @@ const updateSeo = () => {
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Accueil', item: toAbsoluteUrl('/') },
         { '@type': 'ListItem', position: 2, name: 'Exercices gratuits', item: toAbsoluteUrl('/ressources-gratuites/exercices') },
-        { '@type': 'ListItem', position: 3, name: chapterTitle, item: canonicalUrl }
+        { '@type': 'ListItem', position: 3, name: chapterTitle, item: canonicalResourceUrl }
       ]
     },
     itemListElements.length
@@ -394,9 +371,10 @@ const updateSeo = () => {
   setPageSeo({
     title,
     description,
-    canonicalPath,
-    robots: getRobotsForRoute({ route }),
-    ogType: 'website',
+    canonicalPath: canonicalSeo.canonicalPath,
+    canonicalUrl: canonicalSeo.canonicalUrl ? toAbsoluteUrl(canonicalSeo.canonicalUrl) : undefined,
+    robots: canonicalSeo.robots,
+    ogType: seoPayload.ogType,
     image,
     jsonLdGraph
   })

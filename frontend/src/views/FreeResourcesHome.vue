@@ -16,6 +16,19 @@
           </div>
         </section>
 
+        <section class="authority-intro" aria-label="Introduction ressources gratuites">
+          <div class="authority-container">
+            <h2 class="authority-title">Un parcours clair pour progresser en maths</h2>
+            <p
+              v-for="paragraph in hubAuthorityContent.introParagraphs"
+              :key="paragraph"
+              class="authority-paragraph"
+            >
+              {{ paragraph }}
+            </p>
+          </div>
+        </section>
+
         <!-- Cards Section -->
         <section class="cards-section">
           <div class="cards-container">
@@ -54,6 +67,19 @@
           </div>
         </section>
 
+        <section class="popular-links" aria-label="Liens populaires ressources gratuites">
+          <div class="popular-links__container">
+            <h2 class="popular-links__title">Liens populaires</h2>
+            <ul class="popular-links__list">
+              <li v-for="link in hubPopularLinks" :key="link.href" class="popular-links__item">
+                <router-link :to="link.href" class="popular-links__anchor">
+                  {{ link.label }}
+                </router-link>
+              </li>
+            </ul>
+          </div>
+        </section>
+
         <!-- CTA Section -->
         <section class="cta-section">
           <div class="cta-container">
@@ -71,7 +97,7 @@
         </section>
 
         <!-- FAQ Section -->
-        <FaqSection :faq="faq" />
+        <FaqSection :faq="hubAuthorityContent.faq" />
       </div>
     </div>
   </MainLayout>
@@ -81,10 +107,10 @@
 import MainLayout from '@/components/layout/MainLayout.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
 import { freeContentHomeBlocks } from '@/config/freeContent'
-import { faq } from '@/config/homeContent'
+import { FREE_RESOURCES_AUTHORITY_CONTENT, isKnownBrokenPopularLink } from '@/config/freeResourcesAuthority'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { useZoom } from '@/composables/useZoom'
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { 
   SparklesIcon, 
   CheckCircleIcon, 
@@ -95,6 +121,10 @@ import {
 } from '@heroicons/vue/24/outline'
 
 const { openModal } = useModalManager()
+const hubAuthorityContent = FREE_RESOURCES_AUTHORITY_CONTENT.hub
+const hubPopularLinks = computed(() =>
+  hubAuthorityContent.popularLinks.filter((link) => !isKnownBrokenPopularLink(link?.href))
+)
 
 // --- Mobile/desktop zoom (même logique que Home/About) ---
 const freeResourcesContentRef = ref(null)
@@ -258,6 +288,34 @@ const openSubscriptionModal = () => {
   margin: 0 auto;
 }
 
+.authority-intro {
+  padding: 8px 20px 10px;
+}
+
+.authority-container {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.authority-title {
+  margin: 0 0 14px 0;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.authority-paragraph {
+  margin: 0 0 16px 0;
+  font-size: 1rem;
+  line-height: 1.72;
+  color: #334155;
+}
+
+.authority-paragraph:last-child {
+  margin-bottom: 0;
+}
+
 /* Cards Section */
 .cards-section {
   padding: 40px 20px 80px;
@@ -416,6 +474,52 @@ const openSubscriptionModal = () => {
   height: 18px;
 }
 
+.popular-links {
+  padding: 0 20px 44px;
+}
+
+.popular-links__container {
+  max-width: 1040px;
+  margin: 0 auto;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.popular-links__title {
+  margin: 0 0 14px 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.popular-links__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.popular-links__item {
+  margin: 0;
+}
+
+.popular-links__anchor {
+  display: inline-flex;
+  width: 100%;
+  color: #1d4ed8;
+  font-weight: 600;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.popular-links__anchor:hover {
+  text-decoration: underline;
+}
+
 /* CTA Section */
 .cta-section {
   padding: 60px 20px;
@@ -487,6 +591,10 @@ const openSubscriptionModal = () => {
     grid-template-columns: 1fr;
     max-width: 500px;
   }
+
+  .popular-links__list {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 700px) {
@@ -502,6 +610,14 @@ const openSubscriptionModal = () => {
   
   .cards-section {
     padding: 24px 16px 60px;
+  }
+
+  .authority-intro {
+    padding: 10px 16px 14px;
+  }
+
+  .popular-links {
+    padding: 0 16px 36px;
   }
   
   .card-link {

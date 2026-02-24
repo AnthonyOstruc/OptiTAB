@@ -5,10 +5,74 @@ import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+const STATIC_INDEXABLE_PATHS = new Set([
+  '/',
+  '/tarifs',
+  '/cours-particuliers',
+  '/about',
+  '/contact',
+  '/ressources-gratuites',
+  '/ressources-gratuites/cours',
+  '/ressources-gratuites/exercices',
+  '/ressources-gratuites/syntheses'
+])
+
+const GROUPED_COURSE_PATH_RE = /^\/ressources-gratuites\/cours\/[a-z0-9-]+\/(college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
+const GROUPED_SUMMARY_PATH_RE = /^\/ressources-gratuites\/syntheses\/[a-z0-9-]+\/(college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
+const GROUPED_EXERCISE_CHAPTER_PATH_RE = /^\/ressources-gratuites\/exercices\/[a-z0-9-]+\/(college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
+const EXERCISE_DETAIL_PATH_RE = /^\/ressources-gratuites\/exercices\/exercice-gratuit-[a-z0-9-]+$/i
+
+const HTML_FETCH_ACCEPT = 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.8'
+const HTML_FETCH_TIMEOUT_MS = 15000
+const SHOULD_VALIDATE_MERGE = String(process.env.VALIDATE_MERGE || '').trim() === '1'
+
 function normalizeSiteUrl(raw) {
   const value = String(raw || '').trim()
   if (!value) return ''
   return value.replace(/\/+$/, '')
+}
+
+function normalizePathname(pathname) {
+  const raw = String(pathname || '').trim()
+  if (!raw) return ''
+
+  let resolvedPath = raw
+  try {
+    const parsed = new URL(raw, 'https://www.optitab.net')
+    resolvedPath = parsed.pathname || '/'
+  } catch {
+    resolvedPath = raw
+  }
+
+  if (!resolvedPath.startsWith('/')) {
+    resolvedPath = `/${resolvedPath}`
+  }
+
+  const normalized = resolvedPath.replace(/\/+$/, '')
+  return normalized || '/'
+}
+
+function normalizeAbsoluteUrl(rawUrl, baseUrl) {
+  try {
+    const url = new URL(String(rawUrl || ''), String(baseUrl || 'https://www.optitab.net'))
+    url.hash = ''
+    url.search = ''
+    url.pathname = normalizePathname(url.pathname)
+    return `${url.origin}${url.pathname}`
+  } catch {
+    return ''
+  }
+}
+
+function isCanonicalIndexablePath(pathname) {
+  const normalized = normalizePathname(pathname)
+  if (!normalized) return false
+  if (STATIC_INDEXABLE_PATHS.has(normalized)) return true
+  if (GROUPED_COURSE_PATH_RE.test(normalized)) return true
+  if (GROUPED_SUMMARY_PATH_RE.test(normalized)) return true
+  if (GROUPED_EXERCISE_CHAPTER_PATH_RE.test(normalized)) return true
+  if (EXERCISE_DETAIL_PATH_RE.test(normalized)) return true
+  return false
 }
 
 function escapeXml(value) {
@@ -22,7 +86,7 @@ function escapeXml(value) {
 
 function joinUrl(base, pathname) {
   const b = normalizeSiteUrl(base)
-  const p = String(pathname || '').trim()
+  const p = normalizePathname(pathname)
   if (!b) return p
   if (!p) return b
   if (p.startsWith('/')) return `${b}${p}`
@@ -63,6 +127,9 @@ function formatMatiereSlug(value) {
 function formatNiveauGroupSlug(value) {
   const normalized = slugifyText(value || '')
   if (!normalized) return ''
+  if (normalized.includes('bases-methodes')) {
+    return 'lycee'
+  }
   if (
     normalized.includes('lycee') ||
     normalized.includes('terminale') ||
@@ -160,6 +227,20 @@ function buildExerciseChapterRouteParams({ paysNom, matiereNom, niveauNom, nivea
   return { pays: paysSlug, niveauGroup: niveauGroupSlug, matiere: matiereSlug, slug, id: safeId }
 }
 
+function throwMissingNiveauGroupError({ resourceType, resourceId, niveauNom, source, rawSlug } = {}) {
+  const message = [
+    '[sitemap] Missing canonical niveauGroup mapping.',
+    `type=${String(resourceType || 'unknown')}`,
+    `id=${String(resourceId || 'unknown')}`,
+    `niveau="${String(niveauNom || '').trim()}"`,
+    `source=${String(source || 'unknown')}`,
+    `slug=${String(rawSlug || '').trim()}`
+  ].join(' ')
+  const error = new Error(message)
+  error.code = 'MISSING_NIVEAU_GROUP'
+  throw error
+}
+
 async function fetchAllPages(url) {
   const items = []
   let nextUrl = url
@@ -181,9 +262,8 @@ async function fetchAllPages(url) {
 }
 
 function routeForResource(resource) {
-  const slug = resource?.slug
-  const type = resource?.resource_type || resource?.type || resource?.resourceType
-  if (!slug || !type) return null
+  const type = String(resource?.resource_type || resource?.type || resource?.resourceType || '').toLowerCase()
+  if (!type) return null
 
   if (type === 'course') {
     const params = buildCourseRouteParams({
@@ -193,15 +273,19 @@ function routeForResource(resource) {
       titre: resource?.titre,
       id: resource?.id
     })
-    if (params) {
-      if (params.niveauGroup) {
-        return `/ressources-gratuites/cours/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
-      }
-      return `/ressources-gratuites/cours/${params.pays}/${params.matiere}/${params.slug}-${params.id}`
+    if (!params?.slug || !params?.id) return null
+    if (!params?.niveauGroup) {
+      throwMissingNiveauGroupError({
+        resourceType: 'course',
+        resourceId: resource?.id,
+        niveauNom: resource?.niveau_nom,
+        source: 'routeForResource',
+        rawSlug: resource?.slug
+      })
     }
-    return `/ressources-gratuites/cours/${slug}`
+    return `/ressources-gratuites/cours/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
   }
-  if (type === 'exercise') return `/ressources-gratuites/exercices/${slug}`
+
   if (type === 'summary') {
     const params = buildSummaryRouteParams({
       paysNom: resource?.pays_nom,
@@ -210,13 +294,23 @@ function routeForResource(resource) {
       titre: resource?.titre,
       id: resource?.id
     })
-    if (params) {
-      if (params.niveauGroup) {
-        return `/ressources-gratuites/syntheses/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
-      }
-      return `/ressources-gratuites/syntheses/${params.pays}/${params.matiere}/${params.slug}-${params.id}`
+    if (!params?.slug || !params?.id) return null
+    if (!params?.niveauGroup) {
+      throwMissingNiveauGroupError({
+        resourceType: 'summary',
+        resourceId: resource?.id,
+        niveauNom: resource?.niveau_nom,
+        source: 'routeForResource',
+        rawSlug: resource?.slug
+      })
     }
-    return `/ressources-gratuites/syntheses/${slug}`
+    return `/ressources-gratuites/syntheses/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
+  }
+
+  if (type === 'exercise') {
+    const slug = String(resource?.slug || '').trim().replace(/^\/+|\/+$/g, '')
+    if (!slug || slug.includes('/')) return null
+    return `/ressources-gratuites/exercices/${slug}`
   }
 
   return null
@@ -231,45 +325,120 @@ function routeForExerciseChapter(resource) {
     name: resource?.notion_nom || resource?.name || resource?.titre,
     id: resource?.notion || resource?.id
   })
-  if (!params) return null
-  if (params.niveauGroup) {
-    return `/ressources-gratuites/exercices/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
+  if (!params?.slug || !params?.id) return null
+  if (!params?.niveauGroup) {
+    throwMissingNiveauGroupError({
+      resourceType: 'exercise_chapter',
+      resourceId: resource?.notion || resource?.id,
+      niveauNom: resource?.niveau_nom,
+      source: 'routeForExerciseChapter',
+      rawSlug: resource?.slug
+    })
   }
-  return `/ressources-gratuites/exercices/${params.pays}/${params.matiere}/${params.slug}-${params.id}`
+  return `/ressources-gratuites/exercices/${params.pays}/${params.niveauGroup}/${params.matiere}/${params.slug}-${params.id}`
 }
 
 function extractPathname(loc) {
   try {
-    const url = new URL(String(loc))
-    return url.pathname || '/'
+    const url = new URL(String(loc || ''), 'https://www.optitab.net')
+    return normalizePathname(url.pathname || '/')
   } catch {
-    return null
+    return normalizePathname(loc)
   }
 }
 
-function shouldKeepPathForSeo(pathname) {
-  if (!pathname) return false
-  if (pathname === '/') return true
-  if (pathname === '/cours-particuliers') return true
-  if (pathname === '/about') return true
-  if (pathname === '/contact') return true
-  if (pathname === '/ressources-gratuites') return true
-  if (pathname.startsWith('/ressources-gratuites/')) return true
-  return false
+function extractCanonicalHrefFromHtml(html) {
+  const source = String(html || '')
+  const byRelThenHref = source.match(/<link\b[^>]*\brel=["'][^"']*\bcanonical\b[^"']*["'][^>]*\bhref=["']([^"']+)["'][^>]*>/i)
+  if (byRelThenHref?.[1]) return byRelThenHref[1]
+  const byHrefThenRel = source.match(/<link\b[^>]*\bhref=["']([^"']+)["'][^>]*\brel=["'][^"']*\bcanonical\b[^"']*["'][^>]*>/i)
+  if (byHrefThenRel?.[1]) return byHrefThenRel[1]
+  return ''
 }
 
-async function mergeExistingSitemap(outPath, addUrl) {
+function extractRobotsContentFromHtml(html) {
+  const source = String(html || '')
+  const byNameThenContent = source.match(/<meta\b[^>]*\bname=["']robots["'][^>]*\bcontent=["']([^"']*)["'][^>]*>/i)
+  if (byNameThenContent?.[1]) return byNameThenContent[1]
+  const byContentThenName = source.match(/<meta\b[^>]*\bcontent=["']([^"']*)["'][^>]*\bname=["']robots["'][^>]*>/i)
+  if (byContentThenName?.[1]) return byContentThenName[1]
+  return ''
+}
+
+function hasNoIndexRobots(robotsContent) {
+  return /\bnoindex\b/i.test(String(robotsContent || ''))
+}
+
+async function fetchHtml(url) {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), HTML_FETCH_TIMEOUT_MS)
+  try {
+    return await fetch(url, {
+      redirect: 'follow',
+      signal: controller.signal,
+      headers: { Accept: HTML_FETCH_ACCEPT }
+    })
+  } finally {
+    clearTimeout(timeout)
+  }
+}
+
+async function isIndexableSelfCanonicalUrl(url, siteUrl) {
+  const expectedUrl = normalizeAbsoluteUrl(url, siteUrl)
+  if (!expectedUrl) return false
+
+  try {
+    const response = await fetchHtml(expectedUrl)
+    if (response.status !== 200) return false
+
+    const html = await response.text()
+    const canonicalHref = extractCanonicalHrefFromHtml(html)
+    const canonicalUrl = normalizeAbsoluteUrl(canonicalHref, expectedUrl)
+    if (!canonicalUrl || canonicalUrl !== expectedUrl) return false
+
+    const robotsContent = extractRobotsContentFromHtml(html)
+    if (hasNoIndexRobots(robotsContent)) return false
+
+    return true
+  } catch {
+    return false
+  }
+}
+
+async function mergeExistingSitemap(outPath, addUrl, { siteUrl } = {}) {
   try {
     const xml = await fs.readFile(outPath, 'utf8')
     const urlBlocks = xml.match(/<url>[\s\S]*?<\/url>/g) || []
+
+    let kept = 0
+    let skipped = 0
+
     for (const block of urlBlocks) {
       const locMatch = block.match(/<loc>(.*?)<\/loc>/)
       if (!locMatch) continue
+
       const pathname = extractPathname(locMatch[1])
-      if (!shouldKeepPathForSeo(pathname)) continue
+      if (!isCanonicalIndexablePath(pathname)) continue
+
+      if (SHOULD_VALIDATE_MERGE) {
+        const url = joinUrl(siteUrl, pathname)
+        const isValid = await isIndexableSelfCanonicalUrl(url, siteUrl)
+        if (!isValid) {
+          skipped += 1
+          continue
+        }
+      }
+
       const lastmodMatch = block.match(/<lastmod>(.*?)<\/lastmod>/)
       const lastmod = lastmodMatch ? String(lastmodMatch[1]).trim() : ''
       addUrl(pathname, lastmod)
+      kept += 1
+    }
+
+    if (SHOULD_VALIDATE_MERGE) {
+      console.warn(`[sitemap] merged ${kept} validated URLs from previous sitemap (skipped ${skipped})`)
+    } else {
+      console.warn(`[sitemap] merged ${kept} canonical-pattern URLs from previous sitemap (VALIDATE_MERGE=0)`)
     }
     return true
   } catch {
@@ -295,8 +464,12 @@ async function buildSitemap() {
 
   const urls = new Map()
   const addUrl = (pathname, lastmod = '') => {
-    if (!pathname) return
-    const loc = joinUrl(siteUrl, pathname)
+    const normalizedPath = normalizePathname(pathname)
+    if (!isCanonicalIndexablePath(normalizedPath)) return
+
+    const loc = normalizeAbsoluteUrl(joinUrl(siteUrl, normalizedPath), siteUrl)
+    if (!loc) return
+
     const key = loc.toLowerCase()
     const existing = urls.get(key)
     if (!existing) {
@@ -308,57 +481,51 @@ async function buildSitemap() {
     }
   }
 
-  // Static public pages (SEO)
-  addUrl('/', '')
-  addUrl('/tarifs', '')
-  addUrl('/cours-particuliers', '')
-  addUrl('/about', '')
-  addUrl('/contact', '')
-  addUrl('/ressources-gratuites', '')
-
-  // Free content entry points
-  addUrl('/ressources-gratuites/cours', '')
-  addUrl('/ressources-gratuites/exercices', '')
-  addUrl('/ressources-gratuites/syntheses', '')
+  for (const staticPath of STATIC_INDEXABLE_PATHS) {
+    addUrl(staticPath, '')
+  }
 
   try {
     const baseEndpoint = `${apiBase}/api/free/learning-resources/`
 
-    // 1) Custom FreeLearningResource items (curated content)
+    // 1) Curated resources
     const generic = await fetchAllPages(`${baseEndpoint}?page_size=500`)
     for (const item of generic) {
-      const type = String(item?.resource_type || item?.type || item?.resourceType || '').toLowerCase()
-      if (type === 'exercise') continue
-      const path = routeForResource(item)
-      if (!path) continue
-      addUrl(path, toLastMod(item?.date_modification))
+      if (item?.is_locked === true) continue
+      const pathForItem = routeForResource(item)
+      if (!pathForItem) continue
+      addUrl(pathForItem, toLastMod(item?.date_modification))
     }
 
-    // 2) Courses/Exercises/Summaries from existing models (filter locked)
-    for (const type of ['course', 'summary']) {
+    // 2) Typed resources (course, summary, exercise detail)
+    for (const type of ['course', 'summary', 'exercise']) {
       const items = await fetchAllPages(`${baseEndpoint}?type=${encodeURIComponent(type)}&page_size=500`)
       for (const item of items) {
         if (item?.is_locked === true) continue
-        const path = routeForResource({ ...item, resource_type: type })
-        if (!path) continue
-        addUrl(path, toLastMod(item?.date_modification))
+        const pathForItem = routeForResource({ ...item, resource_type: type })
+        if (!pathForItem) continue
+        addUrl(pathForItem, toLastMod(item?.date_modification))
       }
     }
 
-    // 3) Exercise chapters (grouped by notion)
+    // 3) Exercise chapter pages (grouped canonical shape only)
     const chapterItems = await fetchAllPages(`${baseEndpoint}?type=exercise&group_by=notion&page_size=500`)
     for (const item of chapterItems) {
-      const path = routeForExerciseChapter(item)
-      if (!path) continue
-      addUrl(path, toLastMod(item?.date_modification))
+      const pathForChapter = routeForExerciseChapter(item)
+      if (!pathForChapter) continue
+      addUrl(pathForChapter, toLastMod(item?.date_modification))
     }
   } catch (err) {
+    if (err?.code === 'MISSING_NIVEAU_GROUP') {
+      console.error('[sitemap] hard failure: unresolved niveauGroup mapping in canonical routes.')
+      throw err
+    }
     // Never fail the build if the API is unreachable.
-    // We keep at least the static URLs above (and try to keep the previous sitemap entries).
-    console.warn('[sitemap] API fetch failed, attempting to reuse the existing sitemap:', err?.message || err)
-    const merged = await mergeExistingSitemap(outPath, addUrl)
+    // Keep static URLs and only merge previous entries that are still indexable+self-canonical.
+    console.warn('[sitemap] API fetch failed, attempting merge from existing sitemap:', err?.message || err)
+    const merged = await mergeExistingSitemap(outPath, addUrl, { siteUrl })
     if (!merged) {
-      console.warn('[sitemap] No existing sitemap to merge; generating a minimal sitemap.')
+      console.warn('[sitemap] No existing sitemap to merge; generating static-only sitemap.')
     }
   }
 

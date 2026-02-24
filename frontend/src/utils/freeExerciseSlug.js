@@ -37,6 +37,9 @@ export const formatMatiereSlug = (value) => {
 export const formatNiveauGroupSlug = (value) => {
   const normalized = slugifyText(value || '')
   if (!normalized) return ''
+  if (normalized.includes('bases-methodes')) {
+    return 'lycee'
+  }
   if (normalized.includes('lycee') || normalized.includes('terminale') || normalized.includes('terminal') || normalized.includes('premiere') || normalized.includes('1ere') || normalized.includes('1re') || normalized.includes('seconde') || normalized.includes('2nde') || normalized.includes('2de') || normalized.includes('bac')) {
     return 'lycee'
   }

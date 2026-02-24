@@ -1,4 +1,5 @@
 import { faq as homeFaq } from '@/config/homeFaq.js'
+import { FREE_RESOURCES_FAQ_BY_ROUTE } from '@/config/freeResourcesAuthority'
 
 const DEFAULT_SITE_NAME = 'OptiTAB'
 const DEFAULT_TITLE = 'Plateforme de maths & cours particuliers en ligne'
@@ -361,7 +362,8 @@ const ROUTE_SEO = {
     title: 'Cours de maths gratuits (6e-Prepa, Brevet, Bac)',
     description:
       'Cours de maths gratuits : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale, Prepa (MPSI, MP2I, PCSI). Methodes, exemples, exercices.',
-    canonicalPath: '/ressources-gratuites/cours'
+    canonicalPath: '/ressources-gratuites/cours',
+    faq: FREE_RESOURCES_FAQ_BY_ROUTE.FreeCourses
   },
   FreeCourseDetail: {
     title: 'Cours gratuit de maths',
@@ -382,7 +384,8 @@ const ROUTE_SEO = {
     title: 'Exercices de maths corriges (6e-Prepa)',
     description:
       'Exercices de maths corriges : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI). Methode + correction.',
-    canonicalPath: '/ressources-gratuites/exercices'
+    canonicalPath: '/ressources-gratuites/exercices',
+    faq: FREE_RESOURCES_FAQ_BY_ROUTE.FreeExercises
   },
   FreeExerciseDetail: {
     title: 'Exercice de maths corrige',
@@ -393,7 +396,8 @@ const ROUTE_SEO = {
     title: 'Fiches de revision de maths (6e-Prepa)',
     description:
       'Fiches de revision de maths : formules, methodes, exemples - 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI).',
-    canonicalPath: '/ressources-gratuites/syntheses'
+    canonicalPath: '/ressources-gratuites/syntheses',
+    faq: FREE_RESOURCES_FAQ_BY_ROUTE.FreeSummaries
   },
   FreeSummaryDetail: {
     title: 'Fiche de revision de maths',
@@ -430,7 +434,7 @@ const ROUTE_SEO = {
     title: 'Ressources gratuites de maths',
     description: 'Cours gratuits, exercices corriges et fiches de synthese pour reviser efficacement du college a la prepa. Acces libre sur OptiTAB.',
     canonicalPath: '/ressources-gratuites',
-    faq: homeFaq
+    faq: FREE_RESOURCES_FAQ_BY_ROUTE.FreeResourcesHome
   },
   CGV: { title: 'CGV', canonicalPath: '/cgv', noindex: true },
   CGU: { title: 'CGU', canonicalPath: '/cgu', noindex: true },

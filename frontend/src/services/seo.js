@@ -456,8 +456,8 @@ export function applyRouteSeo(route) {
     const isConfiguredNoIndex = Boolean(routeSeo.noindex)
     const isSystemNoIndex = requiresAuth || NOINDEX_ROUTE_NAMES.has(name)
     const slugParam = String(route?.params?.slug || '')
-    const isFreeExerciseDetail = name === 'FreeExerciseDetail' && slugParam.startsWith('exercice-gratuit-')
-    const shouldNoIndex = isConfiguredNoIndex || isSystemNoIndex || isFreeExerciseDetail
+    // Suppression de la logique qui interdit l'indexation des exercices corrigés
+    const shouldNoIndex = isConfiguredNoIndex || isSystemNoIndex
     const robots = getRobotsForRoute({ route, noindex: shouldNoIndex })
 
     const breadcrumbs = Array.isArray(routeSeo.breadcrumbs) ? [...routeSeo.breadcrumbs] : []

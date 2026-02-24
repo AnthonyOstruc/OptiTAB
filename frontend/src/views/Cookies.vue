@@ -262,7 +262,7 @@
                   <li><strong>Accéder aux données :</strong> Demander quelles données sont collectées</li>
                   <li><strong>Supprimer :</strong> Effacer les cookies de votre navigateur</li>
                 </ul>
-                <p>Pour exercer ces droits, contactez-nous à <a href="mailto:support@optitab.net" class="link">support@optitab.net</a></p>
+                <p>Pour exercer ces droits, contactez-nous à <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a></p>
               </div>
             </section>
 
@@ -276,7 +276,7 @@
                 <p>Pour toute question concernant notre politique de cookies :</p>
                 <div class="contact-info">
                   <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:support@optitab.net" class="link">support@optitab.net</a>
+                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
                   </div>
                 </div>
                 <p>Nous nous engageons à répondre à vos demandes dans les meilleurs délais.</p>

@@ -107,8 +107,8 @@ export const introPiedDePage = {
 export const contactsPiedDePage = [
   {
     icone: 'mail',
-    texte: 'contact@optitab.com',
-    lien: 'mailto:contact@optitab.com',
+    texte: 'contact@optitab.net',
+    lien: 'mailto:contact@optitab.net',
     etiquette: 'Envoyer un email',
     externe: false
   },
@@ -146,7 +146,7 @@ export const faq = [
   },
   {
     question: "Que faire si je ne suis pas satisfait de mon abonnement ?",
-    answer: "Vous pouvez résilier votre abonnement à tout moment. Si vous n'êtes pas satisfait, contactez notre support pour trouver une solution adaptée ou obtenir un remboursement selon nos conditions."
+    answer: "Vous pouvez résilier votre abonnement à tout moment depuis votre espace personnel. Vous gardez l'accès jusqu'à la fin de la période payée. Aucun remboursement n'est effectué pour une période déjà entamée (sauf dispositions légales)."
   },
   {
     question: "Comment fonctionne le suivi de progression ?",
@@ -168,8 +168,8 @@ export const newsletterSection = {
 export const pricingPlans = {
   titre: "Choisissez Votre Formule d'Apprentissage",
   description: "Commencez avec notre formule gratuite ou débloquez les fonctionnalités premium avec nos abonnements abordables. Annulation possible à tout moment.",
-  legal: "Pas satisfait ? Obtenez un remboursement intégral sous 30 jours, sans questions posées.",
-  garantie: "Garantie satisfait ou remboursé 30 jours",
+  legal: "Paiement sécurisé • Résiliation à tout moment • Pas de remboursement au prorata (sauf dispositions légales)",
+  garantie: "Accès immédiat",
   plans: [
     {
       key: 'free',

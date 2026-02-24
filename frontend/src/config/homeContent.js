@@ -115,8 +115,8 @@ export const introPiedDePage = {
 export const contactsPiedDePage = [
   {
     icone: 'mail',
-    texte: 'contact@optitab.com',
-    lien: 'mailto:contact@optitab.com',
+    texte: 'contact@optitab.net',
+    lien: 'mailto:contact@optitab.net',
     etiquette: 'Envoyer un email',
     externe: false
   },
@@ -145,8 +145,8 @@ export const newsletterSection = {
 export const pricingPlans = {
   titre: "Choisissez Votre Formule d'Apprentissage",
   description: "Commencez avec notre formule gratuite ou débloquez les fonctionnalités premium avec nos abonnements abordables. Annulation possible à tout moment.",
-  legal: "Pas satisfait ? Obtenez un remboursement intégral sous 30 jours, sans questions posées.",
-  garantie: "Garantie satisfait ou remboursé 30 jours",
+  legal: "Paiement sécurisé • Résiliation à tout moment • Pas de remboursement au prorata (sauf dispositions légales)",
+  garantie: "Accès immédiat",
   plans: [
     {
       key: 'free',

@@ -86,12 +86,12 @@
           <p>Ces conditions d'utilisation sont régies par le droit français. Tout litige sera soumis à la compétence des tribunaux français.</p>
         </section>
 
-        <section class="content-section">
-          <h2>11. Contact</h2>
-          <p>Pour toute question concernant ces conditions d'utilisation, contactez-nous :</p>
-          <p><strong>Email :</strong> support@optitab.com</p>
+          <section class="content-section">
+            <h2>11. Contact</h2>
+            <p>Pour toute question concernant ces conditions d'utilisation, contactez-nous :</p>
+          <p><strong>Email :</strong> contact@optitab.net</p>
           <p><strong>Téléphone :</strong> 07 64 04 02 51</p>
-        </section>
+          </section>
 
         <div class="last-updated">
           <p><em>Dernière mise à jour : {{ new Date().toLocaleDateString('fr-FR') }}</em></p>

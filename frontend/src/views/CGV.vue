@@ -13,7 +13,7 @@
               <span class="gradient-text">OptiTAB</span> - Plateforme d'apprentissage
             </p>
             <div class="cgv-meta">
-              <span class="meta-text">Dernière mise à jour : {{ currentDate }} • Version 1.0</span>
+              <span class="meta-text">Dernière mise à jour : {{ currentDate }} • Version 1.1</span>
             </div>
           </div>
         </div>
@@ -106,16 +106,65 @@
                 Abonnements et tarifs
               </h2>
               <div class="section-content">
-                <h3 class="subsection-title">4.1 Formules d'abonnement</h3>
-                <ul class="content-list">
-                  <li><strong>Mensuel :</strong> 19,90 €/mois</li>
-                  <li><strong>Annuel :</strong> 199 €/an (soit 16,58 €/mois)</li>
-                  <li><strong>Famille :</strong> 29,90 €/mois (jusqu'à 3 enfants)</li>
-                </ul>
+                <h3 class="subsection-title">4.1 Offres et tarifs</h3>
+                <p>
+                  Les offres et tarifs en vigueur sont affichés sur la
+                  <router-link to="/tarifs" class="link">page Tarifs</router-link>
+                  et au moment de la commande.
+                  Le client peut retrouver à tout moment le tarif de son abonnement, ses dates de renouvellement et ses factures dans son espace client.
+                </p>
+
+                <div class="plans-wrap" aria-live="polite">
+                  <div v-if="plansLoading" class="plans-state">
+                    <p>Chargement des tarifs…</p>
+                  </div>
+
+                  <div v-else-if="plansError" class="plans-state error">
+                    <p>{{ plansError }}</p>
+                    <p>
+                      Consultez la <router-link to="/tarifs" class="link">page Tarifs</router-link> pour voir les prix à jour.
+                    </p>
+                  </div>
+
+                  <div v-else-if="displayPlans.length === 0" class="plans-state">
+                    <p>Les tarifs ne sont pas disponibles pour le moment.</p>
+                    <p>
+                      Consultez la <router-link to="/tarifs" class="link">page Tarifs</router-link> pour voir les prix à jour.
+                    </p>
+                  </div>
+
+                  <div v-else class="plans-table-wrap">
+                    <table class="plans-table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Offre</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Périodicité / durée</th>
+                          <th scope="col">Prix</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(plan, idx) in displayPlans" :key="planKey(plan, idx)">
+                          <td>{{ plan.name || 'Offre' }}</td>
+                          <td>{{ plan.mode === 'subscription' ? 'Abonnement' : 'Pass' }}</td>
+                          <td>{{ humanPlanPeriod(plan) }}</td>
+                          <td>{{ formatEur(plan.price) }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <p class="plans-note">
+                      Les prix sont indiqués en euros. Le prix applicable est celui affiché lors de la commande.
+                    </p>
+                  </div>
+                </div>
                 
-                <h3 class="subsection-title">4.2 Modalités de paiement</h3>
-                <p>Paiement par carte bancaire, PayPal ou virement.</p>
-                <p>Les abonnements sont renouvelés automatiquement à chaque échéance, sauf résiliation par l'utilisateur.</p>
+                <h3 class="subsection-title">4.2 Paiement et facturation</h3>
+                <ul class="content-list">
+                  <li>Le paiement est effectué en ligne de manière sécurisée (notamment via Stripe).</li>
+                  <li>Les informations de carte bancaire ne sont pas stockées par OptiTAB.</li>
+                  <li>Les prix peuvent évoluer : le tarif applicable est celui affiché lors de la souscription et/ou du renouvellement.</li>
+                </ul>
               </div>
             </section>
 
@@ -127,10 +176,11 @@
               </h2>
               <div class="section-content">
                 <ul class="content-list">
-                  <li>Les abonnements mensuels se renouvellent automatiquement.</li>
-                  <li>Les abonnements annuels sont sans engagement.</li>
-                  <li>La résiliation est possible à tout moment depuis l'espace client.</li>
+                  <li>L'abonnement est souscrit pour la période choisie (hebdomadaire, mensuelle, annuelle, etc.).</li>
+                  <li>Sauf mention contraire, l'abonnement est reconduit tacitement à chaque échéance.</li>
+                  <li>La résiliation est possible à tout moment depuis l'espace client et stoppe le renouvellement.</li>
                   <li>L'accès reste actif jusqu'à la fin de la période déjà réglée.</li>
+                  <li>Pour éviter toute facturation de la période suivante, la résiliation doit être effectuée avant la date/heure de renouvellement indiquée dans l'espace client.</li>
                 </ul>
               </div>
             </section>
@@ -143,10 +193,14 @@
               </h2>
               <div class="section-content">
                 <h3 class="subsection-title">6.1 Droit de rétractation</h3>
-                <p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux services numériques fournis immédiatement après la commande et pleinement exécutés avant la fin du délai de rétractation.</p>
+                <p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation peut ne pas s'appliquer à la fourniture de contenus numériques non fournis sur un support matériel lorsque l'exécution a commencé après accord préalable exprès du client et renoncement exprès à son droit de rétractation.</p>
                 
-                <h3 class="subsection-title">6.2 Remboursement exceptionnel</h3>
-                <p>En cas de problème technique majeur non résolu dans un délai de 48h après signalement, un remboursement au prorata pourra être accordé.</p>
+                <h3 class="subsection-title">6.2 Absence de remboursement</h3>
+                <ul class="content-list">
+                  <li>Sauf disposition légale impérative, aucun remboursement (total ou partiel) n'est effectué pour une période d'abonnement commencée.</li>
+                  <li>En cas de résiliation, l'abonnement reste actif jusqu'à la fin de la période déjà payée : la période en cours demeure due.</li>
+                  <li>Les sommes impayées (échéances en retard, rejet de paiement, contestation bancaire) restent dues.</li>
+                </ul>
               </div>
             </section>
 
@@ -219,7 +273,7 @@
               </h2>
               <div class="section-content">
                 <p>Le traitement des données personnelles est régi par la Politique de Confidentialité d'OptiTAB, conforme au RGPD.</p>
-                <p>L'utilisateur dispose d'un droit d'accès, de rectification, de suppression et d'opposition à ses données, en contactant : <a href="mailto:contact@optitab.com" class="link">contact@optitab.com</a>.</p>
+                <p>L'utilisateur dispose d'un droit d'accès, de rectification, de suppression et d'opposition à ses données, en contactant : <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>.</p>
               </div>
             </section>
 
@@ -253,8 +307,10 @@
               </h2>
               <div class="section-content">
                 <p>Les présentes CGV sont régies par le droit français.</p>
-                <p>En cas de litige, les tribunaux français seront seuls compétents.</p>
                 <p>OptiTAB privilégiera toujours une résolution amiable avant toute procédure judiciaire.</p>
+                <p>Conformément à l'article L.612-1 du Code de la consommation, le client consommateur peut recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable du litige (coordonnées communiquées sur demande).</p>
+                <p>Le client peut également utiliser la plateforme européenne de règlement en ligne des litiges (RLL) : <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" class="link">https://ec.europa.eu/consumers/odr</a>.</p>
+                <p>À défaut de résolution amiable, le litige pourra être porté devant les juridictions compétentes.</p>
               </div>
             </section>
 
@@ -267,10 +323,7 @@
               <div class="section-content">
                 <div class="contact-info">
                   <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:contact@optitab.com" class="link">contact@optitab.com</a>
-                  </div>
-                  <div class="contact-item">
-                    <strong>Support :</strong> <a href="mailto:support@optitab.com" class="link">support@optitab.com</a>
+                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
                   </div>
                   <div class="contact-item">
                     <strong>WhatsApp :</strong> <a href="https://wa.me/33764040251" target="_blank" rel="noopener noreferrer" class="link" data-cta-name="whatsapp" data-cta-location="legal">07 64 04 02 51</a>
@@ -317,6 +370,7 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useZoom } from '@/composables/useZoom'
+import { getPlans } from '@/api/subscriptions'
 
 // --- Mobile zoom (same logic as Home/About) ---
 const cgvContentRef = ref(null)
@@ -388,12 +442,67 @@ const handleOrientationChange = () => {
   }, 200)
 }
 
-// Date actuelle
-const currentDate = ref(new Date().toLocaleDateString('fr-FR', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-}))
+// Dernière mise à jour (date fixe pour éviter d'afficher "aujourd'hui" en permanence)
+const currentDate = ref('24 février 2026')
+
+// Tarifs (issus du backend si disponible)
+const plans = ref([])
+const plansLoading = ref(true)
+const plansError = ref('')
+
+const displayPlans = computed(() => {
+  const list = Array.isArray(plans.value) ? plans.value : []
+  return list
+    .filter(plan => plan && typeof plan === 'object')
+    .slice()
+    .sort((a, b) => Number(a?.price || 0) - Number(b?.price || 0))
+})
+
+const planKey = (plan, idx) => String(plan?.stripe_price_id || plan?.id || plan?.name || idx)
+
+const humanPlanPeriod = (plan) => {
+  const mode = String(plan?.mode || '').toLowerCase()
+  const billingPeriod = String(plan?.billing_period || '').toLowerCase()
+  const accessDays = Number(plan?.access_days || 0)
+
+  if (mode === 'one_time') {
+    if (Number.isFinite(accessDays) && accessDays > 0) {
+      return `Accès ${accessDays} jour${accessDays > 1 ? 's' : ''} (paiement unique)`
+    }
+    return 'Paiement unique'
+  }
+
+  if (billingPeriod === 'weekly') return 'Renouvellement hebdomadaire'
+  if (billingPeriod === 'monthly') return 'Renouvellement mensuel'
+  if (billingPeriod === 'yearly' || billingPeriod === 'annual') return 'Renouvellement annuel'
+  if (billingPeriod) return `Renouvellement ${billingPeriod}`
+  return 'Renouvellement périodique'
+}
+
+const formatEur = (value) => {
+  const amount = Number(value)
+  if (!Number.isFinite(amount)) return ''
+  try {
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount)
+  } catch {
+    return `${amount.toFixed(2)} €`
+  }
+}
+
+const loadPlans = async () => {
+  plansLoading.value = true
+  plansError.value = ''
+  try {
+    const { data } = await getPlans()
+    const remote = Array.isArray(data?.plans) ? data.plans : []
+    plans.value = remote
+  } catch (error) {
+    console.error('Erreur chargement plans (CGV):', error)
+    plansError.value = 'Impossible de charger les tarifs automatiquement.'
+  } finally {
+    plansLoading.value = false
+  }
+}
 
 // Bouton retour en haut
 const showBackToTop = ref(false)
@@ -466,6 +575,7 @@ const scrollToSection = (sectionId, event) => {
 onMounted(async () => {
   detectMobileAndZoomSupport()
   setupViewportListener()
+  void loadPlans()
 
   window.addEventListener('scroll', handleScroll, { passive: true })
   // Définir la première section comme active au chargement
@@ -518,6 +628,58 @@ onUnmounted(() => {
   max-width: 900px;
   margin: 0 auto;
   padding: 0 2rem;
+}
+
+/* Tarifs */
+.plans-wrap {
+  margin-top: 1rem;
+}
+
+.plans-state {
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  color: #334155;
+}
+
+.plans-state.error {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #9f1239;
+}
+
+.plans-table-wrap {
+  margin-top: 0.75rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.plans-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  min-width: 520px;
+}
+
+.plans-table th,
+.plans-table td {
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+  vertical-align: top;
+}
+
+.plans-table th {
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.plans-note {
+  margin: 0.75rem 0 0 0;
+  color: #64748b;
+  font-size: 0.9rem;
 }
 
 /* Header Section - Style propre */

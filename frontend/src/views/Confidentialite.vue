@@ -61,7 +61,7 @@
                     </a>
                   </div>
                   <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:anthony@optitab.net" class="link">anthony@optitab.net</a>
+                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
                   </div>
                 </div>
                 
@@ -71,7 +71,7 @@
                     <strong>OptiTAB</strong>
                   </div>
                   <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:support@optitab.net" class="link">support@optitab.net</a>
+                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
                   </div>
                 </div>
               </div>
@@ -192,7 +192,7 @@
                   <li>Demander la limitation du traitement ou vous opposer à certaines utilisations.</li>
                   <li>Retirer votre consentement pour certaines communications.</li>
                 </ul>
-                <p>Pour exercer vos droits : <a href="mailto:support@optitab.net" class="link">support@optitab.net</a></p>
+                <p>Pour exercer vos droits : <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a></p>
                 <p>Conformément au RGPD, une réponse sera fournie dans un délai d'un mois. Vous pouvez également saisir la CNIL en cas de problème.</p>
               </div>
             </section>
@@ -251,7 +251,7 @@
                 <p>Pour toute question relative à la confidentialité :</p>
                 <div class="contact-info">
                   <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:support@optitab.net" class="link">support@optitab.net</a>
+                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
                   </div>
                 </div>
               </div>

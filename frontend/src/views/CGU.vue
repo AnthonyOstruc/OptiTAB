@@ -103,13 +103,14 @@
               <div class="section-content">
                 <ul class="content-list">
                   <li>Les services peuvent être proposés via des abonnements payants.</li>
-                  <li>Paiement en ligne par carte bancaire, PayPal ou virement sécurisé.</li>
+                  <li>Paiement en ligne de manière sécurisée (notamment via Stripe).</li>
                   <li>Les abonnements se renouvellent automatiquement sauf résiliation par l'utilisateur.</li>
-                  <li>Aucun remboursement n'est possible pour les périodes déjà entamées, sauf dispositions légales.</li>
+                  <li>Aucun remboursement n'est possible pour les périodes déjà entamées, sauf dispositions légales impératives.</li>
+                  <li>Toute somme due (période entamée, échéance impayée, rejet de paiement) reste exigible, y compris en cas de résiliation.</li>
                   <li>En cas de défaut de paiement, OptiTAB peut suspendre l'accès au compte.</li>
                 </ul>
-                <p>Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux services numériques fournis immédiatement après la commande.</p>
-                <p>En cas de problème technique majeur non résolu sous 48h, un remboursement au prorata peut être accordé.</p>
+                <p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation peut ne pas s'appliquer à la fourniture de contenus numériques non fournis sur un support matériel lorsque l'exécution a commencé après accord préalable exprès du client et renoncement exprès à son droit de rétractation.</p>
+                <p>En cas de difficulté, l'utilisateur peut contacter le support afin d'obtenir une assistance technique.</p>
               </div>
             </section>
 

@@ -16,6 +16,6 @@ export const footerIntro = {
 };
 
 export const footerContacts = [
-  { icon: '📧', text: 'contact@optitab.com', href: 'mailto:contact@optitab.com', label: 'Email', external: false },
+  { icon: '📧', text: 'contact@optitab.net', href: 'mailto:contact@optitab.net', label: 'Email', external: false },
   { icon: 'LinkedIn', text: 'LinkedIn', href: 'https://linkedin.com', label: 'LinkedIn', external: true }
 ]; 

@@ -63,7 +63,7 @@
                     </a>
                   </div>
                   <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:anthony@optitab.net" class="link">anthony@optitab.net</a>
+                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
                   </div>
                 </div>
                 
@@ -73,7 +73,7 @@
                     <strong>Nom :</strong> OptiTAB
                   </div>
                   <div class="contact-item">
-                    <strong>Email :</strong> <a href="mailto:support@optitab.net" class="link">support@optitab.net</a>
+                    <strong>Email :</strong> <a href="mailto:contact@optitab.net" class="link">contact@optitab.net</a>
                   </div>
                 </div>
               </div>

@@ -5,7 +5,7 @@ const STABLE_PATHS = Object.freeze({
   summaries: '/ressources-gratuites/syntheses'
 })
 
-const SITE_BASE_URL = 'https://optitab.net'
+const SITE_BASE_URL = 'https://www.optitab.net'
 
 function normalizePathname(pathname) {
   const raw = String(pathname || '').trim()

@@ -9,6 +9,8 @@ const DEFAULT_IMAGE_PATH = '/Logo_bg.png'
 const DEFAULT_ROBOTS_INDEX =
   'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1'
 const DEFAULT_ROBOTS_NOINDEX = 'noindex,follow'
+const CANONICAL_SITE_ORIGIN = 'https://www.optitab.net'
+const CANONICAL_SITE_HOSTS = new Set(['optitab.net', 'www.optitab.net'])
 
 const TRACKING_QUERY_KEYS = new Set([
   'gclid',
@@ -25,14 +27,22 @@ const TRACKING_QUERY_KEYS = new Set([
 function normalizeSiteUrl(raw) {
   const value = String(raw || '').trim()
   if (!value) return ''
-  return value.replace(/\/+$/, '')
+  try {
+    const url = new URL(value)
+    const hostname = String(url.hostname || '').toLowerCase()
+    if (CANONICAL_SITE_HOSTS.has(hostname)) {
+      return CANONICAL_SITE_ORIGIN
+    }
+    return String(url.origin || '').replace(/\/+$/, '')
+  } catch (_) {
+    return value.replace(/\/+$/, '')
+  }
 }
 
 function getSiteBaseUrl() {
   const fromEnv = normalizeSiteUrl(import.meta?.env?.VITE_SITE_URL)
   if (fromEnv) return fromEnv
-  if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin
-  return 'https://www.optitab.net'
+  return CANONICAL_SITE_ORIGIN
 }
 
 function removeTrailingSlash(value) {
@@ -143,15 +153,16 @@ function normalizeCanonicalUrl(rawUrl) {
   const raw = String(rawUrl || '').trim()
   if (!raw) return ''
   try {
-    const base = getSiteBaseUrl()
-    const url = new URL(raw, base)
+    const siteBase = getSiteBaseUrl()
+    const url = new URL(raw, siteBase)
     url.search = ''
     url.hash = ''
-    url.pathname = url.pathname || '/'
-    if (url.pathname.length > 1) {
-      url.pathname = url.pathname.replace(/\/+$/, '')
+    let pathname = url.pathname || '/'
+    if (pathname.length > 1) {
+      pathname = pathname.replace(/\/+$/, '')
     }
-    return `${url.origin}${url.pathname}`
+    const safePath = pathname.startsWith('/') ? pathname : `/${pathname}`
+    return `${siteBase}${safePath}`
   } catch (_) {
     return ''
   }
@@ -160,7 +171,7 @@ function normalizeCanonicalUrl(rawUrl) {
 function canonicalizePath(pathLike) {
   if (!pathLike) return '/'
   try {
-    const base = (typeof window !== 'undefined' && window.location?.origin) ? window.location.origin : 'https://www.optitab.net'
+    const base = getSiteBaseUrl()
     const url = new URL(String(pathLike), base)
     let pathname = url.pathname || '/'
     if (pathname.length > 1) {
@@ -184,7 +195,18 @@ function buildTitle(title) {
 function toAbsoluteUrl(maybeUrlOrPath) {
   const raw = String(maybeUrlOrPath || '').trim()
   if (!raw) return ''
-  if (/^https?:\/\//i.test(raw)) return raw
+  if (/^https?:\/\//i.test(raw)) {
+    try {
+      const url = new URL(raw)
+      const hostname = String(url.hostname || '').toLowerCase()
+      if (CANONICAL_SITE_HOSTS.has(hostname)) {
+        return `${CANONICAL_SITE_ORIGIN}${url.pathname}${url.search}${url.hash}`
+      }
+      return raw
+    } catch (_) {
+      return raw
+    }
+  }
   return `${getSiteBaseUrl()}${raw.startsWith('/') ? '' : '/'}${raw}`
 }
 

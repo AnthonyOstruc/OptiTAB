@@ -25,11 +25,25 @@ const EXERCISE_DETAIL_PATH_RE = /^\/ressources-gratuites\/exercices\/exercice-gr
 const HTML_FETCH_ACCEPT = 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.8'
 const HTML_FETCH_TIMEOUT_MS = 15000
 const SHOULD_VALIDATE_MERGE = String(process.env.VALIDATE_MERGE || '').trim() === '1'
+const CANONICAL_SITE_ORIGIN = 'https://www.optitab.net'
+const CANONICAL_SITE_HOSTS = new Set(['optitab.net', 'www.optitab.net'])
 
-function normalizeSiteUrl(raw) {
+function normalizeSiteUrl(raw, { forceCanonicalHost = false } = {}) {
   const value = String(raw || '').trim()
   if (!value) return ''
-  return value.replace(/\/+$/, '')
+  try {
+    const url = new URL(value)
+    const hostname = String(url.hostname || '').toLowerCase()
+    if (forceCanonicalHost && CANONICAL_SITE_HOSTS.has(hostname)) {
+      return CANONICAL_SITE_ORIGIN
+    }
+    const origin = String(url.origin || '').replace(/\/+$/, '')
+    const pathname = String(url.pathname || '').replace(/\/+$/, '')
+    if (!pathname || pathname === '/') return origin
+    return `${origin}${pathname}`
+  } catch {
+    return value.replace(/\/+$/, '')
+  }
 }
 
 function normalizePathname(pathname) {
@@ -54,11 +68,13 @@ function normalizePathname(pathname) {
 
 function normalizeAbsoluteUrl(rawUrl, baseUrl) {
   try {
-    const url = new URL(String(rawUrl || ''), String(baseUrl || 'https://www.optitab.net'))
+    const url = new URL(String(rawUrl || ''), String(baseUrl || CANONICAL_SITE_ORIGIN))
     url.hash = ''
     url.search = ''
     url.pathname = normalizePathname(url.pathname)
-    return `${url.origin}${url.pathname}`
+    const hostname = String(url.hostname || '').toLowerCase()
+    const origin = CANONICAL_SITE_HOSTS.has(hostname) ? CANONICAL_SITE_ORIGIN : url.origin
+    return `${origin}${url.pathname}`
   } catch {
     return ''
   }
@@ -447,12 +463,14 @@ async function mergeExistingSitemap(outPath, addUrl, { siteUrl } = {}) {
 }
 
 async function buildSitemap() {
-  const siteUrl = normalizeSiteUrl(
-    process.env.VITE_SITE_URL ||
-    process.env.SITE_URL ||
-    process.env.PUBLIC_SITE_URL ||
-    'https://www.optitab.net'
-  )
+  const siteUrl =
+    normalizeSiteUrl(
+      process.env.VITE_SITE_URL ||
+      process.env.SITE_URL ||
+      process.env.PUBLIC_SITE_URL ||
+      'https://www.optitab.net',
+      { forceCanonicalHost: true }
+    ) || CANONICAL_SITE_ORIGIN
 
   const apiBase = normalizeSiteUrl(
     process.env.VITE_API_BASE_URL ||

@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node ./scripts/generate-sitemap.mjs",
+    "prebuild": "node ./scripts/generate-render-routes.mjs && node ./scripts/generate-sitemap.mjs",
     "build": "node ./node_modules/vite/bin/vite.js build",
+    "generate:render-routes": "node ./scripts/generate-render-routes.mjs",
     "generate:sitemap": "node ./scripts/generate-sitemap.mjs",
     "preview": "vite preview",
     "serve": "vite preview",

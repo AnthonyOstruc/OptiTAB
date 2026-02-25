@@ -1489,12 +1489,6 @@ function initFirstVisitFlag() {
   position: relative;
 }
 
-@media (max-width: 768px) {
-  .exercices-section {
-    flex: 1 0 auto;
-  }
-}
-
 .exercices-initial-loader {
   position: absolute;
   inset: 0;

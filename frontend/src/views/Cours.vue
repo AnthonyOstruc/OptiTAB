@@ -760,6 +760,12 @@ watch(() => route.query.q, (val) => {
   position: relative;
 }
 
+@media (max-width: 768px) {
+  .cours-section {
+    min-height: auto;
+  }
+}
+
 .cours-initial-loader {
   position: absolute;
   inset: 0;
@@ -1014,10 +1020,10 @@ watch(() => route.query.q, (val) => {
   background: transparent;
 }
 
-/* Sur mobile, augmenter le padding pour les barres d'outils */
+/* Sur mobile, ajuster le padding pour les barres d'outils */
 @media (max-width: 768px) {
   .cours-content {
-    padding-bottom: 120px;
+    padding-bottom: 2rem;
   }
 }
 

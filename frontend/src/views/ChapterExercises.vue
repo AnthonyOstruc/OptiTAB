@@ -1614,7 +1614,7 @@ function initFirstVisitFlag() {
 /* Sur mobile, conserver un léger espace sécurisé en bas pour le footer */
 @media (max-width: 768px) {
   .exercices-list {
-    padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
   }
 }
 

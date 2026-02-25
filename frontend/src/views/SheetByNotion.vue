@@ -593,6 +593,12 @@ watch(() => route.query.q, (val) => {
   position: relative;
 }
 
+@media (max-width: 768px) {
+  .sheet-by-notion-page {
+    min-height: auto;
+  }
+}
+
 :deep(.dashboard-main) {
   padding-top: 0 !important;
   padding-left: 0 !important;
@@ -688,10 +694,10 @@ watch(() => route.query.q, (val) => {
   background: transparent;
 }
 
-/* Sur mobile, augmenter le padding pour les barres d'outils */
+/* Sur mobile, ajuster le padding pour les barres d'outils */
 @media (max-width: 768px) {
   .sheet-content {
-    padding-bottom: 120px;
+    padding-bottom: 2rem;
   }
 }
 

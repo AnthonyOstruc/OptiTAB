@@ -760,11 +760,13 @@ watch(() => route.query.q, (val) => {
   position: relative;
 }
 
-/* Sur mobile, supprimer la hauteur minimum fixe pour que la section
-   s'adapte exactement à la taille du contenu zoomé, sans espace vide. */
+/* Sur mobile, supprimer la hauteur minimum fixe et laisser le contenu
+   déterminer la hauteur. flex: 1 0 auto garantit que la section remplit
+   le conteneur quand le contenu est court, et dépasse quand il est long. */
 @media (max-width: 768px) {
   .cours-section {
     min-height: 0;
+    flex: 1 0 auto;
   }
 }
 

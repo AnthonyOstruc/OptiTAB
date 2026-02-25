@@ -41,108 +41,110 @@
           </div>
           
           <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
-            <div v-if="!statementOnlyMode" class="exercices-controls">
-              <div class="controls-row">
-                <div class="filter-cta">
-                  <span class="filter-cta-icon" aria-hidden="true">★</span>
-                  <span class="filter-cta-text">Utilisez les filtres pour affiner votre sélection d'exercices</span>
-                </div>
-                <div class="filter-row">
-                  <div class="filter-group">
-                    <span class="filter-label">Filtrer</span>
-                    <div class="filter-buttons type-filter-buttons">
-                      <button
-                        v-for="opt in renderedTypeFilterOptions"
-                        :key="opt.value"
-                        :class="['filter-btn', 'type-filter-btn', { active: opt.value === selectedTypeFilter }]"
-                        @click="selectedTypeFilter = opt.value; handleTypeFilterChange()"
-                      >
-                        {{ opt.label }}
-                      </button>
-                    </div>
+            <div class="exercices-content-inner" ref="exContentRef">
+              <div v-if="!statementOnlyMode" class="exercices-controls">
+                <div class="controls-row">
+                  <div class="filter-cta">
+                    <span class="filter-cta-icon" aria-hidden="true">★</span>
+                    <span class="filter-cta-text">Utilisez les filtres pour affiner votre sélection d'exercices</span>
                   </div>
-
-                  <div class="filter-divider"></div>
-
-                  <div class="filter-item">
-                    <span class="filter-label">Difficulté</span>
-                      <div class="filter-buttons">
+                  <div class="filter-row">
+                    <div class="filter-group">
+                      <span class="filter-label">Filtrer</span>
+                      <div class="filter-buttons type-filter-buttons">
                         <button
-                          v-for="opt in renderedDifficultyOptions"
+                          v-for="opt in renderedTypeFilterOptions"
                           :key="opt.value"
-                          :class="['filter-btn', { active: opt.value === selectedDifficulty }]"
-                          @click="selectedDifficulty = opt.value; currentPage = 1"
+                          :class="['filter-btn', 'type-filter-btn', { active: opt.value === selectedTypeFilter }]"
+                          @click="selectedTypeFilter = opt.value; handleTypeFilterChange()"
                         >
-                          <span v-if="opt.value === 'all'" class="difficulty-text">Toutes</span>
-                          <span v-else class="difficulty-stars">
-                            {{ opt.value === 'easy' ? '⭐' : opt.value === 'medium' ? '⭐⭐' : '⭐⭐⭐' }}
-                          </span>
+                          {{ opt.label }}
                         </button>
                       </div>
+                    </div>
+
+                    <div class="filter-divider"></div>
+
+                    <div class="filter-item">
+                      <span class="filter-label">Difficulté</span>
+                        <div class="filter-buttons">
+                          <button
+                            v-for="opt in renderedDifficultyOptions"
+                            :key="opt.value"
+                            :class="['filter-btn', { active: opt.value === selectedDifficulty }]"
+                            @click="selectedDifficulty = opt.value; currentPage = 1"
+                          >
+                            <span v-if="opt.value === 'all'" class="difficulty-text">Toutes</span>
+                            <span v-else class="difficulty-stars">
+                              {{ opt.value === 'easy' ? '⭐' : opt.value === 'medium' ? '⭐⭐' : '⭐⭐⭐' }}
+                            </span>
+                          </button>
+                        </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="exercices-list">
-              <div v-if="filteredExercices.length === 0" class="filter-empty">
-                <div class="filter-empty-card">
-                  <div class="filter-empty-title">{{ emptyMessage.title }}</div>
-                  <p class="filter-empty-text">{{ emptyMessage.text }}</p>
-                  <div class="filter-empty-actions" v-if="emptyMessage.showReset">
-                    <button class="filter-empty-btn" @click="resetFilters">Réinitialiser les filtres</button>
-                  </div>
-                  <div class="filter-empty-current" v-if="emptyMessage.showCurrentFilters">
-                    <span v-if="selectedTypeFilter !== 'all'">Type : {{ selectedTypeLabel }}</span>
-                    <span v-if="selectedDifficulty !== 'all'">Difficulté : {{ selectedDifficultyLabel }}</span>
+              <div class="exercices-list">
+                <div v-if="filteredExercices.length === 0" class="filter-empty">
+                  <div class="filter-empty-card">
+                    <div class="filter-empty-title">{{ emptyMessage.title }}</div>
+                    <p class="filter-empty-text">{{ emptyMessage.text }}</p>
+                    <div class="filter-empty-actions" v-if="emptyMessage.showReset">
+                      <button class="filter-empty-btn" @click="resetFilters">Réinitialiser les filtres</button>
+                    </div>
+                    <div class="filter-empty-current" v-if="emptyMessage.showCurrentFilters">
+                      <span v-if="selectedTypeFilter !== 'all'">Type : {{ selectedTypeLabel }}</span>
+                      <span v-if="selectedDifficulty !== 'all'">Difficulté : {{ selectedDifficultyLabel }}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <template v-else>
-                <div
-                  v-for="exercice in visibleExercices"
-                  :key="exercice.id"
-                  :id="`ex-${exercice.id}`"
-                  class="exercice-item-wrapper"
-                  @click="setLastExerciceId(exercice.id)"
-                >
-                  <ExerciceQCM
-                    :eid="exercice.id"
-                    :titre="getTitre(exercice)"
-                    :instruction="getInstruction(exercice)"
-                    :solution="statementOnlyMode ? '' : (exercice.solution || exercice.reponse_correcte || '')"
-                    :etapes="statementOnlyMode ? '' : (exercice.etapes || '')"
-                    :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
-                    :current="statementOnlyMode ? null : statusMap[exercice.id]?.status"
-                    :readonly="statementOnlyMode"
-                    @status-changed="handleStatus"
+                <template v-else>
+                  <div
+                    v-for="exercice in visibleExercices"
+                    :key="exercice.id"
+                    :id="`ex-${exercice.id}`"
+                    class="exercice-item-wrapper"
+                    @click="setLastExerciceId(exercice.id)"
+                  >
+                    <ExerciceQCM
+                      :eid="exercice.id"
+                      :titre="getTitre(exercice)"
+                      :instruction="getInstruction(exercice)"
+                      :solution="statementOnlyMode ? '' : (exercice.solution || exercice.reponse_correcte || '')"
+                      :etapes="statementOnlyMode ? '' : (exercice.etapes || '')"
+                      :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
+                      :current="statementOnlyMode ? null : statusMap[exercice.id]?.status"
+                      :readonly="statementOnlyMode"
+                      @status-changed="handleStatus"
+                    />
+                  </div>
+                  <Pagination 
+                    v-if="!statementOnlyMode" 
+                    :total="filteredExercices.length" 
+                    :perPage="perPage" 
+                    :page="currentPage" 
+                    @update:page="handlePageChange" 
                   />
+                </template>
+              </div>
+              <div v-if="statementOnlyMode" class="assignment-cta">
+                <div class="assignment-card">
+                  <div class="assignment-text">
+                    <h3 class="assignment-title">Exercice Çÿ rendre</h3>
+                    <p class="assignment-subtitle">RÇ¸alise l'exercice sans afficher de correction puis partage-le sur WhatsApp.</p>
+                    <p class="assignment-note">Aucune solution n'est affichÇ¸e ici pour te laisser travailler en autonomie.</p>
+                  </div>
+                  <a
+                    :href="whatsappLink"
+                    data-cta-name="whatsapp"
+                    data-cta-location="exercise"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="assignment-btn"
+                  >
+                    Envoyer sur WhatsApp
+                  </a>
                 </div>
-                <Pagination 
-                  v-if="!statementOnlyMode" 
-                  :total="filteredExercices.length" 
-                  :perPage="perPage" 
-                  :page="currentPage" 
-                  @update:page="handlePageChange" 
-                />
-              </template>
-            </div>
-            <div v-if="statementOnlyMode" class="assignment-cta">
-              <div class="assignment-card">
-                <div class="assignment-text">
-                  <h3 class="assignment-title">Exercice Çÿ rendre</h3>
-                  <p class="assignment-subtitle">RÇ¸alise l'exercice sans afficher de correction puis partage-le sur WhatsApp.</p>
-                  <p class="assignment-note">Aucune solution n'est affichÇ¸e ici pour te laisser travailler en autonomie.</p>
-                </div>
-                <a
-                  :href="whatsappLink"
-                  data-cta-name="whatsapp"
-                  data-cta-location="exercise"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="assignment-btn"
-                >
-                  Envoyer sur WhatsApp
-                </a>
               </div>
             </div>
           </div>
@@ -189,6 +191,7 @@ const notionId = ref(route.params.notionId)
 const statementOnlyMode = computed(() => route.meta?.statementOnlyMode || route.query?.mode === 'whatsapp')
 const exPageRef = ref(null)
 const exOuterRef = ref(null)
+const exContentRef = ref(null)
 const firstVisit = ref(true)
 const WHATSAPP_PHONE = '33764040251'
 
@@ -762,7 +765,7 @@ const zoomStyle = createZoomStyle({
 
 
 function measureContentHeightForExercices() {
-  measureContentHeight(exOuterRef)
+  measureContentHeight(exContentRef)
 }
 
 function handlePageChange(page) {
@@ -1486,7 +1489,11 @@ function initFirstVisitFlag() {
   position: relative;
 }
 
-/* Sur mobile, pas de flex-grow : la section s'adapte au contenu zoomé. */
+@media (max-width: 768px) {
+  .exercices-section {
+    flex: 1 0 auto;
+  }
+}
 
 .exercices-initial-loader {
   position: absolute;
@@ -1561,6 +1568,10 @@ function initFirstVisitFlag() {
   overflow: visible;
   margin-top: 0; /* Pas d'espace avec la navigation au-dessus */
   /* Les styles seront appliqués dynamiquement via JS selon le support du zoom */
+}
+
+.exercices-content-inner {
+  width: 100%;
 }
 
 /* Sur mobile, assurer que le conteneur ne crée pas de problèmes de scroll */
@@ -1941,7 +1952,7 @@ function initFirstVisitFlag() {
 
 /* Navigation ultra-propre */
 .clean-navigation {
-  margin: 4em 0 1rem 0;
+  margin: 2.4rem 0 1rem 0;
   position: relative;
   z-index: 1;
 }
@@ -2108,7 +2119,7 @@ function initFirstVisitFlag() {
 /* Responsive */
 @media (max-width: 680px) {
   .clean-navigation {
-    margin: 4em 0 1rem 0;
+    margin: 2rem 0 1rem 0;
     padding: 0 0.5rem;
   }
 
@@ -2151,7 +2162,7 @@ function initFirstVisitFlag() {
 
 @media (max-width: 360px) {
   .clean-navigation {
-    margin: 4em 0 1rem 0;
+    margin: 1.8rem 0 1rem 0;
   }
 
   .nav-grid {

@@ -10,6 +10,56 @@ export function useZoom(options = {}) {
   const contentHeight = ref(0)
   const isMobileDevice = ref(false)
   const supportsNativeZoom = ref(false)
+  let observedElement = null
+  let resizeObserver = null
+  let measureRaf = null
+
+  function readElementHeight(el) {
+    if (!el) return 0
+    const scrollHeight = el.scrollHeight || 0
+    const offsetHeight = el.offsetHeight || 0
+    const rectHeight = typeof el.getBoundingClientRect === 'function'
+      ? Math.ceil(el.getBoundingClientRect().height || 0)
+      : 0
+    return Math.max(scrollHeight, offsetHeight, rectHeight)
+  }
+
+  function cancelScheduledMeasure() {
+    if (!measureRaf) return
+    if (typeof cancelAnimationFrame === 'function') {
+      cancelAnimationFrame(measureRaf)
+    } else {
+      clearTimeout(measureRaf)
+    }
+    measureRaf = null
+  }
+
+  function scheduleObservedHeightUpdate() {
+    if (!observedElement) return
+    cancelScheduledMeasure()
+    if (typeof requestAnimationFrame === 'function') {
+      measureRaf = requestAnimationFrame(() => {
+        measureRaf = null
+        contentHeight.value = readElementHeight(observedElement)
+      })
+      return
+    }
+    measureRaf = setTimeout(() => {
+      measureRaf = null
+      contentHeight.value = readElementHeight(observedElement)
+    }, 0)
+  }
+
+  function stopContentObserver() {
+    cancelScheduledMeasure()
+    if (resizeObserver) {
+      try {
+        resizeObserver.disconnect()
+      } catch (_) {}
+      resizeObserver = null
+    }
+    observedElement = null
+  }
 
   function detectMobileAndZoomSupport() {
     if (typeof window === 'undefined') return
@@ -22,21 +72,31 @@ export function useZoom(options = {}) {
     
     isMobileDevice.value = isMobile || (isTouchDevice && hasSmallScreen)
     
-    // Test plus robuste du support du zoom natif
+    // Détection du support natif zoom:
+    // 1) CSS.supports pour les moteurs modernes
+    // 2) fallback via mesure réelle en cas de doute
     let zoomSupported = false
     try {
-      // Créer un élément de test avec des dimensions connues
-      const testEl = document.createElement('div')
-      testEl.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:100px;height:100px;zoom:2;'
-      document.body.appendChild(testEl)
-      
-      // Si zoom est supporté, getBoundingClientRect retourne 200x200
-      const rect = testEl.getBoundingClientRect()
-      zoomSupported = rect.width >= 190 // ~200px si zoom fonctionne, ~100px sinon
-      
-      document.body.removeChild(testEl)
-    } catch (e) {
+      if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function') {
+        zoomSupported = CSS.supports('zoom: 1') || CSS.supports('zoom', '1')
+      }
+    } catch (_) {
       zoomSupported = false
+    }
+
+    if (!zoomSupported) {
+      try {
+        const testEl = document.createElement('div')
+        testEl.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:100px;height:100px;zoom:2;'
+        document.body.appendChild(testEl)
+
+        const rect = testEl.getBoundingClientRect()
+        zoomSupported = rect.width >= 190 // ~200px si zoom fonctionne, ~100px sinon
+
+        document.body.removeChild(testEl)
+      } catch (_) {
+        zoomSupported = false
+      }
     }
     
     // En 2025+, le CSS zoom est supporté nativement par tous les navigateurs
@@ -132,11 +192,23 @@ export function useZoom(options = {}) {
   }
 
   function measureContentHeight(elementRef) {
-    if (!elementRef?.value) {
+    const element = elementRef?.value || elementRef
+    if (!element) {
+      stopContentObserver()
       contentHeight.value = 0
       return
     }
-    contentHeight.value = elementRef.value.scrollHeight || elementRef.value.offsetHeight || 0
+    contentHeight.value = readElementHeight(element)
+
+    if (typeof ResizeObserver === 'undefined') return
+    if (observedElement === element && resizeObserver) return
+
+    stopContentObserver()
+    observedElement = element
+    resizeObserver = new ResizeObserver(() => {
+      scheduleObservedHeightUpdate()
+    })
+    resizeObserver.observe(element)
   }
 
   // Setup des event listeners
@@ -150,6 +222,7 @@ export function useZoom(options = {}) {
     if (typeof window !== 'undefined') {
       window.removeEventListener('resize', updateViewportWidth)
     }
+    stopContentObserver()
   }
 
   return {

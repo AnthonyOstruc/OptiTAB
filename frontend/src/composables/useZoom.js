@@ -72,31 +72,19 @@ export function useZoom(options = {}) {
     
     isMobileDevice.value = isMobile || (isTouchDevice && hasSmallScreen)
     
-    // Détection du support natif zoom:
-    // 1) CSS.supports pour les moteurs modernes
-    // 2) fallback via mesure réelle en cas de doute
+    // Test robuste du support du zoom natif (comportement historique)
     let zoomSupported = false
     try {
-      if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function') {
-        zoomSupported = CSS.supports('zoom: 1') || CSS.supports('zoom', '1')
-      }
+      const testEl = document.createElement('div')
+      testEl.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:100px;height:100px;zoom:2;'
+      document.body.appendChild(testEl)
+
+      const rect = testEl.getBoundingClientRect()
+      zoomSupported = rect.width >= 190 // ~200px si zoom fonctionne, ~100px sinon
+
+      document.body.removeChild(testEl)
     } catch (_) {
       zoomSupported = false
-    }
-
-    if (!zoomSupported) {
-      try {
-        const testEl = document.createElement('div')
-        testEl.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:100px;height:100px;zoom:2;'
-        document.body.appendChild(testEl)
-
-        const rect = testEl.getBoundingClientRect()
-        zoomSupported = rect.width >= 190 // ~200px si zoom fonctionne, ~100px sinon
-
-        document.body.removeChild(testEl)
-      } catch (_) {
-        zoomSupported = false
-      }
     }
     
     // En 2025+, le CSS zoom est supporté nativement par tous les navigateurs

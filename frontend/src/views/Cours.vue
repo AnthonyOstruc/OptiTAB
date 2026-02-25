@@ -760,9 +760,13 @@ watch(() => route.query.q, (val) => {
   position: relative;
 }
 
+/* Sur mobile, supprimer la hauteur minimum fixe et laisser le contenu
+   déterminer la hauteur. flex: 1 0 auto garantit que la section remplit
+   le conteneur quand le contenu est court, et dépasse quand il est long. */
 @media (max-width: 768px) {
   .cours-section {
-    min-height: auto;
+    min-height: 0;
+    flex: 1 0 auto;
   }
 }
 
@@ -1020,10 +1024,10 @@ watch(() => route.query.q, (val) => {
   background: transparent;
 }
 
-/* Sur mobile, ajuster le padding pour les barres d'outils */
+/* Sur mobile, le DashboardLayout gère déjà le padding pour la nav bar */
 @media (max-width: 768px) {
   .cours-content {
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
   }
 }
 

@@ -1486,6 +1486,12 @@ function initFirstVisitFlag() {
   position: relative;
 }
 
+@media (max-width: 768px) {
+  .exercices-section {
+    flex: 1 0 auto;
+  }
+}
+
 .exercices-initial-loader {
   position: absolute;
   inset: 0;
@@ -1611,10 +1617,10 @@ function initFirstVisitFlag() {
   padding-bottom: 1rem; /* Eviter un grand vide après la pagination */
 }
 
-/* Sur mobile, conserver un léger espace sécurisé en bas pour le footer */
+/* Sur mobile, le DashboardLayout gère déjà le padding pour la nav bar */
 @media (max-width: 768px) {
   .exercices-list {
-    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
   }
 }
 

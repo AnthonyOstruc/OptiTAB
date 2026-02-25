@@ -595,7 +595,8 @@ watch(() => route.query.q, (val) => {
 
 @media (max-width: 768px) {
   .sheet-by-notion-page {
-    min-height: auto;
+    min-height: 0;
+    flex: 1 0 auto;
   }
 }
 
@@ -694,10 +695,10 @@ watch(() => route.query.q, (val) => {
   background: transparent;
 }
 
-/* Sur mobile, ajuster le padding pour les barres d'outils */
+/* Sur mobile, le DashboardLayout gère déjà le padding pour la nav bar */
 @media (max-width: 768px) {
   .sheet-content {
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
   }
 }
 

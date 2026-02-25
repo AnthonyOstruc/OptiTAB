@@ -11,7 +11,13 @@ import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
 import { buildCourseRouteParams } from '@/utils/freeCourseSlug'
 import { buildSummaryRouteParams } from '@/utils/freeSummarySlug'
 import { buildExerciseChapterRouteParams } from '@/utils/freeExerciseSlug'
-import { setPageSeo, getRobotsForRoute } from '@/services/seo'
+import {
+  setPageSeo,
+  getRobotsForRoute,
+  buildBreadcrumbJsonLd,
+  buildCourseJsonLd,
+  buildCreativeWorkJsonLd
+} from '@/services/seo'
 import {
   buildDynamicSeo,
   buildCanonicalSeoFields,
@@ -596,30 +602,49 @@ watch(
       : (props.resourceType === 'summary' ? 'Fiches de synthèse gratuites' : 'Cours gratuits')
     const dateModified = toIsoDate(value?.date_modification || value?.updated_at || value?.date_update || value?.date_mise_a_jour)
 
-    const jsonLdGraph = [
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Accueil', item: toAbsoluteUrl('/') },
-          { '@type': 'ListItem', position: 2, name: categoryLabel, item: toAbsoluteUrl(categoryPath) },
-          { '@type': 'ListItem', position: 3, name: baseTitle || seoPayload.topic || 'Ressource gratuite', item: canonicalResourceUrl }
-        ]
-      },
-      {
-        '@type': 'Article',
-        '@id': `${canonicalResourceUrl}#article`,
-        headline: baseTitle || seoPayload.topic || 'Ressource gratuite',
-        description: description || undefined,
-        inLanguage: 'fr-FR',
-        isPartOf: { '@id': websiteId },
-        mainEntityOfPage: { '@id': webPageId },
-        author: { '@id': organizationId },
-        publisher: { '@id': organizationId },
-        image: imageAbs ? [imageAbs] : undefined,
-        dateModified: dateModified || undefined,
-        keywords: [matiere, niveau].filter(Boolean).join(', ') || undefined
-      }
-    ]
+    const resourceName = baseTitle || seoPayload.topic || 'Ressource gratuite'
+    const keywords = [matiere, niveau].filter(Boolean)
+    const breadcrumbGraph = buildBreadcrumbJsonLd([
+      { name: 'Accueil', item: '/' },
+      { name: categoryLabel, item: categoryPath },
+      { name: resourceName, item: canonicalResourceUrl }
+    ])
+
+    const primaryGraph = props.resourceType === 'course'
+      ? buildCourseJsonLd({
+          id: `${canonicalResourceUrl}#course`,
+          name: resourceName,
+          description,
+          url: canonicalResourceUrl,
+          inLanguage: 'fr-FR',
+          provider: { '@id': organizationId },
+          isPartOf: { '@id': websiteId },
+          mainEntityOfPage: { '@id': webPageId },
+          image: imageAbs || undefined,
+          dateModified: dateModified || undefined,
+          educationalLevel: niveau || undefined,
+          keywords,
+          about: notionOrChapterTitle || undefined
+        })
+      : buildCreativeWorkJsonLd({
+          id: `${canonicalResourceUrl}#creativework`,
+          name: resourceName,
+          description,
+          url: canonicalResourceUrl,
+          inLanguage: 'fr-FR',
+          author: { '@id': organizationId },
+          publisher: { '@id': organizationId },
+          isPartOf: { '@id': websiteId },
+          mainEntityOfPage: { '@id': webPageId },
+          image: imageAbs || undefined,
+          dateModified: dateModified || undefined,
+          educationalLevel: niveau || undefined,
+          learningResourceType: props.resourceType === 'summary' ? 'Revision summary' : 'Exercise',
+          keywords,
+          about: notionOrChapterTitle || undefined
+        })
+
+    const jsonLdGraph = [breadcrumbGraph, primaryGraph].filter(Boolean)
 
     setPageSeo({
       title,

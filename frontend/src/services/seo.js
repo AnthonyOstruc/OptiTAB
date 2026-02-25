@@ -236,8 +236,39 @@ export function buildFaqJsonLd(items) {
   }
 }
 
+function toEntityReference(entity) {
+  if (!entity) return undefined
+  if (typeof entity === 'string') {
+    const id = String(entity).trim()
+    return id ? { '@id': id } : undefined
+  }
+  if (typeof entity === 'object') return entity
+  return undefined
+}
 
-function buildBreadcrumbJsonLd(items) {
+function normalizeImageArray(image) {
+  if (Array.isArray(image)) {
+    const urls = image
+      .map((item) => toAbsoluteUrl(item))
+      .filter(Boolean)
+    return urls.length ? urls : undefined
+  }
+  const single = toAbsoluteUrl(image)
+  return single ? [single] : undefined
+}
+
+function normalizeKeywords(keywords) {
+  if (Array.isArray(keywords)) {
+    const values = keywords
+      .map((value) => String(value || '').trim())
+      .filter(Boolean)
+    return values.length ? values.join(', ') : undefined
+  }
+  const value = String(keywords || '').trim()
+  return value || undefined
+}
+
+export function buildBreadcrumbJsonLd(items) {
   if (!Array.isArray(items) || items.length === 0) return null
   const list = items
     .map((item, index) => {
@@ -256,6 +287,158 @@ function buildBreadcrumbJsonLd(items) {
   return {
     '@type': 'BreadcrumbList',
     itemListElement: list
+  }
+}
+
+export function buildArticleJsonLd({
+  id,
+  url,
+  headline,
+  description,
+  inLanguage = 'fr-FR',
+  isPartOf,
+  mainEntityOfPage,
+  author,
+  publisher,
+  image,
+  datePublished,
+  dateModified,
+  keywords
+} = {}) {
+  const finalHeadline = String(headline || '').trim()
+  const finalUrl = toAbsoluteUrl(url)
+  if (!finalHeadline || !finalUrl) return null
+
+  return {
+    '@type': 'Article',
+    '@id': String(id || `${finalUrl}#article`).trim(),
+    headline: finalHeadline,
+    description: String(description || '').trim() || undefined,
+    inLanguage: String(inLanguage || '').trim() || undefined,
+    url: finalUrl,
+    isPartOf: toEntityReference(isPartOf),
+    mainEntityOfPage: toEntityReference(mainEntityOfPage),
+    author: toEntityReference(author),
+    publisher: toEntityReference(publisher),
+    image: normalizeImageArray(image),
+    datePublished: String(datePublished || '').trim() || undefined,
+    dateModified: String(dateModified || '').trim() || undefined,
+    keywords: normalizeKeywords(keywords)
+  }
+}
+
+export function buildCourseJsonLd({
+  id,
+  url,
+  name,
+  description,
+  inLanguage = 'fr-FR',
+  provider,
+  isPartOf,
+  mainEntityOfPage,
+  image,
+  dateModified,
+  educationalLevel,
+  keywords,
+  about
+} = {}) {
+  const finalName = String(name || '').trim()
+  const finalUrl = toAbsoluteUrl(url)
+  if (!finalName || !finalUrl) return null
+
+  return {
+    '@type': 'Course',
+    '@id': String(id || `${finalUrl}#course`).trim(),
+    name: finalName,
+    description: String(description || '').trim() || undefined,
+    url: finalUrl,
+    inLanguage: String(inLanguage || '').trim() || undefined,
+    provider: toEntityReference(provider),
+    isPartOf: toEntityReference(isPartOf),
+    mainEntityOfPage: toEntityReference(mainEntityOfPage),
+    image: normalizeImageArray(image),
+    dateModified: String(dateModified || '').trim() || undefined,
+    educationalLevel: String(educationalLevel || '').trim() || undefined,
+    keywords: normalizeKeywords(keywords),
+    about: String(about || '').trim() || undefined
+  }
+}
+
+export function buildCreativeWorkJsonLd({
+  id,
+  url,
+  name,
+  description,
+  inLanguage = 'fr-FR',
+  author,
+  publisher,
+  isPartOf,
+  mainEntityOfPage,
+  image,
+  dateModified,
+  learningResourceType,
+  educationalLevel,
+  keywords,
+  about
+} = {}) {
+  const finalName = String(name || '').trim()
+  const finalUrl = toAbsoluteUrl(url)
+  if (!finalName || !finalUrl) return null
+
+  return {
+    '@type': 'CreativeWork',
+    '@id': String(id || `${finalUrl}#creativework`).trim(),
+    name: finalName,
+    description: String(description || '').trim() || undefined,
+    url: finalUrl,
+    inLanguage: String(inLanguage || '').trim() || undefined,
+    author: toEntityReference(author),
+    publisher: toEntityReference(publisher),
+    isPartOf: toEntityReference(isPartOf),
+    mainEntityOfPage: toEntityReference(mainEntityOfPage),
+    image: normalizeImageArray(image),
+    dateModified: String(dateModified || '').trim() || undefined,
+    learningResourceType: String(learningResourceType || '').trim() || undefined,
+    educationalLevel: String(educationalLevel || '').trim() || undefined,
+    keywords: normalizeKeywords(keywords),
+    about: String(about || '').trim() || undefined
+  }
+}
+
+export function buildEducationalOccupationalProgramJsonLd({
+  id,
+  url,
+  name,
+  description,
+  inLanguage = 'fr-FR',
+  provider,
+  isPartOf,
+  mainEntityOfPage,
+  educationalLevel,
+  occupationalCategory,
+  timeToComplete,
+  image,
+  keywords
+} = {}) {
+  const finalName = String(name || '').trim()
+  const finalUrl = toAbsoluteUrl(url)
+  if (!finalName || !finalUrl) return null
+
+  return {
+    '@type': 'EducationalOccupationalProgram',
+    '@id': String(id || `${finalUrl}#program`).trim(),
+    name: finalName,
+    description: String(description || '').trim() || undefined,
+    url: finalUrl,
+    inLanguage: String(inLanguage || '').trim() || undefined,
+    provider: toEntityReference(provider),
+    isPartOf: toEntityReference(isPartOf),
+    mainEntityOfPage: toEntityReference(mainEntityOfPage),
+    educationalLevel: String(educationalLevel || '').trim() || undefined,
+    occupationalCategory: String(occupationalCategory || '').trim() || undefined,
+    timeToComplete: String(timeToComplete || '').trim() || undefined,
+    image: normalizeImageArray(image),
+    keywords: normalizeKeywords(keywords)
   }
 }
 
@@ -477,6 +660,8 @@ export function applyRouteSeo(route) {
   try {
     const name = route?.name ? String(route.name) : ''
     const routeSeo = ROUTE_SEO[name] || {}
+    const routePath = canonicalizePath(route?.path || '/')
+    const inferredCanonicalPath = routeSeo.canonicalPath || routePath
 
     const requiresAuth = Boolean(route?.meta?.requiresAuth || route?.meta?.requiresAdmin || route?.meta?.requiresSubscription)
     const isConfiguredNoIndex = Boolean(routeSeo.noindex)
@@ -486,30 +671,62 @@ export function applyRouteSeo(route) {
     const shouldNoIndex = isConfiguredNoIndex || isSystemNoIndex
     const robots = getRobotsForRoute({ route, noindex: shouldNoIndex })
 
-    const breadcrumbs = Array.isArray(routeSeo.breadcrumbs) ? [...routeSeo.breadcrumbs] : []
+    const routeMetaBreadcrumbs = Array.isArray(route?.meta?.breadcrumbs) ? route.meta.breadcrumbs : []
+    const breadcrumbs = Array.isArray(routeSeo.breadcrumbs) && routeSeo.breadcrumbs.length
+      ? [...routeSeo.breadcrumbs]
+      : [...routeMetaBreadcrumbs]
     if (breadcrumbs.length === 0 && !['Home', 'NotFound'].includes(name)) {
-      if (routeSeo.canonicalPath) {
+      if (inferredCanonicalPath) {
         breadcrumbs.push({ name: 'Accueil', item: '/' })
-        if (routeSeo.canonicalPath !== '/') {
+        if (inferredCanonicalPath !== '/') {
           const label = String(routeSeo.breadcrumbLabel || routeSeo.title || '')
             .replace(/^OptiTAB\s*-\s*/i, '')
             .trim()
           if (label) {
-            breadcrumbs.push({ name: label, item: routeSeo.canonicalPath })
+            breadcrumbs.push({ name: label, item: inferredCanonicalPath })
           }
         }
       }
     }
 
+    const routeMetaFaq = Array.isArray(route?.meta?.faq) ? route.meta.faq : []
+    const faqItems = Array.isArray(routeSeo.faq) && routeSeo.faq.length ? routeSeo.faq : routeMetaFaq
     const breadcrumbGraph = buildBreadcrumbJsonLd(breadcrumbs)
-    const faqGraph = buildFaqJsonLd(routeSeo.faq)
+    const faqGraph = buildFaqJsonLd(faqItems)
     const extraGraph = Array.isArray(routeSeo.jsonLdGraph) ? routeSeo.jsonLdGraph : []
-    const jsonLdGraph = [breadcrumbGraph, faqGraph, ...extraGraph].filter(Boolean)
+    const finalCanonical = toAbsoluteUrl(inferredCanonicalPath || '/')
+    const websiteId = `${getSiteBaseUrl()}/#website`
+    const webPageId = `${finalCanonical}#webpage`
+    const organizationId = `${getSiteBaseUrl()}/#organization`
+
+    const articleMeta = route?.meta?.article && typeof route.meta.article === 'object'
+      ? route.meta.article
+      : {}
+    const hasArticleGraphAlready = extraGraph.some((graph) => String(graph?.['@type'] || '').toLowerCase() === 'article')
+    const looksLikeEditorialPath = /^\/(?:blog|articles)(?:\/|$)/i.test(routePath)
+    const shouldAttachArticle = !hasArticleGraphAlready && !shouldNoIndex && (looksLikeEditorialPath || Boolean(routeSeo.article || route?.meta?.article))
+    const articleGraph = shouldAttachArticle
+      ? buildArticleJsonLd({
+          id: articleMeta.id || `${finalCanonical}#article`,
+          url: finalCanonical,
+          headline: articleMeta.headline || routeSeo.title || DEFAULT_TITLE,
+          description: articleMeta.description || routeSeo.description || DEFAULT_DESCRIPTION,
+          datePublished: articleMeta.datePublished,
+          dateModified: articleMeta.dateModified,
+          image: articleMeta.image || routeSeo.image || DEFAULT_IMAGE_PATH,
+          author: articleMeta.author || { '@id': organizationId },
+          publisher: articleMeta.publisher || { '@id': organizationId },
+          isPartOf: { '@id': websiteId },
+          mainEntityOfPage: { '@id': webPageId }
+        })
+      : null
+
+    const jsonLdGraph = [breadcrumbGraph, faqGraph, articleGraph, ...extraGraph].filter(Boolean)
 
     setPageSeo({
       title: routeSeo.title || DEFAULT_TITLE,
       description: routeSeo.description || DEFAULT_DESCRIPTION,
-      canonicalPath: routeSeo.canonicalPath || route?.path || '/',
+      canonicalPath: inferredCanonicalPath,
       robots,
       ogType: routeSeo.ogType || 'website',
       image: routeSeo.image || DEFAULT_IMAGE_PATH,

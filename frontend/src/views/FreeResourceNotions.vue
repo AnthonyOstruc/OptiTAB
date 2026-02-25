@@ -4,9 +4,9 @@ import { useRouter, useRoute } from 'vue-router'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import NotionCard from '@/components/UI/NotionCard.vue'
 import BackButton from '@/components/common/BackButton.vue'
-import Breadcrumbs from '@/components/common/Breadcrumbs.vue'
 import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
-import FaqSection from '@/components/home/FaqSection.vue'
+import SeoAccordion from '@/components/free-content/SeoAccordion.vue'
+import FaqAccordion from '@/components/free-content/FaqAccordion.vue'
 import { getFreeResources } from '@/api/free-content'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
@@ -16,6 +16,9 @@ import { buildExerciseChapterRouteParams } from '@/utils/freeExerciseSlug'
 import { buildCourseRouteParams } from '@/utils/freeCourseSlug'
 import { buildSummaryRouteParams } from '@/utils/freeSummarySlug'
 import { FREE_RESOURCES_AUTHORITY_CONTENT, isKnownBrokenPopularLink } from '@/config/freeResourcesAuthority'
+import {
+  FREE_RESOURCES_SEO_SECTION_TITLES
+} from '@/config/freeResourcesUx'
 
 const props = defineProps({
   resourceType: {
@@ -43,7 +46,12 @@ const filterDropdownRef = ref(null)
 const filterButtonRef = ref(null)
 const currentPage = ref(1)
 const itemsPerPage = 12
-const searchQuery = ref('')
+const readRouteQuerySearch = () => {
+  const raw = route?.query?.q
+  if (Array.isArray(raw)) return String(raw[0] || '').trim()
+  return String(raw || '').trim()
+}
+const searchQuery = ref(readRouteQuerySearch())
 const userStore = useUserStore()
 const subscriptionStore = useSubscriptionStore()
 const { openModal } = useModalManager()
@@ -146,6 +154,18 @@ const authorityContent = computed(() => {
   if (isExerciseMode.value) return FREE_RESOURCES_AUTHORITY_CONTENT.exercise
   if (isSummaryMode.value) return FREE_RESOURCES_AUTHORITY_CONTENT.summary
   return FREE_RESOURCES_AUTHORITY_CONTENT.course
+})
+
+const seoSections = computed(() => {
+  const paragraphs = Array.isArray(authorityContent.value?.introParagraphs)
+    ? authorityContent.value.introParagraphs
+    : []
+  return paragraphs
+    .map((paragraph, index) => ({
+      title: FREE_RESOURCES_SEO_SECTION_TITLES[index] || `Section ${index + 1}`,
+      paragraphs: [paragraph]
+    }))
+    .filter((section) => section.paragraphs.length > 0)
 })
 
 const filteredPopularLinks = computed(() =>
@@ -478,9 +498,19 @@ watch(() => props.resourceType, () => {
   levelOptions.value = []
   levelOptionsLoaded.value = false
   currentPage.value = 1
-  searchQuery.value = ''
+  searchQuery.value = readRouteQuerySearch()
   fetchLevelOptions()
 })
+
+watch(
+  () => route.query.q,
+  () => {
+    const nextValue = readRouteQuerySearch()
+    if (nextValue !== searchQuery.value) {
+      searchQuery.value = nextValue
+    }
+  }
+)
 
 watch(() => selectedLevels.value.length, () => {
   currentPage.value = 1
@@ -930,7 +960,7 @@ const onLockedExercise = (chapter) => {
 
 <template>
   <MainLayout>
-    <div class="free-course-page">
+    <main class="free-course-page">
       <div class="header-row">
         <BackButton text="Retour à l'accueil" :custom-action="() => router.push({ name: 'Home' })" position="top-left" />
         <div v-if="!loading && totalResourceCount.count > 0" class="resource-count-badge">
@@ -949,32 +979,6 @@ const onLockedExercise = (chapter) => {
         <h1 id="free-resource-title" class="page-title">{{ pageIntro.title }}</h1>
         <p class="page-subtitle">{{ pageIntro.subtitle }}</p>
       </header>
-
-      <section class="authority-intro-block" aria-label="Introduction pédagogique">
-        <h2 class="authority-intro-block__title">Comment exploiter ces ressources efficacement</h2>
-        <p
-          v-for="paragraph in authorityContent.introParagraphs"
-          :key="paragraph"
-          class="authority-intro-block__text"
-        >
-          {{ paragraph }}
-        </p>
-      </section>
-
-      <section class="popular-links-panel" aria-label="Liens populaires">
-        <h2 class="popular-links-panel__title">Liens populaires</h2>
-        <ul class="popular-links-panel__list">
-          <li
-            v-for="link in filteredPopularLinks"
-            :key="link.href"
-            class="popular-links-panel__item"
-          >
-            <router-link :to="link.href" class="popular-links-panel__anchor">
-              {{ link.label }}
-            </router-link>
-          </li>
-        </ul>
-      </section>
 
       <section class="free-resource-cta" :style="ctaWidthStyle" aria-label="Accès professeur ou plateforme">
         <div class="free-resource-cta__copy">
@@ -1234,10 +1238,37 @@ const onLockedExercise = (chapter) => {
         </div>
       </template>
 
-      <section class="list-faq-section" aria-label="Questions fréquentes">
-        <FaqSection :faq="authorityContent.faq" />
+      <section v-if="filteredPopularLinks.length > 0" class="popular-links-panel" aria-label="Liens populaires">
+        <h2 class="popular-links-panel__title">Liens populaires</h2>
+        <ul class="popular-links-panel__list">
+          <li
+            v-for="link in filteredPopularLinks"
+            :key="link.href"
+            class="popular-links-panel__item"
+          >
+            <router-link :to="link.href" class="popular-links-panel__anchor">
+              {{ link.label }}
+            </router-link>
+          </li>
+        </ul>
       </section>
-    </div>
+
+      <section class="seo-copy-block" aria-label="Explications detaillees">
+        <SeoAccordion
+          title="Pourquoi cette page ?"
+          summary="Le detail pedagogique complet reste disponible ci-dessous."
+          :sections="seoSections"
+        />
+      </section>
+
+      <section class="list-faq-section" aria-label="Questions frequentes">
+        <FaqAccordion
+          :items="authorityContent.faq"
+          title="FAQ rapide"
+          description="Reponses utiles avant de passer aux exercices."
+        />
+      </section>
+    </main>
 
     <WhatsappChatButton
       phone="33764040251"
@@ -1300,30 +1331,6 @@ const onLockedExercise = (chapter) => {
   line-height: 1.6;
 }
 
-.authority-intro-block {
-  max-width: 980px;
-  margin: 0 0 18px 0;
-}
-
-.authority-intro-block__title {
-  margin: 0 0 12px 0;
-  font-size: 20px;
-  font-weight: 800;
-  color: #0f172a;
-  line-height: 1.35;
-}
-
-.authority-intro-block__text {
-  margin: 0 0 14px 0;
-  font-size: 15px;
-  line-height: 1.72;
-  color: #334155;
-}
-
-.authority-intro-block__text:last-child {
-  margin-bottom: 0;
-}
-
 .popular-links-panel {
   max-width: 980px;
   margin: 0 0 18px 0;
@@ -1360,8 +1367,12 @@ const onLockedExercise = (chapter) => {
   text-decoration: underline;
 }
 
+.seo-copy-block {
+  margin-top: 12px;
+}
+
 .list-faq-section {
-  margin-top: 18px;
+  margin-top: 12px;
 }
 
 @media (max-width: 900px) {

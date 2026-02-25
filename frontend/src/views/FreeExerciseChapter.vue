@@ -10,7 +10,12 @@ import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { useUserStore } from '@/stores/user'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { renderMath } from '@/utils/scientificRenderer'
-import { setPageSeo, getRobotsForRoute } from '@/services/seo'
+import {
+  setPageSeo,
+  getRobotsForRoute,
+  buildBreadcrumbJsonLd,
+  buildCreativeWorkJsonLd
+} from '@/services/seo'
 import { buildExerciseChapterRouteParams } from '@/utils/freeExerciseSlug'
 import { useZoom } from '@/composables/useZoom'
 import {
@@ -348,15 +353,34 @@ const updateSeo = () => {
       const url = anchorId ? `${canonicalResourceUrl}#${anchorId}` : canonicalResourceUrl
       return { '@type': 'ListItem', position: index + 1, name: exercise.titre, url }
     })
+  const siteUrl = getSiteUrl()
+  const organizationId = `${siteUrl}/#organization`
+  const websiteId = `${siteUrl}/#website`
+  const webPageId = `${canonicalResourceUrl}#webpage`
+  const breadcrumbGraph = buildBreadcrumbJsonLd([
+    { name: 'Accueil', item: '/' },
+    { name: 'Exercices gratuits', item: '/ressources-gratuites/exercices' },
+    { name: chapterTitle, item: canonicalResourceUrl }
+  ])
+  const chapterGraph = buildCreativeWorkJsonLd({
+    id: `${canonicalResourceUrl}#creativework`,
+    name: chapterTitle,
+    description,
+    url: canonicalResourceUrl,
+    inLanguage: 'fr-FR',
+    author: { '@id': organizationId },
+    publisher: { '@id': organizationId },
+    isPartOf: { '@id': websiteId },
+    mainEntityOfPage: { '@id': webPageId },
+    image: image || undefined,
+    educationalLevel: niveau || undefined,
+    learningResourceType: 'Exercise chapter',
+    keywords: [first?.matiere_nom, niveau, chapterTitle].filter(Boolean),
+    about: chapterTitle
+  })
   const jsonLdGraph = [
-    {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Accueil', item: toAbsoluteUrl('/') },
-        { '@type': 'ListItem', position: 2, name: 'Exercices gratuits', item: toAbsoluteUrl('/ressources-gratuites/exercices') },
-        { '@type': 'ListItem', position: 3, name: chapterTitle, item: canonicalResourceUrl }
-      ]
-    },
+    breadcrumbGraph,
+    chapterGraph,
     itemListElements.length
       ? {
           '@type': 'ItemList',
@@ -366,7 +390,7 @@ const updateSeo = () => {
           itemListElement: itemListElements
         }
       : null
-  ]
+  ].filter(Boolean)
 
   setPageSeo({
     title,

@@ -119,15 +119,18 @@ export function useZoom(options = {}) {
       cssVar = '--content-zoom',
       heightVar = '--content-height',
       mobileZoomAdjustment = null,
-      minMobileZoom = 0.45
+      minMobileZoom = 0.45,
+      forceTransformOnMobile = false,
+      mobileBreakpoint = 768
     } = options
 
     return computed(() => {
       const baseHeight = `${contentHeight.value}px`
       let z = zoomLevel.value || 1
+      const isMobileViewport = viewportWidth.value <= mobileBreakpoint
       
       // Ajustement mobile personnalisable
-      if (viewportWidth.value <= 768) {
+      if (isMobileViewport) {
         if (mobileZoomAdjustment) {
           z = mobileZoomAdjustment(z)
         } else {
@@ -142,8 +145,10 @@ export function useZoom(options = {}) {
         [heightVar]: baseHeight,
         '--use-native-zoom': supportsNativeZoom.value ? '1' : '0'
       }
+
+      const shouldUseNativeZoom = supportsNativeZoom.value && !(forceTransformOnMobile && isMobileViewport)
       
-      if (supportsNativeZoom.value) {
+      if (shouldUseNativeZoom) {
         // Utiliser le zoom natif uniquement si vraiment supporté
         return {
           ...baseStyle,

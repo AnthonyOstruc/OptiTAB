@@ -146,7 +146,7 @@ export function useZoom(options = {}) {
         '--use-native-zoom': supportsNativeZoom.value ? '1' : '0'
       }
 
-      const shouldUseNativeZoom = supportsNativeZoom.value && !(forceTransformOnMobile && isMobileViewport)
+      const shouldUseNativeZoom = (supportsNativeZoom.value || isMobileViewport) && !(forceTransformOnMobile && isMobileViewport)
       
       if (shouldUseNativeZoom) {
         // Utiliser le zoom natif uniquement si vraiment supporté

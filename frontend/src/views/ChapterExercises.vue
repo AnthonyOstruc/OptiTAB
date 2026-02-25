@@ -761,7 +761,7 @@ const zoomStyle = createZoomStyle({
   cssVar: '--exercices-zoom',
   heightVar: '--exercices-content-height',
   mobileZoomAdjustment: (z) => Math.max(0.45, z * 0.75),
-  forceTransformOnMobile: false
+  forceTransformOnMobile: true
 })
 
 

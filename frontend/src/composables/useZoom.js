@@ -146,7 +146,7 @@ export function useZoom(options = {}) {
         '--use-native-zoom': supportsNativeZoom.value ? '1' : '0'
       }
 
-      const shouldUseNativeZoom = (supportsNativeZoom.value || isMobileViewport) && !(forceTransformOnMobile && isMobileViewport)
+      const shouldUseNativeZoom = supportsNativeZoom.value && !(forceTransformOnMobile && isMobileViewport)
       
       if (shouldUseNativeZoom) {
         // Utiliser le zoom natif uniquement si vraiment supporté
@@ -170,7 +170,7 @@ export function useZoom(options = {}) {
         
         // Seulement appliquer la hauteur si elle est mesurée et valide
         if (contentHeight.value > 0 && Number.isFinite(z) && z < 1) {
-          const marginBottom = -Math.round(contentHeight.value * (1 - z))
+          const marginBottom = -Math.ceil(contentHeight.value * (1 - z))
           style.marginBottom = `${marginBottom}px`
         }
         

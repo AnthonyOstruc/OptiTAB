@@ -581,6 +581,10 @@ onMounted(async () => {
   }
   
   await loadData()
+
+  // Start observing inner content for reflows (MathJax, images, etc.)
+  await nextTick()
+  setupGapObserver()
 })
 
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
@@ -588,24 +592,8 @@ onActivated(() => {
   detectMobileAndZoomSupport()
   updateViewportWidth()
   
-  // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
-  nextTick(() => {
-    if (window.MathJax && window.MathJax.typesetPromise) {
-      try {
-        if (window.MathJax.typesetClear) {
-          window.MathJax.typesetClear()
-        }
-        window.MathJax.typesetPromise()
-      } catch (error) {
-        console.warn('[MathJax] Erreur:', error)
-      }
-    }
-    setTimeout(() => {
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise()
-      }
-    }, 100)
-  })
+  // Re-typeset MathJax et recalculer la hauteur
+  typesetAndFix()
   
   // Note: KeepAlive préserve automatiquement le DOM et la position de scroll
   // Pas besoin de restaurer manuellement
@@ -659,22 +647,9 @@ async function loadData() {
     measureContentHeightForExercices()
     restoreScrollPositionAfterLoad()
 
-    // Forcer le rendu MathJax après le chargement des exercices
-    setTimeout(() => {
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        try {
-          if (window.MathJax.typesetClear) {
-            window.MathJax.typesetClear()
-          }
-          window.MathJax.typesetPromise()
-        } catch (error) {
-          console.warn('[MathJax] Erreur:', error)
-        }
-      }
-      measureContentHeightForExercices()
-      
-      // Note: KeepAlive préserve automatiquement le scroll
-      // Pas besoin de restaurer manuellement sauf si nouvelle notion
+    // MathJax typesetting + fix bottom gap after DOM settles
+    setTimeout(async () => {
+      await typesetAndFix()
       tryScrollToHashExercice()
     }, 150)
   }
@@ -769,6 +744,66 @@ function measureContentHeightForExercices() {
   measureContentHeight(exContentRef)
 }
 
+/**
+ * Compensate the bottom gap caused by CSS transform: scale().
+ * When transform is applied, the browser keeps the original (unscaled) layout
+ * height, so we explicitly set the outer container height to the visually
+ * scaled content height.
+ */
+function fixBottomGap() {
+  const outer = exOuterRef.value
+  const inner = exContentRef.value
+  if (!outer || !inner) return
+
+  const cs = window.getComputedStyle(outer)
+  if (cs.transform === 'none') {
+    outer.style.height = 'auto'
+    return
+  }
+
+  const zoom = parseFloat(cs.getPropertyValue('--exercices-zoom')) || 1
+  const contentH = inner.scrollHeight || Math.ceil(inner.getBoundingClientRect().height) || 0
+  outer.style.height = Math.ceil(contentH * zoom) + 'px'
+}
+
+/**
+ * Run MathJax typesetting, then re-measure and fix the bottom gap.
+ * Safe to call even if MathJax is not loaded.
+ */
+async function typesetAndFix() {
+  await nextTick()
+  try {
+    if (window.MathJax?.typesetPromise) {
+      if (window.MathJax.typesetClear) window.MathJax.typesetClear()
+      await window.MathJax.typesetPromise()
+    }
+  } catch (e) {
+    console.warn('[MathJax] Erreur:', e)
+  }
+  measureContentHeightForExercices()
+  fixBottomGap()
+  clampScrollToContentEnd()
+}
+
+// ResizeObserver for inner content — keeps height in sync after any reflow
+let gapObserver = null
+function setupGapObserver() {
+  if (typeof ResizeObserver === 'undefined') return
+  const inner = exContentRef.value
+  if (!inner) return
+  gapObserver = new ResizeObserver(() => {
+    measureContentHeightForExercices()
+    fixBottomGap()
+  })
+  gapObserver.observe(inner)
+}
+function teardownGapObserver() {
+  if (gapObserver) {
+    gapObserver.disconnect()
+    gapObserver = null
+  }
+}
+
 function handlePageChange(page) {
   currentPage.value = page
   // scroll to top of exercises (dans le bon conteneur)
@@ -776,18 +811,7 @@ function handlePageChange(page) {
   // Sauvegarder l'état
   saveViewState()
   // Forcer le rendu MathJax après le changement de page
-  nextTick(() => {
-    if (window.MathJax && window.MathJax.typesetPromise) {
-      try {
-        if (window.MathJax.typesetClear) {
-          window.MathJax.typesetClear()
-        }
-        window.MathJax.typesetPromise()
-      } catch (error) {
-        console.warn('[MathJax] Erreur:', error)
-      }
-    }
-  })
+  typesetAndFix()
 }
 
 function handleTypeFilterChange() {
@@ -906,38 +930,12 @@ watch(() => route.query.q, (val) => {
 })
 
 watch(viewportWidth, () => {
-  nextTick(() => {
-    if (typeof window !== 'undefined' && window.MathJax && window.MathJax.typesetPromise) {
-      try {
-        if (window.MathJax.typesetClear) {
-          window.MathJax.typesetClear()
-        }
-        window.MathJax.typesetPromise()
-      } catch (error) {
-        console.warn('[MathJax] Erreur:', error)
-      }
-    }
-    measureContentHeightForExercices()
-    clampScrollToContentEnd()
-  })
+  typesetAndFix()
 }, { immediate: true })
 
 // Forcer le rendu MathJax quand les exercices affichés changent
 watch(paginated, () => {
-  nextTick(() => {
-    if (window.MathJax && window.MathJax.typesetPromise) {
-      try {
-        if (window.MathJax.typesetClear) {
-          window.MathJax.typesetClear()
-        }
-        window.MathJax.typesetPromise()
-      } catch (error) {
-        console.warn('[MathJax] Erreur:', error)
-      }
-    }
-    measureContentHeightForExercices()
-    clampScrollToContentEnd()
-  })
+  typesetAndFix()
 }, { deep: true })
 
 watch(
@@ -953,6 +951,7 @@ watch(
 onBeforeUnmount(() => {
   saveViewState()
   cleanupViewportListener()
+  teardownGapObserver()
 })
 
 onDeactivated(() => {

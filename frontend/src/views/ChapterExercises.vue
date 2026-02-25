@@ -1486,11 +1486,7 @@ function initFirstVisitFlag() {
   position: relative;
 }
 
-@media (max-width: 768px) {
-  .exercices-section {
-    flex: 1 0 auto;
-  }
-}
+/* Sur mobile, pas de flex-grow : la section s'adapte au contenu zoomé. */
 
 .exercices-initial-loader {
   position: absolute;

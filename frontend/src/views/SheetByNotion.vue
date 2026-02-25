@@ -593,10 +593,11 @@ watch(() => route.query.q, (val) => {
   position: relative;
 }
 
+/* Sur mobile, supprimer la hauteur minimum fixe pour que la section
+   s'adapte exactement à la taille du contenu zoomé, sans espace vide. */
 @media (max-width: 768px) {
   .sheet-by-notion-page {
     min-height: 0;
-    flex: 1 0 auto;
   }
 }
 

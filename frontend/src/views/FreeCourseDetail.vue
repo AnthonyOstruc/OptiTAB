@@ -10,7 +10,8 @@ import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
 import { buildCourseRouteParams } from '@/utils/freeCourseSlug'
 import { buildSummaryRouteParams } from '@/utils/freeSummarySlug'
-import { buildExerciseChapterRouteParams } from '@/utils/freeExerciseSlug'
+import { buildExerciseChapterRouteParams, slugifyText } from '@/utils/freeExerciseSlug'
+import { FREE_RESOURCES_AUTHORITY_CONTENT, isKnownBrokenPopularLink } from '@/config/freeResourcesAuthority'
 import {
   setPageSeo,
   getRobotsForRoute,
@@ -149,6 +150,7 @@ const categoryInfo = computed(() => {
 
 const introText = computed(() => {
   if (!resource.value) return ''
+  if (props.resourceType === 'course') return ''
   const raw = resource.value.accroche || resource.value.excerpt || resource.value.resume || ''
   const cleaned = stripHtml(raw)
   if (!cleaned) return ''
@@ -190,11 +192,251 @@ const breadcrumbItems = computed(() => {
   return crumbs
 })
 
-const relatedLinks = computed(() => [
-  { label: 'Cours gratuits de maths', to: '/ressources-gratuites/cours' },
-  { label: 'Exercices corriges gratuits', to: '/ressources-gratuites/exercices' },
-  { label: 'Fiches de revision gratuites', to: '/ressources-gratuites/syntheses' }
+const RELATED_LINK_BASE_PATHS = Object.freeze({
+  course: '/ressources-gratuites/cours',
+  summary: '/ressources-gratuites/syntheses',
+  exercise: '/ressources-gratuites/exercices'
+})
+
+const RELATED_LINK_STOPWORDS = new Set([
+  'cours',
+  'course',
+  'exercice',
+  'exercices',
+  'corrige',
+  'corriges',
+  'corrigees',
+  'fiche',
+  'fiches',
+  'synthese',
+  'resume',
+  'gratuite',
+  'gratuites',
+  'math',
+  'maths',
+  'mathematiques',
+  'de',
+  'des',
+  'du',
+  'la',
+  'le',
+  'les',
+  'et',
+  'en',
+  'pour',
+  'sur'
 ])
+
+function stripTopicPrefix(value) {
+  return String(value || '')
+    .trim()
+    .replace(/^r[eé]sum[eé]\s*:\s*/i, '')
+    .replace(/^cours\s*:\s*/i, '')
+    .replace(/^exercices?\s+corrig[eé]s?\s*:\s*/i, '')
+    .replace(/^exercice\s*:\s*/i, '')
+    .trim()
+}
+
+function stripQueryFromPath(value) {
+  return String(value || '').split('#')[0].split('?')[0]
+}
+
+function tokenizeForRelatedMatch(value) {
+  return slugifyText(value || '')
+    .split('-')
+    .filter((token) => token && token.length > 2 && !RELATED_LINK_STOPWORDS.has(token))
+}
+
+function scoreAuthorityLinkMatch(link, topicTokens, levelTokens) {
+  const searchableText = slugifyText(`${link?.label || ''} ${link?.href || ''}`)
+  if (!searchableText) return 0
+  let score = 0
+  for (const token of topicTokens) {
+    if (searchableText.includes(token)) score += 6
+  }
+  for (const token of levelTokens) {
+    if (searchableText.includes(token)) score += 3
+  }
+  return score
+}
+
+function pickAuthorityLinks({ preferredTypes, topicTokens, levelTokens, excludedPaths, limit } = {}) {
+  const rows = []
+
+  ;(preferredTypes || []).forEach((type, typeIndex) => {
+    const popularLinks = Array.isArray(FREE_RESOURCES_AUTHORITY_CONTENT?.[type]?.popularLinks)
+      ? FREE_RESOURCES_AUTHORITY_CONTENT[type].popularLinks
+      : []
+
+    popularLinks.forEach((link, itemIndex) => {
+      const href = String(link?.href || '').trim()
+      const label = String(link?.label || '').trim()
+      const normalizedPath = normalizePathname(stripQueryFromPath(href))
+      if (!href || !label || !normalizedPath) return
+      if (isKnownBrokenPopularLink(href)) return
+      if (excludedPaths?.has(normalizedPath)) return
+
+      rows.push({
+        href,
+        label,
+        normalizedPath,
+        typeIndex,
+        itemIndex,
+        score: scoreAuthorityLinkMatch(link, topicTokens || [], levelTokens || [])
+      })
+    })
+  })
+
+  rows.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score
+    if (a.typeIndex !== b.typeIndex) return a.typeIndex - b.typeIndex
+    return a.itemIndex - b.itemIndex
+  })
+
+  const picked = []
+  const used = new Set()
+  for (const row of rows) {
+    if (picked.length >= (limit || 4)) break
+    if (used.has(row.normalizedPath)) continue
+    used.add(row.normalizedPath)
+    picked.push({ label: row.label, href: row.href })
+  }
+
+  return picked
+}
+
+function hashSeed(value) {
+  const text = String(value || '')
+  let hash = 2166136261
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i)
+    hash = Math.imul(hash, 16777619)
+  }
+  return hash >>> 0
+}
+
+function createSeededRandom(seed) {
+  let state = (seed >>> 0) || 1
+  return () => {
+    state = Math.imul(state, 1664525) + 1013904223
+    return ((state >>> 0) / 4294967296)
+  }
+}
+
+function shuffleLinksStable(items, seedSource) {
+  const list = Array.isArray(items) ? [...items] : []
+  if (list.length <= 1) return list
+  const random = createSeededRandom(hashSeed(seedSource))
+  for (let i = list.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(random() * (i + 1))
+    ;[list[i], list[j]] = [list[j], list[i]]
+  }
+  return list
+}
+
+const relatedTopic = computed(() => {
+  const raw = resource.value?.notion_nom || resource.value?.chapitre_nom || resource.value?.titre || ''
+  return stripTopicPrefix(raw)
+})
+
+const relatedLevel = computed(() => {
+  return String(resource.value?.niveau_nom || resource.value?.tag_secondaire || '').trim()
+})
+
+const relatedLinksIntro = computed(() => {
+  const topic = relatedTopic.value
+  if (props.resourceType === 'exercise') {
+    return topic
+      ? `Continuez avec des cours et des fiches autour de ${topic}.`
+      : 'Continuez avec des cours et des fiches sur les notions proches.'
+  }
+  if (props.resourceType === 'summary') {
+    return topic
+      ? `Pour bien retenir ${topic}, combinez cours et exercices corrigés.`
+      : 'Pour progresser, combinez les fiches avec des cours et des exercices corrigés.'
+  }
+  return topic
+    ? `Pour maîtriser ${topic}, passez ensuite aux exercices corrigés et aux fiches de synthèse.`
+    : 'Complétez ce cours avec des exercices corrigés et des fiches de synthèse.'
+})
+
+const relatedLinks = computed(() => {
+  const links = []
+  const usedPaths = new Set()
+  const currentPath = normalizePathname(route.path)
+
+  const addLink = (label, to) => {
+    const safeLabel = String(label || '').trim()
+    const safeTo = String(to || '').trim()
+    if (!safeLabel || !safeTo) return
+    const normalizedPath = normalizePathname(stripQueryFromPath(safeTo))
+    if (!normalizedPath || normalizedPath === currentPath || usedPaths.has(normalizedPath)) return
+    usedPaths.add(normalizedPath)
+    links.push({ label: safeLabel, to: safeTo })
+  }
+
+  const topic = relatedTopic.value
+  const level = relatedLevel.value
+  const topicTokens = tokenizeForRelatedMatch(topic)
+  const levelTokens = tokenizeForRelatedMatch(level)
+
+  if (props.resourceType === 'exercise' && exerciseChapterPath.value && resource.value?.notion_nom) {
+    addLink(`Chapitre d'exercices: ${resource.value.notion_nom}`, exerciseChapterPath.value)
+  }
+
+  pickAuthorityLinks({
+    preferredTypes: ['course'],
+    topicTokens,
+    levelTokens,
+    excludedPaths: usedPaths,
+    limit: 1
+  }).forEach((link) => addLink(link.label, link.href))
+
+  pickAuthorityLinks({
+    preferredTypes: ['summary'],
+    topicTokens,
+    levelTokens,
+    excludedPaths: usedPaths,
+    limit: 1
+  }).forEach((link) => addLink(link.label, link.href))
+
+  pickAuthorityLinks({
+    preferredTypes: ['exercise'],
+    topicTokens,
+    levelTokens,
+    excludedPaths: usedPaths,
+    limit: 1
+  }).forEach((link) => addLink(link.label, link.href))
+
+  const authorityLinks = pickAuthorityLinks({
+    preferredTypes: ['course', 'summary', 'exercise'],
+    topicTokens,
+    levelTokens,
+    excludedPaths: usedPaths,
+    limit: 6
+  })
+  authorityLinks.forEach((link) => addLink(link.label, link.href))
+
+  if (links.length < 4) {
+    const fallbackAuthorityLinks = pickAuthorityLinks({
+      preferredTypes: ['summary', 'course', 'exercise'],
+      topicTokens: [],
+      levelTokens: [],
+      excludedPaths: usedPaths,
+      limit: 8
+    })
+    fallbackAuthorityLinks.forEach((link) => addLink(link.label, link.href))
+  }
+
+  if (links.length < 4) {
+    addLink('Tous les cours gratuits', RELATED_LINK_BASE_PATHS.course)
+    addLink('Tous les exercices corrigés', RELATED_LINK_BASE_PATHS.exercise)
+    addLink('Toutes les fiches de synthèse', RELATED_LINK_BASE_PATHS.summary)
+  }
+
+  const seedSource = `${props.resourceType}|${resource.value?.id || ''}|${route.path}|${topic}|${level}`
+  return shuffleLinksStable(links, seedSource).slice(0, 8)
+})
 
 const subscriptionCtaLabel = computed(() => (subscriptionStore.hasAccess ? 'Gérer mon abonnement' : "S'abonner"))
 
@@ -830,7 +1072,8 @@ onBeforeUnmount(() => {
           </div>
 
           <section class="related-resources" aria-labelledby="related-resources-title">
-            <h2 id="related-resources-title" class="related-resources__title">Ressources liees</h2>
+            <h2 id="related-resources-title" class="related-resources__title">Liens utiles pour continuer</h2>
+            <p class="related-resources__intro">{{ relatedLinksIntro }}</p>
             <div class="related-resources__list">
               <router-link
                 v-for="link in relatedLinks"
@@ -1410,28 +1653,42 @@ onBeforeUnmount(() => {
   color: #0f172a;
 }
 
+.related-resources__intro {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.5;
+}
+
 .related-resources__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 28px;
 }
 
 .related-resources__link {
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: #ffffff;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 2px 0;
   color: #1d4ed8;
-  font-weight: 600;
-  font-size: 13px;
+  font-weight: 700;
+  font-size: 15px;
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  line-height: 1.35;
+  transition: color 0.2s ease;
 }
 
 .related-resources__link:hover {
-  transform: translateY(-1px);
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.12);
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .related-resources__list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
 }
 
 .blurred-teaser {

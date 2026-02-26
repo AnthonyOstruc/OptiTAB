@@ -234,10 +234,42 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             return self._paginate_and_serialize(queryset, ExerciceFreePreviewSerializer)
         if resource_type == FreeLearningResource.TYPE_SUMMARY:
             response = self._paginate_and_serialize(
-                self._apply_limit(self._get_free_summaries_queryset(request), request),
+                self._apply_limit(
+                    self._get_free_summaries_queryset(
+                        request,
+                        sheet_type=SynthesisSheet.SHEET_TYPE_SUMMARY
+                    ),
+                    request
+                ),
                 SynthesisFreePreviewSerializer
             )
-            hidden_count = self._count_hidden_chapters(self._get_free_summaries_queryset(request, include_inactive=True))
+            hidden_count = self._count_hidden_chapters(
+                self._get_free_summaries_queryset(
+                    request,
+                    include_inactive=True,
+                    sheet_type=SynthesisSheet.SHEET_TYPE_SUMMARY
+                )
+            )
+            self._attach_hidden_chapters_count(response, hidden_count)
+            return response
+        if resource_type == SynthesisSheet.SHEET_TYPE_TABLE:
+            response = self._paginate_and_serialize(
+                self._apply_limit(
+                    self._get_free_summaries_queryset(
+                        request,
+                        sheet_type=SynthesisSheet.SHEET_TYPE_TABLE
+                    ),
+                    request
+                ),
+                SynthesisFreePreviewSerializer
+            )
+            hidden_count = self._count_hidden_chapters(
+                self._get_free_summaries_queryset(
+                    request,
+                    include_inactive=True,
+                    sheet_type=SynthesisSheet.SHEET_TYPE_TABLE
+                )
+            )
             self._attach_hidden_chapters_count(response, hidden_count)
             return response
 
@@ -318,7 +350,10 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 SynthesisSheet.objects.filter(
                     pk=sheet_id,
                     est_actif=True,
-                    sheet_type=SynthesisSheet.SHEET_TYPE_SUMMARY,
+                    sheet_type__in=[
+                        SynthesisSheet.SHEET_TYPE_SUMMARY,
+                        SynthesisSheet.SHEET_TYPE_TABLE,
+                    ],
                     access_scope__in=[SynthesisSheet.ACCESS_SCOPE_FREE, SynthesisSheet.ACCESS_SCOPE_BOTH]
                 )
                 .select_related(
@@ -561,11 +596,16 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
 
         return qs
 
-    def _get_free_summaries_queryset(self, request, include_inactive=False):
+    def _get_free_summaries_queryset(
+        self,
+        request,
+        include_inactive=False,
+        sheet_type=SynthesisSheet.SHEET_TYPE_SUMMARY
+    ):
         qs = (
             SynthesisSheet.objects.filter(
                 est_actif=True,
-                sheet_type=SynthesisSheet.SHEET_TYPE_SUMMARY
+                sheet_type=sheet_type
             )
         )
         if not include_inactive:

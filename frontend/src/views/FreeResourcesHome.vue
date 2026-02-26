@@ -18,7 +18,10 @@
       </header>
 
       <section class="top-actions-section" aria-label="Formats de ressources">
-        <TopActionCards :cards="actionCards" />
+        <TopActionCards
+          :cards="actionCards"
+          description="Comprendre, t'entrainer ou reviser vite: clique sur le format qui te fait progresser tout de suite."
+        />
       </section>
 
       <section v-if="hubPopularLinks.length > 0" class="popular-links-panel" aria-label="Liens populaires ressources gratuites">

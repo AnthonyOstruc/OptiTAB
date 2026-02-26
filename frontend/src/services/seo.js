@@ -5,6 +5,15 @@ const DEFAULT_SITE_NAME = 'OptiTAB'
 const DEFAULT_TITLE = 'Plateforme de maths & cours particuliers en ligne'
 const DEFAULT_DESCRIPTION =
   'Plateforme de maths & cours particuliers : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI). Cours, fiches, exercices corriges.'
+const DEFAULT_KEYWORDS = [
+  'cours de maths',
+  'cours de maths gratuits',
+  'exercices corriges maths',
+  'fiches de revision maths',
+  'brevet maths',
+  'bac maths',
+  'prepa maths'
+].join(', ')
 const DEFAULT_IMAGE_PATH = '/Logo_bg.png'
 const DEFAULT_ROBOTS_INDEX =
   'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1'
@@ -445,6 +454,7 @@ export function buildEducationalOccupationalProgramJsonLd({
 export function setPageSeo({
   title,
   description,
+  keywords,
   robots,
   canonicalPath,
   canonicalUrl,
@@ -456,6 +466,7 @@ export function setPageSeo({
 
   const finalTitle = buildTitle(title)
   const finalDescription = String(description || DEFAULT_DESCRIPTION).trim() || DEFAULT_DESCRIPTION
+  const finalKeywords = normalizeKeywords(keywords) || DEFAULT_KEYWORDS
   const finalRobots = String(robots || DEFAULT_ROBOTS_INDEX).trim()
 
   const normalizedCanonicalUrl = normalizeCanonicalUrl(canonicalUrl)
@@ -468,6 +479,7 @@ export function setPageSeo({
 
   document.title = finalTitle
   ensureMeta('name', 'description', finalDescription)
+  ensureMeta('name', 'keywords', finalKeywords)
   ensureMeta('name', 'robots', finalRobots)
 
   ensureLink('canonical', finalCanonical)
@@ -636,10 +648,47 @@ const ROUTE_SEO = {
     canonicalPath: '/tarifs'
   },
   FreeResourcesHome: {
-    title: 'Ressources gratuites de maths',
-    description: 'Cours gratuits, exercices corriges et fiches de synthese pour reviser efficacement du college a la prepa. Acces libre sur OptiTAB.',
+    title: 'Ressources gratuites de maths : cours, exercices corriges et fiches de revision',
+    description: 'Cours de maths gratuits, exercices corriges et fiches de revision pour college, lycee, brevet, bac et prepa. Demarrage rapide par format sur OptiTAB.',
+    keywords: [
+      'ressources gratuites maths',
+      'cours de maths gratuits',
+      'exercices corriges maths',
+      'fiches de revision maths',
+      'reviser brevet maths',
+      'reviser bac maths'
+    ],
     canonicalPath: '/ressources-gratuites',
-    faq: FREE_RESOURCES_FAQ_BY_ROUTE.FreeResourcesHome
+    faq: FREE_RESOURCES_FAQ_BY_ROUTE.FreeResourcesHome,
+    jsonLdGraph: [
+      {
+        '@type': 'ItemList',
+        '@id': `${toAbsoluteUrl('/ressources-gratuites')}#resource-types`,
+        name: 'Formats de ressources gratuites de maths',
+        itemListOrder: 'https://schema.org/ItemListOrderAscending',
+        numberOfItems: 3,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Cours de maths gratuits',
+            item: toAbsoluteUrl('/ressources-gratuites/cours')
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Exercices corriges de maths',
+            item: toAbsoluteUrl('/ressources-gratuites/exercices')
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: 'Fiches de revision de maths',
+            item: toAbsoluteUrl('/ressources-gratuites/syntheses')
+          }
+        ]
+      }
+    ]
   },
   CGV: { title: 'CGV', canonicalPath: '/cgv', noindex: true },
   CGU: { title: 'CGU', canonicalPath: '/cgu', noindex: true },
@@ -726,6 +775,7 @@ export function applyRouteSeo(route) {
     setPageSeo({
       title: routeSeo.title || DEFAULT_TITLE,
       description: routeSeo.description || DEFAULT_DESCRIPTION,
+      keywords: routeSeo.keywords,
       canonicalPath: inferredCanonicalPath,
       robots,
       ogType: routeSeo.ogType || 'website',

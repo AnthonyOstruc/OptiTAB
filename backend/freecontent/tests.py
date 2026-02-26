@@ -51,7 +51,17 @@ class FreeSummarySheetTypeTests(TestCase):
         self.assertIn(self.summary_sheet.id, returned_ids)
         self.assertNotIn(self.table_sheet.id, returned_ids)
 
-    def test_free_summary_retrieve_slug_rejects_table_sheet(self):
+    def test_free_table_list_excludes_summary_type(self):
+        response = self.client.get('/api/free/learning-resources/', {'type': 'table'})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        results = response.data.get('results', response.data)
+        returned_ids = {item['id'] for item in results}
+
+        self.assertIn(self.table_sheet.id, returned_ids)
+        self.assertNotIn(self.summary_sheet.id, returned_ids)
+
+    def test_free_summary_retrieve_slug_accepts_summary_and_table_sheet(self):
         summary_response = self.client.get(
             f'/api/free/learning-resources/synthese-gratuite-{self.summary_sheet.id}/'
         )
@@ -60,4 +70,4 @@ class FreeSummarySheetTypeTests(TestCase):
         )
 
         self.assertEqual(summary_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(table_response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(table_response.status_code, status.HTTP_200_OK)

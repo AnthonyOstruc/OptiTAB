@@ -2,36 +2,48 @@ export const FREE_RESOURCES_ACTION_CARDS = Object.freeze([
   {
     key: 'course',
     title: 'Cours',
-    subtitle: 'Cours gratuits structurés et progressifs.',
+    subtitle: 'Progression claire du college a la prepa pour comprendre chaque notion.',
+    badge: 'Base solide',
+    hint: 'Ideal pour preparer un chapitre avant les exercices.',
+    cta: 'Voir les cours gratuits',
+    seoLabel: 'Acceder aux cours de maths gratuits',
     to: { name: 'FreeCourses' }
   },
   {
     key: 'exercise',
-    title: 'Exercices corrigés',
-    subtitle: 'Entraînement avec correction pas à pas.',
+    title: 'Exercices corriges',
+    subtitle: 'Entrainement cible avec corrections detaillees et methode pas a pas.',
+    badge: 'Le plus clique',
+    hint: 'Parfait pour passer de la theorie a la pratique.',
+    cta: 'Faire des exercices corriges',
+    seoLabel: 'Acceder aux exercices de maths corriges',
     to: { name: 'FreeExercises' }
   },
   {
     key: 'summary',
-    title: 'Fiches de révision',
-    subtitle: 'Synthèses rapides à relire avant contrôle.',
+    title: 'Fiches de revision',
+    subtitle: 'Syntheses visuelles et rappels de methodes avant DS, brevet ou bac.',
+    badge: 'Revision express',
+    hint: 'A relire rapidement avant une evaluation.',
+    cta: 'Ouvrir les fiches de revision',
+    seoLabel: 'Acceder aux fiches de revision de maths gratuites',
     to: { name: 'FreeSummaries' }
   }
 ])
 
 export const FREE_RESOURCES_LEVEL_LINKS = Object.freeze([
-  { key: 'college', label: 'Collège', query: 'college' },
+  { key: 'college', label: 'College', query: 'college' },
   { key: 'seconde', label: 'Seconde', query: 'seconde' },
-  { key: 'premiere', label: 'Première', query: 'premiere' },
+  { key: 'premiere', label: 'Premiere', query: 'premiere' },
   { key: 'terminale', label: 'Terminale', query: 'terminale' },
-  { key: 'prepa', label: 'Prépa', query: 'mpsi' }
+  { key: 'prepa', label: 'Prepa', query: 'mpsi' }
 ])
 
 export const FREE_RESOURCES_QUICK_START_ITEMS = Object.freeze([
   'Choisis ton niveau.',
-  'Ouvre un chapitre ciblé.',
-  'Fais 3 exercices corrigés.',
-  'Termine avec une fiche de révision.'
+  'Ouvre un chapitre cible.',
+  'Fais 3 exercices corriges.',
+  'Termine avec une fiche de revision.'
 ])
 
 export const FREE_RESOURCES_SEO_SECTION_TITLES = Object.freeze([

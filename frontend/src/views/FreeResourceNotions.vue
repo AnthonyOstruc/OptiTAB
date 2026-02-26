@@ -175,20 +175,20 @@ const filteredPopularLinks = computed(() =>
 const pageIntro = computed(() => {
   if (isExerciseMode.value) {
     return {
-      title: 'Exercices corrigés gratuits de maths',
+      title: 'Exercices corrigés de maths',
       subtitle: 'Collège • Seconde • Première • Terminale • Prépa (MPSI) • Grandes Écoles — corrections et méthode pas à pas.'
     }
   }
 
   if (isSummaryMode.value) {
     return {
-      title: 'Fiches de synthèse gratuites (maths)',
+      title: 'Fiches de synthèse maths',
       subtitle: 'Collège • Seconde • Première • Terminale • Prépa (MPSI) • Grandes Écoles — fiches de synthèse : formules et méthodes.'
     }
   }
 
   return {
-    title: 'Cours de maths en ligne gratuits',
+    title: 'Cours de maths en ligne',
     subtitle: 'Collège • Seconde • Première • Terminale • Prépa (MPSI) • Grandes Écoles — cours clairs, méthodes et exemples.'
   }
 })
@@ -344,10 +344,75 @@ function groupsScore(text, groups) {
   return score
 }
 
+function toResourceList(payload) {
+  if (Array.isArray(payload?.results)) return payload.results
+  if (Array.isArray(payload)) return payload
+  return []
+}
+
+function resourceDedupKey(resource, index = 0) {
+  const slug = String(resource?.slug || '').trim()
+  if (slug) return `slug:${slug}`
+  const id = resource?.id
+  if (id != null && String(id).trim() !== '') return `id:${id}`
+  const title = String(resource?.titre || resource?.notion_nom || '').trim()
+  return `fallback:${title}:${index}`
+}
+
+function mergeUniqueResources(lists = []) {
+  const merged = []
+  const seen = new Set()
+  ;(lists || []).forEach((list) => {
+    ;(list || []).forEach((resource, index) => {
+      const key = resourceDedupKey(resource, index)
+      if (!key || seen.has(key)) return
+      seen.add(key)
+      merged.push(resource)
+    })
+  })
+  return merged
+}
+
+const fetchSummaryAndTableResources = async () => {
+  const baseParams = { page: 1, page_size: 500 }
+  const [summaryResult, tableResult] = await Promise.allSettled([
+    getFreeResources({ ...baseParams, type: 'summary' }),
+    getFreeResources({ ...baseParams, type: 'table' })
+  ])
+
+  if (summaryResult.status !== 'fulfilled') {
+    throw summaryResult.reason
+  }
+
+  const summaryData = summaryResult.value
+  const tableData = tableResult.status === 'fulfilled' ? tableResult.value : { results: [] }
+  const summaryList = toResourceList(summaryData)
+  const tableList = toResourceList(tableData)
+  const list = mergeUniqueResources([summaryList, tableList])
+
+  return {
+    list,
+    hiddenChaptersCount: Number(summaryData?.hidden_chapters_count || tableData?.hidden_chapters_count || 0)
+  }
+}
+
 const fetchResources = async (page = 1, retried = false) => {
   loading.value = true
   error.value = null
   try {
+    if (isSummaryMode.value) {
+      const { list, hiddenChaptersCount: hiddenCount } = await fetchSummaryAndTableResources()
+      allResources.value = list || []
+      resources.value = list || []
+      totalCount.value = list.length
+      totalExercisesCount.value = 0
+      totalChaptersCount.value = 0
+      hiddenChaptersCount.value = hiddenCount
+      isServerPaginated.value = false
+      currentPage.value = page
+      return
+    }
+
     const filtersActive = selectedLevels.value.length > 0 || Boolean(searchQuery.value.trim())
     const useServerPagination = !filtersActive
     const effectivePage = useServerPagination ? page : 1
@@ -458,6 +523,15 @@ const fetchResources = async (page = 1, retried = false) => {
 
 const fetchLevelOptions = async () => {
   try {
+    if (isSummaryMode.value) {
+      const sourceList = allResources.value.length > 0
+        ? allResources.value
+        : (await fetchSummaryAndTableResources()).list
+      levelOptions.value = extractLevels(sourceList)
+      levelOptionsLoaded.value = true
+      return
+    }
+
     const params = {
       type: props.resourceType,
       page: 1,
@@ -514,11 +588,13 @@ watch(
 
 watch(() => selectedLevels.value.length, () => {
   currentPage.value = 1
+  if (isSummaryMode.value) return
   fetchResources(1)
 })
 
 watch(() => searchQuery.value, () => {
   currentPage.value = 1
+  if (isSummaryMode.value) return
   if (searchTimeoutId) {
     clearTimeout(searchTimeoutId)
   }
@@ -841,6 +917,10 @@ const getCourseRoute = (resource) => {
 
 const getSummaryRoute = (resource) => {
   if (!resource) return null
+  const directSlug = String(resource?.slug || '').trim()
+  if (directSlug) {
+    return { name: 'FreeSummaryDetail', params: { slug: directSlug } }
+  }
   const params = buildSummaryRouteParams({
     paysNom: resource?.pays_nom,
     matiereNom: resource?.matiere_nom,
@@ -960,7 +1040,7 @@ const onLockedExercise = (chapter) => {
 
 <template>
   <MainLayout>
-    <main class="free-course-page">
+    <main class="free-course-page" :class="{ 'summary-mode': isSummaryMode }">
       <div class="header-row">
         <BackButton text="Retour à l'accueil" :custom-action="() => router.push({ name: 'Home' })" position="top-left" />
         <div v-if="!loading && totalResourceCount.count > 0" class="resource-count-badge">
@@ -1955,11 +2035,36 @@ const onLockedExercise = (chapter) => {
     grid-template-columns: 1fr;
     justify-content: stretch;
   }
+
+  .free-course-page.summary-mode :deep(.notion-title) {
+    font-size: 0.93rem;
+    line-height: 1.35;
+  }
 }
 
 @media (max-width: 640px) {
   .free-course-page {
     padding: 24px 12px 52px;
+  }
+
+  .popular-links-panel {
+    padding: 14px 14px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+  }
+
+  .popular-links-panel__title {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .popular-links-panel__list {
+    gap: 6px;
+  }
+
+  .popular-links-panel__anchor {
+    font-size: 14px;
+    line-height: 1.35;
   }
 
   .header-row {
@@ -2071,6 +2176,14 @@ const onLockedExercise = (chapter) => {
     padding: 22px 10px 44px;
   }
 
+  .popular-links-panel__title {
+    font-size: 15px;
+  }
+
+  .popular-links-panel__anchor {
+    font-size: 13px;
+  }
+
   .page-title {
     font-size: 16px;
   }
@@ -2093,6 +2206,10 @@ const onLockedExercise = (chapter) => {
     min-height: 32px;
     font-size: 10.5px;
   }
+
+  .free-course-page.summary-mode :deep(.notion-title) {
+    font-size: 0.9rem;
+  }
 }
 
 @keyframes spin {
@@ -2104,3 +2221,4 @@ const onLockedExercise = (chapter) => {
   }
 }
 </style>
+

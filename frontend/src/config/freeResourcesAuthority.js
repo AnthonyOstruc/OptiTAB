@@ -1,11 +1,4 @@
-const STABLE_PATHS = Object.freeze({
-  hub: '/ressources-gratuites',
-  courses: '/ressources-gratuites/cours',
-  exercises: '/ressources-gratuites/exercices',
-  summaries: '/ressources-gratuites/syntheses'
-})
-
-const SITE_BASE_URL = 'https://www.optitab.net'
+﻿const SITE_BASE_URL = 'https://www.optitab.net'
 
 function normalizePathname(pathname) {
   const raw = String(pathname || '').trim()
@@ -61,16 +54,16 @@ export const FREE_RESOURCES_AUTHORITY_CONTENT = Object.freeze({
       "Cette page hub sert aussi de point d'entrée éditorial: elle vous oriente vers les chapitres les plus demandés, les listes par niveau et les contenus les plus utiles pour réviser efficacement. Vous pouvez alterner entre cours, exercices corrigés et fiches de révision selon votre besoin du moment: comprendre une notion, corriger une erreur récurrente, ou réactiver rapidement les méthodes avant une évaluation. Le maillage interne ci-dessous vous guide vers les URL canoniques des ressources les plus consultées. En pratique, cela permet de bâtir une routine hebdomadaire stable, adaptée à votre niveau, avec des objectifs simples et mesurables."
     ],
     popularLinks: [
-      { label: 'Liste des cours gratuits', href: STABLE_PATHS.courses },
-      { label: 'Liste des exercices corrigés', href: STABLE_PATHS.exercises },
-      { label: 'Liste des fiches de révision', href: STABLE_PATHS.summaries },
-      { label: 'Ressources gratuites par niveau', href: STABLE_PATHS.hub },
-      { label: 'Cours de maths collège et Brevet', href: STABLE_PATHS.courses },
-      { label: 'Cours de maths lycée et Bac', href: STABLE_PATHS.courses },
-      { label: 'Exercices corrigés collège', href: STABLE_PATHS.exercises },
-      { label: 'Exercices corrigés lycée', href: STABLE_PATHS.exercises },
-      { label: 'Cours Terminale: factorisation', href: '/ressources-gratuites/cours/france/lycee/maths/terminal-bac-factorisation-mise-en-forme-factorisee-methodes-et-techniques-115' },
-      { label: 'Fiche de révision MPSI: sommes et produits', href: '/ressources-gratuites/syntheses/france/prepa/maths/mpsi-mp2i-resume-sommes-et-produits-58' }
+      { label: 'Cours Bases: factorisation', href: '/ressources-gratuites/cours/france/lycee/maths/maths-bases-methodes-factorisation-mise-en-forme-factorisee-methodes-et-techniques-175' },
+      { label: 'Cours particuliers de maths', href: '/cours-particuliers' },
+      { label: 'Cours Terminale: matrices', href: '/ressources-gratuites/cours/france/lycee/maths/terminal-bac-matrices-112' },
+      { label: 'Cours MPSI: nombres complexes', href: '/ressources-gratuites/cours/france/prepa/maths/mpsi-mp2i-nombres-complexes-123' },
+      { label: 'Exercices corriges Terminale: derivation', href: '/ressources-gratuites/exercices/france/lycee/maths/terminal-bac-derivation-87' },
+      { label: 'Soutien scolaire: cours en ligne', href: '/cours-particuliers' },
+      { label: 'Exercices corriges 1ere: suites numeriques', href: '/ressources-gratuites/exercices/france/lycee/maths/premiere-1er-suites-numeriques-153' },
+      { label: 'Exercices corriges Seconde: notion de fonction', href: '/ressources-gratuites/exercices/france/lycee/maths/seconde-notion-de-fonction-178' },
+      { label: 'Fiche Terminale: tableau des derivees', href: '/ressources-gratuites/syntheses/france/lycee/maths/terminal-bac-resume-derivation-32' },
+      { label: 'Fiche Terminale: tableau des integrales', href: '/ressources-gratuites/syntheses/france/lycee/maths/terminal-bac-resume-primitives-33' }
     ],
     faq: withSharedFaq([
       {
@@ -90,16 +83,16 @@ export const FREE_RESOURCES_AUTHORITY_CONTENT = Object.freeze({
       "Pour un travail complet, utilisez cette page en complément des autres formats: les cours installent la compréhension, les exercices corrigés testent la maîtrise opérationnelle, et les fiches de révision servent de support de rappel rapide. Le bloc de liens populaires ci-dessous vous envoie vers des URL canoniques pertinentes pour gagner du temps de navigation et accéder directement aux chapitres les plus consultés par niveau. Vous pouvez ainsi construire une progression continue sans multiplier les sources ni perdre du temps entre plusieurs outils."
     ],
     popularLinks: [
-      { label: 'Tous les cours gratuits', href: STABLE_PATHS.courses },
-      { label: 'Cours de maths collège', href: STABLE_PATHS.courses },
-      { label: 'Cours de maths lycée', href: STABLE_PATHS.courses },
-      { label: 'Réviser avec des exercices corrigés', href: STABLE_PATHS.exercises },
-      { label: 'Réviser avec des fiches de révision', href: STABLE_PATHS.summaries },
-      { label: 'Hub ressources gratuites', href: STABLE_PATHS.hub },
-      { label: 'Parcours Bac/Brevet en cours', href: STABLE_PATHS.courses },
-      { label: 'Cours de maths Terminale: factorisation', href: '/ressources-gratuites/cours/france/lycee/maths/terminal-bac-factorisation-mise-en-forme-factorisee-methodes-et-techniques-115' },
-      { label: 'Cours de maths Terminale: matrices', href: '/ressources-gratuites/cours/france/lycee/maths/terminal-bac-matrices-112' },
-      { label: 'Cours de maths MPSI: nombres complexes', href: '/ressources-gratuites/cours/france/prepa/maths/mpsi-mp2i-nombres-complexes-123' }
+      { label: 'Exercices corriges Terminale: derivation', href: '/ressources-gratuites/exercices/france/lycee/maths/terminal-bac-derivation-87' },
+      { label: 'Soutien scolaire: cours en ligne', href: '/cours-particuliers' },
+      { label: 'Exercices corriges Bases et methodes: puissances', href: '/ressources-gratuites/exercices/france/lycee/maths/maths-bases-methodes-puissances-229' },
+      { label: 'Exercices corriges Terminale: equations differentielles', href: '/ressources-gratuites/exercices/france/lycee/maths/terminal-bac-equations-differentielles-90' },
+      { label: 'Exercices corriges 1ere: suites numeriques', href: '/ressources-gratuites/exercices/france/lycee/maths/premiere-1er-suites-numeriques-153' },
+      { label: 'Exercices corriges Seconde: notion de fonction', href: '/ressources-gratuites/exercices/france/lycee/maths/seconde-notion-de-fonction-178' },
+      { label: 'Exercices corriges Terminale: arithmetique', href: '/ressources-gratuites/exercices/france/lycee/maths/terminal-bac-arithmetique-103' },
+      { label: 'Exercices corriges Terminale: graphes et matrices', href: '/ressources-gratuites/exercices/france/lycee/maths/terminal-bac-graphes-et-matrices-104' },
+      { label: 'Exercices corriges Bases et methodes: pythagore et reciproque', href: '/ressources-gratuites/exercices/france/lycee/maths/maths-bases-methodes-theoreme-de-pythagore-et-sa-reciproque-226' },
+      { label: 'Exercices corriges Terminale: limites des fonctions', href: '/ressources-gratuites/exercices/france/lycee/maths/terminal-bac-limites-des-fonctions-82' }
     ],
     faq: withSharedFaq([
       {
@@ -119,16 +112,16 @@ export const FREE_RESOURCES_AUTHORITY_CONTENT = Object.freeze({
       "Pour maximiser l'impact, combinez systématiquement les formats: les cours clarifient les notions avant l'entraînement, les exercices corrigés installent la maîtrise opérationnelle, et les fiches de révision servent de support de rappel avant contrôle. Les liens populaires ci-dessous pointent vers des URL canoniques utiles pour accéder vite aux chapitres les plus demandés et construire un plan de travail cohérent selon votre niveau et votre objectif Bac/Brevet. Cette logique réduit les révisions dispersées et aide à garder une préparation régulière jusqu'à l'examen."
     ],
     popularLinks: [
-      { label: 'Tous les exercices corrigés', href: STABLE_PATHS.exercises },
-      { label: 'Exercices corrigés collège', href: STABLE_PATHS.exercises },
-      { label: 'Exercices corrigés lycée', href: STABLE_PATHS.exercises },
-      { label: 'Cours associés aux exercices', href: STABLE_PATHS.courses },
-      { label: 'Fiches de révision pour consolider', href: STABLE_PATHS.summaries },
-      { label: 'Hub ressources gratuites', href: STABLE_PATHS.hub },
-      { label: 'Exercices corrigés Bac/Brevet', href: STABLE_PATHS.exercises },
-      { label: 'Exercices corrigés Première: boucles', href: '/ressources-gratuites/exercices/france/lycee/maths/premiere-1er-boucles-iterations-163' },
-      { label: 'Exercices corrigés Seconde: fonctions', href: '/ressources-gratuites/exercices/france/lycee/maths/seconde-notion-de-fonction-178' },
-      { label: 'Exercices corrigés Terminale: arithmétique', href: '/ressources-gratuites/exercices/france/lycee/maths/terminal-bac-arithmetique-103' }
+      { label: 'Fiche Bases: tableau des derivees', href: '/ressources-gratuites/syntheses/synthese-gratuite-92-france-maths-bases-methodes-mathematiques-resume-derivation-formules-usuelles-et-regles-de-calcul' },
+      { label: 'Fiche Bases: tableau des integrales', href: '/ressources-gratuites/syntheses/synthese-gratuite-93-france-maths-bases-methodes-mathematiques-resume-integration-primitives-integrales-et-methodes' },
+      { label: 'Fiche Terminale: resume limites des fonctions', href: '/ressources-gratuites/syntheses/france/lycee/maths/terminal-bac-resume-limites-des-fonctions-73' },
+      { label: 'Fiche Terminale: resume nombres complexes', href: '/ressources-gratuites/syntheses/france/lycee/maths/terminal-bac-resume-nombres-complexes-47' },
+      { label: 'Fiche 1ere: resume fonction exponentielle', href: '/ressources-gratuites/syntheses/synthese-gratuite-79-france-1ere-mathematiques-resume-fonction-exponentielle' },
+      { label: 'Fiche Bases: resume arithmetique', href: '/ressources-gratuites/syntheses/synthese-gratuite-121-france-maths-bases-methodes-mathematiques-resume-arithmetique' },
+      { label: 'Fiche Bases: resume combinatoire et denombrement', href: '/ressources-gratuites/syntheses/synthese-gratuite-98-france-maths-bases-methodes-mathematiques-resume-combinatoire-et-denombrement' },
+      { label: 'Fiche Bases: formules de trigonometrie', href: '/ressources-gratuites/syntheses/synthese-gratuite-94-france-maths-bases-methodes-mathematiques-resume-trigonometrie-formules-et-relations-usuelles' },
+      { label: 'Fiche Bases: aires et volumes', href: '/ressources-gratuites/syntheses/synthese-gratuite-130-france-maths-bases-methodes-mathematiques-aires-volumes-fiches-formules' },
+      { label: 'Fiche MPSI: sommes et produits', href: '/ressources-gratuites/syntheses/synthese-gratuite-58-france-mpsi-mp2i-mathematiques-resume-sommes-et-produits' }
     ],
     faq: withSharedFaq([
       {
@@ -148,16 +141,16 @@ export const FREE_RESOURCES_AUTHORITY_CONTENT = Object.freeze({
       "Pour obtenir un vrai gain de performance, combinez systématiquement les trois formats complémentaires: cours pour comprendre le fond, exercices corrigés pour vérifier l'exécution, fiches de révision pour ancrer les automatismes. Le bloc de liens populaires ci-dessous facilite l'accès aux URL canoniques les plus utiles selon votre objectif. Vous gagnez du temps, vous évitez les parcours dispersés et vous construisez une révision cohérente orientée Bac/Brevet. Ce fonctionnement rend les révisions plus prévisibles et améliore la confiance avant les contrôles."
     ],
     popularLinks: [
-      { label: 'Toutes les fiches de révision', href: STABLE_PATHS.summaries },
-      { label: 'Fiches de révision collège', href: STABLE_PATHS.summaries },
-      { label: 'Fiches de révision lycée', href: STABLE_PATHS.summaries },
-      { label: 'Cours pour compléter les fiches', href: STABLE_PATHS.courses },
-      { label: "Exercices corrigés pour s'entraîner", href: STABLE_PATHS.exercises },
-      { label: 'Hub ressources gratuites', href: STABLE_PATHS.hub },
-      { label: 'Fiches de révision Bac/Brevet', href: STABLE_PATHS.summaries },
-      { label: 'Fiche de révision MPSI: sommes et produits', href: '/ressources-gratuites/syntheses/france/prepa/maths/mpsi-mp2i-resume-sommes-et-produits-58' },
-      { label: 'Cours Terminale: factorisation', href: '/ressources-gratuites/cours/france/lycee/maths/terminal-bac-factorisation-mise-en-forme-factorisee-methodes-et-techniques-115' },
-      { label: 'Cours MPSI: nombres complexes', href: '/ressources-gratuites/cours/france/prepa/maths/mpsi-mp2i-nombres-complexes-123' }
+      { label: 'Cours Bases: factorisation', href: '/ressources-gratuites/cours/france/lycee/maths/maths-bases-methodes-factorisation-mise-en-forme-factorisee-methodes-et-techniques-175' },
+      { label: 'Cours Terminale: matrices', href: '/ressources-gratuites/cours/france/lycee/maths/terminal-bac-matrices-112' },
+      { label: 'Cours Terminale: la derivation', href: '/ressources-gratuites/cours/france/lycee/maths/terminal-bac-la-derivation-88' },
+      { label: 'Soutien scolaire: cours en ligne', href: '/cours-particuliers' },
+      { label: 'Cours Terminale: logarithme népérien', href: '/ressources-gratuites/cours/france/lycee/maths/terminal-bac-la-fonction-logarithme-neperien-90' },
+      { label: 'Cours MPSI: equations differentielles', href: '/ressources-gratuites/cours/france/prepa/maths/mpsi-mp2i-equations-differentielles-lineaires-129' },
+      { label: 'Cours MPSI: nombres complexes', href: '/ressources-gratuites/cours/france/prepa/maths/mpsi-mp2i-nombres-complexes-123' },
+      { label: 'Cours 1ere: suites numeriques', href: '/ressources-gratuites/cours/france/lycee/maths/premiere-1er-suites-numeriques-153' },
+      { label: 'Cours Seconde: problemes de geometrie', href: '/ressources-gratuites/cours/france/lycee/maths/seconde-resoudre-des-problemes-de-geometrie-223' },
+      { label: 'Cours MPSI: sommes et produits', href: '/ressources-gratuites/cours/france/prepa/maths/mpsi-mp2i-sommes-et-produits-121' }
     ],
     faq: withSharedFaq([
       {
@@ -178,3 +171,5 @@ export const FREE_RESOURCES_FAQ_BY_ROUTE = Object.freeze({
   FreeExercises: FREE_RESOURCES_AUTHORITY_CONTENT.exercise.faq,
   FreeSummaries: FREE_RESOURCES_AUTHORITY_CONTENT.summary.faq
 })
+
+

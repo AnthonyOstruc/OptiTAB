@@ -143,6 +143,7 @@
                         Demander de l'aide
                       </a>
                     </div>
+                    <div class="help-empty-box" aria-hidden="true"></div>
                   </div>
                 </template>
               </div>
@@ -2157,6 +2158,13 @@ function initFirstVisitFlag() {
 
 .help-cta {
   margin-top: 1rem;
+}
+
+.help-empty-box {
+  margin-top: 0.85rem;
+  height: 120px;
+  background: #fff;
+ 
 }
 
 .help-card {

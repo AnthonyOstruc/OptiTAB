@@ -114,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onActivated, onBeforeUnmount, nextTick, watch } from 'vue'
+import { ref, computed, onMounted, onActivated, onDeactivated, onBeforeUnmount, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
 import BackButton from '@/components/common/BackButton.vue'
@@ -174,6 +174,7 @@ let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
 let gapObserver = null
+let activationRefreshTimer = null
 
 // Utiliser le composable de zoom
 const {
@@ -282,6 +283,10 @@ function fixBottomGap() {
   const outer = outerRef.value
   const inner = innerRef.value
   if (!outer || !inner) return
+  if (!outer.getClientRects().length || !inner.getClientRects().length) {
+    outer.style.height = 'auto'
+    return
+  }
 
   const computedStyle = window.getComputedStyle(outer)
   if (computedStyle.transform === 'none') {
@@ -334,6 +339,12 @@ function teardownGapObserver() {
     gapObserver.disconnect()
     gapObserver = null
   }
+}
+
+function resetZoomContainerHeight() {
+  const outer = outerRef.value
+  if (typeof Element === 'undefined' || !(outer instanceof Element)) return
+  outer.style.height = 'auto'
 }
 
 function prepareTablesForScroll() {
@@ -435,17 +446,30 @@ onMounted(async () => {
 onActivated(() => {
   detectMobileAndZoomSupport()
   updateViewportWidth()
+  if (activationRefreshTimer) {
+    clearTimeout(activationRefreshTimer)
+    activationRefreshTimer = null
+  }
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
   nextTick(async () => {
     prepareTablesForScroll()
     setupGapObserver()
     await typesetAndFix()
     // S'assurer que le rendu est bien appliqué avec un second appel après un délai
-    setTimeout(() => {
+    activationRefreshTimer = setTimeout(() => {
       prepareTablesForScroll()
       typesetAndFix()
     }, 100)
   })
+})
+
+onDeactivated(() => {
+  if (activationRefreshTimer) {
+    clearTimeout(activationRefreshTimer)
+    activationRefreshTimer = null
+  }
+  teardownGapObserver()
+  resetZoomContainerHeight()
 })
 
 // Extraire la table des matières depuis le contenu HTML
@@ -600,6 +624,11 @@ watch(viewportWidth, () => {
 
 // Nettoyer l'observer au démontage
 onBeforeUnmount(() => {
+  if (activationRefreshTimer) {
+    clearTimeout(activationRefreshTimer)
+    activationRefreshTimer = null
+  }
+  resetZoomContainerHeight()
   if (tocObserver) {
     try { tocObserver.disconnect() } catch (e) {}
   }

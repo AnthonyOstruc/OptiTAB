@@ -509,6 +509,7 @@ const focusKey = computed(() => `optitab_last_exercice_${notionId.value}`)
 const firstVisitKey = computed(() => `optitab_first_visit_exercices_${notionId.value}`)
 
 let isRestoringState = false
+let activationRefreshTimer = null
 
 function readSavedViewState() {
   try {
@@ -625,12 +626,17 @@ onMounted(async () => {
 onActivated(() => {
   detectMobileAndZoomSupport()
   updateViewportWidth()
-  
-  // Re-typeset MathJax et recalculer la hauteur
-  typesetAndFix()
-  
-  // Note: KeepAlive préserve automatiquement le DOM et la position de scroll
-  // Pas besoin de restaurer manuellement
+  if (activationRefreshTimer) {
+    clearTimeout(activationRefreshTimer)
+    activationRefreshTimer = null
+  }
+  nextTick(async () => {
+    setupGapObserver()
+    await typesetAndFix()
+    activationRefreshTimer = setTimeout(() => {
+      typesetAndFix()
+    }, 100)
+  })
 })
 
 async function loadData() {
@@ -790,6 +796,10 @@ function fixBottomGap() {
   const outer = exOuterRef.value
   const inner = exContentRef.value
   if (!outer || !inner) return
+  if (!outer.getClientRects().length || !inner.getClientRects().length) {
+    outer.style.height = 'auto'
+    return
+  }
 
   const cs = window.getComputedStyle(outer)
   if (cs.transform === 'none') {
@@ -848,6 +858,12 @@ function teardownGapObserver() {
     gapObserver.disconnect()
     gapObserver = null
   }
+}
+
+function resetZoomContainerHeight() {
+  const outer = exOuterRef.value
+  if (typeof Element === 'undefined' || !(outer instanceof Element)) return
+  outer.style.height = 'auto'
 }
 
 function handlePageChange(page) {
@@ -995,12 +1011,23 @@ watch(
 )
 
 onBeforeUnmount(() => {
+  if (activationRefreshTimer) {
+    clearTimeout(activationRefreshTimer)
+    activationRefreshTimer = null
+  }
+  resetZoomContainerHeight()
   saveViewState()
   cleanupViewportListener()
   teardownGapObserver()
 })
 
 onDeactivated(() => {
+  if (activationRefreshTimer) {
+    clearTimeout(activationRefreshTimer)
+    activationRefreshTimer = null
+  }
+  resetZoomContainerHeight()
+  teardownGapObserver()
   // Sauvegarder la position au moment de quitter via onglets
   saveViewState()
 })

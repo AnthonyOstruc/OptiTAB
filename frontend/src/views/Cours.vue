@@ -94,7 +94,7 @@
           </transition>
         </nav>
 
-        <div class="cours-content-outer" :style="zoomStyle">
+        <div class="cours-content-outer" :style="zoomStyle" ref="coursOuterRef">
           <div class="cours-content" ref="coursContentRef" v-html="renderedContent"></div>
         </div>
         <div v-if="selectedCours.video_url" class="cours-video">
@@ -170,6 +170,7 @@ const subjectsStore = useSubjectsStore()
 const cours = ref([])
 const selectedCours = ref(null)
 const loading = ref(true)
+const coursOuterRef = ref(null)
 const coursContentRef = ref(null)
 const tableOfContents = ref([])
 const isTocExpanded = ref(false)
@@ -177,6 +178,7 @@ const showScrollTopButton = ref(false)
 let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
+let gapObserver = null
 const showLoadingSpinner = computed(() => loading.value)
 
 // Utiliser le composable de zoom
@@ -351,20 +353,26 @@ onMounted(async () => {
     try { searchQuery.value = String(route.query.q) } catch {}
   }
   await loadCoursData()
+  await nextTick()
+  setupGapObserver()
+  fixBottomGap()
 })
 
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
 onActivated(() => {
   detectMobileAndZoomSupport()
+  updateViewportWidth()
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
-  nextTick(() => {
+  nextTick(async () => {
     scheduleFormulaWrapRetry()
     renderMath()
+    setupGapObserver()
+    await typesetAndFix()
     // S'assurer que le rendu est bien appliqué avec un second appel après un délai
     setTimeout(() => {
       scheduleFormulaWrapRetry()
       renderMath()
-      measureContentHeightForCours()
+      typesetAndFix()
     }, 100)
   })
   
@@ -405,17 +413,18 @@ async function loadCoursData() {
     }
 
     // Rendre le contenu MathJax après le chargement
-    nextTick(() => {
+    nextTick(async () => {
       scheduleFormulaWrapRetry()
       renderMath()
-      setTimeout(() => {
+      setTimeout(async () => {
         scheduleFormulaWrapRetry()
         extractTableOfContents()
         buildSearchIndex()
         updateHeadingMatches()
         setupTocObserver()
         setupScrollListener()
-        measureContentHeightForCours()
+        setupGapObserver()
+        await typesetAndFix()
       }, 150)
     })
   } catch (error) {
@@ -425,9 +434,7 @@ async function loadCoursData() {
     loading.value = false
     await nextTick()
     scrollToTop({ behavior: 'auto', useWindow: true })
-    if (window.MathJax && window.MathJax.typesetPromise) {
-      window.MathJax.typesetPromise()
-    }
+    await typesetAndFix()
   }
 }
 
@@ -456,7 +463,67 @@ const zoomStyle = createZoomStyle({
 })
 
 function measureContentHeightForCours() {
-  measureContentHeight(coursContentRef)
+  const el = coursContentRef.value
+  if (typeof Element === 'undefined' || !(el instanceof Element)) return
+  measureContentHeight(el)
+}
+
+function fixBottomGap() {
+  const outer = coursOuterRef.value
+  const inner = coursContentRef.value
+  if (!outer || !inner) return
+
+  const cs = window.getComputedStyle(outer)
+  if (cs.transform === 'none') {
+    outer.style.height = 'auto'
+    return
+  }
+
+  const zoomFactor = parseFloat(cs.getPropertyValue('--course-zoom')) || 1
+  const contentHeight = inner.scrollHeight || Math.ceil(inner.getBoundingClientRect().height) || 0
+  outer.style.height = Math.ceil(contentHeight * zoomFactor) + 'px'
+}
+
+async function typesetAndFix() {
+  await nextTick()
+  const outer = coursOuterRef.value
+  const inner = coursContentRef.value
+  if (
+    typeof Element === 'undefined' ||
+    !(outer instanceof Element) ||
+    !(inner instanceof Element)
+  ) return
+  try {
+    if (window.MathJax?.typesetPromise) {
+      if (window.MathJax.typesetClear) window.MathJax.typesetClear()
+      await window.MathJax.typesetPromise()
+    }
+  } catch (error) {
+    console.warn('[MathJax] Erreur:', error)
+  }
+  measureContentHeightForCours()
+  fixBottomGap()
+}
+
+function setupGapObserver() {
+  if (typeof ResizeObserver === 'undefined') return
+  const inner = coursContentRef.value
+  if (typeof Element === 'undefined' || !(inner instanceof Element)) return
+  if (gapObserver) {
+    gapObserver.disconnect()
+  }
+  gapObserver = new ResizeObserver(() => {
+    measureContentHeightForCours()
+    fixBottomGap()
+  })
+  gapObserver.observe(inner)
+}
+
+function teardownGapObserver() {
+  if (gapObserver) {
+    gapObserver.disconnect()
+    gapObserver = null
+  }
 }
 
 
@@ -467,6 +534,7 @@ function scheduleFormulaWrapRetry(attempt = 0) {
   if (hasScrollableContent) {
     prepareScrollableContent()
     measureContentHeightForCours()
+    fixBottomGap()
     return
   }
   if (attempt < MAX_ATTEMPTS) {
@@ -544,7 +612,8 @@ function prepareScrollableContent() {
     }
   })
   // Mise à jour de la hauteur mesurée après ajustements
-  measureContentHeight(coursContentRef)
+  measureContentHeightForCours()
+  fixBottomGap()
 }
 
 // Extraire la table des matières depuis le contenu HTML
@@ -588,6 +657,7 @@ function setupTocObserver() {
       buildSearchIndex()
       updateHeadingMatches()
       measureContentHeightForCours()
+      fixBottomGap()
     }, 200)
   })
   tocObserver.observe(coursContentRef.value, {
@@ -677,11 +747,11 @@ function scrollToTop({ behavior = 'smooth', targetEl, useWindow = false } = {}) 
 // Relancer renderMath() et extraire le sommaire quand le contenu change
 watch(selectedCours, () => {
   if (selectedCours.value) {
-    nextTick(() => {
+    nextTick(async () => {
       scheduleFormulaWrapRetry()
       renderMath()
       // Attendre que le DOM soit vraiment mis à jour
-      setTimeout(() => {
+      setTimeout(async () => {
         scheduleFormulaWrapRetry()
         extractTableOfContents()
         buildSearchIndex()
@@ -690,26 +760,25 @@ watch(selectedCours, () => {
         // Réinitialiser l'écouteur de scroll pour le nouveau cours
         if (scrollCleanup) scrollCleanup()
         setupScrollListener()
-        measureContentHeightForCours()
+        setupGapObserver()
+        await typesetAndFix()
       }, 100)
     })
   }
 }, { deep: true })
 
 watch(renderedContent, () => {
-  nextTick(() => {
+  nextTick(async () => {
     scheduleFormulaWrapRetry()
-    measureContentHeightForCours()
+    setupGapObserver()
+    await typesetAndFix()
   })
 })
 
 watch(viewportWidth, () => {
-  nextTick(() => {
+  nextTick(async () => {
     scheduleFormulaWrapRetry()
-    if (typeof window !== 'undefined' && window.MathJax && window.MathJax.typesetPromise) {
-      window.MathJax.typesetPromise().catch(() => {})
-    }
-    measureContentHeightForCours()
+    await typesetAndFix()
   })
 }, { immediate: true })
 
@@ -724,6 +793,7 @@ onBeforeUnmount(() => {
     try { scrollCleanup() } catch (e) {}
   }
   cleanupViewportListener()
+  teardownGapObserver()
   // Sauvegarder l'état courant (cours sélectionné + scroll)
   saveCoursViewState()
 })
@@ -813,6 +883,10 @@ watch(() => route.query.q, (val) => {
   width: 100%;
   padding: 0 2rem 1.5rem 2rem;
   text-align: center;
+}
+
+.cours-container {
+  padding-bottom: calc(5em + env(safe-area-inset-bottom, 0px));
 }
 
 @media (max-width: 1200px) {

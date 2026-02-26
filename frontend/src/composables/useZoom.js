@@ -184,11 +184,13 @@ export function useZoom(options = {}) {
     viewportWidth.value = window.innerWidth
   }
 
-  function measureContentHeight(elementRef) {
-    const element = elementRef?.value || elementRef
-    if (!element) {
-      stopContentObserver()
-      contentHeight.value = 0
+  function measureContentHeight(target) {
+    const element = target?.value ?? target
+    if (typeof Element === 'undefined' || !(element instanceof Element)) {
+      if (element == null) {
+        stopContentObserver()
+        contentHeight.value = 0
+      }
       return
     }
     contentHeight.value = readElementHeight(element)

@@ -40,7 +40,8 @@
             </div>
           </div>
           
-          <div v-if="exercices.length > 0" class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
+          <template v-if="exercices.length > 0">
+            <div class="exercices-content-outer" :style="zoomStyle" ref="exOuterRef">
             <div class="exercices-content-inner" ref="exContentRef">
               <div v-if="!statementOnlyMode" class="exercices-controls">
                 <div class="controls-row">
@@ -125,6 +126,24 @@
                     :page="currentPage" 
                     @update:page="handlePageChange" 
                   />
+                  <div v-if="!statementOnlyMode" class="help-cta">
+                    <div class="help-card">
+                      <div class="help-text">
+                        <h3 class="help-title">Besoin d'aide sur ce chapitre ?</h3>
+                        <p class="help-subtitle">On peut vous accompagner avec un cours particulier adapte a vos difficultes.</p>
+                      </div>
+                      <a
+                        :href="helpWhatsappLink"
+                        data-cta-name="help-whatsapp"
+                        data-cta-location="exercise-pagination"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="help-btn"
+                      >
+                        Demander de l'aide
+                      </a>
+                    </div>
+                  </div>
                 </template>
               </div>
               <div v-if="statementOnlyMode" class="assignment-cta">
@@ -147,7 +166,13 @@
                 </div>
               </div>
             </div>
-          </div>
+            </div>
+            <div
+              v-if="!statementOnlyMode && filteredExercices.length > 0"
+              class="footer-clearance"
+              aria-hidden="true"
+            />
+          </template>
           <div v-else class="empty-coming">
             <div class="empty-card">
               <div class="empty-icon">🧮</div>
@@ -217,6 +242,14 @@ const whatsappMessage = computed(() => {
 })
 const whatsappLink = computed(() => {
   return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(whatsappMessage.value)}`
+})
+const helpWhatsappMessage = computed(() => {
+  const titre = exercices.value[0]?.titre || exercices.value[0]?.nom
+  const label = titre ? `"${titre}"` : `la notion ${notionId.value}`
+  return `Bonjour, j'ai besoin d'aide sur ${label}. Est-il possible d'organiser un cours particulier ?`
+})
+const helpWhatsappLink = computed(() => {
+  return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(helpWhatsappMessage.value)}`
 })
 
 // Filtre par type (configurable par niveau)
@@ -741,7 +774,9 @@ const zoomStyle = createZoomStyle({
 
 
 function measureContentHeightForExercices() {
-  measureContentHeight(exContentRef)
+  const el = exContentRef.value
+  if (typeof Element === 'undefined' || !(el instanceof Element)) return
+  measureContentHeight(el)
 }
 
 /**
@@ -772,6 +807,13 @@ function fixBottomGap() {
  */
 async function typesetAndFix() {
   await nextTick()
+  const outer = exOuterRef.value
+  const inner = exContentRef.value
+  if (
+    typeof Element === 'undefined' ||
+    !(outer instanceof Element) ||
+    !(inner instanceof Element)
+  ) return
   try {
     if (window.MathJax?.typesetPromise) {
       if (window.MathJax.typesetClear) window.MathJax.typesetClear()
@@ -790,7 +832,10 @@ let gapObserver = null
 function setupGapObserver() {
   if (typeof ResizeObserver === 'undefined') return
   const inner = exContentRef.value
-  if (!inner) return
+  if (typeof Element === 'undefined' || !(inner instanceof Element)) return
+  if (gapObserver) {
+    gapObserver.disconnect()
+  }
   gapObserver = new ResizeObserver(() => {
     measureContentHeightForExercices()
     fixBottomGap()
@@ -2110,6 +2155,61 @@ function initFirstVisitFlag() {
   box-shadow: 0 10px 24px rgba(37, 211, 102, 0.28);
 }
 
+.help-cta {
+  margin-top: 1rem;
+}
+
+.help-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #eff6ff, #f8fafc);
+  padding: 1rem 1.1rem;
+}
+
+.help-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.help-title {
+  margin: 0;
+  font-size: 1rem;
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+.help-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.help-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  color: #fff;
+  background: #2563eb;
+  border: 1px solid #1d4ed8;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.help-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
+}
+
 /* Responsive */
 @media (max-width: 680px) {
   .clean-navigation {
@@ -2152,11 +2252,22 @@ function initFirstVisitFlag() {
     width: 100%;
     text-align: center;
   }
+
+  .help-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .help-btn {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 @media (max-width: 360px) {
   .clean-navigation {
     margin: 1.8rem 0 1rem 0;
+    
   }
 
   .nav-grid {
@@ -2185,5 +2296,6 @@ function initFirstVisitFlag() {
     height: 0.9rem;
   }
 }
+
 
 </style> 

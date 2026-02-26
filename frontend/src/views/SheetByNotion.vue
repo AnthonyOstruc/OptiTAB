@@ -89,8 +89,8 @@
             </transition>
           </nav>
 
-          <div class="sheet-content-outer" :style="zoomStyle">
-            <div class="sheet-content" ref="sheetContentRef" v-html="rendered"></div>
+          <div class="sheet-content-outer" :style="zoomStyle" ref="outerRef">
+            <div class="sheet-content" ref="innerRef" v-html="rendered"></div>
           </div>
 
           <!-- Bouton retour en haut -->
@@ -164,13 +164,16 @@ const emptyText = computed(() => (
 const notionId = computed(() => Number(route.params.notionId))
 const loading = ref(true)
 const sheet = ref(null)
-const sheetContentRef = ref(null)
+const outerRef = ref(null)
+const innerRef = ref(null)
+const sheetContentRef = innerRef
 const tableOfContents = ref([])
 const isTocExpanded = ref(false)
 const showScrollTopButton = ref(false)
 let tocObserver = null
 let tocDebounce = null
 let scrollCleanup = null
+let gapObserver = null
 
 // Utiliser le composable de zoom
 const {
@@ -270,7 +273,67 @@ const zoomStyle = createZoomStyle({
 })
 
 function measureContentHeightForSheets() {
-  measureContentHeight(sheetContentRef)
+  const el = innerRef.value
+  if (typeof Element === 'undefined' || !(el instanceof Element)) return
+  measureContentHeight(el)
+}
+
+function fixBottomGap() {
+  const outer = outerRef.value
+  const inner = innerRef.value
+  if (!outer || !inner) return
+
+  const computedStyle = window.getComputedStyle(outer)
+  if (computedStyle.transform === 'none') {
+    outer.style.height = 'auto'
+    return
+  }
+
+  const zoomFactor = parseFloat(computedStyle.getPropertyValue('--sheet-zoom')) || 1
+  const contentHeight = inner.scrollHeight || Math.ceil(inner.getBoundingClientRect().height) || 0
+  outer.style.height = Math.ceil(contentHeight * zoomFactor) + 'px'
+}
+
+async function typesetAndFix() {
+  await nextTick()
+  const outer = outerRef.value
+  const inner = innerRef.value
+  if (
+    typeof Element === 'undefined' ||
+    !(outer instanceof Element) ||
+    !(inner instanceof Element)
+  ) return
+  try {
+    if (window.MathJax?.typesetPromise) {
+      if (window.MathJax.typesetClear) window.MathJax.typesetClear()
+      await window.MathJax.typesetPromise()
+    }
+  } catch (error) {
+    console.warn('[MathJax] Erreur:', error)
+  }
+  measureContentHeightForSheets()
+  fixBottomGap()
+}
+
+function setupGapObserver() {
+  if (typeof ResizeObserver === 'undefined') return
+  const inner = innerRef.value
+  if (typeof Element === 'undefined' || !(inner instanceof Element)) return
+  if (gapObserver) {
+    gapObserver.disconnect()
+  }
+  gapObserver = new ResizeObserver(() => {
+    measureContentHeightForSheets()
+    fixBottomGap()
+  })
+  gapObserver.observe(inner)
+}
+
+function teardownGapObserver() {
+  if (gapObserver) {
+    gapObserver.disconnect()
+    gapObserver = null
+  }
 }
 
 function prepareTablesForScroll() {
@@ -297,6 +360,7 @@ function prepareTablesForScroll() {
 
   // Mise à jour des mesures après normalisation des tableaux
   measureContentHeightForSheets()
+  fixBottomGap()
 }
 
 function goBack() {
@@ -340,30 +404,31 @@ async function fetchSheet(nId) {
     loading.value = false
     await nextTick()
     scrollToTop({ behavior: 'auto' })
-    if (window.MathJax && window.MathJax.typesetPromise) {
-      window.MathJax.typesetPromise()
-    }
     // Extraire le sommaire après le rendu
-    setTimeout(() => {
+    setTimeout(async () => {
       prepareTablesForScroll()
       extractTableOfContents()
       buildSearchIndex()
       updateHeadingMatches()
       setupTocObserver()
       setupScrollListener()
-      measureContentHeightForSheets()
+      setupGapObserver()
+      await typesetAndFix()
     }, 150)
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   detectMobileAndZoomSupport()
   updateViewportWidth()
   setupViewportListener()
   if (route.query?.q) {
     try { searchQuery.value = String(route.query.q) } catch {}
   }
-  fetchSheet(notionId.value)
+  await fetchSheet(notionId.value)
+  await nextTick()
+  setupGapObserver()
+  fixBottomGap()
 })
 
 // Hook onActivated - appelé quand le composant est réactivé depuis le cache KeepAlive
@@ -371,26 +436,14 @@ onActivated(() => {
   detectMobileAndZoomSupport()
   updateViewportWidth()
   // Forcer le rendu MathJax à chaque réactivation pour éviter les problèmes de cache
-  nextTick(() => {
+  nextTick(async () => {
     prepareTablesForScroll()
-    if (window.MathJax && window.MathJax.typesetPromise) {
-      try {
-        // Vider le cache de MathJax pour forcer un nouveau rendu
-        if (window.MathJax.typesetClear) {
-          window.MathJax.typesetClear()
-        }
-        window.MathJax.typesetPromise()
-      } catch (error) {
-        console.warn('[MathJax] Erreur:', error)
-      }
-    }
+    setupGapObserver()
+    await typesetAndFix()
     // S'assurer que le rendu est bien appliqué avec un second appel après un délai
     setTimeout(() => {
       prepareTablesForScroll()
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise()
-      }
-      measureContentHeightForSheets()
+      typesetAndFix()
     }, 100)
   })
 })
@@ -435,6 +488,7 @@ function setupTocObserver() {
       extractTableOfContents()
       buildSearchIndex()
       measureContentHeightForSheets()
+      fixBottomGap()
     }, 200)
   })
   tocObserver.observe(sheetContentRef.value, {
@@ -530,19 +584,17 @@ watch(normalizedSheetType, () => {
   }
 })
 watch(rendered, () => {
-  nextTick(() => {
+  nextTick(async () => {
     prepareTablesForScroll()
-    measureContentHeightForSheets()
+    setupGapObserver()
+    await typesetAndFix()
   })
 })
 
 watch(viewportWidth, () => {
-  nextTick(() => {
+  nextTick(async () => {
     prepareTablesForScroll()
-    if (typeof window !== 'undefined' && window.MathJax && window.MathJax.typesetPromise) {
-      window.MathJax.typesetPromise().catch(() => {})
-    }
-    measureContentHeightForSheets()
+    await typesetAndFix()
   })
 }, { immediate: true })
 
@@ -558,6 +610,7 @@ onBeforeUnmount(() => {
     try { scrollCleanup() } catch {}
   }
   cleanupViewportListener()
+  teardownGapObserver()
 })
 
 // Garder la requête dans l'URL pour partage/retour

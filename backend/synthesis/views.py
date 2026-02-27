@@ -37,6 +37,7 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             "update",
             "partial_update",
             "destroy",
+            "add_image",
             "duplicate",
             "preview_data",
         ]:
@@ -135,10 +136,17 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
         image_file = request.FILES.get('image')
         image_type = request.data.get('image_type', 'illustration')
         position = request.data.get('position')
-        caption = request.data.get('caption')
+        caption = request.data.get('caption', request.data.get('legende'))
+        alt_text = request.data.get('alt_text', '')
+        title_text = request.data.get('title_text', '')
 
         if not image_file:
             return Response({'detail': 'Image manquante'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            position = int(position) if position not in (None, '') else None
+        except (TypeError, ValueError):
+            position = None
 
         img = SynthesisImage.objects.create(
             sheet=sheet,
@@ -146,9 +154,12 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
             image_type=image_type,
             position=position,
             caption=caption,
+            alt_text=alt_text or '',
+            title_text=title_text or '',
         )
 
-        return Response({'id': img.id, 'image': request.build_absolute_uri(img.image.url) if hasattr(img.image, 'url') else ''}, status=status.HTTP_201_CREATED)
+        serializer = SynthesisImageSerializer(img, context=self.get_serializer_context())
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     @action(detail=True, methods=['post'])
     def duplicate(self, request, pk=None):
@@ -182,6 +193,10 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
                     image_type=img.image_type,
                     position=img.position,
                     caption=img.caption,
+                    alt_text=img.alt_text,
+                    title_text=img.title_text,
+                    width=img.width,
+                    height=img.height,
                 )
                 try:
                     with img.image.open('rb') as original_file:

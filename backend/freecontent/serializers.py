@@ -4,6 +4,7 @@ from django.utils.text import slugify
 
 from .models import FreeLearningResource
 from synthesis.models import SynthesisSheet
+from synthesis.utils import build_synthesis_image_payload, resolve_synthesis_title
 from cours.utils import build_course_image_payload, resolve_course_title
 from curriculum.utils import build_exercice_image_payload, resolve_exercice_title
 
@@ -350,22 +351,18 @@ class SynthesisFreePreviewSerializer(serializers.Serializer):
 
         images_payload = []
         images_qs = getattr(sheet, 'images', None)
+        request = self.context.get('request') if hasattr(self, 'context') else None
         include_images = bool(self.context.get('include_images', True)) if hasattr(self, 'context') else True
+        synthesis_title = resolve_synthesis_title(sheet) or (sheet.titre or '')
         if include_images and images_qs is not None:
-            for img in images_qs.all():
-                image_url = ''
-                try:
-                    image_url = getattr(img.image, 'url', '') or ''
-                except Exception:
-                    image_url = ''
-                images_payload.append({
-                    'id': img.id,
-                    'image': image_url,
-                    'image_type': img.image_type,
-                    'position': img.position,
-                    'caption': img.caption,
-                    'legende': img.caption,
-                })
+            for img in images_qs.all().order_by('position', 'id'):
+                images_payload.append(
+                    build_synthesis_image_payload(
+                        img,
+                        request=request,
+                        synthesis_title=synthesis_title
+                    )
+                )
 
         return {
             'id': sheet.id,

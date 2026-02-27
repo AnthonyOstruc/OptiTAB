@@ -3,7 +3,9 @@ SYNTHESIS SHEETS - Fiches de synthèse
 Fiches de résumé par chapitre pour faciliter les révisions
 """
 from django.db import models
+from django.db.models import Max, Q
 from core.models import BaseContent
+from .utils import resolve_synthesis_image_alt, resolve_synthesis_image_title, resolve_synthesis_title
 
 
 class SynthesisSheet(BaseContent):
@@ -130,6 +132,10 @@ class SynthesisImage(models.Model):
     image_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='illustration')
     position = models.PositiveIntegerField(null=True, blank=True)
     caption = models.CharField(max_length=255, null=True, blank=True)
+    alt_text = models.CharField(max_length=255, blank=True, default='')
+    title_text = models.CharField(max_length=255, blank=True, default='')
+    width = models.PositiveIntegerField(null=True, blank=True)
+    height = models.PositiveIntegerField(null=True, blank=True)
     date_creation = models.DateTimeField(auto_now_add=True)
     date_modification = models.DateTimeField(auto_now=True)
 
@@ -140,6 +146,46 @@ class SynthesisImage(models.Model):
         indexes = [
             models.Index(fields=['sheet', 'position']),
         ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=['sheet', 'position'],
+                condition=Q(position__isnull=False),
+                name='unique_synthesisimage_position_per_sheet',
+            ),
+        ]
 
     def __str__(self):
         return f'Image {self.id} - Sheet {self.sheet_id}'
+
+    def save(self, *args, **kwargs):
+        if self.sheet_id and (self.position is None or self.position < 1):
+            max_position = (
+                type(self).objects
+                .filter(sheet_id=self.sheet_id)
+                .exclude(pk=self.pk)
+                .aggregate(max_position=Max('position'))
+                .get('max_position')
+            ) or 0
+            self.position = max_position + 1
+
+        if getattr(self, 'image', None):
+            try:
+                if not self.width:
+                    self.width = int(getattr(self.image, 'width', 0) or 0) or None
+                if not self.height:
+                    self.height = int(getattr(self.image, 'height', 0) or 0) or None
+            except Exception:
+                pass
+
+        super().save(*args, **kwargs)
+
+    @property
+    def resolved_alt_text(self):
+        return resolve_synthesis_image_alt(
+            self,
+            synthesis_title=resolve_synthesis_title(getattr(self, 'sheet', None))
+        )
+
+    @property
+    def resolved_title_text(self):
+        return resolve_synthesis_image_title(self)

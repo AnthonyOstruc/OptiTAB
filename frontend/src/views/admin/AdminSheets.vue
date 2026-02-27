@@ -91,6 +91,8 @@
             <th>Type</th>
             <th>Position</th>
             <th>Légende</th>
+            <th>Alt SEO</th>
+            <th>Title</th>
             <th>Remplacer</th>
             <th>Actions</th>
           </tr>
@@ -110,6 +112,12 @@
             </td>
             <td>
               <input v-model="img.caption" placeholder="Légende" />
+            </td>
+            <td>
+              <input v-model="img.alt_text" placeholder="Alt image" />
+            </td>
+            <td>
+              <input v-model="img.title_text" placeholder="Title image" />
             </td>
             <td>
               <input type="file" accept="image/*" @change="onSelectReplaceFile(i, $event)" />
@@ -132,6 +140,8 @@
           </select>
           <input v-model.number="newImage.position" type="number" min="0" placeholder="Position" />
           <input v-model="newImage.caption" type="text" placeholder="Légende (optionnel)" />
+          <input v-model="newImage.alt_text" type="text" placeholder="Alt SEO (optionnel)" />
+          <input v-model="newImage.title_text" type="text" placeholder="Title (optionnel)" />
           <input type="file" accept="image/*" @change="onSelectNewImage($event)" />
           <button type="button" class="btn-primary small" :disabled="!newImage.file" @click="addNewImage(currentEditSheetId)">Ajouter</button>
         </div>
@@ -1324,7 +1334,14 @@ async function replaceImageRow(sheetId, row, index) {
   try {
     const file = row._file
     if (!file) return
-    await updateSynthesisImage(row.id, { image: file, image_type: row.image_type || 'illustration', position: row.position, caption: row.caption })
+    await updateSynthesisImage(row.id, {
+      image: file,
+      image_type: row.image_type || 'illustration',
+      position: row.position,
+      caption: row.caption,
+      alt_text: row.alt_text,
+      title_text: row.title_text
+    })
     await loadServerImages(sheetId)
     serverImages.value[index]._file = null
   } catch (e) {
@@ -1335,7 +1352,13 @@ async function replaceImageRow(sheetId, row, index) {
 
 async function saveImageRow(sheetId, row, index) {
   try {
-    await updateSynthesisImage(row.id, { image_type: row.image_type, position: row.position, caption: row.caption })
+    await updateSynthesisImage(row.id, {
+      image_type: row.image_type,
+      position: row.position,
+      caption: row.caption,
+      alt_text: row.alt_text,
+      title_text: row.title_text
+    })
     await loadServerImages(sheetId)
   } catch (e) {
     console.error('Erreur sauvegarde image:', e)
@@ -1353,7 +1376,14 @@ async function deleteImageRow(sheetId, row, index) {
   }
 }
 
-const newImage = ref({ file: null, image_type: 'illustration', position: 0, caption: '' })
+const newImage = ref({
+  file: null,
+  image_type: 'illustration',
+  position: 0,
+  caption: '',
+  alt_text: '',
+  title_text: ''
+})
 function onSelectNewImage(event) {
   const input = event?.target
   const f = (input?.files || [])[0]
@@ -1383,10 +1413,19 @@ async function addNewImage(sheetId) {
       image: newImage.value.file,
       image_type: newImage.value.image_type,
       position: newImage.value.position || null,
-      caption: newImage.value.caption || ''
+      caption: newImage.value.caption || '',
+      alt_text: newImage.value.alt_text || '',
+      title_text: newImage.value.title_text || ''
     })
     // reset form
-    newImage.value = { file: null, image_type: 'illustration', position: 0, caption: '' }
+    newImage.value = {
+      file: null,
+      image_type: 'illustration',
+      position: 0,
+      caption: '',
+      alt_text: '',
+      title_text: ''
+    }
     await loadServerImages(sheetId)
   } catch (e) {
     console.error('Erreur ajout image:', e)
@@ -1563,4 +1602,5 @@ onActivated(() => {
 .add-image-form { margin-top: 10px; background: #f9fafb; padding: 10px; border: 1px dashed #d1d5db; border-radius: 8px; }
 .add-image-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 </style>
+
 

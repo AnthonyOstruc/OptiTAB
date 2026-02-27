@@ -1,10 +1,12 @@
 from django.test import TestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from curriculum.models import Matiere, MatiereContexte, Notion, Theme
 from pays.models import Niveau, Pays
 from synthesis.models import SynthesisSheet
+from synthesis.models import SynthesisImage
 
 
 def _build_notion_tree():
@@ -71,3 +73,22 @@ class FreeSummarySheetTypeTests(TestCase):
 
         self.assertEqual(summary_response.status_code, status.HTTP_200_OK)
         self.assertEqual(table_response.status_code, status.HTTP_200_OK)
+
+    def test_free_summary_include_images_returns_resolved_alt(self):
+        SynthesisImage.objects.create(
+            sheet=self.summary_sheet,
+            image=SimpleUploadedFile('tableau-variation.png', b'fake-image-content', content_type='image/png'),
+            image_type='illustration',
+            caption='Tableau de variation',
+            position=1,
+        )
+
+        response = self.client.get('/api/free/learning-resources/', {'type': 'summary', 'include_images': 1})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        results = response.data.get('results', response.data)
+        summary_payload = next(item for item in results if item['id'] == self.summary_sheet.id)
+        self.assertTrue(summary_payload['images'])
+        first_image = summary_payload['images'][0]
+        self.assertEqual(first_image.get('alt_text_resolved'), 'Tableau de variation')
+        self.assertTrue(first_image.get('image'))

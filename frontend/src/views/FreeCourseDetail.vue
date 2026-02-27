@@ -882,7 +882,11 @@ watch(
 
     const resourceName = baseTitle || seoPayload.topic || 'Ressource gratuite'
     const keywords = [matiere, niveau].filter(Boolean)
-    const resourceImageObjects = (props.resourceType === 'course' || props.resourceType === 'exercise')
+    const resourceImageObjects = (
+      props.resourceType === 'course' ||
+      props.resourceType === 'exercise' ||
+      props.resourceType === 'summary'
+    )
       ? buildResourceImageObjects(value, canonicalResourceUrl)
       : []
     const resourceImageUrls = resourceImageObjects.map((img) => img.contentUrl).filter(Boolean)

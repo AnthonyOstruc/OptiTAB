@@ -161,6 +161,23 @@ function buildExerciseRoutePath(resource) {
   return `/ressources-gratuites/exercices/${slug}`
 }
 
+function buildSummaryRoutePath(resource) {
+  const pays = formatPaysSlug(resource?.pays_nom)
+  const matiere = formatMatiereSlug(resource?.matiere_nom || resource?.matiere)
+  const niveauGroup = formatNiveauGroupSlug(resource?.niveau_nom)
+  const slug = buildCoursePathSlug({
+    niveauNom: resource?.niveau_nom,
+    titre: resource?.titre
+  })
+  const id = resource?.id != null ? String(resource.id) : ''
+
+  if (!pays || !matiere || !slug || !id) return ''
+  if (niveauGroup) {
+    return `/ressources-gratuites/syntheses/${pays}/${niveauGroup}/${matiere}/${slug}-${id}`
+  }
+  return `/ressources-gratuites/syntheses/${pays}/${matiere}/${slug}-${id}`
+}
+
 function normalizeText(value) {
   return String(value || '').replace(/\s+/g, ' ').trim()
 }
@@ -314,9 +331,11 @@ async function buildImageSitemap() {
   )
 
   const outPath = path.resolve(__dirname, '..', 'public', 'sitemap-images.xml')
-  const [courseResources, exerciseResources] = await Promise.all([
+  const [courseResources, exerciseResources, summaryResources, tableResources] = await Promise.all([
     fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=course&page_size=500&include_images=1`, 'courses'),
-    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=exercise&page_size=500&include_images=1`, 'exercises')
+    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=exercise&page_size=500&include_images=1`, 'exercises'),
+    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=summary&page_size=500&include_images=1`, 'summaries'),
+    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=table&page_size=500&include_images=1`, 'tables')
   ])
 
   const entries = new Map()
@@ -336,6 +355,17 @@ async function buildImageSitemap() {
     if (resource?.is_locked === true) continue
 
     const routePath = buildExerciseRoutePath(resource)
+    if (!routePath) continue
+    const pageUrl = joinUrl(siteUrl, routePath)
+    const imageNodes = collectImageNodes(resource, { apiBase, mediaBase })
+    const lastmod = toLastMod(resource?.date_modification)
+    mergePageImages(entries, pageUrl, imageNodes, lastmod)
+  }
+
+  for (const resource of [...summaryResources, ...tableResources]) {
+    if (resource?.is_locked === true) continue
+
+    const routePath = buildSummaryRoutePath(resource)
     if (!routePath) continue
     const pageUrl = joinUrl(siteUrl, routePath)
     const imageNodes = collectImageNodes(resource, { apiBase, mediaBase })

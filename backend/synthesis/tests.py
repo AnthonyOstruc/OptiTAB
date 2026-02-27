@@ -142,6 +142,10 @@ class SynthesisSheetTypeTests(TestCase):
                 image_type='illustration',
                 position=2,
                 caption='Schema',
+                alt_text='Schema du graphe',
+                title_text='Graphe oriente',
+                width=640,
+                height=360,
             )
 
             response = self.client.post(f'/api/sheets/{original.id}/duplicate/')
@@ -157,13 +161,44 @@ class SynthesisSheetTypeTests(TestCase):
             self.assertEqual(duplicated_image.image_type, original_image.image_type)
             self.assertEqual(duplicated_image.position, original_image.position)
             self.assertEqual(duplicated_image.caption, original_image.caption)
-            self.assertNotEqual(duplicated_image.image.name, original_image.image.name)
+            self.assertEqual(duplicated_image.alt_text, original_image.alt_text)
+            self.assertEqual(duplicated_image.title_text, original_image.title_text)
+            self.assertEqual(duplicated_image.width, original_image.width)
+            self.assertEqual(duplicated_image.height, original_image.height)
 
             with original_image.image.open('rb') as original_file:
                 original_bytes = original_file.read()
             with duplicated_image.image.open('rb') as duplicated_file:
                 duplicated_bytes = duplicated_file.read()
             self.assertEqual(duplicated_bytes, original_bytes)
+
+    def test_image_fallback_alt_and_auto_position(self):
+        temp_media = tempfile.mkdtemp(prefix='synthesis-test-media-')
+        self.addCleanup(lambda: shutil.rmtree(temp_media, ignore_errors=True))
+
+        with override_settings(MEDIA_ROOT=temp_media):
+            sheet = SynthesisSheet.objects.create(
+                notion=self.notion,
+                titre='Graphes',
+                summary='Contenu test',
+                sheet_type=SynthesisSheet.SHEET_TYPE_SUMMARY,
+            )
+            first = SynthesisImage.objects.create(
+                sheet=sheet,
+                image=SimpleUploadedFile('matrice-adjacence.png', b'fake-image-content', content_type='image/png'),
+                image_type='illustration',
+                caption='Matrice d adjacency',
+            )
+            second = SynthesisImage.objects.create(
+                sheet=sheet,
+                image=SimpleUploadedFile('graphe-oriente.png', b'fake-image-content', content_type='image/png'),
+                image_type='illustration',
+            )
+
+            self.assertEqual(first.position, 1)
+            self.assertEqual(second.position, 2)
+            self.assertEqual(first.resolved_alt_text, 'Matrice d adjacency')
+            self.assertIn('Graphes - Graphe oriente', second.resolved_alt_text)
 
 
 class SynthesisSheetAccessTests(TestCase):

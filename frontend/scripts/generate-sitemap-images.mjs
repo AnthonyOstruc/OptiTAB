@@ -315,8 +315,8 @@ async function buildImageSitemap() {
 
   const outPath = path.resolve(__dirname, '..', 'public', 'sitemap-images.xml')
   const [courseResources, exerciseResources] = await Promise.all([
-    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=course&page_size=500`, 'courses'),
-    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=exercise&page_size=500`, 'exercises')
+    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=course&page_size=500&include_images=1`, 'courses'),
+    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=exercise&page_size=500&include_images=1`, 'exercises')
   ])
 
   const entries = new Map()

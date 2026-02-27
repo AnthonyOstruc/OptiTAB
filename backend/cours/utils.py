@@ -79,22 +79,21 @@ def resolve_course_image_title(image_obj):
 
 
 def resolve_course_image_dimensions(image_obj):
+    # Important for performance on list endpoints:
+    # never trigger storage reads (S3) at render time to infer dimensions.
     width = getattr(image_obj, "width", None)
     height = getattr(image_obj, "height", None)
 
-    if width and height:
-        return width, height
-
-    image_field = getattr(image_obj, "image", None)
     try:
-        if not width:
-            width = int(getattr(image_field, "width", 0) or 0)
-        if not height:
-            height = int(getattr(image_field, "height", 0) or 0)
-    except Exception:
-        pass
+        width = int(width) if width else None
+    except (TypeError, ValueError):
+        width = None
+    try:
+        height = int(height) if height else None
+    except (TypeError, ValueError):
+        height = None
 
-    return (width or None, height or None)
+    return width, height
 
 
 def build_course_image_payload(image_obj, request=None, course_title=""):

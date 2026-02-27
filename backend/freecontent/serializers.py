@@ -151,8 +151,9 @@ class CourseFreePreviewSerializer(serializers.Serializer):
         images = getattr(cours, 'images', None)
         image_data = []
         request = self.context.get('request') if hasattr(self, 'context') else None
+        include_images = bool(self.context.get('include_images', True)) if hasattr(self, 'context') else True
         course_title = resolve_course_title(cours) or titre
-        if images is not None:
+        if include_images and images is not None:
             for img in images.all().order_by('position', 'id'):
                 image_data.append(
                     build_course_image_payload(
@@ -259,8 +260,9 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
         images = getattr(exercice, 'images', None)
         image_data = []
         request = self.context.get('request') if hasattr(self, 'context') else None
+        include_images = bool(self.context.get('include_images', True)) if hasattr(self, 'context') else True
         exercice_title = resolve_exercice_title(exercice) or (exercice.titre or '')
-        if images is not None:
+        if include_images and images is not None:
             for img in images.all().order_by('position', 'id'):
                 image_data.append(
                     build_exercice_image_payload(
@@ -348,7 +350,8 @@ class SynthesisFreePreviewSerializer(serializers.Serializer):
 
         images_payload = []
         images_qs = getattr(sheet, 'images', None)
-        if images_qs is not None:
+        include_images = bool(self.context.get('include_images', True)) if hasattr(self, 'context') else True
+        if include_images and images_qs is not None:
             for img in images_qs.all():
                 image_url = ''
                 try:

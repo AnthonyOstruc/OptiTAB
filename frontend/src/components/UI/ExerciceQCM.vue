@@ -940,6 +940,13 @@ async function loadExerciceImages() {
     return
   }
 
+  // En mode lecture seule (pages publiques), ne pas appeler l'endpoint protégé /api/exercice-images/.
+  if (props.readonly) {
+    exerciceImages.value = []
+    nextTick(() => renderMath())
+    return
+  }
+
   // Si aucun marqueur d'image dans les contenus, ne rien appeler
   if (!hasImageMarkers()) {
     exerciceImages.value = []

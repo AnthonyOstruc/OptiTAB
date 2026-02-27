@@ -3,7 +3,13 @@ MODÈLES EXERCICES - ULTRA CLEAN et SIMPLE
 Structure: Pays -> Niveau -> Matière -> Thème -> Notion -> Chapitre -> Exercice
 """
 from django.db import models
+from django.db.models import Max, Q
 from core.models import BaseSimple, BaseContent, BaseEducational, BaseOrganizational
+from .utils import (
+    resolve_exercice_image_alt,
+    resolve_exercice_image_title,
+    resolve_exercice_title,
+)
 
 
 class Matiere(BaseOrganizational):
@@ -117,6 +123,11 @@ class ExerciceImage(models.Model):
     exercice = models.ForeignKey(Exercice, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='exercice_images/')
     position = models.PositiveIntegerField(null=True, blank=True)
+    legende = models.CharField(max_length=255, null=True, blank=True)
+    alt_text = models.CharField(max_length=255, blank=True, default='')
+    title_text = models.CharField(max_length=255, blank=True, default='')
+    width = models.PositiveIntegerField(null=True, blank=True)
+    height = models.PositiveIntegerField(null=True, blank=True)
     date_creation = models.DateTimeField(auto_now_add=True)
     date_modification = models.DateTimeField(auto_now=True)
 
@@ -127,7 +138,47 @@ class ExerciceImage(models.Model):
         indexes = [
             models.Index(fields=['exercice', 'position']),
         ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=['exercice', 'position'],
+                condition=Q(position__isnull=False),
+                name='unique_exerciceimage_position_per_exercice',
+            ),
+        ]
 
     def __str__(self):
         return f"Image {self.id} - Exercice {self.exercice_id}"
+
+    def save(self, *args, **kwargs):
+        if self.exercice_id and (self.position is None or self.position < 1):
+            max_position = (
+                type(self).objects
+                .filter(exercice_id=self.exercice_id)
+                .exclude(pk=self.pk)
+                .aggregate(max_position=Max('position'))
+                .get('max_position')
+            ) or 0
+            self.position = max_position + 1
+
+        if getattr(self, 'image', None):
+            try:
+                if not self.width:
+                    self.width = int(getattr(self.image, 'width', 0) or 0) or None
+                if not self.height:
+                    self.height = int(getattr(self.image, 'height', 0) or 0) or None
+            except Exception:
+                pass
+
+        super().save(*args, **kwargs)
+
+    @property
+    def resolved_alt_text(self):
+        return resolve_exercice_image_alt(
+            self,
+            exercice_title=resolve_exercice_title(getattr(self, 'exercice', None))
+        )
+
+    @property
+    def resolved_title_text(self):
+        return resolve_exercice_image_title(self)
 

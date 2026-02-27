@@ -127,7 +127,11 @@ class CoursImageViewSet(viewsets.ModelViewSet):
                 cours=target_cours,
                 image_type=img.image_type,
                 position=img.position,
-                legende=img.legende
+                legende=img.legende,
+                alt_text=img.alt_text,
+                title_text=img.title_text,
+                width=img.width,
+                height=img.height,
             )
             try:
                 with img.image.open('rb') as original_file:

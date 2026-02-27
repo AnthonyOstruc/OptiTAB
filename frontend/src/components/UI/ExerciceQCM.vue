@@ -288,11 +288,12 @@
         <button class="modal-close-btn" @click="closeImageModal">×</button>
         <img 
           :src="getImageUrl(selectedImage.image)" 
-          :alt="`Image ${selectedImage.image_type === 'donnee' ? 'donnée' : 'solution'}`"
+          :alt="resolveImageAlt(selectedImage, selectedImage?.position)"
+          :title="resolveImageTitle(selectedImage) || null"
           class="modal-image"
         />
         <div class="modal-caption">
-          <span class="modal-image-type">{{ selectedImage.image_type === 'donnee' ? 'Donnée' : 'Solution' }}</span>
+          <span class="modal-image-type">{{ resolveImageCaption(selectedImage) || resolveImageTitle(selectedImage) || 'Illustration' }}</span>
           <span v-if="selectedImage.position" class="modal-position">Position {{ selectedImage.position }}</span>
         </div>
       </div>
@@ -602,46 +603,111 @@ function unescapeLatex(text) {
   return result
 }
 
+const IMAGE_PLACEHOLDER_REGEX = /\[\s*IMAGE\s*_?\s*(\d+)\s*\]/gi
+const IMAGE_PLACEHOLDER_DETECT_REGEX = /\[\s*IMAGE\s*_?\s*\d+\s*\]/i
+
+function normalizeText(value) {
+  return String(value ?? '').replace(/\s+/g, ' ').trim()
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+function resolveImageCaption(image) {
+  return normalizeText(image?.caption || image?.legende || '')
+}
+
+function resolveImageAlt(image, position) {
+  const resolvedAlt = normalizeText(
+    image?.alt_text_resolved || image?.resolved_alt_text || image?.alt_text || image?.legende || image?.caption || ''
+  )
+  if (resolvedAlt) return resolvedAlt
+
+  const resolvedTitle = normalizeText(
+    image?.title_text_resolved || image?.resolved_title_text || image?.title_text || ''
+  )
+  if (resolvedTitle) return resolvedTitle
+
+  const title = normalizeText(props.titre || '')
+  if (title) {
+    return `${title} - illustration ${position || ''}`.trim()
+  }
+  return `Illustration de l'exercice ${position || ''}`.trim()
+}
+
+function resolveImageTitle(image) {
+  return normalizeText(image?.title_text_resolved || image?.resolved_title_text || image?.title_text || '')
+}
+
+function resolveImageDimensions(image) {
+  const width = Number.parseInt(image?.width, 10)
+  const height = Number.parseInt(image?.height, 10)
+  const safeWidth = Number.isFinite(width) && width > 0 ? width : 1200
+  const safeHeight = Number.isFinite(height) && height > 0 ? height : 675
+  return { width: safeWidth, height: safeHeight }
+}
+
 function renderInstructionWithImages(instruction) {
   if (!instruction) return ''
-  
-  // D'abord, traiter le texte de base
+
   let processedText = unescapeLatex(instruction)
-  
-  // Si pas d'images, retourner le texte traité
+
   if (!exerciceImages.value || exerciceImages.value.length === 0) {
     return processedText
   }
-  
-  // Créer un mapping des images par position
+
   const imagesByPosition = {}
-  exerciceImages.value.forEach(img => {
-    if (img.position) {
-      imagesByPosition[img.position] = img
+  exerciceImages.value.forEach((img) => {
+    const position = Number.parseInt(img?.position, 10)
+    if (Number.isFinite(position) && position > 0 && !imagesByPosition[position]) {
+      imagesByPosition[position] = img
     }
   })
-  
-  // Remplacer les marqueurs [IMAGE_1], [IMAGE_2], etc. par les images
-  processedText = processedText.replace(/\[IMAGE_(\d+)\]/g, (match, position) => {
-    const image = imagesByPosition[parseInt(position)]
-    if (image) {
-      return `
-        <div class="exercice-image-container inline-image" data-image-position="${position}">
-          <img 
-            src="${getImageUrl(image.image)}" 
-            alt="Image ${image.image_type === 'donnee' ? 'donnée' : 'solution'} - position ${position}"
-            class="exercice-image inline"
-            style="cursor: pointer;"
-          />
-        </div>
-      `
-    }
-    return match // Garder le marqueur si l'image n'existe pas
+
+  processedText = processedText.replace(IMAGE_PLACEHOLDER_REGEX, (match, position) => {
+    const numericPosition = Number.parseInt(position, 10)
+    const image = imagesByPosition[numericPosition]
+    if (!image) return match
+
+    const src = escapeHtml(getImageUrl(image.image))
+    const alt = escapeHtml(resolveImageAlt(image, numericPosition))
+    const title = resolveImageTitle(image)
+    const titleAttr = title ? ` title="${escapeHtml(title)}"` : ''
+    const caption = resolveImageCaption(image)
+    const figcaption = caption
+      ? `<figcaption class="image-legende" style="text-align:center;margin-top:8px;font-style:italic;color:#666;font-size:0.9em;">${escapeHtml(caption)}</figcaption>`
+      : ''
+    const { width, height } = resolveImageDimensions(image)
+
+    return `
+      <figure class="course-figure exercice-image-container inline-image" data-image-position="${numericPosition}" style="text-align: center; margin: 1em 0;">
+        <img
+          src="${src}"
+          alt="${alt}"${titleAttr}
+          loading="lazy"
+          decoding="async"
+          width="${width}"
+          height="${height}"
+          class="exercice-image inline"
+          style="cursor: pointer; max-width: 100%; height: auto;"
+          data-caption="${escapeHtml(caption)}"
+        />
+        ${figcaption}
+      </figure>
+    `
   })
-  
+
+  processedText = processedText.replace(/<img(?![^>]*loading=)([^>]*?)>/gi, '<img loading="lazy"$1>')
+  processedText = processedText.replace(/<img(?![^>]*decoding=)([^>]*?)>/gi, '<img decoding="async"$1>')
+
   return processedText
 }
-
 function renderSolutionContent(solutionText) {
   if (!solutionText) return ''
   // Traiter le texte de la solution avec support Markdown basique et LaTeX
@@ -800,7 +866,13 @@ function handleImageClick(event) {
   }
   // Si c'est une image générique rendue dans le contenu (sans classe spéciale)
   if (event.target && event.target.tagName === 'IMG') {
-    openImageModal({ image: event.target.src, image_type: 'aperçu', position: null })
+    openImageModal({
+      image: event.target.src,
+      position: null,
+      alt_text: event.target.getAttribute('alt') || '',
+      title_text: event.target.getAttribute('title') || '',
+      legende: event.target.getAttribute('data-caption') || ''
+    })
   }
 }
 
@@ -845,11 +917,11 @@ function sendExamToWhatsApp() {
 function hasImageMarkers() {
   // Si on a une liste d'exercices
   if (props.exercicesList && props.exercicesList.length > 0) {
-    return props.exercicesList.some(ex => ex.question && /\[IMAGE_\d+\]/.test(ex.question))
+    return props.exercicesList.some((ex) => ex.question && IMAGE_PLACEHOLDER_DETECT_REGEX.test(ex.question))
   }
   // Sinon mode standard
   const texts = [props.instruction, props.etapes, props.solution].filter(Boolean)
-  return texts.some(t => /\[IMAGE_\d+\]/.test(t))
+  return texts.some((text) => IMAGE_PLACEHOLDER_DETECT_REGEX.test(text))
 }
 
 // Load exercice images (appelé uniquement si des marqueurs d'images existent)

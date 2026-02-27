@@ -4,6 +4,7 @@ SERIALIZERS ULTRA SIMPLES pour exercices
 from rest_framework import serializers
 from django.db.models import Max
 from .models import Matiere, Theme, Notion, Exercice, MatiereContexte, ExerciceImage
+from .utils import build_exercice_image_payload, resolve_exercice_title
 from pays.models import Niveau
 
 
@@ -246,19 +247,13 @@ class ExerciceSerializer(serializers.ModelSerializer):
         if qs is None:
             return []
         request = self.context.get('request') if hasattr(self, 'context') else None
+        exercice_title = resolve_exercice_title(obj)
         return [
-            {
-                'id': img.id,
-                'image': (
-                    img.image.url if (getattr(img.image, 'url', None) and str(img.image.url).startswith(('http://', 'https://')))
-                    else (
-                        request.build_absolute_uri(img.image.url)
-                        if (request and getattr(img.image, 'url', None))
-                        else (img.image.url if getattr(img.image, 'url', None) else '')
-                    )
-                ),
-                'position': img.position,
-            }
+            build_exercice_image_payload(
+                img,
+                request=request,
+                exercice_title=exercice_title
+            )
             for img in qs.all().order_by('position', 'id')
         ]
 
@@ -269,6 +264,11 @@ class ExerciceImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'position': {'required': False},
+            'legende': {'required': False, 'allow_blank': True},
+            'alt_text': {'required': False, 'allow_blank': True},
+            'title_text': {'required': False, 'allow_blank': True},
+            'width': {'required': False},
+            'height': {'required': False},
         }
 
     def create(self, validated_data):
@@ -277,11 +277,19 @@ class ExerciceImageSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        # Convertir l'URL relative en URL absolue en production
-        try:
-            request = self.context.get('request') if hasattr(self, 'context') else None
-            if request and data.get('image') and not str(data['image']).startswith('http'):
-                data['image'] = request.build_absolute_uri(data['image'])
-        except Exception:
-            pass
+        request = self.context.get('request') if hasattr(self, 'context') else None
+        exercice_title = resolve_exercice_title(getattr(instance, 'exercice', None))
+        payload = build_exercice_image_payload(
+            instance,
+            request=request,
+            exercice_title=exercice_title
+        )
+
+        data['image'] = payload['image']
+        data['legende'] = payload['legende']
+        data['caption'] = payload['caption']
+        data['alt_text_resolved'] = payload['alt_text_resolved']
+        data['title_text_resolved'] = payload['title_text_resolved']
+        data['width'] = payload['width']
+        data['height'] = payload['height']
         return data

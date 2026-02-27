@@ -314,7 +314,7 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             ).first()
             if not cours:
                 raise NotFound("Cours gratuit introuvable.")
-            data = CourseFreePreviewSerializer().to_representation(cours)
+            data = CourseFreePreviewSerializer(context=self.get_serializer_context()).to_representation(cours)
             return Response(data)
         if slug and slug.startswith('exercice-gratuit-'):
             try:

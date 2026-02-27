@@ -125,6 +125,11 @@ def duplicate_theme_deep(original: Theme, target_contexte: MatiereContexte, new_
                     exercice=new_ex,
                     image=eimg.image,
                     position=eimg.position,
+                    legende=getattr(eimg, 'legende', None),
+                    alt_text=getattr(eimg, 'alt_text', '') or '',
+                    title_text=getattr(eimg, 'title_text', '') or '',
+                    width=getattr(eimg, 'width', None),
+                    height=getattr(eimg, 'height', None),
                 )
 
     return new_theme
@@ -239,6 +244,11 @@ def duplicate_notion_deep(original: Notion, target_theme: Theme, new_title: str 
                 exercice=new_ex,
                 image=eimg.image,
                 position=eimg.position,
+                legende=getattr(eimg, 'legende', None),
+                alt_text=getattr(eimg, 'alt_text', '') or '',
+                title_text=getattr(eimg, 'title_text', '') or '',
+                width=getattr(eimg, 'width', None),
+                height=getattr(eimg, 'height', None),
             )
 
     return new_notion

@@ -671,6 +671,7 @@ class ExerciceViewSet(viewsets.ModelViewSet):
         return (
             queryset
             .select_related('notion', 'notion__theme', 'notion__theme__matiere')
+            .prefetch_related('images')
             .filter(est_actif=True)
             .order_by('notion_id', 'titre', 'id')
         )

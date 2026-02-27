@@ -4,6 +4,8 @@ from django.utils.text import slugify
 
 from .models import FreeLearningResource
 from synthesis.models import SynthesisSheet
+from cours.utils import build_course_image_payload, resolve_course_title
+from curriculum.utils import build_exercice_image_payload, resolve_exercice_title
 
 
 def build_seo_prefixed_slug(prefix, object_id, *, pays='', niveau='', matiere='', titre='', max_length=140):
@@ -148,20 +150,17 @@ class CourseFreePreviewSerializer(serializers.Serializer):
         badge = self._badge_for_scope(cours)
         images = getattr(cours, 'images', None)
         image_data = []
+        request = self.context.get('request') if hasattr(self, 'context') else None
+        course_title = resolve_course_title(cours) or titre
         if images is not None:
-            for img in images.all():
-                image_url = ''
-                try:
-                    image_url = getattr(img.image, 'url', '') or ''
-                except Exception:
-                    image_url = ''
-                image_data.append({
-                    'id': img.id,
-                    'image': image_url,
-                    'image_type': img.image_type,
-                    'position': img.position,
-                    'legende': img.legende,
-                })
+            for img in images.all().order_by('position', 'id'):
+                image_data.append(
+                    build_course_image_payload(
+                        img,
+                        request=request,
+                        course_title=course_title
+                    )
+                )
 
         return {
             'id': cours.id,
@@ -245,7 +244,7 @@ class CourseFreePreviewSerializer(serializers.Serializer):
 
 
 class ExerciceFreePreviewSerializer(serializers.Serializer):
-    """Sérialise un exercice gratuit en vignette."""
+    """Serialize un exercice gratuit en vignette."""
 
     def to_representation(self, exercice):
         notion = getattr(exercice, 'notion', None)
@@ -257,24 +256,20 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
 
         accroche = exercice.question or exercice.contenu or ''
         excerpt = accroche[:220]
-        cover_image = self._first_image(exercice)
         images = getattr(exercice, 'images', None)
         image_data = []
+        request = self.context.get('request') if hasattr(self, 'context') else None
+        exercice_title = resolve_exercice_title(exercice) or (exercice.titre or '')
         if images is not None:
             for img in images.all().order_by('position', 'id'):
-                image_url = ''
-                try:
-                    image_url = getattr(img.image, 'url', '') or ''
-                except Exception:
-                    image_url = ''
-                image_data.append({
-                    'id': img.id,
-                    'image': image_url,
-                    # Champs historiques supprimés du modèle: on renvoie une valeur vide pour compatibilité
-                    'image_type': getattr(img, 'image_type', '') or '',
-                    'position': getattr(img, 'position', None),
-                    'legende': getattr(img, 'legende', '') or '',
-                })
+                image_data.append(
+                    build_exercice_image_payload(
+                        img,
+                        request=request,
+                        exercice_title=exercice_title
+                    )
+                )
+        cover_image = image_data[0]['image'] if image_data else ''
 
         return {
             'id': exercice.id,
@@ -321,19 +316,6 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
         }
 
     @staticmethod
-    def _first_image(exercice):
-        images = getattr(exercice, 'images', None)
-        if not images:
-            return ''
-        image = images.all().order_by('position', 'id').first()
-        if not image:
-            return ''
-        try:
-            return image.image.url or ''
-        except Exception:
-            return ''
-
-    @staticmethod
     def _estimate_read_time(content):
         words = len((content or '').split())
         if words == 0:
@@ -347,7 +329,6 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
             return exercice.get_difficulty_display()
         except Exception:
             return ''
-
 
 class SynthesisFreePreviewSerializer(serializers.Serializer):
     """Sérialise une fiche de synthèse accessible gratuitement."""
@@ -460,3 +441,4 @@ class ExerciseNotionSummarySerializer(serializers.Serializer):
 
     def get_resource_type(self, obj):
         return getattr(FreeLearningResource, 'TYPE_EXERCISE', 'exercise')
+

@@ -75,6 +75,8 @@ export const createCoursImage = (payload) => {
   formData.append('image_type', payload.image_type)
   if (payload.position) formData.append('position', payload.position)
   if (payload.legende) formData.append('legende', payload.legende)
+  if (payload.alt_text !== undefined) formData.append('alt_text', payload.alt_text || '')
+  if (payload.title_text !== undefined) formData.append('title_text', payload.title_text || '')
   return apiClient.post('/api/cours/cours-images/', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -95,6 +97,8 @@ export const updateCoursImage = (id, payload) => {
   if (payload.image_type) formData.append('image_type', payload.image_type)
   if (payload.position !== undefined) formData.append('position', payload.position)
   if (payload.legende !== undefined) formData.append('legende', payload.legende)
+  if (payload.alt_text !== undefined) formData.append('alt_text', payload.alt_text || '')
+  if (payload.title_text !== undefined) formData.append('title_text', payload.title_text || '')
   return apiClient.patch(`/api/cours/cours-images/${id}/`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'

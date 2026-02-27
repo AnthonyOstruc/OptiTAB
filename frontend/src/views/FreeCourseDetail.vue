@@ -630,6 +630,42 @@ function toIsoDate(value) {
   }
 }
 
+function normalizeSeoText(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim()
+}
+
+function buildResourceImageObjects(value, canonicalResourceUrl) {
+  if (!canonicalResourceUrl || !Array.isArray(value?.images)) return []
+
+  return value.images
+    .map((img, index) => {
+      const contentUrl = toAbsoluteUrl(img?.image)
+      if (!contentUrl) return null
+
+      const caption = normalizeSeoText(
+        img?.legende || img?.caption || img?.alt_text_resolved || img?.alt_text || ''
+      )
+      const title = normalizeSeoText(
+        img?.title_text_resolved || img?.title_text || caption || `Illustration ${index + 1}`
+      )
+      const width = Number.parseInt(img?.width, 10)
+      const height = Number.parseInt(img?.height, 10)
+
+      return {
+        '@type': 'ImageObject',
+        '@id': `${canonicalResourceUrl}#image-${img?.id || index + 1}`,
+        contentUrl,
+        url: contentUrl,
+        name: title || undefined,
+        caption: caption || undefined,
+        width: Number.isFinite(width) && width > 0 ? width : undefined,
+        height: Number.isFinite(height) && height > 0 ? height : undefined,
+        representativeOfPage: index === 0 ? true : undefined
+      }
+    })
+    .filter(Boolean)
+}
+
 function buildCanonicalPath(value) {
   if (!value) return route.path
   if (props.resourceType === 'course') {
@@ -846,6 +882,10 @@ watch(
 
     const resourceName = baseTitle || seoPayload.topic || 'Ressource gratuite'
     const keywords = [matiere, niveau].filter(Boolean)
+    const resourceImageObjects = (props.resourceType === 'course' || props.resourceType === 'exercise')
+      ? buildResourceImageObjects(value, canonicalResourceUrl)
+      : []
+    const resourceImageUrls = resourceImageObjects.map((img) => img.contentUrl).filter(Boolean)
     const breadcrumbGraph = buildBreadcrumbJsonLd([
       { name: 'Accueil', item: '/' },
       { name: categoryLabel, item: categoryPath },
@@ -862,7 +902,7 @@ watch(
           provider: { '@id': organizationId },
           isPartOf: { '@id': websiteId },
           mainEntityOfPage: { '@id': webPageId },
-          image: imageAbs || undefined,
+          image: resourceImageUrls.length ? resourceImageUrls : (imageAbs || undefined),
           dateModified: dateModified || undefined,
           educationalLevel: niveau || undefined,
           keywords,
@@ -878,7 +918,7 @@ watch(
           publisher: { '@id': organizationId },
           isPartOf: { '@id': websiteId },
           mainEntityOfPage: { '@id': webPageId },
-          image: imageAbs || undefined,
+          image: resourceImageUrls.length ? resourceImageUrls : (imageAbs || undefined),
           dateModified: dateModified || undefined,
           educationalLevel: niveau || undefined,
           learningResourceType: props.resourceType === 'summary' ? 'Revision summary' : 'Exercise',
@@ -886,7 +926,7 @@ watch(
           about: notionOrChapterTitle || undefined
         })
 
-    const jsonLdGraph = [breadcrumbGraph, primaryGraph].filter(Boolean)
+    const jsonLdGraph = [breadcrumbGraph, primaryGraph, ...resourceImageObjects].filter(Boolean)
 
     setPageSeo({
       title,

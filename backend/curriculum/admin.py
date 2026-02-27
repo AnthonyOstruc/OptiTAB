@@ -10,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from core.admin import ContentModelAdmin, BaseModelAdmin
 from .models import Matiere, Theme, Notion, Exercice, MatiereContexte, ExerciceImage
 from .services import duplicate_theme_deep
+from .utils import resolve_exercice_image_alt, resolve_exercice_image_title, resolve_exercice_title
 
 
 @admin.register(Matiere)
@@ -271,8 +272,17 @@ class ExerciceAdmin(admin.ModelAdmin):
     class ExerciceImageInline(admin.TabularInline):
         model = ExerciceImage
         extra = 1
-        fields = ("preview", "image", "position")
-        readonly_fields = ("preview",)
+        fields = (
+            "preview",
+            "image",
+            "position",
+            "alt_text",
+            "title_text",
+            "legende",
+            "width",
+            "height",
+        )
+        readonly_fields = ("preview", "width", "height")
         can_delete = True
 
         def preview(self, obj):
@@ -350,9 +360,19 @@ class ExerciceAdmin(admin.ModelAdmin):
 # Administration dédiée aux images d'exercice
 @admin.register(ExerciceImage)
 class ExerciceImageAdmin(admin.ModelAdmin):
-    list_display = ("id", "exercice", "position", "image_link")
-    search_fields = ("exercice__titre",)
+    list_display = (
+        "id",
+        "exercice",
+        "position",
+        "alt_text",
+        "title_text",
+        "legende",
+        "image_link",
+    )
+    search_fields = ("exercice__titre", "alt_text", "title_text", "legende", "image")
     ordering = ("exercice", "position", "id")
+    list_editable = ("position", "alt_text", "title_text", "legende")
+    actions = ("auto_fill_alt_from_filename_legend",)
 
     def image_link(self, obj):
         if getattr(obj, "image", None):
@@ -363,6 +383,44 @@ class ExerciceImageAdmin(admin.ModelAdmin):
         return "-"
 
     image_link.short_description = _("Image")
+
+    @admin.action(description="Auto-fill alt from filename/legend")
+    def auto_fill_alt_from_filename_legend(self, request, queryset):
+        updated_count = 0
+
+        for image_obj in queryset.select_related("exercice", "exercice__notion"):
+            updates = []
+            exercice_title = resolve_exercice_title(getattr(image_obj, "exercice", None))
+
+            if not str(image_obj.alt_text or "").strip():
+                image_obj.alt_text = resolve_exercice_image_alt(
+                    image_obj,
+                    exercice_title=exercice_title
+                )
+                updates.append("alt_text")
+
+            if not str(image_obj.title_text or "").strip():
+                title_value = resolve_exercice_image_title(image_obj)
+                if title_value:
+                    image_obj.title_text = title_value
+                    updates.append("title_text")
+
+            if (not image_obj.width or not image_obj.height) and getattr(image_obj, "image", None):
+                try:
+                    if not image_obj.width:
+                        image_obj.width = int(getattr(image_obj.image, "width", 0) or 0) or None
+                        updates.append("width")
+                    if not image_obj.height:
+                        image_obj.height = int(getattr(image_obj.image, "height", 0) or 0) or None
+                        updates.append("height")
+                except Exception:
+                    pass
+
+            if updates:
+                image_obj.save(update_fields=updates + ["date_modification"])
+                updated_count += 1
+
+        self.message_user(request, f"{updated_count} image(s) mises a jour.")
 
 # Configuration des titres de l'interface admin
 admin.site.site_header = "Administration OptiTAB - Exercices"

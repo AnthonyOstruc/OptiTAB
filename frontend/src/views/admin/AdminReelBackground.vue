@@ -137,6 +137,7 @@
               opacity: overlay.opacity,
               transform: 'translate(-50%, -50%) rotate(' + overlay.rotation + 'deg)',
               textShadow: overlay.shadow ? '2px 2px 8px rgba(0,0,0,0.6)' : 'none',
+              textAlign: overlay.align || 'center',
             }"
           >
             <div
@@ -724,6 +725,16 @@
                     </div>
                   </div>
 
+                  <!-- Alignement -->
+                  <div class="control-group">
+                    <label>Alignement</label>
+                    <div class="text-style-row">
+                      <button class="style-btn" :class="{ active: overlay.align === 'left' }" @click="overlay.align = 'left'" title="Gauche">◧</button>
+                      <button class="style-btn" :class="{ active: overlay.align === 'center' || !overlay.align }" @click="overlay.align = 'center'" title="Centre">◫</button>
+                      <button class="style-btn" :class="{ active: overlay.align === 'right' }" @click="overlay.align = 'right'" title="Droite">◨</button>
+                    </div>
+                  </div>
+
                   <!-- Position -->
                   <div class="sidebar-row-2">
                     <div class="control-group">
@@ -1102,6 +1113,7 @@ function addLatexFromInput() {
     opacity: 1,
     rotation: 0,
     shadow: false,
+    align: 'center',
   })
   latexInput.value = ''
   selectedLatexId.value = newId
@@ -1164,17 +1176,33 @@ function removeLatexOverlay(id) {
 }
 
 function renderLatex(latex) {
+  const source = String(latex ?? '')
   try {
-    let cleaned = cleanLatexInput(latex)
-    return katex.renderToString(cleaned, { throwOnError: false, displayMode: true, trust: true })
+    const cleaned = cleanLatexInput(source)
+    const katexHtml = katex.renderToString(cleaned, { throwOnError: false, displayMode: true, trust: true })
+    // Fallback to MathJax for syntaxes KaTeX doesn't support (ex: array specs with @{...}).
+    if (!katexHtml.includes('katex-error')) return katexHtml
+    const mathJaxHtml = renderLatexWithMathJax(source)
+    return mathJaxHtml || katexHtml
   } catch (e) {
-    return `<span style="color:#e74c3c">${latex}</span>`
+    const mathJaxHtml = renderLatexWithMathJax(source)
+    if (mathJaxHtml) return mathJaxHtml
+    return `<span style="color:#e74c3c">${source}</span>`
   }
 }
 
 // Nettoie le LaTeX : strip delimiters + convertit \textcolor[HTML]{...} → \textcolor{#...}
 function cleanLatexInput(latex) {
-  let cleaned = latex.trim()
+  let cleaned = stripLatexDelimiters(String(latex ?? ''))
+  // Convert \textcolor[HTML]{XXXXXX} → \textcolor{#XXXXXX} (KaTeX doesn't support [HTML] model)
+  cleaned = cleaned.replace(/\\textcolor\[HTML\]\{([0-9A-Fa-f]{3,8})\}/g, '\\textcolor{#$1}')
+  // Also handle \color[HTML]{XXXXXX} → \color{#XXXXXX}
+  cleaned = cleaned.replace(/\\color\[HTML\]\{([0-9A-Fa-f]{3,8})\}/g, '\\color{#$1}')
+  return cleaned
+}
+
+function stripLatexDelimiters(latex) {
+  let cleaned = String(latex ?? '').trim()
   // Strip delimiters that KaTeX doesn't need (displayMode handles it)
   if (cleaned.startsWith('\\[') && cleaned.endsWith('\\]')) {
     cleaned = cleaned.slice(2, -2).trim()
@@ -1183,11 +1211,37 @@ function cleanLatexInput(latex) {
   } else if (cleaned.startsWith('$') && cleaned.endsWith('$')) {
     cleaned = cleaned.slice(1, -1).trim()
   }
-  // Convert \textcolor[HTML]{XXXXXX} → \textcolor{#XXXXXX} (KaTeX doesn't support [HTML] model)
-  cleaned = cleaned.replace(/\\textcolor\[HTML\]\{([0-9A-Fa-f]{3,8})\}/g, '\\textcolor{#$1}')
-  // Also handle \color[HTML]{XXXXXX} → \color{#XXXXXX}
-  cleaned = cleaned.replace(/\\color\[HTML\]\{([0-9A-Fa-f]{3,8})\}/g, '\\color{#$1}')
   return cleaned
+}
+
+function renderLatexWithMathJax(latex) {
+  if (typeof window === 'undefined') return null
+  const mj = window.MathJax
+  if (!mj || typeof mj.tex2svg !== 'function') return null
+  try {
+    const raw = normalizeMathJaxColors(stripLatexDelimiters(String(latex ?? '')))
+    const node = mj.tex2svg(raw, { display: true })
+    return node?.outerHTML || null
+  } catch (_e) {
+    return null
+  }
+}
+
+function normalizeMathJaxColors(latex) {
+  return String(latex ?? '')
+    .replace(/\\textcolor\[HTML\]\{([0-9A-Fa-f]{3,8})\}/g, (_m, hex) => `\\textcolor[rgb]{${hexToRgbTriplet(hex)}}`)
+    .replace(/\\color\[HTML\]\{([0-9A-Fa-f]{3,8})\}/g, (_m, hex) => `\\color[rgb]{${hexToRgbTriplet(hex)}}`)
+}
+
+function hexToRgbTriplet(hex) {
+  let h = String(hex || '').trim().replace(/^#/, '')
+  if (h.length === 3) h = h.split('').map(c => c + c).join('')
+  if (h.length >= 6) h = h.slice(0, 6)
+  if (!/^[0-9A-Fa-f]{6}$/.test(h)) return '0,0,0'
+  const r = parseInt(h.slice(0, 2), 16) / 255
+  const g = parseInt(h.slice(2, 4), 16) / 255
+  const b = parseInt(h.slice(4, 6), 16) / 255
+  return `${r.toFixed(3)},${g.toFixed(3)},${b.toFixed(3)}`
 }
 
 // ─── Guides d'alignement (style Canva) ───
@@ -1932,7 +1986,6 @@ body {
 .latex-overlay-export {
   position: absolute;
   pointer-events: none;
-  transform: translate(-50%, -50%);
   z-index: 3;
   line-height: normal;
 }
@@ -1940,6 +1993,7 @@ body {
 .latex-overlay-export .katex-display {
   margin: 0;
   overflow: visible;
+  text-align: inherit;
 }
 </style>
 </head>
@@ -1994,7 +2048,7 @@ body {
   ${textOverlays.value.map(t => `<div style="position:absolute;left:${t.x}%;top:${t.y}%;width:${t.boxWidth}%;transform:translate(-50%,-50%) rotate(${t.rotation}deg);opacity:${t.opacity};z-index:4;pointer-events:none;"><div style="font-size:${t.fontSize}px;font-family:${t.fontFamily};font-weight:${t.bold ? 'bold' : 'normal'};font-style:${t.italic ? 'italic' : 'normal'};color:${t.color};text-align:${t.align};text-shadow:${t.shadow ? '2px 2px 8px rgba(0,0,0,0.6)' : 'none'};letter-spacing:${t.letterSpacing}px;line-height:${t.lineHeight};white-space:pre-wrap;word-wrap:break-word;">${t.text}</div></div>`).join('\n  ')}
 
   <!-- Formules LaTeX -->
-  ${latexOverlays.value.map(o => `<div class="latex-overlay-export" style="left:${o.x}%;top:${o.y}%;font-size:${o.fontSize}px;color:${o.color};">${katex.renderToString(cleanLatexInput(o.latex), { throwOnError: false, displayMode: true, trust: true })}</div>`).join('\n  ')}
+  ${latexOverlays.value.map(o => `<div class="latex-overlay-export" style="left:${o.x}%;top:${o.y}%;font-size:${o.fontSize}px;color:${o.color};opacity:${o.opacity};transform:translate(-50%,-50%) rotate(${o.rotation}deg);text-shadow:${o.shadow ? '2px 2px 8px rgba(0,0,0,0.6)' : 'none'};text-align:${o.align || 'center'};">${katex.renderToString(cleanLatexInput(o.latex), { throwOnError: false, displayMode: true, trust: true })}</div>`).join('\n  ')}
 
   <!-- Vignettage -->
   <div class="vignette-layer"></div>
@@ -2009,6 +2063,61 @@ function openInNewTab() {
   const blob = new Blob([html], { type: 'text/html' })
   const url = URL.createObjectURL(blob)
   window.open(url, '_blank')
+}
+
+function freezeMathJaxInElement(rootEl) {
+  const replacements = []
+  if (!rootEl) return replacements
+
+  const latexContents = rootEl.querySelectorAll('.latex-overlay-wrapper .latex-overlay-content')
+  latexContents.forEach((contentEl) => {
+    const mjx = contentEl.querySelector('mjx-container')
+    const svg = mjx?.querySelector('svg')
+    if (!mjx || !svg) return
+
+    const rect = mjx.getBoundingClientRect()
+    const widthPx = rect.width || 0
+    const heightPx = rect.height || 0
+    if (widthPx <= 0 || heightPx <= 0) return
+
+    const svgClone = svg.cloneNode(true)
+    if (!svgClone.getAttribute('xmlns')) {
+      svgClone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    }
+    svgClone.setAttribute('width', String(widthPx))
+    svgClone.setAttribute('height', String(heightPx))
+    const mathColor = getComputedStyle(mjx).color || getComputedStyle(contentEl).color
+    if (mathColor) {
+      const prevStyle = svgClone.getAttribute('style') || ''
+      svgClone.setAttribute('style', `${prevStyle};color:${mathColor};`)
+      svgClone.setAttribute('color', mathColor)
+    }
+
+    const serialized = new XMLSerializer().serializeToString(svgClone)
+    const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(serialized)
+
+    const img = document.createElement('img')
+    img.src = dataUrl
+    img.style.display = 'block'
+    img.style.width = `${widthPx}px`
+    img.style.height = `${heightPx}px`
+    img.style.maxWidth = 'none'
+    img.style.pointerEvents = 'none'
+
+    replacements.push({ el: contentEl, html: contentEl.innerHTML })
+    contentEl.innerHTML = ''
+    contentEl.appendChild(img)
+  })
+
+  return replacements
+}
+
+function restoreFrozenMathJax(replacements) {
+  if (!Array.isArray(replacements)) return
+  replacements.forEach((entry) => {
+    if (!entry?.el) return
+    entry.el.innerHTML = entry.html || ''
+  })
 }
 
 async function exportPNG() {
@@ -2046,6 +2155,10 @@ async function exportPNG() {
   el.style.width = W + 'px'
   el.style.height = H + 'px'
 
+  // Freeze MathJax overlays before rasterization to avoid duplicated layers.
+  await new Promise(r => setTimeout(r, 10))
+  const frozenMathJax = freezeMathJaxInElement(el)
+
   try {
     const canvas = await html2canvas(el, {
       scale: SCALE,
@@ -2055,6 +2168,45 @@ async function exportPNG() {
       allowTaint: true,
       backgroundColor: null,
       logging: false,
+      onclone: (doc) => {
+        // Remove KaTeX MathML elements completely from the cloned DOM
+        // These are accessibility elements that html2canvas captures incorrectly
+        doc.querySelectorAll('.katex-mathml').forEach(el => el.remove())
+        
+        // Also remove MathJax assistive elements
+        doc.querySelectorAll('mjx-assistive-mml').forEach(el => el.remove())
+        
+        // Add cleanup styles for remaining elements
+        const style = doc.createElement('style')
+        style.textContent = `
+          .katex-html { display: inline-block !important; }
+          .latex-overlay-wrapper mjx-container {
+            display: inline-block !important;
+            width: auto !important;
+            max-width: none !important;
+            margin: 0 !important;
+            overflow: visible !important;
+            line-height: 1 !important;
+          }
+          .latex-overlay-wrapper mjx-container[display="true"] {
+            display: inline-block !important;
+            text-align: left !important;
+          }
+          .latex-overlay-wrapper mjx-container svg {
+            max-width: none !important;
+            height: auto !important;
+          }
+        `
+        doc.head.appendChild(style)
+
+        // Freeze MathJax output to plain SVG images to avoid html2canvas
+        // baseline/overlay glitches with mjx-container internals.
+        const latexContents = doc.querySelectorAll('.latex-overlay-wrapper .latex-overlay-content')
+        latexContents.forEach((contentEl) => {
+          const mjx = contentEl.querySelector('mjx-container')
+          if (mjx) mjx.style.display = 'none'
+        })
+      },
     })
 
     const link = document.createElement('a')
@@ -2073,6 +2225,7 @@ async function exportPNG() {
     activeGuides.value = prevGuides
     activeDistances.value = prevDistances
     activeEqualSpacing.value = prevEqualSpacing
+    restoreFrozenMathJax(frozenMathJax)
     // Restaurer la zone safe
     if (safeZoneEl) safeZoneEl.style.display = ''
   }
@@ -3112,6 +3265,30 @@ input[type="range"] {
 .latex-overlay-wrapper :deep(.katex-display) {
   margin: 0;
   overflow: visible;
+  text-align: inherit;
+}
+
+.latex-overlay-wrapper :deep(.katex-display > .katex) {
+  text-align: inherit;
+}
+
+/* MathJax fallback inside draggable overlays: keep intrinsic SVG size. */
+.latex-overlay-wrapper :deep(mjx-container) {
+  display: inline-block !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  line-height: 1;
+}
+
+.latex-overlay-wrapper :deep(mjx-container[display="true"]) {
+  display: inline-block !important;
+  text-align: left !important;
+}
+
+.latex-overlay-wrapper :deep(mjx-container svg) {
+  max-width: none !important;
 }
 
 .text-overlay-wrapper {

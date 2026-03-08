@@ -469,12 +469,26 @@
                 </div>
                 <div class="sidebar-row-2">
                   <div class="control-group">
-                    <label>X <span class="val">{{ imgOv.x }}%</span></label>
-                    <input type="range" min="0" max="100" step="1" v-model.number="imgOv.x" />
+                    <label>X <span class="val">{{ formatPercent(getOverlayEdgePercent(imgOv, 'image', 'x')) }}%</span></label>
+                    <input
+                      type="range"
+                      :min="getOverlayEdgeMin(imgOv, 'image', 'x')"
+                      :max="getOverlayEdgeMax(imgOv, 'image', 'x')"
+                      step="0.1"
+                      :value="getOverlayEdgePercent(imgOv, 'image', 'x')"
+                      @input="onOverlayEdgeInput($event, imgOv, 'image', 'x')"
+                    />
                   </div>
                   <div class="control-group">
-                    <label>Y <span class="val">{{ imgOv.y }}%</span></label>
-                    <input type="range" min="0" max="100" step="1" v-model.number="imgOv.y" />
+                    <label>Y <span class="val">{{ formatPercent(getOverlayEdgePercent(imgOv, 'image', 'y')) }}%</span></label>
+                    <input
+                      type="range"
+                      :min="getOverlayEdgeMin(imgOv, 'image', 'y')"
+                      :max="getOverlayEdgeMax(imgOv, 'image', 'y')"
+                      step="0.1"
+                      :value="getOverlayEdgePercent(imgOv, 'image', 'y')"
+                      @input="onOverlayEdgeInput($event, imgOv, 'image', 'y')"
+                    />
                   </div>
                 </div>
                 <div class="sidebar-row-2">
@@ -585,12 +599,26 @@
                   <!-- Position -->
                   <div class="sidebar-row-2">
                     <div class="control-group">
-                      <label>X <span class="val">{{ txt.x }}%</span></label>
-                      <input type="range" min="0" max="100" step="1" v-model.number="txt.x" />
+                      <label>X <span class="val">{{ formatPercent(getOverlayEdgePercent(txt, 'text', 'x')) }}%</span></label>
+                      <input
+                        type="range"
+                        :min="getOverlayEdgeMin(txt, 'text', 'x')"
+                        :max="getOverlayEdgeMax(txt, 'text', 'x')"
+                        step="0.1"
+                        :value="getOverlayEdgePercent(txt, 'text', 'x')"
+                        @input="onOverlayEdgeInput($event, txt, 'text', 'x')"
+                      />
                     </div>
                     <div class="control-group">
-                      <label>Y <span class="val">{{ txt.y }}%</span></label>
-                      <input type="range" min="0" max="100" step="1" v-model.number="txt.y" />
+                      <label>Y <span class="val">{{ formatPercent(getOverlayEdgePercent(txt, 'text', 'y')) }}%</span></label>
+                      <input
+                        type="range"
+                        :min="getOverlayEdgeMin(txt, 'text', 'y')"
+                        :max="getOverlayEdgeMax(txt, 'text', 'y')"
+                        step="0.1"
+                        :value="getOverlayEdgePercent(txt, 'text', 'y')"
+                        @input="onOverlayEdgeInput($event, txt, 'text', 'y')"
+                      />
                     </div>
                   </div>
 
@@ -699,12 +727,26 @@
                   <!-- Position -->
                   <div class="sidebar-row-2">
                     <div class="control-group">
-                      <label>X <span class="val">{{ overlay.x }}%</span></label>
-                      <input type="range" min="0" max="100" step="1" v-model.number="overlay.x" />
+                      <label>X <span class="val">{{ formatPercent(getOverlayEdgePercent(overlay, 'latex', 'x')) }}%</span></label>
+                      <input
+                        type="range"
+                        :min="getOverlayEdgeMin(overlay, 'latex', 'x')"
+                        :max="getOverlayEdgeMax(overlay, 'latex', 'x')"
+                        step="0.1"
+                        :value="getOverlayEdgePercent(overlay, 'latex', 'x')"
+                        @input="onOverlayEdgeInput($event, overlay, 'latex', 'x')"
+                      />
                     </div>
                     <div class="control-group">
-                      <label>Y <span class="val">{{ overlay.y }}%</span></label>
-                      <input type="range" min="0" max="100" step="1" v-model.number="overlay.y" />
+                      <label>Y <span class="val">{{ formatPercent(getOverlayEdgePercent(overlay, 'latex', 'y')) }}%</span></label>
+                      <input
+                        type="range"
+                        :min="getOverlayEdgeMin(overlay, 'latex', 'y')"
+                        :max="getOverlayEdgeMax(overlay, 'latex', 'y')"
+                        step="0.1"
+                        :value="getOverlayEdgePercent(overlay, 'latex', 'y')"
+                        @input="onOverlayEdgeInput($event, overlay, 'latex', 'y')"
+                      />
                     </div>
                   </div>
 
@@ -876,10 +918,17 @@ let dragTextStartX = 0, dragTextStartY = 0, dragTextStartOvX = 0, dragTextStartO
 
 const textInput = ref('')
 
+function getNextTextId() {
+  const maxExisting = textOverlays.value.reduce((maxId, ov) => Math.max(maxId, Number(ov.id) || 0), 0)
+  nextTextId = Math.max(nextTextId, maxExisting)
+  nextTextId += 1
+  return nextTextId
+}
+
 function addTextFromInput() {
   const content = textInput.value.trim()
   if (!content) return
-  const newId = ++nextTextId
+  const newId = getNextTextId()
   textOverlays.value.push({
     id: newId,
     text: content,
@@ -923,15 +972,14 @@ function onDragText(e) {
   const scale = previewScale.value / canvasWidth.value
   const dx = (e.clientX - dragTextStartX) / scale
   const dy = (e.clientY - dragTextStartY) / scale
-  const safeTop = safeZoneV.value / canvasHeight.value * 100
-  const safeBottom = 100 - safeTop
-  const safeLeft = safeZoneH.value / canvasWidth.value * 100
-  const safeRight = 100 - safeLeft
-  const rawX = Math.max(safeLeft, Math.min(safeRight, dragTextStartOvX + (dx / canvasWidth.value) * 100))
-  const rawY = Math.max(safeTop, Math.min(safeBottom, dragTextStartOvY + (dy / canvasHeight.value) * 100))
-  const snapped = computeSnap(rawX, rawY, draggingText.value.id, 'text')
-  draggingText.value.x = Math.max(safeLeft, Math.min(safeRight, snapped.x))
-  draggingText.value.y = Math.max(safeTop, Math.min(safeBottom, snapped.y))
+  const bounds = getOverlayMoveBounds('text', draggingText.value.id)
+  const rawX = dragTextStartOvX + (dx / canvasWidth.value) * 100
+  const rawY = dragTextStartOvY + (dy / canvasHeight.value) * 100
+  const clampedX = clampValue(rawX, bounds.minX, bounds.maxX)
+  const clampedY = clampValue(rawY, bounds.minY, bounds.maxY)
+  const snapped = computeSnap(clampedX, clampedY, draggingText.value.id, 'text')
+  draggingText.value.x = clampValue(snapped.x, bounds.minX, bounds.maxX)
+  draggingText.value.y = clampValue(snapped.y, bounds.minY, bounds.maxY)
 }
 
 function stopDragText() {
@@ -943,6 +991,7 @@ function stopDragText() {
 
 function wheelFontSize(e, txt) {
   txt.fontSize = Math.max(10, Math.min(300, txt.fontSize + (e.deltaY > 0 ? -2 : 2)))
+  clampOverlayToBounds(txt, 'text')
 }
 
 // ─── Resize text box ───
@@ -977,6 +1026,7 @@ function onResizeText(e) {
     const newWidth = Math.max(10, Math.min(95, resizeStartWidth - dxPct * 2))
     resizingText.value.boxWidth = Math.round(newWidth)
   }
+  clampOverlayToBounds(resizingText.value, 'text')
 }
 
 function stopResizeText() {
@@ -1031,10 +1081,17 @@ let nextOverlayId = 0
 const latexInput = ref('')
 const selectedLatexId = ref(null)
 
+function getNextLatexId() {
+  const maxExisting = latexOverlays.value.reduce((maxId, ov) => Math.max(maxId, Number(ov.id) || 0), 0)
+  nextOverlayId = Math.max(nextOverlayId, maxExisting)
+  nextOverlayId += 1
+  return nextOverlayId
+}
+
 function addLatexFromInput() {
   const code = latexInput.value.trim()
   if (!code) return
-  const newId = ++nextOverlayId
+  const newId = getNextLatexId()
   latexOverlays.value.push({
     id: newId,
     latex: code,
@@ -1079,15 +1136,14 @@ function onDragLatex(e) {
   const scale = previewScale.value / canvasWidth.value
   const dx = (e.clientX - dragLatexStartX) / scale
   const dy = (e.clientY - dragLatexStartY) / scale
-  const safeTop = safeZoneV.value / canvasHeight.value * 100
-  const safeBottom = 100 - safeTop
-  const safeLeft = safeZoneH.value / canvasWidth.value * 100
-  const safeRight = 100 - safeLeft
-  const rawX = Math.max(safeLeft, Math.min(safeRight, dragLatexOvX + (dx / canvasWidth.value) * 100))
-  const rawY = Math.max(safeTop, Math.min(safeBottom, dragLatexOvY + (dy / canvasHeight.value) * 100))
-  const snapped = computeSnap(rawX, rawY, draggingLatex.value.id, 'latex')
-  draggingLatex.value.x = Math.max(safeLeft, Math.min(safeRight, snapped.x))
-  draggingLatex.value.y = Math.max(safeTop, Math.min(safeBottom, snapped.y))
+  const bounds = getOverlayMoveBounds('latex', draggingLatex.value.id)
+  const rawX = dragLatexOvX + (dx / canvasWidth.value) * 100
+  const rawY = dragLatexOvY + (dy / canvasHeight.value) * 100
+  const clampedX = clampValue(rawX, bounds.minX, bounds.maxX)
+  const clampedY = clampValue(rawY, bounds.minY, bounds.maxY)
+  const snapped = computeSnap(clampedX, clampedY, draggingLatex.value.id, 'latex')
+  draggingLatex.value.x = clampValue(snapped.x, bounds.minX, bounds.maxX)
+  draggingLatex.value.y = clampValue(snapped.y, bounds.minY, bounds.maxY)
 }
 
 function stopDragLatex() {
@@ -1099,6 +1155,7 @@ function stopDragLatex() {
 
 function wheelLatexSize(e, overlay) {
   overlay.fontSize = Math.max(12, Math.min(300, overlay.fontSize + (e.deltaY > 0 ? -2 : 2)))
+  clampOverlayToBounds(overlay, 'latex')
 }
 
 function removeLatexOverlay(id) {
@@ -1140,6 +1197,171 @@ const activeGuides = ref([])
 const activeDistances = ref([])
 const activeEqualSpacing = ref([])
 const reelCanvas = ref(null)
+
+function getSafeBoundsPct() {
+  const safeTop = safeZoneV.value / canvasHeight.value * 100
+  const safeBottom = 100 - safeTop
+  const safeLeft = safeZoneH.value / canvasWidth.value * 100
+  const safeRight = 100 - safeLeft
+  return { safeTop, safeBottom, safeLeft, safeRight }
+}
+
+function getOverlayHalfSizePct(overlayType, overlayId) {
+  const canvasEl = reelCanvas.value
+  if (!canvasEl) return { halfW: 0, halfH: 0 }
+  const overlayEl = canvasEl.querySelector(
+    `[data-overlay-type="${overlayType}"][data-overlay-id="${overlayId}"]`
+  )
+  if (!overlayEl) return { halfW: 0, halfH: 0 }
+  const canvasRect = canvasEl.getBoundingClientRect()
+  const rect = overlayEl.getBoundingClientRect()
+  if (!canvasRect.width || !canvasRect.height) return { halfW: 0, halfH: 0 }
+  return {
+    halfW: (rect.width / canvasRect.width) * 50,
+    halfH: (rect.height / canvasRect.height) * 50,
+  }
+}
+
+function getOverlayMoveBounds(overlayType, overlayId) {
+  const { safeTop, safeBottom, safeLeft, safeRight } = getSafeBoundsPct()
+  const { halfW, halfH } = getOverlayHalfSizePct(overlayType, overlayId)
+  let minX = safeLeft + halfW
+  let maxX = safeRight - halfW
+  let minY = safeTop + halfH
+  let maxY = safeBottom - halfH
+  if (minX > maxX) {
+    const midX = (safeLeft + safeRight) / 2
+    minX = midX
+    maxX = midX
+  }
+  if (minY > maxY) {
+    const midY = (safeTop + safeBottom) / 2
+    minY = midY
+    maxY = midY
+  }
+  return { minX, maxX, minY, maxY, halfW, halfH }
+}
+
+function clampValue(value, min, max) {
+  return Math.max(min, Math.min(max, value))
+}
+
+function clampOverlayToBounds(overlay, overlayType) {
+  if (!overlay) return
+  const bounds = getOverlayMoveBounds(overlayType, overlay.id)
+  overlay.x = clampValue(overlay.x, bounds.minX, bounds.maxX)
+  overlay.y = clampValue(overlay.y, bounds.minY, bounds.maxY)
+}
+
+function getOverlayEdgePercent(overlay, overlayType, axis) {
+  if (!overlay) return 0
+  const bounds = getOverlayMoveBounds(overlayType, overlay.id)
+  const center = axis === 'x' ? overlay.x : overlay.y
+  const half = axis === 'x' ? bounds.halfW : bounds.halfH
+  return center - half
+}
+
+function getOverlayEdgeMin(overlay, overlayType, axis) {
+  const bounds = getOverlayMoveBounds(overlayType, overlay.id)
+  return axis === 'x' ? bounds.minX - bounds.halfW : bounds.minY - bounds.halfH
+}
+
+function getOverlayEdgeMax(overlay, overlayType, axis) {
+  const bounds = getOverlayMoveBounds(overlayType, overlay.id)
+  return axis === 'x' ? bounds.maxX - bounds.halfW : bounds.maxY - bounds.halfH
+}
+
+function onOverlayEdgeInput(event, overlay, overlayType, axis) {
+  const value = Number(event?.target?.value)
+  if (!Number.isFinite(value)) return
+  const bounds = getOverlayMoveBounds(overlayType, overlay.id)
+  const half = axis === 'x' ? bounds.halfW : bounds.halfH
+  if (axis === 'x') overlay.x = value + half
+  else overlay.y = value + half
+  clampOverlayToBounds(overlay, overlayType)
+}
+
+function formatPercent(value) {
+  if (!Number.isFinite(value)) return '0'
+  return (Math.round(value * 10) / 10).toString()
+}
+
+// ─── Copy / Paste overlays ───
+const overlayClipboard = ref(null)
+
+function deepClone(value) {
+  return JSON.parse(JSON.stringify(value))
+}
+
+function getSelectedOverlayForClipboard() {
+  if (selectedTextId.value !== null) {
+    const txt = textOverlays.value.find(t => t.id === selectedTextId.value)
+    if (txt) return { type: 'text', overlay: txt }
+  }
+  if (selectedLatexId.value !== null) {
+    const latex = latexOverlays.value.find(o => o.id === selectedLatexId.value)
+    if (latex) return { type: 'latex', overlay: latex }
+  }
+  return null
+}
+
+function copySelectedOverlay() {
+  const selected = getSelectedOverlayForClipboard()
+  if (!selected) return false
+
+  overlayClipboard.value = {
+    type: selected.type,
+    data: deepClone(selected.overlay),
+    pasteCount: 0,
+  }
+
+  // Best effort: expose plain content in system clipboard too.
+  const plain = selected.type === 'text' ? selected.overlay.text : selected.overlay.latex
+  if (plain && navigator?.clipboard?.writeText) {
+    navigator.clipboard.writeText(plain).catch(() => {})
+  }
+  showToast(`${selected.type === 'text' ? 'Texte' : 'Formule'} copié`)
+  return true
+}
+
+function pasteOverlayFromClipboard() {
+  const clip = overlayClipboard.value
+  if (!clip || !clip.data) return false
+
+  const offsetPct = 2 * ((clip.pasteCount || 0) + 1)
+
+  if (clip.type === 'text') {
+    const clone = deepClone(clip.data)
+    clone.id = getNextTextId()
+    clone.x = Number(clone.x || 50) + offsetPct
+    clone.y = Number(clone.y || 50) + offsetPct
+    textOverlays.value.push(clone)
+    clampOverlayToBounds(clone, 'text')
+    selectedTextId.value = clone.id
+    selectedLatexId.value = null
+    sidebarTab.value = 'texte'
+    clip.pasteCount = (clip.pasteCount || 0) + 1
+    showToast('Texte collé')
+    return true
+  }
+
+  if (clip.type === 'latex') {
+    const clone = deepClone(clip.data)
+    clone.id = getNextLatexId()
+    clone.x = Number(clone.x || 50) + offsetPct
+    clone.y = Number(clone.y || 50) + offsetPct
+    latexOverlays.value.push(clone)
+    clampOverlayToBounds(clone, 'latex')
+    selectedLatexId.value = clone.id
+    selectedTextId.value = null
+    sidebarTab.value = 'latex'
+    clip.pasteCount = (clip.pasteCount || 0) + 1
+    showToast('Formule collée')
+    return true
+  }
+
+  return false
+}
 
 // Lit les bounding boxes réelles des éléments sur le canvas (en %)
 function getElementEdges(excludeId, excludeType) {
@@ -1294,7 +1516,7 @@ function computeSnap(rawX, rawY, excludeId, excludeType) {
   }
 
   // ── Distance indicators to nearby elements ──
-  const realEdges = edgeList.filter(e => !e.id?.startsWith('__'))
+  const realEdges = edgeList.filter(e => !(typeof e.id === 'string' && e.id.startsWith('__')))
   for (const other of realEdges) {
     const dx = Math.abs(snappedX - other.cx)
     const dy = Math.abs(snappedY - other.cy)
@@ -1878,15 +2100,14 @@ function onDragOverlay(e) {
   const scale = previewScale.value / canvasWidth.value
   const dx = (e.clientX - dragStartX) / scale
   const dy = (e.clientY - dragStartY) / scale
-  const safeTop = safeZoneV.value / canvasHeight.value * 100
-  const safeBottom = 100 - safeTop
-  const safeLeft = safeZoneH.value / canvasWidth.value * 100
-  const safeRight = 100 - safeLeft
-  const rawX = Math.max(safeLeft, Math.min(safeRight, dragStartOvX + (dx / canvasWidth.value) * 100))
-  const rawY = Math.max(safeTop, Math.min(safeBottom, dragStartOvY + (dy / canvasHeight.value) * 100))
-  const snapped = computeSnap(rawX, rawY, draggingOverlay.value.id, 'image')
-  draggingOverlay.value.x = Math.max(safeLeft, Math.min(safeRight, snapped.x))
-  draggingOverlay.value.y = Math.max(safeTop, Math.min(safeBottom, snapped.y))
+  const bounds = getOverlayMoveBounds('image', draggingOverlay.value.id)
+  const rawX = dragStartOvX + (dx / canvasWidth.value) * 100
+  const rawY = dragStartOvY + (dy / canvasHeight.value) * 100
+  const clampedX = clampValue(rawX, bounds.minX, bounds.maxX)
+  const clampedY = clampValue(rawY, bounds.minY, bounds.maxY)
+  const snapped = computeSnap(clampedX, clampedY, draggingOverlay.value.id, 'image')
+  draggingOverlay.value.x = clampValue(snapped.x, bounds.minX, bounds.maxX)
+  draggingOverlay.value.y = clampValue(snapped.y, bounds.minY, bounds.maxY)
 }
 
 function stopDragOverlay() {
@@ -1899,37 +2120,77 @@ function stopDragOverlay() {
 function wheelZoomOverlay(e, imgOv) {
   const delta = e.deltaY > 0 ? -2 : 2
   imgOv.widthPct = Math.max(5, Math.min(200, imgOv.widthPct + delta))
+  clampOverlayToBounds(imgOv, 'image')
 }
 
 // ── Bloquer le scroll parent ──
 function onKeyDown(e) {
+  const isModifier = e.ctrlKey || e.metaKey
+  const key = (e.key || '').toLowerCase()
+  const tag = document.activeElement?.tagName
+
+  if (isModifier && (key === 'c' || key === 'v')) {
+    // Preserve native copy/paste when editing inputs/textareas.
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return
+    if (key === 'c') {
+      const copied = copySelectedOverlay()
+      if (copied) e.preventDefault()
+      return
+    }
+    if (key === 'v') {
+      const pasted = pasteOverlayFromClipboard()
+      if (pasted) e.preventDefault()
+      return
+    }
+  }
+
+  if (e.key === 'Delete' || e.key === 'Backspace') {
+    // Preserve native delete behavior when editing inputs/textareas.
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return
+
+    if (selectedTextId.value !== null) {
+      removeTextOverlay(selectedTextId.value)
+      clearGuides()
+      e.preventDefault()
+      showToast('Texte supprimé')
+      return
+    }
+
+    if (selectedLatexId.value !== null) {
+      removeLatexOverlay(selectedLatexId.value)
+      clearGuides()
+      e.preventDefault()
+      showToast('Formule supprimée')
+      return
+    }
+  }
+
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
     // Don't move if user is typing in an input/textarea
-    const tag = document.activeElement?.tagName
     if (tag === 'INPUT' || tag === 'TEXTAREA') return
 
     const step = e.shiftKey ? 5 : 1 // Shift = 5px, sinon 1px
-    const safeTop = safeZoneV.value / canvasHeight.value * 100
-    const safeBottom = 100 - safeTop
-    const safeLeft = safeZoneH.value / canvasWidth.value * 100
-    const safeRight = 100 - safeLeft
 
     let target = null
+    let targetType = null
     if (selectedTextId.value !== null) {
       target = textOverlays.value.find(t => t.id === selectedTextId.value)
+      targetType = 'text'
     } else if (selectedLatexId.value !== null) {
       target = latexOverlays.value.find(o => o.id === selectedLatexId.value)
+      targetType = 'latex'
     }
-    if (!target) return
+    if (!target || !targetType) return
 
     e.preventDefault()
     const dxPct = step / canvasWidth.value * 100
     const dyPct = step / canvasHeight.value * 100
+    const bounds = getOverlayMoveBounds(targetType, target.id)
 
-    if (e.key === 'ArrowLeft') target.x = Math.max(safeLeft, target.x - dxPct)
-    if (e.key === 'ArrowRight') target.x = Math.min(safeRight, target.x + dxPct)
-    if (e.key === 'ArrowUp') target.y = Math.max(safeTop, target.y - dyPct)
-    if (e.key === 'ArrowDown') target.y = Math.min(safeBottom, target.y + dyPct)
+    if (e.key === 'ArrowLeft') target.x = clampValue(target.x - dxPct, bounds.minX, bounds.maxX)
+    if (e.key === 'ArrowRight') target.x = clampValue(target.x + dxPct, bounds.minX, bounds.maxX)
+    if (e.key === 'ArrowUp') target.y = clampValue(target.y - dyPct, bounds.minY, bounds.maxY)
+    if (e.key === 'ArrowDown') target.y = clampValue(target.y + dyPct, bounds.minY, bounds.maxY)
   }
 }
 

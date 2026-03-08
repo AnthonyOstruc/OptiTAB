@@ -237,6 +237,7 @@ const routes = [
       { path: 'quiz-submissions', name: 'AdminQuizSubmissions', component: () => import('@/views/admin/AdminQuizSubmissions.vue') },
       { path: 'niveaux', name: 'AdminNiveaux', component: () => import('@/views/admin/AdminNiveaux.vue') },
       { path: 'pays', name: 'AdminPays', component: () => import('@/views/admin/AdminPays.vue') },
+      { path: 'reel-background', name: 'AdminReelBackground', component: () => import('@/views/admin/AdminReelBackground.vue') },
       { path: '', redirect: { name: 'AdminMatieres' } }
     ]
   },

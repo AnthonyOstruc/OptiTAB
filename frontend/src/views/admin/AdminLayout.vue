@@ -20,9 +20,17 @@ function isActive(name) {
 <style scoped>
 .admin-layout {
   width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-content {
   width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 </style> 

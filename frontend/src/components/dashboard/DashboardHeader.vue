@@ -54,6 +54,13 @@
       <div class="nav-group">
         <router-link to="/admin/sheets" class="admin-link" :class="{ active: isActive('AdminSheets') }">Fiches</router-link>
       </div>
+      
+      <div class="nav-separator"></div>
+      
+      <!-- Groupe 6: Outils -->
+      <div class="nav-group">
+        <router-link to="/admin/reel-background" class="admin-link" :class="{ active: isActive('AdminReelBackground') }">🎬 Fond Reel</router-link>
+      </div>
     </nav>
 
     <!-- Section centrale : Contenu conditionnel (masqué si admin) -->

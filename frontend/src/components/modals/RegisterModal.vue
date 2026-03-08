@@ -26,6 +26,27 @@
         </button>
       </p>
     </div>
+    <!-- Social Registration (en haut) -->
+    <div class="social-register">
+      <div class="social-btn-group">
+        <button 
+          v-for="provider in socialProviders"
+          :key="provider.key"
+          :class="['social-btn', provider.btnClass]"
+          @click="() => handleSocialRegister(provider.key)"
+          :disabled="isSubmitting || (provider.key === 'google' && isGoogleLoading)"
+        >
+          <img :src="provider.icon" :alt="provider.key" class="social-icon" />
+          {{ provider.label }}
+        </button>
+      </div>
+    </div>
+    <!-- Divider -->
+    <div class="divider">
+      <span class="divider-line"></span>
+      <span class="divider-text">ou</span>
+      <span class="divider-line"></span>
+    </div>
     <!-- Top fields: Prénom, Nom -->
     <div class="top-fields">
       <div class="name-fields">
@@ -93,27 +114,6 @@
     <!-- Feedback Message -->
     <div v-if="feedbackMessage" :class="['register-feedback', feedbackType]">
       {{ feedbackMessage }}
-    </div>
-    <!-- Divider -->
-    <div class="divider">
-      <span class="divider-line"></span>
-      <span class="divider-text">ou</span>
-      <span class="divider-line"></span>
-    </div>
-    <!-- Social Registration -->
-    <div class="social-register">
-      <div class="social-btn-group">
-        <button 
-          v-for="provider in socialProviders"
-          :key="provider.key"
-          :class="['social-btn', provider.btnClass]"
-          @click="() => handleSocialRegister(provider.key)"
-          :disabled="isSubmitting || (provider.key === 'google' && isGoogleLoading)"
-        >
-          <img :src="provider.icon" :alt="provider.key" class="social-icon" />
-          {{ provider.label }}
-        </button>
-      </div>
     </div>
         </div>
       </div>

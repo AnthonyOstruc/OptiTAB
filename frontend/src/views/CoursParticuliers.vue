@@ -167,6 +167,12 @@
                   vers l'excellence et vous ouvrir les portes des meilleures écoles.
                 </p>
                 <p>
+                  Je dispense des cours particuliers depuis maintenant plusieurs années. Avant de lancer OptiTAB, j'ai d'abord été professeur particulier au sein de plusieurs plateformes comme <a href="https://groupe-reussite.fr/cours-particuliers-cours-particuliers-niveaux-ligne-domicile-3452/" target="_blank" rel="noopener noreferrer" class="inline-link">Groupe Réussite</a>. J'y accompagnais des élèves de tous niveaux — du collège jusqu'aux classes préparatoires en passant par le lycée — en mathématiques et en physique-chimie. J'étais libre du choix de mes tarifs, de mes matières, de mon emploi du temps et de ma manière de travailler.
+                </p>
+                <p>
+                  L'accompagnement y était vraiment très qualitatif, mais j'ai souhaité aller encore plus loin en créant OptiTAB afin d'aider les élèves, quel que soit leur parcours, à progresser durablement et à révéler leur plein potentiel.
+                </p>
+                <p>
                   Que vous soyez en prépa ou au bac, j'adapte mon approche à votre niveau et vos objectifs pour maximiser vos chances de réussite.
                 </p>
                 <p>
@@ -1364,6 +1370,17 @@ onUnmounted(() => {
 
 .professeur-description p:last-child {
   margin-bottom: 0;
+}
+
+.professeur-description .inline-link {
+  color: #4338ca;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.professeur-description .inline-link:hover {
+  color: #3730a3;
 }
 
 .professeur-highlights {

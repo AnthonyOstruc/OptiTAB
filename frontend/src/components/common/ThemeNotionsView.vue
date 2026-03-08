@@ -61,7 +61,7 @@
               {{ currentLevelLabel || 'Ce niveau' }} est verrouillé. Abonnez-vous pour débloquer tous les chapitres.
             </p>
           </div>
-          <router-link to="/billing" class="tnv-lock-cta">
+          <router-link to="/billing#plans" class="tnv-lock-cta">
             Voir les offres
           </router-link>
         </div>
@@ -91,7 +91,7 @@
             :key="`inline-${n.id}`"
             class="tnv-inline-chip"
             type="button"
-            :disabled="notionsLocked"
+            :disabled="false"
             @click="goToNotion(n.id)"
           >
             <span v-if="themeNameFor(n)" class="tnv-inline-theme">{{ themeNameFor(n) }}</span>
@@ -117,6 +117,7 @@
               :description="notion.description || ''"
               :locked="notionsLocked"
               @click="goToNotion(notion.id)"
+              @locked-click="goToNotion(notion.id)"
             />
             <div v-if="!(themeToNotions[theme.id] && themeToNotions[theme.id].length)" class="tnv-no-notions">
               <div class="tnv-empty-icon">
@@ -169,6 +170,7 @@
               :description="notion.description || ''"
               :locked="notionsLocked"
               @click="goToNotion(notion.id)"
+              @locked-click="goToNotion(notion.id)"
             />
           </div>
         </template>
@@ -319,7 +321,7 @@ function notionMatches(notion) {
 
 async function goToNotion(notionId) {
   if (notionsLocked.value) {
-    showToast('Ce niveau est verrouillé. Abonnez-vous pour accéder aux chapitres.', 'warning')
+    router.push({ name: 'Billing', hash: '#plans' })
     return
   }
   // Effacer le filtre de recherche de l'URL avant de naviguer

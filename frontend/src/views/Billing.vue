@@ -100,7 +100,7 @@
       </div>
 
       <!-- Pricing Cards -->
-      <div class="pricing-container">
+      <div class="pricing-container" id="plans">
         <PricingCards 
           :submitting="submitting"
           :show-current-plan="shouldBlockForSelf"
@@ -288,6 +288,7 @@
 
 <script setup>
 import { onMounted, onUnmounted, ref, computed, watch, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
 import { createCheckoutSession } from '@/api/subscriptions'
 import { checkEmailExists, createChildAccount } from '@/api/users'
 import DashboardLayout from '@/components/dashboard/DashboardLayout.vue'
@@ -303,6 +304,7 @@ const loading = ref(false)
 const submitting = ref(false)
 const subscriptionStore = useSubscriptionStore()
 const userStore = useUserStore()
+const route = useRoute()
 
 // --- Zoom mobile ("dézoom") ---
 const billingContentRef = ref(null)
@@ -380,6 +382,14 @@ onMounted(async () => {
 
   await nextTick()
   measureBillingHeight()
+
+  // Scroll vers la section plans si on arrive via un contenu verrouillé
+  if (route.hash === '#plans' || route.query.reason === 'subscription_required') {
+    setTimeout(() => {
+      const el = document.getElementById('plans')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 300)
+  }
 
   if (typeof window !== 'undefined') {
     window.addEventListener('resize', handleResize, { passive: true })

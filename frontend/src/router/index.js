@@ -394,7 +394,7 @@ router.beforeEach(async (to, from, next) => {
       if (!subscriptionStore.hasAccess) {
         const unlocked = await subscriptionStore.refreshUntilAccess({ attempts: 5, interval: 2000 })
         if (!unlocked) {
-          return next({ name: 'Billing', query: { redirect: to.fullPath, reason: 'subscription_required' } })
+          return next({ name: 'Billing', hash: '#plans', query: { redirect: to.fullPath, reason: 'subscription_required' } })
         }
       }
     }

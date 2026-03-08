@@ -20,7 +20,7 @@
       <div class="notion-content">
         <h3 class="notion-title">{{ title }}</h3>
         <div v-if="!hideDescription" class="notion-description-container">
-          <p class="notion-description">{{ description || 'Cliquez pour explorer les chapitres' }}</p>
+          <p class="notion-description">{{ locked ? 'Débloquer ce chapitre' : (description || 'Cliquez pour explorer les chapitres') }}</p>
           <!-- Flèche à côté du texte -->
           <div class="notion-arrow">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -62,7 +62,7 @@
       <div class="notion-content">
         <h3 class="notion-title">{{ title }}</h3>
         <div v-if="!hideDescription" class="notion-description-container">
-          <p class="notion-description">{{ description || 'Cliquez pour explorer les chapitres' }}</p>
+          <p class="notion-description">{{ locked ? 'Débloquer ce chapitre' : (description || 'Cliquez pour explorer les chapitres') }}</p>
           <!-- Flèche à côté du texte -->
           <div class="notion-arrow">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -157,8 +157,8 @@ function handleMouseEnter() {
 }
 
 .notion-card.locked .notion-card-inner {
-  cursor: default;
-  opacity: 0.7;
+  cursor: pointer;
+  opacity: 0.75;
 }
 
 .notion-card-inner:hover {
@@ -167,8 +167,9 @@ function handleMouseEnter() {
 }
 
 .notion-card.locked .notion-card-inner:hover {
-  border-color: #e5e7eb;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-color: #f59e0b;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+  opacity: 1;
 }
 
 /* Slot pour ajouter des badges ou infos complémentaires */
@@ -237,8 +238,13 @@ function handleMouseEnter() {
 }
 
 .notion-card.locked .notion-arrow {
-  background: #f9fafb;
-  color: #cbd5f5;
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.notion-card.locked .notion-description {
+  color: #d97706;
+  font-weight: 500;
 }
 
 .lock-badge {

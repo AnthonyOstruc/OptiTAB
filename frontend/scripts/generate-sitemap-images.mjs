@@ -6,6 +6,10 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const CANONICAL_SITE_ORIGIN = 'https://www.optitab.net'
+const API_FETCH_TIMEOUT_MS = Number.parseInt(
+  String(process.env.SITEMAP_IMAGES_API_TIMEOUT_MS || '15000'),
+  10
+)
 
 function normalizeSiteUrl(raw) {
   const value = String(raw || '').trim()
@@ -287,7 +291,17 @@ async function fetchAllPages(url) {
 
   while (nextUrl && guard < 50) {
     guard += 1
-    const res = await fetch(nextUrl, { headers: { Accept: 'application/json' } })
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), Number.isFinite(API_FETCH_TIMEOUT_MS) ? API_FETCH_TIMEOUT_MS : 15000)
+    let res
+    try {
+      res = await fetch(nextUrl, {
+        headers: { Accept: 'application/json' },
+        signal: controller.signal
+      })
+    } finally {
+      clearTimeout(timeout)
+    }
     if (!res.ok) {
       throw new Error(`HTTP ${res.status} for ${nextUrl}`)
     }

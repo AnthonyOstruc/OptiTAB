@@ -24,6 +24,10 @@ const EXERCISE_DETAIL_PATH_RE = /^\/ressources-gratuites\/exercices\/exercice-gr
 
 const HTML_FETCH_ACCEPT = 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.8'
 const HTML_FETCH_TIMEOUT_MS = 15000
+const API_FETCH_TIMEOUT_MS = Number.parseInt(
+  String(process.env.SITEMAP_API_TIMEOUT_MS || '15000'),
+  10
+)
 const SHOULD_VALIDATE_MERGE = String(process.env.VALIDATE_MERGE || '').trim() === '1'
 const CANONICAL_SITE_ORIGIN = 'https://www.optitab.net'
 const CANONICAL_SITE_HOSTS = new Set(['optitab.net', 'www.optitab.net'])
@@ -264,7 +268,17 @@ async function fetchAllPages(url) {
 
   while (nextUrl && guard < 50) {
     guard += 1
-    const res = await fetch(nextUrl, { headers: { Accept: 'application/json' } })
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), Number.isFinite(API_FETCH_TIMEOUT_MS) ? API_FETCH_TIMEOUT_MS : 15000)
+    let res
+    try {
+      res = await fetch(nextUrl, {
+        headers: { Accept: 'application/json' },
+        signal: controller.signal
+      })
+    } finally {
+      clearTimeout(timeout)
+    }
     if (!res.ok) {
       throw new Error(`HTTP ${res.status} for ${nextUrl}`)
     }

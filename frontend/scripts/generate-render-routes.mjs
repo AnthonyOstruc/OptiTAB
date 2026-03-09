@@ -12,6 +12,10 @@ const OUTPUT_JSON_PATH = path.resolve(__dirname, '..', 'generated', 'render-lega
 const START_MARKER = '      # BEGIN GENERATED LEGACY REDIRECTS'
 const END_MARKER = '      # END GENERATED LEGACY REDIRECTS'
 const STRICT_MODE = String(process.env.RENDER_ROUTES_STRICT || '').trim() === '1'
+const API_FETCH_TIMEOUT_MS = Number.parseInt(
+  String(process.env.RENDER_ROUTES_API_TIMEOUT_MS || '15000'),
+  10
+)
 const KNOWN_404_POPULAR_LINK_PATHS = [
   '/ressources-gratuites/exercices/exercice-gratuit-1058-france-1ere-mathematiques-boucles-for-avec-range-exercices-de-base'
 ]
@@ -234,7 +238,17 @@ async function fetchAllPages(url) {
 
   while (nextUrl && guard < 100) {
     guard += 1
-    const response = await fetch(nextUrl, { headers: { Accept: 'application/json' } })
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), Number.isFinite(API_FETCH_TIMEOUT_MS) ? API_FETCH_TIMEOUT_MS : 15000)
+    let response
+    try {
+      response = await fetch(nextUrl, {
+        headers: { Accept: 'application/json' },
+        signal: controller.signal
+      })
+    } finally {
+      clearTimeout(timeout)
+    }
     if (!response.ok) {
       throw new Error(`HTTP ${response.status} while fetching ${nextUrl}`)
     }

@@ -11,6 +11,17 @@ const normalizeToken = (token) => {
   return trimmed && trimmed !== 'null' && trimmed !== 'undefined' ? trimmed : ''
 }
 
+const FETCH_USER_RETRY_DELAY_MS = 5000
+const FETCH_USER_MAX_SERVER_RETRIES = 1
+let fetchUserRetryTimer = null
+
+const clearFetchUserRetryTimer = () => {
+  if (fetchUserRetryTimer) {
+    clearTimeout(fetchUserRetryTimer)
+    fetchUserRetryTimer = null
+  }
+}
+
 // Nettoyage automatique de l'ancienne clé 'user' du localStorage (sécurité)
 localStorage.removeItem('user')
 
@@ -35,7 +46,8 @@ export const useUserStore = defineStore('user', {
     isActive: false,
     isAdmin: false,
     isAuthenticated: false,
-    isLoading: false
+    isLoading: false,
+    fetchUserRetryCount: 0
   }),
   actions: {
     // Met à jour l'utilisateur dans le store
@@ -66,6 +78,8 @@ export const useUserStore = defineStore('user', {
       
       this.isAuthenticated = true
       this.isLoading = false
+      this.fetchUserRetryCount = 0
+      clearFetchUserRetryTimer()
     },
     // Réinitialise l'utilisateur (déconnexion ou erreur)
     clearUser(options = {}) {
@@ -97,6 +111,8 @@ export const useUserStore = defineStore('user', {
       if (!preserveLoadingState) {
         this.isLoading = false
       }
+      this.fetchUserRetryCount = 0
+      clearFetchUserRetryTimer()
 
       // Nettoyer le localStorage des données liées à cet utilisateur
       if (userId) {
@@ -116,7 +132,8 @@ export const useUserStore = defineStore('user', {
       keysToClean.forEach(key => localStorage.removeItem(key))
     },
     // Récupère l'utilisateur via l'API si le token est présent
-    async fetchUser() {
+    async fetchUser(options = {}) {
+      const { silent = false } = options
       const accessToken = normalizeToken(localStorage.getItem('access_token'))
       const refreshToken = normalizeToken(localStorage.getItem('refresh_token'))
       const hasAccessToken = Boolean(accessToken)
@@ -127,7 +144,9 @@ export const useUserStore = defineStore('user', {
         return
       }
 
-      this.isLoading = true
+      if (!silent) {
+        this.isLoading = true
+      }
       try {
         console.log('🔍 Tokens disponibles:', { 
           hasAccess: hasAccessToken, 
@@ -209,21 +228,35 @@ export const useUserStore = defineStore('user', {
           console.warn('Token invalide ou expiré, déconnexion automatique')
           this.clearUser()
         } else if (errorStatus >= 500) {
-          console.warn('Erreur serveur, tentative de reconnexion dans 5 secondes')
-          // Pour les erreurs serveur, on peut essayer de nouveau après un délai
-          setTimeout(() => {
-            if (!this.isAuthenticated) {
-              console.log('Nouvelle tentative de récupération du profil après erreur serveur')
-              this.fetchUser()
-            }
-          }, 5000)
+          const currentRetryCount = Number(this.fetchUserRetryCount || 0)
+          if (currentRetryCount < FETCH_USER_MAX_SERVER_RETRIES) {
+            this.fetchUserRetryCount = currentRetryCount + 1
+            console.warn(`Erreur serveur, nouvelle tentative (${this.fetchUserRetryCount}/${FETCH_USER_MAX_SERVER_RETRIES}) dans 5 secondes`)
+            clearFetchUserRetryTimer()
+            fetchUserRetryTimer = setTimeout(() => {
+              fetchUserRetryTimer = null
+              const hasAnyToken = Boolean(
+                normalizeToken(localStorage.getItem('access_token')) ||
+                normalizeToken(localStorage.getItem('refresh_token'))
+              )
+              if (!this.isAuthenticated && hasAnyToken) {
+                console.log('Nouvelle tentative silencieuse de récupération du profil après erreur serveur')
+                this.fetchUser({ silent: true })
+              }
+            }, FETCH_USER_RETRY_DELAY_MS)
+          } else {
+            console.warn('Erreur serveur persistante, arrêt des retries automatiques et déconnexion préventive')
+            this.clearUser()
+          }
         } else {
           console.warn(`Erreur ${errorStatus}: ${errorMessage}`)
           // Pour les autres erreurs, on déconnecte aussi pour éviter les boucles
           this.clearUser()
         }
       } finally {
-        this.isLoading = false
+        if (!silent) {
+          this.isLoading = false
+        }
       }
     }
   }

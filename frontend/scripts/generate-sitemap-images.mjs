@@ -10,6 +10,10 @@ const API_FETCH_TIMEOUT_MS = Number.parseInt(
   String(process.env.SITEMAP_IMAGES_API_TIMEOUT_MS || '15000'),
   10
 )
+const API_PAGE_SIZE = Number.parseInt(
+  String(process.env.SITEMAP_IMAGES_API_PAGE_SIZE || '100'),
+  10
+)
 
 function normalizeSiteUrl(raw) {
   const value = String(raw || '').trim()
@@ -337,6 +341,7 @@ async function buildImageSitemap() {
     process.env.VITE_API_URL ||
     'https://optitab-backend.onrender.com'
   )
+  const pageSize = Number.isFinite(API_PAGE_SIZE) && API_PAGE_SIZE > 0 ? API_PAGE_SIZE : 100
 
   const mediaBase = normalizeSiteUrl(
     process.env.VITE_S3_MEDIA_URL ||
@@ -346,10 +351,22 @@ async function buildImageSitemap() {
 
   const outPath = path.resolve(__dirname, '..', 'public', 'sitemap-images.xml')
   const [courseResources, exerciseResources, summaryResources, tableResources] = await Promise.all([
-    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=course&page_size=500&include_images=1`, 'courses'),
-    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=exercise&page_size=500&include_images=1`, 'exercises'),
-    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=summary&page_size=500&include_images=1`, 'summaries'),
-    fetchAllPagesSafe(`${apiBase}/api/free/learning-resources/?type=table&page_size=500&include_images=1`, 'tables')
+    fetchAllPagesSafe(
+      `${apiBase}/api/free/learning-resources/?type=course&page_size=${pageSize}&include_images=1&light=1`,
+      'courses'
+    ),
+    fetchAllPagesSafe(
+      `${apiBase}/api/free/learning-resources/?type=exercise&page_size=${pageSize}&include_images=1&light=1`,
+      'exercises'
+    ),
+    fetchAllPagesSafe(
+      `${apiBase}/api/free/learning-resources/?type=summary&page_size=${pageSize}&include_images=1&light=1`,
+      'summaries'
+    ),
+    fetchAllPagesSafe(
+      `${apiBase}/api/free/learning-resources/?type=table&page_size=${pageSize}&include_images=1&light=1`,
+      'tables'
+    )
   ])
 
   const entries = new Map()

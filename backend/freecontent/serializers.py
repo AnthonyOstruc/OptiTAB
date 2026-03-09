@@ -146,7 +146,8 @@ class CourseFreePreviewSerializer(serializers.Serializer):
 
         titre = cours.titre or getattr(notion, 'titre', 'Cours OptiTAB')
         accroche = getattr(notion, 'description', '') or ''
-        raw_content = getattr(cours, 'contenu', '')
+        include_full_content = bool(self.context.get('include_full_content', True)) if hasattr(self, 'context') else True
+        raw_content = getattr(cours, 'contenu', '') if include_full_content else ''
         excerpt = accroche or self._build_excerpt(raw_content)
         badge = self._badge_for_scope(cours)
         images = getattr(cours, 'images', None)
@@ -155,7 +156,7 @@ class CourseFreePreviewSerializer(serializers.Serializer):
         include_images = bool(self.context.get('include_images', True)) if hasattr(self, 'context') else True
         course_title = resolve_course_title(cours) or titre
         if include_images and images is not None:
-            for img in images.all().order_by('position', 'id'):
+            for img in images.all():
                 image_data.append(
                     build_course_image_payload(
                         img,
@@ -188,7 +189,7 @@ class CourseFreePreviewSerializer(serializers.Serializer):
             'pdf_url': self._safe_file_url(getattr(cours, 'pdf_file', None)),
             'cover_image': '',
             'badge': badge,
-            'lecture_duree': self._estimate_read_time(getattr(cours, 'contenu', '')),
+            'lecture_duree': self._estimate_read_time(raw_content),
             'tag_secondaire': getattr(niveau, 'nom', '') or getattr(matiere, 'titre', ''),
             'matiere': getattr(matiere, 'id', None),
             'matiere_nom': getattr(matiere, 'titre', ''),
@@ -256,7 +257,12 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
         matiere = getattr(theme, 'matiere', None)
         pays = getattr(niveau, 'pays', None) if niveau else None
 
-        accroche = exercice.question or exercice.contenu or ''
+        include_full_content = bool(self.context.get('include_full_content', True)) if hasattr(self, 'context') else True
+        question = (exercice.question or '') if include_full_content else ''
+        contenu = (exercice.contenu or '') if include_full_content else ''
+        solution = (exercice.reponse_correcte or '') if include_full_content else ''
+        etapes = (exercice.etapes or '') if include_full_content else ''
+        accroche = question or contenu or ''
         excerpt = accroche[:220]
         images = getattr(exercice, 'images', None)
         image_data = []
@@ -264,7 +270,7 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
         include_images = bool(self.context.get('include_images', True)) if hasattr(self, 'context') else True
         exercice_title = resolve_exercice_title(exercice) or (exercice.titre or '')
         if include_images and images is not None:
-            for img in images.all().order_by('position', 'id'):
+            for img in images.all():
                 image_data.append(
                     build_exercice_image_payload(
                         img,
@@ -292,10 +298,10 @@ class ExerciceFreePreviewSerializer(serializers.Serializer):
             'is_locked': exercice.access_scope == getattr(exercice, 'ACCESS_SCOPE_PAID', 'paid'),
             'excerpt': excerpt,
             'contenu_html': '',
-            'contenu': exercice.contenu or '',
-            'question': exercice.question or '',
-            'solution': exercice.reponse_correcte or '',
-            'etapes': exercice.etapes or '',
+            'contenu': contenu,
+            'question': question,
+            'solution': solution,
+            'etapes': etapes,
             'images': image_data,
             'difficulty': getattr(exercice, 'difficulty', '') or '',
             'cover_image': cover_image,
@@ -344,7 +350,8 @@ class SynthesisFreePreviewSerializer(serializers.Serializer):
         matiere = getattr(theme, 'matiere', None)
         pays = getattr(niveau, 'pays', None) if niveau else None
 
-        summary = sheet.summary or ''
+        include_full_content = bool(self.context.get('include_full_content', True)) if hasattr(self, 'context') else True
+        summary = (sheet.summary or '') if include_full_content else ''
         excerpt = summary.strip().split('\n')[0]
         if not excerpt:
             excerpt = summary[:200]
@@ -355,7 +362,7 @@ class SynthesisFreePreviewSerializer(serializers.Serializer):
         include_images = bool(self.context.get('include_images', True)) if hasattr(self, 'context') else True
         synthesis_title = resolve_synthesis_title(sheet) or (sheet.titre or '')
         if include_images and images_qs is not None:
-            for img in images_qs.all().order_by('position', 'id'):
+            for img in images_qs.all():
                 images_payload.append(
                     build_synthesis_image_payload(
                         img,

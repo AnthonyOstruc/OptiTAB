@@ -409,13 +409,50 @@ CSRF_TRUSTED_ORIGINS = [
 # CACHE
 # ========================================
 
-# Cache en mémoire locale pour activer cache.set/get côté vues
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'opti-tab-local-cache',
+def _int_env(var_name, default):
+    try:
+        return int(os.getenv(var_name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
+# En production, eviter LocMem par defaut pour limiter les pics RAM.
+# Valeurs possibles via CACHE_BACKEND: locmem | filebased | dummy
+cache_backend = os.getenv(
+    'CACHE_BACKEND',
+    'locmem' if DEBUG else 'filebased'
+).strip().lower()
+
+if cache_backend == 'dummy':
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
     }
-}
+elif cache_backend == 'filebased':
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+            'LOCATION': os.getenv('FILEBASED_CACHE_DIR', '/tmp/optitab-django-cache'),
+            'TIMEOUT': _int_env('CACHE_DEFAULT_TIMEOUT', 300),
+            'OPTIONS': {
+                'MAX_ENTRIES': _int_env('CACHE_MAX_ENTRIES', 1000),
+                'CULL_FREQUENCY': _int_env('CACHE_CULL_FREQUENCY', 3),
+            },
+        }
+    }
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'opti-tab-local-cache',
+            'TIMEOUT': _int_env('CACHE_DEFAULT_TIMEOUT', 300),
+            'OPTIONS': {
+                'MAX_ENTRIES': _int_env('CACHE_MAX_ENTRIES', 300),
+                'CULL_FREQUENCY': _int_env('CACHE_CULL_FREQUENCY', 3),
+            },
+        }
+    }
 
 # ========================================
 # INTERNATIONALISATION
@@ -582,3 +619,4 @@ if not DEBUG:
     #         'LOCATION': 'optitab-cache',
     #     }
     # }
+

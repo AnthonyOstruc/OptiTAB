@@ -16,6 +16,10 @@ const API_FETCH_TIMEOUT_MS = Number.parseInt(
   String(process.env.RENDER_ROUTES_API_TIMEOUT_MS || '15000'),
   10
 )
+const API_PAGE_SIZE = Number.parseInt(
+  String(process.env.RENDER_ROUTES_API_PAGE_SIZE || '100'),
+  10
+)
 const KNOWN_404_POPULAR_LINK_PATHS = [
   '/ressources-gratuites/exercices/exercice-gratuit-1058-france-1ere-mathematiques-boucles-for-avec-range-exercices-de-base'
 ]
@@ -298,6 +302,7 @@ async function main() {
   if (!apiBase) {
     throw new Error('Missing API base URL for redirect generation')
   }
+  const pageSize = Number.isFinite(API_PAGE_SIZE) && API_PAGE_SIZE > 0 ? API_PAGE_SIZE : 100
 
   const redirectsBySource = new Map()
   const addRedirect = (source, destination, reason) => {
@@ -327,10 +332,10 @@ async function main() {
 
   const baseEndpoint = `${apiBase}/api/free/learning-resources/`
   const [courses, summaries, exerciseChapters, exercises] = await Promise.all([
-    fetchAllPages(`${baseEndpoint}?type=course&page_size=500`),
-    fetchAllPages(`${baseEndpoint}?type=summary&page_size=500`),
-    fetchAllPages(`${baseEndpoint}?type=exercise&group_by=notion&page_size=500`),
-    fetchAllPages(`${baseEndpoint}?type=exercise&page_size=500`)
+    fetchAllPages(`${baseEndpoint}?type=course&page_size=${pageSize}&light=1`),
+    fetchAllPages(`${baseEndpoint}?type=summary&page_size=${pageSize}&light=1`),
+    fetchAllPages(`${baseEndpoint}?type=exercise&group_by=notion&page_size=${pageSize}&light=1`),
+    fetchAllPages(`${baseEndpoint}?type=exercise&page_size=${pageSize}&light=1`)
   ])
 
   for (const item of courses) {

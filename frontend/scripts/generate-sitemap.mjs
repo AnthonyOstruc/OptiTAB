@@ -28,6 +28,10 @@ const API_FETCH_TIMEOUT_MS = Number.parseInt(
   String(process.env.SITEMAP_API_TIMEOUT_MS || '15000'),
   10
 )
+const API_PAGE_SIZE = Number.parseInt(
+  String(process.env.SITEMAP_API_PAGE_SIZE || '100'),
+  10
+)
 const SHOULD_VALIDATE_MERGE = String(process.env.VALIDATE_MERGE || '').trim() === '1'
 const CANONICAL_SITE_ORIGIN = 'https://www.optitab.net'
 const CANONICAL_SITE_HOSTS = new Set(['optitab.net', 'www.optitab.net'])
@@ -491,6 +495,7 @@ async function buildSitemap() {
     process.env.VITE_API_URL ||
     'https://optitab-backend.onrender.com'
   )
+  const pageSize = Number.isFinite(API_PAGE_SIZE) && API_PAGE_SIZE > 0 ? API_PAGE_SIZE : 100
 
   const outPath = path.resolve(__dirname, '..', 'public', 'sitemap.xml')
 
@@ -521,7 +526,7 @@ async function buildSitemap() {
     const baseEndpoint = `${apiBase}/api/free/learning-resources/`
 
     // 1) Curated resources
-    const generic = await fetchAllPages(`${baseEndpoint}?page_size=500`)
+    const generic = await fetchAllPages(`${baseEndpoint}?page_size=${pageSize}&light=1`)
     for (const item of generic) {
       if (item?.is_locked === true) continue
       const pathForItem = routeForResource(item)
@@ -531,7 +536,9 @@ async function buildSitemap() {
 
     // 2) Typed resources (course, summary, exercise detail)
     for (const type of ['course', 'summary', 'exercise']) {
-      const items = await fetchAllPages(`${baseEndpoint}?type=${encodeURIComponent(type)}&page_size=500`)
+      const items = await fetchAllPages(
+        `${baseEndpoint}?type=${encodeURIComponent(type)}&page_size=${pageSize}&light=1`
+      )
       for (const item of items) {
         if (item?.is_locked === true) continue
         const pathForItem = routeForResource({ ...item, resource_type: type })
@@ -541,7 +548,9 @@ async function buildSitemap() {
     }
 
     // 3) Exercise chapter pages (grouped canonical shape only)
-    const chapterItems = await fetchAllPages(`${baseEndpoint}?type=exercise&group_by=notion&page_size=500`)
+    const chapterItems = await fetchAllPages(
+      `${baseEndpoint}?type=exercise&group_by=notion&page_size=${pageSize}&light=1`
+    )
     for (const item of chapterItems) {
       const pathForChapter = routeForExerciseChapter(item)
       if (!pathForChapter) continue

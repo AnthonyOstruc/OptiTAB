@@ -374,7 +374,7 @@ function mergeUniqueResources(lists = []) {
 }
 
 const fetchSummaryAndTableResources = async () => {
-  const baseParams = { page: 1, page_size: 500 }
+  const baseParams = { page: 1, page_size: 500, light: 1 }
   const [summaryResult, tableResult] = await Promise.allSettled([
     getFreeResources({ ...baseParams, type: 'summary' }),
     getFreeResources({ ...baseParams, type: 'table' })
@@ -421,7 +421,8 @@ const fetchResources = async (page = 1, retried = false) => {
     const params = {
       type: props.resourceType,
       page: effectivePage,
-      page_size: effectivePageSize
+      page_size: effectivePageSize,
+      light: 1
     }
     if (isExerciseMode.value) {
       params.group_by = 'notion'
@@ -470,6 +471,7 @@ const fetchResources = async (page = 1, retried = false) => {
       // Fallback: certains endpoints n'acceptent pas page/page_size -> tenter sans pagination serveur
       try {
         const fallbackParams = { type: props.resourceType }
+        fallbackParams.light = 1
         if (isExerciseMode.value) {
           fallbackParams.group_by = 'notion'
         }
@@ -535,7 +537,8 @@ const fetchLevelOptions = async () => {
     const params = {
       type: props.resourceType,
       page: 1,
-      page_size: 500
+      page_size: 500,
+      light: 1
     }
     if (isExerciseMode.value) {
       params.group_by = 'notion'

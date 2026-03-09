@@ -107,7 +107,7 @@ const resolveNotionBySlug = async () => {
 
   try {
     if (targetId) {
-      const data = await getFreeResources({ type: 'exercise', notion: targetId, page_size: 1 })
+      const data = await getFreeResources({ type: 'exercise', notion: targetId, page_size: 1, light: 1 })
       const list = Array.isArray(data?.results) ? data.results : data
       const first = list && list.length ? list[0] : null
       if (first) {
@@ -166,7 +166,8 @@ const resolveNotionBySlug = async () => {
         type: 'exercise',
         group_by: 'notion',
         page,
-        page_size: pageSize
+        page_size: pageSize,
+        light: 1
       })
       const list = Array.isArray(data?.results) ? data.results : data
       const count = Number(data?.count || 0)

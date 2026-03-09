@@ -1,14 +1,14 @@
 import re
-from django.db.models import Q, Count, Case, When, Value, BooleanField, F
+from django.db.models import Q, Count, Case, When, Value, BooleanField, F, Prefetch
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 from rest_framework.pagination import PageNumberPagination
 
-from cours.models import Cours
-from curriculum.models import Exercice
-from synthesis.models import SynthesisSheet
+from cours.models import Cours, CoursImage
+from curriculum.models import Exercice, ExerciceImage
+from synthesis.models import SynthesisSheet, SynthesisImage
 from .models import FreeLearningResource
 from .serializers import (
     FreeLearningResourceSerializer,
@@ -216,6 +216,7 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
     def list(self, request, *args, **kwargs):
         resource_type = request.query_params.get('type') or request.query_params.get('resource_type')
         include_images = self._should_include_images(request)
+        include_full_content = self._should_include_full_content(request, resource_type)
 
         if resource_type == FreeLearningResource.TYPE_COURSE:
             response = self._paginate_and_serialize(
@@ -227,7 +228,10 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                     request
                 ),
                 CourseFreePreviewSerializer,
-                context_updates={'include_images': include_images}
+                context_updates={
+                    'include_images': include_images,
+                    'include_full_content': include_full_content,
+                }
             )
             hidden_count = self._count_hidden_chapters(
                 self._get_free_courses_queryset(
@@ -254,7 +258,10 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             return self._paginate_and_serialize(
                 queryset,
                 ExerciceFreePreviewSerializer,
-                context_updates={'include_images': include_images}
+                context_updates={
+                    'include_images': include_images,
+                    'include_full_content': include_full_content,
+                }
             )
         if resource_type == FreeLearningResource.TYPE_SUMMARY:
             response = self._paginate_and_serialize(
@@ -267,7 +274,10 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                     request
                 ),
                 SynthesisFreePreviewSerializer,
-                context_updates={'include_images': include_images}
+                context_updates={
+                    'include_images': include_images,
+                    'include_full_content': include_full_content,
+                }
             )
             hidden_count = self._count_hidden_chapters(
                 self._get_free_summaries_queryset(
@@ -290,7 +300,10 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                     request
                 ),
                 SynthesisFreePreviewSerializer,
-                context_updates={'include_images': include_images}
+                context_updates={
+                    'include_images': include_images,
+                    'include_full_content': include_full_content,
+                }
             )
             hidden_count = self._count_hidden_chapters(
                 self._get_free_summaries_queryset(
@@ -407,8 +420,11 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         qs = (
             Cours.objects.filter(est_actif=True)
         )
+        include_full_content = self._should_include_full_content(request, FreeLearningResource.TYPE_COURSE)
         if not include_inactive:
             qs = qs.filter(Q(notion__isnull=True) | Q(notion__est_actif=True))
+        if not include_full_content:
+            qs = qs.defer('contenu')
         qs = qs.select_related(
             'notion',
             'notion__theme',
@@ -418,7 +434,12 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             'notion__theme__contexte__niveau__pays',
         )
         if prefetch_images:
-            qs = qs.prefetch_related('images')
+            qs = qs.prefetch_related(
+                Prefetch(
+                    'images',
+                    queryset=CoursImage.objects.order_by('position', 'id')
+                )
+            )
         qs = qs.annotate(
             is_locked=Case(
                 When(access_scope=Cours.ACCESS_SCOPE_PAID, then=Value(True)),
@@ -544,6 +565,19 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
     def _should_include_images(self, request):
         return self._is_truthy(request.query_params.get('include_images'))
 
+    def _should_use_lightweight_payload(self, request):
+        return self._is_truthy(request.query_params.get('light'))
+
+    def _should_include_full_content(self, request, resource_type):
+        if self._is_truthy(request.query_params.get('full_content')):
+            return True
+        if not self._should_use_lightweight_payload(request):
+            return True
+        # Les pages de chapitre d'exercices affichent le contenu complet.
+        if resource_type == FreeLearningResource.TYPE_EXERCISE and request.query_params.get('notion'):
+            return True
+        return False
+
     def _paginate_and_serialize(self, queryset, serializer_class, context_updates=None):
         """Applique la pagination standard et serialise le resultat."""
         page = self.paginate_queryset(queryset)
@@ -580,8 +614,11 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
         qs = (
             Exercice.objects.filter(est_actif=True)
         )
+        include_full_content = self._should_include_full_content(request, FreeLearningResource.TYPE_EXERCISE)
         if not include_inactive:
             qs = qs.filter(Q(notion__isnull=True) | Q(notion__est_actif=True))
+        if not include_full_content:
+            qs = qs.defer('contenu', 'question', 'reponse_correcte', 'etapes')
         qs = qs.select_related(
             'notion',
             'notion__theme',
@@ -591,7 +628,12 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             'notion__theme__contexte__niveau__pays',
         )
         if prefetch_images:
-            qs = qs.prefetch_related('images')
+            qs = qs.prefetch_related(
+                Prefetch(
+                    'images',
+                    queryset=ExerciceImage.objects.order_by('position', 'id')
+                )
+            )
         qs = qs.annotate(
             is_locked=Case(
                 When(access_scope=Exercice.ACCESS_SCOPE_PAID, then=Value(True)),
@@ -658,8 +700,11 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
                 sheet_type=sheet_type
             )
         )
+        include_full_content = self._should_include_full_content(request, FreeLearningResource.TYPE_SUMMARY)
         if not include_inactive:
             qs = qs.filter(Q(notion__isnull=True) | Q(notion__est_actif=True))
+        if not include_full_content:
+            qs = qs.defer('summary')
         qs = qs.select_related(
             'notion',
             'notion__theme',
@@ -669,7 +714,12 @@ class FreeLearningResourceViewSet(viewsets.ReadOnlyModelViewSet):
             'notion__theme__contexte__niveau__pays',
         )
         if prefetch_images:
-            qs = qs.prefetch_related('images')
+            qs = qs.prefetch_related(
+                Prefetch(
+                    'images',
+                    queryset=SynthesisImage.objects.order_by('position', 'id')
+                )
+            )
         qs = qs.annotate(
             is_locked=Case(
                 When(access_scope=SynthesisSheet.ACCESS_SCOPE_PAID, then=Value(True)),

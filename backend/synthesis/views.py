@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 import os
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from subscriptions.permissions import HasActiveSubscriptionOrPass
+from subscriptions.permissions import HasActiveSubscriptionOrPass, user_has_active_subscription_or_pass
 from .models import SynthesisSheet, SynthesisImage
 from .serializers import (
     SynthesisSheetSerializer,
@@ -28,9 +28,9 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
         # Autoriser tous les utilisateurs authentifies a lister
         if self.action == "list":
             return [IsAuthenticated()]
-        # La lecture detail reste reservee aux utilisateurs avec acces actif
+        # retrieve: auth only (demo check in retrieve method)
         if self.action == "retrieve":
-            return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
+            return [IsAuthenticated()]
         # Toutes les autres actions (ecriture) sont reservees aux admins
         if self.action in [
             "create",
@@ -43,6 +43,17 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
         ]:
             return [IsAdminUser()]
         return super().get_permissions()
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Bypass subscription for synthesis of demo notion
+        if not user_has_active_subscription_or_pass(request.user):
+            niveau = getattr(request.user, 'niveau_pays', None)
+            is_demo = niveau and niveau.demo_notion_id and niveau.demo_notion_id == instance.notion_id
+            if not is_demo:
+                self.permission_denied(request, message=HasActiveSubscriptionOrPass.message)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
     
     def get_serializer_class(self):
         if self.action == 'list':

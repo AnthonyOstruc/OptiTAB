@@ -28,6 +28,18 @@ class Niveau(BaseSimple):
     # Options de filtre d'exercices spécifiques à ce niveau (ex: "Type bac", "Problème")
     exercice_filter_options = models.JSONField(default=list, blank=True)
     exercice_filter_default = models.CharField(max_length=120, default='Tous', blank=True)
+    # Chapitre démo : notion + exercices débloqués pour les non-abonnés
+    demo_notion = models.ForeignKey(
+        'curriculum.Notion', on_delete=models.SET_NULL,
+        null=True, blank=True, related_name='+',
+        verbose_name="Chapitre démo",
+        help_text="Notion (chapitre) débloquée gratuitement pour ce niveau"
+    )
+    demo_exercices = models.ManyToManyField(
+        'curriculum.Exercice', blank=True, related_name='+',
+        verbose_name="Exercices démo",
+        help_text="Exercices débloqués gratuitement (du chapitre démo)"
+    )
     # Inherits: nom, ordre, est_actif, timestamps
 
     class Meta:

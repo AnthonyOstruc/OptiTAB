@@ -51,7 +51,8 @@ class NiveauAdmin(admin.ModelAdmin):
     list_filter = ['est_actif', 'pays']
     search_fields = ['pays__nom', 'nom']
     ordering = ['pays', 'ordre', 'nom']
-    autocomplete_fields = ['pays']
+    autocomplete_fields = ['pays', 'demo_notion']
+    filter_horizontal = ['demo_exercices']
     list_editable = ['ordre', 'est_actif']
     
     fieldsets = (
@@ -63,6 +64,10 @@ class NiveauAdmin(admin.ModelAdmin):
         }),
         ('Paramètres', {
             'fields': ['ordre', 'couleur', 'exercice_filter_default', 'exercice_filter_options', 'est_actif']
+        }),
+        ('Chapitre démo (gratuit)', {
+            'fields': ['demo_notion', 'demo_exercices'],
+            'description': 'Choisissez un chapitre (notion) et jusqu\'à 2 exercices débloqués gratuitement pour les non-abonnés.'
         }),
         ('Métadonnées', {
             'fields': ['date_creation', 'date_modification'],

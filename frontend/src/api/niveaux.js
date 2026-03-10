@@ -167,4 +167,15 @@ export const getNiveauxByPays = async () => {
     console.error('Erreur lors de la récupération des niveaux:', error)
     throw error
   }
-} 
+}
+
+// Récupérer le contenu démo d'un niveau (chapitre + exercices gratuits)
+export async function getNiveauDemo(niveauId) {
+  try {
+    const response = await apiClient.get(`/api/niveaux/${niveauId}/demo/`)
+    return response.data
+  } catch (error) {
+    console.error(`Erreur lors de la récupération du contenu démo du niveau ${niveauId}:`, error)
+    throw error
+  }
+}

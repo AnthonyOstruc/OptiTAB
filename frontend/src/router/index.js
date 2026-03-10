@@ -25,6 +25,7 @@ const ALWAYS_SCROLL_TO_TOP_ROUTES = [
 
 const routes = [
   { path: '/', name: 'Home', component: () => import('@/views/Home.vue') },
+  { path: '/commencer', name: 'InstagramLanding', component: () => import('@/views/InstagramLanding.vue') },
   { path: '/tarifs', name: 'TarifsPage', component: () => import('@/views/TarifsPage.vue') },
   { 
     path: '/ressources-gratuites', 
@@ -390,12 +391,18 @@ router.beforeEach(async (to, from, next) => {
   // Autres routes
   else {
     if (isAuthenticated && to.meta.requiresSubscription && !isAdmin) {
+      // Bypass pour le chapitre démo de l'utilisateur
+      const demoNotionId = userStore.niveau_pays?.demo_notion
+      const routeNotionId = to.params.notionId
+      const isDemoAccess = demoNotionId && routeNotionId && Number(routeNotionId) === Number(demoNotionId)
+      if (!isDemoAccess) {
       await subscriptionStore.fetchStatus({ force: !subscriptionStore.hasAccess })
       if (!subscriptionStore.hasAccess) {
         const unlocked = await subscriptionStore.refreshUntilAccess({ attempts: 5, interval: 2000 })
         if (!unlocked) {
           return next({ name: 'Billing', hash: '#plans', query: { redirect: to.fullPath, reason: 'subscription_required' } })
         }
+      }
       }
     }
     // Vérifier si la route nécessite un niveau

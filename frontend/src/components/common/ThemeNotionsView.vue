@@ -115,7 +115,7 @@
               :notion-id="notion.id"
               :title="notion.nom"
               :description="notion.description || ''"
-              :locked="notionsLocked"
+              :locked="isNotionLocked(notion.id)"
               @click="goToNotion(notion.id)"
               @locked-click="goToNotion(notion.id)"
             />
@@ -168,7 +168,7 @@
               :notion-id="notion.id"
               :title="notion.nom"
               :description="notion.description || ''"
-              :locked="notionsLocked"
+              :locked="isNotionLocked(notion.id)"
               @click="goToNotion(notion.id)"
               @locked-click="goToNotion(notion.id)"
             />
@@ -320,7 +320,7 @@ function notionMatches(notion) {
 }
 
 async function goToNotion(notionId) {
-  if (notionsLocked.value) {
+  if (isNotionLocked(notionId)) {
     router.push({ name: 'Billing', hash: '#plans' })
     return
   }
@@ -331,7 +331,8 @@ async function goToNotion(notionId) {
     router.replace({ query: newQuery })
   } catch (_) {}
   const target = { name: props.notionRouteName, params: { notionId } }
-  if (await ensureAccess(target)) {
+  const isDemoNotion = demoNotionId.value && Number(notionId) === demoNotionId.value
+  if (isDemoNotion || await ensureAccess(target)) {
     router.push(target)
   }
 }
@@ -552,6 +553,15 @@ const hasSelectedLevelAccess = computed(() => {
   return unlockedLevels.value.some(level => Number(level.id) === selectedNiveauId.value)
 })
 const notionsLocked = computed(() => !hasSelectedLevelAccess.value)
+const demoNotionId = computed(() => {
+  const id = userStore.niveau_pays?.demo_notion
+  return id ? Number(id) : null
+})
+function isNotionLocked(notionId) {
+  if (!notionsLocked.value) return false
+  if (demoNotionId.value && Number(notionId) === demoNotionId.value) return false
+  return true
+}
 const currentLevelLabel = computed(() => {
   const level = userStore.niveau_pays
   if (!level) return ''

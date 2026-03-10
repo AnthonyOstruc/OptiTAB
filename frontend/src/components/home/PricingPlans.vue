@@ -5,7 +5,7 @@
       <h2 class="pricing-title">
         Choisissez votre <span class="pricing-highlight">Abonnement Maths</span>
       </h2>
-      <p class="pricing-desc">Plateforme de maths : cours, fiches de synthèse et exercices corrigés (sans engagement)</p>
+      <p class="pricing-desc">Accès complet aux cours, fiches de synthèse et exercices corrigés pas à pas — sans engagement, annulable à tout moment.</p>
     </div>
 
     <!-- Pricing Cards Component -->

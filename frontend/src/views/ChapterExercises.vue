@@ -107,7 +107,23 @@
                     class="exercice-item-wrapper"
                     @click="setLastExerciceId(exercice.id)"
                   >
+                    <!-- Exercice verrouillé (démo: non sélectionné par l'admin) -->
+                    <div v-if="isExerciceLocked(exercice.id)" class="exercice-locked-card">
+                      <div class="exercice-locked-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="3" y="11" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <div class="exercice-locked-content">
+                        <h3 class="exercice-locked-title">{{ getTitre(exercice) }}</h3>
+                        <p class="exercice-locked-text">Abonnez-vous pour débloquer cet exercice</p>
+                      </div>
+                      <router-link to="/billing#plans" class="exercice-locked-cta">Voir les offres</router-link>
+                    </div>
+                    <!-- Exercice débloqué -->
                     <ExerciceQCM
+                      v-else
                       :eid="exercice.id"
                       :titre="getTitre(exercice)"
                       :instruction="getInstruction(exercice)"
@@ -200,6 +216,7 @@ import SkeletonList from '@/components/common/SkeletonList.vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import { getExercices, getStatuses, createStatus, updateStatus, deleteStatus } from '@/api'
 import { useUserStore } from '@/stores/user'
+import { useSubscriptionStore } from '@/stores/subscription'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import ExerciceQCM from '@/components/UI/ExerciceQCM.vue'
 import Pagination from '@/components/common/Pagination.vue'
@@ -212,6 +229,7 @@ defineOptions({ name: 'ExercisesByNotion' })
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
+const subscriptionStore = useSubscriptionStore()
 const subjectsStore = useSubjectsStore()
 const notionId = ref(route.params.notionId)
 const statementOnlyMode = computed(() => route.meta?.statementOnlyMode || route.query?.mode === 'whatsapp')
@@ -595,6 +613,25 @@ const loading = ref(true)
 const error = ref('')
 const chapitres = ref([])
 
+// Demo mode: chapitre démo avec exercices restreints
+const demoNotionId = computed(() => {
+  const id = userStore.niveau_pays?.demo_notion
+  return id ? Number(id) : null
+})
+const demoExerciceIds = computed(() => {
+  const ids = userStore.niveau_pays?.demo_exercices_ids
+  return Array.isArray(ids) ? ids.map(Number) : []
+})
+const isDemoMode = computed(() => {
+  if (userStore.isAdmin) return false
+  if (subscriptionStore.hasAccess) return false
+  return demoNotionId.value && Number(notionId.value) === demoNotionId.value
+})
+function isExerciceLocked(exerciceId) {
+  if (!isDemoMode.value) return false
+  return !demoExerciceIds.value.includes(Number(exerciceId))
+}
+
 onMounted(async () => {
   initFirstVisitFlag()
   detectMobileAndZoomSupport()
@@ -748,8 +785,11 @@ const filteredExercices = computed(() => {
     list = list.filter(e => statusMap.value[e.id]?.status === activeTab.value)
   }
   
-  // Trier les exercices par ID pour avoir l'ordre 1, 2, 3, etc.
+  // Trier : exercices débloqués en premier, puis par ID
   return list.sort((a, b) => {
+    const aLocked = isExerciceLocked(a.id) ? 1 : 0
+    const bLocked = isExerciceLocked(b.id) ? 1 : 0
+    if (aLocked !== bLocked) return aLocked - bLocked
     const idA = parseInt(a.id) || 0
     const idB = parseInt(b.id) || 0
     return idA - idB
@@ -1555,6 +1595,67 @@ function initFirstVisitFlag() {
 </script>
 
 <style scoped>
+/* Carte exercice verrouillé (démo) */
+.exercice-locked-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: #f8fafc;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 12px;
+  opacity: 0.85;
+}
+.exercice-locked-icon {
+  flex-shrink: 0;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+}
+.exercice-locked-content {
+  flex: 1;
+  min-width: 0;
+}
+.exercice-locked-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #334155;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.exercice-locked-text {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin: 2px 0 0;
+}
+.exercice-locked-cta {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border: 1.5px solid #2563eb;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+.exercice-locked-cta:hover {
+  background: #2563eb;
+  color: #fff;
+}
+@media (max-width: 640px) {
+  .exercice-locked-card {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .exercice-locked-cta {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 .exercices-section {
   background: #fff;
   min-height: 0;

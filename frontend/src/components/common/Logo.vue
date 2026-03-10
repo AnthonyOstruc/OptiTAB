@@ -24,6 +24,7 @@ export default {
   max-width: 100px;
   margin-left: 0px;
   margin-top: 2px;
+  filter: saturate(0.45) brightness(1.1);
 }
 
 .logo-icon {

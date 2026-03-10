@@ -20,6 +20,10 @@ class NiveauSerializer(serializers.ModelSerializer):
     pays_nom = serializers.CharField(source='pays.nom', read_only=True)
     pays_drapeau = serializers.CharField(source='pays.drapeau_emoji', read_only=True)
     statistiques = serializers.SerializerMethodField(read_only=True)
+    demo_notion_titre = serializers.CharField(source='demo_notion.titre', read_only=True, default=None)
+    demo_exercices_ids = serializers.PrimaryKeyRelatedField(
+        source='demo_exercices', many=True, read_only=True
+    )
     
     class Meta:
         model = Niveau
@@ -34,6 +38,10 @@ class NiveauSerializer(serializers.ModelSerializer):
             'pays_drapeau',
             'exercice_filter_options',
             'exercice_filter_default',
+            'demo_notion',
+            'demo_notion_titre',
+            'demo_exercices',
+            'demo_exercices_ids',
             'statistiques',
         ]
 

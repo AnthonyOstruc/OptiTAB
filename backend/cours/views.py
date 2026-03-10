@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from django.core.files.base import ContentFile
 from rest_framework.permissions import IsAuthenticated
 
-from subscriptions.permissions import HasActiveSubscriptionOrPass
+from subscriptions.permissions import HasActiveSubscriptionOrPass, user_has_active_subscription_or_pass, is_demo_content
 from .models import Cours, CoursImage
 from .serializers import CoursSerializer, CoursImageSerializer
 
@@ -19,9 +19,18 @@ class CoursViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
-        if self.action == 'list':
+        if self.action in ('list', 'retrieve'):
             return [IsAuthenticated()]
         return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Bypass subscription check for demo content
+        if not user_has_active_subscription_or_pass(request.user):
+            if not is_demo_content(request.user, 'cours', instance):
+                self.permission_denied(request, message=HasActiveSubscriptionOrPass.message)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     def get_serializer_context(self):
         # Injecter la requête pour construire des URLs absolues dans le serializer

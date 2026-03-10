@@ -11,7 +11,7 @@
           Voyez comment <span class="demo-highlight">OptiTAB</span> transforme l'apprentissage
         </h2>
         <p class="demo-desc">
-          Des exercices interactifs, des corrections détaillées, un suivi personnalisé et des synthèses pour progresser rapidement
+          Exercices guidés avec corrections pas à pas, fiches de synthèse et suivi de progression — tout ce qu'il faut pour réussir
         </p>
       </div>
 
@@ -52,11 +52,11 @@
 
       <!-- Call to Action -->
       <div class="demo-cta-container">
-        <h3 class="demo-cta-title">Rejoignez la plateforme OptiTAB dès maintenant</h3>
-        <p class="demo-cta-desc">Accédez à des milliers d'exercices et progressez à votre rythme</p>
+        <h3 class="demo-cta-title">Prêt à progresser en maths ?</h3>
+        <p class="demo-cta-desc">Crée ton compte gratuitement et accède à un chapitre démo complet. Ensuite, débloque tous les contenus avec l'abonnement.</p>
         <div class="demo-cta-buttons">
           <button class="demo-cta-primary" data-cta-name="signup" data-cta-location="demo" @click="$emit('cta-subscribe')">
-            Commencer gratuitement
+            Créer mon compte gratuit →
           </button>
           <button class="demo-cta-secondary" data-cta-name="pricing" data-cta-location="demo" @click="$emit('cta-pricing')">
             Voir les tarifs

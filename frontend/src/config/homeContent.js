@@ -11,6 +11,7 @@ export const sectionHero = {
   reassurance: "Contenu structuré • Corrections pas à pas • Suivi de progression",
   ctaText: "Découvrir la plateforme Maths",
   ctaSecondary: "Découvrir les cours particuliers",
+  ctaHint: "Accès gratuit, sans engagement",
   image: heroImage,
   showImage: false,
   bg: "linear-gradient(135deg, #fefefe 0%, #f8fafc 30%, #f1f5f9 60%, #e2e8f0 100%)"
@@ -104,8 +105,8 @@ export const etapesParcours = {
   ],
   ctaText: "Commencer gratuitement",
   ctaSecondary: "Voir les tarifs",
-  ctaTop: "Prêt à commencer ?",
-  titreBas: "Donnez à votre enfant les clés de la réussite avec un apprentissage adapté à ses besoins !"
+  ctaTop: "Prêt à progresser ?",
+  titreBas: "Commence gratuitement, puis débloque tous les cours, fiches et exercices guidés avec l'abonnement !"
 };
 
 export const introPiedDePage = {

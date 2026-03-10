@@ -28,7 +28,7 @@ from .serializers import (
     ExerciceImageSerializer
 )
 
-from subscriptions.permissions import HasActiveSubscriptionOrPass
+from subscriptions.permissions import HasActiveSubscriptionOrPass, user_has_active_subscription_or_pass, is_demo_content
 
 
 logger = logging.getLogger(__name__)
@@ -514,7 +514,8 @@ class NotionViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(theme__contexte_id=contexte)
         if search:
             queryset = queryset.filter(titre__icontains=search)
-        # niveau param plus utilisé; filtrage par contexte se fait via Theme
+        if niveau:
+            queryset = queryset.filter(theme__contexte__niveau_id=niveau)
 
         # Pour l'admin, ne pas filtrer par est_actif afin d'afficher toutes les notions
         user = getattr(self.request, 'user', None)
@@ -650,9 +651,18 @@ class ExerciceViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
-        if self.action == 'list':
+        if self.action in ('list', 'retrieve'):
             return [IsAuthenticated()]
         return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Bypass subscription check for demo exercices
+        if not user_has_active_subscription_or_pass(request.user):
+            if not is_demo_content(request.user, 'exercice', instance):
+                self.permission_denied(request, message=HasActiveSubscriptionOrPass.message)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     def get_queryset(self):
         queryset = super().get_queryset()

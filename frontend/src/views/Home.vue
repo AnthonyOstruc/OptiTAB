@@ -5,6 +5,8 @@ import SubjectsSection from '@/components/home/SubjectsSection.vue'
 import IntroFeaturesSection from '@/components/home/IntroFeaturesSection.vue'
 import StepsHowItWorks from '@/components/home/StepsHowItWorks.vue'
 import DemoSection from '@/components/home/DemoSection.vue'
+import WhySubscribeSection from '@/components/home/WhySubscribeSection.vue'
+import UnlockBenefitsSection from '@/components/home/UnlockBenefitsSection.vue'
 import PricingPlans from '@/components/home/PricingPlans.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
 import NewsletterSection from '@/components/home/NewsletterSection.vue'
@@ -219,6 +221,34 @@ const handleDemoPricing = () => {
   }
 }
 
+// Handlers pour la section "Pourquoi s'abonner"
+const handleExploreFree = () => {
+  router.push({ name: 'FreeResourcesHome' })
+}
+
+const handleCreateAccount = () => {
+  openModal(MODAL_IDS.REGISTER)
+}
+
+const handleWhySubscribe = () => {
+  const tarifsSection = document.getElementById('tarifs')
+  if (tarifsSection) {
+    tarifsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
+
+// Handlers pour la section "Débloquer les bénéfices"
+const handleUnlockSubscribe = () => {
+  openModal(MODAL_IDS.REGISTER)
+}
+
+const handleSeePricing = () => {
+  const tarifsSection = document.getElementById('tarifs')
+  if (tarifsSection) {
+    tarifsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
+
 onMounted(async () => {
   detectMobileAndZoomSupport()
   setupViewportListener()
@@ -326,15 +356,28 @@ onUnmounted(() => {
         @cta-secondary="handleStepsCtaSecondary"
       />
 
+      <!-- Section Pourquoi S'abonner (comparaison Gratuit / Découverte / Abonnement) -->
+      <WhySubscribeSection
+        @explore-free="handleExploreFree"
+        @create-account="handleCreateAccount"
+        @subscribe="handleWhySubscribe"
+      />
+
+      <!-- Section Bénéfices de l'abonnement -->
+      <UnlockBenefitsSection
+        @subscribe="handleUnlockSubscribe"
+        @see-pricing="handleSeePricing"
+      />
+
+      <!-- Section Tarifs / Abonnements -->
+      <PricingPlans />
+
       <!-- Section Matières/Sujets -->
       <SubjectsSection
         :titre="titreSujets"
         :sujets="matieres"
         @subject-selected="handleSubjectSelected"
       />
-
-      <!-- Section Tarifs / Abonnements -->
-      <PricingPlans />
 
       <!-- Section FAQ -->
       <FaqSection :faq="faq" />

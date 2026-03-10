@@ -40,6 +40,24 @@ def user_has_active_subscription_or_pass(user):
     return has_access
 
 
+def is_demo_content(user, content_type, content_obj):
+    """Check if a content object is part of the user's niveau demo content.
+    
+    content_type: 'cours' | 'exercice'
+    content_obj: the Cours or Exercice model instance
+    """
+    niveau = getattr(user, 'niveau_pays', None)
+    if not niveau:
+        return False
+
+    if content_type == 'cours':
+        notion_id = getattr(content_obj, 'notion_id', None)
+        return notion_id and niveau.demo_notion_id == notion_id
+    elif content_type == 'exercice':
+        return niveau.demo_exercices.filter(pk=content_obj.pk).exists()
+    return False
+
+
 class HasActiveSubscriptionOrPass(BasePermission):
     """Allow access only to authenticated users with an active subscription or valid pass."""
 

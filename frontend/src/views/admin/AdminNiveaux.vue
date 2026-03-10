@@ -119,6 +119,9 @@
                   {{ niveau.est_actif ? 'Actif' : 'Inactif' }}
                 </span>
                 <span class="ordre-badge">Ordre: {{ niveau.ordre }}</span>
+                <span v-if="niveau.demo_notion_titre" class="demo-badge" title="Chapitre démo configuré">
+                  📖 {{ niveau.demo_notion_titre }}
+                </span>
               </div>
             </div>
           </div>
@@ -226,6 +229,52 @@
             placeholder="Tous"
           />
         </div>
+
+        <div class="divider"></div>
+
+        <!-- Chapitre démo -->
+        <h4 class="form-section-title">Chapitre démo (gratuit)</h4>
+        <small class="muted" style="display:block;margin-bottom:0.75rem;">
+          Choisis un chapitre (notion) et jusqu'à 2 exercices débloqués gratuitement pour les non-abonnés.
+        </small>
+
+        <div class="form-group">
+          <label for="demo_notion">Chapitre démo</label>
+          <select
+            id="demo_notion"
+            v-model="formData.demo_notion"
+            @change="onDemoNotionChange"
+          >
+            <option :value="null">— Aucun —</option>
+            <option v-for="n in demoNotions" :key="n.id" :value="n.id">
+              {{ n.titre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group" v-if="formData.demo_notion">
+          <label>Exercices démo (max 2)</label>
+          <div v-if="demoExercicesLoading" class="muted">Chargement…</div>
+          <div v-else-if="demoExercicesOptions.length === 0" class="muted">Aucun exercice pour cette notion.</div>
+          <div v-else class="demo-exercices-list">
+            <label
+              v-for="ex in demoExercicesOptions"
+              :key="ex.id"
+              class="checkbox-label demo-exercice-item"
+            >
+              <input
+                type="checkbox"
+                :value="ex.id"
+                v-model="formData.demo_exercices"
+                :disabled="formData.demo_exercices.length >= 2 && !formData.demo_exercices.includes(ex.id)"
+              />
+              {{ ex.titre }}
+            </label>
+          </div>
+          <small class="muted" v-if="formData.demo_exercices.length > 0">
+            {{ formData.demo_exercices.length }}/2 exercice(s) sélectionné(s)
+          </small>
+        </div>
       </form>
 
       <template #footer>
@@ -251,6 +300,8 @@ import {
   deleteNiveau
 } from '@/api/niveaux.js'
 import { getPays } from '@/api/pays.js'
+import { getNotions } from '@/api/notions.js'
+import { getExercices } from '@/api/exercices.js'
 
 export default {
   name: 'AdminNiveaux',
@@ -281,8 +332,15 @@ export default {
       couleur: '#3b82f6',
       est_actif: true,
       exercice_filter_options: [],
-      exercice_filter_default: 'Tous'
+      exercice_filter_default: 'Tous',
+      demo_notion: null,
+      demo_exercices: []
     })
+
+    // Demo chapter state
+    const demoNotions = ref([])
+    const demoExercicesOptions = ref([])
+    const demoExercicesLoading = ref(false)
 
     // Computed
     const niveauxActifs = computed(() => 
@@ -394,10 +452,18 @@ export default {
         couleur: niveau.couleur,
         est_actif: niveau.est_actif,
         exercice_filter_options: niveau.exercice_filter_options || [],
-        exercice_filter_default: niveau.exercice_filter_default || 'Tous'
+        exercice_filter_default: niveau.exercice_filter_default || 'Tous',
+        demo_notion: niveau.demo_notion || null,
+        demo_exercices: niveau.demo_exercices || []
       }
       modalFilterOptions.value = JSON.stringify(niveau.exercice_filter_options || [], null, 2)
       modalFilterDefault.value = niveau.exercice_filter_default || 'Tous'
+      // Load notions for this niveau
+      await loadDemoNotions(niveau.id)
+      // Load exercices if a demo notion is already selected
+      if (niveau.demo_notion) {
+        await loadDemoExercices(niveau.demo_notion)
+      }
       showEditModal.value = true
     }
 
@@ -478,10 +544,48 @@ export default {
         couleur: '#3b82f6',
         est_actif: true,
         exercice_filter_options: [],
-        exercice_filter_default: 'Tous'
+        exercice_filter_default: 'Tous',
+        demo_notion: null,
+        demo_exercices: []
       }
       modalFilterOptions.value = '[]'
       modalFilterDefault.value = 'Tous'
+      demoNotions.value = []
+      demoExercicesOptions.value = []
+    }
+
+    // Demo chapter helpers
+    const loadDemoNotions = async (niveauId) => {
+      try {
+        const resp = await getNotions({ niveau: niveauId })
+        const data = resp?.data || resp
+        demoNotions.value = Array.isArray(data) ? data : (data?.results || [])
+      } catch (e) {
+        console.error('Erreur chargement notions démo:', e)
+        demoNotions.value = []
+      }
+    }
+
+    const loadDemoExercices = async (notionId) => {
+      demoExercicesLoading.value = true
+      try {
+        const resp = await getExercices({ notion: notionId })
+        const data = resp?.data || resp
+        demoExercicesOptions.value = Array.isArray(data) ? data : (data?.results || [])
+      } catch (e) {
+        console.error('Erreur chargement exercices démo:', e)
+        demoExercicesOptions.value = []
+      } finally {
+        demoExercicesLoading.value = false
+      }
+    }
+
+    const onDemoNotionChange = async () => {
+      formData.value.demo_exercices = []
+      demoExercicesOptions.value = []
+      if (formData.value.demo_notion) {
+        await loadDemoExercices(formData.value.demo_notion)
+      }
     }
 
     onMounted(() => {
@@ -507,12 +611,16 @@ export default {
       statusFilter,
       modalFilterOptions,
       modalFilterDefault,
+      demoNotions,
+      demoExercicesOptions,
+      demoExercicesLoading,
       openCreateModal,
       editNiveau,
       saveNiveau,
       confirmDeleteNiveau,
       handleDeleteNiveau,
-      closeModal
+      closeModal,
+      onDemoNotionChange
     }
   }
 }
@@ -927,5 +1035,44 @@ export default {
   .form-row {
     grid-template-columns: 1fr;
   }
+}
+
+.form-section-title {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.demo-exercices-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.demo-exercice-item {
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.demo-exercice-item:hover {
+  background: #e5e7eb;
+}
+
+.demo-badge {
+  padding: 0.375rem 0.75rem;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #bfdbfe;
 }
 </style> 

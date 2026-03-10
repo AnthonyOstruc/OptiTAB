@@ -25,16 +25,12 @@
       </div>
       <div class="section-hero__cta-group">
         <button v-if="ctaText" class="section-hero__cta main" @click="$emit('cta-main')">
-          <span class="cta-text">
-            {{ ctaText }}
-            <span class="cta-arrow">→</span>
-          </span>
+          <span class="cta-text">{{ ctaText }}</span>
           <span v-if="ctaHint" class="cta-hint-main">{{ ctaHint }}</span>
         </button>
         <button v-if="ctaSecondary" class="section-hero__cta secondary" @click="$emit('cta-secondary')">
           <span class="cta-text">{{ ctaSecondary }}</span>
           <span v-if="ctaSecondaryHint" class="cta-hint">({{ ctaSecondaryHint }})</span>
-          <span class="cta-arrow">→</span>
         </button>
       </div>
       <div class="section-hero__reassurance">
@@ -47,25 +43,23 @@
       <div class="image-glow"></div>
       <img
         :src="image"
-        alt="Illustration OptiTAB Hero"
+        :alt="resolvedImageAlt"
         class="section-hero__image"
-        loading="lazy"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
       />
     </div>
     
     <!-- Bouton CTA pour mobile (sous l'image) -->
     <div class="section-hero__cta-mobile">
       <button v-if="ctaText" class="section-hero__cta main" @click="$emit('cta-main')">
-        <span class="cta-text">
-          {{ ctaText }}
-          <span class="cta-arrow">→</span>
-        </span>
+        <span class="cta-text">{{ ctaText }}</span>
         <span v-if="ctaHint" class="cta-hint-main">{{ ctaHint }}</span>
       </button>
       <button v-if="ctaSecondary" class="section-hero__cta secondary" @click="$emit('cta-secondary')">
         <span class="cta-text">{{ ctaSecondary }}</span>
         <span v-if="ctaSecondaryHint" class="cta-hint">({{ ctaSecondaryHint }})</span>
-        <span class="cta-arrow">→</span>
       </button>
       <div class="section-hero__reassurance-mobile">
         <GoogleReviewsCompact />
@@ -87,6 +81,7 @@ const props = defineProps({
   sousTitre2: { type: String, default: '' },
   miniLine: { type: String, default: '' },
   image: { type: [String, Object], default: () => heroDefaultImage },
+  imageAlt: { type: String, default: '' },
   showImage: { type: Boolean, default: true },
   highlight: { type: String, default: '' },
   microBenefits: { type: Array, default: () => [] },
@@ -105,6 +100,16 @@ const subtitleLines = computed(() => {
     .split('\n')
     .map(s => s.trim())
     .filter(Boolean)
+})
+
+const resolvedImageAlt = computed(() => {
+  const explicitAlt = String(props.imageAlt || '').trim()
+  if (explicitAlt) return explicitAlt
+
+  const title = String(props.titre || '').trim()
+  if (title) return `${title} - OptiTAB`
+
+  return 'Plateforme de maths OptiTAB'
 })
 </script>
 
@@ -306,11 +311,12 @@ const subtitleLines = computed(() => {
   }
 }
 .section-hero__title {
-  font-size: 2.8rem;
+  font-size: clamp(1.82rem, 3.55vw, 2.72rem);
   font-weight: 800;
   color: #0f172a;
-  margin-bottom: 20px;
-  line-height: 1.1;
+  margin: 0 auto 16px auto;
+  max-width: 19ch;
+  line-height: 1.12;
   text-shadow: 0 2px 8px rgba(0,0,0,0.06);
   letter-spacing: -0.02em;
   animation: fadeInUp 0.8s ease-out 0.3s both;
@@ -338,24 +344,25 @@ const subtitleLines = computed(() => {
   }
   
   @media (max-width: 800px) {
-    font-size: 2rem;
+    font-size: clamp(1.68rem, 5.8vw, 2.04rem);
     margin-bottom: 16px;
-    line-height: 1.2;
+    line-height: 1.18;
   }
   
   @media (max-width: 600px) {
-    font-size: 1.65rem;
+    font-size: 1.52rem;
     margin-bottom: 14px;
+    max-width: 100%;
   }
   
   @media (max-width: 480px) {
-    font-size: 1.5rem;
+    font-size: 1.42rem;
     margin-bottom: 12px;
     line-height: 1.25;
   }
   
   @media (max-width: 360px) {
-    font-size: 1.35rem;
+    font-size: 1.28rem;
   }
 }
 
@@ -393,21 +400,22 @@ const subtitleLines = computed(() => {
 }
 
 .section-hero__subtitle {
-  font-size: 1.12rem;
-  color: #475569;
-  margin-bottom: 0.5rem;
+  font-size: 1.08rem;
+  color: #334155;
+  margin: 0 auto 0.7rem auto;
+  max-width: 760px;
   font-weight: 500;
-  line-height: 1.65;
+  line-height: 1.62;
   animation: fadeInUp 0.8s ease-out 0.4s both;
   
   @media (max-width: 800px) {
-    font-size: 1.02rem;
+    font-size: 1rem;
     margin-bottom: 0.6rem;
-    line-height: 1.5;
+    line-height: 1.55;
   }
   
   @media (max-width: 480px) {
-    font-size: 0.95rem;
+    font-size: 0.93rem;
     margin-bottom: 0.5rem;
     padding: 0 0.5rem;
   }
@@ -579,22 +587,24 @@ const subtitleLines = computed(() => {
 
 .cta-hint-main {
   display: block;
-  font-size: 0.75rem;
-  font-weight: 400;
-  opacity: 0.85;
-  margin-top: 0.125rem;
+  font-size: 0.73rem;
+  font-weight: 600;
+  opacity: 0.9;
+  margin-top: 0.24rem;
+  letter-spacing: 0;
   
   @media (max-width: 480px) {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
   }
 }
 
 .section-hero__cta-group {
   display: flex;
-  gap: 1.1rem;
-  margin-top: 18px;
+  gap: 0.85rem;
+  margin-top: 22px;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: stretch;
   
   @media (max-width: 800px) {
     display: none; /* Masquer sur mobile */
@@ -618,77 +628,86 @@ const subtitleLines = computed(() => {
   }
 }
 .section-hero__cta {
-  font-weight: 600;
-  font-size: 1.05rem;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 20px;
+  font-weight: 650;
+  font-size: 1.02rem;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  padding: 12px 24px;
   cursor: pointer;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  min-width: 240px;
-  transition: all 0.2s ease;
+  justify-content: center;
+  gap: 1px;
+  min-width: 252px;
+  min-height: 72px;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
   animation: fadeInUp 0.8s ease-out 0.6s both;
   
   .cta-text {
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .cta-arrow {
-    transition: transform 0.2s ease;
-    font-size: 1.1rem;
-  }
-  
-  &:hover .cta-arrow {
-    transform: translateX(3px);
+    font-weight: 700;
+    display: block;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
   
   &.main {
-    background: #2563eb;
+    background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
     color: #fff;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    border-color: #1f4ed2;
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.24);
     
     &:hover {
-      background: #1e40af;
+      background: linear-gradient(180deg, #2a64e6 0%, #1d4ed8 100%);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 14px 28px rgba(29, 78, 216, 0.33);
     }
     
     &:active {
       transform: translateY(0);
-      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.24);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.24), 0 12px 24px rgba(29, 78, 216, 0.28);
     }
   }
   
   &.secondary {
-    background: transparent;
-    color: #475569;
-    border: 2px solid #cbd5e1;
-    flex-direction: row;
+    background: rgba(255, 255, 255, 0.88);
+    color: #1f2937;
+    border: 1px solid #c5d1e2;
+    min-width: 236px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
     
     &:hover {
-      background: #f8fafc;
-      color: #2563eb;
-      border-color: #93c5fd;
+      background: #ffffff;
+      color: #0f172a;
+      border-color: #9fb2cf;
       transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
     }
     
     &:active {
       transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-color: #90a7c6;
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.22), 0 8px 18px rgba(15, 23, 42, 0.12);
     }
   }
   
   @media (max-width: 800px) {
-    width: auto;
-    max-width: 100%;
+    width: 100%;
+    max-width: 360px;
     justify-content: center;
     padding: 11px 18px;
     font-size: 0.95rem;
+    min-height: 64px;
     white-space: nowrap;
   }
   

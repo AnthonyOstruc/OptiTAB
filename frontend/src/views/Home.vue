@@ -3,10 +3,8 @@
 import SectionHero from '@/components/home/SectionHero.vue'
 import SubjectsSection from '@/components/home/SubjectsSection.vue'
 import IntroFeaturesSection from '@/components/home/IntroFeaturesSection.vue'
-import StepsHowItWorks from '@/components/home/StepsHowItWorks.vue'
 import DemoSection from '@/components/home/DemoSection.vue'
 import WhySubscribeSection from '@/components/home/WhySubscribeSection.vue'
-import UnlockBenefitsSection from '@/components/home/UnlockBenefitsSection.vue'
 import PricingPlans from '@/components/home/PricingPlans.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
 import NewsletterSection from '@/components/home/NewsletterSection.vue'
@@ -163,24 +161,23 @@ const handleSubjectSelected = (subject) => {
   })
 }
 
-// Handler pour le bouton CTA principal (Découvrir OptiTAB)
+// Handler pour le bouton CTA principal (Créer mon compte gratuit)
 const handleCtaMain = () => {
-  // Découvrir la plateforme (démo)
+  openModal(MODAL_IDS.REGISTER)
+}
+
+// Handler pour le bouton CTA secondaire (Voir la plateforme en action)
+const handleCtaSecondary = () => {
+  const demoGifs = document.getElementById('demo-gifs')
+  if (demoGifs) {
+    demoGifs.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    return
+  }
+
   const demoSection = document.getElementById('demo')
   if (demoSection) {
     demoSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    return
   }
-  const tarifsSection = document.getElementById('tarifs')
-  if (tarifsSection) tarifsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-}
-
-// Handler pour le bouton CTA secondaire (Voir les tarifs)
-const handleCtaSecondary = () => {
-  // Réserver un cours en ligne (cours particuliers)
-  router.push({ name: 'CoursParticuliers' }).then(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  })
 }
 
 // Handler pour le bouton CTA principal des étapes (Je m'abonne maintenant)
@@ -311,6 +308,7 @@ onUnmounted(() => {
         :sous-titre2="sectionHero.sousTitre2"
         :mini-line="sectionHero.miniLine"
         :image="sectionHero.image"
+        :image-alt="sectionHero.imageAlt"
         :show-image="sectionHero.showImage"
         :highlight="sectionHero.highlight"
         :micro-benefits="sectionHero.microBenefits"
@@ -341,32 +339,11 @@ onUnmounted(() => {
         :features="introFeatures.features"
       />
 
-      <!-- Section Steps How It Works -->
-      <StepsHowItWorks
-        :titre="etapesParcours.titre"
-        :highlight="etapesParcours.highlight"
-        :titre-fin="etapesParcours.titreFin"
-        :description="etapesParcours.description"
-        :etapes="etapesParcours.etapes"
-        :cta-text="etapesParcours.ctaText"
-        :cta-secondary="etapesParcours.ctaSecondary"
-        :cta-top="etapesParcours.ctaTop"
-        :titre-bas="etapesParcours.titreBas"
-        @cta-main="handleStepsCtaMain"
-        @cta-secondary="handleStepsCtaSecondary"
-      />
-
       <!-- Section Pourquoi S'abonner (comparaison Gratuit / Découverte / Abonnement) -->
       <WhySubscribeSection
         @explore-free="handleExploreFree"
         @create-account="handleCreateAccount"
         @subscribe="handleWhySubscribe"
-      />
-
-      <!-- Section Bénéfices de l'abonnement -->
-      <UnlockBenefitsSection
-        @subscribe="handleUnlockSubscribe"
-        @see-pricing="handleSeePricing"
       />
 
       <!-- Section Tarifs / Abonnements -->

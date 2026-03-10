@@ -16,7 +16,7 @@
       </div>
 
       <!-- Conteneur des GIFs côte à côte -->
-      <div class="demo-gifs-container">
+      <div id="demo-gifs" class="demo-gifs-container">
         <!-- GIF Desktop -->
         <div class="demo-gif-card demo-gif-card-desktop">
           <div class="demo-gif-label">

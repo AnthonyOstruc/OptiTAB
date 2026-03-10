@@ -19,7 +19,7 @@
             <li>Programme Première et Terminale + bases</li>
           </ul>
           <a href="#tarifs" class="offer-card__cta" itemprop="url">Découvrir l'abonnement</a>
-          <span class="offer-card__hint">Première • Terminale • Spé maths • Bases</span>
+          <span class="offer-card__hint">Terminale • Seconde • Première • Bases</span>
         </article>
 
         <article class="offer-card" itemscope itemtype="https://schema.org/Service">
@@ -32,7 +32,7 @@
             <li>Aide aux devoirs et méthode de travail</li>
             <li>Tous niveaux : collège à prépa</li>
           </ul>
-          <button @click="openContactModal('Réserver un cours')" class="offer-card__cta" itemprop="url">Réserver un cours</button>
+          <router-link to="/cours-particuliers" class="offer-card__cta" itemprop="url">Découvrir les cours particuliers</router-link>
           <span class="offer-card__hint">Collège • Lycée • Prépa • Réponse sous 24h</span>
         </article>
       </div>

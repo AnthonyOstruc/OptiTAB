@@ -29,13 +29,19 @@ const benefits = [
     icon: '📊',
     title: 'Révisions par niveau',
     description: 'Un contenu adapté à ton niveau : Bases, 2nde, 1re et Tle.'
+  },
+  {
+    icon: '🧮',
+    title: 'Outils de calcul',
+    description: 'Des outils intégrés pour calculer, vérifier et réviser plus vite.'
   }
 ]
 
 const subscriptionPoints = [
   'Exercices guidés',
   'Fiches synthétiques',
-  'Révisions par niveau'
+  'Révisions par niveau',
+  'Outils de calcul intégrés'
 ]
 </script>
 
@@ -49,13 +55,13 @@ const subscriptionPoints = [
         <div class="ig-hero__content">
           <span class="ig-hero__badge">Bases · 2nde · 1re · Tle</span>
           <h1 class="ig-hero__title">
-            Teste gratuitement un <span class="ig-hero__highlight">chapitre démo</span>
+            Teste gratuitement la <span class="ig-hero__highlight">plateforme de maths</span>
           </h1>
           <p class="ig-hero__supporting">
-            Cours, synthèse et exercices guidés pour découvrir la méthode OptiTAB
+            Cours, fiches, exercices guidés et outils de calcul pour réviser et progresser à ton rythme.
           </p>
           <button class="ig-cta ig-cta--primary ig-cta--hero" @click="openRegister">
-            Tester le chapitre démo
+            Tester gratuitement la plateforme
           </button>
           <p class="ig-hero__reassurance">Sans engagement · Accès immédiat</p>
         </div>
@@ -64,23 +70,30 @@ const subscriptionPoints = [
       <!-- Section 2 — Ce que tu débloques gratuitement -->
       <section class="ig-unlock">
         <div class="ig-unlock__container">
-          <h2 class="ig-section-title">Crée ton compte gratuit pour accéder à :</h2>
+          <h2 class="ig-section-title">Accède gratuitement à l’essentiel</h2>
+          <p class="ig-unlock__subtitle">
+            Un aperçu clair de la plateforme pour commencer à progresser en maths.
+          </p>
           <div class="ig-unlock__grid">
-            <div class="ig-unlock__item">
-              <span class="ig-unlock__icon">📘</span>
-              <span class="ig-unlock__label">1 cours complet</span>
-            </div>
-            <div class="ig-unlock__item">
-              <span class="ig-unlock__icon">📄</span>
-              <span class="ig-unlock__label">1 fiche de synthèse</span>
-            </div>
-            <div class="ig-unlock__item">
-              <span class="ig-unlock__icon">✏️</span>
-              <span class="ig-unlock__label">1 à 2 exercices guidés</span>
-            </div>
+            <article class="ig-unlock__item">
+              <h3 class="ig-unlock__item-title">Cours structurés</h3>
+              <p class="ig-unlock__item-desc">Des notions claires et progressives.</p>
+            </article>
+            <article class="ig-unlock__item">
+              <h3 class="ig-unlock__item-title">Fiches de synthèse</h3>
+              <p class="ig-unlock__item-desc">L’essentiel à retenir en un coup d’œil.</p>
+            </article>
+            <article class="ig-unlock__item">
+              <h3 class="ig-unlock__item-title">Exercices guidés</h3>
+              <p class="ig-unlock__item-desc">Des entraînements progressifs avec corrections.</p>
+            </article>
+            <article class="ig-unlock__item">
+              <h3 class="ig-unlock__item-title">Outils de calcul</h3>
+              <p class="ig-unlock__item-desc">Des outils intégrés pour vérifier et avancer plus vite.</p>
+            </article>
           </div>
           <button class="ig-cta ig-cta--primary" @click="openRegister">Créer mon compte gratuit</button>
-          <p class="ig-unlock__note">Aucune carte bancaire requise</p>
+          <p class="ig-unlock__note">Gratuit • Sans carte bancaire</p>
         </div>
       </section>
 
@@ -363,42 +376,57 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.10);
 }
 
 .ig-unlock__container {
-  max-width: 480px;
+  max-width: 860px;
   margin: 0 auto;
 }
 
+.ig-unlock__subtitle {
+  max-width: 560px;
+  margin: 0 auto 1.2rem;
+  font-size: 0.96rem;
+  color: $text;
+  line-height: 1.55;
+}
+
 .ig-unlock__grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin: 1.25rem 0 1.75rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  margin: 1.2rem 0 1.7rem;
 }
 
 .ig-unlock__item {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1rem 1.05rem;
+  text-align: center;
+  box-shadow: 0 1px 10px rgba(15, 23, 42, 0.04);
+  min-height: 118px;
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: $bg-light;
-  border: 1px solid rgba($indigo, 0.08);
-  border-radius: 12px;
-  padding: 0.85rem 1.15rem;
-  text-align: left;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.ig-unlock__icon {
-  font-size: 1.3rem;
-  flex-shrink: 0;
-}
-
-.ig-unlock__label {
-  font-size: 0.95rem;
-  font-weight: 600;
+.ig-unlock__item-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.02rem;
+  font-weight: 750;
   color: $text-dark;
+  letter-spacing: -0.01em;
+}
+
+.ig-unlock__item-desc {
+  margin: 0;
+  font-size: 0.86rem;
+  color: $text;
+  line-height: 1.45;
 }
 
 .ig-unlock__note {
-  margin-top: 0.65rem;
-  font-size: 0.78rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: $text-light;
 }
 
@@ -443,7 +471,7 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.10);
 
 .ig-benefits__grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -665,10 +693,6 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.10);
     max-width: none;
   }
 
-  .ig-benefits__grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   .ig-section-title {
     font-size: 1.6rem;
   }
@@ -682,16 +706,14 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.10);
   }
 
   .ig-unlock__grid {
-    flex-direction: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
   }
 
   .ig-unlock__item {
-    flex: 1;
-    flex-direction: column;
     text-align: center;
-    gap: 0.5rem;
-    padding: 1rem;
+    padding: 1.1rem 1rem;
+    min-height: 130px;
   }
 
   .ig-transition__title {
@@ -704,6 +726,12 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.10);
 
   .ig-subscription__card {
     padding: 2.75rem 2.5rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .ig-benefits__grid {
+    grid-template-columns: 1fr;
   }
 }
 

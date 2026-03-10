@@ -1,19 +1,19 @@
 export const freeContentMeta = {
   course: {
-    title: 'Cours gratuits',
-    highlight: 'Mini-cours gratuits',
-    description: 'Testez la méthode OptiTAB avant de vous abonner.',
+    title: 'Cours de maths gratuits',
+    highlight: 'Cours de maths offerts',
+    description: 'Testez la méthode OptiTAB avec des cours de maths gratuits.',
     badge: 'Cours express',
     accent: '#2563eb',
     routeName: 'FreeCourses',
     hero: {
-      title: 'Mini-cours de mathématiques offerts',
-      subtitle: 'Découvre notre traitement pas-à-pas du produit scalaire (niveau Première) avec la même pédagogie que nos membres premium.',
-      stats: ['Méthode bac', 'Exemples détaillés', 'PDF à télécharger']
+      title: 'Cours de maths gratuits en ligne',
+      subtitle: 'Accédez à un chapitre de maths gratuit avec méthode pas à pas, exemples concrets et exercices corrigés.',
+      stats: ['Cours de maths', 'Exercices corrigés', 'Fiches de révision']
     },
-    subjectLine: 'Focus Mathématiques • Première / Terminale',
-    context: 'La vitrine gratuite est centrée sur les maths pour l’instant. Nous ajoutons d’autres matières très vite.',
-    searchPlaceholder: 'Rechercher un point précis (ex : produit scalaire, projection, orthogonalité...)',
+    subjectLine: 'Plateforme de maths OptiTAB • Collège, lycée, prépa',
+    context: 'La vitrine gratuite est dédiée aux mathématiques pour vous faire tester la méthode OptiTAB avant abonnement.',
+    searchPlaceholder: 'Rechercher un chapitre de maths (ex : produit scalaire, projection, orthogonalité...)',
     quickFilters: [],
     pedago: {
       badge: 'Méthode OptiTAB',
@@ -38,34 +38,34 @@ export const freeContentMeta = {
     }
   },
   exercise: {
-    title: 'Exercices gratuits',
-    highlight: 'Exercices guidés gratuits',
-    description: 'Passez de la théorie à la pratique en quelques minutes.',
+    title: 'Exercices de maths gratuits',
+    highlight: 'Exercices de maths corrigés',
+    description: 'Passez de la théorie à la pratique avec des exercices de maths corrigés.',
     badge: 'Ateliers interactifs',
     accent: '#10b981',
     routeName: 'FreeExercises',
     hero: {
-      title: 'Ateliers d’entraînement gratuits',
-      subtitle: 'Questions types + corrections animées pour rassurer les parents.',
-      stats: ['Diagnostic instantané', 'Difficulté progressive', 'Corrections audio']
+      title: 'Exercices de maths corrigés gratuits',
+      subtitle: 'Entraînez-vous sur des exercices de maths avec correction détaillée et méthode étape par étape.',
+      stats: ['Corrections détaillées', 'Méthodes bac', 'Progression guidée']
     },
-    searchPlaceholder: 'Rechercher un entraînement gratuit (ex : fractions, climat, accord du participe...)',
-    quickFilters: ['Mathématiques', 'Français', 'Sciences', 'Méthodologie']
+    searchPlaceholder: 'Rechercher un exercice de maths (ex : fractions, dérivation, probabilités...)',
+    quickFilters: ['Mathématiques', 'Brevet', 'Bac', 'Prépa']
   },
   summary: {
-    title: 'Fiches de résumé',
-    highlight: 'Fiches de révision gratuites',
-    description: 'L\'essentiel du cours, prêt à être mémorisé.',
+    title: 'Fiches de maths gratuites',
+    highlight: 'Fiches de révision maths',
+    description: 'L’essentiel des maths, prêt à être mémorisé.',
     badge: 'Focus révision',
     accent: '#f97316',
     routeName: 'FreeSummaries',
     hero: {
-      title: 'Fiches synthèse offertes',
-      subtitle: 'Plan de cours condensé à imprimer ou lire en mobile.',
-      stats: ['Visuels colorés', 'Méthodes clés', 'Exemples concrets']
+      title: 'Fiches de révision maths gratuites',
+      subtitle: 'Révisez rapidement avec des fiches de maths claires, prêtes à imprimer et à mémoriser.',
+      stats: ['Formules clés', 'Méthodes essentielles', 'Format rapide']
     },
-    searchPlaceholder: 'Chercher une fiche (ex : triangles, révolution française...)',
-    quickFilters: ['Mathématiques', 'Histoire', 'Sciences', 'Français']
+    searchPlaceholder: 'Chercher une fiche de maths (ex : trigonométrie, fonctions, géométrie...)',
+    quickFilters: ['Collège', 'Lycée', 'Terminale', 'Prépa']
   }
 }
 

@@ -4,15 +4,16 @@ import heroImage from '@/assets/Images/HeroSection3.jpg';
 export { faq } from './homeFaq.js'
 
 export const sectionHero = {
-  titre: 'Cours particuliers en ligne + plateforme de maths',
-  sousTitre: 'Cours particuliers en ligne (maths, physique, chimie, info)',
-  sousTitre2: 'Plateforme de maths (abonnement) : cours, fiches, exercices corrigés.',
-  miniLine: "Collège • Lycée • Prépa • Université",
-  reassurance: "Contenu structuré • Corrections pas à pas • Suivi de progression",
-  ctaText: "Découvrir la plateforme Maths",
-  ctaSecondary: "Découvrir les cours particuliers",
-  ctaHint: "Accès gratuit, sans engagement",
+  titre: 'Progresse en maths avec méthode',
+  sousTitre: 'Cours clairs, fiches synthétiques et exercices guidés\npour aider les élèves du collège au lycée à réviser et progresser à leur rythme.',
+  sousTitre2: '',
+  miniLine: "Bases fondamentales • Seconde • Première • Terminale",
+  reassurance: "Inscription gratuite • Accès immédiat • Sans engagement",
+  ctaText: "Créer mon compte gratuit",
+  ctaSecondary: "Voir la plateforme en action",
+  ctaHint: "Gratuit • Sans carte bancaire",
   image: heroImage,
+  imageAlt: 'Élève qui révise sur la plateforme de maths OptiTAB',
   showImage: false,
   bg: "linear-gradient(135deg, #fefefe 0%, #f8fafc 30%, #f1f5f9 60%, #e2e8f0 100%)"
 };

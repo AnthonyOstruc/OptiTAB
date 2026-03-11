@@ -53,7 +53,7 @@
       <!-- Call to Action -->
       <div class="demo-cta-container">
         <h3 class="demo-cta-title">Prêt à progresser en maths ?</h3>
-        <p class="demo-cta-desc">Crée ton compte gratuitement et accède à un chapitre démo complet. Ensuite, débloque tous les contenus avec l'abonnement.</p>
+        <p class="demo-cta-desc">Crée ton compte gratuitement et accède à un chapitre démo complet. Découvre une méthode claire, des exercices guidés et un suivi efficace pour progresser à ton rythme.</p>
         <div class="demo-cta-buttons">
           <button class="demo-cta-primary" data-cta-name="signup" data-cta-location="demo" @click="$emit('cta-subscribe')">
             Créer mon compte gratuit →

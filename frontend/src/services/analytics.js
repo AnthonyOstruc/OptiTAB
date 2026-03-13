@@ -27,6 +27,7 @@ const ALLOWED_NAV_NAMES = new Set([
 ])
 const CTA_TRACKING_WINDOW_FLAG = '__optitab_cta_tracking_initialized__'
 const CTA_TRACKING_WINDOW_HANDLER = '__optitab_cta_tracking_handler__'
+const REGISTRATION_COMPLETED_EVENT = 'optitab_registration_completed'
 
 function getDataLayer() {
   if (typeof window === 'undefined') return null
@@ -146,6 +147,33 @@ export function login(method = 'email_password') {
 
 export function logout() {
   pushToDataLayer(withDebug(withAppUserId({ event: 'logout' })))
+}
+
+function normalizeRegistrationMethod(method) {
+  const normalized = String(method ?? '').trim().toLowerCase().replace(/\s+/g, '_')
+  return normalized || 'email_password'
+}
+
+function normalizeAppUserIdForTracking(userId) {
+  const id = String(userId ?? '').trim()
+  if (!id || id.includes('@')) return ''
+  return id
+}
+
+export function completeRegistration(method = 'email_password', { appUserId = null } = {}) {
+  const payload = {
+    event: REGISTRATION_COMPLETED_EVENT,
+    registration_method: normalizeRegistrationMethod(method),
+  }
+
+  const normalizedProvidedId = normalizeAppUserIdForTracking(appUserId)
+  if (normalizedProvidedId) {
+    payload.app_user_id = normalizedProvidedId
+  } else if (lastAppUserId) {
+    payload.app_user_id = lastAppUserId
+  }
+
+  pushToDataLayer(withDebug(payload))
 }
 
 export function setUserId(userId) {

@@ -134,6 +134,7 @@ import { useUserStore } from '@/stores/user'
 import { useGoogleAuth } from '@/composables/useGoogleAuth'
 import FullPageSpinner from '@/components/common/FullPageSpinner.vue'
 import { useZoom } from '@/composables/useZoom'
+import * as analytics from '@/services/analytics'
 
 export default {
   name: 'RegisterModal',
@@ -333,6 +334,7 @@ export default {
             localStorage.setItem('refresh_token', refresh)
           }
           userStore.setUser(data)
+          analytics.completeRegistration('email_password', { appUserId: data?.id })
         }
         showFeedback('Compte créé avec succès!', 'success')
         emit('register', { ...payload })

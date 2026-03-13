@@ -104,7 +104,8 @@ class GoogleLoginView(APIView):
                 data={
                     'user': user_data,
                     'access': str(refresh.access_token),
-                    'refresh': str(refresh)
+                    'refresh': str(refresh),
+                    'is_new_user': bool(created)
                 }
             )
 
@@ -239,7 +240,8 @@ class GoogleOAuthCodeExchangeView(APIView):
                 data={
                     'user': user_data,
                     'access': str(refresh.access_token),
-                    'refresh': str(refresh)
+                    'refresh': str(refresh),
+                    'is_new_user': bool(created)
                 }
             )
 
@@ -338,7 +340,8 @@ class GoogleOAuthAccessTokenView(APIView):
                 data={
                     'user': user_data,
                     'access': str(refresh.access_token),
-                    'refresh': str(refresh)
+                    'refresh': str(refresh),
+                    'is_new_user': bool(created)
                 }
             )
 

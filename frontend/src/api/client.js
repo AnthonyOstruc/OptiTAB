@@ -574,6 +574,17 @@ function isCanceledError(error) {
   )
 }
 
+function isRetriableNetworkError(error) {
+  if (!error?.response) {
+    return (
+      error?.code === 'ECONNABORTED' ||
+      error?.code === 'NETWORK_ERROR' ||
+      error?.code === 'ERR_NETWORK'
+    )
+  }
+  return false
+}
+
 /**
  * Intercepteur de requête
  * Ajoute automatiquement le token d'authentification
@@ -703,8 +714,12 @@ apiClient.interceptors.response.use(
       }
     }
     
-    // Gestion des erreurs réseau et timeouts
-    if (!response && (error.code === 'ECONNABORTED' || error.code === 'NETWORK_ERROR')) {
+    // Gestion des erreurs réseau et timeouts.
+    // Important: éviter les boucles infinies de retry via l'intercepteur.
+    if (isRetriableNetworkError(error)) {
+      if (config?.__networkRetryChainActive) {
+        return Promise.reject(error)
+      }
       return handleNetworkError(config, error)
     }
 
@@ -771,9 +786,18 @@ async function handleTokenExpiration(config, originalError) {
  * Gère les erreurs réseau avec retry
  */
 async function handleNetworkError(config, error) {
+  if (!config) {
+    return Promise.reject(error)
+  }
+
+  const retryConfig = {
+    ...config,
+    __networkRetryChainActive: true
+  }
+
   return RetryManager.retryRequest(() => {
-    ApiLogger.secureLog('info', 'Retry de la requête réseau', { url: config.url })
-    return apiClient(config)
+    ApiLogger.secureLog('info', 'Retry de la requête réseau', { url: retryConfig.url })
+    return apiClient(retryConfig)
   })
 }
 

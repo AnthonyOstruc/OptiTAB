@@ -58,6 +58,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSubscriptionStore } from '@/stores/subscription'
 import { finalizeCheckoutSession } from '@/api/subscriptions'
+import * as analytics from '@/services/analytics'
 
 const route = useRoute()
 const subscriptionStore = useSubscriptionStore()
@@ -68,6 +69,7 @@ const isGiftPayer = ref(false)
 const beneficiaryLabel = ref('')
 const step = ref(1)
 const progress = ref(10)
+const purchaseTracked = ref(false)
 
 const sessionId = computed(() => route.query.session_id || '')
 const isSuccess = computed(() => hasAccess.value || isGiftPayer.value)
@@ -88,11 +90,58 @@ const primaryLabel = computed(() => {
 })
 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+const PURCHASE_TRACKED_PREFIX = 'optitab_purchase_tracked_'
 
 function updateProgress(targetStep, targetProgress, message) {
   step.value = targetStep
   progress.value = targetProgress
   statusMessage.value = message
+}
+
+function readTrackedPurchase(transactionId) {
+  if (!transactionId || typeof window === 'undefined') return false
+  try {
+    return window.localStorage?.getItem(`${PURCHASE_TRACKED_PREFIX}${transactionId}`) === '1'
+  } catch (_) {
+    return false
+  }
+}
+
+function markTrackedPurchase(transactionId) {
+  if (!transactionId || typeof window === 'undefined') return
+  try {
+    window.localStorage?.setItem(`${PURCHASE_TRACKED_PREFIX}${transactionId}`, '1')
+  } catch (_) {}
+}
+
+function trackPurchaseIfPaid(data) {
+  if (purchaseTracked.value) return
+
+  const payment = data?.payment
+  if (!payment?.is_paid) return
+
+  const value = Number(payment.value)
+  if (!Number.isFinite(value) || value <= 0) return
+
+  const transactionId = String(payment.transaction_id || sessionId.value || '').trim()
+  if (transactionId && readTrackedPurchase(transactionId)) {
+    purchaseTracked.value = true
+    return
+  }
+
+  const statusPlan = data?.status?.plan || {}
+  analytics.purchase({
+    value,
+    currency: payment.currency || 'EUR',
+    transactionId,
+    planName: statusPlan?.name || statusPlan?.label || '',
+    planMode: statusPlan?.mode || '',
+  })
+
+  if (transactionId) {
+    markTrackedPurchase(transactionId)
+  }
+  purchaseTracked.value = true
 }
 
 async function finalizeSessionIfNeeded() {
@@ -107,6 +156,7 @@ async function finalizeSessionIfNeeded() {
   for (let attempt = 0; attempt < 5; attempt++) {
     try {
       const { data } = await finalizeCheckoutSession(sessionId.value)
+      trackPurchaseIfPaid(data)
       
       updateProgress(2, 50, 'Paiement confirme, activation...')
       

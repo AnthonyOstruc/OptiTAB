@@ -28,6 +28,7 @@ const ALLOWED_NAV_NAMES = new Set([
 const CTA_TRACKING_WINDOW_FLAG = '__optitab_cta_tracking_initialized__'
 const CTA_TRACKING_WINDOW_HANDLER = '__optitab_cta_tracking_handler__'
 const REGISTRATION_COMPLETED_EVENT = 'optitab_registration_completed'
+const PURCHASE_COMPLETED_EVENT = 'optitab_purchase_completed'
 
 function getDataLayer() {
   if (typeof window === 'undefined') return null
@@ -160,6 +161,17 @@ function normalizeAppUserIdForTracking(userId) {
   return id
 }
 
+function normalizeCurrency(currency) {
+  const value = String(currency ?? '').trim().toUpperCase()
+  return value || 'EUR'
+}
+
+function normalizePurchaseValue(value) {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric) || numeric <= 0) return null
+  return Math.round(numeric * 100) / 100
+}
+
 export function completeRegistration(method = 'email_password', { appUserId = null } = {}) {
   const payload = {
     event: REGISTRATION_COMPLETED_EVENT,
@@ -174,6 +186,34 @@ export function completeRegistration(method = 'email_password', { appUserId = nu
   }
 
   pushToDataLayer(withDebug(payload))
+}
+
+export function purchase({
+  value,
+  currency = 'EUR',
+  transactionId = null,
+  planName = null,
+  planMode = null,
+} = {}) {
+  const normalizedValue = normalizePurchaseValue(value)
+  if (normalizedValue === null) return
+
+  const payload = {
+    event: PURCHASE_COMPLETED_EVENT,
+    value: normalizedValue,
+    currency: normalizeCurrency(currency),
+  }
+
+  const txId = String(transactionId ?? '').trim()
+  if (txId) payload.transaction_id = txId
+
+  const normalizedPlanName = String(planName ?? '').trim()
+  if (normalizedPlanName) payload.plan_name = normalizedPlanName
+
+  const normalizedPlanMode = String(planMode ?? '').trim().toLowerCase()
+  if (normalizedPlanMode) payload.plan_mode = normalizedPlanMode
+
+  pushToDataLayer(withDebug(withAppUserId(payload)))
 }
 
 export function setUserId(userId) {

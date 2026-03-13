@@ -498,6 +498,17 @@ class CheckoutSessionStatusView(APIView):
             except Exception:
                 beneficiary_label = ''
 
+        payment_status = str(session.get('payment_status') or '').lower()
+        currency = str(session.get('currency') or 'EUR').upper()
+        amount_total_minor = session.get('amount_total')
+        try:
+            amount_total_minor = int(amount_total_minor) if amount_total_minor is not None else None
+        except (TypeError, ValueError):
+            amount_total_minor = None
+        amount_total = (amount_total_minor / 100.0) if amount_total_minor is not None else None
+        is_paid = bool(payment_status == 'paid' and amount_total_minor and amount_total_minor > 0)
+        transaction_id = str(session.get('payment_intent') or session.get('id') or '')
+
         return JsonResponse({
             'status': status_payload,
             'has_access': status_payload.get('has_access', False),
@@ -506,6 +517,14 @@ class CheckoutSessionStatusView(APIView):
                 'is_payer': is_payer,
                 'is_beneficiary': is_beneficiary,
                 'beneficiary_label': beneficiary_label
+            },
+            'payment': {
+                'is_paid': is_paid,
+                'status': payment_status,
+                'value': amount_total,
+                'value_minor': amount_total_minor,
+                'currency': currency,
+                'transaction_id': transaction_id,
             }
         })
 

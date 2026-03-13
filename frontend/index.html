@@ -47,18 +47,20 @@
         }
 
         var analytics = 'denied';
+        var marketing = 'denied';
 
         if (stored && stored.expiresAt && stored.expiresAt > now) {
           analytics = stored.analytics === 'granted' ? 'granted' : 'denied';
+          marketing = stored.marketing === 'granted' ? 'granted' : 'denied';
         } else if (stored && stored.expiresAt && stored.expiresAt <= now) {
           clearStored();
         }
 
         gtag('consent', 'default', {
           analytics_storage: analytics,
-          ad_storage: 'denied',
-          ad_user_data: 'denied',
-          ad_personalization: 'denied'
+          ad_storage: marketing,
+          ad_user_data: marketing,
+          ad_personalization: marketing
         });
       })();
     </script>

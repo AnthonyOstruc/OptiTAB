@@ -13,8 +13,8 @@
             <strong>Votre vie privee compte.</strong>
             <p>
               OptiTAB utilise des cookies essentiels pour le fonctionnement du site et des cookies de
-              statistiques pour mesurer l'audience. Vous pouvez accepter, refuser ou personnaliser votre
-              choix.
+              statistiques et marketing/publicite pour mesurer l'audience et personnaliser nos campagnes.
+              Vous pouvez accepter, refuser ou personnaliser votre choix.
               <router-link to="/cookies" class="cookie-link">En savoir plus</router-link>.
             </p>
           </div>
@@ -64,6 +64,22 @@
                 </span>
               </label>
             </div>
+
+            <div class="cookie-category cookie-category--toggle">
+              <div>
+                <h4>Marketing / Publicite</h4>
+                <p>
+                  Active les traceurs publicitaires pour la mesure et l'optimisation de campagnes (Meta
+                  Pixel).
+                </p>
+              </div>
+              <label class="cookie-toggle" aria-label="Autoriser les cookies marketing et publicitaires">
+                <input type="checkbox" v-model="marketingEnabled" />
+                <span class="cookie-toggle__track">
+                  <span class="cookie-toggle__thumb"></span>
+                </span>
+              </label>
+            </div>
           </div>
 
           <div class="cookie-panel__actions">
@@ -93,6 +109,7 @@ const CONSENT_MONTHS = 6
 const isBannerVisible = ref(false)
 const isPanelOpen = ref(false)
 const analyticsEnabled = ref(false)
+const marketingEnabled = ref(false)
 const hasChoice = ref(false)
 
 const ensureGtag = () => {
@@ -112,15 +129,16 @@ const ensureGtag = () => {
   return window.gtag
 }
 
-const updateConsent = (analyticsGranted) => {
+const updateConsent = (analyticsGranted, marketingGranted) => {
   const gtag = ensureGtag()
   if (!gtag) return
 
+  const marketingStorage = marketingGranted ? 'granted' : 'denied'
   gtag('consent', 'update', {
     analytics_storage: analyticsGranted ? 'granted' : 'denied',
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied'
+    ad_storage: marketingStorage,
+    ad_user_data: marketingStorage,
+    ad_personalization: marketingStorage
   })
 }
 
@@ -185,16 +203,18 @@ const readStoredConsent = () => {
   }
 
   const analytics = stored.analytics === 'granted' ? 'granted' : 'denied'
-  return { analytics, expiresAt: stored.expiresAt }
+  const marketing = stored.marketing === 'granted' ? 'granted' : 'denied'
+  return { analytics, marketing, expiresAt: stored.expiresAt }
 }
 
-const persistConsent = (analyticsGranted) => {
+const persistConsent = (analyticsGranted, marketingGranted) => {
   const now = new Date()
   const expiresAt = new Date(now)
   expiresAt.setMonth(expiresAt.getMonth() + CONSENT_MONTHS)
 
   const payload = {
     analytics: analyticsGranted ? 'granted' : 'denied',
+    marketing: marketingGranted ? 'granted' : 'denied',
     updatedAt: now.toISOString(),
     expiresAt: expiresAt.getTime()
   }
@@ -212,29 +232,32 @@ const applyStoredConsent = () => {
   const stored = readStoredConsent()
   if (stored) {
     analyticsEnabled.value = stored.analytics === 'granted'
+    marketingEnabled.value = stored.marketing === 'granted'
     hasChoice.value = true
     isBannerVisible.value = false
-    updateConsent(analyticsEnabled.value)
+    updateConsent(analyticsEnabled.value, marketingEnabled.value)
     return
   }
 
   analyticsEnabled.value = false
+  marketingEnabled.value = false
   hasChoice.value = false
   isBannerVisible.value = true
-  updateConsent(false)
+  updateConsent(false, false)
 }
 
-const saveConsent = (analyticsGranted) => {
+const saveConsent = ({ analyticsGranted, marketingGranted }) => {
   analyticsEnabled.value = analyticsGranted
+  marketingEnabled.value = marketingGranted
   hasChoice.value = true
-  persistConsent(analyticsGranted)
-  updateConsent(analyticsGranted)
+  persistConsent(analyticsGranted, marketingGranted)
+  updateConsent(analyticsGranted, marketingGranted)
   isBannerVisible.value = false
   isPanelOpen.value = false
 }
 
-const acceptAll = () => saveConsent(true)
-const denyAll = () => saveConsent(false)
+const acceptAll = () => saveConsent({ analyticsGranted: true, marketingGranted: true })
+const denyAll = () => saveConsent({ analyticsGranted: false, marketingGranted: false })
 
 const openPanel = () => {
   isPanelOpen.value = true
@@ -248,7 +271,12 @@ const closePanel = () => {
   }
 }
 
-const savePreferences = () => saveConsent(analyticsEnabled.value)
+const savePreferences = () => {
+  saveConsent({
+    analyticsGranted: analyticsEnabled.value,
+    marketingGranted: marketingEnabled.value
+  })
+}
 
 const handleOpenEvent = () => {
   openPanel()

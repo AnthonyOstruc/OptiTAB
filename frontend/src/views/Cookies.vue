@@ -13,7 +13,7 @@
               <span class="gradient-text">OptiTAB</span> - Plateforme d'apprentissage
             </p>
             <div class="cgv-meta">
-              <span class="meta-text">Dernière mise à jour : 3 février 2026 • Site web : www.optitab.net</span>
+              <span class="meta-text">Dernière mise à jour : 13 mars 2026 • Site web : www.optitab.net</span>
             </div>
           </div>
         </div>
@@ -71,29 +71,30 @@
                   <li>L'équilibrage de la charge du serveur</li>
                 </ul>
 
-                <h3 class="subsection-title">2.2 Cookies de performance</h3>
+                <h3 class="subsection-title">2.2 Cookies de statistiques</h3>
                 <p>Ces cookies nous aident à comprendre comment les visiteurs interagissent avec notre site :</p>
                 <ul class="content-list">
                   <li>Nombre de visiteurs et pages visitées</li>
                   <li>Temps passé sur le site</li>
                   <li>Sources de trafic</li>
                   <li>Pages d'erreur rencontrées</li>
+                  <li>Dépôt uniquement après votre consentement explicite</li>
                 </ul>
 
-                <h3 class="subsection-title">2.3 Cookies de fonctionnalité</h3>
-                <p>Ces cookies permettent d'améliorer votre expérience utilisateur :</p>
+                <h3 class="subsection-title">2.3 Cookies Marketing / Publicité</h3>
+                <p>Ces traceurs sont utilisés pour mesurer et optimiser nos campagnes publicitaires :</p>
                 <ul class="content-list">
-                  <li>Mémorisation de vos préférences (langue, région)</li>
-                  <li>Personnalisation de l'interface</li>
-                  <li>Rappel de vos choix précédents</li>
+                  <li>Mesure de l'efficacité des campagnes (ex. Meta Pixel)</li>
+                  <li>Attribution des visites/conversions publicitaires</li>
+                  <li>Dépôt uniquement après votre consentement explicite</li>
                 </ul>
 
-                <h3 class="subsection-title">2.4 Cookies de ciblage</h3>
-                <p>Ces cookies sont utilisés pour :</p>
+                <h3 class="subsection-title">2.4 Règles de consentement appliquées</h3>
+                <p>Conformément aux règles applicables en France (CNIL), nous appliquons les principes suivants :</p>
                 <ul class="content-list">
-                  <li>Proposer des contenus adaptés à vos centres d'intérêt</li>
-                  <li>Mesurer l'efficacité de nos campagnes publicitaires</li>
-                  <li>Limiter le nombre d'affichages d'une publicité</li>
+                  <li>Les catégories non essentielles (Statistiques, Marketing / Publicité) sont désactivées par défaut</li>
+                  <li>Le bouton "Tout refuser" est proposé au même niveau que "Tout accepter"</li>
+                  <li>Vous pouvez retirer votre consentement à tout moment via "Gérer mes cookies"</li>
                 </ul>
               </div>
             </section>
@@ -107,7 +108,7 @@
               <div class="section-content">
                 <p>
                   La liste ci-dessous présente les principaux cookies/traceurs utilisés sur OptiTAB. Les
-                  cookies de statistiques ne sont déposés qu'après votre consentement explicite.
+                  cookies de statistiques et marketing/publicité ne sont déposés qu'après votre consentement explicite.
                 </p>
                 <div class="cookies-table">
                   <div class="cookie-item">
@@ -125,7 +126,7 @@
                     <div class="cookie-details">
                       <strong>Finalité :</strong> Mesure d'audience et statistiques de fréquentation<br>
                       <strong>Durée :</strong> 13 mois maximum<br>
-                      <strong>Type :</strong> Performance<br>
+                      <strong>Type :</strong> Statistiques<br>
                       <strong>Dépôt :</strong> Uniquement après acceptation des cookies "Statistiques"
                     </div>
                   </div>
@@ -135,8 +136,18 @@
                     <div class="cookie-details">
                       <strong>Finalité :</strong> Analyse de l'expérience utilisateur (parcours, heatmaps)<br>
                       <strong>Durée :</strong> Variable selon le cookie (session à 12 mois)<br>
-                      <strong>Type :</strong> Performance<br>
+                      <strong>Type :</strong> Statistiques<br>
                       <strong>Dépôt :</strong> Uniquement après acceptation des cookies "Statistiques"
+                    </div>
+                  </div>
+
+                  <div class="cookie-item">
+                    <div class="cookie-name">Meta Pixel (_fbp, _fbc)</div>
+                    <div class="cookie-details">
+                      <strong>Finalité :</strong> Mesure et optimisation des campagnes publicitaires<br>
+                      <strong>Durée :</strong> Variable selon Meta (souvent jusqu'à 90 jours)<br>
+                      <strong>Type :</strong> Marketing / Publicité<br>
+                      <strong>Dépôt :</strong> Uniquement après acceptation des cookies "Marketing / Publicité"
                     </div>
                   </div>
                 </div>
@@ -154,7 +165,15 @@
                   Vous pouvez modifier vos préférences à tout moment via le lien "Gérer mes cookies"
                   disponible en pied de page.
                 </p>
-                <h3 class="subsection-title">4.1 Paramètres du navigateur</h3>
+                <h3 class="subsection-title">4.1 Depuis la bannière de consentement</h3>
+                <ul class="content-list">
+                  <li>"Tout accepter" active les catégories Statistiques et Marketing / Publicité</li>
+                  <li>"Tout refuser" maintient uniquement les cookies strictement nécessaires</li>
+                  <li>"Personnaliser" permet d'activer/désactiver chaque catégorie non essentielle</li>
+                  <li>Votre choix peut être modifié à tout moment via "Gérer mes cookies"</li>
+                </ul>
+
+                <h3 class="subsection-title">4.2 Paramètres du navigateur</h3>
                 <p>Vous pouvez configurer votre navigateur pour :</p>
                 <ul class="content-list">
                   <li>Accepter tous les cookies</li>
@@ -163,7 +182,7 @@
                   <li>Supprimer les cookies existants</li>
                 </ul>
 
-                <h3 class="subsection-title">4.2 Instructions par navigateur</h3>
+                <h3 class="subsection-title">4.3 Instructions par navigateur</h3>
                 <div class="browser-instructions">
                   <div class="browser-item">
                     <strong>Google Chrome :</strong> Paramètres > Confidentialité et sécurité > Cookies et autres données de site
@@ -179,13 +198,12 @@
                   </div>
                 </div>
 
-                <h3 class="subsection-title">4.3 Conséquences du refus</h3>
+                <h3 class="subsection-title">4.4 Conséquences du refus</h3>
                 <p>Si vous refusez les cookies :</p>
                 <ul class="content-list">
-                  <li>Certaines fonctionnalités du site peuvent ne pas fonctionner correctement</li>
-                  <li>Vous devrez vous reconnecter à chaque visite</li>
-                  <li>Vos préférences ne seront pas mémorisées</li>
-                  <li>L'expérience utilisateur peut être dégradée</li>
+                  <li>Les mesures d'audience et de campagnes publicitaires sont désactivées</li>
+                  <li>Le fonctionnement essentiel du site reste disponible</li>
+                  <li>Vous pouvez revenir sur ce choix à tout moment</li>
                 </ul>
               </div>
             </section>
@@ -218,7 +236,17 @@
                   <li><strong>Dépôt :</strong> Uniquement après acceptation des cookies "Statistiques"</li>
                 </ul>
 
-                <h3 class="subsection-title">5.3 Réseaux sociaux</h3>
+                <h3 class="subsection-title">5.3 Meta Pixel</h3>
+                <p>Nous utilisons Meta Pixel pour mesurer et optimiser nos campagnes publicitaires :</p>
+                <ul class="content-list">
+                  <li><strong>Finalité :</strong> Mesure des performances publicitaires et attribution</li>
+                  <li><strong>Données collectées :</strong> Pages vues, événements de navigation, données techniques du navigateur</li>
+                  <li><strong>Durée :</strong> Variable selon Meta (souvent jusqu'à 90 jours)</li>
+                  <li><strong>Dépôt :</strong> Uniquement après acceptation des cookies "Marketing / Publicité"</li>
+                  <li><strong>Politique tierce :</strong> <a href="https://www.facebook.com/privacy/policy/" class="link" target="_blank">Politique de confidentialité Meta</a></li>
+                </ul>
+
+                <h3 class="subsection-title">5.4 Réseaux sociaux</h3>
                 <p>Des boutons de partage peuvent déposer des cookies :</p>
                 <ul class="content-list">
                   <li>Facebook, Twitter, LinkedIn, etc.</li>
@@ -240,8 +268,8 @@
                   <li><strong>Cookies de session :</strong> Supprimés à la fermeture du navigateur</li>
                   <li><strong>Cookies persistants :</strong> Conservés selon la durée définie (de quelques jours à plusieurs années)</li>
                   <li><strong>Cookies de sécurité :</strong> Généralement 24 heures</li>
-                  <li><strong>Cookies de préférences :</strong> 1 an maximum</li>
                   <li><strong>Cookies analytiques :</strong> 13 mois maximum</li>
+                  <li><strong>Cookies marketing/publicitaires :</strong> Durée variable selon les fournisseurs (dans la limite des règles applicables)</li>
                 </ul>
                 <p>Vous pouvez supprimer manuellement tous les cookies à tout moment via les paramètres de votre navigateur.</p>
               </div>
@@ -258,6 +286,7 @@
                 <ul class="content-list">
                   <li><strong>Être informé :</strong> Connaître les cookies utilisés et leur finalité</li>
                   <li><strong>Donner votre consentement :</strong> Accepter ou refuser les cookies non essentiels</li>
+                  <li><strong>Refuser facilement :</strong> Refuser doit être aussi simple qu'accepter</li>
                   <li><strong>Retirer votre consentement :</strong> Modifier vos préférences à tout moment</li>
                   <li><strong>Accéder aux données :</strong> Demander quelles données sont collectées</li>
                   <li><strong>Supprimer :</strong> Effacer les cookies de votre navigateur</li>

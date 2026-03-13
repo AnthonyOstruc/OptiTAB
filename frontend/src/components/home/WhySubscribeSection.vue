@@ -207,6 +207,7 @@ const CrossIcon = () => h('span', { class: 'cell-cross' },
 </script>
 
 <style scoped lang="scss">
+@use 'sass:color';
 // ─────────────────────────────────────────
 // Tokens
 // ─────────────────────────────────────────
@@ -402,7 +403,7 @@ $radius-sm:  8px;
 .row-alt {
   .cmp-label-col,
   .cmp-row-cell { background: $row-alt; }
-  .cmp-row-cell--premium { background: mix(#eff6ff, #f8fafc, 60%); }
+  .cmp-row-cell--premium { background: color.mix(#eff6ff, #f8fafc, $weight: 60%); }
 }
 
 .row-label {
@@ -536,7 +537,7 @@ $radius-sm:  8px;
   color: #fff;
   box-shadow: 0 2px 14px rgba(37,99,235,0.22);
   &:hover {
-    background: darken($blue-mid, 5%);
+    background: color.adjust($blue-mid, $lightness: -5%);
     transform: translateY(-1px);
     box-shadow: 0 4px 18px rgba(37,99,235,0.32);
   }
@@ -687,7 +688,7 @@ $radius-sm:  8px;
   text-align: center;
 
   &:hover {
-    background: darken($blue-mid, 6%);
+    background: color.adjust($blue-mid, $lightness: -6%);
     transform: translateY(-1px);
   }
 }

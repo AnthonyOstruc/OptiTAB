@@ -105,6 +105,8 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 const STORAGE_KEY = 'optitab_cookie_consent_v1'
 const CONSENT_EVENT = 'open-cookie-preferences'
 const CONSENT_MONTHS = 6
+const CONSENT_UPDATED_DATALAYER_EVENT = 'optitab_consent_updated'
+const MARKETING_GRANTED_DATALAYER_EVENT = 'optitab_marketing_consent_granted'
 
 const isBannerVisible = ref(false)
 const isPanelOpen = ref(false)
@@ -129,17 +131,44 @@ const ensureGtag = () => {
   return window.gtag
 }
 
-const updateConsent = (analyticsGranted, marketingGranted) => {
+const pushConsentUpdateEvents = (analyticsGranted, marketingGranted, emitMarketingGrantEvent) => {
+  if (typeof window === 'undefined') return
+  const existing = window.dataLayer
+  if (!Array.isArray(existing)) {
+    window.dataLayer = []
+  }
+
+  const analyticsStorage = analyticsGranted ? 'granted' : 'denied'
+  const marketingStorage = marketingGranted ? 'granted' : 'denied'
+
+  window.dataLayer.push({
+    event: CONSENT_UPDATED_DATALAYER_EVENT,
+    analytics_consent: analyticsStorage,
+    marketing_consent: marketingStorage
+  })
+
+  if (emitMarketingGrantEvent && marketingGranted) {
+    window.dataLayer.push({
+      event: MARKETING_GRANTED_DATALAYER_EVENT,
+      marketing_consent: marketingStorage
+    })
+  }
+}
+
+const updateConsent = (analyticsGranted, marketingGranted, { emitMarketingGrantEvent = false } = {}) => {
   const gtag = ensureGtag()
   if (!gtag) return
 
   const marketingStorage = marketingGranted ? 'granted' : 'denied'
+  const analyticsStorage = analyticsGranted ? 'granted' : 'denied'
   gtag('consent', 'update', {
-    analytics_storage: analyticsGranted ? 'granted' : 'denied',
+    analytics_storage: analyticsStorage,
     ad_storage: marketingStorage,
     ad_user_data: marketingStorage,
     ad_personalization: marketingStorage
   })
+
+  pushConsentUpdateEvents(analyticsGranted, marketingGranted, emitMarketingGrantEvent)
 }
 
 const safeJsonParse = (value) => {
@@ -251,7 +280,7 @@ const saveConsent = ({ analyticsGranted, marketingGranted }) => {
   marketingEnabled.value = marketingGranted
   hasChoice.value = true
   persistConsent(analyticsGranted, marketingGranted)
-  updateConsent(analyticsGranted, marketingGranted)
+  updateConsent(analyticsGranted, marketingGranted, { emitMarketingGrantEvent: true })
   isBannerVisible.value = false
   isPanelOpen.value = false
 }
@@ -260,6 +289,10 @@ const acceptAll = () => saveConsent({ analyticsGranted: true, marketingGranted: 
 const denyAll = () => saveConsent({ analyticsGranted: false, marketingGranted: false })
 
 const openPanel = () => {
+  if (!hasChoice.value) {
+    analyticsEnabled.value = true
+    marketingEnabled.value = true
+  }
   isPanelOpen.value = true
   isBannerVisible.value = false
 }

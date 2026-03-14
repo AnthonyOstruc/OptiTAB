@@ -1,14 +1,29 @@
 Stripe subscription setup (OptiTAB)
 
-1) Configure environment variables (backend/.env)
+1) Configure environment variables safely by environment
+
+Local development (`backend/.env`):
+- STRIPE_SECRET_KEY=sk_test_...
+- STRIPE_PUBLISHABLE_KEY=pk_test_...
+- STRIPE_WEBHOOK_SECRET=whsec_... (from Stripe Test mode)
+- FRONTEND_BASE_URL=http://localhost:3000
+- STRIPE_ENV=dev
+
+Production (Render environment variables):
 - STRIPE_SECRET_KEY=sk_live_...
 - STRIPE_PUBLISHABLE_KEY=pk_live_...
-- STRIPE_WEBHOOK_SECRET=whsec_...
+- STRIPE_WEBHOOK_SECRET=whsec_... (from Stripe Live mode)
 - FRONTEND_BASE_URL=https://optitab.net
-# Optional overrides
+
+Optional overrides:
 - STRIPE_SUCCESS_URL=https://optitab.net/billing/success
 - STRIPE_CANCEL_URL=https://optitab.net/billing/cancel
 - STRIPE_FREE_TRIAL_DAYS=0  # Set to a positive number only if you offer a free trial
+
+Safety guard (enabled by default):
+- Local/dev refuses `*_live_*` Stripe keys.
+- Production refuses `*_test_*` Stripe keys.
+- Override only in emergency with `STRIPE_DISABLE_MODE_GUARD=true`.
 
 2) Install backend dependency
 - pip install -r backend/requirements.txt
@@ -62,3 +77,7 @@ Mirror in Django admin → Subscription plans:
 8) Local dev fallback (si le webhook n'est pas joignable)
 - L'URL `/api/subscriptions/checkout-session/status/?session_id=...` permet au frontend de forcer la finalisation d'une session Stripe après la redirection `success_url`.
 - Cela garantit que les abonnements/passes sont créés même sans tunnel Stripe CLI.
+
+9) Important local frontend setting
+- In local frontend dev, keep API on local backend (`http://localhost:8000`).
+- Do not set `VITE_USE_REMOTE_IN_DEV=true`, otherwise your local UI can hit production backend.

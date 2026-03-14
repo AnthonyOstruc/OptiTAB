@@ -58,6 +58,8 @@ Create a `.env` file for local development:
 
 ```env
 VITE_API_URL=http://localhost:8000
+# Keep this unset/false in local to avoid calling remote prod backend by mistake
+# VITE_USE_REMOTE_IN_DEV=false
 ```
 
 ## Project Structure

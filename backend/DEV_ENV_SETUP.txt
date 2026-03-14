@@ -24,6 +24,13 @@ GOOGLE_OAUTH_CLIENT_SECRET=votre_google_client_secret_developpement
 FRONTEND_BASE_URL=http://localhost:3000
 FRONTEND_URL=http://localhost:3000
 
+# Stripe (DEV = TEST MODE UNIQUEMENT)
+STRIPE_SECRET_KEY=sk_test_xxx
+STRIPE_PUBLISHABLE_KEY=pk_test_xxx
+STRIPE_WEBHOOK_SECRET=whsec_xxx
+# Optionnel (explicite): force le runtime Stripe en mode dev
+STRIPE_ENV=dev
+
 # Email (pour développement local)
 EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
 # EMAIL_HOST=smtp.gmail.com
@@ -47,6 +54,7 @@ SECRET_KEY=dev_secret_key_change_in_production
 2. Remplacez les valeurs GOOGLE_OAUTH_* par vos vraies clés Google Cloud Console
 3. Créez un client OAuth séparé pour le développement dans Google Cloud Console
 4. Configurez les origines autorisées : http://localhost:3000 et http://127.0.0.1:3000
+5. N'utilisez jamais de clés Stripe `*_live_*` en local.
 
 # ==========================================
 # TESTER L'EXPIRATION D'UN PASS (EMAIL "PASS EXPIRÉ")

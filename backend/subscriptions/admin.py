@@ -6,7 +6,7 @@ from .models import SubscriptionPlan, UserSubscription, PaymentHistory, AccessPa
 class SubscriptionPlanAdmin(admin.ModelAdmin):
     list_display = ("name", "plan_type", "plan_mode", "billing_period", "price", "access_days", "is_active")
     list_filter = ("plan_type", "plan_mode", "billing_period", "is_active")
-    search_fields = ("name", "stripe_price_id")
+    search_fields = ("name", "stripe_price_id", "stripe_price_id_test")
 
 
 @admin.register(UserSubscription)

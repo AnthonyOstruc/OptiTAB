@@ -15,7 +15,13 @@ from .models import SubscriptionPlan, UserSubscription, PaymentHistory, AccessPa
 from pays.models import Niveau
 from django.db import DatabaseError
 from django.db.models import Q
-from stripe_config import STRIPE_WEBHOOK_SECRET, SUCCESS_URL, CANCEL_URL, FREE_TRIAL_DAYS
+from stripe_config import (
+    STRIPE_WEBHOOK_SECRET,
+    SUCCESS_URL,
+    CANCEL_URL,
+    FREE_TRIAL_DAYS,
+    STRIPE_RUNTIME_MODE,
+)
 from core.services import EmailService
 from .stripe_client import stripe, stripe_error
 from .helpers import (
@@ -62,6 +68,39 @@ logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
+
+
+def _is_stripe_test_runtime():
+    return str(STRIPE_RUNTIME_MODE).lower() == 'test'
+
+
+def _runtime_stripe_price_id(plan):
+    if not plan:
+        return None
+    if _is_stripe_test_runtime():
+        return (getattr(plan, 'stripe_price_id_test', None) or '').strip() or None
+    return (getattr(plan, 'stripe_price_id', None) or '').strip() or None
+
+
+def _find_plan_from_checkout_price_id(price_id):
+    candidate = (price_id or '').strip()
+    if not candidate:
+        return None
+    if _is_stripe_test_runtime():
+        # Primary lookup in test field; fallback to live field for backward compatibility.
+        return (
+            SubscriptionPlan.objects.filter(stripe_price_id_test=candidate).first()
+            or SubscriptionPlan.objects.filter(stripe_price_id=candidate).first()
+        )
+    return SubscriptionPlan.objects.filter(stripe_price_id=candidate).first()
+
+
+def _plans_queryset_for_runtime():
+    qs = SubscriptionPlan.objects.filter(is_active=True)
+    if _is_stripe_test_runtime():
+        # In local/dev test mode, only expose plans that are mapped to a test Price ID.
+        return qs.exclude(stripe_price_id_test__isnull=True).exclude(stripe_price_id_test='')
+    return qs
 
 
 def _beneficiary_already_has_level_access(beneficiary_user, niveau_obj, *, now=None):
@@ -139,11 +178,18 @@ class CreateCheckoutSessionView(APIView):
                 
                 logger.info("User %s subscribing for beneficiary %s", payer_user.id, beneficiary_user.id)
             
-            # Récupérer le plan
-            try:
-                plan = SubscriptionPlan.objects.get(stripe_price_id=price_id)
-            except SubscriptionPlan.DoesNotExist:
+            # Récupérer le plan depuis le price_id envoyé par le frontend.
+            # En local/dev (Stripe test), on cible stripe_price_id_test quand il est configuré.
+            plan = _find_plan_from_checkout_price_id(price_id)
+            if not plan:
                 return JsonResponse({'error': 'Plan non trouvé'}, status=404)
+            checkout_price_id = _runtime_stripe_price_id(plan)
+            if not checkout_price_id:
+                mode_label = 'test' if _is_stripe_test_runtime() else 'live'
+                return JsonResponse(
+                    {'error': f"Plan non configuré pour Stripe {mode_label}. Configurez le price_id dans l'admin."},
+                    status=400,
+                )
             
             # Déterminer le niveau d'accès (obligatoire pour éviter l'accès global)
             niveau_obj = None
@@ -262,7 +308,7 @@ class CreateCheckoutSessionView(APIView):
                 customer=customer_id,
                 payment_method_types=['card'],
                 line_items=[{
-                    'price': price_id,
+                    'price': checkout_price_id,
                     'quantity': 1,
                 }],
                 mode='subscription' if is_subscription else 'payment',
@@ -795,7 +841,7 @@ class PlansListView(APIView):
 
     def get(self, request):
         try:
-            plans = SubscriptionPlan.objects.filter(is_active=True).order_by('price')
+            plans = _plans_queryset_for_runtime().order_by('price')
             return JsonResponse({'plans': [_plan_to_dict(plan) for plan in plans]})
         except DatabaseError as e:
             logger.error(f"PlansListView DB error: {e}")
@@ -862,6 +908,7 @@ def _parse_datetime_value(value):
     return dt
 
 def _plan_to_dict(plan, include_admin=False):
+    runtime_price_id = _runtime_stripe_price_id(plan)
     payload = {
         'id': plan.id,
         'name': plan.name,
@@ -869,7 +916,8 @@ def _plan_to_dict(plan, include_admin=False):
         'mode': _resolve_plan_mode(plan),
         'billing_period': plan.billing_period,
         'price': float(plan.price),
-        'stripe_price_id': plan.stripe_price_id,
+        # Expose the runtime-appropriate price ID to the public API.
+        'stripe_price_id': runtime_price_id or plan.stripe_price_id,
         'features': plan.features,
         'access_days': getattr(plan, 'access_days', None),
     }
@@ -877,6 +925,8 @@ def _plan_to_dict(plan, include_admin=False):
         payload.update({
             'is_active': plan.is_active,
             'created_at': plan.created_at.isoformat() if plan.created_at else None,
+            'stripe_price_id_live': plan.stripe_price_id,
+            'stripe_price_id_test': getattr(plan, 'stripe_price_id_test', None),
         })
     return payload
 
@@ -931,6 +981,7 @@ class AdminPlansView(APIView):
             billing_period = data.get('billing_period') or 'monthly'
             price = data.get('price')
             stripe_price_id = data.get('stripe_price_id')
+            stripe_price_id_test = (data.get('stripe_price_id_test') or None)
             access_days = data.get('access_days')
             features = data.get('features') or []
             is_active = bool(data.get('is_active', True))
@@ -944,6 +995,7 @@ class AdminPlansView(APIView):
                 billing_period=billing_period,
                 price=price,
                 stripe_price_id=stripe_price_id,
+                stripe_price_id_test=stripe_price_id_test,
                 features=features if isinstance(features, list) else [],
                 is_active=is_active,
             )
@@ -972,9 +1024,12 @@ class AdminPlanDetailView(APIView):
             return JsonResponse({'detail': 'Not found'}, status=404)
         data = request.data if hasattr(request, 'data') else json.loads(request.body or '{}')
         try:
-            for field in ['name', 'plan_type', 'billing_period', 'price', 'stripe_price_id', 'is_active']:
+            for field in ['name', 'plan_type', 'billing_period', 'price', 'stripe_price_id', 'stripe_price_id_test', 'is_active']:
                 if field in data:
-                    setattr(plan, field, data[field])
+                    value = data[field]
+                    if field == 'stripe_price_id_test' and value in ('', None):
+                        value = None
+                    setattr(plan, field, value)
             # Handle mode / plan_mode
             if 'mode' in data or 'plan_mode' in data:
                 mode = (data.get('mode') or data.get('plan_mode')).lower()

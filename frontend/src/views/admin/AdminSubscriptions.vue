@@ -31,7 +31,8 @@
           </select>
         </label>
         <label>Prix (€)<input v-model.number="form.price" type="number" step="0.01" min="0" /></label>
-        <label>Stripe Price ID<input v-model="form.stripe_price_id" placeholder="price_..." /></label>
+        <label>Stripe Price ID (LIVE)<input v-model="form.stripe_price_id" placeholder="price_live_..." /></label>
+        <label>Stripe Price ID (TEST)<input v-model="form.stripe_price_id_test" placeholder="price_test_..." /></label>
         <label v-if="form.mode === 'one_time'">Accès (jours)<input v-model.number="form.access_days" type="number" min="1" /></label>
       </div>
       <div class="row row-align-end">
@@ -58,7 +59,8 @@
             <th>Mode</th>
             <th>Période</th>
             <th>Prix (€)</th>
-            <th>Price ID</th>
+            <th>Price ID (LIVE)</th>
+            <th>Price ID (TEST)</th>
             <th>Accès</th>
             <th>Actif</th>
             <th>Actions</th>
@@ -70,7 +72,8 @@
             <td><span class="tag" :class="mode(p) === 'subscription' ? 'tag-sub' : 'tag-one'">{{ mode(p) }}</span></td>
             <td>{{ humanPeriod(p.billing_period) }}</td>
             <td>{{ Number(p.price || 0).toFixed(2) }}</td>
-            <td class="mono">{{ p.stripe_price_id }}</td>
+            <td class="mono">{{ p.stripe_price_id_live || p.stripe_price_id }}</td>
+            <td class="mono">{{ p.stripe_price_id_test || '—' }}</td>
             <td>{{ p.access_days || (mode(p) === 'subscription' ? '—' : 0) }}</td>
             <td>{{ p.is_active ? 'Oui' : 'Non' }}</td>
             <td class="row-actions">
@@ -78,7 +81,7 @@
               <button class="link danger" @click="remove(p)">Supprimer</button>
             </td>
           </tr>
-          <tr v-if="!filtered.length"><td colspan="8" class="empty">Aucun plan trouvé</td></tr>
+          <tr v-if="!filtered.length"><td colspan="9" class="empty">Aucun plan trouvé</td></tr>
         </tbody>
       </table>
     </div>
@@ -92,7 +95,18 @@ import { adminListPlans, adminCreatePlan, adminUpdatePlan, adminDeletePlan } fro
 const plans = ref([])
 const q = ref('')
 const editId = ref(null)
-const form = ref({ name: '', plan_type: 'basic', mode: 'subscription', billing_period: 'monthly', price: 0, stripe_price_id: '', access_days: null, is_active: true, features: [] })
+const form = ref({
+  name: '',
+  plan_type: 'basic',
+  mode: 'subscription',
+  billing_period: 'monthly',
+  price: 0,
+  stripe_price_id: '',
+  stripe_price_id_test: '',
+  access_days: null,
+  is_active: true,
+  features: []
+})
 const featuresText = ref('')
 
 function mode(p) {
@@ -117,7 +131,9 @@ const filtered = computed(() => {
   if (!s) return plans.value
   return plans.value.filter(p =>
     String(p.name || '').toLowerCase().includes(s) ||
-    String(p.stripe_price_id || '').toLowerCase().includes(s)
+    String(p.stripe_price_id || '').toLowerCase().includes(s) ||
+    String(p.stripe_price_id_live || '').toLowerCase().includes(s) ||
+    String(p.stripe_price_id_test || '').toLowerCase().includes(s)
   )
 })
 
@@ -125,7 +141,18 @@ onMounted(load)
 
 function resetForm() {
   editId.value = null
-  form.value = { name: '', plan_type: 'basic', mode: 'subscription', billing_period: 'monthly', price: 0, stripe_price_id: '', access_days: null, is_active: true, features: [] }
+  form.value = {
+    name: '',
+    plan_type: 'basic',
+    mode: 'subscription',
+    billing_period: 'monthly',
+    price: 0,
+    stripe_price_id: '',
+    stripe_price_id_test: '',
+    access_days: null,
+    is_active: true,
+    features: []
+  }
   featuresText.value = ''
 }
 
@@ -137,7 +164,8 @@ function startEdit(p) {
     mode: mode(p),
     billing_period: p.billing_period,
     price: Number(p.price || 0),
-    stripe_price_id: p.stripe_price_id,
+    stripe_price_id: p.stripe_price_id_live || p.stripe_price_id,
+    stripe_price_id_test: p.stripe_price_id_test || '',
     access_days: p.access_days || null,
     is_active: !!p.is_active,
     features: Array.isArray(p.features) ? p.features : []

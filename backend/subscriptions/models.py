@@ -46,6 +46,13 @@ class SubscriptionPlan(models.Model):
     billing_period = models.CharField(max_length=20, choices=BILLING_PERIODS)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stripe_price_id = models.CharField(max_length=100, unique=True)
+    stripe_price_id_test = models.CharField(
+        max_length=100,
+        unique=True,
+        null=True,
+        blank=True,
+        help_text="Price ID Stripe en mode test (utilisé en local/dev).",
+    )
     features = models.JSONField(default=list)  # Liste des fonctionnalités
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

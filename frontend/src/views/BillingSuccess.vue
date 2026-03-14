@@ -15,6 +15,23 @@
       </router-link>
     </template>
 
+    <!-- Failure State -->
+    <template v-else-if="isFailure">
+      <div class="error-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M8 8l8 8M16 8l-8 8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <h1 class="headline error">Paiement non confirmé</h1>
+      <p class="status">{{ statusMessage }}</p>
+      <div class="buttons-row">
+        <router-link class="btn btn-primary" to="/billing">
+          Réessayer le paiement
+        </router-link>
+      </div>
+    </template>
+
     <!-- Loading State -->
     <template v-else>
       <div class="loading-container">
@@ -70,9 +87,11 @@ const beneficiaryLabel = ref('')
 const step = ref(1)
 const progress = ref(10)
 const purchaseTracked = ref(false)
+const paymentFailed = ref(false)
 
 const sessionId = computed(() => route.query.session_id || '')
 const isSuccess = computed(() => hasAccess.value || isGiftPayer.value)
+const isFailure = computed(() => paymentFailed.value && !isSuccess.value)
 const progressPercent = computed(() => Math.min(100, progress.value))
 const progressStyle = computed(() => {
   const circumference = 2 * Math.PI * 42
@@ -210,11 +229,10 @@ onMounted(async () => {
     await wait(1200)
   }
   
-  // Final - assume success even if we can't confirm
-  updateProgress(3, 100, 'Acces en cours d\'activation...')
-  await wait(800)
-  hasAccess.value = true
-  statusMessage.value = 'Ton acces est pret !'
+  // Pas de succès forcé: aucun accès tant que le paiement n'est pas confirmé.
+  paymentFailed.value = true
+  progress.value = 100
+  statusMessage.value = 'Le paiement n’a pas été confirmé. Aucun accès supplémentaire n’a été débloqué.'
 })
 </script>
 
@@ -239,7 +257,18 @@ onMounted(async () => {
   color: #10b981;
   animation: scaleIn 0.4s ease-out;
 }
+.error-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1.5rem;
+  color: #ef4444;
+  animation: scaleIn 0.4s ease-out;
+}
 .success-icon svg {
+  width: 100%;
+  height: 100%;
+}
+.error-icon svg {
   width: 100%;
   height: 100%;
 }
@@ -251,6 +280,9 @@ onMounted(async () => {
 }
 .headline.success {
   color: #059669;
+}
+.headline.error {
+  color: #b91c1c;
 }
 .status {
   font-size: 1.1rem;

@@ -221,6 +221,17 @@ class CreateCheckoutSessionView(APIView):
                     'error': f"L'élève {beneficiary_user.email} a déjà ce niveau débloqué (abonnement ou pass actif)."
                 }, status=400)
 
+            # Pour les passes one-time en achat direct, éviter les doubles achats
+            # si le niveau est déjà débloqué (abonnement/pass actif).
+            if (not beneficiary_email) and (plan_mode == 'one_time') and _beneficiary_already_has_level_access(
+                beneficiary_user,
+                niveau_obj,
+                now=timezone.now(),
+            ):
+                return JsonResponse({
+                    'error': "Vous avez déjà ce niveau débloqué (abonnement ou pass actif)."
+                }, status=400)
+
             # Créer ou récupérer le client Stripe (basé sur le payeur, pas le bénéficiaire)
             existing_customer_id = _get_stripe_customer_id(payer_user)
             if existing_customer_id:

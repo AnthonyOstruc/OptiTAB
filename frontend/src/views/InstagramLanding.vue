@@ -1,17 +1,18 @@
 <script setup>
 import Header from '@/components/layout/Header.vue'
+import PricingPlans from '@/components/home/PricingPlans.vue'
 import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
-import { useRouter } from 'vue-router'
 
 const { openModal } = useModalManager()
-const router = useRouter()
 
 const openRegister = () => {
   openModal(MODAL_IDS.REGISTER)
 }
 
-const goToTarifs = () => {
-  router.push({ name: 'TarifsPage' })
+const scrollToAbonnements = () => {
+  const target = document.getElementById('tarifs')
+  if (!target) return
+  target.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 const freeFeatures = [
@@ -102,11 +103,13 @@ const subscriptionPoints = [
               <span class="ig-subscription__check">✓</span> {{ point }}
             </li>
           </ul>
-          <button class="ig-cta ig-cta--primary ig-subscription__cta" @click="goToTarifs">
+          <button class="ig-cta ig-cta--primary ig-subscription__cta" @click="scrollToAbonnements">
             Voir l'abonnement
           </button>
         </div>
       </section>
+
+      <PricingPlans />
     </main>
 
     <footer class="ig-footer">

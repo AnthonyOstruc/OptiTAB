@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename)
 
 const CANONICAL_SITE_ORIGIN = 'https://www.optitab.net'
 const API_FETCH_TIMEOUT_MS = Number.parseInt(
-  String(process.env.SITEMAP_IMAGES_API_TIMEOUT_MS || '15000'),
+  String(process.env.SITEMAP_IMAGES_API_TIMEOUT_MS || '45000'),
   10
 )
 const API_PAGE_SIZE = Number.parseInt(

@@ -25,11 +25,19 @@ const EXERCISE_DETAIL_PATH_RE = /^\/ressources-gratuites\/exercices\/exercice-gr
 const HTML_FETCH_ACCEPT = 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.8'
 const HTML_FETCH_TIMEOUT_MS = 15000
 const API_FETCH_TIMEOUT_MS = Number.parseInt(
-  String(process.env.SITEMAP_API_TIMEOUT_MS || '15000'),
+  String(process.env.SITEMAP_API_TIMEOUT_MS || '45000'),
   10
 )
 const API_PAGE_SIZE = Number.parseInt(
   String(process.env.SITEMAP_API_PAGE_SIZE || '100'),
+  10
+)
+const API_FETCH_MAX_RETRIES = Number.parseInt(
+  String(process.env.SITEMAP_API_RETRIES || '2'),
+  10
+)
+const API_FETCH_RETRY_BASE_DELAY_MS = Number.parseInt(
+  String(process.env.SITEMAP_API_RETRY_BASE_DELAY_MS || '500'),
   10
 )
 const SHOULD_VALIDATE_MERGE = String(process.env.VALIDATE_MERGE || '').trim() === '1'
@@ -269,20 +277,46 @@ async function fetchAllPages(url) {
   const items = []
   let nextUrl = url
   let guard = 0
+  const retryLimit = Number.isFinite(API_FETCH_MAX_RETRIES) && API_FETCH_MAX_RETRIES >= 0
+    ? API_FETCH_MAX_RETRIES
+    : 2
+  const retryBaseDelayMs = Number.isFinite(API_FETCH_RETRY_BASE_DELAY_MS) && API_FETCH_RETRY_BASE_DELAY_MS > 0
+    ? API_FETCH_RETRY_BASE_DELAY_MS
+    : 500
 
   while (nextUrl && guard < 50) {
     guard += 1
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), Number.isFinite(API_FETCH_TIMEOUT_MS) ? API_FETCH_TIMEOUT_MS : 15000)
     let res
-    try {
-      res = await fetch(nextUrl, {
-        headers: { Accept: 'application/json' },
-        signal: controller.signal
-      })
-    } finally {
-      clearTimeout(timeout)
+    let attempt = 0
+
+    while (true) {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), Number.isFinite(API_FETCH_TIMEOUT_MS) ? API_FETCH_TIMEOUT_MS : 45000)
+      try {
+        res = await fetch(nextUrl, {
+          headers: { Accept: 'application/json' },
+          signal: controller.signal
+        })
+      } catch (error) {
+        if (attempt < retryLimit && isRetryableFetchError(error)) {
+          attempt += 1
+          await delay(retryBaseDelayMs * attempt)
+          continue
+        }
+        throw error
+      } finally {
+        clearTimeout(timeout)
+      }
+
+      if (!res.ok && attempt < retryLimit && isRetryableStatus(res.status)) {
+        attempt += 1
+        await delay(retryBaseDelayMs * attempt)
+        continue
+      }
+
+      break
     }
+
     if (!res.ok) {
       throw new Error(`HTTP ${res.status} for ${nextUrl}`)
     }
@@ -293,6 +327,20 @@ async function fetchAllPages(url) {
   }
 
   return items
+}
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+function isRetryableStatus(status) {
+  return status === 429 || status >= 500
+}
+
+function isRetryableFetchError(error) {
+  if (!error) return false
+  if (error?.name === 'AbortError') return true
+  return error instanceof TypeError
 }
 
 function routeForResource(resource) {

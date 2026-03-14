@@ -13,11 +13,19 @@ const START_MARKER = '      # BEGIN GENERATED LEGACY REDIRECTS'
 const END_MARKER = '      # END GENERATED LEGACY REDIRECTS'
 const STRICT_MODE = String(process.env.RENDER_ROUTES_STRICT || '').trim() === '1'
 const API_FETCH_TIMEOUT_MS = Number.parseInt(
-  String(process.env.RENDER_ROUTES_API_TIMEOUT_MS || '15000'),
+  String(process.env.RENDER_ROUTES_API_TIMEOUT_MS || '45000'),
   10
 )
 const API_PAGE_SIZE = Number.parseInt(
   String(process.env.RENDER_ROUTES_API_PAGE_SIZE || '100'),
+  10
+)
+const API_FETCH_MAX_RETRIES = Number.parseInt(
+  String(process.env.RENDER_ROUTES_API_RETRIES || '2'),
+  10
+)
+const API_FETCH_RETRY_BASE_DELAY_MS = Number.parseInt(
+  String(process.env.RENDER_ROUTES_API_RETRY_BASE_DELAY_MS || '500'),
   10
 )
 const KNOWN_404_POPULAR_LINK_PATHS = [
@@ -239,20 +247,46 @@ async function fetchAllPages(url) {
   const items = []
   let nextUrl = url
   let guard = 0
+  const retryLimit = Number.isFinite(API_FETCH_MAX_RETRIES) && API_FETCH_MAX_RETRIES >= 0
+    ? API_FETCH_MAX_RETRIES
+    : 2
+  const retryBaseDelayMs = Number.isFinite(API_FETCH_RETRY_BASE_DELAY_MS) && API_FETCH_RETRY_BASE_DELAY_MS > 0
+    ? API_FETCH_RETRY_BASE_DELAY_MS
+    : 500
 
   while (nextUrl && guard < 100) {
     guard += 1
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), Number.isFinite(API_FETCH_TIMEOUT_MS) ? API_FETCH_TIMEOUT_MS : 15000)
     let response
-    try {
-      response = await fetch(nextUrl, {
-        headers: { Accept: 'application/json' },
-        signal: controller.signal
-      })
-    } finally {
-      clearTimeout(timeout)
+    let attempt = 0
+
+    while (true) {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), Number.isFinite(API_FETCH_TIMEOUT_MS) ? API_FETCH_TIMEOUT_MS : 45000)
+      try {
+        response = await fetch(nextUrl, {
+          headers: { Accept: 'application/json' },
+          signal: controller.signal
+        })
+      } catch (error) {
+        if (attempt < retryLimit && isRetryableFetchError(error)) {
+          attempt += 1
+          await delay(retryBaseDelayMs * attempt)
+          continue
+        }
+        throw error
+      } finally {
+        clearTimeout(timeout)
+      }
+
+      if (!response.ok && attempt < retryLimit && isRetryableStatus(response.status)) {
+        attempt += 1
+        await delay(retryBaseDelayMs * attempt)
+        continue
+      }
+
+      break
     }
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status} while fetching ${nextUrl}`)
     }
@@ -263,6 +297,20 @@ async function fetchAllPages(url) {
   }
 
   return items
+}
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+function isRetryableStatus(status) {
+  return status === 429 || status >= 500
+}
+
+function isRetryableFetchError(error) {
+  if (!error) return false
+  if (error?.name === 'AbortError') return true
+  return error instanceof TypeError
 }
 
 function renderYamlRedirectEntry({ source, destination }) {

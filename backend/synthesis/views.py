@@ -256,7 +256,7 @@ class SynthesisImageViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         # Lecture: utilisateurs authentifies
         if self.action in ["list", "retrieve"]:
-            return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
+            return [IsAuthenticated()]
         # Ecriture reservee aux admins
         return [IsAdminUser()]
 
@@ -270,5 +270,13 @@ class SynthesisImageViewSet(viewsets.ModelViewSet):
         sheet_id = self.request.query_params.get('sheet')
         if sheet_id:
             queryset = queryset.filter(sheet_id=sheet_id)
-        return queryset.order_by('position', 'id')
 
+        user = getattr(self.request, "user", None)
+        if user and user.is_authenticated and not (user.is_staff or user.is_superuser):
+            if not user_has_active_subscription_or_pass(user):
+                demo_notion_id = getattr(getattr(user, "niveau_pays", None), "demo_notion_id", None)
+                if not demo_notion_id:
+                    return queryset.none()
+                queryset = queryset.filter(sheet__notion_id=demo_notion_id)
+
+        return queryset.order_by('position', 'id')

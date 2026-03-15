@@ -153,6 +153,24 @@ function stripUrlQuery(value) {
   }
 }
 
+function normalizeInlineImageSources(html, { imageType = 'cours' } = {}) {
+  if (!html) return html
+
+  return html.replace(/<img\b([^>]*?)>/gi, (fullMatch, attrs = '') => {
+    const srcMatch = attrs.match(/\bsrc\s*=\s*(['"])(.*?)\1/i)
+    if (!srcMatch) return fullMatch
+
+    const rawSrc = String(srcMatch[2] || '').trim()
+    if (!rawSrc) return fullMatch
+
+    const normalizedSrc = getImageUrl(rawSrc, imageType)
+    if (!normalizedSrc || normalizedSrc === rawSrc) return fullMatch
+
+    const updatedAttrs = attrs.replace(srcMatch[0], `src="${escapeHtml(normalizedSrc)}"`)
+    return `<img${updatedAttrs}>`
+  })
+}
+
 /**
  * Rendu du contenu avec images intégrées
  */
@@ -161,6 +179,7 @@ export function renderContentWithImages(content, images = [], options = {}) {
 
   const looksLikeHtml = /<\s*(h[1-6]|p|div|table|ul|ol|li|img|section|article|header|footer|span|br|hr)\b/i.test(content)
   let processedText = looksLikeHtml ? content : markdownToHtml(content)
+  const imageType = options?.imageType || options?.type || 'cours'
 
   processedText = unescapeLatex(processedText)
   const { autoShiftHeadings = false, headingOffset = 0 } = options || {}
@@ -169,6 +188,8 @@ export function renderContentWithImages(content, images = [], options = {}) {
   } else if (headingOffset) {
     processedText = shiftHeadingLevels(processedText, headingOffset)
   }
+
+  processedText = normalizeInlineImageSources(processedText, { imageType })
 
   if (!images || images.length === 0) {
     return processedText
@@ -216,6 +237,7 @@ export function renderContentWithImages(content, images = [], options = {}) {
 
   processedText = processedText.replace(/<img(?![^>]*loading=)([^>]*?)>/gi, '<img loading="lazy"$1>')
   processedText = processedText.replace(/<img(?![^>]*decoding=)([^>]*?)>/gi, '<img decoding="async"$1>')
+  processedText = normalizeInlineImageSources(processedText, { imageType })
 
   return processedText
 }

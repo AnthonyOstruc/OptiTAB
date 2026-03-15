@@ -791,7 +791,9 @@ class ExerciceImageViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
-        """Lecture protégée par abonnement, modifications réservées aux utilisateurs authentifiés (admin)."""
+        """Lecture autorisée pour utilisateurs connectés, limitée au chapitre démo sans abonnement."""
+        if self.action in ['list', 'retrieve']:
+            return [IsAuthenticated()]
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             return [IsAuthenticated()]
         return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
@@ -801,6 +803,15 @@ class ExerciceImageViewSet(viewsets.ModelViewSet):
         exercice_id = self.request.query_params.get('exercice')
         if exercice_id:
             queryset = queryset.filter(exercice_id=exercice_id)
+
+        user = getattr(self.request, "user", None)
+        if user and user.is_authenticated and not (user.is_staff or user.is_superuser):
+            if not user_has_active_subscription_or_pass(user):
+                demo_notion_id = getattr(getattr(user, "niveau_pays", None), "demo_notion_id", None)
+                if not demo_notion_id:
+                    return queryset.none()
+                queryset = queryset.filter(exercice__notion_id=demo_notion_id)
+
         return queryset.order_by('position', 'id')
 
     def create(self, request, *args, **kwargs):

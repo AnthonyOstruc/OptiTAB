@@ -129,6 +129,7 @@
                       :instruction="getInstruction(exercice)"
                       :solution="statementOnlyMode ? '' : (exercice.solution || exercice.reponse_correcte || '')"
                       :etapes="statementOnlyMode ? '' : (exercice.etapes || '')"
+                      :previewImages="exercice.images || []"
                       :difficulty="exercice.difficulty || exercice.difficulte || 'medium'"
                       :current="statementOnlyMode ? null : statusMap[exercice.id]?.status"
                       :readonly="statementOnlyMode"

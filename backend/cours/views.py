@@ -95,6 +95,11 @@ class CoursImageViewSet(viewsets.ModelViewSet):
     serializer_class = CoursImageSerializer
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
+    def get_permissions(self):
+        if self.action in ("list", "retrieve"):
+            return [IsAuthenticated()]
+        return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
+
     def get_serializer_context(self):
         ctx = super().get_serializer_context()
         ctx['request'] = self.request
@@ -105,6 +110,15 @@ class CoursImageViewSet(viewsets.ModelViewSet):
         cours_id = self.request.query_params.get('cours')
         if cours_id:
             queryset = queryset.filter(cours_id=cours_id)
+
+        user = getattr(self.request, "user", None)
+        if user and user.is_authenticated and not (user.is_staff or user.is_superuser):
+            if not user_has_active_subscription_or_pass(user):
+                demo_notion_id = getattr(getattr(user, "niveau_pays", None), "demo_notion_id", None)
+                if not demo_notion_id:
+                    return queryset.none()
+                queryset = queryset.filter(cours__notion_id=demo_notion_id)
+
         return queryset.order_by('position', 'id')
 
     @action(detail=False, methods=['post'], url_path='duplicate')

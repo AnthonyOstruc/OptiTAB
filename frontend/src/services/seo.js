@@ -1,5 +1,6 @@
 import { faq as homeFaq } from '@/config/homeFaq.js'
 import { FREE_RESOURCES_FAQ_BY_ROUTE } from '@/config/freeResourcesAuthority'
+import { getManualSeoOverrideByPath } from '@/config/manualSeoOverrides'
 
 const DEFAULT_SITE_NAME = 'OptiTAB'
 const DEFAULT_TITLE = 'Plateforme de maths & cours particuliers en ligne'
@@ -570,15 +571,15 @@ const ROUTE_SEO = {
     })()
   },
   CoursParticuliers: {
-    title: 'Cours particuliers de maths en ligne (6e-Prepa)',
+    title: 'Cours particuliers de maths en ligne du college a la prepa | OptiTAB',
     description:
-      'Cours particuliers de maths en ligne : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI). Professeurs experts, suivi.',
+      'Cours particuliers de maths en ligne de la 6e a la prepa : explications claires, suivi regulier, exercices cibles et accompagnement pas a pas.',
     canonicalPath: '/cours-particuliers'
   },
   FreeCourses: {
-    title: 'Cours de maths gratuits (6e-Prepa, Brevet, Bac)',
+    title: 'Cours de maths gratuits du college a la prepa | OptiTAB',
     description:
-      'Cours de maths gratuits : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale, Prepa (MPSI, MP2I, PCSI). Methodes, exemples, exercices.',
+      'Comprends chaque notion avec des cours de maths clairs, methodes et exemples concrets pour college, lycee, bac et prepa.',
     canonicalPath: '/ressources-gratuites/cours',
     faq: FREE_RESOURCES_FAQ_BY_ROUTE.FreeCourses
   },
@@ -598,9 +599,9 @@ const ROUTE_SEO = {
     ogType: 'article'
   },
   FreeExercises: {
-    title: 'Exercices de maths corriges (6e-Prepa)',
+    title: 'Exercices corriges de maths du college a la prepa | OptiTAB',
     description:
-      'Exercices de maths corriges : 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI). Methode + correction.',
+      'Entraine-toi avec des exercices de maths corriges pas a pas pour progresser en methode, du college a la prepa.',
     canonicalPath: '/ressources-gratuites/exercices',
     faq: FREE_RESOURCES_FAQ_BY_ROUTE.FreeExercises
   },
@@ -610,9 +611,9 @@ const ROUTE_SEO = {
     ogType: 'article'
   },
   FreeSummaries: {
-    title: 'Fiches de revision de maths (6e-Prepa)',
+    title: 'Fiches de revision de maths du college a la prepa | OptiTAB',
     description:
-      'Fiches de revision de maths : formules, methodes, exemples - 6e, 5e, 4e, 3e (Brevet), 2nde, 1re, Terminale (Bac), Prepa (MPSI, MP2I, PCSI).',
+      'Revise vite avec des fiches de maths claires: formules, methodes et points essentiels pour college, lycee, bac et prepa.',
     canonicalPath: '/ressources-gratuites/syntheses',
     faq: FREE_RESOURCES_FAQ_BY_ROUTE.FreeSummaries
   },
@@ -643,13 +644,13 @@ const ROUTE_SEO = {
     canonicalPath: '/contact'
   },
   TarifsPage: {
-    title: 'Tarifs OptiTAB : abonnement maths en ligne',
-    description: 'Tarifs OptiTAB : abonnement mensuel sans engagement pour acceder aux cours, exercices corriges et fiches de synthese. Paiement securise, annulation a tout moment.',
+    title: 'Tarifs abonnement maths en ligne sans engagement | OptiTAB',
+    description: 'Decouvre les tarifs OptiTAB pour acceder aux cours de maths, exercices corriges et fiches de synthese, avec annulation a tout moment.',
     canonicalPath: '/tarifs'
   },
   FreeResourcesHome: {
-    title: 'Ressources gratuites de maths : cours, exercices corriges et fiches de revision',
-    description: 'Cours de maths gratuits, exercices corriges et fiches de revision pour college, lycee, brevet, bac et prepa. Demarrage rapide par format sur OptiTAB.',
+    title: 'Ressources gratuites de maths: cours, exercices corriges et fiches | OptiTAB',
+    description: 'Accede a des cours de maths gratuits, des exercices corriges pas a pas et des fiches de revision pour college, lycee et prepa.',
     keywords: [
       'ressources gratuites maths',
       'cours de maths gratuits',
@@ -710,10 +711,15 @@ export function applyRouteSeo(route) {
     const name = route?.name ? String(route.name) : ''
     const routeSeo = ROUTE_SEO[name] || {}
     const routePath = canonicalizePath(route?.path || '/')
-    const inferredCanonicalPath = routeSeo.canonicalPath || routePath
+    const routeCanonicalPath = routeSeo.canonicalPath || routePath
+    const manualSeoByCanonical = getManualSeoOverrideByPath(routeCanonicalPath)
+    const manualSeoByPath = getManualSeoOverrideByPath(routePath)
+    const manualSeo = manualSeoByCanonical || manualSeoByPath || null
+    const resolvedSeo = manualSeo ? { ...routeSeo, ...manualSeo } : routeSeo
+    const inferredCanonicalPath = resolvedSeo.canonicalPath || routeCanonicalPath
 
     const requiresAuth = Boolean(route?.meta?.requiresAuth || route?.meta?.requiresAdmin || route?.meta?.requiresSubscription)
-    const isConfiguredNoIndex = Boolean(routeSeo.noindex)
+    const isConfiguredNoIndex = Boolean(resolvedSeo.noindex)
     const isSystemNoIndex = requiresAuth || NOINDEX_ROUTE_NAMES.has(name)
     const slugParam = String(route?.params?.slug || '')
     // Suppression de la logique qui interdit l'indexation des exercices corrigés
@@ -721,14 +727,14 @@ export function applyRouteSeo(route) {
     const robots = getRobotsForRoute({ route, noindex: shouldNoIndex })
 
     const routeMetaBreadcrumbs = Array.isArray(route?.meta?.breadcrumbs) ? route.meta.breadcrumbs : []
-    const breadcrumbs = Array.isArray(routeSeo.breadcrumbs) && routeSeo.breadcrumbs.length
-      ? [...routeSeo.breadcrumbs]
+    const breadcrumbs = Array.isArray(resolvedSeo.breadcrumbs) && resolvedSeo.breadcrumbs.length
+      ? [...resolvedSeo.breadcrumbs]
       : [...routeMetaBreadcrumbs]
     if (breadcrumbs.length === 0 && !['Home', 'NotFound'].includes(name)) {
       if (inferredCanonicalPath) {
         breadcrumbs.push({ name: 'Accueil', item: '/' })
         if (inferredCanonicalPath !== '/') {
-          const label = String(routeSeo.breadcrumbLabel || routeSeo.title || '')
+          const label = String(resolvedSeo.breadcrumbLabel || resolvedSeo.title || '')
             .replace(/^OptiTAB\s*-\s*/i, '')
             .trim()
           if (label) {
@@ -739,10 +745,10 @@ export function applyRouteSeo(route) {
     }
 
     const routeMetaFaq = Array.isArray(route?.meta?.faq) ? route.meta.faq : []
-    const faqItems = Array.isArray(routeSeo.faq) && routeSeo.faq.length ? routeSeo.faq : routeMetaFaq
+    const faqItems = Array.isArray(resolvedSeo.faq) && resolvedSeo.faq.length ? resolvedSeo.faq : routeMetaFaq
     const breadcrumbGraph = buildBreadcrumbJsonLd(breadcrumbs)
     const faqGraph = buildFaqJsonLd(faqItems)
-    const extraGraph = Array.isArray(routeSeo.jsonLdGraph) ? routeSeo.jsonLdGraph : []
+    const extraGraph = Array.isArray(resolvedSeo.jsonLdGraph) ? resolvedSeo.jsonLdGraph : []
     const finalCanonical = toAbsoluteUrl(inferredCanonicalPath || '/')
     const websiteId = `${getSiteBaseUrl()}/#website`
     const webPageId = `${finalCanonical}#webpage`
@@ -753,16 +759,16 @@ export function applyRouteSeo(route) {
       : {}
     const hasArticleGraphAlready = extraGraph.some((graph) => String(graph?.['@type'] || '').toLowerCase() === 'article')
     const looksLikeEditorialPath = /^\/(?:blog|articles)(?:\/|$)/i.test(routePath)
-    const shouldAttachArticle = !hasArticleGraphAlready && !shouldNoIndex && (looksLikeEditorialPath || Boolean(routeSeo.article || route?.meta?.article))
+    const shouldAttachArticle = !hasArticleGraphAlready && !shouldNoIndex && (looksLikeEditorialPath || Boolean(resolvedSeo.article || route?.meta?.article))
     const articleGraph = shouldAttachArticle
       ? buildArticleJsonLd({
           id: articleMeta.id || `${finalCanonical}#article`,
           url: finalCanonical,
-          headline: articleMeta.headline || routeSeo.title || DEFAULT_TITLE,
-          description: articleMeta.description || routeSeo.description || DEFAULT_DESCRIPTION,
+          headline: articleMeta.headline || resolvedSeo.title || DEFAULT_TITLE,
+          description: articleMeta.description || resolvedSeo.description || DEFAULT_DESCRIPTION,
           datePublished: articleMeta.datePublished,
           dateModified: articleMeta.dateModified,
-          image: articleMeta.image || routeSeo.image || DEFAULT_IMAGE_PATH,
+          image: articleMeta.image || resolvedSeo.image || DEFAULT_IMAGE_PATH,
           author: articleMeta.author || { '@id': organizationId },
           publisher: articleMeta.publisher || { '@id': organizationId },
           isPartOf: { '@id': websiteId },
@@ -773,13 +779,13 @@ export function applyRouteSeo(route) {
     const jsonLdGraph = [breadcrumbGraph, faqGraph, articleGraph, ...extraGraph].filter(Boolean)
 
     setPageSeo({
-      title: routeSeo.title || DEFAULT_TITLE,
-      description: routeSeo.description || DEFAULT_DESCRIPTION,
-      keywords: routeSeo.keywords,
+      title: resolvedSeo.title || DEFAULT_TITLE,
+      description: resolvedSeo.description || DEFAULT_DESCRIPTION,
+      keywords: resolvedSeo.keywords,
       canonicalPath: inferredCanonicalPath,
       robots,
-      ogType: routeSeo.ogType || 'website',
-      image: routeSeo.image || DEFAULT_IMAGE_PATH,
+      ogType: resolvedSeo.ogType || 'website',
+      image: resolvedSeo.image || DEFAULT_IMAGE_PATH,
       jsonLdGraph
     })
   } catch (_) {

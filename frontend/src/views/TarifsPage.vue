@@ -94,9 +94,9 @@ function toAbsoluteUrl(path) {
   return `${base}${raw.startsWith('/') ? '' : '/'}${raw}`
 }
 
-const title = 'Tarifs OptiTAB : abonnement maths en ligne'
+const title = 'Tarifs abonnement maths en ligne sans engagement | OptiTAB'
 const description =
-  'Tarifs OptiTAB : abonnement mensuel sans engagement pour acceder aux cours, exercices corriges et fiches de synthese. Paiement securise, annulation a tout moment.'
+  'Decouvre les tarifs OptiTAB pour acceder aux cours de maths, exercices corriges et fiches de synthese, avec annulation a tout moment.'
 const faqGraph = buildFaqJsonLd(faqItems)
 const jsonLdGraph = [
   {

@@ -20,7 +20,7 @@
           </div>
           
           <h1 class="hero-title">
-            Cours particuliers <span class="title-highlight">en ligne</span>
+            Cours particuliers de maths <span class="title-highlight">en ligne</span>
           </h1>
           
           <p class="hero-subtitle">

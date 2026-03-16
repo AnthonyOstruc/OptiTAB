@@ -12,6 +12,7 @@ import { buildCourseRouteParams } from '@/utils/freeCourseSlug'
 import { buildSummaryRouteParams } from '@/utils/freeSummarySlug'
 import { buildExerciseChapterRouteParams, slugifyText } from '@/utils/freeExerciseSlug'
 import { FREE_RESOURCES_AUTHORITY_CONTENT, isKnownBrokenPopularLink } from '@/config/freeResourcesAuthority'
+import { getManualSeoOverrideByPath } from '@/config/manualSeoOverrides'
 import {
   setPageSeo,
   getRobotsForRoute,
@@ -146,15 +147,6 @@ const categoryInfo = computed(() => {
     return { label: 'Fiches de synthese gratuites', path: '/ressources-gratuites/syntheses' }
   }
   return { label: 'Cours gratuits', path: '/ressources-gratuites/cours' }
-})
-
-const introText = computed(() => {
-  if (!resource.value) return ''
-  if (props.resourceType === 'course') return ''
-  const raw = resource.value.accroche || resource.value.excerpt || resource.value.resume || ''
-  const cleaned = stripHtml(raw)
-  if (!cleaned) return ''
-  return cleaned.length > 180 ? `${cleaned.slice(0, 177).trimEnd()}...` : cleaned
 })
 
 const exerciseChapterPath = computed(() => {
@@ -750,6 +742,7 @@ function buildBestKnownCanonicalPathFromRoute() {
 function applySafeSeoBeforeResourceLoaded() {
   const canonicalTargetPath = buildBestKnownCanonicalPathFromRoute()
   const currentPath = normalizePathname(route.path)
+  const manualSeoOverride = getManualSeoOverrideByPath(canonicalTargetPath)
   const seoPayload = buildDynamicSeo({
     pageType: pageTypeFromResourceType(props.resourceType),
     topic: topicFromSlug(getRouteParamValue('slug')),
@@ -758,8 +751,8 @@ function applySafeSeoBeforeResourceLoaded() {
   })
 
   setPageSeo({
-    title: seoPayload.title,
-    description: seoPayload.description,
+    title: manualSeoOverride?.title || seoPayload.title,
+    description: manualSeoOverride?.description || seoPayload.description,
     canonicalPath: currentPath,
     canonicalUrl: canonicalTargetPath !== currentPath ? canonicalTargetPath : undefined,
     robots: 'noindex,follow',
@@ -849,17 +842,18 @@ watch(
       ? String(value.notion_nom).trim()
       : (value?.chapitre_nom ? String(value.chapitre_nom).trim() : '')
     const sourceText = pickSeoSourceText(value, props.resourceType)
+    const canonicalResourcePath = buildCanonicalPath(value)
+    const manualSeoOverride = getManualSeoOverrideByPath(canonicalResourcePath)
     const seoPayload = buildDynamicSeo({
       pageType: pageTypeFromResourceType(props.resourceType),
       topic: notionOrChapterTitle || baseTitle || topicFromSlug(route?.params?.slug),
       level: niveau,
       sourceText
     })
-    const title = seoPayload.title
-    const description = seoPayload.description
+    const title = manualSeoOverride?.title || seoPayload.title
+    const description = manualSeoOverride?.description || seoPayload.description
     const image = pickSeoImage(value) || undefined
     const imageAbs = image ? toAbsoluteUrl(image) : ''
-    const canonicalResourcePath = buildCanonicalPath(value)
     const canonicalResourceUrl = toAbsoluteUrl(canonicalResourcePath)
     const isCanonicalRoute = isCanonicalRoutePath(route.path, canonicalResourcePath)
     const canonicalSeo = buildCanonicalSeoFields({
@@ -1034,7 +1028,6 @@ onBeforeUnmount(() => {
              <div class="cours-title-row">
                <h1 class="cours-title">{{ resource.titre }}</h1>
              </div>
-             <p v-if="introText" class="cours-intro">{{ introText }}</p>
            </header>
 
            <section class="free-resource-cta" aria-label="Accès professeur ou plateforme">
@@ -1219,15 +1212,6 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-}
-
-.cours-intro {
-  margin: 0;
-  max-width: 860px;
-  color: #475569;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 1.6;
 }
 
 .cours-title-row {

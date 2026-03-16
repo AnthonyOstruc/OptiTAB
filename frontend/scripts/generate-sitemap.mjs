@@ -390,9 +390,9 @@ function routeForResource(resource) {
   }
 
   if (type === 'exercise') {
-    const slug = String(resource?.slug || '').trim().replace(/^\/+|\/+$/g, '')
-    if (!slug || slug.includes('/')) return null
-    return `/ressources-gratuites/exercices/${slug}`
+    // Exercise detail slugs are legacy entry points and now canonicalized to
+    // chapter URLs. We keep chapter routes only in sitemap.
+    return null
   }
 
   return null
@@ -582,8 +582,8 @@ async function buildSitemap() {
       addUrl(pathForItem, toLastMod(item?.date_modification))
     }
 
-    // 2) Typed resources (course, summary, exercise detail)
-    for (const type of ['course', 'summary', 'exercise']) {
+    // 2) Typed resources (course, summary)
+    for (const type of ['course', 'summary']) {
       const items = await fetchAllPages(
         `${baseEndpoint}?type=${encodeURIComponent(type)}&page_size=${pageSize}&light=1`
       )

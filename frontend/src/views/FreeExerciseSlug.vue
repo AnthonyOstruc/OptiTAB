@@ -3,14 +3,15 @@ import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import FreeCourseDetail from '@/views/FreeCourseDetail.vue'
 import FreeExerciseChapter from '@/views/FreeExerciseChapter.vue'
-import { getFreeResources } from '@/api/free-content'
-import { buildExerciseChapterSlug, formatPaysSlug, formatMatiereSlug, formatNiveauGroupSlug, DEFAULT_PAYS_SLUG, DEFAULT_MATIERE_SLUG } from '@/utils/freeExerciseSlug'
+import { getFreeResource, getFreeResources } from '@/api/free-content'
+import { buildExerciseChapterRouteParams, buildExerciseChapterSlug, formatPaysSlug, formatMatiereSlug, formatNiveauGroupSlug, DEFAULT_PAYS_SLUG, DEFAULT_MATIERE_SLUG } from '@/utils/freeExerciseSlug'
 import { setPageSeo } from '@/services/seo'
 import {
   buildDynamicSeo,
   DYNAMIC_SEO_PAGE_TYPES,
   topicFromSlug
 } from '@/composables/useDynamicSeo'
+import { getManualSeoOverrideByPath } from '@/config/manualSeoOverrides'
 
 const route = useRoute()
 const router = useRouter()
@@ -47,6 +48,7 @@ const applyNonCanonicalSeo = ({ canonicalPath, pageType, topic, level, sourceTex
   const normalizedCanonicalPath = normalizePathname(canonicalPath)
   const currentPath = normalizePathname(route.path)
   if (!normalizedCanonicalPath || !currentPath) return
+  const manualSeoOverride = getManualSeoOverrideByPath(normalizedCanonicalPath)
   const seoPayload = buildDynamicSeo({
     pageType: pageType || DYNAMIC_SEO_PAGE_TYPES.EXERCISE_CHAPTER,
     topic: topic || topicFromSlug(slug.value),
@@ -54,8 +56,8 @@ const applyNonCanonicalSeo = ({ canonicalPath, pageType, topic, level, sourceTex
     sourceText
   })
   setPageSeo({
-    title: seoPayload.title,
-    description: seoPayload.description,
+    title: manualSeoOverride?.title || seoPayload.title,
+    description: manualSeoOverride?.description || seoPayload.description,
     canonicalPath: currentPath,
     canonicalUrl: normalizedCanonicalPath,
     robots: 'noindex,follow',
@@ -79,6 +81,54 @@ const resolving = ref(false)
 const resolveError = ref('')
 const resolvedNotionId = ref(null)
 const resolvedTitle = ref('')
+const resolvingExerciseDetailRedirect = ref(false)
+let detailRedirectRequestSeq = 0
+
+const normalizeAnchorId = (value) => {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+const buildExerciseAnchorHash = (resource) => {
+  const raw = resource?.slug || resource?.id || ''
+  const normalized = normalizeAnchorId(raw)
+  return normalized ? `#exercise-${normalized}` : ''
+}
+
+const buildExerciseChapterRouteTarget = (resource) => {
+  if (!resource) return null
+  const notionId = resource?.notion || resource?.notion_id || resource?.notionId || ''
+  const notionName = resource?.notion_nom || resource?.notion_name || resource?.chapitre_nom || resource?.name || resource?.titre || ''
+  if (!notionId || !notionName) return null
+
+  const params = buildExerciseChapterRouteParams({
+    paysNom: resource?.pays_nom,
+    matiereNom: resource?.matiere_nom || resource?.matiere,
+    niveauNom: resource?.niveau_nom,
+    niveauGroup: resource?.niveau_nom,
+    name: notionName,
+    id: notionId
+  })
+
+  if (!params?.slug || !params?.id) return null
+  const routeName = params.niveauGroup ? 'FreeExerciseChapterSlugGrouped' : 'FreeExerciseChapterSlug'
+  const routeParams = params.niveauGroup
+    ? params
+    : {
+        pays: params.pays,
+        matiere: params.matiere,
+        slug: params.slug,
+        id: params.id
+      }
+  return {
+    routeName,
+    routeParams,
+    hash: buildExerciseAnchorHash(resource),
+    topic: notionName
+  }
+}
 
 const resolveNotionBySlug = async () => {
   if (isExerciseDetail.value) {
@@ -255,10 +305,46 @@ watch([slug, pays, niveauGroup, matiere, slugIdParam], () => {
   resolveNotionBySlug()
 }, { immediate: true })
 
-watch([isExerciseDetail, slug, () => route.path], ([detailMode, currentSlug]) => {
-  if (!detailMode) return
+watch([isExerciseDetail, slug, () => route.path], async ([detailMode, currentSlug]) => {
+  if (!detailMode) {
+    resolvingExerciseDetailRedirect.value = false
+    return
+  }
   const safeSlug = String(currentSlug || '').trim()
   if (!safeSlug) return
+  const requestSeq = ++detailRedirectRequestSeq
+  resolvingExerciseDetailRedirect.value = true
+
+  try {
+    const resource = await getFreeResource(safeSlug)
+    if (requestSeq !== detailRedirectRequestSeq) return
+
+    const chapterTarget = buildExerciseChapterRouteTarget(resource)
+    if (chapterTarget) {
+      const canonicalPath = buildCanonicalPathFromRoute(chapterTarget.routeName, chapterTarget.routeParams)
+      const topic = chapterTarget.topic || resource?.notion_nom || topicFromSlug(safeSlug)
+      applyNonCanonicalSeo({
+        canonicalPath,
+        pageType: DYNAMIC_SEO_PAGE_TYPES.EXERCISE_CHAPTER,
+        topic,
+        level: resource?.niveau_nom || niveauGroup.value,
+        sourceText: resource?.question || resource?.accroche || resource?.contenu || resource?.excerpt || safeSlug
+      })
+      router.replace({
+        name: chapterTarget.routeName,
+        params: chapterTarget.routeParams,
+        query: route.query,
+        hash: chapterTarget.hash || route.hash
+      }).catch(() => {})
+      return
+    }
+  } catch (_) {
+    // Keep standalone detail page if chapter resolution fails.
+  } finally {
+    if (requestSeq === detailRedirectRequestSeq) {
+      resolvingExerciseDetailRedirect.value = false
+    }
+  }
 
   const canonicalPath = normalizePathname(`/ressources-gratuites/exercices/${safeSlug}`)
   if (routePathMatches(route.path, canonicalPath)) return
@@ -281,7 +367,11 @@ watch([isExerciseDetail, slug, () => route.path], ([detailMode, currentSlug]) =>
 </script>
 
 <template>
-  <FreeCourseDetail v-if="isExerciseDetail" resourceType="exercise" />
+  <div v-if="isExerciseDetail && resolvingExerciseDetailRedirect" class="state-card">
+    <div class="state-card__spinner" aria-hidden="true"></div>
+    <p>Chargement du chapitre d'exercices...</p>
+  </div>
+  <FreeCourseDetail v-else-if="isExerciseDetail" resourceType="exercise" />
   <div v-else-if="resolving" class="state-card">
     <div class="state-card__spinner" aria-hidden="true"></div>
     <p>Chargement du chapitre...</p>

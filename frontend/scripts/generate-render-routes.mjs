@@ -385,6 +385,7 @@ async function main() {
     fetchAllPages(`${baseEndpoint}?type=exercise&group_by=notion&page_size=${pageSize}&light=1`),
     fetchAllPages(`${baseEndpoint}?type=exercise&page_size=${pageSize}&light=1`)
   ])
+  const exerciseChapterPathByNotionId = new Map()
 
   for (const item of courses) {
     const canonical = buildCourseCanonicalPath(item)
@@ -409,6 +410,10 @@ async function main() {
   for (const item of exerciseChapters) {
     const canonical = buildExerciseChapterCanonicalPath(item)
     if (!canonical) continue
+    const notionId = String(canonical?.params?.id || item?.notion || item?.id || '').trim()
+    if (notionId) {
+      exerciseChapterPathByNotionId.set(notionId, canonical.canonicalPath)
+    }
 
     addRedirect(canonical.slugOnlyPath, canonical.canonicalPath, 'exercise_chapter_slug_legacy')
     addRedirect(canonical.paysOnlyPath, canonical.canonicalPath, 'exercise_chapter_pays_legacy')
@@ -434,17 +439,23 @@ async function main() {
   for (const item of exercises) {
     const id = String(item?.id || '').trim()
     const slug = sanitizeSlug(item?.slug)
+    const notionId = String(item?.notion || '').trim()
+    const chapterPath = notionId ? exerciseChapterPathByNotionId.get(notionId) || '' : ''
     if (!id || !slug) continue
-    exerciseById.set(id, slug)
+    exerciseById.set(id, { slug, notionId, chapterPath })
+    if (chapterPath) {
+      addRedirect(`/ressources-gratuites/exercices/${slug}`, chapterPath, 'exercise_detail_to_chapter')
+    }
   }
 
   for (const rawPath of KNOWN_404_POPULAR_LINK_PATHS) {
     const sourcePath = normalizePath(rawPath)
     const idMatch = sourcePath.match(/exercice-gratuit-(\d+)/i)
     if (!idMatch) continue
-    const canonicalSlug = exerciseById.get(String(idMatch[1]))
-    if (!canonicalSlug) continue
-    addRedirect(sourcePath, `/ressources-gratuites/exercices/${canonicalSlug}`, 'known_broken_popular_link')
+    const exerciseInfo = exerciseById.get(String(idMatch[1]))
+    const canonicalTarget = exerciseInfo?.chapterPath || (exerciseInfo?.slug ? `/ressources-gratuites/exercices/${exerciseInfo.slug}` : '')
+    if (!canonicalTarget) continue
+    addRedirect(sourcePath, canonicalTarget, 'known_broken_popular_link')
   }
 
   const redirects = [...redirectsBySource.values()]

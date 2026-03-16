@@ -10,12 +10,21 @@ const DEFAULT_SAMPLE_SIZE = 30
 const DEFAULT_CONCURRENCY = 5
 const NAVIGATION_TIMEOUT_MS = 30000
 const NETWORK_IDLE_TIMEOUT_MS = 15000
+const MIN_DESCRIPTION_LENGTH = 90
+const MAX_DESCRIPTION_LENGTH = 220
+const GENERIC_DESCRIPTION_MARKERS = [
+  'plateforme de maths',
+  'cours particuliers',
+  '6e, 5e, 4e, 3e',
+  'prepa'
+]
 
 function parseCliArgs(argv) {
   const options = {
     sitemapPath: DEFAULT_SITEMAP_PATH,
     sampleSize: DEFAULT_SAMPLE_SIZE,
-    concurrency: DEFAULT_CONCURRENCY
+    concurrency: DEFAULT_CONCURRENCY,
+    siteOrigin: ''
   }
 
   for (const arg of argv) {
@@ -34,6 +43,19 @@ function parseCliArgs(argv) {
     if (arg.startsWith('--concurrency=')) {
       const raw = Number(arg.slice('--concurrency='.length))
       if (Number.isFinite(raw) && raw > 0) options.concurrency = Math.max(1, Math.min(Math.floor(raw), 10))
+      continue
+    }
+
+    if (arg.startsWith('--site=')) {
+      const value = arg.slice('--site='.length).trim()
+      if (value) {
+        try {
+          const url = new URL(value)
+          options.siteOrigin = `${url.origin}`.replace(/\/+$/, '')
+        } catch {
+          // Ignore invalid site origin values.
+        }
+      }
     }
   }
 
@@ -103,16 +125,62 @@ async function loadPlaywright() {
   }
 }
 
-async function validateUrlWithPlaywright(browser, url) {
-  const expectedUrl = normalizeAbsoluteUrl(url, url)
+function toNavigationUrl(expectedUrl, siteOrigin) {
+  const normalizedExpected = normalizeAbsoluteUrl(expectedUrl, expectedUrl)
+  if (!normalizedExpected) return ''
+  if (!siteOrigin) return normalizedExpected
+  try {
+    const expected = new URL(normalizedExpected)
+    return `${siteOrigin}${normalizePathname(expected.pathname)}`
+  } catch {
+    return normalizedExpected
+  }
+}
+
+function normalizeWhitespace(value) {
+  return String(value || '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function normalizeHtmlEntities(value) {
+  return normalizeWhitespace(
+    String(value || '')
+      .replace(/&amp;/gi, '&')
+      .replace(/&lt;/gi, '<')
+      .replace(/&gt;/gi, '>')
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;|&apos;/gi, "'")
+  )
+}
+
+function looksGenericDescription(value) {
+  const normalized = normalizeHtmlEntities(value).toLowerCase()
+  if (!normalized) return false
+  let score = 0
+  for (const marker of GENERIC_DESCRIPTION_MARKERS) {
+    if (normalized.includes(marker)) score += 1
+  }
+  return score >= 2
+}
+
+function isResourceDetailPath(urlLike) {
+  const pathValue = normalizePathname(urlLike)
+  return /^\/ressources-gratuites\/(cours|syntheses|exercices)\/[a-z0-9-]+\/(college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i.test(pathValue)
+}
+
+async function validateUrlWithPlaywright(browser, { expectedCanonicalUrl, navigationUrl }) {
+  const expectedUrl = normalizeAbsoluteUrl(expectedCanonicalUrl, expectedCanonicalUrl)
+  const targetUrl = normalizeAbsoluteUrl(navigationUrl || expectedCanonicalUrl, navigationUrl || expectedCanonicalUrl)
   if (!expectedUrl) {
     return {
-      url,
+      url: String(expectedCanonicalUrl || ''),
       ok: false,
       reason: 'invalid-url',
       status: null,
       canonical: '',
-      robots: ''
+      robots: '',
+      navigationUrl: targetUrl || String(navigationUrl || '')
     }
   }
 
@@ -120,7 +188,7 @@ async function validateUrlWithPlaywright(browser, url) {
   const page = await context.newPage()
 
   try {
-    const response = await page.goto(expectedUrl, {
+    const response = await page.goto(targetUrl, {
       waitUntil: 'domcontentloaded',
       timeout: NAVIGATION_TIMEOUT_MS
     })
@@ -131,6 +199,10 @@ async function validateUrlWithPlaywright(browser, url) {
     const canonicalHref = await page.locator('link[rel="canonical"]').first().getAttribute('href')
     const canonicalUrl = normalizeAbsoluteUrl(canonicalHref, page.url())
     const robots = String(await page.locator('meta[name="robots"]').first().getAttribute('content') || '')
+    const title = normalizeWhitespace(await page.title())
+    const description = normalizeWhitespace(
+      String(await page.locator('meta[name="description"]').first().getAttribute('content') || '')
+    )
 
     if (status !== 200) {
       return {
@@ -139,7 +211,10 @@ async function validateUrlWithPlaywright(browser, url) {
         reason: 'status-not-200',
         status,
         canonical: canonicalUrl,
-        robots
+        robots,
+        title,
+        description,
+        navigationUrl: targetUrl
       }
     }
 
@@ -150,7 +225,10 @@ async function validateUrlWithPlaywright(browser, url) {
         reason: 'canonical-mismatch',
         status,
         canonical: canonicalUrl,
-        robots
+        robots,
+        title,
+        description,
+        navigationUrl: targetUrl
       }
     }
 
@@ -161,7 +239,66 @@ async function validateUrlWithPlaywright(browser, url) {
         reason: 'robots-noindex',
         status,
         canonical: canonicalUrl,
-        robots
+        robots,
+        title,
+        description,
+        navigationUrl: targetUrl
+      }
+    }
+
+    if (!description) {
+      return {
+        url: expectedUrl,
+        ok: false,
+        reason: 'missing-description',
+        status,
+        canonical: canonicalUrl,
+        robots,
+        title,
+        description,
+        navigationUrl: targetUrl
+      }
+    }
+
+    if (description.length < MIN_DESCRIPTION_LENGTH) {
+      return {
+        url: expectedUrl,
+        ok: false,
+        reason: 'description-too-short',
+        status,
+        canonical: canonicalUrl,
+        robots,
+        title,
+        description,
+        navigationUrl: targetUrl
+      }
+    }
+
+    if (description.length > MAX_DESCRIPTION_LENGTH) {
+      return {
+        url: expectedUrl,
+        ok: false,
+        reason: 'description-too-long',
+        status,
+        canonical: canonicalUrl,
+        robots,
+        title,
+        description,
+        navigationUrl: targetUrl
+      }
+    }
+
+    if (isResourceDetailPath(expectedUrl) && looksGenericDescription(description)) {
+      return {
+        url: expectedUrl,
+        ok: false,
+        reason: 'generic-description',
+        status,
+        canonical: canonicalUrl,
+        robots,
+        title,
+        description,
+        navigationUrl: targetUrl
       }
     }
 
@@ -171,7 +308,10 @@ async function validateUrlWithPlaywright(browser, url) {
       reason: '',
       status,
       canonical: canonicalUrl,
-      robots
+      robots,
+      title,
+      description,
+      navigationUrl: targetUrl
     }
   } catch (error) {
     return {
@@ -181,6 +321,9 @@ async function validateUrlWithPlaywright(browser, url) {
       status: null,
       canonical: '',
       robots: '',
+      title: '',
+      description: '',
+      navigationUrl: targetUrl,
       error: error instanceof Error ? error.message : String(error)
     }
   } finally {
@@ -217,7 +360,9 @@ async function run() {
   }
 
   const sample = pickRandomItems(urls, options.sampleSize)
-  console.log(`[sitemap-check] urls=${urls.length} sample=${sample.length} concurrency=${options.concurrency}`)
+  console.log(
+    `[sitemap-check] urls=${urls.length} sample=${sample.length} concurrency=${options.concurrency} site=${options.siteOrigin || 'canonical'}`
+  )
 
   const { chromium } = await loadPlaywright()
   const browser = await chromium.launch({ headless: true })
@@ -225,7 +370,11 @@ async function run() {
   try {
     const results = await mapWithConcurrency(
       sample,
-      (entryUrl) => validateUrlWithPlaywright(browser, entryUrl),
+      (entryUrl) =>
+        validateUrlWithPlaywright(browser, {
+          expectedCanonicalUrl: entryUrl,
+          navigationUrl: toNavigationUrl(entryUrl, options.siteOrigin)
+        }),
       options.concurrency
     )
 
@@ -234,10 +383,13 @@ async function run() {
       console.error(`[sitemap-check] FAILED ${failures.length}/${sample.length}`)
       for (const failure of failures) {
         console.error(`- ${failure.url}`)
+        console.error(`  navigated=${failure.navigationUrl || 'n/a'}`)
         console.error(`  reason=${failure.reason}`)
         console.error(`  status=${failure.status ?? 'n/a'}`)
         console.error(`  canonical=${failure.canonical || 'n/a'}`)
         console.error(`  robots=${failure.robots || 'n/a'}`)
+        console.error(`  title=${failure.title || 'n/a'}`)
+        console.error(`  description=${failure.description || 'n/a'}`)
         if (failure.error) {
           console.error(`  error=${failure.error}`)
         }

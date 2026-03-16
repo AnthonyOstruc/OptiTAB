@@ -26,6 +26,7 @@ import {
   normalizePathname,
   stripHtmlForSeo
 } from '@/composables/useDynamicSeo'
+import { getManualSeoOverrideByPath } from '@/config/manualSeoOverrides'
 
 const props = defineProps({
   notionIdOverride: {
@@ -191,19 +192,6 @@ const displayedExercises = computed(() =>
 )
 
 const exercisesCount = computed(() => displayedExercises.value.length)
-
-const introText = computed(() => {
-  if (!notionTitle.value) return ''
-  const count = freeExercisesCount.value
-  const countText = count
-    ? `${count} exercice${count > 1 ? 's' : ''} gratuit${count > 1 ? 's' : ''}`
-    : 'des exercices corriges gratuits'
-  const source = exercises.value[0] || {}
-  const matiere = formatMatiereLabel(source.matiere_nom || '') || 'Maths'
-  const niveau = formatNiveauLabel(source.niveau_nom || '')
-  const levelPart = niveau ? ` (${niveau})` : ''
-  return `Retrouvez ${countText} de ${matiere}${levelPart} sur le chapitre ${notionTitle.value}.`
-})
 
 const breadcrumbItems = computed(() => [
   { label: 'Accueil', to: '/' },
@@ -568,6 +556,9 @@ const updateSeo = () => {
   const description = seoPayload.description
   const image = pickSeoImage(exercises.value) || undefined
   const canonicalResourcePath = buildCanonicalPath(first)
+  const manualSeoOverride = getManualSeoOverrideByPath(canonicalResourcePath)
+  const finalTitle = manualSeoOverride?.title || title
+  const finalDescription = manualSeoOverride?.description || description
   const canonicalResourceUrl = toAbsoluteUrl(canonicalResourcePath)
   const isCanonicalRoute = isCanonicalRoutePath(route.path, canonicalResourcePath)
   const canonicalSeo = buildCanonicalSeoFields({
@@ -595,7 +586,7 @@ const updateSeo = () => {
   const chapterGraph = buildCreativeWorkJsonLd({
     id: `${canonicalResourceUrl}#creativework`,
     name: chapterTitle,
-    description,
+    description: finalDescription,
     url: canonicalResourceUrl,
     inLanguage: 'fr-FR',
     author: { '@id': organizationId },
@@ -623,8 +614,8 @@ const updateSeo = () => {
   ].filter(Boolean)
 
   setPageSeo({
-    title,
-    description,
+    title: finalTitle,
+    description: finalDescription,
     canonicalPath: canonicalSeo.canonicalPath,
     canonicalUrl: canonicalSeo.canonicalUrl ? toAbsoluteUrl(canonicalSeo.canonicalUrl) : undefined,
     robots: canonicalSeo.robots,
@@ -779,7 +770,6 @@ function getExerciseAnchorId(exercise, index = 0) {
       <header class="free-exercise-intro" aria-labelledby="free-exercise-title">
         <p v-if="chapterMetaLabel" class="free-exercise-meta">{{ chapterMetaLabel }}</p>
         <h1 id="free-exercise-title" class="free-exercise-title">{{ notionTitle || 'Exercices' }}</h1>
-        <p v-if="introText" class="free-exercise-intro-text">{{ introText }}</p>
         <p v-if="exercisesCountLabel" class="free-exercise-count">{{ exercisesCountLabel }}</p>
       </header>
 
@@ -951,13 +941,6 @@ function getExerciseAnchorId(exercise, index = 0) {
   font-size: 28px;
   font-weight: 800;
   color: #0f172a;
-}
-
-.free-exercise-intro-text {
-  margin: 0;
-  font-size: 14px;
-  color: #475569;
-  max-width: 760px;
 }
 
 .free-exercise-count {

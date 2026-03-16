@@ -172,9 +172,17 @@ function buildCourseRoutePath(resource) {
 }
 
 function buildExerciseRoutePath(resource) {
-  const slug = normalizeText(resource?.slug)
-  if (!slug) return ''
-  return `/ressources-gratuites/exercices/${slug}`
+  const pays = formatPaysSlug(resource?.pays_nom)
+  const matiere = formatMatiereSlug(resource?.matiere_nom || resource?.matiere)
+  const niveauGroup = formatNiveauGroupSlug(resource?.niveau_group || resource?.niveau_nom)
+  const slug = buildCoursePathSlug({
+    niveauNom: resource?.niveau_nom,
+    titre: resource?.notion_nom || resource?.name || resource?.titre
+  })
+  const notionIdRaw = resource?.notion ?? resource?.notion_id ?? resource?.id
+  const notionId = notionIdRaw != null ? String(notionIdRaw) : ''
+  if (!pays || !matiere || !niveauGroup || !slug || !notionId) return ''
+  return `/ressources-gratuites/exercices/${pays}/${niveauGroup}/${matiere}/${slug}-${notionId}`
 }
 
 function buildSummaryRoutePath(resource) {

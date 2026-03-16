@@ -1516,6 +1516,166 @@ class AdminStripeSyncView(APIView):
             return JsonResponse({'detail': 'Server error', 'error': str(e)}, status=500)
 
 
+class AdminSubscriptionPlanChangeView(APIView):
+    """Permet aux administrateurs de changer le plan d'un abonnement utilisateur."""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        if not _is_admin(request.user):
+            return JsonResponse({'detail': 'Forbidden'}, status=403)
+
+        data = request.data if hasattr(request, 'data') else json.loads(request.body or '{}')
+        subscription_id = data.get('subscription_id')
+        stripe_subscription_id = data.get('stripe_subscription_id')
+        plan_id = data.get('plan_id') or data.get('new_plan_id')
+
+        if not plan_id:
+            return JsonResponse({'detail': 'plan_id requis'}, status=400)
+
+        subscription = None
+        if subscription_id:
+            try:
+                subscription = UserSubscription.objects.select_related('plan').get(pk=subscription_id)
+            except (UserSubscription.DoesNotExist, ValueError, TypeError):
+                subscription = None
+
+        if not subscription and stripe_subscription_id:
+            subscription = (
+                UserSubscription.objects
+                .select_related('plan')
+                .filter(stripe_subscription_id=stripe_subscription_id)
+                .first()
+            )
+
+        if not subscription:
+            return JsonResponse({'detail': 'Abonnement introuvable'}, status=404)
+
+        try:
+            target_plan = SubscriptionPlan.objects.get(pk=int(plan_id))
+        except (SubscriptionPlan.DoesNotExist, ValueError, TypeError):
+            return JsonResponse({'detail': 'Plan introuvable'}, status=404)
+
+        target_mode = _resolve_plan_mode(target_plan)
+        if target_mode != 'subscription':
+            return JsonResponse({'detail': 'Le plan cible doit être un abonnement récurrent.'}, status=400)
+        if not getattr(target_plan, 'is_active', True):
+            return JsonResponse({'detail': 'Le plan cible est inactif.'}, status=400)
+
+        current_mode = _resolve_plan_mode(getattr(subscription, 'plan', None))
+        if current_mode != 'subscription':
+            return JsonResponse({'detail': "Ce changement n'est autorisé que pour les abonnements récurrents."}, status=400)
+
+        if subscription.plan_id == target_plan.id:
+            return JsonResponse({
+                'success': True,
+                'message': 'Le plan est déjà appliqué.',
+                'subscription': {
+                    'id': subscription.id,
+                    'plan_id': subscription.plan_id,
+                    'plan_name': getattr(subscription.plan, 'name', ''),
+                    'status': subscription.status,
+                    'cancel_at_period_end': bool(subscription.cancel_at_period_end),
+                    'current_period_end': _iso_or_none(subscription.current_period_end),
+                }
+            })
+
+        updated_fields = ['plan', 'updated_at']
+
+        # Si l'abonnement est relié à Stripe, on bascule également le Price ID côté Stripe
+        # pour conserver la cohérence entre la facturation et la base locale.
+        if subscription.stripe_subscription_id:
+            stripe_price_id = _runtime_stripe_price_id(target_plan)
+            if not stripe_price_id:
+                mode_label = 'test' if _is_stripe_test_runtime() else 'live'
+                return JsonResponse({
+                    'detail': f"Le plan cible n'est pas configuré pour Stripe {mode_label}."
+                }, status=400)
+
+            try:
+                stripe_sub = stripe.Subscription.retrieve(subscription.stripe_subscription_id)
+                if hasattr(stripe_sub, 'to_dict'):
+                    stripe_sub = stripe_sub.to_dict()
+
+                stripe_items = ((stripe_sub.get('items') or {}).get('data') or [])
+                stripe_item_id = stripe_items[0].get('id') if stripe_items else None
+                if not stripe_item_id:
+                    return JsonResponse({
+                        'detail': 'Impossible de modifier cet abonnement côté Stripe (item manquant).'
+                    }, status=400)
+
+                stripe_metadata = stripe_sub.get('metadata') or {}
+                if not isinstance(stripe_metadata, dict):
+                    stripe_metadata = {}
+                stripe_metadata.update({
+                    'plan_id': str(target_plan.id),
+                    'plan_mode': target_mode,
+                })
+
+                updated_sub = stripe.Subscription.modify(
+                    subscription.stripe_subscription_id,
+                    items=[{
+                        'id': stripe_item_id,
+                        'price': stripe_price_id,
+                    }],
+                    proration_behavior='none',
+                    metadata=stripe_metadata,
+                )
+                if hasattr(updated_sub, 'to_dict'):
+                    updated_sub = updated_sub.to_dict()
+
+                subscription.status = updated_sub.get('status', subscription.status)
+                subscription.current_period_start = (
+                    _from_timestamp(updated_sub.get('current_period_start'))
+                    or subscription.current_period_start
+                )
+                subscription.current_period_end = (
+                    _from_timestamp(updated_sub.get('current_period_end'))
+                    or subscription.current_period_end
+                )
+                subscription.trial_end = (
+                    _from_timestamp(updated_sub.get('trial_end'))
+                    or subscription.trial_end
+                )
+                subscription.cancel_at_period_end = bool(
+                    updated_sub.get('cancel_at_period_end', subscription.cancel_at_period_end)
+                )
+                updated_fields.extend([
+                    'status',
+                    'current_period_start',
+                    'current_period_end',
+                    'trial_end',
+                    'cancel_at_period_end',
+                ])
+            except stripe_error.StripeError as exc:
+                human = getattr(exc, 'user_message', None) or str(exc)
+                return JsonResponse({
+                    'detail': f"Stripe a refusé le changement de plan ({human})."
+                }, status=400)
+            except Exception as exc:
+                logger.error(
+                    "AdminSubscriptionPlanChange unexpected error for sub %s: %s",
+                    subscription.id,
+                    exc,
+                )
+                return JsonResponse({'detail': 'Erreur serveur pendant la mise à jour Stripe.'}, status=500)
+
+        subscription.plan = target_plan
+        subscription.save(update_fields=list(dict.fromkeys(updated_fields)))
+
+        return JsonResponse({
+            'success': True,
+            'message': f"Plan mis à jour vers {target_plan.name}.",
+            'subscription': {
+                'id': subscription.id,
+                'plan_id': target_plan.id,
+                'plan_name': target_plan.name,
+                'status': subscription.status,
+                'cancel_at_period_end': bool(subscription.cancel_at_period_end),
+                'current_period_end': _iso_or_none(subscription.current_period_end),
+            }
+        })
+
+
 class AdminSubscriptionCancelView(APIView):
     """Permet aux administrateurs de résilier un abonnement utilisateur."""
     permission_classes = [IsAuthenticated]

@@ -55,3 +55,7 @@ export const adminUpdatePlan = (id, payload) => apiClient.patch(`/api/subscripti
 export const adminDeletePlan = (id) => apiClient.delete(`/api/subscriptions/admin/plans/${id}/`)
 export const adminListPasses = (params = {}) => apiClient.get('/api/subscriptions/admin/passes/', { params })
 export const adminUpdatePass = (id, payload) => apiClient.patch(`/api/subscriptions/admin/passes/${id}/`, payload)
+export const adminListSubscribers = (params = {}) => apiClient.get('/api/subscriptions/admin/subscribers/', { params })
+export const adminChangeSubscriberPlan = (payload) => apiClient.post('/api/subscriptions/admin/subscribers/change-plan/', payload)
+export const adminCancelSubscriberSubscription = (payload) => apiClient.post('/api/subscriptions/admin/subscribers/cancel/', payload)
+export const adminSyncFromStripe = () => apiClient.post('/api/subscriptions/admin/sync-from-stripe/')

@@ -61,16 +61,33 @@
             </td>
             <td>
               <div class="actions" v-if="it.type === 'subscription'">
+                <select
+                  class="plan-select"
+                  :value="selectedPlanIdForItem(it) ?? ''"
+                  @change="(event) => updateSelectedPlan(it, event?.target?.value)"
+                >
+                  <option disabled value="">Choisir un plan</option>
+                  <option v-for="plan in subscriptionPlans" :key="plan.id" :value="plan.id">
+                    {{ planOptionLabel(plan) }}
+                  </option>
+                </select>
+                <button
+                  class="action-btn primary"
+                  :disabled="changingPlanId === subscriptionIdentifier(it) || !canChangePlan(it)"
+                  @click="changePlan(it)"
+                >
+                  {{ changingPlanId === subscriptionIdentifier(it) ? 'Changement…' : 'Changer plan' }}
+                </button>
                 <button
                   class="action-btn danger"
-                  :disabled="cancellingId === subscriptionIdentifier(it)"
+                  :disabled="cancellingId === subscriptionIdentifier(it) || changingPlanId === subscriptionIdentifier(it)"
                   @click="cancelSubscription(it, true)"
                 >
                   {{ cancellingId === subscriptionIdentifier(it) ? 'Suppression…' : 'Supprimer' }}
                 </button>
                 <button
                   class="action-btn ghost"
-                  :disabled="cancellingId === subscriptionIdentifier(it)"
+                  :disabled="cancellingId === subscriptionIdentifier(it) || changingPlanId === subscriptionIdentifier(it)"
                   @click="cancelSubscription(it, false)"
                 >
                   {{ cancellingId === subscriptionIdentifier(it) ? '…' : 'Fin de période' }}
@@ -87,17 +104,39 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { apiClient } from '@/api'
+import { computed, ref } from 'vue'
+import {
+  adminCancelSubscriberSubscription,
+  adminChangeSubscriberPlan,
+  adminListPlans,
+  adminListSubscribers,
+  adminSyncFromStripe
+} from '@/api/subscriptions'
 
 const q = ref('')
 const activeOnly = ref(false)
 const items = ref([])
 const cancellingId = ref(null)
+const changingPlanId = ref(null)
+const plans = ref([])
+const selectedPlansBySubscription = ref({})
+
+const subscriptionPlans = computed(() => {
+  return (plans.value || []).filter((plan) => {
+    const mode = String(plan?.mode || plan?.plan_mode || '').toLowerCase() || 'subscription'
+    return mode === 'subscription' && !!plan?.is_active
+  })
+})
 
 const subscriptionIdentifier = (item) => {
   if (!item) return null
   return item.subscription_id || item.stripe_subscription_id || null
+}
+
+const subscriptionKey = (item) => {
+  const identifier = subscriptionIdentifier(item)
+  if (!identifier) return ''
+  return String(identifier)
 }
 
 const rowKey = (item, index = 0) => {
@@ -161,10 +200,72 @@ function endDate(item) {
   return item.current_period_end || item.ends_at
 }
 
+function humanPeriod(period) {
+  const value = String(period || '').toLowerCase()
+  if (value === 'daily') return 'journalier'
+  if (value === 'weekly') return 'hebdomadaire'
+  if (value === 'monthly') return 'mensuel'
+  if (value === 'yearly') return 'annuel'
+  return value || '—'
+}
+
+function planOptionLabel(plan) {
+  if (!plan) return 'Plan'
+  return `${plan.name} (${humanPeriod(plan.billing_period)})`
+}
+
+function syncSelectedPlanValues() {
+  const nextValues = {}
+  for (const item of items.value || []) {
+    if (item?.type !== 'subscription') continue
+    const key = subscriptionKey(item)
+    if (!key) continue
+    const planId = Number.parseInt(String(item.plan_id), 10)
+    if (!Number.isFinite(planId)) continue
+    nextValues[key] = planId
+  }
+  selectedPlansBySubscription.value = nextValues
+}
+
+function updateSelectedPlan(item, rawValue) {
+  const key = subscriptionKey(item)
+  if (!key) return
+  const parsed = Number.parseInt(String(rawValue ?? ''), 10)
+  selectedPlansBySubscription.value = {
+    ...selectedPlansBySubscription.value,
+    [key]: Number.isFinite(parsed) ? parsed : null
+  }
+}
+
+function selectedPlanIdForItem(item) {
+  const key = subscriptionKey(item)
+  if (!key) return null
+  const explicit = selectedPlansBySubscription.value[key]
+  if (explicit !== undefined && explicit !== null && explicit !== '') {
+    const explicitId = Number.parseInt(String(explicit), 10)
+    if (Number.isFinite(explicitId)) return explicitId
+  }
+  const current = Number.parseInt(String(item?.plan_id), 10)
+  return Number.isFinite(current) ? current : null
+}
+
+function canChangePlan(item) {
+  if (!item || item.type !== 'subscription') return false
+  const selected = selectedPlanIdForItem(item)
+  const current = Number.parseInt(String(item.plan_id), 10)
+  if (!Number.isFinite(selected) || !Number.isFinite(current)) return false
+  return selected !== current
+}
+
 async function load() {
   const params = { q: q.value || undefined, active: activeOnly.value ? 'true' : 'false' }
-  const { data } = await apiClient.get('/api/subscriptions/admin/subscribers/', { params })
-  items.value = data?.items || []
+  const [{ data: subscribersData }, { data: plansData }] = await Promise.all([
+    adminListSubscribers(params),
+    adminListPlans()
+  ])
+  items.value = subscribersData?.items || []
+  plans.value = plansData?.plans || []
+  syncSelectedPlanValues()
 }
 
 load()
@@ -173,7 +274,7 @@ const syncing = ref(false)
 async function sync() {
   try {
     syncing.value = true
-    await apiClient.post('/api/subscriptions/admin/sync-from-stripe/')
+    await adminSyncFromStripe()
     await load()
     alert('Synchronisation terminée.')
   } catch (e) {
@@ -195,7 +296,7 @@ async function cancelSubscription(item, immediate = true) {
   }
   cancellingId.value = subId
   try {
-    const { data } = await apiClient.post('/api/subscriptions/admin/subscribers/cancel/', {
+    const { data } = await adminCancelSubscriberSubscription({
       subscription_id: item.subscription_id,
       stripe_subscription_id: item.stripe_subscription_id,
       immediate
@@ -209,6 +310,38 @@ async function cancelSubscription(item, immediate = true) {
     alert(message)
   } finally {
     cancellingId.value = null
+  }
+}
+
+async function changePlan(item) {
+  if (!item || item.type !== 'subscription') return
+  const subId = subscriptionIdentifier(item)
+  if (!subId) return
+  const selectedPlanId = selectedPlanIdForItem(item)
+  if (!Number.isFinite(selectedPlanId)) return
+  if (!canChangePlan(item)) return
+
+  const targetPlan = subscriptionPlans.value.find((plan) => Number(plan.id) === Number(selectedPlanId))
+  const planName = targetPlan?.name || 'ce plan'
+  const confirmation = `Confirmer le changement vers "${planName}" ?`
+  if (typeof window !== 'undefined' && !window.confirm(confirmation)) {
+    return
+  }
+
+  changingPlanId.value = subId
+  try {
+    const { data } = await adminChangeSubscriberPlan({
+      subscription_id: item.subscription_id,
+      stripe_subscription_id: item.stripe_subscription_id,
+      plan_id: selectedPlanId
+    })
+    await load()
+    alert(data?.message || 'Plan modifié.')
+  } catch (e) {
+    const message = e?.response?.data?.detail || 'Erreur lors du changement de plan.'
+    alert(message)
+  } finally {
+    changingPlanId.value = null
   }
 }
 </script>
@@ -235,7 +368,9 @@ async function cancelSubscription(item, immediate = true) {
 .chip-value { font-weight:600; color:#0f172a }
 .empty { text-align:center; color:#6b7280 }
 .actions { display:flex; gap:6px; flex-wrap:wrap }
+.plan-select { min-width: 180px; border:1px solid #d1d5db; border-radius:6px; padding:6px 8px; background:#fff; color:#111827; font-size:12px }
 .action-btn { border:none; border-radius:6px; padding:6px 10px; font-size:12px; font-weight:600; cursor:pointer }
+.action-btn.primary { background:#dbeafe; color:#1d4ed8 }
 .action-btn.danger { background:#fee2e2; color:#b91c1c }
 .action-btn.ghost { background:#f3f4f6; color:#374151 }
 .action-btn:disabled { opacity:0.6; cursor:not-allowed }

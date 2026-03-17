@@ -16,11 +16,11 @@ from pays.models import Niveau
 from django.db import DatabaseError
 from django.db.models import Q
 from stripe_config import (
-    STRIPE_WEBHOOK_SECRET,
     SUCCESS_URL,
     CANCEL_URL,
     FREE_TRIAL_DAYS,
     STRIPE_RUNTIME_MODE,
+    get_stripe_webhook_secrets,
 )
 from core.services import EmailService
 from .stripe_client import stripe, stripe_error
@@ -72,6 +72,40 @@ User = get_user_model()
 
 def _is_stripe_test_runtime():
     return str(STRIPE_RUNTIME_MODE).lower() == 'test'
+
+
+def _construct_stripe_event(payload, sig_header):
+    """Verify a webhook against the configured Stripe signing secrets."""
+    webhook_secrets = get_stripe_webhook_secrets()
+    if not webhook_secrets:
+        logger.error("Stripe webhook: aucun secret de signature configuré")
+        raise stripe_error.SignatureVerificationError(
+            "No Stripe webhook signing secret configured.",
+            sig_header or '',
+        )
+
+    last_signature_error = None
+    for index, webhook_secret in enumerate(webhook_secrets):
+        try:
+            event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
+            if index > 0:
+                logger.info(
+                    "Stripe webhook: signature validée avec un secret alternatif (slot=%s)",
+                    index + 1,
+                )
+            return event
+        except ValueError:
+            raise
+        except stripe_error.SignatureVerificationError as exc:
+            last_signature_error = exc
+
+    if last_signature_error is not None:
+        raise last_signature_error
+
+    raise stripe_error.SignatureVerificationError(
+        "Unable to verify Stripe webhook signature.",
+        sig_header or '',
+    )
 
 
 def _runtime_stripe_price_id(plan):
@@ -1770,9 +1804,7 @@ def stripe_webhook(request):
         logger.warning("Stripe webhook: signature manquante (path=%s)", request.path)
 
     try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, STRIPE_WEBHOOK_SECRET
-        )
+        event = _construct_stripe_event(payload, sig_header)
     except ValueError as exc:
         logger.warning("Stripe webhook: payload invalide (path=%s): %s", request.path, exc)
         return HttpResponse(status=400)

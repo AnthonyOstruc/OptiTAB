@@ -6,13 +6,16 @@ Local development (`backend/.env`):
 - STRIPE_SECRET_KEY=sk_test_...
 - STRIPE_PUBLISHABLE_KEY=pk_test_...
 - STRIPE_WEBHOOK_SECRET=whsec_... (from Stripe Test mode)
+- Optional explicit alias: STRIPE_WEBHOOK_SECRET_TEST=whsec_...
 - FRONTEND_BASE_URL=http://localhost:3000
 - STRIPE_ENV=dev
 
 Production (Render environment variables):
 - STRIPE_SECRET_KEY=sk_live_...
 - STRIPE_PUBLISHABLE_KEY=pk_live_...
-- STRIPE_WEBHOOK_SECRET=whsec_... (from Stripe Live mode)
+- Recommended: STRIPE_WEBHOOK_SECRET_LIVE=whsec_... (from Stripe Live mode)
+- If Stripe Test mode also points to the same production URL: STRIPE_WEBHOOK_SECRET_TEST=whsec_...
+- Backward-compatible fallback: STRIPE_WEBHOOK_SECRET=whsec_... (single secret only)
 - FRONTEND_BASE_URL=https://optitab.net
 
 Optional overrides:
@@ -54,12 +57,13 @@ Mirror in Django admin → Subscription plans:
   - customer.subscription.updated
   - customer.subscription.deleted
   - charge.refunded
-  - refund.created
-  - refund.updated
-  - charge.refund.created
-  - charge.refund.updated
-- Configure this webhook in BOTH Stripe Test mode and Live mode.
-- Use the displayed Signing secret as STRIPE_WEBHOOK_SECRET (different for Test vs Live).
+- refund.created
+- refund.updated
+- charge.refund.created
+- charge.refund.updated
+- Recommended: use separate webhook endpoints/URLs for Stripe Test and Stripe Live.
+- If both Stripe modes target the same backend URL, set both `STRIPE_WEBHOOK_SECRET_LIVE` and `STRIPE_WEBHOOK_SECRET_TEST` on the backend.
+- `STRIPE_WEBHOOK_SECRET` remains supported as a legacy single-secret fallback.
 
 6) Frontend flow
 

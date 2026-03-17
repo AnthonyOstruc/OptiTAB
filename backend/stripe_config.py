@@ -4,6 +4,8 @@ import os
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')
+STRIPE_WEBHOOK_SECRET_LIVE = os.getenv('STRIPE_WEBHOOK_SECRET_LIVE', '')
+STRIPE_WEBHOOK_SECRET_TEST = os.getenv('STRIPE_WEBHOOK_SECRET_TEST', '')
 
 # Frontend URLs for redirect after checkout
 FRONTEND_BASE_URL = os.getenv('FRONTEND_BASE_URL', 'http://localhost:3000')
@@ -85,3 +87,31 @@ def _validate_stripe_mode():
 STRIPE_RUNTIME_MODE = 'live' if _is_production_runtime() else 'test'
 if not _is_truthy(os.getenv('STRIPE_DISABLE_MODE_GUARD')):
     _validate_stripe_mode()
+
+
+def get_stripe_webhook_secrets():
+    """Return the configured webhook signing secrets in verification order.
+
+    Order matters only for logs/perf. We prefer the secret matching the current
+    runtime mode, then the alternate mode, then the legacy single-secret value.
+    """
+    if STRIPE_RUNTIME_MODE == 'live':
+        ordered_candidates = (
+            STRIPE_WEBHOOK_SECRET_LIVE,
+            STRIPE_WEBHOOK_SECRET_TEST,
+            STRIPE_WEBHOOK_SECRET,
+        )
+    else:
+        ordered_candidates = (
+            STRIPE_WEBHOOK_SECRET_TEST,
+            STRIPE_WEBHOOK_SECRET_LIVE,
+            STRIPE_WEBHOOK_SECRET,
+        )
+
+    secrets = []
+    for candidate in ordered_candidates:
+        secret = (candidate or '').strip()
+        if secret and secret not in secrets:
+            secrets.append(secret)
+
+    return tuple(secrets)

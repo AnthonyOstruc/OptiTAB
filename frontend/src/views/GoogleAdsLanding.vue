@@ -1,6 +1,7 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import Header from '@/components/layout/Header.vue'
 import PricingCards from '@/components/shared/PricingCards.vue'
 import { createCheckoutSession, createGuestCheckoutSession } from '@/api/subscriptions'
 import { getNiveauxByPays } from '@/api/niveaux'
@@ -10,7 +11,7 @@ import { setPageSeo, buildFaqJsonLd, getRobotsForRoute } from '@/services/seo'
 
 const route = useRoute()
 const userStore = useUserStore()
-const { info: showInfoToast, error: showErrorToast } = useToast()
+const { error: showErrorToast } = useToast()
 
 const submitting = ref(false)
 const niveaux = ref([])
@@ -22,6 +23,7 @@ const selectedNiveauId = ref(
 const showLevelModal = ref(false)
 const pendingPriceId = ref('')
 const pendingPlanName = ref('')
+const openFaqIndex = ref(null)
 
 const faqItems = [
   {
@@ -39,12 +41,20 @@ const faqItems = [
   {
     question: 'À qui s\'adresse la plateforme ?',
     answer: 'À tous les élèves de Seconde, Première et Terminale qui veulent progresser en maths. Le contenu suit le programme officiel de l\'Éducation nationale française.'
+  },
+  {
+    question: 'Qu\'est-ce que le parcours Bases & Méthode ?',
+    answer: 'C\'est un parcours complémentaire accessible à tous les abonnés — lycéens, élèves de prépa ou toute personne souhaitant reprendre les fondamentaux. Utilisable librement, sans obligation.'
   }
 ]
 
+function toggleFaq(idx) {
+  openFaqIndex.value = openFaqIndex.value === idx ? null : idx
+}
+
 // ── SEO ──
 const title = 'Abonnement maths en ligne dès 3,99 € — Cours, fiches et exercices corrigés | OptiTAB'
-const description = 'Cours clairs, fiches de synthèse et exercices corrigés pas à pas pour la Seconde, Première et Terminale. Accès immédiat. Sans engagement. Dès 3,99 €/mois.'
+const description = 'Cours clairs, fiches de synthèse et exercices corrigés pas à pas pour la Seconde, Première et Terminale. Parcours Bases & Méthode inclus. Accès immédiat. Sans engagement. Dès 3,99 €/mois.'
 const faqGraph = buildFaqJsonLd(faqItems)
 const jsonLdGraph = [
   {
@@ -66,13 +76,31 @@ setPageSeo({
   jsonLdGraph
 })
 
-// ── UTM persistence ──
+// ── Scroll animations ──
+let scrollObserver = null
+
 onMounted(() => {
+  // UTM persistence
   const params = new URLSearchParams(window.location.search)
   const gclid = params.get('gclid')
   if (gclid) {
     try { sessionStorage.setItem('gclid', gclid) } catch (_) {}
   }
+
+  // Scroll reveal
+  scrollObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('revealed')
+      })
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+  )
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => scrollObserver.observe(el))
+})
+
+onUnmounted(() => {
+  scrollObserver?.disconnect()
 })
 
 // ── Scroll CTA ──
@@ -81,7 +109,12 @@ function scrollToPricing() {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-// ── Checkout flow (same logic as home PricingPlans) ──
+function scrollToDemo() {
+  const el = document.getElementById('gads-demo')
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+}
+
+// ── Checkout flow ──
 async function loadLevels(force = false) {
   if (niveauxLoading.value) return
   if (!force && niveaux.value.length) return
@@ -166,141 +199,165 @@ async function confirmSubscription() {
 </script>
 
 <template>
-  <div class="gads-page">
-    <!-- ═══════ SECTION 1 — HERO ═══════ -->
-    <section class="gads-hero">
-      <div class="gads-hero__inner">
-        <h1 class="gads-hero__title">
-          Abonnement maths en ligne<br />
-          <span class="gads-hero__highlight">dès 3,99 €</span>
+  <div class="lp">
+    <Header />
+
+    <!-- ══════════ HERO ══════════ -->
+    <section class="hero">
+      <div class="hero__deco">
+        <div class="hero__circle hero__circle--1"></div>
+        <div class="hero__circle hero__circle--2"></div>
+        <div class="hero__circle hero__circle--3"></div>
+      </div>
+      <div class="hero__body">
+        <h1 class="hero__title">
+          Progresse en maths<br><span class="hero__grad">dès 3,99 €/mois</span>
         </h1>
-        <p class="gads-hero__subtitle">
-          Cours, fiches et exercices corrigés pas à pas pour progresser en Seconde, Première et Terminale.<br />
-          Accès immédiat. Sans engagement.
+        <p class="hero__sub">
+          Cours structurés, fiches de synthèse et exercices corrigés pas à pas<br class="hide-mobile">
+          pour la Seconde, Première et Terminale.
         </p>
-        <button
-          class="gads-cta gads-cta--primary"
-          data-cta-name="subscribe"
-          data-cta-location="gads_hero"
-          @click="scrollToPricing"
-        >
-          Je m'abonne maintenant
-        </button>
-        <p class="gads-hero__reassurance">Paiement sécurisé • Accès immédiat • Résiliation simple</p>
+        <div class="hero__chips">
+          <span class="chip"><span class="chip__icon">✓</span> Accès immédiat</span>
+          <span class="chip"><span class="chip__icon">✓</span> Sans engagement</span>
+          <span class="chip"><span class="chip__icon">✓</span> Résiliation en 1 clic</span>
+        </div>
+        <div class="hero__ctas">
+          <button class="btn btn--main" data-cta-name="subscribe" data-cta-location="gads_hero" @click="scrollToPricing">
+            <span class="btn__label">Je m'abonne maintenant</span>
+            <span class="btn__hint">Accès immédiat après paiement</span>
+          </button>
+          <button class="btn btn--ghost" @click="scrollToDemo">
+            Voir la plateforme en action
+          </button>
+        </div>
+        <p class="hero__trust">Paiement sécurisé Stripe · Contenu aligné Éducation nationale</p>
       </div>
     </section>
 
-    <!-- ═══════ APERÇU PLATEFORME — sous hero ═══════ -->
-    <section class="gads-preview gads-preview--hero">
-      <div class="gads-section__inner">
-        <div class="gads-preview__grid">
-          <div class="gads-preview__item">
-            <p class="gads-preview__caption">Exercices corrigés pas à pas</p>
-            <img
-              src="/video/optitab-demo-exercices.gif"
-              alt="Démonstration des exercices corrigés pas à pas sur OptiTAB"
-              class="gads-preview__img"
-              loading="lazy"
-              width="800"
-              height="500"
-            />
+    <!-- ══════════ DÉMO ══════════ -->
+    <section class="demo reveal-on-scroll" id="gads-demo">
+      <div class="wrap">
+        <div class="demo__badge"><span class="demo__sparkle">✨</span> Découvrez OptiTAB en action</div>
+        <h2 class="section-title">La plateforme qui <span class="grad">transforme</span> l'apprentissage</h2>
+        <p class="section-sub">Exercices guidés avec corrections détaillées, fiches prêtes à l'emploi et progression structurée.</p>
+        <div class="demo__grid">
+          <div class="demo__card reveal-on-scroll">
+            <div class="demo__tag"><span>💻</span> Version Desktop</div>
+            <div class="demo__frame">
+              <img src="/video/optitab-demo-exercices.gif" alt="Démonstration des exercices corrigés pas à pas sur OptiTAB" loading="lazy" />
+            </div>
+            <p class="demo__caption">Interface complète pour travailler confortablement</p>
           </div>
-          <div class="gads-preview__item">
-            <p class="gads-preview__caption">Interface mobile optimisée</p>
-            <img
-              src="/video/optitab-demo-mobile.gif"
-              alt="Interface mobile OptiTAB — cours et fiches accessibles partout"
-              class="gads-preview__img gads-preview__img--mobile"
-              loading="lazy"
-              width="400"
-              height="500"
-            />
+          <div class="demo__card demo__card--mobile reveal-on-scroll">
+            <div class="demo__tag"><span>📱</span> Version Mobile</div>
+            <div class="demo__frame demo__frame--mobile">
+              <img src="/video/optitab-demo-mobile.gif" alt="Interface mobile OptiTAB" loading="lazy" />
+            </div>
+            <p class="demo__caption">Étudiez partout, à tout moment</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══════ SECTION 2 — 3 BÉNÉFICES ═══════ -->
-    <section class="gads-benefits">
-      <div class="gads-section__inner">
-        <div class="gads-benefits__grid">
-          <div class="gads-benefit-card">
-            <div class="gads-benefit-card__icon">📖</div>
-            <h3 class="gads-benefit-card__title">Cours clairs</h3>
-            <p class="gads-benefit-card__desc">
-              Des notions expliquées étape par étape, organisées par chapitre et par niveau.
-            </p>
+    <!-- ══════════ FEATURES ══════════ -->
+    <section class="features reveal-on-scroll">
+      <div class="wrap">
+        <h2 class="section-title">Tout ce qu'il faut pour <span class="grad">vraiment progresser</span></h2>
+        <p class="section-sub">Une méthode pensée pour les lycéens, pas un catalogue de vidéos.</p>
+        <div class="features__grid">
+          <div class="feat-card reveal-on-scroll">
+            <div class="feat-card__ico feat-card__ico--blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div class="feat-card__body">
+              <h3>Cours structurés par chapitre</h3>
+              <p>Chaque notion est expliquée clairement, dans l'ordre du programme officiel de l'Éducation nationale.</p>
+            </div>
           </div>
-          <div class="gads-benefit-card">
-            <div class="gads-benefit-card__icon">📝</div>
-            <h3 class="gads-benefit-card__title">Fiches de synthèse</h3>
-            <p class="gads-benefit-card__desc">
-              Les formules et méthodes essentielles résumées pour réviser efficacement.
-            </p>
+          <div class="feat-card reveal-on-scroll">
+            <div class="feat-card__ico feat-card__ico--indigo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <div class="feat-card__body">
+              <h3>Exercices corrigés pas à pas</h3>
+              <p>Pas juste la réponse — chaque étape est détaillée pour que tu comprennes la méthode.</p>
+            </div>
           </div>
-          <div class="gads-benefit-card">
-            <div class="gads-benefit-card__icon">✏️</div>
-            <h3 class="gads-benefit-card__title">Exercices guidés pas à pas</h3>
-            <p class="gads-benefit-card__desc">
-              Un entraînement guidé pour comprendre la méthode, pas juste la réponse.
-            </p>
+          <div class="feat-card reveal-on-scroll">
+            <div class="feat-card__ico feat-card__ico--violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="feat-card__body">
+              <h3>Fiches de synthèse</h3>
+              <p>Des fiches prêtes à l'emploi pour chaque chapitre — idéales avant un contrôle ou le bac.</p>
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════ SECTION 3 — NIVEAUX ═══════ -->
-    <section class="gads-audience">
-      <div class="gads-section__inner">
-        <h2 class="gads-section__title">Pour tous les <span class="gads-highlight">lycéens</span></h2>
-        <p class="gads-section__subtitle">
-          Cours, fiches et exercices guidés pour progresser en Seconde, Première et Terminale.
-        </p>
-        <div class="gads-audience__tags">
-          <div class="gads-level-card">
-            <span class="gads-level-card__icon">📘</span>
-            <span class="gads-level-card__name">Seconde</span>
-          </div>
-          <div class="gads-level-card">
-            <span class="gads-level-card__icon">📗</span>
-            <span class="gads-level-card__name">Première</span>
-          </div>
-          <div class="gads-level-card">
-            <span class="gads-level-card__icon">📕</span>
-            <span class="gads-level-card__name">Terminale</span>
-          </div>
-        </div>
-        <div class="gads-bases-banner">
-          <span class="gads-bases-banner__icon">🧱</span>
-          <div>
-            <strong>Bases &amp; Méthode inclus pour tous les niveaux</strong>
-            <p>Un parcours complémentaire pensé pour les élèves qui ont des lacunes et veulent reprendre les fondamentaux, quel que soit leur niveau : Seconde, Première ou Terminale.</p>
+          <div class="feat-card reveal-on-scroll">
+            <div class="feat-card__ico feat-card__ico--emerald">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="feat-card__body">
+              <h3>Progression guidée</h3>
+              <p>Un parcours structuré chapitre par chapitre pour avancer dans le bon ordre, sans se perdre.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- ══════════ NIVEAUX ══════════ -->
+    <section class="levels reveal-on-scroll">
+      <div class="wrap">
+        <p class="eyebrow">Adapté à chaque niveau</p>
+        <h2 class="section-title">Pour tous les <span class="grad">lycéens</span></h2>
+        <p class="section-sub">Des contenus complets de la Seconde à la Terminale, alignés sur le programme officiel.</p>
+        <div class="levels__grid">
+          <div class="lv-card reveal-on-scroll">
+            <div class="lv-card__ico lv-card__ico--blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+            </div>
+            <h3>Seconde</h3>
+            <p>Consolide tes bases et prends les bons réflexes dès le lycée.</p>
+          </div>
+          <div class="lv-card reveal-on-scroll">
+            <div class="lv-card__ico lv-card__ico--indigo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <h3>Première</h3>
+            <p>Approfondis chaque notion et prépare sereinement les épreuves.</p>
+          </div>
+          <div class="lv-card reveal-on-scroll">
+            <div class="lv-card__ico lv-card__ico--violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.657 2.686 3 6 3s6-1.343 6-3v-5"/></svg>
+            </div>
+            <h3>Terminale</h3>
+            <p>Maîtrise le programme et vise l'excellence au bac.</p>
+          </div>
+        </div>
 
-
-    <!-- ═══════ SECTION 4 — CONTENU DE L'ABONNEMENT ═══════ -->
-    <section class="gads-includes">
-      <div class="gads-section__inner">
-        <h2 class="gads-section__title">Ce que tu obtiens <span class="gads-highlight">avec l'abonnement</span></h2>
-        <ul class="gads-includes__list">
-          <li class="gads-includes__item"><span class="gads-check">✓</span> Accès complet à la plateforme</li>
-          <li class="gads-includes__item"><span class="gads-check">✓</span> Cours structurés par chapitre et par niveau</li>
-          <li class="gads-includes__item"><span class="gads-check">✓</span> Fiches de synthèse prêtes à l'emploi</li>
-          <li class="gads-includes__item"><span class="gads-check">✓</span> Exercices corrigés pas à pas</li>
-          <li class="gads-includes__item"><span class="gads-check">✓</span> Progression structurée et guidée</li>
-        </ul>
+        <!-- Bases & Méthode — bloc séparé -->
+        <div class="bases-block reveal-on-scroll">
+          <div class="bases-block__ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </div>
+          <div class="bases-block__body">
+            <div class="bases-block__header">
+              <h3>Bases &amp; Méthode</h3>
+              <span class="bases-block__tag">Inclus pour tous</span>
+            </div>
+            <p>Un parcours complémentaire accessible à tous les abonnés — lycéens en difficulté, élèves de prépa ou toute personne souhaitant reprendre les fondamentaux. Utilisable librement, sans obligation.</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ═══════ SECTION 5 — PRIX / OFFRE ═══════ -->
-    <section class="gads-pricing" id="gads-pricing">
-      <div class="gads-section__inner">
-        <h2 class="gads-section__title">Dès <span class="gads-highlight">3,99 €</span></h2>
-        <p class="gads-section__subtitle">Sans engagement • Accès immédiat • Résiliation en un clic</p>
+    <!-- ══════════ PRICING ══════════ -->
+    <section class="pricing reveal-on-scroll" id="gads-pricing">
+      <div class="wrap">
+        <p class="eyebrow">Abonnement simple et transparent</p>
+        <h2 class="section-title">Dès <span class="grad">3,99 €/mois</span></h2>
+        <p class="section-sub">Sans engagement · Accès immédiat · Résiliation en un clic</p>
         <PricingCards
           :submitting="submitting"
           cta-location="gads_pricing"
@@ -309,717 +366,880 @@ async function confirmSubscription() {
       </div>
     </section>
 
-    <!-- ═══════ SECTION 7 — FAQ ═══════ -->
-    <section class="gads-faq">
-      <div class="gads-section__inner">
-        <h2 class="gads-section__title">Questions <span class="gads-highlight">fréquentes</span></h2>
-        <div class="gads-faq__list">
-          <details
+    <!-- ══════════ FAQ ══════════ -->
+    <section class="faq reveal-on-scroll">
+      <div class="wrap wrap--narrow">
+        <h2 class="section-title">Questions <span class="grad">fréquentes</span></h2>
+        <div class="faq__list">
+          <div
             v-for="(item, idx) in faqItems"
             :key="idx"
-            class="gads-faq__item"
+            class="faq__item"
+            :class="{ 'faq__item--open': openFaqIndex === idx }"
           >
-            <summary class="gads-faq__question">{{ item.question }}</summary>
-            <p class="gads-faq__answer">{{ item.answer }}</p>
-          </details>
+            <button class="faq__q" @click="toggleFaq(idx)" type="button">
+              <span>{{ item.question }}</span>
+              <svg class="faq__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq__a-wrap">
+              <p class="faq__a">{{ item.answer }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══════ SECTION 8 — DERNIER CTA ═══════ -->
-    <section class="gads-final-cta">
-      <div class="gads-section__inner">
-        <h2 class="gads-final-cta__title">Commence aujourd'hui</h2>
-        <p class="gads-final-cta__subtitle">Cours, fiches et exercices corrigés pour la Seconde, Première et Terminale. Accès immédiat dès 3,99 €.</p>
-        <button
-          class="gads-cta gads-cta--primary gads-cta--large"
-          data-cta-name="subscribe"
-          data-cta-location="gads_final"
-          @click="scrollToPricing"
-        >
+    <!-- ══════════ FINAL CTA ══════════ -->
+    <section class="final-cta">
+      <div class="wrap">
+        <h2 class="final-cta__title">Prêt à progresser en maths ?</h2>
+        <p class="final-cta__sub">Rejoins des centaines d'élèves qui progressent avec OptiTAB. Accès immédiat dès 3,99 €/mois.</p>
+        <button class="btn btn--white" data-cta-name="subscribe" data-cta-location="gads_final" @click="scrollToPricing">
           Je m'abonne maintenant
         </button>
       </div>
     </section>
 
-    <!-- ═══════ FOOTER MINIMAL ═══════ -->
-    <footer class="gads-footer">
-      <div class="gads-footer__inner">
-        <span class="gads-footer__copy">© {{ new Date().getFullYear() }} OptiTAB</span>
-        <span class="gads-footer__sep">·</span>
-        <router-link to="/legal" class="gads-footer__link">Mentions légales</router-link>
-        <span class="gads-footer__sep">·</span>
-        <router-link to="/confidentialite" class="gads-footer__link">Confidentialité</router-link>
-        <span class="gads-footer__sep">·</span>
-        <router-link to="/cgu" class="gads-footer__link">CGU</router-link>
-        <span class="gads-footer__sep">·</span>
-        <router-link to="/cgv" class="gads-footer__link">CGV</router-link>
+    <!-- ══════════ FOOTER ══════════ -->
+    <footer class="lp-footer">
+      <div class="lp-footer__inner">
+        <span>© {{ new Date().getFullYear() }} OptiTAB</span>
+        <span class="lp-footer__sep">·</span>
+        <router-link to="/legal">Mentions légales</router-link>
+        <span class="lp-footer__sep">·</span>
+        <router-link to="/confidentialite">Confidentialité</router-link>
+        <span class="lp-footer__sep">·</span>
+        <router-link to="/cgu">CGU</router-link>
+        <span class="lp-footer__sep">·</span>
+        <router-link to="/cgv">CGV</router-link>
       </div>
     </footer>
 
-    <!-- ═══════ MODAL NIVEAU ═══════ -->
-    <div v-if="showLevelModal" class="gads-modal-overlay" @click="closeLevelModal">
-      <div class="gads-modal" @click.stop>
-        <button class="gads-modal__close" type="button" :disabled="submitting" @click="closeLevelModal">
-          &times;
-        </button>
-        <div class="gads-modal__header">
-          <h3>Choisis ton niveau</h3>
-          <p>L'abonnement <strong>{{ pendingPlanName || 'OptiTAB' }}</strong> débloquera un seul niveau.</p>
-        </div>
-        <div class="gads-modal__body">
-          <div v-if="niveauxLoading" class="gads-modal__loading">Chargement…</div>
-          <div v-else-if="niveauxError" class="gads-modal__error">
-            <p>{{ niveauxError }}</p>
-            <button @click="loadLevels(true)">Réessayer</button>
+    <!-- ══════════ MODAL NIVEAU ══════════ -->
+    <Teleport to="body">
+      <div v-if="showLevelModal" class="modal-overlay" @click="closeLevelModal">
+        <div class="modal" @click.stop>
+          <button class="modal__close" type="button" :disabled="submitting" @click="closeLevelModal">&times;</button>
+          <div class="modal__header">
+            <h3>Choisis ton niveau</h3>
+            <p>L'abonnement <strong>{{ pendingPlanName || 'OptiTAB' }}</strong> débloquera un seul niveau.</p>
           </div>
-          <div v-else>
-            <label for="gads-level-select">Niveau à débloquer</label>
-            <select id="gads-level-select" v-model.number="selectedNiveauId">
-              <option v-for="n in niveaux" :key="n.id" :value="n.id">
-                {{ n.nom }}{{ n.pays?.nom ? ` — ${n.pays.nom}` : '' }}
-              </option>
-            </select>
+          <div class="modal__body">
+            <div v-if="niveauxLoading" class="modal__loading">Chargement…</div>
+            <div v-else-if="niveauxError" class="modal__error">
+              <p>{{ niveauxError }}</p>
+              <button @click="loadLevels(true)">Réessayer</button>
+            </div>
+            <div v-else>
+              <label for="lp-level-select">Niveau à débloquer</label>
+              <select id="lp-level-select" v-model.number="selectedNiveauId">
+                <option v-for="n in niveaux" :key="n.id" :value="n.id">
+                  {{ n.nom }}{{ n.pays?.nom ? ` — ${n.pays.nom}` : '' }}
+                </option>
+              </select>
+            </div>
+            <p v-if="!userStore.isAuthenticated" class="modal__hint">
+              Pas encore de compte ? Choisis ton niveau puis crée ton compte pour finaliser le paiement.
+            </p>
           </div>
-          <p v-if="!userStore.isAuthenticated" class="gads-modal__hint">
-            Pas encore de compte ? Choisis ton niveau puis crée ton compte pour finaliser le paiement.
-          </p>
-        </div>
-        <div class="gads-modal__actions">
-          <button class="gads-modal__btn gads-modal__btn--secondary" :disabled="submitting" @click="closeLevelModal">
-            Annuler
-          </button>
-          <button class="gads-modal__btn gads-modal__btn--primary" :disabled="submitting || !selectedNiveauId" @click="confirmSubscription">
-            {{ submitting ? 'Redirection…' : 'Continuer vers le paiement' }}
-          </button>
+          <div class="modal__actions">
+            <button class="modal__btn modal__btn--ghost" :disabled="submitting" @click="closeLevelModal">Annuler</button>
+            <button class="modal__btn modal__btn--main" :disabled="submitting || !selectedNiveauId" @click="confirmSubscription">
+              {{ submitting ? 'Redirection…' : 'Continuer vers le paiement' }}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </Teleport>
   </div>
 </template>
 
 <style scoped lang="scss">
-/* ──────────────────────────────────────────────
-   Variables
-   ────────────────────────────────────────────── */
-$primary: #2a38b7;
-$primary-light: #667eea;
-$text-dark: #0f172a;
-$text: #475569;
-$text-light: #64748b;
+/* ═══════════════════════════════════════════
+   Design tokens
+   ═══════════════════════════════════════════ */
+$blue: #2a38b7;
+$blue-light: #667eea;
+$blue-soft: #3b82f6;
+$dark: #0f172a;
+$text: #334155;
+$text-muted: #64748b;
 $white: #ffffff;
-$bg-light: #f8fafc;
+$bg: #f8fafc;
 $bg-alt: #f1f5f9;
-$radius: 16px;
-$radius-sm: 10px;
-$shadow: 0 4px 24px rgba(42, 56, 183, 0.08);
+$radius: 20px;
+$radius-sm: 14px;
 
-/* ──────────────────────────────────────────────
-   Page
-   ────────────────────────────────────────────── */
-.gads-page {
+/* ═══════════════════════════════════════════
+   Globals
+   ═══════════════════════════════════════════ */
+.lp {
   min-height: 100vh;
   background: $white;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Poppins', 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: $text;
   line-height: 1.6;
+  padding-top: 64px;
+  overflow-x: hidden;
 }
 
-/* ──────────────────────────────────────────────
-   Section generic
-   ────────────────────────────────────────────── */
-.gads-section__inner {
-  max-width: 900px;
+.wrap {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 clamp(16px, 4vw, 40px);
 }
+.wrap--narrow { max-width: 720px; }
 
-.gads-section__title {
-  font-size: 2.2rem;
+.section-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
   font-weight: 900;
-  color: #0f172a;
+  color: $dark;
   text-align: center;
-  margin-bottom: 14px;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
 }
 
-.gads-highlight {
-  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
+.section-sub {
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  color: $text-muted;
+  text-align: center;
+  margin: 0 auto 40px;
+  max-width: 640px;
+  line-height: 1.65;
+}
+
+.grad {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-weight: 900;
 }
 
-.gads-section__subtitle {
-  font-size: 1.1rem;
-  color: #475569;
+.eyebrow {
   text-align: center;
-  margin-bottom: 2rem;
-  line-height: 1.6;
-}
-
-/* ──────────────────────────────────────────────
-   CTA button global
-   ────────────────────────────────────────────── */
-.gads-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 12px;
+  font-size: 0.78rem;
   font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: inherit;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $blue;
+  margin: 0 0 10px;
 }
 
-.gads-cta--primary {
-  background: linear-gradient(135deg, $primary, $primary-light);
-  color: $white;
-  padding: 16px 40px;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 16px rgba(42, 56, 183, 0.25);
+.hide-mobile {
+  @media (max-width: 640px) { display: none; }
+}
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(42, 56, 183, 0.35);
+/* ═══════════════════════════════════════════
+   Scroll reveal
+   ═══════════════════════════════════════════ */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  &.revealed {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.gads-cta--large {
-  padding: 18px 48px;
-  font-size: 1.2rem;
+/* ═══════════════════════════════════════════
+   Buttons
+   ═══════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: $radius-sm;
+  font-weight: 700;
+  font-size: 1.02rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.25s, background 0.25s;
+  font-family: inherit;
+  min-height: 56px;
+  padding: 14px 32px;
 }
 
-/* ──────────────────────────────────────────────
-   SECTION 1 — Hero
-   ────────────────────────────────────────────── */
-.gads-hero {
-  padding: 80px 24px 60px;
+.btn--main {
+  background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
+  color: $white;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.24);
+  min-width: 260px;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(29, 78, 216, 0.33);
+  }
+}
+
+.btn__label { font-weight: 700; line-height: 1.3; }
+.btn__hint {
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+.btn--ghost {
+  background: rgba(255,255,255,0.88);
+  color: $dark;
+  border: 1px solid #c5d1e2;
+  box-shadow: 0 2px 8px rgba(15,23,42,0.08);
+  min-width: 240px;
+  &:hover {
+    background: $white;
+    border-color: #9fb2cf;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(15,23,42,0.12);
+  }
+}
+
+.btn--white {
+  background: $white;
+  color: $blue;
+  font-size: 1.1rem;
+  padding: 16px 44px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.16);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════ */
+.hero {
+  position: relative;
   text-align: center;
-  background: linear-gradient(180deg, $bg-light 0%, $white 100%);
+  padding: 80px 24px 64px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f5f9 60%, #e2e8f0 100%);
+  overflow: hidden;
 }
 
-.gads-hero__inner {
-  max-width: 720px;
+.hero__deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero__circle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(42,56,183,0.04) 0%, transparent 70%);
+  animation: floatC 20s ease-in-out infinite;
+  &--1 { width: 400px; height: 400px; top: -150px; left: -100px; }
+  &--2 { width: 350px; height: 350px; bottom: -100px; right: -80px; animation-delay: 7s; }
+  &--3 { width: 300px; height: 300px; top: 40%; right: 5%; animation-delay: 14s; }
+}
+
+@keyframes floatC {
+  0%, 100% { transform: translate(0,0) scale(1); opacity: .5; }
+  50% { transform: translate(30px,-30px) scale(1.1); opacity: .7; }
+}
+
+.hero__body {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
   margin: 0 auto;
+  animation: fadeUp .8s ease-out;
 }
 
-.gads-hero__title {
-  font-size: 2.5rem;
+.hero__title {
+  font-size: clamp(1.7rem, 4vw, 2.8rem);
   font-weight: 900;
-  color: $text-dark;
-  line-height: 1.2;
-  margin-bottom: 20px;
+  color: $dark;
+  line-height: 1.12;
+  margin: 0 0 18px;
   letter-spacing: -0.02em;
 }
 
-.gads-hero__highlight {
-  background: linear-gradient(135deg, $primary, $primary-light);
+.hero__grad {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-weight: 900;
 }
 
-.gads-hero__subtitle {
-  font-size: 1.15rem;
+.hero__sub {
+  font-size: clamp(0.95rem, 1.5vw, 1.12rem);
   color: $text;
-  line-height: 1.6;
-  margin-bottom: 32px;
+  font-weight: 500;
+  line-height: 1.62;
+  margin: 0 auto 20px;
+  max-width: 640px;
 }
 
-.gads-hero__reassurance {
-  margin-top: 14px;
-  font-size: 0.9rem;
-  color: $text-light;
+.hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 0 0 28px;
 }
 
-/* ──────────────────────────────────────────────
-   SECTION 2 — Bénéfices
-   ────────────────────────────────────────────── */
-.gads-benefits {
-  padding: 64px 24px;
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.25);
+  color: #166534;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+.chip__icon { color: #22c55e; font-weight: 700; }
+
+.hero__ctas {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 0 16px;
+}
+
+.hero__trust {
+  font-size: 0.82rem;
+  color: $text-muted;
+  margin: 0;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   DEMO
+   ═══════════════════════════════════════════ */
+.demo {
+  padding: 88px 0;
   background: $white;
 }
 
-.gads-benefits__grid {
+.demo__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(236,72,153,0.08));
+  border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 50px;
+  padding: 10px 24px;
+  margin: 0 auto 24px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #6366f1;
+  text-align: center;
+}
+
+.demo__sparkle { animation: sparkle 2s ease-in-out infinite; }
+
+@keyframes sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.2) rotate(180deg); }
+}
+
+.demo__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 36px;
+  margin-top: 40px;
+  align-items: start;
+  @media (max-width: 900px) { grid-template-columns: 1fr; }
+}
+
+.demo__card {
+  border-radius: $radius;
+  padding: 24px;
+  transition: transform .3s ease, box-shadow .3s ease;
+  &:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(42,56,183,0.1); }
+}
+
+.demo__tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #0369a1;
+}
+
+.demo__frame {
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  img { width: 100%; height: auto; display: block; }
+}
+
+.demo__frame--mobile {
+  max-width: 300px;
+  margin: 0 auto 14px;
+}
+
+.demo__caption {
+  font-size: 0.88rem;
+  color: $text-muted;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════
+   FEATURES
+   ═══════════════════════════════════════════ */
+.features {
+  padding: 88px 0 72px;
+  background: linear-gradient(160deg, #f8faff 0%, #eef2ff 50%, #f5f3ff 100%);
+}
+
+.features__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.feat-card {
+  background: $white;
+  border-radius: 28px;
+  box-shadow: 0 4px 28px rgba(42,56,183,0.1);
+  padding: 36px 32px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  transition: box-shadow .25s, transform .25s;
+  &:hover {
+    box-shadow: 0 10px 40px rgba(42,56,183,0.16);
+    transform: translateY(-5px);
+  }
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 28px 22px;
+  }
+}
+
+.feat-card__ico {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg { width: 30px; height: 30px; }
+  &--blue    { background: #dbeafe; color: #2563eb; }
+  &--indigo  { background: #e0e7ff; color: #4f46e5; }
+  &--violet  { background: #ede9fe; color: #7c3aed; }
+  &--emerald { background: #d1fae5; color: #059669; }
+}
+
+.feat-card__body {
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: $dark;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  p {
+    font-size: 0.95rem;
+    color: $text;
+    line-height: 1.65;
+    margin: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   LEVELS
+   ═══════════════════════════════════════════ */
+.levels {
+  padding: 88px 0 72px;
+  background: $white;
+}
+
+.levels__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-top: 8px;
+  @media (max-width: 768px) { grid-template-columns: 1fr; }
 }
 
-.gads-benefit-card {
-  background: $bg-light;
+.lv-card {
+  background: $bg;
   border-radius: $radius;
-  padding: 28px 24px;
+  padding: 36px 24px 28px;
   text-align: center;
   border: 1px solid #e2e8f0;
-}
-
-.gads-benefit-card__icon {
-  font-size: 2rem;
-  margin-bottom: 12px;
-}
-
-.gads-benefit-card__title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: $text-dark;
-  margin-bottom: 8px;
-}
-
-.gads-benefit-card__desc {
-  font-size: 0.95rem;
-  color: $text;
-  line-height: 1.55;
-}
-
-/* ──────────────────────────────────────────────
-   SECTION 3 — Niveaux
-   ────────────────────────────────────────────── */
-.gads-audience {
-  padding: 56px 24px;
-  background: $bg-alt;
-}
-
-.gads-audience__tags {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.gads-level-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  background: $white;
-  border: 2px solid #e0e7ff;
-  border-radius: $radius;
-  padding: 32px 40px;
-  min-width: 150px;
-  box-shadow: 0 4px 16px rgba(42, 56, 183, 0.08);
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-
+  transition: transform .25s, box-shadow .25s, border-color .25s;
   &:hover {
-    border-color: $primary;
-    box-shadow: 0 8px 28px rgba(42, 56, 183, 0.15);
-    transform: translateY(-3px);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(42,56,183,0.1);
+    border-color: rgba(99,102,241,0.3);
+  }
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: $dark;
+    margin: 0 0 8px;
+  }
+  p {
+    font-size: 0.88rem;
+    color: $text-muted;
+    line-height: 1.55;
+    margin: 0;
   }
 }
 
-.gads-level-card__icon {
-  font-size: 2.2rem;
+.lv-card__ico {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  svg { width: 28px; height: 28px; }
+  &--blue   { background: #dbeafe; color: #2563eb; }
+  &--indigo { background: #e0e7ff; color: #4f46e5; }
+  &--violet { background: #ede9fe; color: #7c3aed; }
 }
 
-.gads-level-card__name {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: $primary;
-  letter-spacing: -0.01em;
-}
-
-.gads-bases-banner {
+/* Bases & Méthode */
+.bases-block {
   display: flex;
   align-items: flex-start;
-  gap: 18px;
-  max-width: 620px;
-  margin: 40px auto 0;
-  background: linear-gradient(135deg, #eef2ff 0%, #f0f4ff 100%);
-  border: 2px solid #c7d2fe;
-  border-left: 5px solid $primary;
+  gap: 20px;
+  max-width: 720px;
+  margin: 36px auto 0;
+  background: $bg;
+  border: 1px solid #e2e8f0;
   border-radius: $radius;
-  padding: 24px 28px;
-  box-shadow: 0 4px 20px rgba(42, 56, 183, 0.1);
+  padding: 28px 32px;
+  transition: transform .25s, box-shadow .25s;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(42,56,183,0.08);
+  }
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px 20px;
+  }
 }
 
-.gads-bases-banner__icon {
-  font-size: 2rem;
-  flex-shrink: 0;
-  line-height: 1;
-  margin-top: 2px;
+.bases-block__ico {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  border-radius: 16px;
+  background: #fef3c7;
+  color: #d97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg { width: 26px; height: 26px; }
 }
 
-.gads-bases-banner strong {
-  display: block;
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: #0f172a;
+.bases-block__body { flex: 1; }
+.bases-block__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 8px;
-  letter-spacing: -0.01em;
+  flex-wrap: wrap;
+  h3 { font-size: 1.1rem; font-weight: 800; color: $dark; margin: 0; }
+  @media (max-width: 600px) { justify-content: center; }
 }
 
-.gads-bases-banner p {
-  font-size: 0.95rem;
-  color: #475569;
+.bases-block__tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #d97706;
+  background: #fef3c7;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.bases-block__body p {
+  font-size: 0.9rem;
+  color: $text;
   line-height: 1.6;
   margin: 0;
 }
 
-/* ──────────────────────────────────────────────
-   SECTION 5 — Pricing
-   ────────────────────────────────────────────── */
-.gads-pricing {
-  padding: 72px 24px;
-  background: #f8f9fa;
+/* ═══════════════════════════════════════════
+   PRICING
+   ═══════════════════════════════════════════ */
+.pricing {
+  padding: 88px 0 72px;
+  background: linear-gradient(160deg, #f8faff 0%, #eef2ff 50%, #f5f3ff 100%);
+  scroll-margin-top: 60px;
 }
 
-/* ──────────────────────────────────────────────
-   SECTION 6 — Preview
-   ────────────────────────────────────────────── */
-.gads-preview {
-  padding: 64px 24px;
+/* ═══════════════════════════════════════════
+   FAQ
+   ═══════════════════════════════════════════ */
+.faq {
+  padding: 80px 0 72px;
   background: $white;
 }
 
-.gads-preview--hero {
-  padding: 32px 24px 56px;
-  background: $white;
+.faq__list {
+  margin-top: 8px;
 }
 
-.gads-preview__grid {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: 24px;
-  align-items: start;
-  margin-top: 16px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.gads-preview__item {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.gads-preview__caption {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: $text-light;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.gads-preview__img {
-  max-width: 100%;
-  height: auto;
-  border-radius: $radius;
-}
-
-.gads-preview__img--mobile {
-  max-height: 420px;
-  object-fit: contain;
-  margin: 0 auto;
-  display: block;
-}
-
-/* ──────────────────────────────────────────────
-   SECTION 7 — FAQ
-   ────────────────────────────────────────────── */
-.gads-faq {
-  padding: 64px 24px;
-  background: $bg-alt;
-}
-
-.gads-faq__list {
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-.gads-faq__item {
+.faq__item {
   border-bottom: 1px solid #e2e8f0;
-  padding: 16px 0;
-
-  &[open] .gads-faq__question::after {
-    transform: rotate(180deg);
-  }
 }
 
-.gads-faq__question {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: $text-dark;
-  cursor: pointer;
-  list-style: none;
+.faq__q {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  &::after {
-    content: '▾';
-    font-size: 1.1rem;
-    color: $text-light;
-    transition: transform 0.2s ease;
-    flex-shrink: 0;
-    margin-left: 12px;
-  }
-
-  &::-webkit-details-marker {
-    display: none;
-  }
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 20px 0;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: $dark;
+  text-align: left;
+  gap: 16px;
+  transition: color .2s;
+  &:hover { color: $blue; }
 }
 
-.gads-faq__answer {
-  margin-top: 10px;
+.faq__arrow {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  color: $text-muted;
+  transition: transform .3s ease;
+  .faq__item--open & { transform: rotate(180deg); }
+}
+
+.faq__a-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .35s ease;
+  .faq__item--open & { grid-template-rows: 1fr; }
+}
+
+.faq__a {
+  overflow: hidden;
   font-size: 0.95rem;
   color: $text;
+  line-height: 1.65;
+  margin: 0;
+  padding: 0 0 20px;
+}
+
+/* ═══════════════════════════════════════════
+   FINAL CTA
+   ═══════════════════════════════════════════ */
+.final-cta {
+  padding: 80px 24px;
+  background: linear-gradient(135deg, $blue 0%, $blue-light 100%);
+  text-align: center;
+}
+
+.final-cta__title {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 900;
+  color: $white;
+  margin: 0 0 14px;
+}
+
+.final-cta__sub {
+  font-size: clamp(0.95rem, 1.5vw, 1.12rem);
+  color: rgba(255,255,255,0.9);
+  margin: 0 auto 32px;
+  max-width: 560px;
   line-height: 1.6;
 }
 
-/* ──────────────────────────────────────────────
-   SECTION 8 — Final CTA
-   ────────────────────────────────────────────── */
-.gads-final-cta {
-  padding: 72px 24px;
-  background: linear-gradient(135deg, $primary 0%, $primary-light 100%);
-  text-align: center;
-}
-
-.gads-final-cta__title {
-  font-size: 2rem;
-  font-weight: 800;
-  color: $white;
-  margin-bottom: 12px;
-}
-
-.gads-final-cta__subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 28px;
-}
-
-.gads-final-cta .gads-cta--primary {
-  background: $white;
-  color: $primary;
-
-  &:hover {
-    background: #f8fafc;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
-  }
-}
-
-/* ──────────────────────────────────────────────
-   Footer
-   ────────────────────────────────────────────── */
-.gads-footer {
+/* ═══════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════ */
+.lp-footer {
   padding: 24px;
-  background: $text-dark;
+  background: $dark;
   text-align: center;
 }
 
-.gads-footer__inner {
+.lp-footer__inner {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.gads-footer__link {
-  color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
-
-  &:hover {
-    color: $white;
+  color: rgba(255,255,255,0.55);
+  a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    &:hover { color: $white; }
   }
 }
 
-.gads-footer__sep {
-  color: rgba(255, 255, 255, 0.3);
-}
+.lp-footer__sep { color: rgba(255,255,255,0.25); }
 
-/* ──────────────────────────────────────────────
-   Modal niveau
-   ────────────────────────────────────────────── */
-.gads-modal-overlay {
+/* ═══════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════ */
+.modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(15,23,42,0.55);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
   padding: 24px;
+  backdrop-filter: blur(4px);
 }
 
-.gads-modal {
+.modal {
   background: $white;
   border-radius: $radius;
   max-width: 440px;
   width: 100%;
   padding: 32px;
   position: relative;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.18);
 }
 
-.gads-modal__close {
+.modal__close {
   position: absolute;
   top: 12px;
   right: 16px;
   background: none;
   border: none;
   font-size: 1.6rem;
-  color: $text-light;
+  color: $text-muted;
   cursor: pointer;
 }
 
-.gads-modal__header h3 {
+.modal__header h3 {
   font-size: 1.3rem;
   font-weight: 700;
-  color: $text-dark;
-  margin-bottom: 8px;
+  color: $dark;
+  margin: 0 0 8px;
 }
 
-.gads-modal__header p {
+.modal__header p {
   font-size: 0.95rem;
   color: $text;
-  margin-bottom: 20px;
+  margin: 0 0 20px;
 }
 
-.gads-modal__body label {
+.modal__body label {
   display: block;
   font-weight: 600;
   font-size: 0.9rem;
-  color: $text-dark;
+  color: $dark;
   margin-bottom: 8px;
 }
 
-.gads-modal__body select {
+.modal__body select {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
-  color: $text-dark;
+  color: $dark;
   background: $white;
   margin-bottom: 12px;
 }
 
-.gads-modal__hint {
+.modal__hint {
   font-size: 0.85rem;
-  color: $text-light;
+  color: $text-muted;
   margin-top: 8px;
 }
 
-.gads-modal__loading,
-.gads-modal__error {
+.modal__loading, .modal__error {
   text-align: center;
   padding: 16px 0;
   color: $text;
 }
 
-.gads-modal__actions {
+.modal__actions {
   display: flex;
   gap: 12px;
   margin-top: 20px;
 }
 
-.gads-modal__btn {
+.modal__btn {
   flex: 1;
   padding: 12px 20px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
-  transition: all 0.2s ease;
+  font-family: inherit;
+  transition: all .2s;
 }
 
-.gads-modal__btn--secondary {
-  background: $bg-light;
+.modal__btn--ghost {
+  background: $bg;
   color: $text;
-
-  &:hover {
-    background: $bg-alt;
-  }
+  &:hover { background: $bg-alt; }
 }
 
-.gads-modal__btn--primary {
-  background: linear-gradient(135deg, $primary, $primary-light);
+.modal__btn--main {
+  background: linear-gradient(135deg, $blue, $blue-light);
   color: $white;
-
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(42, 56, 183, 0.3);
+    box-shadow: 0 4px 16px rgba(42,56,183,0.3);
   }
-
   &:disabled {
-    opacity: 0.6;
+    opacity: .6;
     cursor: not-allowed;
     transform: none;
   }
 }
 
-/* ──────────────────────────────────────────────
-   Mobile responsive
-   ────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
 @media (max-width: 768px) {
-  .gads-hero {
-    padding: 56px 20px 44px;
-  }
-
-  .gads-hero__title {
-    font-size: 1.75rem;
-  }
-
-  .gads-hero__subtitle {
-    font-size: 1rem;
-  }
-
-  .gads-section__title {
-    font-size: 1.4rem;
-  }
-
-  .gads-benefits__grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .gads-cta--primary {
-    padding: 14px 32px;
-    font-size: 1rem;
-    width: 100%;
-  }
-
-  .gads-cta--large {
-    padding: 16px 36px;
-    font-size: 1.05rem;
-  }
-
-  .gads-audience__tags {
-    gap: 12px;
-  }
-
-  .gads-level-card {
-    padding: 20px 24px;
-    min-width: 110px;
-  }
-
-  .gads-final-cta__title {
-    font-size: 1.5rem;
-  }
+  .hero { padding: 64px 20px 48px; }
+  .hero__ctas { flex-direction: column; align-items: center; }
+  .btn--main, .btn--ghost { width: 100%; max-width: 360px; }
+  .demo, .features, .levels, .pricing, .faq { padding-top: 64px; padding-bottom: 56px; }
 }
 
 @media (max-width: 480px) {
-  .gads-hero__title {
-    font-size: 1.5rem;
-  }
-
-  .gads-benefits, .gads-includes, .gads-preview, .gads-faq {
-    padding: 48px 16px;
-  }
-
-  .gads-pricing {
-    padding: 56px 16px;
-  }
+  .hero { padding: 48px 16px 40px; }
+  .chip { font-size: 0.78rem; padding: 5px 11px; }
+  .feat-card { padding: 24px 18px; border-radius: 22px; }
+  .lv-card { padding: 28px 20px 24px; }
 }
 </style>

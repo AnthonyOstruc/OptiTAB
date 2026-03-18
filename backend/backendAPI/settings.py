@@ -318,6 +318,9 @@ EMAIL_LOGO_URL = os.getenv("EMAIL_LOGO_URL")
 FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL", "http://localhost:3000")
 FRONTEND_URL = os.getenv("FRONTEND_URL", FRONTEND_BASE_URL)
 
+# Allow OAuth users (without a usable password) to reset/set a password
+DJANGO_REST_MULTITOKENAUTH_REQUIRE_USABLE_PASSWORD = False
+
 # ========================================
 # FICHIERS STATIQUES ET MÉDIA
 # ========================================

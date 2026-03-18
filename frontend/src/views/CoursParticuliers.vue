@@ -167,7 +167,7 @@
                   vers l'excellence et vous ouvrir les portes des meilleures écoles.
                 </p>
                 <p>
-                  Je dispense des cours particuliers depuis maintenant plusieurs années. Avant de lancer OptiTAB, j'ai d'abord été professeur particulier au sein de plusieurs plateformes comme <a href="https://groupe-reussite.fr/cours-particuliers-cours-particuliers-niveaux-ligne-domicile-3452/" target="_blank" rel="noopener noreferrer" class="inline-link">Groupe Réussite</a>. J'y accompagnais des élèves de tous niveaux — du collège jusqu'aux classes préparatoires en passant par le lycée — en mathématiques et en physique-chimie. J'étais libre du choix de mes tarifs, de mes matières, de mon emploi du temps et de ma manière de travailler.
+                  Je dispense des cours particuliers depuis maintenant plusieurs années. Avant de lancer OptiTAB, j'ai d'abord été professeur particulier au sein de plusieurs plateformes comme <a href="https://groupe-reussite.fr/" target="_blank" rel="noopener noreferrer" class="inline-link">Groupe Réussite</a>. J'y accompagnais des élèves de tous niveaux — du collège jusqu'aux classes préparatoires en passant par le lycée — en mathématiques et en physique-chimie. J'étais libre du choix de mes tarifs, de mes matières, de mon emploi du temps et de ma manière de travailler.
                 </p>
                 <p>
                   L'accompagnement y était vraiment très qualitatif, mais j'ai souhaité aller encore plus loin en créant OptiTAB afin d'aider les élèves, quel que soit leur parcours, à progresser durablement et à révéler leur plein potentiel.
@@ -210,7 +210,7 @@
                     </svg>
                     <span class="social-text">LinkedIn</span>
                   </a>
-                  <a href="https://groupe-reussite.fr/cours-particuliers-cours-particuliers-niveaux-ligne-domicile-3452/" target="_blank" rel="noopener noreferrer" class="social-link groupe-link">
+                  <a href="https://groupe-reussite.fr/" target="_blank" rel="noopener noreferrer" class="social-link groupe-link">
                     <span class="social-icon">👥</span>
                     <span class="social-text">Groupe Réussite</span>
                   </a>

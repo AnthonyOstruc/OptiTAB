@@ -57,13 +57,11 @@
     <!-- Historique des exercices avec filtres → rendu immédiat -->
     <ExercicesHistory />
 
-
-
-
-
-
-
-
+    <!-- Modal d'abonnement (niveaux bloqués) -->
+    <SubscriptionPromptModal
+      :is-open="showSubscriptionPrompt"
+      @close="handleSubscriptionPromptClose"
+    />
 
     
   </div>
@@ -95,12 +93,14 @@ import PrivateTutorCTA from '@/components/dashboard/PrivateTutorCTA.vue'
 import QuizHistory from '@/components/dashboard/QuizHistoryRefactored.vue'
 import ExercicesHistory from '@/components/dashboard/ExercicesHistory.vue'
 import PendingCorrections from '@/components/dashboard/PendingCorrections.vue'
-
+import SubscriptionPromptModal from '@/components/modals/SubscriptionPromptModal.vue'
+import { useSubscriptionStore } from '@/stores/subscription'
 
 // StreakTestButton supprimé
 
 const userStore = useUserStore()
 const subjectsStore = useSubjectsStore()
+const subscriptionStore = useSubscriptionStore()
 const router = useRouter()
 
 const stats = ref({ done: 0, acquired: 0, not_acquired: 0 })
@@ -120,6 +120,48 @@ const processingAction = ref('')
 
 const activeInvitation = computed(() => invitations.value[activeInvitationIndex.value] || null)
 const isAuthenticated = computed(() => userStore.isAuthenticated)
+
+// --- Modal abonnement (réapparait toutes les 2 min si niveaux bloqués) ---
+const showSubscriptionPrompt = ref(false)
+let subscriptionPromptTimer = null
+const SUBSCRIPTION_PROMPT_INTERVAL = 2 * 60 * 1000 // 2 minutes
+
+const shouldShowSubscriptionPrompt = computed(() => {
+  if (!isAuthenticated.value) return false
+  if (subscriptionStore.hasAccess) return false
+  // L'utilisateur n'a pas d'accès → niveaux bloqués
+  return true
+})
+
+function openSubscriptionPrompt() {
+  if (shouldShowSubscriptionPrompt.value) {
+    showSubscriptionPrompt.value = true
+  }
+}
+
+function handleSubscriptionPromptClose() {
+  showSubscriptionPrompt.value = false
+  // Relancer le timer pour réapparition dans 2 min
+  clearSubscriptionPromptTimer()
+  if (shouldShowSubscriptionPrompt.value) {
+    subscriptionPromptTimer = setTimeout(openSubscriptionPrompt, SUBSCRIPTION_PROMPT_INTERVAL)
+  }
+}
+
+function clearSubscriptionPromptTimer() {
+  if (subscriptionPromptTimer) {
+    clearTimeout(subscriptionPromptTimer)
+    subscriptionPromptTimer = null
+  }
+}
+
+function initSubscriptionPrompt() {
+  clearSubscriptionPromptTimer()
+  if (shouldShowSubscriptionPrompt.value) {
+    // Afficher immédiatement au chargement du dashboard
+    showSubscriptionPrompt.value = true
+  }
+}
 
 const lastActivity = computed(() => {
   if (!statuses.value.length) return null
@@ -204,6 +246,7 @@ watch(showInvitationModal, (visible) => {
 
 onBeforeUnmount(() => {
   lockScroll(false)
+  clearSubscriptionPromptTimer()
 })
 
 onBeforeRouteLeave((to, from, next) => {
@@ -257,15 +300,20 @@ const runDashboardLoad = async () => {
   } catch {}
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (isAuthenticated.value) {
     runDashboardLoad()
+    // Charger le statut d'abonnement puis afficher le modal si nécessaire
+    await subscriptionStore.fetchStatus()
+    initSubscriptionPrompt()
   }
 })
 
-watch(isAuthenticated, (authed) => {
+watch(isAuthenticated, async (authed) => {
   if (authed) {
     runDashboardLoad()
+    await subscriptionStore.fetchStatus()
+    initSubscriptionPrompt()
   } else {
     // Nettoyer les données affichées lorsque l'utilisateur se déconnecte
     stats.value = { done: 0, acquired: 0, not_acquired: 0 }
@@ -275,6 +323,8 @@ watch(isAuthenticated, (authed) => {
     invitations.value = []
     showInvitationModal.value = false
     activeInvitationIndex.value = 0
+    clearSubscriptionPromptTimer()
+    showSubscriptionPrompt.value = false
   }
 })
 </script>

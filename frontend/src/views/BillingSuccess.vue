@@ -10,6 +10,9 @@
       </div>
       <h1 class="headline success">{{ headline }}</h1>
       <p class="status success-text">{{ statusMessage }}</p>
+      <p v-if="accountCreated" class="status account-created-hint">
+        Un email vous a été envoyé pour définir votre mot de passe et accéder à votre compte.
+      </p>
       <router-link class="btn btn-primary" to="/dashboard">
         {{ primaryLabel }}
       </router-link>
@@ -74,16 +77,19 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSubscriptionStore } from '@/stores/subscription'
-import { finalizeCheckoutSession } from '@/api/subscriptions'
+import { useUserStore } from '@/stores/user'
+import { finalizeCheckoutSession, finalizeGuestCheckoutSession } from '@/api/subscriptions'
 import * as analytics from '@/services/analytics'
 
 const route = useRoute()
 const subscriptionStore = useSubscriptionStore()
+const userStore = useUserStore()
 
 const statusMessage = ref('Connexion avec Stripe...')
 const hasAccess = ref(false)
 const isGiftPayer = ref(false)
 const beneficiaryLabel = ref('')
+const accountCreated = ref(false)
 const step = ref(1)
 const progress = ref(10)
 const purchaseTracked = ref(false)
@@ -100,6 +106,7 @@ const progressStyle = computed(() => {
 })
 
 const headline = computed(() => {
+  if (accountCreated.value) return 'Compte cree et acces active !'
   if (isGiftPayer.value) return 'Cadeau active !'
   return hasAccess.value ? 'Acces active !' : 'Activation en cours'
 })
@@ -163,6 +170,21 @@ function trackPurchaseIfPaid(data) {
   purchaseTracked.value = true
 }
 
+function loginFromGuestResponse(data) {
+  const auth = data?.auth
+  if (!auth?.access || !auth?.refresh) return false
+  localStorage.setItem('access_token', auth.access)
+  localStorage.setItem('refresh_token', auth.refresh)
+  userStore.setUser({
+    id: auth.user_id,
+    email: auth.email,
+    first_name: auth.first_name,
+    last_name: auth.last_name,
+  })
+  return true
+}
+
+
 async function finalizeSessionIfNeeded() {
   if (!sessionId.value) {
     updateProgress(1, 100, 'Redirection vers le tableau de bord...')
@@ -172,67 +194,75 @@ async function finalizeSessionIfNeeded() {
 
   updateProgress(1, 20, 'Verification du paiement...')
 
-  for (let attempt = 0; attempt < 5; attempt++) {
+  const isGuest = !userStore.isAuthenticated
+  const maxAttempts = 12
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
-      const { data } = await finalizeCheckoutSession(sessionId.value)
-      trackPurchaseIfPaid(data)
-      
-      updateProgress(2, 50, 'Paiement confirme, activation...')
-      
-      if (data?.status) {
-        subscriptionStore.status = data.status
-        subscriptionStore.loadedAt = Date.now()
+      let data
+      // Premieres tentatives : appeler finalize (guest ou auth)
+      if (attempt < 3) {
+        const finalizeFn = isGuest ? finalizeGuestCheckoutSession : finalizeCheckoutSession
+        const res = await finalizeFn(sessionId.value)
+        data = res.data
+      } else if (userStore.isAuthenticated) {
+        // Tentatives suivantes : polling simple du statut
+        await subscriptionStore.fetchStatus()
+        data = { status: subscriptionStore.status, has_access: subscriptionStore.status?.has_access }
       }
-      if (data?.session) {
-        isGiftPayer.value = Boolean(data.session.is_gift && data.session.is_payer)
-        beneficiaryLabel.value = data.session.beneficiary_label || ''
-      }
-      if (data?.has_access || isGiftPayer.value) {
-        updateProgress(3, 80, 'Finalisation...')
-        return
+
+      if (data) {
+        trackPurchaseIfPaid(data)
+
+        // Progression fluide en une seule montee
+        const pct = Math.min(90, 20 + Math.floor((attempt / maxAttempts) * 70))
+        updateProgress(2, pct, 'Paiement confirme, activation...')
+
+        // Si guest checkout, auto-login avec les tokens retournes
+        if (isGuest && data?.auth) {
+          loginFromGuestResponse(data)
+          accountCreated.value = Boolean(data.account_created)
+          try { await userStore.fetchUser() } catch (_) {}
+        }
+
+        if (data?.status) {
+          subscriptionStore.status = data.status
+          subscriptionStore.loadedAt = Date.now()
+        }
+        if (data?.session) {
+          isGiftPayer.value = Boolean(data.session.is_gift && data.session.is_payer)
+          beneficiaryLabel.value = data.session.beneficiary_label || ''
+        }
+
+        if (data?.has_access || isGiftPayer.value) {
+          if (isGiftPayer.value) {
+            const name = beneficiaryLabel.value ? ` pour ${beneficiaryLabel.value}` : ''
+            updateProgress(3, 100, `Cadeau active${name} !`)
+          } else {
+            const msg = accountCreated.value
+              ? 'Compte cree et acces active !'
+              : 'Acces active avec succes !'
+            updateProgress(3, 100, msg)
+          }
+          await wait(400)
+          hasAccess.value = true
+          return
+        }
       }
     } catch {
-      // Silently retry - no error display
-      progress.value = Math.min(40, 15 + attempt * 5)
+      // Silently retry
     }
     await wait(1200)
   }
-  
-  updateProgress(2, 50, 'Synchronisation en cours...')
-}
 
-onMounted(async () => {
-  await finalizeSessionIfNeeded()
-  
-  if (isGiftPayer.value) {
-    const name = beneficiaryLabel.value ? ` pour ${beneficiaryLabel.value}` : ''
-    updateProgress(3, 100, `Cadeau active${name} !`)
-    await wait(500)
-    hasAccess.value = true
-    return
-  }
-
-  updateProgress(3, 70, 'Activation de ton acces...')
-  
-  const totalAttempts = 10
-  for (let i = 0; i < totalAttempts; i++) {
-    await subscriptionStore.fetchStatus()
-    const accessGranted = subscriptionStore.status?.has_access
-    progress.value = 70 + Math.floor((i / totalAttempts) * 25)
-    
-    if (accessGranted) {
-      updateProgress(3, 100, 'Acces active avec succes !')
-      await wait(400)
-      hasAccess.value = true
-      return
-    }
-    await wait(1200)
-  }
-  
-  // Pas de succès forcé: aucun accès tant que le paiement n'est pas confirmé.
+  // Aucun acces confirme apres toutes les tentatives
   paymentFailed.value = true
   progress.value = 100
-  statusMessage.value = 'Le paiement n’a pas été confirmé. Aucun accès supplémentaire n’a été débloqué.'
+  statusMessage.value = "Le paiement n'a pas ete confirme. Veuillez contacter le support."
+}
+
+onMounted(() => {
+  finalizeSessionIfNeeded()
 })
 </script>
 
@@ -249,7 +279,7 @@ onMounted(async () => {
   align-items: center;
 }
 
-/* Success State */
+/* Success / Error icons */
 .success-icon {
   width: 80px;
   height: 80px;
@@ -264,14 +294,12 @@ onMounted(async () => {
   color: #ef4444;
   animation: scaleIn 0.4s ease-out;
 }
-.success-icon svg {
-  width: 100%;
-  height: 100%;
-}
+.success-icon svg,
 .error-icon svg {
   width: 100%;
   height: 100%;
 }
+
 .headline {
   font-size: 1.75rem;
   font-weight: 700;
@@ -292,6 +320,12 @@ onMounted(async () => {
 }
 .success-text {
   color: #374151;
+}
+.account-created-hint {
+  color: #059669;
+  font-size: 0.95rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Loading State */

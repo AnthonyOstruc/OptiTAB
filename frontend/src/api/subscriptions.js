@@ -8,11 +8,22 @@ export const createCheckoutSession = (priceId, extraPayload = {}) =>
     price_id: priceId
   })
 
+export const createGuestCheckoutSession = (priceId, extraPayload = {}) =>
+  apiClient.post('/api/subscriptions/guest-checkout-session/', {
+    ...extraPayload,
+    price_id: priceId
+  })
+
 export const getSubscriptionStatus = () =>
   apiClient.get('/api/subscriptions/status/')
 
 export const finalizeCheckoutSession = (sessionId) =>
   apiClient.get('/api/subscriptions/checkout-session/status/', {
+    params: { session_id: sessionId }
+  })
+
+export const finalizeGuestCheckoutSession = (sessionId) =>
+  apiClient.get('/api/subscriptions/guest-checkout/status/', {
     params: { session_id: sessionId }
   })
 

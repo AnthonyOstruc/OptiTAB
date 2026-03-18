@@ -2,18 +2,14 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import PricingCards from '@/components/shared/PricingCards.vue'
-import { createCheckoutSession } from '@/api/subscriptions'
+import { createCheckoutSession, createGuestCheckoutSession } from '@/api/subscriptions'
 import { getNiveauxByPays } from '@/api/niveaux'
 import { useUserStore } from '@/stores/user'
-import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
-import { useCheckoutIntentStore } from '@/stores/checkoutIntent'
 import { useToast } from '@/composables/useToast'
 import { setPageSeo, buildFaqJsonLd, getRobotsForRoute } from '@/services/seo'
 
 const route = useRoute()
 const userStore = useUserStore()
-const checkoutIntentStore = useCheckoutIntentStore()
-const { openModal } = useModalManager()
 const { info: showInfoToast, error: showErrorToast } = useToast()
 
 const submitting = ref(false)
@@ -29,34 +25,26 @@ const pendingPlanName = ref('')
 
 const faqItems = [
   {
-    question: 'C\'est pour quel niveau ?',
-    answer: 'OptiTAB suit le programme officiel français. Il couvre les Bases & Méthode (pour tout le monde), la Seconde, la Première et la Terminale. Chaque abonnement donne accès au contenu complet d\'un niveau.'
-  },
-  {
-    question: 'Comment ça marche concrètement ?',
-    answer: 'Après ton abonnement, tu accèdes immédiatement à tous les cours, fiches de synthèse et exercices corrigés pas à pas de ton niveau. Tu avances à ton rythme.'
-  },
-  {
-    question: 'C\'est sans engagement ?',
-    answer: 'Oui. Tu peux annuler ton abonnement à tout moment depuis ton espace personnel, sans frais.'
+    question: 'Comment ça marche ?',
+    answer: 'Tu choisis ton abonnement, tu sélectionnes ton niveau (Seconde, Première ou Terminale) et tu accèdes immédiatement à tous les cours, fiches et exercices corrigés. Tu avances à ton rythme, quand tu veux.'
   },
   {
     question: 'Quand est-ce que je paie ?',
-    answer: 'Le paiement se fait au moment de l\'abonnement. Tu es ensuite prélevé automatiquement à chaque période (mensuel ou annuel selon ton choix).'
+    answer: 'Le paiement se fait au moment de l\'abonnement. Tu es ensuite prélevé automatiquement chaque mois (ou chaque année si tu choisis l\'offre annuelle).'
   },
   {
     question: 'Comment résilier ?',
-    answer: 'Tu peux résilier en un clic depuis ton espace abonné. Ton accès reste actif jusqu\'à la fin de la période déjà payée.'
+    answer: 'En un clic depuis ton espace abonné, à tout moment. Ton accès reste actif jusqu\'à la fin de la période déjà payée. Pas de frais, pas de délai.'
   },
   {
-    question: 'Est-ce adapté si j\'ai des lacunes ?',
-    answer: 'Oui. Les cours sont structurés pas à pas et les exercices sont guidés étape par étape. La méthode est pensée pour progresser même en partant de zéro.'
+    question: 'À qui s\'adresse la plateforme ?',
+    answer: 'À tous les élèves de Seconde, Première et Terminale qui veulent progresser en maths. Le contenu suit le programme officiel de l\'Éducation nationale française.'
   }
 ]
 
 // ── SEO ──
-const title = 'Plateforme de maths en ligne — Programme français, cours et exercices corrigés | OptiTAB'
-const description = 'Abonne-toi à OptiTAB : +120 cours, +120 fiches et +1 000 exercices corrigés pas à pas. Programme officiel français du collège au lycée. Sans engagement.'
+const title = 'Abonnement maths en ligne dès 3,99 € — Cours, fiches et exercices corrigés | OptiTAB'
+const description = 'Cours clairs, fiches de synthèse et exercices corrigés pas à pas pour la Seconde, Première et Terminale. Accès immédiat. Sans engagement. Dès 3,99 €/mois.'
 const faqGraph = buildFaqJsonLd(faqItems)
 const jsonLdGraph = [
   {
@@ -149,24 +137,20 @@ async function confirmSubscription() {
     showErrorToast('Choisis un niveau pour continuer.')
     return
   }
-  if (!userStore.isAuthenticated) {
-    checkoutIntentStore.setIntent({
-      priceId: pendingPriceId.value,
-      niveauId: selectedNiveauId.value,
-      planName: pendingPlanName.value,
-      source: 'gads-landing'
-    })
-    showInfoToast('Crée ton compte gratuit pour finaliser le paiement.', 6000)
-    closeLevelModal()
-    openModal(MODAL_IDS.REGISTER)
-    return
-  }
   try {
     submitting.value = true
-    const { data } = await createCheckoutSession(pendingPriceId.value, {
-      niveau_pays_id: selectedNiveauId.value
-    })
-    const redirectUrl = data?.checkout_url || data?.url
+    let redirectUrl
+    if (!userStore.isAuthenticated) {
+      const { data } = await createGuestCheckoutSession(pendingPriceId.value, {
+        niveau_pays_id: selectedNiveauId.value
+      })
+      redirectUrl = data?.checkout_url || data?.url
+    } else {
+      const { data } = await createCheckoutSession(pendingPriceId.value, {
+        niveau_pays_id: selectedNiveauId.value
+      })
+      redirectUrl = data?.checkout_url || data?.url
+    }
     if (redirectUrl) {
       window.location.href = redirectUrl
     } else {
@@ -186,14 +170,13 @@ async function confirmSubscription() {
     <!-- ═══════ SECTION 1 — HERO ═══════ -->
     <section class="gads-hero">
       <div class="gads-hero__inner">
-        <span class="gads-hero__badge">🇫🇷 Programme officiel français</span>
         <h1 class="gads-hero__title">
-          Réussis en maths avec<br />
-          <span class="gads-hero__highlight">+120 cours, +120 fiches, +1 000 exercices</span>
+          Abonnement maths en ligne<br />
+          <span class="gads-hero__highlight">dès 3,99 €</span>
         </h1>
         <p class="gads-hero__subtitle">
-          Cours structurés, fiches de synthèse et exercices corrigés pas à pas.<br />
-          Lycée · Bases & Méthode. Accès immédiat.
+          Cours, fiches et exercices corrigés pas à pas pour progresser en Seconde, Première et Terminale.<br />
+          Accès immédiat. Sans engagement.
         </p>
         <button
           class="gads-cta gads-cta--primary"
@@ -201,16 +184,45 @@ async function confirmSubscription() {
           data-cta-location="gads_hero"
           @click="scrollToPricing"
         >
-          S'abonner maintenant
+          Je m'abonne maintenant
         </button>
-        <p class="gads-hero__reassurance">Sans engagement · Annulable à tout moment · Paiement sécurisé</p>
+        <p class="gads-hero__reassurance">Paiement sécurisé • Accès immédiat • Résiliation simple</p>
+      </div>
+    </section>
+
+    <!-- ═══════ APERÇU PLATEFORME — sous hero ═══════ -->
+    <section class="gads-preview gads-preview--hero">
+      <div class="gads-section__inner">
+        <div class="gads-preview__grid">
+          <div class="gads-preview__item">
+            <p class="gads-preview__caption">Exercices corrigés pas à pas</p>
+            <img
+              src="/video/optitab-demo-exercices.gif"
+              alt="Démonstration des exercices corrigés pas à pas sur OptiTAB"
+              class="gads-preview__img"
+              loading="lazy"
+              width="800"
+              height="500"
+            />
+          </div>
+          <div class="gads-preview__item">
+            <p class="gads-preview__caption">Interface mobile optimisée</p>
+            <img
+              src="/video/optitab-demo-mobile.gif"
+              alt="Interface mobile OptiTAB — cours et fiches accessibles partout"
+              class="gads-preview__img gads-preview__img--mobile"
+              loading="lazy"
+              width="400"
+              height="500"
+            />
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ═══════ SECTION 2 — 3 BÉNÉFICES ═══════ -->
     <section class="gads-benefits">
       <div class="gads-section__inner">
-        <h2 class="gads-section__title">Tout est prêt pour que tu progresses</h2>
         <div class="gads-benefits__grid">
           <div class="gads-benefit-card">
             <div class="gads-benefit-card__icon">📖</div>
@@ -223,12 +235,12 @@ async function confirmSubscription() {
             <div class="gads-benefit-card__icon">📝</div>
             <h3 class="gads-benefit-card__title">Fiches de synthèse</h3>
             <p class="gads-benefit-card__desc">
-              Les formules et méthodes essentielles résumées pour réviser rapidement.
+              Les formules et méthodes essentielles résumées pour réviser efficacement.
             </p>
           </div>
           <div class="gads-benefit-card">
             <div class="gads-benefit-card__icon">✏️</div>
-            <h3 class="gads-benefit-card__title">Exercices corrigés pas à pas</h3>
+            <h3 class="gads-benefit-card__title">Exercices guidés pas à pas</h3>
             <p class="gads-benefit-card__desc">
               Un entraînement guidé pour comprendre la méthode, pas juste la réponse.
             </p>
@@ -237,73 +249,48 @@ async function confirmSubscription() {
       </div>
     </section>
 
-    <!-- ═══════ SECTION 3 — POUR QUI ═══════ -->
+    <!-- ═══════ SECTION 3 — NIVEAUX ═══════ -->
     <section class="gads-audience">
       <div class="gads-section__inner">
-        <h2 class="gads-section__title">Pour qui ?</h2>
-
+        <h2 class="gads-section__title">Pour tous les <span class="gads-highlight">lycéens</span></h2>
         <p class="gads-section__subtitle">
-          Le programme suit le <strong>programme officiel de l'Éducation nationale française</strong>.
-        </p>
-
-        <!-- Bloc Bases & Méthode -->
-        <div class="gads-audience__universal">
-          <div class="gads-audience__universal-card">
-            <span class="gads-audience__universal-icon">🧱</span>
-            <div>
-              <h3 class="gads-audience__universal-title">Bases & Méthode</h3>
-              <p class="gads-audience__universal-desc">
-                Reprendre les fondamentaux depuis zéro et apprendre à raisonner.<br />
-                <strong>Adapté à tout le monde, quel que soit le niveau de départ.</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Niveaux -->
-        <p class="gads-audience__level-intro">
-          Ou choisis ton niveau pour accéder à tout le programme :
+          Cours, fiches et exercices guidés pour progresser en Seconde, Première et Terminale.
         </p>
         <div class="gads-audience__tags">
-          <span class="gads-tag">Seconde</span>
-          <span class="gads-tag">Première</span>
-          <span class="gads-tag">Terminale</span>
+          <div class="gads-level-card">
+            <span class="gads-level-card__icon">📘</span>
+            <span class="gads-level-card__name">Seconde</span>
+          </div>
+          <div class="gads-level-card">
+            <span class="gads-level-card__icon">📗</span>
+            <span class="gads-level-card__name">Première</span>
+          </div>
+          <div class="gads-level-card">
+            <span class="gads-level-card__icon">📕</span>
+            <span class="gads-level-card__name">Terminale</span>
+          </div>
+        </div>
+        <div class="gads-bases-banner">
+          <span class="gads-bases-banner__icon">🧱</span>
+          <div>
+            <strong>Bases &amp; Méthode inclus pour tous les niveaux</strong>
+            <p>Un parcours complémentaire pensé pour les élèves qui ont des lacunes et veulent reprendre les fondamentaux, quel que soit leur niveau : Seconde, Première ou Terminale.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══════ SECTION 3b — CHIFFRES ═══════ -->
-    <section class="gads-stats">
-      <div class="gads-section__inner">
-        <div class="gads-stats__grid">
-          <div class="gads-stats__item">
-            <span class="gads-stats__number">120+</span>
-            <span class="gads-stats__label">chapitres de cours</span>
-          </div>
-          <div class="gads-stats__item">
-            <span class="gads-stats__number">120+</span>
-            <span class="gads-stats__label">fiches de synthèse</span>
-          </div>
-          <div class="gads-stats__item">
-            <span class="gads-stats__number">1 000+</span>
-            <span class="gads-stats__label">exercices corrigés</span>
-          </div>
-        </div>
-        <p class="gads-stats__caption">Tout le programme français est couvert. Il n'y a plus qu'à s'y mettre.</p>
-      </div>
-    </section>
+
 
     <!-- ═══════ SECTION 4 — CONTENU DE L'ABONNEMENT ═══════ -->
     <section class="gads-includes">
       <div class="gads-section__inner">
-        <h2 class="gads-section__title">Ce que tu obtiens avec l'abonnement</h2>
+        <h2 class="gads-section__title">Ce que tu obtiens <span class="gads-highlight">avec l'abonnement</span></h2>
         <ul class="gads-includes__list">
           <li class="gads-includes__item"><span class="gads-check">✓</span> Accès complet à la plateforme</li>
-          <li class="gads-includes__item"><span class="gads-check">✓</span> Programme officiel français (Lycée)</li>
-          <li class="gads-includes__item"><span class="gads-check">✓</span> 120+ cours structurés par chapitre</li>
-          <li class="gads-includes__item"><span class="gads-check">✓</span> 120+ fiches de synthèse</li>
-          <li class="gads-includes__item"><span class="gads-check">✓</span> 1 000+ exercices corrigés pas à pas</li>
-          <li class="gads-includes__item"><span class="gads-check">✓</span> Module Bases & Méthode inclus</li>
+          <li class="gads-includes__item"><span class="gads-check">✓</span> Cours structurés par chapitre et par niveau</li>
+          <li class="gads-includes__item"><span class="gads-check">✓</span> Fiches de synthèse prêtes à l'emploi</li>
+          <li class="gads-includes__item"><span class="gads-check">✓</span> Exercices corrigés pas à pas</li>
           <li class="gads-includes__item"><span class="gads-check">✓</span> Progression structurée et guidée</li>
         </ul>
       </div>
@@ -312,8 +299,8 @@ async function confirmSubscription() {
     <!-- ═══════ SECTION 5 — PRIX / OFFRE ═══════ -->
     <section class="gads-pricing" id="gads-pricing">
       <div class="gads-section__inner">
-        <h2 class="gads-section__title">Choisis ton abonnement</h2>
-        <p class="gads-section__subtitle">Sans engagement · Accès immédiat · Annulable à tout moment</p>
+        <h2 class="gads-section__title">Dès <span class="gads-highlight">3,99 €</span></h2>
+        <p class="gads-section__subtitle">Sans engagement • Accès immédiat • Résiliation en un clic</p>
         <PricingCards
           :submitting="submitting"
           cta-location="gads_pricing"
@@ -322,30 +309,10 @@ async function confirmSubscription() {
       </div>
     </section>
 
-    <!-- ═══════ SECTION 6 — PREUVE VISUELLE ═══════ -->
-    <section class="gads-preview">
-      <div class="gads-section__inner">
-        <h2 class="gads-section__title">Aperçu de la plateforme</h2>
-        <p class="gads-section__subtitle">
-          Un espace clair pour réviser, s'entraîner et suivre ta progression.
-        </p>
-        <div class="gads-preview__wrapper">
-          <img
-            src="/video/optitab-demo-exercices.gif"
-            alt="Démonstration des exercices corrigés pas à pas sur OptiTAB"
-            class="gads-preview__img"
-            loading="lazy"
-            width="800"
-            height="500"
-          />
-        </div>
-      </div>
-    </section>
-
     <!-- ═══════ SECTION 7 — FAQ ═══════ -->
     <section class="gads-faq">
       <div class="gads-section__inner">
-        <h2 class="gads-section__title">Questions fréquentes</h2>
+        <h2 class="gads-section__title">Questions <span class="gads-highlight">fréquentes</span></h2>
         <div class="gads-faq__list">
           <details
             v-for="(item, idx) in faqItems"
@@ -362,15 +329,15 @@ async function confirmSubscription() {
     <!-- ═══════ SECTION 8 — DERNIER CTA ═══════ -->
     <section class="gads-final-cta">
       <div class="gads-section__inner">
-        <h2 class="gads-final-cta__title">Prêt à réussir en maths ?</h2>
-        <p class="gads-final-cta__subtitle">+120 cours · +120 fiches · +1 000 exercices corrigés. Tout le programme français, accès immédiat.</p>
+        <h2 class="gads-final-cta__title">Commence aujourd'hui</h2>
+        <p class="gads-final-cta__subtitle">Cours, fiches et exercices corrigés pour la Seconde, Première et Terminale. Accès immédiat dès 3,99 €.</p>
         <button
           class="gads-cta gads-cta--primary gads-cta--large"
           data-cta-name="subscribe"
           data-cta-location="gads_final"
           @click="scrollToPricing"
         >
-          S'abonner maintenant
+          Je m'abonne maintenant
         </button>
       </div>
     </section>
@@ -468,20 +435,28 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.08);
 }
 
 .gads-section__title {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: $text-dark;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #0f172a;
   text-align: center;
-  margin-bottom: 12px;
-  line-height: 1.25;
+  margin-bottom: 14px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.gads-highlight {
+  background: linear-gradient(135deg, #2a38b7 0%, #667eea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .gads-section__subtitle {
-  font-size: 1.05rem;
-  color: $text;
+  font-size: 1.1rem;
+  color: #475569;
   text-align: center;
   margin-bottom: 2rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* ──────────────────────────────────────────────
@@ -529,19 +504,6 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.08);
 .gads-hero__inner {
   max-width: 720px;
   margin: 0 auto;
-}
-
-.gads-hero__badge {
-  display: inline-block;
-  background: $white;
-  color: $primary;
-  font-weight: 700;
-  font-size: 0.9rem;
-  padding: 6px 18px;
-  border-radius: 50px;
-  border: 1.5px solid #e0e7ff;
-  margin-bottom: 20px;
-  letter-spacing: 0.02em;
 }
 
 .gads-hero__title {
@@ -615,152 +577,87 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.08);
 }
 
 /* ──────────────────────────────────────────────
-   SECTION 3 — Pour qui
+   SECTION 3 — Niveaux
    ────────────────────────────────────────────── */
 .gads-audience {
-  padding: 56px 24px 32px;
+  padding: 56px 24px;
   background: $bg-alt;
-}
-
-.gads-audience__universal {
-  max-width: 540px;
-  margin: 0 auto 28px;
-}
-
-.gads-audience__universal-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  background: $white;
-  border: 2px solid #e0e7ff;
-  border-radius: $radius;
-  padding: 24px;
-  box-shadow: 0 2px 12px rgba(42, 56, 183, 0.06);
-}
-
-.gads-audience__universal-icon {
-  font-size: 2rem;
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.gads-audience__universal-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: $primary;
-  margin-bottom: 6px;
-}
-
-.gads-audience__universal-desc {
-  font-size: 0.95rem;
-  color: $text;
-  line-height: 1.55;
-
-  strong {
-    color: $text-dark;
-  }
-}
-
-.gads-audience__level-intro {
-  font-size: 1rem;
-  color: $text;
-  text-align: center;
-  margin-bottom: 16px;
 }
 
 .gads-audience__tags {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 20px;
   flex-wrap: wrap;
+  margin-top: 8px;
 }
 
-.gads-tag {
-  display: inline-flex;
+.gads-level-card {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 10px 28px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: $primary;
+  gap: 12px;
   background: $white;
-  border: 2px solid $primary;
-  border-radius: 50px;
-}
+  border: 2px solid #e0e7ff;
+  border-radius: $radius;
+  padding: 32px 40px;
+  min-width: 150px;
+  box-shadow: 0 4px 16px rgba(42, 56, 183, 0.08);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 
-/* ──────────────────────────────────────────────
-   SECTION 3b — Chiffres
-   ────────────────────────────────────────────── */
-.gads-stats {
-  padding: 48px 24px;
-  background: $white;
-}
-
-.gads-stats__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.gads-stats__item {
-  text-align: center;
-}
-
-.gads-stats__number {
-  display: block;
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: $primary;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-
-.gads-stats__label {
-  display: block;
-  font-size: 0.95rem;
-  color: $text;
-  margin-top: 6px;
-}
-
-.gads-stats__caption {
-  text-align: center;
-  font-size: 1rem;
-  color: $text-light;
-  margin-top: 24px;
-  font-style: italic;
-}
-
-/* ──────────────────────────────────────────────
-   SECTION 4 — Contenu abonnement
-   ────────────────────────────────────────────── */
-.gads-includes {
-  padding: 64px 24px;
-  background: $bg-alt;
-}
-
-.gads-includes__list {
-  list-style: none;
-  padding: 0;
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-.gads-includes__item {
-  font-size: 1.05rem;
-  padding: 12px 0;
-  border-bottom: 1px solid #f1f5f9;
-  color: $text-dark;
-
-  &:last-child {
-    border-bottom: none;
+  &:hover {
+    border-color: $primary;
+    box-shadow: 0 8px 28px rgba(42, 56, 183, 0.15);
+    transform: translateY(-3px);
   }
 }
 
-.gads-check {
-  color: #22c55e;
-  font-weight: 700;
-  margin-right: 10px;
+.gads-level-card__icon {
+  font-size: 2.2rem;
+}
+
+.gads-level-card__name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: $primary;
+  letter-spacing: -0.01em;
+}
+
+.gads-bases-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  max-width: 620px;
+  margin: 40px auto 0;
+  background: linear-gradient(135deg, #eef2ff 0%, #f0f4ff 100%);
+  border: 2px solid #c7d2fe;
+  border-left: 5px solid $primary;
+  border-radius: $radius;
+  padding: 24px 28px;
+  box-shadow: 0 4px 20px rgba(42, 56, 183, 0.1);
+}
+
+.gads-bases-banner__icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.gads-bases-banner strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.gads-bases-banner p {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
 }
 
 /* ──────────────────────────────────────────────
@@ -768,7 +665,7 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.08);
    ────────────────────────────────────────────── */
 .gads-pricing {
   padding: 72px 24px;
-  background: $bg-alt;
+  background: #f8f9fa;
 }
 
 /* ──────────────────────────────────────────────
@@ -779,18 +676,49 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.08);
   background: $white;
 }
 
-.gads-preview__wrapper {
-  display: flex;
-  justify-content: center;
+.gads-preview--hero {
+  padding: 32px 24px 56px;
+  background: $white;
+}
+
+.gads-preview__grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 24px;
+  align-items: start;
   margin-top: 16px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gads-preview__item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gads-preview__caption {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $text-light;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .gads-preview__img {
   max-width: 100%;
   height: auto;
   border-radius: $radius;
-  border: 1px solid #e2e8f0;
-  box-shadow: $shadow;
+}
+
+.gads-preview__img--mobile {
+  max-height: 420px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
 }
 
 /* ──────────────────────────────────────────────
@@ -1068,20 +996,12 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.08);
   }
 
   .gads-audience__tags {
-    gap: 10px;
+    gap: 12px;
   }
 
-  .gads-tag {
-    padding: 8px 20px;
-    font-size: 0.9rem;
-  }
-
-  .gads-stats__grid {
-    gap: 16px;
-  }
-
-  .gads-stats__number {
-    font-size: 2rem;
+  .gads-level-card {
+    padding: 20px 24px;
+    min-width: 110px;
   }
 
   .gads-final-cta__title {
@@ -1100,20 +1020,6 @@ $shadow: 0 4px 24px rgba(42, 56, 183, 0.08);
 
   .gads-pricing {
     padding: 56px 16px;
-  }
-
-  .gads-stats {
-    padding: 36px 16px;
-  }
-
-  .gads-stats__number {
-    font-size: 1.75rem;
-  }
-
-  .gads-audience__universal-card {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
   }
 }
 </style>

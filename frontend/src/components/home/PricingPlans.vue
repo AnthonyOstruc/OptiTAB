@@ -77,7 +77,7 @@
             v-if="!userStore.isAuthenticated"
             class="modal-signup-hint"
           >
-            Pas encore de compte ? Choisis ton niveau puis crée ton compte gratuitement pour finaliser le paiement.
+            Ton compte OptiTAB sera créé automatiquement après le paiement avec l'email renseigné sur Stripe.
           </p>
         </div>
         <div class="modal-actions">
@@ -105,18 +105,14 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { createCheckoutSession } from '@/api/subscriptions'
+import { createCheckoutSession, createGuestCheckoutSession } from '@/api/subscriptions'
 import PricingCards from '@/components/shared/PricingCards.vue'
 import { useUserStore } from '@/stores/user'
 import { getNiveauxByPays } from '@/api/niveaux'
-import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
-import { useCheckoutIntentStore } from '@/stores/checkoutIntent'
 import { useToast } from '@/composables/useToast'
 
 const submitting = ref(false)
 const userStore = useUserStore()
-const checkoutIntentStore = useCheckoutIntentStore()
-const { openModal } = useModalManager()
 const { info: showInfoToast, error: showErrorToast } = useToast()
 const niveaux = ref([])
 const niveauxLoading = ref(false)
@@ -211,22 +207,12 @@ async function confirmSubscription() {
     showErrorToast('Choisis un niveau pour continuer.')
     return
   }
-  if (!userStore.isAuthenticated) {
-    checkoutIntentStore.setIntent({
-      priceId: pendingPriceId.value,
-      niveauId: selectedNiveauId.value,
-      planName: pendingPlanName.value,
-      niveauLabel: selectedNiveauLabel.value,
-      source: 'home-pricing'
-    })
-    showInfoToast('Crée ton compte gratuit pour finaliser le paiement.', 6000)
-    closeLevelModal()
-    openModal(MODAL_IDS.REGISTER)
-    return
-  }
   try {
     submitting.value = true
-    const { data } = await createCheckoutSession(pendingPriceId.value, {
+    const checkoutFn = userStore.isAuthenticated
+      ? createCheckoutSession
+      : createGuestCheckoutSession
+    const { data } = await checkoutFn(pendingPriceId.value, {
       niveau_pays_id: selectedNiveauId.value
     })
     const redirectUrl = data?.checkout_url || data?.url

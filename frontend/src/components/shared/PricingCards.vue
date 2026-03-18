@@ -8,7 +8,7 @@
 
     <template v-else>
       <!-- Tabs -->
-      <div class="pricing-tabs">
+      <div v-if="!subscriptionOnly" class="pricing-tabs">
         <button 
           class="pricing-tab" 
           :class="{ active: activeTab === 'recurring' }"
@@ -143,6 +143,11 @@ const props = defineProps({
   alreadySubscribedLabel: {
     type: String,
     default: 'Déjà souscrit'
+  },
+  // Mode landing : masque l'onglet Pass
+  subscriptionOnly: {
+    type: Boolean,
+    default: false
   }
 })
 

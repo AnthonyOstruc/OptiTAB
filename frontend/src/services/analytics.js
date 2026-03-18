@@ -29,6 +29,7 @@ const CTA_TRACKING_WINDOW_FLAG = '__optitab_cta_tracking_initialized__'
 const CTA_TRACKING_WINDOW_HANDLER = '__optitab_cta_tracking_handler__'
 const REGISTRATION_COMPLETED_EVENT = 'optitab_registration_completed'
 const PURCHASE_COMPLETED_EVENT = 'optitab_purchase_completed'
+const BEGIN_CHECKOUT_EVENT = 'begin_checkout'
 
 function getDataLayer() {
   if (typeof window === 'undefined') return null
@@ -206,6 +207,29 @@ export function purchase({
 
   const txId = String(transactionId ?? '').trim()
   if (txId) payload.transaction_id = txId
+
+  const normalizedPlanName = String(planName ?? '').trim()
+  if (normalizedPlanName) payload.plan_name = normalizedPlanName
+
+  const normalizedPlanMode = String(planMode ?? '').trim().toLowerCase()
+  if (normalizedPlanMode) payload.plan_mode = normalizedPlanMode
+
+  pushToDataLayer(withDebug(withAppUserId(payload)))
+}
+
+export function beginCheckout({
+  value,
+  currency = 'EUR',
+  planName = null,
+  planMode = null,
+} = {}) {
+  const payload = {
+    event: BEGIN_CHECKOUT_EVENT,
+    currency: normalizeCurrency(currency),
+  }
+
+  const normalizedValue = normalizePurchaseValue(value)
+  if (normalizedValue !== null) payload.value = normalizedValue
 
   const normalizedPlanName = String(planName ?? '').trim()
   if (normalizedPlanName) payload.plan_name = normalizedPlanName

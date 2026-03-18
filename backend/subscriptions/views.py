@@ -408,7 +408,13 @@ class CreateCheckoutSessionView(APIView):
                 else:
                     raise
             
-            return JsonResponse({'checkout_url': checkout_session.url})
+            return JsonResponse({
+                'checkout_url': checkout_session.url,
+                'amount': float(plan.price) if plan.price else None,
+                'currency': 'EUR',
+                'plan_name': plan.name or '',
+                'plan_mode': plan_mode or '',
+            })
             
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)

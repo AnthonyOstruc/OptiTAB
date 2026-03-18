@@ -299,6 +299,7 @@ import { useSubscriptionStore } from '@/stores/subscription'
 import { getNiveauxByPays } from '@/api/niveaux'
 import { useUserStore } from '@/stores/user'
 import { useZoom } from '@/composables/useZoom'
+import * as analytics from '@/services/analytics'
 
 const loading = ref(false)
 const submitting = ref(false)
@@ -710,6 +711,12 @@ async function proceedWithCheckout(priceId) {
   submitting.value = true
   const { data } = await createCheckoutSession(priceId, payload)
   if (data?.checkout_url) {
+    analytics.beginCheckout({
+      value: data.amount,
+      currency: data.currency || 'EUR',
+      planName: data.plan_name,
+      planMode: data.plan_mode,
+    })
     window.location.assign(data.checkout_url)
   }
 }

@@ -48,6 +48,7 @@ const routes = [
     }
   },
   { path: '/tarifs', name: 'TarifsPage', component: () => import('@/views/TarifsPage.vue') },
+  { path: '/plateforme-maths', name: 'GoogleAdsLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
   { 
     path: '/ressources-gratuites', 
     name: 'FreeResourcesHome',

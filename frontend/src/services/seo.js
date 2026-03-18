@@ -648,6 +648,11 @@ const ROUTE_SEO = {
     description: 'Decouvre les tarifs OptiTAB pour acceder aux cours de maths, exercices corriges et fiches de synthese, avec annulation a tout moment.',
     canonicalPath: '/tarifs'
   },
+  GoogleAdsLanding: {
+    title: 'Plateforme de maths en ligne — Cours, fiches et exercices corriges | OptiTAB',
+    description: 'Abonne-toi a OptiTAB : cours de maths structures, fiches de synthese et exercices corriges pas a pas du lycee. Sans engagement, acces immediat.',
+    canonicalPath: '/plateforme-maths'
+  },
   FreeResourcesHome: {
     title: 'Ressources gratuites de maths: cours, exercices corriges et fiches | OptiTAB',
     description: 'Accede a des cours de maths gratuits, des exercices corriges pas a pas et des fiches de revision pour college, lycee et prepa.',

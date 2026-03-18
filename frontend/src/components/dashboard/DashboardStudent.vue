@@ -128,6 +128,8 @@ const SUBSCRIPTION_PROMPT_INTERVAL = 2 * 60 * 1000 // 2 minutes
 
 const shouldShowSubscriptionPrompt = computed(() => {
   if (!isAuthenticated.value) return false
+  // Attendre que le statut soit chargé avant de décider
+  if (subscriptionStore.loading || !subscriptionStore.status) return false
   if (subscriptionStore.hasAccess) return false
   // L'utilisateur n'a pas d'accès → niveaux bloqués
   return true
@@ -303,8 +305,8 @@ const runDashboardLoad = async () => {
 onMounted(async () => {
   if (isAuthenticated.value) {
     runDashboardLoad()
-    // Charger le statut d'abonnement puis afficher le modal si nécessaire
-    await subscriptionStore.fetchStatus()
+    // Forcer le chargement du statut d'abonnement (même si récemment chargé)
+    await subscriptionStore.fetchStatus({ force: true })
     initSubscriptionPrompt()
   }
 })

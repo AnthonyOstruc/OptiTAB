@@ -104,6 +104,71 @@ def _get_active_user_by_email(email):
     return User.objects.filter(email__iexact=normalized_email, is_active=True).first()
 
 
+def _resolve_guest_user(session, metadata):
+    """Résout ou crée un utilisateur pour un guest checkout depuis une session Stripe."""
+    customer_details = session.get('customer_details') or {}
+    customer_email = (customer_details.get('email') or '').strip().lower()
+
+    if not customer_email:
+        stripe_customer_id = session.get('customer')
+        if stripe_customer_id:
+            try:
+                from .stripe_client import stripe as _stripe
+                cust = _stripe.Customer.retrieve(stripe_customer_id)
+                customer_email = (getattr(cust, 'email', '') or '').strip().lower()
+            except Exception:
+                pass
+
+    if not customer_email:
+        return None
+
+    user = User.objects.filter(email__iexact=customer_email, is_active=True).first()
+    if user:
+        return user
+
+    # Vérifier un compte inactif
+    user = User.objects.filter(email__iexact=customer_email).first()
+    if user:
+        user.is_active = True
+        user.save(update_fields=['is_active'])
+        return user
+
+    # Créer un nouveau compte
+    customer_name = (customer_details.get('name') or '').strip()
+    parts = customer_name.split(' ', 1) if customer_name else ['', '']
+    first_name = parts[0] or 'Utilisateur'
+    last_name = parts[1] if len(parts) > 1 else ''
+
+    from pays.models import Niveau as NiveauModel
+    niveau_id = metadata.get('niveau_pays_id')
+    niveau_obj = None
+    if niveau_id:
+        try:
+            niveau_obj = NiveauModel.objects.get(id=niveau_id, est_actif=True)
+        except NiveauModel.DoesNotExist:
+            pass
+
+    user = User(
+        email=customer_email,
+        first_name=first_name,
+        last_name=last_name,
+        is_active=True,
+        niveau_pays=niveau_obj,
+    )
+    user.set_unusable_password()
+    user.save()
+    logger.info("Guest checkout webhook: compte créé pour %s (user=%s)", customer_email, user.id)
+
+    # Envoyer l'email de bienvenue
+    try:
+        from subscriptions.views import _send_welcome_set_password_email
+        _send_welcome_set_password_email(user)
+    except Exception as exc:
+        logger.error("Guest checkout webhook: email error for %s: %s", customer_email, exc)
+
+    return user
+
+
 # =============================================================================
 # Handler: invoice.created
 # =============================================================================
@@ -268,12 +333,26 @@ def handle_checkout_session_completed(session):
         user_id = metadata.get('user_id')
         plan_id = metadata.get('plan_id')
         niveau_id = metadata.get('niveau_pays_id')
+        is_guest = str(metadata.get('guest_checkout') or '').lower() == 'true'
 
-        if not user_id or not plan_id:
-            logger.error("Session checkout sans metadata user/plan (%s)", session.get('id'))
+        if not plan_id:
+            logger.error("Session checkout sans metadata plan (%s)", session.get('id'))
             return
 
-        user = User.objects.get(id=user_id)
+        # Résoudre l'utilisateur : par user_id ou par email Stripe (guest checkout)
+        user = None
+        if user_id:
+            try:
+                user = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                user = None
+
+        if not user and is_guest:
+            user = _resolve_guest_user(session, metadata)
+
+        if not user:
+            logger.error("Session checkout sans utilisateur valide (%s)", session.get('id'))
+            return
         plan = SubscriptionPlan.objects.get(id=plan_id)
         niveau_obj = _get_niveau_from_id(niveau_id)
 
@@ -363,6 +442,7 @@ def handle_checkout_session_payment_completed(session):
         plan_mode = metadata.get('plan_mode')
         niveau_id = metadata.get('niveau_pays_id')
         beneficiary_email = (metadata.get('beneficiary_email') or '').strip()
+        is_guest = str(metadata.get('guest_checkout') or '').lower() == 'true'
 
         if not plan_id:
             logger.error("Session checkout paiement sans user/plan (%s)", session.get('id'))
@@ -376,6 +456,8 @@ def handle_checkout_session_payment_completed(session):
                 user = None
         if not user and beneficiary_email:
             user = _get_active_user_by_email(beneficiary_email)
+        if not user and is_guest:
+            user = _resolve_guest_user(session, metadata)
         if not user:
             logger.error(
                 "Session checkout paiement sans bénéficiaire valide (%s, user_id=%s, beneficiary_email=%s)",

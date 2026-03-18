@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import (
     CreateCheckoutSessionView,
+    GuestCheckoutSessionView,
+    GuestCheckoutStatusView,
     SubscriptionStatusView,
     InvoiceListView,
     InvoiceEmailView,
@@ -9,6 +11,7 @@ from .views import (
     ReactivateSubscriptionView,
     PlansListView,
     stripe_webhook,
+    stripe_webhook_test,
     AdminPlansView,
     AdminPlanDetailView,
     AdminSubscribersView,
@@ -22,6 +25,8 @@ from .views import (
 urlpatterns = [
     path('plans/', PlansListView.as_view(), name='plans-list'),
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
+    path('guest-checkout-session/', GuestCheckoutSessionView.as_view(), name='guest-checkout-session'),
+    path('guest-checkout/status/', GuestCheckoutStatusView.as_view(), name='guest-checkout-status'),
     path('checkout-session/status/', CheckoutSessionStatusView.as_view(), name='checkout-session-status'),
     path('status/', SubscriptionStatusView.as_view(), name='subscription-status'),
     path('invoices/', InvoiceListView.as_view(), name='subscription-invoices'),
@@ -29,6 +34,7 @@ urlpatterns = [
     path('cancel/', CancelSubscriptionView.as_view(), name='cancel-subscription'),
     path('reactivate/', ReactivateSubscriptionView.as_view(), name='reactivate-subscription'),
     path('webhook/', stripe_webhook, name='stripe-webhook'),
+    path('webhook/test/', stripe_webhook_test, name='stripe-webhook-test'),
     # Admin management endpoints
     path('admin/plans/', AdminPlansView.as_view(), name='admin-plans'),
     path('admin/plans/<int:pk>/', AdminPlanDetailView.as_view(), name='admin-plan-detail'),

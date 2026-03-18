@@ -74,6 +74,22 @@ def _is_stripe_test_runtime():
     return str(STRIPE_RUNTIME_MODE).lower() == 'test'
 
 
+def _is_mode_mismatch_event(payload):
+    """Check raw payload livemode vs runtime to detect cross-mode events.
+
+    When signature verification fails this lets us distinguish a real
+    forgery from a harmless mode mismatch (e.g. test-mode webhook
+    hitting a production server that only has the live signing secret).
+    """
+    try:
+        data = json.loads(payload)
+        event_livemode = data.get('livemode')
+        expected_livemode = STRIPE_RUNTIME_MODE == 'live'
+        return event_livemode is not None and event_livemode != expected_livemode
+    except (json.JSONDecodeError, TypeError, AttributeError):
+        return False
+
+
 def _construct_stripe_event(payload, sig_header):
     """Verify a webhook against the configured Stripe signing secrets."""
     webhook_secrets = get_stripe_webhook_secrets()
@@ -420,6 +436,108 @@ class CreateCheckoutSessionView(APIView):
             return JsonResponse({'error': str(e)}, status=400)
 
 
+class GuestCheckoutSessionView(APIView):
+    """Créer une session Stripe Checkout pour un visiteur non connecté.
+
+    Aucun compte OptiTAB n'est requis : Stripe collecte l'email du client.
+    Le compte sera créé automatiquement au moment du paiement (via webhook ou
+    fallback sur la page succès).
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        try:
+            price_id = request.data.get('price_id')
+            niveau_payload = request.data.get('niveau_pays_id') or request.data.get('niveau_id')
+
+            plan = _find_plan_from_checkout_price_id(price_id)
+            if not plan:
+                return JsonResponse({'error': 'Plan non trouvé'}, status=404)
+
+            checkout_price_id = _runtime_stripe_price_id(plan)
+            if not checkout_price_id:
+                mode_label = 'test' if _is_stripe_test_runtime() else 'live'
+                return JsonResponse(
+                    {'error': f"Plan non configuré pour Stripe {mode_label}."},
+                    status=400,
+                )
+
+            niveau_obj = None
+            if niveau_payload:
+                try:
+                    niveau_obj = Niveau.objects.get(id=niveau_payload, est_actif=True)
+                except Niveau.DoesNotExist:
+                    return JsonResponse({'error': 'Niveau sélectionné invalide'}, status=400)
+
+            if not niveau_obj:
+                return JsonResponse({
+                    'error': "Sélectionnez votre niveau scolaire pour finaliser l'abonnement."
+                }, status=400)
+
+            plan_mode = _resolve_plan_mode(plan)
+            is_subscription = (plan_mode == 'subscription')
+
+            metadata = {
+                'guest_checkout': 'true',
+                'plan_id': str(plan.id),
+                'plan_mode': plan_mode,
+                'niveau_pays_id': str(niveau_obj.id),
+                'pays_id': str(niveau_obj.pays_id),
+                'niveau_label': _format_level_label_from_obj(niveau_obj),
+                'access_days': str(plan.access_days or ''),
+            }
+
+            create_kwargs = dict(
+                payment_method_types=['card'],
+                line_items=[{
+                    'price': checkout_price_id,
+                    'quantity': 1,
+                }],
+                mode='subscription' if is_subscription else 'payment',
+                success_url=SUCCESS_URL + '?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=CANCEL_URL,
+                metadata=metadata,
+                custom_text={
+                    'submit': {
+                        'message': 'Accès instantané après paiement. Facture disponible par email.'
+                    }
+                },
+                locale='fr',
+                allow_promotion_codes=True,
+            )
+
+            if is_subscription:
+                subscription_data = {'metadata': metadata}
+                if FREE_TRIAL_DAYS > 0:
+                    subscription_data['trial_period_days'] = FREE_TRIAL_DAYS
+                create_kwargs['subscription_data'] = subscription_data
+            else:
+                create_kwargs['invoice_creation'] = {
+                    'enabled': True,
+                    'invoice_data': {
+                        'metadata': metadata,
+                        'description': _build_pass_description(
+                            plan.name,
+                            level_label=_format_level_label_from_obj(niveau_obj),
+                        ),
+                    }
+                }
+
+            checkout_session = stripe.checkout.Session.create(**create_kwargs)
+
+            return JsonResponse({
+                'checkout_url': checkout_session.url,
+                'amount': float(plan.price) if plan.price else None,
+                'currency': 'EUR',
+                'plan_name': plan.name or '',
+                'plan_mode': plan_mode or '',
+            })
+
+        except Exception as e:
+            logger.error("GuestCheckoutSessionView error: %s", e)
+            return JsonResponse({'error': str(e)}, status=400)
+
+
 # build_subscription_status a été déplacé vers subscription_status.py
 
 
@@ -624,6 +742,246 @@ class CheckoutSessionStatusView(APIView):
                 'transaction_id': transaction_id,
             }
         })
+
+
+class GuestCheckoutStatusView(APIView):
+    """Valider une session Stripe pour un guest checkout.
+
+    Crée automatiquement le compte OptiTAB si nécessaire, puis renvoie
+    des JWT tokens pour connecter l'utilisateur côté frontend.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        from rest_framework_simplejwt.tokens import RefreshToken as JWTRefreshToken
+
+        session_id = request.query_params.get('session_id') or request.GET.get('session_id')
+        if not session_id:
+            return JsonResponse({'detail': 'session_id parameter is required'}, status=400)
+
+        try:
+            session = stripe.checkout.Session.retrieve(session_id)
+        except stripe_error.InvalidRequestError:
+            return JsonResponse({'detail': 'Session Stripe introuvable'}, status=404)
+        except stripe_error.StripeError as exc:
+            logger.error("GuestCheckoutStatus: Stripe error %s: %s", session_id, exc)
+            return JsonResponse({'detail': 'Impossible de récupérer la session Stripe'}, status=400)
+
+        metadata = session.get('metadata') or {}
+
+        # Récupérer l'email du client depuis la session Stripe
+        customer_details = session.get('customer_details') or {}
+        customer_email = (customer_details.get('email') or '').strip().lower()
+
+        if not customer_email:
+            # Fallback: essayer le customer Stripe
+            stripe_customer_id = session.get('customer')
+            if stripe_customer_id:
+                try:
+                    cust = stripe.Customer.retrieve(stripe_customer_id)
+                    customer_email = (getattr(cust, 'email', '') or '').strip().lower()
+                except stripe_error.StripeError:
+                    pass
+
+        if not customer_email:
+            return JsonResponse({'detail': 'Email client introuvable dans la session Stripe'}, status=400)
+
+        # Trouver ou créer l'utilisateur
+        user = User.objects.filter(email__iexact=customer_email, is_active=True).first()
+        account_created = False
+
+        if not user:
+            # Vérifier s'il existe un compte inactif
+            user = User.objects.filter(email__iexact=customer_email).first()
+            if user:
+                user.is_active = True
+                user.save(update_fields=['is_active'])
+            else:
+                # Créer un nouveau compte
+                customer_name = (customer_details.get('name') or '').strip()
+                parts = customer_name.split(' ', 1) if customer_name else ['', '']
+                first_name = parts[0] or 'Utilisateur'
+                last_name = parts[1] if len(parts) > 1 else ''
+
+                niveau_id = metadata.get('niveau_pays_id')
+                niveau_obj = None
+                if niveau_id:
+                    try:
+                        niveau_obj = Niveau.objects.get(id=niveau_id, est_actif=True)
+                    except Niveau.DoesNotExist:
+                        pass
+
+                user = User(
+                    email=customer_email,
+                    first_name=first_name,
+                    last_name=last_name,
+                    is_active=True,
+                    niveau_pays=niveau_obj,
+                )
+                user.set_unusable_password()
+                user.save()
+                account_created = True
+                logger.info("Guest checkout: compte créé pour %s (user=%s)", customer_email, user.id)
+
+        # Mettre à jour le metadata Stripe avec le user_id pour que les handlers le trouvent
+        if not metadata.get('user_id'):
+            metadata['user_id'] = str(user.id)
+            if not metadata.get('payer_user_id'):
+                metadata['payer_user_id'] = str(user.id)
+            try:
+                stripe.checkout.Session.modify(session_id, metadata=metadata)
+            except Exception:
+                pass  # Non bloquant — modify peut ne pas exister selon la version du SDK
+
+        # Associer le customer Stripe à l'utilisateur
+        stripe_customer_id = session.get('customer')
+        if stripe_customer_id and not user.stripe_customer_id:
+            user.stripe_customer_id = stripe_customer_id
+            user.save(update_fields=['stripe_customer_id'])
+
+        # Finaliser la session (créer l'abonnement/pass localement)
+        try:
+            if session.get('subscription'):
+                handle_checkout_session_completed(session)
+            else:
+                handle_checkout_session_payment_completed(session)
+        except Exception as exc:
+            logger.error("GuestCheckoutStatus: finalisation error %s: %s", session_id, exc)
+
+        # Envoyer l'email de bienvenue avec lien de définition de mot de passe
+        if account_created:
+            try:
+                _send_welcome_set_password_email(user)
+            except Exception as exc:
+                logger.error("GuestCheckoutStatus: email error for %s: %s", user.email, exc)
+
+        # Générer les JWT tokens
+        refresh = JWTRefreshToken.for_user(user)
+
+        user.refresh_from_db()
+        status_payload = build_subscription_status(user)
+
+        payment_status_str = str(session.get('payment_status') or '').lower()
+        currency = str(session.get('currency') or 'EUR').upper()
+        amount_total_minor = session.get('amount_total')
+        try:
+            amount_total_minor = int(amount_total_minor) if amount_total_minor is not None else None
+        except (TypeError, ValueError):
+            amount_total_minor = None
+        amount_total = (amount_total_minor / 100.0) if amount_total_minor is not None else None
+        is_paid = bool(payment_status_str == 'paid' and amount_total_minor and amount_total_minor > 0)
+        transaction_id = str(session.get('payment_intent') or session.get('id') or '')
+
+        return JsonResponse({
+            'status': status_payload,
+            'has_access': status_payload.get('has_access', False),
+            'account_created': account_created,
+            'session': {
+                'is_gift': False,
+                'is_payer': True,
+                'is_beneficiary': True,
+                'beneficiary_label': '',
+            },
+            'payment': {
+                'is_paid': is_paid,
+                'status': payment_status_str,
+                'value': amount_total,
+                'value_minor': amount_total_minor,
+                'currency': currency,
+                'transaction_id': transaction_id,
+            },
+            'auth': {
+                'access': str(refresh.access_token),
+                'refresh': str(refresh),
+                'user_id': user.id,
+                'email': user.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'niveau_pays': {
+                    'id': user.niveau_pays.id,
+                    'nom': user.niveau_pays.nom,
+                    'pays': {
+                        'id': user.niveau_pays.pays.id,
+                        'nom': user.niveau_pays.pays.nom,
+                        'drapeau_emoji': getattr(user.niveau_pays.pays, 'drapeau_emoji', ''),
+                    }
+                } if user.niveau_pays else None,
+                'pays': {
+                    'id': user.niveau_pays.pays.id,
+                    'nom': user.niveau_pays.pays.nom,
+                    'drapeau_emoji': getattr(user.niveau_pays.pays, 'drapeau_emoji', ''),
+                } if user.niveau_pays and user.niveau_pays.pays else None,
+            },
+        })
+
+
+def _send_welcome_set_password_email(user):
+    """Envoie un email de bienvenue avec lien pour définir le mot de passe."""
+    from django_rest_passwordreset.models import ResetPasswordToken
+    from django.conf import settings
+    import secrets
+
+    # Générer un token de reset
+    token = ResetPasswordToken.objects.create(
+        user=user,
+        user_agent='guest-checkout',
+        ip_address='0.0.0.0',
+    )
+    frontend_base = getattr(settings, 'FRONTEND_BASE_URL', 'http://localhost:3000').rstrip('/')
+    reset_url = f"{frontend_base}/password-reset?token={token.key}"
+
+    first_name = (user.first_name or '').strip() or 'OptiTABien'
+    subject = 'Bienvenue sur OptiTAB — Définissez votre mot de passe'
+    brand = '#4F46E5'
+    site_url = frontend_base
+
+    text_body = (
+        f"Bonjour {first_name},\n\n"
+        "Votre compte OptiTAB a été créé suite à votre abonnement.\n\n"
+        f"Définissez votre mot de passe en cliquant sur ce lien :\n{reset_url}\n\n"
+        "Merci pour votre confiance !\nL'équipe OptiTAB"
+    )
+
+    html_body = f"""
+    <div style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f9fafb;padding:24px 0;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0"
+             style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden;">
+        <tr><td style="padding:24px;">
+          <h1 style="margin:0 0 12px;font-size:22px;color:#111827;">Bienvenue sur OptiTAB !</h1>
+          <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
+            Bonjour {first_name},<br/>
+            Votre compte a été créé automatiquement suite à votre abonnement.
+            Pour vous connecter facilement, définissez votre mot de passe :
+          </p>
+          <p style="margin:24px 0;text-align:center;">
+            <a href="{reset_url}" style="display:inline-block;background:{brand};color:#fff;
+              text-decoration:none;font-weight:600;padding:14px 28px;border-radius:10px;font-size:16px;">
+              Définir mon mot de passe
+            </a>
+          </p>
+          <p style="margin:0 0 10px;color:#6b7280;font-size:13px;">
+            Si le bouton ne fonctionne pas, copiez ce lien :<br/>
+            <a href="{reset_url}" style="color:#2563eb;">{reset_url}</a>
+          </p>
+          <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;"/>
+          <p style="margin:0;color:#9ca3af;font-size:12px;">
+            Vous recevez cet email car un abonnement OptiTAB a été souscrit avec cette adresse.
+          </p>
+        </td></tr>
+      </table>
+    </div>
+    """.strip()
+
+    from django.core.mail import EmailMultiAlternatives
+    email_message = EmailMultiAlternatives(
+        subject=subject,
+        body=text_body,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[user.email],
+    )
+    email_message.attach_alternative(html_body, "text/html")
+    email_message.send(fail_silently=False)
+    logger.info("Welcome set-password email sent to %s", user.email)
 
 
 def _normalize_metadata_user_id(value):
@@ -1815,9 +2173,35 @@ def stripe_webhook(request):
         logger.warning("Stripe webhook: payload invalide (path=%s): %s", request.path, exc)
         return HttpResponse(status=400)
     except stripe_error.SignatureVerificationError as exc:
+        if _is_mode_mismatch_event(payload):
+            logger.info(
+                "Stripe webhook: événement du mode opposé ignoré "
+                "(runtime=%s, path=%s)",
+                STRIPE_RUNTIME_MODE, request.path,
+            )
+            return HttpResponse(status=200)
         logger.warning("Stripe webhook: signature invalide (path=%s): %s", request.path, exc)
         return HttpResponse(status=400)
 
+    # Skip verified events whose mode doesn't match our runtime
+    event_livemode = event.get('livemode') if hasattr(event, 'get') else getattr(event, 'livemode', None)
+    expected_livemode = STRIPE_RUNTIME_MODE == 'live'
+    if event_livemode is not None and event_livemode != expected_livemode:
+        logger.info(
+            "Stripe webhook: événement %s ignoré (livemode=%s, runtime=%s)",
+            event.get('type', '?') if hasattr(event, 'get') else getattr(event, 'type', '?'),
+            event_livemode, STRIPE_RUNTIME_MODE,
+        )
+        return HttpResponse(status=200)
+
+    return _handle_webhook_event(event)
+
+
+def _handle_webhook_event(event):
+    """Route a verified Stripe event to the appropriate handler.
+
+    Shared by stripe_webhook (live/main) and stripe_webhook_test.
+    """
     try:
         event_type = event.get('type')
         event_id = event.get('id')
@@ -1873,4 +2257,42 @@ def stripe_webhook(request):
         handle_refund_event(event['data']['object'])
     
     return HttpResponse(status=200)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def stripe_webhook_test(request):
+    """Webhook dédié au mode test Stripe.
+
+    Utilise uniquement STRIPE_WEBHOOK_SECRET_TEST pour vérifier la
+    signature et refuse tout événement livemode=true.
+    URL séparée pour pouvoir être enregistrée comme endpoint test
+    dans le Dashboard Stripe sans interférer avec le webhook live.
+    """
+    from stripe_config import STRIPE_WEBHOOK_SECRET_TEST
+
+    payload = request.body
+    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
+
+    test_secret = (STRIPE_WEBHOOK_SECRET_TEST or '').strip()
+    if not test_secret:
+        logger.warning("Stripe webhook test: STRIPE_WEBHOOK_SECRET_TEST non configuré")
+        return HttpResponse(status=400)
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, test_secret)
+    except ValueError as exc:
+        logger.warning("Stripe webhook test: payload invalide: %s", exc)
+        return HttpResponse(status=400)
+    except stripe_error.SignatureVerificationError as exc:
+        logger.warning("Stripe webhook test: signature invalide: %s", exc)
+        return HttpResponse(status=400)
+
+    # Refuse live events on the test endpoint
+    event_livemode = event.get('livemode') if hasattr(event, 'get') else getattr(event, 'livemode', None)
+    if event_livemode is True:
+        logger.warning("Stripe webhook test: événement live refusé sur endpoint test")
+        return HttpResponse(status=200)
+
+    return _handle_webhook_event(event)
 

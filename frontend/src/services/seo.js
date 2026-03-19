@@ -653,6 +653,11 @@ const ROUTE_SEO = {
     description: 'Abonne-toi a OptiTAB : cours de maths structures, fiches de synthese et exercices corriges pas a pas du lycee. Sans engagement, acces immediat.',
     canonicalPath: '/plateforme-maths'
   },
+  ExercicesCorrigesLanding: {
+    title: 'Exercices corriges pas a pas : comprendre chaque etape | OptiTAB',
+    description: 'Des exercices corriges etape par etape pour comprendre la methode, debloquer les exercices et progresser plus vite.',
+    canonicalPath: '/exercices-corriges'
+  },
   FreeResourcesHome: {
     title: 'Ressources gratuites de maths: cours, exercices corriges et fiches | OptiTAB',
     description: 'Accede a des cours de maths gratuits, des exercices corriges pas a pas et des fiches de revision pour college, lycee et prepa.',
@@ -797,5 +802,4 @@ export function applyRouteSeo(route) {
     // Never block navigation on SEO updates.
   }
 }
-
 

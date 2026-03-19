@@ -131,10 +131,16 @@ const subjectsStore = useSubjectsStore()
 const userStore = useUserStore()
 
 const isLandingVariant = computed(() => props.variant === 'landing')
+const subscriptionLandingPaths = [
+  '/plateforme-maths',
+  '/bases-methode',
+  '/exercices-corriges',
+  '/exercices-corriges-pas-a-pas'
+]
 const isPlateformeMathsLanding = computed(
   () =>
     isLandingVariant.value &&
-    ['/plateforme-maths', '/bases-methode'].includes(route.path)
+    subscriptionLandingPaths.includes(route.path)
 )
 const landingLoginCtaName = computed(() =>
   isPlateformeMathsLanding.value ? 'pricing' : 'signup'

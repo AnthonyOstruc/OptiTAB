@@ -136,10 +136,16 @@ export default {
     const contactModalSubject = ref('')
 
     const isLandingVariant = computed(() => props.variant === 'landing')
+    const subscriptionLandingPaths = [
+      '/plateforme-maths',
+      '/bases-methode',
+      '/exercices-corriges',
+      '/exercices-corriges-pas-a-pas'
+    ]
     const isPlateformeMathsLanding = computed(
       () =>
         isLandingVariant.value &&
-        ['/plateforme-maths', '/bases-methode'].includes(route.path)
+        subscriptionLandingPaths.includes(route.path)
     )
     const landingPrimaryCtaLabel = computed(() =>
       isPlateformeMathsLanding.value ? 'Choisir un abonnement' : 'Créer un compte'
@@ -157,7 +163,7 @@ export default {
         }
       }
 
-      if (!['/plateforme-maths', '/bases-methode'].includes(route.path)) {
+      if (!subscriptionLandingPaths.includes(route.path)) {
         await router.push({ path: '/plateforme-maths', hash: '#offre' })
       } else if (typeof window !== 'undefined') {
         window.location.hash = 'offre'

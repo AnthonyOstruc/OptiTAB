@@ -21,66 +21,96 @@ const { openModal } = useModalManager()
 
 const isStartRoute = computed(() => route.path === '/start')
 const isBasesMethodeRoute = computed(() => route.path === '/bases-methode')
+const isExercicesCorrigesRoute = computed(
+  () =>
+    route.name === 'ExercicesCorrigesLanding' ||
+    route.path === '/exercices-corriges' ||
+    route.path === '/exercices-corriges-pas-a-pas'
+)
 
 const CTA_LABEL = computed(() =>
-  isStartRoute.value ? 'Découvrir la plateforme' : 'Choisir mon abonnement'
+  isExercicesCorrigesRoute.value
+    ? 'Découvrir les exercices corrigés'
+    : isStartRoute.value
+      ? 'Découvrir la plateforme'
+      : 'Choisir mon abonnement'
 )
 const OFFER_CTA_LABEL = 'Choisir mon abonnement'
 
 const quickTrust = computed(() =>
   isStartRoute.value
     ? ['Commence gratuitement maintenant', 'Aucune carte bancaire requise', 'Inscription en 30 secondes']
-    : ['Sans engagement', 'Annulable à tout moment', 'Accès immédiat']
+    : isExercicesCorrigesRoute.value
+      ? ['Sans engagement', 'Accès immédiat', 'Annulable à tout moment']
+      : ['Sans engagement', 'Annulable à tout moment', 'Accès immédiat']
 )
 
-const heroKicker = computed(() => 'OptiTAB — Plateforme maths')
+const heroKicker = computed(() =>
+  isExercicesCorrigesRoute.value ? 'OptiTAB — Exercices corrigés' : 'OptiTAB — Plateforme maths'
+)
 
 const heroTitle = computed(() =>
-  isBasesMethodeRoute.value
-    ? 'Le parcours maths Bases & Méthode pour reprendre confiance'
-    : 'La plateforme de maths pour mieux comprendre et progresser'
+  isExercicesCorrigesRoute.value
+    ? 'La plateforme pour comprendre les exercices pas à pas'
+    : isBasesMethodeRoute.value
+      ? 'Le parcours maths Bases & Méthode pour reprendre confiance'
+      : 'La plateforme de maths pour mieux comprendre et progresser'
 )
 
 const heroSubtitle = computed(() =>
-  isBasesMethodeRoute.value
-    ? 'Cours, fiches de synthèse et exercices corrigés pas à pas pour combler les lacunes'
-    : 'Cours, fiches de synthèse et exercices corrigés pas à pas'
+  isExercicesCorrigesRoute.value
+    ? 'Des exercices corrigés étape par étape pour savoir comment faire seul ensuite'
+    : isBasesMethodeRoute.value
+      ? 'Cours, fiches de synthèse et exercices corrigés pas à pas pour combler les lacunes'
+      : 'Cours, fiches de synthèse et exercices corrigés pas à pas'
 )
 
 const heroResult = computed(() =>
-  isBasesMethodeRoute.value
-    ? 'Déjà adopté par de nombreux élèves du lycée au supérieur.'
-    : 'Travaille plus efficacement, comprends mieux, progresse à ton rythme.'
+  isExercicesCorrigesRoute.value
+    ? 'Comprends la méthode, avance plus sereinement et progresse exercice après exercice.'
+    : isBasesMethodeRoute.value
+      ? 'Déjà adopté par de nombreux élèves du lycée au supérieur.'
+      : 'Travaille plus efficacement, comprends mieux, progresse à ton rythme.'
 )
 
 const levelsSectionTitle = computed(() =>
-  isBasesMethodeRoute.value
-    ? 'Bases & Méthode pour repartir sur de bonnes bases'
-    : 'Choisis le parcours qui te correspond'
+  isExercicesCorrigesRoute.value
+    ? 'Choisis le parcours et avance pas à pas'
+    : isBasesMethodeRoute.value
+      ? 'Bases & Méthode pour repartir sur de bonnes bases'
+      : 'Choisis le parcours qui te correspond'
 )
 
 const levelsSectionSubtitle = computed(() =>
-  isBasesMethodeRoute.value
-    ? 'Une méthode claire et progressive pour reprendre confiance, combler ses lacunes et avancer pas à pas.'
-    : 'Trouve en quelques secondes le parcours adapté à ton niveau.'
+  isExercicesCorrigesRoute.value
+    ? 'Des exercices corrigés pas à pas, adaptés à chaque niveau pour comprendre la méthode et progresser.'
+    : isBasesMethodeRoute.value
+      ? 'Une méthode claire et progressive pour reprendre confiance, combler ses lacunes et avancer pas à pas.'
+      : 'Trouve en quelques secondes le parcours adapté à ton niveau.'
 )
 
 const levelsSectionNote = computed(() =>
-  isBasesMethodeRoute.value
-    ? ''
-    : "Lycée : programmes alignés sur l'Éducation nationale (France)"
+  isExercicesCorrigesRoute.value
+    ? 'Chaque parcours inclut des corrigés détaillés pour ne plus rester bloqué.'
+    : isBasesMethodeRoute.value
+      ? ''
+      : "Lycée : programmes alignés sur l'Éducation nationale (France)"
 )
 
 const finalCtaTitle = computed(() =>
-  isBasesMethodeRoute.value
-    ? 'Bases & Méthode : reprends les fondamentaux et progresse durablement'
-    : 'La plateforme de maths pour mieux comprendre et progresser'
+  isExercicesCorrigesRoute.value
+    ? 'Exercices corrigés pas à pas pour progresser durablement'
+    : isBasesMethodeRoute.value
+      ? 'Bases & Méthode : reprends les fondamentaux et progresse durablement'
+      : 'La plateforme de maths pour mieux comprendre et progresser'
 )
 
 const finalCtaSubtitle = computed(() =>
-  isBasesMethodeRoute.value
-    ? 'Déjà adopté par de nombreux élèves du lycée au supérieur.'
-    : 'Cours clairs, fiches de synthèse, exercices corrigés pas à pas.'
+  isExercicesCorrigesRoute.value
+    ? 'Comprends la méthode, gagne en autonomie et avance étape par étape.'
+    : isBasesMethodeRoute.value
+      ? 'Déjà adopté par de nombreux élèves du lycée au supérieur.'
+      : 'Cours clairs, fiches de synthèse, exercices corrigés pas à pas.'
 )
 
 const heroStats = ['+150 chapitres', '+150 résumés', '+150 cours', '+1000 exercices']
@@ -95,6 +125,27 @@ const levels = computed(() =>
           isHighlight: true
         }
       ]
+    : isExercicesCorrigesRoute.value
+      ? [
+          {
+            title: 'Seconde',
+            description: 'Exercices corrigés pas à pas'
+          },
+          {
+            title: 'Première',
+            description: 'Exercices corrigés pas à pas'
+          },
+          {
+            title: 'Terminale',
+            description: 'Exercices corrigés pas à pas'
+          },
+          {
+            title: 'Bases & Méthode',
+            description: 'Exercices guidés pour reprendre les bases',
+            badge: 'Priorité exercices corrigés',
+            isHighlight: true
+          }
+        ]
     : [
         {
           title: 'Seconde',
@@ -116,46 +167,103 @@ const levels = computed(() =>
         }
       ]
 )
-const proofCards = [
-  {
-    title: 'Cours clairs',
-    text: 'Des cours structurés pour comprendre vite et retenir durablement.'
-  },
-  {
-    title: 'Fiches de synthèse',
-    text: 'Les points essentiels à réviser sans perdre de temps.'
-  },
-  {
-    title: 'Exercices corrigés pas à pas',
-    text: 'Une méthode détaillée pour savoir comment faire seul ensuite.'
-  }
-]
-const faqItems = [
-  {
-    question: "À qui s'adresse OptiTAB ?",
-    answer: 'Aux élèves de Seconde, Première, Terminale et Bases & Méthode.'
-  },
-  {
-    question: "À qui s'adresse Bases & Méthode ?",
-    answer: "Bases & Méthode s’adresse aux élèves qui veulent combler leurs lacunes, reprendre les fondamentaux et progresser durablement en maths. Ce parcours est particulièrement adapté aux élèves du collège au lycée, ainsi qu’aux étudiants en BTS et en classes préparatoires qui ont besoin de consolider leurs bases avec une méthode claire, progressive et efficace. Il est déjà utilisé et recommandé par de nombreux élèves, notamment en Bac, en BTS et en prépa."
-  },
-  {
-    question: 'Est-ce sans engagement ?',
-    answer: "Oui. L'abonnement est sans engagement."
-  },
-  {
-    question: 'Puis-je annuler à tout moment ?',
-    answer: "Oui. L'annulation se fait quand vous voulez."
-  },
-  {
-    question: "Que contient l'abonnement ?",
-    answer: 'Cours clairs, fiches de synthèse et exercices corrigés pas à pas.'
-  },
-  {
-    question: "Comment contacter quelqu'un si j'ai une question ?",
-    answer: 'Par WhatsApp ou par email. Réponse rapide.'
-  }
-]
+const proofSectionTitle = computed(() =>
+  isExercicesCorrigesRoute.value
+    ? 'Ce que tu obtiens avec les exercices corrigés'
+    : 'Ce que tu obtiens concrètement'
+)
+const proofSectionSubtitle = computed(() =>
+  isExercicesCorrigesRoute.value
+    ? 'Un aperçu clair de la méthode pas à pas, sur desktop comme sur mobile.'
+    : 'Découvre concrètement l’expérience OptiTAB sur ordinateur et sur mobile.'
+)
+const proofHook = computed(() =>
+  isExercicesCorrigesRoute.value
+    ? 'Tu comprends chaque étape, puis tu sais refaire seul.'
+    : 'Tu vois la méthode, tu gagnes du temps dès la première séance.'
+)
+const proofCards = computed(() =>
+  isExercicesCorrigesRoute.value
+    ? [
+        {
+          title: 'Méthode détaillée',
+          text: "Vois chaque étape pour comprendre comment résoudre l'exercice."
+        },
+        {
+          title: 'Corrigés pas à pas',
+          text: 'Avance ligne par ligne avec une logique claire.'
+        },
+        {
+          title: 'Compréhension durable',
+          text: 'Apprends la méthode pour réussir seul ensuite.'
+        }
+      ]
+    : [
+        {
+          title: 'Cours clairs',
+          text: 'Des cours structurés pour comprendre vite et retenir durablement.'
+        },
+        {
+          title: 'Fiches de synthèse',
+          text: 'Les points essentiels à réviser sans perdre de temps.'
+        },
+        {
+          title: 'Exercices corrigés pas à pas',
+          text: 'Une méthode détaillée pour savoir comment faire seul ensuite.'
+        }
+      ]
+)
+const faqItems = computed(() =>
+  isExercicesCorrigesRoute.value
+    ? [
+        {
+          question: "À qui s’adressent les exercices corrigés pas à pas ?",
+          answer: 'Aux élèves du lycée au supérieur qui veulent comprendre la méthode et progresser avec un cadre clair.'
+        },
+        {
+          question: 'Est-ce adapté si je bloque souvent en maths ?',
+          answer: 'Oui. Le format pas à pas est conçu pour débloquer chaque exercice sans sauter les étapes clés.'
+        },
+        {
+          question: 'Est-ce que je vois vraiment toutes les étapes ?',
+          answer: 'Oui. Les corrigés détaillent le raisonnement étape par étape pour comprendre la logique complète.'
+        },
+        {
+          question: 'Est-ce utile pour apprendre à faire seul ensuite ?',
+          answer: 'Oui. L’objectif est de te transmettre une méthode réutilisable pour résoudre ensuite en autonomie.'
+        },
+        {
+          question: 'Puis-je arrêter à tout moment ?',
+          answer: "Oui. L'abonnement est sans engagement et annulable à tout moment."
+        }
+      ]
+    : [
+        {
+          question: "À qui s'adresse OptiTAB ?",
+          answer: 'Aux élèves de Seconde, Première, Terminale et Bases & Méthode.'
+        },
+        {
+          question: "À qui s'adresse Bases & Méthode ?",
+          answer: "Bases & Méthode s’adresse aux élèves qui veulent combler leurs lacunes, reprendre les fondamentaux et progresser durablement en maths. Ce parcours est particulièrement adapté aux élèves du collège au lycée, ainsi qu’aux étudiants en BTS et en classes préparatoires qui ont besoin de consolider leurs bases avec une méthode claire, progressive et efficace. Il est déjà utilisé et recommandé par de nombreux élèves, notamment en Bac, en BTS et en prépa."
+        },
+        {
+          question: 'Est-ce sans engagement ?',
+          answer: "Oui. L'abonnement est sans engagement."
+        },
+        {
+          question: 'Puis-je annuler à tout moment ?',
+          answer: "Oui. L'annulation se fait quand vous voulez."
+        },
+        {
+          question: "Que contient l'abonnement ?",
+          answer: 'Cours clairs, fiches de synthèse et exercices corrigés pas à pas.'
+        },
+        {
+          question: "Comment contacter quelqu'un si j'ai une question ?",
+          answer: 'Par WhatsApp ou par email. Réponse rapide.'
+        }
+      ]
+)
 
 const submitting = ref(false)
 const niveaux = ref([])
@@ -166,7 +274,9 @@ const showLevelModal = ref(false)
 const pendingPriceId = ref('')
 const pendingPlanName = ref('')
 const heroOfferTitle = computed(() =>
-  isStartRoute.value
+  isExercicesCorrigesRoute.value
+    ? 'Abonnement dès 4.99€'
+    : isStartRoute.value
     ? 'Déjà adoptée par de nombreux élèves\ndu lycée au supérieur'
     : isBasesMethodeRoute.value
       ? 'Le parcours Bases & Méthode\ndéjà adopté par de nombreux élèves'
@@ -363,15 +473,21 @@ function storeGclid() {
 
 onMounted(() => {
   setPageSeo({
-    title: isBasesMethodeRoute.value
-      ? 'Bases & Méthode : le parcours pour combler ses lacunes | OptiTAB'
-      : 'La plateforme de maths pour mieux comprendre et progresser | OptiTAB',
-    description: isBasesMethodeRoute.value
-      ? 'Le parcours Bases & Méthode pour reprendre les fondamentaux : cours clairs, fiches de synthèse et exercices corrigés pas à pas.'
-      : 'Cours clairs, fiches de synthèse et exercices corrigés pas à pas. Sans engagement, annulable à tout moment, accès immédiat.',
-    canonicalPath: isBasesMethodeRoute.value
-      ? '/bases-methode'
-      : (isStartRoute.value ? '/start' : '/plateforme-maths'),
+    title: isExercicesCorrigesRoute.value
+      ? 'Exercices corrigés pas à pas : comprendre chaque étape | OptiTAB'
+      : isBasesMethodeRoute.value
+        ? 'Bases & Méthode : le parcours pour combler ses lacunes | OptiTAB'
+        : 'La plateforme de maths pour mieux comprendre et progresser | OptiTAB',
+    description: isExercicesCorrigesRoute.value
+      ? 'Des exercices corrigés étape par étape pour comprendre la méthode, ne plus rester bloqué et progresser plus vite.'
+      : isBasesMethodeRoute.value
+        ? 'Le parcours Bases & Méthode pour reprendre les fondamentaux : cours clairs, fiches de synthèse et exercices corrigés pas à pas.'
+        : 'Cours clairs, fiches de synthèse et exercices corrigés pas à pas. Sans engagement, annulable à tout moment, accès immédiat.',
+    canonicalPath: isExercicesCorrigesRoute.value
+      ? '/exercices-corriges'
+      : isBasesMethodeRoute.value
+        ? '/bases-methode'
+        : (isStartRoute.value ? '/start' : '/plateforme-maths'),
     robots: getRobotsForRoute({ route }),
     ogType: 'website'
   })
@@ -414,7 +530,7 @@ onUnmounted(() => {
 
           <div :class="['hero-side', { 'hero-side--stats-only': !showHeroOfferCard }]">
             <div v-if="showHeroOfferCard" class="hero-offer-card">
-              <p :class="['hero-offer-title', { 'hero-offer-title--start': isStartRoute, 'hero-offer-title--bases': isBasesMethodeRoute }]">{{ heroOfferTitle }}</p>
+              <p :class="['hero-offer-title', { 'hero-offer-title--start': isStartRoute, 'hero-offer-title--bases': isBasesMethodeRoute, 'hero-offer-title--exercise': isExercicesCorrigesRoute }]">{{ heroOfferTitle }}</p>
               <p class="hero-offer-sub">{{ heroOfferSub }}</p>
               <GoogleReviewsCompact />
             </div>
@@ -437,8 +553,8 @@ onUnmounted(() => {
 
         <section class="block proof-block">
           <div class="section-head">
-            <h2>Ce que tu obtiens concrètement</h2>
-            <p>Découvre concrètement l’expérience OptiTAB sur ordinateur et sur mobile.</p>
+            <h2>{{ proofSectionTitle }}</h2>
+            <p>{{ proofSectionSubtitle }}</p>
           </div>
 
           <div class="proof-media">
@@ -458,7 +574,7 @@ onUnmounted(() => {
               <p>{{ item.text }}</p>
             </article>
           </div>
-          <p class="proof-hook">Tu vois la méthode, tu gagnes du temps dès la première séance.</p>
+          <p class="proof-hook">{{ proofHook }}</p>
         </section>
 
         <section :class="['block', 'levels-block', { 'levels-block--bases': isBasesMethodeRoute }]">
@@ -804,6 +920,11 @@ onUnmounted(() => {
 .hero-offer-title--bases {
   font-size: 1rem;
   line-height: 1.16;
+}
+
+.hero-offer-title--exercise {
+  font-size: 1.02rem;
+  line-height: 1.18;
 }
 
 .hero-offer-sub {
@@ -1292,6 +1413,22 @@ onUnmounted(() => {
 @media (max-width: 960px) {
   .hero-block {
     grid-template-columns: 1fr;
+  }
+
+  .hero-side {
+    width: 100%;
+    max-width: 100%;
+    justify-self: center;
+  }
+
+  .hero-offer-card {
+    display: none;
+  }
+
+  .hero-stats--side {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
   }
 
   .levels-grid {

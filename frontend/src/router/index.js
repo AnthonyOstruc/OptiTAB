@@ -50,6 +50,12 @@ const routes = [
   { path: '/tarifs', name: 'TarifsPage', component: () => import('@/views/TarifsPage.vue') },
   { path: '/plateforme-maths', name: 'GoogleAdsLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
   { path: '/bases-methode', name: 'BasesMethodeLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
+  {
+    path: '/exercices-corriges',
+    alias: ['/exercices-corriges-pas-a-pas'],
+    name: 'ExercicesCorrigesLanding',
+    component: () => import('@/views/GoogleAdsLanding.vue')
+  },
   { 
     path: '/ressources-gratuites', 
     name: 'FreeResourcesHome',

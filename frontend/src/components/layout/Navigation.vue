@@ -1,7 +1,6 @@
 <template>
-  <nav class="navigation">
-    <!-- Main navigation items on the left -->
-    <div v-if="!isFreeResourcePage && !isCalculatorPage" class="nav-items">
+  <nav :class="['navigation', { 'navigation--landing': isLandingVariant }]">
+    <div v-if="!isLandingVariant && !isFreeResourcePage && !isCalculatorPage" class="nav-items">
       <router-link
         v-for="item in leftMenuItems"
         :key="item.key"
@@ -16,67 +15,66 @@
       </router-link>
     </div>
 
-    <FreeResourceTabs v-else-if="isFreeResourcePage" class="free-resource-tabs" />
+    <FreeResourceTabs v-else-if="!isLandingVariant && isFreeResourcePage" class="free-resource-tabs" />
 
-    <CalculatorTabs v-else-if="isCalculatorPage" :class="['calculator-tabs', { 'calculator-tabs--not-logged': !userStore.isAuthenticated }]" />
+    <CalculatorTabs
+      v-else-if="!isLandingVariant && isCalculatorPage"
+      :class="['calculator-tabs', { 'calculator-tabs--not-logged': !userStore.isAuthenticated }]"
+    />
 
-    <!-- Onglets de matières (centre) -->
     <div v-if="shouldShowMatieresTab && !isFreeResourcePage && !isCalculatorPage" class="matieres-tabs">
-      <!-- Onglets des matières sélectionnées -->
       <div class="tabs-container">
-        <div 
-          v-for="matiere in selectedMatieres" 
+        <div
+          v-for="matiere in selectedMatieres"
           :key="`tab-${matiere.id}`"
           :class="['matiere-tab', { active: subjectsStore.activeMatiereId === matiere.id }]"
           @click="setActiveMatiere(matiere.id)"
           @mousedown="handleTabMouseDown($event, matiere.id)"
         >
           <span class="tab-name">{{ matiere.nom }}</span>
-          <button 
-            class="tab-close"
-            @click.stop="removeMatiere(matiere.id)"
-          >
-            ×
+          <button class="tab-close" @click.stop="removeMatiere(matiere.id)">
+            x
           </button>
         </div>
-        
-        <!-- Bouton pour ajouter une matière -->
-        <button 
-          v-if="availableMatieres.length > 0"
-          class="matiere-tab new-tab"
-          @click="toggleMatieresDropdown"
-        >
+
+        <button v-if="availableMatieres.length > 0" class="matiere-tab new-tab" @click="toggleMatieresDropdown">
           <span class="tab-icon">+</span>
         </button>
       </div>
-      
-      <!-- Dropdown des matières disponibles -->
+
       <div v-if="showMatieresDropdown" class="matieres-dropdown">
         <div
-          v-for="matiere in availableMatieres" 
+          v-for="matiere in availableMatieres"
           :key="`dropdown-${matiere.id}`"
           class="dropdown-item"
           @click="selectMatiere(matiere)"
         >
-          <span class="dropdown-icon" v-html="matiere.svg_icon || '📚'"></span>
+          <span class="dropdown-icon" v-html="matiere.svg_icon || 'Livre'"></span>
           <span class="dropdown-name">{{ matiere.nom }}</span>
         </div>
       </div>
     </div>
 
-    <!-- Auth and contact items on the right -->
     <div class="right-items">
       <template v-for="item in rightMenuItems" :key="item.key">
         <button
-          v-if="item.emit"
+          v-if="item.emit || (isLandingVariant && item.key === 'contact')"
           type="button"
           :class="['right-item', item.key === 'login' ? 'btn-login' : '']"
-          :data-cta-name="item.key === 'login' ? 'login' : null"
+          :data-cta-name="item.key === 'login' ? (isLandingVariant ? landingLoginCtaName : 'login') : null"
           :data-cta-location="item.key === 'login' ? 'header_public' : null"
+          :data-track="item.key === 'contact' ? 'nav' : null"
+          :data-nav-name="item.key === 'contact' ? navNameForMenuItem(item) : null"
+          :data-nav-location="item.key === 'contact' ? 'header_public' : null"
           @click="handleItemClick(item)"
         >
-          <component :is="item.icon" class="right-icon" />
-          <span class="right-text">{{ item.text }}</span>
+          <component
+            v-if="!(isPlateformeMathsLanding && item.key === 'login')"
+            :is="item.icon"
+            class="right-icon"
+          />
+          <span v-else class="right-emoji" aria-hidden="true">✦</span>
+          <span class="right-text">{{ rightItemLabel(item) }}</span>
         </button>
 
         <a
@@ -90,7 +88,7 @@
           :data-nav-location="navNameForMenuItem(item) ? 'header_public' : null"
         >
           <component :is="item.icon" class="right-icon" />
-          <span class="right-text">{{ item.text }}</span>
+          <span class="right-text">{{ rightItemLabel(item) }}</span>
         </a>
 
         <router-link
@@ -102,7 +100,7 @@
           :data-nav-location="navNameForMenuItem(item) ? 'header_public' : null"
         >
           <component :is="item.icon" class="right-icon" />
-          <span class="right-text">{{ item.text }}</span>
+          <span class="right-text">{{ rightItemLabel(item) }}</span>
         </router-link>
       </template>
     </div>
@@ -113,26 +111,40 @@
 import { computed, ref, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { menuItems } from '@/config/menuItems'
-
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { useUserStore } from '@/stores/user'
 import { getMatieresUtilisateur } from '@/api/matieres.js'
 import FreeResourceTabs from '@/components/free-content/FreeResourceTabs.vue'
 import CalculatorTabs from '@/components/calculator/CalculatorTabs.vue'
 
-const emit = defineEmits(['open-login'])
+const props = defineProps({
+  variant: {
+    type: String,
+    default: 'default'
+  }
+})
+
+const emit = defineEmits(['open-login', 'open-contact'])
 const router = useRouter()
 const route = useRoute()
 const subjectsStore = useSubjectsStore()
 const userStore = useUserStore()
 
+const isLandingVariant = computed(() => props.variant === 'landing')
+const isPlateformeMathsLanding = computed(
+  () =>
+    isLandingVariant.value &&
+    ['/plateforme-maths', '/bases-methode'].includes(route.path)
+)
+const landingLoginCtaName = computed(() =>
+  isPlateformeMathsLanding.value ? 'pricing' : 'signup'
+)
 
-// État pour les matières
 const matieres = ref([])
 const showMatieresDropdown = ref(false)
 const isLoadingMatieres = ref(false)
 
-const isFreeResourcePage = computed(() => 
+const isFreeResourcePage = computed(() =>
   route.path?.startsWith('/ressources-gratuites') && route.path !== '/ressources-gratuites'
 )
 const isCalculatorPage = computed(() => route.path === '/calculator')
@@ -142,7 +154,7 @@ const HEADER_PUBLIC_NAV_NAME_BY_KEY = {
   about: 'about',
   'cours-particuliers': 'tutoring',
   'ressources-gratuites': 'free_resources',
-  contact: 'contact',
+  contact: 'contact'
 }
 
 const navNameForMenuItem = (item) => {
@@ -150,73 +162,82 @@ const navNameForMenuItem = (item) => {
   return key ? (HEADER_PUBLIC_NAV_NAME_BY_KEY[key] || null) : null
 }
 
-// Left side: Main navigation items
-const leftMenuItems = computed(() => {
-  if (isFreeResourcePage.value) {
-    return []
+const rightItemLabel = (item) => {
+  if (isLandingVariant.value && item?.key === 'login') {
+    return isPlateformeMathsLanding.value ? 'Choisir un abonnement' : 'Créer un compte'
   }
-  return menuItems.filter(item =>
+  return item?.text || ''
+}
+
+const leftMenuItems = computed(() => {
+  if (isLandingVariant.value || isFreeResourcePage.value) return []
+  return menuItems.filter((item) =>
     ['calculator', 'about', 'cours-particuliers', 'ressources-gratuites'].includes(item.key)
   )
 })
 
-// Right side: Contact and authentication
 const rightMenuItems = computed(() => {
-  return menuItems.filter(item => 
-    ['contact', 'login'].includes(item.key)
-  )
+  return menuItems.filter((item) => ['contact', 'login'].includes(item.key))
 })
 
-// Matières sélectionnées pour les onglets
 const selectedMatieres = computed(() => {
-  return matieres.value.filter(m => 
+  return matieres.value.filter((m) =>
     m && m.id && subjectsStore.selectedMatieresIds.includes(m.id)
   )
 })
 
-// Matières disponibles pour le dropdown
 const availableMatieres = computed(() => {
-  return matieres.value.filter(m => 
+  return matieres.value.filter((m) =>
     m && m.id && !subjectsStore.selectedMatieresIds.includes(m.id)
   )
 })
 
-// Pages où afficher les onglets de matières
 const shouldShowMatieresTab = computed(() => {
-  return ['Quiz', 'Exercises', 'Sheets', 'Notions', 'QuizNotions', 'QuizByNotion', 'ExercicesByNotion', 'ChapterExercises', 'ChapterQuiz', 'CourseByNotion'].includes(route.name)
+  if (isLandingVariant.value) return false
+  return [
+    'Quiz',
+    'Exercises',
+    'Sheets',
+    'Notions',
+    'QuizNotions',
+    'QuizByNotion',
+    'ExercicesByNotion',
+    'ChapterExercises',
+    'ChapterQuiz',
+    'CourseByNotion'
+  ].includes(route.name)
 })
 
 const handleItemClick = async (item) => {
   try {
+    if (isLandingVariant.value && item?.key === 'contact') {
+      emit('open-contact')
+      return
+    }
+
     if (item.emit) {
       emit(item.emit)
       return
     }
-    
-    // Navigation externe (email, etc.)
+
     if (item.external && item.href) {
       window.open(item.href, '_blank', 'noopener,noreferrer')
       return
     }
-    
-    
-    // Navigation normale pour les autres liens
+
     if (item.href && !item.external) {
-      console.log(`[Navigation] Navigation normale vers: ${item.href}`)
       await router.push(item.href)
     }
   } catch (error) {
-    console.error(`[Navigation] Erreur lors de la navigation pour ${item.key}:`, error)
-    // Fallback vers navigation normale
+    console.error(`[Navigation] Erreur navigation ${item.key}:`, error)
     if (item.href && !item.external) {
       await router.push(item.href)
     }
   }
 }
 
-// Fonctions de gestion des matières
 const MATIERES_CACHE_KEY = 'matieres_disponibles_cache'
-const MATIERES_CACHE_TTL_MS = 10 * 60 * 1000 // 10 minutes
+const MATIERES_CACHE_TTL_MS = 10 * 60 * 1000
 
 const readMatieresCache = () => {
   try {
@@ -243,23 +264,15 @@ const writeMatieresCache = (data) => {
   }
 }
 
-const invalidateMatieresCache = () => {
-  try { localStorage.removeItem(MATIERES_CACHE_KEY) } catch {}
-  try { window.dispatchEvent(new Event('matieres-cache:invalidate')) } catch {}
-}
-
 const syncSelectedAndActiveWithAvailability = async () => {
-  const availableIds = matieres.value.map(m => m.id)
+  const availableIds = matieres.value.map((m) => m.id)
   const currentSelected = Array.isArray(subjectsStore.selectedMatieresIds)
     ? [...subjectsStore.selectedMatieresIds]
     : []
 
-  const filteredSelected = currentSelected.filter(id => availableIds.includes(id))
+  const filteredSelected = currentSelected.filter((id) => availableIds.includes(id))
 
-  if (
-    subjectsStore.stores?.selected &&
-    filteredSelected.length !== currentSelected.length
-  ) {
+  if (subjectsStore.stores?.selected && filteredSelected.length !== currentSelected.length) {
     subjectsStore.stores.selected.setSelectedMatieresIds(filteredSelected)
   }
 
@@ -281,13 +294,12 @@ const loadMatieres = async ({ useCache = true } = {}) => {
     return
   }
 
-  // Essayer le cache pour ce niveau
   if (useCache) {
     const cached = readMatieresCache()
     const sameNiveau = cached?.niveauId === (userStore.niveau_pays?.id || null)
     const fresh = cached && Date.now() - cached.ts < MATIERES_CACHE_TTL_MS
     if (cached && sameNiveau && fresh) {
-      matieres.value = cached.data.filter(m => m && m.id && m.nom)
+      matieres.value = cached.data.filter((m) => m && m.id && m.nom)
       return
     }
   }
@@ -295,13 +307,12 @@ const loadMatieres = async ({ useCache = true } = {}) => {
   try {
     isLoadingMatieres.value = true
     const response = await getMatieresUtilisateur()
-    const items = response.data.matieres_disponibles.filter(m => m && m.id && m.nom)
+    const items = response.data.matieres_disponibles.filter((m) => m && m.id && m.nom)
     matieres.value = items
     writeMatieresCache(items)
-    console.log(`[Navigation] Matières chargées pour utilisateur:`, items.length)
     await syncSelectedAndActiveWithAvailability()
   } catch (error) {
-    console.error('[Navigation] Erreur lors du chargement des matières:', error)
+    console.error('[Navigation] Erreur chargement matieres:', error)
     matieres.value = []
   } finally {
     isLoadingMatieres.value = false
@@ -310,7 +321,6 @@ const loadMatieres = async ({ useCache = true } = {}) => {
 
 const setActiveMatiere = (matiereId) => {
   subjectsStore.setActiveMatiere(matiereId)
-  console.log('[Navigation] Matière active définie:', matiereId)
 }
 
 const selectMatiere = (matiere) => {
@@ -325,37 +335,28 @@ const removeMatiere = (matiereId) => {
   subjectsStore.removeMatiereId(matiereId)
 }
 
-/**
- * Gère les événements de souris sur les onglets (style Google Chrome)
- * @param {MouseEvent} event - L'événement de souris
- * @param {number} matiereId - L'ID de la matière
- */
 const handleTabMouseDown = (event, matiereId) => {
-  // Bouton du milieu (molette) = fermer l'onglet
   if (event.button === 1) {
     event.preventDefault()
     event.stopPropagation()
     removeMatiere(matiereId)
-    return
   }
-  
-  // Bouton gauche = comportement normal (géré par @click)
-  // Bouton droit = menu contextuel (géré par @contextmenu)
 }
 
 const toggleMatieresDropdown = () => {
   showMatieresDropdown.value = !showMatieresDropdown.value
 }
 
-// Watcher pour recharger les matières quand le niveau change
-watch(() => userStore.niveau_pays, async (newNiveau) => {
-  if (newNiveau) {
-    console.log('[Navigation] Niveau changé, rechargement des matières:', newNiveau.nom)
-    await loadMatieres()
-  }
-}, { immediate: false })
+watch(
+  () => userStore.niveau_pays,
+  async (newNiveau) => {
+    if (newNiveau) {
+      await loadMatieres()
+    }
+  },
+  { immediate: false }
+)
 
-// Initialisation
 onMounted(async () => {
   await Promise.all([
     loadMatieres({ useCache: true }),
@@ -371,6 +372,10 @@ onMounted(async () => {
   @extend .flex-between;
   width: 100%;
   gap: 20px;
+}
+
+.navigation--landing {
+  justify-content: flex-end;
 }
 
 .nav-items {
@@ -389,7 +394,7 @@ onMounted(async () => {
   border-radius: 6px;
   transition: all 0.2s ease;
   cursor: pointer;
-  
+
   &:hover {
     background: rgba(102, 126, 234, 0.1);
     color: #667eea;
@@ -440,7 +445,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding:8px 12px;
+  padding: 8px 12px;
   text-decoration: none;
   color: #10257f;
   font-weight: 500;
@@ -449,17 +454,16 @@ onMounted(async () => {
   cursor: pointer;
   border-radius: 6px;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background: rgba(102, 126, 234, 0.1);
     color: #667eea;
   }
-  
-  // Special styling for login button
+
   &:last-child {
     background: #667eea;
     color: white;
-    
+
     &:hover {
       background: #5a67d8;
       transform: translateY(-1px);
@@ -472,11 +476,16 @@ onMounted(async () => {
   height: 18px;
 }
 
+.right-emoji {
+  font-size: 16px;
+  line-height: 1;
+  color: currentColor;
+}
+
 .right-text {
   font-size: 14px;
 }
 
-// Styles pour les onglets de matières
 .matieres-tabs {
   position: relative;
   display: flex;
@@ -613,16 +622,14 @@ onMounted(async () => {
   font-weight: 500;
 }
 
-/* Effet visuel pour le clic de la molette (style Google Chrome) */
 .matiere-tab:active {
   transform: scale(0.95);
   transition: transform 0.1s ease;
 }
 
-// Mobile screens - hide navigation, show hamburger
 @media (max-width: #{$max-width-media}) {
   .navigation {
     display: none;
   }
 }
-</style> 
+</style>

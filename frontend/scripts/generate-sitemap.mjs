@@ -7,6 +7,9 @@ const __dirname = path.dirname(__filename)
 
 const STATIC_INDEXABLE_PATHS = new Set([
   '/',
+  '/plateforme-maths',
+  '/start',
+  '/bases-methode',
   '/tarifs',
   '/cours-particuliers',
   '/about',

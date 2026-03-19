@@ -35,19 +35,11 @@ if settings.DEBUG:
 if isinstance(settings.MEDIA_URL, str) and settings.MEDIA_URL.startswith('/'):
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Vérifier la configuration média au démarrage (debug)
-if settings.DEBUG:
-    from django.core.management import execute_from_command_line
-    import sys
-    try:
-        execute_from_command_line(['manage.py', 'check', '--deploy'])
-    except SystemExit:
-        pass
-else:
-    # En production, vérifier que les répertoires médias existent
-    import os
-    media_root = settings.MEDIA_ROOT
-    if not os.path.exists(media_root):
-        print(f"AVERTISSEMENT: Répertoire médias manquant: {media_root}")
+# Vérifier que les répertoires médias existent au démarrage (production)
+if not settings.DEBUG:
+    import os as _os_media_check
+    _media_root = settings.MEDIA_ROOT
+    if not _os_media_check.path.exists(_media_root):
+        print(f"AVERTISSEMENT: Répertoire médias manquant: {_media_root}")
     else:
-        print(f"Répertoire médias OK: {media_root}")
+        print(f"Répertoire médias OK: {_media_root}")

@@ -1,45 +1,99 @@
 <template>
-  <header :class="['header', { 'header--no-shadow': isFreeResourcePage }]" ref="headerRef">
+  <header :class="['header', { 'header--no-shadow': isFreeResourcePage, 'header--landing': isLandingVariant }]" ref="headerRef">
     <div class="header-desktop">
       <Logo data-track="nav" data-nav-name="home" data-nav-location="header_public" />
-      <Navigation @open-login="handleLogin" />
+      <Navigation :variant="variant" @open-login="handleLogin" @open-contact="openLandingContactModal" />
     </div>
+
     <div class="header-mobile">
-      <div class="header-mobile-top">
-        <Logo data-track="nav" data-nav-name="home" data-nav-location="header_public" />
-      </div>
-      <div v-if="isFreeResourcePage" class="mobile-free-tabs">
-        <FreeResourceTabs />
-      </div>
-      <div v-else-if="isCalculatorPage" class="mobile-calculator-tabs">
-        <CalculatorTabs />
-      </div>
-      <!-- Cours Particuliers à gauche -->
-      <router-link v-if="!isFreeResourcePage && !isCalculatorPage" to="/cours-particuliers" class="mobile-quick-link mobile-quick-link--left" data-track="nav" data-nav-name="tutoring" data-nav-location="header_public">
-        <UserGroupIcon class="mobile-quick-icon" />
-        <span>Cours Particuliers</span>
-      </router-link>
-      <!-- Nous contacter -->
-      <router-link v-if="!isFreeResourcePage && !isCalculatorPage" to="/contact" class="mobile-quick-link mobile-quick-link--contact" data-track="nav" data-nav-name="contact" data-nav-location="header_public">
-        <EnvelopeIcon class="mobile-quick-icon" />
-        <span>Nous contacter</span>
-      </router-link>
-      <!-- Spacer pour pousser Connexion à droite -->
-      <div v-if="!isFreeResourcePage && !isCalculatorPage" class="mobile-spacer"></div>
-      <!-- Connexion à droite -->
-      <button
-        v-if="!isFreeResourcePage && !isCalculatorPage"
-        class="mobile-quick-link mobile-quick-link--login"
-        data-cta-name="login"
-        data-cta-location="header_public"
-        @click="handleLogin"
-      >
-        <UserIcon class="mobile-quick-icon" />
-        <span>Connexion</span>
-      </button>
-      <MobileMenu @open-login="handleLogin" />
+      <template v-if="isLandingVariant">
+        <div class="header-mobile-top header-mobile-top--landing">
+          <Logo data-track="nav" data-nav-name="home" data-nav-location="header_public" />
+          <div class="landing-mobile-actions">
+            <button
+              type="button"
+              class="mobile-quick-link mobile-quick-link--contact"
+              data-track="nav"
+              data-nav-name="contact"
+              data-nav-location="header_public"
+              @click="openLandingContactModal"
+            >
+              <EnvelopeIcon class="mobile-quick-icon" />
+              <span>Nous contacter</span>
+            </button>
+            <button
+              type="button"
+              class="mobile-quick-link mobile-quick-link--login"
+              :data-cta-name="landingPrimaryCtaName"
+              data-cta-location="header_public"
+              @click="handleLogin"
+            >
+              <span v-if="isPlateformeMathsLanding" class="mobile-quick-emoji" aria-hidden="true">✦</span>
+              <UserIcon v-else class="mobile-quick-icon" />
+              <span>{{ landingPrimaryCtaLabel }}</span>
+            </button>
+          </div>
+        </div>
+      </template>
+
+      <template v-else>
+        <div class="header-mobile-top">
+          <Logo data-track="nav" data-nav-name="home" data-nav-location="header_public" />
+        </div>
+        <div v-if="isFreeResourcePage" class="mobile-free-tabs">
+          <FreeResourceTabs />
+        </div>
+        <div v-else-if="isCalculatorPage" class="mobile-calculator-tabs">
+          <CalculatorTabs />
+        </div>
+
+        <router-link
+          v-if="!isFreeResourcePage && !isCalculatorPage"
+          to="/cours-particuliers"
+          class="mobile-quick-link mobile-quick-link--left"
+          data-track="nav"
+          data-nav-name="tutoring"
+          data-nav-location="header_public"
+        >
+          <UserGroupIcon class="mobile-quick-icon" />
+          <span>Cours Particuliers</span>
+        </router-link>
+
+        <router-link
+          v-if="!isFreeResourcePage && !isCalculatorPage"
+          to="/contact"
+          class="mobile-quick-link mobile-quick-link--contact"
+          data-track="nav"
+          data-nav-name="contact"
+          data-nav-location="header_public"
+        >
+          <EnvelopeIcon class="mobile-quick-icon" />
+          <span>Nous contacter</span>
+        </router-link>
+
+        <div v-if="!isFreeResourcePage && !isCalculatorPage" class="mobile-spacer"></div>
+
+        <button
+          v-if="!isFreeResourcePage && !isCalculatorPage"
+          class="mobile-quick-link mobile-quick-link--login"
+          data-cta-name="login"
+          data-cta-location="header_public"
+          @click="handleLogin"
+        >
+          <UserIcon class="mobile-quick-icon" />
+          <span>Connexion</span>
+        </button>
+
+        <MobileMenu @open-login="handleLogin" />
+      </template>
     </div>
   </header>
+  <ContactModal
+    :isOpen="isContactModalOpen"
+    :initialSubject="contactModalSubject"
+    @close="closeContactModal"
+    @success="handleContactSuccess"
+  />
 </template>
 
 <script>
@@ -49,9 +103,10 @@ import Navigation from '@/components/layout/Navigation.vue'
 import MobileMenu from '@/components/layout/MobileMenu.vue'
 import FreeResourceTabs from '@/components/free-content/FreeResourceTabs.vue'
 import CalculatorTabs from '@/components/calculator/CalculatorTabs.vue'
+import ContactModal from '@/components/common/ContactModal.vue'
 import { UserGroupIcon, UserIcon, EnvelopeIcon } from '@heroicons/vue/24/outline'
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
   name: 'Header',
@@ -61,29 +116,85 @@ export default {
     MobileMenu,
     FreeResourceTabs,
     CalculatorTabs,
+    ContactModal,
     UserGroupIcon,
     UserIcon,
     EnvelopeIcon
   },
-  setup() {
+  props: {
+    variant: {
+      type: String,
+      default: 'default'
+    }
+  },
+  setup(props) {
     const { openModal } = useModalManager()
     const headerRef = ref(null)
     const route = useRoute()
+    const router = useRouter()
+    const isContactModalOpen = ref(false)
+    const contactModalSubject = ref('')
 
-    const handleLogin = () => {
-      openModal(MODAL_IDS.LOGIN)
+    const isLandingVariant = computed(() => props.variant === 'landing')
+    const isPlateformeMathsLanding = computed(
+      () =>
+        isLandingVariant.value &&
+        ['/plateforme-maths', '/bases-methode'].includes(route.path)
+    )
+    const landingPrimaryCtaLabel = computed(() =>
+      isPlateformeMathsLanding.value ? 'Choisir un abonnement' : 'Créer un compte'
+    )
+    const landingPrimaryCtaName = computed(() =>
+      isPlateformeMathsLanding.value ? 'pricing' : 'signup'
+    )
+
+    const scrollToOffer = async () => {
+      if (typeof document !== 'undefined') {
+        const offer = document.getElementById('offre')
+        if (offer) {
+          offer.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          return
+        }
+      }
+
+      if (!['/plateforme-maths', '/bases-methode'].includes(route.path)) {
+        await router.push({ path: '/plateforme-maths', hash: '#offre' })
+      } else if (typeof window !== 'undefined') {
+        window.location.hash = 'offre'
+      }
+    }
+
+    const handleLogin = async () => {
+      if (isPlateformeMathsLanding.value) {
+        await scrollToOffer()
+        return
+      }
+      openModal(isLandingVariant.value ? MODAL_IDS.REGISTER : MODAL_IDS.LOGIN)
+    }
+
+    const openLandingContactModal = () => {
+      if (!isLandingVariant.value) return
+      contactModalSubject.value = "Demande d'information"
+      isContactModalOpen.value = true
+    }
+
+    const closeContactModal = () => {
+      isContactModalOpen.value = false
+      contactModalSubject.value = ''
+    }
+
+    const handleContactSuccess = () => {
+      // no-op: le ContactModal gère déjà son message de confirmation
     }
 
     const isFreeResourcePage = computed(() => {
       const path = route.path
-      // Exclure la page d'accueil des ressources gratuites, ne montrer les tabs que sur les sous-pages
       return path?.startsWith('/ressources-gratuites/') && path !== '/ressources-gratuites'
     })
+
     const isCalculatorPage = computed(() => route.path === '/calculator')
 
-    // Empêcher le zoom et les gestes indésirables sur le header
     const handleTouchStart = (e) => {
-      // Si c'est un multi-touch (pinch zoom), empêcher
       if (e.touches.length > 1) {
         e.preventDefault()
         e.stopPropagation()
@@ -91,14 +202,12 @@ export default {
     }
 
     const handleTouchMove = (e) => {
-      // Empêcher le pinch zoom sur le header
       if (e.touches.length > 1) {
         e.preventDefault()
         e.stopPropagation()
       }
     }
 
-    // Empêcher le zoom lors du double-tap sur le header
     let lastTap = 0
     const handleDoubleTap = (e) => {
       const currentTime = Date.now()
@@ -108,12 +217,12 @@ export default {
         return false
       }
       lastTap = currentTime
+      return true
     }
 
     onMounted(() => {
       const header = headerRef.value
       if (header) {
-        // Ajouter les listeners avec passive: false pour permettre preventDefault()
         header.addEventListener('touchstart', handleTouchStart, { passive: false })
         header.addEventListener('touchmove', handleTouchMove, { passive: false })
         header.addEventListener('touchend', handleDoubleTap, { passive: false })
@@ -131,9 +240,18 @@ export default {
 
     return {
       handleLogin,
+      openLandingContactModal,
+      closeContactModal,
+      handleContactSuccess,
+      isContactModalOpen,
+      contactModalSubject,
       headerRef,
       isFreeResourcePage,
-      isCalculatorPage
+      isCalculatorPage,
+      isLandingVariant,
+      isPlateformeMathsLanding,
+      landingPrimaryCtaLabel,
+      landingPrimaryCtaName
     }
   }
 }
@@ -157,17 +275,19 @@ export default {
   display: flex;
   align-items: center;
   min-height: $header-height;
-  /* Empêcher le zoom et les gestes indésirables */
   touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  /* Forcer le header à rester fixe (GPU layer) */
   will-change: transform;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+}
+
+.header--landing {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
 }
 
 .header--no-shadow {
@@ -192,6 +312,18 @@ export default {
   gap: 8px;
   flex-shrink: 0;
   min-width: 0;
+}
+
+.header-mobile-top--landing {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.landing-mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
 }
 
 .mobile-free-tabs {
@@ -239,7 +371,7 @@ export default {
     margin-left: 4px;
     color: #10257f;
     border: 1px solid rgba(102, 126, 234, 0.3);
-    
+
     &:hover {
       background: rgba(102, 126, 234, 0.1);
       color: #667eea;
@@ -250,7 +382,7 @@ export default {
   &--contact {
     color: #10257f;
     border: 1px solid rgba(102, 126, 234, 0.3);
-    
+
     &:hover {
       background: rgba(102, 126, 234, 0.1);
       color: #667eea;
@@ -261,7 +393,7 @@ export default {
   &--login {
     background: #667eea;
     color: white;
-    
+
     &:hover {
       background: #5a67d8;
     }
@@ -271,6 +403,12 @@ export default {
 .mobile-quick-icon {
   width: 16px;
   height: 16px;
+}
+
+.mobile-quick-emoji {
+  font-size: 15px;
+  line-height: 1;
+  color: currentColor;
 }
 
 .header-desktop {
@@ -283,10 +421,8 @@ export default {
   box-sizing: border-box;
 }
 
-// Responsive breakpoints
 @media (max-width: #{$max-width-media}) {
   .header {
-    /* Bloquer le scroll sur le header lui-même - empêche tout mouvement */
     touch-action: none;
     overscroll-behavior: contain;
   }
@@ -294,9 +430,9 @@ export default {
   .header-desktop {
     display: none;
   }
+
   .header-mobile {
     display: flex;
-    /* Permettre les clics sur les éléments du header */
     touch-action: manipulation;
   }
 
@@ -319,14 +455,28 @@ export default {
   }
 }
 
-// Écrans < 530px - masquer "Nous contacter"
 @media (max-width: 530px) {
   .mobile-quick-link--contact {
     display: none !important;
   }
+
+  .header--landing .mobile-quick-link--contact {
+    display: flex !important;
+  }
 }
 
-// Très petits écrans (< 400px)
+@media (max-width: 420px) {
+  .header--landing .mobile-quick-link {
+    min-width: 38px;
+    padding: 6px 8px;
+    justify-content: center;
+  }
+
+  .header--landing .mobile-quick-link span {
+    display: none;
+  }
+}
+
 @media (max-width: 400px) {
   .header-mobile {
     padding: 0 8px;
@@ -353,15 +503,15 @@ export default {
   .header-mobile {
     display: none;
   }
+
   .header-desktop {
     display: flex;
   }
 }
 
-/* iOS safe area at top */
 @supports (padding: env(safe-area-inset-top)) {
   .header {
     padding-top: env(safe-area-inset-top);
   }
 }
-</style> 
+</style>

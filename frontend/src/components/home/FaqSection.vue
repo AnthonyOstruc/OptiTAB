@@ -2,9 +2,9 @@
   <section class="faq-section">
     <div class="faq-header">
       <h2 class="faq-title">
-        <span>Questions</span> <span class="faq-highlight">Fréquentes</span>
+        <span>{{ titlePrefix }}</span> <span class="faq-highlight">{{ titleHighlight }}</span>
       </h2>
-      <p class="faq-desc">Trouvez des réponses aux questions courantes sur OptiTAB et notre plateforme d'apprentissage.</p>
+      <p class="faq-desc">{{ description }}</p>
     </div>
     <div class="faq-list">
       <div v-for="(item, idx) in faq" :key="idx" class="faq-item">
@@ -25,7 +25,13 @@
 <script setup>
 import { ref } from 'vue'
 const props = defineProps({
-  faq: { type: Array, required: true }
+  faq: { type: Array, required: true },
+  titlePrefix: { type: String, default: 'Questions' },
+  titleHighlight: { type: String, default: 'Fréquentes' },
+  description: {
+    type: String,
+    default: "Trouvez des réponses aux questions courantes sur OptiTAB et notre plateforme d'apprentissage."
+  }
 })
 const opened = ref(null)
 function toggle(idx) {

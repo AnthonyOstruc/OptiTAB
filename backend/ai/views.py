@@ -1,5 +1,8 @@
 import os
-import openai
+try:
+    import openai
+except ImportError:
+    openai = None
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -19,6 +22,8 @@ class AIHelper:
     """Classe utilitaire pour gérer les interactions avec l'IA"""
 
     def __init__(self):
+        if openai is None:
+            raise ValueError("Module openai non disponible (installation manquante ou incompatible)")
         openai.api_key = getattr(settings, 'OPENAI_API_KEY', os.getenv('OPENAI_API_KEY'))
         if not openai.api_key:
             raise ValueError("OPENAI_API_KEY non configurée")

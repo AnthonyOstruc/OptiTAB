@@ -1,16 +1,27 @@
 <template>
   <div class="main-layout">
-    <Header />
+    <Header :variant="headerVariant" />
     <main class="main-content">
       <slot />
     </main>
-    <Footer />
+    <Footer :variant="footerVariant" />
   </div>
 </template>
 
 <script setup>
 import Header from './Header.vue'
 import Footer from './Footer.vue'
+
+defineProps({
+  headerVariant: {
+    type: String,
+    default: 'default'
+  },
+  footerVariant: {
+    type: String,
+    default: 'default'
+  }
+})
 </script>
 
 <style scoped>

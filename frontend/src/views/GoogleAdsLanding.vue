@@ -1,138 +1,275 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import Header from '@/components/layout/Header.vue'
+import MainLayout from '@/components/layout/MainLayout.vue'
 import PricingCards from '@/components/shared/PricingCards.vue'
+import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
+import FaqSection from '@/components/home/FaqSection.vue'
+import WhatsappChatButton from '@/components/home/WhatsappChatButton.vue'
 import { createCheckoutSession, createGuestCheckoutSession } from '@/api/subscriptions'
 import { getNiveauxByPays } from '@/api/niveaux'
 import { useUserStore } from '@/stores/user'
 import { useToast } from '@/composables/useToast'
-import { setPageSeo, buildFaqJsonLd, getRobotsForRoute } from '@/services/seo'
+import { useModalManager, MODAL_IDS } from '@/composables/useModalManager'
+import { setPageSeo, getRobotsForRoute } from '@/services/seo'
+import * as analytics from '@/services/analytics'
 
 const route = useRoute()
 const userStore = useUserStore()
 const { error: showErrorToast } = useToast()
+const { openModal } = useModalManager()
+
+const isStartRoute = computed(() => route.path === '/start')
+const isBasesMethodeRoute = computed(() => route.path === '/bases-methode')
+
+const CTA_LABEL = computed(() =>
+  isStartRoute.value ? 'Découvrir la plateforme' : 'Choisir mon abonnement'
+)
+const OFFER_CTA_LABEL = 'Choisir mon abonnement'
+
+const quickTrust = computed(() =>
+  isStartRoute.value
+    ? ['Commence gratuitement maintenant', 'Aucune carte bancaire requise', 'Inscription en 30 secondes']
+    : ['Sans engagement', 'Annulable à tout moment', 'Accès immédiat']
+)
+
+const heroKicker = computed(() => 'OptiTAB — Plateforme maths')
+
+const heroTitle = computed(() =>
+  isBasesMethodeRoute.value
+    ? 'Le parcours maths Bases & Méthode pour reprendre confiance'
+    : 'La plateforme de maths pour mieux comprendre et progresser'
+)
+
+const heroSubtitle = computed(() =>
+  isBasesMethodeRoute.value
+    ? 'Cours, fiches de synthèse et exercices corrigés pas à pas pour combler les lacunes'
+    : 'Cours, fiches de synthèse et exercices corrigés pas à pas'
+)
+
+const heroResult = computed(() =>
+  isBasesMethodeRoute.value
+    ? 'Déjà adopté par de nombreux élèves du lycée au supérieur.'
+    : 'Travaille plus efficacement, comprends mieux, progresse à ton rythme.'
+)
+
+const levelsSectionTitle = computed(() =>
+  isBasesMethodeRoute.value
+    ? 'Bases & Méthode pour repartir sur de bonnes bases'
+    : 'Choisis le parcours qui te correspond'
+)
+
+const levelsSectionSubtitle = computed(() =>
+  isBasesMethodeRoute.value
+    ? 'Une méthode claire et progressive pour reprendre confiance, combler ses lacunes et avancer pas à pas.'
+    : 'Trouve en quelques secondes le parcours adapté à ton niveau.'
+)
+
+const levelsSectionNote = computed(() =>
+  isBasesMethodeRoute.value
+    ? ''
+    : "Lycée : programmes alignés sur l'Éducation nationale (France)"
+)
+
+const finalCtaTitle = computed(() =>
+  isBasesMethodeRoute.value
+    ? 'Bases & Méthode : reprends les fondamentaux et progresse durablement'
+    : 'La plateforme de maths pour mieux comprendre et progresser'
+)
+
+const finalCtaSubtitle = computed(() =>
+  isBasesMethodeRoute.value
+    ? 'Déjà adopté par de nombreux élèves du lycée au supérieur.'
+    : 'Cours clairs, fiches de synthèse, exercices corrigés pas à pas.'
+)
+
+const heroStats = ['+150 chapitres', '+150 résumés', '+150 cours', '+1000 exercices']
+const levels = computed(() =>
+  isBasesMethodeRoute.value
+    ? [
+        {
+          title: 'Bases & Méthode',
+          description: 'Pour combler ses lacunes, retrouver une méthode et progresser durablement.',
+          badge: 'Le plus choisi pour reprendre les bases',
+          chips: ['Progressif', 'Pas à pas', 'Accès immédiat'],
+          isHighlight: true
+        }
+      ]
+    : [
+        {
+          title: 'Seconde',
+          description: 'Programme officiel'
+        },
+        {
+          title: 'Première',
+          description: 'Programme officiel'
+        },
+        {
+          title: 'Terminale',
+          description: 'Programme officiel'
+        },
+        {
+          title: 'Bases & Méthode',
+          description: 'Pour reprendre les bases et combler ses lacunes',
+          badge: 'Idéal pour consolider les bases',
+          isHighlight: true
+        }
+      ]
+)
+const proofCards = [
+  {
+    title: 'Cours clairs',
+    text: 'Des cours structurés pour comprendre vite et retenir durablement.'
+  },
+  {
+    title: 'Fiches de synthèse',
+    text: 'Les points essentiels à réviser sans perdre de temps.'
+  },
+  {
+    title: 'Exercices corrigés pas à pas',
+    text: 'Une méthode détaillée pour savoir comment faire seul ensuite.'
+  }
+]
+const faqItems = [
+  {
+    question: "À qui s'adresse OptiTAB ?",
+    answer: 'Aux élèves de Seconde, Première, Terminale et Bases & Méthode.'
+  },
+  {
+    question: "À qui s'adresse Bases & Méthode ?",
+    answer: "Bases & Méthode s’adresse aux élèves qui veulent combler leurs lacunes, reprendre les fondamentaux et progresser durablement en maths. Ce parcours est particulièrement adapté aux élèves du collège au lycée, ainsi qu’aux étudiants en BTS et en classes préparatoires qui ont besoin de consolider leurs bases avec une méthode claire, progressive et efficace. Il est déjà utilisé et recommandé par de nombreux élèves, notamment en Bac, en BTS et en prépa."
+  },
+  {
+    question: 'Est-ce sans engagement ?',
+    answer: "Oui. L'abonnement est sans engagement."
+  },
+  {
+    question: 'Puis-je annuler à tout moment ?',
+    answer: "Oui. L'annulation se fait quand vous voulez."
+  },
+  {
+    question: "Que contient l'abonnement ?",
+    answer: 'Cours clairs, fiches de synthèse et exercices corrigés pas à pas.'
+  },
+  {
+    question: "Comment contacter quelqu'un si j'ai une question ?",
+    answer: 'Par WhatsApp ou par email. Réponse rapide.'
+  }
+]
 
 const submitting = ref(false)
 const niveaux = ref([])
 const niveauxLoading = ref(false)
 const niveauxError = ref('')
-const selectedNiveauId = ref(
-  userStore.niveau_pays?.id ? Number(userStore.niveau_pays.id) : null
-)
+const selectedNiveauId = ref(userStore.niveau_pays?.id ? Number(userStore.niveau_pays.id) : null)
 const showLevelModal = ref(false)
 const pendingPriceId = ref('')
 const pendingPlanName = ref('')
-const openFaqIndex = ref(null)
+const heroOfferTitle = computed(() =>
+  isStartRoute.value
+    ? 'Déjà adoptée par de nombreux élèves\ndu lycée au supérieur'
+    : isBasesMethodeRoute.value
+      ? 'Le parcours Bases & Méthode\ndéjà adopté par de nombreux élèves'
+      : 'Abonnements dès 4,99 €'
+)
+const heroOfferSub = computed(() =>
+  isBasesMethodeRoute.value
+    ? 'Parcours recommandé en Bac, BTS et prépa'
+    : 'Accès immédiat à la plateforme'
+)
+const showHeroOfferCard = computed(() => !isStartRoute.value && !isBasesMethodeRoute.value)
 
-const faqItems = [
-  {
-    question: 'Comment ça marche ?',
-    answer: 'Tu choisis ton abonnement, tu sélectionnes ton niveau (Seconde, Première ou Terminale) et tu accèdes immédiatement à tous les cours, fiches et exercices corrigés. Tu avances à ton rythme, quand tu veux.'
-  },
-  {
-    question: 'Quand est-ce que je paie ?',
-    answer: 'Le paiement se fait au moment de l\'abonnement. Tu es ensuite prélevé automatiquement chaque mois (ou chaque année si tu choisis l\'offre annuelle).'
-  },
-  {
-    question: 'Comment résilier ?',
-    answer: 'En un clic depuis ton espace abonné, à tout moment. Ton accès reste actif jusqu\'à la fin de la période déjà payée. Pas de frais, pas de délai.'
-  },
-  {
-    question: 'À qui s\'adresse la plateforme ?',
-    answer: 'À tous les élèves de Seconde, Première et Terminale qui veulent progresser en maths. Le contenu suit le programme officiel de l\'Éducation nationale française.'
-  },
-  {
-    question: 'Qu\'est-ce que le parcours Bases & Méthode ?',
-    answer: 'C\'est un parcours complémentaire accessible à tous les abonnés — lycéens, élèves de prépa ou toute personne souhaitant reprendre les fondamentaux. Utilisable librement, sans obligation.'
+watch(
+  () => userStore.niveau_pays?.id,
+  (newId) => {
+    if (newId) selectedNiveauId.value = Number(newId)
   }
-]
+)
 
-function toggleFaq(idx) {
-  openFaqIndex.value = openFaqIndex.value === idx ? null : idx
-}
-
-// ── SEO ──
-const title = 'Abonnement maths en ligne dès 3,99 € — Cours, fiches et exercices corrigés | OptiTAB'
-const description = 'Cours clairs, fiches de synthèse et exercices corrigés pas à pas pour la Seconde, Première et Terminale. Parcours Bases & Méthode inclus. Accès immédiat. Sans engagement. Dès 3,99 €/mois.'
-const faqGraph = buildFaqJsonLd(faqItems)
-const jsonLdGraph = [
-  {
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://www.optitab.net/' },
-      { '@type': 'ListItem', position: 2, name: 'Plateforme maths', item: 'https://www.optitab.net/plateforme-maths' }
-    ]
-  },
-  ...(faqGraph ? [faqGraph] : [])
-]
-
-setPageSeo({
-  title,
-  description,
-  canonicalPath: '/plateforme-maths',
-  robots: getRobotsForRoute({ route }),
-  ogType: 'website',
-  jsonLdGraph
+watch(showLevelModal, (isOpen) => {
+  if (typeof document === 'undefined') return
+  document.body.style.overflow = isOpen ? 'hidden' : ''
 })
 
-// ── Scroll animations ──
-let scrollObserver = null
+const selectedNiveau = computed(() => {
+  return niveaux.value.find((niveau) => Number(niveau.id) === Number(selectedNiveauId.value)) || null
+})
 
-onMounted(() => {
-  // UTM persistence
-  const params = new URLSearchParams(window.location.search)
-  const gclid = params.get('gclid')
-  if (gclid) {
-    try { sessionStorage.setItem('gclid', gclid) } catch (_) {}
+const selectedNiveauLabel = computed(() => {
+  if (!selectedNiveau.value) return ''
+  const pays = selectedNiveau.value.pays?.nom
+  return pays ? `${selectedNiveau.value.nom} - ${pays}` : selectedNiveau.value.nom
+})
+
+const normalizeText = (value = '') =>
+  String(value)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+
+const findBasesMethodeLevel = (list = []) =>
+  list.find((niveau) => {
+    const label = normalizeText(niveau?.nom)
+    return label.includes('base') && label.includes('methode')
+  }) || null
+
+function scrollToOffer() {
+  if (typeof document === 'undefined') return
+  const node = document.getElementById('offre')
+  if (!node) return
+  node.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+function openRegisterModal() {
+  openModal(MODAL_IDS.REGISTER)
+}
+
+function handlePrimaryCta() {
+  if (isStartRoute.value) {
+    openRegisterModal()
+    return
   }
-
-  // Scroll reveal
-  scrollObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('revealed')
-      })
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-  )
-  document.querySelectorAll('.reveal-on-scroll').forEach(el => scrollObserver.observe(el))
-})
-
-onUnmounted(() => {
-  scrollObserver?.disconnect()
-})
-
-// ── Scroll CTA ──
-function scrollToPricing() {
-  const el = document.getElementById('gads-pricing')
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  scrollToOffer()
 }
 
-function scrollToDemo() {
-  const el = document.getElementById('gads-demo')
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+async function handlePlanSelect(card) {
+  await handleSubscribe(card)
 }
 
-// ── Checkout flow ──
 async function loadLevels(force = false) {
   if (niveauxLoading.value) return
   if (!force && niveaux.value.length) return
+
   try {
     niveauxLoading.value = true
     niveauxError.value = ''
     const data = await getNiveauxByPays()
-    const rawList = Array.isArray(data?.results)
+    const raw = Array.isArray(data?.results)
       ? data.results
-      : Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : [])
-    niveaux.value = rawList.filter(n => n && (n.est_actif === undefined || n.est_actif))
+      : Array.isArray(data)
+        ? data
+        : Array.isArray(data?.data)
+          ? data.data
+          : []
+
+    niveaux.value = raw.filter((niveau) => niveau && (niveau.est_actif === undefined || niveau.est_actif))
+
+    if (isBasesMethodeRoute.value) {
+      const basesMethodeLevel = findBasesMethodeLevel(niveaux.value)
+      if (basesMethodeLevel) {
+        selectedNiveauId.value = Number(basesMethodeLevel.id)
+      }
+    }
+
     if (!selectedNiveauId.value && niveaux.value.length) {
-      const preferredId = userStore.niveau_pays?.id
-      const match = preferredId ? niveaux.value.find(n => Number(n.id) === Number(preferredId)) : null
+      const preferred = userStore.niveau_pays?.id
+      const match = preferred ? niveaux.value.find((niveau) => Number(niveau.id) === Number(preferred)) : null
       selectedNiveauId.value = match ? match.id : niveaux.value[0].id
     }
   } catch (error) {
-    niveauxError.value = 'Impossible de récupérer les niveaux.'
+    console.error('Erreur chargement niveaux:', error)
+    niveauxError.value = 'Impossible de charger les niveaux.'
   } finally {
     niveauxLoading.value = false
   }
@@ -141,18 +278,22 @@ async function loadLevels(force = false) {
 async function handleSubscribe(card) {
   const priceId = card?.priceId
   if (!priceId) {
-    showErrorToast('Ce plan doit encore être configuré (Price ID manquant).')
+      showErrorToast('Plan non configuré (Price ID manquant).')
     return
   }
+
   pendingPriceId.value = priceId
   pendingPlanName.value = card?.title || 'OptiTAB'
+
   await loadLevels()
+
   if (!niveaux.value.length) {
-    showErrorToast('Impossible de proposer les niveaux pour le moment.')
+    showErrorToast('Niveaux indisponibles pour le moment.')
     pendingPriceId.value = ''
     pendingPlanName.value = ''
     return
   }
+
   if (!selectedNiveauId.value) selectedNiveauId.value = niveaux.value[0].id
   showLevelModal.value = true
 }
@@ -165,1081 +306,1062 @@ function closeLevelModal() {
 }
 
 async function confirmSubscription() {
-  if (!pendingPriceId.value) { closeLevelModal(); return }
-  if (!selectedNiveauId.value) {
-    showErrorToast('Choisis un niveau pour continuer.')
+  if (!pendingPriceId.value) {
+    closeLevelModal()
     return
   }
+
+  if (!selectedNiveauId.value) {
+      showErrorToast('Choisis un niveau pour continuer.')
+    return
+  }
+
   try {
     submitting.value = true
-    let redirectUrl
-    if (!userStore.isAuthenticated) {
-      const { data } = await createGuestCheckoutSession(pendingPriceId.value, {
-        niveau_pays_id: selectedNiveauId.value
-      })
-      redirectUrl = data?.checkout_url || data?.url
-    } else {
-      const { data } = await createCheckoutSession(pendingPriceId.value, {
-        niveau_pays_id: selectedNiveauId.value
-      })
-      redirectUrl = data?.checkout_url || data?.url
+    const checkoutFn = userStore.isAuthenticated ? createCheckoutSession : createGuestCheckoutSession
+    const { data } = await checkoutFn(pendingPriceId.value, {
+      niveau_pays_id: selectedNiveauId.value
+    })
+
+    const redirectUrl = data?.checkout_url || data?.url
+    if (!redirectUrl) {
+      showErrorToast('Paiement indisponible. Réessaie plus tard.')
+      return
     }
-    if (redirectUrl) {
-      window.location.href = redirectUrl
-    } else {
-      showErrorToast("Impossible d'ouvrir la page de paiement.")
-    }
-  } catch (err) {
-    showErrorToast("Erreur lors de la création du paiement.")
+
+    analytics.beginCheckout({
+      value: data?.amount,
+      currency: data?.currency || 'EUR',
+      planName: data?.plan_name || pendingPlanName.value,
+      planMode: data?.plan_mode
+    })
+
+    window.location.assign(redirectUrl)
+  } catch (error) {
+    console.error(error)
+    showErrorToast('Erreur lors du paiement.')
   } finally {
     submitting.value = false
-    closeLevelModal()
+    showLevelModal.value = false
+    pendingPriceId.value = ''
+    pendingPlanName.value = ''
   }
 }
+
+function handleEscape(event) {
+  if (event.key === 'Escape') closeLevelModal()
+}
+
+function storeGclid() {
+  if (typeof window === 'undefined') return
+  try {
+    const params = new URLSearchParams(window.location.search)
+    const gclid = params.get('gclid')
+    if (gclid) window.localStorage?.setItem('optitab_gclid', gclid)
+  } catch (_) {}
+}
+
+onMounted(() => {
+  setPageSeo({
+    title: isBasesMethodeRoute.value
+      ? 'Bases & Méthode : le parcours pour combler ses lacunes | OptiTAB'
+      : 'La plateforme de maths pour mieux comprendre et progresser | OptiTAB',
+    description: isBasesMethodeRoute.value
+      ? 'Le parcours Bases & Méthode pour reprendre les fondamentaux : cours clairs, fiches de synthèse et exercices corrigés pas à pas.'
+      : 'Cours clairs, fiches de synthèse et exercices corrigés pas à pas. Sans engagement, annulable à tout moment, accès immédiat.',
+    canonicalPath: isBasesMethodeRoute.value
+      ? '/bases-methode'
+      : (isStartRoute.value ? '/start' : '/plateforme-maths'),
+    robots: getRobotsForRoute({ route }),
+    ogType: 'website'
+  })
+
+  storeGclid()
+  if (typeof window !== 'undefined') window.addEventListener('keydown', handleEscape)
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') window.removeEventListener('keydown', handleEscape)
+  if (typeof document !== 'undefined') document.body.style.overflow = ''
+})
 </script>
 
 <template>
-  <div class="lp">
-    <Header />
+  <MainLayout header-variant="landing" footer-variant="landing">
+    <div class="landing-ads">
+      <div class="landing-shell">
+        <section class="block hero-block">
+          <div class="hero-copy">
+            <p class="hero-kicker">{{ heroKicker }}</p>
+            <h1>{{ heroTitle }}</h1>
+            <p class="hero-subtitle">{{ heroSubtitle }}</p>
+            <p class="hero-result">{{ heroResult }}</p>
 
-    <!-- ══════════ HERO ══════════ -->
-    <section class="hero">
-      <div class="hero__deco">
-        <div class="hero__circle hero__circle--1"></div>
-        <div class="hero__circle hero__circle--2"></div>
-        <div class="hero__circle hero__circle--3"></div>
-      </div>
-      <div class="hero__body">
-        <h1 class="hero__title">
-          Progresse en maths<br><span class="hero__grad">dès 3,99 €/mois</span>
-        </h1>
-        <p class="hero__sub">
-          Cours structurés, fiches de synthèse et exercices corrigés pas à pas<br class="hide-mobile">
-          pour la Seconde, Première et Terminale.
-        </p>
-        <div class="hero__chips">
-          <span class="chip"><span class="chip__icon">✓</span> Accès immédiat</span>
-          <span class="chip"><span class="chip__icon">✓</span> Sans engagement</span>
-          <span class="chip"><span class="chip__icon">✓</span> Résiliation en 1 clic</span>
-        </div>
-        <div class="hero__ctas">
-          <button class="btn btn--main" data-cta-name="subscribe" data-cta-location="gads_hero" @click="scrollToPricing">
-            <span class="btn__label">Je m'abonne maintenant</span>
-            <span class="btn__hint">Accès immédiat après paiement</span>
-          </button>
-          <button class="btn btn--ghost" @click="scrollToDemo">
-            Voir la plateforme en action
-          </button>
-        </div>
-        <p class="hero__trust">Paiement sécurisé Stripe · Contenu aligné Éducation nationale</p>
-      </div>
-    </section>
-
-    <!-- ══════════ DÉMO ══════════ -->
-    <section class="demo reveal-on-scroll" id="gads-demo">
-      <div class="wrap">
-        <div class="demo__badge"><span class="demo__sparkle">✨</span> Découvrez OptiTAB en action</div>
-        <h2 class="section-title">La plateforme qui <span class="grad">transforme</span> l'apprentissage</h2>
-        <p class="section-sub">Exercices guidés avec corrections détaillées, fiches prêtes à l'emploi et progression structurée.</p>
-        <div class="demo__grid">
-          <div class="demo__card reveal-on-scroll">
-            <div class="demo__tag"><span>💻</span> Version Desktop</div>
-            <div class="demo__frame">
-              <img src="/video/optitab-demo-exercices.gif" alt="Démonstration des exercices corrigés pas à pas sur OptiTAB" loading="lazy" />
-            </div>
-            <p class="demo__caption">Interface complète pour travailler confortablement</p>
-          </div>
-          <div class="demo__card demo__card--mobile reveal-on-scroll">
-            <div class="demo__tag"><span>📱</span> Version Mobile</div>
-            <div class="demo__frame demo__frame--mobile">
-              <img src="/video/optitab-demo-mobile.gif" alt="Interface mobile OptiTAB" loading="lazy" />
-            </div>
-            <p class="demo__caption">Étudiez partout, à tout moment</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════ FEATURES ══════════ -->
-    <section class="features reveal-on-scroll">
-      <div class="wrap">
-        <h2 class="section-title">Tout ce qu'il faut pour <span class="grad">vraiment progresser</span></h2>
-        <p class="section-sub">Une méthode pensée pour les lycéens, pas un catalogue de vidéos.</p>
-        <div class="features__grid">
-          <div class="feat-card reveal-on-scroll">
-            <div class="feat-card__ico feat-card__ico--blue">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            </div>
-            <div class="feat-card__body">
-              <h3>Cours structurés par chapitre</h3>
-              <p>Chaque notion est expliquée clairement, dans l'ordre du programme officiel de l'Éducation nationale.</p>
-            </div>
-          </div>
-          <div class="feat-card reveal-on-scroll">
-            <div class="feat-card__ico feat-card__ico--indigo">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            </div>
-            <div class="feat-card__body">
-              <h3>Exercices corrigés pas à pas</h3>
-              <p>Pas juste la réponse — chaque étape est détaillée pour que tu comprennes la méthode.</p>
-            </div>
-          </div>
-          <div class="feat-card reveal-on-scroll">
-            <div class="feat-card__ico feat-card__ico--violet">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            </div>
-            <div class="feat-card__body">
-              <h3>Fiches de synthèse</h3>
-              <p>Des fiches prêtes à l'emploi pour chaque chapitre — idéales avant un contrôle ou le bac.</p>
-            </div>
-          </div>
-          <div class="feat-card reveal-on-scroll">
-            <div class="feat-card__ico feat-card__ico--emerald">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            </div>
-            <div class="feat-card__body">
-              <h3>Progression guidée</h3>
-              <p>Un parcours structuré chapitre par chapitre pour avancer dans le bon ordre, sans se perdre.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════ NIVEAUX ══════════ -->
-    <section class="levels reveal-on-scroll">
-      <div class="wrap">
-        <p class="eyebrow">Adapté à chaque niveau</p>
-        <h2 class="section-title">Pour tous les <span class="grad">lycéens</span></h2>
-        <p class="section-sub">Des contenus complets de la Seconde à la Terminale, alignés sur le programme officiel.</p>
-        <div class="levels__grid">
-          <div class="lv-card reveal-on-scroll">
-            <div class="lv-card__ico lv-card__ico--blue">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
-            </div>
-            <h3>Seconde</h3>
-            <p>Consolide tes bases et prends les bons réflexes dès le lycée.</p>
-          </div>
-          <div class="lv-card reveal-on-scroll">
-            <div class="lv-card__ico lv-card__ico--indigo">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            </div>
-            <h3>Première</h3>
-            <p>Approfondis chaque notion et prépare sereinement les épreuves.</p>
-          </div>
-          <div class="lv-card reveal-on-scroll">
-            <div class="lv-card__ico lv-card__ico--violet">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.657 2.686 3 6 3s6-1.343 6-3v-5"/></svg>
-            </div>
-            <h3>Terminale</h3>
-            <p>Maîtrise le programme et vise l'excellence au bac.</p>
-          </div>
-        </div>
-
-        <!-- Bases & Méthode — bloc séparé -->
-        <div class="bases-block reveal-on-scroll">
-          <div class="bases-block__ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          </div>
-          <div class="bases-block__body">
-            <div class="bases-block__header">
-              <h3>Bases &amp; Méthode</h3>
-              <span class="bases-block__tag">Inclus pour tous</span>
-            </div>
-            <p>Un parcours complémentaire accessible à tous les abonnés — lycéens en difficulté, élèves de prépa ou toute personne souhaitant reprendre les fondamentaux. Utilisable librement, sans obligation.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════ PRICING ══════════ -->
-    <section class="pricing reveal-on-scroll" id="gads-pricing">
-      <div class="wrap">
-        <p class="eyebrow">Abonnement simple et transparent</p>
-        <h2 class="section-title">Dès <span class="grad">3,99 €/mois</span></h2>
-        <p class="section-sub">Sans engagement · Accès immédiat · Résiliation en un clic</p>
-        <PricingCards
-          :submitting="submitting"
-          cta-location="gads_pricing"
-          @select="handleSubscribe"
-        />
-      </div>
-    </section>
-
-    <!-- ══════════ FAQ ══════════ -->
-    <section class="faq reveal-on-scroll">
-      <div class="wrap wrap--narrow">
-        <h2 class="section-title">Questions <span class="grad">fréquentes</span></h2>
-        <div class="faq__list">
-          <div
-            v-for="(item, idx) in faqItems"
-            :key="idx"
-            class="faq__item"
-            :class="{ 'faq__item--open': openFaqIndex === idx }"
-          >
-            <button class="faq__q" @click="toggleFaq(idx)" type="button">
-              <span>{{ item.question }}</span>
-              <svg class="faq__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            <button
+              type="button"
+              class="cta-primary"
+              data-cta-name="pricing"
+              data-cta-location="hero"
+              @click="handlePrimaryCta"
+            >
+              {{ CTA_LABEL }}
             </button>
-            <div class="faq__a-wrap">
-              <p class="faq__a">{{ item.answer }}</p>
+
+            <div class="trust-row">
+              <span v-for="item in quickTrust" :key="item" class="trust-chip">{{ item }}</span>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ══════════ FINAL CTA ══════════ -->
-    <section class="final-cta">
-      <div class="wrap">
-        <h2 class="final-cta__title">Prêt à progresser en maths ?</h2>
-        <p class="final-cta__sub">Rejoins des centaines d'élèves qui progressent avec OptiTAB. Accès immédiat dès 3,99 €/mois.</p>
-        <button class="btn btn--white" data-cta-name="subscribe" data-cta-location="gads_final" @click="scrollToPricing">
-          Je m'abonne maintenant
-        </button>
-      </div>
-    </section>
-
-    <!-- ══════════ FOOTER ══════════ -->
-    <footer class="lp-footer">
-      <div class="lp-footer__inner">
-        <span>© {{ new Date().getFullYear() }} OptiTAB</span>
-        <span class="lp-footer__sep">·</span>
-        <router-link to="/legal">Mentions légales</router-link>
-        <span class="lp-footer__sep">·</span>
-        <router-link to="/confidentialite">Confidentialité</router-link>
-        <span class="lp-footer__sep">·</span>
-        <router-link to="/cgu">CGU</router-link>
-        <span class="lp-footer__sep">·</span>
-        <router-link to="/cgv">CGV</router-link>
-      </div>
-    </footer>
-
-    <!-- ══════════ MODAL NIVEAU ══════════ -->
-    <Teleport to="body">
-      <div v-if="showLevelModal" class="modal-overlay" @click="closeLevelModal">
-        <div class="modal" @click.stop>
-          <button class="modal__close" type="button" :disabled="submitting" @click="closeLevelModal">&times;</button>
-          <div class="modal__header">
-            <h3>Choisis ton niveau</h3>
-            <p>L'abonnement <strong>{{ pendingPlanName || 'OptiTAB' }}</strong> débloquera un seul niveau.</p>
+          <div :class="['hero-side', { 'hero-side--stats-only': !showHeroOfferCard }]">
+            <div v-if="showHeroOfferCard" class="hero-offer-card">
+              <p :class="['hero-offer-title', { 'hero-offer-title--start': isStartRoute, 'hero-offer-title--bases': isBasesMethodeRoute }]">{{ heroOfferTitle }}</p>
+              <p class="hero-offer-sub">{{ heroOfferSub }}</p>
+              <GoogleReviewsCompact />
+            </div>
+            <div
+              :class="['hero-stats', 'hero-stats--side', { 'hero-stats--solo': !showHeroOfferCard }]"
+              aria-label="Statistiques OptiTAB"
+            >
+              <article v-for="item in heroStats" :key="item" class="hero-stat">
+                <span class="hero-stat-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8" />
+                    <path d="M8.5 12.2L10.8 14.5L15.7 9.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <span class="hero-stat-text">{{ item }}</span>
+              </article>
+            </div>
           </div>
-          <div class="modal__body">
-            <div v-if="niveauxLoading" class="modal__loading">Chargement…</div>
-            <div v-else-if="niveauxError" class="modal__error">
-              <p>{{ niveauxError }}</p>
-              <button @click="loadLevels(true)">Réessayer</button>
-            </div>
-            <div v-else>
-              <label for="lp-level-select">Niveau à débloquer</label>
-              <select id="lp-level-select" v-model.number="selectedNiveauId">
-                <option v-for="n in niveaux" :key="n.id" :value="n.id">
-                  {{ n.nom }}{{ n.pays?.nom ? ` — ${n.pays.nom}` : '' }}
-                </option>
-              </select>
-            </div>
-            <p v-if="!userStore.isAuthenticated" class="modal__hint">
-              Pas encore de compte ? Choisis ton niveau puis crée ton compte pour finaliser le paiement.
+        </section>
+
+        <section class="block proof-block">
+          <div class="section-head">
+            <h2>Ce que tu obtiens concrètement</h2>
+            <p>Découvre concrètement l’expérience OptiTAB sur ordinateur et sur mobile.</p>
+          </div>
+
+          <div class="proof-media">
+            <article class="proof-media-card">
+              <p class="proof-media-label">Version desktop</p>
+              <img src="/video/optitab-demo-exercices.gif" alt="Aperçu desktop de la plateforme OptiTAB" />
+            </article>
+            <article class="proof-media-card proof-media-card--mobile">
+              <p class="proof-media-label">Version mobile</p>
+              <img src="/video/optitab-demo-mobile.gif" alt="Aperçu mobile de la plateforme OptiTAB" />
+            </article>
+          </div>
+
+          <div class="proof-grid">
+            <article v-for="item in proofCards" :key="item.title" class="proof-card">
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.text }}</p>
+            </article>
+          </div>
+          <p class="proof-hook">Tu vois la méthode, tu gagnes du temps dès la première séance.</p>
+        </section>
+
+        <section :class="['block', 'levels-block', { 'levels-block--bases': isBasesMethodeRoute }]">
+          <div class="section-head">
+            <h2>{{ levelsSectionTitle }}</h2>
+            <p>{{ levelsSectionSubtitle }}</p>
+            <p v-if="levelsSectionNote" class="levels-professional-note">
+              {{ levelsSectionNote }}
             </p>
           </div>
-          <div class="modal__actions">
-            <button class="modal__btn modal__btn--ghost" :disabled="submitting" @click="closeLevelModal">Annuler</button>
-            <button class="modal__btn modal__btn--main" :disabled="submitting || !selectedNiveauId" @click="confirmSubscription">
-              {{ submitting ? 'Redirection…' : 'Continuer vers le paiement' }}
+
+          <div :class="['levels-grid', { 'levels-grid--single': levels.length === 1 }]">
+            <article
+              v-for="level in levels"
+              :key="level.title"
+              :class="[
+                'level-card',
+                {
+                  'level-card--highlight': level.isHighlight,
+                  'level-card--compact': isBasesMethodeRoute && levels.length === 1
+                }
+              ]"
+              role="button"
+              tabindex="0"
+              :aria-label="`Choisir ${level.title}`"
+              @click="scrollToOffer"
+              @keydown.enter.prevent="scrollToOffer"
+              @keydown.space.prevent="scrollToOffer"
+            >
+              <h3 class="level-title">{{ level.title }}</h3>
+              <p v-if="level.badge" class="level-badge">{{ level.badge }}</p>
+              <p class="level-desc">{{ level.description }}</p>
+              <div v-if="level.chips?.length" class="level-mini-badges">
+                <span v-for="chip in level.chips" :key="`${level.title}-${chip}`" class="level-mini-badge">
+                  {{ chip }}
+                </span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="offre" class="block offer-block">
+          <div class="section-head">
+            <h2>Choisis la formule qui te convient</h2>
+            <p>Deux formules simples pour accéder à OptiTAB selon ton rythme.</p>
+          </div>
+
+          <PricingCards
+            :submitting="submitting"
+            cta-location="landing_offer"
+            :primary-cta-label="OFFER_CTA_LABEL"
+            :subscription-only="false"
+            @select="handlePlanSelect"
+          />
+        </section>
+
+        <section class="block faq-block">
+          <FaqSection
+            :faq="faqItems"
+            description="On lève les freins avant abonnement."
+          />
+
+          <div class="contact-card">
+            <h3>Une question avant de t'abonner ?</h3>
+            <p>Contact rapide par WhatsApp ou par email.</p>
+            <div class="contact-actions">
+              <a
+                href="https://wa.me/33764040251?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20l%27abonnement%20OptiTAB."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-link contact-link--whatsapp"
+                data-cta-name="whatsapp"
+                data-cta-location="landing_contact"
+              >
+                WhatsApp
+              </a>
+              <a href="mailto:contact@optitab.net" class="contact-link">
+                contact@optitab.net
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="block final-cta-block">
+          <h2>{{ finalCtaTitle }}</h2>
+          <p>{{ finalCtaSubtitle }}</p>
+          <div class="trust-row trust-row--center">
+            <span v-for="item in quickTrust" :key="`final-${item}`" class="trust-chip">{{ item }}</span>
+          </div>
+          <button
+            type="button"
+            class="cta-primary"
+            data-cta-name="pricing"
+            data-cta-location="final"
+            @click="handlePrimaryCta"
+          >
+            {{ CTA_LABEL }}
+          </button>
+        </section>
+      </div>
+    </div>
+
+    <WhatsappChatButton
+      phone="33764040251"
+      message="Bonjour, j'ai une question sur l'abonnement OptiTAB."
+      tooltip="Besoin d'aide ? WhatsApp"
+    />
+
+    <Teleport to="body">
+      <div v-if="showLevelModal" class="level-modal-overlay" @click="closeLevelModal">
+        <div class="level-modal" @click.stop>
+          <button type="button" class="modal-close" :disabled="submitting" @click="closeLevelModal">&times;</button>
+
+          <div class="modal-header">
+            <p class="modal-kicker">Avant paiement</p>
+            <h3>Choisis ton niveau</h3>
+            <p>{{ pendingPlanName || 'OptiTAB' }}</p>
+          </div>
+
+          <div class="modal-body">
+            <div v-if="niveauxLoading" class="modal-loading">
+              <div class="spinner"></div>
+              <p>Chargement...</p>
+            </div>
+
+            <div v-else-if="niveauxError" class="modal-error">
+              <p>{{ niveauxError }}</p>
+              <button type="button" class="retry-btn" @click="loadLevels(true)">Réessayer</button>
+            </div>
+
+            <div v-else class="modal-select">
+              <label for="level-select">Niveau</label>
+              <select id="level-select" v-model.number="selectedNiveauId">
+                <option v-for="niveau in niveaux" :key="niveau.id" :value="niveau.id">
+                  {{ niveau.pays?.nom ? `${niveau.nom} - ${niveau.pays.nom}` : niveau.nom }}
+                </option>
+              </select>
+              <p v-if="selectedNiveauLabel" class="modal-selected">Accès : {{ selectedNiveauLabel }}</p>
+            </div>
+
+            <p v-if="!userStore.isAuthenticated" class="modal-hint">
+              Le compte est créé automatiquement après paiement.
+            </p>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-light" :disabled="submitting" @click="closeLevelModal">Annuler</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              :disabled="submitting || !selectedNiveauId"
+              @click="confirmSubscription"
+            >
+              {{ submitting ? 'Redirection...' : 'Continuer' }}
             </button>
           </div>
         </div>
       </div>
     </Teleport>
-  </div>
+  </MainLayout>
 </template>
 
 <style scoped lang="scss">
-/* ═══════════════════════════════════════════
-   Design tokens
-   ═══════════════════════════════════════════ */
-$blue: #2a38b7;
-$blue-light: #667eea;
-$blue-soft: #3b82f6;
-$dark: #0f172a;
-$text: #334155;
-$text-muted: #64748b;
-$white: #ffffff;
-$bg: #f8fafc;
-$bg-alt: #f1f5f9;
-$radius: 20px;
-$radius-sm: 14px;
-
-/* ═══════════════════════════════════════════
-   Globals
-   ═══════════════════════════════════════════ */
-.lp {
-  min-height: 100vh;
-  background: $white;
-  font-family: 'Poppins', 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: $text;
-  line-height: 1.6;
-  padding-top: 64px;
-  overflow-x: hidden;
+.landing-ads {
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 45%, #f6f8ff 100%);
+  min-height: 100%;
 }
 
-.wrap {
-  max-width: 1200px;
+.landing-shell {
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 0 clamp(16px, 4vw, 40px);
-}
-.wrap--narrow { max-width: 720px; }
-
-.section-title {
-  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
-  font-weight: 900;
-  color: $dark;
-  text-align: center;
-  margin: 0 0 14px;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
+  padding: 26px 16px 88px;
+  display: grid;
+  gap: 0;
 }
 
-.section-sub {
-  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
-  color: $text-muted;
-  text-align: center;
-  margin: 0 auto 40px;
-  max-width: 640px;
-  line-height: 1.65;
+.block {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 34px 0;
+  box-shadow: none;
 }
 
-.grad {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 900;
+.block + .block {
+  border-top: 1px solid rgba(30, 58, 138, 0.12);
 }
 
-.eyebrow {
-  text-align: center;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: $blue;
-  margin: 0 0 10px;
+.hero-block {
+  display: grid;
+  grid-template-columns: minmax(0, 1.34fr) minmax(0, 0.66fr);
+  gap: 22px;
+  align-items: start;
 }
 
-.hide-mobile {
-  @media (max-width: 640px) { display: none; }
+.hero-copy {
+  max-width: 820px;
 }
 
-/* ═══════════════════════════════════════════
-   Scroll reveal
-   ═══════════════════════════════════════════ */
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-  &.revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.hero-kicker {
+  margin: 0;
+  color: #2a38b7;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  font-weight: 800;
 }
 
-/* ═══════════════════════════════════════════
-   Buttons
-   ═══════════════════════════════════════════ */
-.btn {
+.hero-stats {
+  margin: 12px 0 14px;
+  max-width: 470px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 10px;
+}
+
+.hero-stats--side {
+  margin: 0;
+  max-width: none;
+}
+
+.hero-stats--solo {
+  width: 100%;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hero-stat {
+  min-height: 40px;
+  border-radius: 11px;
+  border: 1px solid #d7e3ff;
+  background: linear-gradient(145deg, #f8fbff 0%, #f1f5ff 100%);
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-stat-icon {
+  width: 16px;
+  height: 16px;
+  color: #2a38b7;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hero-stat-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-stat-text {
+  color: #1e293b;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-stats--solo .hero-stat {
+  min-height: 54px;
+  border-radius: 13px;
+  padding: 0 10px;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.hero-stats--solo .hero-stat-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.hero-stats--solo .hero-stat-text {
+  font-size: 0.9rem;
+  font-weight: 730;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.hero-copy h1 {
+  margin: 10px 0 0;
+  max-width: 30ch;
+  font-size: clamp(1.52rem, 2.7vw, 2.2rem);
+  line-height: 1.08;
+  text-wrap: balance;
+  color: #0f172a;
+}
+
+.hero-subtitle {
+  margin: 14px 0 0;
+  color: #1e293b;
+  font-size: 1.04rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.hero-result {
+  margin: 14px 0 0;
+  color: #475569;
+  font-size: 0.96rem;
+  line-height: 1.45;
+}
+
+.hero-side {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  max-width: 500px;
+  justify-self: end;
+}
+
+.hero-side--stats-only {
+  width: 100%;
+  max-width: 560px;
+  justify-self: center;
+  align-self: center;
+}
+
+.hero-offer-card {
+  width: 100%;
+  background: linear-gradient(145deg, #f7faff 0%, #f1f5ff 100%);
+  border: 1px solid #d7e2ff;
+  border-radius: 18px;
+  padding: 16px;
+  display: grid;
+  gap: 9px;
+}
+
+.hero-offer-title {
+  margin: 0;
+  color: #1e3a8a;
+  font-size: 1.06rem;
+  font-weight: 780;
+  line-height: 1.2;
+  white-space: pre-line;
+}
+
+.hero-offer-title--start {
+  font-size: 1.02rem;
+  line-height: 1.12;
+}
+
+.hero-offer-title--bases {
+  font-size: 1rem;
+  line-height: 1.16;
+}
+
+.hero-offer-sub {
+  margin: 0;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.cta-primary {
+  margin-top: 20px;
+  min-height: 50px;
+  border: 1px solid #1f4ed2;
+  border-radius: 14px;
+  padding: 0 20px;
+  background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
+}
+
+.trust-row {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.trust-row--center {
+  justify-content: center;
+}
+
+.trust-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #eef4ff;
+  border: 1px solid #cfe0ff;
+  color: #1e3a8a;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.section-head {
+  margin-bottom: 16px;
+}
+
+.section-head h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.45rem, 2.6vw, 2rem);
+}
+
+.section-head p {
+  margin: 8px 0 0;
+  color: #475569;
+  font-size: 0.96rem;
+}
+
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.levels-grid--single {
+  grid-template-columns: minmax(280px, 520px);
+}
+
+.level-card {
+  min-height: 118px;
+  border-radius: 14px;
+  border: 1px solid #d6e1ff;
+  background: linear-gradient(140deg, #ffffff 0%, #f5f8ff 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+
+.level-card:hover {
+  transform: translateY(-2px);
+  border-color: #a8c1ff;
+  box-shadow: 0 10px 24px rgba(30, 58, 138, 0.1);
+}
+
+.level-card:focus-visible {
+  outline: none;
+  border-color: #6d8dff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.level-title {
+  margin: 0;
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 1.12rem;
+  letter-spacing: -0.01em;
+}
+
+.level-badge {
+  margin: 0;
+  color: #2a38b7;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.level-desc {
+  margin: 0;
+  color: #475569;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  font-weight: 650;
+}
+
+.level-card--highlight {
+  border-color: #9fb6ff;
+  background: linear-gradient(140deg, #f7faff 0%, #edf3ff 100%);
+}
+
+.level-card--highlight:hover {
+  border-color: #7596ff;
+  box-shadow: 0 12px 26px rgba(42, 56, 183, 0.14);
+}
+
+.level-card--compact {
+  min-height: 0;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+  gap: 6px;
+  padding: 16px 18px;
+}
+
+.level-card--compact .level-title {
+  font-size: 1.16rem;
+}
+
+.level-card--compact .level-badge {
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.level-card--compact .level-desc {
+  font-size: 0.9rem;
+  line-height: 1.42;
+}
+
+.level-mini-badges {
+  margin-top: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.level-mini-badge {
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid #c9d8ff;
+  background: #f4f8ff;
+  color: #1e3a8a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+}
+
+.levels-professional-note {
+  margin: 9px 0 0;
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.proof-media {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.proof-media-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: $radius-sm;
-  font-weight: 700;
-  font-size: 1.02rem;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.25s, background 0.25s;
-  font-family: inherit;
-  min-height: 56px;
-  padding: 14px 32px;
 }
 
-.btn--main {
-  background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
-  color: $white;
-  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.24);
-  min-width: 260px;
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 28px rgba(29, 78, 216, 0.33);
-  }
-}
-
-.btn__label { font-weight: 700; line-height: 1.3; }
-.btn__hint {
-  font-size: 0.72rem;
-  font-weight: 600;
-  opacity: 0.85;
-  margin-top: 2px;
-}
-
-.btn--ghost {
-  background: rgba(255,255,255,0.88);
-  color: $dark;
-  border: 1px solid #c5d1e2;
-  box-shadow: 0 2px 8px rgba(15,23,42,0.08);
-  min-width: 240px;
-  &:hover {
-    background: $white;
-    border-color: #9fb2cf;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(15,23,42,0.12);
-  }
-}
-
-.btn--white {
-  background: $white;
-  color: $blue;
-  font-size: 1.1rem;
-  padding: 16px 44px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.16);
-  }
-}
-
-/* ═══════════════════════════════════════════
-   HERO
-   ═══════════════════════════════════════════ */
-.hero {
-  position: relative;
-  text-align: center;
-  padding: 80px 24px 64px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f5f9 60%, #e2e8f0 100%);
-  overflow: hidden;
-}
-
-.hero__deco {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.hero__circle {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(42,56,183,0.04) 0%, transparent 70%);
-  animation: floatC 20s ease-in-out infinite;
-  &--1 { width: 400px; height: 400px; top: -150px; left: -100px; }
-  &--2 { width: 350px; height: 350px; bottom: -100px; right: -80px; animation-delay: 7s; }
-  &--3 { width: 300px; height: 300px; top: 40%; right: 5%; animation-delay: 14s; }
-}
-
-@keyframes floatC {
-  0%, 100% { transform: translate(0,0) scale(1); opacity: .5; }
-  50% { transform: translate(30px,-30px) scale(1.1); opacity: .7; }
-}
-
-.hero__body {
-  position: relative;
-  z-index: 1;
-  max-width: 760px;
-  margin: 0 auto;
-  animation: fadeUp .8s ease-out;
-}
-
-.hero__title {
-  font-size: clamp(1.7rem, 4vw, 2.8rem);
-  font-weight: 900;
-  color: $dark;
-  line-height: 1.12;
-  margin: 0 0 18px;
-  letter-spacing: -0.02em;
-}
-
-.hero__grad {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 900;
-}
-
-.hero__sub {
-  font-size: clamp(0.95rem, 1.5vw, 1.12rem);
-  color: $text;
-  font-weight: 500;
-  line-height: 1.62;
-  margin: 0 auto 20px;
-  max-width: 640px;
-}
-
-.hero__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin: 0 0 28px;
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: rgba(34,197,94,0.1);
-  border: 1px solid rgba(34,197,94,0.25);
-  color: #166534;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 999px;
-}
-.chip__icon { color: #22c55e; font-weight: 700; }
-
-.hero__ctas {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 0 0 16px;
-}
-
-.hero__trust {
-  font-size: 0.82rem;
-  color: $text-muted;
-  margin: 0;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ═══════════════════════════════════════════
-   DEMO
-   ═══════════════════════════════════════════ */
-.demo {
-  padding: 88px 0;
-  background: $white;
-}
-
-.demo__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(236,72,153,0.08));
-  border: 1px solid rgba(99,102,241,0.2);
-  border-radius: 50px;
-  padding: 10px 24px;
-  margin: 0 auto 24px;
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #6366f1;
-  text-align: center;
-}
-
-.demo__sparkle { animation: sparkle 2s ease-in-out infinite; }
-
-@keyframes sparkle {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.2) rotate(180deg); }
-}
-
-.demo__grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 36px;
-  margin-top: 40px;
-  align-items: start;
-  @media (max-width: 900px) { grid-template-columns: 1fr; }
-}
-
-.demo__card {
-  border-radius: $radius;
-  padding: 24px;
-  transition: transform .3s ease, box-shadow .3s ease;
-  &:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(42,56,183,0.1); }
-}
-
-.demo__tag {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-  border: 1px solid #bae6fd;
-  border-radius: 12px;
-  padding: 8px 16px;
-  margin-bottom: 16px;
-  font-weight: 700;
-  font-size: 0.88rem;
-  color: #0369a1;
-}
-
-.demo__frame {
-  border-radius: 14px;
-  overflow: hidden;
-  margin-bottom: 14px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-  img { width: 100%; height: auto; display: block; }
-}
-
-.demo__frame--mobile {
-  max-width: 300px;
-  margin: 0 auto 14px;
-}
-
-.demo__caption {
-  font-size: 0.88rem;
-  color: $text-muted;
-  text-align: center;
-  font-weight: 500;
-}
-
-/* ═══════════════════════════════════════════
-   FEATURES
-   ═══════════════════════════════════════════ */
-.features {
-  padding: 88px 0 72px;
-  background: linear-gradient(160deg, #f8faff 0%, #eef2ff 50%, #f5f3ff 100%);
-}
-
-.features__grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
-  @media (max-width: 700px) {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-}
-
-.feat-card {
-  background: $white;
-  border-radius: 28px;
-  box-shadow: 0 4px 28px rgba(42,56,183,0.1);
-  padding: 36px 32px;
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-  transition: box-shadow .25s, transform .25s;
-  &:hover {
-    box-shadow: 0 10px 40px rgba(42,56,183,0.16);
-    transform: translateY(-5px);
-  }
-  @media (max-width: 700px) {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 28px 22px;
-  }
-}
-
-.feat-card__ico {
-  width: 64px;
-  height: 64px;
-  min-width: 64px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  svg { width: 30px; height: 30px; }
-  &--blue    { background: #dbeafe; color: #2563eb; }
-  &--indigo  { background: #e0e7ff; color: #4f46e5; }
-  &--violet  { background: #ede9fe; color: #7c3aed; }
-  &--emerald { background: #d1fae5; color: #059669; }
-}
-
-.feat-card__body {
-  h3 {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: $dark;
-    margin: 0 0 8px;
-    letter-spacing: -0.01em;
-  }
-  p {
-    font-size: 0.95rem;
-    color: $text;
-    line-height: 1.65;
-    margin: 0;
-  }
-}
-
-/* ═══════════════════════════════════════════
-   LEVELS
-   ═══════════════════════════════════════════ */
-.levels {
-  padding: 88px 0 72px;
-  background: $white;
-}
-
-.levels__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 8px;
-  @media (max-width: 768px) { grid-template-columns: 1fr; }
-}
-
-.lv-card {
-  background: $bg;
-  border-radius: $radius;
-  padding: 36px 24px 28px;
-  text-align: center;
-  border: 1px solid #e2e8f0;
-  transition: transform .25s, box-shadow .25s, border-color .25s;
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 32px rgba(42,56,183,0.1);
-    border-color: rgba(99,102,241,0.3);
-  }
-  h3 {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: $dark;
-    margin: 0 0 8px;
-  }
-  p {
-    font-size: 0.88rem;
-    color: $text-muted;
-    line-height: 1.55;
-    margin: 0;
-  }
-}
-
-.lv-card__ico {
-  width: 60px;
-  height: 60px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 18px;
-  svg { width: 28px; height: 28px; }
-  &--blue   { background: #dbeafe; color: #2563eb; }
-  &--indigo { background: #e0e7ff; color: #4f46e5; }
-  &--violet { background: #ede9fe; color: #7c3aed; }
-}
-
-/* Bases & Méthode */
-.bases-block {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  max-width: 720px;
-  margin: 36px auto 0;
-  background: $bg;
-  border: 1px solid #e2e8f0;
-  border-radius: $radius;
-  padding: 28px 32px;
-  transition: transform .25s, box-shadow .25s;
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(42,56,183,0.08);
-  }
-  @media (max-width: 600px) {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 24px 20px;
-  }
-}
-
-.bases-block__ico {
-  width: 56px;
-  height: 56px;
-  min-width: 56px;
-  border-radius: 16px;
-  background: #fef3c7;
-  color: #d97706;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  svg { width: 26px; height: 26px; }
-}
-
-.bases-block__body { flex: 1; }
-.bases-block__header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
-  h3 { font-size: 1.1rem; font-weight: 800; color: $dark; margin: 0; }
-  @media (max-width: 600px) { justify-content: center; }
-}
-
-.bases-block__tag {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #d97706;
-  background: #fef3c7;
-  padding: 3px 10px;
-  border-radius: 20px;
-}
-
-.bases-block__body p {
+.proof-media-label {
+  margin: 0 0 10px;
+  color: #1e3a8a;
   font-size: 0.9rem;
-  color: $text;
-  line-height: 1.6;
-  margin: 0;
+  font-weight: 800;
+  text-align: center;
 }
 
-/* ═══════════════════════════════════════════
-   PRICING
-   ═══════════════════════════════════════════ */
-.pricing {
-  padding: 88px 0 72px;
-  background: linear-gradient(160deg, #f8faff 0%, #eef2ff 50%, #f5f3ff 100%);
-  scroll-margin-top: 60px;
-}
-
-/* ═══════════════════════════════════════════
-   FAQ
-   ═══════════════════════════════════════════ */
-.faq {
-  padding: 80px 0 72px;
-  background: $white;
-}
-
-.faq__list {
-  margin-top: 8px;
-}
-
-.faq__item {
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.faq__q {
+.proof-media-card img {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 20px 0;
-  font-family: inherit;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: $dark;
-  text-align: left;
-  gap: 16px;
-  transition: color .2s;
-  &:hover { color: $blue; }
+  border-radius: 14px;
+  display: block;
 }
 
-.faq__arrow {
-  width: 20px;
-  height: 20px;
-  min-width: 20px;
-  color: $text-muted;
-  transition: transform .3s ease;
-  .faq__item--open & { transform: rotate(180deg); }
+.proof-media-card--mobile img {
+  max-width: 300px;
+  margin: 0 auto;
 }
 
-.faq__a-wrap {
+.proof-media-card--mobile .proof-media-label {
+  max-width: 300px;
+  margin: 0 auto 10px;
+  text-align: center;
+}
+
+.proof-grid {
   display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows .35s ease;
-  .faq__item--open & { grid-template-rows: 1fr; }
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.faq__a {
-  overflow: hidden;
-  font-size: 0.95rem;
-  color: $text;
-  line-height: 1.65;
+.proof-card {
+  border-radius: 14px;
+  border: 1px solid #dbe6ff;
+  background: #ffffff;
+  padding: 14px;
+}
+
+.proof-card h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.proof-card p {
   margin: 0;
-  padding: 0 0 20px;
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.45;
 }
 
-/* ═══════════════════════════════════════════
-   FINAL CTA
-   ═══════════════════════════════════════════ */
-.final-cta {
-  padding: 80px 24px;
-  background: linear-gradient(135deg, $blue 0%, $blue-light 100%);
+.proof-hook {
+  margin: 14px 0 0;
+  color: #1e3a8a;
+  font-size: 0.95rem;
+  font-weight: 700;
   text-align: center;
 }
 
-.final-cta__title {
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
-  font-weight: 900;
-  color: $white;
-  margin: 0 0 14px;
+.offer-block {
+  background: transparent;
+  border-color: transparent;
 }
 
-.final-cta__sub {
-  font-size: clamp(0.95rem, 1.5vw, 1.12rem);
-  color: rgba(255,255,255,0.9);
-  margin: 0 auto 32px;
-  max-width: 560px;
-  line-height: 1.6;
+.offer-block :deep(.pricing-card) {
+  border-color: #dbe6ff;
 }
 
-/* ═══════════════════════════════════════════
-   FOOTER
-   ═══════════════════════════════════════════ */
-.lp-footer {
-  padding: 24px;
-  background: $dark;
-  text-align: center;
+.faq-block :deep(.faq-section) {
+  margin-bottom: 0;
 }
 
-.lp-footer__inner {
+.contact-card {
+  margin-top: 14px;
+  border-radius: 16px;
+  border: 1px solid #cfe0ff;
+  background: linear-gradient(145deg, #f8fbff 0%, #eef3ff 100%);
+  padding: 16px;
+}
+
+.contact-card h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.02rem;
+}
+
+.contact-card p {
+  margin: 6px 0 0;
+  color: #475569;
+  font-size: 0.92rem;
+}
+
+.contact-actions {
+  margin-top: 12px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.55);
-  a {
-    color: rgba(255,255,255,0.7);
-    text-decoration: none;
-    &:hover { color: $white; }
-  }
+  gap: 10px;
 }
 
-.lp-footer__sep { color: rgba(255,255,255,0.25); }
+.contact-link {
+  min-height: 40px;
+  border-radius: 10px;
+  border: 1px solid #c8d6fa;
+  background: #ffffff;
+  color: #1f2937;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+}
 
-/* ═══════════════════════════════════════════
-   MODAL
-   ═══════════════════════════════════════════ */
-.modal-overlay {
+.contact-link--whatsapp {
+  background: #25d366;
+  border-color: #25d366;
+  color: #ffffff;
+}
+
+.final-cta-block {
+  text-align: center;
+  background: linear-gradient(145deg, #ffffff 0%, #eef2ff 100%);
+}
+
+.final-cta-block h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.45rem, 2.6vw, 2rem);
+}
+
+.final-cta-block p {
+  margin: 8px 0 0;
+  color: #475569;
+}
+
+.level-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15,23,42,0.55);
+  z-index: 9999;
+  background: rgba(15, 23, 42, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-  padding: 24px;
-  backdrop-filter: blur(4px);
+  padding: 14px;
 }
 
-.modal {
-  background: $white;
-  border-radius: $radius;
-  max-width: 440px;
-  width: 100%;
-  padding: 32px;
+.level-modal {
+  width: min(520px, 100%);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px;
   position: relative;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.18);
 }
 
-.modal__close {
+.modal-close {
   position: absolute;
-  top: 12px;
-  right: 16px;
-  background: none;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
   border: none;
-  font-size: 1.6rem;
-  color: $text-muted;
-  cursor: pointer;
-}
-
-.modal__header h3 {
+  background: #f1f5f9;
   font-size: 1.3rem;
-  font-weight: 700;
-  color: $dark;
-  margin: 0 0 8px;
-}
-
-.modal__header p {
-  font-size: 0.95rem;
-  color: $text;
-  margin: 0 0 20px;
-}
-
-.modal__body label {
-  display: block;
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: $dark;
-  margin-bottom: 8px;
-}
-
-.modal__body select {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 1rem;
-  color: $dark;
-  background: $white;
-  margin-bottom: 12px;
-}
-
-.modal__hint {
-  font-size: 0.85rem;
-  color: $text-muted;
-  margin-top: 8px;
-}
-
-.modal__loading, .modal__error {
-  text-align: center;
-  padding: 16px 0;
-  color: $text;
-}
-
-.modal__actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.modal__btn {
-  flex: 1;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
   cursor: pointer;
+}
+
+.modal-header {
+  text-align: center;
+}
+
+.modal-kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #4338ca;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.modal-header h3 {
+  margin: 8px 0 4px;
+}
+
+.modal-header p {
+  margin: 0;
+  color: #475569;
+}
+
+.modal-body {
+  margin-top: 16px;
+}
+
+.modal-select label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.modal-select select {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 0 10px;
+}
+
+.modal-selected {
+  margin: 8px 0 0;
+  color: #1e3a8a;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.modal-hint {
+  margin: 10px 0 0;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.modal-loading {
+  text-align: center;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 8px;
+  border: 3px solid #dbeafe;
+  border-top-color: #1d4ed8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.retry-btn {
+  min-height: 40px;
   border: none;
-  font-family: inherit;
-  transition: all .2s;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-weight: 700;
+  padding: 0 12px;
+  cursor: pointer;
 }
 
-.modal__btn--ghost {
-  background: $bg;
-  color: $text;
-  &:hover { background: $bg-alt; }
+.modal-error {
+  text-align: center;
+  color: #b91c1c;
 }
 
-.modal__btn--main {
-  background: linear-gradient(135deg, $blue, $blue-light);
-  color: $white;
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(42,56,183,0.3);
+.modal-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn {
+  min-height: 46px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 0 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
+  color: #ffffff;
+}
+
+.btn-light {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  &:disabled {
-    opacity: .6;
-    cursor: not-allowed;
-    transform: none;
+}
+
+@media (max-width: 960px) {
+  .hero-block {
+    grid-template-columns: 1fr;
+  }
+
+  .levels-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .levels-grid--single {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-media,
+  .proof-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-/* ═══════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════ */
-@media (max-width: 768px) {
-  .hero { padding: 64px 20px 48px; }
-  .hero__ctas { flex-direction: column; align-items: center; }
-  .btn--main, .btn--ghost { width: 100%; max-width: 360px; }
-  .demo, .features, .levels, .pricing, .faq { padding-top: 64px; padding-bottom: 56px; }
-}
+@media (max-width: 640px) {
+  .landing-shell {
+    padding: 18px 12px 82px;
+  }
 
-@media (max-width: 480px) {
-  .hero { padding: 48px 16px 40px; }
-  .chip { font-size: 0.78rem; padding: 5px 11px; }
-  .feat-card { padding: 24px 18px; border-radius: 22px; }
-  .lv-card { padding: 28px 20px 24px; }
+  .block {
+    padding: 24px 0;
+    border-radius: 0;
+  }
+
+  .hero-stats {
+    gap: 8px;
+  }
+
+  .hero-stat {
+    min-height: 36px;
+    padding: 0 8px;
+  }
+
+  .hero-stat-text {
+    font-size: 0.8rem;
+  }
+
+  .hero-side--stats-only {
+    max-width: 100%;
+  }
+
+  .hero-stats--solo {
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-stats--solo .hero-stat {
+    min-height: 46px;
+    padding: 0 10px;
+    gap: 7px;
+    justify-content: flex-start;
+  }
+
+  .hero-stats--solo .hero-stat-text {
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .cta-primary {
+    width: 100%;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
 }
 </style>

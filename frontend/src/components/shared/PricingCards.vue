@@ -1,37 +1,35 @@
 <template>
   <div class="pricing-cards-container">
-    <!-- Loading State -->
     <div v-if="loading" class="loading-state">
       <div class="spinner"></div>
-      <p>Chargement des offres…</p>
+      <p>Chargement des offres...</p>
     </div>
 
     <template v-else>
-      <!-- Tabs -->
       <div v-if="!subscriptionOnly" class="pricing-tabs">
-        <button 
-          class="pricing-tab" 
+        <button
+          class="pricing-tab"
           :class="{ active: activeTab === 'recurring' }"
           @click="activeTab = 'recurring'"
         >
           <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M17 1l4 4-4 4"/>
-            <path d="M3 11V9a4 4 0 014-4h14"/>
-            <path d="M7 23l-4-4 4-4"/>
-            <path d="M21 13v2a4 4 0 01-4 4H3"/>
+            <path d="M17 1l4 4-4 4" />
+            <path d="M3 11V9a4 4 0 014-4h14" />
+            <path d="M7 23l-4-4 4-4" />
+            <path d="M21 13v2a4 4 0 01-4 4H3" />
           </svg>
           Abonnements
         </button>
-        <button 
-          class="pricing-tab" 
+        <button
+          class="pricing-tab"
           :class="{ active: activeTab === 'pass' }"
           @click="activeTab = 'pass'"
         >
           <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
           Pass (paiement unique)
         </button>
@@ -46,12 +44,11 @@
           v-for="card in displayedCards"
           :key="card.key"
           class="pricing-card"
-          :class="{ 
+          :class="{
             'is-popular': card.recommended,
             'is-current': isCurrentPlan(card)
           }"
         >
-          <!-- Badge -->
           <div class="card-badge-area">
             <span v-if="card.recommended" class="badge badge-popular">
               Le plus populaire
@@ -61,34 +58,29 @@
             </span>
           </div>
 
-          <!-- Header -->
           <div class="card-header">
             <h3 class="card-title">{{ card.title }}</h3>
             <p class="card-subtitle">{{ card.subtitle }}</p>
           </div>
 
-          <!-- Price -->
           <div class="card-price">
             <div class="price-amount">{{ card.price.toFixed(2) }}€</div>
             <div v-if="card.per" class="price-period">{{ card.per }}</div>
           </div>
 
-          <!-- Features -->
           <ul class="card-features">
             <li v-for="(feature, idx) in card.features" :key="idx">
               <svg class="feature-icon" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
               </svg>
               {{ feature }}
             </li>
           </ul>
 
-          <!-- Reviews -->
           <div class="card-reviews">
             <GoogleReviewsCompact />
           </div>
 
-          <!-- CTA Button -->
           <button
             class="card-button"
             data-cta-name="subscribe"
@@ -99,8 +91,7 @@
             {{ getButtonLabel(card) }}
           </button>
 
-          <!-- Security Note -->
-          <p class="card-note">🔒 Paiement sécurisé • Annulable à tout moment</p>
+          <p class="card-note">Paiement sécurisé - Annulable à tout moment</p>
         </article>
       </div>
     </template>
@@ -114,7 +105,6 @@ import { DEFAULT_PLANS } from '@/config/subscriptions'
 import GoogleReviewsCompact from '@/components/home/GoogleReviewsCompact.vue'
 
 const props = defineProps({
-  // Pour le mode billing avec level déjà sélectionné
   showCurrentPlan: {
     type: Boolean,
     default: false
@@ -135,7 +125,6 @@ const props = defineProps({
     type: String,
     default: 'pricing'
   },
-  // Labels personnalisés
   disabledLabel: {
     type: String,
     default: 'Choisir un niveau'
@@ -144,7 +133,10 @@ const props = defineProps({
     type: String,
     default: 'Déjà souscrit'
   },
-  // Mode landing : masque l'onglet Pass
+  primaryCtaLabel: {
+    type: String,
+    default: ''
+  },
   subscriptionOnly: {
     type: Boolean,
     default: false
@@ -157,7 +149,6 @@ const plans = ref(DEFAULT_PLANS)
 const loading = ref(true)
 const activeTab = ref('recurring')
 
-// Normalise la période (français -> anglais)
 const normalizePeriod = (period) => {
   if (!period) return ''
   const p = period.toLowerCase()
@@ -176,12 +167,12 @@ const cards = computed(() => {
   const subs = plans.value.filter(isSubscription)
   const passes = plans.value.filter(isOneTime)
 
-  const monthly = subs.find(p => normalizePeriod(p.billing_period) === 'monthly')
-  const weekly = subs.find(p => normalizePeriod(p.billing_period) === 'weekly')
-  const yearly = subs.find(p => normalizePeriod(p.billing_period) === 'yearly')
-  const passYear = passes.find(p => normalizePeriod(p.billing_period) === 'yearly')
-  const passMonth = passes.find(p => (p.access_days || 0) >= 28 && (p.access_days || 0) < 365 && normalizePeriod(p.billing_period) !== 'yearly')
-  const passDay = passes.find(p => Number(p.access_days) === 1 || normalizePeriod(p.billing_period) === 'daily')
+  const monthly = subs.find((p) => normalizePeriod(p.billing_period) === 'monthly')
+  const weekly = subs.find((p) => normalizePeriod(p.billing_period) === 'weekly')
+  const yearly = subs.find((p) => normalizePeriod(p.billing_period) === 'yearly')
+  const passYear = passes.find((p) => normalizePeriod(p.billing_period) === 'yearly')
+  const passMonth = passes.find((p) => (p.access_days || 0) >= 28 && (p.access_days || 0) < 365 && normalizePeriod(p.billing_period) !== 'yearly')
+  const passDay = passes.find((p) => Number(p.access_days) === 1 || normalizePeriod(p.billing_period) === 'daily')
 
   const baseFeatures = ['Accès complet à OptiTAB', 'Sans engagement', 'Annulable à tout moment']
 
@@ -195,7 +186,6 @@ const cards = computed(() => {
   const recurringCards = []
   const passCards = []
 
-  // Abonnements récurrents
   if (monthly) recurringCards.push({
     key: `m-${monthly.id}`,
     title: 'Mensuel',
@@ -209,6 +199,7 @@ const cards = computed(() => {
     savings,
     type: 'recurring'
   })
+
   if (weekly) recurringCards.push({
     key: `w-${weekly.id}`,
     title: 'Hebdomadaire',
@@ -226,6 +217,7 @@ const cards = computed(() => {
     recommended: false,
     type: 'recurring'
   })
+
   if (yearly) recurringCards.push({
     key: `y-${yearly.id}`,
     title: 'Annuel',
@@ -239,7 +231,6 @@ const cards = computed(() => {
     type: 'recurring'
   })
 
-  // Pass (paiement unique)
   if (passYear) passCards.push({
     key: `py-${passYear.id}`,
     title: passYear.name || 'Pass Annuel',
@@ -252,6 +243,7 @@ const cards = computed(() => {
     recommended: true,
     type: 'pass'
   })
+
   if (passMonth) passCards.push({
     key: `pm-${passMonth.id}`,
     title: 'Pass 1 mois',
@@ -264,6 +256,7 @@ const cards = computed(() => {
     recommended: false,
     type: 'pass'
   })
+
   if (passDay) passCards.push({
     key: `pd-${passDay.id}`,
     title: 'Pass 24h',
@@ -300,14 +293,15 @@ const isCardDisabled = (card) => {
 const getButtonLabel = (card) => {
   if (props.showCurrentPlan && props.levelAlreadyUnlocked) return props.alreadySubscribedLabel
   if (props.showCurrentPlan && isCurrentPlan(card)) return 'Déjà abonné'
-  if (props.submitting) return 'Redirection…'
+  if (props.submitting) return 'Redirection...'
+  if (props.primaryCtaLabel && props.primaryCtaLabel.trim()) return props.primaryCtaLabel.trim()
   return card.cta
 }
 
 onMounted(async () => {
   try {
     const { data } = await getPlans()
-    const remote = (data?.plans || [])
+    const remote = data?.plans || []
     if (remote.length) {
       plans.value = remote
     }
@@ -325,7 +319,6 @@ onMounted(async () => {
   width: 100%;
 }
 
-/* Loading & Empty States */
 .loading-state,
 .empty-state {
   text-align: center;
@@ -347,7 +340,6 @@ onMounted(async () => {
   to { transform: rotate(360deg); }
 }
 
-/* Pricing Tabs */
 .pricing-tabs {
   display: flex;
   justify-content: center;
@@ -395,7 +387,6 @@ onMounted(async () => {
   flex-shrink: 0;
 }
 
-/* Pricing Grid */
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -412,7 +403,6 @@ onMounted(async () => {
   }
 }
 
-/* Pricing Card */
 .pricing-card {
   background: white;
   border: 2px solid #e5e5e5;
@@ -440,7 +430,6 @@ onMounted(async () => {
   border-color: #10b981;
 }
 
-/* Badge Area */
 .card-badge-area {
   min-height: 32px;
   display: flex;
@@ -469,7 +458,6 @@ onMounted(async () => {
   color: white;
 }
 
-/* Card Header */
 .card-header {
   text-align: center;
   margin-bottom: 1.25rem;
@@ -488,7 +476,6 @@ onMounted(async () => {
   margin: 0;
 }
 
-/* Price */
 .card-price {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -507,7 +494,6 @@ onMounted(async () => {
   margin-top: 0.25rem;
 }
 
-/* Features */
 .card-features {
   list-style: none;
   padding: 0;
@@ -532,12 +518,10 @@ onMounted(async () => {
   margin-top: 0.1rem;
 }
 
-/* Reviews */
 .card-reviews {
   margin-bottom: 1.25rem;
 }
 
-/* CTA Button */
 .card-button {
   width: 100%;
   padding: 1rem 1.5rem;
@@ -564,7 +548,6 @@ onMounted(async () => {
   box-shadow: none;
 }
 
-/* Security Note */
 .card-note {
   text-align: center;
   margin-top: 0.875rem;

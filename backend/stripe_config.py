@@ -86,7 +86,13 @@ def _validate_stripe_mode():
 
 STRIPE_RUNTIME_MODE = 'live' if _is_production_runtime() else 'test'
 if not _is_truthy(os.getenv('STRIPE_DISABLE_MODE_GUARD')):
-    _validate_stripe_mode()
+    try:
+        _validate_stripe_mode()
+    except RuntimeError as _stripe_mode_err:
+        import logging as _stripe_logging
+        _stripe_logging.getLogger('stripe_config').error(
+            "Stripe mode validation failed (server will continue): %s", _stripe_mode_err
+        )
 
 
 def get_stripe_webhook_secrets():

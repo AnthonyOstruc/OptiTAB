@@ -25,7 +25,7 @@ const ALWAYS_SCROLL_TO_TOP_ROUTES = [
 
 const routes = [
   { path: '/', name: 'Home', component: () => import('@/views/Home.vue') },
-  { path: '/start', name: 'StartLanding', component: () => import('@/views/InstagramLanding.vue') },
+  { path: '/start', name: 'StartLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
   { path: '/commencer', redirect: '/start' },
   {
     path: '/instagram',
@@ -49,6 +49,7 @@ const routes = [
   },
   { path: '/tarifs', name: 'TarifsPage', component: () => import('@/views/TarifsPage.vue') },
   { path: '/plateforme-maths', name: 'GoogleAdsLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
+  { path: '/bases-methode', name: 'BasesMethodeLanding', component: () => import('@/views/GoogleAdsLanding.vue') },
   { 
     path: '/ressources-gratuites', 
     name: 'FreeResourcesHome',

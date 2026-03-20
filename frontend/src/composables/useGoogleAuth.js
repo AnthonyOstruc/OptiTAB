@@ -98,6 +98,7 @@ export function useGoogleAuth() {
 
       // Récupérer les données de la réponse
       const { user, access, refresh, is_new_user: isNewUser } = result.data.data
+      const registrationEventId = result.data?.data?.tiktok_event_ids?.complete_registration || ''
 
       // Stocker nos tokens JWT
       localStorage.setItem('access_token', access)
@@ -109,7 +110,12 @@ export function useGoogleAuth() {
 
       analytics.login('google_one_tap')
       if (userStore.id) analytics.setUserId(userStore.id)
-      if (isNewUser) analytics.completeRegistration('google', { appUserId: userStore.id || user?.id })
+      if (isNewUser) {
+        analytics.completeRegistration('google', {
+          appUserId: userStore.id || user?.id,
+          eventId: registrationEventId,
+        })
+      }
 
       // Fermer toutes les modales d'authentification et rediriger
       closeAuthModals()
@@ -144,6 +150,7 @@ export function useGoogleAuth() {
                 if (resp?.access_token) {
                   const result = await googleOAuthTokenLogin({ access_token: resp.access_token })
                   const { user, access, refresh, is_new_user: isNewUser } = result.data.data
+                  const registrationEventId = result.data?.data?.tiktok_event_ids?.complete_registration || ''
                   localStorage.setItem('access_token', access)
                   localStorage.setItem('refresh_token', refresh)
                   userStore.setUser(user)
@@ -151,7 +158,12 @@ export function useGoogleAuth() {
 
                   analytics.login('google_one_tap')
                   if (userStore.id) analytics.setUserId(userStore.id)
-                  if (isNewUser) analytics.completeRegistration('google', { appUserId: userStore.id || user?.id })
+                  if (isNewUser) {
+                    analytics.completeRegistration('google', {
+                      appUserId: userStore.id || user?.id,
+                      eventId: registrationEventId,
+                    })
+                  }
                   closeAuthModals()
                   router.push('/dashboard')
                   showToast('Connexion réussie !', 'success')
@@ -171,6 +183,7 @@ export function useGoogleAuth() {
                         if (resp2?.code) {
                           const result = await googleOAuthExchange({ code: resp2.code, client_id: googleClientId })
                           const { user, access, refresh, is_new_user: isNewUser } = result.data.data
+                          const registrationEventId = result.data?.data?.tiktok_event_ids?.complete_registration || ''
                           localStorage.setItem('access_token', access)
                           localStorage.setItem('refresh_token', refresh)
                           userStore.setUser(user)
@@ -178,7 +191,12 @@ export function useGoogleAuth() {
 
                           analytics.login('google_one_tap')
                           if (userStore.id) analytics.setUserId(userStore.id)
-                          if (isNewUser) analytics.completeRegistration('google', { appUserId: userStore.id || user?.id })
+                          if (isNewUser) {
+                            analytics.completeRegistration('google', {
+                              appUserId: userStore.id || user?.id,
+                              eventId: registrationEventId,
+                            })
+                          }
                           closeAuthModals()
                           router.push('/dashboard')
                           showToast('Connexion réussie !', 'success')
@@ -217,6 +235,7 @@ export function useGoogleAuth() {
                 if (resp?.code) {
                   const result = await googleOAuthExchange({ code: resp.code, client_id: googleClientId })
                   const { user, access, refresh, is_new_user: isNewUser } = result.data.data
+                  const registrationEventId = result.data?.data?.tiktok_event_ids?.complete_registration || ''
                   localStorage.setItem('access_token', access)
                   localStorage.setItem('refresh_token', refresh)
                   userStore.setUser(user)
@@ -224,7 +243,12 @@ export function useGoogleAuth() {
 
                   analytics.login('google_one_tap')
                   if (userStore.id) analytics.setUserId(userStore.id)
-                  if (isNewUser) analytics.completeRegistration('google', { appUserId: userStore.id || user?.id })
+                  if (isNewUser) {
+                    analytics.completeRegistration('google', {
+                      appUserId: userStore.id || user?.id,
+                      eventId: registrationEventId,
+                    })
+                  }
                   closeAuthModals()
                   router.push('/dashboard')
                   showToast('Connexion réussie !', 'success')

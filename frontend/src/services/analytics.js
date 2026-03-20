@@ -173,7 +173,7 @@ function normalizePurchaseValue(value) {
   return Math.round(numeric * 100) / 100
 }
 
-export function completeRegistration(method = 'email_password', { appUserId = null } = {}) {
+export function completeRegistration(method = 'email_password', { appUserId = null, eventId = null } = {}) {
   const payload = {
     event: REGISTRATION_COMPLETED_EVENT,
     registration_method: normalizeRegistrationMethod(method),
@@ -186,6 +186,9 @@ export function completeRegistration(method = 'email_password', { appUserId = nu
     payload.app_user_id = lastAppUserId
   }
 
+  const normalizedEventId = String(eventId ?? '').trim()
+  if (normalizedEventId) payload.event_id = normalizedEventId
+
   pushToDataLayer(withDebug(payload))
 }
 
@@ -193,6 +196,7 @@ export function purchase({
   value,
   currency = 'EUR',
   transactionId = null,
+  eventId = null,
   planName = null,
   planMode = null,
 } = {}) {
@@ -207,6 +211,9 @@ export function purchase({
 
   const txId = String(transactionId ?? '').trim()
   if (txId) payload.transaction_id = txId
+
+  const normalizedEventId = String(eventId ?? '').trim()
+  if (normalizedEventId) payload.event_id = normalizedEventId
 
   const normalizedPlanName = String(planName ?? '').trim()
   if (normalizedPlanName) payload.plan_name = normalizedPlanName

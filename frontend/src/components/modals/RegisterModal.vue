@@ -329,12 +329,17 @@ export default {
           const data = response.data?.data || response.data
           const access = data.access
           const refresh = data.refresh
+          const registrationEventId = data?.tiktok_event_ids?.complete_registration || ''
+          const appUserId = data?.id || data?.user_id || null
           if (access && refresh) {
             localStorage.setItem('access_token', access)
             localStorage.setItem('refresh_token', refresh)
           }
           userStore.setUser(data)
-          analytics.completeRegistration('email_password', { appUserId: data?.id })
+          analytics.completeRegistration('email_password', {
+            appUserId,
+            eventId: registrationEventId,
+          })
         }
         showFeedback('Compte créé avec succès!', 'success')
         emit('register', { ...payload })

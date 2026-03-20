@@ -1,6 +1,12 @@
 import axios from 'axios'
 import router from '@/router'
 import { useUserStore } from '@/stores/user'
+import {
+  getCurrentPageUrl,
+  getDocumentReferrer,
+  getStoredTtclid,
+  getTtpCookie,
+} from '@/services/attribution'
 
 /**
  * Résolution robuste de l'URL de base API
@@ -592,6 +598,20 @@ function isRetriableNetworkError(error) {
 apiClient.interceptors.request.use(
   (config) => {
     const token = tokenManager.getAccessToken()
+
+    const ttclid = getStoredTtclid()
+    const ttp = getTtpCookie()
+    const pageUrl = getCurrentPageUrl()
+    const pageReferrer = getDocumentReferrer()
+
+    if (!config.headers) {
+      config.headers = {}
+    }
+
+    if (ttclid) config.headers['X-TTCLID'] = ttclid
+    if (ttp) config.headers['X-TTP'] = ttp
+    if (pageUrl) config.headers['X-Page-URL'] = pageUrl
+    if (pageReferrer) config.headers['X-Page-Referrer'] = pageReferrer
     
     if (token && !tokenManager.isTokenExpired(token)) {
       config.headers.Authorization = `Bearer ${token}`

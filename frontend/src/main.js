@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 import { useSubjectsStore } from '@/stores/subjects/index'
 import { initCtaTracking } from '@/services/analytics'
+import { initAttributionTracking } from '@/services/attribution'
 
 import 'katex/dist/katex.min.css'
 import 'mathlive'
@@ -51,6 +52,7 @@ app.use(router)
 
 // Global delegated tracking for CTA clicks (data-cta-name / data-cta-location)
 initCtaTracking()
+initAttributionTracking()
 
 // Récupère l'utilisateur via l'API si un token est présent
 const userStore = useUserStore()

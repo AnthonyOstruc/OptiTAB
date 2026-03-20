@@ -19,6 +19,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from core.services import ResponseService, EmailService
+from core.tiktok_events import (
+    build_complete_registration_event_id,
+    send_complete_registration_event,
+)
 from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
@@ -78,6 +82,17 @@ class UserRegistrationView(generics.CreateAPIView):
                 'email_verified': not bool(user.verification_code),
                 'role': user.role,
             }
+
+            registration_event_id = build_complete_registration_event_id(user.id)
+            send_complete_registration_event(
+                event_id=registration_event_id,
+                user=user,
+                request=request,
+            )
+            token_payload['tiktok_event_ids'] = {
+                'complete_registration': registration_event_id,
+            }
+
             return ResponseService.success(
                 message="Compte créé et connecté",
                 data=token_payload,

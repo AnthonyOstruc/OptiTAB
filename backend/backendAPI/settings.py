@@ -288,7 +288,8 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     'accept', 'accept-encoding', 'authorization', 'content-type',
-    'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with'
+    'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with',
+    'x-ttclid', 'x-ttp', 'x-page-url', 'x-page-referrer',
 ]
 CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 
@@ -547,6 +548,22 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 # CONFIGURATION OPENAI
 # ========================================
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+# ========================================
+# CONFIGURATION TIKTOK EVENTS API
+# ========================================
+TIKTOK_PIXEL_ID = os.getenv('TIKTOK_PIXEL_ID', '').strip()
+TIKTOK_EVENTS_API_ACCESS_TOKEN = os.getenv('TIKTOK_EVENTS_API_ACCESS_TOKEN', '').strip()
+TIKTOK_EVENTS_API_URL = os.getenv(
+    'TIKTOK_EVENTS_API_URL',
+    'https://business-api.tiktok.com/open_api/v1.3/event/track/'
+).strip()
+TIKTOK_TEST_EVENT_CODE = os.getenv('TIKTOK_TEST_EVENT_CODE', '').strip()
+
+try:
+    TIKTOK_EVENTS_API_TIMEOUT_SECONDS = float(os.getenv('TIKTOK_EVENTS_API_TIMEOUT_SECONDS', '3'))
+except (TypeError, ValueError):
+    TIKTOK_EVENTS_API_TIMEOUT_SECONDS = 3.0
 
 # ========================================
 # CONFIGURATION PRODUCTION POUR RENDER

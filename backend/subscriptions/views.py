@@ -23,6 +23,10 @@ from stripe_config import (
     get_stripe_webhook_secrets,
 )
 from core.services import EmailService
+from core.tiktok_events import (
+    build_purchase_event_id,
+    merge_tiktok_context_into_stripe_metadata,
+)
 from .stripe_client import stripe, stripe_error
 from .helpers import (
     _build_pass_description,
@@ -151,6 +155,72 @@ def _plans_queryset_for_runtime():
         # In local/dev test mode, only expose plans that are mapped to a test Price ID.
         return qs.exclude(stripe_price_id_test__isnull=True).exclude(stripe_price_id_test='')
     return qs
+
+
+def _stripe_object_to_dict(obj):
+    if not obj:
+        return {}
+    if isinstance(obj, dict):
+        return obj
+    if hasattr(obj, 'to_dict'):
+        try:
+            return obj.to_dict()
+        except Exception:
+            return {}
+    return {}
+
+
+def _normalize_stripe_reference(value):
+    if isinstance(value, dict):
+        return value.get('id') or value.get('payment_intent') or value.get('invoice')
+    return value
+
+
+def _resolve_checkout_transaction_reference(session):
+    """Résout un identifiant de transaction stable pour la dédup Pixel/API."""
+    payment_intent = _normalize_stripe_reference(session.get('payment_intent'))
+    if payment_intent:
+        return str(payment_intent)
+
+    invoice_id = _normalize_stripe_reference(session.get('invoice'))
+    if invoice_id:
+        try:
+            invoice_data = _stripe_object_to_dict(stripe.Invoice.retrieve(invoice_id))
+            invoice_payment_intent = _normalize_stripe_reference(invoice_data.get('payment_intent'))
+            if invoice_payment_intent:
+                return str(invoice_payment_intent)
+            if invoice_data.get('id'):
+                return str(invoice_data.get('id'))
+        except stripe_error.StripeError:
+            pass
+
+    subscription_id = _normalize_stripe_reference(session.get('subscription'))
+    if subscription_id:
+        try:
+            subscription_data = _stripe_object_to_dict(
+                stripe.Subscription.retrieve(
+                    subscription_id,
+                    expand=['latest_invoice.payment_intent', 'latest_invoice'],
+                )
+            )
+            latest_invoice = subscription_data.get('latest_invoice')
+            if isinstance(latest_invoice, str):
+                latest_invoice = _stripe_object_to_dict(stripe.Invoice.retrieve(latest_invoice))
+            else:
+                latest_invoice = _stripe_object_to_dict(latest_invoice)
+
+            latest_invoice_payment_intent = _normalize_stripe_reference(
+                latest_invoice.get('payment_intent')
+            )
+            if latest_invoice_payment_intent:
+                return str(latest_invoice_payment_intent)
+            if latest_invoice.get('id'):
+                return str(latest_invoice.get('id'))
+        except stripe_error.StripeError:
+            pass
+
+    fallback_session_id = _normalize_stripe_reference(session.get('id'))
+    return str(fallback_session_id or '')
 
 
 def _beneficiary_already_has_level_access(beneficiary_user, niveau_obj, *, now=None):
@@ -359,6 +429,8 @@ class CreateCheckoutSessionView(APIView):
                 # Nettoyer les custom_fields temporaires du Customer
                 _clear_customer_temp_invoice_custom_fields(customer_id, names=['Bénéficiaire'])
 
+            metadata = merge_tiktok_context_into_stripe_metadata(metadata, request=request)
+
             # Important: certains comptes Stripe finalisent immédiatement la 1ère facture d'une souscription.
             # Dans ce cas, invoice.created arrive trop tard pour modifier la facture. On prépare donc des
             # custom_fields au niveau Customer afin qu'ils soient hérités à la création.
@@ -486,6 +558,8 @@ class GuestCheckoutSessionView(APIView):
                 'niveau_label': _format_level_label_from_obj(niveau_obj),
                 'access_days': str(plan.access_days or ''),
             }
+
+            metadata = merge_tiktok_context_into_stripe_metadata(metadata, request=request)
 
             create_kwargs = dict(
                 payment_method_types=['card'],
@@ -722,7 +796,15 @@ class CheckoutSessionStatusView(APIView):
             amount_total_minor = None
         amount_total = (amount_total_minor / 100.0) if amount_total_minor is not None else None
         is_paid = bool(payment_status == 'paid' and amount_total_minor and amount_total_minor > 0)
-        transaction_id = str(session.get('payment_intent') or session.get('id') or '')
+        if is_paid:
+            transaction_id = _resolve_checkout_transaction_reference(session)
+        else:
+            transaction_id = str(session.get('id') or '')
+        tiktok_purchase_event_id = (
+            build_purchase_event_id(transaction_id)
+            if is_paid and transaction_id
+            else ''
+        )
 
         return JsonResponse({
             'status': status_payload,
@@ -740,6 +822,7 @@ class CheckoutSessionStatusView(APIView):
                 'value_minor': amount_total_minor,
                 'currency': currency,
                 'transaction_id': transaction_id,
+                'tiktok_event_id': tiktok_purchase_event_id,
             }
         })
 
@@ -870,7 +953,15 @@ class GuestCheckoutStatusView(APIView):
             amount_total_minor = None
         amount_total = (amount_total_minor / 100.0) if amount_total_minor is not None else None
         is_paid = bool(payment_status_str == 'paid' and amount_total_minor and amount_total_minor > 0)
-        transaction_id = str(session.get('payment_intent') or session.get('id') or '')
+        if is_paid:
+            transaction_id = _resolve_checkout_transaction_reference(session)
+        else:
+            transaction_id = str(session.get('id') or '')
+        tiktok_purchase_event_id = (
+            build_purchase_event_id(transaction_id)
+            if is_paid and transaction_id
+            else ''
+        )
 
         return JsonResponse({
             'status': status_payload,
@@ -889,6 +980,7 @@ class GuestCheckoutStatusView(APIView):
                 'value_minor': amount_total_minor,
                 'currency': currency,
                 'transaction_id': transaction_id,
+                'tiktok_event_id': tiktok_purchase_event_id,
             },
             'auth': {
                 'access': str(refresh.access_token),

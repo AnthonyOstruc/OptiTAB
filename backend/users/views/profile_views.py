@@ -6,6 +6,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 from core.services import ResponseService, QuerySetService
+from core.tiktok_events import (
+    build_complete_registration_event_id,
+    send_complete_registration_event,
+)
 from ..serializers.user_profile import UserDetailSerializer, UserUpdateSerializer, ChangePasswordSerializer, UserListSerializer
 from rest_framework.decorators import api_view
 from ..serializers.geographic_data import UserPaysNiveauUpdateSerializer
@@ -1237,6 +1241,13 @@ class CreateChildAccountView(APIView):
             except Exception as email_exc:
                 logger.warning("Impossible d'envoyer l'email de création de compte enfant: %s", email_exc)
 
+            registration_event_id = build_complete_registration_event_id(child.id)
+            send_complete_registration_event(
+                event_id=registration_event_id,
+                user=child,
+                request=request,
+            )
+
             data = {
                 'child': {
                     'id': child.id,
@@ -1245,6 +1256,9 @@ class CreateChildAccountView(APIView):
                     'last_name': child.last_name,
                 },
                 'temp_password': temp_password,
+                'tiktok_event_ids': {
+                    'complete_registration': registration_event_id,
+                },
             }
             return ResponseService.success(
                 message="Compte enfant créé et lié",

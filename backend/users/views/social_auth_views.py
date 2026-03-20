@@ -19,6 +19,10 @@ from google.auth.transport import requests as google_requests
 import requests
 
 from core.services import ResponseService
+from core.tiktok_events import (
+    build_complete_registration_event_id,
+    send_complete_registration_event,
+)
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -86,6 +90,14 @@ class GoogleLoginView(APIView):
 
             # Générer tokens JWT applicatifs
             refresh = RefreshToken.for_user(user)
+            registration_event_id = None
+            if created:
+                registration_event_id = build_complete_registration_event_id(user.id)
+                send_complete_registration_event(
+                    event_id=registration_event_id,
+                    user=user,
+                    request=request,
+                )
 
             user_data = {
                 'id': user.id,
@@ -105,7 +117,10 @@ class GoogleLoginView(APIView):
                     'user': user_data,
                     'access': str(refresh.access_token),
                     'refresh': str(refresh),
-                    'is_new_user': bool(created)
+                    'is_new_user': bool(created),
+                    'tiktok_event_ids': {
+                        'complete_registration': registration_event_id
+                    } if registration_event_id else {},
                 }
             )
 
@@ -225,6 +240,14 @@ class GoogleOAuthCodeExchangeView(APIView):
             update_last_login(None, user)
 
             refresh = RefreshToken.for_user(user)
+            registration_event_id = None
+            if created:
+                registration_event_id = build_complete_registration_event_id(user.id)
+                send_complete_registration_event(
+                    event_id=registration_event_id,
+                    user=user,
+                    request=request,
+                )
             user_data = {
                 'id': user.id,
                 'email': user.email,
@@ -241,7 +264,10 @@ class GoogleOAuthCodeExchangeView(APIView):
                     'user': user_data,
                     'access': str(refresh.access_token),
                     'refresh': str(refresh),
-                    'is_new_user': bool(created)
+                    'is_new_user': bool(created),
+                    'tiktok_event_ids': {
+                        'complete_registration': registration_event_id
+                    } if registration_event_id else {},
                 }
             )
 
@@ -325,6 +351,14 @@ class GoogleOAuthAccessTokenView(APIView):
             update_last_login(None, user)
 
             refresh = RefreshToken.for_user(user)
+            registration_event_id = None
+            if created:
+                registration_event_id = build_complete_registration_event_id(user.id)
+                send_complete_registration_event(
+                    event_id=registration_event_id,
+                    user=user,
+                    request=request,
+                )
             user_data = {
                 'id': user.id,
                 'email': user.email,
@@ -341,7 +375,10 @@ class GoogleOAuthAccessTokenView(APIView):
                     'user': user_data,
                     'access': str(refresh.access_token),
                     'refresh': str(refresh),
-                    'is_new_user': bool(created)
+                    'is_new_user': bool(created),
+                    'tiktok_event_ids': {
+                        'complete_registration': registration_event_id
+                    } if registration_event_id else {},
                 }
             )
 

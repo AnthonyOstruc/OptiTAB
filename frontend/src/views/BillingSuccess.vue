@@ -150,6 +150,7 @@ function trackPurchaseIfPaid(data) {
   if (!Number.isFinite(value) || value <= 0) return
 
   const transactionId = String(payment.transaction_id || sessionId.value || '').trim()
+  const tiktokEventId = String(payment.tiktok_event_id || '').trim()
   if (transactionId && readTrackedPurchase(transactionId)) {
     purchaseTracked.value = true
     return
@@ -160,6 +161,7 @@ function trackPurchaseIfPaid(data) {
     value,
     currency: payment.currency || 'EUR',
     transactionId,
+    eventId: tiktokEventId,
     planName: statusPlan?.name || statusPlan?.label || '',
     planMode: statusPlan?.mode || '',
   })

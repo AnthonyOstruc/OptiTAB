@@ -11,6 +11,9 @@
 export { BaseAPI, apiUtils } from './base'
 export { default as apiClient } from './client'
 
+// Blog
+export { getBlogPosts, getBlogPost, getBlogCategories, getBlogTags, getBlogSitemap } from './blog'
+
 // Imports pour l'API unifiée (utilisés dans le scope local)
 import {
   getPays,

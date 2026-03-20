@@ -115,7 +115,7 @@ const isMinimalVariant = computed(() => props.variant === 'minimal')
 const isLandingVariant = computed(() => props.variant === 'landing')
 
 const navLinks = footerLinks.filter((link) =>
-  ['/cours-particuliers', '/tarifs', '/ressources-gratuites'].includes(link.href)
+  ['/cours-particuliers', '/tarifs', '/ressources-gratuites', '/calculator', '/about'].includes(link.href)
 )
 
 const legalLinks = footerLinks.filter((link) =>

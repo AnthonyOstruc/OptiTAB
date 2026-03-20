@@ -14,7 +14,8 @@ import {
   UserGroupIcon, // <- icône cours particuliers
   SparklesIcon, // <- icône ressources gratuites
   CreditCardIcon, // <- icône abonnement
-  TableCellsIcon // <- icône tableaux & formules
+  TableCellsIcon, // <- icône tableaux & formules
+  NewspaperIcon // <- icône blog
 } from '@heroicons/vue/24/outline'
 const DashboardIcon = Squares2X2Icon;
 // Centralized menu configuration for OptiTAB
@@ -96,6 +97,13 @@ export const menuItems = [
     icon: CreditCardIcon,
     href: '/billing',
     description: 'Gérer votre abonnement'
+  },
+  {
+    key: 'blog',
+    text: 'Blog',
+    icon: NewspaperIcon,
+    href: '/blog',
+    description: 'Articles et conseils en maths'
   },
   {
     key: 'contact',

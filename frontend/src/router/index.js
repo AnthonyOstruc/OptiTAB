@@ -20,7 +20,10 @@ const ALWAYS_SCROLL_TO_TOP_ROUTES = [
   'FreeCourses',
   'FreeExercises',
   'FreeSummaries',
-  'HelpGraphe'
+  'HelpGraphe',
+  'BlogList',
+  'BlogCategory',
+  'BlogTag'
 ]
 
 const routes = [
@@ -217,6 +220,11 @@ const routes = [
   },
   { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
   { path: '/contact', name: 'Contact', component: () => import('@/views/Contact.vue') },
+  // Blog (coming soon — routes publiques désactivées)
+  { path: '/blog', name: 'BlogList', component: () => import('@/views/BlogComingSoon.vue') },
+  { path: '/blog/categorie/:slug', name: 'BlogCategory', component: () => import('@/views/BlogComingSoon.vue') },
+  { path: '/blog/tag/:slug', name: 'BlogTag', component: () => import('@/views/BlogComingSoon.vue') },
+  { path: '/blog/:slug', name: 'BlogDetail', component: () => import('@/views/BlogComingSoon.vue') },
   { path: '/cours-particuliers', name: 'CoursParticuliers', component: () => import('@/views/CoursParticuliers.vue') },
   { path: '/password-reset', name: 'PasswordReset', component: () => import('@/views/PasswordReset.vue') },
   { path: '/cgv', name: 'CGV', component: () => import('@/views/CGV.vue') },
@@ -268,6 +276,7 @@ const routes = [
       { path: 'niveaux', name: 'AdminNiveaux', component: () => import('@/views/admin/AdminNiveaux.vue') },
       { path: 'pays', name: 'AdminPays', component: () => import('@/views/admin/AdminPays.vue') },
       { path: 'reel-background', name: 'AdminReelBackground', component: () => import('@/views/admin/AdminReelBackground.vue') },
+      { path: 'blog', name: 'AdminBlog', component: () => import('@/views/admin/AdminBlog.vue') },
       { path: '', redirect: { name: 'AdminMatieres' } }
     ]
   },

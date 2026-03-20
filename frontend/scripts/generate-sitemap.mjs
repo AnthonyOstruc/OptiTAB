@@ -15,6 +15,7 @@ const STATIC_INDEXABLE_PATHS = new Set([
   '/cours-particuliers',
   '/about',
   '/contact',
+  '/blog',
   '/ressources-gratuites',
   '/ressources-gratuites/cours',
   '/ressources-gratuites/exercices',
@@ -25,6 +26,7 @@ const GROUPED_COURSE_PATH_RE = /^\/ressources-gratuites\/cours\/[a-z0-9-]+\/(col
 const GROUPED_SUMMARY_PATH_RE = /^\/ressources-gratuites\/syntheses\/[a-z0-9-]+\/(college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
 const GROUPED_EXERCISE_CHAPTER_PATH_RE = /^\/ressources-gratuites\/exercices\/[a-z0-9-]+\/(college|lycee|prepa)\/[a-z0-9-]+\/[a-z0-9-]+-\d+$/i
 const EXERCISE_DETAIL_PATH_RE = /^\/ressources-gratuites\/exercices\/exercice-gratuit-[a-z0-9-]+$/i
+const BLOG_POST_PATH_RE = /^\/blog\/[a-z0-9-]+$/i
 
 const HTML_FETCH_ACCEPT = 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.8'
 const HTML_FETCH_TIMEOUT_MS = 15000
@@ -108,6 +110,7 @@ function isCanonicalIndexablePath(pathname) {
   if (GROUPED_SUMMARY_PATH_RE.test(normalized)) return true
   if (GROUPED_EXERCISE_CHAPTER_PATH_RE.test(normalized)) return true
   if (EXERCISE_DETAIL_PATH_RE.test(normalized)) return true
+  if (BLOG_POST_PATH_RE.test(normalized)) return true
   return false
 }
 
@@ -607,6 +610,18 @@ async function buildSitemap() {
       const pathForChapter = routeForExerciseChapter(item)
       if (!pathForChapter) continue
       addUrl(pathForChapter, toLastMod(item?.date_modification))
+    }
+
+    // 4) Blog articles
+    try {
+      const blogItems = await fetchAllPages(`${apiBase}/api/blog/sitemap/`)
+      for (const item of blogItems) {
+        if (item?.loc) {
+          addUrl(item.loc, item?.lastmod ? item.lastmod.slice(0, 10) : '')
+        }
+      }
+    } catch (blogErr) {
+      console.warn('[sitemap] Blog fetch failed, skipping blog URLs:', blogErr?.message || blogErr)
     }
   } catch (err) {
     if (err?.code === 'MISSING_NIVEAU_GROUP') {

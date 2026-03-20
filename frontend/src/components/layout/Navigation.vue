@@ -178,7 +178,7 @@ const rightItemLabel = (item) => {
 const leftMenuItems = computed(() => {
   if (isLandingVariant.value || isFreeResourcePage.value) return []
   return menuItems.filter((item) =>
-    ['calculator', 'about', 'cours-particuliers', 'ressources-gratuites'].includes(item.key)
+    ['cours-particuliers', 'ressources-gratuites'].includes(item.key)
   )
 })
 

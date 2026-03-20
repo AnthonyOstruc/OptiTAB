@@ -61,6 +61,13 @@
       <div class="nav-group">
         <router-link to="/admin/reel-background" class="admin-link" :class="{ active: isActive('AdminReelBackground') }">🎬 Fond Reel</router-link>
       </div>
+      
+      <div class="nav-separator"></div>
+      
+      <!-- Groupe 7: Blog -->
+      <div class="nav-group">
+        <router-link to="/admin/blog" class="admin-link" :class="{ active: isActive('AdminBlog') }">📝 Blog</router-link>
+      </div>
     </nav>
 
     <!-- Section centrale : Contenu conditionnel (masqué si admin) -->

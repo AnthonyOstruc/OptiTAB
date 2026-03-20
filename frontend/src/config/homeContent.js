@@ -123,10 +123,24 @@ export const contactsPiedDePage = [
     externe: false
   },
   {
-    icone: 'linkedin',
-    texte: 'LinkedIn',
-    lien: 'https://linkedin.com/company/optitab',
-    etiquette: 'LinkedIn OptiTAB',
+    icone: 'instagram',
+    texte: 'Instagram',
+    lien: 'https://instagram.com/opti.tab',
+    etiquette: 'Instagram OptiTAB',
+    externe: true
+  },
+  {
+    icone: 'facebook',
+    texte: 'Facebook',
+    lien: 'https://facebook.com/optitab',
+    etiquette: 'Facebook OptiTAB',
+    externe: true
+  },
+  {
+    icone: 'tiktok',
+    texte: 'TikTok',
+    lien: 'https://tiktok.com/@optitab',
+    etiquette: 'TikTok OptiTAB',
     externe: true
   }
 ];

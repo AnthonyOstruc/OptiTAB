@@ -19,5 +19,7 @@ export const footerIntro = {
 
 export const footerContacts = [
   { icon: '📧', text: 'contact@optitab.net', href: 'mailto:contact@optitab.net', label: 'Email', external: false },
-  { icon: 'LinkedIn', text: 'LinkedIn', href: 'https://linkedin.com', label: 'LinkedIn', external: true }
+  { icon: 'Instagram', text: 'Instagram', href: 'https://instagram.com/opti.tab', label: 'Instagram', external: true },
+  { icon: 'Facebook', text: 'Facebook', href: 'https://facebook.com/optitab', label: 'Facebook', external: true },
+  { icon: 'TikTok', text: 'TikTok', href: 'https://tiktok.com/@optitab', label: 'TikTok', external: true }
 ]; 

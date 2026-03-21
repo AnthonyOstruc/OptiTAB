@@ -24,8 +24,11 @@ from stripe_config import (
 )
 from core.services import EmailService
 from core.tiktok_events import (
+    build_initiate_checkout_event_id,
     build_purchase_event_id,
+    extract_tiktok_context_from_metadata,
     merge_tiktok_context_into_stripe_metadata,
+    send_initiate_checkout_event,
 )
 from .stripe_client import stripe, stripe_error
 from .helpers import (
@@ -495,13 +498,35 @@ class CreateCheckoutSessionView(APIView):
                     checkout_session = stripe.checkout.Session.create(**create_kwargs)
                 else:
                     raise
-            
+
+            checkout_session_id = str(checkout_session.get('id') or '')
+            tiktok_checkout_event_id = build_initiate_checkout_event_id(checkout_session_id)
+            checkout_created_at = _from_timestamp(checkout_session.get('created')) or timezone.now()
+            checkout_value = float(plan.price) if plan.price else None
+            checkout_currency = str(checkout_session.get('currency') or 'EUR').upper()
+            checkout_context = extract_tiktok_context_from_metadata(metadata)
+            send_initiate_checkout_event(
+                event_id=tiktok_checkout_event_id,
+                user=payer_user,
+                context=checkout_context,
+                event_time=checkout_created_at,
+                value=checkout_value,
+                currency=checkout_currency,
+                content_id=str(plan.id),
+                content_name=plan.name,
+            )
+
             return JsonResponse({
                 'checkout_url': checkout_session.url,
                 'amount': float(plan.price) if plan.price else None,
                 'currency': 'EUR',
                 'plan_name': plan.name or '',
                 'plan_mode': plan_mode or '',
+                'transaction_id': checkout_session_id,
+                'tiktok_event_id': tiktok_checkout_event_id,
+                'tiktok_event_ids': {
+                    'initiate_checkout': tiktok_checkout_event_id,
+                },
             })
             
         except Exception as e:
@@ -599,12 +624,33 @@ class GuestCheckoutSessionView(APIView):
 
             checkout_session = stripe.checkout.Session.create(**create_kwargs)
 
+            checkout_session_id = str(checkout_session.get('id') or '')
+            tiktok_checkout_event_id = build_initiate_checkout_event_id(checkout_session_id)
+            checkout_created_at = _from_timestamp(checkout_session.get('created')) or timezone.now()
+            checkout_value = float(plan.price) if plan.price else None
+            checkout_currency = str(checkout_session.get('currency') or 'EUR').upper()
+            checkout_context = extract_tiktok_context_from_metadata(metadata)
+            send_initiate_checkout_event(
+                event_id=tiktok_checkout_event_id,
+                context=checkout_context,
+                event_time=checkout_created_at,
+                value=checkout_value,
+                currency=checkout_currency,
+                content_id=str(plan.id),
+                content_name=plan.name,
+            )
+
             return JsonResponse({
                 'checkout_url': checkout_session.url,
                 'amount': float(plan.price) if plan.price else None,
                 'currency': 'EUR',
                 'plan_name': plan.name or '',
                 'plan_mode': plan_mode or '',
+                'transaction_id': checkout_session_id,
+                'tiktok_event_id': tiktok_checkout_event_id,
+                'tiktok_event_ids': {
+                    'initiate_checkout': tiktok_checkout_event_id,
+                },
             })
 
         except Exception as e:

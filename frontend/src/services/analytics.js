@@ -229,6 +229,8 @@ export function beginCheckout({
   currency = 'EUR',
   planName = null,
   planMode = null,
+  transactionId = null,
+  eventId = null,
 } = {}) {
   const payload = {
     event: BEGIN_CHECKOUT_EVENT,
@@ -243,6 +245,12 @@ export function beginCheckout({
 
   const normalizedPlanMode = String(planMode ?? '').trim().toLowerCase()
   if (normalizedPlanMode) payload.plan_mode = normalizedPlanMode
+
+  const txId = String(transactionId ?? '').trim()
+  if (txId) payload.transaction_id = txId
+
+  const normalizedEventId = String(eventId ?? '').trim() || txId
+  if (normalizedEventId) payload.event_id = normalizedEventId
 
   pushToDataLayer(withDebug(withAppUserId(payload)))
 }

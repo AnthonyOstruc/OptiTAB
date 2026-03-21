@@ -10,12 +10,8 @@ from pays.models import Niveau
 from core.services import EmailService
 from core.tiktok_events import (
     build_purchase_event_id,
-    build_start_trial_event_id,
-    build_subscribe_event_id,
     extract_tiktok_context_from_metadata,
     send_purchase_event,
-    send_start_trial_event,
-    send_subscribe_event,
 )
 from .stripe_client import stripe, stripe_error
 from .pass_access import revoke_pass_for_payment_intent
@@ -124,16 +120,6 @@ def _merge_metadata_dicts(*metadata_dicts):
 def _resolve_currency(value, default='EUR'):
     normalized = str(value or '').strip().upper()
     return normalized or default
-
-
-def _resolve_plan_value(plan):
-    if not plan:
-        return None
-    try:
-        numeric = float(plan.price)
-    except (TypeError, ValueError):
-        return None
-    return numeric if numeric > 0 else None
 
 
 def _resolve_guest_user(session, metadata):
@@ -397,14 +383,12 @@ def handle_checkout_session_completed(session):
         defaults = _build_subscription_defaults(
             user, plan, subscription_data, niveau_obj, session.get('customer')
         )
-        previous_status = None
         user_subscription, created = UserSubscription.objects.get_or_create(
             stripe_subscription_id=stripe_subscription_id,
             defaults=defaults
         )
 
         if not created:
-            previous_status = user_subscription.status
             _update_subscription_from_stripe(user_subscription, subscription_data, niveau_obj)
         elif niveau_obj and user_subscription.niveau_pays_id != niveau_obj.id:
             user_subscription.niveau_pays = niveau_obj
@@ -412,46 +396,6 @@ def handle_checkout_session_completed(session):
 
         if niveau_obj:
             _sync_user_niveau(user, niveau_obj)
-
-        merged_metadata = _merge_metadata_dicts(
-            subscription_data.get('metadata') or {},
-            metadata,
-        )
-        tiktok_context = extract_tiktok_context_from_metadata(merged_metadata)
-        plan_value = _resolve_plan_value(plan)
-        plan_currency = _resolve_currency(session.get('currency'))
-        content_id = str(plan.id) if plan and plan.id else None
-        content_name = plan.name if plan else None
-        subscription_event_time = (
-            _from_timestamp(subscription_data.get('current_period_start'))
-            or _from_timestamp(subscription_data.get('created'))
-            or _from_timestamp(session.get('created'))
-        )
-        current_status = user_subscription.status
-
-        if current_status == 'trialing' and previous_status != 'trialing':
-            send_start_trial_event(
-                event_id=build_start_trial_event_id(stripe_subscription_id),
-                user=user_subscription.user,
-                context=tiktok_context,
-                event_time=subscription_event_time,
-                value=plan_value,
-                currency=plan_currency,
-                content_id=content_id,
-                content_name=content_name,
-            )
-
-        if current_status == 'active' and previous_status != 'active':
-            send_subscribe_event(
-                event_id=build_subscribe_event_id(stripe_subscription_id),
-                user=user_subscription.user,
-                context=tiktok_context,
-                event_time=subscription_event_time,
-                value=plan_value,
-                currency=plan_currency,
-                content_id=content_id,
-                content_name=content_name,
-            )
 
         # Fallback: déclencher l'envoi des emails si la facture est déjà payée
         _ensure_paid_invoice_email_from_session(session)
@@ -762,25 +706,9 @@ def handle_payment_succeeded(invoice):
             or _from_timestamp(invoice.get('created'))
             or timezone.now()
         )
-        subscription_event_time = (
-            _from_timestamp(subscription_data.get('current_period_start'))
-            or payment_event_time
-        )
         currency = _resolve_currency(invoice.get('currency'))
         content_id = str(user_subscription.plan_id) if user_subscription.plan_id else None
         content_name = user_subscription.plan.name if user_subscription.plan else None
-
-        if user_subscription.status == 'active' and previous_status != 'active':
-            send_subscribe_event(
-                event_id=build_subscribe_event_id(subscription_id),
-                user=user_subscription.user,
-                context=tiktok_context,
-                event_time=subscription_event_time,
-                value=_resolve_plan_value(user_subscription.plan),
-                currency=currency,
-                content_id=content_id,
-                content_name=content_name,
-            )
 
         if is_first_charge and payment_created:
             payment_reference = invoice.get('payment_intent') or invoice_id or subscription_id
@@ -1029,44 +957,6 @@ def handle_subscription_updated(subscription):
                 previous_status,
                 new_status,
             )
-
-            tiktok_context = extract_tiktok_context_from_metadata(metadata)
-            content_id = str(user_subscription.plan_id) if user_subscription.plan_id else None
-            content_name = user_subscription.plan.name if user_subscription.plan else None
-            default_currency = _resolve_currency(subscription.get('currency'))
-
-            if new_status == 'trialing' and previous_status != 'trialing':
-                trial_event_time = (
-                    _from_timestamp(subscription.get('trial_start'))
-                    or _from_timestamp(subscription.get('current_period_start'))
-                    or timezone.now()
-                )
-                send_start_trial_event(
-                    event_id=build_start_trial_event_id(stripe_subscription_id),
-                    user=user_subscription.user,
-                    context=tiktok_context,
-                    event_time=trial_event_time,
-                    value=_resolve_plan_value(user_subscription.plan),
-                    currency=default_currency,
-                    content_id=content_id,
-                    content_name=content_name,
-                )
-
-            if new_status == 'active' and previous_status != 'active':
-                subscribe_event_time = (
-                    _from_timestamp(subscription.get('current_period_start'))
-                    or timezone.now()
-                )
-                send_subscribe_event(
-                    event_id=build_subscribe_event_id(stripe_subscription_id),
-                    user=user_subscription.user,
-                    context=tiktok_context,
-                    event_time=subscribe_event_time,
-                    value=_resolve_plan_value(user_subscription.plan),
-                    currency=default_currency,
-                    content_id=content_id,
-                    content_name=content_name,
-                )
 
     except UserSubscription.DoesNotExist:
         logger.warning("handle_subscription_updated: subscription introuvable (%s)", stripe_subscription_id)

@@ -220,6 +220,10 @@ def build_complete_registration_event_id(user_id: Any) -> str:
     return _sanitize_event_key(user_id) or 'unknown'
 
 
+def build_initiate_checkout_event_id(checkout_reference: Any) -> str:
+    return _sanitize_event_key(checkout_reference) or 'unknown'
+
+
 def build_start_trial_event_id(subscription_id: Any) -> str:
     return f"st:{_sanitize_event_key(subscription_id) or 'unknown'}"
 
@@ -500,6 +504,32 @@ def send_start_trial_event(
 ) -> bool:
     return send_tiktok_web_event(
         'StartTrial',
+        event_id=event_id,
+        user=user,
+        request=request,
+        context=context,
+        event_time=event_time,
+        value=value,
+        currency=currency,
+        content_id=content_id,
+        content_name=content_name,
+    )
+
+
+def send_initiate_checkout_event(
+    *,
+    event_id: str,
+    user=None,
+    request=None,
+    context: Optional[Dict[str, Any]] = None,
+    event_time: Optional[Any] = None,
+    value: Optional[Any] = None,
+    currency: Optional[str] = None,
+    content_id: Optional[Any] = None,
+    content_name: Optional[str] = None,
+) -> bool:
+    return send_tiktok_web_event(
+        'InitiateCheckout',
         event_id=event_id,
         user=user,
         request=request,

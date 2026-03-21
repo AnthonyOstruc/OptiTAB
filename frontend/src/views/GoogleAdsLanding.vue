@@ -443,7 +443,9 @@ async function confirmSubscription() {
       value: data?.amount,
       currency: data?.currency || 'EUR',
       planName: data?.plan_name || pendingPlanName.value,
-      planMode: data?.plan_mode
+      planMode: data?.plan_mode,
+      transactionId: data?.transaction_id || data?.tiktok_event_id || '',
+      eventId: data?.tiktok_event_id || data?.transaction_id || '',
     })
 
     window.location.assign(redirectUrl)

@@ -268,6 +268,7 @@ const routes = [
       { path: 'exercices', name: 'AdminExercices', component: () => import('@/views/admin/AdminExercices.vue') },
       { path: 'exercices-plus', name: 'AdminExercicesPlus', component: () => import('@/views/admin/AdminExercicesPlus.vue') },
       { path: 'cours', name: 'AdminCours', component: () => import('@/views/admin/AdminCours.vue') },
+      { path: 'cours-pdf', name: 'AdminCoursPdf', component: () => import('@/views/admin/AdminCoursPdf.vue') },
       { path: 'cours-plus', name: 'AdminCoursPlus', component: () => import('@/views/admin/AdminCoursPlus.vue') },
       { path: 'sheets', name: 'AdminSheets', component: () => import('@/views/admin/AdminSheets.vue') },
       { path: 'quiz', name: 'AdminQuiz', component: () => import('@/views/admin/AdminQuiz.vue') },

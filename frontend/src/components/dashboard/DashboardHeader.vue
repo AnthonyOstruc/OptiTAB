@@ -43,6 +43,7 @@
       
       <!-- Groupe 4: Contenu avancé -->
       <div class="nav-group">
+        <router-link to="/admin/cours-pdf" class="admin-link" :class="{ active: isActive('AdminCoursPdf') }">PDF Cours</router-link>
         <router-link to="/admin/cours-plus" class="admin-link" :class="{ active: isActive('AdminCoursPlus') }">Cours+</router-link>
         <router-link to="/admin/exercices-plus" class="admin-link" :class="{ active: isActive('AdminExercicesPlus') }">Exercices+</router-link>
         <router-link to="/admin/quiz-plus" class="admin-link" :class="{ active: isActive('AdminQuizPlus') }">Quiz+</router-link>

@@ -114,3 +114,12 @@ export const duplicateCoursImages = ({ sourceCoursId, targetCoursId, replaceExis
     replace_existing: replaceExisting
   })
 }
+
+// ----- Admin PDF Draft (coller -> previsualiser -> exporter PDF) -----
+export const previewCoursPdfDraft = (payload) =>
+  apiClient.post('/api/cours/cours/pdf-draft-preview/', payload)
+
+export const downloadCoursPdfDraft = (payload) =>
+  apiClient.post('/api/cours/cours/pdf-draft-download/', payload, {
+    responseType: 'blob'
+  })

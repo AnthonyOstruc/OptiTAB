@@ -1,0 +1,295 @@
+:root {
+  --pdf-ink: #0f172a;
+  --pdf-muted: #475569;
+  --pdf-border: #cbd5e1;
+  --pdf-soft: #e2e8f0;
+  --pdf-accent: #1e3a8a;
+  --pdf-accent-soft: #dbeafe;
+  --pdf-callout-info: #eff6ff;
+  --pdf-callout-success: #ecfdf5;
+  --pdf-callout-warning: #fffbeb;
+  --pdf-callout-danger: #fef2f2;
+  --pdf-code-bg: #0b1220;
+  --pdf-code-ink: #f8fafc;
+}
+
+@page {
+  size: A4;
+  margin: 14mm 12mm 14mm 12mm;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: var(--pdf-ink);
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  font-size: 11pt;
+  line-height: 1.58;
+  background: #ffffff;
+}
+
+.pdf-shell {
+  width: 100%;
+}
+
+.pdf-header {
+  border-bottom: 1px solid var(--pdf-soft);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+}
+
+.pdf-main-title {
+  margin: 0;
+  color: var(--pdf-accent);
+  font-size: 24px;
+  line-height: 1.25;
+  break-after: avoid-page;
+  page-break-after: avoid;
+}
+
+.pdf-subtitle {
+  margin: 8px 0 0;
+  color: var(--pdf-muted);
+  font-size: 13px;
+}
+
+.pdf-meta-line {
+  margin: 6px 0 0;
+  color: var(--pdf-muted);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.pdf-content {
+  color: var(--pdf-ink);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #0b2248;
+  margin: 18px 0 10px;
+  line-height: 1.3;
+  break-after: avoid-page;
+  page-break-after: avoid;
+}
+
+h1 {
+  font-size: 22px;
+}
+
+h2 {
+  font-size: 18px;
+  border-bottom: 1px solid var(--pdf-soft);
+  padding-bottom: 6px;
+}
+
+h3 {
+  font-size: 15px;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+.pdf-list,
+ul,
+ol {
+  margin: 8px 0 14px 20px;
+  padding: 0;
+}
+
+li {
+  margin: 4px 0;
+}
+
+.pdf-section-card {
+  border: 1px solid var(--pdf-soft);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 14px 0;
+  background: #ffffff;
+}
+
+.pdf-callout {
+  border-radius: 8px;
+  border-left: 6px solid #60a5fa;
+  padding: 11px 13px;
+  margin: 12px 0;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+.pdf-callout--info {
+  background: var(--pdf-callout-info);
+  border-left-color: #3b82f6;
+}
+
+.pdf-callout--success {
+  background: var(--pdf-callout-success);
+  border-left-color: #10b981;
+}
+
+.pdf-callout--warning {
+  background: var(--pdf-callout-warning);
+  border-left-color: #f59e0b;
+}
+
+.pdf-callout--danger {
+  background: var(--pdf-callout-danger);
+  border-left-color: #ef4444;
+}
+
+.pdf-code,
+pre {
+  font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 10.2px;
+  line-height: 1.48;
+  border-radius: 8px;
+  border: 1px solid var(--pdf-border);
+  background: #f8fafc;
+  color: #0f172a;
+  padding: 11px 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  margin: 10px 0 12px;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+.pdf-code--dark {
+  background: var(--pdf-code-bg);
+  color: var(--pdf-code-ink);
+  border-color: #1f2937;
+}
+
+code {
+  font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.92em;
+  background: #eef2ff;
+  border-radius: 4px;
+  padding: 0.12em 0.32em;
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.pdf-table,
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 16px;
+  font-size: 10.5px;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+th,
+td {
+  border: 1px solid var(--pdf-border);
+  padding: 7px 8px;
+  vertical-align: top;
+}
+
+th {
+  background: #dbeafe;
+  color: #0b2a60;
+  font-weight: 700;
+}
+
+.pdf-table-row--head > th,
+.pdf-table-row--head > td,
+tr.pdf-table-row--head > th,
+tr.pdf-table-row--head > td {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.pdf-table-row--alt > th,
+.pdf-table-row--alt > td,
+tr.pdf-table-row--alt > th,
+tr.pdf-table-row--alt > td {
+  background: #f8fafc;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+blockquote {
+  border-left: 4px solid #93c5fd;
+  margin: 12px 0;
+  padding: 8px 12px;
+  color: #1e3a8a;
+  background: #eff6ff;
+}
+
+a {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.katex-display,
+mjx-container {
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+p,
+li {
+  widows: 3;
+  orphans: 3;
+}
+
+h2 + p,
+h3 + p,
+h4 + p {
+  break-before: avoid-page;
+  page-break-before: avoid;
+}
+
+@media screen {
+  body {
+    background: #e5e7eb;
+    padding: 24px 0;
+  }
+
+  .pdf-shell {
+    width: min(820px, calc(100vw - 24px));
+    margin: 0 auto;
+    padding: 34px 40px;
+    background: #ffffff;
+    box-shadow: 0 14px 36px rgba(15, 23, 42, 0.16);
+    border-radius: 10px;
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff;
+    padding: 0;
+  }
+
+  .pdf-shell {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+}

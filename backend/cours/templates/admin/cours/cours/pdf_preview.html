@@ -1,0 +1,61 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Apercu PDF | {{ block.super }}{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    .pdf-preview-toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pdf-preview-container {
+      height: calc(100vh - 220px);
+      min-height: 560px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f9fafb;
+    }
+
+    .pdf-preview-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #ffffff;
+    }
+
+    .pdf-preview-caption {
+      color: #6b7280;
+      margin: 0 0 10px 0;
+      font-size: 12px;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div id="content-main">
+    <h1>{{ title }}</h1>
+
+    <div class="pdf-preview-toolbar">
+      <a class="button" href="{{ change_url }}">Retour au cours</a>
+      <a class="button" href="{{ refresh_preview_url }}">Rafraichir</a>
+      <a class="button default" href="{{ download_pdf_url }}" target="_blank">Telecharger le PDF</a>
+    </div>
+
+    <p class="pdf-preview-caption">
+      Apercu PDF natif (texte selectionnable et recherchable).
+    </p>
+
+    <div class="pdf-preview-container">
+      <iframe
+        src="{{ inline_pdf_url }}"
+        title="Apercu PDF du cours"
+      ></iframe>
+    </div>
+  </div>
+{% endblock %}

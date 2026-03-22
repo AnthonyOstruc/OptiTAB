@@ -5,12 +5,20 @@ import os
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from django.core.files.base import ContentFile
+from django.http import HttpResponse
 from rest_framework.permissions import IsAuthenticated
 
 from subscriptions.permissions import HasActiveSubscriptionOrPass, user_has_active_subscription_or_pass, is_demo_content
 from .models import Cours, CoursImage
 from .serializers import CoursSerializer, CoursImageSerializer
+from .services import (
+    CoursePdfGenerationError,
+    build_course_pdf_filename,
+    render_course_pdf_bytes,
+    render_course_pdf_html,
+)
 
 
 class CoursViewSet(viewsets.ModelViewSet):
@@ -19,9 +27,37 @@ class CoursViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
-        if self.action in ('list', 'retrieve'):
+        if self.action in ('list', 'retrieve', 'pdf_draft_preview', 'pdf_draft_download'):
             return [IsAuthenticated()]
         return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
+
+    @staticmethod
+    def _is_admin_user(user):
+        return bool(user and user.is_authenticated and (user.is_staff or user.is_superuser))
+
+    def _require_admin(self, request):
+        if not self._is_admin_user(getattr(request, "user", None)):
+            self.permission_denied(
+                request,
+                message="Acces reserve aux administrateurs.",
+            )
+
+    def _build_draft_course_from_payload(self, request):
+        payload = request.data or {}
+        raw_content = payload.get("contenu") or payload.get("content") or payload.get("source") or ""
+        source_content = str(raw_content or "")
+        if not source_content.strip():
+            raise ValidationError({"detail": "Le contenu du cours est vide."})
+
+        raw_title = payload.get("titre") or payload.get("title") or ""
+        title = str(raw_title or "").strip()
+
+        raw_difficulty = payload.get("difficulty") or payload.get("difficulte") or "medium"
+        difficulty = str(raw_difficulty or "medium").strip().lower()
+        if difficulty not in {"easy", "medium", "hard"}:
+            difficulty = "medium"
+
+        return Cours(titre=title, contenu=source_content, difficulty=difficulty)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -84,6 +120,57 @@ class CoursViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, methods=['post'], url_path='pdf-draft-preview')
+    def pdf_draft_preview(self, request, *args, **kwargs):
+        """Prévisualisation HTML d'un cours collé/importé (sans sauvegarde DB)."""
+        self._require_admin(request)
+        try:
+            draft_course = self._build_draft_course_from_payload(request)
+            preview_html = render_course_pdf_html(draft_course, request=request)
+        except ValidationError:
+            raise
+        except Exception as exc:
+            return Response(
+                {"detail": f"Erreur generation preview: {exc}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        return Response(
+            {
+                "html": preview_html,
+                "filename": build_course_pdf_filename(draft_course),
+            }
+        )
+
+    @action(detail=False, methods=['post'], url_path='pdf-draft-download')
+    def pdf_draft_download(self, request, *args, **kwargs):
+        """Génère et renvoie un PDF natif d'un cours collé/importé (sans sauvegarde DB)."""
+        self._require_admin(request)
+
+        try:
+            draft_course = self._build_draft_course_from_payload(request)
+            pdf_bytes = render_course_pdf_bytes(draft_course, request=request)
+        except ValidationError:
+            raise
+        except CoursePdfGenerationError as exc:
+            return Response(
+                {"detail": str(exc)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+        except Exception as exc:
+            return Response(
+                {"detail": f"Erreur generation PDF: {exc}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        requested_filename = str(request.data.get("filename") or "").strip()
+        filename = requested_filename or build_course_pdf_filename(draft_course)
+
+        response = HttpResponse(pdf_bytes, content_type="application/pdf")
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+        response["Cache-Control"] = "no-store"
+        return response
 
 
 class CoursImageViewSet(viewsets.ModelViewSet):

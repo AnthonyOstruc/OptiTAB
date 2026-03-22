@@ -1,0 +1,13 @@
+{% extends "admin/change_form.html" %}
+
+{% block object-tools-items %}
+  {{ block.super }}
+  {% if original %}
+    <li>
+      <a href="{{ pdf_preview_url }}" target="_blank">Previsualiser le PDF</a>
+    </li>
+    <li>
+      <a href="{{ pdf_download_url }}" target="_blank">Telecharger le PDF</a>
+    </li>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <base href="{{ base_url }}" />
+    <title>{{ pdf_title }}</title>
+
+    <style>
+      {{ pdf_styles|safe }}
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    ></script>
+  </head>
+  <body>
+    <article class="pdf-shell">
+      <header class="pdf-header">
+        <h1 class="pdf-main-title">{{ pdf_title }}</h1>
+        {% if pdf_subtitle %}
+          <p class="pdf-subtitle">{{ pdf_subtitle }}</p>
+        {% endif %}
+        {% if pdf_meta_line %}
+          <p class="pdf-meta-line">{{ pdf_meta_line }}</p>
+        {% endif %}
+      </header>
+
+      <section id="pdf-course-content" class="pdf-content">
+        {{ course_body_html|safe }}
+      </section>
+    </article>
+
+    <script>
+      window.__COURSE_PDF_READY__ = false;
+    </script>
+    <script>
+      {{ pdf_renderer_script|safe }}
+    </script>
+  </body>
+</html>

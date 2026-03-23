@@ -126,14 +126,20 @@ const showSubscriptionPrompt = ref(false)
 let subscriptionPromptTimer = null
 const SUBSCRIPTION_PROMPT_INTERVAL = 2 * 60 * 1000 // 2 minutes
 const hasLearningProfile = computed(() => Boolean(userStore.pays && userStore.niveau_pays))
+const hasUnlockedCurrentLevel = computed(() => {
+  const currentLevelId = userStore.niveau_pays?.id
+  if (!currentLevelId) return false
+  return subscriptionStore.levelUnlocked(currentLevelId)
+})
 
 const shouldShowSubscriptionPrompt = computed(() => {
   if (!isAuthenticated.value) return false
+  if (userStore.isAdmin) return false
   // Ne jamais afficher la promo abonnement tant que le profil d'apprentissage n'est pas configuré.
   if (!hasLearningProfile.value) return false
   // Attendre que le statut soit chargé avant de décider
   if (subscriptionStore.loading || !subscriptionStore.status) return false
-  if (subscriptionStore.hasAccess) return false
+  if (subscriptionStore.hasAccess || hasUnlockedCurrentLevel.value) return false
   // L'utilisateur n'a pas d'accès → niveaux bloqués
   return true
 })

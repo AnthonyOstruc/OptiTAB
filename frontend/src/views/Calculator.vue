@@ -923,8 +923,8 @@
               ref="mf"
               id="expr"
               class="math-input expr-input"
-              virtual-keyboard-mode="onfocus"
-              @focus="isFocused = true"
+              virtual-keyboard-mode="off"
+              @focus="handleMathFieldFocus"
               @blur="isFocused = false"
               @input="onInput"
               @keydown="handleKeyDown"
@@ -4325,6 +4325,7 @@ onMounted(async () => {
   await nextTick()
   if (mf.value) {
     mf.value.virtualKeyboardMode = 'off'
+    hideMathLiveKeyboard()
   }
   
   // Rendre le placeholder initial
@@ -4576,6 +4577,19 @@ function onInput() {
     expressionValue.value = mf.value.value
     update()
   }
+}
+
+function hideMathLiveKeyboard() {
+  if (typeof window === 'undefined') return
+  const virtualKeyboard = window.mathVirtualKeyboard
+  if (virtualKeyboard?.visible) {
+    virtualKeyboard.hide()
+  }
+}
+
+function handleMathFieldFocus() {
+  isFocused.value = true
+  hideMathLiveKeyboard()
 }
 
 function handleKeyDown(event) {

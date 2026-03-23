@@ -132,7 +132,7 @@
             :style="{
               left: overlay.x + '%',
               top: overlay.y + '%',
-              fontSize: overlay.fontSize + 'px',
+              fontSize: getLatexRenderFontSize(overlay) + 'px',
               color: overlay.color,
               opacity: overlay.opacity,
               transform: 'translate(-50%, -50%) rotate(' + overlay.rotation + 'deg)',
@@ -272,6 +272,7 @@
           <h2>🎬 Fond Reel</h2>
           <div class="sidebar-header-actions">
             <button class="btn-header-action primary" @click="exportPNG" title="Exporter PNG">📥 PNG</button>
+            <button class="btn-header-action" @click="exportPNGNoBackground" title="Exporter PNG sans fond (transparent)">🫥 PNG</button>
             <button class="btn-header-action save" @click="saveProjectToFile" title="Sauvegarder le projet">💾</button>
             <button class="btn-header-action" @click="triggerLoadProject" title="Charger un projet">📂</button>
             <button class="btn-header-action" @click="openInNewTab" title="Ouvrir dans un nouvel onglet">🔗</button>
@@ -317,7 +318,7 @@
                   v-for="fmt in formatPresets"
                   :key="fmt.label"
                   class="format-btn"
-                  :class="{ active: canvasWidth === fmt.w && canvasHeight === fmt.h }"
+                  :class="{ active: isFormatActive(fmt) }"
                   @click="applyFormat(fmt)"
                 >{{ fmt.label }}</button>
               </div>
@@ -660,7 +661,7 @@
           <!-- ══ TAB: LaTeX ══ -->
           <template v-if="sidebarTab === 'latex'">
             <div class="sidebar-section">
-              <div class="latex-hint">Supporte <code>\\frac</code>, <code>\\int</code>, <code>\\sum</code>, <code>\\begin{'{'}aligned{'}'}</code>…<br/>Glisser sur l'aperçu · Molette = taille</div>
+              <div class="latex-hint">Supporte <code>\\frac</code>, <code>\\int</code>, <code>\\sum</code>, <code>\\begin{'{'}aligned{'}'}</code>…<br/>Échelle Canva: 12 = taille 12 Canva · Glisser sur l'aperçu · Molette = taille</div>
             </div>
             <!-- Zone de saisie LaTeX -->
             <div class="sidebar-section">
@@ -669,7 +670,14 @@
               </div>
               <div class="control-group">
                 <textarea v-model="latexInput" class="text-textarea latex-textarea" rows="5" placeholder="Ex: \frac{a}{b} ou \begin{aligned}...\end{aligned}" @keydown.shift.enter.prevent="addLatexFromInput"></textarea>
-                <div v-if="latexInput" class="latex-preview-mini" v-html="renderLatex(latexInput)"></div>
+                <div class="control-group">
+                  <label>Taille Canva (ajout) <span class="val">{{ latexInputFontSize }}</span></label>
+                  <div class="latex-size-row">
+                    <input type="range" min="12" max="300" step="1" v-model.number="latexInputFontSize" />
+                    <input type="number" min="12" max="300" step="1" v-model.number="latexInputFontSize" class="dim-input latex-size-input" @blur="clampLatexInputFontSize" />
+                  </div>
+                </div>
+                <div v-if="latexInput" class="latex-preview-mini" :style="{ fontSize: latexInputPreviewFontSize + 'px' }" v-html="renderLatex(latexInput)"></div>
                 <button class="btn-add-item" style="margin-top:6px;width:100%" @click="addLatexFromInput" :disabled="!latexInput.trim()">Ajouter (Shift+↵)</button>
               </div>
             </div>
@@ -704,8 +712,8 @@
 
                   <!-- Taille -->
                   <div class="control-group">
-                    <label>Taille <span class="val">{{ overlay.fontSize }}px</span></label>
-                    <input type="range" min="12" max="300" step="2" v-model.number="overlay.fontSize" />
+                    <label>Taille {{ overlay.sizeUnit === 'canva' ? 'Canva' : '' }} <span class="val">{{ overlay.fontSize }}{{ overlay.sizeUnit === 'canva' ? '' : 'px' }}</span></label>
+                    <input type="range" min="12" max="300" :step="overlay.sizeUnit === 'canva' ? 1 : 2" v-model.number="overlay.fontSize" />
                   </div>
 
                   <!-- Couleur -->
@@ -842,7 +850,7 @@ function loadSlideState(index) {
   bgImagePosition.value = s.bgImagePosition
   bgImageBlend.value = s.bgImageBlend
   imageOverlays.value = s.imageOverlays.map(o => ({ ...o }))
-  latexOverlays.value = s.latexOverlays.map(o => ({ ...o }))
+  latexOverlays.value = s.latexOverlays.map(o => normalizeLatexOverlayForCanva(o))
   textOverlays.value = (s.textOverlays || []).map(o => ({ ...o }))
 }
 
@@ -897,10 +905,36 @@ const formatPresets = [
   { label: 'Post paysage', w: 1200, h: 628 },
   { label: 'YouTube', w: 1280, h: 720 },
   { label: 'Banner', w: 1920, h: 1080 },
+  { label: 'A4 blanc', w: 2480, h: 3508, type: 'a4-white' },
 ]
+
+function applyA4WhitePreset() {
+  primaryColor.value = '#ffffff'
+  gridOpacity.value = 0
+  symbolsOpacity.value = 0
+  vignetteIntensity.value = 0
+  bgImageUrl.value = ''
+  bgImageBase64.value = ''
+}
+
+function isFormatActive(preset) {
+  if (canvasWidth.value !== preset.w || canvasHeight.value !== preset.h) return false
+  if (preset.type === 'a4-white') {
+    return isFlatWhiteBackground.value &&
+      gridOpacity.value === 0 &&
+      symbolsOpacity.value === 0 &&
+      vignetteIntensity.value === 0 &&
+      !bgImageUrl.value
+  }
+  return true
+}
+
 function applyFormat(preset) {
   canvasWidth.value = preset.w
   canvasHeight.value = preset.h
+  if (preset.type === 'a4-white') {
+    applyA4WhitePreset()
+  }
 }
 
 // ─── Image de fond personnalisée ───
@@ -1087,10 +1121,45 @@ function loadOverlayImage(file, overlay) {
 }
 
 // ─── Formules LaTeX ───
+const LATEX_CANVA_SIZE_FACTOR = 2
 const latexOverlays = ref([])
 let nextOverlayId = 0
 const latexInput = ref('')
+const latexInputFontSize = ref(40)
 const selectedLatexId = ref(null)
+const latexInputPreviewFontSize = computed(() => latexInputFontSize.value * LATEX_CANVA_SIZE_FACTOR)
+
+function normalizeLatexOverlayForCanva(overlay) {
+  const copy = { ...overlay }
+  const rawSize = Number(copy.fontSize)
+  const safeSize = Number.isFinite(rawSize) ? rawSize : 40
+  if (!copy.sizeUnit) {
+    // Legacy projects stored raw px; convert once to Canva-equivalent units.
+    copy.fontSize = Math.max(12, Math.min(300, Math.round(safeSize / LATEX_CANVA_SIZE_FACTOR)))
+    copy.sizeUnit = 'canva'
+    return copy
+  }
+  copy.fontSize = Math.max(12, Math.min(300, Math.round(safeSize)))
+  return copy
+}
+
+function getLatexRenderFontSize(overlay) {
+  const rawSize = Number(overlay?.fontSize)
+  const safeSize = Number.isFinite(rawSize) ? rawSize : 40
+  if (overlay?.sizeUnit === 'canva') {
+    return safeSize * LATEX_CANVA_SIZE_FACTOR
+  }
+  return safeSize
+}
+
+function clampLatexInputFontSize() {
+  const n = Number(latexInputFontSize.value)
+  if (!Number.isFinite(n)) {
+    latexInputFontSize.value = 40
+    return
+  }
+  latexInputFontSize.value = Math.max(12, Math.min(300, Math.round(n)))
+}
 
 function getNextLatexId() {
   const maxExisting = latexOverlays.value.reduce((maxId, ov) => Math.max(maxId, Number(ov.id) || 0), 0)
@@ -1102,13 +1171,15 @@ function getNextLatexId() {
 function addLatexFromInput() {
   const code = latexInput.value.trim()
   if (!code) return
+  clampLatexInputFontSize()
   const newId = getNextLatexId()
   latexOverlays.value.push({
     id: newId,
     latex: code,
     x: 50,
     y: 50,
-    fontSize: 80,
+    fontSize: latexInputFontSize.value,
+    sizeUnit: 'canva',
     color: '#29428e',
     opacity: 1,
     rotation: 0,
@@ -1166,7 +1237,8 @@ function stopDragLatex() {
 }
 
 function wheelLatexSize(e, overlay) {
-  overlay.fontSize = Math.max(12, Math.min(300, overlay.fontSize + (e.deltaY > 0 ? -2 : 2)))
+  const step = overlay?.sizeUnit === 'canva' ? 1 : 2
+  overlay.fontSize = Math.max(12, Math.min(300, overlay.fontSize + (e.deltaY > 0 ? -step : step)))
   clampOverlayToBounds(overlay, 'latex')
 }
 
@@ -1648,13 +1720,19 @@ function clearGuides() {
 
 // ─── Computed ───
 const gridColor = computed(() => '#F7F9FC')
+const isFlatWhiteBackground = computed(() => {
+  const color = String(primaryColor.value || '').trim().toLowerCase()
+  return color === '#fff' || color === '#ffffff'
+})
 
 const canvasStyle = computed(() => ({
   '--primary-color': primaryColor.value,
   '--grid-opacity': gridOpacity.value,
   '--symbols-opacity': symbolsOpacity.value,
   '--vignette-intensity': vignetteIntensity.value,
-  background: `linear-gradient(160deg, ${lighten(primaryColor.value, 15)} 0%, ${primaryColor.value} 40%, ${darken(primaryColor.value, 20)} 100%)`
+  background: isFlatWhiteBackground.value
+    ? '#ffffff'
+    : `linear-gradient(160deg, ${lighten(primaryColor.value, 15)} 0%, ${primaryColor.value} 40%, ${darken(primaryColor.value, 20)} 100%)`
 }))
 
 const canvasStyleWithTransform = computed(() => ({
@@ -1868,6 +1946,10 @@ async function renderLatexToImage(latexStr, fontSize, color) {
 
 // ─── Export ───
 function generateStandaloneHTML() {
+  const canvasBackground = isFlatWhiteBackground.value
+    ? '#ffffff'
+    : 'linear-gradient(160deg, var(--primary-light) 0%, var(--primary) 40%, var(--primary-dark) 100%)'
+
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1918,7 +2000,7 @@ body {
   height: ${canvasHeight.value}px;
   overflow: hidden;
   /* Dégradé de fond premium */
-  background: linear-gradient(160deg, var(--primary-light) 0%, var(--primary) 40%, var(--primary-dark) 100%);
+  background: ${canvasBackground};
 }
 
 /* Image de fond personnalisée */
@@ -2048,7 +2130,7 @@ body {
   ${textOverlays.value.map(t => `<div style="position:absolute;left:${t.x}%;top:${t.y}%;width:${t.boxWidth}%;transform:translate(-50%,-50%) rotate(${t.rotation}deg);opacity:${t.opacity};z-index:4;pointer-events:none;"><div style="font-size:${t.fontSize}px;font-family:${t.fontFamily};font-weight:${t.bold ? 'bold' : 'normal'};font-style:${t.italic ? 'italic' : 'normal'};color:${t.color};text-align:${t.align};text-shadow:${t.shadow ? '2px 2px 8px rgba(0,0,0,0.6)' : 'none'};letter-spacing:${t.letterSpacing}px;line-height:${t.lineHeight};white-space:pre-wrap;word-wrap:break-word;">${t.text}</div></div>`).join('\n  ')}
 
   <!-- Formules LaTeX -->
-  ${latexOverlays.value.map(o => `<div class="latex-overlay-export" style="left:${o.x}%;top:${o.y}%;font-size:${o.fontSize}px;color:${o.color};opacity:${o.opacity};transform:translate(-50%,-50%) rotate(${o.rotation}deg);text-shadow:${o.shadow ? '2px 2px 8px rgba(0,0,0,0.6)' : 'none'};text-align:${o.align || 'center'};">${katex.renderToString(cleanLatexInput(o.latex), { throwOnError: false, displayMode: true, trust: true })}</div>`).join('\n  ')}
+  ${latexOverlays.value.map(o => `<div class="latex-overlay-export" style="left:${o.x}%;top:${o.y}%;font-size:${getLatexRenderFontSize(o)}px;color:${o.color};opacity:${o.opacity};transform:translate(-50%,-50%) rotate(${o.rotation}deg);text-shadow:${o.shadow ? '2px 2px 8px rgba(0,0,0,0.6)' : 'none'};text-align:${o.align || 'center'};">${katex.renderToString(cleanLatexInput(o.latex), { throwOnError: false, displayMode: true, trust: true })}</div>`).join('\n  ')}
 
   <!-- Vignettage -->
   <div class="vignette-layer"></div>
@@ -2120,13 +2202,34 @@ function restoreFrozenMathJax(replacements) {
   })
 }
 
+const MAX_EXPORT_PIXELS = 40000000
+const MAX_EXPORT_SCALE = 4
+const DEFAULT_EXPORT_SCALE = 2
+
+function computeExportScale(width, height, { transparentBackground = false } = {}) {
+  const safeWidth = Math.max(1, Number(width) || 1)
+  const safeHeight = Math.max(1, Number(height) || 1)
+  const area = safeWidth * safeHeight
+  const preferredScale = transparentBackground ? MAX_EXPORT_SCALE : DEFAULT_EXPORT_SCALE
+  const scaleByPixels = Math.max(1, Math.floor(Math.sqrt(MAX_EXPORT_PIXELS / area)))
+  return Math.max(1, Math.min(preferredScale, MAX_EXPORT_SCALE, scaleByPixels))
+}
+
 async function exportPNG() {
+  return exportPNGWithOptions({ transparentBackground: false })
+}
+
+async function exportPNGNoBackground() {
+  return exportPNGWithOptions({ transparentBackground: true })
+}
+
+async function exportPNGWithOptions({ transparentBackground = false } = {}) {
   const el = reelCanvas.value
   if (!el) return
 
   const W = canvasWidth.value
   const H = canvasHeight.value
-  const SCALE = 2 // haute résolution 2x
+  const SCALE = computeExportScale(W, H, { transparentBackground })
 
   // Désélectionner le texte pour cacher les poignées de resize
   const prevSelected = selectedTextId.value
@@ -2151,9 +2254,21 @@ async function exportPNG() {
   const origTransform = el.style.transform
   const origWidth = el.style.width
   const origHeight = el.style.height
+  const origBackground = el.style.background
   el.style.transform = 'none'
   el.style.width = W + 'px'
   el.style.height = H + 'px'
+
+  // Optionnel: export transparent sans aucun fond.
+  const hiddenBackgroundLayers = []
+  if (transparentBackground) {
+    el.style.background = 'transparent'
+    const bgLayers = el.querySelectorAll('.bg-image-layer, .grid-layer, .symbols-layer, .vignette-layer')
+    bgLayers.forEach((layer) => {
+      hiddenBackgroundLayers.push({ layer, previousDisplay: layer.style.display })
+      layer.style.display = 'none'
+    })
+  }
 
   // Freeze MathJax overlays before rasterization to avoid duplicated layers.
   await new Promise(r => setTimeout(r, 10))
@@ -2210,7 +2325,9 @@ async function exportPNG() {
     })
 
     const link = document.createElement('a')
-    link.download = 'optitab-reel-background.png'
+    link.download = transparentBackground
+      ? 'optitab-reel-sans-fond.png'
+      : 'optitab-reel-background.png'
     link.href = canvas.toDataURL('image/png')
     link.click()
   } catch (e) {
@@ -2221,11 +2338,15 @@ async function exportPNG() {
     el.style.transform = origTransform
     el.style.width = origWidth
     el.style.height = origHeight
+    el.style.background = origBackground
     selectedTextId.value = prevSelected
     activeGuides.value = prevGuides
     activeDistances.value = prevDistances
     activeEqualSpacing.value = prevEqualSpacing
     restoreFrozenMathJax(frozenMathJax)
+    hiddenBackgroundLayers.forEach(({ layer, previousDisplay }) => {
+      layer.style.display = previousDisplay
+    })
     // Restaurer la zone safe
     if (safeZoneEl) safeZoneEl.style.display = ''
   }
@@ -3175,6 +3296,21 @@ input[type="range"] {
   padding: 1px 4px;
   font-size: 0.7rem;
   color: #1F3F8F;
+}
+
+.latex-size-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.latex-size-row input[type="range"] {
+  flex: 1;
+}
+
+.latex-size-input {
+  width: 72px;
+  text-align: center;
 }
 
 /* old classes kept for compat – now unused */

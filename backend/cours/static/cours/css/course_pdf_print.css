@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap");
+
 :root {
   --pdf-ink: #0f172a;
   --pdf-muted: #475569;
@@ -5,6 +7,20 @@
   --pdf-soft: #e2e8f0;
   --pdf-accent: #1e3a8a;
   --pdf-accent-soft: #dbeafe;
+  --pdf-annale-border: #c7d2fe;
+  --pdf-annale-soft: #eff6ff;
+  --pdf-annale-highlight: #1d4ed8;
+  --pdf-annale-statement: #eff6ff;
+  --pdf-annale-method: #ecfeff;
+  --pdf-annale-solution: #ecfdf5;
+  --pdf-annale-note: #fffbeb;
+  --pdf-annale-questions: #f0f9ff;
+  --pdf-annale-correction: #f8fafc;
+  --pdf-annale-final: #f0fdf4;
+  --pdf-band-top-start: #1d4ed8;
+  --pdf-band-top-end: #0f172a;
+  --pdf-band-bottom-start: #0f172a;
+  --pdf-band-bottom-end: #0f766e;
   --pdf-callout-info: #eff6ff;
   --pdf-callout-success: #ecfdf5;
   --pdf-callout-warning: #fffbeb;
@@ -15,7 +31,7 @@
 
 @page {
   size: A4;
-  margin: 14mm 12mm 14mm 12mm;
+  margin: 22mm 12mm 20mm 12mm;
 }
 
 html,
@@ -28,7 +44,7 @@ body {
   color: var(--pdf-ink);
   font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 11pt;
-  line-height: 1.58;
+  line-height: 1.62;
   background: #ffffff;
 }
 
@@ -36,15 +52,58 @@ body {
   width: 100%;
 }
 
+.pdf-page-band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 2.6mm 5.2mm;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.26);
+}
+
+.pdf-page-band-title {
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.pdf-page-band-brand {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.pdf-page-band--top {
+  background: linear-gradient(120deg, var(--pdf-band-top-start), var(--pdf-band-top-end));
+}
+
+.pdf-page-band--bottom {
+  background: linear-gradient(120deg, var(--pdf-band-bottom-start), var(--pdf-band-bottom-end));
+}
+
 .pdf-header {
-  border-bottom: 1px solid var(--pdf-soft);
-  margin-bottom: 20px;
-  padding-bottom: 12px;
+  border: 1px solid var(--pdf-annale-border);
+  border-left: 6px solid var(--pdf-accent);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.09);
+  margin-bottom: 22px;
+  padding: 16px 18px;
 }
 
 .pdf-main-title {
   margin: 0;
   color: var(--pdf-accent);
+  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
   font-size: 24px;
   line-height: 1.25;
   break-after: avoid-page;
@@ -52,20 +111,278 @@ body {
 }
 
 .pdf-subtitle {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   color: var(--pdf-muted);
-  font-size: 13px;
+  font-size: 12px;
+  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
+  font-weight: 600;
 }
 
 .pdf-meta-line {
   margin: 6px 0 0;
   color: var(--pdf-muted);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.02em;
+  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
+  font-weight: 600;
 }
 
 .pdf-content {
   color: var(--pdf-ink);
+}
+
+.annale-document {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.annale-summary {
+  border: 1px solid var(--pdf-annale-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--pdf-annale-soft);
+  color: #1e3a8a;
+  font-size: 10.5pt;
+}
+
+.annale-card {
+  border: 1px solid var(--pdf-annale-border);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.06);
+  padding: 15px 15px 13px;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+.annale-card-header {
+  border-bottom: 1px solid var(--pdf-soft);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+}
+
+.annale-card-index {
+  margin: 0 0 6px;
+  width: fit-content;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  background: #eff6ff;
+  padding: 2px 8px;
+  font-size: 8.8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pdf-annale-highlight);
+  font-weight: 700;
+  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
+}
+
+.annale-card-title {
+  margin: 0;
+  font-size: 17px;
+  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: #0f2b66;
+}
+
+.annale-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.annale-badge {
+  border-radius: 999px;
+  border: 1px solid var(--pdf-border);
+  padding: 2px 8px;
+  font-size: 9.2px;
+  font-weight: 600;
+  color: #334155;
+  background: #f8fafc;
+  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
+}
+
+.annale-badge--difficulty.annale-badge--easy {
+  background: #ecfdf5;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.annale-badge--difficulty.annale-badge--medium {
+  background: #fffbeb;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+.annale-badge--difficulty.annale-badge--hard {
+  background: #fef2f2;
+  border-color: #fda4af;
+  color: #9f1239;
+}
+
+.annale-badge--type {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+  color: #4338ca;
+}
+
+.annale-badge--matiere {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.annale-badge--niveau {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+  color: #6d28d9;
+}
+
+.annale-badge--serie {
+  background: #faf5ff;
+  border-color: #e9d5ff;
+  color: #7e22ce;
+}
+
+.annale-badge--duree {
+  background: #ecfeff;
+  border-color: #a5f3fc;
+  color: #0e7490;
+}
+
+.annale-badge--points {
+  background: #fff7ed;
+  border-color: #fed7aa;
+  color: #c2410c;
+}
+
+.annale-badge--order {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+.annale-card-description {
+  margin: 9px 0 0;
+  color: var(--pdf-muted);
+  font-size: 10.2px;
+}
+
+.annale-card-context {
+  margin: 7px 0 0;
+  color: #1e293b;
+  font-size: 10px;
+}
+
+.annale-card-body > *:first-child {
+  margin-top: 0;
+}
+
+.annale-section {
+  border: 1px solid var(--pdf-soft);
+  border-left: 4px solid #93c5fd;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 11px 0;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+.annale-section--statement {
+  background: var(--pdf-annale-statement);
+  border-left-color: #60a5fa;
+}
+
+.annale-section--method {
+  background: var(--pdf-annale-method);
+  border-left-color: #06b6d4;
+}
+
+.annale-section--solution {
+  background: var(--pdf-annale-solution);
+  border-left-color: #22c55e;
+}
+
+.annale-section--questions {
+  background: var(--pdf-annale-questions);
+  border-left-color: #0284c7;
+}
+
+.annale-section--correction {
+  background: var(--pdf-annale-correction);
+  border-left-color: #64748b;
+}
+
+.annale-section--final {
+  background: var(--pdf-annale-final);
+  border-left-color: #16a34a;
+}
+
+.annale-section--note {
+  background: var(--pdf-annale-note);
+  border-left-color: #f59e0b;
+}
+
+.annale-section-title {
+  margin: 0;
+  font-size: 11px;
+  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #0f172a;
+}
+
+.annale-section-body {
+  margin-top: 7px;
+}
+
+.annale-section-body > p:last-child,
+.annale-section-body > ul:last-child,
+.annale-section-body > ol:last-child {
+  margin-bottom: 0;
+}
+
+.annale-question {
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #f8fbff 0%, #f0f7ff 100%);
+  padding: 9px 11px;
+  margin: 10px 0;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+.annale-question-label {
+  margin: 0;
+  font-size: 9.2px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.annale-question-text {
+  margin: 5px 0 0;
+}
+
+.annale-list {
+  margin: 8px 0 10px 18px;
+}
+
+.annale-list li {
+  margin: 5px 0;
+}
+
+.annale-spacer {
+  height: 6px;
+}
+
+.annale-exercice-line {
+  margin: 8px 0;
 }
 
 h1,
@@ -231,6 +548,18 @@ svg {
   page-break-inside: avoid;
 }
 
+figure {
+  margin: 12px 0 14px;
+  text-align: center;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+figure img {
+  display: block;
+  margin: 0 auto;
+}
+
 blockquote {
   border-left: 4px solid #93c5fd;
   margin: 12px 0;
@@ -266,12 +595,27 @@ h4 + p {
 @media screen {
   body {
     background: #e5e7eb;
-    padding: 24px 0;
+    padding: 24px 0 28px;
+  }
+
+  .pdf-page-band {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    z-index: 5;
+  }
+
+  .pdf-page-band--top {
+    top: 10px;
+  }
+
+  .pdf-page-band--bottom {
+    bottom: 10px;
   }
 
   .pdf-shell {
     width: min(820px, calc(100vw - 24px));
-    margin: 0 auto;
+    margin: 54px auto;
     padding: 34px 40px;
     background: #ffffff;
     box-shadow: 0 14px 36px rgba(15, 23, 42, 0.16);
@@ -283,6 +627,23 @@ h4 + p {
   body {
     background: #ffffff;
     padding: 0;
+  }
+
+  .pdf-page-band {
+    position: fixed;
+    left: 12mm;
+    right: 12mm;
+    box-shadow: none;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .pdf-page-band--top {
+    top: 4mm;
+  }
+
+  .pdf-page-band--bottom {
+    bottom: 4mm;
   }
 
   .pdf-shell {

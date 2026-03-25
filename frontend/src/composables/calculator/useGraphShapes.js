@@ -3,6 +3,7 @@
  */
 import { ref } from 'vue'
 import { GRAPH_COLORS } from './graphConfig'
+import { convertLatexToJS } from './mathUtils'
 
 export function useGraphShapes() {
   // État des formes
@@ -11,8 +12,8 @@ export function useGraphShapes() {
   const circles = ref([])
   
   // Champs de saisie pour les points
-  const pointX = ref(0)
-  const pointY = ref(0)
+  const pointX = ref('0')
+  const pointY = ref('0')
   const pointName = ref('')
   const pointsInput = ref('')
   
@@ -51,15 +52,47 @@ export function useGraphShapes() {
   function resetColorIndex() {
     colorIndex = 0
   }
+
+  function parseCoordinateValue(rawValue) {
+    if (typeof rawValue === 'number') {
+      return Number.isFinite(rawValue) ? rawValue : NaN
+    }
+
+    const raw = String(rawValue ?? '').trim()
+    if (!raw) return NaN
+
+    // Accepter la notation usuelle: e, pi, π, 2e, e^2, 3/2...
+    let normalized = raw
+      .replace(',', '.')
+      .replace(/π/g, 'pi')
+      .replace(/\bpi\b/gi, 'Math.PI')
+
+    const jsExpr = convertLatexToJS(normalized).replace(/\s+/g, '')
+    if (!jsExpr || /\bx\b/i.test(jsExpr)) return NaN
+
+    try {
+      const value = Function(`"use strict"; return (${jsExpr});`)()
+      return (typeof value === 'number' && Number.isFinite(value)) ? value : NaN
+    } catch {
+      return NaN
+    }
+  }
   
   // === POINTS ===
   function addPoint(onUpdate) {
+    const xValue = parseCoordinateValue(pointX.value)
+    const yValue = parseCoordinateValue(pointY.value)
+    if (!Number.isFinite(xValue) || !Number.isFinite(yValue)) {
+      alert('Coordonnées invalides. Exemple: x = e, y = 1')
+      return
+    }
+
     const color = getNextColor()
     pointAutoIndex++
     const name = pointName.value.trim() || `P${pointAutoIndex}`
     points.value.push({
-      x: pointX.value,
-      y: pointY.value,
+      x: xValue,
+      y: yValue,
       color: color,
       name: name,
       showName: true,
@@ -68,8 +101,8 @@ export function useGraphShapes() {
     })
     
     // Réinitialiser les champs
-    pointX.value = 0
-    pointY.value = 0
+    pointX.value = '0'
+    pointY.value = '0'
     pointName.value = ''
     
     if (onUpdate) onUpdate()
@@ -79,15 +112,19 @@ export function useGraphShapes() {
     const input = pointsInput.value.trim()
     if (!input) return
     
-    // Regex pour matcher A(1,2) ou A(1;2) ou A(1.5,-2.3) etc.
-    const pointRegex = /([A-Za-zÀ-ÿ_]\w*)\s*\(\s*(-?[\d]*\.?[\d]+)\s*[,;]\s*(-?[\d]*\.?[\d]+)\s*\)/g
+    // Regex pour matcher A(1,2), A(e,1), A(2e,pi/2), etc.
+    const pointRegex = /([A-Za-zÀ-ÿ_]\w*)\s*\(\s*([A-Za-z0-9π\\.+\-*/^]+)\s*[,;]\s*([A-Za-z0-9π\\.+\-*/^]+)\s*\)/g
     let match
     let count = 0
     
     while ((match = pointRegex.exec(input)) !== null) {
       const name = match[1]
-      const x = parseFloat(match[2])
-      const y = parseFloat(match[3])
+      const x = parseCoordinateValue(match[2])
+      const y = parseCoordinateValue(match[3])
+      if (!Number.isFinite(x) || !Number.isFinite(y)) {
+        alert(`Coordonnées invalides pour ${name}. Exemple valide: ${name}(e,1)`)
+        return
+      }
       const color = getNextColor()
       pointAutoIndex++
       

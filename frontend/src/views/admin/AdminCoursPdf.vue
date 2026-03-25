@@ -3,10 +3,12 @@
     <FormatHelp :format-template="FORMAT_TEMPLATE">
       <template #notes>
         <ul>
-          <li>Le titre, la difficulte et l ordre se definissent dans le bloc colle (pas via des champs separes).</li>
-          <li>Vous pouvez coller un ancien bloc de cours/synthese au meme format que les autres ecrans admin.</li>
-          <li>Pour les images, utilisez une ligne <code>Images:</code> puis <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code>, etc.</li>
-          <li>Si aucun marqueur <code>[IMAGE_X]</code> n est present, les images uploadees sont ajoutees en bas.</li>
+          <li>Utilise un bloc par exercice: <code>=== [Titre]</code> puis les champs d identite (niveau, matiere, chapitre, notion, type, difficulte, temps, objectif).</li>
+          <li>Format pedagogique recommande: <code>Prerequis</code>, <code>Competences_visees</code>, <code>Enonce_eleve</code>, <code>Questions</code>, <code>Aides_progressives</code>, <code>Correction_pedagogique_detaillee</code>, <code>Reponse_finale</code>, <code>A_retenir</code>, <code>Prolongement</code>.</li>
+          <li>Dans <code>Questions:</code> utilise des lignes numerotees <code>1.</code>, <code>2.</code>, <code>3.</code> pour un rendu parfaitement aligne.</li>
+          <li>Tu peux aussi utiliser les variantes en balises: <code>[OBJECTIF]</code>, <code>[PREREQUIS]</code>, <code>[ENONCE]</code>, <code>[REPONSE FINALE]</code>, <code>[A RETENIR]</code>.</li>
+          <li>Pour les images: declare <code>Images:</code> puis place <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code> dans la partie concernee.</li>
+          <li>Evite les gros tableaux inline dans l enonce: garde les details dans la correction pour un PDF premium propre.</li>
         </ul>
       </template>
     </FormatHelp>
@@ -19,7 +21,7 @@
       </select>
 
       <div class="images-upload-section">
-        <h4>Images du cours</h4>
+        <h4>Images de l annale</h4>
         <p class="upload-help">Uploadez les images referencees dans votre bloc.</p>
         <input
           type="file"
@@ -51,7 +53,7 @@
 
       <textarea
         v-model="rawInput"
-        placeholder="Collez ici votre cours ou votre synthese au format OptiTAB"
+        placeholder="Collez ici votre annale d exercices (ou un cours) au format OptiTAB"
       ></textarea>
 
       <div class="btn-group">
@@ -109,20 +111,70 @@ const successMessage = ref('')
 const imagePreviewUrls = new Map()
 const imageDataUrls = new Map()
 
-const FORMAT_TEMPLATE = `=== [NOM DU COURS]
-Images: schema_1.png,schema_2.jpg
-Titre: Fonctions affine
-Difficulte: medium
-Ordre: 1
-Description: Rappels essentiels
+const FORMAT_TEMPLATE = `=== [TEMPLATE MAITRE - EXERCICE PEDAGOGIQUE]
+Titre: Derivation - Lecture graphique de la tangente
+Niveau: Premiere
+Matiere: Mathematiques
+Chapitre: Derivation
+Notion: Nombre derive
+Sous_notion: Lecture graphique
+Type d exercice: application
+Difficulte: moyen
+Temps estime: 15 min
+Objectif pedagogique principal: Determiner un nombre derive a partir d une tangente.
+Prerequis: Coefficient directeur, equation de droite, lecture de points.
+Erreurs frequentes: Confondre pente positive/negative ; inversion dans la formule.
+Images: lecturegraphique.png
 
-## 1. Definition
-Texte du cours...
+Competences_visees:
+- Identifier les informations utiles dans un graphique.
+- Appliquer la formule du coefficient directeur.
+- Justifier chaque etape du calcul.
+- Rediger une conclusion mathematique.
+- Verifier la coherence du resultat.
+
+Enonce_eleve:
+- Contexte: On etudie la pente de la tangente a une courbe.
+- Consigne principale: Determiner les nombres derives demandes.
+- Donnees: Tangente en C(-1;2) passant par (1;0) et tangente en D(2;0) passant par (0;-1).
 [IMAGE_1]
 
-## 2. Methode
-Texte...
-[IMAGE_2]
+Questions:
+1. Determiner graphiquement f'(-1).
+2. Determiner graphiquement f'(2).
+
+Decoupage_pedagogique:
+- Etape 1: comprendre ce qu on cherche.
+- Etape 2: identifier la bonne methode.
+- Etape 3: appliquer proprement.
+- Etape 4: conclure.
+- Etape 5: verifier le resultat.
+
+Aides_progressives:
+- Indice 1: Le nombre derive est la pente de la tangente.
+- Indice 2: Utiliser m = (y2 - y1)/(x2 - x1).
+- Indice 3: Remplacer par les coordonnees des deux points de chaque tangente.
+
+Correction_pedagogique_detaillee:
+- Etape 1 (Question 1): on prend C(-1;2) et (1;0), donc f'(-1) = (0-2)/(1-(-1)) = -2/2 = -1.
+- Etape 2 (Question 2): on prend D(2;0) et (0;-1), donc f'(2) = (-1-0)/(0-2) = -1/-2 = 1/2.
+- Vigilance: ne pas inverser l ordre des soustractions.
+
+Reponse_finale:
+- f'(-1) = -1
+- f'(2) = 1/2
+- Conclusion: la fonction est decroissante en -1 et croissante en 2.
+
+A_retenir:
+- Le nombre derive en a est le coefficient directeur de la tangente en a.
+- Le signe de la pente donne le sens de variation local.
+- Piege classique: oublier les parenthèses avec les nombres negatifs.
+
+Prolongement:
+- Variante plus simple: tangente passant par des points entiers.
+- Variante plus difficile: deduire une equation de tangente.
+- Question bonus: comparer les pentes obtenues et interpreter.
+
 ===`
 
 const canRunActions = computed(() => rawInput.value.trim().length > 0)

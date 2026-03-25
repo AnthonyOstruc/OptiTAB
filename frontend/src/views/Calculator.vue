@@ -113,6 +113,8 @@
                     <div class="shape-item-toggles">
                       <button @click="point.showName = !point.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showName !== false }]" :title="point.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
                       <button @click="point.showCoords = !point.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showCoords !== false }]" :title="point.showCoords !== false ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                      <button @click="cyclePointLabelFormat(point); plotAllFunctions()" :class="['point-toggle-btn', { active: normalizePointLabelFormat(point.labelFormat) !== 'default' }]" :title="getPointLabelFormatTitle(point.labelFormat)">{{ getPointLabelFormatChip(point.labelFormat) }}</button>
+                      <button @click="point.showProjections = !point.showProjections; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showProjections === true }]" :title="point.showProjections === true ? 'Masquer les pointillés sur les axes' : 'Afficher les pointillés sur les axes'">Proj</button>
                       <button @click="point.showInLegend = point.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: point.showInLegend !== false }]" :title="point.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
                     </div>
                   </div>
@@ -260,6 +262,14 @@
                   Afficher les graduations
                 </label>
                 <label class="checkbox-label">
+                  <input type="checkbox" v-model="showCenterAxesOnly" />
+                  Axes centraux seulement (0,0)
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" v-model="showClickProjections" />
+                  Projections pointillees au clic (x,y)
+                </label>
+                <label class="checkbox-label">
                   <input type="checkbox" v-model="snapToGrid" />
                   Accrocher aux intersections de la grille
                 </label>
@@ -287,6 +297,12 @@
                   <input type="checkbox" v-model="allowPan" />
                   Déplacer le graphique (clic + glisser)
                 </label>
+              </div>
+              <div class="bounds-row">
+                <div class="bound-input">
+                  <label>Epaisseur des axes :</label>
+                  <input v-model.number="axisLineWidth" type="number" min="1" max="10" step="0.5" class="bound-field" />
+                </div>
               </div>
               <div class="bounds-row">
                 <div class="bound-input">
@@ -613,18 +629,18 @@
                   </div>
                   <div class="bound-input">
                     <label>x :</label>
-                    <input v-model.number="pointX" type="number" step="0.5" class="bound-field" />
+                    <input v-model="pointX" type="text" class="bound-field" placeholder="ex: e" />
                   </div>
                   <div class="bound-input">
                     <label>y :</label>
-                    <input v-model.number="pointY" type="number" step="0.5" class="bound-field" />
+                    <input v-model="pointY" type="text" class="bound-field" placeholder="ex: 1" />
                   </div>
                 </div>
                 <button @click="addPoint" class="action-btn">Ajouter le point</button>
                 
                 <div style="margin-top: 8px;">
                   <label style="font-size: 0.8rem; color: #94a3b8;">Plusieurs points :</label>
-                  <input v-model="pointsInput" type="text" class="bound-field" placeholder="A(1,2),B(3,4),C(5,6)" style="width: 100%; margin-top: 4px;" @keyup.enter="addMultiplePoints" />
+                  <input v-model="pointsInput" type="text" class="bound-field" placeholder="A(e,1),B(3,4),C(pi,2)" style="width: 100%; margin-top: 4px;" @keyup.enter="addMultiplePoints" />
                   <button @click="addMultiplePoints" class="action-btn" style="margin-top: 4px;">Ajouter les points</button>
                 </div>
                 
@@ -888,11 +904,18 @@
                   </div>
                   <div class="bound-input">
                     <label>Taille :</label>
-                    <input v-model.number="newTextSize" type="number" min="8" max="36" step="1" class="bound-field" style="width: 55px;" />
+                    <input v-model.number="newTextSize" type="number" min="8" max="120" step="1" class="bound-field" style="width: 70px;" />
                   </div>
                   <div class="bound-input">
                     <label>Couleur :</label>
                     <input v-model="newTextColor" type="color" class="bound-field" style="width: 40px; padding: 2px; height: 32px;" />
+                  </div>
+                  <div class="bound-input">
+                    <label>Style :</label>
+                    <label class="checkbox-label" style="margin: 0; gap: 0.35rem;">
+                      <input v-model="newTextBold" type="checkbox" />
+                      <span>Gras</span>
+                    </label>
                   </div>
                 </div>
                 <button @click="addTextAnnotation" class="action-btn">Ajouter le texte</button>
@@ -1085,6 +1108,14 @@
                   Afficher les graduations
                 </label>
                 <label class="integral-type-label">
+                  <input type="checkbox" v-model="showCenterAxesOnly" />
+                  Axes centraux seulement (0,0)
+                </label>
+                <label class="integral-type-label">
+                  <input type="checkbox" v-model="showClickProjections" />
+                  Projections pointillees au clic (x,y)
+                </label>
+                <label class="integral-type-label">
                   <input type="checkbox" v-model="snapToGrid" />
                   Accrocher aux intersections de la grille
                 </label>
@@ -1112,6 +1143,12 @@
                   <input type="checkbox" v-model="allowPan" />
                   Déplacer le graphique (clic + glisser)
                 </label>
+              </div>
+              <div class="bounds-row">
+                <div class="bound-input">
+                  <label>Epaisseur des axes :</label>
+                  <input v-model.number="axisLineWidth" type="number" min="1" max="10" step="0.5" class="bound-field" />
+                </div>
               </div>
               <div class="bounds-row">
                 <div class="bound-input">
@@ -1413,22 +1450,20 @@
                       <label for="point-x">x :</label>
                       <input 
                         id="point-x"
-                        v-model.number="pointX" 
-                        type="number" 
-                        step="0.5"
+                        v-model="pointX" 
+                        type="text" 
                         class="bound-field"
-                        placeholder="0"
+                        placeholder="ex: e"
                       />
                     </div>
                     <div class="bound-input">
                       <label for="point-y">y :</label>
                       <input 
                         id="point-y"
-                        v-model.number="pointY" 
-                        type="number" 
-                        step="0.5"
+                        v-model="pointY" 
+                        type="text" 
                         class="bound-field"
-                        placeholder="0"
+                        placeholder="ex: 1"
                       />
                     </div>
                   </div>
@@ -1439,7 +1474,7 @@
                   
                   <div style="margin-top: 8px;">
                     <label style="font-size: 0.8rem; color: #94a3b8;">Plusieurs points :</label>
-                    <input v-model="pointsInput" type="text" class="bound-field" placeholder="A(1,2),B(3,4),C(5,6)" style="width: 100%; margin-top: 4px;" @keyup.enter="addMultiplePoints" />
+                    <input v-model="pointsInput" type="text" class="bound-field" placeholder="A(e,1),B(3,4),C(pi,2)" style="width: 100%; margin-top: 4px;" @keyup.enter="addMultiplePoints" />
                     <button @click="addMultiplePoints" class="calculate-integral-btn" style="background: #10b981; margin-top: 4px;">
                       Ajouter les points
                     </button>
@@ -1467,6 +1502,8 @@
                     <div class="shape-item-toggles">
                       <button @click="point.showName = !point.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showName !== false }]" :title="point.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
                       <button @click="point.showCoords = !point.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showCoords !== false }]" :title="point.showCoords !== false ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                      <button @click="cyclePointLabelFormat(point); plotAllFunctions()" :class="['point-toggle-btn', { active: normalizePointLabelFormat(point.labelFormat) !== 'default' }]" :title="getPointLabelFormatTitle(point.labelFormat)">{{ getPointLabelFormatChip(point.labelFormat) }}</button>
+                      <button @click="point.showProjections = !point.showProjections; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showProjections === true }]" :title="point.showProjections === true ? 'Masquer les pointillés sur les axes' : 'Afficher les pointillés sur les axes'">Proj</button>
                       <button @click="point.showInLegend = point.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: point.showInLegend !== false }]" :title="point.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
                     </div>
                   </div>
@@ -1735,11 +1772,18 @@
                 <div class="bounds-row">
                   <div class="bound-input">
                     <label>Taille :</label>
-                    <input v-model.number="newTextSize" type="number" min="8" max="36" step="1" class="bound-field" style="width: 65px;" />
+                    <input v-model.number="newTextSize" type="number" min="8" max="120" step="1" class="bound-field" style="width: 70px;" />
                   </div>
                   <div class="bound-input">
                     <label>Couleur :</label>
                     <input v-model="newTextColor" type="color" class="bound-field" style="width: 50px; padding: 2px; height: 36px;" />
+                  </div>
+                  <div class="bound-input">
+                    <label>Style :</label>
+                    <label class="checkbox-label" style="margin: 0; gap: 0.35rem;">
+                      <input v-model="newTextBold" type="checkbox" />
+                      <span>Gras</span>
+                    </label>
                   </div>
                 </div>
                 <button @click="addTextAnnotation" class="calculate-integral-btn" style="background: #1e3a8a; margin-top: 0.5rem;">
@@ -2128,6 +2172,8 @@
                       <div class="shape-item-toggles">
                         <button @click="point.showName = !point.showName; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showName !== false }]" :title="point.showName !== false ? 'Masquer le nom' : 'Afficher le nom'">Nom</button>
                         <button @click="point.showCoords = !point.showCoords; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showCoords !== false }]" :title="point.showCoords !== false ? 'Masquer les coordonnées' : 'Afficher les coordonnées'">Coord</button>
+                        <button @click="cyclePointLabelFormat(point); plotAllFunctions()" :class="['point-toggle-btn', { active: normalizePointLabelFormat(point.labelFormat) !== 'default' }]" :title="getPointLabelFormatTitle(point.labelFormat)">{{ getPointLabelFormatChip(point.labelFormat) }}</button>
+                        <button @click="point.showProjections = !point.showProjections; plotAllFunctions()" :class="['point-toggle-btn', { active: point.showProjections === true }]" :title="point.showProjections === true ? 'Masquer les pointillés sur les axes' : 'Afficher les pointillés sur les axes'">Proj</button>
                         <button @click="point.showInLegend = point.showInLegend === false ? true : false; plotAllFunctions()" :class="['legend-toggle-btn', { active: point.showInLegend !== false }]" :title="point.showInLegend !== false ? 'Masquer de la légende' : 'Afficher dans la légende'">Lég</button>
                       </div>
                     </div>
@@ -2275,6 +2321,14 @@
                     Afficher les graduations
                   </label>
                   <label class="checkbox-label">
+                    <input type="checkbox" v-model="showCenterAxesOnly" />
+                    Axes centraux seulement (0,0)
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" v-model="showClickProjections" />
+                    Projections pointillees au clic (x,y)
+                  </label>
+                  <label class="checkbox-label">
                     <input type="checkbox" v-model="snapToGrid" />
                     Accrocher aux intersections de la grille
                   </label>
@@ -2302,6 +2356,12 @@
                     <input type="checkbox" v-model="allowPan" />
                     Déplacer le graphique (clic + glisser)
                   </label>
+                </div>
+                <div class="bounds-row">
+                  <div class="bound-input">
+                    <label>Epaisseur des axes :</label>
+                    <input v-model.number="axisLineWidth" type="number" min="1" max="10" step="0.5" class="bound-field" />
+                  </div>
                 </div>
                 <div class="bounds-row">
                   <div class="bound-input">
@@ -2624,18 +2684,18 @@
                     </div>
                     <div class="bound-input">
                       <label>x :</label>
-                      <input v-model.number="pointX" type="number" step="0.5" class="bound-field" />
+                      <input v-model="pointX" type="text" class="bound-field" placeholder="ex: e" />
                     </div>
                     <div class="bound-input">
                       <label>y :</label>
-                      <input v-model.number="pointY" type="number" step="0.5" class="bound-field" />
+                      <input v-model="pointY" type="text" class="bound-field" placeholder="ex: 1" />
                     </div>
                   </div>
                   <button @click="addPoint" class="action-btn">Ajouter le point</button>
                   
                   <div style="margin-top: 8px;">
                     <label style="font-size: 0.8rem; color: #94a3b8;">Plusieurs points :</label>
-                    <input v-model="pointsInput" type="text" class="bound-field" placeholder="A(1,2),B(3,4),C(5,6)" style="width: 100%; margin-top: 4px;" @keyup.enter="addMultiplePoints" />
+                    <input v-model="pointsInput" type="text" class="bound-field" placeholder="A(e,1),B(3,4),C(pi,2)" style="width: 100%; margin-top: 4px;" @keyup.enter="addMultiplePoints" />
                     <button @click="addMultiplePoints" class="action-btn" style="margin-top: 4px;">Ajouter les points</button>
                   </div>
                   
@@ -2897,11 +2957,18 @@
                     </div>
                     <div class="bound-input">
                       <label>Taille :</label>
-                      <input v-model.number="newTextSize" type="number" min="8" max="36" step="1" class="bound-field" style="width: 55px;" />
+                      <input v-model.number="newTextSize" type="number" min="8" max="120" step="1" class="bound-field" style="width: 70px;" />
                     </div>
                     <div class="bound-input">
                       <label>Couleur :</label>
                       <input v-model="newTextColor" type="color" class="bound-field" style="width: 40px; padding: 2px; height: 32px;" />
+                    </div>
+                    <div class="bound-input">
+                      <label>Style :</label>
+                      <label class="checkbox-label" style="margin: 0; gap: 0.35rem;">
+                        <input v-model="newTextBold" type="checkbox" />
+                        <span>Gras</span>
+                      </label>
                     </div>
                   </div>
                   <button @click="addTextAnnotation" class="action-btn">Ajouter le texte</button>
@@ -3415,6 +3482,50 @@ const showLegend = ref(true)
 
 // Autoriser le déplacement (pan) du graphique
 const allowPan = ref(false)
+// Option: masquer axes/ticks de bord et ne garder que x=0 et y=0
+const showCenterAxesOnly = ref(false)
+const axisLineWidth = ref(2)
+const showClickProjections = ref(true)
+const clickedProjectionPoint = ref(null)
+
+const POINT_LABEL_FORMAT_ORDER = ['default', 'normal', 'bold', 'italic', 'boldItalic']
+
+function normalizePointLabelFormat(format) {
+  return POINT_LABEL_FORMAT_ORDER.includes(format) ? format : 'default'
+}
+
+function cyclePointLabelFormat(point) {
+  if (!point) return
+  const current = normalizePointLabelFormat(point.labelFormat)
+  const index = POINT_LABEL_FORMAT_ORDER.indexOf(current)
+  point.labelFormat = POINT_LABEL_FORMAT_ORDER[(index + 1) % POINT_LABEL_FORMAT_ORDER.length]
+}
+
+function getPointLabelFormatChip(format) {
+  const normalized = normalizePointLabelFormat(format)
+  if (normalized === 'normal') return 'N'
+  if (normalized === 'bold') return 'B'
+  if (normalized === 'italic') return 'I'
+  if (normalized === 'boldItalic') return 'BI'
+  return 'Fmt'
+}
+
+function getPointLabelFormatTitle(format) {
+  const normalized = normalizePointLabelFormat(format)
+  if (normalized === 'normal') return 'Format normal'
+  if (normalized === 'bold') return 'Format gras'
+  if (normalized === 'italic') return 'Format italique'
+  if (normalized === 'boldItalic') return 'Format gras + italique'
+  return 'Format classique (nom en gras)'
+}
+
+function applyPointLabelFormat(text, format) {
+  const normalized = normalizePointLabelFormat(format)
+  if (normalized === 'bold') return `<b>${text}</b>`
+  if (normalized === 'italic') return `<i>${text}</i>`
+  if (normalized === 'boldItalic') return `<b><i>${text}</i></b>`
+  return text
+}
 
 // Toggle pour relier les points entre eux (polyline)
 const connectPoints = ref(false)
@@ -3557,15 +3668,23 @@ const newTextX = ref(0)
 const newTextY = ref(0)
 const newTextColor = ref('#1e3a8a')
 const newTextSize = ref(16)
+const newTextBold = ref(false)
 
 function addTextAnnotation() {
-  if (!newTextContent.value.trim()) return
+  const content = String(newTextContent.value || '').trim()
+  if (!content) return
+  const parsedSize = Number(newTextSize.value)
+  const safeSize = Number.isFinite(parsedSize)
+    ? Math.max(8, Math.min(120, parsedSize))
+    : 16
+
   textAnnotations.value.push({
-    content: newTextContent.value.trim(),
+    content,
     x: newTextX.value,
     y: newTextY.value,
     color: newTextColor.value,
-    size: newTextSize.value
+    size: safeSize,
+    bold: newTextBold.value === true
   })
   newTextContent.value = ''
   newTextX.value = 0
@@ -3596,11 +3715,52 @@ function removeTextAnnotation(index) {
 }
 
 // Convertit le texte utilisateur en format Plotly (supporte LaTeX avec $...$)
-function formatTextForPlotly(text) {
+function getLatexSizeCommand(size) {
+  const numeric = Number(size)
+  if (!Number.isFinite(numeric)) return ''
+  if (numeric <= 12) return '\\small '
+  if (numeric <= 16) return ''
+  if (numeric <= 20) return '\\large '
+  if (numeric <= 24) return '\\Large '
+  if (numeric <= 30) return '\\LARGE '
+  if (numeric <= 40) return '\\huge '
+  return '\\Huge '
+}
+
+function styleLatexSegment(content, { size = 16, bold = false } = {}) {
+  const raw = String(content ?? '').trim()
+  if (!raw) return '$$'
+  const sizeCommand = getLatexSizeCommand(size)
+  const styled = `${sizeCommand}${raw}`
+  if (bold) return `$\\boldsymbol{${styled}}$`
+  return `$${styled}$`
+}
+
+function formatTextForPlotly(text, { size = 16, bold = false } = {}) {
   // Si le texte contient des délimiteurs LaTeX $...$, on les garde tels quels
   // Plotly/MathJax les interprète nativement
   // Sinon on retourne le texte brut
-  return text
+  const rawText = String(text ?? '')
+  const hasLatex = /\$[^$]+\$/.test(rawText)
+
+  if (!hasLatex) {
+    return bold ? `<b>${rawText}</b>` : rawText
+  }
+
+  const styled = rawText.replace(/\$([^$]+)\$/g, (_match, latexContent) => {
+    return styleLatexSegment(latexContent, { size, bold })
+  })
+
+  if (!bold) return styled
+
+  return styled
+    .split(/(\$[^$]+\$)/g)
+    .map(part => {
+      if (!part) return part
+      if (part.startsWith('$') && part.endsWith('$')) return part
+      return `<b>${part}</b>`
+    })
+    .join('')
 }
 
 // === CALCUL D'ANGLE ===
@@ -3790,12 +3950,21 @@ function buildInteractiveAnnotations() {
       const displayName = point.name || `P${index + 1}`
       const showName = point.showName !== false
       const showCoords = point.showCoords !== false
+      const labelFormat = normalizePointLabelFormat(point.labelFormat)
       
       // Build annotation text based on visibility flags
       let annotText = ''
-      if (showName && showCoords) annotText = `<b>${displayName}</b>(${point.x}, ${point.y})`
-      else if (showName) annotText = `<b>${displayName}</b>`
-      else if (showCoords) annotText = `(${point.x}, ${point.y})`
+      if (labelFormat === 'default') {
+        if (showName && showCoords) annotText = `<b>${displayName}</b>(${point.x}, ${point.y})`
+        else if (showName) annotText = `<b>${displayName}</b>`
+        else if (showCoords) annotText = `(${point.x}, ${point.y})`
+      } else {
+        let baseText = ''
+        if (showName && showCoords) baseText = `${displayName}(${point.x}, ${point.y})`
+        else if (showName) baseText = `${displayName}`
+        else if (showCoords) baseText = `(${point.x}, ${point.y})`
+        annotText = applyPointLabelFormat(baseText, labelFormat)
+      }
       
       // Skip annotation entirely if both hidden
       if (!showName && !showCoords) return
@@ -3958,14 +4127,14 @@ function buildInteractiveAnnotations() {
       y: ta.y,
       xref: 'x',
       yref: 'y',
-      text: formatTextForPlotly(ta.content),
+      text: formatTextForPlotly(ta.content, { size: ta.size || 16, bold: ta.bold === true }),
       showarrow: false,
       ax: saved?.ax ?? 0,
       ay: saved?.ay ?? 0,
       font: {
         size: ta.size || 16,
         color: ta.color,
-        family: 'Arial, sans-serif'
+        family: ta.bold === true ? 'Arial Black, Arial, sans-serif' : 'Arial, sans-serif'
       },
       bgcolor: 'rgba(0,0,0,0)',
       bordercolor: 'rgba(0,0,0,0)',
@@ -4531,7 +4700,7 @@ watch(() => graphFunctions.value.length, () => {
 }, { flush: 'post' })
 
 // Watchers pour l'affichage de la grille, des axes et des graduations
-watch([showGrid, showAxes, showTicks], () => {
+watch([showGrid, showAxes, showTicks, showCenterAxesOnly, axisLineWidth, showClickProjections], () => {
   if (selectedOperation.value === 'graph') {
     plotAllFunctions()
   }
@@ -4548,8 +4717,17 @@ watch(showSidePanel, () => {
 
 // Re-render quand le mode dessin change (pan vs dessin)
 watch(drawingMode, () => {
+  if (drawingMode.value !== 'none') {
+    clickedProjectionPoint.value = null
+  }
   if (selectedOperation.value === 'graph') {
     plotAllFunctions()
+  }
+})
+
+watch(showClickProjections, (enabled) => {
+  if (!enabled && clickedProjectionPoint.value) {
+    clickedProjectionPoint.value = null
   }
 })
 
@@ -4557,6 +4735,15 @@ watch(drawingMode, () => {
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
   window.removeEventListener('resize', handleResize)
+  if (graphContainer.value?._clickListener) {
+    graphContainer.value.removeEventListener('click', graphContainer.value._clickListener)
+  }
+  if (graphContainer.value?._plotlyClickListener && graphContainer.value.removeListener) {
+    graphContainer.value.removeListener('plotly_click', graphContainer.value._plotlyClickListener)
+  }
+  if (graphContainer.value?._relayoutListener && graphContainer.value.removeListener) {
+    graphContainer.value.removeListener('plotly_relayout', graphContainer.value._relayoutListener)
+  }
   if (resizeTimeout) {
     clearTimeout(resizeTimeout)
   }
@@ -4922,6 +5109,26 @@ function solveForY(leftSide, rightSide) {
   }
 }
 
+function parsePointCoordinateToken(rawToken) {
+  const raw = String(rawToken ?? '').trim()
+  if (!raw) return NaN
+
+  let normalized = raw
+    .replace(',', '.')
+    .replace(/π/g, 'pi')
+    .replace(/\bpi\b/gi, 'Math.PI')
+
+  const jsExpr = convertLatexToJS(normalized).replace(/\s+/g, '')
+  if (!jsExpr || /\bx\b/i.test(jsExpr)) return NaN
+
+  try {
+    const value = Function(`"use strict"; return (${jsExpr});`)()
+    return (typeof value === 'number' && Number.isFinite(value)) ? value : NaN
+  } catch {
+    return NaN
+  }
+}
+
 // === Parser intelligent : détecte les points, segments, vecteurs, cercles dans l'input ===
 function parseSmartInput(rawLatex) {
   // Normaliser : retirer \left \right, espaces, accolades MathLive, \operatorname
@@ -4938,18 +5145,30 @@ function parseSmartInput(rawLatex) {
 
   // Pattern pour un nombre (entier ou décimal, positif ou négatif)
   const num = '-?\\d+(?:\\.\\d+)?'
+  // Pattern pour une coordonnée (supporte e, pi, +, -, /, ^)
+  const coord = '-?[A-Za-z0-9π\\\\.+*/^\\-]+'
   // Pattern pour un nom de point (lettre majuscule + optionnel alphanum)
   const ptName = '[A-Z][a-zA-Z0-9]*'
 
   // 1. Plusieurs points : A(1,2),B(3,4),C(5,6) ou A(1;2),B(3;4)
-  const multiPointRe = new RegExp(`(${ptName})\\((${num})[,;](${num})\\)`, 'g')
+  const multiPointRe = new RegExp(`(${ptName})\\((${coord})[,;](${coord})\\)`, 'g')
   const multiPoints = []
   let mpMatch
   while ((mpMatch = multiPointRe.exec(cleaned)) !== null) {
+    const x = parsePointCoordinateToken(mpMatch[2])
+    const y = parsePointCoordinateToken(mpMatch[3])
+    if (!Number.isFinite(x) || !Number.isFinite(y)) {
+      return {
+        type: 'invalidPointCoord',
+        name: mpMatch[1],
+        xRaw: mpMatch[2],
+        yRaw: mpMatch[3]
+      }
+    }
     multiPoints.push({
       name: mpMatch[1],
-      x: parseFloat(mpMatch[2]),
-      y: parseFloat(mpMatch[3])
+      x,
+      y
     })
   }
   if (multiPoints.length >= 2) {
@@ -5107,6 +5326,13 @@ function findPointByName(name) {
 
 function handleSmartInput(parsed) {
   const color = shapes.getNextColor()
+
+  if (parsed.type === 'invalidPointCoord') {
+    return {
+      success: false,
+      message: `Coordonnées invalides pour ${parsed.name}(${parsed.xRaw}, ${parsed.yRaw}). Exemple: ${parsed.name}(e,1)`
+    }
+  }
 
   if (parsed.type === 'multipoints') {
     const names = []
@@ -5514,6 +5740,21 @@ async function plotFunction() {
 }
 
 // Gérer le clic sur le graphique pour ajouter un point
+function handlePlotlyPointClick(eventData) {
+  if (!showClickProjections.value || drawingMode.value !== 'none') return
+
+  const pointData = eventData?.points?.[0]
+  if (!pointData) return
+  if (pointData?.data?.meta === 'click-projection-helper' || pointData?.data?.meta === 'point-projection-helper') return
+
+  const x = Number(pointData.x)
+  const y = Number(pointData.y)
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return
+
+  clickedProjectionPoint.value = { x, y }
+  plotAllFunctions()
+}
+
 function handleGraphClick(event) {
   if (!graphContainer.value || !graphContainer.value._fullLayout) return
   
@@ -5926,9 +6167,136 @@ async function plotAllFunctions() {
     })
   }
 
+  points.value.forEach((point) => {
+    if (!point || point._temp || point.showProjections !== true) return
+
+    const px = Number(point.x)
+    const py = Number(point.y)
+    if (!Number.isFinite(px) || !Number.isFinite(py)) return
+
+    const helperColor = point.color || '#6b7280'
+
+    traces.push({
+      x: [px, px],
+      y: [0, py],
+      type: 'scatter',
+      mode: 'lines',
+      line: {
+        color: helperColor,
+        width: 1.5,
+        dash: 'dot'
+      },
+      showlegend: false,
+      hoverinfo: 'skip',
+      meta: 'point-projection-helper'
+    })
+
+    traces.push({
+      x: [0, px],
+      y: [py, py],
+      type: 'scatter',
+      mode: 'lines',
+      line: {
+        color: helperColor,
+        width: 1.5,
+        dash: 'dot'
+      },
+      showlegend: false,
+      hoverinfo: 'skip',
+      meta: 'point-projection-helper'
+    })
+
+    traces.push({
+      x: [px, 0],
+      y: [0, py],
+      type: 'scatter',
+      mode: 'markers',
+      marker: {
+        color: '#ffffff',
+        size: 7,
+        line: { color: helperColor, width: 1.2 }
+      },
+      showlegend: false,
+      hoverinfo: 'skip',
+      meta: 'point-projection-helper'
+    })
+  })
+  if (showClickProjections.value && clickedProjectionPoint.value) {
+    const px = Number(clickedProjectionPoint.value.x)
+    const py = Number(clickedProjectionPoint.value.y)
+    if (Number.isFinite(px) && Number.isFinite(py)) {
+      const helperColor = '#6b7280'
+
+      traces.push({
+        x: [px, px],
+        y: [0, py],
+        type: 'scatter',
+        mode: 'lines',
+        line: {
+          color: helperColor,
+          width: 1.5,
+          dash: 'dot'
+        },
+        showlegend: false,
+        hoverinfo: 'skip',
+        meta: 'click-projection-helper'
+      })
+
+      traces.push({
+        x: [0, px],
+        y: [py, py],
+        type: 'scatter',
+        mode: 'lines',
+        line: {
+          color: helperColor,
+          width: 1.5,
+          dash: 'dot'
+        },
+        showlegend: false,
+        hoverinfo: 'skip',
+        meta: 'click-projection-helper'
+      })
+
+      traces.push({
+        x: [px],
+        y: [py],
+        type: 'scatter',
+        mode: 'markers',
+        marker: {
+          color: '#2563eb',
+          size: 9,
+          line: { color: '#1d4ed8', width: 1.2 }
+        },
+        showlegend: false,
+        hoverinfo: 'skip',
+        meta: 'click-projection-helper'
+      })
+
+      traces.push({
+        x: [px, 0],
+        y: [0, py],
+        type: 'scatter',
+        mode: 'markers',
+        marker: {
+          color: '#ffffff',
+          size: 7,
+          line: { color: helperColor, width: 1.2 }
+        },
+        showlegend: false,
+        hoverinfo: 'skip',
+        meta: 'click-projection-helper'
+      })
+    }
+  }
+
+  const centerAxesOnly = showAxes.value && showCenterAxesOnly.value
+  const edgeTicksVisible = showTicks.value && !centerAxesOnly
+  const edgeAxisTitlesVisible = showAxes.value && !centerAxesOnly
+  const axisStrokeWidth = Math.min(10, Math.max(1, Number(axisLineWidth.value) || 2))
+
   const layout = {
     xaxis: {
-      title: showAxes.value ? {
+      title: edgeAxisTitlesVisible ? {
         text: 'x',
         font: { size: 16, color: '#1e3a8a' },
         standoff: 10
@@ -5937,27 +6305,27 @@ async function plotAllFunctions() {
       gridcolor: '#e5e7eb',
       showgrid: showGrid.value,
       zerolinecolor: '#374151',
-      zerolinewidth: showAxes.value ? 2 : 0,
+      zerolinewidth: showAxes.value ? axisStrokeWidth : 0,
       zeroline: showAxes.value,
       fixedrange: !allowPan.value || drawingMode.value !== 'none',
-      showline: showAxes.value,
+      showline: showAxes.value && !centerAxesOnly,
       linecolor: '#374151',
-      linewidth: 2,
+      linewidth: axisStrokeWidth,
       mirror: false,
       tickmode: 'linear',
       tick0: 0,
       dtick: 1,
       ticklabelstep: 2,
       tickfont: { size: mobileViewport ? 9 : 12 },
-      showticklabels: showTicks.value,
-      ticks: showTicks.value ? 'outside' : '',
+      showticklabels: edgeTicksVisible,
+      ticks: edgeTicksVisible ? 'outside' : '',
       scaleanchor: 'y',
       scaleratio: 1,
       constrain: 'domain',
       constraintoward: 'center'
     },
     yaxis: {
-      title: showAxes.value ? {
+      title: edgeAxisTitlesVisible ? {
         text: 'y',
         font: { size: 16, color: '#1e3a8a' },
         standoff: 10
@@ -5966,20 +6334,20 @@ async function plotAllFunctions() {
       gridcolor: '#e5e7eb',
       showgrid: showGrid.value,
       zerolinecolor: '#374151',
-      zerolinewidth: showAxes.value ? 2 : 0,
+      zerolinewidth: showAxes.value ? axisStrokeWidth : 0,
       zeroline: showAxes.value,
       fixedrange: !allowPan.value || drawingMode.value !== 'none',
-      showline: showAxes.value,
+      showline: showAxes.value && !centerAxesOnly,
       linecolor: '#374151',
-      linewidth: 2,
+      linewidth: axisStrokeWidth,
       dtick: 1,
       mirror: false,
       tickmode: 'linear',
       tick0: 0,
       ticklabelstep: 2,
       tickfont: { size: mobileViewport ? 9 : 12 },
-      showticklabels: showTicks.value,
-      ticks: showTicks.value ? 'outside' : '',
+      showticklabels: edgeTicksVisible,
+      ticks: edgeTicksVisible ? 'outside' : '',
       constrain: 'domain',
       constraintoward: 'center'
     },
@@ -5999,7 +6367,7 @@ async function plotAllFunctions() {
         ay: 0,
         arrowhead: 2,
         arrowsize: 1,
-        arrowwidth: 2,
+        arrowwidth: axisStrokeWidth,
         arrowcolor: '#374151'
       },
       // Label "x" à côté de la flèche X
@@ -6034,7 +6402,7 @@ async function plotAllFunctions() {
         ay: yMax.value * 0.95,
         arrowhead: 2,
         arrowsize: 1,
-        arrowwidth: 2,
+        arrowwidth: axisStrokeWidth,
         arrowcolor: '#374151'
       },
       // Label "y" à côté de la flèche Y
@@ -6117,6 +6485,16 @@ async function plotAllFunctions() {
       // Ajouter l'écouteur de clic pour ajouter des points
       graphContainer.value._clickListener = handleGraphClick
       graphContainer.value.addEventListener('click', handleGraphClick)
+      if (graphContainer.value._plotlyClickListener && graphContainer.value.removeListener) {
+        graphContainer.value.removeListener('plotly_click', graphContainer.value._plotlyClickListener)
+      }
+      graphContainer.value._plotlyClickListener = handlePlotlyPointClick
+      graphContainer.value.on('plotly_click', handlePlotlyPointClick)
+
+      if (graphContainer.value._relayoutListener && graphContainer.value.removeListener) {
+        graphContainer.value.removeListener('plotly_relayout', graphContainer.value._relayoutListener)
+      }
+      graphContainer.value._relayoutListener = handleAnnotationDrag
       
       // Écouter les événements de déplacement des annotations
       graphContainer.value.on('plotly_relayout', handleAnnotationDrag)
@@ -8231,6 +8609,7 @@ async function clearGraph() {
   axisIntersectionCustomNames.value = {}
   hiddenIntersections.value = []
   hiddenAxisIntersections.value = []
+  clickedProjectionPoint.value = null
   // Reset inéquations
   inequalities.value = [{ func1Index: 0, func2Index: 1, operator: '<', result: null, color: INEQUALITY_COLORS[0] }]
   inequalityResult.value = null
@@ -10729,3 +11108,9 @@ async function initializeGraph() {
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
 }
 </style> 
+
+
+
+
+
+

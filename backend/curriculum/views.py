@@ -28,7 +28,12 @@ from .serializers import (
     ExerciceImageSerializer
 )
 
-from subscriptions.permissions import HasActiveSubscriptionOrPass, user_has_active_subscription_or_pass, is_demo_content
+from subscriptions.permissions import (
+    HasActiveSubscriptionOrPass,
+    get_content_niveau,
+    is_demo_content,
+    user_has_active_subscription_or_pass,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -658,7 +663,10 @@ class ExerciceViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         # Bypass subscription check for demo exercices
-        if not user_has_active_subscription_or_pass(request.user):
+        if not user_has_active_subscription_or_pass(
+            request.user,
+            niveau=get_content_niveau(instance),
+        ):
             if not is_demo_content(request.user, 'exercice', instance):
                 self.permission_denied(request, message=HasActiveSubscriptionOrPass.message)
         serializer = self.get_serializer(instance)
@@ -806,7 +814,7 @@ class ExerciceImageViewSet(viewsets.ModelViewSet):
 
         user = getattr(self.request, "user", None)
         if user and user.is_authenticated and not (user.is_staff or user.is_superuser):
-            if not user_has_active_subscription_or_pass(user):
+            if not user_has_active_subscription_or_pass(user, niveau=getattr(user, "niveau_pays", None)):
                 demo_notion_id = getattr(getattr(user, "niveau_pays", None), "demo_notion_id", None)
                 if not demo_notion_id:
                     return queryset.none()

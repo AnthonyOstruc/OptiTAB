@@ -26,6 +26,11 @@ from .pass_access import (
     get_valid_active_passes_for_user,
     sync_refunded_passes,
 )
+from .permissions import (
+    get_manual_access_levels,
+    has_global_complimentary_access,
+    user_has_any_manual_access,
+)
 from pays.models import Niveau
 
 logger = logging.getLogger(__name__)
@@ -297,6 +302,10 @@ def build_subscription_status(user):
     """
     now = timezone.now()
     user_id = user.id
+    manual_levels = get_manual_access_levels(user)
+    manual_levels_payload = [serialize_niveau(level) for level in manual_levels]
+    has_manual_access_global = has_global_complimentary_access(user)
+    has_manual_access = user_has_any_manual_access(user)
     
     # Initialisation de la réponse
     response = {
@@ -304,10 +313,20 @@ def build_subscription_status(user):
         'status': 'none',
         'is_active': False,
         'has_active_pass': False,
-        'has_manual_access': bool(getattr(user, 'has_complimentary_access', False)),
+        'has_manual_access': has_manual_access,
+        'has_manual_access_global': has_manual_access_global,
+        'manual_access_levels': manual_levels_payload,
+        'manual_access_scope': (
+            'global'
+            if has_manual_access_global
+            else ('levels' if manual_levels_payload else 'none')
+        ),
     }
     
     levels = UnlockedLevelsCollector()
+    for manual_level in manual_levels_payload:
+        levels.add(manual_level)
+
     subscriptions_payload = []
     primary_subscription = None
     processed_stripe_ids = set()

@@ -6,6 +6,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils import timezone
 from .models import CustomUser, UserFavoriteMatiere, UserSelectedMatiere, ParentChild
 from subscriptions.models import UserSubscription, AccessPass
+from subscriptions.permissions import user_has_any_manual_access
 
 
 @admin.register(CustomUser)
@@ -33,13 +34,23 @@ class CustomUserAdmin(UserAdmin):
         'subscription_plan_display',
         'subscription_status_display',
         'has_complimentary_access',
+        'complimentary_access_scope_display',
         'is_active',
         'is_staff',
         'date_joined',
     )
 
     # Filtres disponibles
-    list_filter = ('is_staff', 'is_active', 'civilite', 'pays', 'niveau_pays', 'has_complimentary_access', 'date_joined')
+    list_filter = (
+        'is_staff',
+        'is_active',
+        'civilite',
+        'pays',
+        'niveau_pays',
+        'has_complimentary_access',
+        'complimentary_access_levels',
+        'date_joined',
+    )
 
     # Champs de recherche
     search_fields = ('email', 'first_name', 'last_name', 'telephone')
@@ -66,6 +77,7 @@ class CustomUserAdmin(UserAdmin):
         ('Accès premium', {
             'fields': (
                 'has_complimentary_access',
+                'complimentary_access_levels',
             ),
         }),
         ('Abonnement / Pass', {
@@ -97,6 +109,7 @@ class CustomUserAdmin(UserAdmin):
         'subscription_ends_display',
         'subscription_has_active_pass',
     )
+    filter_horizontal = ('complimentary_access_levels',)
 
     def _get_subscription(self, obj):
         try:
@@ -109,7 +122,7 @@ class CustomUserAdmin(UserAdmin):
         if subscription and subscription.plan:
             billing = subscription.plan.get_billing_period_display() if hasattr(subscription.plan, 'get_billing_period_display') else subscription.plan.billing_period
             return f"{subscription.plan.name} ({billing})"
-        if obj.has_complimentary_access:
+        if user_has_any_manual_access(obj):
             return 'Accès manuel'
         return '—'
 
@@ -122,11 +135,21 @@ class CustomUserAdmin(UserAdmin):
                 return subscription.get_status_display()
             except AttributeError:
                 return subscription.status
-        if obj.has_complimentary_access:
+        if user_has_any_manual_access(obj):
             return 'Accès manuel'
         return 'Aucun'
 
     subscription_status_display.short_description = 'Statut'
+
+    def complimentary_access_scope_display(self, obj):
+        levels_count = obj.complimentary_access_levels.count()
+        if levels_count > 0:
+            return f"Niveaux ({levels_count})"
+        if obj.has_complimentary_access:
+            return 'Global'
+        return 'Aucun'
+
+    complimentary_access_scope_display.short_description = "Portée accès offert"
 
     @staticmethod
     def _format_dt(dt):

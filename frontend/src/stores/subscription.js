@@ -43,6 +43,20 @@ const hasActiveSubscription = (status) => {
   return false
 }
 
+const hasGlobalManualAccess = (status) => {
+  if (!status?.has_manual_access) return false
+  if (typeof status.has_manual_access_global === 'boolean') {
+    return Boolean(status.has_manual_access_global)
+  }
+  const scopedManualLevels = Array.isArray(status.manual_access_levels)
+    ? status.manual_access_levels
+    : []
+  if (scopedManualLevels.length > 0) {
+    return false
+  }
+  return true
+}
+
 const hasAnyAccess = (status) => {
   if (!status) return false
   if (typeof status.has_access !== 'undefined') {
@@ -71,6 +85,8 @@ const collectUnlockedLevels = (status) => {
   }
   const list = Array.isArray(status.unlocked_levels) ? status.unlocked_levels : []
   list.forEach(addLevel)
+  const manualLevels = Array.isArray(status.manual_access_levels) ? status.manual_access_levels : []
+  manualLevels.forEach(addLevel)
   if (status.subscription_niveau && hasActiveSubscription(status)) {
     addLevel(status.subscription_niveau)
   }
@@ -100,7 +116,7 @@ export const useSubscriptionStore = defineStore('subscription', {
     levelUnlocked(state) {
       return (niveauId) => {
         if (!niveauId) return false
-        if (state.status?.has_manual_access) return true
+        if (hasGlobalManualAccess(state.status)) return true
         const targetId = Number(niveauId)
         if (Number.isNaN(targetId)) return false
         return collectUnlockedLevels(state.status).some(level => Number(level.id) === targetId)

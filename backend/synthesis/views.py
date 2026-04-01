@@ -6,7 +6,11 @@ from django.core.files.base import ContentFile
 import os
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from subscriptions.permissions import HasActiveSubscriptionOrPass, user_has_active_subscription_or_pass
+from subscriptions.permissions import (
+    HasActiveSubscriptionOrPass,
+    get_content_niveau,
+    user_has_active_subscription_or_pass,
+)
 from .models import SynthesisSheet, SynthesisImage
 from .serializers import (
     SynthesisSheetSerializer,
@@ -47,7 +51,10 @@ class SynthesisSheetViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         # Bypass subscription for synthesis of demo notion
-        if not user_has_active_subscription_or_pass(request.user):
+        if not user_has_active_subscription_or_pass(
+            request.user,
+            niveau=get_content_niveau(instance),
+        ):
             niveau = getattr(request.user, 'niveau_pays', None)
             is_demo = niveau and niveau.demo_notion_id and niveau.demo_notion_id == instance.notion_id
             if not is_demo:
@@ -273,7 +280,7 @@ class SynthesisImageViewSet(viewsets.ModelViewSet):
 
         user = getattr(self.request, "user", None)
         if user and user.is_authenticated and not (user.is_staff or user.is_superuser):
-            if not user_has_active_subscription_or_pass(user):
+            if not user_has_active_subscription_or_pass(user, niveau=getattr(user, "niveau_pays", None)):
                 demo_notion_id = getattr(getattr(user, "niveau_pays", None), "demo_notion_id", None)
                 if not demo_notion_id:
                     return queryset.none()

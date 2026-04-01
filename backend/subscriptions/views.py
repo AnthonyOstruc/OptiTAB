@@ -70,6 +70,7 @@ from .handlers import (
 from .email_jobs import _schedule_cancellation_emails
 from .subscription_status import build_subscription_status
 from .pass_access import REFUNDED_STATUSES
+from .permissions import user_has_manual_access_for_level
 
 logger = logging.getLogger(__name__)
 
@@ -231,7 +232,7 @@ def _beneficiary_already_has_level_access(beneficiary_user, niveau_obj, *, now=N
     if not beneficiary_user or not niveau_obj:
         return False
 
-    if getattr(beneficiary_user, 'has_complimentary_access', False):
+    if user_has_manual_access_for_level(beneficiary_user, niveau_obj):
         return True
 
     now = now or timezone.now()
@@ -1733,7 +1734,9 @@ class AdminSubscribersView(APIView):
 
             # Accès manuels accordés par un administrateur
             try:
-                manual_qs = User.objects.filter(has_complimentary_access=True)
+                manual_qs = User.objects.filter(
+                    Q(has_complimentary_access=True) | Q(complimentary_access_levels__isnull=False)
+                ).distinct()
                 for user in manual_qs:
                     try:
                         if user.id in covered_user_ids:
@@ -1741,6 +1744,8 @@ class AdminSubscribersView(APIView):
                         if q:
                             if q not in (user.email or '').lower() and q not in (user.first_name or '').lower() and q not in (user.last_name or '').lower():
                                 continue
+                        manual_level_count = user.complimentary_access_levels.count()
+                        manual_scope = 'levels' if manual_level_count else 'global'
                         manual_entry = {
                             'type': 'manual',
                             'user_id': user.id,
@@ -1750,6 +1755,8 @@ class AdminSubscribersView(APIView):
                             'plan_id': None,
                             'plan_name': 'Accès manuel',
                             'plan_mode': 'manual',
+                            'manual_access_scope': manual_scope,
+                            'manual_levels_count': manual_level_count,
                             'billing_period': None,
                             'status': 'manual',
                             'is_active': True,

@@ -5,7 +5,11 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from subscriptions.permissions import HasActiveSubscriptionOrPass
+from subscriptions.permissions import (
+    HasActiveSubscriptionOrPass,
+    get_content_niveau,
+    user_has_active_subscription_or_pass,
+)
 from .models import Quiz, QuizImage
 from .serializers import QuizSerializer, QuizImageSerializer
 
@@ -16,9 +20,19 @@ class QuizViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, HasActiveSubscriptionOrPass]
 
     def get_permissions(self):
-        if self.action == 'list':
+        if self.action in ('list', 'retrieve'):
             return [IsAuthenticated()]
         return [IsAuthenticated(), HasActiveSubscriptionOrPass()]
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if not user_has_active_subscription_or_pass(
+            request.user,
+            niveau=get_content_niveau(instance),
+        ):
+            self.permission_denied(request, message=HasActiveSubscriptionOrPass.message)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     def get_queryset(self):
         queryset = super().get_queryset()

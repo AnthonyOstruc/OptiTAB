@@ -93,6 +93,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name="Accès premium offert",
         help_text="Autorise l'accès aux contenus premium sans abonnement actif ou pass."
     )
+    complimentary_access_levels = models.ManyToManyField(
+        'pays.Niveau',
+        blank=True,
+        related_name='users_with_complimentary_access',
+        verbose_name="Niveaux premium offerts",
+        help_text=(
+            "Si des niveaux sont sélectionnés, l'accès premium offert est limité à ces niveaux. "
+            "Laisser vide pour un accès global."
+        ),
+    )
 
     objects = CustomUserManager()
 

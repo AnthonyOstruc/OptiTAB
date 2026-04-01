@@ -418,7 +418,7 @@
           <CheckIcon />
         </div>
         <h4>Accès premium accordé</h4>
-        <p>Un administrateur vous a offert l'accès complet aux contenus premium sans abonnement actif.</p>
+        <p>{{ manualAccessDescription }}</p>
         <router-link to="/billing" class="get-started-btn">
           Gérer mon accès
         </router-link>
@@ -833,6 +833,31 @@ const subscription = computed(() => {
 const features = computed(() => subscription.value.features?.length ? subscription.value.features : defaultFeatures)
 const hasSubscription = computed(() => Boolean(subscription.value.has_subscription || subscription.value.has_active_pass))
 const hasManualAccess = computed(() => Boolean(subscription.value.has_manual_access))
+const manualAccessLevels = computed(() => {
+  const levels = subscription.value.manual_access_levels
+  return Array.isArray(levels) ? levels : []
+})
+const hasManualAccessGlobal = computed(() => {
+  if (!hasManualAccess.value) return false
+  if (typeof subscription.value.has_manual_access_global === 'boolean') {
+    return Boolean(subscription.value.has_manual_access_global)
+  }
+  return manualAccessLevels.value.length === 0
+})
+const manualAccessDescription = computed(() => {
+  if (hasManualAccessGlobal.value) {
+    return "Un administrateur vous a offert l'accès complet aux contenus premium sans abonnement actif."
+  }
+  if (!manualAccessLevels.value.length) {
+    return "Un administrateur vous a offert un accès premium ciblé."
+  }
+  const labels = manualAccessLevels.value
+    .map(level => level?.nom)
+    .filter(Boolean)
+    .slice(0, 3)
+  const suffix = manualAccessLevels.value.length > 3 ? ', ...' : ''
+  return `Un administrateur vous a offert l'accès premium pour les niveaux : ${labels.join(', ')}${suffix}.`
+})
 const isCardLoading = computed(() => !initialLoadDone.value && (subscriptionStore.loading || !subscriptionStore.status))
 const cancellationScheduled = computed(() => Boolean(subscription.value.cancel_at_period_end))
 const hasActiveAccess = computed(() => subscriptionStore.hasAccess)

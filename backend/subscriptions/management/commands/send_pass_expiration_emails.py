@@ -13,6 +13,7 @@ from django.utils import timezone
 from django.db import transaction
 
 from subscriptions.models import AccessPass, PaymentHistory
+from subscriptions.permissions import user_has_any_manual_access
 from core.services import EmailService
 
 logger = logging.getLogger(__name__)
@@ -76,7 +77,7 @@ class Command(BaseCommand):
                     continue
 
                 still_has_access = False
-                if getattr(user, 'has_complimentary_access', False):
+                if user_has_any_manual_access(user):
                     still_has_access = True
                 else:
                     try:

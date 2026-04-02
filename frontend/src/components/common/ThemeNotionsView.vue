@@ -495,7 +495,7 @@ function prefetchTopNotions() {
 
 onMounted(() => {
   load(props.matiereId)
-  subscriptionStore.fetchStatus({ force: !subscriptionStore.hasAccess }).catch(() => {})
+  subscriptionStore.fetchStatus({ force: true }).catch(() => {})
 })
 watch(() => props.matiereId, (id) => load(id))
 
@@ -537,20 +537,15 @@ const filteredTotalCount = computed(() => {
   return total
 })
 
-const unlockedLevels = computed(() => subscriptionStore.unlockedLevels || [])
 const selectedNiveauId = computed(() => {
   const rawId = userStore.niveau_pays?.id
   if (rawId == null) return null
   const parsed = Number(rawId)
   return Number.isNaN(parsed) ? null : parsed
 })
-const hasManualAccess = computed(() => Boolean(subscriptionStore.status?.has_manual_access))
 const hasSelectedLevelAccess = computed(() => {
   if (userStore.isAdmin) return true
-  if (hasManualAccess.value) return true
-  if (!subscriptionStore.hasAccess) return false
-  if (!selectedNiveauId.value) return false
-  return unlockedLevels.value.some(level => Number(level.id) === selectedNiveauId.value)
+  return subscriptionStore.accessForLevel(selectedNiveauId.value)
 })
 const notionsLocked = computed(() => !hasSelectedLevelAccess.value)
 const demoNotionId = computed(() => {

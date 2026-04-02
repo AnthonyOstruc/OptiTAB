@@ -17,13 +17,23 @@ export function useRequireSubscription() {
       return true
     }
 
+    const currentLevelId = userStore.niveau_pays?.id
+
     try {
-      await subscriptionStore.fetchStatus({ force: !subscriptionStore.hasAccess })
+      await subscriptionStore.fetchStatus({ force: true })
     } catch (e) {
       // ignore: we'll redirect below if access still absent
     }
 
-    if (subscriptionStore.hasAccess) {
+    if (!subscriptionStore.accessForLevel(currentLevelId)) {
+      try {
+        await subscriptionStore.refreshUntilLevelAccess(currentLevelId, { attempts: 2, interval: 1000 })
+      } catch (e) {
+        // ignore and redirect below
+      }
+    }
+
+    if (subscriptionStore.accessForLevel(currentLevelId)) {
       return true
     }
 

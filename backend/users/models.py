@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 
@@ -103,6 +104,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             "Laisser vide pour un accès global."
         ),
     )
+    complimentary_access_starts_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Début accès premium offert",
+        help_text="Date/heure de début de validité. Laisser vide pour un accès immédiat.",
+    )
+    complimentary_access_ends_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Fin accès premium offert",
+        help_text="Date/heure de fin de validité. Laisser vide pour un accès sans date de fin.",
+    )
 
     objects = CustomUserManager()
 
@@ -115,6 +128,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def clean(self):
+        super().clean()
+        starts_at = self.complimentary_access_starts_at
+        ends_at = self.complimentary_access_ends_at
+        if starts_at and ends_at and starts_at > ends_at:
+            raise ValidationError({
+                'complimentary_access_ends_at': "La date de fin doit être postérieure à la date de début.",
+            })
 
     @property
     def full_name(self):

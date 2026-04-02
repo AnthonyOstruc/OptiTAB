@@ -35,6 +35,7 @@ class CustomUserAdmin(UserAdmin):
         'subscription_status_display',
         'has_complimentary_access',
         'complimentary_access_scope_display',
+        'complimentary_access_window_display',
         'is_active',
         'is_staff',
         'date_joined',
@@ -49,6 +50,8 @@ class CustomUserAdmin(UserAdmin):
         'niveau_pays',
         'has_complimentary_access',
         'complimentary_access_levels',
+        'complimentary_access_starts_at',
+        'complimentary_access_ends_at',
         'date_joined',
     )
 
@@ -78,6 +81,8 @@ class CustomUserAdmin(UserAdmin):
             'fields': (
                 'has_complimentary_access',
                 'complimentary_access_levels',
+                'complimentary_access_starts_at',
+                'complimentary_access_ends_at',
             ),
         }),
         ('Abonnement / Pass', {
@@ -150,6 +155,19 @@ class CustomUserAdmin(UserAdmin):
         return 'Aucun'
 
     complimentary_access_scope_display.short_description = "Portée accès offert"
+
+    def complimentary_access_window_display(self, obj):
+        starts_at = self._format_dt(getattr(obj, 'complimentary_access_starts_at', None))
+        ends_at = self._format_dt(getattr(obj, 'complimentary_access_ends_at', None))
+        if starts_at and ends_at:
+            return f"{starts_at} -> {ends_at}"
+        if starts_at:
+            return f"A partir du {starts_at}"
+        if ends_at:
+            return f"Jusqu'au {ends_at}"
+        return "Toujours"
+
+    complimentary_access_window_display.short_description = "Validité accès offert"
 
     @staticmethod
     def _format_dt(dt):

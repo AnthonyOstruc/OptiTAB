@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+from datetime import timedelta
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.utils import timezone
 
 from pays.models import Niveau, Pays
 from subscriptions.permissions import (
@@ -123,3 +125,56 @@ class ManualComplimentaryLevelAccessTests(TestCase):
         self.assertEqual(status["manual_access_scope"], "global")
         self.assertEqual(status.get("manual_access_levels"), [])
         self.assertTrue(status["has_access"])
+
+    def test_manual_access_is_inactive_before_configured_start_date(self):
+        level_a = self._create_niveau(tag="window-start-a")
+        user = self._create_user(tag="window-start-user", niveau=level_a)
+        user.has_complimentary_access = True
+        user.complimentary_access_starts_at = timezone.now() + timedelta(days=1)
+        user.save(update_fields=["has_complimentary_access", "complimentary_access_starts_at"])
+
+        self.assertFalse(user_has_any_manual_access(user))
+        self.assertFalse(has_global_complimentary_access(user))
+        self.assertFalse(user_has_active_subscription_or_pass(user, niveau=level_a))
+
+        with patch(
+            "subscriptions.subscription_status._list_stripe_subscriptions",
+            return_value=[],
+        ), patch(
+            "subscriptions.subscription_status.get_valid_active_passes_for_user",
+            return_value=[],
+        ):
+            status = build_subscription_status(user)
+
+        self.assertFalse(status["has_manual_access"])
+        self.assertEqual(status["manual_access_window_status"], "scheduled")
+        self.assertFalse(status["has_access"])
+
+    def test_manual_access_is_inactive_after_configured_end_date(self):
+        level_a = self._create_niveau(tag="window-end-a")
+        user = self._create_user(tag="window-end-user", niveau=level_a)
+        user.complimentary_access_levels.add(level_a)
+        user.complimentary_access_ends_at = timezone.now() - timedelta(minutes=1)
+        user.save(update_fields=["complimentary_access_ends_at"])
+
+        self.assertFalse(user_has_any_manual_access(user))
+        self.assertFalse(user_has_active_subscription_or_pass(user, niveau=level_a))
+
+        with patch(
+            "subscriptions.subscription_status._list_stripe_subscriptions",
+            return_value=[],
+        ), patch(
+            "subscriptions.subscription_status.get_valid_active_passes_for_user",
+            return_value=[],
+        ):
+            status = build_subscription_status(user)
+
+        self.assertFalse(status["has_manual_access"])
+        self.assertEqual(status["manual_access_window_status"], "expired")
+        unlocked_level_ids = {
+            level["id"]
+            for level in status.get("unlocked_levels", [])
+            if isinstance(level, dict) and level.get("id") is not None
+        }
+        self.assertNotIn(level_a.id, unlocked_level_ids)
+        self.assertFalse(status["has_access"])

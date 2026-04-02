@@ -28,6 +28,7 @@ from .pass_access import (
 )
 from .permissions import (
     get_manual_access_levels,
+    get_manual_access_window_status,
     has_global_complimentary_access,
     user_has_any_manual_access,
 )
@@ -304,6 +305,13 @@ def build_subscription_status(user):
     user_id = user.id
     manual_levels = get_manual_access_levels(user)
     manual_levels_payload = [serialize_niveau(level) for level in manual_levels]
+    manual_access_starts_at = iso_or_none(
+        getattr(user, 'complimentary_access_starts_at', None)
+    )
+    manual_access_ends_at = iso_or_none(
+        getattr(user, 'complimentary_access_ends_at', None)
+    )
+    manual_access_window_status = get_manual_access_window_status(user, now=now)
     has_manual_access_global = has_global_complimentary_access(user)
     has_manual_access = user_has_any_manual_access(user)
     
@@ -316,6 +324,9 @@ def build_subscription_status(user):
         'has_manual_access': has_manual_access,
         'has_manual_access_global': has_manual_access_global,
         'manual_access_levels': manual_levels_payload,
+        'manual_access_starts_at': manual_access_starts_at,
+        'manual_access_ends_at': manual_access_ends_at,
+        'manual_access_window_status': manual_access_window_status,
         'manual_access_scope': (
             'global'
             if has_manual_access_global
@@ -324,8 +335,9 @@ def build_subscription_status(user):
     }
     
     levels = UnlockedLevelsCollector()
-    for manual_level in manual_levels_payload:
-        levels.add(manual_level)
+    if has_manual_access:
+        for manual_level in manual_levels_payload:
+            levels.add(manual_level)
 
     subscriptions_payload = []
     primary_subscription = None

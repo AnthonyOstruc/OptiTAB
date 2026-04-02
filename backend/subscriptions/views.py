@@ -70,7 +70,11 @@ from .handlers import (
 from .email_jobs import _schedule_cancellation_emails
 from .subscription_status import build_subscription_status
 from .pass_access import REFUNDED_STATUSES
-from .permissions import user_has_manual_access_for_level
+from .permissions import (
+    get_manual_access_window_status,
+    user_has_any_manual_access,
+    user_has_manual_access_for_level,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -1745,7 +1749,13 @@ class AdminSubscribersView(APIView):
                             if q not in (user.email or '').lower() and q not in (user.first_name or '').lower() and q not in (user.last_name or '').lower():
                                 continue
                         manual_level_count = user.complimentary_access_levels.count()
-                        manual_scope = 'levels' if manual_level_count else 'global'
+                        manual_scope = (
+                            'levels'
+                            if manual_level_count
+                            else ('global' if user.has_complimentary_access else 'none')
+                        )
+                        manual_window_status = get_manual_access_window_status(user)
+                        manual_is_active = user_has_any_manual_access(user)
                         manual_entry = {
                             'type': 'manual',
                             'user_id': user.id,
@@ -1756,14 +1766,18 @@ class AdminSubscribersView(APIView):
                             'plan_name': 'Accès manuel',
                             'plan_mode': 'manual',
                             'manual_access_scope': manual_scope,
+                            'manual_access_window_status': manual_window_status,
                             'manual_levels_count': manual_level_count,
                             'billing_period': None,
-                            'status': 'manual',
-                            'is_active': True,
+                            'status': 'manual' if manual_is_active else manual_window_status,
+                            'is_active': manual_is_active,
                             'is_trial': False,
                             'days_remaining_trial': 0,
-                            'current_period_start': _iso_or_none(getattr(user, 'date_joined', None)),
-                            'current_period_end': None,
+                            'current_period_start': _iso_or_none(
+                                getattr(user, 'complimentary_access_starts_at', None)
+                                or getattr(user, 'date_joined', None)
+                            ),
+                            'current_period_end': _iso_or_none(getattr(user, 'complimentary_access_ends_at', None)),
                             'amount_paid': None,
                             'currency': None,
                         }

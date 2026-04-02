@@ -435,13 +435,14 @@ router.beforeEach(async (to, from, next) => {
       const routeNotionId = to.params.notionId
       const isDemoAccess = demoNotionId && routeNotionId && Number(routeNotionId) === Number(demoNotionId)
       if (!isDemoAccess) {
-      await subscriptionStore.fetchStatus({ force: !subscriptionStore.hasAccess })
-      if (!subscriptionStore.hasAccess) {
-        const unlocked = await subscriptionStore.refreshUntilAccess({ attempts: 5, interval: 2000 })
-        if (!unlocked) {
-          return next({ name: 'Billing', hash: '#plans', query: { redirect: to.fullPath, reason: 'subscription_required' } })
+        const currentLevelId = userStore.niveau_pays?.id
+        await subscriptionStore.fetchStatus({ force: true })
+        if (!subscriptionStore.accessForLevel(currentLevelId)) {
+          const unlocked = await subscriptionStore.refreshUntilLevelAccess(currentLevelId, { attempts: 5, interval: 2000 })
+          if (!unlocked) {
+            return next({ name: 'Billing', hash: '#plans', query: { redirect: to.fullPath, reason: 'subscription_required' } })
+          }
         }
-      }
       }
     }
     // Vérifier si la route nécessite un niveau

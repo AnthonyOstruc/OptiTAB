@@ -85,8 +85,10 @@ const collectUnlockedLevels = (status) => {
   }
   const list = Array.isArray(status.unlocked_levels) ? status.unlocked_levels : []
   list.forEach(addLevel)
-  const manualLevels = Array.isArray(status.manual_access_levels) ? status.manual_access_levels : []
-  manualLevels.forEach(addLevel)
+  if (Boolean(status.has_manual_access)) {
+    const manualLevels = Array.isArray(status.manual_access_levels) ? status.manual_access_levels : []
+    manualLevels.forEach(addLevel)
+  }
   if (status.subscription_niveau && hasActiveSubscription(status)) {
     addLevel(status.subscription_niveau)
   }
@@ -107,15 +109,29 @@ export const useSubscriptionStore = defineStore('subscription', {
     hasAccess(state) {
       return hasAnyAccess(state.status)
     },
+    hasGlobalManualAccess(state) {
+      return hasGlobalManualAccess(state.status)
+    },
     isTrial(state) {
       return Boolean(state.status?.is_trial)
     },
     unlockedLevels(state) {
       return collectUnlockedLevels(state.status)
     },
+    accessForLevel(state) {
+      return (niveauId) => {
+        if (!state.status || !hasAnyAccess(state.status)) return false
+        if (hasGlobalManualAccess(state.status)) return true
+        if (niveauId == null || niveauId === '') return true
+        const targetId = Number(niveauId)
+        if (Number.isNaN(targetId)) return false
+        return collectUnlockedLevels(state.status).some(level => Number(level.id) === targetId)
+      }
+    },
     levelUnlocked(state) {
       return (niveauId) => {
         if (!niveauId) return false
+        if (!hasAnyAccess(state.status)) return false
         if (hasGlobalManualAccess(state.status)) return true
         const targetId = Number(niveauId)
         if (Number.isNaN(targetId)) return false
@@ -159,6 +175,16 @@ export const useSubscriptionStore = defineStore('subscription', {
         await new Promise(resolve => setTimeout(resolve, interval))
       }
       return this.hasAccess
+    },
+    async refreshUntilLevelAccess(niveauId, { attempts = 5, interval = 2000 } = {}) {
+      for (let i = 0; i < attempts; i++) {
+        await this.fetchStatus({ force: true })
+        if (this.accessForLevel(niveauId)) {
+          return true
+        }
+        await new Promise(resolve => setTimeout(resolve, interval))
+      }
+      return this.accessForLevel(niveauId)
     }
   }
 })

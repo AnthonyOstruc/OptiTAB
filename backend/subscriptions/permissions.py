@@ -25,6 +25,21 @@ def _normalize_niveau_id(niveau):
         return None
 
 
+def _normalize_datetime_for_compare(value):
+    """Normalize datetimes to timezone-aware values for safe comparisons."""
+    if not value:
+        return None
+    if timezone.is_naive(value):
+        try:
+            return timezone.make_aware(value, timezone.get_current_timezone())
+        except Exception:
+            try:
+                return timezone.make_aware(value)
+            except Exception:
+                return value
+    return value
+
+
 def get_content_niveau(content_obj):
     """
     Resolve the educational level for content linked through:
@@ -64,12 +79,42 @@ def get_manual_access_level_ids(user):
     }
 
 
+def get_manual_access_window_status(user, now=None):
+    """
+    Return manual access window status:
+    - scheduled: start date is set and in the future
+    - expired: end date is set and already passed
+    - active: no boundary or currently inside the configured range
+    """
+    if not user:
+        return 'inactive'
+
+    current_dt = _normalize_datetime_for_compare(now or timezone.now())
+    starts_at = _normalize_datetime_for_compare(
+        getattr(user, 'complimentary_access_starts_at', None)
+    )
+    ends_at = _normalize_datetime_for_compare(
+        getattr(user, 'complimentary_access_ends_at', None)
+    )
+
+    if starts_at and current_dt < starts_at:
+        return 'scheduled'
+    if ends_at and current_dt > ends_at:
+        return 'expired'
+    return 'active'
+
+
+def is_manual_access_window_active(user, now=None):
+    """Return True if manual complimentary access is currently valid."""
+    return get_manual_access_window_status(user, now=now) == 'active'
+
+
 def has_global_complimentary_access(user):
     """
     Global complimentary access is enabled by the legacy boolean only when
     no explicit level restriction is configured.
     """
-    if not user:
+    if not user or not is_manual_access_window_active(user):
         return False
     level_ids = get_manual_access_level_ids(user)
     return bool(getattr(user, 'has_complimentary_access', False) and not level_ids)
@@ -77,7 +122,7 @@ def has_global_complimentary_access(user):
 
 def user_has_any_manual_access(user):
     """Return True when user has global or level-scoped manual access."""
-    if not user:
+    if not user or not is_manual_access_window_active(user):
         return False
     return has_global_complimentary_access(user) or bool(get_manual_access_level_ids(user))
 
@@ -91,7 +136,7 @@ def user_has_manual_access_for_level(user, niveau=None):
     - Otherwise, fallback to legacy global boolean.
     - If no level is provided, the user's current `niveau_pays` is used.
     """
-    if not user:
+    if not user or not is_manual_access_window_active(user):
         return False
 
     level_ids = get_manual_access_level_ids(user)

@@ -60,6 +60,46 @@ class BlogTag(BaseModel):
         super().save(*args, **kwargs)
 
 
+class BlogNiveau(BaseModel):
+    """Niveau scolaire pour classer les articles"""
+    nom = models.CharField(max_length=80, unique=True, verbose_name="Nom")
+    slug = models.SlugField(max_length=100, unique=True, verbose_name="Slug")
+    ordre = models.PositiveIntegerField(default=0, verbose_name="Ordre")
+
+    class Meta:
+        verbose_name = "Niveau"
+        verbose_name_plural = "Niveaux"
+        ordering = ['ordre', 'nom']
+
+    def __str__(self):
+        return self.nom
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.nom)
+        super().save(*args, **kwargs)
+
+
+class BlogContentType(BaseModel):
+    """Type de contenu d'article"""
+    nom = models.CharField(max_length=120, unique=True, verbose_name="Nom")
+    slug = models.SlugField(max_length=140, unique=True, verbose_name="Slug")
+    ordre = models.PositiveIntegerField(default=0, verbose_name="Ordre")
+
+    class Meta:
+        verbose_name = "Type de contenu"
+        verbose_name_plural = "Types de contenu"
+        ordering = ['ordre', 'nom']
+
+    def __str__(self):
+        return self.nom
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.nom)
+        super().save(*args, **kwargs)
+
+
 class BlogPost(BaseModel):
     """Article de blog"""
     STATUS_CHOICES = [
@@ -87,6 +127,22 @@ class BlogPost(BaseModel):
         blank=True,
         related_name='articles',
         verbose_name="Catégorie"
+    )
+    niveau = models.ForeignKey(
+        BlogNiveau,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='articles',
+        verbose_name="Niveau",
+    )
+    type_contenu = models.ForeignKey(
+        BlogContentType,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='articles',
+        verbose_name="Type de contenu",
     )
     tags = models.ManyToManyField(BlogTag, blank=True, related_name='articles', verbose_name="Tags")
     auteur = models.ForeignKey(

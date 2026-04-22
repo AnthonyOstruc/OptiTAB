@@ -31,6 +31,14 @@ export function getBlogTagDetail(slug) {
   return apiClient.get(`${BASE}/tags/${slug}/`)
 }
 
+export function getBlogNiveaux() {
+  return apiClient.get(`${BASE}/niveaux/`)
+}
+
+export function getBlogContentTypes() {
+  return apiClient.get(`${BASE}/types/`)
+}
+
 export function getBlogSitemap() {
   return apiClient.get(`${BASE}/sitemap/`)
 }
@@ -89,4 +97,40 @@ export function updateBlogTag(id, data) {
 
 export function deleteBlogTag(id) {
   return apiClient.delete(`${BASE}/admin/tags/${id}/delete/`)
+}
+
+// —— Admin CRUD — Niveaux —————————————————————————————————————————————
+
+export function getAdminBlogNiveaux() {
+  return apiClient.get(`${BASE}/admin/niveaux/`)
+}
+
+export function createBlogNiveau(data) {
+  return apiClient.post(`${BASE}/admin/niveaux/create/`, data)
+}
+
+export function updateBlogNiveau(id, data) {
+  return apiClient.patch(`${BASE}/admin/niveaux/${id}/`, data)
+}
+
+export function deleteBlogNiveau(id) {
+  return apiClient.delete(`${BASE}/admin/niveaux/${id}/delete/`)
+}
+
+// —— Admin CRUD — Types de contenu —————————————————————————————————————
+
+export function getAdminBlogContentTypes() {
+  return apiClient.get(`${BASE}/admin/types/`)
+}
+
+export function createBlogContentType(data) {
+  return apiClient.post(`${BASE}/admin/types/create/`, data)
+}
+
+export function updateBlogContentType(id, data) {
+  return apiClient.patch(`${BASE}/admin/types/${id}/`, data)
+}
+
+export function deleteBlogContentType(id) {
+  return apiClient.delete(`${BASE}/admin/types/${id}/delete/`)
 }

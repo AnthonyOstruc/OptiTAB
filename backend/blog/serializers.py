@@ -1,8 +1,10 @@
-"""
+﻿"""
 Serializers du blog OptiTAB
 """
+from django.utils.text import slugify
 from rest_framework import serializers
-from .models import BlogCategory, BlogTag, BlogPost
+
+from .models import BlogCategory, BlogTag, BlogNiveau, BlogContentType, BlogPost
 
 
 class BlogCategorySerializer(serializers.ModelSerializer):
@@ -27,9 +29,34 @@ class BlogTagSerializer(serializers.ModelSerializer):
         return obj.articles.filter(statut='published', est_actif=True).count()
 
 
+class BlogNiveauSerializer(serializers.ModelSerializer):
+    articles_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlogNiveau
+        fields = ['id', 'nom', 'slug', 'ordre', 'articles_count']
+
+    def get_articles_count(self, obj):
+        return obj.articles.filter(statut='published', est_actif=True).count()
+
+
+class BlogContentTypeSerializer(serializers.ModelSerializer):
+    articles_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlogContentType
+        fields = ['id', 'nom', 'slug', 'ordre', 'articles_count']
+
+    def get_articles_count(self, obj):
+        return obj.articles.filter(statut='published', est_actif=True).count()
+
+
 class BlogPostListSerializer(serializers.ModelSerializer):
-    """Serializer léger pour la liste d'articles"""
+    """Serializer leger pour la liste d'articles"""
+
     categorie = BlogCategorySerializer(read_only=True)
+    niveau = BlogNiveauSerializer(read_only=True)
+    type_contenu = BlogContentTypeSerializer(read_only=True)
     tags = BlogTagSerializer(many=True, read_only=True)
     auteur_nom = serializers.SerializerMethodField()
     reading_time = serializers.ReadOnlyField()
@@ -40,7 +67,8 @@ class BlogPostListSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'titre', 'slug', 'extrait', 'image_couverture_url',
             'alt_text_image',
-            'categorie', 'tags', 'auteur_nom', 'statut',
+            'categorie', 'niveau', 'type_contenu',
+            'tags', 'auteur_nom', 'statut',
             'date_publication', 'reading_time',
         ]
 
@@ -60,7 +88,8 @@ class BlogPostListSerializer(serializers.ModelSerializer):
 
 
 class BlogPostDetailSerializer(BlogPostListSerializer):
-    """Serializer complet pour le détail d'un article"""
+    """Serializer complet pour le detail d'un article"""
+
     articles_lies = BlogPostListSerializer(many=True, read_only=True)
     og_image_url = serializers.SerializerMethodField()
 
@@ -81,24 +110,80 @@ class BlogPostDetailSerializer(BlogPostListSerializer):
         return None
 
 
-# ── Admin serializers ──────────────────────────────────────────────
+class _SlugAutoUniqueMixin:
+    slug_fallback = 'item'
 
-class BlogCategoryAdminSerializer(serializers.ModelSerializer):
+    def _build_unique_slug(self, model, source_text, max_length):
+        base = slugify((source_text or '').strip())[:max_length]
+        if not base:
+            base = self.slug_fallback
+
+        qs = model.objects.all()
+        if self.instance and getattr(self.instance, 'pk', None):
+            qs = qs.exclude(pk=self.instance.pk)
+
+        slug = base
+        index = 2
+        while qs.filter(slug=slug).exists():
+            suffix = f'-{index}'
+            slug = f'{base[:max_length - len(suffix)]}{suffix}'
+            index += 1
+        return slug
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        nom = (attrs.get('nom') or getattr(self.instance, 'nom', '') or '').strip()
+        raw_slug = (attrs.get('slug') or '').strip()
+        source = raw_slug or nom or self.slug_fallback
+        max_length = getattr(self.fields.get('slug'), 'max_length', 140) or 140
+        attrs['slug'] = self._build_unique_slug(self.Meta.model, source, max_length)
+        return attrs
+
+
+class BlogCategoryAdminSerializer(_SlugAutoUniqueMixin, serializers.ModelSerializer):
     class Meta:
         model = BlogCategory
         fields = ['id', 'nom', 'slug', 'description', 'meta_description', 'meta_robots', 'ordre', 'est_actif']
+        extra_kwargs = {
+            'slug': {'required': False, 'allow_blank': True, 'validators': []},
+        }
 
 
-class BlogTagAdminSerializer(serializers.ModelSerializer):
+class BlogTagAdminSerializer(_SlugAutoUniqueMixin, serializers.ModelSerializer):
     class Meta:
         model = BlogTag
         fields = ['id', 'nom', 'slug', 'meta_description', 'meta_robots', 'est_actif']
+        extra_kwargs = {
+            'slug': {'required': False, 'allow_blank': True, 'validators': []},
+        }
+
+
+class BlogNiveauAdminSerializer(_SlugAutoUniqueMixin, serializers.ModelSerializer):
+    class Meta:
+        model = BlogNiveau
+        fields = ['id', 'nom', 'slug', 'ordre', 'est_actif']
+        extra_kwargs = {
+            'slug': {'required': False, 'allow_blank': True, 'validators': []},
+        }
+
+
+class BlogContentTypeAdminSerializer(_SlugAutoUniqueMixin, serializers.ModelSerializer):
+    class Meta:
+        model = BlogContentType
+        fields = ['id', 'nom', 'slug', 'ordre', 'est_actif']
+        extra_kwargs = {
+            'slug': {'required': False, 'allow_blank': True, 'validators': []},
+        }
 
 
 class BlogPostAdminSerializer(serializers.ModelSerializer):
     """Serializer admin pour la liste et le CRUD des articles"""
+
     categorie_nom = serializers.CharField(source='categorie.nom', read_only=True, default='')
     auteur_nom = serializers.SerializerMethodField()
+    niveau_nom = serializers.CharField(source='niveau.nom', read_only=True, default='')
+    type_contenu_nom = serializers.CharField(source='type_contenu.nom', read_only=True, default='')
+
     tags_ids = serializers.PrimaryKeyRelatedField(
         source='tags', many=True, queryset=BlogTag.objects.all(), required=False,
     )
@@ -117,6 +202,8 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
             'og_image', 'og_image_url',
             'alt_text_image',
             'categorie', 'categorie_nom',
+            'niveau', 'niveau_nom',
+            'type_contenu', 'type_contenu_nom',
             'tags_ids',
             'auteur', 'auteur_nom',
             'statut', 'date_publication', 'ordre', 'est_actif',
@@ -126,6 +213,37 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
             'date_creation', 'date_modification',
         ]
         read_only_fields = ['date_creation', 'date_modification']
+        extra_kwargs = {
+            'slug': {'required': False, 'allow_blank': True, 'validators': []},
+            'categorie': {'required': False, 'allow_null': True},
+            'niveau': {'required': False, 'allow_null': True},
+            'type_contenu': {'required': False, 'allow_null': True},
+            'est_actif': {'required': False, 'default': True},
+        }
+
+    def _build_unique_slug(self, source_text, max_length=280):
+        base = slugify((source_text or '').strip())[:max_length]
+        if not base:
+            base = 'article'
+
+        qs = BlogPost.objects.all()
+        if self.instance and getattr(self.instance, 'pk', None):
+            qs = qs.exclude(pk=self.instance.pk)
+
+        slug = base
+        index = 2
+        while qs.filter(slug=slug).exists():
+            suffix = f'-{index}'
+            slug = f'{base[:max_length - len(suffix)]}{suffix}'
+            index += 1
+        return slug
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        titre = (attrs.get('titre') or getattr(self.instance, 'titre', '') or '').strip()
+        raw_slug = (attrs.get('slug') or '').strip()
+        attrs['slug'] = self._build_unique_slug(raw_slug or titre)
+        return attrs
 
     def get_image_couverture_url(self, obj):
         if obj.image_couverture:

@@ -7,15 +7,19 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from django.db.models import Q
-from .models import BlogPost, BlogCategory, BlogTag
+from .models import BlogPost, BlogCategory, BlogTag, BlogNiveau, BlogContentType
 from .serializers import (
     BlogPostListSerializer,
     BlogPostDetailSerializer,
     BlogCategorySerializer,
     BlogTagSerializer,
+    BlogNiveauSerializer,
+    BlogContentTypeSerializer,
     BlogPostAdminSerializer,
     BlogCategoryAdminSerializer,
     BlogTagAdminSerializer,
+    BlogNiveauAdminSerializer,
+    BlogContentTypeAdminSerializer,
 )
 
 
@@ -28,7 +32,7 @@ class BlogPagination(PageNumberPagination):
 def _published_posts():
     return BlogPost.objects.filter(
         statut='published', est_actif=True
-    ).select_related('categorie', 'auteur').prefetch_related('tags')
+    ).select_related('categorie', 'niveau', 'type_contenu', 'auteur').prefetch_related('tags')
 
 
 @api_view(['GET'])
@@ -41,6 +45,16 @@ def blog_post_list(request):
     categorie_slug = request.query_params.get('categorie')
     if categorie_slug:
         qs = qs.filter(categorie__slug=categorie_slug)
+
+    # Filtre par niveau
+    niveau_slug = request.query_params.get('niveau')
+    if niveau_slug:
+        qs = qs.filter(niveau__slug=niveau_slug)
+
+    # Filtre par type de contenu
+    type_contenu_slug = request.query_params.get('type')
+    if type_contenu_slug:
+        qs = qs.filter(type_contenu__slug=type_contenu_slug)
 
     # Filtre par tag
     tag_slug = request.query_params.get('tag')
@@ -92,6 +106,24 @@ def blog_tag_list(request):
     """Liste des tags actifs"""
     tags = BlogTag.objects.filter(est_actif=True).order_by('nom')
     serializer = BlogTagSerializer(tags, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def blog_niveau_list(request):
+    """Liste des niveaux actifs"""
+    niveaux = BlogNiveau.objects.filter(est_actif=True).order_by('ordre', 'nom')
+    serializer = BlogNiveauSerializer(niveaux, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def blog_content_type_list(request):
+    """Liste des types de contenu actifs"""
+    content_types = BlogContentType.objects.filter(est_actif=True).order_by('ordre', 'nom')
+    serializer = BlogContentTypeSerializer(content_types, many=True)
     return Response(serializer.data)
 
 
@@ -156,7 +188,7 @@ def blog_sitemap(request):
 @permission_classes([IsAdminUser])
 def admin_post_list(request):
     """Liste admin de TOUS les articles (brouillons inclus)"""
-    qs = BlogPost.objects.select_related('categorie', 'auteur').prefetch_related('tags').order_by('-date_creation')
+    qs = BlogPost.objects.select_related('categorie', 'niveau', 'type_contenu', 'auteur').prefetch_related('tags').order_by('-date_creation')
     serializer = BlogPostAdminSerializer(qs, many=True, context={'request': request})
     return Response(serializer.data)
 
@@ -286,4 +318,94 @@ def admin_tag_delete(request, pk):
     except BlogTag.DoesNotExist:
         return Response({'detail': 'Tag non trouvé.'}, status=status.HTTP_404_NOT_FOUND)
     tag.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# —— Admin niveaux ——————————————————————————————————————————————————————————
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def admin_niveau_list(request):
+    qs = BlogNiveau.objects.order_by('ordre', 'nom')
+    serializer = BlogNiveauAdminSerializer(qs, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def admin_niveau_create(request):
+    serializer = BlogNiveauAdminSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PATCH'])
+@permission_classes([IsAdminUser])
+def admin_niveau_update(request, pk):
+    try:
+        niveau = BlogNiveau.objects.get(pk=pk)
+    except BlogNiveau.DoesNotExist:
+        return Response({'detail': 'Niveau non trouvé.'}, status=status.HTTP_404_NOT_FOUND)
+    serializer = BlogNiveauAdminSerializer(niveau, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def admin_niveau_delete(request, pk):
+    try:
+        niveau = BlogNiveau.objects.get(pk=pk)
+    except BlogNiveau.DoesNotExist:
+        return Response({'detail': 'Niveau non trouvé.'}, status=status.HTTP_404_NOT_FOUND)
+    niveau.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# —— Admin types de contenu ——————————————————————————————————————————————
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def admin_content_type_list(request):
+    qs = BlogContentType.objects.order_by('ordre', 'nom')
+    serializer = BlogContentTypeAdminSerializer(qs, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def admin_content_type_create(request):
+    serializer = BlogContentTypeAdminSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PATCH'])
+@permission_classes([IsAdminUser])
+def admin_content_type_update(request, pk):
+    try:
+        content_type = BlogContentType.objects.get(pk=pk)
+    except BlogContentType.DoesNotExist:
+        return Response({'detail': 'Type de contenu non trouvé.'}, status=status.HTTP_404_NOT_FOUND)
+    serializer = BlogContentTypeAdminSerializer(content_type, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def admin_content_type_delete(request, pk):
+    try:
+        content_type = BlogContentType.objects.get(pk=pk)
+    except BlogContentType.DoesNotExist:
+        return Response({'detail': 'Type de contenu non trouvé.'}, status=status.HTTP_404_NOT_FOUND)
+    content_type.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)

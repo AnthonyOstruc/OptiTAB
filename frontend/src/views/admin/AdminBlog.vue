@@ -1,68 +1,107 @@
 <template>
   <div>
+    <FormatHelp v-if="activeTab === 'posts'" :format-template="BLOG_FORMAT_TEMPLATE">
+      <template #notes>
+        <ul>
+          <li>Tu peux mixer Markdown, LaTeX et HTML dans <code>Contenu</code></li>
+          <li>Image Markdown: <code>![alt](https://...)</code></li>
+          <li>Vid&eacute;o YouTube: colle un bloc <code>&lt;iframe ...&gt;&lt;/iframe&gt;</code></li>
+          <li>Bouton: utilise le lien HTML avec style inline montr&eacute; dans le template</li>
+          <li>Toujours v&eacute;rifier avec le bouton <strong>Pr&eacute;visualiser</strong></li>
+        </ul>
+      </template>
+    </FormatHelp>
+    
     <h2 class="admin-title">Gestion du Blog</h2>
 
-    <!-- Onglets -->
     <div class="blog-tabs">
       <button :class="['tab-btn', { active: activeTab === 'posts' }]" @click="activeTab = 'posts'">
-        <span class="tab-icon">📝</span> Articles
+        <span class="tab-icon">A</span> Articles
         <span class="tab-count" v-if="posts.length">{{ posts.length }}</span>
       </button>
       <button :class="['tab-btn', { active: activeTab === 'categories' }]" @click="activeTab = 'categories'">
-        <span class="tab-icon">📁</span> Catégories
+        <span class="tab-icon">C</span> Chapitres
         <span class="tab-count" v-if="categories.length">{{ categories.length }}</span>
       </button>
+      <button :class="['tab-btn', { active: activeTab === 'niveaux' }]" @click="activeTab = 'niveaux'">
+        <span class="tab-icon">N</span> Niveaux
+        <span class="tab-count" v-if="niveaux.length">{{ niveaux.length }}</span>
+      </button>
+      <button :class="['tab-btn', { active: activeTab === 'types' }]" @click="activeTab = 'types'">
+        <span class="tab-icon">T</span> Types de contenu
+        <span class="tab-count" v-if="contentTypes.length">{{ contentTypes.length }}</span>
+      </button>
       <button :class="['tab-btn', { active: activeTab === 'tags' }]" @click="activeTab = 'tags'">
-        <span class="tab-icon">🏷️</span> Tags
+        <span class="tab-icon">#</span> Tags
         <span class="tab-count" v-if="tags.length">{{ tags.length }}</span>
       </button>
     </div>
 
-    <!-- ═══════ ARTICLES ═══════ -->
     <template v-if="activeTab === 'posts'">
       <form class="admin-form" @submit.prevent="handleSavePost">
-        <h3 class="form-section-title">{{ postForm.id ? 'Modifier l\'article' : 'Nouvel article' }}</h3>
+        <h3 class="form-section-title">{{ postForm.id ? 'Modifier article' : 'Nouvel article' }}</h3>
 
         <div class="form-group">
           <label>Titre de l'article <span class="required">*</span></label>
-          <input v-model="postForm.titre" placeholder="Ex: 5 astuces pour réussir sa prépa MPSI" required />
+          <input v-model="postForm.titre" placeholder="Ex: 5 astuces pour r&eacute;ussir sa pr&eacute;pa MPSI" required />
         </div>
 
         <div class="form-group">
           <label>Slug</label>
-          <input v-model="postForm.slug" placeholder="Auto-généré depuis le titre si vide" />
+          <input v-model="postForm.slug" placeholder="Auto-g&eacute;n&eacute;r&eacute; depuis le titre si vide" />
           <small class="field-hint">URL de l'article. Laisser vide = auto.</small>
         </div>
 
         <div class="form-group">
-          <label>Extrait</label>
-          <input v-model="postForm.extrait" placeholder="Résumé court affiché dans la liste du blog" maxlength="400" />
-          <small class="field-hint">Max 400 car. Affiché dans les cartes du blog.</small>
+          <label class="label-with-counter">
+            <span>Extrait</span>
+            <span :class="counterClass(postForm.extrait.length, 120, 220, 400)">
+              {{ postForm.extrait.length }}/400 (id&eacute;al 120-220)
+            </span>
+          </label>
+          <input v-model="postForm.extrait" placeholder="R&eacute;sum&eacute; court affich&eacute; dans la liste du blog" maxlength="400" />
+          <small class="field-hint">Max 400 car. Affich&eacute; dans les cartes du blog.</small>
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>Catégorie</label>
+            <label>Cat&eacute;gorie (chapitre)</label>
             <select v-model="postForm.categorie">
-              <option :value="null">— Aucune catégorie —</option>
+              <option :value="null">- Aucun chapitre -</option>
               <option v-for="c in categories" :key="c.id" :value="c.id">{{ c.nom }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Niveau (classe)</label>
+            <select v-model="postForm.niveau">
+              <option :value="null">- Aucun niveau -</option>
+              <option v-for="n in niveaux" :key="n.id" :value="n.id">{{ n.nom }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Type de contenu</label>
+            <select v-model="postForm.type_contenu">
+              <option :value="null">- Aucun type -</option>
+              <option v-for="t in contentTypes" :key="t.id" :value="t.id">{{ t.nom }}</option>
             </select>
           </div>
           <div class="form-group">
             <label>Statut</label>
             <select v-model="postForm.statut">
               <option value="draft">Brouillon</option>
-              <option value="published">Publié</option>
+              <option value="published">Publi&eacute;</option>
             </select>
           </div>
         </div>
 
-        <!-- Tags multi-select chips -->
         <div class="form-group">
           <label>Tags</label>
           <div class="tags-select-row">
             <select v-model="selectedTagId">
-              <option value="">Ajouter un tag…</option>
+              <option value="">Ajouter un tag...</option>
               <option v-for="t in availableTags" :key="t.id" :value="t.id">{{ t.nom }}</option>
             </select>
             <button class="btn-tag-add" type="button" @click="addTag" :disabled="!selectedTagId">+</button>
@@ -70,18 +109,17 @@
           <div class="chips" v-if="postForm.tags_ids.length">
             <span class="chip" v-for="tid in postForm.tags_ids" :key="tid">
               {{ tagNameById(tid) }}
-              <button class="chip-remove" type="button" @click="removeTag(tid)">×</button>
+              <button class="chip-remove" type="button" @click="removeTag(tid)">x</button>
             </span>
           </div>
         </div>
 
         <div class="form-group">
           <label>Contenu <span class="required">*</span></label>
-          <textarea v-model="postForm.contenu" placeholder="Rédigez en Markdown ($formules$ LaTeX supportées)" rows="14"></textarea>
+          <textarea v-model="postForm.contenu" placeholder="R&eacute;digez en Markdown ($formules$ LaTeX support&eacute;es)" rows="14"></textarea>
           <small class="field-hint">Supporte Markdown, LaTeX ($formule$) et HTML.</small>
         </div>
 
-        <!-- Image de couverture -->
         <div class="form-group">
           <label>Image de couverture</label>
           <div class="image-upload-zone">
@@ -92,27 +130,34 @@
 
         <div class="form-group">
           <label>Alt text image</label>
-          <input v-model="postForm.alt_text_image" placeholder="Description textuelle de l'image (accessibilité + SEO)" maxlength="250" />
-          <small class="field-hint">Max 250 car. Important pour l'accessibilité et le référencement.</small>
+          <input v-model="postForm.alt_text_image" placeholder="Description textuelle de l'image (accessibilit&eacute; + SEO)" maxlength="250" />
+          <small class="field-hint">Max 250 car.</small>
         </div>
 
-        <!-- SEO -->
         <details class="seo-accordion">
           <summary>
-            <span class="seo-icon">🔍</span> SEO (optionnel)
-            <span class="seo-arrow">▸</span>
+            <span class="seo-icon">SEO</span> SEO (optionnel)
+            <span class="seo-arrow">></span>
           </summary>
           <div class="seo-content">
             <div class="form-row-2">
               <div class="form-group">
-                <label>Titre SEO</label>
+                <label class="label-with-counter">
+                  <span>Titre SEO</span>
+                  <span :class="counterClass(postForm.seo_title.length, 50, 65, 70)">
+                    {{ postForm.seo_title.length }}/70 (id&eacute;al 50-65)
+                  </span>
+                </label>
                 <input v-model="postForm.seo_title" placeholder="Titre dans l'onglet Google" maxlength="70" />
-                <small class="field-hint">Max 70 car. Si vide = titre article.</small>
               </div>
               <div class="form-group">
-                <label>Meta description</label>
+                <label class="label-with-counter">
+                  <span>Meta description</span>
+                  <span :class="counterClass(postForm.meta_description.length, 140, 160, 160)">
+                    {{ postForm.meta_description.length }}/160 (id&eacute;al 140-160)
+                  </span>
+                </label>
                 <input v-model="postForm.meta_description" placeholder="Description sous le lien Google" maxlength="160" />
-                <small class="field-hint">Max 160 car. Si vide = extrait.</small>
               </div>
             </div>
             <div class="form-row-2">
@@ -122,7 +167,7 @@
               </div>
               <div class="form-group">
                 <label>OG Description</label>
-                <input v-model="postForm.og_description" placeholder="Description sur les réseaux" maxlength="200" />
+                <input v-model="postForm.og_description" placeholder="Description sur les r&eacute;seaux" maxlength="200" />
               </div>
             </div>
             <div class="form-group">
@@ -131,38 +176,35 @@
                 <input type="file" accept="image/*" @change="onOgImageChange" />
                 <img v-if="postForm._ogPreview" :src="postForm._ogPreview" class="image-preview-lg" />
               </div>
-              <small class="field-hint">Image dédiée réseaux sociaux. Si vide = image couverture. Idéal : 1200×630 px.</small>
             </div>
             <div class="form-group">
               <label>Meta robots</label>
               <select v-model="postForm.meta_robots">
                 <option value="index">Index (visible Google)</option>
-                <option value="noindex">Noindex (masqué Google)</option>
+                <option value="noindex">Noindex (masque Google)</option>
               </select>
             </div>
           </div>
         </details>
 
         <div class="form-actions">
-          <button class="btn-primary" type="submit">{{ postForm.id ? 'Mettre à jour' : 'Créer' }}</button>
-          <button class="btn-secondary" type="button" @click="handlePreview" :disabled="!postForm.contenu.trim()">Prévisualiser</button>
+          <button class="btn-primary" type="submit">{{ postForm.id ? 'Mettre \u00e0 jour' : 'Cr\u00e9er' }}</button>
+          <button class="btn-secondary" type="button" @click="handlePreview" :disabled="!postForm.contenu.trim()">Pr\u00e9visualiser</button>
           <button v-if="postForm.id" class="btn-danger" type="button" @click="resetPostForm">Annuler</button>
         </div>
       </form>
 
-      <!-- Aperçu de l'article -->
       <div v-if="showPreview" class="preview-section">
         <div class="preview-header-bar">
-          <h3>Aperçu de l'article {{ postForm.id ? '(Mode édition)' : '(Mode création)' }}</h3>
-          <button class="btn-close-preview" @click="showPreview = false">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
-            Fermer
-          </button>
+          <h3>Aper\u00e7u de l'article {{ postForm.id ? '(Mode \u00e9dition)' : '(Mode cr\u00e9ation)' }}</h3>
+          <button class="btn-close-preview" @click="showPreview = false">Fermer</button>
         </div>
         <div class="preview-article">
           <div class="preview-meta">
-            <span :class="['status-badge', postForm.statut]">{{ postForm.statut === 'published' ? 'Publié' : 'Brouillon' }}</span>
+            <span :class="['status-badge', postForm.statut]">{{ postForm.statut === 'published' ? 'Publi\u00e9' : 'Brouillon' }}</span>
             <span v-if="previewCategorie" class="preview-cat">{{ previewCategorie }}</span>
+            <span v-if="previewNiveau" class="preview-taxonomy">{{ previewNiveau }}</span>
+            <span v-if="previewTypeContenu" class="preview-taxonomy">{{ previewTypeContenu }}</span>
             <span v-if="postForm.tags_ids.length" class="preview-tags">
               <span class="chip" v-for="tid in postForm.tags_ids" :key="tid">{{ tagNameById(tid) }}</span>
             </span>
@@ -173,36 +215,50 @@
         </div>
       </div>
 
-      <!-- Filtres articles -->
       <div class="filters">
         <div class="filter-group">
-          <label>Filtrer par catégorie</label>
+          <label>Filtrer par cat&eacute;gorie</label>
           <select v-model="filterCategorie">
-            <option value="all">Toutes les catégories</option>
+            <option value="all">Toutes les cat&eacute;gories</option>
             <option v-for="c in categories" :key="c.id" :value="c.id">{{ c.nom }}</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Filtrer par niveau</label>
+          <select v-model="filterNiveau">
+            <option value="all">Tous les niveaux</option>
+            <option v-for="n in niveaux" :key="n.id" :value="n.id">{{ n.nom }}</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Filtrer par type</label>
+          <select v-model="filterTypeContenu">
+            <option value="all">Tous les types</option>
+            <option v-for="t in contentTypes" :key="t.id" :value="t.id">{{ t.nom }}</option>
           </select>
         </div>
         <div class="filter-group">
           <label>Filtrer par statut</label>
           <select v-model="filterStatut">
             <option value="all">Tous les statuts</option>
-            <option value="published">Publié</option>
+            <option value="published">Publi\u00e9</option>
             <option value="draft">Brouillon</option>
           </select>
         </div>
         <div class="filter-group">
           <label>Rechercher</label>
-          <input v-model="filterSearch" type="text" placeholder="Recherche par titre…" class="filter-input" />
+          <input v-model="filterSearch" type="text" placeholder="Recherche par titre..." class="filter-input" />
         </div>
       </div>
 
-      <!-- Tableau des articles -->
       <table class="admin-table">
         <thead>
           <tr>
             <th>ID</th>
             <th>Titre</th>
-            <th>Catégorie</th>
+            <th>Cat&eacute;gorie</th>
+            <th>Niveau</th>
+            <th>Type</th>
             <th>Statut</th>
             <th>Date publication</th>
             <th>Actions</th>
@@ -210,22 +266,22 @@
         </thead>
         <tbody>
           <tr v-if="isLoadingPosts">
-            <td colspan="6" class="loading-row">Chargement des articles...</td>
+            <td colspan="8" class="loading-row">Chargement des articles...</td>
           </tr>
           <template v-else>
             <tr v-for="p in filteredPosts" :key="p.id">
               <td>{{ p.id }}</td>
               <td class="title-cell">{{ p.titre }}</td>
-              <td>{{ p.categorie_nom || '—' }}</td>
-              <td>
-                <span :class="['status-badge', p.statut]">{{ p.statut === 'published' ? 'Publié' : 'Brouillon' }}</span>
-              </td>
-              <td>{{ p.date_publication ? new Date(p.date_publication).toLocaleDateString('fr-FR') : '—' }}</td>
+              <td>{{ p.categorie_nom || '-' }}</td>
+              <td>{{ p.niveau_nom || niveauLabel(p.niveau) || '-' }}</td>
+              <td>{{ p.type_contenu_nom || typeContenuLabel(p.type_contenu) || '-' }}</td>
+              <td><span :class="['status-badge', p.statut]">{{ p.statut === 'published' ? 'Publi\u00e9' : 'Brouillon' }}</span></td>
+              <td>{{ formatDate(p.date_publication) }}</td>
               <td>
                 <AdminActionsButtons
                   :item="p"
                   :actions="['edit', 'delete']"
-                  edit-label="Éditer"
+                  edit-label="&Eacute;diter"
                   confirm-message="Supprimer cet article ?"
                   @edit="editPost"
                   @delete="handleDeletePost"
@@ -233,174 +289,216 @@
               </td>
             </tr>
             <tr v-if="filteredPosts.length === 0">
-              <td colspan="6" class="empty-row">Aucun article trouvé.</td>
+              <td colspan="8" class="empty-row">Aucun article trouv&eacute;.</td>
             </tr>
           </template>
         </tbody>
       </table>
-
-      <div v-if="filteredPosts.length > 0" class="pagination-info">
-        {{ filteredPosts.length }} article(s) au total
-      </div>
     </template>
 
-    <!-- ═══════ CATÉGORIES ═══════ -->
     <template v-if="activeTab === 'categories'">
       <form class="admin-form" @submit.prevent="handleSaveCategory">
-        <h3 class="form-section-title">{{ catForm.id ? 'Modifier la catégorie' : 'Nouvelle catégorie' }}</h3>
-
+        <h3 class="form-section-title">{{ catForm.id ? 'Modifier le chapitre' : 'Nouveau chapitre' }}</h3>
         <div class="form-group">
           <label>Nom <span class="required">*</span></label>
-          <input v-model="catForm.nom" placeholder="Ex: Méthodologie" required />
+          <input v-model="catForm.nom" required />
         </div>
-
         <div class="form-group">
           <label>Slug</label>
-          <input v-model="catForm.slug" placeholder="Auto-généré depuis le nom si vide" />
-          <small class="field-hint">URL-friendly. Laisser vide = auto.</small>
+          <input v-model="catForm.slug" placeholder="Auto-g&eacute;n&eacute;r&eacute; depuis le nom si vide" />
         </div>
-
         <div class="form-group">
           <label>Description</label>
-          <textarea v-model="catForm.description" placeholder="Courte description affichée sur la page catégorie" rows="2"></textarea>
+          <textarea v-model="catForm.description" rows="2"></textarea>
         </div>
-
         <div class="form-group">
-          <label>Meta description SEO</label>
-          <input v-model="catForm.meta_description" placeholder="Description SEO (max 160 car.)" maxlength="160" />
-          <small class="field-hint">Si vide, la description normale est utilisée.</small>
+          <label>Meta description</label>
+          <input v-model="catForm.meta_description" maxlength="160" />
         </div>
-
         <div class="form-row-2">
-          <div class="form-group">
-            <label>Ordre</label>
-            <input v-model.number="catForm.ordre" type="number" placeholder="0" min="0" />
-            <small class="field-hint">0 = premier, 10 = après, etc.</small>
-          </div>
           <div class="form-group">
             <label>Meta robots</label>
             <select v-model="catForm.meta_robots">
-              <option value="index">Index (visible Google)</option>
-              <option value="noindex">Noindex (masqué Google)</option>
+              <option value="index">Index</option>
+              <option value="noindex">Noindex</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Ordre</label>
+            <input v-model.number="catForm.ordre" type="number" min="0" />
+          </div>
         </div>
-
         <div class="form-actions">
-          <button class="btn-primary" type="submit">{{ catForm.id ? 'Mettre à jour' : 'Créer' }}</button>
+          <button class="btn-primary" type="submit">{{ catForm.id ? 'Mettre \u00e0 jour' : 'Cr\u00e9er' }}</button>
           <button v-if="catForm.id" class="btn-danger" type="button" @click="resetCatForm">Annuler</button>
         </div>
       </form>
 
       <table class="admin-table">
         <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Slug</th>
-            <th>Robots</th>
-            <th>Ordre</th>
-            <th>Actions</th>
-          </tr>
+          <tr><th>ID</th><th>Nom</th><th>Slug</th><th>Description</th><th>Robots</th><th>Actions</th></tr>
         </thead>
         <tbody>
           <tr v-for="c in categories" :key="c.id">
             <td>{{ c.id }}</td>
             <td class="title-cell">{{ c.nom }}</td>
             <td><code class="slug-code">{{ c.slug }}</code></td>
-            <td>
-              <span :class="['robots-badge', c.meta_robots === 'noindex' ? 'noindex' : 'index']">
-                {{ c.meta_robots === 'noindex' ? 'Noindex' : 'Index' }}
-              </span>
-            </td>
-            <td>{{ c.ordre }}</td>
+            <td>{{ c.description || '-' }}</td>
+            <td><span :class="['robots-badge', c.meta_robots === 'noindex' ? 'noindex' : 'index']">{{ c.meta_robots === 'noindex' ? 'Noindex' : 'Index' }}</span></td>
             <td>
               <AdminActionsButtons
                 :item="c"
                 :actions="['edit', 'delete']"
-                edit-label="Éditer"
-                confirm-message="Supprimer cette catégorie ?"
+                edit-label="&Eacute;diter"
+                confirm-message="Supprimer ce chapitre ?"
                 @edit="editCategory"
                 @delete="handleDeleteCategory"
               />
             </td>
           </tr>
-          <tr v-if="!categories.length">
-            <td colspan="6" class="empty-row">Aucune catégorie</td>
-          </tr>
+          <tr v-if="!categories.length"><td colspan="6" class="empty-row">Aucun chapitre</td></tr>
         </tbody>
       </table>
     </template>
 
-    <!-- ═══════ TAGS ═══════ -->
-    <template v-if="activeTab === 'tags'">
-      <form class="admin-form" @submit.prevent="handleSaveTag">
-        <h3 class="form-section-title">{{ tagForm.id ? 'Modifier le tag' : 'Nouveau tag' }}</h3>
-
+    <template v-if="activeTab === 'niveaux'">
+      <form class="admin-form" @submit.prevent="handleSaveNiveau">
+        <h3 class="form-section-title">{{ niveauForm.id ? 'Modifier niveau' : 'Nouveau niveau' }}</h3>
         <div class="form-group">
           <label>Nom <span class="required">*</span></label>
-          <input v-model="tagForm.nom" placeholder="Ex: MPSI" required />
+          <input v-model="niveauForm.nom" required />
         </div>
-
         <div class="form-group">
           <label>Slug</label>
-          <input v-model="tagForm.slug" placeholder="Auto-généré depuis le nom si vide" />
-          <small class="field-hint">URL-friendly. Laisser vide = auto.</small>
+          <input v-model="niveauForm.slug" placeholder="Auto-g&eacute;n&eacute;r&eacute; depuis le nom si vide" />
         </div>
-
         <div class="form-group">
-          <label>Meta description SEO</label>
-          <input v-model="tagForm.meta_description" placeholder="Description SEO (max 160 car.)" maxlength="160" />
+          <label>Ordre</label>
+          <input v-model.number="niveauForm.ordre" type="number" min="0" />
         </div>
+        <div class="form-actions">
+          <button class="btn-primary" type="submit">{{ niveauForm.id ? 'Mettre \u00e0 jour' : 'Cr\u00e9er' }}</button>
+          <button v-if="niveauForm.id" class="btn-danger" type="button" @click="resetNiveauForm">Annuler</button>
+        </div>
+      </form>
 
+      <table class="admin-table">
+        <thead><tr><th>ID</th><th>Nom</th><th>Slug</th><th>Ordre</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr v-for="n in niveaux" :key="n.id">
+            <td>{{ n.id }}</td>
+            <td class="title-cell">{{ n.nom }}</td>
+            <td><code class="slug-code">{{ n.slug }}</code></td>
+            <td>{{ n.ordre }}</td>
+            <td>
+              <AdminActionsButtons
+                :item="n"
+                :actions="['edit', 'delete']"
+                edit-label="&Eacute;diter"
+                confirm-message="Supprimer ce niveau ?"
+                @edit="editNiveau"
+                @delete="handleDeleteNiveau"
+              />
+            </td>
+          </tr>
+          <tr v-if="!niveaux.length"><td colspan="5" class="empty-row">Aucun niveau</td></tr>
+        </tbody>
+      </table>
+    </template>
+
+    <template v-if="activeTab === 'types'">
+      <form class="admin-form" @submit.prevent="handleSaveContentType">
+        <h3 class="form-section-title">{{ contentTypeForm.id ? 'Modifier type' : 'Nouveau type de contenu' }}</h3>
+        <div class="form-group">
+          <label>Nom <span class="required">*</span></label>
+          <input v-model="contentTypeForm.nom" required />
+        </div>
+        <div class="form-group">
+          <label>Slug</label>
+          <input v-model="contentTypeForm.slug" placeholder="Auto-g&eacute;n&eacute;r&eacute; depuis le nom si vide" />
+        </div>
+        <div class="form-group">
+          <label>Ordre</label>
+          <input v-model.number="contentTypeForm.ordre" type="number" min="0" />
+        </div>
+        <div class="form-actions">
+          <button class="btn-primary" type="submit">{{ contentTypeForm.id ? 'Mettre \u00e0 jour' : 'Cr\u00e9er' }}</button>
+          <button v-if="contentTypeForm.id" class="btn-danger" type="button" @click="resetContentTypeForm">Annuler</button>
+        </div>
+      </form>
+
+      <table class="admin-table">
+        <thead><tr><th>ID</th><th>Nom</th><th>Slug</th><th>Ordre</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr v-for="t in contentTypes" :key="t.id">
+            <td>{{ t.id }}</td>
+            <td class="title-cell">{{ t.nom }}</td>
+            <td><code class="slug-code">{{ t.slug }}</code></td>
+            <td>{{ t.ordre }}</td>
+            <td>
+              <AdminActionsButtons
+                :item="t"
+                :actions="['edit', 'delete']"
+                edit-label="&Eacute;diter"
+                confirm-message="Supprimer ce type de contenu ?"
+                @edit="editContentType"
+                @delete="handleDeleteContentType"
+              />
+            </td>
+          </tr>
+          <tr v-if="!contentTypes.length"><td colspan="5" class="empty-row">Aucun type de contenu</td></tr>
+        </tbody>
+      </table>
+    </template>
+
+    <template v-if="activeTab === 'tags'">
+      <form class="admin-form" @submit.prevent="handleSaveTag">
+        <h3 class="form-section-title">{{ tagForm.id ? 'Modifier tag' : 'Nouveau tag' }}</h3>
+        <div class="form-group">
+          <label>Nom <span class="required">*</span></label>
+          <input v-model="tagForm.nom" required />
+        </div>
+        <div class="form-group">
+          <label>Slug</label>
+          <input v-model="tagForm.slug" placeholder="Auto-g&eacute;n&eacute;r&eacute; depuis le nom si vide" />
+        </div>
+        <div class="form-group">
+          <label>Meta description</label>
+          <input v-model="tagForm.meta_description" maxlength="160" />
+        </div>
         <div class="form-group">
           <label>Meta robots</label>
           <select v-model="tagForm.meta_robots">
-            <option value="index">Index (visible Google)</option>
-            <option value="noindex">Noindex (masqué Google)</option>
+            <option value="index">Index</option>
+            <option value="noindex">Noindex</option>
           </select>
         </div>
-
         <div class="form-actions">
-          <button class="btn-primary" type="submit">{{ tagForm.id ? 'Mettre à jour' : 'Créer' }}</button>
+          <button class="btn-primary" type="submit">{{ tagForm.id ? 'Mettre \u00e0 jour' : 'Cr\u00e9er' }}</button>
           <button v-if="tagForm.id" class="btn-danger" type="button" @click="resetTagForm">Annuler</button>
         </div>
       </form>
 
       <table class="admin-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Slug</th>
-            <th>Robots</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+        <thead><tr><th>ID</th><th>Nom</th><th>Slug</th><th>Robots</th><th>Actions</th></tr></thead>
         <tbody>
           <tr v-for="t in tags" :key="t.id">
             <td>{{ t.id }}</td>
             <td class="title-cell">{{ t.nom }}</td>
             <td><code class="slug-code">{{ t.slug }}</code></td>
-            <td>
-              <span :class="['robots-badge', t.meta_robots === 'noindex' ? 'noindex' : 'index']">
-                {{ t.meta_robots === 'noindex' ? 'Noindex' : 'Index' }}
-              </span>
-            </td>
+            <td><span :class="['robots-badge', t.meta_robots === 'noindex' ? 'noindex' : 'index']">{{ t.meta_robots === 'noindex' ? 'Noindex' : 'Index' }}</span></td>
             <td>
               <AdminActionsButtons
                 :item="t"
                 :actions="['edit', 'delete']"
-                edit-label="Éditer"
+                edit-label="&Eacute;diter"
                 confirm-message="Supprimer ce tag ?"
                 @edit="editTag"
                 @delete="handleDeleteTag"
               />
             </td>
           </tr>
-          <tr v-if="!tags.length">
-            <td colspan="5" class="empty-row">Aucun tag</td>
-          </tr>
+          <tr v-if="!tags.length"><td colspan="5" class="empty-row">Aucun tag</td></tr>
         </tbody>
       </table>
     </template>
@@ -413,31 +511,60 @@ import {
   getAdminBlogPosts, createBlogPost, updateBlogPost, deleteBlogPost,
   getAdminBlogCategories, createBlogCategory, updateBlogCategory, deleteBlogCategory,
   getAdminBlogTags, createBlogTag, updateBlogTag, deleteBlogTag,
+  getAdminBlogNiveaux, createBlogNiveau, updateBlogNiveau, deleteBlogNiveau,
+  getAdminBlogContentTypes, createBlogContentType, updateBlogContentType, deleteBlogContentType,
 } from '@/api/blog'
 import { AdminActionsButtons } from '@/components/admin'
+import FormatHelp from '@/components/admin/FormatHelp.vue'
 import { renderContentWithImages, renderMath } from '@/utils/scientificRenderer'
 
-const activeTab = ref('posts')
+const BLOG_FORMAT_TEMPLATE = `# Titre de l'article
 
-// ── Data ──────────────────────────────────────────────────────────
+## Introduction
+Explique en 3-4 phrases l'objectif du chapitre.
+
+## Methode
+- Etape 1
+- Etape 2
+- Etape 3
+
+## Exemple
+![Texte alternatif image](https://www.exemple.com/image.jpg)
+
+## Video explicative
+<iframe width="100%" height="380" src="https://www.youtube.com/embed/VIDEO_ID" title="Video explicative" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Lien utile
+[Voir la fiche complete](https://www.exemple.com)
+
+## Bouton CTA
+<a href="https://www.exemple.com" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:10px 16px;border-radius:8px;background:#1d4ed8;color:#ffffff;text-decoration:none;font-weight:600;">Voir l'exercice complet</a>
+
+---
+
+## Conclusion
+Resume les points cles et la prochaine etape.`
+
+const activeTab = ref('posts')
 const posts = ref([])
 const categories = ref([])
+const niveaux = ref([])
+const contentTypes = ref([])
 const tags = ref([])
 const isLoadingPosts = ref(false)
 
-// ── Filters ───────────────────────────────────────────────────────
 const filterCategorie = ref('all')
+const filterNiveau = ref('all')
+const filterTypeContenu = ref('all')
 const filterStatut = ref('all')
 const filterSearch = ref('')
 
 const filteredPosts = computed(() => {
   let result = posts.value
-  if (filterCategorie.value !== 'all') {
-    result = result.filter(p => p.categorie === filterCategorie.value)
-  }
-  if (filterStatut.value !== 'all') {
-    result = result.filter(p => p.statut === filterStatut.value)
-  }
+  if (filterCategorie.value !== 'all') result = result.filter(p => Number(p.categorie) === Number(filterCategorie.value))
+  if (filterNiveau.value !== 'all') result = result.filter(p => Number(p.niveau) === Number(filterNiveau.value))
+  if (filterTypeContenu.value !== 'all') result = result.filter(p => Number(p.type_contenu) === Number(filterTypeContenu.value))
+  if (filterStatut.value !== 'all') result = result.filter(p => p.statut === filterStatut.value)
   if (filterSearch.value.trim()) {
     const q = filterSearch.value.toLowerCase()
     result = result.filter(p => (p.titre || '').toLowerCase().includes(q))
@@ -445,54 +572,57 @@ const filteredPosts = computed(() => {
   return result
 })
 
-// ── Post form ─────────────────────────────────────────────────────
 const emptyPost = () => ({
   id: null, titre: '', slug: '', extrait: '', contenu: '',
-  categorie: null, tags_ids: [], statut: 'draft',
+  categorie: null, niveau: null, type_contenu: null, tags_ids: [], statut: 'draft',
   seo_title: '', meta_description: '', og_title: '', og_description: '',
   alt_text_image: '', meta_robots: 'index',
   _coverFile: null, _coverPreview: '', _ogFile: null, _ogPreview: '',
 })
+
 const postForm = ref(emptyPost())
 const selectedTagId = ref('')
 const showPreview = ref(false)
 const previewHtml = ref('')
 
-const previewCategorie = computed(() => {
-  if (!postForm.value.categorie) return ''
-  const cat = categories.value.find(c => c.id === postForm.value.categorie)
-  return cat ? cat.nom : ''
-})
+const previewCategorie = computed(() => categories.value.find(c => c.id === postForm.value.categorie)?.nom || '')
+const previewNiveau = computed(() => niveauLabel(postForm.value.niveau))
+const previewTypeContenu = computed(() => typeContenuLabel(postForm.value.type_contenu))
 
-function handlePreview() {
-  try {
-    previewHtml.value = renderContentWithImages(postForm.value.contenu, [])
-    showPreview.value = true
-    nextTick(() => renderMath())
-  } catch (e) {
-    console.error('Erreur prévisualisation:', e)
-  }
+const emptyCat = () => ({ id: null, nom: '', slug: '', description: '', meta_description: '', meta_robots: 'index', ordre: 0 })
+const catForm = ref(emptyCat())
+const emptyNiveau = () => ({ id: null, nom: '', slug: '', ordre: 0, est_actif: true })
+const niveauForm = ref(emptyNiveau())
+const emptyContentType = () => ({ id: null, nom: '', slug: '', ordre: 0, est_actif: true })
+const contentTypeForm = ref(emptyContentType())
+const emptyTag = () => ({ id: null, nom: '', slug: '', meta_description: '', meta_robots: 'index' })
+const tagForm = ref(emptyTag())
+
+const availableTags = computed(() => tags.value.filter(t => !postForm.value.tags_ids.includes(t.id)))
+
+function counterClass(length, minIdeal, maxIdeal, hardMax) {
+  if (hardMax && length > hardMax) return 'char-counter char-counter--danger'
+  if (length >= minIdeal && length <= maxIdeal) return 'char-counter char-counter--good'
+  if (length === 0) return 'char-counter'
+  return 'char-counter char-counter--warn'
 }
 
-function onCoverImageChange(e) {
-  const file = e.target.files?.[0]
-  if (file) {
-    postForm.value._coverFile = file
-    postForm.value._coverPreview = URL.createObjectURL(file)
-  }
+function formatDate(value) {
+  if (!value) return '-'
+  const d = new Date(value)
+  if (Number.isNaN(d.getTime())) return '-'
+  return d.toLocaleDateString('fr-FR')
 }
 
-function onOgImageChange(e) {
-  const file = e.target.files?.[0]
-  if (file) {
-    postForm.value._ogFile = file
-    postForm.value._ogPreview = URL.createObjectURL(file)
-  }
+function niveauLabel(value) {
+  const id = Number(value)
+  return niveaux.value.find(n => Number(n.id) === id)?.nom || ''
 }
 
-const availableTags = computed(() =>
-  tags.value.filter(t => !postForm.value.tags_ids.includes(t.id))
-)
+function typeContenuLabel(value) {
+  const id = Number(value)
+  return contentTypes.value.find(t => Number(t.id) === id)?.nom || ''
+}
 
 function tagNameById(id) {
   return tags.value.find(t => t.id === id)?.nom || id
@@ -509,6 +639,30 @@ function removeTag(id) {
   postForm.value.tags_ids = postForm.value.tags_ids.filter(t => t !== id)
 }
 
+function onCoverImageChange(e) {
+  const file = e.target.files?.[0]
+  if (!file) return
+  postForm.value._coverFile = file
+  postForm.value._coverPreview = URL.createObjectURL(file)
+}
+
+function onOgImageChange(e) {
+  const file = e.target.files?.[0]
+  if (!file) return
+  postForm.value._ogFile = file
+  postForm.value._ogPreview = URL.createObjectURL(file)
+}
+
+function handlePreview() {
+  try {
+    previewHtml.value = renderContentWithImages(postForm.value.contenu, [])
+    showPreview.value = true
+    nextTick(() => renderMath())
+  } catch (e) {
+    console.error('Erreur preview:', e)
+  }
+}
+
 function resetPostForm() {
   postForm.value = emptyPost()
   selectedTagId.value = ''
@@ -523,7 +677,9 @@ function editPost(post) {
     slug: post.slug || '',
     extrait: post.extrait || '',
     contenu: post.contenu || '',
-    categorie: post.categorie || null,
+    categorie: post.categorie ? Number(post.categorie) : null,
+    niveau: post.niveau ? Number(post.niveau) : null,
+    type_contenu: post.type_contenu ? Number(post.type_contenu) : null,
     tags_ids: (post.tags_ids || []).map(Number),
     statut: post.statut || 'draft',
     seo_title: post.seo_title || '',
@@ -550,7 +706,9 @@ async function handleSavePost() {
     if (postForm.value.slug) fd.append('slug', postForm.value.slug)
     fd.append('extrait', postForm.value.extrait)
     fd.append('contenu', postForm.value.contenu)
-    if (postForm.value.categorie) fd.append('categorie', postForm.value.categorie)
+    fd.append('categorie', postForm.value.categorie || '')
+    fd.append('niveau', postForm.value.niveau || '')
+    fd.append('type_contenu', postForm.value.type_contenu || '')
     fd.append('statut', postForm.value.statut)
     fd.append('seo_title', postForm.value.seo_title)
     fd.append('meta_description', postForm.value.meta_description)
@@ -558,24 +716,17 @@ async function handleSavePost() {
     fd.append('og_description', postForm.value.og_description)
     fd.append('alt_text_image', postForm.value.alt_text_image)
     fd.append('meta_robots', postForm.value.meta_robots)
-    for (const tid of postForm.value.tags_ids) {
-      fd.append('tags_ids', tid)
-    }
-    if (postForm.value._coverFile) {
-      fd.append('image_couverture', postForm.value._coverFile)
-    }
-    if (postForm.value._ogFile) {
-      fd.append('og_image', postForm.value._ogFile)
-    }
-    if (postForm.value.id) {
-      await updateBlogPost(postForm.value.id, fd)
-    } else {
-      await createBlogPost(fd)
-    }
+    for (const tid of postForm.value.tags_ids) fd.append('tags_ids', tid)
+    if (postForm.value._coverFile) fd.append('image_couverture', postForm.value._coverFile)
+    if (postForm.value._ogFile) fd.append('og_image', postForm.value._ogFile)
+
+    if (postForm.value.id) await updateBlogPost(postForm.value.id, fd)
+    else await createBlogPost(fd)
+
     resetPostForm()
     await loadPosts()
   } catch (e) {
-    console.error('Erreur sauvegarde article:', e)
+    console.error('Erreur sauvegarde article:', e, e?.response?.data)
   }
 }
 
@@ -588,17 +739,16 @@ async function handleDeletePost(post) {
   }
 }
 
-// ── Category form ─────────────────────────────────────────────────
-const emptyCat = () => ({ id: null, nom: '', slug: '', description: '', meta_description: '', meta_robots: 'index', ordre: 0 })
-const catForm = ref(emptyCat())
-
 function resetCatForm() { catForm.value = emptyCat() }
-
 function editCategory(cat) {
   catForm.value = {
-    id: cat.id, nom: cat.nom, slug: cat.slug,
-    description: cat.description || '', meta_description: cat.meta_description || '',
-    meta_robots: cat.meta_robots || 'index', ordre: cat.ordre || 0
+    id: cat.id,
+    nom: cat.nom || '',
+    slug: cat.slug || '',
+    description: cat.description || '',
+    meta_description: cat.meta_description || '',
+    meta_robots: cat.meta_robots || 'index',
+    ordre: Number(cat.ordre || 0),
   }
   activeTab.value = 'categories'
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -609,15 +759,12 @@ async function handleSaveCategory() {
   try {
     const payload = { ...catForm.value }
     delete payload.id
-    if (catForm.value.id) {
-      await updateBlogCategory(catForm.value.id, payload)
-    } else {
-      await createBlogCategory(payload)
-    }
+    if (catForm.value.id) await updateBlogCategory(catForm.value.id, payload)
+    else await createBlogCategory(payload)
     resetCatForm()
     await loadCategories()
   } catch (e) {
-    console.error('Erreur sauvegarde catégorie:', e)
+    console.error('Erreur sauvegarde categorie:', e, e?.response?.data)
   }
 }
 
@@ -626,20 +773,90 @@ async function handleDeleteCategory(cat) {
     await deleteBlogCategory(cat.id)
     await loadCategories()
   } catch (e) {
-    console.error('Erreur suppression catégorie:', e)
+    console.error('Erreur suppression categorie:', e)
   }
 }
 
-// ── Tag form ──────────────────────────────────────────────────────
-const emptyTag = () => ({ id: null, nom: '', slug: '', meta_description: '', meta_robots: 'index' })
-const tagForm = ref(emptyTag())
+function resetNiveauForm() { niveauForm.value = emptyNiveau() }
+function editNiveau(niveau) {
+  niveauForm.value = {
+    id: niveau.id,
+    nom: niveau.nom || '',
+    slug: niveau.slug || '',
+    ordre: Number(niveau.ordre || 0),
+    est_actif: niveau.est_actif !== false,
+  }
+  activeTab.value = 'niveaux'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+async function handleSaveNiveau() {
+  if (!niveauForm.value.nom) return
+  try {
+    const payload = { ...niveauForm.value }
+    delete payload.id
+    if (niveauForm.value.id) await updateBlogNiveau(niveauForm.value.id, payload)
+    else await createBlogNiveau(payload)
+    resetNiveauForm()
+    await Promise.all([loadNiveaux(), loadPosts()])
+  } catch (e) {
+    console.error('Erreur sauvegarde niveau:', e, e?.response?.data)
+  }
+}
+
+async function handleDeleteNiveau(niveau) {
+  try {
+    await deleteBlogNiveau(niveau.id)
+    await Promise.all([loadNiveaux(), loadPosts()])
+  } catch (e) {
+    console.error('Erreur suppression niveau:', e)
+  }
+}
+
+function resetContentTypeForm() { contentTypeForm.value = emptyContentType() }
+function editContentType(item) {
+  contentTypeForm.value = {
+    id: item.id,
+    nom: item.nom || '',
+    slug: item.slug || '',
+    ordre: Number(item.ordre || 0),
+    est_actif: item.est_actif !== false,
+  }
+  activeTab.value = 'types'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+async function handleSaveContentType() {
+  if (!contentTypeForm.value.nom) return
+  try {
+    const payload = { ...contentTypeForm.value }
+    delete payload.id
+    if (contentTypeForm.value.id) await updateBlogContentType(contentTypeForm.value.id, payload)
+    else await createBlogContentType(payload)
+    resetContentTypeForm()
+    await Promise.all([loadContentTypes(), loadPosts()])
+  } catch (e) {
+    console.error('Erreur sauvegarde type:', e, e?.response?.data)
+  }
+}
+
+async function handleDeleteContentType(item) {
+  try {
+    await deleteBlogContentType(item.id)
+    await Promise.all([loadContentTypes(), loadPosts()])
+  } catch (e) {
+    console.error('Erreur suppression type:', e)
+  }
+}
 
 function resetTagForm() { tagForm.value = emptyTag() }
-
 function editTag(tag) {
   tagForm.value = {
-    id: tag.id, nom: tag.nom, slug: tag.slug,
-    meta_description: tag.meta_description || '', meta_robots: tag.meta_robots || 'index'
+    id: tag.id,
+    nom: tag.nom || '',
+    slug: tag.slug || '',
+    meta_description: tag.meta_description || '',
+    meta_robots: tag.meta_robots || 'index',
   }
   activeTab.value = 'tags'
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -650,15 +867,12 @@ async function handleSaveTag() {
   try {
     const payload = { ...tagForm.value }
     delete payload.id
-    if (tagForm.value.id) {
-      await updateBlogTag(tagForm.value.id, payload)
-    } else {
-      await createBlogTag(payload)
-    }
+    if (tagForm.value.id) await updateBlogTag(tagForm.value.id, payload)
+    else await createBlogTag(payload)
     resetTagForm()
     await loadTags()
   } catch (e) {
-    console.error('Erreur sauvegarde tag:', e)
+    console.error('Erreur sauvegarde tag:', e, e?.response?.data)
   }
 }
 
@@ -671,7 +885,6 @@ async function handleDeleteTag(tag) {
   }
 }
 
-// ── Loaders ───────────────────────────────────────────────────────
 async function loadPosts() {
   isLoadingPosts.value = true
   try {
@@ -690,8 +903,28 @@ async function loadCategories() {
     const { data } = await getAdminBlogCategories()
     categories.value = data || []
   } catch (e) {
-    console.error('Erreur chargement catégories:', e)
+    console.error('Erreur chargement categories:', e)
     categories.value = []
+  }
+}
+
+async function loadNiveaux() {
+  try {
+    const { data } = await getAdminBlogNiveaux()
+    niveaux.value = data || []
+  } catch (e) {
+    console.error('Erreur chargement niveaux:', e)
+    niveaux.value = []
+  }
+}
+
+async function loadContentTypes() {
+  try {
+    const { data } = await getAdminBlogContentTypes()
+    contentTypes.value = data || []
+  } catch (e) {
+    console.error('Erreur chargement types:', e)
+    contentTypes.value = []
   }
 }
 
@@ -706,14 +939,18 @@ async function loadTags() {
 }
 
 onMounted(async () => {
-  await Promise.all([loadPosts(), loadCategories(), loadTags()])
+  await Promise.all([
+    loadPosts(),
+    loadCategories(),
+    loadNiveaux(),
+    loadContentTypes(),
+    loadTags(),
+  ])
 })
 </script>
 
+<style src="@/styles/admin-common.css"></style>
 <style scoped>
-/* ============================================================================
-   TITRE PRINCIPAL
-   ============================================================================ */
 .admin-title {
   font-size: 1.5rem;
   font-weight: 600;
@@ -721,14 +958,12 @@ onMounted(async () => {
   color: #1f2937;
 }
 
-/* ============================================================================
-   ONGLETS
-   ============================================================================ */
 .blog-tabs {
   display: flex;
   gap: 0;
   margin-bottom: 1.5rem;
   border-bottom: 2px solid #e5e7eb;
+  overflow-x: auto;
 }
 
 .tab-btn {
@@ -745,6 +980,7 @@ onMounted(async () => {
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .tab-btn:hover {
@@ -758,7 +994,10 @@ onMounted(async () => {
 }
 
 .tab-icon {
-  font-size: 1rem;
+  width: 16px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .tab-count {
@@ -772,16 +1011,8 @@ onMounted(async () => {
   text-align: center;
 }
 
-.tab-btn.active .tab-count {
-  background: #dbeafe;
-  color: #2563eb;
-}
-
-/* ============================================================================
-   FORMULAIRE
-   ============================================================================ */
 .admin-form {
-  background: white;
+  background: #fff;
   padding: 1.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -797,10 +1028,7 @@ onMounted(async () => {
   border-bottom: 1px solid #e5e7eb;
 }
 
-.form-group {
-  margin-bottom: 1rem;
-}
-
+.form-group { margin-bottom: 1rem; }
 .form-group label {
   display: block;
   font-weight: 500;
@@ -809,9 +1037,7 @@ onMounted(async () => {
   font-size: 0.875rem;
 }
 
-.required {
-  color: #ef4444;
-}
+.required { color: #ef4444; }
 
 .form-group input,
 .form-group select,
@@ -823,7 +1049,7 @@ onMounted(async () => {
   font-size: 0.875rem;
   font-family: inherit;
   transition: border-color 0.15s, box-shadow 0.15s;
-  background: white;
+  background: #fff;
 }
 
 .form-group input:focus,
@@ -848,11 +1074,28 @@ onMounted(async () => {
   color: #9ca3af;
 }
 
-.form-row-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+.label-with-counter {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
+
+.char-counter {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.char-counter--good { color: #065f46; background: #d1fae5; }
+.char-counter--warn { color: #92400e; background: #fef3c7; }
+.char-counter--danger { color: #991b1b; background: #fee2e2; }
+
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
 .form-actions {
   display: flex;
@@ -862,46 +1105,21 @@ onMounted(async () => {
   border-top: 1px solid #e5e7eb;
 }
 
-/* ============================================================================
-   TAGS CHIPS
-   ============================================================================ */
-.tags-select-row {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.tags-select-row select {
-  flex: 1;
-}
+.tags-select-row { display: flex; gap: 0.5rem; }
+.tags-select-row select { flex: 1; }
 
 .btn-tag-add {
   width: 40px;
   background: #3b82f6;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 0.375rem;
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 600;
-  transition: background 0.15s;
 }
 
-.btn-tag-add:hover:not(:disabled) {
-  background: #2563eb;
-}
-
-.btn-tag-add:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
 .chip {
   display: inline-flex;
   align-items: center;
@@ -925,30 +1143,11 @@ onMounted(async () => {
   line-height: 1;
 }
 
-.chip-remove:hover {
-  color: #ef4444;
-}
-
-/* ============================================================================
-   IMAGE UPLOAD
-   ============================================================================ */
 .image-upload-zone {
   border: 2px dashed #d1d5db;
   border-radius: 0.5rem;
   padding: 0.75rem;
   background: #f9fafb;
-  transition: border-color 0.2s;
-}
-
-.image-upload-zone:hover {
-  border-color: #3b82f6;
-}
-
-.image-upload-zone input[type="file"] {
-  width: 100%;
-  font-size: 0.875rem;
-  border: none;
-  padding: 0;
 }
 
 .image-preview-lg {
@@ -957,440 +1156,127 @@ onMounted(async () => {
   max-height: 160px;
   margin-top: 0.75rem;
   border-radius: 0.5rem;
-  border: 1px solid #e5e7eb;
-  object-fit: cover;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-/* ============================================================================
-   SEO ACCORDION
-   ============================================================================ */
-.seo-accordion {
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  background: #f9fafb;
-  overflow: hidden;
-}
-
-.seo-accordion summary {
-  cursor: pointer;
-  padding: 0.75rem 1rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  user-select: none;
-  transition: background 0.15s;
-}
-
-.seo-accordion summary:hover {
-  background: #f3f4f6;
-}
-
-.seo-icon {
-  font-size: 1rem;
-}
-
-.seo-arrow {
-  margin-left: auto;
-  transition: transform 0.2s;
-  font-size: 0.75rem;
-}
-
-.seo-accordion[open] .seo-arrow {
-  transform: rotate(90deg);
-}
-
-.seo-content {
-  padding: 1rem;
-  border-top: 1px solid #e5e7eb;
-  background: white;
-}
-
-/* ============================================================================
-   BOUTONS
-   ============================================================================ */
-.btn-primary,
-.btn-secondary,
-.btn-danger {
+.btn-primary, .btn-secondary, .btn-danger {
   border: none;
-  padding: 0.625rem 1.25rem;
   border-radius: 0.375rem;
+  padding: 0.55rem 0.9rem;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  transition: background-color 0.15s;
 }
 
-.btn-primary {
-  background: #3b82f6;
-  color: white;
-}
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-secondary { background: #e5e7eb; color: #111827; }
+.btn-danger { background: #ef4444; color: #fff; }
 
-.btn-primary:hover:not(:disabled) {
-  background: #2563eb;
-}
-
-.btn-secondary {
-  background: #6b7280;
-  color: white;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background: #4b5563;
-}
-
-.btn-danger {
-  background: #ef4444;
-  color: white;
-}
-
-.btn-danger:hover:not(:disabled) {
-  background: #dc2626;
-}
-
-.btn-primary:disabled,
-.btn-secondary:disabled,
-.btn-danger:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* ============================================================================
-   FILTRES
-   ============================================================================ */
 .filters {
-  display: flex;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
   margin-bottom: 1rem;
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  min-width: 160px;
 }
 
 .filter-group label {
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.75rem;
   color: #6b7280;
+  margin-bottom: 0.25rem;
+  display: block;
 }
 
-.filter-group select,
-.filter-group input {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  background: white;
-}
-
-.filter-input {
-  min-width: 200px;
-}
-
-/* ============================================================================
-   TABLEAU
-   ============================================================================ */
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
+  background: #fff;
   border-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .admin-table th,
 .admin-table td {
+  border-bottom: 1px solid #e5e7eb;
   padding: 0.75rem;
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+  font-size: 0.85rem;
 }
 
-.admin-table th {
-  background: #f9fafb;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: #374151;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
-}
+.admin-table thead th { background: #f9fafb; color: #374151; font-weight: 600; }
+.title-cell { font-weight: 600; color: #1f2937; }
+.empty-row, .loading-row { text-align: center; color: #6b7280; }
 
-.admin-table tr:hover {
-  background: #f9fafb;
-}
-
-.title-cell {
-  font-weight: 500;
-  color: #1f2937;
-  max-width: 300px;
-}
-
-.slug-code {
-  background: #f1f5f9;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: 'Consolas', 'Courier New', monospace;
-  font-size: 0.8rem;
-  color: #475569;
-}
-
-.loading-row {
-  text-align: center;
-  color: #6b7280;
-  font-style: italic;
-  padding: 2rem 0.75rem !important;
-}
-
-.empty-row {
-  text-align: center;
-  color: #9ca3af;
-  font-style: italic;
-  padding: 2rem 0.75rem !important;
-}
-
-.pagination-info {
-  text-align: center;
-  font-size: 0.8rem;
-  color: #6b7280;
-  margin-top: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-/* ============================================================================
-   BADGES
-   ============================================================================ */
 .status-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.2rem 0.625rem;
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
   border-radius: 9999px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
 }
 
-.status-badge.published {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.status-badge.draft {
-  background: #fef3c7;
-  color: #92400e;
-}
+.status-badge.published { background: #dcfce7; color: #166534; }
+.status-badge.draft { background: #fef3c7; color: #92400e; }
 
 .robots-badge {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   padding: 0.15rem 0.5rem;
   border-radius: 9999px;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 600;
 }
 
-.robots-badge.index {
-  background: #d1fae5;
-  color: #065f46;
+.robots-badge.index { background: #dcfce7; color: #166534; }
+.robots-badge.noindex { background: #fee2e2; color: #991b1b; }
+
+.slug-code {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.75rem;
 }
 
-.robots-badge.noindex {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-/* ============================================================================
-   PREVIEW
-   ============================================================================ */
 .preview-section {
-  margin-top: 1.5rem;
-  margin-bottom: 2rem;
-  border: 2px solid #3b82f6;
+  background: #fff;
+  border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
+  margin-bottom: 1rem;
   overflow: hidden;
-  background: white;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .preview-header-bar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1.25rem;
+  justify-content: space-between;
   background: #eff6ff;
-  border-bottom: 1px solid #bfdbfe;
-}
-
-.preview-header-bar h3 {
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #1e40af;
+  border-bottom: 1px solid #dbeafe;
+  padding: 0.75rem 1rem;
 }
 
 .btn-close-preview {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  background: transparent;
   border: 1px solid #93c5fd;
+  background: #fff;
   color: #2563eb;
-  padding: 0.375rem 0.75rem;
   border-radius: 0.375rem;
+  padding: 0.35rem 0.65rem;
   cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 500;
-  transition: background 0.15s;
 }
 
-.btn-close-preview:hover {
-  background: #dbeafe;
-}
+.preview-article { padding: 1rem 1.25rem; }
+.preview-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.preview-cat { background: #f3f4f6; color: #374151; padding: 0.15rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+.preview-taxonomy { background: #ecfeff; color: #155e75; padding: 0.15rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+.preview-tags { display: flex; gap: 0.375rem; flex-wrap: wrap; }
+.preview-title { font-size: 1.75rem; font-weight: 700; color: #111827; margin: 0 0 0.75rem; }
+.preview-excerpt { font-size: 1rem; color: #6b7280; margin: 0 0 1.25rem; font-style: italic; }
+.preview-content { font-size: 0.95rem; line-height: 1.75; color: #374151; }
+.preview-content :deep(img) { max-width: 100%; border-radius: 0.5rem; }
 
-.preview-article {
-  padding: 1.5rem 2rem;
-}
-
-.preview-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
-
-.preview-cat {
-  background: #f3f4f6;
-  color: #374151;
-  padding: 0.15rem 0.625rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.preview-tags {
-  display: flex;
-  gap: 0.375rem;
-  flex-wrap: wrap;
-}
-
-.preview-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 0.75rem;
-  line-height: 1.3;
-}
-
-.preview-excerpt {
-  font-size: 1rem;
-  color: #6b7280;
-  margin: 0 0 1.25rem;
-  line-height: 1.6;
-  font-style: italic;
-}
-
-.preview-content {
-  font-size: 0.95rem;
-  line-height: 1.75;
-  color: #374151;
-}
-
-.preview-content :deep(h1),
-.preview-content :deep(h2),
-.preview-content :deep(h3) {
-  color: #111827;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
-}
-
-.preview-content :deep(h2) {
-  font-size: 1.375rem;
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 0.375rem;
-}
-
-.preview-content :deep(h3) {
-  font-size: 1.125rem;
-}
-
-.preview-content :deep(pre) {
-  background: #1e293b;
-  color: #e2e8f0;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  font-size: 0.8rem;
-}
-
-.preview-content :deep(code) {
-  background: #f1f5f9;
-  padding: 0.125rem 0.375rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-}
-
-.preview-content :deep(pre code) {
-  background: transparent;
-  padding: 0;
-}
-
-.preview-content :deep(blockquote) {
-  border-left: 4px solid #2563eb;
-  padding: 0.5rem 1rem;
-  margin: 1rem 0;
-  background: #f8fafc;
-  color: #475569;
-}
-
-.preview-content :deep(ul),
-.preview-content :deep(ol) {
-  padding-left: 1.5rem;
-}
-
-.preview-content :deep(img) {
-  max-width: 100%;
-  border-radius: 0.5rem;
-}
-
-/* ============================================================================
-   RESPONSIVE
-   ============================================================================ */
 @media (max-width: 768px) {
-  .form-row-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .filters {
-    flex-direction: column;
-  }
-
-  .filter-group {
-    width: 100%;
-  }
-
-  .blog-tabs {
-    overflow-x: auto;
-  }
-
-  .preview-article {
-    padding: 1rem;
-  }
-
-  .preview-title {
-    font-size: 1.375rem;
-  }
-
-  .admin-table {
-    font-size: 0.8rem;
-  }
+  .form-row-2 { grid-template-columns: 1fr; }
+  .label-with-counter { flex-direction: column; align-items: flex-start; }
+  .filters { grid-template-columns: 1fr; }
+  .admin-table { font-size: 0.8rem; display: block; overflow-x: auto; }
 }
 </style>

@@ -8,7 +8,12 @@
       <div class="preview-column">
         <div class="preview-wrapper">
           <div class="preview-label">Aperçu {{ canvasWidth }}×{{ canvasHeight }}</div>
-          <div class="preview-container" ref="previewContainer" :style="{ width: previewScale + 'px', height: Math.round(previewScale * canvasHeight / canvasWidth) + 'px' }">
+          <div
+            class="preview-container"
+            ref="previewContainer"
+            :style="{ width: previewScale + 'px', height: Math.round(previewScale * canvasHeight / canvasWidth) + 'px' }"
+            @wheel="onPreviewWheel"
+          >
             <div
               ref="reelCanvas"
               class="reel-canvas"
@@ -379,7 +384,7 @@
               <div class="section-title">Aperçu</div>
               <div class="control-group">
                 <label>Taille <span class="val">{{ previewScale }}px</span></label>
-                <input type="range" min="200" max="600" step="10" v-model.number="previewScale" />
+                <input type="range" :min="PREVIEW_SCALE_MIN" :max="PREVIEW_SCALE_MAX" :step="PREVIEW_SCALE_STEP" v-model.number="previewScale" />
               </div>
             </div>
           </template>
@@ -796,6 +801,16 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import katex from 'katex'
 import katexCSSRaw from 'katex/dist/katex.min.css?raw'
 import html2canvas from 'html2canvas'
+import optitabYoutubeBg from '../../../Image_Reel/optitab-youtube.png'
+
+const DEFAULT_BG_IMAGE = '/OptiTAB_bg.png'
+const YOUTUBE_BG_IMAGE = optitabYoutubeBg
+const YOUTUBE_WIDTH = 1280
+const YOUTUBE_HEIGHT = 720
+const PREVIEW_SCALE_MIN = 200
+const PREVIEW_SCALE_MAX = 1600
+const PREVIEW_SCALE_STEP = 20
+const PREVIEW_SCALE_DEFAULT = 360
 
 // ─── Slides (diapos) ───
 function createSlideState() {
@@ -804,8 +819,8 @@ function createSlideState() {
     gridOpacity: 0.08,
     symbolsOpacity: 0.06,
     vignetteIntensity: 0.65,
-    bgImageUrl: '/OptiTAB_bg.png',
-    bgImageBase64: '/OptiTAB_bg.png',
+    bgImageUrl: DEFAULT_BG_IMAGE,
+    bgImageBase64: DEFAULT_BG_IMAGE,
     bgImageOpacity: 1,
     bgImageFit: 'cover',
     bgImagePosition: 'center center',
@@ -891,9 +906,28 @@ const primaryColor = ref('#455e92')
 const gridOpacity = ref(0.08)
 const symbolsOpacity = ref(0.06)
 const vignetteIntensity = ref(0.65)
-const previewScale = ref(360)
+const previewScale = ref(PREVIEW_SCALE_DEFAULT)
 const safeZoneV = ref(400)
 const safeZoneH = ref(95)
+
+function clampPreviewScale(value) {
+  return Math.max(PREVIEW_SCALE_MIN, Math.min(PREVIEW_SCALE_MAX, value))
+}
+
+function setPreviewScale(value) {
+  const numericValue = Number(value)
+  if (!Number.isFinite(numericValue)) {
+    previewScale.value = PREVIEW_SCALE_DEFAULT
+    return
+  }
+  const stepped = Math.round(numericValue / PREVIEW_SCALE_STEP) * PREVIEW_SCALE_STEP
+  previewScale.value = clampPreviewScale(stepped)
+}
+
+function zoomPreviewByStep(direction) {
+  const stepDirection = direction >= 0 ? 1 : -1
+  setPreviewScale(previewScale.value + (stepDirection * PREVIEW_SCALE_STEP))
+}
 
 // ─── Dimensions du canvas ───
 const canvasWidth = ref(1080)
@@ -903,7 +937,7 @@ const formatPresets = [
   { label: 'Post carré', w: 1080, h: 1080 },
   { label: 'Post portrait', w: 1080, h: 1350 },
   { label: 'Post paysage', w: 1200, h: 628 },
-  { label: 'YouTube', w: 1280, h: 720 },
+  { label: 'YouTube', w: YOUTUBE_WIDTH, h: YOUTUBE_HEIGHT, type: 'youtube' },
   { label: 'Banner', w: 1920, h: 1080 },
   { label: 'A4 blanc', w: 2480, h: 3508, type: 'a4-white' },
 ]
@@ -915,6 +949,18 @@ function applyA4WhitePreset() {
   vignetteIntensity.value = 0
   bgImageUrl.value = ''
   bgImageBase64.value = ''
+}
+
+function applyYouTubePreset() {
+  bgImageUrl.value = YOUTUBE_BG_IMAGE
+  bgImageBase64.value = YOUTUBE_BG_IMAGE
+}
+
+function restoreDefaultBackgroundIfNeeded() {
+  if (bgImageUrl.value === YOUTUBE_BG_IMAGE) {
+    bgImageUrl.value = DEFAULT_BG_IMAGE
+    bgImageBase64.value = DEFAULT_BG_IMAGE
+  }
 }
 
 function isFormatActive(preset) {
@@ -934,12 +980,18 @@ function applyFormat(preset) {
   canvasHeight.value = preset.h
   if (preset.type === 'a4-white') {
     applyA4WhitePreset()
+    return
   }
+  if (preset.type === 'youtube') {
+    applyYouTubePreset()
+    return
+  }
+  restoreDefaultBackgroundIfNeeded()
 }
 
 // ─── Image de fond personnalisée ───
-const bgImageUrl = ref('/OptiTAB_bg.png')
-const bgImageBase64 = ref('/OptiTAB_bg.png')
+const bgImageUrl = ref(DEFAULT_BG_IMAGE)
+const bgImageBase64 = ref(DEFAULT_BG_IMAGE)
 const bgImageOpacity = ref(1)
 const bgImageFit = ref('cover')
 const bgImagePosition = ref('center center')
@@ -2325,9 +2377,10 @@ async function exportPNGWithOptions({ transparentBackground = false } = {}) {
     })
 
     const link = document.createElement('a')
+    const isYoutubeExport = canvasWidth.value === YOUTUBE_WIDTH && canvasHeight.value === YOUTUBE_HEIGHT
     link.download = transparentBackground
       ? 'optitab-reel-sans-fond.png'
-      : 'optitab-reel-background.png'
+      : isYoutubeExport ? 'optitab-youtube.png' : 'optitab-reel-background.png'
     link.href = canvas.toDataURL('image/png')
     link.click()
   } catch (e) {
@@ -2397,15 +2450,40 @@ function wheelZoomOverlay(e, imgOv) {
   clampOverlayToBounds(imgOv, 'image')
 }
 
+function onPreviewWheel(e) {
+  if (!(e.ctrlKey || e.metaKey)) return
+  const targetEl = e.target instanceof Element ? e.target : null
+  if (targetEl?.closest('.image-overlay-preview, .text-overlay-content, .latex-overlay-content, .resize-handle')) {
+    return
+  }
+  e.preventDefault()
+  if (e.deltaY === 0) return
+  zoomPreviewByStep(e.deltaY < 0 ? 1 : -1)
+}
+
 // ── Bloquer le scroll parent ──
 function onKeyDown(e) {
   const isModifier = e.ctrlKey || e.metaKey
   const key = (e.key || '').toLowerCase()
   const tag = document.activeElement?.tagName
+  const isTyping = tag === 'INPUT' || tag === 'TEXTAREA'
+
+  if (isModifier) {
+    const isZoomInShortcut = key === '+' || key === '=' || e.code === 'NumpadAdd'
+    const isZoomOutShortcut = key === '-' || key === '_' || e.code === 'NumpadSubtract'
+    const isZoomResetShortcut = key === '0' || e.code === 'Digit0' || e.code === 'Numpad0'
+    if (!isTyping && (isZoomInShortcut || isZoomOutShortcut || isZoomResetShortcut)) {
+      e.preventDefault()
+      if (isZoomInShortcut) zoomPreviewByStep(1)
+      if (isZoomOutShortcut) zoomPreviewByStep(-1)
+      if (isZoomResetShortcut) setPreviewScale(PREVIEW_SCALE_DEFAULT)
+      return
+    }
+  }
 
   if (isModifier && (key === 'c' || key === 'v')) {
     // Preserve native copy/paste when editing inputs/textareas.
-    if (tag === 'INPUT' || tag === 'TEXTAREA') return
+    if (isTyping) return
     if (key === 'c') {
       const copied = copySelectedOverlay()
       if (copied) e.preventDefault()
@@ -2420,7 +2498,7 @@ function onKeyDown(e) {
 
   if (e.key === 'Delete' || e.key === 'Backspace') {
     // Preserve native delete behavior when editing inputs/textareas.
-    if (tag === 'INPUT' || tag === 'TEXTAREA') return
+    if (isTyping) return
 
     if (selectedTextId.value !== null) {
       removeTextOverlay(selectedTextId.value)
@@ -2441,7 +2519,7 @@ function onKeyDown(e) {
 
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
     // Don't move if user is typing in an input/textarea
-    if (tag === 'INPUT' || tag === 'TEXTAREA') return
+    if (isTyping) return
 
     const step = e.shiftKey ? 5 : 1 // Shift = 5px, sinon 1px
 
@@ -2539,7 +2617,7 @@ function loadProjectFromFile(event) {
       canvasHeight.value = proj.canvasHeight || 1920
       safeZoneV.value = proj.safeZoneV ?? 325
       safeZoneH.value = proj.safeZoneH ?? 95
-      previewScale.value = proj.previewScale || 360
+      setPreviewScale(proj.previewScale ?? PREVIEW_SCALE_DEFAULT)
       slides.value = proj.slides
       currentSlideIndex.value = Math.min(proj.currentSlideIndex || 0, slides.value.length - 1)
       loadSlideState(currentSlideIndex.value)

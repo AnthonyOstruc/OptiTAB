@@ -6,8 +6,8 @@ from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
-from django.db.models import Q
-from .models import BlogPost, BlogCategory, BlogTag, BlogNiveau, BlogContentType
+from django.db.models import Q, Prefetch
+from .models import BlogPost, BlogCategory, BlogTag, BlogNiveau, BlogContentType, BlogPostImage
 from .serializers import (
     BlogPostListSerializer,
     BlogPostDetailSerializer,
@@ -16,6 +16,7 @@ from .serializers import (
     BlogNiveauSerializer,
     BlogContentTypeSerializer,
     BlogPostAdminSerializer,
+    BlogPostImageAdminSerializer,
     BlogCategoryAdminSerializer,
     BlogTagAdminSerializer,
     BlogNiveauAdminSerializer,
@@ -32,7 +33,10 @@ class BlogPagination(PageNumberPagination):
 def _published_posts():
     return BlogPost.objects.filter(
         statut='published', est_actif=True
-    ).select_related('categorie', 'niveau', 'type_contenu', 'auteur').prefetch_related('tags')
+    ).select_related('categorie', 'niveau', 'type_contenu', 'auteur').prefetch_related(
+        'tags',
+        Prefetch('images', queryset=BlogPostImage.objects.filter(est_actif=True)),
+    )
 
 
 @api_view(['GET'])
@@ -188,7 +192,7 @@ def blog_sitemap(request):
 @permission_classes([IsAdminUser])
 def admin_post_list(request):
     """Liste admin de TOUS les articles (brouillons inclus)"""
-    qs = BlogPost.objects.select_related('categorie', 'niveau', 'type_contenu', 'auteur').prefetch_related('tags').order_by('-date_creation')
+    qs = BlogPost.objects.select_related('categorie', 'niveau', 'type_contenu', 'auteur').prefetch_related('tags', 'images').order_by('-date_creation')
     serializer = BlogPostAdminSerializer(qs, many=True, context={'request': request})
     return Response(serializer.data)
 
@@ -232,6 +236,58 @@ def admin_post_delete(request, pk):
 
 
 # ── Admin catégories ───────────────────────────────────────────────
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAdminUser])
+def admin_post_images(request, pk):
+    """Lister ou ajouter les images inserees dans un article"""
+    try:
+        post = BlogPost.objects.get(pk=pk)
+    except BlogPost.DoesNotExist:
+        return Response({'detail': 'Article non trouve.'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = BlogPostImageAdminSerializer(
+            post.images.all(),
+            many=True,
+            context={'request': request},
+        )
+        return Response(serializer.data)
+
+    if not request.FILES.get('image') and not request.data.get('image'):
+        return Response({'image': ['Image obligatoire.']}, status=status.HTTP_400_BAD_REQUEST)
+
+    serializer = BlogPostImageAdminSerializer(data=request.data, context={'request': request})
+    if serializer.is_valid():
+        serializer.save(post=post)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PATCH', 'DELETE'])
+@permission_classes([IsAdminUser])
+def admin_post_image_detail(request, pk, image_pk):
+    """Modifier ou supprimer une image inseree dans un article"""
+    try:
+        image = BlogPostImage.objects.get(pk=image_pk, post_id=pk)
+    except BlogPostImage.DoesNotExist:
+        return Response({'detail': 'Image non trouvee.'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        image.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    serializer = BlogPostImageAdminSerializer(
+        image,
+        data=request.data,
+        partial=True,
+        context={'request': request},
+    )
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET'])
 @permission_classes([IsAdminUser])

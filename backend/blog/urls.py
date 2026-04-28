@@ -18,6 +18,8 @@ urlpatterns = [
     path('admin/posts/create/', views.admin_post_create, name='blog-admin-post-create'),
     path('admin/posts/<int:pk>/', views.admin_post_update, name='blog-admin-post-update'),
     path('admin/posts/<int:pk>/delete/', views.admin_post_delete, name='blog-admin-post-delete'),
+    path('admin/posts/<int:pk>/images/', views.admin_post_images, name='blog-admin-post-images'),
+    path('admin/posts/<int:pk>/images/<int:image_pk>/', views.admin_post_image_detail, name='blog-admin-post-image-detail'),
 
     # Admin CRUD — catégories
     path('admin/categories/', views.admin_category_list, name='blog-admin-category-list'),

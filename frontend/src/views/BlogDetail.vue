@@ -151,10 +151,11 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
-import { marked } from 'marked'
+import 'katex/dist/katex.min.css'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import { getBlogPost } from '@/api/blog'
 import { setPageSeo, buildArticleJsonLd, buildBreadcrumbJsonLd } from '@/services/seo'
+import { extractBlogToc, renderBlogMarkdown } from '@/utils/blogRenderer'
 
 const route = useRoute()
 const post = ref(null)
@@ -165,42 +166,19 @@ const canonicalUrl = computed(() => {
   return post.value ? `${base}/blog/${post.value.slug}` : `${base}/blog`
 })
 
-// Marked renderer avec IDs auto sur les headings
-marked.use({
-  renderer: {
-    heading(text, level) {
-      const id = String(text)
-        .toLowerCase()
-        .replace(/<[^>]*>/g, '')
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-      return `<h${level} id="${id}">${text}</h${level}>\n`
-    }
-  }
-})
-
 // Rendu Markdown → HTML
 const renderedContent = computed(() => {
   if (!post.value?.contenu) return ''
-  return marked.parse(post.value.contenu, { breaks: true, gfm: true })
+  return renderBlogMarkdown(post.value.contenu, {
+    title: post.value.titre,
+    images: post.value.images || [],
+  })
 })
 
 // Table of Contents
 const toc = computed(() => {
   if (!post.value?.contenu) return []
-  const items = []
-  const regex = /^(#{2,3})\s+(.+)$/gm
-  let match
-  while ((match = regex.exec(post.value.contenu)) !== null) {
-    const level = match[1].length
-    const text = match[2].trim()
-    const id = text
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-    items.push({ level, text, id })
-  }
-  return items
+  return extractBlogToc(post.value.contenu)
 })
 
 function formatDate(dateStr) {
@@ -308,10 +286,8 @@ watch(() => route.params.slug, fetchPost)
 <style scoped>
 .blog-detail-page {
   min-height: 100vh;
-  background: #fff;
-  padding: 48px 32px 80px;
-  max-width: 900px;
-  margin: 0 auto;
+  background: #f7f9fc;
+  padding: 40px 20px 80px;
 }
 
 /* Breadcrumb */
@@ -319,7 +295,8 @@ watch(() => route.params.slug, fetchPost)
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 24px;
+  max-width: 1080px;
+  margin: 0 auto 24px;
   font-size: 13px;
   color: #64748b;
 }
@@ -356,8 +333,20 @@ watch(() => route.params.slug, fetchPost)
 .blog-back-link:hover { text-decoration: underline; }
 
 /* Article Header */
+.blog-article {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+}
+
 .blog-article__header {
-  margin-bottom: 32px;
+  margin-bottom: 34px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #e2e8f0;
 }
 .blog-article__meta {
   display: flex;
@@ -369,9 +358,9 @@ watch(() => route.params.slug, fetchPost)
   color: #64748b;
 }
 .blog-article__category {
-  background: #eef2ff;
-  color: #3730a3;
-  padding: 3px 12px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 4px 12px;
   border-radius: 999px;
   font-weight: 700;
   font-size: 12px;
@@ -380,17 +369,18 @@ watch(() => route.params.slug, fetchPost)
 .blog-article__category:hover { background: #e0e7ff; }
 .blog-article__title {
   margin: 0 0 12px;
-  font-size: 36px;
+  font-size: clamp(30px, 4vw, 42px);
   font-weight: 900;
   color: #0f172a;
   line-height: 1.15;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 .blog-article__excerpt {
   margin: 0 0 12px;
+  max-width: 780px;
   font-size: 18px;
   color: #475569;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 .blog-article__author {
   font-size: 14px;
@@ -401,27 +391,31 @@ watch(() => route.params.slug, fetchPost)
 /* Cover */
 .blog-article__cover {
   margin-bottom: 32px;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
+  border: 1px solid #e2e8f0;
 }
 .blog-article__cover-img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 16px;
+  border-radius: 12px;
 }
 
 /* Layout: TOC + Content */
 .blog-article__layout {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
 }
 
 /* Table of Contents */
 .blog-toc {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 20px 24px;
+  border-radius: 10px;
+  padding: 18px 20px;
   margin-bottom: 32px;
 }
 .blog-toc__title {
@@ -444,7 +438,7 @@ watch(() => route.params.slug, fetchPost)
   padding-left: 16px;
 }
 .blog-toc__link {
-  color: #3b82f6;
+  color: #2563eb;
   text-decoration: none;
   font-size: 14px;
   line-height: 1.5;
@@ -464,22 +458,25 @@ watch(() => route.params.slug, fetchPost)
   font-size: 26px;
   font-weight: 800;
   color: #0f172a;
-  margin: 40px 0 16px;
-  padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
+  margin: 44px 0 16px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+  letter-spacing: 0;
 }
 .blog-article__content :deep(h3) {
   font-size: 20px;
   font-weight: 700;
   color: #0f172a;
   margin: 32px 0 12px;
+  letter-spacing: 0;
 }
 .blog-article__content :deep(p) {
   margin: 0 0 20px;
 }
 .blog-article__content :deep(a) {
-  color: #3b82f6;
+  color: #2563eb;
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .blog-article__content :deep(strong) {
   font-weight: 700;
@@ -496,9 +493,9 @@ watch(() => route.params.slug, fetchPost)
 .blog-article__content :deep(blockquote) {
   margin: 24px 0;
   padding: 16px 24px;
-  border-left: 4px solid #3b82f6;
-  background: #f0f7ff;
-  border-radius: 0 12px 12px 0;
+  border-left: 4px solid #2563eb;
+  background: #eff6ff;
+  border-radius: 0 10px 10px 0;
   color: #1e40af;
   font-style: italic;
 }
@@ -508,11 +505,64 @@ watch(() => route.params.slug, fetchPost)
   border-radius: 12px;
   margin: 24px 0;
 }
+
+.blog-article__content :deep(.blog-inline-image) {
+  max-width: min(var(--blog-image-width, 100%), 100%);
+  margin: 28px auto;
+  clear: both;
+}
+
+.blog-article__content :deep(.blog-inline-image--left) {
+  float: left;
+  clear: left;
+  margin: 8px 28px 20px 0;
+  max-width: min(var(--blog-image-width, 45%), 52%);
+}
+
+.blog-article__content :deep(.blog-inline-image--right) {
+  float: right;
+  clear: right;
+  margin: 8px 0 20px 28px;
+  max-width: min(var(--blog-image-width, 45%), 52%);
+}
+
+.blog-article__content :deep(.blog-inline-image--full) {
+  max-width: 100%;
+}
+
+.blog-article__content :deep(.blog-inline-image img) {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.10);
+}
+
+.blog-article__content :deep(.blog-inline-image__caption) {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #64748b;
+  text-align: center;
+}
+
+.blog-article__content :deep(.blog-image-placeholder) {
+  margin: 24px 0;
+  padding: 18px;
+  border: 1px dashed #f59e0b;
+  border-radius: 10px;
+  background: #fffbeb;
+  color: #92400e;
+  font-weight: 600;
+  text-align: center;
+}
 .blog-article__content :deep(pre) {
   background: #1e293b;
   color: #e2e8f0;
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 10px;
   overflow-x: auto;
   margin: 24px 0;
   font-size: 14px;
@@ -530,6 +580,41 @@ watch(() => route.params.slug, fetchPost)
   color: inherit;
 }
 
+.blog-article__content :deep(.blog-math) {
+  color: #0f172a;
+}
+
+.blog-article__content :deep(.blog-math--inline) {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: -0.1em;
+}
+
+.blog-article__content :deep(.blog-math--display) {
+  display: block;
+  margin: 24px 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.blog-article__content :deep(.blog-math--display .katex-display) {
+  margin: 0;
+}
+
+.blog-article__content :deep(.blog-math--display .katex) {
+  font-size: 1.12em;
+}
+
+.blog-article__content :deep(.blog-math-error) {
+  background: #fff1f2;
+  color: #be123c;
+  border: 1px solid #fecdd3;
+}
+
 /* Tags */
 .blog-article__tags {
   display: flex;
@@ -538,6 +623,7 @@ watch(() => route.params.slug, fetchPost)
   margin-top: 40px;
   padding-top: 24px;
   border-top: 1px solid #e2e8f0;
+  clear: both;
 }
 .blog-article__tag {
   font-size: 13px;
@@ -554,6 +640,9 @@ watch(() => route.params.slug, fetchPost)
 
 /* Related Articles */
 .blog-related {
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 56px;
   padding-top: 40px;
   border-top: 1px solid #e2e8f0;
@@ -573,6 +662,7 @@ watch(() => route.params.slug, fetchPost)
   border-radius: 14px;
   border: 1px solid #e2e8f0;
   overflow: hidden;
+  background: #fff;
   transition: box-shadow 0.2s;
 }
 .blog-related-card:hover {
@@ -615,9 +705,26 @@ watch(() => route.params.slug, fetchPost)
 }
 
 /* Responsive */
+@media (min-width: 1100px) {
+  .blog-article__layout {
+    grid-template-columns: 260px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .blog-toc {
+    position: sticky;
+    top: 88px;
+    margin-bottom: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .blog-detail-page {
-    padding: 24px 16px 60px;
+    padding: 24px 14px 60px;
+  }
+  .blog-article {
+    padding: 24px 18px;
+    border-radius: 12px;
   }
   .blog-article__title {
     font-size: 26px;
@@ -627,6 +734,13 @@ watch(() => route.params.slug, fetchPost)
   }
   .blog-article__content {
     font-size: 16px;
+  }
+  .blog-article__content :deep(.blog-inline-image--left),
+  .blog-article__content :deep(.blog-inline-image--right) {
+    float: none;
+    clear: both;
+    max-width: 100%;
+    margin: 24px auto;
   }
   .blog-related__grid {
     grid-template-columns: 1fr;
@@ -644,6 +758,9 @@ watch(() => route.params.slug, fetchPost)
 
 /* Internal Links */
 .blog-internal-links {
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 48px;
   padding-top: 32px;
   border-top: 1px solid #e2e8f0;

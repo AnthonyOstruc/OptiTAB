@@ -210,3 +210,44 @@ class BlogPost(BaseModel):
         """Temps de lecture estimé en minutes"""
         word_count = len(self.contenu.split())
         return max(1, round(word_count / 200))
+
+
+class BlogPostImage(BaseModel):
+    """Image inseree dans le contenu d'un article de blog"""
+
+    ALIGN_CHOICES = [
+        ('center', 'Centree'),
+        ('left', 'Gauche'),
+        ('right', 'Droite'),
+        ('full', 'Pleine largeur'),
+    ]
+
+    post = models.ForeignKey(
+        BlogPost,
+        on_delete=models.CASCADE,
+        related_name='images',
+        verbose_name="Article",
+    )
+    image = models.ImageField(
+        upload_to='blog/content/%Y/%m/',
+        verbose_name="Image",
+    )
+    position = models.PositiveIntegerField(default=1, verbose_name="Position")
+    align = models.CharField(
+        max_length=20,
+        choices=ALIGN_CHOICES,
+        default='center',
+        verbose_name="Alignement",
+    )
+    width_percent = models.PositiveIntegerField(default=100, verbose_name="Largeur (%)")
+    alt_text = models.CharField(max_length=250, blank=True, default="", verbose_name="Texte alternatif")
+    caption = models.CharField(max_length=300, blank=True, default="", verbose_name="Legende")
+    title_text = models.CharField(max_length=160, blank=True, default="", verbose_name="Titre image")
+
+    class Meta:
+        verbose_name = "Image d'article"
+        verbose_name_plural = "Images d'articles"
+        ordering = ['position', 'id']
+
+    def __str__(self):
+        return f'{self.post.titre} - image {self.position}'

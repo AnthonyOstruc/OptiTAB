@@ -65,6 +65,24 @@ export function deleteBlogPost(id) {
 
 // ── Admin CRUD — Catégories ───────────────────────────────────────
 
+export function getBlogPostImages(postId) {
+  return apiClient.get(`${BASE}/admin/posts/${postId}/images/`)
+}
+
+export function createBlogPostImage(postId, data) {
+  const config = data instanceof FormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
+  return apiClient.post(`${BASE}/admin/posts/${postId}/images/`, data, config)
+}
+
+export function updateBlogPostImage(postId, imageId, data) {
+  const config = data instanceof FormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
+  return apiClient.patch(`${BASE}/admin/posts/${postId}/images/${imageId}/`, data, config)
+}
+
+export function deleteBlogPostImage(postId, imageId) {
+  return apiClient.delete(`${BASE}/admin/posts/${postId}/images/${imageId}/`)
+}
+
 export function getAdminBlogCategories() {
   return apiClient.get(`${BASE}/admin/categories/`)
 }

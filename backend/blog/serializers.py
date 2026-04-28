@@ -4,7 +4,7 @@ Serializers du blog OptiTAB
 from django.utils.text import slugify
 from rest_framework import serializers
 
-from .models import BlogCategory, BlogTag, BlogNiveau, BlogContentType, BlogPost
+from .models import BlogCategory, BlogTag, BlogNiveau, BlogContentType, BlogPost, BlogPostImage
 
 
 class BlogCategorySerializer(serializers.ModelSerializer):
@@ -51,6 +51,25 @@ class BlogContentTypeSerializer(serializers.ModelSerializer):
         return obj.articles.filter(statut='published', est_actif=True).count()
 
 
+class BlogPostImageSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlogPostImage
+        fields = [
+            'id', 'image_url', 'position', 'align', 'width_percent',
+            'alt_text', 'caption', 'title_text',
+        ]
+
+    def get_image_url(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
+
+
 class BlogPostListSerializer(serializers.ModelSerializer):
     """Serializer leger pour la liste d'articles"""
 
@@ -92,10 +111,11 @@ class BlogPostDetailSerializer(BlogPostListSerializer):
 
     articles_lies = BlogPostListSerializer(many=True, read_only=True)
     og_image_url = serializers.SerializerMethodField()
+    images = BlogPostImageSerializer(many=True, read_only=True)
 
     class Meta(BlogPostListSerializer.Meta):
         fields = BlogPostListSerializer.Meta.fields + [
-            'contenu', 'articles_lies',
+            'contenu', 'images', 'articles_lies',
             'seo_title', 'meta_description', 'og_title', 'og_description',
             'og_image_url', 'meta_robots',
             'date_creation', 'date_modification',
@@ -193,11 +213,13 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
 
     image_couverture_url = serializers.SerializerMethodField()
     og_image_url = serializers.SerializerMethodField()
+    images = BlogPostImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = BlogPost
         fields = [
             'id', 'titre', 'slug', 'extrait', 'contenu',
+            'images',
             'image_couverture', 'image_couverture_url',
             'og_image', 'og_image_url',
             'alt_text_image',
@@ -266,3 +288,43 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
             name = f'{obj.auteur.first_name} {obj.auteur.last_name}'.strip()
             return name or obj.auteur.email
         return ''
+
+
+class BlogPostImageAdminSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlogPostImage
+        fields = [
+            'id', 'post', 'image', 'image_url', 'position', 'align',
+            'width_percent', 'alt_text', 'caption', 'title_text',
+            'est_actif', 'date_creation', 'date_modification',
+        ]
+        read_only_fields = ['post', 'image_url', 'date_creation', 'date_modification']
+        extra_kwargs = {
+            'image': {'required': False},
+            'align': {'required': False},
+            'width_percent': {'required': False},
+            'position': {'required': False},
+            'est_actif': {'required': False},
+        }
+
+    def validate_width_percent(self, value):
+        value = int(value or 100)
+        if value < 20 or value > 100:
+            raise serializers.ValidationError('La largeur doit etre comprise entre 20 et 100%.')
+        return value
+
+    def validate_position(self, value):
+        value = int(value or 1)
+        if value < 1:
+            raise serializers.ValidationError('La position doit etre superieure ou egale a 1.')
+        return value
+
+    def get_image_url(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None

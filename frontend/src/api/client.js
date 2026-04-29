@@ -23,7 +23,7 @@ function resolveBaseUrl() {
     if (typeof window !== 'undefined') {
       // Petit log d'aide en dev pour confirmer la cible
       // eslint-disable-next-line no-console
-      console.info('[API] Development mode: using Vite proxy for /api → http://localhost:8000')
+      console.info('[API] Development mode: using Vite proxy for /api → http://127.0.0.1:8000')
     }
     return ''
   }

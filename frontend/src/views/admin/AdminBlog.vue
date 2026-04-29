@@ -3,11 +3,14 @@
     <FormatHelp v-if="activeTab === 'posts'" :format-template="BLOG_FORMAT_TEMPLATE">
       <template #notes>
         <ul>
-          <li>Tu peux mixer Markdown, LaTeX et HTML dans <code>Contenu</code></li>
-          <li>Image Markdown: <code>![alt](https://...)</code></li>
-          <li>Vid&eacute;o YouTube: colle un bloc <code>&lt;iframe ...&gt;&lt;/iframe&gt;</code></li>
-          <li>Bouton: utilise le lien HTML avec style inline montr&eacute; dans le template</li>
-          <li>Toujours v&eacute;rifier avec le bouton <strong>Pr&eacute;visualiser</strong></li>
+          <li><strong>Titres :</strong> <code>#</code> pour le titre principal, <code>##</code> pour les parties, <code>###</code> pour les sous-parties.</li>
+          <li><strong>LaTeX :</strong> formule dans une phrase avec <code>$f'(x)=2x$</code>, formule centr&eacute;e avec <code>$$f'(x)=2x$$</code>.</li>
+          <li><strong>Images ajout&eacute;es dans l'admin :</strong> ajoute les fichiers dans "Images dans l'article", puis place <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code> dans le contenu.</li>
+          <li><strong>Banni&egrave;re image + bouton :</strong> utilise <code>[CTA]...[/CTA]</code>. L'image se place avec <code>image_position: droite</code>, <code>gauche</code> ou <code>bas</code>.</li>
+          <li><strong>Image externe :</strong> possible avec <code>![Texte alternatif](https://.../image.png)</code>, mais pr&eacute;f&egrave;re les images upload&eacute;es.</li>
+          <li><strong>Liens :</strong> lien interne <code>[Voir les exercices](/ressources-gratuites/exercices)</code>, lien externe <code>[Site officiel](https://...)</code>.</li>
+          <li><strong>Articles similaires :</strong> utilise le bloc "Articles similaires" sous les tags. Les liens texte se mettent directement dans le contenu.</li>
+          <li><strong>Validation :</strong> clique toujours sur <strong>Pr&eacute;visualiser</strong> avant de publier.</li>
         </ul>
       </template>
     </FormatHelp>
@@ -18,10 +21,6 @@
       <button :class="['tab-btn', { active: activeTab === 'posts' }]" @click="activeTab = 'posts'">
         <span class="tab-icon">A</span> Articles
         <span class="tab-count" v-if="posts.length">{{ posts.length }}</span>
-      </button>
-      <button :class="['tab-btn', { active: activeTab === 'categories' }]" @click="activeTab = 'categories'">
-        <span class="tab-icon">C</span> Chapitres
-        <span class="tab-count" v-if="categories.length">{{ categories.length }}</span>
       </button>
       <button :class="['tab-btn', { active: activeTab === 'niveaux' }]" @click="activeTab = 'niveaux'">
         <span class="tab-icon">N</span> Niveaux
@@ -63,12 +62,12 @@
           <small class="field-hint">Max 400 car. Affich&eacute; dans les cartes du blog.</small>
         </div>
 
-        <div class="form-row-2">
+        <div class="form-row-3">
           <div class="form-group">
-            <label>Cat&eacute;gorie (chapitre)</label>
-            <select v-model="postForm.categorie">
-              <option :value="null">- Aucun chapitre -</option>
-              <option v-for="c in categories" :key="c.id" :value="c.id">{{ c.nom }}</option>
+            <label>Type de contenu</label>
+            <select v-model="postForm.type_contenu">
+              <option :value="null">- Aucun type -</option>
+              <option v-for="t in contentTypes" :key="t.id" :value="t.id">{{ t.nom }}</option>
             </select>
           </div>
           <div class="form-group">
@@ -78,21 +77,11 @@
               <option v-for="n in niveaux" :key="n.id" :value="n.id">{{ n.nom }}</option>
             </select>
           </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Type de contenu</label>
-            <select v-model="postForm.type_contenu">
-              <option :value="null">- Aucun type -</option>
-              <option v-for="t in contentTypes" :key="t.id" :value="t.id">{{ t.nom }}</option>
-            </select>
-          </div>
           <div class="form-group">
             <label>Statut</label>
             <select v-model="postForm.statut">
-              <option value="draft">Brouillon</option>
               <option value="published">Publi&eacute;</option>
+              <option value="draft">Brouillon</option>
             </select>
           </div>
         </div>
@@ -114,15 +103,48 @@
           </div>
         </div>
 
+        <div class="form-group related-posts-panel">
+          <label>Articles similaires</label>
+          <small class="field-hint">
+            Ces articles seront affich&eacute;s en cartes &agrave; la fin de l'article public.
+          </small>
+          <div class="tags-select-row">
+            <select v-model="selectedRelatedPostId">
+              <option value="">Ajouter un article similaire...</option>
+              <option v-for="p in availableRelatedPosts" :key="p.id" :value="p.id">{{ p.titre }}</option>
+            </select>
+            <button class="btn-tag-add" type="button" @click="addRelatedPost" :disabled="!selectedRelatedPostId">+</button>
+          </div>
+          <div class="chips" v-if="postForm.articles_lies_ids.length">
+            <span class="chip" v-for="pid in postForm.articles_lies_ids" :key="pid">
+              {{ postTitleById(pid) }}
+              <button class="chip-remove" type="button" @click="removeRelatedPost(pid)">x</button>
+            </span>
+          </div>
+        </div>
+
         <div class="form-group">
-          <label>Contenu <span class="required">*</span></label>
+          <div class="content-field-head">
+            <label>Contenu <span class="required">*</span></label>
+            <div class="content-tools">
+              <label class="cta-position-control">
+                <span>Image CTA</span>
+                <select v-model="ctaImagePosition">
+                  <option value="droite">Droite</option>
+                  <option value="gauche">Gauche</option>
+                  <option value="bas">Sous le texte</option>
+                </select>
+              </label>
+              <button type="button" class="btn-marker" @click="insertCtaBlock">Ins&eacute;rer une banni&egrave;re CTA</button>
+            </div>
+          </div>
           <textarea
             ref="contentTextarea"
             v-model="postForm.contenu"
             placeholder="R&eacute;digez en Markdown ($formules$ LaTeX support&eacute;es)"
             rows="14"
           ></textarea>
-          <small class="field-hint">Supporte Markdown, LaTeX ($formule$) et HTML.</small>
+          <small class="field-hint">Supporte Markdown, LaTeX ($formule$), HTML et blocs CTA <code>[CTA]...[/CTA]</code>.</small>
         </div>
 
         <div class="form-group inline-images-panel">
@@ -239,30 +261,6 @@
                 <input v-model="postForm.meta_description" placeholder="Description sous le lien Google" maxlength="160" />
               </div>
             </div>
-            <div class="form-row-2">
-              <div class="form-group">
-                <label>OG Title</label>
-                <input v-model="postForm.og_title" placeholder="Titre sur Facebook/LinkedIn" maxlength="100" />
-              </div>
-              <div class="form-group">
-                <label>OG Description</label>
-                <input v-model="postForm.og_description" placeholder="Description sur les r&eacute;seaux" maxlength="200" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Image OG (Open Graph)</label>
-              <div class="image-upload-zone">
-                <input type="file" accept="image/*" @change="onOgImageChange" />
-                <img v-if="postForm._ogPreview" :src="postForm._ogPreview" class="image-preview-lg" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Meta robots</label>
-              <select v-model="postForm.meta_robots">
-                <option value="index">Index (visible Google)</option>
-                <option value="noindex">Noindex (masque Google)</option>
-              </select>
-            </div>
           </div>
         </details>
 
@@ -281,7 +279,6 @@
         <div class="preview-article">
           <div class="preview-meta">
             <span :class="['status-badge', postForm.statut]">{{ postForm.statut === 'published' ? 'Publi\u00e9' : 'Brouillon' }}</span>
-            <span v-if="previewCategorie" class="preview-cat">{{ previewCategorie }}</span>
             <span v-if="previewNiveau" class="preview-taxonomy">{{ previewNiveau }}</span>
             <span v-if="previewTypeContenu" class="preview-taxonomy">{{ previewTypeContenu }}</span>
             <span v-if="postForm.tags_ids.length" class="preview-tags">
@@ -300,39 +297,51 @@
         </div>
       </div>
 
-      <div class="filters">
-        <div class="filter-group">
-          <label>Filtrer par cat&eacute;gorie</label>
-          <select v-model="filterCategorie">
-            <option value="all">Toutes les cat&eacute;gories</option>
-            <option v-for="c in categories" :key="c.id" :value="c.id">{{ c.nom }}</option>
-          </select>
+      <div class="filters" aria-label="Filtres des articles">
+        <div class="filters__head">
+          <div>
+            <p class="filters__title">Filtres</p>
+            <p class="filters__count">
+              {{ filteredPosts.length }} article{{ filteredPosts.length > 1 ? 's' : '' }}
+            </p>
+          </div>
+          <button
+            v-if="hasActiveFilters"
+            type="button"
+            class="filters__reset"
+            @click="resetFilters"
+          >
+            R&eacute;initialiser
+          </button>
         </div>
-        <div class="filter-group">
-          <label>Filtrer par niveau</label>
-          <select v-model="filterNiveau">
-            <option value="all">Tous les niveaux</option>
-            <option v-for="n in niveaux" :key="n.id" :value="n.id">{{ n.nom }}</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Filtrer par type</label>
-          <select v-model="filterTypeContenu">
-            <option value="all">Tous les types</option>
-            <option v-for="t in contentTypes" :key="t.id" :value="t.id">{{ t.nom }}</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Filtrer par statut</label>
-          <select v-model="filterStatut">
-            <option value="all">Tous les statuts</option>
-            <option value="published">Publi&eacute;</option>
-            <option value="draft">Brouillon</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Rechercher</label>
-          <input v-model="filterSearch" type="text" placeholder="Recherche par titre..." class="filter-input" />
+
+        <div class="filters__controls">
+          <label class="filter-control">
+            <span>Niveau</span>
+            <select v-model="filterNiveau">
+              <option value="all">Tous les niveaux</option>
+              <option v-for="n in niveaux" :key="n.id" :value="n.id">{{ n.nom }}</option>
+            </select>
+          </label>
+          <label class="filter-control">
+            <span>Type</span>
+            <select v-model="filterTypeContenu">
+              <option value="all">Tous les types</option>
+              <option v-for="t in contentTypes" :key="t.id" :value="t.id">{{ t.nom }}</option>
+            </select>
+          </label>
+          <label class="filter-control">
+            <span>Statut</span>
+            <select v-model="filterStatut">
+              <option value="all">Tous les statuts</option>
+              <option value="published">Publi&eacute;</option>
+              <option value="draft">Brouillon</option>
+            </select>
+          </label>
+          <label class="filter-control filter-control--search">
+            <span>Recherche</span>
+            <input v-model="filterSearch" type="search" placeholder="Titre de l'article..." />
+          </label>
         </div>
       </div>
 
@@ -341,7 +350,6 @@
           <tr>
             <th>ID</th>
             <th>Titre</th>
-            <th>Cat&eacute;gorie</th>
             <th>Niveau</th>
             <th>Type</th>
             <th>Statut</th>
@@ -351,13 +359,12 @@
         </thead>
         <tbody>
           <tr v-if="isLoadingPosts">
-            <td colspan="8" class="loading-row">Chargement des articles...</td>
+            <td colspan="7" class="loading-row">Chargement des articles...</td>
           </tr>
           <template v-else>
             <tr v-for="p in filteredPosts" :key="p.id">
               <td>{{ p.id }}</td>
               <td class="title-cell">{{ p.titre }}</td>
-              <td>{{ p.categorie_nom || '-' }}</td>
               <td>{{ p.niveau_nom || niveauLabel(p.niveau) || '-' }}</td>
               <td>{{ p.type_contenu_nom || typeContenuLabel(p.type_contenu) || '-' }}</td>
               <td><span :class="['status-badge', p.statut]">{{ p.statut === 'published' ? 'Publi\u00e9' : 'Brouillon' }}</span></td>
@@ -374,74 +381,9 @@
               </td>
             </tr>
             <tr v-if="filteredPosts.length === 0">
-              <td colspan="8" class="empty-row">Aucun article trouv&eacute;.</td>
+              <td colspan="7" class="empty-row">Aucun article trouv&eacute;.</td>
             </tr>
           </template>
-        </tbody>
-      </table>
-    </template>
-
-    <template v-if="activeTab === 'categories'">
-      <form class="admin-form" @submit.prevent="handleSaveCategory">
-        <h3 class="form-section-title">{{ catForm.id ? 'Modifier le chapitre' : 'Nouveau chapitre' }}</h3>
-        <div class="form-group">
-          <label>Nom <span class="required">*</span></label>
-          <input v-model="catForm.nom" required />
-        </div>
-        <div class="form-group">
-          <label>Slug</label>
-          <input v-model="catForm.slug" placeholder="Auto-g&eacute;n&eacute;r&eacute; depuis le nom si vide" />
-        </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea v-model="catForm.description" rows="2"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Meta description</label>
-          <input v-model="catForm.meta_description" maxlength="160" />
-        </div>
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Meta robots</label>
-            <select v-model="catForm.meta_robots">
-              <option value="index">Index</option>
-              <option value="noindex">Noindex</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Ordre</label>
-            <input v-model.number="catForm.ordre" type="number" min="0" />
-          </div>
-        </div>
-        <div class="form-actions">
-          <button class="btn-primary" type="submit">{{ catForm.id ? 'Mettre \u00e0 jour' : 'Cr\u00e9er' }}</button>
-          <button v-if="catForm.id" class="btn-danger" type="button" @click="resetCatForm">Annuler</button>
-        </div>
-      </form>
-
-      <table class="admin-table">
-        <thead>
-          <tr><th>ID</th><th>Nom</th><th>Slug</th><th>Description</th><th>Robots</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-          <tr v-for="c in categories" :key="c.id">
-            <td>{{ c.id }}</td>
-            <td class="title-cell">{{ c.nom }}</td>
-            <td><code class="slug-code">{{ c.slug }}</code></td>
-            <td>{{ c.description || '-' }}</td>
-            <td><span :class="['robots-badge', c.meta_robots === 'noindex' ? 'noindex' : 'index']">{{ c.meta_robots === 'noindex' ? 'Noindex' : 'Index' }}</span></td>
-            <td>
-              <AdminActionsButtons
-                :item="c"
-                :actions="['edit', 'delete']"
-                edit-label="&Eacute;diter"
-                confirm-message="Supprimer ce chapitre ?"
-                @edit="editCategory"
-                @delete="handleDeleteCategory"
-              />
-            </td>
-          </tr>
-          <tr v-if="!categories.length"><td colspan="6" class="empty-row">Aucun chapitre</td></tr>
         </tbody>
       </table>
     </template>
@@ -591,11 +533,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import {
   getAdminBlogPosts, createBlogPost, updateBlogPost, deleteBlogPost,
   createBlogPostImage, updateBlogPostImage, deleteBlogPostImage,
-  getAdminBlogCategories, createBlogCategory, updateBlogCategory, deleteBlogCategory,
   getAdminBlogTags, createBlogTag, updateBlogTag, deleteBlogTag,
   getAdminBlogNiveaux, createBlogNiveau, updateBlogNiveau, deleteBlogNiveau,
   getAdminBlogContentTypes, createBlogContentType, updateBlogContentType, deleteBlogContentType,
@@ -605,36 +546,87 @@ import FormatHelp from '@/components/admin/FormatHelp.vue'
 import { renderBlogMarkdown } from '@/utils/blogRenderer'
 import 'katex/dist/katex.min.css'
 
-const BLOG_FORMAT_TEMPLATE = `# Titre de l'article
+const BLOG_FORMAT_TEMPLATE = `# Titre exact de l'article
 
-## Introduction
-Explique en 3-4 phrases l'objectif du chapitre.
+Court paragraphe d'introduction : expliquer le sujet, le niveau concerne et ce que l'eleve va apprendre.
 
-## Methode
-- Etape 1
-- Etape 2
-- Etape 3
+## 1. Definition ou idee principale
 
-## Exemple
-![Texte alternatif image](https://www.exemple.com/image.jpg)
+Texte simple en paragraphes courts. Mets les mots importants en **gras**.
 
-## Video explicative
+Exemple de formule LaTeX dans une phrase : $\\ln(ab)=\\ln(a)+\\ln(b)$.
+
+Formule centree :
+
+$$
+\\ln\\left(\\frac{a}{b}\\right)=\\ln(a)-\\ln(b)
+$$
+
+## 2. Methode a retenir
+
+- Premiere idee importante.
+- Deuxieme idee importante.
+- Erreur classique a eviter.
+
+### Exemple corrige
+
+Enonce de l'exemple.
+
+$$
+\\ln(e^3)=3
+$$
+
+Explication du calcul en 2 ou 3 phrases.
+
+[IMAGE_1]
+
+## 3. Application ou exercice type
+
+Texte de l'application.
+
+[IMAGE_2]
+
+## Banniere CTA image + bouton
+
+Le bloc ci-dessous affiche une carte avec un bouton cliquable. L'image peut etre une image ajoutee dans l'admin avec [IMAGE_3], une image du dossier public comme /Banner-blog.png, ou une URL complete.
+
+[CTA]
+surtitre: Cours particuliers OptiTAB
+titre: Progresser en maths avec un professeur
+texte: Un accompagnement clair pour reprendre confiance et travailler les bonnes methodes.
+bouton: Decouvrir les cours particuliers
+url: /cours-particuliers
+image: [IMAGE_3]
+image_position: droite
+style: split
+theme: optitab
+[/CTA]
+
+Positions possibles pour l'image : image_position: droite, gauche ou bas.
+Variante sans image possible : style: bandeau, theme: vert.
+
+## Video explicative facultative
+
 <iframe width="100%" height="380" src="https://www.youtube.com/embed/VIDEO_ID" title="Video explicative" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-## Lien utile
-[Voir la fiche complete](https://www.exemple.com)
+## Liens utiles dans le contenu
 
-## Bouton CTA
-<a href="https://www.exemple.com" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:10px 16px;border-radius:8px;background:#1d4ed8;color:#ffffff;text-decoration:none;font-weight:600;">Voir l'exercice complet</a>
+Lien interne : [Voir les exercices corriges](/ressources-gratuites/exercices)
 
----
+Lien externe : [Voir une ressource officielle](https://www.exemple.com)
+
+Bouton HTML simple facultatif :
+
+<a href="/cours-particuliers" style="display:inline-block;padding:10px 16px;border-radius:8px;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:700;">Demander un cours particulier</a>
 
 ## Conclusion
-Resume les points cles et la prochaine etape.`
+
+Resume les points cles en quelques lignes.
+
+Important : les liens texte se mettent directement dans le contenu. Les cartes d'articles similaires se reglent dans le bloc admin "Articles similaires".`
 
 const activeTab = ref('posts')
 const posts = ref([])
-const categories = ref([])
 const niveaux = ref([])
 const contentTypes = ref([])
 const tags = ref([])
@@ -646,7 +638,6 @@ const deletedInlineImageIds = ref([])
 const BLOG_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
 const BLOG_IMAGE_MAX_SIZE = 10 * 1024 * 1024
 
-const filterCategorie = ref('all')
 const filterNiveau = ref('all')
 const filterTypeContenu = ref('all')
 const filterStatut = ref('all')
@@ -654,7 +645,6 @@ const filterSearch = ref('')
 
 const filteredPosts = computed(() => {
   let result = posts.value
-  if (filterCategorie.value !== 'all') result = result.filter(p => Number(p.categorie) === Number(filterCategorie.value))
   if (filterNiveau.value !== 'all') result = result.filter(p => Number(p.niveau) === Number(filterNiveau.value))
   if (filterTypeContenu.value !== 'all') result = result.filter(p => Number(p.type_contenu) === Number(filterTypeContenu.value))
   if (filterStatut.value !== 'all') result = result.filter(p => p.statut === filterStatut.value)
@@ -665,26 +655,39 @@ const filteredPosts = computed(() => {
   return result
 })
 
+const hasActiveFilters = computed(() => (
+  filterNiveau.value !== 'all'
+  || filterTypeContenu.value !== 'all'
+  || filterStatut.value !== 'all'
+  || Boolean(filterSearch.value.trim())
+))
+
+function resetFilters() {
+  filterNiveau.value = 'all'
+  filterTypeContenu.value = 'all'
+  filterStatut.value = 'all'
+  filterSearch.value = ''
+}
+
 const emptyPost = () => ({
   id: null, titre: '', slug: '', extrait: '', contenu: '',
-  categorie: null, niveau: null, type_contenu: null, tags_ids: [], statut: 'draft',
-  seo_title: '', meta_description: '', og_title: '', og_description: '',
-  alt_text_image: '', meta_robots: 'index',
-  _coverFile: null, _coverPreview: '', _ogFile: null, _ogPreview: '',
+  niveau: null, type_contenu: null, tags_ids: [], articles_lies_ids: [], statut: 'published',
+  seo_title: '', meta_description: '',
+  alt_text_image: '',
+  _coverFile: null, _coverPreview: '',
   images: [],
 })
 
 const postForm = ref(emptyPost())
 const selectedTagId = ref('')
+const selectedRelatedPostId = ref('')
+const ctaImagePosition = ref('droite')
 const showPreview = ref(false)
 const previewHtml = ref('')
 
-const previewCategorie = computed(() => categories.value.find(c => c.id === postForm.value.categorie)?.nom || '')
 const previewNiveau = computed(() => niveauLabel(postForm.value.niveau))
 const previewTypeContenu = computed(() => typeContenuLabel(postForm.value.type_contenu))
 
-const emptyCat = () => ({ id: null, nom: '', slug: '', description: '', meta_description: '', meta_robots: 'index', ordre: 0 })
-const catForm = ref(emptyCat())
 const emptyNiveau = () => ({ id: null, nom: '', slug: '', ordre: 0, est_actif: true })
 const niveauForm = ref(emptyNiveau())
 const emptyContentType = () => ({ id: null, nom: '', slug: '', ordre: 0, est_actif: true })
@@ -693,6 +696,13 @@ const emptyTag = () => ({ id: null, nom: '', slug: '', meta_description: '', met
 const tagForm = ref(emptyTag())
 
 const availableTags = computed(() => tags.value.filter(t => !postForm.value.tags_ids.includes(t.id)))
+const availableRelatedPosts = computed(() => {
+  const selected = new Set(postForm.value.articles_lies_ids.map(Number))
+  return posts.value.filter((post) => {
+    if (postForm.value.id && Number(post.id) === Number(postForm.value.id)) return false
+    return !selected.has(Number(post.id))
+  })
+})
 
 function counterClass(length, minIdeal, maxIdeal, hardMax) {
   if (hardMax && length > hardMax) return 'char-counter char-counter--danger'
@@ -722,6 +732,10 @@ function tagNameById(id) {
   return tags.value.find(t => t.id === id)?.nom || id
 }
 
+function postTitleById(id) {
+  return posts.value.find(p => Number(p.id) === Number(id))?.titre || `Article ${id}`
+}
+
 function addTag() {
   if (selectedTagId.value && !postForm.value.tags_ids.includes(Number(selectedTagId.value))) {
     postForm.value.tags_ids.push(Number(selectedTagId.value))
@@ -731,6 +745,18 @@ function addTag() {
 
 function removeTag(id) {
   postForm.value.tags_ids = postForm.value.tags_ids.filter(t => t !== id)
+}
+
+function addRelatedPost() {
+  const id = Number(selectedRelatedPostId.value)
+  if (id && !postForm.value.articles_lies_ids.includes(id)) {
+    postForm.value.articles_lies_ids.push(id)
+  }
+  selectedRelatedPostId.value = ''
+}
+
+function removeRelatedPost(id) {
+  postForm.value.articles_lies_ids = postForm.value.articles_lies_ids.filter(postId => Number(postId) !== Number(id))
 }
 
 function nextInlineImagePosition() {
@@ -746,19 +772,32 @@ function normalizeInlineImage(image) {
     : Math.min(100, Math.max(20, Number.parseInt(image.width_percent, 10) || 100))
 }
 
+function imageTitleFromFilename(filename = '') {
+  return String(filename)
+    .split(/[\\/]/)
+    .pop()
+    .replace(/\.[^.]+$/, '')
+    .trim()
+}
+
 function buildInlineImageFromFile(file) {
   const position = nextInlineImagePosition()
+  const previewUrl = URL.createObjectURL(file)
+  const defaultTitle = imageTitleFromFilename(file.name)
   return {
     _key: `new-${Date.now()}-${Math.random().toString(36).slice(2)}`,
     id: null,
     _file: file,
-    _preview: URL.createObjectURL(file),
+    _preview: previewUrl,
+    preview_url: previewUrl,
+    image_url: previewUrl,
     position,
     align: 'center',
     width_percent: 100,
     alt_text: '',
     caption: '',
-    title_text: '',
+    title_text: defaultTitle,
+    est_actif: true,
   }
 }
 
@@ -768,6 +807,7 @@ function normalizeExistingInlineImage(image, index = 0) {
     id: image.id || null,
     _file: null,
     _preview: image.image_url || '',
+    preview_url: image.image_url || '',
     image_url: image.image_url || '',
     position: Number(image.position || index + 1),
     align: image.align || 'center',
@@ -775,6 +815,7 @@ function normalizeExistingInlineImage(image, index = 0) {
     alt_text: image.alt_text || '',
     caption: image.caption || '',
     title_text: image.title_text || '',
+    est_actif: image.est_actif !== false,
   }
   normalizeInlineImage(normalized)
   return normalized
@@ -804,12 +845,10 @@ function removeInlineImage(index) {
   postForm.value.images.splice(index, 1)
 }
 
-function insertImageMarker(image) {
-  normalizeInlineImage(image)
-  const marker = `\n\n[IMAGE_${image.position}]\n\n`
+function insertContentSnippet(snippet) {
   const textarea = contentTextarea.value
   if (!textarea) {
-    postForm.value.contenu = `${postForm.value.contenu || ''}${marker}`
+    postForm.value.contenu = `${postForm.value.contenu || ''}${snippet}`
     return
   }
 
@@ -817,13 +856,28 @@ function insertImageMarker(image) {
   const end = textarea.selectionEnd ?? start
   const before = postForm.value.contenu.slice(0, start)
   const after = postForm.value.contenu.slice(end)
-  postForm.value.contenu = `${before}${marker}${after}`
+  postForm.value.contenu = `${before}${snippet}${after}`
 
   requestAnimationFrame(() => {
     textarea.focus()
-    const nextPosition = start + marker.length
+    const nextPosition = start + snippet.length
     textarea.setSelectionRange(nextPosition, nextPosition)
   })
+}
+
+function insertImageMarker(image) {
+  normalizeInlineImage(image)
+  insertContentSnippet(`\n\n[IMAGE_${image.position}]\n\n`)
+}
+
+function insertCtaBlock() {
+  const firstImage = postForm.value.images[0]
+  const imageMarker = firstImage ? `[IMAGE_${firstImage.position}]` : '[IMAGE_1]'
+  const selectedPosition = ['droite', 'gauche', 'bas'].includes(ctaImagePosition.value)
+    ? ctaImagePosition.value
+    : 'droite'
+  const snippet = `\n\n[CTA]\nsurtitre: Cours particuliers OptiTAB\ntitre: Progresser en maths avec un professeur\ntexte: Un accompagnement clair pour reprendre confiance et travailler les bonnes methodes.\nbouton: Decouvrir les cours particuliers\nurl: /cours-particuliers\nimage: ${imageMarker}\nimage_position: ${selectedPosition}\nstyle: split\ntheme: optitab\n[/CTA]\n\n`
+  insertContentSnippet(snippet)
 }
 
 function buildInlineImageFormData(image) {
@@ -836,6 +890,7 @@ function buildInlineImageFormData(image) {
   fd.append('alt_text', image.alt_text || '')
   fd.append('caption', image.caption || '')
   fd.append('title_text', image.title_text || '')
+  fd.append('est_actif', image.est_actif === false ? 'false' : 'true')
   return fd
 }
 
@@ -863,14 +918,7 @@ function onCoverImageChange(e) {
   postForm.value._coverPreview = URL.createObjectURL(file)
 }
 
-function onOgImageChange(e) {
-  const file = e.target.files?.[0]
-  if (!file) return
-  postForm.value._ogFile = file
-  postForm.value._ogPreview = URL.createObjectURL(file)
-}
-
-function handlePreview() {
+function refreshPreviewHtml() {
   try {
     previewHtml.value = renderBlogMarkdown(postForm.value.contenu, {
       title: postForm.value.titre,
@@ -878,15 +926,28 @@ function handlePreview() {
       images: postForm.value.images,
       preview: true,
     })
-    showPreview.value = true
   } catch (e) {
     console.error('Erreur preview:', e)
   }
 }
 
+function handlePreview() {
+  refreshPreviewHtml()
+  showPreview.value = true
+}
+
+watch(
+  () => [postForm.value.titre, postForm.value.contenu, postForm.value.images],
+  () => {
+    if (showPreview.value) refreshPreviewHtml()
+  },
+  { deep: true }
+)
+
 function resetPostForm() {
   postForm.value = emptyPost()
   selectedTagId.value = ''
+  selectedRelatedPostId.value = ''
   deletedInlineImageIds.value = []
   showPreview.value = false
   previewHtml.value = ''
@@ -900,25 +961,21 @@ function editPost(post) {
     slug: post.slug || '',
     extrait: post.extrait || '',
     contenu: post.contenu || '',
-    categorie: post.categorie ? Number(post.categorie) : null,
     niveau: post.niveau ? Number(post.niveau) : null,
     type_contenu: post.type_contenu ? Number(post.type_contenu) : null,
     tags_ids: (post.tags_ids || []).map(Number),
-    statut: post.statut || 'draft',
+    articles_lies_ids: (post.articles_lies_ids || []).map(Number),
+    statut: post.statut || 'published',
     seo_title: post.seo_title || '',
     meta_description: post.meta_description || '',
-    og_title: post.og_title || '',
-    og_description: post.og_description || '',
     alt_text_image: post.alt_text_image || '',
-    meta_robots: post.meta_robots || 'index',
     _coverFile: null,
     _coverPreview: post.image_couverture_url || '',
-    _ogFile: null,
-    _ogPreview: post.og_image_url || '',
     images: (post.images || []).map(normalizeExistingInlineImage),
   }
   deletedInlineImageIds.value = []
   selectedTagId.value = ''
+  selectedRelatedPostId.value = ''
   activeTab.value = 'posts'
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -931,19 +988,23 @@ async function handleSavePost() {
     if (postForm.value.slug) fd.append('slug', postForm.value.slug)
     fd.append('extrait', postForm.value.extrait)
     fd.append('contenu', postForm.value.contenu)
-    fd.append('categorie', postForm.value.categorie || '')
+    fd.append('categorie', '')
     fd.append('niveau', postForm.value.niveau || '')
     fd.append('type_contenu', postForm.value.type_contenu || '')
     fd.append('statut', postForm.value.statut)
+    const generatedOgTitle = (postForm.value.seo_title || postForm.value.titre || '').trim()
+    const generatedOgDescription = (postForm.value.meta_description || postForm.value.extrait || '').trim()
     fd.append('seo_title', postForm.value.seo_title)
     fd.append('meta_description', postForm.value.meta_description)
-    fd.append('og_title', postForm.value.og_title)
-    fd.append('og_description', postForm.value.og_description)
+    fd.append('og_title', generatedOgTitle)
+    fd.append('og_description', generatedOgDescription)
     fd.append('alt_text_image', postForm.value.alt_text_image)
-    fd.append('meta_robots', postForm.value.meta_robots)
+    fd.append('meta_robots', 'index')
+    fd.append('tags_ids_present', 'true')
     for (const tid of postForm.value.tags_ids) fd.append('tags_ids', tid)
+    fd.append('articles_lies_ids_present', 'true')
+    for (const pid of postForm.value.articles_lies_ids) fd.append('articles_lies_ids', pid)
     if (postForm.value._coverFile) fd.append('image_couverture', postForm.value._coverFile)
-    if (postForm.value._ogFile) fd.append('og_image', postForm.value._ogFile)
 
     const response = postForm.value.id
       ? await updateBlogPost(postForm.value.id, fd)
@@ -966,44 +1027,6 @@ async function handleDeletePost(post) {
     await loadPosts()
   } catch (e) {
     console.error('Erreur suppression article:', e)
-  }
-}
-
-function resetCatForm() { catForm.value = emptyCat() }
-function editCategory(cat) {
-  catForm.value = {
-    id: cat.id,
-    nom: cat.nom || '',
-    slug: cat.slug || '',
-    description: cat.description || '',
-    meta_description: cat.meta_description || '',
-    meta_robots: cat.meta_robots || 'index',
-    ordre: Number(cat.ordre || 0),
-  }
-  activeTab.value = 'categories'
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-
-async function handleSaveCategory() {
-  if (!catForm.value.nom) return
-  try {
-    const payload = { ...catForm.value }
-    delete payload.id
-    if (catForm.value.id) await updateBlogCategory(catForm.value.id, payload)
-    else await createBlogCategory(payload)
-    resetCatForm()
-    await loadCategories()
-  } catch (e) {
-    console.error('Erreur sauvegarde categorie:', e, e?.response?.data)
-  }
-}
-
-async function handleDeleteCategory(cat) {
-  try {
-    await deleteBlogCategory(cat.id)
-    await loadCategories()
-  } catch (e) {
-    console.error('Erreur suppression categorie:', e)
   }
 }
 
@@ -1128,16 +1151,6 @@ async function loadPosts() {
   }
 }
 
-async function loadCategories() {
-  try {
-    const { data } = await getAdminBlogCategories()
-    categories.value = data || []
-  } catch (e) {
-    console.error('Erreur chargement categories:', e)
-    categories.value = []
-  }
-}
-
 async function loadNiveaux() {
   try {
     const { data } = await getAdminBlogNiveaux()
@@ -1171,7 +1184,6 @@ async function loadTags() {
 onMounted(async () => {
   await Promise.all([
     loadPosts(),
-    loadCategories(),
     loadNiveaux(),
     loadContentTypes(),
     loadTags(),
@@ -1311,6 +1323,44 @@ onMounted(async () => {
   gap: 0.75rem;
 }
 
+.content-field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.content-field-head label {
+  margin-bottom: 0;
+}
+
+.content-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.cta-position-control {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: #4b5563;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cta-position-control select {
+  width: auto;
+  min-width: 132px;
+  padding: 0.45rem 0.625rem;
+  font-size: 0.82rem;
+}
+
 .char-counter {
   font-size: 0.7rem;
   font-weight: 600;
@@ -1326,6 +1376,7 @@ onMounted(async () => {
 .char-counter--danger { color: #991b1b; background: #fee2e2; }
 
 .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-row-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 
 .form-actions {
   display: flex;
@@ -1373,6 +1424,13 @@ onMounted(async () => {
   line-height: 1;
 }
 
+.related-posts-panel {
+  border: 1px solid #dbeafe;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: #f8fbff;
+}
+
 .image-upload-zone {
   border: 2px dashed #d1d5db;
   border-radius: 0.5rem;
@@ -1403,16 +1461,92 @@ onMounted(async () => {
 
 .filters {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  gap: 0.875rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
 }
 
-.filter-group label {
-  font-size: 0.75rem;
-  color: #6b7280;
-  margin-bottom: 0.25rem;
-  display: block;
+.filters__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.filters__title {
+  margin: 0;
+  color: #111827;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.filters__count {
+  margin: 0.15rem 0 0;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.filters__reset {
+  min-height: 34px;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #dbe4ff;
+  border-radius: 0.5rem;
+  background: #f5f8ff;
+  color: #2557d6;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.filters__reset:hover {
+  border-color: #b7c8ff;
+  background: #eef3ff;
+}
+
+.filters__controls {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.8fr) minmax(150px, 0.85fr) minmax(140px, 0.8fr) minmax(240px, 1.4fr);
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.filter-control {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.filter-control span {
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.filter-control select,
+.filter-control input {
+  width: 100%;
+  min-height: 40px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #cfd8e6;
+  border-radius: 0.55rem;
+  background: #f8fafc;
+  color: #111827;
+  font: inherit;
+  font-size: 0.88rem;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+
+.filter-control select:focus,
+.filter-control input:focus {
+  outline: none;
+  border-color: #315eea;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(49, 94, 234, 0.12);
 }
 
 .admin-table {
@@ -1602,6 +1736,10 @@ onMounted(async () => {
   gap: 0.75rem;
 }
 
+.form-row-4 .span-2 {
+  grid-column: span 2;
+}
+
 .form-group.compact {
   margin-bottom: 0.75rem;
 }
@@ -1661,17 +1799,11 @@ onMounted(async () => {
   align-items: center;
 }
 
-.preview-cat,
 .preview-taxonomy {
   padding: 0.2rem 0.625rem;
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 700;
-}
-
-.preview-cat {
-  background: #dbeafe;
-  color: #1d4ed8;
 }
 
 .preview-taxonomy {
@@ -1688,9 +1820,9 @@ onMounted(async () => {
 .preview-title {
   font-size: clamp(2rem, 3.5vw, 3.1rem);
   font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: 0;
-  color: #0f172a;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #111827;
   margin: 0 0 1rem;
 }
 
@@ -1726,27 +1858,29 @@ onMounted(async () => {
 .preview-content :deep(h1) {
   font-size: 2rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #111827;
   margin: 2rem 0 1rem;
-  letter-spacing: 0;
+  letter-spacing: -0.03em;
 }
 
 .preview-content :deep(h2) {
-  font-size: 1.625rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin: 2.75rem 0 1rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #e2e8f0;
-  letter-spacing: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 2.75rem 0 1.125rem;
+  padding: 0 0 0.75rem;
+  border-bottom: 3px solid #6366f1;
+  letter-spacing: -0.01em;
 }
 
 .preview-content :deep(h3) {
-  font-size: 1.25rem;
+  font-size: 1.1875rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #374151;
   margin: 2rem 0 0.75rem;
-  letter-spacing: 0;
+  padding-left: 1rem;
+  border-left: 4px solid #6366f1;
+  letter-spacing: -0.005em;
 }
 
 .preview-content :deep(p) {
@@ -1761,7 +1895,7 @@ onMounted(async () => {
 
 .preview-content :deep(strong) {
   font-weight: 700;
-  color: #0f172a;
+  color: #111827;
 }
 
 .preview-content :deep(ul),
@@ -1844,6 +1978,136 @@ onMounted(async () => {
   text-align: center;
 }
 
+.preview-content :deep(.blog-cta-card) {
+  clear: both;
+  display: grid;
+  gap: 0;
+  margin: 2.25rem 0;
+  overflow: hidden;
+  border: 1px solid #dbe4ff;
+  border-radius: 1.375rem;
+  background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
+}
+
+.preview-content :deep(.blog-cta-card--split.blog-cta-card--has-image) {
+  grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr);
+}
+
+.preview-content :deep(.blog-cta-card--image-left.blog-cta-card--has-image .blog-cta-card__media) {
+  order: -1;
+}
+
+.preview-content :deep(.blog-cta-card--image-bottom.blog-cta-card--has-image) {
+  grid-template-columns: 1fr;
+}
+
+.preview-content :deep(.blog-cta-card--image-bottom .blog-cta-card__media) {
+  order: 2;
+}
+
+.preview-content :deep(.blog-cta-card--solid) {
+  display: block;
+}
+
+.preview-content :deep(.blog-cta-card--green) {
+  background: linear-gradient(135deg, #4db6a6 0%, #99e5c7 100%);
+  border-color: #74d2bd;
+}
+
+.preview-content :deep(.blog-cta-card--light) {
+  background: #fff;
+}
+
+.preview-content :deep(.blog-cta-card__body) {
+  padding: 1.875rem 2rem;
+}
+
+.preview-content :deep(.blog-cta-card__eyebrow) {
+  margin: 0 0 0.625rem;
+  color: #16a34a;
+  font-size: 0.8125rem;
+  font-weight: 900;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.preview-content :deep(.blog-cta-card__title) {
+  margin: 0 0 0.625rem;
+  color: #0f2f6f;
+  font-size: 1.875rem;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.preview-content :deep(.blog-cta-card__text) {
+  max-width: 35rem;
+  margin: 0 0 1.25rem;
+  color: #334155;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+.preview-content :deep(.blog-cta-card__button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.125rem;
+  border-radius: 0.625rem;
+  background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.2;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgba(33, 85, 216, 0.24);
+}
+
+.preview-content :deep(.blog-cta-card__button:hover) {
+  background: linear-gradient(180deg, #2a64e6 0%, #1d4ed8 100%);
+  text-decoration: none;
+}
+
+.preview-content :deep(.blog-cta-card__media) {
+  display: block;
+  min-height: 100%;
+  background: #e2e8f0;
+}
+
+.preview-content :deep(.blog-cta-card__media img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 15.625rem;
+  margin: 0;
+  object-fit: cover;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.preview-content :deep(.blog-cta-card__media--empty) {
+  display: grid;
+  place-items: center;
+  min-height: 13.75rem;
+  padding: 1.5rem;
+  color: #64748b;
+  font-weight: 800;
+}
+
+.preview-content :deep(.blog-cta-card--green .blog-cta-card__eyebrow),
+.preview-content :deep(.blog-cta-card--green .blog-cta-card__title),
+.preview-content :deep(.blog-cta-card--green .blog-cta-card__text) {
+  color: #fff;
+}
+
+.preview-content :deep(.blog-cta-card--green .blog-cta-card__button) {
+  background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
+  color: #ffffff;
+}
+
 .preview-content :deep(pre) {
   background: #1e293b;
   color: #e2e8f0;
@@ -1905,11 +2169,17 @@ onMounted(async () => {
 
 @media (max-width: 768px) {
   .form-row-2 { grid-template-columns: 1fr; }
+  .form-row-3 { grid-template-columns: 1fr; }
   .form-row-4 { grid-template-columns: 1fr; }
+  .form-row-4 .span-2 { grid-column: auto; }
   .label-with-counter { flex-direction: column; align-items: flex-start; }
-  .filters { grid-template-columns: 1fr; }
+  .filters { padding: 0.875rem; }
+  .filters__head { align-items: flex-start; }
+  .filters__controls { grid-template-columns: 1fr; }
   .admin-table { font-size: 0.8rem; display: block; overflow-x: auto; }
   .inline-images-head { flex-direction: column; }
+  .content-field-head { flex-direction: column; align-items: flex-start; }
+  .content-tools { justify-content: flex-start; width: 100%; }
   .inline-image-card { grid-template-columns: 1fr; }
   .preview-article { margin: 0; padding: 1.5rem; border-radius: 0; }
   .preview-title { font-size: 2rem; }
@@ -1920,6 +2190,22 @@ onMounted(async () => {
     clear: both;
     max-width: 100%;
     margin: 1.5rem auto;
+  }
+  .preview-content :deep(.blog-cta-card),
+  .preview-content :deep(.blog-cta-card--split.blog-cta-card--has-image) {
+    grid-template-columns: 1fr;
+  }
+  .preview-content :deep(.blog-cta-card--image-left.blog-cta-card--has-image .blog-cta-card__media) {
+    order: 0;
+  }
+  .preview-content :deep(.blog-cta-card__body) {
+    padding: 1.5rem 1.25rem;
+  }
+  .preview-content :deep(.blog-cta-card__title) {
+    font-size: 1.5rem;
+  }
+  .preview-content :deep(.blog-cta-card__media img) {
+    min-height: 11.875rem;
   }
 }
 </style>

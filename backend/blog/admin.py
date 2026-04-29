@@ -3,13 +3,19 @@ Admin du blog OptiTAB — interface complète pour gérer les articles
 """
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import BlogCategory, BlogTag, BlogPost, BlogPostImage
+from .models import BlogCategory, BlogTag, BlogPost, BlogPostImage, BlogPostRelatedLink
 
 
 class BlogPostImageInline(admin.TabularInline):
     model = BlogPostImage
     extra = 0
     fields = ['image', 'position', 'align', 'width_percent', 'alt_text', 'caption', 'title_text', 'est_actif']
+
+
+class BlogPostRelatedLinkInline(admin.TabularInline):
+    model = BlogPostRelatedLink
+    extra = 0
+    fields = ['titre', 'url', 'description', 'ordre', 'est_actif']
 
 
 @admin.register(BlogCategory)
@@ -33,7 +39,7 @@ class BlogTagAdmin(admin.ModelAdmin):
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
-    inlines = [BlogPostImageInline]
+    inlines = [BlogPostImageInline, BlogPostRelatedLinkInline]
     list_display = [
         'titre', 'categorie', 'auteur', 'statut_display', 'date_publication',
         'ordre', 'reading_time_display', 'est_actif'

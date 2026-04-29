@@ -251,3 +251,26 @@ class BlogPostImage(BaseModel):
 
     def __str__(self):
         return f'{self.post.titre} - image {self.position}'
+
+
+class BlogPostRelatedLink(BaseModel):
+    """Lien recommande affiche en fin d'article."""
+
+    post = models.ForeignKey(
+        BlogPost,
+        on_delete=models.CASCADE,
+        related_name='liens_lies',
+        verbose_name="Article",
+    )
+    titre = models.CharField(max_length=220, verbose_name="Titre du lien")
+    url = models.CharField(max_length=500, verbose_name="URL")
+    description = models.CharField(max_length=260, blank=True, default="", verbose_name="Description")
+    ordre = models.PositiveIntegerField(default=0, verbose_name="Ordre")
+
+    class Meta:
+        verbose_name = "Lien recommande"
+        verbose_name_plural = "Liens recommandes"
+        ordering = ['ordre', 'id']
+
+    def __str__(self):
+        return self.titre

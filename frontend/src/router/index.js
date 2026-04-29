@@ -220,11 +220,11 @@ const routes = [
   },
   { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
   { path: '/contact', name: 'Contact', component: () => import('@/views/Contact.vue') },
-  // Blog visible en validation admin uniquement.
-  { path: '/blog', name: 'BlogList', component: () => import('@/views/BlogList.vue'), meta: { requiresAdmin: true } },
-  { path: '/blog/categorie/:slug', name: 'BlogCategory', component: () => import('@/views/BlogCategory.vue'), meta: { requiresAdmin: true } },
-  { path: '/blog/tag/:slug', name: 'BlogTag', component: () => import('@/views/BlogTag.vue'), meta: { requiresAdmin: true } },
-  { path: '/blog/:slug', name: 'BlogDetail', component: () => import('@/views/BlogDetail.vue'), meta: { requiresAdmin: true } },
+  // Blog public.
+  { path: '/blog', name: 'BlogList', component: () => import('@/views/BlogList.vue') },
+  { path: '/blog/categorie/:slug', name: 'BlogCategory', component: () => import('@/views/BlogCategory.vue') },
+  { path: '/blog/tag/:slug', name: 'BlogTag', component: () => import('@/views/BlogTag.vue') },
+  { path: '/blog/:slug', name: 'BlogDetail', component: () => import('@/views/BlogDetail.vue') },
   { path: '/cours-particuliers', name: 'CoursParticuliers', component: () => import('@/views/CoursParticuliers.vue') },
   { path: '/password-reset', name: 'PasswordReset', component: () => import('@/views/PasswordReset.vue') },
   { path: '/cgv', name: 'CGV', component: () => import('@/views/CGV.vue') },

@@ -20,6 +20,8 @@ urlpatterns = [
     path('admin/posts/<int:pk>/delete/', views.admin_post_delete, name='blog-admin-post-delete'),
     path('admin/posts/<int:pk>/images/', views.admin_post_images, name='blog-admin-post-images'),
     path('admin/posts/<int:pk>/images/<int:image_pk>/', views.admin_post_image_detail, name='blog-admin-post-image-detail'),
+    path('admin/posts/<int:pk>/related-links/', views.admin_post_related_links, name='blog-admin-post-related-links'),
+    path('admin/posts/<int:pk>/related-links/<int:link_pk>/', views.admin_post_related_link_detail, name='blog-admin-post-related-link-detail'),
 
     # Admin CRUD — catégories
     path('admin/categories/', views.admin_category_list, name='blog-admin-category-list'),

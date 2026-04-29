@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from django.db.models import Q, Prefetch
-from .models import BlogPost, BlogCategory, BlogTag, BlogNiveau, BlogContentType, BlogPostImage
+from .models import BlogPost, BlogCategory, BlogTag, BlogNiveau, BlogContentType, BlogPostImage, BlogPostRelatedLink
 from .serializers import (
     BlogPostListSerializer,
     BlogPostDetailSerializer,
@@ -17,6 +17,7 @@ from .serializers import (
     BlogContentTypeSerializer,
     BlogPostAdminSerializer,
     BlogPostImageAdminSerializer,
+    BlogPostRelatedLinkAdminSerializer,
     BlogCategoryAdminSerializer,
     BlogTagAdminSerializer,
     BlogNiveauAdminSerializer,
@@ -35,6 +36,8 @@ def _published_posts():
         statut='published', est_actif=True
     ).select_related('categorie', 'niveau', 'type_contenu', 'auteur').prefetch_related(
         'tags',
+        'articles_lies',
+        Prefetch('liens_lies', queryset=BlogPostRelatedLink.objects.filter(est_actif=True).order_by('ordre', 'id')),
         Prefetch('images', queryset=BlogPostImage.objects.filter(est_actif=True)),
     )
 
@@ -87,7 +90,7 @@ def blog_post_list(request):
 def blog_post_detail(request, slug):
     """Détail d'un article par slug"""
     try:
-        post = _published_posts().prefetch_related('articles_lies').get(slug=slug)
+        post = _published_posts().get(slug=slug)
     except BlogPost.DoesNotExist:
         return Response({'detail': 'Article non trouvé.'}, status=404)
 
@@ -192,9 +195,37 @@ def blog_sitemap(request):
 @permission_classes([IsAdminUser])
 def admin_post_list(request):
     """Liste admin de TOUS les articles (brouillons inclus)"""
-    qs = BlogPost.objects.select_related('categorie', 'niveau', 'type_contenu', 'auteur').prefetch_related('tags', 'images').order_by('-date_creation')
+    qs = BlogPost.objects.select_related(
+        'categorie', 'niveau', 'type_contenu', 'auteur'
+    ).prefetch_related(
+        'tags', 'images', 'articles_lies', 'liens_lies'
+    ).order_by('-date_creation')
     serializer = BlogPostAdminSerializer(qs, many=True, context={'request': request})
     return Response(serializer.data)
+
+
+def _request_list(request, key):
+    if hasattr(request.data, 'getlist'):
+        return [value for value in request.data.getlist(key) if str(value).strip()]
+
+    value = request.data.get(key, [])
+    if value in (None, ''):
+        return []
+    if isinstance(value, (list, tuple)):
+        return [item for item in value if str(item).strip()]
+    return [value]
+
+
+def _sync_post_relations_from_request(post, request):
+    if 'tags_ids_present' in request.data or 'tags_ids' in request.data:
+        post.tags.set(_request_list(request, 'tags_ids'))
+
+    if 'articles_lies_ids_present' in request.data or 'articles_lies_ids' in request.data:
+        related_ids = [
+            value for value in _request_list(request, 'articles_lies_ids')
+            if str(value) != str(post.pk)
+        ]
+        post.articles_lies.set(related_ids)
 
 
 @api_view(['POST'])
@@ -203,7 +234,8 @@ def admin_post_create(request):
     """Créer un article"""
     serializer = BlogPostAdminSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save(auteur=request.user)
+        post = serializer.save(auteur=request.user)
+        _sync_post_relations_from_request(post, request)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -218,7 +250,8 @@ def admin_post_update(request, pk):
         return Response({'detail': 'Article non trouvé.'}, status=status.HTTP_404_NOT_FOUND)
     serializer = BlogPostAdminSerializer(post, data=request.data, partial=True)
     if serializer.is_valid():
-        serializer.save()
+        post = serializer.save()
+        _sync_post_relations_from_request(post, request)
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -283,6 +316,46 @@ def admin_post_image_detail(request, pk, image_pk):
         partial=True,
         context={'request': request},
     )
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAdminUser])
+def admin_post_related_links(request, pk):
+    """Lister ou ajouter les liens recommandes d'un article"""
+    try:
+        post = BlogPost.objects.get(pk=pk)
+    except BlogPost.DoesNotExist:
+        return Response({'detail': 'Article non trouve.'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = BlogPostRelatedLinkAdminSerializer(post.liens_lies.all(), many=True)
+        return Response(serializer.data)
+
+    serializer = BlogPostRelatedLinkAdminSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save(post=post)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PATCH', 'DELETE'])
+@permission_classes([IsAdminUser])
+def admin_post_related_link_detail(request, pk, link_pk):
+    """Modifier ou supprimer un lien recommande"""
+    try:
+        link = BlogPostRelatedLink.objects.get(pk=link_pk, post_id=pk)
+    except BlogPostRelatedLink.DoesNotExist:
+        return Response({'detail': 'Lien non trouve.'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        link.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    serializer = BlogPostRelatedLinkAdminSerializer(link, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)

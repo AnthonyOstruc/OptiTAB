@@ -53,23 +53,192 @@ function renderBlogImageFigure(image, position, preview = false) {
 </figure>`
 }
 
-export function renderBlogImageMarkers(source, images = [], options = {}) {
-  const content = String(source ?? '')
-  if (!content) return content
-
+function buildImagePositionMap(images = []) {
   const byPosition = new Map()
-  ;(Array.isArray(images) ? images : []).forEach((image, index) => {
+  const sortedImages = Array.isArray(images)
+    ? [...images].sort((a, b) => {
+      const posA = clampNumber(a?.position, 1, 999, 999)
+      const posB = clampNumber(b?.position, 1, 999, 999)
+      return posA - posB
+    })
+    : []
+
+  sortedImages.forEach((image, index) => {
     const position = clampNumber(image?.position, 1, 999, index + 1)
     if (!byPosition.has(position)) {
       byPosition.set(position, image)
     }
   })
 
-  return content.replace(/^\s*\[IMAGE_(\d+)\]\s*$/gm, (_match, rawPosition) => {
+  return { byPosition, sortedImages }
+}
+
+function normalizeCtaKey(value) {
+  return String(value ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+}
+
+function parseCtaFields(rawBlock) {
+  const fields = {}
+  String(rawBlock ?? '')
+    .split(/\r?\n/)
+    .map(line => line.trim())
+    .filter(Boolean)
+    .forEach((line) => {
+      const separatorIndex = line.indexOf(':')
+      if (separatorIndex === -1) return
+      const key = normalizeCtaKey(line.slice(0, separatorIndex))
+      const value = line.slice(separatorIndex + 1).trim()
+      if (key) fields[key] = value
+    })
+  return fields
+}
+
+function ctaField(fields, keys, fallback = '') {
+  for (const key of keys) {
+    const value = fields[normalizeCtaKey(key)]
+    if (value) return value
+  }
+  return fallback
+}
+
+function normalizeCtaVariant(value) {
+  const normalized = normalizeCtaKey(value)
+  if (['solid', 'plein', 'bandeau', 'simple'].includes(normalized)) return 'solid'
+  if (['split', 'image', 'visuel'].includes(normalized)) return 'split'
+  return 'split'
+}
+
+function normalizeCtaTheme(value) {
+  const normalized = normalizeCtaKey(value)
+  if (['green', 'vert', 'lycee'].includes(normalized)) return 'green'
+  if (['light', 'clair'].includes(normalized)) return 'light'
+  if (['blue', 'bleu', 'optitab'].includes(normalized)) return 'optitab'
+  return 'optitab'
+}
+
+function normalizeCtaImagePosition(value) {
+  const normalized = normalizeCtaKey(value)
+  const compact = normalized.replace(/[\s_-]+/g, '')
+  if (['left', 'gauche', 'agauche'].includes(compact)) return 'left'
+  if (['bottom', 'bas', 'dessous', 'endessous', 'sous'].includes(compact)) return 'bottom'
+  return 'right'
+}
+
+function normalizeCtaHref(value) {
+  const href = String(value ?? '').trim()
+  if (!href) return '/cours-particuliers'
+  if (/^(https?:\/\/|mailto:|tel:|\/(?!\/)|#)/i.test(href)) return href
+  if (!href.includes(':') && /^[a-z0-9][a-z0-9/_?&=#.-]*$/i.test(href)) return `/${href}`
+  return '/cours-particuliers'
+}
+
+function isExternalHref(href) {
+  return /^https?:\/\//i.test(href || '')
+}
+
+function resolveCtaImage(rawValue, images = []) {
+  const value = String(rawValue ?? '').trim()
+  if (!value) return null
+
+  const markerMatch = value.match(/^\[?\s*IMAGE\s*_?\s*(\d+)\s*\]?$/i)
+  if (!markerMatch) {
+    return { src: value, alt: '' }
+  }
+
+  const position = Number.parseInt(markerMatch[1], 10)
+  const { byPosition } = buildImagePositionMap(images)
+  const image = byPosition.get(position)
+  const src = resolveImageUrl(image)
+  if (!src) return null
+
+  return {
+    src,
+    alt: image?.alt_text || image?.caption || image?.title_text || `Image ${position}`,
+    title: image?.title_text || '',
+  }
+}
+
+export function renderBlogCtaBlocks(source, images = [], options = {}) {
+  const content = String(source ?? '')
+  if (!content) return content
+
+  return content.replace(/\[\s*CTA\s*\]([\s\S]*?)\[\s*\/\s*CTA\s*\]/gi, (_match, rawBlock) => {
+    const fields = parseCtaFields(rawBlock)
+    const title = ctaField(fields, ['titre', 'title'])
+    const text = ctaField(fields, ['texte', 'description', 'sous-titre', 'subtitle'])
+    const eyebrow = ctaField(fields, ['surtitre', 'eyebrow'])
+    const button = ctaField(fields, ['bouton', 'button', 'cta'], 'En savoir plus')
+    const href = normalizeCtaHref(ctaField(fields, ['url', 'lien', 'link', 'href']))
+    const variant = normalizeCtaVariant(ctaField(fields, ['style', 'variant', 'type']))
+    const theme = normalizeCtaTheme(ctaField(fields, ['theme', 'couleur', 'color']))
+    const imageField = ctaField(fields, ['image', 'img', 'visuel'])
+    const imagePosition = normalizeCtaImagePosition(ctaField(fields, [
+      'image_position',
+      'position_image',
+      'position image',
+      'image-position',
+      'placement image',
+      'placement',
+    ]))
+    const image = resolveCtaImage(imageField, images)
+    const target = isExternalHref(href) ? ' target="_blank" rel="noopener noreferrer"' : ''
+    const hasImage = Boolean(image?.src)
+    const hasMedia = hasImage || (options.preview && imageField)
+
+    if (!title && !text && !button) return ''
+
+    const media = hasImage
+      ? `<a class="blog-cta-card__media" href="${escapeHtml(href)}"${target} aria-label="${escapeHtml(button)}">
+  <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || title)}"${image.title ? ` title="${escapeHtml(image.title)}"` : ''} loading="lazy" decoding="async" />
+</a>`
+      : (options.preview && imageField
+        ? '<div class="blog-cta-card__media blog-cta-card__media--empty">Image CTA non disponible</div>'
+        : '')
+
+    return `
+<section class="blog-cta-card blog-cta-card--${variant} blog-cta-card--${theme} blog-cta-card--image-${imagePosition}${hasMedia ? ' blog-cta-card--has-image' : ''}">
+  <div class="blog-cta-card__body">
+    ${eyebrow ? `<p class="blog-cta-card__eyebrow">${escapeHtml(eyebrow)}</p>` : ''}
+    ${title ? `<h3 class="blog-cta-card__title">${escapeHtml(title)}</h3>` : ''}
+    ${text ? `<p class="blog-cta-card__text">${escapeHtml(text)}</p>` : ''}
+    <a class="blog-cta-card__button" href="${escapeHtml(href)}"${target}>${escapeHtml(button)}</a>
+  </div>
+  ${media}
+</section>`
+  })
+}
+
+export function renderBlogImageMarkers(source, images = [], options = {}) {
+  const content = String(source ?? '')
+  if (!content) return content
+
+  const { byPosition, sortedImages } = buildImagePositionMap(images)
+
+  let replacedAnyMarker = false
+  const withMarkers = content.replace(/\[\s*IMAGE\s*_?\s*(\d+)\s*\]/gi, (_match, rawPosition) => {
+    replacedAnyMarker = true
     const position = Number.parseInt(rawPosition, 10)
     const image = byPosition.get(position)
     return `\n\n${renderBlogImageFigure(image, position, options.preview)}\n\n`
   })
+
+  if (replacedAnyMarker || options.skipGallery || sortedImages.length === 0) {
+    return withMarkers
+  }
+
+  const gallery = sortedImages
+    .map((image, index) => {
+      const position = clampNumber(image?.position, 1, 999, index + 1)
+      return renderBlogImageFigure(image, position, options.preview)
+    })
+    .filter(Boolean)
+    .join('\n\n')
+
+  return gallery ? `${withMarkers}\n\n${gallery}` : withMarkers
 }
 
 export function slugifyHeading(value) {
@@ -197,7 +366,9 @@ export function renderBlogMarkdown(source, options = {}) {
   const articleContent = stripTitleHeading
     ? removeDuplicateTitleHeading(source, title)
     : String(source ?? '')
-  const contentWithImages = renderBlogImageMarkers(articleContent, images, { preview })
+  const hasExplicitMediaBlock = /\[\s*IMAGE\s*_?\s*\d+\s*\]|\[\s*CTA\s*\]/i.test(articleContent)
+  const contentWithCtas = renderBlogCtaBlocks(articleContent, images, { preview })
+  const contentWithImages = renderBlogImageMarkers(contentWithCtas, images, { preview, skipGallery: hasExplicitMediaBlock })
   const contentWithKatex = renderLatexBeforeMarkdown(contentWithImages)
 
   return blogMarked.parse(contentWithKatex)

@@ -4,7 +4,15 @@ Serializers du blog OptiTAB
 from django.utils.text import slugify
 from rest_framework import serializers
 
-from .models import BlogCategory, BlogTag, BlogNiveau, BlogContentType, BlogPost, BlogPostImage
+from .models import (
+    BlogCategory,
+    BlogTag,
+    BlogNiveau,
+    BlogContentType,
+    BlogPost,
+    BlogPostImage,
+    BlogPostRelatedLink,
+)
 
 
 class BlogCategorySerializer(serializers.ModelSerializer):
@@ -70,6 +78,12 @@ class BlogPostImageSerializer(serializers.ModelSerializer):
         return None
 
 
+class BlogPostRelatedLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogPostRelatedLink
+        fields = ['id', 'titre', 'url', 'description', 'ordre']
+
+
 class BlogPostListSerializer(serializers.ModelSerializer):
     """Serializer leger pour la liste d'articles"""
 
@@ -109,17 +123,26 @@ class BlogPostListSerializer(serializers.ModelSerializer):
 class BlogPostDetailSerializer(BlogPostListSerializer):
     """Serializer complet pour le detail d'un article"""
 
-    articles_lies = BlogPostListSerializer(many=True, read_only=True)
+    articles_lies = serializers.SerializerMethodField()
+    liens_lies = serializers.SerializerMethodField()
     og_image_url = serializers.SerializerMethodField()
     images = BlogPostImageSerializer(many=True, read_only=True)
 
     class Meta(BlogPostListSerializer.Meta):
         fields = BlogPostListSerializer.Meta.fields + [
-            'contenu', 'images', 'articles_lies',
+            'contenu', 'images', 'articles_lies', 'liens_lies',
             'seo_title', 'meta_description', 'og_title', 'og_description',
             'og_image_url', 'meta_robots',
             'date_creation', 'date_modification',
         ]
+
+    def get_articles_lies(self, obj):
+        qs = obj.articles_lies.filter(statut='published', est_actif=True).order_by('-date_publication')
+        return BlogPostListSerializer(qs, many=True, context=self.context).data
+
+    def get_liens_lies(self, obj):
+        qs = obj.liens_lies.filter(est_actif=True).order_by('ordre', 'id')
+        return BlogPostRelatedLinkSerializer(qs, many=True).data
 
     def get_og_image_url(self, obj):
         if obj.og_image:
@@ -214,12 +237,13 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
     image_couverture_url = serializers.SerializerMethodField()
     og_image_url = serializers.SerializerMethodField()
     images = BlogPostImageSerializer(many=True, read_only=True)
+    related_links = BlogPostRelatedLinkSerializer(source='liens_lies', many=True, read_only=True)
 
     class Meta:
         model = BlogPost
         fields = [
             'id', 'titre', 'slug', 'extrait', 'contenu',
-            'images',
+            'images', 'related_links',
             'image_couverture', 'image_couverture_url',
             'og_image', 'og_image_url',
             'alt_text_image',
@@ -309,6 +333,18 @@ class BlogPostImageAdminSerializer(serializers.ModelSerializer):
             'est_actif': {'required': False},
         }
 
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        # In multipart forms, an omitted boolean can be interpreted like an
+        # unchecked checkbox. Inline blog images should stay visible unless the
+        # admin explicitly disables them.
+        if 'est_actif' not in getattr(self, 'initial_data', {}):
+            if self.instance is None:
+                attrs['est_actif'] = True
+            else:
+                attrs.pop('est_actif', None)
+        return attrs
+
     def validate_width_percent(self, value):
         value = int(value or 100)
         if value < 20 or value > 100:
@@ -328,3 +364,34 @@ class BlogPostImageAdminSerializer(serializers.ModelSerializer):
                 return request.build_absolute_uri(obj.image.url)
             return obj.image.url
         return None
+
+
+class BlogPostRelatedLinkAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogPostRelatedLink
+        fields = [
+            'id', 'post', 'titre', 'url', 'description', 'ordre',
+            'est_actif', 'date_creation', 'date_modification',
+        ]
+        read_only_fields = ['post', 'date_creation', 'date_modification']
+        extra_kwargs = {
+            'titre': {'required': True, 'allow_blank': False},
+            'url': {'required': True, 'allow_blank': False},
+            'description': {'required': False, 'allow_blank': True},
+            'ordre': {'required': False},
+            'est_actif': {'required': False},
+        }
+
+    def validate_url(self, value):
+        value = (value or '').strip()
+        if not value:
+            raise serializers.ValidationError('URL obligatoire.')
+        if value.startswith(('/', '#', 'http://', 'https://', 'mailto:', 'tel:')):
+            return value
+        raise serializers.ValidationError('Utilise une URL relative (/blog/...) ou une URL complete https://...')
+
+    def validate_ordre(self, value):
+        value = int(value or 0)
+        if value < 0:
+            raise serializers.ValidationError("L'ordre doit etre positif.")
+        return value

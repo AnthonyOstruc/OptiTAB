@@ -14,6 +14,7 @@ from ..serializers.user_profile import UserDetailSerializer, UserUpdateSerialize
 from rest_framework.decorators import api_view
 from ..serializers.geographic_data import UserPaysNiveauUpdateSerializer
 from pays.models import Pays, Niveau
+from django.conf import settings
 from django.db.models import F, Q, Count, IntegerField, Window
 from django.db.models.functions import Cast, TruncDate, Rank
 from users.models import CustomUser, ParentChild, UserNotification
@@ -60,8 +61,13 @@ class MeView(APIView):
                 data=serializer.data
             )
         except Exception as e:
+            logger.exception(
+                "Erreur lors de la recuperation du profil utilisateur %s",
+                getattr(request.user, 'id', 'unknown'),
+            )
             return ResponseService.error(
                 message="Erreur lors de la récupération du profil",
+                errors=str(e) if settings.DEBUG else None,
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 

@@ -38,13 +38,6 @@
 
         <header class="blog-article__header">
           <div class="blog-article__meta">
-            <RouterLink
-              v-if="post.categorie"
-              :to="`/blog/categorie/${post.categorie.slug}`"
-              class="blog-article__category"
-            >
-              {{ post.categorie.nom }}
-            </RouterLink>
             <time :datetime="post.date_publication" class="blog-article__date" itemprop="datePublished">
               {{ formatDate(post.date_publication) }}
             </time>
@@ -108,7 +101,7 @@
 
       <!-- Articles liés -->
       <section v-if="post && post.articles_lies && post.articles_lies.length" class="blog-related">
-        <h2 class="blog-related__title">Articles liés</h2>
+        <h2 class="blog-related__title">Articles similaires</h2>
         <div class="blog-related__grid">
           <article
             v-for="related in post.articles_lies"
@@ -124,10 +117,20 @@
                   class="blog-related-card__image"
                   loading="lazy"
                 />
+                <time
+                  v-if="related.date_publication"
+                  class="blog-related-card__date-badge"
+                  :datetime="related.date_publication"
+                  :title="formatDate(related.date_publication)"
+                >
+                  <span>{{ formatDateDay(related.date_publication) }}</span>
+                  <small>{{ formatDateMonth(related.date_publication) }}</small>
+                </time>
               </div>
               <div class="blog-related-card__body">
                 <h3 class="blog-related-card__title">{{ related.titre }}</h3>
                 <p class="blog-related-card__excerpt">{{ related.extrait }}</p>
+                <span class="blog-related-card__cta">Lire plus</span>
               </div>
             </RouterLink>
           </article>
@@ -181,11 +184,30 @@ const toc = computed(() => {
   return extractBlogToc(post.value.contenu)
 })
 
+function parseDate(dateStr) {
+  if (!dateStr) return null
+  const date = new Date(dateStr)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
 function formatDate(dateStr) {
-  if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('fr-FR', {
+  const date = parseDate(dateStr)
+  if (!date) return ''
+  return date.toLocaleDateString('fr-FR', {
     day: 'numeric', month: 'long', year: 'numeric'
   })
+}
+
+function formatDateDay(dateStr) {
+  const date = parseDate(dateStr)
+  if (!date) return ''
+  return date.toLocaleDateString('fr-FR', { day: '2-digit' })
+}
+
+function formatDateMonth(dateStr) {
+  const date = parseDate(dateStr)
+  if (!date) return ''
+  return date.toLocaleDateString('fr-FR', { month: 'short' }).replace('.', '')
 }
 
 function isModifiedAfterPublication(post) {
@@ -201,9 +223,9 @@ function applySeo() {
   const p = post.value
   const seoTitle = p.seo_title || p.titre
   const seoDescription = p.meta_description || p.extrait || ''
-  const ogTitle = p.og_title || seoTitle
-  const ogDescription = p.og_description || seoDescription
-  const ogImage = p.og_image_url || p.image_couverture_url || ''
+  const ogTitle = seoTitle
+  const ogDescription = seoDescription
+  const ogImage = p.image_couverture_url || p.og_image_url || ''
 
   // Robots: noindex pour brouillons ou si meta_robots = noindex
   const isDraft = p.statut !== 'published'
@@ -257,7 +279,6 @@ function applySeo() {
     if (ogImage) setMeta('og:image', ogImage)
     setMeta('article:published_time', p.date_publication)
     setMeta('article:modified_time', p.date_modification)
-    if (p.categorie) setMeta('article:section', p.categorie.nom)
     if (p.tags?.length) {
       p.tags.forEach(t => setMeta('article:tag', t.nom))
     }
@@ -357,23 +378,13 @@ watch(() => route.params.slug, fetchPost)
   font-size: 13px;
   color: #64748b;
 }
-.blog-article__category {
-  background: #eff6ff;
-  color: #1d4ed8;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 12px;
-  text-decoration: none;
-}
-.blog-article__category:hover { background: #e0e7ff; }
 .blog-article__title {
   margin: 0 0 12px;
   font-size: clamp(30px, 4vw, 42px);
-  font-weight: 900;
-  color: #0f172a;
-  line-height: 1.15;
-  letter-spacing: 0;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 .blog-article__excerpt {
   margin: 0 0 12px;
@@ -422,7 +433,7 @@ watch(() => route.params.slug, fetchPost)
   margin: 0 0 12px;
   font-size: 14px;
   font-weight: 800;
-  color: #0f172a;
+  color: #111827;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -455,20 +466,22 @@ watch(() => route.params.slug, fetchPost)
   word-break: break-word;
 }
 .blog-article__content :deep(h2) {
-  font-size: 26px;
-  font-weight: 800;
-  color: #0f172a;
-  margin: 44px 0 16px;
-  padding-top: 24px;
-  border-top: 1px solid #e2e8f0;
-  letter-spacing: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin: 44px 0 18px;
+  padding: 0 0 12px;
+  border-bottom: 3px solid #6366f1;
+  letter-spacing: -0.01em;
 }
 .blog-article__content :deep(h3) {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 700;
-  color: #0f172a;
+  color: #374151;
   margin: 32px 0 12px;
-  letter-spacing: 0;
+  padding-left: 16px;
+  border-left: 4px solid #6366f1;
+  letter-spacing: -0.005em;
 }
 .blog-article__content :deep(p) {
   margin: 0 0 20px;
@@ -480,7 +493,7 @@ watch(() => route.params.slug, fetchPost)
 }
 .blog-article__content :deep(strong) {
   font-weight: 700;
-  color: #0f172a;
+  color: #111827;
 }
 .blog-article__content :deep(ul),
 .blog-article__content :deep(ol) {
@@ -558,6 +571,139 @@ watch(() => route.params.slug, fetchPost)
   font-weight: 600;
   text-align: center;
 }
+
+.blog-article__content :deep(.blog-cta-card) {
+  clear: both;
+  display: grid;
+  gap: 0;
+  margin: 36px 0;
+  overflow: hidden;
+  border: 1px solid #dbe4ff;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
+}
+
+.blog-article__content :deep(.blog-cta-card--split.blog-cta-card--has-image) {
+  grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr);
+}
+
+.blog-article__content :deep(.blog-cta-card--image-left.blog-cta-card--has-image .blog-cta-card__media) {
+  order: -1;
+}
+
+.blog-article__content :deep(.blog-cta-card--image-bottom.blog-cta-card--has-image) {
+  grid-template-columns: 1fr;
+}
+
+.blog-article__content :deep(.blog-cta-card--image-bottom .blog-cta-card__media) {
+  order: 2;
+}
+
+.blog-article__content :deep(.blog-cta-card--solid) {
+  display: block;
+  background: linear-gradient(135deg, #4db6a6 0%, #99e5c7 100%);
+  border-color: #74d2bd;
+}
+
+.blog-article__content :deep(.blog-cta-card--light) {
+  background: #ffffff;
+}
+
+.blog-article__content :deep(.blog-cta-card--green) {
+  background: linear-gradient(135deg, #4db6a6 0%, #99e5c7 100%);
+  border-color: #74d2bd;
+}
+
+.blog-article__content :deep(.blog-cta-card__body) {
+  padding: 30px 32px;
+}
+
+.blog-article__content :deep(.blog-cta-card__eyebrow) {
+  margin: 0 0 10px;
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.blog-article__content :deep(.blog-cta-card__title) {
+  margin: 0 0 10px;
+  color: #0f2f6f;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.blog-article__content :deep(.blog-cta-card__text) {
+  max-width: 560px;
+  margin: 0 0 20px;
+  color: #334155;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.blog-article__content :deep(.blog-cta-card__button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgba(33, 85, 216, 0.24);
+}
+
+.blog-article__content :deep(.blog-cta-card__button:hover) {
+  background: linear-gradient(180deg, #2a64e6 0%, #1d4ed8 100%);
+  text-decoration: none;
+}
+
+.blog-article__content :deep(.blog-cta-card__media) {
+  display: block;
+  min-height: 100%;
+  background: #e2e8f0;
+}
+
+.blog-article__content :deep(.blog-cta-card__media img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+  margin: 0;
+  object-fit: cover;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.blog-article__content :deep(.blog-cta-card__media--empty) {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  padding: 24px;
+  color: #64748b;
+  font-weight: 800;
+}
+
+.blog-article__content :deep(.blog-cta-card--green .blog-cta-card__eyebrow),
+.blog-article__content :deep(.blog-cta-card--green .blog-cta-card__title),
+.blog-article__content :deep(.blog-cta-card--green .blog-cta-card__text) {
+  color: #ffffff;
+}
+
+.blog-article__content :deep(.blog-cta-card--green .blog-cta-card__button) {
+  background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
+  color: #ffffff;
+}
+
 .blog-article__content :deep(pre) {
   background: #1e293b;
   color: #e2e8f0;
@@ -650,31 +796,40 @@ watch(() => route.params.slug, fetchPost)
 .blog-related__title {
   margin: 0 0 24px;
   font-size: 22px;
-  font-weight: 800;
-  color: #0f172a;
+  font-weight: 700;
+  color: #111827;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #6366f1;
+  letter-spacing: -0.01em;
 }
 .blog-related__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 .blog-related-card {
-  border-radius: 14px;
+  border-radius: 8px;
   border: 1px solid #e2e8f0;
   overflow: hidden;
   background: #fff;
-  transition: box-shadow 0.2s;
+  box-shadow: 0 12px 34px rgba(16, 24, 40, 0.06);
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
 }
 .blog-related-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border-color: #bfd0ff;
+  box-shadow: 0 18px 42px rgba(16, 24, 40, 0.12);
+  transform: translateY(-3px);
 }
 .blog-related-card__link {
-  display: block;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
   color: inherit;
 }
 .blog-related-card__image-wrap {
-  height: 140px;
+  position: relative;
+  aspect-ratio: 16 / 10;
   background: #f1f5f9;
   overflow: hidden;
 }
@@ -683,14 +838,44 @@ watch(() => route.params.slug, fetchPost)
   height: 100%;
   object-fit: cover;
 }
+.blog-related-card__date-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 54px;
+  min-height: 58px;
+  display: grid;
+  place-items: center;
+  padding: 7px 5px;
+  border-radius: 4px;
+  background: #1f3c88;
+  color: #ffffff;
+  text-align: center;
+  box-shadow: 0 12px 26px rgba(16, 24, 40, 0.22);
+}
+.blog-related-card__date-badge span {
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 1;
+}
+.blog-related-card__date-badge small {
+  color: #eaf1ff;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
 .blog-related-card__body {
+  flex: 1;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
 }
 .blog-related-card__title {
   margin: 0 0 6px;
   font-size: 16px;
-  font-weight: 700;
-  color: #0f172a;
+  font-weight: 800;
+  color: #111827;
   line-height: 1.3;
 }
 .blog-related-card__excerpt {
@@ -702,6 +887,13 @@ watch(() => route.params.slug, fetchPost)
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.blog-related-card__cta {
+  margin-top: auto;
+  padding-top: 16px;
+  color: #315eea;
+  font-size: 13px;
+  font-weight: 900;
 }
 
 /* Responsive */
@@ -742,6 +934,22 @@ watch(() => route.params.slug, fetchPost)
     max-width: 100%;
     margin: 24px auto;
   }
+  .blog-article__content :deep(.blog-cta-card),
+  .blog-article__content :deep(.blog-cta-card--split.blog-cta-card--has-image) {
+    grid-template-columns: 1fr;
+  }
+  .blog-article__content :deep(.blog-cta-card--image-left.blog-cta-card--has-image .blog-cta-card__media) {
+    order: 0;
+  }
+  .blog-article__content :deep(.blog-cta-card__body) {
+    padding: 24px 20px;
+  }
+  .blog-article__content :deep(.blog-cta-card__title) {
+    font-size: 24px;
+  }
+  .blog-article__content :deep(.blog-cta-card__media img) {
+    min-height: 190px;
+  }
   .blog-related__grid {
     grid-template-columns: 1fr;
   }
@@ -768,8 +976,11 @@ watch(() => route.params.slug, fetchPost)
 .blog-internal-links__title {
   margin: 0 0 16px;
   font-size: 18px;
-  font-weight: 800;
-  color: #0f172a;
+  font-weight: 700;
+  color: #111827;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #6366f1;
+  letter-spacing: -0.01em;
 }
 .blog-internal-links__grid {
   display: grid;

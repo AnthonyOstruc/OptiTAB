@@ -110,13 +110,14 @@ export default {
 
     // Computed
     const navigationItems = menuItems.filter(item =>
-      ['cours-particuliers', 'ressources-gratuites', 'contact'].includes(item.key)
+      ['cours-particuliers', 'ressources-gratuites', 'blog', 'contact'].includes(item.key)
     )
     const isAuthenticated = computed(() => userStore.isAuthenticated)
 
     const HEADER_PUBLIC_NAV_NAME_BY_KEY = {
       calculator: 'calculator',
       about: 'about',
+      blog: 'blog',
       'cours-particuliers': 'tutoring',
       'ressources-gratuites': 'free_resources',
       contact: 'contact',

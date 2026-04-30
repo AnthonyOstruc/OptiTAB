@@ -1,19 +1,6 @@
 <template>
   <div>
-    <FormatHelp v-if="activeTab === 'posts'" :format-template="BLOG_FORMAT_TEMPLATE">
-      <template #notes>
-        <ul>
-          <li><strong>Titres :</strong> <code>#</code> pour le titre principal, <code>##</code> pour les parties, <code>###</code> pour les sous-parties.</li>
-          <li><strong>LaTeX :</strong> formule dans une phrase avec <code>$f'(x)=2x$</code>, formule centr&eacute;e avec <code>$$f'(x)=2x$$</code>.</li>
-          <li><strong>Images ajout&eacute;es dans l'admin :</strong> ajoute les fichiers dans "Images dans l'article", puis place <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code> dans le contenu.</li>
-          <li><strong>Banni&egrave;re image + bouton :</strong> utilise <code>[CTA]...[/CTA]</code>. L'image se place avec <code>image_position: droite</code>, <code>gauche</code> ou <code>bas</code>.</li>
-          <li><strong>Image externe :</strong> possible avec <code>![Texte alternatif](https://.../image.png)</code>, mais pr&eacute;f&egrave;re les images upload&eacute;es.</li>
-          <li><strong>Liens :</strong> lien interne <code>[Voir les exercices](/ressources-gratuites/exercices)</code>, lien externe <code>[Site officiel](https://...)</code>.</li>
-          <li><strong>Articles similaires :</strong> utilise le bloc "Articles similaires" sous les tags. Les liens texte se mettent directement dans le contenu.</li>
-          <li><strong>Validation :</strong> clique toujours sur <strong>Pr&eacute;visualiser</strong> avant de publier.</li>
-        </ul>
-      </template>
-    </FormatHelp>
+    <FormatHelp v-if="activeTab === 'posts'" :format-template="BLOG_FORMAT_TEMPLATE" :show-notes="false" />
     
     <h2 class="admin-title">Gestion du Blog</h2>
 
@@ -40,29 +27,7 @@
       <form class="admin-form" @submit.prevent="handleSavePost">
         <h3 class="form-section-title">{{ postForm.id ? 'Modifier article' : 'Nouvel article' }}</h3>
 
-        <div class="form-group">
-          <label>Titre de l'article <span class="required">*</span></label>
-          <input v-model="postForm.titre" placeholder="Ex: 5 astuces pour r&eacute;ussir sa pr&eacute;pa MPSI" required />
-        </div>
-
-        <div class="form-group">
-          <label>Slug</label>
-          <input v-model="postForm.slug" placeholder="Auto-g&eacute;n&eacute;r&eacute; depuis le titre si vide" />
-          <small class="field-hint">URL de l'article. Laisser vide = auto.</small>
-        </div>
-
-        <div class="form-group">
-          <label class="label-with-counter">
-            <span>Extrait</span>
-            <span :class="counterClass(postForm.extrait.length, 120, 220, 400)">
-              {{ postForm.extrait.length }}/400 (id&eacute;al 120-220)
-            </span>
-          </label>
-          <input v-model="postForm.extrait" placeholder="R&eacute;sum&eacute; court affich&eacute; dans la liste du blog" maxlength="400" />
-          <small class="field-hint">Max 400 car. Affich&eacute; dans les cartes du blog.</small>
-        </div>
-
-        <div class="form-row-3">
+        <div class="post-meta-row">
           <div class="form-group">
             <label>Type de contenu</label>
             <select v-model="postForm.type_contenu">
@@ -84,22 +49,21 @@
               <option value="draft">Brouillon</option>
             </select>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label>Tags</label>
-          <div class="tags-select-row">
-            <select v-model="selectedTagId">
-              <option value="">Ajouter un tag...</option>
-              <option v-for="t in availableTags" :key="t.id" :value="t.id">{{ t.nom }}</option>
-            </select>
-            <button class="btn-tag-add" type="button" @click="addTag" :disabled="!selectedTagId">+</button>
-          </div>
-          <div class="chips" v-if="postForm.tags_ids.length">
-            <span class="chip" v-for="tid in postForm.tags_ids" :key="tid">
-              {{ tagNameById(tid) }}
-              <button class="chip-remove" type="button" @click="removeTag(tid)">x</button>
-            </span>
+          <div class="form-group">
+            <label>Tags</label>
+            <div class="tags-select-row">
+              <select v-model="selectedTagId">
+                <option value="">Ajouter un tag...</option>
+                <option v-for="t in availableTags" :key="t.id" :value="t.id">{{ t.nom }}</option>
+              </select>
+              <button class="btn-tag-add" type="button" @click="addTag" :disabled="!selectedTagId">+</button>
+            </div>
+            <div class="chips" v-if="postForm.tags_ids.length">
+              <span class="chip" v-for="tid in postForm.tags_ids" :key="tid">
+                {{ tagNameById(tid) }}
+                <button class="chip-remove" type="button" @click="removeTag(tid)">x</button>
+              </span>
+            </div>
           </div>
         </div>
 
@@ -128,23 +92,25 @@
             <label>Contenu <span class="required">*</span></label>
             <div class="content-tools">
               <label class="cta-position-control">
-                <span>Image CTA</span>
+                <span>CTA perso</span>
                 <select v-model="ctaImagePosition">
                   <option value="droite">Droite</option>
                   <option value="gauche">Gauche</option>
                   <option value="bas">Sous le texte</option>
                 </select>
               </label>
-              <button type="button" class="btn-marker" @click="insertCtaBlock">Ins&eacute;rer une banni&egrave;re CTA</button>
+              <button type="button" class="btn-marker" @click="insertDefaultCtaPreset('cours')">CTA cours</button>
+              <button type="button" class="btn-marker" @click="insertDefaultCtaPreset('abonnement')">CTA abonnement</button>
+              <button type="button" class="btn-marker" @click="insertCtaBlock">CTA personnalis&eacute;</button>
             </div>
           </div>
           <textarea
             ref="contentTextarea"
             v-model="postForm.contenu"
-            placeholder="R&eacute;digez en Markdown ($formules$ LaTeX support&eacute;es)"
+            :placeholder="SMART_CONTENT_PLACEHOLDER"
             rows="14"
           ></textarea>
-          <small class="field-hint">Supporte Markdown, LaTeX ($formule$), HTML et blocs CTA <code>[CTA]...[/CTA]</code>.</small>
+          <small class="field-hint">Tu peux coller ici Titre de l'article, Slug, Extrait, Titre SEO, Meta description puis Contenu. Les 2 CTA par d&eacute;faut s'ajoutent automatiquement en fin d'article.</small>
         </div>
 
         <div class="form-group inline-images-panel">
@@ -152,7 +118,7 @@
             <div>
               <label>Images dans l'article</label>
               <small class="field-hint">
-                Ajoutez les images puis placez-les avec <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code>, etc.
+                La premi&egrave;re image ajout&eacute;e devient la couverture. Les suivantes se placent avec <code>[IMAGE_1]</code>, <code>[IMAGE_2]</code>, etc. Le bloc complet permet de r&eacute;gler alt, description, l&eacute;gende, alignement et largeur dans le contenu.
               </small>
             </div>
             <label class="btn-upload-inline">
@@ -167,11 +133,31 @@
             </label>
           </div>
 
-          <div v-if="!postForm.images.length" class="inline-images-empty">
-            Aucune image de contenu. Les images ajout&eacute;es ici peuvent &ecirc;tre align&eacute;es &agrave; gauche, au centre, &agrave; droite ou en pleine largeur.
+          <div v-if="!hasBlogImages" class="inline-images-empty">
+            Aucune image. Ajoutez une ou plusieurs images : la premi&egrave;re sera utilis&eacute;e en couverture, les suivantes pourront &ecirc;tre ins&eacute;r&eacute;es dans le contenu.
           </div>
 
           <div v-else class="inline-images-list">
+            <article v-if="hasCoverImage" class="inline-image-card inline-image-card--cover">
+              <div class="inline-image-preview">
+                <img :src="postForm._coverPreview" :alt="postForm.alt_text_image || postForm.titre || 'Image de couverture'" />
+              </div>
+              <div class="inline-image-fields">
+                <div class="inline-image-card__top">
+                  <code>[IMAGE_0]</code>
+                  <span class="cover-image-badge">Couverture</span>
+                  <span class="inline-image-help">Premi&egrave;re image de l'article, configur&eacute;e dans le contenu avec <code>[IMAGE_0]</code>.</span>
+                  <button type="button" class="btn-marker" @click="insertCoverImageOptions">Ins&eacute;rer les options SEO</button>
+                  <button type="button" class="btn-remove-image" @click="removeCoverImage">Supprimer</button>
+                </div>
+                <div class="form-group compact">
+                  <label>Alt SEO/accessibilit&eacute;</label>
+                  <input v-model="postForm.alt_text_image" maxlength="250" placeholder="Description textuelle de l'image de couverture" />
+                  <small class="field-hint">Utilis&eacute; pour la couverture, l'accessibilit&eacute; et le SEO.</small>
+                </div>
+              </div>
+            </article>
+
             <article v-for="(image, index) in postForm.images" :key="image._key" class="inline-image-card">
               <div class="inline-image-preview">
                 <img v-if="image._preview" :src="image._preview" :alt="image.alt_text || `Image ${image.position}`" />
@@ -186,7 +172,7 @@
                 <div class="form-row-4">
                   <div class="form-group compact">
                     <label>Position</label>
-                    <input v-model.number="image.position" type="number" min="1" step="1" @change="normalizeInlineImage(image)" />
+                    <input v-model.number="image.position" type="number" min="1" step="1" @change="handleInlineImagePositionChange(image)" />
                   </div>
                   <div class="form-group compact">
                     <label>Alignement</label>
@@ -221,49 +207,6 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label>Image de couverture</label>
-          <div class="image-upload-zone">
-            <input type="file" accept="image/*" @change="onCoverImageChange" />
-            <img v-if="postForm._coverPreview" :src="postForm._coverPreview" class="image-preview-lg" />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Alt text image</label>
-          <input v-model="postForm.alt_text_image" placeholder="Description textuelle de l'image (accessibilit&eacute; + SEO)" maxlength="250" />
-          <small class="field-hint">Max 250 car.</small>
-        </div>
-
-        <details class="seo-accordion">
-          <summary>
-            <span class="seo-icon">SEO</span> Options SEO (optionnel)
-            <span class="seo-arrow">></span>
-          </summary>
-          <div class="seo-content">
-            <div class="form-row-2">
-              <div class="form-group">
-                <label class="label-with-counter">
-                  <span>Titre SEO</span>
-                  <span :class="counterClass(postForm.seo_title.length, 50, 65, 70)">
-                    {{ postForm.seo_title.length }}/70 (id&eacute;al 50-65)
-                  </span>
-                </label>
-                <input v-model="postForm.seo_title" placeholder="Titre dans l'onglet Google" maxlength="70" />
-              </div>
-              <div class="form-group">
-                <label class="label-with-counter">
-                  <span>Meta description</span>
-                  <span :class="counterClass(postForm.meta_description.length, 140, 160, 160)">
-                    {{ postForm.meta_description.length }}/160 (id&eacute;al 140-160)
-                  </span>
-                </label>
-                <input v-model="postForm.meta_description" placeholder="Description sous le lien Google" maxlength="160" />
-              </div>
-            </div>
-          </div>
-        </details>
-
         <div class="form-actions">
           <button class="btn-primary" type="submit">{{ postForm.id ? 'Mettre \u00e0 jour' : 'Cr\u00e9er' }}</button>
           <button class="btn-secondary" type="button" @click="handlePreview" :disabled="!postForm.contenu.trim()">Pr&eacute;visualiser</button>
@@ -276,25 +219,61 @@
           <h3>Aper&ccedil;u de l'article {{ postForm.id ? '(Mode \u00e9dition)' : '(Mode cr\u00e9ation)' }}</h3>
           <button class="btn-close-preview" @click="showPreview = false">Fermer</button>
         </div>
-        <div class="preview-article">
-          <div class="preview-meta">
-            <span :class="['status-badge', postForm.statut]">{{ postForm.statut === 'published' ? 'Publi\u00e9' : 'Brouillon' }}</span>
-            <span v-if="previewNiveau" class="preview-taxonomy">{{ previewNiveau }}</span>
-            <span v-if="previewTypeContenu" class="preview-taxonomy">{{ previewTypeContenu }}</span>
-            <span v-if="postForm.tags_ids.length" class="preview-tags">
-              <span class="chip" v-for="tid in postForm.tags_ids" :key="tid">{{ tagNameById(tid) }}</span>
-            </span>
-          </div>
-          <h1 class="preview-title">{{ postForm.titre || 'Sans titre' }}</h1>
-          <p v-if="postForm.extrait" class="preview-excerpt">{{ postForm.extrait }}</p>
-          <div v-if="postForm._coverPreview" class="preview-cover">
+        <article class="blog-article">
+          <header class="blog-article__header">
+            <h1 class="blog-article__title">{{ postForm.titre || 'Sans titre' }}</h1>
+            <p v-if="postForm.extrait" class="blog-article__excerpt">{{ postForm.extrait }}</p>
+          </header>
+
+          <div v-if="postForm._coverPreview" class="blog-article__cover">
             <img
               :src="postForm._coverPreview"
               :alt="postForm.alt_text_image || postForm.titre || 'Image de couverture'"
+              class="blog-article__cover-img"
             />
           </div>
-          <div class="preview-content" v-html="previewHtml"></div>
-        </div>
+
+          <div class="blog-article__layout">
+            <aside v-if="previewToc.length > 1" class="blog-toc" aria-label="Sommaire">
+              <button
+                type="button"
+                class="blog-toc__toggle"
+                :aria-expanded="isPreviewTocExpanded"
+                aria-controls="admin-blog-preview-toc"
+                @click="isPreviewTocExpanded = !isPreviewTocExpanded"
+              >
+                <span class="blog-toc__title">Sommaire</span>
+                <span class="blog-toc__state">{{ isPreviewTocExpanded ? 'Masquer' : 'Afficher' }}</span>
+                <ChevronDownIcon
+                  class="blog-toc__chevron"
+                  :class="{ 'blog-toc__chevron--open': isPreviewTocExpanded }"
+                  aria-hidden="true"
+                />
+              </button>
+              <ul
+                v-show="isPreviewTocExpanded"
+                id="admin-blog-preview-toc"
+                class="blog-toc__list"
+              >
+                <li v-for="item in previewToc" :key="item.id" :class="`blog-toc__item--h${item.level}`">
+                  <a :href="`#${item.id}`" class="blog-toc__link">{{ item.text }}</a>
+                </li>
+              </ul>
+            </aside>
+
+            <div class="blog-article__content" v-html="previewHtml"></div>
+          </div>
+
+          <div v-if="postForm.tags_ids.length" class="blog-article__tags">
+            <span
+              v-for="tid in postForm.tags_ids"
+              :key="tid"
+              class="blog-article__tag"
+            >
+              #{{ tagNameById(tid) }}
+            </span>
+          </div>
+        </article>
       </div>
 
       <div class="filters" aria-label="Filtres des articles">
@@ -534,6 +513,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
+import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import {
   getAdminBlogPosts, createBlogPost, updateBlogPost, deleteBlogPost,
   createBlogPostImage, updateBlogPostImage, deleteBlogPostImage,
@@ -543,20 +523,33 @@ import {
 } from '@/api/blog'
 import { AdminActionsButtons } from '@/components/admin'
 import FormatHelp from '@/components/admin/FormatHelp.vue'
-import { renderBlogMarkdown } from '@/utils/blogRenderer'
+import { extractBlogToc, renderBlogMarkdown } from '@/utils/blogRenderer'
+import '@/assets/styles/blogArticle.css'
 import 'katex/dist/katex.min.css'
 
-const BLOG_FORMAT_TEMPLATE = `# Titre exact de l'article
+const BLOG_FORMAT_TEMPLATE = `Titre de l'article: Titre clair et precis de l'article
+Slug: titre-clair-et-precis-de-l-article
+Extrait: Resume court de 120 a 220 caracteres qui explique le benefice de l'article.
+Titre SEO: Titre Google clair avec le mot-cle principal, idealement 50 a 65 caracteres
+Meta description: Description Google de 140 a 160 caracteres qui donne envie de lire l'article.
+Contenu:
+[IMAGE_0]
+nom: Image de couverture de l'article
+alt seo: Description precise de l'image de couverture avec le mot-cle principal
+description seo: Image principale de l'article, utile pour comprendre le sujet traite
+[/IMAGE_0]
 
-Court paragraphe d'introduction : expliquer le sujet, le niveau concerne et ce que l'eleve va apprendre.
+# Titre clair et precis de l'article
 
-## 1. Definition ou idee principale
+Introduction courte : presenter le sujet, le niveau concerne et ce que l'eleve va apprendre.
 
-Texte simple en paragraphes courts. Mets les mots importants en **gras**.
+## 1. Idee principale
+
+Texte simple en paragraphes courts. Mettre les mots vraiment importants en **gras**.
 
 Exemple de formule LaTeX dans une phrase : $\\ln(ab)=\\ln(a)+\\ln(b)$.
 
-Formule centree :
+Formule centree sur une ligne separee :
 
 $$
 \\ln\\left(\\frac{a}{b}\\right)=\\ln(a)-\\ln(b)
@@ -564,56 +557,76 @@ $$
 
 ## 2. Methode a retenir
 
-- Premiere idee importante.
-- Deuxieme idee importante.
-- Erreur classique a eviter.
+- Etape 1 : expliquer l'action a faire.
+- Etape 2 : expliquer pourquoi elle fonctionne.
+- Erreur classique : dire clairement ce qu'il faut eviter.
 
 ### Exemple corrige
 
-Enonce de l'exemple.
+Enonce de l'exemple, puis correction detaillee.
 
 $$
 \\ln(e^3)=3
 $$
 
-Explication du calcul en 2 ou 3 phrases.
+Explication du calcul en 2 ou 3 phrases simples.
 
 [IMAGE_1]
+nom: Schema de la methode
+alt seo: Schema clair qui explique la methode pas a pas
+description seo: Image pedagogique pour comprendre la methode de l'article
+legende: Methode a retenir.
+alignement: centre
+largeur: 100
+[/IMAGE_1]
 
 ## 3. Application ou exercice type
 
-Texte de l'application.
+Texte de l'application ou exercice rapide a retenir.
 
 [IMAGE_2]
+nom: Exemple corrige
+alt seo: Exemple corrige detaille pour appliquer la methode
+description seo: Illustration de l'exemple corrige presente dans l'article
+legende: Exemple corrige.
+alignement: centre
+largeur: 100
+[/IMAGE_2]
 
-## Banniere CTA image + bouton
+## CTA par defaut
 
-Le bloc ci-dessous affiche une carte avec un bouton cliquable. L'image peut etre une image ajoutee dans l'admin avec [IMAGE_3], une image du dossier public comme /Banner-blog.png, ou une URL complete.
+Deux bannieres CTA sont ajoutees automatiquement en fin d'article :
+- CTA cours particuliers
+- CTA abonnement / plateforme
 
-[CTA]
-surtitre: Cours particuliers OptiTAB
-titre: Progresser en maths avec un professeur
-texte: Un accompagnement clair pour reprendre confiance et travailler les bonnes methodes.
-bouton: Decouvrir les cours particuliers
-url: /cours-particuliers
-image: [IMAGE_3]
-image_position: droite
-style: split
-theme: optitab
-[/CTA]
+Si tu veux choisir leur emplacement exact, place simplement :
+[CTA_1]
+[CTA_2]
 
-Positions possibles pour l'image : image_position: droite, gauche ou bas.
-Variante sans image possible : style: bandeau, theme: vert.
+Pour ne pas afficher les CTA par defaut sur un article precis :
+[CTA_AUCUN]
+
+Pour une banniere exceptionnelle, utilise le bouton "CTA personnalise" dans l'admin.
 
 ## Video explicative facultative
 
 <iframe width="100%" height="380" src="https://www.youtube.com/embed/VIDEO_ID" title="Video explicative" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-## Liens utiles dans le contenu
+## Liens dans l'article
 
-Lien interne : [Voir les exercices corriges](/ressources-gratuites/exercices)
+Format a utiliser : [texte visible du lien](URL)
 
-Lien externe : [Voir une ressource officielle](https://www.exemple.com)
+Lien vers un autre article du blog :
+[Lire aussi : comprendre les fonctions](/blog/comprendre-les-fonctions)
+
+Lien vers une page interne du site :
+[Voir les exercices corriges](/ressources-gratuites/exercices)
+
+Lien externe vers un autre site :
+[Consulter une ressource officielle](https://www.exemple.com)
+
+Les liens internes commencent par /blog/..., /ressources-gratuites/..., /cours-particuliers, etc.
+Les liens externes commencent par https:// et s'ouvrent automatiquement dans un nouvel onglet.
 
 Bouton HTML simple facultatif :
 
@@ -623,7 +636,41 @@ Bouton HTML simple facultatif :
 
 Resume les points cles en quelques lignes.
 
-Important : les liens texte se mettent directement dans le contenu. Les cartes d'articles similaires se reglent dans le bloc admin "Articles similaires".`
+## NOTES IMPORTANTES (a ne pas publier)
+
+- Cette partie est dans le bloc pour pouvoir tout copier d'un coup. Elle est retiree automatiquement lors de la creation si le titre reste exactement comme ici.
+- Les lignes du debut permettent de tout creer d'un coup : "Titre de l'article:", "Slug:", "Extrait:", "Titre SEO:", "Meta description:" et "Contenu:".
+- Le champ "Slug" doit etre en minuscules, sans accents, avec des tirets entre les mots.
+- Le champ "Extrait" doit rester court : idealement 120 a 220 caracteres, maximum 400.
+- Le champ "Titre SEO" est le titre dans Google : idealement 50 a 65 caracteres, maximum 70.
+- Le champ "Meta description" est la description sous le lien Google : idealement 140 a 160 caracteres.
+- Titres Markdown : # pour le titre principal, ## pour les grandes parties, ### pour les sous-parties.
+- LaTeX : utiliser $f'(x)=2x$ dans une phrase et $$f'(x)=2x$$ pour une formule centree.
+- Images ajoutees dans l'admin : la premiere image ajoutee dans "Images dans l'article" devient la couverture. Les images suivantes se placent avec [IMAGE_1], [IMAGE_2], etc. dans le contenu.
+- Couverture : utiliser [IMAGE_0] ... [/IMAGE_0] dans le contenu pour renseigner nom, alt seo et description seo. Ce bloc ne s'affiche pas dans l'article, il sert a la couverture.
+- Options image dans le contenu : utiliser un bloc [IMAGE_1] ... [/IMAGE_1] avec nom, alt seo, description seo, legende, alignement et largeur. Le marqueur simple [IMAGE_1] fonctionne aussi.
+- Image externe possible : ![Texte alternatif](https://.../image.png), mais preferer les images uploadees dans l'admin.
+- CTA par defaut : les deux bannieres fixes sont ajoutees automatiquement. Utiliser [CTA_1] ou [CTA_2] seulement pour choisir l'emplacement. Utiliser [CTA_AUCUN] pour les masquer sur un article precis.
+- CTA personnalise : utiliser [CTA]...[/CTA] seulement pour une banniere exceptionnelle. Positions possibles : image_position: droite, gauche ou bas.
+- Liens : mettre les liens directement dans le contenu avec [texte visible](URL). Exemple article interne : [Lire aussi](/blog/slug-de-l-article). Exemple lien externe : [Ressource officielle](https://www.exemple.com).
+- Articles similaires : les cartes se reglent dans le bloc admin "Articles similaires", pas dans le texte.
+- Avant de publier : cliquer sur "Previsualiser" et verifier le rendu.`
+
+const SMART_CONTENT_PLACEHOLDER = `Titre de l'article: 5 astuces pour reussir sa prepa MPSI
+Slug: 5-astuces-reussir-prepa-mpsi
+Extrait: Resume court affiche dans la liste du blog.
+Titre SEO: 5 astuces pour reussir sa prepa MPSI
+Meta description: Decouvre 5 conseils simples pour mieux travailler en prepa MPSI et progresser en maths avec une methode claire.
+Contenu:
+[IMAGE_0]
+nom: Couverture article prepa MPSI
+alt seo: Eleve en prepa MPSI qui organise son travail en mathematiques
+description seo: Image de couverture pour un article sur les methodes de travail en prepa MPSI
+[/IMAGE_0]
+
+# 5 astuces pour reussir sa prepa MPSI
+
+Texte de l'article...`
 
 const activeTab = ref('posts')
 const posts = ref([])
@@ -674,7 +721,7 @@ const emptyPost = () => ({
   niveau: null, type_contenu: null, tags_ids: [], articles_lies_ids: [], statut: 'published',
   seo_title: '', meta_description: '',
   alt_text_image: '',
-  _coverFile: null, _coverPreview: '',
+  _coverFile: null, _coverPreview: '', _coverName: '', _coverRemoved: false,
   images: [],
 })
 
@@ -684,9 +731,13 @@ const selectedRelatedPostId = ref('')
 const ctaImagePosition = ref('droite')
 const showPreview = ref(false)
 const previewHtml = ref('')
+const previewToc = ref([])
+const isPreviewTocExpanded = ref(false)
 
 const previewNiveau = computed(() => niveauLabel(postForm.value.niveau))
 const previewTypeContenu = computed(() => typeContenuLabel(postForm.value.type_contenu))
+const hasCoverImage = computed(() => Boolean(postForm.value._coverPreview || postForm.value._coverFile))
+const hasBlogImages = computed(() => hasCoverImage.value || postForm.value.images.length > 0)
 
 const emptyNiveau = () => ({ id: null, nom: '', slug: '', ordre: 0, est_actif: true })
 const niveauForm = ref(emptyNiveau())
@@ -704,11 +755,320 @@ const availableRelatedPosts = computed(() => {
   })
 })
 
-function counterClass(length, minIdeal, maxIdeal, hardMax) {
-  if (hardMax && length > hardMax) return 'char-counter char-counter--danger'
-  if (length >= minIdeal && length <= maxIdeal) return 'char-counter char-counter--good'
-  if (length === 0) return 'char-counter'
-  return 'char-counter char-counter--warn'
+const ARTICLE_FIELD_ALIASES = {
+  titre: ['titre', 'titre article', 'titre de l article', 'title'],
+  slug: ['slug', 'url'],
+  extrait: ['extrait', 'resume', 'description', 'excerpt'],
+  seo_title: ['titre seo', 'titre google', 'titre meta', 'seo title', 'meta title', 'title seo'],
+  meta_description: ['meta description', 'description meta', 'description seo', 'seo description', 'meta desc'],
+  contenu: ['contenu', 'content', 'article', 'texte'],
+}
+
+function normalizeArticleLabel(label) {
+  return String(label || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/['\u2019]/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+}
+
+function articleFieldFromLabel(label) {
+  const normalized = normalizeArticleLabel(label)
+  return Object.entries(ARTICLE_FIELD_ALIASES).find(([, aliases]) => aliases.includes(normalized))?.[0] || ''
+}
+
+function compactInlineText(lines) {
+  return lines
+    .map(line => String(line || '').trim())
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function stripInternalTemplateNotes(content) {
+  return String(content || '')
+    .replace(/\n?## NOTES IMPORTANTES \(a ne pas publier\)[\s\S]*$/i, '')
+    .trim()
+}
+
+function parseContentOptionFields(rawBlock) {
+  const fields = {}
+  String(rawBlock || '')
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean)
+    .forEach((line) => {
+      const separatorIndex = line.indexOf(':')
+      if (separatorIndex === -1) return
+      const key = normalizeArticleLabel(line.slice(0, separatorIndex))
+      const value = line.slice(separatorIndex + 1).trim()
+      if (key) fields[key] = value
+    })
+  return fields
+}
+
+function contentOptionValue(fields, aliases) {
+  for (const alias of aliases) {
+    const value = fields[normalizeArticleLabel(alias)]
+    if (value) return value
+  }
+  return ''
+}
+
+function parseImageWidthPercent(value) {
+  const match = String(value || '').match(/\d+/)
+  if (!match) return null
+  return Math.min(100, Math.max(20, Number.parseInt(match[0], 10) || 100))
+}
+
+function normalizeImageAlignFromContent(value) {
+  const compact = normalizeArticleLabel(value).replace(/\s+/g, '')
+  if (['left', 'gauche', 'agauche'].includes(compact)) return 'left'
+  if (['right', 'droite', 'adroite'].includes(compact)) return 'right'
+  if (['full', 'wide', 'pleinelargeur', 'largeurcomplete', '100'].includes(compact)) return 'full'
+  return 'center'
+}
+
+function imageOptionsFromContentBlock(rawBlock) {
+  const fields = parseContentOptionFields(rawBlock)
+  const title = contentOptionValue(fields, ['nom', 'nom image', 'nom de l image', 'titre', 'titre image', 'title'])
+  const alt = contentOptionValue(fields, ['alt', 'alt seo', 'texte alternatif', 'accessibilite'])
+  const description = contentOptionValue(fields, ['description', 'description seo', 'desc', 'seo description'])
+  const caption = contentOptionValue(fields, ['legende', 'caption'])
+  const align = contentOptionValue(fields, ['alignement', 'align', 'position', 'placement'])
+  const width = parseImageWidthPercent(contentOptionValue(fields, ['largeur', 'largeur %', 'width', 'width percent', 'width_percent']))
+
+  const options = {}
+  if (title || description) options.title_text = compactInlineText([title || description]).slice(0, 160)
+  if (alt || description) options.alt_text = compactInlineText([alt || description]).slice(0, 250)
+  if (caption) options.caption = compactInlineText([caption]).slice(0, 300)
+  if (align) options.align = normalizeImageAlignFromContent(align)
+  if (width) options.width_percent = width
+  return options
+}
+
+function extractInlineImageOptions(content) {
+  const byPosition = new Map()
+  String(content || '').replace(
+    /\n?\[\s*IMAGE\s*_?\s*(\d+)\s*\]([\s\S]*?)\[\s*\/\s*IMAGE(?:\s*_?\s*\1)?\s*\]\n?/gi,
+    (_match, rawPosition, rawBlock) => {
+      const position = Number.parseInt(rawPosition, 10)
+      if (!Number.isFinite(position) || position < 1) return _match
+      const options = imageOptionsFromContentBlock(rawBlock)
+      if (Object.keys(options).length) {
+        byPosition.set(position, { position, ...options })
+      }
+      return _match
+    }
+  )
+  return byPosition
+}
+
+function setImageOption(image, key, value) {
+  if (value === undefined || value === null || value === '') return false
+  if (image[key] === value) return false
+  image[key] = value
+  return true
+}
+
+function applyInlineImageOptionsToForm(inlineImageOptions) {
+  if (!inlineImageOptions?.size) return false
+
+  let applied = false
+  for (const [position, options] of inlineImageOptions.entries()) {
+    const image = postForm.value.images.find(item => Number(item.position) === Number(position))
+    if (!image) continue
+
+    applied = setImageOption(image, 'title_text', options.title_text) || applied
+    applied = setImageOption(image, 'alt_text', options.alt_text) || applied
+    applied = setImageOption(image, 'caption', options.caption) || applied
+    applied = setImageOption(image, 'align', options.align) || applied
+    applied = setImageOption(image, 'width_percent', options.width_percent) || applied
+    normalizeInlineImage(image)
+  }
+
+  return applied
+}
+
+function coverAltFromOptions({ alt, description, name }) {
+  const parts = []
+  if (alt) parts.push(alt)
+  if (description && normalizeArticleLabel(description) !== normalizeArticleLabel(alt)) {
+    parts.push(description)
+  }
+  if (!parts.length && name) parts.push(name)
+  return compactInlineText(parts).slice(0, 250)
+}
+
+function extractCoverImageOptions(content) {
+  let coverName = ''
+  let coverAlt = ''
+  let hasCoverOptions = false
+  const cleanedContent = String(content || '')
+    .replace(/\n?\[\s*IMAGE\s*_?\s*0\s*\]([\s\S]*?)\[\s*\/\s*IMAGE(?:\s*_?\s*0)?\s*\]\n?/gi, (_match, rawBlock) => {
+      hasCoverOptions = true
+      const fields = parseContentOptionFields(rawBlock)
+      coverName = contentOptionValue(fields, ['nom', 'nom image', 'nom de l image', 'titre', 'titre image', 'title'])
+      const alt = contentOptionValue(fields, ['alt', 'alt seo', 'texte alternatif', 'accessibilite', 'accessibilité'])
+      const description = contentOptionValue(fields, ['description', 'description seo', 'desc', 'seo description'])
+      coverAlt = coverAltFromOptions({ alt, description, name: coverName })
+      return '\n\n'
+    })
+    .replace(/^\s*\[\s*IMAGE\s*_?\s*0\s*\]\s*$/gmi, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+
+  return {
+    content: cleanedContent,
+    hasCoverOptions,
+    coverName,
+    coverAlt,
+  }
+}
+
+function parseArticleDraft(rawText) {
+  const text = String(rawText || '').replace(/\r\n/g, '\n').trim()
+  const values = {
+    titre: [],
+    slug: [],
+    extrait: [],
+    seo_title: [],
+    meta_description: [],
+    contenu: [],
+  }
+  const contentLines = []
+  let currentField = ''
+  let hasMetadata = false
+  const seenFields = new Set()
+
+  for (const line of text.split('\n')) {
+    if (currentField === 'contenu') {
+      values.contenu.push(line)
+      continue
+    }
+
+    const labelMatch = line.match(/^\s*([^:]{1,80})\s*:\s*(.*)$/)
+    const field = labelMatch ? articleFieldFromLabel(labelMatch[1]) : ''
+
+    if (field) {
+      currentField = field
+      hasMetadata = true
+      seenFields.add(field)
+      if (labelMatch[2]) values[field].push(labelMatch[2])
+      continue
+    }
+
+    if (currentField) {
+      if (line.trim()) values[currentField].push(line.trim())
+      else currentField = ''
+      continue
+    }
+
+    contentLines.push(line)
+  }
+
+  const rawContent = stripInternalTemplateNotes((values.contenu.length ? values.contenu : contentLines).join('\n'))
+  const coverOptions = extractCoverImageOptions(rawContent)
+  const contenu = coverOptions.content
+  const inlineImageOptions = extractInlineImageOptions(contenu)
+  const inferredTitle = contenu.match(/^\s*#\s+(.+?)\s*$/m)?.[1]?.replace(/\s+#*$/, '').trim() || ''
+
+  return {
+    hasMetadata,
+    seenFields,
+    titre: compactInlineText(values.titre) || inferredTitle,
+    slug: compactInlineText(values.slug),
+    extrait: compactInlineText(values.extrait).slice(0, 400),
+    seo_title: compactInlineText(values.seo_title).slice(0, 70),
+    meta_description: compactInlineText(values.meta_description).slice(0, 160),
+    hasCoverOptions: coverOptions.hasCoverOptions,
+    cover_image_name: coverOptions.coverName,
+    cover_alt_text: coverOptions.coverAlt,
+    hasInlineImageOptions: inlineImageOptions.size > 0,
+    inline_image_options: inlineImageOptions,
+    contenu,
+  }
+}
+
+function applyParsedArticleDraft(parsed) {
+  if (!parsed.hasMetadata && !parsed.contenu && !parsed.hasCoverOptions && !parsed.hasInlineImageOptions) return false
+
+  const seen = parsed.seenFields || new Set()
+  let applied = false
+  if (seen.has('titre') && parsed.titre) {
+    postForm.value.titre = parsed.titre
+    applied = true
+  }
+  if (seen.has('slug')) {
+    postForm.value.slug = parsed.slug
+    applied = true
+  }
+  if (seen.has('extrait')) {
+    postForm.value.extrait = parsed.extrait
+    applied = true
+  }
+  if (seen.has('seo_title')) {
+    postForm.value.seo_title = parsed.seo_title
+    applied = true
+  }
+  if (seen.has('meta_description')) {
+    postForm.value.meta_description = parsed.meta_description
+    applied = true
+  }
+  if (parsed.hasCoverOptions) {
+    postForm.value._coverName = parsed.cover_image_name
+    postForm.value.alt_text_image = parsed.cover_alt_text
+    applied = true
+  }
+
+  return applyInlineImageOptionsToForm(parsed.inline_image_options) || applied
+}
+
+function buildCoverEditorContent(post) {
+  if (!post.image_couverture_url && !post.alt_text_image) return ''
+  if (/\[\s*IMAGE\s*_?\s*0\s*\]/i.test(post.contenu || '')) return ''
+  return [
+    '[IMAGE_0]',
+    `nom: ${post.titre || 'Image de couverture'}`,
+    `alt seo: ${post.alt_text_image || ''}`,
+    `description seo: ${post.alt_text_image || ''}`,
+    '[/IMAGE_0]',
+  ].join('\n')
+}
+
+function buildPostEditorContent(post) {
+  const coverBlock = buildCoverEditorContent(post)
+  return [
+    `Titre de l'article: ${post.titre || ''}`,
+    `Slug: ${post.slug || ''}`,
+    `Extrait: ${post.extrait || ''}`,
+    `Titre SEO: ${post.seo_title || ''}`,
+    `Meta description: ${post.meta_description || ''}`,
+    'Contenu:',
+    coverBlock,
+    post.contenu || '',
+  ].filter(part => part !== '').join('\n')
+}
+
+function syncArticleFieldsFromContent() {
+  const parsed = parseArticleDraft(postForm.value.contenu)
+  const applied = applyParsedArticleDraft(parsed)
+  if (parsed.hasMetadata || parsed.hasCoverOptions) return applied
+
+  if (!postForm.value.titre.trim() && parsed.titre) {
+    postForm.value.titre = parsed.titre
+    return true
+  }
+
+  return applied
+}
+
+function getArticleBodyForRender() {
+  const parsed = parseArticleDraft(postForm.value.contenu)
+  return parsed.contenu
 }
 
 function formatDate(value) {
@@ -772,6 +1132,11 @@ function normalizeInlineImage(image) {
     : Math.min(100, Math.max(20, Number.parseInt(image.width_percent, 10) || 100))
 }
 
+function handleInlineImagePositionChange(image) {
+  normalizeInlineImage(image)
+  syncArticleFieldsFromContent()
+}
+
 function imageTitleFromFilename(filename = '') {
   return String(filename)
     .split(/[\\/]/)
@@ -798,6 +1163,17 @@ function buildInlineImageFromFile(file) {
     caption: '',
     title_text: defaultTitle,
     est_actif: true,
+  }
+}
+
+function setCoverImageFromFile(file) {
+  const coverName = imageTitleFromFilename(file.name)
+  postForm.value._coverFile = file
+  postForm.value._coverPreview = URL.createObjectURL(file)
+  postForm.value._coverName = coverName
+  postForm.value._coverRemoved = false
+  if (!postForm.value.alt_text_image.trim()) {
+    postForm.value.alt_text_image = coverName
   }
 }
 
@@ -832,9 +1208,22 @@ function onInlineImagesChange(event) {
       console.warn(`Image trop lourde: ${file.name}`)
       return
     }
+    if (!hasCoverImage.value) {
+      setCoverImageFromFile(file)
+      return
+    }
     postForm.value.images.push(buildInlineImageFromFile(file))
   })
   if (inlineImagesInput.value) inlineImagesInput.value.value = ''
+  syncArticleFieldsFromContent()
+}
+
+function removeCoverImage() {
+  postForm.value._coverRemoved = Boolean(postForm.value._coverPreview && !postForm.value._coverFile)
+  postForm.value._coverFile = null
+  postForm.value._coverPreview = ''
+  postForm.value._coverName = ''
+  postForm.value.alt_text_image = ''
 }
 
 function removeInlineImage(index) {
@@ -865,18 +1254,43 @@ function insertContentSnippet(snippet) {
   })
 }
 
-function insertImageMarker(image) {
+function imageAlignContentValue(value) {
+  if (value === 'left') return 'gauche'
+  if (value === 'right') return 'droite'
+  if (value === 'full') return 'pleine largeur'
+  return 'centre'
+}
+
+function imageContentBlock(image) {
   normalizeInlineImage(image)
-  insertContentSnippet(`\n\n[IMAGE_${image.position}]\n\n`)
+  const position = image.position
+  return `\n\n[IMAGE_${position}]\nnom: ${image.title_text || ''}\nalt seo: ${image.alt_text || ''}\ndescription seo: ${image.title_text || image.alt_text || ''}\nlegende: ${image.caption || ''}\nalignement: ${imageAlignContentValue(image.align)}\nlargeur: ${image.width_percent || 100}\n[/IMAGE_${position}]\n\n`
+}
+
+function coverImageContentBlock() {
+  const name = postForm.value._coverName || postForm.value.titre || 'Image de couverture'
+  const alt = postForm.value.alt_text_image || ''
+  return `\n\n[IMAGE_0]\nnom: ${name}\nalt seo: ${alt}\ndescription seo: ${alt}\n[/IMAGE_0]\n\n`
+}
+
+function insertCoverImageOptions() {
+  insertContentSnippet(coverImageContentBlock())
+}
+
+function insertImageMarker(image) {
+  insertContentSnippet(imageContentBlock(image))
+}
+
+function insertDefaultCtaPreset(type) {
+  const marker = type === 'abonnement' ? '[CTA_2]' : '[CTA_1]'
+  insertContentSnippet(`\n\n${marker}\n\n`)
 }
 
 function insertCtaBlock() {
-  const firstImage = postForm.value.images[0]
-  const imageMarker = firstImage ? `[IMAGE_${firstImage.position}]` : '[IMAGE_1]'
   const selectedPosition = ['droite', 'gauche', 'bas'].includes(ctaImagePosition.value)
     ? ctaImagePosition.value
     : 'droite'
-  const snippet = `\n\n[CTA]\nsurtitre: Cours particuliers OptiTAB\ntitre: Progresser en maths avec un professeur\ntexte: Un accompagnement clair pour reprendre confiance et travailler les bonnes methodes.\nbouton: Decouvrir les cours particuliers\nurl: /cours-particuliers\nimage: ${imageMarker}\nimage_position: ${selectedPosition}\nstyle: split\ntheme: optitab\n[/CTA]\n\n`
+  const snippet = `\n\n[CTA]\nsurtitre: Banniere personnalisee\ntitre: Titre de la banniere\ntexte: Texte court qui explique l'action proposee.\nbouton: Texte du bouton\nurl: /cours-particuliers\nimage: /cta-banner-cours-particuliers.png\nimage_alt: Description SEO de l'image de la banniere\nimage_position: ${selectedPosition}\nstyle: split\ntheme: optitab\n[/CTA]\n\n`
   insertContentSnippet(snippet)
 }
 
@@ -911,18 +1325,12 @@ async function syncInlineImages(postId) {
   }
 }
 
-function onCoverImageChange(e) {
-  const file = e.target.files?.[0]
-  if (!file) return
-  postForm.value._coverFile = file
-  postForm.value._coverPreview = URL.createObjectURL(file)
-}
-
 function refreshPreviewHtml() {
   try {
-    previewHtml.value = renderBlogMarkdown(postForm.value.contenu, {
+    const articleBody = getArticleBodyForRender()
+    previewToc.value = extractBlogToc(articleBody)
+    previewHtml.value = renderBlogMarkdown(articleBody, {
       title: postForm.value.titre,
-      stripTitleHeading: Boolean(postForm.value.titre.trim()),
       images: postForm.value.images,
       preview: true,
     })
@@ -932,12 +1340,24 @@ function refreshPreviewHtml() {
 }
 
 function handlePreview() {
+  syncArticleFieldsFromContent()
+  isPreviewTocExpanded.value = false
   refreshPreviewHtml()
   showPreview.value = true
 }
 
 watch(
-  () => [postForm.value.titre, postForm.value.contenu, postForm.value.images],
+  () => postForm.value.contenu,
+  () => {
+    syncArticleFieldsFromContent()
+    if (showPreview.value) {
+      refreshPreviewHtml()
+    }
+  }
+)
+
+watch(
+  () => [postForm.value.titre, postForm.value.images],
   () => {
     if (showPreview.value) refreshPreviewHtml()
   },
@@ -951,6 +1371,8 @@ function resetPostForm() {
   deletedInlineImageIds.value = []
   showPreview.value = false
   previewHtml.value = ''
+  previewToc.value = []
+  isPreviewTocExpanded.value = false
   if (inlineImagesInput.value) inlineImagesInput.value.value = ''
 }
 
@@ -960,7 +1382,7 @@ function editPost(post) {
     titre: post.titre || '',
     slug: post.slug || '',
     extrait: post.extrait || '',
-    contenu: post.contenu || '',
+    contenu: buildPostEditorContent(post),
     niveau: post.niveau ? Number(post.niveau) : null,
     type_contenu: post.type_contenu ? Number(post.type_contenu) : null,
     tags_ids: (post.tags_ids || []).map(Number),
@@ -971,8 +1393,11 @@ function editPost(post) {
     alt_text_image: post.alt_text_image || '',
     _coverFile: null,
     _coverPreview: post.image_couverture_url || '',
+    _coverName: post.titre || '',
+    _coverRemoved: false,
     images: (post.images || []).map(normalizeExistingInlineImage),
   }
+  syncArticleFieldsFromContent()
   deletedInlineImageIds.value = []
   selectedTagId.value = ''
   selectedRelatedPostId.value = ''
@@ -981,13 +1406,15 @@ function editPost(post) {
 }
 
 async function handleSavePost() {
-  if (!postForm.value.titre) return
+  syncArticleFieldsFromContent()
+  if (!postForm.value.titre.trim()) return
   try {
+    const articleBody = getArticleBodyForRender()
     const fd = new FormData()
     fd.append('titre', postForm.value.titre)
-    if (postForm.value.slug) fd.append('slug', postForm.value.slug)
+    fd.append('slug', postForm.value.slug || '')
     fd.append('extrait', postForm.value.extrait)
-    fd.append('contenu', postForm.value.contenu)
+    fd.append('contenu', articleBody)
     fd.append('categorie', '')
     fd.append('niveau', postForm.value.niveau || '')
     fd.append('type_contenu', postForm.value.type_contenu || '')
@@ -1005,6 +1432,7 @@ async function handleSavePost() {
     fd.append('articles_lies_ids_present', 'true')
     for (const pid of postForm.value.articles_lies_ids) fd.append('articles_lies_ids', pid)
     if (postForm.value._coverFile) fd.append('image_couverture', postForm.value._coverFile)
+    else if (postForm.value._coverRemoved) fd.append('clear_image_couverture', 'true')
 
     const response = postForm.value.id
       ? await updateBlogPost(postForm.value.id, fd)
@@ -1316,13 +1744,6 @@ onMounted(async () => {
   color: #9ca3af;
 }
 
-.label-with-counter {
-  display: flex !important;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
 .content-field-head {
   display: flex;
   align-items: center;
@@ -1361,22 +1782,9 @@ onMounted(async () => {
   font-size: 0.82rem;
 }
 
-.char-counter {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: #6b7280;
-  background: #f3f4f6;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  white-space: nowrap;
-}
-
-.char-counter--good { color: #065f46; background: #d1fae5; }
-.char-counter--warn { color: #92400e; background: #fef3c7; }
-.char-counter--danger { color: #991b1b; background: #fee2e2; }
-
 .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .form-row-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.post-meta-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
 
 .form-actions {
   display: flex;
@@ -1458,6 +1866,15 @@ onMounted(async () => {
 .btn-primary { background: #2563eb; color: #fff; }
 .btn-secondary { background: #e5e7eb; color: #111827; }
 .btn-danger { background: #ef4444; color: #fff; }
+
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-danger:disabled,
+.btn-marker:disabled,
+.btn-tag-add:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
 
 .filters {
   display: grid;
@@ -1620,7 +2037,7 @@ onMounted(async () => {
   margin-bottom: 0.25rem;
 }
 
-.btn-upload-inline {
+.inline-images-head .btn-upload-inline {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1661,6 +2078,11 @@ onMounted(async () => {
   border: 1px solid #e2e8f0;
   border-radius: 0.75rem;
   background: #fff;
+}
+
+.inline-image-card--cover {
+  border-color: #bfdbfe;
+  background: #f8fbff;
 }
 
 .inline-image-preview {
@@ -1706,6 +2128,26 @@ onMounted(async () => {
   border-radius: 0.375rem;
   padding: 0.25rem 0.45rem;
   font-weight: 700;
+}
+
+.cover-image-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.25rem 0.55rem;
+  border-radius: 0.375rem;
+  background: #10257f;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.inline-image-help {
+  color: #64748b;
+  font-size: 0.82rem;
+  font-weight: 600;
 }
 
 .btn-marker,
@@ -1754,6 +2196,10 @@ onMounted(async () => {
   border-radius: 0.875rem;
   margin-bottom: 1.5rem;
   overflow: hidden;
+}
+
+.preview-section .blog-article {
+  margin: 1.25rem auto;
 }
 
 .preview-header-bar {
@@ -2170,9 +2616,9 @@ onMounted(async () => {
 @media (max-width: 768px) {
   .form-row-2 { grid-template-columns: 1fr; }
   .form-row-3 { grid-template-columns: 1fr; }
+  .post-meta-row { grid-template-columns: 1fr; }
   .form-row-4 { grid-template-columns: 1fr; }
   .form-row-4 .span-2 { grid-column: auto; }
-  .label-with-counter { flex-direction: column; align-items: flex-start; }
   .filters { padding: 0.875rem; }
   .filters__head { align-items: flex-start; }
   .filters__controls { grid-template-columns: 1fr; }

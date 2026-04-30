@@ -16,7 +16,7 @@
       <div class="format-example">
         <pre><code>{{ formatTemplate }}</code></pre>
       </div>
-      <div class="format-notes">
+      <div v-if="showNotes" class="format-notes">
         <p><strong>Notes importantes :</strong></p>
         <slot name="notes">
           <ul>
@@ -43,6 +43,10 @@ const props = defineProps({
   initialShow: {
     type: Boolean,
     default: false
+  },
+  showNotes: {
+    type: Boolean,
+    default: true
   }
 })
 

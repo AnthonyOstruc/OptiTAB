@@ -1,7 +1,7 @@
 """
 Vues API du blog OptiTAB
 """
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
@@ -43,6 +43,7 @@ def _published_posts():
 
 
 @api_view(['GET'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def blog_post_list(request):
     """Liste des articles publiés avec filtres et recherche"""
@@ -86,6 +87,7 @@ def blog_post_list(request):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def blog_post_detail(request, slug):
     """Détail d'un article par slug"""
@@ -99,6 +101,7 @@ def blog_post_detail(request, slug):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def blog_category_list(request):
     """Liste des catégories actives"""
@@ -108,6 +111,7 @@ def blog_category_list(request):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def blog_tag_list(request):
     """Liste des tags actifs"""
@@ -117,6 +121,7 @@ def blog_tag_list(request):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def blog_niveau_list(request):
     """Liste des niveaux actifs"""
@@ -126,6 +131,7 @@ def blog_niveau_list(request):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def blog_content_type_list(request):
     """Liste des types de contenu actifs"""
@@ -135,6 +141,7 @@ def blog_content_type_list(request):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def blog_category_detail(request, slug):
     """Détail d'une catégorie par slug (pour SEO frontend)"""
@@ -147,6 +154,7 @@ def blog_category_detail(request, slug):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def blog_tag_detail(request, slug):
     """Détail d'un tag par slug (pour SEO frontend)"""
@@ -159,6 +167,7 @@ def blog_tag_detail(request, slug):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def blog_sitemap(request):
     """Données sitemap pour les articles publiés et indexables"""
@@ -228,6 +237,21 @@ def _sync_post_relations_from_request(post, request):
         post.articles_lies.set(related_ids)
 
 
+def _is_truthy_request_value(value):
+    return str(value).strip().lower() in {'1', 'true', 'yes', 'on'}
+
+
+def _clear_post_cover_if_requested(post, request):
+    if request.FILES.get('image_couverture'):
+        return
+    if not _is_truthy_request_value(request.data.get('clear_image_couverture')):
+        return
+    if post.image_couverture:
+        post.image_couverture.delete(save=False)
+    post.image_couverture = None
+    post.save(update_fields=['image_couverture', 'date_modification'])
+
+
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def admin_post_create(request):
@@ -251,6 +275,7 @@ def admin_post_update(request, pk):
     serializer = BlogPostAdminSerializer(post, data=request.data, partial=True)
     if serializer.is_valid():
         post = serializer.save()
+        _clear_post_cover_if_requested(post, request)
         _sync_post_relations_from_request(post, request)
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

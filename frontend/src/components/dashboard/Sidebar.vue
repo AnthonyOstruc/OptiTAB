@@ -233,6 +233,7 @@ const isActiveRoute = (menuKey) => {
     'quiz': ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
     'progress': '/progress',
     'calculator': '/calculator',
+    'blog': '/blog',
     'abonnement': ['/billing', '/subscription'],
     'cours-particuliers': '/cours-particuliers',
     'admin': '/admin' // Spécialement pour les routes admin
@@ -313,6 +314,8 @@ async function handleSidebarClick(item) {
     router.push('/dashboard')
   } else if (item.key === 'abonnement') {
     router.push('/billing')
+  } else if (item.key === 'blog') {
+    router.push('/blog')
   } else if (item.key === 'cours-particuliers') {
     router.push('/cours-particuliers')
   }

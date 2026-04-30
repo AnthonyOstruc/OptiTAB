@@ -580,6 +580,33 @@ function isCanceledError(error) {
   )
 }
 
+function requestPath(url) {
+  if (!url) return ''
+  try {
+    const base = typeof window !== 'undefined' ? window.location.origin : 'http://localhost'
+    return new URL(url, base).pathname
+  } catch (_) {
+    return String(url).split('?')[0]
+  }
+}
+
+function isPublicBlogRequest(config) {
+  const method = (config?.method || 'get').toLowerCase()
+  if (!['get', 'head', 'options'].includes(method)) return false
+  const path = requestPath(config?.url)
+  return /^\/api\/blog\/(posts|categories|tags|niveaux|types|sitemap)(\/|$)/.test(path)
+}
+
+function deleteRequestHeader(headers, name) {
+  if (!headers) return
+  if (typeof headers.delete === 'function') {
+    headers.delete(name)
+  } else {
+    delete headers[name]
+    delete headers[name.toLowerCase()]
+  }
+}
+
 function isRetriableNetworkError(error) {
   if (!error?.response) {
     return (
@@ -598,6 +625,8 @@ function isRetriableNetworkError(error) {
 apiClient.interceptors.request.use(
   (config) => {
     const token = tokenManager.getAccessToken()
+    const isFormDataRequest = typeof FormData !== 'undefined' && config.data instanceof FormData
+    const skipAuth = isPublicBlogRequest(config)
 
     const ttclid = getStoredTtclid()
     const ttp = getTtpCookie()
@@ -608,12 +637,20 @@ apiClient.interceptors.request.use(
       config.headers = {}
     }
 
+    if (isFormDataRequest) {
+      deleteRequestHeader(config.headers, 'Content-Type')
+    }
+
+    if (skipAuth) {
+      deleteRequestHeader(config.headers, 'Authorization')
+    }
+
     if (ttclid) config.headers['X-TTCLID'] = ttclid
     if (ttp) config.headers['X-TTP'] = ttp
     if (pageUrl) config.headers['X-Page-URL'] = pageUrl
     if (pageReferrer) config.headers['X-Page-Referrer'] = pageReferrer
     
-    if (token && !tokenManager.isTokenExpired(token)) {
+    if (!skipAuth && token && !tokenManager.isTokenExpired(token)) {
       config.headers.Authorization = `Bearer ${token}`
       ApiLogger.secureLog('info', 'Token ajouté à la requête', { 
         url: config.url,

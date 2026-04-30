@@ -35,26 +35,11 @@
       <!-- Article -->
       <article v-else class="blog-article" itemscope itemtype="https://schema.org/BlogPosting">
         <meta itemprop="mainEntityOfPage" :content="canonicalUrl" />
+        <meta v-if="post.date_publication" itemprop="datePublished" :content="post.date_publication" />
 
         <header class="blog-article__header">
-          <div class="blog-article__meta">
-            <time :datetime="post.date_publication" class="blog-article__date" itemprop="datePublished">
-              {{ formatDate(post.date_publication) }}
-            </time>
-            <time v-if="isModifiedAfterPublication(post)"
-              :datetime="post.date_modification"
-              class="blog-article__date blog-article__date--modified"
-              itemprop="dateModified"
-            >
-              Mis à jour le {{ formatDate(post.date_modification) }}
-            </time>
-            <span class="blog-article__reading">{{ post.reading_time }} min de lecture</span>
-          </div>
           <h1 class="blog-article__title" itemprop="headline">{{ post.titre }}</h1>
           <p v-if="post.extrait" class="blog-article__excerpt" itemprop="description">{{ post.extrait }}</p>
-          <div class="blog-article__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
-            <span itemprop="name">{{ post.auteur_nom }}</span>
-          </div>
         </header>
 
         <!-- Image de couverture -->
@@ -70,8 +55,26 @@
         <div class="blog-article__layout">
           <!-- Table of Contents -->
           <aside v-if="toc.length > 1" class="blog-toc" aria-label="Sommaire">
-            <p class="blog-toc__title">Sommaire</p>
-            <ul class="blog-toc__list">
+            <button
+              type="button"
+              class="blog-toc__toggle"
+              :aria-expanded="isTocExpanded"
+              aria-controls="blog-article-toc"
+              @click="isTocExpanded = !isTocExpanded"
+            >
+              <span class="blog-toc__title">Sommaire</span>
+              <span class="blog-toc__state">{{ isTocExpanded ? 'Masquer' : 'Afficher' }}</span>
+              <ChevronDownIcon
+                class="blog-toc__chevron"
+                :class="{ 'blog-toc__chevron--open': isTocExpanded }"
+                aria-hidden="true"
+              />
+            </button>
+            <ul
+              v-show="isTocExpanded"
+              id="blog-article-toc"
+              class="blog-toc__list"
+            >
               <li v-for="item in toc" :key="item.id" :class="`blog-toc__item--h${item.level}`">
                 <a :href="`#${item.id}`" class="blog-toc__link">{{ item.text }}</a>
               </li>
@@ -137,16 +140,6 @@
         </div>
       </section>
 
-      <!-- Liens internes vers les pages principales -->
-      <section v-if="post" class="blog-internal-links">
-        <h2 class="blog-internal-links__title">Aller plus loin</h2>
-        <div class="blog-internal-links__grid">
-          <RouterLink to="/ressources-gratuites/cours" class="blog-internal-link">Cours gratuits</RouterLink>
-          <RouterLink to="/ressources-gratuites/exercices" class="blog-internal-link">Exercices gratuits</RouterLink>
-          <RouterLink to="/cours-particuliers" class="blog-internal-link">Cours particuliers</RouterLink>
-          <RouterLink to="/abonnement" class="blog-internal-link">Nos abonnements</RouterLink>
-        </div>
-      </section>
     </main>
   </MainLayout>
 </template>
@@ -154,7 +147,9 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
+import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import 'katex/dist/katex.min.css'
+import '@/assets/styles/blogArticle.css'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import { getBlogPost } from '@/api/blog'
 import { setPageSeo, buildArticleJsonLd, buildBreadcrumbJsonLd } from '@/services/seo'
@@ -163,6 +158,7 @@ import { extractBlogToc, renderBlogMarkdown } from '@/utils/blogRenderer'
 const route = useRoute()
 const post = ref(null)
 const loading = ref(true)
+const isTocExpanded = ref(false)
 
 const canonicalUrl = computed(() => {
   const base = 'https://www.optitab.net'
@@ -369,22 +365,13 @@ watch(() => route.params.slug, fetchPost)
   padding-bottom: 28px;
   border-bottom: 1px solid #e2e8f0;
 }
-.blog-article__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  font-size: 13px;
-  color: #64748b;
-}
 .blog-article__title {
   margin: 0 0 12px;
-  font-size: clamp(30px, 4vw, 42px);
-  font-weight: 800;
-  color: #111827;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  font-size: clamp(28px, 3.4vw, 38px);
+  font-weight: 600;
+  color: #10257f;
+  line-height: 1.18;
+  letter-spacing: 0;
 }
 .blog-article__excerpt {
   margin: 0 0 12px;
@@ -393,12 +380,6 @@ watch(() => route.params.slug, fetchPost)
   color: #475569;
   line-height: 1.6;
 }
-.blog-article__author {
-  font-size: 14px;
-  color: #64748b;
-  font-weight: 600;
-}
-
 /* Cover */
 .blog-article__cover {
   margin-bottom: 32px;
@@ -426,21 +407,51 @@ watch(() => route.params.slug, fetchPost)
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
-  padding: 18px 20px;
+  padding: 0;
   margin-bottom: 32px;
+  overflow: hidden;
+}
+.blog-toc__toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
 }
 .blog-toc__title {
-  margin: 0 0 12px;
+  margin: 0;
   font-size: 14px;
   font-weight: 800;
   color: #111827;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  flex: 1;
+}
+.blog-toc__state {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+.blog-toc__chevron {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  color: #64748b;
+  transition: transform 0.2s ease;
+  transform-origin: center;
+}
+.blog-toc__chevron--open {
+  transform: rotate(180deg);
 }
 .blog-toc__list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 20px 16px;
 }
 .blog-toc__list li {
   margin-bottom: 6px;
@@ -899,14 +910,8 @@ watch(() => route.params.slug, fetchPost)
 /* Responsive */
 @media (min-width: 1100px) {
   .blog-article__layout {
-    grid-template-columns: 260px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     align-items: start;
-  }
-
-  .blog-toc {
-    position: sticky;
-    top: 88px;
-    margin-bottom: 0;
   }
 }
 
@@ -953,55 +958,5 @@ watch(() => route.params.slug, fetchPost)
   .blog-related__grid {
     grid-template-columns: 1fr;
   }
-  .blog-internal-links__grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-/* Date modified */
-.blog-article__date--modified {
-  font-style: italic;
-  color: #94a3b8;
-}
-
-/* Internal Links */
-.blog-internal-links {
-  max-width: 1080px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid #e2e8f0;
-}
-.blog-internal-links__title {
-  margin: 0 0 16px;
-  font-size: 18px;
-  font-weight: 700;
-  color: #111827;
-  padding-bottom: 10px;
-  border-bottom: 3px solid #6366f1;
-  letter-spacing: -0.01em;
-}
-.blog-internal-links__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
-}
-.blog-internal-link {
-  display: block;
-  padding: 12px 16px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  color: #3b82f6;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  text-align: center;
-  transition: background 0.2s, border-color 0.2s;
-}
-.blog-internal-link:hover {
-  background: #eef2ff;
-  border-color: #c7d2fe;
 }
 </style>

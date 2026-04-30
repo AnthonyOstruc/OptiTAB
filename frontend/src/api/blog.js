@@ -4,6 +4,11 @@
 import apiClient from './client'
 
 const BASE = '/api/blog'
+const BLOG_UPLOAD_TIMEOUT = 120000
+
+function formDataConfig(data) {
+  return data instanceof FormData ? { timeout: BLOG_UPLOAD_TIMEOUT } : {}
+}
 
 // ── Public ────────────────────────────────────────────────────────
 
@@ -50,13 +55,11 @@ export function getAdminBlogPosts() {
 }
 
 export function createBlogPost(data) {
-  const config = data instanceof FormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
-  return apiClient.post(`${BASE}/admin/posts/create/`, data, config)
+  return apiClient.post(`${BASE}/admin/posts/create/`, data, formDataConfig(data))
 }
 
 export function updateBlogPost(id, data) {
-  const config = data instanceof FormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
-  return apiClient.patch(`${BASE}/admin/posts/${id}/`, data, config)
+  return apiClient.patch(`${BASE}/admin/posts/${id}/`, data, formDataConfig(data))
 }
 
 export function deleteBlogPost(id) {
@@ -70,13 +73,11 @@ export function getBlogPostImages(postId) {
 }
 
 export function createBlogPostImage(postId, data) {
-  const config = data instanceof FormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
-  return apiClient.post(`${BASE}/admin/posts/${postId}/images/`, data, config)
+  return apiClient.post(`${BASE}/admin/posts/${postId}/images/`, data, formDataConfig(data))
 }
 
 export function updateBlogPostImage(postId, imageId, data) {
-  const config = data instanceof FormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
-  return apiClient.patch(`${BASE}/admin/posts/${postId}/images/${imageId}/`, data, config)
+  return apiClient.patch(`${BASE}/admin/posts/${postId}/images/${imageId}/`, data, formDataConfig(data))
 }
 
 export function deleteBlogPostImage(postId, imageId) {

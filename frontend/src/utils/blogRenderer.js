@@ -21,7 +21,12 @@ function clampNumber(value, min, max, fallback) {
 }
 
 function normalizeImageAlign(value) {
-  return ['left', 'right', 'center', 'full'].includes(value) ? value : 'center'
+  const normalized = normalizeCtaKey(value)
+  const compact = normalized.replace(/[\s_-]+/g, '')
+  if (['left', 'gauche', 'agauche'].includes(compact)) return 'left'
+  if (['right', 'droite', 'adroite'].includes(compact)) return 'right'
+  if (['full', 'wide', 'pleinelargeur', 'pleinelargeur', 'largeurcomplete', '100'].includes(compact)) return 'full'
+  return 'center'
 }
 
 function resolveImageUrl(image) {
@@ -105,6 +110,84 @@ function ctaField(fields, keys, fallback = '') {
   return fallback
 }
 
+const BLOG_CTA_PRESETS = {
+  cours: {
+    aliases: ['1', 'cours', 'cours particuliers', 'cours_particuliers', 'prof', 'professeur'],
+    fields: {
+      surtitre: 'Cours particuliers OptiTAB',
+      titre: 'Progresser en maths avec un professeur',
+      texte: 'Un accompagnement clair pour reprendre confiance, travailler les bonnes methodes et avancer plus vite.',
+      bouton: 'Decouvrir les cours particuliers',
+      url: '/cours-particuliers',
+      image: '/cta-banner-cours-particuliers.png',
+      image_alt: 'Cours particuliers de maths en ligne avec OptiTAB',
+      image_position: 'droite',
+      style: 'split',
+      theme: 'optitab',
+    },
+  },
+  abonnement: {
+    aliases: ['2', 'abonnement', 'plateforme', 'premium', 'optitab'],
+    fields: {
+      surtitre: 'Plateforme de maths OptiTAB',
+      titre: 'S entrainer avec des cours, fiches et exercices corriges',
+      texte: 'Accede aux ressources de maths pour reviser, comprendre les notions et progresser regulierement.',
+      bouton: 'Voir les abonnements',
+      url: '/abonnement',
+      image: '/cta-banner-plateforme.png',
+      image_alt: 'Plateforme de maths OptiTAB avec cours et exercices corriges',
+      image_position: 'gauche',
+      style: 'split',
+      theme: 'light',
+    },
+  },
+}
+
+const DEFAULT_BLOG_CTA_ORDER = ['cours', 'abonnement']
+const CTA_PRESET_ALIAS_MAP = new Map(
+  Object.entries(BLOG_CTA_PRESETS).flatMap(([key, preset]) => [
+    [normalizeCtaKey(key).replace(/[\s_-]+/g, ''), key],
+    ...preset.aliases.map(alias => [normalizeCtaKey(alias).replace(/[\s_-]+/g, ''), key]),
+  ])
+)
+
+function ctaPresetKey(value) {
+  const normalized = normalizeCtaKey(value).replace(/^(cta|cta defaut|cta default)\s*/i, '').replace(/[\s_-]+/g, '')
+  return CTA_PRESET_ALIAS_MAP.get(normalized) || ''
+}
+
+function ctaFieldsObject(fields = {}) {
+  return Object.fromEntries(
+    Object.entries(fields).map(([key, value]) => [normalizeCtaKey(key), value])
+  )
+}
+
+function parseImagePercent(value) {
+  const match = String(value ?? '').match(/\d+/)
+  if (!match) return ''
+  return clampNumber(match[0], 20, 100, 100)
+}
+
+function imageWithInlineOptions(image, position, rawBlock) {
+  const fields = parseCtaFields(rawBlock)
+  const title = ctaField(fields, ['nom', 'nom image', 'nom de l image', 'titre', 'titre image', 'title'])
+  const alt = ctaField(fields, ['alt', 'alt seo', 'texte alternatif', 'accessibilite', 'accessibilité'])
+  const description = ctaField(fields, ['description', 'description seo', 'desc', 'seo description'])
+  const caption = ctaField(fields, ['legende', 'légende', 'caption'])
+  const align = ctaField(fields, ['alignement', 'align', 'position', 'placement'])
+  const width = parseImagePercent(ctaField(fields, ['largeur', 'largeur %', 'width', 'width percent', 'width_percent']))
+
+  return {
+    ...(image || {}),
+    position,
+    title_text: description || title || image?.title_text || '',
+    alt_text: alt || description || image?.alt_text || '',
+    caption: caption || image?.caption || '',
+    align: align ? normalizeImageAlign(align) : image?.align,
+    width_percent: width || image?.width_percent,
+  }
+}
+
 function normalizeCtaVariant(value) {
   const normalized = normalizeCtaKey(value)
   if (['solid', 'plein', 'bandeau', 'simple'].includes(normalized)) return 'solid'
@@ -136,17 +219,25 @@ function normalizeCtaHref(value) {
   return '/cours-particuliers'
 }
 
+function normalizeMarkdownHref(value) {
+  const href = String(value ?? '').trim()
+  if (!href) return ''
+  if (/^(https?:\/\/|mailto:|tel:|\/(?!\/)|#)/i.test(href)) return href
+  if (!href.includes(':') && /^[a-z0-9][a-z0-9/_?&=#.-]*$/i.test(href)) return `/${href}`
+  return ''
+}
+
 function isExternalHref(href) {
   return /^https?:\/\//i.test(href || '')
 }
 
-function resolveCtaImage(rawValue, images = []) {
+function resolveCtaImage(rawValue, images = [], fallbackAlt = '') {
   const value = String(rawValue ?? '').trim()
   if (!value) return null
 
   const markerMatch = value.match(/^\[?\s*IMAGE\s*_?\s*(\d+)\s*\]?$/i)
   if (!markerMatch) {
-    return { src: value, alt: '' }
+    return { src: value, alt: fallbackAlt }
   }
 
   const position = Number.parseInt(markerMatch[1], 10)
@@ -163,11 +254,14 @@ function resolveCtaImage(rawValue, images = []) {
 }
 
 export function renderBlogCtaBlocks(source, images = [], options = {}) {
-  const content = String(source ?? '')
+  let content = String(source ?? '')
   if (!content) return content
 
-  return content.replace(/\[\s*CTA\s*\]([\s\S]*?)\[\s*\/\s*CTA\s*\]/gi, (_match, rawBlock) => {
-    const fields = parseCtaFields(rawBlock)
+  const usedPresets = new Set()
+  const disableDefaultCtas = /\[\s*(?:CTA_AUCUN|CTA_NONE|NO_CTA|SANS_CTA)\s*\]/i.test(content)
+  content = content.replace(/\[\s*(?:CTA_AUCUN|CTA_NONE|NO_CTA|SANS_CTA)\s*\]/gi, '')
+
+  function renderCtaFromFields(fields) {
     const title = ctaField(fields, ['titre', 'title'])
     const text = ctaField(fields, ['texte', 'description', 'sous-titre', 'subtitle'])
     const eyebrow = ctaField(fields, ['surtitre', 'eyebrow'])
@@ -184,7 +278,8 @@ export function renderBlogCtaBlocks(source, images = [], options = {}) {
       'placement image',
       'placement',
     ]))
-    const image = resolveCtaImage(imageField, images)
+    const imageAlt = ctaField(fields, ['image_alt', 'alt image', 'alt', 'alt seo'])
+    const image = resolveCtaImage(imageField, images, imageAlt)
     const target = isExternalHref(href) ? ' target="_blank" rel="noopener noreferrer"' : ''
     const hasImage = Boolean(image?.src)
     const hasMedia = hasImage || (options.preview && imageField)
@@ -209,17 +304,62 @@ export function renderBlogCtaBlocks(source, images = [], options = {}) {
   </div>
   ${media}
 </section>`
+  }
+
+  content = content.replace(/\[\s*CTA\s*[_:-]?\s*([A-Z0-9_\-\s]+?)\s*\]/gi, (match, rawPreset) => {
+    const key = ctaPresetKey(rawPreset)
+    if (!key) return match
+    usedPresets.add(key)
+    return `\n\n${renderCtaFromFields(ctaFieldsObject(BLOG_CTA_PRESETS[key].fields))}\n\n`
   })
+
+  content = content.replace(/\[\s*CTA_DEFAUTS?\s*\]|\[\s*CTA_DEFAULTS?\s*\]/gi, () => {
+    DEFAULT_BLOG_CTA_ORDER.forEach(key => usedPresets.add(key))
+    return DEFAULT_BLOG_CTA_ORDER
+      .map(key => renderCtaFromFields(ctaFieldsObject(BLOG_CTA_PRESETS[key].fields)))
+      .join('\n\n')
+  })
+
+  content = content.replace(/\[\s*CTA\s*\]([\s\S]*?)\[\s*\/\s*CTA\s*\]/gi, (_match, rawBlock) => {
+    const fields = parseCtaFields(rawBlock)
+    return renderCtaFromFields(fields)
+  })
+
+  if (!disableDefaultCtas && options.autoDefaultCtas !== false) {
+    const missingDefaults = DEFAULT_BLOG_CTA_ORDER.filter(key => !usedPresets.has(key))
+    if (missingDefaults.length) {
+      const defaultCtas = missingDefaults
+        .map(key => renderCtaFromFields(ctaFieldsObject(BLOG_CTA_PRESETS[key].fields)))
+        .join('\n\n')
+      content = `${content.trim()}\n\n${defaultCtas}`
+    }
+  }
+
+  return content
 }
 
 export function renderBlogImageMarkers(source, images = [], options = {}) {
   const content = String(source ?? '')
+    .replace(/\n?\[\s*IMAGE\s*_?\s*0\s*\][\s\S]*?\[\s*\/\s*IMAGE(?:\s*_?\s*0)?\s*\]\n?/gi, '\n\n')
+    .replace(/^\s*\[\s*IMAGE\s*_?\s*0\s*\]\s*$/gmi, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
   if (!content) return content
 
   const { byPosition, sortedImages } = buildImagePositionMap(images)
 
   let replacedAnyMarker = false
-  const withMarkers = content.replace(/\[\s*IMAGE\s*_?\s*(\d+)\s*\]/gi, (_match, rawPosition) => {
+  const withConfiguredMarkers = content.replace(
+    /\[\s*IMAGE\s*_?\s*(\d+)\s*\]([\s\S]*?)\[\s*\/\s*IMAGE(?:\s*_?\s*\1)?\s*\]/gi,
+    (_match, rawPosition, rawBlock) => {
+      replacedAnyMarker = true
+      const position = Number.parseInt(rawPosition, 10)
+      const image = imageWithInlineOptions(byPosition.get(position), position, rawBlock)
+      return `\n\n${renderBlogImageFigure(image, position, options.preview)}\n\n`
+    }
+  )
+
+  const withMarkers = withConfiguredMarkers.replace(/\[\s*IMAGE\s*_?\s*(\d+)\s*\]/gi, (_match, rawPosition) => {
     replacedAnyMarker = true
     const position = Number.parseInt(rawPosition, 10)
     const image = byPosition.get(position)
@@ -355,6 +495,21 @@ blogMarked.use({
       const id = slugifyHeading(rawText)
 
       return `<h${depth} id="${id}">${html}</h${depth}>\n`
+    },
+    link(tokenOrHref, title, text) {
+      const isToken = typeof tokenOrHref === 'object' && tokenOrHref !== null
+      const rawHref = isToken ? tokenOrHref.href : tokenOrHref
+      const href = normalizeMarkdownHref(rawHref)
+      const rawTitle = isToken ? tokenOrHref.title : title
+      const html = isToken && tokenOrHref.tokens
+        ? this.parser.parseInline(tokenOrHref.tokens)
+        : String(text ?? '')
+
+      if (!href) return html
+
+      const titleAttr = rawTitle ? ` title="${escapeHtml(rawTitle)}"` : ''
+      const targetAttr = isExternalHref(href) ? ' target="_blank" rel="noopener noreferrer"' : ''
+      return `<a href="${escapeHtml(href)}"${titleAttr}${targetAttr}>${html}</a>`
     }
   }
 })
@@ -366,7 +521,7 @@ export function renderBlogMarkdown(source, options = {}) {
   const articleContent = stripTitleHeading
     ? removeDuplicateTitleHeading(source, title)
     : String(source ?? '')
-  const hasExplicitMediaBlock = /\[\s*IMAGE\s*_?\s*\d+\s*\]|\[\s*CTA\s*\]/i.test(articleContent)
+  const hasExplicitMediaBlock = /\[\s*IMAGE\s*_?\s*[1-9]\d*\s*\]|\[\s*CTA\s*\]/i.test(articleContent)
   const contentWithCtas = renderBlogCtaBlocks(articleContent, images, { preview })
   const contentWithImages = renderBlogImageMarkers(contentWithCtas, images, { preview, skipGallery: hasExplicitMediaBlock })
   const contentWithKatex = renderLatexBeforeMarkdown(contentWithImages)

@@ -210,7 +210,7 @@
                     </svg>
                     <span class="social-text">LinkedIn</span>
                   </a>
-                  <a href="https://groupe-reussite.fr/" target="_blank" rel="noopener noreferrer" class="social-link groupe-link">
+                  <a href="https://groupe-reussite.fr/cours-particuliers-cours-particuliers-niveaux-ligne-domicile-3452/" target="_blank" rel="noopener noreferrer" class="social-link groupe-link">
                     <span class="social-icon">👥</span>
                     <span class="social-text">Groupe Réussite</span>
                   </a>

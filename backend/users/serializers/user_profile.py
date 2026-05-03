@@ -49,6 +49,7 @@ class UserBaseSerializer(serializers.ModelSerializer):
             'telephone',
             'is_active',
             'is_staff',
+            'is_superuser',
             'xp',
             'level',
             'xp_to_next',
@@ -57,7 +58,7 @@ class UserBaseSerializer(serializers.ModelSerializer):
             'pending_email',
             'pending_email_sent_at'
         ]
-        read_only_fields = ['id', 'email', 'is_active', 'is_staff']
+        read_only_fields = ['id', 'email', 'is_active', 'is_staff', 'is_superuser']
         extra_kwargs = {
             'first_name': {'help_text': 'User first name'},
             'last_name': {'help_text': 'User last name'},

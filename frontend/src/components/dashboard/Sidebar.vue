@@ -57,7 +57,7 @@
           <!-- Lien admin -->
           <template v-if="userStore.isAdmin">
             <li class="sidebar-section-header" v-if="!collapsed">
-              <span class="section-title">⚙️ Administration</span>
+              <span class="section-title">Administration</span>
             </li>
             <li>
               <button
@@ -65,83 +65,10 @@
                 class="sidebar-item"
                 :class="{ active: isAdminActive }"
                 :title="collapsed ? 'Admin' : ''"
-                @click="router.push('/admin/matieres')"
+                @click="router.push('/admin')"
               >
                 <span class="sidebar-icon"><AcademicCapIcon class="h-6 w-6" /></span>
                 <span v-if="!collapsed" class="sidebar-label">Admin</span>
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                class="sidebar-item"
-                :class="{ active: route.path.startsWith('/admin/newsletter') }"
-                :title="collapsed ? 'Newsletter' : ''"
-                @click="router.push('/admin/newsletter')"
-              >
-                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 7l10 6 10-6"/></svg></span>
-                <span v-if="!collapsed" class="sidebar-label">Newsletter</span>
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                class="sidebar-item"
-                :class="{ active: route.path.startsWith('/admin/subscriptions') }"
-                :title="collapsed ? 'Abonnements' : ''"
-                @click="router.push('/admin/subscriptions')"
-              >
-                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
-                <span v-if="!collapsed" class="sidebar-label">Abonnements</span>
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                class="sidebar-item"
-                :class="{ active: route.path.startsWith('/admin/subscribers') }"
-                :title="collapsed ? 'Abonnés' : ''"
-                @click="router.push('/admin/subscribers')"
-              >
-                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11c1.657 0 3-1.79 3-4s-1.343-4-3-4-3 1.79-3 4 1.343 4 3 4z"/><path d="M8 13c-3.866 0-7 2.239-7 5v3h14v-3c0-2.761-3.134-5-7-5z"/></svg></span>
-                <span v-if="!collapsed" class="sidebar-label">Abonnés</span>
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                class="sidebar-item"
-                :class="{ active: route.path.startsWith('/admin/passes') }"
-                :title="collapsed ? 'Passes' : ''"
-                @click="router.push('/admin/passes')"
-              >
-                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h10M4 17h7"/><rect x="14" y="10" width="6" height="6" rx="1"/></svg></span>
-                <span v-if="!collapsed" class="sidebar-label">Passes</span>
-              </button>
-            </li>
-
-            <li>
-              <button
-                type="button"
-                class="sidebar-item"
-                :class="{ active: route.path.startsWith('/admin/quiz-submissions') }"
-                :title="collapsed ? 'Notation des Quiz' : ''"
-                @click="router.push('/admin/quiz-submissions')"
-              >
-                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></span>
-                <span v-if="!collapsed" class="sidebar-label">Notation Quiz</span>
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                class="sidebar-item"
-                :class="{ active: route.path.startsWith('/admin/blog') }"
-                :title="collapsed ? 'Blog' : ''"
-                @click="router.push('/admin/blog')"
-              >
-                <span class="sidebar-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V9a2 2 0 012-2h2a2 2 0 012 2v9a2 2 0 01-2 2h-2z"/></svg></span>
-                <span v-if="!collapsed" class="sidebar-label">Blog</span>
               </button>
             </li>
           </template>
@@ -154,7 +81,7 @@
 <script setup>
 import menu from '@/config/dashboardMenu.js'
 import { useUserStore } from '@/stores/user'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { logoutUser } from '@/api'
 import { getInitials } from '@/utils'
 import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
@@ -164,7 +91,6 @@ import { getSynthesisSheets } from '@/api/synthesis'
 import * as analytics from '@/services/analytics'
 
 import { AcademicCapIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
-import { useRoute } from 'vue-router'
 import { useSubjectsStore } from '@/stores/subjects/index'
 
 const props = defineProps({ collapsed: Boolean })
@@ -307,6 +233,7 @@ const isActiveRoute = (menuKey) => {
     'quiz': ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
     'progress': '/progress',
     'calculator': '/calculator',
+    'blog': '/blog',
     'abonnement': ['/billing', '/subscription'],
     'cours-particuliers': '/cours-particuliers',
     'admin': '/admin' // Spécialement pour les routes admin
@@ -331,9 +258,9 @@ const isActiveRoute = (menuKey) => {
 }
 
 // Fonction pour déterminer si l'onglet Admin doit être actif
-const isAdminActive = computed(() => { 
-  const p = route.path || ''; 
-  return p.startsWith('/admin') && !p.startsWith('/admin/newsletter') && !p.startsWith('/admin/subscriptions') && !p.startsWith('/admin/subscribers') && !p.startsWith('/admin/passes') && !p.startsWith('/admin/quiz-submissions')
+const isAdminActive = computed(() => {
+  const p = route.path || '';
+  return p.startsWith('/admin')
 })
 
 // Prefetch au survol (hover) - déclenché 150ms après le survol
@@ -387,9 +314,11 @@ async function handleSidebarClick(item) {
     router.push('/dashboard')
   } else if (item.key === 'abonnement') {
     router.push('/billing')
+  } else if (item.key === 'blog') {
+    router.push('/blog')
   } else if (item.key === 'cours-particuliers') {
     router.push('/cours-particuliers')
-  } 
+  }
   // Routes intelligentes avec matière
   else if (['exercices', 'fiches', 'tables-formules', 'quiz', 'cours'].includes(item.key)) {
     // Déterminer la matière active si possible

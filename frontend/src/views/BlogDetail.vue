@@ -35,33 +35,11 @@
       <!-- Article -->
       <article v-else class="blog-article" itemscope itemtype="https://schema.org/BlogPosting">
         <meta itemprop="mainEntityOfPage" :content="canonicalUrl" />
+        <meta v-if="post.date_publication" itemprop="datePublished" :content="post.date_publication" />
 
         <header class="blog-article__header">
-          <div class="blog-article__meta">
-            <RouterLink
-              v-if="post.categorie"
-              :to="`/blog/categorie/${post.categorie.slug}`"
-              class="blog-article__category"
-            >
-              {{ post.categorie.nom }}
-            </RouterLink>
-            <time :datetime="post.date_publication" class="blog-article__date" itemprop="datePublished">
-              {{ formatDate(post.date_publication) }}
-            </time>
-            <time v-if="isModifiedAfterPublication(post)"
-              :datetime="post.date_modification"
-              class="blog-article__date blog-article__date--modified"
-              itemprop="dateModified"
-            >
-              Mis à jour le {{ formatDate(post.date_modification) }}
-            </time>
-            <span class="blog-article__reading">{{ post.reading_time }} min de lecture</span>
-          </div>
           <h1 class="blog-article__title" itemprop="headline">{{ post.titre }}</h1>
           <p v-if="post.extrait" class="blog-article__excerpt" itemprop="description">{{ post.extrait }}</p>
-          <div class="blog-article__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
-            <span itemprop="name">{{ post.auteur_nom }}</span>
-          </div>
         </header>
 
         <!-- Image de couverture -->
@@ -77,8 +55,26 @@
         <div class="blog-article__layout">
           <!-- Table of Contents -->
           <aside v-if="toc.length > 1" class="blog-toc" aria-label="Sommaire">
-            <p class="blog-toc__title">Sommaire</p>
-            <ul class="blog-toc__list">
+            <button
+              type="button"
+              class="blog-toc__toggle"
+              :aria-expanded="isTocExpanded"
+              aria-controls="blog-article-toc"
+              @click="isTocExpanded = !isTocExpanded"
+            >
+              <span class="blog-toc__title">Sommaire</span>
+              <span class="blog-toc__state">{{ isTocExpanded ? 'Masquer' : 'Afficher' }}</span>
+              <ChevronDownIcon
+                class="blog-toc__chevron"
+                :class="{ 'blog-toc__chevron--open': isTocExpanded }"
+                aria-hidden="true"
+              />
+            </button>
+            <ul
+              v-show="isTocExpanded"
+              id="blog-article-toc"
+              class="blog-toc__list"
+            >
               <li v-for="item in toc" :key="item.id" :class="`blog-toc__item--h${item.level}`">
                 <a :href="`#${item.id}`" class="blog-toc__link">{{ item.text }}</a>
               </li>
@@ -108,7 +104,7 @@
 
       <!-- Articles liés -->
       <section v-if="post && post.articles_lies && post.articles_lies.length" class="blog-related">
-        <h2 class="blog-related__title">Articles liés</h2>
+        <h2 class="blog-related__title">Articles similaires</h2>
         <div class="blog-related__grid">
           <article
             v-for="related in post.articles_lies"
@@ -124,26 +120,26 @@
                   class="blog-related-card__image"
                   loading="lazy"
                 />
+                <time
+                  v-if="related.date_publication"
+                  class="blog-related-card__date-badge"
+                  :datetime="related.date_publication"
+                  :title="formatDate(related.date_publication)"
+                >
+                  <span>{{ formatDateDay(related.date_publication) }}</span>
+                  <small>{{ formatDateMonth(related.date_publication) }}</small>
+                </time>
               </div>
               <div class="blog-related-card__body">
                 <h3 class="blog-related-card__title">{{ related.titre }}</h3>
                 <p class="blog-related-card__excerpt">{{ related.extrait }}</p>
+                <span class="blog-related-card__cta">Lire plus</span>
               </div>
             </RouterLink>
           </article>
         </div>
       </section>
 
-      <!-- Liens internes vers les pages principales -->
-      <section v-if="post" class="blog-internal-links">
-        <h2 class="blog-internal-links__title">Aller plus loin</h2>
-        <div class="blog-internal-links__grid">
-          <RouterLink to="/ressources-gratuites/cours" class="blog-internal-link">Cours gratuits</RouterLink>
-          <RouterLink to="/ressources-gratuites/exercices" class="blog-internal-link">Exercices gratuits</RouterLink>
-          <RouterLink to="/cours-particuliers" class="blog-internal-link">Cours particuliers</RouterLink>
-          <RouterLink to="/abonnement" class="blog-internal-link">Nos abonnements</RouterLink>
-        </div>
-      </section>
     </main>
   </MainLayout>
 </template>
@@ -151,63 +147,63 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
-import { marked } from 'marked'
+import { ChevronDownIcon } from '@heroicons/vue/24/outline'
+import 'katex/dist/katex.min.css'
+import '@/assets/styles/blogArticle.css'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import { getBlogPost } from '@/api/blog'
 import { setPageSeo, buildArticleJsonLd, buildBreadcrumbJsonLd } from '@/services/seo'
+import { extractBlogToc, renderBlogMarkdown } from '@/utils/blogRenderer'
 
 const route = useRoute()
 const post = ref(null)
 const loading = ref(true)
+const isTocExpanded = ref(false)
 
 const canonicalUrl = computed(() => {
   const base = 'https://www.optitab.net'
   return post.value ? `${base}/blog/${post.value.slug}` : `${base}/blog`
 })
 
-// Marked renderer avec IDs auto sur les headings
-marked.use({
-  renderer: {
-    heading(text, level) {
-      const id = String(text)
-        .toLowerCase()
-        .replace(/<[^>]*>/g, '')
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-      return `<h${level} id="${id}">${text}</h${level}>\n`
-    }
-  }
-})
-
 // Rendu Markdown → HTML
 const renderedContent = computed(() => {
   if (!post.value?.contenu) return ''
-  return marked.parse(post.value.contenu, { breaks: true, gfm: true })
+  return renderBlogMarkdown(post.value.contenu, {
+    title: post.value.titre,
+    images: post.value.images || [],
+  })
 })
 
 // Table of Contents
 const toc = computed(() => {
   if (!post.value?.contenu) return []
-  const items = []
-  const regex = /^(#{2,3})\s+(.+)$/gm
-  let match
-  while ((match = regex.exec(post.value.contenu)) !== null) {
-    const level = match[1].length
-    const text = match[2].trim()
-    const id = text
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-    items.push({ level, text, id })
-  }
-  return items
+  return extractBlogToc(post.value.contenu)
 })
 
+function parseDate(dateStr) {
+  if (!dateStr) return null
+  const date = new Date(dateStr)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
 function formatDate(dateStr) {
-  if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('fr-FR', {
+  const date = parseDate(dateStr)
+  if (!date) return ''
+  return date.toLocaleDateString('fr-FR', {
     day: 'numeric', month: 'long', year: 'numeric'
   })
+}
+
+function formatDateDay(dateStr) {
+  const date = parseDate(dateStr)
+  if (!date) return ''
+  return date.toLocaleDateString('fr-FR', { day: '2-digit' })
+}
+
+function formatDateMonth(dateStr) {
+  const date = parseDate(dateStr)
+  if (!date) return ''
+  return date.toLocaleDateString('fr-FR', { month: 'short' }).replace('.', '')
 }
 
 function isModifiedAfterPublication(post) {
@@ -223,9 +219,9 @@ function applySeo() {
   const p = post.value
   const seoTitle = p.seo_title || p.titre
   const seoDescription = p.meta_description || p.extrait || ''
-  const ogTitle = p.og_title || seoTitle
-  const ogDescription = p.og_description || seoDescription
-  const ogImage = p.og_image_url || p.image_couverture_url || ''
+  const ogTitle = seoTitle
+  const ogDescription = seoDescription
+  const ogImage = p.image_couverture_url || p.og_image_url || ''
 
   // Robots: noindex pour brouillons ou si meta_robots = noindex
   const isDraft = p.statut !== 'published'
@@ -279,7 +275,6 @@ function applySeo() {
     if (ogImage) setMeta('og:image', ogImage)
     setMeta('article:published_time', p.date_publication)
     setMeta('article:modified_time', p.date_modification)
-    if (p.categorie) setMeta('article:section', p.categorie.nom)
     if (p.tags?.length) {
       p.tags.forEach(t => setMeta('article:tag', t.nom))
     }
@@ -308,10 +303,8 @@ watch(() => route.params.slug, fetchPost)
 <style scoped>
 .blog-detail-page {
   min-height: 100vh;
-  background: #fff;
-  padding: 48px 32px 80px;
-  max-width: 900px;
-  margin: 0 auto;
+  background: #f7f9fc;
+  padding: 40px 20px 80px;
 }
 
 /* Breadcrumb */
@@ -319,7 +312,8 @@ watch(() => route.params.slug, fetchPost)
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 24px;
+  max-width: 1080px;
+  margin: 0 auto 24px;
   font-size: 13px;
   color: #64748b;
 }
@@ -356,86 +350,108 @@ watch(() => route.params.slug, fetchPost)
 .blog-back-link:hover { text-decoration: underline; }
 
 /* Article Header */
+.blog-article {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+}
+
 .blog-article__header {
-  margin-bottom: 32px;
+  margin-bottom: 34px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #e2e8f0;
 }
-.blog-article__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  font-size: 13px;
-  color: #64748b;
-}
-.blog-article__category {
-  background: #eef2ff;
-  color: #3730a3;
-  padding: 3px 12px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 12px;
-  text-decoration: none;
-}
-.blog-article__category:hover { background: #e0e7ff; }
 .blog-article__title {
   margin: 0 0 12px;
-  font-size: 36px;
-  font-weight: 900;
-  color: #0f172a;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-size: clamp(28px, 3.4vw, 38px);
+  font-weight: 600;
+  color: #10257f;
+  line-height: 1.18;
+  letter-spacing: 0;
 }
 .blog-article__excerpt {
   margin: 0 0 12px;
+  max-width: 780px;
   font-size: 18px;
   color: #475569;
-  line-height: 1.5;
+  line-height: 1.6;
 }
-.blog-article__author {
-  font-size: 14px;
-  color: #64748b;
-  font-weight: 600;
-}
-
 /* Cover */
 .blog-article__cover {
   margin-bottom: 32px;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
+  border: 1px solid #e2e8f0;
 }
 .blog-article__cover-img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 16px;
+  border-radius: 12px;
 }
 
 /* Layout: TOC + Content */
 .blog-article__layout {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
 }
 
 /* Table of Contents */
 .blog-toc {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 20px 24px;
+  border-radius: 10px;
+  padding: 0;
   margin-bottom: 32px;
+  overflow: hidden;
+}
+.blog-toc__toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
 }
 .blog-toc__title {
-  margin: 0 0 12px;
+  margin: 0;
   font-size: 14px;
   font-weight: 800;
-  color: #0f172a;
+  color: #111827;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  flex: 1;
+}
+.blog-toc__state {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+.blog-toc__chevron {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  color: #64748b;
+  transition: transform 0.2s ease;
+  transform-origin: center;
+}
+.blog-toc__chevron--open {
+  transform: rotate(180deg);
 }
 .blog-toc__list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 20px 16px;
 }
 .blog-toc__list li {
   margin-bottom: 6px;
@@ -444,7 +460,7 @@ watch(() => route.params.slug, fetchPost)
   padding-left: 16px;
 }
 .blog-toc__link {
-  color: #3b82f6;
+  color: #2563eb;
   text-decoration: none;
   font-size: 14px;
   line-height: 1.5;
@@ -461,29 +477,34 @@ watch(() => route.params.slug, fetchPost)
   word-break: break-word;
 }
 .blog-article__content :deep(h2) {
-  font-size: 26px;
-  font-weight: 800;
-  color: #0f172a;
-  margin: 40px 0 16px;
-  padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin: 44px 0 18px;
+  padding: 0 0 12px;
+  border-bottom: 3px solid #6366f1;
+  letter-spacing: -0.01em;
 }
 .blog-article__content :deep(h3) {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 700;
-  color: #0f172a;
+  color: #374151;
   margin: 32px 0 12px;
+  padding-left: 16px;
+  border-left: 4px solid #6366f1;
+  letter-spacing: -0.005em;
 }
 .blog-article__content :deep(p) {
   margin: 0 0 20px;
 }
 .blog-article__content :deep(a) {
-  color: #3b82f6;
+  color: #2563eb;
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .blog-article__content :deep(strong) {
   font-weight: 700;
-  color: #0f172a;
+  color: #111827;
 }
 .blog-article__content :deep(ul),
 .blog-article__content :deep(ol) {
@@ -496,9 +517,9 @@ watch(() => route.params.slug, fetchPost)
 .blog-article__content :deep(blockquote) {
   margin: 24px 0;
   padding: 16px 24px;
-  border-left: 4px solid #3b82f6;
-  background: #f0f7ff;
-  border-radius: 0 12px 12px 0;
+  border-left: 4px solid #2563eb;
+  background: #eff6ff;
+  border-radius: 0 10px 10px 0;
   color: #1e40af;
   font-style: italic;
 }
@@ -508,11 +529,197 @@ watch(() => route.params.slug, fetchPost)
   border-radius: 12px;
   margin: 24px 0;
 }
+
+.blog-article__content :deep(.blog-inline-image) {
+  max-width: min(var(--blog-image-width, 100%), 100%);
+  margin: 28px auto;
+  clear: both;
+}
+
+.blog-article__content :deep(.blog-inline-image--left) {
+  float: left;
+  clear: left;
+  margin: 8px 28px 20px 0;
+  max-width: min(var(--blog-image-width, 45%), 52%);
+}
+
+.blog-article__content :deep(.blog-inline-image--right) {
+  float: right;
+  clear: right;
+  margin: 8px 0 20px 28px;
+  max-width: min(var(--blog-image-width, 45%), 52%);
+}
+
+.blog-article__content :deep(.blog-inline-image--full) {
+  max-width: 100%;
+}
+
+.blog-article__content :deep(.blog-inline-image img) {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.10);
+}
+
+.blog-article__content :deep(.blog-inline-image__caption) {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #64748b;
+  text-align: center;
+}
+
+.blog-article__content :deep(.blog-image-placeholder) {
+  margin: 24px 0;
+  padding: 18px;
+  border: 1px dashed #f59e0b;
+  border-radius: 10px;
+  background: #fffbeb;
+  color: #92400e;
+  font-weight: 600;
+  text-align: center;
+}
+
+.blog-article__content :deep(.blog-cta-card) {
+  clear: both;
+  display: grid;
+  gap: 0;
+  margin: 36px 0;
+  overflow: hidden;
+  border: 1px solid #dbe4ff;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
+}
+
+.blog-article__content :deep(.blog-cta-card--split.blog-cta-card--has-image) {
+  grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr);
+}
+
+.blog-article__content :deep(.blog-cta-card--image-left.blog-cta-card--has-image .blog-cta-card__media) {
+  order: -1;
+}
+
+.blog-article__content :deep(.blog-cta-card--image-bottom.blog-cta-card--has-image) {
+  grid-template-columns: 1fr;
+}
+
+.blog-article__content :deep(.blog-cta-card--image-bottom .blog-cta-card__media) {
+  order: 2;
+}
+
+.blog-article__content :deep(.blog-cta-card--solid) {
+  display: block;
+  background: linear-gradient(135deg, #4db6a6 0%, #99e5c7 100%);
+  border-color: #74d2bd;
+}
+
+.blog-article__content :deep(.blog-cta-card--light) {
+  background: #ffffff;
+}
+
+.blog-article__content :deep(.blog-cta-card--green) {
+  background: linear-gradient(135deg, #4db6a6 0%, #99e5c7 100%);
+  border-color: #74d2bd;
+}
+
+.blog-article__content :deep(.blog-cta-card__body) {
+  padding: 30px 32px;
+}
+
+.blog-article__content :deep(.blog-cta-card__eyebrow) {
+  margin: 0 0 10px;
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.blog-article__content :deep(.blog-cta-card__title) {
+  margin: 0 0 10px;
+  color: #0f2f6f;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.blog-article__content :deep(.blog-cta-card__text) {
+  max-width: 560px;
+  margin: 0 0 20px;
+  color: #334155;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.blog-article__content :deep(.blog-cta-card__button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgba(33, 85, 216, 0.24);
+}
+
+.blog-article__content :deep(.blog-cta-card__button:hover) {
+  background: linear-gradient(180deg, #2a64e6 0%, #1d4ed8 100%);
+  text-decoration: none;
+}
+
+.blog-article__content :deep(.blog-cta-card__media) {
+  display: block;
+  min-height: 100%;
+  background: #e2e8f0;
+}
+
+.blog-article__content :deep(.blog-cta-card__media img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+  margin: 0;
+  object-fit: cover;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.blog-article__content :deep(.blog-cta-card__media--empty) {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  padding: 24px;
+  color: #64748b;
+  font-weight: 800;
+}
+
+.blog-article__content :deep(.blog-cta-card--green .blog-cta-card__eyebrow),
+.blog-article__content :deep(.blog-cta-card--green .blog-cta-card__title),
+.blog-article__content :deep(.blog-cta-card--green .blog-cta-card__text) {
+  color: #ffffff;
+}
+
+.blog-article__content :deep(.blog-cta-card--green .blog-cta-card__button) {
+  background: linear-gradient(180deg, #2f6df4 0%, #2155d8 100%);
+  color: #ffffff;
+}
+
 .blog-article__content :deep(pre) {
   background: #1e293b;
   color: #e2e8f0;
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 10px;
   overflow-x: auto;
   margin: 24px 0;
   font-size: 14px;
@@ -530,6 +737,41 @@ watch(() => route.params.slug, fetchPost)
   color: inherit;
 }
 
+.blog-article__content :deep(.blog-math) {
+  color: #0f172a;
+}
+
+.blog-article__content :deep(.blog-math--inline) {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: -0.1em;
+}
+
+.blog-article__content :deep(.blog-math--display) {
+  display: block;
+  margin: 24px 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.blog-article__content :deep(.blog-math--display .katex-display) {
+  margin: 0;
+}
+
+.blog-article__content :deep(.blog-math--display .katex) {
+  font-size: 1.12em;
+}
+
+.blog-article__content :deep(.blog-math-error) {
+  background: #fff1f2;
+  color: #be123c;
+  border: 1px solid #fecdd3;
+}
+
 /* Tags */
 .blog-article__tags {
   display: flex;
@@ -538,6 +780,7 @@ watch(() => route.params.slug, fetchPost)
   margin-top: 40px;
   padding-top: 24px;
   border-top: 1px solid #e2e8f0;
+  clear: both;
 }
 .blog-article__tag {
   font-size: 13px;
@@ -554,6 +797,9 @@ watch(() => route.params.slug, fetchPost)
 
 /* Related Articles */
 .blog-related {
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 56px;
   padding-top: 40px;
   border-top: 1px solid #e2e8f0;
@@ -561,30 +807,40 @@ watch(() => route.params.slug, fetchPost)
 .blog-related__title {
   margin: 0 0 24px;
   font-size: 22px;
-  font-weight: 800;
-  color: #0f172a;
+  font-weight: 700;
+  color: #111827;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #6366f1;
+  letter-spacing: -0.01em;
 }
 .blog-related__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
 .blog-related-card {
-  border-radius: 14px;
+  border-radius: 8px;
   border: 1px solid #e2e8f0;
   overflow: hidden;
-  transition: box-shadow 0.2s;
+  background: #fff;
+  box-shadow: 0 12px 34px rgba(16, 24, 40, 0.06);
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
 }
 .blog-related-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border-color: #bfd0ff;
+  box-shadow: 0 18px 42px rgba(16, 24, 40, 0.12);
+  transform: translateY(-3px);
 }
 .blog-related-card__link {
-  display: block;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
   color: inherit;
 }
 .blog-related-card__image-wrap {
-  height: 140px;
+  position: relative;
+  aspect-ratio: 16 / 10;
   background: #f1f5f9;
   overflow: hidden;
 }
@@ -593,14 +849,44 @@ watch(() => route.params.slug, fetchPost)
   height: 100%;
   object-fit: cover;
 }
+.blog-related-card__date-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 54px;
+  min-height: 58px;
+  display: grid;
+  place-items: center;
+  padding: 7px 5px;
+  border-radius: 4px;
+  background: #1f3c88;
+  color: #ffffff;
+  text-align: center;
+  box-shadow: 0 12px 26px rgba(16, 24, 40, 0.22);
+}
+.blog-related-card__date-badge span {
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 1;
+}
+.blog-related-card__date-badge small {
+  color: #eaf1ff;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
 .blog-related-card__body {
+  flex: 1;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
 }
 .blog-related-card__title {
   margin: 0 0 6px;
   font-size: 16px;
-  font-weight: 700;
-  color: #0f172a;
+  font-weight: 800;
+  color: #111827;
   line-height: 1.3;
 }
 .blog-related-card__excerpt {
@@ -613,11 +899,29 @@ watch(() => route.params.slug, fetchPost)
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.blog-related-card__cta {
+  margin-top: auto;
+  padding-top: 16px;
+  color: #315eea;
+  font-size: 13px;
+  font-weight: 900;
+}
 
 /* Responsive */
+@media (min-width: 1100px) {
+  .blog-article__layout {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
 @media (max-width: 768px) {
   .blog-detail-page {
-    padding: 24px 16px 60px;
+    padding: 24px 14px 60px;
+  }
+  .blog-article {
+    padding: 24px 18px;
+    border-radius: 12px;
   }
   .blog-article__title {
     font-size: 26px;
@@ -628,52 +932,31 @@ watch(() => route.params.slug, fetchPost)
   .blog-article__content {
     font-size: 16px;
   }
+  .blog-article__content :deep(.blog-inline-image--left),
+  .blog-article__content :deep(.blog-inline-image--right) {
+    float: none;
+    clear: both;
+    max-width: 100%;
+    margin: 24px auto;
+  }
+  .blog-article__content :deep(.blog-cta-card),
+  .blog-article__content :deep(.blog-cta-card--split.blog-cta-card--has-image) {
+    grid-template-columns: 1fr;
+  }
+  .blog-article__content :deep(.blog-cta-card--image-left.blog-cta-card--has-image .blog-cta-card__media) {
+    order: 0;
+  }
+  .blog-article__content :deep(.blog-cta-card__body) {
+    padding: 24px 20px;
+  }
+  .blog-article__content :deep(.blog-cta-card__title) {
+    font-size: 24px;
+  }
+  .blog-article__content :deep(.blog-cta-card__media img) {
+    min-height: 190px;
+  }
   .blog-related__grid {
     grid-template-columns: 1fr;
   }
-  .blog-internal-links__grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-/* Date modified */
-.blog-article__date--modified {
-  font-style: italic;
-  color: #94a3b8;
-}
-
-/* Internal Links */
-.blog-internal-links {
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid #e2e8f0;
-}
-.blog-internal-links__title {
-  margin: 0 0 16px;
-  font-size: 18px;
-  font-weight: 800;
-  color: #0f172a;
-}
-.blog-internal-links__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
-}
-.blog-internal-link {
-  display: block;
-  padding: 12px 16px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  color: #3b82f6;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  text-align: center;
-  transition: background 0.2s, border-color 0.2s;
-}
-.blog-internal-link:hover {
-  background: #eef2ff;
-  border-color: #c7d2fe;
 }
 </style>

@@ -1,139 +1,138 @@
 <template>
   <MainLayout>
     <main class="blog-page">
-      <!-- Fil d'Ariane -->
-      <nav class="breadcrumb" aria-label="Fil d'Ariane">
-        <RouterLink to="/">Accueil</RouterLink>
-        <span class="breadcrumb__sep">/</span>
-        <span class="breadcrumb__current">Blog</span>
-      </nav>
+      <section
+        class="blog-hero"
+        :style="heroStyle"
+        aria-labelledby="blog-title"
+      >
+      </section>
 
-      <header class="blog-header">
-        <h1 class="blog-title">Blog OptiTAB</h1>
-        <p class="blog-subtitle">Conseils, méthodes et astuces pour progresser en maths.</p>
-      </header>
+      <section class="blog-content">
+        <nav class="breadcrumb" aria-label="Fil d'Ariane">
+          <RouterLink to="/">Accueil</RouterLink>
+          <span class="breadcrumb__sep">/</span>
+          <span class="breadcrumb__current">Blog</span>
+        </nav>
 
-      <!-- Barre de recherche + filtres -->
-      <div class="blog-toolbar">
-        <div class="blog-search">
-          <input
-            v-model="searchQuery"
-            type="search"
-            placeholder="Rechercher un article…"
-            class="blog-search__input"
-            @input="debouncedSearch"
-          />
+        <div class="blog-toolbar" aria-label="Recherche et filtres du blog">
+          <div class="blog-toolbar__header">
+            <h2>ARTICLES RÉCENTS</h2>
+          </div>
+
         </div>
-        <div class="blog-filters">
-          <button
-            class="blog-filter-btn"
-            :class="{ 'blog-filter-btn--active': !activeCategory }"
-            @click="setCategory(null)"
-          >
-            Tous
-          </button>
-          <button
-            v-for="cat in categories"
-            :key="cat.id"
-            class="blog-filter-btn"
-            :class="{ 'blog-filter-btn--active': activeCategory === cat.slug }"
-            @click="setCategory(cat.slug)"
-          >
-            {{ cat.nom }}
-            <span v-if="cat.articles_count" class="blog-filter-count">{{ cat.articles_count }}</span>
-          </button>
+
+        <div v-if="loading" class="blog-loading">
+          <div class="blog-loading__spinner"></div>
+          <p>Chargement des articles...</p>
         </div>
-      </div>
 
-      <!-- Liste des articles -->
-      <div v-if="loading" class="blog-loading">
-        <div class="blog-loading__spinner"></div>
-        <p>Chargement des articles…</p>
-      </div>
+        <div v-else-if="posts.length === 0" class="blog-empty">
+          <p>Aucun article trouvé pour cette recherche.</p>
+        </div>
 
-      <div v-else-if="posts.length === 0" class="blog-empty">
-        <p>Aucun article trouvé.</p>
-      </div>
+        <div v-else class="blog-grid">
+          <article
+            v-for="post in posts"
+            :key="post.id"
+            class="blog-card"
+          >
+            <RouterLink :to="`/blog/${post.slug}`" class="blog-card__link">
+              <div class="blog-card__image-wrap">
+                <img
+                  v-if="post.image_couverture_url"
+                  :src="post.image_couverture_url"
+                  :alt="post.titre"
+                  class="blog-card__image"
+                  loading="lazy"
+                />
+                <div v-else class="blog-card__image-placeholder">
+                  <span>OptiTAB</span>
+                </div>
 
-      <div v-else class="blog-grid">
-        <article
-          v-for="post in posts"
-          :key="post.id"
-          class="blog-card"
-        >
-          <RouterLink :to="`/blog/${post.slug}`" class="blog-card__link">
-            <div class="blog-card__image-wrap">
-              <img
-                v-if="post.image_couverture_url"
-                :src="post.image_couverture_url"
-                :alt="post.titre"
-                class="blog-card__image"
-                loading="lazy"
-              />
-              <div v-else class="blog-card__image-placeholder">
-                <svg width="48" height="48" fill="none" viewBox="0 0 24 24"><path stroke="#94a3b8" stroke-width="1.5" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+                <time
+                  v-if="post.date_publication"
+                  class="blog-card__date-badge"
+                  :datetime="post.date_publication"
+                  :title="formatDate(post.date_publication)"
+                >
+                  <span>{{ formatDateDay(post.date_publication) }}</span>
+                  <small>{{ formatDateMonth(post.date_publication) }}</small>
+                </time>
               </div>
-            </div>
-            <div class="blog-card__body">
-              <div class="blog-card__meta">
-                <span v-if="post.categorie" class="blog-card__category">{{ post.categorie.nom }}</span>
-                <span class="blog-card__date">{{ formatDate(post.date_publication) }}</span>
-                <span class="blog-card__reading">{{ post.reading_time }} min</span>
-              </div>
-              <h2 class="blog-card__title">{{ post.titre }}</h2>
-              <p class="blog-card__excerpt">{{ post.extrait }}</p>
-              <div class="blog-card__tags" v-if="post.tags && post.tags.length">
-                <span v-for="tag in post.tags.slice(0, 3)" :key="tag.id" class="blog-card__tag">
-                  {{ tag.nom }}
-                </span>
-              </div>
-            </div>
-          </RouterLink>
-        </article>
-      </div>
 
-      <!-- Pagination -->
-      <nav v-if="totalPages > 1" class="blog-pagination" aria-label="Pagination">
-        <button
-          class="blog-pagination__btn"
-          :disabled="currentPage <= 1"
-          @click="goToPage(currentPage - 1)"
-        >
-          ← Précédent
-        </button>
-        <span class="blog-pagination__info">Page {{ currentPage }} / {{ totalPages }}</span>
-        <button
-          class="blog-pagination__btn"
-          :disabled="currentPage >= totalPages"
-          @click="goToPage(currentPage + 1)"
-        >
-          Suivant →
-        </button>
-      </nav>
+              <div class="blog-card__body">
+                <div class="blog-card__meta">
+                  <span class="blog-card__reading">{{ post.reading_time }} min</span>
+                </div>
+
+                <h3 class="blog-card__title">{{ post.titre }}</h3>
+                <p class="blog-card__excerpt">{{ post.extrait }}</p>
+
+                <div class="blog-card__footer">
+                  <div v-if="post.tags && post.tags.length" class="blog-card__tags">
+                    <span
+                      v-for="tag in post.tags.slice(0, 3)"
+                      :key="tag.id"
+                      class="blog-card__tag"
+                    >
+                      {{ tag.nom }}
+                    </span>
+                  </div>
+                  <span class="blog-card__cta">Lire l'article</span>
+                </div>
+              </div>
+            </RouterLink>
+          </article>
+        </div>
+
+        <nav v-if="totalPages > 1" class="blog-pagination" aria-label="Pagination">
+          <button
+            class="blog-pagination__btn"
+            :disabled="currentPage <= 1"
+            type="button"
+            @click="goToPage(currentPage - 1)"
+          >
+            Précédent
+          </button>
+          <span class="blog-pagination__info">Page {{ currentPage }} / {{ totalPages }}</span>
+          <button
+            class="blog-pagination__btn"
+            :disabled="currentPage >= totalPages"
+            type="button"
+            @click="goToPage(currentPage + 1)"
+          >
+            Suivant
+          </button>
+        </nav>
+      </section>
     </main>
   </MainLayout>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import MainLayout from '@/components/layout/MainLayout.vue'
-import { getBlogPosts, getBlogCategories } from '@/api/blog'
+const blogHeroImage = '/Banner-blog.png'
+import { getBlogPosts } from '@/api/blog'
 import { setPageSeo, buildBreadcrumbJsonLd } from '@/services/seo'
 
 const route = useRoute()
 const router = useRouter()
 
 const posts = ref([])
-const categories = ref([])
 const loading = ref(true)
 const totalCount = ref(0)
 const currentPage = ref(1)
 const pageSize = 12
 const searchQuery = ref('')
-const activeCategory = ref(null)
 
 const totalPages = computed(() => Math.ceil(totalCount.value / pageSize))
+
+const heroStyle = computed(() => ({
+  backgroundImage: `url(${blogHeroImage})`
+}))
 
 function applySeo() {
   const breadcrumbs = [
@@ -160,18 +159,6 @@ function debouncedSearch() {
   }, 400)
 }
 
-function setCategory(slug) {
-  activeCategory.value = slug
-  currentPage.value = 1
-  if (slug) {
-    router.replace({ query: { ...route.query, categorie: slug, page: undefined } })
-  } else {
-    const { categorie, ...rest } = route.query
-    router.replace({ query: rest })
-  }
-  fetchPosts()
-}
-
 function goToPage(page) {
   currentPage.value = page
   router.replace({ query: { ...route.query, page: page > 1 ? page : undefined } })
@@ -183,8 +170,8 @@ async function fetchPosts() {
   loading.value = true
   try {
     const params = { page: currentPage.value, page_size: pageSize }
-    if (activeCategory.value) params.categorie = activeCategory.value
     if (searchQuery.value.trim()) params.search = searchQuery.value.trim()
+
     const { data } = await getBlogPosts(params)
     posts.value = data.results || []
     totalCount.value = data.count || 0
@@ -196,26 +183,38 @@ async function fetchPosts() {
   }
 }
 
-async function fetchCategories() {
-  try {
-    const { data } = await getBlogCategories()
-    categories.value = data || []
-  } catch (_) {
-    categories.value = []
-  }
+function parseDate(dateStr) {
+  if (!dateStr) return null
+  const date = new Date(dateStr)
+  return Number.isNaN(date.getTime()) ? null : date
 }
 
 function formatDate(dateStr) {
-  if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('fr-FR', {
-    day: 'numeric', month: 'long', year: 'numeric'
+  const date = parseDate(dateStr)
+  if (!date) return ''
+
+  return date.toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
   })
 }
 
+function formatDateDay(dateStr) {
+  const date = parseDate(dateStr)
+  if (!date) return ''
+  return date.toLocaleDateString('fr-FR', { day: '2-digit' })
+}
+
+function formatDateMonth(dateStr) {
+  const date = parseDate(dateStr)
+  if (!date) return ''
+  return date.toLocaleDateString('fr-FR', { month: 'short' }).replace('.', '')
+}
+
 onMounted(() => {
-  if (route.query.categorie) activeCategory.value = route.query.categorie
   if (route.query.page) currentPage.value = parseInt(route.query.page) || 1
-  fetchCategories()
+
   fetchPosts()
   applySeo()
 })
@@ -224,278 +223,449 @@ onMounted(() => {
 <style scoped>
 .blog-page {
   min-height: 100vh;
-  background: #ffffff;
-  padding: 48px 32px 80px;
-  max-width: 1200px;
-  margin: 0 auto;
+  background: #f6f8fc;
 }
 
-/* Breadcrumb */
+.blog-hero {
+  min-height: 330px;
+  display: flex;
+  align-items: center;
+  background-position: center;
+  background-size: cover;
+  color: #ffffff;
+}
+
+.blog-hero__content {
+  width: min(1120px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 64px 0;
+}
+
+.blog-hero__eyebrow {
+  margin: 0 0 14px;
+  color: #7bd389;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.blog-hero h1 {
+  max-width: 760px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(34px, 5vw, 58px);
+  font-weight: 900;
+  hyphens: none;
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+
+.blog-hero p:last-child {
+  max-width: 640px;
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 18px;
+  hyphens: none;
+  line-height: 1.6;
+}
+
+.blog-content {
+  width: min(1120px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 34px 0 80px;
+}
+
 .breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 24px;
+  color: #667085;
   font-size: 13px;
-  color: #64748b;
 }
+
 .breadcrumb a {
-  color: #3b82f6;
+  color: #315eea;
   text-decoration: none;
 }
+
 .breadcrumb a:hover {
   text-decoration: underline;
 }
+
 .breadcrumb__sep {
-  color: #cbd5e1;
+  color: #b8c0cc;
 }
+
 .breadcrumb__current {
-  color: #0f172a;
-  font-weight: 600;
+  color: #111827;
+  font-weight: 700;
 }
 
-/* Header */
-.blog-header {
-  margin-bottom: 32px;
-}
-.blog-title {
-  margin: 0 0 8px;
-  font-size: 32px;
-  font-weight: 900;
-  color: #0f172a;
-  letter-spacing: -0.02em;
-}
-.blog-subtitle {
-  margin: 0;
-  font-size: 16px;
-  color: #475569;
-  line-height: 1.5;
-}
-
-/* Toolbar */
 .blog-toolbar {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 32px;
-}
-.blog-search__input {
-  width: 100%;
-  max-width: 420px;
-  padding: 10px 16px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 14px;
-  color: #0f172a;
-  background: #f8fafc;
-  transition: border-color 0.2s;
-}
-.blog-search__input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  background: #fff;
-}
-.blog-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.blog-filter-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #475569;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.blog-filter-btn:hover {
-  background: #e0e7ff;
-  color: #3730a3;
-}
-.blog-filter-btn--active {
-  background: #3b82f6;
-  color: #fff;
-  border-color: #3b82f6;
-}
-.blog-filter-count {
-  font-size: 11px;
-  background: rgba(255,255,255,0.25);
-  padding: 1px 6px;
-  border-radius: 999px;
+  margin-bottom: 28px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #dfe5ef;
 }
 
-/* Loading */
-.blog-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 64px 0;
-  color: #64748b;
-  gap: 12px;
-}
-.blog-loading__spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #3b82f6;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.blog-empty {
-  text-align: center;
-  padding: 64px 0;
-  color: #64748b;
-  font-size: 15px;
-}
-
-/* Grid */
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-  margin-bottom: 48px;
-}
-
-/* Card */
-.blog-card {
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
-  overflow: hidden;
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-.blog-card:hover {
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  transform: translateY(-2px);
-}
-.blog-card__link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
-.blog-card__image-wrap {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  background: #f1f5f9;
-}
-.blog-card__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.blog-card__image-placeholder {
-  width: 100%;
-  height: 100%;
+.blog-toolbar__header {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f1f5f9;
+  gap: 24px;
+  margin-bottom: 20px;
 }
+
+.blog-kicker {
+  margin: 0 0 7px;
+  color: #315eea;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.blog-toolbar h2 {
+  margin: 0;
+  color: #101828;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.16;
+}
+
+.blog-toolbar p {
+  margin: 8px 0 0;
+  color: #5b6678;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.blog-search {
+  flex: 0 1 390px;
+}
+
+.blog-search__input {
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 14px;
+  border: 1px solid #cfd8e6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.blog-search__input:focus {
+  outline: none;
+  border-color: #315eea;
+  box-shadow: 0 0 0 3px rgba(49, 94, 234, 0.14);
+}
+
+.blog-loading,
+.blog-empty {
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+  color: #667085;
+  text-align: center;
+}
+
+.blog-loading {
+  gap: 12px;
+}
+
+.blog-loading__spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid #dce3ee;
+  border-top-color: #315eea;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 26px;
+  margin-bottom: 48px;
+}
+
+.blog-card {
+  min-height: 100%;
+  overflow: hidden;
+  border: 1px solid #dfe5ef;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 34px rgba(16, 24, 40, 0.06);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.blog-card:hover {
+  border-color: #bfd0ff;
+  box-shadow: 0 18px 42px rgba(16, 24, 40, 0.12);
+  transform: translateY(-3px);
+}
+
+.blog-card__link {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
+.blog-card__image-wrap {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #e9eef8;
+}
+
+.blog-card__image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.25s;
+}
+
+.blog-card:hover .blog-card__image {
+  transform: scale(1.035);
+}
+
+.blog-card__image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(135deg, rgba(49, 94, 234, 0.16), rgba(123, 211, 137, 0.18)),
+    #eef3fb;
+  color: #1f3c88;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.blog-card__date-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 58px;
+  min-height: 62px;
+  display: grid;
+  place-items: center;
+  padding: 7px 5px;
+  border-radius: 4px;
+  background: #1f3c88;
+  color: #ffffff;
+  text-align: center;
+  box-shadow: 0 14px 28px rgba(16, 24, 40, 0.2);
+}
+
+.blog-card__date-badge span {
+  font-size: 23px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.blog-card__date-badge small {
+  color: #eaf1ff;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .blog-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: 20px;
 }
+
 .blog-card__meta {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 12px;
+  color: #667085;
   font-size: 12px;
-  color: #64748b;
-}
-.blog-card__category {
-  background: #eef2ff;
-  color: #3730a3;
-  padding: 2px 10px;
-  border-radius: 999px;
   font-weight: 700;
-  font-size: 11px;
 }
+
 .blog-card__title {
-  margin: 0 0 8px;
-  font-size: 18px;
-  font-weight: 800;
-  color: #0f172a;
-  line-height: 1.3;
+  margin: 0 0 10px;
+  color: #101828;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.28;
 }
+
 .blog-card__excerpt {
-  margin: 0 0 12px;
+  margin: 0;
+  color: #475467;
   font-size: 14px;
-  color: #475569;
-  line-height: 1.5;
+  line-height: 1.65;
   display: -webkit-box;
+  overflow: hidden;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  overflow: hidden;
 }
+
+.blog-card__footer {
+  margin-top: auto;
+  padding-top: 18px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+}
+
 .blog-card__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-}
-.blog-card__tag {
-  font-size: 11px;
-  color: #64748b;
-  background: #f1f5f9;
-  padding: 2px 8px;
-  border-radius: 999px;
+  gap: 7px;
 }
 
-/* Pagination */
+.blog-card__tag {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #f1f4f9;
+  color: #5b6678;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.blog-card__cta {
+  flex: 0 0 auto;
+  color: #315eea;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.blog-card:hover .blog-card__cta {
+  color: #1f3c88;
+}
+
 .blog-pagination {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  padding: 24px 0;
-}
-.blog-pagination__btn {
-  padding: 8px 18px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #3b82f6;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.blog-pagination__btn:hover:not(:disabled) {
-  background: #eef2ff;
-}
-.blog-pagination__btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-.blog-pagination__info {
-  font-size: 14px;
-  color: #64748b;
-  font-weight: 600;
+  padding-top: 12px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .blog-page {
-    padding: 24px 16px 60px;
+.blog-pagination__btn {
+  min-height: 40px;
+  padding: 9px 18px;
+  border: 1px solid #cfd8e6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #315eea;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.blog-pagination__btn:hover:not(:disabled) {
+  border-color: #315eea;
+  background: #eef3ff;
+}
+
+.blog-pagination__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.blog-pagination__info {
+  color: #667085;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 820px) {
+  .blog-hero {
+    min-height: 280px;
   }
-  .blog-title {
-    font-size: 24px;
+
+  .blog-hero__content,
+  .blog-content {
+    width: min(100% - 32px, 1120px);
   }
+
+  .blog-hero__content {
+    padding: 48px 0;
+  }
+
+  .blog-hero h1 {
+    font-size: 34px;
+  }
+
+  .blog-hero p:last-child {
+    font-size: 16px;
+  }
+
+  .blog-content {
+    padding: 26px 0 60px;
+  }
+
+  .blog-toolbar__header {
+    display: block;
+  }
+
+  .blog-search {
+    display: block;
+    margin-top: 18px;
+  }
+
   .blog-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 18px;
   }
-  .blog-card__image-wrap {
-    height: 180px;
+
+  .blog-card__footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .blog-hero {
+    min-height: 250px;
+    background-position: 58% center;
+  }
+
+  .blog-hero h1 {
+    font-size: 30px;
+  }
+
+  .blog-toolbar h2 {
+    font-size: 25px;
+  }
+
+  .blog-pagination {
+    flex-wrap: wrap;
   }
 }
 </style>

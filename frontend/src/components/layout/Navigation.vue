@@ -158,6 +158,7 @@ const isCalculatorPage = computed(() => route.path === '/calculator')
 const HEADER_PUBLIC_NAV_NAME_BY_KEY = {
   calculator: 'calculator',
   about: 'about',
+  blog: 'blog',
   'cours-particuliers': 'tutoring',
   'ressources-gratuites': 'free_resources',
   contact: 'contact'
@@ -178,7 +179,7 @@ const rightItemLabel = (item) => {
 const leftMenuItems = computed(() => {
   if (isLandingVariant.value || isFreeResourcePage.value) return []
   return menuItems.filter((item) =>
-    ['cours-particuliers', 'ressources-gratuites'].includes(item.key)
+    ['cours-particuliers', 'ressources-gratuites', 'blog'].includes(item.key)
   )
 })
 

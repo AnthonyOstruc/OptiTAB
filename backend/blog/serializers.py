@@ -1,8 +1,18 @@
-"""
+﻿"""
 Serializers du blog OptiTAB
 """
+from django.utils.text import slugify
 from rest_framework import serializers
-from .models import BlogCategory, BlogTag, BlogPost
+
+from .models import (
+    BlogCategory,
+    BlogTag,
+    BlogNiveau,
+    BlogContentType,
+    BlogPost,
+    BlogPostImage,
+    BlogPostRelatedLink,
+)
 
 
 class BlogCategorySerializer(serializers.ModelSerializer):
@@ -27,9 +37,59 @@ class BlogTagSerializer(serializers.ModelSerializer):
         return obj.articles.filter(statut='published', est_actif=True).count()
 
 
+class BlogNiveauSerializer(serializers.ModelSerializer):
+    articles_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlogNiveau
+        fields = ['id', 'nom', 'slug', 'ordre', 'articles_count']
+
+    def get_articles_count(self, obj):
+        return obj.articles.filter(statut='published', est_actif=True).count()
+
+
+class BlogContentTypeSerializer(serializers.ModelSerializer):
+    articles_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlogContentType
+        fields = ['id', 'nom', 'slug', 'ordre', 'articles_count']
+
+    def get_articles_count(self, obj):
+        return obj.articles.filter(statut='published', est_actif=True).count()
+
+
+class BlogPostImageSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlogPostImage
+        fields = [
+            'id', 'image_url', 'position', 'align', 'width_percent',
+            'alt_text', 'caption', 'title_text',
+        ]
+
+    def get_image_url(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
+
+
+class BlogPostRelatedLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogPostRelatedLink
+        fields = ['id', 'titre', 'url', 'description', 'ordre']
+
+
 class BlogPostListSerializer(serializers.ModelSerializer):
-    """Serializer léger pour la liste d'articles"""
+    """Serializer leger pour la liste d'articles"""
+
     categorie = BlogCategorySerializer(read_only=True)
+    niveau = BlogNiveauSerializer(read_only=True)
+    type_contenu = BlogContentTypeSerializer(read_only=True)
     tags = BlogTagSerializer(many=True, read_only=True)
     auteur_nom = serializers.SerializerMethodField()
     reading_time = serializers.ReadOnlyField()
@@ -40,7 +100,8 @@ class BlogPostListSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'titre', 'slug', 'extrait', 'image_couverture_url',
             'alt_text_image',
-            'categorie', 'tags', 'auteur_nom', 'statut',
+            'categorie', 'niveau', 'type_contenu',
+            'tags', 'auteur_nom', 'statut',
             'date_publication', 'reading_time',
         ]
 
@@ -60,17 +121,28 @@ class BlogPostListSerializer(serializers.ModelSerializer):
 
 
 class BlogPostDetailSerializer(BlogPostListSerializer):
-    """Serializer complet pour le détail d'un article"""
-    articles_lies = BlogPostListSerializer(many=True, read_only=True)
+    """Serializer complet pour le detail d'un article"""
+
+    articles_lies = serializers.SerializerMethodField()
+    liens_lies = serializers.SerializerMethodField()
     og_image_url = serializers.SerializerMethodField()
+    images = BlogPostImageSerializer(many=True, read_only=True)
 
     class Meta(BlogPostListSerializer.Meta):
         fields = BlogPostListSerializer.Meta.fields + [
-            'contenu', 'articles_lies',
+            'contenu', 'images', 'articles_lies', 'liens_lies',
             'seo_title', 'meta_description', 'og_title', 'og_description',
             'og_image_url', 'meta_robots',
             'date_creation', 'date_modification',
         ]
+
+    def get_articles_lies(self, obj):
+        qs = obj.articles_lies.filter(statut='published', est_actif=True).order_by('-date_publication')
+        return BlogPostListSerializer(qs, many=True, context=self.context).data
+
+    def get_liens_lies(self, obj):
+        qs = obj.liens_lies.filter(est_actif=True).order_by('ordre', 'id')
+        return BlogPostRelatedLinkSerializer(qs, many=True).data
 
     def get_og_image_url(self, obj):
         if obj.og_image:
@@ -81,24 +153,80 @@ class BlogPostDetailSerializer(BlogPostListSerializer):
         return None
 
 
-# ── Admin serializers ──────────────────────────────────────────────
+class _SlugAutoUniqueMixin:
+    slug_fallback = 'item'
 
-class BlogCategoryAdminSerializer(serializers.ModelSerializer):
+    def _build_unique_slug(self, model, source_text, max_length):
+        base = slugify((source_text or '').strip())[:max_length]
+        if not base:
+            base = self.slug_fallback
+
+        qs = model.objects.all()
+        if self.instance and getattr(self.instance, 'pk', None):
+            qs = qs.exclude(pk=self.instance.pk)
+
+        slug = base
+        index = 2
+        while qs.filter(slug=slug).exists():
+            suffix = f'-{index}'
+            slug = f'{base[:max_length - len(suffix)]}{suffix}'
+            index += 1
+        return slug
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        nom = (attrs.get('nom') or getattr(self.instance, 'nom', '') or '').strip()
+        raw_slug = (attrs.get('slug') or '').strip()
+        source = raw_slug or nom or self.slug_fallback
+        max_length = getattr(self.fields.get('slug'), 'max_length', 140) or 140
+        attrs['slug'] = self._build_unique_slug(self.Meta.model, source, max_length)
+        return attrs
+
+
+class BlogCategoryAdminSerializer(_SlugAutoUniqueMixin, serializers.ModelSerializer):
     class Meta:
         model = BlogCategory
         fields = ['id', 'nom', 'slug', 'description', 'meta_description', 'meta_robots', 'ordre', 'est_actif']
+        extra_kwargs = {
+            'slug': {'required': False, 'allow_blank': True, 'validators': []},
+        }
 
 
-class BlogTagAdminSerializer(serializers.ModelSerializer):
+class BlogTagAdminSerializer(_SlugAutoUniqueMixin, serializers.ModelSerializer):
     class Meta:
         model = BlogTag
         fields = ['id', 'nom', 'slug', 'meta_description', 'meta_robots', 'est_actif']
+        extra_kwargs = {
+            'slug': {'required': False, 'allow_blank': True, 'validators': []},
+        }
+
+
+class BlogNiveauAdminSerializer(_SlugAutoUniqueMixin, serializers.ModelSerializer):
+    class Meta:
+        model = BlogNiveau
+        fields = ['id', 'nom', 'slug', 'ordre', 'est_actif']
+        extra_kwargs = {
+            'slug': {'required': False, 'allow_blank': True, 'validators': []},
+        }
+
+
+class BlogContentTypeAdminSerializer(_SlugAutoUniqueMixin, serializers.ModelSerializer):
+    class Meta:
+        model = BlogContentType
+        fields = ['id', 'nom', 'slug', 'ordre', 'est_actif']
+        extra_kwargs = {
+            'slug': {'required': False, 'allow_blank': True, 'validators': []},
+        }
 
 
 class BlogPostAdminSerializer(serializers.ModelSerializer):
     """Serializer admin pour la liste et le CRUD des articles"""
+
     categorie_nom = serializers.CharField(source='categorie.nom', read_only=True, default='')
     auteur_nom = serializers.SerializerMethodField()
+    niveau_nom = serializers.CharField(source='niveau.nom', read_only=True, default='')
+    type_contenu_nom = serializers.CharField(source='type_contenu.nom', read_only=True, default='')
+
     tags_ids = serializers.PrimaryKeyRelatedField(
         source='tags', many=True, queryset=BlogTag.objects.all(), required=False,
     )
@@ -108,15 +236,20 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
 
     image_couverture_url = serializers.SerializerMethodField()
     og_image_url = serializers.SerializerMethodField()
+    images = BlogPostImageSerializer(many=True, read_only=True)
+    related_links = BlogPostRelatedLinkSerializer(source='liens_lies', many=True, read_only=True)
 
     class Meta:
         model = BlogPost
         fields = [
             'id', 'titre', 'slug', 'extrait', 'contenu',
+            'images', 'related_links',
             'image_couverture', 'image_couverture_url',
             'og_image', 'og_image_url',
             'alt_text_image',
             'categorie', 'categorie_nom',
+            'niveau', 'niveau_nom',
+            'type_contenu', 'type_contenu_nom',
             'tags_ids',
             'auteur', 'auteur_nom',
             'statut', 'date_publication', 'ordre', 'est_actif',
@@ -126,6 +259,37 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
             'date_creation', 'date_modification',
         ]
         read_only_fields = ['date_creation', 'date_modification']
+        extra_kwargs = {
+            'slug': {'required': False, 'allow_blank': True, 'validators': []},
+            'categorie': {'required': False, 'allow_null': True},
+            'niveau': {'required': False, 'allow_null': True},
+            'type_contenu': {'required': False, 'allow_null': True},
+            'est_actif': {'required': False, 'default': True},
+        }
+
+    def _build_unique_slug(self, source_text, max_length=280):
+        base = slugify((source_text or '').strip())[:max_length]
+        if not base:
+            base = 'article'
+
+        qs = BlogPost.objects.all()
+        if self.instance and getattr(self.instance, 'pk', None):
+            qs = qs.exclude(pk=self.instance.pk)
+
+        slug = base
+        index = 2
+        while qs.filter(slug=slug).exists():
+            suffix = f'-{index}'
+            slug = f'{base[:max_length - len(suffix)]}{suffix}'
+            index += 1
+        return slug
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        titre = (attrs.get('titre') or getattr(self.instance, 'titre', '') or '').strip()
+        raw_slug = (attrs.get('slug') or '').strip()
+        attrs['slug'] = self._build_unique_slug(raw_slug or titre)
+        return attrs
 
     def get_image_couverture_url(self, obj):
         if obj.image_couverture:
@@ -148,3 +312,86 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
             name = f'{obj.auteur.first_name} {obj.auteur.last_name}'.strip()
             return name or obj.auteur.email
         return ''
+
+
+class BlogPostImageAdminSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BlogPostImage
+        fields = [
+            'id', 'post', 'image', 'image_url', 'position', 'align',
+            'width_percent', 'alt_text', 'caption', 'title_text',
+            'est_actif', 'date_creation', 'date_modification',
+        ]
+        read_only_fields = ['post', 'image_url', 'date_creation', 'date_modification']
+        extra_kwargs = {
+            'image': {'required': False},
+            'align': {'required': False},
+            'width_percent': {'required': False},
+            'position': {'required': False},
+            'est_actif': {'required': False},
+        }
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        # In multipart forms, an omitted boolean can be interpreted like an
+        # unchecked checkbox. Inline blog images should stay visible unless the
+        # admin explicitly disables them.
+        if 'est_actif' not in getattr(self, 'initial_data', {}):
+            if self.instance is None:
+                attrs['est_actif'] = True
+            else:
+                attrs.pop('est_actif', None)
+        return attrs
+
+    def validate_width_percent(self, value):
+        value = int(value or 100)
+        if value < 20 or value > 100:
+            raise serializers.ValidationError('La largeur doit etre comprise entre 20 et 100%.')
+        return value
+
+    def validate_position(self, value):
+        value = int(value or 1)
+        if value < 1:
+            raise serializers.ValidationError('La position doit etre superieure ou egale a 1.')
+        return value
+
+    def get_image_url(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
+
+
+class BlogPostRelatedLinkAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogPostRelatedLink
+        fields = [
+            'id', 'post', 'titre', 'url', 'description', 'ordre',
+            'est_actif', 'date_creation', 'date_modification',
+        ]
+        read_only_fields = ['post', 'date_creation', 'date_modification']
+        extra_kwargs = {
+            'titre': {'required': True, 'allow_blank': False},
+            'url': {'required': True, 'allow_blank': False},
+            'description': {'required': False, 'allow_blank': True},
+            'ordre': {'required': False},
+            'est_actif': {'required': False},
+        }
+
+    def validate_url(self, value):
+        value = (value or '').strip()
+        if not value:
+            raise serializers.ValidationError('URL obligatoire.')
+        if value.startswith(('/', '#', 'http://', 'https://', 'mailto:', 'tel:')):
+            return value
+        raise serializers.ValidationError('Utilise une URL relative (/blog/...) ou une URL complete https://...')
+
+    def validate_ordre(self, value):
+        value = int(value or 0)
+        if value < 0:
+            raise serializers.ValidationError("L'ordre doit etre positif.")
+        return value

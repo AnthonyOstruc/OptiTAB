@@ -12,64 +12,12 @@
       <span class="burger-icon-fixed" :class="{ 'burger-icon-collapsed': sidebarCollapsed }">&#9776;</span>
     </button>
 
-    <!-- Navigation admin (visible uniquement dans les pages admin) -->
-    <nav v-if="isAdminPage" class="admin-nav">
-      <!-- Groupe 1: Configuration -->
-      <div class="nav-group">
-        <router-link to="/admin/pays" class="admin-link" :class="{ active: isActive('AdminPays') }">Pays</router-link>
-        <router-link to="/admin/niveaux" class="admin-link" :class="{ active: isActive('AdminNiveaux') }">Niveaux</router-link>
-      </div>
-      
-      <div class="nav-separator"></div>
-      
-      <!-- Groupe 2: Structure/Curriculum -->
-      <div class="nav-group">
-        <router-link to="/admin/matieres" class="admin-link" :class="{ active: isActive('AdminMatieres') }">Matières</router-link>
-        <router-link to="/admin/themes" class="admin-link" :class="{ active: isActive('AdminThemes') }">Thèmes</router-link>
-        <router-link to="/admin/notions" class="admin-link" :class="{ active: isActive('AdminNotions') }">Notions</router-link>
-        <!-- Chapitres supprimés -->
-      </div>
-      
-      <div class="nav-separator"></div>
-      
-      <!-- Groupe 3: Contenu de base -->
-      <div class="nav-group">
-        <router-link to="/admin/cours" class="admin-link" :class="{ active: isActive('AdminCours') }">Cours</router-link>
-        <router-link to="/admin/exercices" class="admin-link" :class="{ active: isActive('AdminExercices') }">Exercices</router-link>
-        <router-link to="/admin/quiz" class="admin-link" :class="{ active: isActive('AdminQuiz') }">Quiz</router-link>
-      </div>
-      
-      <div class="nav-separator"></div>
-      
-      <!-- Groupe 4: Contenu avancé -->
-      <div class="nav-group">
-        <router-link to="/admin/cours-pdf" class="admin-link" :class="{ active: isActive('AdminCoursPdf') }">PDF Cours</router-link>
-        <router-link to="/admin/cours-plus" class="admin-link" :class="{ active: isActive('AdminCoursPlus') }">Cours+</router-link>
-        <router-link to="/admin/exercices-plus" class="admin-link" :class="{ active: isActive('AdminExercicesPlus') }">Exercices+</router-link>
-        <router-link to="/admin/quiz-plus" class="admin-link" :class="{ active: isActive('AdminQuizPlus') }">Quiz+</router-link>
-      </div>
-      
-      <div class="nav-separator"></div>
-      
-      <!-- Groupe 5: Fiches -->
-      <div class="nav-group">
-        <router-link to="/admin/sheets" class="admin-link" :class="{ active: isActive('AdminSheets') }">Fiches</router-link>
-      </div>
-      
-      <div class="nav-separator"></div>
-      
-      <!-- Groupe 6: Outils -->
-      <div class="nav-group">
-        <router-link to="/admin/reel-background" class="admin-link" :class="{ active: isActive('AdminReelBackground') }">🎬 Fond Reel</router-link>
-      </div>
-      
-      <div class="nav-separator"></div>
-      
-      <!-- Groupe 7: Blog -->
-      <div class="nav-group">
-        <router-link to="/admin/blog" class="admin-link" :class="{ active: isActive('AdminBlog') }">📝 Blog</router-link>
-      </div>
-    </nav>
+    <div v-if="isAdminPage" class="admin-topbar">
+      <router-link to="/admin" class="admin-home-link" :class="{ active: route.name === 'AdminHome' }">
+        Administration
+      </router-link>
+      <span v-if="currentAdminTitle" class="admin-current">{{ currentAdminTitle }}</span>
+    </div>
 
     <!-- Section centrale : Contenu conditionnel (masqué si admin) -->
     <ConditionalHeader 
@@ -101,7 +49,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import UserMenu from './UserMenu.vue'
 import ConditionalHeader from '@/components/common/ConditionalHeader.vue'
 import NotificationCenter from '@/components/notifications/NotificationCenter.vue'
@@ -123,24 +71,45 @@ defineProps({
 })
 
 // Router
-const router = useRouter()
 const route = useRoute()
 
 // Computed properties
 const isCalculatorPage = computed(() => route.name === 'Calculator')
 const isAdminPage = computed(() => {
   const path = route.path || '';
-  return path.startsWith('/admin') && !path.startsWith('/admin/newsletter') && !path.startsWith('/admin/subscriptions')
+  return path.startsWith('/admin')
 })
 const isBillingPage = computed(() => route.name === 'Billing')
 const isSubscriptionPage = computed(() => route.name === 'Subscription')
 const isBillingSection = computed(() => ['Billing', 'Subscription'].includes(route.name))
 const showConditionalHeader = computed(() => !isCalculatorPage.value && !isAdminPage.value && !isBillingSection.value)
 
-// Fonction pour déterminer si un onglet admin est actif
-function isActive(routeName) {
-  return route.name === routeName
+const adminTitleByRoute = {
+  AdminHome: '',
+  AdminPays: 'Pays',
+  AdminNiveaux: 'Niveaux',
+  AdminMatieres: 'Matières',
+  AdminThemes: 'Thèmes',
+  AdminNotions: 'Notions',
+  AdminCours: 'Cours',
+  AdminExercices: 'Exercices',
+  AdminQuiz: 'Quiz',
+  AdminCoursPdf: 'PDF Cours',
+  AdminCoursPlus: 'Cours+',
+  AdminExercicesPlus: 'Exercices+',
+  AdminQuizPlus: 'Quiz+',
+  AdminSheets: 'Fiches',
+  AdminReelStudio: 'Reel Studio',
+  AdminReelBackground: 'Fond Reel',
+  AdminBlog: 'Blog',
+  AdminNewsletter: 'Newsletter',
+  AdminSubscriptions: 'Abonnements',
+  AdminSubscribers: 'Abonnés',
+  AdminPasses: 'Passes',
+  AdminQuizSubmissions: 'Notation quiz',
 }
+
+const currentAdminTitle = computed(() => adminTitleByRoute[route.name] || '')
 
 // Gestionnaires d'événements
 const handleSubjectChange = (subjectId) => {
@@ -384,58 +353,43 @@ const handleLogout = () => {
   transform: translateY(0);
 }
 
-/* Navigation admin dans le header */
-.admin-nav {
+/* Raccourci admin dans le header */
+.admin-topbar {
   display: flex;
-  gap: 0.75rem;
   align-items: center;
+  gap: 10px;
   flex: 1;
-  flex-wrap: wrap;
-  overflow-x: auto;
-  padding: 0.25rem 0;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE et Edge */
+  min-width: 0;
 }
 
-.admin-nav::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-.nav-group {
-  display: flex;
-  gap: 0.4rem;
+.admin-home-link {
+  display: inline-flex;
   align-items: center;
-}
-
-.nav-separator {
-  width: 1px;
-  height: 20px;
-  background: #d1d5db;
-  margin: 0 0.15rem;
-  flex-shrink: 0;
-}
-
-.admin-link {
+  min-height: 36px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 14px;
+  font-weight: 800;
   text-decoration: none;
-  color: #374151;
-  font-weight: 600;
-  padding: 6px 10px;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  font-size: 0.85rem;
-  white-space: nowrap;
-  flex-shrink: 0;
 }
 
-.admin-link:hover {
-  background: #f3f4f6;
-  color: #6366f1;
-}
-
-.admin-link.active {
-  background: #6366f1;
+.admin-home-link:hover,
+.admin-home-link.active {
+  background: #2563eb;
   color: #fff;
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+}
+
+.admin-current {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding-left: 10px;
+  border-left: 1px solid #e2e8f0;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 /* Styles pour le composant NotificationCenter intégré */

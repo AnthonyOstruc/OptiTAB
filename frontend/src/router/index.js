@@ -220,11 +220,11 @@ const routes = [
   },
   { path: '/about', name: 'About', component: () => import('@/views/About.vue') },
   { path: '/contact', name: 'Contact', component: () => import('@/views/Contact.vue') },
-  // Blog (coming soon — routes publiques désactivées)
-  { path: '/blog', name: 'BlogList', component: () => import('@/views/BlogComingSoon.vue') },
-  { path: '/blog/categorie/:slug', name: 'BlogCategory', component: () => import('@/views/BlogComingSoon.vue') },
-  { path: '/blog/tag/:slug', name: 'BlogTag', component: () => import('@/views/BlogComingSoon.vue') },
-  { path: '/blog/:slug', name: 'BlogDetail', component: () => import('@/views/BlogComingSoon.vue') },
+  // Blog public.
+  { path: '/blog', name: 'BlogList', component: () => import('@/views/BlogList.vue') },
+  { path: '/blog/categorie/:slug', name: 'BlogCategory', component: () => import('@/views/BlogCategory.vue') },
+  { path: '/blog/tag/:slug', name: 'BlogTag', component: () => import('@/views/BlogTag.vue') },
+  { path: '/blog/:slug', name: 'BlogDetail', component: () => import('@/views/BlogDetail.vue') },
   { path: '/cours-particuliers', name: 'CoursParticuliers', component: () => import('@/views/CoursParticuliers.vue') },
   { path: '/password-reset', name: 'PasswordReset', component: () => import('@/views/PasswordReset.vue') },
   { path: '/cgv', name: 'CGV', component: () => import('@/views/CGV.vue') },
@@ -257,6 +257,7 @@ const routes = [
     component: () => import('@/views/admin/AdminLayout.vue'),
     meta: { requiresAdmin: true },
     children: [
+      { path: '', name: 'AdminHome', component: () => import('@/views/admin/AdminHome.vue') },
       { path: 'newsletter', name: 'AdminNewsletter', component: () => import('@/views/admin/NewsletterAdmin.vue') },
       { path: 'subscriptions', name: 'AdminSubscriptions', component: () => import('@/views/admin/AdminSubscriptions.vue') },
       { path: 'subscribers', name: 'AdminSubscribers', component: () => import('@/views/admin/AdminSubscribers.vue') },
@@ -276,9 +277,9 @@ const routes = [
       { path: 'quiz-submissions', name: 'AdminQuizSubmissions', component: () => import('@/views/admin/AdminQuizSubmissions.vue') },
       { path: 'niveaux', name: 'AdminNiveaux', component: () => import('@/views/admin/AdminNiveaux.vue') },
       { path: 'pays', name: 'AdminPays', component: () => import('@/views/admin/AdminPays.vue') },
+      { path: 'reel-studio', name: 'AdminReelStudio', component: () => import('@/views/admin/ReelStudioAdminPage.vue') },
       { path: 'reel-background', name: 'AdminReelBackground', component: () => import('@/views/admin/AdminReelBackground.vue') },
       { path: 'blog', name: 'AdminBlog', component: () => import('@/views/admin/AdminBlog.vue') },
-      { path: '', redirect: { name: 'AdminMatieres' } }
     ]
   },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/NotFound.vue') }

@@ -9,6 +9,8 @@ urlpatterns = [
     path('categories/<slug:slug>/', views.blog_category_detail, name='blog-category-detail'),
     path('tags/', views.blog_tag_list, name='blog-tag-list'),
     path('tags/<slug:slug>/', views.blog_tag_detail, name='blog-tag-detail'),
+    path('niveaux/', views.blog_niveau_list, name='blog-niveau-list'),
+    path('types/', views.blog_content_type_list, name='blog-content-type-list'),
     path('sitemap/', views.blog_sitemap, name='blog-sitemap'),
 
     # Admin CRUD — articles
@@ -16,6 +18,10 @@ urlpatterns = [
     path('admin/posts/create/', views.admin_post_create, name='blog-admin-post-create'),
     path('admin/posts/<int:pk>/', views.admin_post_update, name='blog-admin-post-update'),
     path('admin/posts/<int:pk>/delete/', views.admin_post_delete, name='blog-admin-post-delete'),
+    path('admin/posts/<int:pk>/images/', views.admin_post_images, name='blog-admin-post-images'),
+    path('admin/posts/<int:pk>/images/<int:image_pk>/', views.admin_post_image_detail, name='blog-admin-post-image-detail'),
+    path('admin/posts/<int:pk>/related-links/', views.admin_post_related_links, name='blog-admin-post-related-links'),
+    path('admin/posts/<int:pk>/related-links/<int:link_pk>/', views.admin_post_related_link_detail, name='blog-admin-post-related-link-detail'),
 
     # Admin CRUD — catégories
     path('admin/categories/', views.admin_category_list, name='blog-admin-category-list'),
@@ -28,4 +34,16 @@ urlpatterns = [
     path('admin/tags/create/', views.admin_tag_create, name='blog-admin-tag-create'),
     path('admin/tags/<int:pk>/', views.admin_tag_update, name='blog-admin-tag-update'),
     path('admin/tags/<int:pk>/delete/', views.admin_tag_delete, name='blog-admin-tag-delete'),
+
+    # Admin CRUD — niveaux
+    path('admin/niveaux/', views.admin_niveau_list, name='blog-admin-niveau-list'),
+    path('admin/niveaux/create/', views.admin_niveau_create, name='blog-admin-niveau-create'),
+    path('admin/niveaux/<int:pk>/', views.admin_niveau_update, name='blog-admin-niveau-update'),
+    path('admin/niveaux/<int:pk>/delete/', views.admin_niveau_delete, name='blog-admin-niveau-delete'),
+
+    # Admin CRUD — types de contenu
+    path('admin/types/', views.admin_content_type_list, name='blog-admin-content-type-list'),
+    path('admin/types/create/', views.admin_content_type_create, name='blog-admin-content-type-create'),
+    path('admin/types/<int:pk>/', views.admin_content_type_update, name='blog-admin-content-type-update'),
+    path('admin/types/<int:pk>/delete/', views.admin_content_type_delete, name='blog-admin-content-type-delete'),
 ]

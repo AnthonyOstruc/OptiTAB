@@ -74,7 +74,7 @@ export const useUserStore = defineStore('user', {
       
       // Forcer l'état admin pour les utilisateurs avec certains emails
       const adminEmails = ['anthonytabet.c@gmail.com', 'admin@optitab.com']
-      this.isAdmin = user.is_staff || user.isAdmin || adminEmails.includes(user.email) || false
+      this.isAdmin = user.is_staff || user.is_superuser || user.isAdmin || adminEmails.includes(user.email) || false
       
       this.isAuthenticated = true
       this.isLoading = false

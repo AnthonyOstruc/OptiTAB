@@ -99,6 +99,7 @@ const adminTitleByRoute = {
   AdminExercicesPlus: 'Exercices+',
   AdminQuizPlus: 'Quiz+',
   AdminSheets: 'Fiches',
+  AdminReelStudio: 'Reel Studio',
   AdminReelBackground: 'Fond Reel',
   AdminBlog: 'Blog',
   AdminNewsletter: 'Newsletter',

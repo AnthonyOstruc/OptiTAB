@@ -90,6 +90,7 @@ const sections = [
       { label: 'Cours+', description: 'Gérer les contenus premium cours.', to: '/admin/cours-plus', icon: BookOpenIcon },
       { label: 'Exercices+', description: 'Gérer les exercices premium.', to: '/admin/exercices-plus', icon: ClipboardDocumentCheckIcon },
       { label: 'Quiz+', description: 'Gérer les quiz premium.', to: '/admin/quiz-plus', icon: QuestionMarkCircleIcon },
+      { label: 'Reel Studio', description: 'Créer des reels pédagogiques 9:16.', to: '/admin/reel-studio', icon: FilmIcon },
       { label: 'Fond Reel', description: 'Créer les fonds pour vidéos courtes.', to: '/admin/reel-background', icon: FilmIcon },
     ],
   },

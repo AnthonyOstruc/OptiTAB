@@ -133,3 +133,118 @@ def generate_speech_mp3(
         'model_id': resolved_model_id,
         'output_format': resolved_output_format,
     }
+
+
+def _serialize_voice(voice, *, matches_filter):
+    labels = voice.get('labels') or {}
+    category = voice.get('category') or ''
+    voice_language = str(labels.get('language') or '').strip().lower()
+    voice_accent = str(labels.get('accent') or '').strip().lower()
+    requires_subscription = category == 'professional'
+
+    return {
+        'voice_id': voice.get('voice_id') or '',
+        'name': voice.get('name') or '',
+        'category': category,
+        'api_usable': not requires_subscription,
+        'requires_subscription': requires_subscription,
+        'matches_filter': bool(matches_filter),
+        'labels': {
+            'language': voice_language,
+            'accent': voice_accent,
+            'gender': labels.get('gender') or '',
+            'age': labels.get('age') or '',
+            'descriptive': labels.get('descriptive') or '',
+            'use_case': labels.get('use_case') or '',
+        },
+    }
+
+
+def _custom_voice_item(voice_id):
+    return {
+        'voice_id': voice_id,
+        'name': f'Voix personnalisee ({voice_id})',
+        'category': 'custom',
+        'api_usable': True,
+        'requires_subscription': False,
+        'matches_filter': False,
+        'is_custom': True,
+        'labels': {
+            'language': '',
+            'accent': '',
+            'gender': '',
+            'age': '',
+            'descriptive': '',
+            'use_case': '',
+        },
+    }
+
+
+def list_filtered_voices(*, language='fr', accent='parisian', include_fallback=True):
+    api_key = getattr(settings, 'ELEVENLABS_API_KEY', '').strip()
+    if not api_key:
+        raise ElevenLabsConfigurationError('ELEVENLABS_API_KEY non configure.')
+
+    try:
+        response = requests.get(
+            'https://api.elevenlabs.io/v1/voices',
+            headers={'xi-api-key': api_key},
+            timeout=float(getattr(settings, 'ELEVENLABS_TIMEOUT_SECONDS', 60) or 60),
+        )
+    except requests.Timeout as exc:
+        raise ElevenLabsAPIError('Timeout ElevenLabs pendant le chargement des voix.') from exc
+    except requests.RequestException as exc:
+        raise ElevenLabsAPIError('Erreur reseau ElevenLabs pendant le chargement des voix.') from exc
+
+    if response.status_code >= 400:
+        detail = _extract_error_detail(response)
+        raise ElevenLabsAPIError(f'ElevenLabs HTTP {response.status_code}: {detail}')
+
+    try:
+        voices = response.json().get('voices', [])
+    except ValueError as exc:
+        raise ElevenLabsAPIError('ElevenLabs a retourne une liste de voix invalide.') from exc
+
+    normalized_language = str(language or '').strip().lower()
+    normalized_accent = str(accent or '').strip().lower()
+    filtered = []
+    seen_voice_ids = set()
+
+    for voice in voices:
+        labels = voice.get('labels') or {}
+        voice_language = str(labels.get('language') or '').strip().lower()
+        voice_accent = str(labels.get('accent') or '').strip().lower()
+        if normalized_language and voice_language != normalized_language:
+            continue
+        if normalized_accent and voice_accent != normalized_accent:
+            continue
+
+        serialized = _serialize_voice(voice, matches_filter=True)
+        filtered.append(serialized)
+        seen_voice_ids.add(serialized['voice_id'])
+
+    has_usable_filtered_voice = any(voice.get('api_usable') for voice in filtered)
+    if include_fallback and not has_usable_filtered_voice:
+        for voice in voices:
+            if voice.get('category') != 'premade':
+                continue
+            if voice.get('voice_id') in seen_voice_ids:
+                continue
+            serialized = _serialize_voice(voice, matches_filter=False)
+            filtered.append(serialized)
+            seen_voice_ids.add(serialized['voice_id'])
+
+    default_voice_id = getattr(settings, 'ELEVENLABS_VOICE_ID', '').strip()
+    if default_voice_id and default_voice_id not in seen_voice_ids:
+        filtered.insert(0, _custom_voice_item(default_voice_id))
+        seen_voice_ids.add(default_voice_id)
+
+    return sorted(
+        filtered,
+        key=lambda item: (
+            not item.get('is_custom'),
+            not item.get('matches_filter'),
+            not item.get('api_usable'),
+            (item.get('name') or '').lower(),
+        ),
+    )

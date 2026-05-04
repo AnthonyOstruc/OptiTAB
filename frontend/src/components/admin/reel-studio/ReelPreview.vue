@@ -20,12 +20,20 @@
           {{ exportingPng ? `PNG ${pngExportProgress}/${slidesForRender.length}` : 'Exporter PNG' }}
         </button>
         <button
+          class="btn-fullscreen btn-video-export btn-video-export-fast"
+          type="button"
+          :disabled="!slidesForRender.length || exportingPng || isVideoExportBusy"
+          @click="exportAllSlidesVideo('fast')"
+        >
+          {{ videoFastExportButtonLabel }}
+        </button>
+        <button
           class="btn-fullscreen btn-video-export"
           type="button"
           :disabled="!slidesForRender.length || exportingPng || isVideoExportBusy"
-          @click="exportAllSlidesVideo"
+          @click="exportAllSlidesVideo('hq')"
         >
-          {{ videoExportButtonLabel }}
+          {{ videoHqExportButtonLabel }}
         </button>
         <div class="math-size-controls" aria-label="Taille des formules">
           <button class="size-button" type="button" @click="decreaseMathSize">A-</button>
@@ -53,12 +61,13 @@
       />
     </div>
 
-    <div v-if="pngExportMounted" class="png-export-area" aria-hidden="true">
+    <div v-if="pngExportMounted" class="png-export-area" :style="exportFrameStyle" aria-hidden="true">
       <div
         v-for="(slide, index) in slidesForRender"
         :key="`png-export-${slide.id || index}`"
         :ref="(el) => setExportSlideRef(el, index)"
         class="png-export-frame"
+        :style="exportFrameStyle"
       >
         <ReelSlidePreview
           :slide="slide"
@@ -272,12 +281,35 @@ const preparingVideoFrames = ref(false)
 const pngExportMounted = ref(false)
 const pngExportProgress = ref(0)
 const videoFrameProgress = ref(0)
+const videoExportMode = ref('fast')
+const exportFrameWidth = ref(1080)
+const exportFrameHeight = ref(1920)
 const exportSlideRefs = ref([])
 
 const slidesSafe = computed(() => (Array.isArray(props.slides) ? props.slides : []))
 const NON_MATH_SLIDE_TYPES = new Set(['hook', 'cta'])
 const PNG_EXPORT_WIDTH = 1080
 const PNG_EXPORT_HEIGHT = 1920
+const VIDEO_EXPORT_PRESETS = {
+  fast: {
+    width: 720,
+    height: 1280,
+    fps: 24,
+    crf: 24,
+    ffmpegPreset: 'ultrafast',
+    imageType: 'image/jpeg',
+    imageQuality: 0.9,
+  },
+  hq: {
+    width: 1080,
+    height: 1920,
+    fps: 30,
+    crf: 18,
+    ffmpegPreset: 'veryfast',
+    imageType: 'image/png',
+    imageQuality: 1,
+  },
+}
 const mathSizePercent = computed(() => Math.round(getMathScale(activeSlide.value) * 100))
 const mathSizeLabel = computed(() => getActiveSlideTypeLabel('Taille'))
 const safeZoneXPercent = computed(() => Math.round(safeZoneXScale.value * 100))
@@ -302,10 +334,19 @@ const activeSlideSpeechStatusLabel = computed(() => {
   return 'Aucun MP3 genere pour cette slide.'
 })
 const isVideoExportBusy = computed(() => Boolean(preparingVideoFrames.value || props.exportingVideo))
-const videoExportButtonLabel = computed(() => {
-  if (props.exportingVideo) return 'Assemblage MP4...'
-  if (preparingVideoFrames.value) return `Frames ${videoFrameProgress.value}/${slidesForRender.value.length}`
-  return 'Exporter MP4 HQ'
+const exportFrameStyle = computed(() => ({
+  '--export-width': `${exportFrameWidth.value}px`,
+  '--export-height': `${exportFrameHeight.value}px`,
+}))
+const videoFastExportButtonLabel = computed(() => {
+  if (props.exportingVideo && videoExportMode.value === 'fast') return 'Assemblage rapide...'
+  if (preparingVideoFrames.value && videoExportMode.value === 'fast') return `Rapide ${videoFrameProgress.value}/${slidesForRender.value.length}`
+  return 'MP4 rapide'
+})
+const videoHqExportButtonLabel = computed(() => {
+  if (props.exportingVideo && videoExportMode.value === 'hq') return 'Assemblage HQ...'
+  if (preparingVideoFrames.value && videoExportMode.value === 'hq') return `HQ ${videoFrameProgress.value}/${slidesForRender.value.length}`
+  return 'MP4 HQ'
 })
 
 function normalizeText(value) {
@@ -723,28 +764,55 @@ async function downloadCanvasPng(canvas, filename) {
   link.remove()
 }
 
-async function renderExportCanvas(index) {
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = () => reject(reader.error)
+    reader.readAsDataURL(blob)
+  })
+}
+
+async function canvasToImageDataUrl(canvas, exportPreset) {
+  const imageType = exportPreset?.imageType || 'image/png'
+  const imageQuality = exportPreset?.imageQuality ?? 1
+  const blob = await new Promise((resolve) => {
+    canvas.toBlob((result) => resolve(result), imageType, imageQuality)
+  })
+
+  if (blob) {
+    return blobToDataUrl(blob)
+  }
+
+  return canvas.toDataURL(imageType, imageQuality)
+}
+
+async function renderExportCanvas(index, dimensions = {}) {
   const frame = exportSlideRefs.value[index]
   const target = frame?.querySelector('.reel-slide') || frame
   if (!target) return null
+  const width = dimensions.width || PNG_EXPORT_WIDTH
+  const height = dimensions.height || PNG_EXPORT_HEIGHT
 
   return html2canvas(target, {
     backgroundColor: '#f8fbff',
-    height: PNG_EXPORT_HEIGHT,
+    height,
     logging: false,
     scale: 1,
     scrollX: 0,
     scrollY: 0,
     useCORS: true,
-    width: PNG_EXPORT_WIDTH,
-    windowHeight: PNG_EXPORT_HEIGHT,
-    windowWidth: PNG_EXPORT_WIDTH,
+    width,
+    windowHeight: height,
+    windowWidth: width,
   })
 }
 
 async function exportAllSlidesPng() {
   if (!slidesForRender.value.length || exportingPng.value) return
 
+  exportFrameWidth.value = PNG_EXPORT_WIDTH
+  exportFrameHeight.value = PNG_EXPORT_HEIGHT
   exportingPng.value = true
   pngExportMounted.value = true
   pngExportProgress.value = 0
@@ -772,8 +840,9 @@ async function exportAllSlidesPng() {
   }
 }
 
-async function exportAllSlidesVideo() {
+async function exportAllSlidesVideo(mode = 'fast') {
   if (!slidesForRender.value.length || isVideoExportBusy.value || exportingPng.value) return
+  const exportPreset = VIDEO_EXPORT_PRESETS[mode] || VIDEO_EXPORT_PRESETS.fast
 
   const slidesMissingAudio = slidesForRender.value.filter((slide) => (
     slideSpeechText(slide) && !normalizeText(slide?.speech_audio_url)
@@ -785,6 +854,9 @@ async function exportAllSlidesVideo() {
     return
   }
 
+  videoExportMode.value = mode
+  exportFrameWidth.value = exportPreset.width
+  exportFrameHeight.value = exportPreset.height
   preparingVideoFrames.value = true
   pngExportMounted.value = true
   videoFrameProgress.value = 0
@@ -795,16 +867,16 @@ async function exportAllSlidesVideo() {
 
     const frames = []
     for (const [index, slide] of slidesForRender.value.entries()) {
-      const canvas = await renderExportCanvas(index)
+      const canvas = await renderExportCanvas(index, exportPreset)
       if (!canvas) continue
 
       frames.push({
         slide_id: slide.id,
-        image: canvas.toDataURL('image/png'),
+        image: await canvasToImageDataUrl(canvas, exportPreset),
         duration_seconds: Number(slide.duration_seconds) || 4,
       })
       videoFrameProgress.value = index + 1
-      await new Promise((resolve) => window.setTimeout(resolve, 50))
+      await waitForNextPaint()
     }
 
     if (!frames.length) {
@@ -814,10 +886,11 @@ async function exportAllSlidesVideo() {
 
     emit('export-video', {
       frames,
-      width: PNG_EXPORT_WIDTH,
-      height: PNG_EXPORT_HEIGHT,
-      fps: 30,
-      crf: 18,
+      width: exportPreset.width,
+      height: exportPreset.height,
+      fps: exportPreset.fps,
+      crf: exportPreset.crf,
+      preset: exportPreset.ffmpegPreset,
     })
   } catch (error) {
     console.error('Erreur export video:', error)
@@ -1038,8 +1111,16 @@ onBeforeUnmount(() => {
   background: #7c3aed;
 }
 
+.btn-video-export-fast {
+  background: #2563eb;
+}
+
 .btn-video-export:hover:not(:disabled) {
   background: #6d28d9;
+}
+
+.btn-video-export-fast:hover:not(:disabled) {
+  background: #1d4ed8;
 }
 
 .preview-count {
@@ -1241,24 +1322,24 @@ onBeforeUnmount(() => {
   position: fixed;
   top: 0;
   left: -12000px;
-  width: 1080px;
+  width: var(--export-width, 1080px);
   pointer-events: none;
   visibility: visible;
   z-index: 0;
 }
 
 .png-export-frame {
-  width: 1080px;
-  height: 1920px;
+  width: var(--export-width, 1080px);
+  height: var(--export-height, 1920px);
   overflow: hidden;
   background: #f8fbff;
 }
 
 .png-export-frame :deep(.slide-card) {
-  width: 1080px !important;
-  min-width: 1080px !important;
-  max-width: 1080px !important;
-  height: 1920px !important;
+  width: var(--export-width, 1080px) !important;
+  min-width: var(--export-width, 1080px) !important;
+  max-width: var(--export-width, 1080px) !important;
+  height: var(--export-height, 1920px) !important;
   padding: 0 !important;
   border: 0 !important;
   border-radius: 0 !important;
@@ -1267,8 +1348,8 @@ onBeforeUnmount(() => {
 }
 
 .png-export-frame :deep(.reel-slide) {
-  width: 1080px !important;
-  height: 1920px !important;
+  width: var(--export-width, 1080px) !important;
+  height: var(--export-height, 1920px) !important;
   aspect-ratio: auto !important;
   border: 0 !important;
   border-radius: 0 !important;

@@ -192,8 +192,19 @@ class ReelVideoFrameSerializer(serializers.Serializer):
 
 
 class ReelVideoExportSerializer(serializers.Serializer):
+    PRESET_CHOICES = [
+        'ultrafast',
+        'superfast',
+        'veryfast',
+        'faster',
+        'fast',
+        'medium',
+        'slow',
+    ]
+
     frames = ReelVideoFrameSerializer(many=True, allow_empty=False)
     width = serializers.IntegerField(min_value=720, max_value=2160, required=False, default=1080)
     height = serializers.IntegerField(min_value=1280, max_value=3840, required=False, default=1920)
     fps = serializers.IntegerField(min_value=24, max_value=60, required=False, default=30)
     crf = serializers.IntegerField(min_value=16, max_value=28, required=False, default=18)
+    preset = serializers.ChoiceField(choices=PRESET_CHOICES, required=False, default='veryfast')

@@ -4,6 +4,7 @@ from . import views
 
 
 urlpatterns = [
+    path('voices/', views.ReelVoiceListView.as_view(), name='reel-voice-list'),
     path('projects/', views.ReelProjectListCreateView.as_view(), name='reel-project-list-create'),
     path('projects/<int:pk>/', views.ReelProjectDetailView.as_view(), name='reel-project-detail'),
     path(
@@ -30,6 +31,11 @@ urlpatterns = [
         'projects/<int:pk>/export-video/',
         views.ReelProjectExportVideoView.as_view(),
         name='reel-project-export-video',
+    ),
+    path(
+        'projects/<int:pk>/download-video/',
+        views.ReelProjectDownloadVideoView.as_view(),
+        name='reel-project-download-video',
     ),
     path(
         'slides/<int:pk>/generate-speech/',

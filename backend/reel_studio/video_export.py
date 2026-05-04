@@ -21,6 +21,7 @@ class VideoExportError(Exception):
 
 MAX_FRAME_BYTES = 20 * 1024 * 1024
 DEFAULT_AUDIO_BITRATE = '192k'
+DEFAULT_VIDEO_PRESET = 'veryfast'
 
 
 def _get_ffmpeg_executable():
@@ -140,6 +141,7 @@ def _build_segment(
     height,
     fps,
     crf,
+    preset,
     timeout,
 ):
     vf = _video_filter(width, height)
@@ -151,7 +153,7 @@ def _build_segment(
         '-c:v',
         'libx264',
         '-preset',
-        'medium',
+        preset,
         '-crf',
         str(crf),
         '-tune',
@@ -220,7 +222,7 @@ def _build_segment(
     _run_ffmpeg(command, timeout=timeout)
 
 
-def _concat_segments(*, ffmpeg, segment_paths, output_path, fps, crf, timeout):
+def _concat_segments(*, ffmpeg, segment_paths, output_path, fps, crf, preset, timeout):
     concat_path = os.path.join(os.path.dirname(output_path), 'concat.txt')
     with open(concat_path, 'w', encoding='utf-8') as concat_file:
         for segment_path in segment_paths:
@@ -264,7 +266,7 @@ def _concat_segments(*, ffmpeg, segment_paths, output_path, fps, crf, timeout):
         '-c:v',
         'libx264',
         '-preset',
-        'medium',
+        preset,
         '-crf',
         str(crf),
         '-pix_fmt',
@@ -280,13 +282,14 @@ def _concat_segments(*, ffmpeg, segment_paths, output_path, fps, crf, timeout):
     _run_ffmpeg(encode_command, timeout=timeout)
 
 
-def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=18):
+def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=18, preset=''):
     frame_items = list(frames or [])
     if not frame_items:
         raise VideoExportError('Aucune image de slide fournie pour exporter la video.')
 
     ffmpeg = _get_ffmpeg_executable()
     timeout = int(getattr(settings, 'REEL_VIDEO_FFMPEG_TIMEOUT_SECONDS', 900) or 900)
+    resolved_preset = str(preset or getattr(settings, 'REEL_VIDEO_FFMPEG_PRESET', DEFAULT_VIDEO_PRESET) or DEFAULT_VIDEO_PRESET)
     slides_by_id = {slide.pk: slide for slide in project.slides.all()}
     segment_paths = []
 
@@ -313,6 +316,7 @@ def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=1
                 height=height,
                 fps=fps,
                 crf=crf,
+                preset=resolved_preset,
                 timeout=timeout,
             )
             segment_paths.append(segment_path)
@@ -324,6 +328,7 @@ def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=1
             output_path=output_path,
             fps=fps,
             crf=crf,
+            preset=resolved_preset,
             timeout=timeout,
         )
 
@@ -340,4 +345,5 @@ def export_reel_video(project, frames, *, width=1080, height=1920, fps=30, crf=1
         'height': height,
         'fps': fps,
         'crf': crf,
+        'preset': resolved_preset,
     }

@@ -1,10 +1,15 @@
 import re
 
+from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.db import transaction
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.utils.text import slugify
+from rest_framework.negotiation import BaseContentNegotiation
+from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -26,6 +31,7 @@ from .elevenlabs import (
     build_slide_speech_text,
     build_project_speech_text,
     generate_speech_mp3,
+    list_filtered_voices,
 )
 from .video_export import (
     VideoExportConfigurationError,
@@ -84,6 +90,15 @@ DEMO_SLIDES = [
         'duration_seconds': 4,
     },
 ]
+
+
+class ReelDownloadContentNegotiation(BaseContentNegotiation):
+    def select_parser(self, request, parsers):
+        return parsers[0] if parsers else None
+
+    def select_renderer(self, request, renderers, format_suffix=None):
+        renderer = renderers[0]
+        return renderer, renderer.media_type
 DEFAULT_TEMPLATE_SLIDE_DURATION_SECONDS = 4
 DEFAULT_CTA_TEXT = 'Abonne-toi à OptiTAB\nSauvegarde ce Reel\nCommente ton résultat'
 LEGACY_CTA_TEXTS = {
@@ -102,6 +117,11 @@ def _touch_project(project_id):
 def _project_serializer(project, request, *, detail=False):
     serializer_cls = ReelProjectDetailSerializer if detail else ReelProjectSerializer
     return serializer_cls(project, context={'request': request})
+
+
+def _project_video_download_filename(project):
+    safe_title = slugify(project.title or '') or f'reel-{project.pk}'
+    return f'{safe_title}.mp4'
 
 
 def _slide_serializer(slide, request):
@@ -829,6 +849,32 @@ class ReelProjectGenerateSpeechView(APIView):
         )
 
 
+class ReelVoiceListView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def get(self, request):
+        language = str(request.query_params.get('language') or 'fr').strip().lower()
+        accent = str(request.query_params.get('accent') or 'parisian').strip().lower()
+
+        try:
+            voices = list_filtered_voices(language=language, accent=accent, include_fallback=True)
+        except ElevenLabsConfigurationError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except ElevenLabsAPIError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+
+        return Response(
+            {
+                'voices': voices,
+                'default_voice_id': getattr(settings, 'ELEVENLABS_VOICE_ID', ''),
+                'filters': {
+                    'language': language,
+                    'accent': accent,
+                },
+            }
+        )
+
+
 class ReelProjectGenerateSlideSpeechesView(APIView):
     permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
 
@@ -914,6 +960,7 @@ class ReelProjectExportVideoView(APIView):
                 height=serializer.validated_data.get('height', 1920),
                 fps=serializer.validated_data.get('fps', 30),
                 crf=serializer.validated_data.get('crf', 18),
+                preset=serializer.validated_data.get('preset', 'veryfast'),
             )
         except VideoExportConfigurationError as exc:
             project.video_status = ReelProject.VIDEO_STATUS_ERROR
@@ -990,9 +1037,39 @@ class ReelProjectExportVideoView(APIView):
                     'height': project.video_height,
                     'fps': project.video_fps,
                     'crf': generated['crf'],
+                    'preset': generated['preset'],
                 },
             },
             status=status.HTTP_201_CREATED,
+        )
+
+
+class ReelProjectDownloadVideoView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+    renderer_classes = [JSONRenderer]
+    content_negotiation_class = ReelDownloadContentNegotiation
+
+    def get(self, request, pk):
+        project = get_object_or_404(ReelProject, pk=pk)
+        if not project.video_file:
+            return Response(
+                {'detail': 'Aucune video MP4 disponible pour ce reel.'},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        try:
+            project.video_file.open('rb')
+        except (FileNotFoundError, OSError, ValueError):
+            return Response(
+                {'detail': 'Le fichier video MP4 est introuvable.'},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        return FileResponse(
+            project.video_file,
+            as_attachment=True,
+            filename=_project_video_download_filename(project),
+            content_type='video/mp4',
         )
 
 

@@ -2,6 +2,10 @@ import apiClient from './client'
 
 const BASE = '/api/admin/reel-studio'
 
+export function listReelVoices(params = {}) {
+  return apiClient.get(`${BASE}/voices/`, { params })
+}
+
 export function listReelProjects() {
   return apiClient.get(`${BASE}/projects/`)
 }
@@ -44,6 +48,16 @@ export function generateReelSlideSpeech(id, data = {}) {
 
 export function exportReelVideo(id, data = {}) {
   return apiClient.post(`${BASE}/projects/${id}/export-video/`, data, { timeout: 900000 })
+}
+
+export function downloadReelVideo(id) {
+  return apiClient.get(`${BASE}/projects/${id}/download-video/`, {
+    responseType: 'blob',
+    timeout: 120000,
+    headers: {
+      Accept: '*/*',
+    },
+  })
 }
 
 export function updateReelSlide(id, data) {

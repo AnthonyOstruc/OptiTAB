@@ -72,10 +72,31 @@
                   <h3>Voix par slide</h3>
                   <p>{{ speechStatusLabel }}</p>
                 </div>
+                <label class="voice-select">
+                  Voix FR - accent parisien
+                  <select
+                    v-model="selectedVoiceId"
+                    :disabled="loadingVoiceOptions || generatingSpeech || generatingSpeechSlideId"
+                  >
+                    <option v-if="loadingVoiceOptions" value="">Chargement...</option>
+                    <option v-else-if="!voiceOptions.length" value="">Aucune voix trouvee</option>
+                    <option
+                      v-for="voice in voiceOptions"
+                      :key="voice.voice_id"
+                      :value="voice.voice_id"
+                      :disabled="!voice.api_usable"
+                    >
+                      {{ voice.name }}{{ voice.category ? ` - ${voice.category}` : '' }}{{ voice.api_usable ? '' : ' (abonnement requis)' }}
+                    </option>
+                  </select>
+                  <span v-if="selectedVoiceMeta">{{ selectedVoiceMeta }}</span>
+                  <span v-if="selectedVoiceWarning" class="voice-warning">{{ selectedVoiceWarning }}</span>
+                  <span v-else-if="voiceOptionsError">{{ voiceOptionsError }}</span>
+                </label>
                 <button
                   class="btn-primary"
                   type="button"
-                  :disabled="generatingSpeech || !canGenerateSpeech"
+                  :disabled="generatingSpeech || loadingVoiceOptions || !canGenerateSpeech || !selectedVoiceCanGenerate"
                   @click="handleGenerateSpeech"
                 >
                   {{ generatingSpeech ? 'Generation des MP3...' : 'Generer les MP3 slides' }}
@@ -121,12 +142,14 @@ import {
   createReelProject,
   deleteReelProject,
   deleteReelSlide,
+  downloadReelVideo,
   exportReelVideo,
   generateReelSlideSpeech,
   generateReelSlideSpeeches,
   generateSlidesFromTemplate,
   getReelProject,
   listReelProjects,
+  listReelVoices,
   updateReelProject,
   updateReelSlide,
 } from '@/api/reelStudio'
@@ -153,6 +176,10 @@ const generatingSpeech = ref(false)
 const generatingSpeechSlideId = ref(null)
 const exportingVideo = ref(false)
 const savingSlide = ref(false)
+const loadingVoiceOptions = ref(false)
+const voiceOptions = ref([])
+const selectedVoiceId = ref('')
+const voiceOptionsError = ref('')
 const showManualEditor = ref(false)
 const projectFormOpen = ref(false)
 const editingProject = ref(null)
@@ -289,6 +316,34 @@ const projectSpeechText = computed(() => buildProjectSpeechText(selectedProject.
 const slidesSpeechCount = computed(() => countSlidesWithSpeechText(selectedProject.value))
 const generatedSlideSpeechCount = computed(() => countGeneratedSlideSpeeches(selectedProject.value))
 const canGenerateSpeech = computed(() => Boolean(selectedProject.value?.id && projectSpeechText.value))
+const selectedVoice = computed(() => {
+  return voiceOptions.value.find((voice) => voice.voice_id === selectedVoiceId.value) || null
+})
+const selectedVoiceCanGenerate = computed(() => Boolean(selectedVoice.value?.api_usable))
+const selectedVoiceMeta = computed(() => {
+  if (!selectedVoice.value) return ''
+  const labels = selectedVoice.value.labels || {}
+  return [
+    selectedVoice.value.matches_filter ? 'FR accent parisien' : 'compatible API',
+    selectedVoice.value.is_custom ? 'ID personnalise' : '',
+    labels.language ? labels.language.toUpperCase() : '',
+    labels.accent === 'parisian' ? 'accent parisien' : labels.accent,
+    selectedVoice.value.category,
+  ].filter(Boolean).join(' · ')
+})
+const selectedVoiceWarning = computed(() => {
+  if (!selectedVoice.value) return ''
+  if (selectedVoice.value.requires_subscription) {
+    return 'Voix professionnelle: abonnement ElevenLabs requis.'
+  }
+  if (selectedVoice.value.is_custom) {
+    return 'ID personnalise: generation testee au moment de creer le MP3.'
+  }
+  if (!selectedVoice.value.matches_filter) {
+    return 'Fallback compatible API: pas strictement accent parisien.'
+  }
+  return ''
+})
 const speechStatusLabel = computed(() => {
   if (!selectedProject.value?.id) return ''
   if (generatingSpeech.value) return 'Generation en cours'
@@ -475,6 +530,43 @@ function extractErrorMessage(error, fallback) {
   return String(apiMessage || fallback)
 }
 
+async function loadVoiceOptions() {
+  if (!canManage.value) return
+
+  loadingVoiceOptions.value = true
+  voiceOptionsError.value = ''
+  try {
+    const response = await listReelVoices({
+      language: 'fr',
+      accent: 'parisian',
+    })
+    const voices = Array.isArray(response?.data?.voices) ? response.data.voices : []
+    voiceOptions.value = voices
+
+    const currentSelectionExists = voices.some((voice) => voice.voice_id === selectedVoiceId.value && voice.api_usable)
+    if (!currentSelectionExists) {
+      const defaultVoiceId = response?.data?.default_voice_id || ''
+      selectedVoiceId.value =
+        voices.find((voice) => voice.voice_id === defaultVoiceId && voice.api_usable)?.voice_id ||
+        voices.find((voice) => voice.matches_filter && voice.api_usable)?.voice_id ||
+        voices.find((voice) => voice.api_usable)?.voice_id ||
+        ''
+    }
+
+    if (!voices.length) {
+      voiceOptionsError.value = 'Aucune voix disponible.'
+    } else if (!voices.some((voice) => voice.matches_filter && voice.api_usable)) {
+      voiceOptionsError.value = 'Aucune voix parisienne compatible API sur ce compte.'
+    }
+  } catch (error) {
+    voiceOptions.value = []
+    selectedVoiceId.value = ''
+    voiceOptionsError.value = extractErrorMessage(error, 'Impossible de charger les voix.')
+  } finally {
+    loadingVoiceOptions.value = false
+  }
+}
+
 async function loadProjects() {
   if (!canManage.value) return
 
@@ -618,11 +710,13 @@ async function handleGenerateFromTemplate(payload) {
 }
 
 async function handleGenerateSpeech() {
-  if (!selectedProject.value?.id || !canGenerateSpeech.value) return
+  if (!selectedProject.value?.id || !canGenerateSpeech.value || !selectedVoiceCanGenerate.value) return
 
   generatingSpeech.value = true
   try {
-    const response = await generateReelSlideSpeeches(selectedProject.value.id)
+    const response = await generateReelSlideSpeeches(selectedProject.value.id, {
+      voice_id: selectedVoiceId.value,
+    })
     const updatedProject = normalizeProject(response?.data?.project || response?.data)
 
     if (updatedProject?.id) {
@@ -642,6 +736,10 @@ async function handleGenerateSpeech() {
 
 async function handleGenerateSlideSpeech(slideId) {
   if (!slideId || !selectedProject.value?.slides) return
+  if (!selectedVoiceCanGenerate.value) {
+    setFeedback('error', 'Selectionne une voix compatible API.')
+    return
+  }
   const slide = selectedProject.value.slides.find((item) => Number(item.id) === Number(slideId))
   const speechText = slideSpeechText(slide)
   if (!speechText) {
@@ -653,6 +751,7 @@ async function handleGenerateSlideSpeech(slideId) {
   try {
     const response = await generateReelSlideSpeech(slideId, {
       text: speechText,
+      voice_id: selectedVoiceId.value,
     })
     const updatedSlide = normalizeProject(response?.data)
 
@@ -667,22 +766,65 @@ async function handleGenerateSlideSpeech(slideId) {
   }
 }
 
-function downloadVideoUrl(url, project) {
-  if (!url) return
+function buildVideoFilename(project) {
   const safeTitle = String(project?.title || 'optitab-reel')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-zA-Z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .toLowerCase() || 'optitab-reel'
+  return `${safeTitle}.mp4`
+}
+
+function filenameFromContentDisposition(value) {
+  const disposition = String(value || '')
+  const utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i)
+  if (utf8Match?.[1]) {
+    try {
+      return decodeURIComponent(utf8Match[1])
+    } catch (_) {
+      return utf8Match[1]
+    }
+  }
+
+  const quotedMatch = disposition.match(/filename="?([^";]+)"?/i)
+  return quotedMatch?.[1] || ''
+}
+
+function triggerBlobDownload(blob, filename) {
+  if (!blob) return
+  const objectUrl = window.URL.createObjectURL(blob)
   const link = document.createElement('a')
-  link.href = url
-  link.download = `${safeTitle}.mp4`
-  link.target = '_blank'
-  link.rel = 'noopener'
+  link.href = objectUrl
+  link.download = filename
+  link.style.display = 'none'
   document.body.appendChild(link)
   link.click()
   link.remove()
+  window.setTimeout(() => window.URL.revokeObjectURL(objectUrl), 60000)
+}
+
+async function downloadExportedVideo(project, fallbackUrl) {
+  const filename = buildVideoFilename(project)
+
+  try {
+    const response = await downloadReelVideo(project.id)
+    const headerFilename = filenameFromContentDisposition(response?.headers?.['content-disposition'])
+    triggerBlobDownload(response?.data, headerFilename || filename)
+    return
+  } catch (error) {
+    if (!fallbackUrl) throw error
+  }
+
+  const fallbackOrigin = new URL(fallbackUrl, window.location.href).origin
+  const response = await fetch(fallbackUrl, {
+    credentials: fallbackOrigin === window.location.origin ? 'same-origin' : 'omit',
+  })
+  if (!response.ok) {
+    throw new Error(`Telechargement MP4 impossible (${response.status}).`)
+  }
+  const blob = await response.blob()
+  triggerBlobDownload(blob, filename)
 }
 
 async function handleExportVideo(payload) {
@@ -700,9 +842,9 @@ async function handleExportVideo(payload) {
       upsertProjectSummary(updatedProject)
     }
 
-    if (videoUrl) {
-      downloadVideoUrl(videoUrl, updatedProject || selectedProject.value)
-      setFeedback('success', 'Video MP4 exportee en haute qualite.')
+    if (videoUrl && (updatedProject?.id || selectedProject.value?.id)) {
+      await downloadExportedVideo(updatedProject || selectedProject.value, videoUrl)
+      setFeedback('success', 'Video MP4 exportee et telechargement lance.')
     } else {
       setFeedback('success', 'Video MP4 generee.')
     }
@@ -816,6 +958,7 @@ async function handleDeleteSlide(slideId) {
 }
 
 onMounted(() => {
+  loadVoiceOptions()
   loadProjects()
 })
 </script>
@@ -1014,6 +1157,43 @@ onMounted(() => {
   color: #64748b;
   font-size: 13px;
   font-weight: 700;
+}
+
+.voice-select {
+  min-width: min(100%, 340px);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.voice-select select {
+  width: 100%;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0f172a;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 10px;
+}
+
+.voice-select select:disabled {
+  background: #e2e8f0;
+  color: #64748b;
+}
+
+.voice-select span {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.voice-select .voice-warning {
+  color: #b45309;
 }
 
 .speech-audio {

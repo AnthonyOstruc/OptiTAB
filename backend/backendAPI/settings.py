@@ -15,13 +15,16 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Charge automatiquement le fichier .env le plus proche en remontant les dossiers
+# Charge d'abord le .env trouve depuis le cwd, puis garantit le chargement
+# de backend/.env pour les reglages propres au backend.
 env_path = find_dotenv(filename='.env', usecwd=True)
 if env_path:
     load_dotenv(env_path, override=True)
-else:
-    # Fallback: tente backend/.env si non trouvé
-    load_dotenv(BASE_DIR / '.env', override=True)
+
+backend_env_path = BASE_DIR / '.env'
+if backend_env_path.exists():
+    if not env_path or Path(env_path).resolve() != backend_env_path.resolve():
+        load_dotenv(backend_env_path, override=True)
 
 
 

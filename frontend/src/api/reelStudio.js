@@ -30,6 +30,22 @@ export function generateSlidesFromTemplate(id, data) {
   return apiClient.post(`${BASE}/projects/${id}/generate-from-template/`, data)
 }
 
+export function generateReelSpeech(id, data = {}) {
+  return apiClient.post(`${BASE}/projects/${id}/generate-speech/`, data, { timeout: 120000 })
+}
+
+export function generateReelSlideSpeeches(id, data = {}) {
+  return apiClient.post(`${BASE}/projects/${id}/generate-slide-speeches/`, data, { timeout: 240000 })
+}
+
+export function generateReelSlideSpeech(id, data = {}) {
+  return apiClient.post(`${BASE}/slides/${id}/generate-speech/`, data, { timeout: 120000 })
+}
+
+export function exportReelVideo(id, data = {}) {
+  return apiClient.post(`${BASE}/projects/${id}/export-video/`, data, { timeout: 900000 })
+}
+
 export function updateReelSlide(id, data) {
   return apiClient.patch(`${BASE}/slides/${id}/`, data)
 }

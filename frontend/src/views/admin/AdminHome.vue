@@ -91,7 +91,7 @@ const sections = [
       { label: 'Exercices+', description: 'Gérer les exercices premium.', to: '/admin/exercices-plus', icon: ClipboardDocumentCheckIcon },
       { label: 'Quiz+', description: 'Gérer les quiz premium.', to: '/admin/quiz-plus', icon: QuestionMarkCircleIcon },
       { label: 'Reel Studio', description: 'Créer des reels pédagogiques 9:16.', to: '/admin/reel-studio', icon: FilmIcon },
-      { label: 'Fond Reel', description: 'Créer les fonds pour vidéos courtes.', to: '/admin/reel-background', icon: FilmIcon },
+      { label: 'Canva', description: 'Créer les fonds pour vidéos courtes.', to: '/admin/reel-background', icon: FilmIcon },
     ],
   },
   {
@@ -110,7 +110,7 @@ const sections = [
 <style scoped>
 .admin-home {
   width: 100%;
-  padding: 24px;
+  padding: 24px 24px 96px;
   background: #f8fafc;
   min-height: 100%;
 }
@@ -157,6 +157,10 @@ const sections = [
 
 .admin-section {
   margin-bottom: 28px;
+}
+
+.admin-section:last-child {
+  margin-bottom: 160px;
 }
 
 .admin-section h2 {

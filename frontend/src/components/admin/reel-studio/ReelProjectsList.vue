@@ -1,35 +1,52 @@
 <template>
   <section class="reel-projects-list">
     <div class="list-header">
-      <h3>Reels existants</h3>
-      <span class="count">{{ projects.length }}</span>
+      <h3>Reels en base</h3>
     </div>
 
-    <p v-if="loading" class="state-text">Chargement des projets...</p>
-    <p v-else-if="!projects.length" class="state-text">Aucun reel pour le moment.</p>
+    <p v-if="loading" class="state-text">Chargement des reels...</p>
+    <p v-else-if="!projects.length" class="state-text">Aucun reel enregistre.</p>
 
-    <ul v-else>
-      <li
-        v-for="project in projects"
-        :key="project.id"
-        class="project-item"
-        :class="{ active: Number(selectedProjectId) === Number(project.id) }"
-      >
-        <button class="project-main" type="button" @click="$emit('select', project.id)">
-          <strong>{{ project.title }}</strong>
-          <span>{{ project.level || 'Niveau non défini' }} · {{ project.format_type || 'Format non défini' }}</span>
-          <span>{{ project.slide_count || 0 }} slides · {{ project.target_duration_seconds || 0 }}s</span>
-        </button>
-        <button
-          class="project-delete"
-          type="button"
-          title="Supprimer"
-          @click="$emit('delete', project.id)"
-        >
-          Suppr.
-        </button>
-      </li>
-    </ul>
+    <div v-else class="table-scroll">
+      <table class="projects-table">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Slides creees</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="project in projects"
+            :key="project.id"
+            :class="{ active: Number(selectedProjectId) === Number(project.id) }"
+          >
+            <td>
+              <button class="title-button" type="button" @click="$emit('select', project.id)">
+                {{ projectTitle(project) }}
+              </button>
+            </td>
+            <td>
+              <span class="slides-count">{{ projectSlideCount(project) }}</span>
+            </td>
+            <td>
+              <div class="row-actions">
+                <button class="btn-action btn-action--open" type="button" @click="$emit('select', project.id)">
+                  Ouvrir
+                </button>
+                <button class="btn-action btn-action--edit" type="button" @click="$emit('edit', project)">
+                  Modifier
+                </button>
+                <button class="btn-action btn-action--delete" type="button" @click="$emit('delete', project)">
+                  Supprimer
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 </template>
 
@@ -49,7 +66,16 @@ defineProps({
   },
 })
 
-defineEmits(['select', 'delete'])
+defineEmits(['select', 'edit', 'delete'])
+
+function projectTitle(project) {
+  return String(project?.title || '').trim() || 'Reel sans titre'
+}
+
+function projectSlideCount(project) {
+  if (Array.isArray(project?.slides)) return project.slides.length
+  return Number(project?.slide_count || 0)
+}
 </script>
 
 <style scoped>
@@ -73,74 +99,99 @@ defineEmits(['select', 'delete'])
   color: #0f172a;
 }
 
-.count {
-  background: #eff6ff;
-  color: #1d4ed8;
-  border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
 .state-text {
   margin: 0;
   color: #64748b;
   font-size: 14px;
 }
 
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.table-scroll {
+  overflow-x: auto;
 }
 
-.project-item {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #f8fafc;
+.projects-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
 }
 
-.project-item.active {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-}
-
-.project-main {
-  border: 0;
-  background: transparent;
+.projects-table th,
+.projects-table td {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px;
   text-align: left;
-  padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  cursor: pointer;
+  color: #334155;
+  font-size: 13px;
+  vertical-align: middle;
 }
 
-.project-main strong {
-  color: #0f172a;
-  font-size: 14px;
-}
-
-.project-main span {
+.projects-table th {
+  background: #f8fafc;
   color: #475569;
-  font-size: 12px;
+  font-weight: 800;
 }
 
-.project-delete {
+.projects-table tr.active td {
+  background: #eff6ff;
+}
+
+.projects-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.title-button {
   border: 0;
-  border-left: 1px solid #e2e8f0;
-  background: #fee2e2;
-  color: #b91c1c;
-  padding: 10px;
-  font-size: 12px;
-  font-weight: 700;
+  padding: 0;
+  background: transparent;
+  color: #0f172a;
+  font: inherit;
+  font-weight: 800;
+  text-align: left;
   cursor: pointer;
+}
+
+.title-button:hover {
+  color: #1d4ed8;
+}
+
+.slides-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 26px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-action {
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-action--open {
+  background: #2563eb;
+}
+
+.btn-action--edit {
+  background: #64748b;
+}
+
+.btn-action--delete {
+  background: #ef4444;
 }
 </style>

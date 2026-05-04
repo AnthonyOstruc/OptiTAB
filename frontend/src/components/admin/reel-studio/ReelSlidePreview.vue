@@ -20,8 +20,16 @@
               class="katex-zone hook-katex"
               v-html="renderedKatex"
             ></div>
-            <p v-else-if="hookBottomText" class="hook-middle-text">{{ hookBottomText }}</p>
-            <p v-if="hasKatex && hookBottomText" class="hook-bottom">{{ hookBottomText }}</p>
+            <div
+              v-else-if="hookBottomText"
+              class="hook-middle-text rich-text"
+              v-html="renderRichText(hookBottomText)"
+            ></div>
+            <div
+              v-if="hasKatex && hookBottomText"
+              class="hook-bottom rich-text"
+              v-html="renderRichText(hookBottomText)"
+            ></div>
           </div>
         </template>
 
@@ -41,21 +49,19 @@
                 v-for="(line, index) in ctaLines"
                 :key="`${index}-${line}`"
                 class="cta-line"
-              >
-                {{ line }}
-              </span>
+                v-html="renderRichTextLine(line)"
+              ></span>
             </div>
           </div>
         </template>
 
         <template v-else>
-          <p
+          <div
             v-if="hasScreenText"
             ref="screenTextRef"
-            class="screen-text"
-          >
-            {{ screenTextContent }}
-          </p>
+            class="screen-text rich-text"
+            v-html="renderRichText(screenTextContent)"
+          ></div>
 
           <div
             v-if="hasKatex"
@@ -219,6 +225,80 @@ function splitKatexLines(value) {
     .split(/\n+/)
     .map((line) => line.trim().replace(/^&+\s*/, '').trim())
     .filter(Boolean)
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+function renderTextKatex(expression, displayMode = false) {
+  const cleaned = String(expression || '').trim()
+  if (!cleaned) return ''
+
+  try {
+    return katex.renderToString(cleaned, {
+      displayMode,
+      throwOnError: false,
+    })
+  } catch (_) {
+    return escapeHtml(expression)
+  }
+}
+
+function renderRichMathToken(token) {
+  const raw = String(token || '')
+  if (raw.startsWith('$$') && raw.endsWith('$$')) {
+    return renderTextKatex(raw.slice(2, -2), true)
+  }
+  if (raw.startsWith('\\[') && raw.endsWith('\\]')) {
+    return renderTextKatex(raw.slice(2, -2), true)
+  }
+  if (raw.startsWith('\\(') && raw.endsWith('\\)')) {
+    return renderTextKatex(raw.slice(2, -2), false)
+  }
+  if (raw.startsWith('$') && raw.endsWith('$')) {
+    return renderTextKatex(raw.slice(1, -1), false)
+  }
+  return escapeHtml(raw)
+}
+
+function renderRichTextLine(line) {
+  const raw = String(line || '')
+  const katexDirective = raw.trim().match(/^KATEX\s*:\s*(.+)$/i)
+  if (katexDirective) {
+    return renderTextKatex(katexDirective[1], true)
+  }
+
+  const tokenPattern = /(\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\\]|\\\([\s\S]+?\\\)|\$[^$\n]+?\$)/g
+  let html = ''
+  let lastIndex = 0
+
+  for (const match of raw.matchAll(tokenPattern)) {
+    html += escapeHtml(raw.slice(lastIndex, match.index))
+    html += renderRichMathToken(match[0])
+    lastIndex = match.index + match[0].length
+  }
+
+  html += escapeHtml(raw.slice(lastIndex))
+  return html
+}
+
+function renderRichText(value) {
+  return String(value || '')
+    .replace(/\r\n/g, '\n')
+    .split('\n')
+    .map((line) => {
+      if (!line.trim()) {
+        return '<span class="rich-text-line rich-text-line--empty">&nbsp;</span>'
+      }
+      return `<span class="rich-text-line">${renderRichTextLine(line)}</span>`
+    })
+    .join('')
 }
 
 const katexError = computed(() => {
@@ -572,13 +652,25 @@ onUnmounted(() => {
   max-width: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
-  text-align: center;
+  text-align: left;
 }
 
 .hook-katex :deep(.katex-display) {
   width: 100%;
+  display: block;
   margin: 0.1em 0;
-  text-align: center;
+  text-align: left !important;
+}
+
+.hook-katex :deep(.katex-display > .katex) {
+  display: inline-block !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  text-align: left !important;
+}
+
+.hook-katex :deep(.katex-display > .katex > .katex-html) {
+  text-align: left !important;
 }
 
 .hook-katex :deep(.katex) {
@@ -675,7 +767,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: flex-start;
   gap: calc(1.6cqw * var(--reel-user-scale, 1) * var(--reel-thumb-fit-scale, 1));
-  font-size: calc(20px * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  font-size: calc(32px * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
   font-weight: 500;
   text-align: left;
 }
@@ -684,6 +776,42 @@ onUnmounted(() => {
   display: block;
   max-width: 100%;
   white-space: nowrap;
+}
+
+.rich-text {
+  white-space: normal;
+}
+
+.rich-text :deep(.rich-text-line) {
+  display: block;
+  max-width: 100%;
+}
+
+.rich-text :deep(.rich-text-line--empty) {
+  min-height: 1em;
+}
+
+.rich-text :deep(.katex) {
+  color: inherit;
+  font-size: 0.98em;
+}
+
+.rich-text :deep(.katex-display) {
+  width: 100%;
+  display: block;
+  margin: 0.08em 0;
+  text-align: left !important;
+}
+
+.rich-text :deep(.katex-display > .katex) {
+  display: inline-block !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  text-align: left !important;
+}
+
+.rich-text :deep(.katex-display > .katex > .katex-html) {
+  text-align: left !important;
 }
 
 .screen-text {
@@ -854,7 +982,7 @@ onUnmounted(() => {
 }
 
 .slide-card--fullscreen .cta-main {
-  font-size: calc(56px * var(--reel-screen-text-scale, 1));
+  font-size: calc(44.8px * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1));
 }
 
 .slide-card--fullscreen .cta-katex :deep(.katex) {
@@ -910,15 +1038,18 @@ onUnmounted(() => {
 }
 
 .cta-top,
-.cta-main,
-.slide-card--fullscreen .cta-top,
-.slide-card--fullscreen .cta-main {
+.slide-card--fullscreen .cta-top {
   font-size: calc(8.4cqw * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
 }
 
 .cta-top,
 .slide-card--fullscreen .cta-top {
   font-size: calc(11.4cqw * var(--reel-title-scale, 1) * var(--reel-thumb-fit-scale, 1));
+}
+
+.cta-main,
+.slide-card--fullscreen .cta-main {
+  font-size: calc(9.12cqw * var(--reel-title-scale, 1) * var(--reel-screen-text-scale, 1) * var(--reel-thumb-fit-scale, 1));
 }
 
 .cta-katex :deep(.katex),

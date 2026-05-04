@@ -1,6 +1,6 @@
 <template>
   <form class="reel-project-form" @submit.prevent="handleSubmit">
-    <h3>Nouveau reel</h3>
+    <h3>{{ formTitle }}</h3>
 
     <div class="form-grid">
       <label>
@@ -10,62 +10,15 @@
           type="text"
           maxlength="255"
           required
-          placeholder="Ex: Dérivée piège - Terminale"
+          placeholder="Ex: Defi integrale"
         />
       </label>
 
-      <label>
-        Thème
-        <input
-          v-model="form.theme"
-          type="text"
-          maxlength="255"
-          placeholder="Ex: Dérivation"
-        />
-      </label>
-
-      <label>
-        Niveau
-        <select v-model="form.level" required>
-          <option disabled value="">Sélectionner</option>
-          <option v-for="item in levelOptions" :key="item" :value="item">{{ item }}</option>
-        </select>
-      </label>
-
-      <label>
-        Format
-        <select v-model="form.format_type" required>
-          <option disabled value="">Sélectionner</option>
-          <option v-for="item in formatOptions" :key="item" :value="item">{{ item }}</option>
-        </select>
-      </label>
-
-      <label>
-        Durée cible (s)
-        <input
-          v-model.number="form.target_duration_seconds"
-          type="number"
-          min="5"
-          max="300"
-          required
-        />
-      </label>
-
-      <label>
-        Nombre de slides
-        <input
-          v-model.number="form.slide_count"
-          type="number"
-          min="1"
-          max="30"
-          required
-        />
-      </label>
     </div>
 
     <div class="form-actions">
       <button class="btn-primary" type="submit" :disabled="loading">
-        {{ loading ? 'Création...' : submitLabel }}
+        {{ loading ? 'Sauvegarde...' : submitLabel }}
       </button>
       <button class="btn-secondary" type="button" @click="$emit('cancel')">Annuler</button>
     </div>
@@ -77,15 +30,7 @@ import { reactive, watch } from 'vue'
 
 const DEFAULT_FORM = {
   title: '',
-  theme: '',
-  level: '',
-  format_type: '',
-  target_duration_seconds: 30,
-  slide_count: 6,
 }
-
-const levelOptions = ['Seconde', 'Première', 'Terminale', 'Bac']
-const formatOptions = ['Défi rapide', 'Erreur fréquente', 'Correction pas à pas', 'Piège classique']
 
 const props = defineProps({
   loading: {
@@ -98,7 +43,11 @@ const props = defineProps({
   },
   submitLabel: {
     type: String,
-    default: 'Créer le projet',
+    default: 'Creer le projet',
+  },
+  formTitle: {
+    type: String,
+    default: 'Nouveau reel',
   },
 })
 
@@ -117,12 +66,6 @@ watch(
 function handleSubmit() {
   emit('submit', {
     title: String(form.title || '').trim(),
-    theme: String(form.theme || '').trim(),
-    level: form.level,
-    format_type: form.format_type,
-    target_duration_seconds: Number(form.target_duration_seconds || 0),
-    slide_count: Number(form.slide_count || 0),
-    status: 'draft',
   })
 }
 </script>
@@ -146,7 +89,7 @@ function handleSubmit() {
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(280px, 1fr);
   gap: 12px;
 }
 
@@ -159,8 +102,7 @@ label {
   font-weight: 700;
 }
 
-input,
-select {
+input {
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 10px 12px;
@@ -169,8 +111,7 @@ select {
   background: #fff;
 }
 
-input:focus,
-select:focus {
+input:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);

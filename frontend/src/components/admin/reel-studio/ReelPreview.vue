@@ -14,10 +14,18 @@
         <button
           class="btn-fullscreen btn-png-export"
           type="button"
-          :disabled="!slidesForRender.length || exportingPng"
+          :disabled="!slidesForRender.length || exportingPng || isVideoExportBusy"
           @click="exportAllSlidesPng"
         >
           {{ exportingPng ? `PNG ${pngExportProgress}/${slidesForRender.length}` : 'Exporter PNG' }}
+        </button>
+        <button
+          class="btn-fullscreen btn-video-export"
+          type="button"
+          :disabled="!slidesForRender.length || exportingPng || isVideoExportBusy"
+          @click="exportAllSlidesVideo"
+        >
+          {{ videoExportButtonLabel }}
         </button>
         <div class="math-size-controls" aria-label="Taille des formules">
           <button class="size-button" type="button" @click="decreaseMathSize">A-</button>
@@ -68,6 +76,40 @@
     <Teleport to="body">
       <div v-if="isFullscreen && activeSlide" class="fullscreen-backdrop" @click="closeFullscreen">
         <div class="fullscreen-content" @click.stop>
+          <aside class="fullscreen-speech-panel" aria-label="Voix de la slide">
+            <div class="speech-panel-header">
+              <h4>Speech</h4>
+              <span>{{ activeSlideIndexLabel }}</span>
+            </div>
+
+            <textarea
+              class="speech-script"
+              :value="activeSlideSpeechText"
+              readonly
+              rows="8"
+            ></textarea>
+
+            <audio
+              v-if="activeSlideSpeechAudioUrl"
+              :key="activeSlideSpeechAudioUrl"
+              class="speech-player"
+              :src="activeSlideSpeechAudioUrl"
+              controls
+              preload="metadata"
+            ></audio>
+
+            <p v-else class="speech-empty">{{ activeSlideSpeechStatusLabel }}</p>
+
+            <button
+              class="speech-generate-button"
+              type="button"
+              :disabled="isGeneratingActiveSpeech || !activeSlideSpeechText"
+              @click="generateActiveSlideSpeech"
+            >
+              {{ isGeneratingActiveSpeech ? 'Generation...' : 'Generer cette slide' }}
+            </button>
+          </aside>
+
           <div class="fullscreen-toolbar">
             <div class="fullscreen-control-group" aria-label="Taille des formules">
               <span class="control-label">{{ mathSizeLabel }}</span>
@@ -75,6 +117,30 @@
               <span class="size-value">{{ mathSizePercent }}%</span>
               <button class="size-button" type="button" @click="increaseMathSize">A+</button>
               <button class="size-reset" type="button" @click="resetMathSize">Reset</button>
+            </div>
+
+            <div
+              v-if="activeSlide && isEdgeSlide(activeSlide)"
+              class="fullscreen-control-group"
+              aria-label="Taille du titre hook ou cta"
+            >
+              <span class="control-label">Titre</span>
+              <button class="size-button" type="button" @click="decreaseActiveTitleSize">T-</button>
+              <span class="size-value">{{ activeTitleSizePercent }}%</span>
+              <button class="size-button" type="button" @click="increaseActiveTitleSize">T+</button>
+              <button class="size-reset" type="button" @click="resetActiveTitleSize">Reset</button>
+            </div>
+
+            <div
+              v-if="activeSlide && isEdgeSlide(activeSlide)"
+              class="fullscreen-control-group"
+              aria-label="Taille du texte hook ou cta"
+            >
+              <span class="control-label">Texte</span>
+              <button class="size-button" type="button" @click="decreaseActiveTextSize">Txt-</button>
+              <span class="size-value">{{ activeTextSizePercent }}%</span>
+              <button class="size-button" type="button" @click="increaseActiveTextSize">Txt+</button>
+              <button class="size-reset" type="button" @click="resetActiveTextSize">Reset</button>
             </div>
 
             <div class="fullscreen-control-group" aria-label="Safe zone horizontale">
@@ -126,7 +192,6 @@
               </button>
             </div>
 
-            <button class="fullscreen-close" type="button" @click="closeFullscreen">Fermer</button>
           </div>
 
           <div class="fullscreen-stage">
@@ -180,21 +245,33 @@ const props = defineProps({
     type: [Number, String, null],
     default: null,
   },
+  generatingSpeechSlideId: {
+    type: [Number, String, null],
+    default: null,
+  },
+  exportingVideo: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const emit = defineEmits(['select-slide', 'diagnostic', 'update-slide'])
+const emit = defineEmits(['select-slide', 'diagnostic', 'update-slide', 'generate-slide-speech', 'export-video'])
 
 const isFullscreen = ref(false)
 const fullscreenIndex = ref(0)
 const previousBodyOverflow = ref('')
 const mathScaleCalcul = ref(1)
-const mathScaleEdge = ref(1)
+const mathScaleHook = ref(1)
+const mathScaleCta = ref(1)
 const safeZoneXScale = ref(1)
 const safeZoneMathYScale = ref(1)
-const safeZoneEdgeYScale = ref(1)
+const safeZoneHookYScale = ref(1)
+const safeZoneCtaYScale = ref(1)
 const exportingPng = ref(false)
+const preparingVideoFrames = ref(false)
 const pngExportMounted = ref(false)
 const pngExportProgress = ref(0)
+const videoFrameProgress = ref(0)
 const exportSlideRefs = ref([])
 
 const slidesSafe = computed(() => (Array.isArray(props.slides) ? props.slides : []))
@@ -202,33 +279,105 @@ const NON_MATH_SLIDE_TYPES = new Set(['hook', 'cta'])
 const PNG_EXPORT_WIDTH = 1080
 const PNG_EXPORT_HEIGHT = 1920
 const mathSizePercent = computed(() => Math.round(getMathScale(activeSlide.value) * 100))
-const mathSizeLabel = computed(() => (isEdgeSlide(activeSlide.value) ? 'Taille Hook/CTA' : 'Taille Calcul'))
+const mathSizeLabel = computed(() => getActiveSlideTypeLabel('Taille'))
 const safeZoneXPercent = computed(() => Math.round(safeZoneXScale.value * 100))
 const safeZoneYPercent = computed(() => Math.round(getSafeZoneYScale(activeSlide.value) * 100))
-const safeZoneYLabel = computed(() => (isEdgeSlide(activeSlide.value) ? 'Safe V Hook/CTA' : 'Safe V Calcul'))
+const safeZoneYLabel = computed(() => getActiveSlideTypeLabel('Safe V'))
+const activeTitleSizePercent = computed(() => Math.round(getSlideScale(activeSlide.value?.title_scale) * 100))
+const activeTextSizePercent = computed(() => Math.round(getSlideScale(activeSlide.value?.screen_text_scale) * 100))
+const activeSlideIndexLabel = computed(() => {
+  if (!slidesForRender.value.length) return ''
+  return `Slide ${fullscreenIndex.value + 1}/${slidesForRender.value.length}`
+})
+const activeSlideSpeechText = computed(() => slideSpeechText(activeSlide.value))
+const activeSlideSpeechAudioUrl = computed(() => normalizeText(activeSlide.value?.speech_audio_url))
+const isGeneratingActiveSpeech = computed(() => (
+  activeSlide.value?.id &&
+  Number(props.generatingSpeechSlideId) === Number(activeSlide.value.id)
+))
+const activeSlideSpeechStatusLabel = computed(() => {
+  if (isGeneratingActiveSpeech.value) return 'Generation audio en cours.'
+  if (activeSlide.value?.speech_status === 'error') return activeSlide.value.speech_error || 'Erreur audio.'
+  if (!activeSlideSpeechText.value) return 'Aucun texte vocal pour cette slide.'
+  return 'Aucun MP3 genere pour cette slide.'
+})
+const isVideoExportBusy = computed(() => Boolean(preparingVideoFrames.value || props.exportingVideo))
+const videoExportButtonLabel = computed(() => {
+  if (props.exportingVideo) return 'Assemblage MP4...'
+  if (preparingVideoFrames.value) return `Frames ${videoFrameProgress.value}/${slidesForRender.value.length}`
+  return 'Exporter MP4 HQ'
+})
 
 function normalizeText(value) {
   return String(value || '').trim()
 }
 
+function normalizeSpeechLine(value) {
+  return String(value || '')
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .split('\n')
+    .map((line) => line.replace(/\s+/g, ' ').trim())
+    .filter(Boolean)
+    .join(' ')
+}
+
+function slideSpeechText(slide) {
+  const voice = normalizeSpeechLine(slide?.voice_script)
+  if (voice) return voice
+
+  return [slide?.title, slide?.screen_text]
+    .map((part) => normalizeSpeechLine(part))
+    .filter(Boolean)
+    .join('. ')
+}
+
+function getSlideType(slide) {
+  return normalizeText(slide?.slide_type).toLowerCase()
+}
+
 function isEdgeSlide(slide) {
-  return NON_MATH_SLIDE_TYPES.has(normalizeText(slide?.slide_type).toLowerCase())
+  return NON_MATH_SLIDE_TYPES.has(getSlideType(slide))
+}
+
+function getActiveSlideTypeLabel(prefix) {
+  const slideType = getSlideType(activeSlide.value)
+  if (slideType === 'hook') return `${prefix} Hook`
+  if (slideType === 'cta') return `${prefix} CTA`
+  return `${prefix} Calcul`
 }
 
 function getSafeZoneYScale(slide) {
-  return isEdgeSlide(slide) ? safeZoneEdgeYScale.value : safeZoneMathYScale.value
+  const slideType = getSlideType(slide)
+  if (slideType === 'hook') return safeZoneHookYScale.value
+  if (slideType === 'cta') return safeZoneCtaYScale.value
+  return safeZoneMathYScale.value
 }
 
 function getMathScale(slide) {
-  return isEdgeSlide(slide) ? mathScaleEdge.value : mathScaleCalcul.value
+  const slideType = getSlideType(slide)
+  if (slideType === 'hook') return mathScaleHook.value
+  if (slideType === 'cta') return mathScaleCta.value
+  return mathScaleCalcul.value
 }
 
 function getActiveSafeZoneYRef() {
-  return isEdgeSlide(activeSlide.value) ? safeZoneEdgeYScale : safeZoneMathYScale
+  const slideType = getSlideType(activeSlide.value)
+  if (slideType === 'hook') return safeZoneHookYScale
+  if (slideType === 'cta') return safeZoneCtaYScale
+  return safeZoneMathYScale
 }
 
 function getActiveMathScaleRef() {
-  return isEdgeSlide(activeSlide.value) ? mathScaleEdge : mathScaleCalcul
+  const slideType = getSlideType(activeSlide.value)
+  if (slideType === 'hook') return mathScaleHook
+  if (slideType === 'cta') return mathScaleCta
+  return mathScaleCalcul
+}
+
+function getSlideScale(value) {
+  const nextValue = Number(value) || 1
+  return Math.min(2, Math.max(0.5, Number(nextValue.toFixed(2))))
 }
 
 function isAlignedKatexBlock(value) {
@@ -461,6 +610,41 @@ function resetSafeZoneY() {
   getActiveSafeZoneYRef().value = 1
 }
 
+function patchActiveEdgeSlideScale(field, value) {
+  if (!activeSlide.value?.id || !isEdgeSlide(activeSlide.value)) return
+
+  emit('update-slide', {
+    id: activeSlide.value.id,
+    patch: {
+      [field]: getSlideScale(value),
+    },
+  })
+}
+
+function decreaseActiveTitleSize() {
+  patchActiveEdgeSlideScale('title_scale', getSlideScale(activeSlide.value?.title_scale) - 0.05)
+}
+
+function increaseActiveTitleSize() {
+  patchActiveEdgeSlideScale('title_scale', getSlideScale(activeSlide.value?.title_scale) + 0.05)
+}
+
+function resetActiveTitleSize() {
+  patchActiveEdgeSlideScale('title_scale', 1)
+}
+
+function decreaseActiveTextSize() {
+  patchActiveEdgeSlideScale('screen_text_scale', getSlideScale(activeSlide.value?.screen_text_scale) - 0.05)
+}
+
+function increaseActiveTextSize() {
+  patchActiveEdgeSlideScale('screen_text_scale', getSlideScale(activeSlide.value?.screen_text_scale) + 0.05)
+}
+
+function resetActiveTextSize() {
+  patchActiveEdgeSlideScale('screen_text_scale', 1)
+}
+
 function toggleActiveKatexLineMode() {
   if (!canToggleKatexLineMode.value || !activeSlide.value?.id) return
 
@@ -481,6 +665,11 @@ function toggleActiveResetCumulative() {
       katex_reset_cumulative: !activeSlideResetsCumulative.value,
     },
   })
+}
+
+function generateActiveSlideSpeech() {
+  if (!activeSlide.value?.id || !activeSlideSpeechText.value || isGeneratingActiveSpeech.value) return
+  emit('generate-slide-speech', activeSlide.value.id)
 }
 
 function setExportSlideRef(el, index) {
@@ -534,6 +723,25 @@ async function downloadCanvasPng(canvas, filename) {
   link.remove()
 }
 
+async function renderExportCanvas(index) {
+  const frame = exportSlideRefs.value[index]
+  const target = frame?.querySelector('.reel-slide') || frame
+  if (!target) return null
+
+  return html2canvas(target, {
+    backgroundColor: '#f8fbff',
+    height: PNG_EXPORT_HEIGHT,
+    logging: false,
+    scale: 1,
+    scrollX: 0,
+    scrollY: 0,
+    useCORS: true,
+    width: PNG_EXPORT_WIDTH,
+    windowHeight: PNG_EXPORT_HEIGHT,
+    windowWidth: PNG_EXPORT_WIDTH,
+  })
+}
+
 async function exportAllSlidesPng() {
   if (!slidesForRender.value.length || exportingPng.value) return
 
@@ -546,22 +754,8 @@ async function exportAllSlidesPng() {
     await waitForExportRender()
 
     for (const [index] of slidesForRender.value.entries()) {
-      const frame = exportSlideRefs.value[index]
-      const target = frame?.querySelector('.reel-slide') || frame
-      if (!target) continue
-
-      const canvas = await html2canvas(target, {
-        backgroundColor: '#f8fbff',
-        height: PNG_EXPORT_HEIGHT,
-        logging: false,
-        scale: 1,
-        scrollX: 0,
-        scrollY: 0,
-        useCORS: true,
-        width: PNG_EXPORT_WIDTH,
-        windowHeight: PNG_EXPORT_HEIGHT,
-        windowWidth: PNG_EXPORT_WIDTH,
-      })
+      const canvas = await renderExportCanvas(index)
+      if (!canvas) continue
 
       const filename = `optitab-reel-slide-${String(index + 1).padStart(2, '0')}.png`
       await downloadCanvasPng(canvas, filename)
@@ -574,6 +768,63 @@ async function exportAllSlidesPng() {
   } finally {
     pngExportMounted.value = false
     exportingPng.value = false
+    exportSlideRefs.value = []
+  }
+}
+
+async function exportAllSlidesVideo() {
+  if (!slidesForRender.value.length || isVideoExportBusy.value || exportingPng.value) return
+
+  const slidesMissingAudio = slidesForRender.value.filter((slide) => (
+    slideSpeechText(slide) && !normalizeText(slide?.speech_audio_url)
+  ))
+  if (
+    slidesMissingAudio.length &&
+    !window.confirm(`${slidesMissingAudio.length} slide(s) ont un script voix sans MP3. Exporter quand meme avec silence sur ces slides ?`)
+  ) {
+    return
+  }
+
+  preparingVideoFrames.value = true
+  pngExportMounted.value = true
+  videoFrameProgress.value = 0
+  exportSlideRefs.value = []
+
+  try {
+    await waitForExportRender()
+
+    const frames = []
+    for (const [index, slide] of slidesForRender.value.entries()) {
+      const canvas = await renderExportCanvas(index)
+      if (!canvas) continue
+
+      frames.push({
+        slide_id: slide.id,
+        image: canvas.toDataURL('image/png'),
+        duration_seconds: Number(slide.duration_seconds) || 4,
+      })
+      videoFrameProgress.value = index + 1
+      await new Promise((resolve) => window.setTimeout(resolve, 50))
+    }
+
+    if (!frames.length) {
+      window.alert("Aucune frame video n'a pu etre preparee.")
+      return
+    }
+
+    emit('export-video', {
+      frames,
+      width: PNG_EXPORT_WIDTH,
+      height: PNG_EXPORT_HEIGHT,
+      fps: 30,
+      crf: 18,
+    })
+  } catch (error) {
+    console.error('Erreur export video:', error)
+    window.alert("Erreur lors de la preparation video. Reessaie apres avoir verifie les slides.")
+  } finally {
+    pngExportMounted.value = false
+    preparingVideoFrames.value = false
     exportSlideRefs.value = []
   }
 }
@@ -783,6 +1034,14 @@ onBeforeUnmount(() => {
   background: #115e59;
 }
 
+.btn-video-export {
+  background: #7c3aed;
+}
+
+.btn-video-export:hover:not(:disabled) {
+  background: #6d28d9;
+}
+
 .preview-count {
   font-size: 12px;
   font-weight: 700;
@@ -819,58 +1078,138 @@ onBeforeUnmount(() => {
 }
 
 .fullscreen-content {
-  width: min(1200px, 100%);
-  max-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  align-items: center;
-}
-
-.fullscreen-toolbar {
-  width: min(920px, 100%);
-  display: flex;
+  width: min(1500px, 100%);
+  max-height: calc(100dvh - 40px);
+  display: grid;
+  grid-template-columns: minmax(230px, 310px) minmax(0, auto) minmax(230px, 300px);
+  gap: 20px;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
 }
 
-.fullscreen-control-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.fullscreen-speech-panel {
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  max-height: calc(100dvh - 56px);
   border: 1px solid rgba(191, 219, 254, 0.72);
-  border-radius: 10px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.96);
-  padding: 5px;
+  padding: 12px;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
 }
 
-.control-label {
+.speech-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.speech-panel-header h4 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 15px;
+}
+
+.speech-panel-header span {
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 8px;
+}
+
+.speech-script {
+  width: 100%;
+  min-height: 132px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #0f172a;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.45;
+  padding: 10px;
+  resize: vertical;
+}
+
+.speech-player {
+  width: 100%;
+}
+
+.speech-empty {
+  margin: 0;
+  border: 1px dashed #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
   color: #1e3a8a;
   font-size: 12px;
-  font-weight: 800;
-  padding: 0 6px;
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 10px;
 }
 
-.fullscreen-close {
+.speech-generate-button {
   border: 0;
   border-radius: 8px;
   background: #1d4ed8;
   color: #ffffff;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
-  padding: 10px 14px;
+  padding: 10px 12px;
   cursor: pointer;
+}
+
+.speech-generate-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.fullscreen-toolbar {
+  grid-column: 3;
+  grid-row: 1;
+  width: 100%;
+  max-height: calc(100dvh - 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.fullscreen-control-group {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  flex-wrap: wrap;
+  border: 1px solid rgba(191, 219, 254, 0.72);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 8px;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.22);
 }
 
-.fullscreen-close:hover {
-  background: #1e40af;
+.control-label {
+  flex: 1 0 100%;
+  color: #1e3a8a;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 0 2px;
 }
 
 .fullscreen-stage {
+  grid-column: 2;
+  grid-row: 1;
   min-height: 0;
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -935,6 +1274,43 @@ onBeforeUnmount(() => {
   border-radius: 0 !important;
 }
 
+@media (max-width: 980px) {
+  .fullscreen-content {
+    width: 100%;
+    max-height: calc(100dvh - 40px);
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .fullscreen-toolbar {
+    grid-column: 1;
+    grid-row: 3;
+    justify-self: center;
+    width: min(640px, 100%);
+    max-height: 28dvh;
+    align-items: stretch;
+  }
+
+  .fullscreen-speech-panel {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: center;
+    width: min(640px, 100%);
+    max-height: 28dvh;
+  }
+
+  .fullscreen-control-group {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .fullscreen-stage {
+    grid-column: 1;
+    grid-row: 1;
+    gap: 8px;
+  }
+}
+
 @media (max-width: 680px) {
   .preview-header {
     align-items: flex-start;
@@ -949,13 +1325,12 @@ onBeforeUnmount(() => {
     padding: 10px;
   }
 
-  .fullscreen-toolbar {
-    justify-content: flex-start;
+  .fullscreen-content {
+    max-height: calc(100dvh - 20px);
   }
 
-  .fullscreen-control-group {
-    max-width: 100%;
-    overflow-x: auto;
+  .fullscreen-toolbar {
+    width: 100%;
   }
 
   .nav-arrow {

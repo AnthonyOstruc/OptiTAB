@@ -274,7 +274,7 @@
       <div class="sidebar-column">
         <!-- Header + Export actions -->
         <div class="sidebar-header">
-          <h2>🎬 Fond Reel</h2>
+          <h2>Canva</h2>
           <div class="sidebar-header-actions">
             <button class="btn-header-action primary" @click="exportPNG" title="Exporter PNG">📥 PNG</button>
             <button class="btn-header-action" @click="exportPNGNoBackground" title="Exporter PNG sans fond (transparent)">🫥 PNG</button>

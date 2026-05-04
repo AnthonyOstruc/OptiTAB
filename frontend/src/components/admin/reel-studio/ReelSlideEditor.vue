@@ -85,9 +85,12 @@
           v-model="form.voice_script"
           rows="3"
           maxlength="2500"
-          placeholder="Texte pour la voix off"
+          placeholder="[thoughtful] On commence par identifier la bonne formule..."
         ></textarea>
       </label>
+      <p class="voice-help">
+        Tags ElevenLabs utiles: [thoughtful], [curious], [excited], [warmly], [whispers], [sighs], [short pause].
+      </p>
 
       <div class="editor-actions">
         <button class="btn-primary" type="submit" :disabled="saving">
@@ -348,6 +351,13 @@ textarea:focus {
 
 .katex-preview :deep(.katex-display) {
   margin: 0;
+}
+
+.voice-help {
+  margin: -6px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.45;
 }
 
 .editor-actions {

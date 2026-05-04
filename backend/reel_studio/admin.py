@@ -10,14 +10,24 @@ class ReelSlideInline(admin.TabularInline):
 
 @admin.register(ReelProject)
 class ReelProjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'level', 'format_type', 'slide_count', 'status', 'updated_at')
-    list_filter = ('status', 'level', 'format_type')
+    list_display = (
+        'id',
+        'title',
+        'level',
+        'format_type',
+        'slide_count',
+        'status',
+        'speech_status',
+        'video_status',
+        'updated_at',
+    )
+    list_filter = ('status', 'speech_status', 'video_status', 'level', 'format_type')
     search_fields = ('title', 'theme', 'level', 'format_type')
     inlines = [ReelSlideInline]
 
 
 @admin.register(ReelSlide)
 class ReelSlideAdmin(admin.ModelAdmin):
-    list_display = ('id', 'reel_project', 'order', 'slide_type', 'layout_status', 'duration_seconds', 'updated_at')
-    list_filter = ('slide_type', 'layout_status')
+    list_display = ('id', 'reel_project', 'order', 'slide_type', 'layout_status', 'speech_status', 'duration_seconds', 'updated_at')
+    list_filter = ('slide_type', 'layout_status', 'speech_status')
     search_fields = ('title', 'screen_text', 'voice_script', 'katex')

@@ -1,5 +1,7 @@
 import re
 
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -14,7 +16,21 @@ from .serializers import (
     ReelProjectDetailSerializer,
     ReelProjectSerializer,
     ReelSlideSerializer,
+    ReelSpeechGenerateSerializer,
     ReelTemplateGenerateSerializer,
+    ReelVideoExportSerializer,
+)
+from .elevenlabs import (
+    ElevenLabsAPIError,
+    ElevenLabsConfigurationError,
+    build_slide_speech_text,
+    build_project_speech_text,
+    generate_speech_mp3,
+)
+from .video_export import (
+    VideoExportConfigurationError,
+    VideoExportError,
+    export_reel_video,
 )
 
 
@@ -81,6 +97,119 @@ LEGACY_CTA_TEXTS = {
 
 def _touch_project(project_id):
     ReelProject.objects.filter(pk=project_id).update(updated_at=timezone.now())
+
+
+def _project_serializer(project, request, *, detail=False):
+    serializer_cls = ReelProjectDetailSerializer if detail else ReelProjectSerializer
+    return serializer_cls(project, context={'request': request})
+
+
+def _slide_serializer(slide, request):
+    return ReelSlideSerializer(slide, context={'request': request})
+
+
+def _clear_slide_speech(slide):
+    previous_audio_name = slide.speech_audio.name if slide.speech_audio else ''
+    slide.speech_audio = None
+    slide.speech_text = ''
+    slide.speech_voice_id = ''
+    slide.speech_model_id = ''
+    slide.speech_output_format = ''
+    slide.speech_status = ReelProject.SPEECH_STATUS_EMPTY
+    slide.speech_error = ''
+    slide.speech_generated_at = None
+    slide.save(
+        update_fields=[
+            'speech_audio',
+            'speech_text',
+            'speech_voice_id',
+            'speech_model_id',
+            'speech_output_format',
+            'speech_status',
+            'speech_error',
+            'speech_generated_at',
+            'updated_at',
+        ]
+    )
+    if previous_audio_name:
+        try:
+            default_storage.delete(previous_audio_name)
+        except Exception:
+            pass
+
+
+def _clear_project_video(project):
+    previous_video_name = project.video_file.name if project.video_file else ''
+    project.video_file = None
+    project.video_status = ReelProject.VIDEO_STATUS_EMPTY
+    project.video_error = ''
+    project.video_generated_at = None
+    project.save(
+        update_fields=[
+            'video_file',
+            'video_status',
+            'video_error',
+            'video_generated_at',
+            'updated_at',
+        ]
+    )
+    if previous_video_name:
+        try:
+            default_storage.delete(previous_video_name)
+        except Exception:
+            pass
+
+
+def _generate_and_save_slide_speech(slide, *, speech_text, voice_id='', model_id='', output_format=''):
+    safe_speech_text = str(speech_text or '').strip()
+    if not safe_speech_text:
+        raise ValueError('Aucun texte voix disponible pour cette slide.')
+
+    slide.speech_status = ReelProject.SPEECH_STATUS_EMPTY
+    slide.speech_error = ''
+    slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+
+    generated = generate_speech_mp3(
+        text=safe_speech_text,
+        voice_id=voice_id,
+        model_id=model_id,
+        output_format=output_format,
+    )
+
+    try:
+        previous_audio_name = slide.speech_audio.name if slide.speech_audio else ''
+        filename = f'slide-{slide.pk}-speech-{timezone.now().strftime("%Y%m%d-%H%M%S")}.mp3'
+        slide.speech_audio.save(filename, ContentFile(generated['audio_bytes']), save=False)
+        slide.speech_text = safe_speech_text
+        slide.speech_voice_id = generated['voice_id']
+        slide.speech_model_id = generated['model_id']
+        slide.speech_output_format = generated['output_format']
+        slide.speech_status = ReelProject.SPEECH_STATUS_READY
+        slide.speech_error = ''
+        slide.speech_generated_at = timezone.now()
+        slide.save(
+            update_fields=[
+                'speech_audio',
+                'speech_text',
+                'speech_voice_id',
+                'speech_model_id',
+                'speech_output_format',
+                'speech_status',
+                'speech_error',
+                'speech_generated_at',
+                'updated_at',
+            ]
+        )
+    except Exception as exc:
+        raise ElevenLabsAPIError(f'Erreur lors de la sauvegarde audio: {exc}') from exc
+
+    if previous_audio_name and previous_audio_name != slide.speech_audio.name:
+        try:
+            default_storage.delete(previous_audio_name)
+        except Exception:
+            pass
+
+    return slide
 
 
 def _normalize_cta_text(value):
@@ -492,14 +621,14 @@ class ReelProjectListCreateView(APIView):
 
     def get(self, request):
         queryset = ReelProject.objects.all().order_by('-updated_at', '-created_at')
-        serializer = ReelProjectSerializer(queryset, many=True)
+        serializer = ReelProjectSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request):
         serializer = ReelProjectSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         project = serializer.save()
-        detail_serializer = ReelProjectDetailSerializer(project)
+        detail_serializer = _project_serializer(project, request, detail=True)
         return Response(detail_serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -508,7 +637,7 @@ class ReelProjectDetailView(APIView):
 
     def get(self, request, pk):
         project = get_object_or_404(ReelProject.objects.prefetch_related('slides'), pk=pk)
-        serializer = ReelProjectDetailSerializer(project)
+        serializer = _project_serializer(project, request, detail=True)
         return Response(serializer.data)
 
     def patch(self, request, pk):
@@ -516,7 +645,7 @@ class ReelProjectDetailView(APIView):
         serializer = ReelProjectSerializer(project, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         updated_project = serializer.save()
-        detail_serializer = ReelProjectDetailSerializer(updated_project)
+        detail_serializer = _project_serializer(updated_project, request, detail=True)
         return Response(detail_serializer.data)
 
     def delete(self, request, pk):
@@ -532,6 +661,7 @@ class ReelProjectGenerateDemoSlidesView(APIView):
         project = get_object_or_404(ReelProject, pk=pk)
 
         with transaction.atomic():
+            _clear_project_video(project)
             project.slides.all().delete()
 
             slides_to_create = []
@@ -558,7 +688,7 @@ class ReelProjectGenerateDemoSlidesView(APIView):
             project.save(update_fields=['slide_count', 'status', 'updated_at'])
 
         project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
-        serializer = ReelProjectDetailSerializer(project)
+        serializer = _project_serializer(project, request, detail=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -578,6 +708,7 @@ class ReelProjectGenerateFromTemplateView(APIView):
             )
 
         with transaction.atomic():
+            _clear_project_video(project)
             project.slides.all().delete()
 
             slides_to_create = []
@@ -604,23 +735,326 @@ class ReelProjectGenerateFromTemplateView(APIView):
             project.save(update_fields=['slide_count', 'status', 'updated_at'])
 
         project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
-        return Response(ReelProjectDetailSerializer(project).data, status=status.HTTP_201_CREATED)
+        return Response(_project_serializer(project, request, detail=True).data, status=status.HTTP_201_CREATED)
+
+
+class ReelProjectGenerateSpeechView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def post(self, request, pk):
+        project = get_object_or_404(ReelProject.objects.prefetch_related('slides'), pk=pk)
+        serializer = ReelSpeechGenerateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        requested_text = str(serializer.validated_data.get('text') or '').strip()
+        speech_text = requested_text or build_project_speech_text(project)
+        if not speech_text:
+            return Response(
+                {'detail': 'Aucun texte voix disponible pour ce reel.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        project.speech_status = ReelProject.SPEECH_STATUS_EMPTY
+        project.speech_error = ''
+        project.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+
+        try:
+            generated = generate_speech_mp3(
+                text=speech_text,
+                voice_id=serializer.validated_data.get('voice_id', ''),
+                model_id=serializer.validated_data.get('model_id', ''),
+                output_format=serializer.validated_data.get('output_format', ''),
+            )
+        except ValueError as exc:
+            project.speech_status = ReelProject.SPEECH_STATUS_ERROR
+            project.speech_error = str(exc)
+            project.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+            return Response({'detail': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+        except ElevenLabsConfigurationError as exc:
+            project.speech_status = ReelProject.SPEECH_STATUS_ERROR
+            project.speech_error = str(exc)
+            project.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+            return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except ElevenLabsAPIError as exc:
+            project.speech_status = ReelProject.SPEECH_STATUS_ERROR
+            project.speech_error = str(exc)
+            project.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+
+        previous_audio_name = project.speech_audio.name if project.speech_audio else ''
+        filename = f'reel-{project.pk}-speech-{timezone.now().strftime("%Y%m%d-%H%M%S")}.mp3'
+        project.speech_audio.save(filename, ContentFile(generated['audio_bytes']), save=False)
+        project.speech_text = speech_text
+        project.speech_voice_id = generated['voice_id']
+        project.speech_model_id = generated['model_id']
+        project.speech_output_format = generated['output_format']
+        project.speech_status = ReelProject.SPEECH_STATUS_READY
+        project.speech_error = ''
+        project.speech_generated_at = timezone.now()
+        project.save(
+            update_fields=[
+                'speech_audio',
+                'speech_text',
+                'speech_voice_id',
+                'speech_model_id',
+                'speech_output_format',
+                'speech_status',
+                'speech_error',
+                'speech_generated_at',
+                'updated_at',
+            ]
+        )
+
+        if previous_audio_name and previous_audio_name != project.speech_audio.name:
+            try:
+                default_storage.delete(previous_audio_name)
+            except Exception:
+                pass
+
+        project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
+        return Response(
+            {
+                'project': _project_serializer(project, request, detail=True).data,
+                'speech': {
+                    'status': project.speech_status,
+                    'audio_url': _project_serializer(project, request).data.get('speech_audio_url'),
+                    'text_length': len(speech_text),
+                    'generated_at': project.speech_generated_at,
+                    'voice_id': project.speech_voice_id,
+                    'model_id': project.speech_model_id,
+                    'output_format': project.speech_output_format,
+                },
+            },
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class ReelProjectGenerateSlideSpeechesView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def post(self, request, pk):
+        project = get_object_or_404(ReelProject.objects.prefetch_related('slides'), pk=pk)
+        serializer = ReelSpeechGenerateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        generated_count = 0
+        skipped_count = 0
+
+        for slide in project.slides.all().order_by('order', 'id'):
+            speech_text = build_slide_speech_text(slide)
+            if not speech_text:
+                _clear_slide_speech(slide)
+                skipped_count += 1
+                continue
+
+            try:
+                _generate_and_save_slide_speech(
+                    slide,
+                    speech_text=speech_text,
+                    voice_id=serializer.validated_data.get('voice_id', ''),
+                    model_id=serializer.validated_data.get('model_id', ''),
+                    output_format=serializer.validated_data.get('output_format', ''),
+                )
+                generated_count += 1
+            except ValueError as exc:
+                slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
+                slide.speech_error = str(exc)
+                slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+                return Response({'detail': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+            except ElevenLabsConfigurationError as exc:
+                slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
+                slide.speech_error = str(exc)
+                slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+                return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            except ElevenLabsAPIError as exc:
+                slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
+                slide.speech_error = str(exc)
+                slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+                return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+
+        _touch_project(project.pk)
+        _clear_project_video(project)
+        project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
+        return Response(
+            {
+                'project': _project_serializer(project, request, detail=True).data,
+                'speech': {
+                    'generated_count': generated_count,
+                    'skipped_count': skipped_count,
+                },
+            },
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class ReelProjectExportVideoView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def post(self, request, pk):
+        project = get_object_or_404(ReelProject.objects.prefetch_related('slides'), pk=pk)
+        serializer = ReelVideoExportSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            project.video_status = ReelProject.VIDEO_STATUS_EMPTY
+            project.video_error = ''
+            project.save(update_fields=['video_status', 'video_error', 'updated_at'])
+        except Exception as exc:
+            import traceback as _tb
+            return Response(
+                {'detail': f'DB init error: {type(exc).__name__}: {exc}\n{_tb.format_exc()}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        try:
+            generated = export_reel_video(
+                project,
+                serializer.validated_data['frames'],
+                width=serializer.validated_data.get('width', 1080),
+                height=serializer.validated_data.get('height', 1920),
+                fps=serializer.validated_data.get('fps', 30),
+                crf=serializer.validated_data.get('crf', 18),
+            )
+        except VideoExportConfigurationError as exc:
+            project.video_status = ReelProject.VIDEO_STATUS_ERROR
+            project.video_error = str(exc)
+            project.save(update_fields=['video_status', 'video_error', 'updated_at'])
+            return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except VideoExportError as exc:
+            project.video_status = ReelProject.VIDEO_STATUS_ERROR
+            project.video_error = str(exc)
+            project.save(update_fields=['video_status', 'video_error', 'updated_at'])
+            return Response({'detail': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as exc:
+            import traceback as _tb
+            detail = f'{type(exc).__name__}: {exc}\n{_tb.format_exc()}'
+            project.video_status = ReelProject.VIDEO_STATUS_ERROR
+            project.video_error = detail[:2000]
+            try:
+                project.save(update_fields=['video_status', 'video_error', 'updated_at'])
+            except Exception:
+                pass
+            return Response({'detail': detail}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        try:
+            previous_video_name = project.video_file.name if project.video_file else ''
+            filename = f'reel-{project.pk}-video-{timezone.now().strftime("%Y%m%d-%H%M%S")}.mp4'
+            project.video_file.save(filename, ContentFile(generated['video_bytes']), save=False)
+            project.video_status = ReelProject.VIDEO_STATUS_READY
+            project.video_error = ''
+            project.video_generated_at = timezone.now()
+            project.video_width = generated['width']
+            project.video_height = generated['height']
+            project.video_fps = generated['fps']
+            project.save(
+                update_fields=[
+                    'video_file',
+                    'video_status',
+                    'video_error',
+                    'video_generated_at',
+                    'video_width',
+                    'video_height',
+                    'video_fps',
+                    'updated_at',
+                ]
+            )
+        except Exception as exc:
+            project.video_status = ReelProject.VIDEO_STATUS_ERROR
+            project.video_error = str(exc)
+            try:
+                project.save(update_fields=['video_status', 'video_error', 'updated_at'])
+            except Exception:
+                pass
+            return Response(
+                {'detail': f'Erreur lors de la sauvegarde de la vidéo: {exc}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        if previous_video_name and previous_video_name != project.video_file.name:
+            try:
+                default_storage.delete(previous_video_name)
+            except Exception:
+                pass
+
+        project = ReelProject.objects.prefetch_related('slides').get(pk=project.pk)
+        project_data = _project_serializer(project, request, detail=True).data
+        return Response(
+            {
+                'project': project_data,
+                'video': {
+                    'status': project.video_status,
+                    'url': project_data.get('video_file_url'),
+                    'generated_at': project.video_generated_at,
+                    'frame_count': generated['frame_count'],
+                    'width': project.video_width,
+                    'height': project.video_height,
+                    'fps': project.video_fps,
+                    'crf': generated['crf'],
+                },
+            },
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class ReelSlideGenerateSpeechView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
+
+    def post(self, request, pk):
+        slide = get_object_or_404(ReelSlide.objects.select_related('reel_project'), pk=pk)
+        serializer = ReelSpeechGenerateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        requested_text = str(serializer.validated_data.get('text') or '').strip()
+        speech_text = requested_text or build_slide_speech_text(slide)
+
+        try:
+            slide = _generate_and_save_slide_speech(
+                slide,
+                speech_text=speech_text,
+                voice_id=serializer.validated_data.get('voice_id', ''),
+                model_id=serializer.validated_data.get('model_id', ''),
+                output_format=serializer.validated_data.get('output_format', ''),
+            )
+        except ValueError as exc:
+            slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
+            slide.speech_error = str(exc)
+            slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+            return Response({'detail': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+        except ElevenLabsConfigurationError as exc:
+            slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
+            slide.speech_error = str(exc)
+            slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+            return Response({'detail': str(exc)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except ElevenLabsAPIError as exc:
+            slide.speech_status = ReelProject.SPEECH_STATUS_ERROR
+            slide.speech_error = str(exc)
+            slide.save(update_fields=['speech_status', 'speech_error', 'updated_at'])
+            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+
+        _clear_project_video(slide.reel_project)
+        _touch_project(slide.reel_project_id)
+        return Response(_slide_serializer(slide, request).data, status=status.HTTP_201_CREATED)
 
 
 class ReelSlideDetailView(APIView):
     permission_classes = [IsAuthenticated, IsStaffOrSuperuser]
 
     def patch(self, request, pk):
-        slide = get_object_or_404(ReelSlide, pk=pk)
+        slide = get_object_or_404(ReelSlide.objects.select_related('reel_project'), pk=pk)
+        previous_voice_script = slide.voice_script
         serializer = ReelSlideSerializer(slide, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         updated_slide = serializer.save()
+        if 'voice_script' in request.data and updated_slide.voice_script != previous_voice_script:
+            _clear_slide_speech(updated_slide)
+        _clear_project_video(updated_slide.reel_project)
         _touch_project(updated_slide.reel_project_id)
-        return Response(ReelSlideSerializer(updated_slide).data)
+        return Response(_slide_serializer(updated_slide, request).data)
 
     def delete(self, request, pk):
-        slide = get_object_or_404(ReelSlide, pk=pk)
+        slide = get_object_or_404(ReelSlide.objects.select_related('reel_project'), pk=pk)
         project_id = slide.reel_project_id
+        project = slide.reel_project
         slide.delete()
 
         slide_count = ReelSlide.objects.filter(reel_project_id=project_id).count()
@@ -628,4 +1062,5 @@ class ReelSlideDetailView(APIView):
             slide_count=slide_count,
             updated_at=timezone.now(),
         )
+        _clear_project_video(project)
         return Response(status=status.HTTP_204_NO_CONTENT)

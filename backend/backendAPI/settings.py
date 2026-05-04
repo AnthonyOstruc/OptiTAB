@@ -390,9 +390,9 @@ FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler',
 ]
 
-# Taille maximale des fichiers uploadés (10MB)
-DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
-FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
+# Taille maximale des uploads admin: export video Reel Studio en frames PNG 1080x1920.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 125829120  # 120MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 125829120  # 120MB
 
 # Cache agressif côté client pour les assets versionnés
 WHITENOISE_MAX_AGE = 31536000  # 1 an
@@ -549,6 +549,40 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 # CONFIGURATION OPENAI
 # ========================================
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+# ========================================
+# CONFIGURATION ELEVENLABS
+# ========================================
+ELEVENLABS_API_KEY = os.getenv('ELEVENLABS_API_KEY', '').strip()
+ELEVENLABS_VOICE_ID = os.getenv('ELEVENLABS_VOICE_ID', 'JBFqnCBsd6RMkjVDRZzb').strip()
+ELEVENLABS_MODEL_ID = os.getenv('ELEVENLABS_MODEL_ID', 'eleven_multilingual_v2').strip()
+ELEVENLABS_OUTPUT_FORMAT = os.getenv('ELEVENLABS_OUTPUT_FORMAT', 'mp3_44100_128').strip()
+ELEVENLABS_LANGUAGE_CODE = os.getenv('ELEVENLABS_LANGUAGE_CODE', 'fr').strip()
+ELEVENLABS_API_URL = os.getenv(
+    'ELEVENLABS_API_URL',
+    'https://api.elevenlabs.io/v1/text-to-speech',
+).rstrip('/')
+
+
+def _float_env(var_name, default):
+    try:
+        return float(os.getenv(var_name, str(default)))
+    except (TypeError, ValueError):
+        return default
+
+
+try:
+    ELEVENLABS_TIMEOUT_SECONDS = float(os.getenv('ELEVENLABS_TIMEOUT_SECONDS', '60'))
+except (TypeError, ValueError):
+    ELEVENLABS_TIMEOUT_SECONDS = 60.0
+try:
+    ELEVENLABS_MAX_TEXT_CHARS = int(os.getenv('ELEVENLABS_MAX_TEXT_CHARS', '10000'))
+except (TypeError, ValueError):
+    ELEVENLABS_MAX_TEXT_CHARS = 10000
+ELEVENLABS_VOICE_STABILITY = _float_env('ELEVENLABS_VOICE_STABILITY', 0.45)
+ELEVENLABS_VOICE_SIMILARITY_BOOST = _float_env('ELEVENLABS_VOICE_SIMILARITY_BOOST', 0.8)
+ELEVENLABS_VOICE_STYLE = _float_env('ELEVENLABS_VOICE_STYLE', 0.0)
+ELEVENLABS_USE_SPEAKER_BOOST = os.getenv('ELEVENLABS_USE_SPEAKER_BOOST', 'True') == 'True'
 
 # ========================================
 # CONFIGURATION TIKTOK EVENTS API

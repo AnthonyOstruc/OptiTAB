@@ -113,7 +113,6 @@ const routeMapping = {
   'tables-formules': ['/tables-formules', '/tables-formules-notion'],
   quiz: ['/quiz', '/quiz-notions', '/quiz-notion', '/chapter-quiz'],
   calculator: '/calculator',
-  blog: '/blog',
   abonnement: ['/billing']
 }
 
@@ -135,10 +134,6 @@ const handleClick = async (item) => {
   }
   if (item.key === 'calculator') {
     router.push('/calculator').catch(() => {})
-    return
-  }
-  if (item.key === 'blog') {
-    router.push('/blog').catch(() => {})
     return
   }
   if (item.key === 'abonnement') {

@@ -16,5 +16,25 @@ urlpatterns = [
         views.ReelProjectGenerateFromTemplateView.as_view(),
         name='reel-project-generate-from-template',
     ),
+    path(
+        'projects/<int:pk>/generate-speech/',
+        views.ReelProjectGenerateSpeechView.as_view(),
+        name='reel-project-generate-speech',
+    ),
+    path(
+        'projects/<int:pk>/generate-slide-speeches/',
+        views.ReelProjectGenerateSlideSpeechesView.as_view(),
+        name='reel-project-generate-slide-speeches',
+    ),
+    path(
+        'projects/<int:pk>/export-video/',
+        views.ReelProjectExportVideoView.as_view(),
+        name='reel-project-export-video',
+    ),
+    path(
+        'slides/<int:pk>/generate-speech/',
+        views.ReelSlideGenerateSpeechView.as_view(),
+        name='reel-slide-generate-speech',
+    ),
     path('slides/<int:pk>/', views.ReelSlideDetailView.as_view(), name='reel-slide-detail'),
 ]

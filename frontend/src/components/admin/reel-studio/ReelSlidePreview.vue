@@ -945,7 +945,9 @@ onUnmounted(() => {
   justify-content: flex-start;
   align-items: flex-start;
   gap: clamp(7px, calc(12px * var(--reel-thumb-fit-scale, 1)), 12px);
-  overflow-x: hidden;
+  flex: 0 0 auto;
+  overflow: visible;
+  padding-block: calc(0.4cqw * var(--reel-thumb-fit-scale, 1));
 }
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.katex-display) {
@@ -971,8 +973,9 @@ onUnmounted(() => {
   max-width: 100%;
   display: block;
   text-align: left;
-  overflow: hidden;
-  min-height: 1.45em;
+  overflow: visible;
+  min-height: calc(1.8em * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  padding-block: 0.08em;
 }
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line + .reel-katex-line) {
@@ -1042,7 +1045,7 @@ onUnmounted(() => {
 }
 
 .slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line) {
-  min-height: 1.55em;
+  min-height: calc(1.85em * var(--reel-math-scale, 1));
 }
 
 .slide-card--fullscreen .hook-layout {
@@ -1170,7 +1173,8 @@ onUnmounted(() => {
 
 .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line),
 .slide-card--fullscreen .reel-slide:not(.reel-slide--hook):not(.reel-slide--cta) .katex-zone :deep(.reel-katex-line) {
-  min-height: calc(7.7cqw * var(--reel-thumb-fit-scale, 1));
+  min-height: calc(9.4cqw * var(--reel-math-scale, 1) * var(--reel-thumb-fit-scale, 1));
+  overflow: visible;
 }
 
 @media (max-width: 768px) {

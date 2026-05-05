@@ -50,6 +50,28 @@
       <p class="result__score">{{ result.score }} / {{ result.max_score }} · précision {{ Math.round(result.accuracy * 100) }}%</p>
       <p class="result__xp">+ {{ result.xp_awarded }} XP · série {{ result.streak }} 🔥</p>
 
+      <ol class="recap" v-if="result.answer_results?.length">
+        <li v-for="(q, i) in questions" :key="q.id" class="recap__item"
+            :class="{ 'recap__item--ok': resultMap[q.id]?.is_correct, 'recap__item--ko': resultMap[q.id] && !resultMap[q.id].is_correct }">
+          <div class="recap__head">
+            <span class="recap__index">Q{{ i + 1 }}</span>
+            <span class="recap__verdict">{{ resultMap[q.id]?.is_correct ? '✓ Correct' : '✗ À revoir' }}</span>
+          </div>
+          <ArenaPrompt :text="q.prompt" />
+          <p class="recap__answers">
+            <span class="recap__label">Votre réponse :</span>
+            <ArenaPrompt :text="userAnswerLabel(q)" />
+          </p>
+          <p v-if="!resultMap[q.id]?.is_correct" class="recap__answers recap__answers--correct">
+            <span class="recap__label">Bonne réponse :</span>
+            <ArenaPrompt :text="correctAnswerLabel(q, resultMap[q.id])" />
+          </p>
+          <div v-if="q.explanation" class="recap__explanation">
+            <ArenaPrompt :text="q.explanation" />
+          </div>
+        </li>
+      </ol>
+
       <div class="result__actions">
         <button class="ghost" @click="quit">Retour</button>
         <button class="primary" @click="replay">Rejouer</button>
@@ -98,6 +120,37 @@ const remainingDisplay = computed(() => {
   return `${m}:${s}`
 })
 
+const resultMap = computed(() => {
+  const out = {}
+  for (const r of (result.value?.answer_results || [])) {
+    out[r.question_id] = r
+  }
+  return out
+})
+
+function userAnswerLabel(q) {
+  if (q.type === 'mcq') {
+    const i = selected.value[q.id]
+    if (i === undefined || i === null) return '—'
+    const letter = String.fromCharCode(65 + i)
+    return `${letter}. ${q.choices?.[i] ?? ''}`
+  }
+  const v = numericAnswers.value[q.id]
+  return (v === undefined || v === null || v === '') ? '—' : String(v)
+}
+
+function correctAnswerLabel(q, r) {
+  const c = r?.correct_answer
+  if (c === undefined || c === null) return ''
+  if (q.type === 'mcq' && Array.isArray(c)) {
+    return c.map((i) => `${String.fromCharCode(65 + i)}. ${q.choices?.[i] ?? ''}`).join(', ')
+  }
+  if (q.type === 'numeric' && typeof c === 'object') {
+    return String(c.value ?? '')
+  }
+  return String(c)
+}
+
 async function load() {
   hintShown.value = false
   finished.value = false
@@ -105,7 +158,14 @@ async function load() {
   selected.value = {}
   numericAnswers.value = {}
   index.value = 0
-  await arena.loadLevel(Number(route.params.levelId))
+  try {
+    await arena.loadLevel(Number(route.params.levelId))
+  } catch (_) {
+    // The store has already pushed the appropriate CTA modal (e.g. paywall).
+    // Send the user back to the home so they aren't stranded on a blank page.
+    router.replace('/jeu')
+    return
+  }
   startedAt.value = Date.now()
   remaining.value = level.value?.time_limit_sec || 90
   timer.value = setInterval(tick, 1000)
@@ -258,4 +318,56 @@ function openCta(cta) {
 }
 .result__cta h3 { margin: 0 0 6px; color: #0f172a; }
 .result__cta p { margin: 0 0 12px; color: #475569; }
+
+.recap {
+  list-style: none;
+  padding: 0;
+  margin: 28px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+.recap__item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.recap__item--ok { border-left-color: #10b981; background: #ecfdf5; }
+.recap__item--ko { border-left-color: #ef4444; background: #fef2f2; }
+.recap__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.recap__index { color: #64748b; text-transform: uppercase; }
+.recap__verdict { color: #0f172a; }
+.recap__item--ok .recap__verdict { color: #047857; }
+.recap__item--ko .recap__verdict { color: #b91c1c; }
+.recap__answers {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #475569;
+}
+.recap__answers--correct { color: #047857; font-weight: 600; }
+.recap__label { font-weight: 700; color: #334155; }
+.recap__explanation {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e1;
+  font-size: 14px;
+  color: #334155;
+}
 </style>

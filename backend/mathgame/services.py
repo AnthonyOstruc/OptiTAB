@@ -173,6 +173,18 @@ def submit_attempt(*, user, level: ArenaLevel, answers: list[dict],
     # Build CTA payload for the frontend.
     ctas = build_post_attempt_ctas(user=user, attempt=attempt, level=level)
 
+    # Per-question recap so the result screen can show ✓/✗ + correct answer.
+    # Includes skipped questions (is_correct=False, no answered record).
+    answered = {a.question_id: a for a in attempt.answers.all()}
+    answer_results = [
+        {
+            'question_id': q.id,
+            'is_correct': bool(answered.get(q.id) and answered[q.id].is_correct),
+            'correct_answer': q.correct,
+        }
+        for q in questions
+    ]
+
     return {
         'attempt_id': attempt.id,
         'score': attempt.score,
@@ -182,6 +194,7 @@ def submit_attempt(*, user, level: ArenaLevel, answers: list[dict],
         'xp_awarded': attempt.xp_awarded,
         'streak': state.current_streak,
         'best_streak': state.best_streak,
+        'answer_results': answer_results,
         'ctas': ctas,
     }
 
